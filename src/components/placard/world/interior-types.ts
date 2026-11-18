@@ -1,4 +1,5 @@
 import type { VillageBuildingKind } from "./village-buildings";
+import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 
 export type InteriorObjectKind = "culture" | "drying" | "storage" | "partition" | "workbench" | "counter" | "desk" | "bookshelf" | "board" | "cards" | "podium" | "safe" | "character" | "exit";
 export type InteriorRotation = 0 | 90 | 180 | 270;
@@ -33,6 +34,8 @@ export type InteriorRoom = {
 export type InteriorPlacement = { id: string; x: number; z: number; rotation: InteriorRotation };
 export type InteriorQuality = "auto" | "high" | "low";
 export type InteriorSceneProps = {
+  profile?: ChanvrierAvatarProfile | null;
+  followPlayer?: boolean;
   room: InteriorRoom;
   suspended: boolean;
   editing: boolean;

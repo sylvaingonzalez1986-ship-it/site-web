@@ -1,10 +1,12 @@
 import * as THREE from "three";
 import { paintingToGround } from "./village-layout";
+import { addCapVisor, addVillageNeck, addVillageShoe, clothPoint, clothSectionAt, createVillageSleeve, garmentPanel, garmentVolume, reshapeGarment, villageTrouserPattern, type ClothSection } from "./village-npc-tailoring";
+import { createCharacterLimbSurface } from "./character-limb-surface";
 import { sampleVillageWaves } from "./village-marine";
 import type { VillageNpcPose, VillageNpcRig } from "./village-npc-types";
 import {
   Assembly, CHARACTER_COLORS as C, characterDisposer, characterEase, characterMaterial,
-  createCharacterFace, createCharacterLimbs, noCharacterHit,
+  createCharacterFace, noCharacterHit,
 } from "./village-character-art";
 
 const [x, z] = paintingToGround(1560, 1090);
@@ -33,47 +35,85 @@ export function createVillageFisherman(): VillageNpcRig {
   equipment.rod([-0.15, 0.78, 0.93], [-0.085, 0.88, 0.93], 0.018, C.wood);
   equipment.finish("fisherman-stool-crate-rod-rest", object, material);
 
+  const oilskin = "#31473e", knit = "#2f504b";
   const legs = new Assembly();
   for (const side of [-1, 1]) {
-    legs.rod([side * 0.145, 0.6, -0.005], [side * 0.2, 0.43, 0.39], 0.11, C.dark, 0.13);
-    legs.ball([side * 0.2, 0.43, 0.39], 0.113, C.dark);
-    legs.rod([side * 0.2, 0.43, 0.39], [side * 0.21, 0.13, 0.43], 0.088, C.dark, 0.108);
-    legs.ball([side * 0.21, 0.085, 0.5], 0.14, C.ink, [0.88, 0.6, 1.35]);
-    legs.box([side * 0.21, 0.04, 0.51], [0.23, 0.035, 0.3], C.wood);
+    const trouser = createCharacterLimbSurface(object, material, "fisherman-seated-leg-" + side,
+      villageTrouserPattern(oilskin, "#354b41", "fisherman"), 14, .36);
+    trouser.pose(new THREE.Vector3(side * .117, .595, -.075), new THREE.Vector3(side * .199, .427, .374),
+      new THREE.Vector3(side * .208, .139, .431), new THREE.Vector3(1, 0, 0));
+    const ankle = new THREE.Group();
+    ankle.name = `fisherman-ankle-${side}`;
+    ankle.position.set(side * .208, .105, .434);
+    ankle.rotation.y = side * .068;
+    object.add(ankle);
+    const shoe = new Assembly();
+    addVillageShoe(shoe, "fisherman");
+    shoe.finish("fisherman-leather-boot", ankle, material);
   }
+  legs.add(garmentVolume([[.516, .144, .124, -.035], [.524, .209, .161, -.036],
+    [.55, .232, .181, -.03], [.602, .237, .179, -.013], [.654, .21, .155]]), oilskin);
   legs.finish("fisherman-seated-trousers-boots", object, material);
   const torso = new THREE.Group(); torso.name = "fisherman-torso"; torso.position.y = 0.56; object.add(torso);
   const shirt = new Assembly();
-  // The stripes are cloth bands on one continuous volume, not bars laid in
-  // front of a sphere. Shared latitude boundaries prevent gaps and shimmer.
-  const shirtRadii = [0.29 * 1.08, 0.29 * 1.09, 0.29 * 0.79] as const;
-  const levels = [-1, -0.78, -0.5, -0.38, -0.26, -0.14, -0.02, 0.1, 0.22, 0.34, 0.46, 0.65, 0.84, 1];
-  for (let index = 0; index < levels.length - 1; index++) {
-    const theta = Math.acos(levels[index + 1]);
-    const band = new THREE.SphereGeometry(1, 20, 2, 0, Math.PI * 2, theta, Math.acos(levels[index]) - theta);
-    band.scale(...shirtRadii);
-    shirt.add(band, index >= 3 && index <= 9 && index % 2 === 1 ? C.cream : C.ink, [0, 0.25, -0.025]);
-  }
-  shirt.ball([0, 0.035, 0], 0.25, C.dark, [1.05, 0.5, 0.8]);
+  const pattern: readonly ClothSection[] = [
+    [-.030, .162, .135, -.015], [.015, .236, .183, -.015], [.085, .270, .205, -.008],
+    [.160, .284, .215, -.002], [.235, .292, .214, 0], [.310, .293, .207, -.005],
+    [.388, .285, .185, -.011], [.443, .273, .164, -.016], [.486, .221, .134, -.017],
+    [.521, .147, .108, -.010], [.544, .101, .084, -.006], [.548, .082, .073, -.005]];
+  const section = (y: number) => clothSectionAt(pattern, y);
+  const drape = (y: number, angle: number) => .009 * Math.cos(angle * 4 + y * 7) * (1 - THREE.MathUtils.smoothstep(y, .20, .45));
+  const stripes = [.085, .158, .231, .304, .377], stripeHeight = .029;
+  const seams = Array.from(new Set([...pattern.map(row => row[0]), ...stripes.flatMap(y => [y, y + stripeHeight])])).sort((a, b) => a - b);
+  shirt.add(garmentVolume(seams.map(section), 24, y => stripes.some(start => y >= start && y < start + stripeHeight) ? "#ead7ae" : knit, drape), null);
+  shirt.add(garmentVolume([[.515, .156, .112, -.010], [.530, .142, .108, -.010], [.550, .107, .089, -.006], [.550, .084, .074, -.005]]), "#3c6860");
+
+  // Tough canvas rises over the lap. A darker chest pocket and welt are formed in the bib.
+  const bibAngle = (y: number) => THREE.MathUtils.lerp(1.34, .78, THREE.MathUtils.smoothstep(y, .033, .222));
+  const bibDrape = (y: number, a: number) => drape(y, a) + .015 + .006 * Math.cos(a * 2.6);
+  shirt.add(garmentPanel([-.024, .015, .067, .133, .180, .213, .227].map(section), 16, y => [-bibAngle(y), bibAngle(y)], bibDrape), oilskin);
+  shirt.add(garmentPanel([.083, .098, .156, .175].map(section), 8, () => [-.369, .369], (y, a) => bibDrape(y, a) + .008), "#496658");
+  shirt.sweep([-.37, 0, .37].map(a => clothPoint(section(.174), a, (y, angle) => bibDrape(y, angle) + .011)),
+    [.003, .006, .003], "#718476", 6);
+
   for (const side of [-1, 1]) {
-    shirt.ball([side * 0.26, 0.42, -0.015], 0.105, C.ink);
-    const strapPoint = (t: number): [number, number, number] => {
-      const x = side * (0.15 + t * 0.03), y = 0.49 - t * 0.4;
-      return [x, y, -0.025 + shirtRadii[2] * Math.sqrt(Math.max(0, 1 - (x / shirtRadii[0]) ** 2 - ((y - 0.25) / shirtRadii[1]) ** 2)) + 0.012];
-    };
-    for (let segment = 0; segment < 7; segment++) shirt.rod(strapPoint(segment / 7), strapPoint((segment + 1) / 7), 0.018, C.gold);
-    shirt.ball(strapPoint(0.76), 0.025, C.wood, [1, 1.1, 0.4]);
+    const strapCenter = (y: number) => side * THREE.MathUtils.lerp(.68, .92, THREE.MathUtils.smoothstep(y, .409, .518));
+    const lift = (y: number, a: number) => .027 + drape(y, a);
+    const rows = [.173, .204, .227, .268, .321, .388, .443, .486, .521].map(section);
+    for (const rear of [false, true]) {
+      shirt.add(garmentPanel(rows, 4, y => {
+        const angle = rear ? Math.PI - strapCenter(y) : strapCenter(y);
+        return [angle - .081, angle + .081];
+      }, lift), rear ? "#b98c55" : "#d0a366");
+    }
+    const buckle = clothPoint(section(.283), strapCenter(.283), (y, a) => lift(y, a) + .008);
+    shirt.add(new THREE.TorusGeometry(.022, .0043, 5, 14).scale(.87, 1.15, .7).rotateY(side * .27), C.gold, buckle);
+    const shoulder = clothPoint(section(.515), side * Math.PI / 2, (y, a) => lift(y, a) + .005);
+    shirt.sweep([clothPoint(section(.515), strapCenter(.515), lift), shoulder,
+      clothPoint(section(.515), side * Math.PI - strapCenter(.515), lift)], [.013, .017, .013], "#bc9159", 7);
   }
-  shirt.rod([0, 0.49, 0], [0, 0.68, 0], 0.091, C.skin);
+  addVillageNeck(shirt, .49, .184, .083);
   shirt.finish("fisherman-striped-knit-and-braces", torso, material);
   const face = createCharacterFace(torso, material, "fisherman", "#b6ad91"); face.head.position.set(0, 0.63, 0);
   const hat = new Assembly();
-  hat.ball([0, 0.41, -0.045], 0.285, C.teal, [1.07, 0.48, 1.05]);
-  hat.ball([0, 0.366, 0.115], 0.236, C.dark, [1.16, 0.105, 1.14]);
-  hat.ball([0, 0.39, 0.197], 0.034, C.gold, [1, 0.8, 0.4]);
-  for (const side of [-1, 1]) hat.ball([side * 0.048, 0.108, 0.213], 0.053, "#d3c7a8", [1.2, 0.42, 0.34]);
-  hat.finish("fisherman-cap-and-silver-moustache", face.head, material);
-  const sleeves = createCharacterLimbs(torso, 4, C.ink, "fisherman-sleeve");
+  const crown: readonly ClothSection[] = [[.388, .242, .217, -.015], [.405, .275, .236, -.018], [.430, .288, .243, -.018],
+    [.463, .283, .241, -.026], [.482, .260, .225, -.034], [.497, .208, .180, -.041], [.505, .119, .114, -.046], [.511, 0, 0, -.046]];
+  hat.add(reshapeGarment(garmentVolume(crown, 36, undefined, (y, a) => {
+    const cloth = Math.sin(Math.PI * (y - .388) / .123);
+    return cloth * (.011 * Math.sin(a * 3 + .65) + .006 * Math.cos(a * 5 - .5));
+  }), point => {
+    const rise = THREE.MathUtils.smoothstep(point.y, .389, .479);
+    point.y += rise * (.057 * point.x + .036 * point.z - .017 * Math.exp(-((point.x + .12) ** 2 / .008)));
+    point.x += rise * .024;
+  }), "#126e65");
+  const band: readonly ClothSection[] = [[.350, .232, .210, -.008], [.358, .247, .224, -.009], [.394, .255, .228, -.010], [.408, .252, .225, -.012]];
+  hat.add(garmentVolume(band, 32, y => y > .392 ? "#49665a" : "#294a43"), null);
+  addCapVisor(hat, .370, .245, .218, .086, "#294941", "#213631");
+  const cord = Array.from({ length: 7 }, (_, i) => clothPoint(clothSectionAt(band, .380 - .009 * Math.sin(i * Math.PI / 6)), -1.36 + 2.72 * i / 6, () => .006));
+  hat.sweep(cord, [.006, .007, .007, .008, .007, .007, .006], "#ac9363", 7);
+  for (const point of [cord[0], cord[cord.length - 1]]) hat.ball(point, .014, "#b6a270", [1, 1, .64]);
+  hat.finish("fisherman-cap", face.head, material);
+  const sleeves = [-1, 1].map(side => createVillageSleeve(torso, material, "fisherman-sleeve-" + side, "fisherman", knit, "#396157"));
   const hands = [-1, 1].map(side => {
     const art = new Assembly();
     if (side === 1) {
@@ -83,9 +123,12 @@ export function createVillageFisherman(): VillageNpcRig {
       art.sweep([[0.068, 0.031, 0], [0.045, 0.052, -0.037], [0.005, 0.044, -0.05]], [0.019, 0.021, 0.012], C.skin);
       for (const y of [-0.027, 0, 0.027]) art.sweep([[0.067, y, 0.022], [0.045, y, 0.057], [0.005, y, 0.065], [-0.027, y - 0.005, 0.044]], [0.014, 0.015, 0.014, 0.01], C.skin);
     } else {
-      art.ball([0, 0, 0], 0.064, C.skin, [0.93, 0.92, 0.8]);
-      art.ball([side * 0.039, 0.025, 0.015], 0.027, C.skin);
-      for (let i = 0; i < 3; i++) art.ball([-0.02 + i * 0.02, -0.025, 0.035], 0.018, C.skin);
+      // The rod runs almost along +Z. Fingers cross under its handle, the thumb opposes them.
+      art.ball([-.031, -.004, .003], .052, C.skin, [.68, .82, 1.12]);
+      art.sweep([[-.043, .013, .026], [-.030, .032, .041], [-.007, .033, .045], [.012, .020, .041]],
+        [.015, .016, .013, .008], C.skin, 7);
+      for (const z of [-.028, 0, .026]) art.sweep([[-.045, -.008, z], [-.028, -.027, z + .002], [.004, -.030, z + .004], [.024, -.009, z + .004]],
+        [.013, .015, .013, .008], C.skin, 7);
     }
     return art.finish(`fisherman-hand-${side}`, torso, material);
   });
@@ -127,7 +170,7 @@ export function createVillageFisherman(): VillageNpcRig {
     .premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -0.75));
   const identity = new THREE.Quaternion();
   let lift = 0, gripAmount = 0;
-  function animate(time: number, delta: number, reduced: boolean, pose?: VillageNpcPose) {
+  function animate(time: number, delta: number, reduced: boolean, pose?: VillageNpcPose, detail = 1) {
     const t = reduced ? 0 : time, ease = characterEase(delta, reduced);
     const phase = pose?.fishingPhase ?? "wait", progress = THREE.MathUtils.clamp(pose?.phaseProgress ?? 0, 0, 1);
     const attention = pose?.attention ?? 0, smooth = THREE.MathUtils.smoothstep(progress, 0, 1);
@@ -139,12 +182,14 @@ export function createVillageFisherman(): VillageNpcRig {
     const yaw = THREE.MathUtils.clamp(pose?.lookYaw ?? 0, -0.85, 0.85);
     torso.rotation.y += (yaw * 0.18 * attention - torso.rotation.y) * ease;
     inverseBust.copy(torso.quaternion).invert();
-    face.head.rotation.y += ((attention ? yaw * 0.82 : phase === "watch" ? -0.11 : -0.04) - face.head.rotation.y) * ease;
+    const idleYaw = phase === "watch" ? -0.11 : -0.04;
+    face.head.rotation.y += (THREE.MathUtils.lerp(idleYaw, yaw * 0.82, attention) - face.head.rotation.y) * ease;
     const adjustment = phase === "adjust" && !reduced ? Math.sin(progress * Math.PI) ** 2 * (1 - attention) : 0;
-    const tilt = (pose?.lookPitch ?? 0) * attention - lift * 0.13 + (phase === "watch" && !attention ? 0.085 : 0) + adjustment * 0.13;
+    const idlePitch = phase === "watch" ? 0.085 : 0;
+    const tilt = THREE.MathUtils.lerp(idlePitch, pose?.lookPitch ?? 0, attention) - lift * 0.13 + adjustment * 0.13;
     face.head.rotation.x += (tilt + Math.sin(t * 1.4) * 0.012 - face.head.rotation.x) * ease;
     face.head.rotation.z = Math.sin(t * 0.8) * 0.018 + attention * (pose?.emphasis ?? 0) * 0.025;
-    face.setExpression(t, reduced, attention, yaw, (0.08 + attention * (0.16 + (pose?.emphasis ?? 0) * 0.3)) * (1 - lift * 0.95), attention * 0.45);
+    face.setExpression(t, reduced, attention, yaw, (0.08 + attention * (0.16 + (pose?.emphasis ?? 0) * 0.3)) * (1 - lift * 0.95), attention * 0.45, detail);
     rest.set(0.53, 0.085, 0.02).applyQuaternion(inverseBust);
     lip.set(0, 0.078, 0.218).applyEuler(face.head.rotation).add(face.head.position);
     bottle.position.copy(rest).lerp(lip, lift);
@@ -158,14 +203,12 @@ export function createVillageFisherman(): VillageNpcRig {
     hands[1].quaternion.copy(bottle.quaternion);
     wrist.set(0.085, 0.02, -0.005).applyQuaternion(hands[1].quaternion).add(hands[1].position);
     const ex = 0.41 - lift * 0.25, ey = 0.18 + lift * 0.31, ez = 0.08 + lift * 0.19;
-    sleeves.set(2, 0.26, 0.42, -0.015, ex, ey, ez, 0.09);
-    sleeves.set(3, ex, ey, ez, wrist.x, wrist.y, wrist.z, 0.071);
+    sleeves[1](.225, .448, -.031, ex, ey, ez, wrist.x, wrist.y, wrist.z);
     // Convert the supported rod's contact back into bust space as shoulders turn.
     leftGrip.set(-0.196 - adjustment * 0.094, 0.225 - adjustment * 0.055, 0.71 - adjustment * 0.14).applyQuaternion(inverseBust);
     hands[0].position.copy(leftGrip);
-    hands[0].rotation.x = Math.sin(t * 4.5) * adjustment * 0.22;
-    sleeves.set(0, -0.26, 0.42, -0.015, -0.36, 0.19, 0.24, 0.092);
-    sleeves.set(1, -0.36, 0.19, 0.24, leftGrip.x, leftGrip.y, leftGrip.z, 0.073);
+    hands[0].rotation.x = -.226 + Math.sin(t * 4.5) * adjustment * .12;
+    sleeves[0](-.226, .443, -.03, -.343, .185, .241, leftGrip.x, leftGrip.y, leftGrip.z);
     // Sample the exact sea shader at the float's world location, including the shared clock.
     object.updateWorldMatrix(true, false);
     worldFloat.set(-0.09, 0, 3.28).applyMatrix4(object.matrixWorld);
@@ -182,7 +225,7 @@ export function createVillageFisherman(): VillageNpcRig {
     object,
     update(frame, pose) {
       if (resources.disposed || !frame.visible(object, 4.1)) return;
-      animate(frame.time, frame.delta, frame.reduced, pose);
+      animate(frame.time, frame.delta, frame.reduced, pose, frame.detail);
     },
     dispose: resources.dispose,
   };

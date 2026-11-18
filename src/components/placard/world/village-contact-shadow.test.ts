@@ -1,0 +1,32 @@
+import { Group, Matrix4, Vector3 } from "three";
+import { expect, it } from "vitest";
+import { createCharacterContactShadow } from "./village-contact-shadow";
+
+it("projects each walking sole onto the terrain and softens contact as a foot rises", () => {
+  const actor = new Group(), left = new Group(), right = new Group();
+  actor.add(left, right);
+  const ground = (x: number, z: number) => .05 * x + .02 * z;
+  actor.position.set(2, ground(2, 3), 3);
+  actor.rotation.y = .8;
+  left.position.set(-.13, .105, .08);
+  right.position.set(.13, .105, -.08);
+  const contact = createCharacterContactShadow(actor, [left, right], .105, .76, ground);
+  const matrix = new Matrix4(), point = new Vector3();
+  contact.mesh.getMatrixAt(1, matrix);
+  point.setFromMatrixPosition(matrix).applyMatrix4(actor.matrixWorld);
+  const sole = left.localToWorld(new Vector3(0, -.105, .047));
+  expect(point.x).toBeCloseTo(sole.x, 5);
+  expect(point.z).toBeCloseTo(sole.z, 5);
+  expect(point.y).toBeCloseTo(ground(point.x, point.z) + .012, 5);
+  expect(new Vector3().setFromMatrixScale(matrix).x).toBeGreaterThan(.2);
+  const version = contact.mesh.instanceMatrix.version;
+  contact.update();
+  expect(contact.mesh.instanceMatrix.version).toBe(version);
+  left.position.y += .25;
+  contact.update();
+  contact.mesh.getMatrixAt(1, matrix);
+  expect(new Vector3().setFromMatrixScale(matrix).x).toBe(0);
+  contact.mesh.getMatrixAt(2, matrix);
+  expect(new Vector3().setFromMatrixScale(matrix).x).toBeGreaterThan(.2);
+  contact.mesh.geometry.dispose(); contact.mesh.material.dispose(); contact.mesh.dispose();
+});

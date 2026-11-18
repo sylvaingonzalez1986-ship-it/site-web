@@ -51,13 +51,15 @@ dans la séquence en cours. Le reçu apparaît ensuite et reste consultable.
 
 ## Dés
 
-La piste de lancer utilise un fond vert profond avec une trame discrète et un
-filet menthe, dessiné en CSS. Les dés physiques et les faces CSS partagent des
-faces crème mates, des points vert encre et des contours épais. Après validation,
-le corail signale le danger, la menthe la réussite et le jaune l’étincelle ; le
-quatrième dé écarté reste grisé en 3D. Les valeurs et la physique du lancer sont
-conservées, ainsi que le résultat direct et la préférence de mouvement réduit.
-Les dés en attente restent visibles avant le premier lancer.
+Les dés reposent en 3D sur un feutre vert qui atteint 620 px de large sur PC.
+Au clic, ils se regroupent d’un côté. Dès que le jeu confirme les valeurs,
+ils traversent le plateau et rebondissent. Quelques traits au point de contact
+marquent le premier impact. Le résultat se lit sur les faces et sous le plateau.
+Après validation, le corail signale le danger, la menthe la réussite et le
+jaune l’étincelle. Le dé écarté est grisé.
+
+Le mode rapide raccourcit le geste. Le résultat direct, la préférence de
+mouvement réduit et le repli sans WebGL utilisent des faces fixes.
 
 ## Illustration
 
@@ -95,8 +97,9 @@ mission après erreur, la progression terminée, le chargement, la reprise aprè
 erreur de lecture et l’intégration dans l’accueil. Aucun appel externe autorisé.
 Captures et rapport : `output/placard-workshop/dashboard/`.
 
-`node scripts/audit-placard-dice.mjs` exerce le moteur WebGL et les faces CSS
-réels, avec des valeurs de présentation fixes : lancer à trois et quatre dés,
-couleurs après validation, mise à jour des faces, points du rendu de secours et
-débordements sur 320/390/768 px. Aucun tirage de partie ni appel API.
-Captures et rapport : `output/placard-workshop/dice/`.
+`node scripts/audit-placard-dice.mjs` vérifie le lancer dans la vue joueur avec
+une réponse serveur simulée. La recette couvre le repos, le chargement à froid,
+une réponse lente ou refusée, le passage au résultat au clavier et les modes
+statiques. Elle vérifie aussi les faces à trois et quatre dés et leurs couleurs
+après validation. Les captures, le GIF du lancer sur PC et le rapport sont dans
+`output/placard-workshop/dice/`.

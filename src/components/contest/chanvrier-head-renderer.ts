@@ -225,6 +225,8 @@ const JAW_OFFSETS: Record<ChanvrierAppearance["face"], readonly number[]> = {
   heart: [0, 6, 8, -6, -26, -26, -14, 0],
   long: [0, -4, -14, -26, -32, -24, -12, 0],
   angular: [0, 4, 15, 9, -6, -10, -5, 0],
+  pear: [0, -3, -5, 5, 21, 28, 16, 0],
+  cheeked: [0, 12, 20, 8, -14, -17, -7, 0],
 };
 
 function jawOffset(face: ChanvrierAppearance["face"], y: number) {

@@ -104,11 +104,11 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     const small=await page.$$eval("[data-team-panel] :is(button,input,select)",nodes=>nodes.filter(node=>node.checkVisibility()&&!node.disabled&&node.getBoundingClientRect().height<43.9).map(node=>node.textContent));
     assert.deepEqual(small,[],"Team controls have a 44 px touch target");
   }
-  for(const [width,world] of [[320,"2d"],[390,"3d"],[1440,"2d"],[1440,"3d"]]) {
+  for(const [width,requestedWorld] of [[320,"2d"],[390,"3d"],[1440,"2d"],[1440,"3d"]]) {
     fixture.reset();
     await page.setViewport({width,height:width===320?690:width===390?844:900,isMobile:width<1000,hasTouch:width<1000,deviceScaleFactor:1});
-    await visit("starter",`world=${world}&entryGate=1`);
-    await page.waitForSelector(`[data-placard-world="${world}"]`);
+    await visit("starter",`world=${requestedWorld}&entryGate=1`);
+    await page.waitForSelector('[data-placard-world="3d"]');
     await showPanel();
     assert.match(await page.$eval(person("player"), node => node.textContent), /VillageAudit/);
     await page.waitForSelector(person("player") + ' canvas[data-avatar-state="ready"]');
@@ -122,8 +122,8 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     await activate(person("player"));
     assert.match(await page.$eval("[data-team-task]",node=>node.textContent),/Ranger un lot.*Stockage.*0,5 h/);
     await checkFit(width);
-    await screenshot(`quarter-team-${world}-${width}`);
-    if (world==="3d" && width===1440) {
+    await screenshot(`quarter-team-from-${requestedWorld}-${width}`);
+    if (requestedWorld==="3d" && width===1440) {
       const initialReads = fixture.reads();
       fixture.approachNextDay();
       await page.evaluate(() => {
@@ -134,7 +134,7 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
       assert.equal(fixture.reads() - initialReads, 2, "One coalesced update and one read at the game-day boundary");
       assert.equal(fixture.mutations(), 0, "Calendar refresh never starts a task");
       await activate("[data-team-close]"); await page.waitForSelector("[data-team-open]");
-      results.push({scenario:"desktop-3d-placement-and-rollover",width,world,dayBoundaryReads:2});continue;
+      results.push({scenario:"desktop-3d-placement-and-rollover",width,requestedWorld,world:"3d",dayBoundaryReads:2});continue;
     }
     await add("communication",2); await save(1);
     const first=plans()[0].id;
@@ -168,6 +168,6 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     assert.equal(await page.$eval("[data-team-form] button[type=submit]",node=>node.disabled),true);
     await activate("[data-team-close]");await page.waitForSelector("[data-team-open]");
     await page.waitForFunction(()=>document.activeElement===document.querySelector("[data-team-open]"));
-    results.push({scenario:"quarter-team-lifecycle",width,world,keyboard:width>=1000,touch:width<1000,mutations:fixture.mutations(),persistedAfterReload:true});
+    results.push({scenario:"quarter-team-lifecycle",width,requestedWorld,world:"3d",keyboard:width>=1000,touch:width<1000,mutations:fixture.mutations(),persistedAfterReload:true});
   }
 }

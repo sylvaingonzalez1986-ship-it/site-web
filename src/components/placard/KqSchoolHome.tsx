@@ -1,42 +1,27 @@
 "use client";
 
-import Image from 'next/image';
-import styles from './KqSchoolHome.module.css';
+import { BellRing, LibraryBig, Trophy } from "lucide-react";
+import { KqQuizzShowScene } from "./KqQuizzShowScene";
+import styles from "./KqSchoolHome.module.css";
 
-/** Each illustrated object is one keyboard- and touch-accessible destination. */
+const destinations = [
+  { id: "tournament", title: "Tournoi", detail: "Les quatre pupitres", icon: BellRing },
+  { id: "ranking", title: "Classement", detail: "Scores et palmarès", icon: Trophy },
+  { id: "learn", title: "Encyclopédie", detail: "La grande bibliothèque", icon: LibraryBig },
+] as const;
+
 export function KqSchoolHome({ onChoose }: {
-  onChoose: (section: 'tournament' | 'learn' | 'ranking') => void;
+  onChoose: (section: "tournament" | "learn" | "ranking") => void;
 }) {
   return <nav className={styles.home} aria-label="Les espaces de QuizzShow" data-school-home>
-    <div className={styles.scene}>
-      <Image
-        className={styles.illustration}
-        src="/placard/school/quizzshow-home-v3.webp"
-        alt="La salle de QuizzShow : un pupitre à buzzer à gauche, un tableau de classement au centre et une bibliothèque à droite. La fenêtre donne sur la banque du quartier."
-        width={1536}
-        height={1024}
-        sizes="(max-width: 700px) 100vw, (max-width: 1400px) 85vw, 1120px"
-        loading="eager"
-        unoptimized
-      />
-      <button type="button" className={`${styles.hotspot} ${styles.tournament}`} onClick={() => onChoose('tournament')}
-        data-school-destination="tournament" aria-label="Pupitre : ouvrir le tournoi">
-        <span className={styles.caption}>
-          <span className={styles.sign}>Tournoi</span>
-        </span>
-      </button>
-      <button type="button" className={`${styles.hotspot} ${styles.ranking}`} onClick={() => onChoose('ranking')}
-        data-school-destination="ranking" aria-label="Tableau : ouvrir le classement">
-        <span className={styles.caption}>
-          <span className={styles.sign}>Classement</span>
-        </span>
-      </button>
-      <button type="button" className={`${styles.hotspot} ${styles.library}`} onClick={() => onChoose('learn')}
-        data-school-destination="learn" aria-label="Bibliothèque : ouvrir l’encyclopédie">
-        <span className={styles.caption}>
-          <span className={styles.sign}>Encyclopédie</span>
-        </span>
-      </button>
+    <KqQuizzShowScene mode="hall" onChoose={onChoose} />
+    <div className={styles.signs}>
+      {destinations.map(({ id, title, detail, icon: Icon }) =>
+        <button key={id} type="button" className={styles.sign} onClick={() => onChoose(id)} data-school-destination={id}>
+          <Icon size={24} strokeWidth={1.8} aria-hidden="true" />
+          <span><strong>{title}</strong><small>{detail}</small></span>
+        </button>
+      )}
     </div>
   </nav>;
 }

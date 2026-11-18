@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
-import { QuarterCharacterContext } from "./QuarterCharacterContext";
+import { QuarterCharacterContext, QuarterAppearanceEditorContext } from "./QuarterCharacterContext";
 import { ARENA_RELEVE_SCENES } from "@/lib/arena-releve";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 import { ChanvrierProfileEditor } from "./ChanvrierProfileEditor";
@@ -22,6 +22,7 @@ export function QuarterCharacterGate({ ownerId, enabled = true, onArrivalComplet
   const [state, setState] = useState<"loading" | "story" | "create" | "paused" | "meeting" | "ready" | "error" | "signed-out">("loading");
   const [retry, setRetry] = useState(0);
   const [character, setCharacter] = useState<ChanvrierProfile | null>(null);
+  const [editing, setEditing] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const createButton = useRef<HTMLButtonElement>(null);
   const continuationKey = `quarter-arrival-meeting-v1:${ownerId}`;
@@ -72,7 +73,13 @@ export function QuarterCharacterGate({ ownerId, enabled = true, onArrivalComplet
     return () => window.removeEventListener("arena:profile-updated", refreshAppearance);
   }, []);
 
-  if (enabled && state === "ready") return <QuarterCharacterContext.Provider value={character}>{children}</QuarterCharacterContext.Provider>;
+  if (enabled && state === "ready") return <QuarterCharacterContext.Provider value={character}>
+    <QuarterAppearanceEditorContext.Provider value={{ open: () => setEditing(true), editing }}>
+      {children}
+      {character && editing && <ChanvrierProfileEditor profile={character} onClose={() => setEditing(false)}
+        onSaved={saved => { setCharacter(saved); setEditing(false); }} />}
+    </QuarterAppearanceEditorContext.Provider>
+  </QuarterCharacterContext.Provider>;
   if (enabled && ["story", "create", "paused", "meeting"].includes(state)) return <main className={`${styles.entry} ${styles.arrival}`} data-quarter-character-gate data-quarter-arrival={state === "meeting" ? "meeting" : "story"}>
     <picture className={styles.scene}>
       <source media="(max-width: 850px)" srcSet="/contest/releve/arrival-sylvain-portrait-v1.webp" />

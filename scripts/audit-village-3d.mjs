@@ -9,30 +9,39 @@ import { OrthographicCamera, Vector3 } from 'three';
 
 const lifecycle = process.argv.includes('--interiors-lifecycle');
 const interiors = process.argv.includes('--interiors') || process.argv.includes('--interiors-builder') || lifecycle;
-const root = process.cwd(), output = resolve(root, interiors ? 'output/village-interiors' : 'output/village-3d');
+const studio = process.argv.includes('--avatar-studio');
+const root = process.cwd(), output = resolve(root, studio ? process.env.CHANVRIER_STUDIO_AUDIT_DIR ?? 'output/chanvrier-studio' : interiors ? 'output/village-interiors' : 'output/village-3d');
 const preview = process.argv.includes('--preview');
 const life = process.argv.includes('--life');
 const npcs = process.argv.includes('--npcs');
 const characterQuality = process.argv.includes('--character-quality');
+const worldFinish = process.argv.includes('--world-finish');
 const port = Number(process.env.VILLAGE_PREVIEW_PORT ?? 3618), origin = `http://127.0.0.1:${port}`;
 const modules = {
   entry: `import React from 'react';import {createRoot} from 'react-dom/client';import {VillagePrototype} from '/src/components/placard/world/VillagePrototype';createRoot(document.getElementById('main-content')).render(<VillagePrototype/>);`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,unoptimized,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
-  'next/link': `import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
+  'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
   'next/navigation': `export function usePathname(){return '/arene/village-3d'}export function useRouter(){return {push:href=>${preview ? 'window.location.assign(href)' : '(window.__villageNavigations??=[]).push(href)'}}}`,
   'next/dynamic': `import React from 'react';export default function dynamic(loader,options={}){const Lazy=React.lazy(()=>Promise.resolve(loader()).then(value=>typeof value==='function'?{default:value}:value));return function Dynamic(props){const Loading=options.loading;return <React.Suspense fallback={Loading?<Loading/>:null}><Lazy {...props}/></React.Suspense>}}`,
 };
 if (life && !process.argv.includes('--baseline')) modules.entry = modules.entry.replace('render(<VillagePrototype/>)', 'render(new URLSearchParams(location.search).has("strict") ? <React.StrictMode><VillagePrototype/></React.StrictMode> : <VillagePrototype/>)');
 if (npcs || characterQuality) modules.entry = (await import('./audit-village-npcs.mjs')).npcAuditEntry;
+if (studio) modules.entry = (await import('./audit-chanvrier-studio.mjs')).entry;
+if (worldFinish || (characterQuality && process.argv.includes('--timing-only') && process.argv.includes('--human-finish'))) {
+  const { entry } = await import('./audit-village-finish.mjs');
+  modules.entry = entry;
+  modules['audit-world-three'] = 'export * from "three"; export { _roots as fiberRoots } from "@react-three/fiber";';
+}
 if (characterQuality) modules['character-audit-three'] = 'export * from "three"; export { _roots as fiberRoots } from "@react-three/fiber";';
 if (lifecycle) modules.entry = `import React,{useCallback,useEffect,useMemo,useState} from 'react';import{createRoot}from'react-dom/client';import InteriorCanvas from '/src/components/placard/world/InteriorCanvas';import{createInteriorRoom}from'/src/components/placard/world/interior-rooms';import{createKqWarehouseStarter}from'/src/lib/kanab-quest-warehouse';
 function Lifecycle(){const[mounted,setMounted]=useState(true),[legacy,setLegacy]=useState(false),[failed,setFailed]=useState(false);useEffect(()=>{window.__interiorLifecycle.effects++;return()=>{window.__interiorLifecycle.cleanups++}},[]);const room=useMemo(()=>{const state=createKqWarehouseStarter();if(legacy)delete state.floor;return createInteriorRoom('warehouse',{state,revision:1,cashCents:100000,activeRun:false,legacyActiveRun:false,migrationCreditCents:0,stockGrams:0,salesGramsPerDay:null})},[legacy]);const ready=useCallback(()=>{window.__interiorLifecycle.ready++},[]),unavailable=useCallback(()=>{window.__interiorLifecycle.unavailable++;setFailed(true)},[]),noop=useCallback(()=>{},[]);return <main><nav style={{height:64,display:'flex',gap:12}}><button data-lifecycle-toggle onClick={()=>{setFailed(false);setMounted(value=>!value)}}>{mounted?'Sortir':'Entrer'}</button><button data-lifecycle-resize onClick={()=>setLegacy(value=>!value)}>Changer les dimensions</button></nav><section data-lifecycle-room={legacy?'legacy':'starter'} style={{position:'relative',height:'calc(100vh - 64px)'}}>{mounted&&!failed?<InteriorCanvas room={room} suspended={false} editing={false} overhead={false} grid={false} sensitivity={1} quality="low" selectedId={null} preview={null} previewValid={true} onSelect={noop} onInteract={noop} onPlace={noop} onExit={noop} onReady={ready} onUnavailable={unavailable}/>:failed?<p data-lifecycle-unavailable>Vue indisponible</p>:<p data-lifecycle-outside>Au village</p>}</section></main>};createRoot(document.getElementById('main-content')).render(<React.StrictMode><Lifecycle/></React.StrictMode>);`;
 const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:700 900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:400 700}:root{--font-display:Display;--font-body:Body}*{box-sizing:border-box}body{margin:0}button,a{-webkit-tap-highlight-color:transparent}button{font-family:inherit}svg{flex-shrink:0}`;
 const beforeCharacters = characterQuality && process.argv.includes('--baseline');
 const worldDirectory = resolve(root, 'src/components/placard/world');
-const characterSnapshot = resolve(root, 'output/village-character-quality/source-before');
+const characterSnapshot = resolve(root, process.env.VILLAGE_CHARACTER_AUDIT_DIR ?? 'output/village-character-quality', 'source-before');
 const worldPrefix = `${worldDirectory.replaceAll('\\', '/')}/`;
 const snapshotPrefix = `${characterSnapshot.replaceAll('\\', '/')}/`;
+const playerSnapshotPrefix = `${resolve(characterSnapshot, '../player-before').replaceAll('\\', '/')}/`;
 await mkdir(output, { recursive: true });
 const server = await createServer({ root, configFile: false, envDir: false, publicDir: resolve(root, 'public'), cacheDir: resolve(output, 'vite-cache'),
   resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom', 'three'] },
@@ -41,12 +50,22 @@ const server = await createServer({ root, configFile: false, envDir: false, publ
   plugins: [{ name: 'isolated-village', enforce: 'pre',
     resolveId(id, importer) {
       if (id in modules) return '\0' + id;
+      if (beforeCharacters && process.argv.includes('--human-finish') && importer?.startsWith(worldPrefix) && id === '../kq-grow-worker-model') {
+        return playerSnapshotPrefix + 'kq-grow-worker-model.ts';
+      }
+      if (characterQuality && importer?.startsWith(playerSnapshotPrefix) && id.startsWith('./world/')) {
+        return snapshotPrefix + id.slice('./world/'.length) + '.ts';
+      }
       if (characterQuality && id.startsWith('../') && importer?.startsWith(snapshotPrefix)) {
         return this.resolve(id, `${worldPrefix}${importer.slice(snapshotPrefix.length)}`, { skipSelf: true });
       }
     },
     async load(id) {
       if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code;
+      if (worldFinish && process.argv.includes('--baseline') && id.startsWith(worldPrefix) && !id.includes('?'))
+        return readFile(resolve(root, 'output/village-faune/source-before', relative(worldDirectory, id)), 'utf8');
+      if (worldFinish && process.argv.includes('--baseline') && id.replaceAll('\\','/').endsWith('/src/components/placard/KqGrowRoomGeometry.ts'))
+        return readFile(resolve(root, 'output/village-faune/player-before/KqGrowRoomGeometry.ts'), 'utf8');
       if (!beforeCharacters || !id.startsWith(worldPrefix) || id.includes('?')) return;
       return readFile(resolve(characterSnapshot, relative(worldDirectory, id)), 'utf8');
     },
@@ -64,6 +83,10 @@ if (preview) {
   console.log(`Village 3D : ${origin}`);
   const stop = async () => { await server.close(); process.exit(0); };
   process.on('SIGINT', stop); process.on('SIGTERM', stop);
+} else if (studio) {
+  try { await (await import('./audit-chanvrier-studio.mjs')).run({ origin, output }); } finally { await server.close(); }
+} else if (worldFinish) {
+  try { await (await import('./audit-village-finish.mjs')).auditWorld(origin); } finally { await server.close(); }
 } else if (characterQuality) {
   process.env.VILLAGE_CHARACTER_ORIGIN = origin;
   try { await import('./audit-village-character-quality.mjs'); } finally { await server.close(); }
@@ -163,13 +186,12 @@ if (preview) {
       const active = !farm.getObjectByName('idle-culture').visible && farm.getObjectByName('activity-culture').visible;
       animation.react('bank', 2.3); animation.update(2.5, { culture: true, market: true, jury: true }, false); const reaction = bank.rotation.z;
       animation.update(2.5, { culture: true, market: true, jury: true }, true); const reduced = bank.rotation.z;
-      animation.update(5, { culture: true, market: true, jury: true }, false); const bird = animation.object.getObjectByName('gull-flight').visible;
       animation.dispose(); buildings.forEach(b => disposeVillageObject(b.object));
-      return { a, b, reaction, reduced, idle, active, bird };
+      return { a, b, reaction, reduced, idle, active };
     });
     assert.notEqual(geometryMotion.a, geometryMotion.b); assert.notEqual(geometryMotion.reaction, geometryMotion.b);
-    assert.equal(geometryMotion.reduced, 0); assert.ok(geometryMotion.idle && geometryMotion.active && geometryMotion.bird);
-    report.cases.push('Actual geometry sways/reacts; reduced motion restores rest; active farm doors/interior and timed gull match 2D states');
+    assert.equal(geometryMotion.reduced, 0); assert.ok(geometryMotion.idle && geometryMotion.active);
+    report.cases.push('Actual geometry sways/reacts; reduced motion restores rest; doors reveal the active farm interior');
     await page.evaluate(() => document.fonts.ready);
     const destinations = '[data-village-building]';
     const settleBubble = () => page.evaluate(async () => {
@@ -214,7 +236,7 @@ if (preview) {
     await page.click(menuButton); await page.waitForSelector(menuDialog);
     await page.click(`${menuDialog} [data-arena-learning-trigger]`); await waitMenuClosed();
     await page.waitForFunction(() => window.__villageNavigations?.at(-1) === '/arene/placard?guide=1');
-    report.cases.push('Shared 2D side menu: all eleven entries, tutorial, correct destinations, keyboard, Escape/Back/backdrop, focus return and desktop resizing');
+    report.cases.push('Village side menu with all eleven entries, tutorial, keyboard, Escape/Back/backdrop, focus return and desktop resizing');
     async function projectWorldPoint(position) {
       await waitCamera();
       const rect = await page.$eval('canvas', node => { const r = node.getBoundingClientRect(); return { left: r.left, top: r.top, width: r.width, height: r.height }; });
@@ -303,15 +325,10 @@ if (preview) {
     assert.equal(await page.$eval('[data-mailbox-form] input[name="subject"]', node => node.value), 'Brouillon conservé');
     await page.goBack(); await page.waitForSelector(mailboxDialog, { hidden: true });
     report.cases.push('Only the 3D mailbox receives pointer hits, no foreground 2D artwork/control; model click, drag guard, messages/replies, visible keyboard access, draft preservation and Back/Escape close');
-    for (let index = 0; index < 3; index++) {
-      await page.click('[aria-label="Voir la carte d’origine"]');
-      await page.waitForSelector('img[src*="placard-world-quizzshow-v9.webp"]');
-      assert.equal(await page.$('canvas'), null);
-      await page.click('[aria-label="Voir le village en 3D"]');
-      await page.waitForSelector('canvas[data-village-ready="true"]');
-      assert.equal(await page.$$eval('canvas', nodes => nodes.length), 1);
-    }
-    report.cases.push('Original painting comparison and clean scene remounts');
+    const oldMap = 'img[src*="placard-world-quizzshow-v9.webp"], [aria-label="Passer à la carte 2D"], [aria-label="Voir la carte d’origine"], [aria-label="Voir le village en 3D"]';
+    assert.equal(await page.$(oldMap), null);
+    assert.equal(await page.$$eval('canvas[data-village-ready="true"]', nodes => nodes.length), 1);
+    report.cases.push('The standalone village exposes one Three scene and no map switch');
     const tapBuildingModel = async id => {
       await page.tap('[aria-label="Recentrer la vue isométrique"]');
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
@@ -413,13 +430,18 @@ if (preview) {
     await page.waitForSelector('canvas[data-motion-state="running"]');
     report.cases.push('Reduced-motion static default and explicit opt-in; visibility change freezes/resumes animation clock');
     await page.evaluate(() => document.querySelector('canvas').getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());
-    await page.waitForSelector('img[src*="placard-world-quizzshow-v9.webp"]');
-    assert.match(await page.$eval('[role="alert"]', node => node.textContent), /indisponible/);
-    report.cases.push('Context loss returns to original painting and navigation');
-    await page.tap(destinations);
-    await page.waitForSelector('[data-building="warehouse"][data-fallback]');
+    const fallback = '[data-village-unavailable]';
+    await page.waitForSelector(fallback, { visible: true });
+    assert.match(await page.$eval(`${fallback} [role="alert"]`, node => node.textContent), /indisponible/);
+    assert.equal(await page.$(oldMap), null);
+    assert.equal(await page.$$eval(`${fallback} ${destinations}`, nodes => nodes.length), 8);
+    const fallbackFarm = `${fallback} [data-village-building="warehouse"]`;
+    await page.focus(fallbackFarm); await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-building="warehouse"]', { visible: true });
     assert.deepEqual(await page.$$eval('[data-building="warehouse"] a', nodes => nodes.map(node => node.getAttribute('href'))), farmLinks);
     await page.click('[aria-label="Fermer les activités du bâtiment"]');
+    await page.waitForFunction(selector => document.activeElement?.matches(selector), {}, fallbackFarm);
+    report.cases.push('After context loss the HTML directory keeps all eight buildings and their activities keyboard-accessible');
     await page.tap(mailboxButton); await page.waitForSelector(mailboxDialog);
     await page.waitForFunction(() => document.querySelector('[data-mailbox-dialog]')?.textContent.includes('Courrier de recette'));
     await page.tap('[aria-label="Fermer la boîte aux lettres"]'); await page.waitForSelector(mailboxDialog, { hidden: true });

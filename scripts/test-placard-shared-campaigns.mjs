@@ -19,6 +19,7 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
   const careMigration = await sql("20261010000100_kq_culture_care.sql");
   await db.exec(careMigration.slice(careMigration.indexOf("CREATE TABLE public.kq_care_inventory"), careMigration.indexOf("CREATE FUNCTION public.kq_care_state_valid")));
   await db.exec(await definition("20261010000100_kq_culture_care.sql", "rpc_kq_apply_care"));
+  await db.exec(await sql("20261010000600_kq_care_explicit_problems.sql"));
   await db.exec(await sql("20261010001000_kq_paid_basic_care.sql"));
   for (const [file, name] of [
     ["20261011120000_kq_chanvrier_career.sql", "kq_chanvrier_run_xp"],
@@ -61,12 +62,25 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [history.user_id]),
     history.recent_buddie_codes.slice(0, 2), "rotation migration preserves the two latest tracked varieties",
   );
+  // Run modern care through the same workday wrapper as production. The hour
+  // ledger is a fixture boundary, shared with the start wrapper exercised below.
+  await db.exec(`CREATE TABLE fixture_campaign_work(user_id UUID,hours NUMERIC);
+    CREATE FUNCTION public.kq_player_work_cost(TEXT,TEXT) RETURNS NUMERIC LANGUAGE sql AS $$ SELECT 1::NUMERIC $$;
+    CREATE FUNCTION public.kq_player_work_charge(p_user UUID,p_hours NUMERIC) RETURNS VOID LANGUAGE sql AS $$
+      INSERT INTO fixture_campaign_work VALUES(p_user,p_hours) $$;`);
+  const workday = await sql("20261107000500_kq_player_workday.sql");
+  await db.exec(workday.slice(workday.indexOf("CREATE FUNCTION pg_temp.kq_player_work_wrap"), workday.indexOf("-- Registration list")));
+  await db.exec("SELECT pg_temp.kq_player_work_wrap('public.rpc_kq_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)','culture','''care''')");
+  for (const file of ["20261108000900_kq_care_surface_and_purchase_register.sql", "20261118000100_kq_care_sectors.sql", "20261118000400_kq_care_input_sectors.sql"]) {
+    await db.exec(await sql(file));
+  }
   await db.exec("BEGIN");
   equal((await row(oldRun.run.id)).state, oldRun.run.state, "existing independent run remains byte-for-byte unchanged");
   const vite = fixtureVite;
   {
     const game = await vite.ssrLoadModule("/src/lib/kanab-quest-game.ts");
     const care = await vite.ssrLoadModule("/src/lib/kanab-quest-care.ts");
+    const { getKqCareSectors } = await vite.ssrLoadModule("/src/lib/kanab-quest-care-spatial.ts");
     const profiles = await vite.ssrLoadModule("/src/lib/kanab-quest-buddie-cultivation.ts");
     const campaignEngine = await vite.ssrLoadModule("/src/lib/kanab-quest-campaign.ts");
     const battle = await vite.ssrLoadModule("/src/lib/kanab-quest-battle.ts");
@@ -144,12 +158,13 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     saved = await row(leadId);
     const money = await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner]);
     const careKey = randomUUID(), cared = care.performKqBasicCare(saved.state);
-    await scalar("SELECT rpc_kq_apply_care($1,$2,NULL,$3,$4,$5,500)", [owner, leadId, careKey, saved.updated_at, cared]);
-    equal(await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner]), money - 500, "one basic-care payment across all zones");
+    const campaignCarePrice = care.KQ_BASIC_CARE_PRICE_CENTS * getKqCareSectors(saved.state).length;
+    await scalar("SELECT rpc_kq_apply_care($1,$2,NULL,$3,$4,$5,$6)", [owner, leadId, careKey, saved.updated_at, cared, campaignCarePrice]);
+    equal(await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner]), money - campaignCarePrice, "one basic-care payment across all zones at the shared area price");
     equal((await runRows(owner)).map(run => run.state.care), Array.from({ length: 3 }, () => cared.care), "common care persists on every member");
     const careReplay = await scalar("SELECT rpc_kq_apply_care($1,$2,NULL,$3,$4,$5,500)", [owner, leadId, careKey, saved.updated_at, cared]);
     equal(careReplay.replayed, true, "care retry returns its receipt");
-    equal(await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner]), money - 500, "care retry cannot debit twice");
+    equal(await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner]), money - campaignCarePrice, "care retry cannot debit twice");
     saved = await row(leadId);
     const next = game.rollKqDice(saved.state);
     await action(owner, saved, next, "roll");
@@ -243,11 +258,14 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     equal((await runRows(rare)).map(run => run.state.handCodes), [["BOTTE-ZONE-B"], ["BOTTE-ZONE-B"]], "Heritage swap synchronizes shared hand");
     equal((await scalar("SELECT rpc_kq_reserved_cards($1)", [rare])).length, 2, "Heritage swap consumes no physical card");
     rareSaved = await row(rareSaved.id);
-    await db.query("INSERT INTO kq_care_inventory(user_id,product_code,quantity) VALUES($1,'CARE-SEAWEED',2)", [rare]);
-    const productState = care.applyKqCareProduct(rareSaved.state, "CARE-SEAWEED");
+    await db.query("INSERT INTO kq_care_inventory(user_id,product_code,quantity,area_quantity) VALUES($1,'CARE-SEAWEED',0,2)", [rare]);
+    const sector = getKqCareSectors(rareSaved.state).find(cell => cell.zoneId !== rareSaved.state.warehouse.zoneId);
+    assert(sector, "the leader can target a cell in another participating zone");
+    const productState = care.applyKqCareProduct(rareSaved.state, "CARE-SEAWEED", sector);
+    equal(productState.care.applications.at(-1)?.target, sector, "product application records the selected cell");
     await scalar("SELECT rpc_kq_apply_care($1,$2,'CARE-SEAWEED',$3,$4,$5,NULL)", [rare, rareSaved.id, randomUUID(), rareSaved.updated_at, productState]);
-    equal(await scalar("SELECT quantity FROM kq_care_inventory WHERE user_id=$1 AND product_code='CARE-SEAWEED'", [rare]), 1, "one care stock unit for the entire campaign");
-    equal((await runRows(rare)).map(run => run.state.care), [productState.care, productState.care], "one product application affects all members");
+    equal(await scalar("SELECT area_quantity FROM kq_care_inventory WHERE user_id=$1 AND product_code='CARE-SEAWEED'", [rare]), 1, "one square metre deducted for a common targeted application");
+    equal((await runRows(rare)).map(run => run.state.care), [productState.care, productState.care], "campaign members share the same care state and recorded target");
     rareSaved = await row(rareSaved.id);
     const dead = { ...rareSaved.state, phase: "complete", cultureDead: true, harvestGrams: 0,
       care: { ...rareSaved.state.care, vitality: 0 } };
@@ -274,14 +292,8 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     // production predicate and real player-work wrapper. Only its hour ledger
     // is a small fixture boundary; the migration patches the actual inner RPC.
     await db.exec("COMMIT");
-    await db.exec(`CREATE TABLE public.kq_staff_accounts(user_id UUID PRIMARY KEY,state JSONB);
-      CREATE TABLE fixture_campaign_work(user_id UUID,hours NUMERIC);
-      CREATE FUNCTION public.kq_player_work_cost(TEXT,TEXT) RETURNS NUMERIC LANGUAGE sql AS $$ SELECT 1::NUMERIC $$;
-      CREATE FUNCTION public.kq_player_work_charge(p_user UUID,p_hours NUMERIC) RETURNS VOID LANGUAGE sql AS $$
-        INSERT INTO fixture_campaign_work VALUES(p_user,p_hours) $$;`);
+    await db.exec("CREATE TABLE public.kq_staff_accounts(user_id UUID PRIMARY KEY,state JSONB)");
     await db.exec(await definition("20261110000100_kq_staff_production.sql", "kq_staff_production_reservation"));
-    const workday = await sql("20261107000500_kq_player_workday.sql");
-    await db.exec(workday.slice(workday.indexOf("CREATE FUNCTION pg_temp.kq_player_work_wrap"), workday.indexOf("-- Registration list")));
     await db.exec("SELECT pg_temp.kq_player_work_wrap('public.rpc_kq_start_campaign(uuid,uuid,jsonb,jsonb,integer,text)','culture','''start''')");
     await db.exec(await sql("20261111000100_kq_production_zone_reservations.sql"));
     await db.exec("BEGIN");

@@ -224,7 +224,7 @@ export function KqFarmGuide({ ownerId, initialOpen = false, initialStep, destina
   }, [state.active, ownerId, resumeRequest, save]);
   useEffect(() => {
     const rememberNavigation = (event: MouseEvent) => {
-      if (event.target instanceof Element && event.target.closest('[data-placard-nav], [data-map-building], [data-placard-next-action] button, [data-placard-next-action] a')) navigationFrom.current = view;
+      if (event.target instanceof Element && event.target.closest('[data-placard-nav], #village-building-activities a, [data-placard-next-action] button, [data-placard-next-action] a')) navigationFrom.current = view;
     };
     document.addEventListener('click', rememberNavigation, true);
     return () => document.removeEventListener('click', rememberNavigation, true);

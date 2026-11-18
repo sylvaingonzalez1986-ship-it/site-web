@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { paintingToGround } from "./village-layout";
+import type { VillageGroundHeight } from "./village-character-gait";
 import type { VillageNpcRig, VillageNpcPose } from "./village-npc-types";
-import { createVillageCharacterGait } from "./village-character-gait";
+import { addVillageNeck, clothPoint, clothSectionAt, createVillageTrousers, garmentPanel, garmentVolume, reshapeGarment, type ClothSection } from "./village-npc-tailoring";
 import { villageBreezeStrength } from "./village-wind";
 import { Assembly, CHARACTER_COLORS as C, characterDisposer, characterEase, characterMaterial, createCharacterFace, noCharacterHit as noHit } from "./village-character-art";
 
@@ -19,7 +20,7 @@ type Point = [number, number, number];
  * https://musee-breton.finistere.fr/fr/notice/1956-1-401-biniou-musee-departemental-breton-671c4329-2362-4309-8472-318ca937ccc3
  * No audio, own clock, network access or interaction targets.
  */
-export function createVillageBreton(): VillageNpcRig {
+export function createVillageBreton(groundAt?: VillageGroundHeight): VillageNpcRig {
   const object = new THREE.Group();
   object.name = "village-breton";
   object.position.set(...VILLAGE_BRETON_POSITION);
@@ -31,66 +32,41 @@ export function createVillageBreton(): VillageNpcRig {
   rig.position.y = 0.72;
   object.add(rig);
 
-  const legs = [-1, 1].map(side => {
-    const hip = new THREE.Group(); hip.position.set(side * 0.125, 0.69, 0); object.add(hip);
-    hip.name = `breton-leg-${side}`;
-    const upper = new Assembly();
-    upper.sweep([[0, 0.042, 0], [0, -0.055, 0], [0, -0.16, 0.003], [0, -0.25, 0.006], [0, -0.30, 0]],
-      [0.076, 0.111, 0.104, 0.094, 0.081], C.dark, 14);
-    upper.finish("breton-trouser-thigh", hip, material);
-    const knee = new THREE.Group(); knee.position.y = -0.28; hip.add(knee);
-    const lower = new Assembly();
-    lower.sweep([[0, 0.036, 0], [0, -0.018, 0], [0, -0.118, -0.005], [0, -0.23, 0], [0, -0.279, 0]],
-      [0.075, 0.092, 0.084, 0.078, 0.081], C.dark, 14);
-    lower.rod([0, -0.265, 0], [0, -0.301, 0], 0.082, "#35463e", 0.079);
-    lower.finish("breton-cuffed-trouser", knee, material);
-    const ankle = new THREE.Group(); ankle.name = `breton-ankle-${side}`; ankle.position.y = -0.32; knee.add(ankle);
-    const shoe = new Assembly();
-    shoe.ball([0, -0.080, 0.066], 1, "#977345", [0.104, 0.025, 0.179]);
-    shoe.ball([0, -0.044, 0.066], 1, C.ink, [0.104, 0.054, 0.174]);
-    shoe.ball([0, 0.004, -0.005], 0.084, C.ink, [1.03, 0.75, 1.33]);
-    shoe.rod([-0.046, 0.016, 0.091], [0.046, 0.016, 0.091], 0.010, "#b99a65");
-    shoe.finish("breton-grounded-foot", ankle, material);
-    return { hip, knee, ankle };
-  });
-  const updateGait = createVillageCharacterGait({ left: legs[0], right: legs[1], upperLength: 0.28, lowerLength: 0.32, soleHeight: 0.105 });
+  const updateGait = createVillageTrousers(object, material, "breton", groundAt);
 
   const body = new Assembly();
-  // Cloth panels share the same horizontal rings. The cream shirt shows through
-  // the widening V, while the dark waistcoat follows the belly all the way round.
-  const torsoRows = [
-    [-0.061, 0.147, 0.12], [-0.02, 0.2, 0.139], [0.052, 0.229, 0.153], [0.144, 0.249, 0.177],
-    [0.24, 0.255, 0.189], [0.33, 0.25, 0.175], [0.402, 0.23, 0.156], [0.451, 0.178, 0.128], [0.482, 0.09, 0.084],
+  const shirt: readonly ClothSection[] = [
+    [-.062, .151, .121], [-.019, .201, .137], [.052, .216, .147], [.130, .223, .163],
+    [.219, .243, .180], [.306, .252, .177], [.380, .247, .159], [.422, .205, .139],
+    [.451, .160, .115], [.475, .107, .092], [.488, .084, .081],
   ];
-  const frontAngle = (y: number) => 0.22 + 0.68 * THREE.MathUtils.smoothstep(y, 0.03, 0.48);
-  const clothPoint = ([y, rx, rz]: number[], angle: number): Point => [Math.sin(angle) * rx, y, Math.cos(angle) * rz];
-  for (const front of [true, false]) {
-    const positions: number[] = [], indices: number[] = [];
-    torsoRows.forEach((row, i) => {
-      const cut = frontAngle(row[0]), steps = 24;
-      for (let j = 0; j <= steps; j++) {
-        const angle = front ? -cut + 2 * cut * j / steps : cut + (Math.PI * 2 - 2 * cut) * j / steps;
-        positions.push(...clothPoint(row, angle));
-        if (i && j) {
-          const c = i * (steps + 1) + j;
-          indices.push(c - steps - 2, c - steps - 1, c, c - steps - 2, c, c - 1);
-        }
-      }
-    });
-    const surface = new THREE.BufferGeometry();
-    surface.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3)); surface.setIndex(indices);
-    surface.computeVertexNormals(); body.add(surface, front ? C.cream : "#394940");
-  }
+  body.add(garmentVolume(shirt, 24), "#f6e8c6");
+  const opening = (y: number) => .28 + .91 * THREE.MathUtils.smoothstep(y, .078, .455);
+  const clothEdge = (y: number, a: number) => .015 + .008 * Math.cos(a * 3) * (1 - THREE.MathUtils.smoothstep(y, .21, .44));
+  const vest = shirt.slice(1, -1);
+  body.add(garmentPanel(vest, 28, y => [opening(y), Math.PI * 2 - opening(y)], clothEdge), "#344840");
+  body.add(garmentVolume([[-.054, .205, .141], [-.046, .221, .153], [-.011, .228, .158],
+    [.007, .226, .155], [.013, .219, .152]], 28, y => y < -.044 || y > .007 ? "#1a5e56" : "#107a70"), null);
   for (const side of [-1, 1]) {
-    const trim = torsoRows.slice(2).map(row => clothPoint(row, side * frontAngle(row[0])));
-    body.sweep(trim, [0.008, 0.009, 0.009, 0.010, 0.011, 0.012, 0.009], "#bc9153", 8);
-    body.sweep([[side * 0.044, 0.489, 0.067], [side * 0.074, 0.462, 0.108], [side * 0.099, 0.419, 0.127]],
-      [0.03, 0.028, 0.004], "#f3e3be");
+    const lapel: readonly ClothSection[] = vest.slice(1);
+    body.add(garmentPanel(lapel, 6, y => {
+      const a = opening(y), lapelWidth = .15 + .08 * THREE.MathUtils.smoothstep(y, .23, .445);
+      return side === 1 ? [a - .04, a + lapelWidth] : [-a - lapelWidth, -a + .04];
+    }, (y, a) => clothEdge(y, a) + .009), "#8a6940");
+    body.sweep(lapel.map(row => clothPoint(row, side * (opening(row[0]) - .042), (y, a) => clothEdge(y, a) + .009)),
+      [.004, .007, .008, .011, .012, .010, .003, .002], "#e4b762", 6);
+
+    const collar = garmentPanel(shirt.slice(-4), 6, y => {
+      const angle = THREE.MathUtils.lerp(.73, 1.02, THREE.MathUtils.smoothstep(y, .422, .486));
+      return side === 1 ? [angle - .15, angle + .24] : [-angle - .24, -angle + .15];
+    }, (y) => .014 + (.488 - y) * .11);
+    body.add(collar, "#ffedc5");
+    for (const y of [.127, .204, .277]) {
+      const a = side * (opening(y) + .28);
+      body.ball(clothPoint(clothSectionAt(shirt, y), a, (height, angle) => clothEdge(height, angle) + .011), .015, C.gold);
+    }
   }
-  for (const y of [0.13, 0.21, 0.29]) body.ball([0.085, y, 0.172], 0.014, C.gold);
-  body.rod([0, 0.455, 0], [0, 0.615, 0], 0.088, C.skin);
-  body.add(new THREE.LatheGeometry([new THREE.Vector2(0.20, -0.02), new THREE.Vector2(0.232, 0.004),
-    new THREE.Vector2(0.24, 0.039), new THREE.Vector2(0.23, 0.061)], 24).scale(1, 1, 0.71), C.teal);
+  addVillageNeck(body, .455, .175, .081);
   body.finish("breton-waistcoat", rig, material);
 
   // Rotate around the lips so that every playing pose seals the blowpipe.
@@ -99,30 +75,54 @@ export function createVillageBreton(): VillageNpcRig {
   face.head.name = "breton-face-pivot";
   face.head.position.copy(face.mouth.position).multiplyScalar(-1);
   const hat = new Assembly();
-  const feltProfile = [[0, 0.365], [0.228, 0.354], [0.335, 0.352], [0.386, 0.363], [0.391, 0.372],
-    [0.385, 0.380], [0.337, 0.372], [0.249, 0.376], [0.235, 0.386], [0.222, 0.49],
-    [0.21, 0.521], [0.178, 0.53], [0.08, 0.525], [0, 0.516]];
+  const feltProfile = [[0, .365], [.224, .354], [.323, .352], [.379, .358], [.391, .369],
+    [.389, .377], [.377, .380], [.327, .370], [.252, .371], [.237, .384], [.224, .420],
+    [.225, .473], [.209, .507], [.185, .523], [.122, .526], [.058, .518], [0, .514]];
+  const crownPinch = (point: THREE.Vector3) => {
+    const { x, y, z } = point;
+    const radius = Math.hypot(x, z), a = Math.atan2(x, z);
+    const brim = THREE.MathUtils.smoothstep(radius, .253, .385);
+    const crown = THREE.MathUtils.smoothstep(y, .404, .518);
+    const front = THREE.MathUtils.smoothstep(z, -.04, .175);
+    point.x = x * (1 - .22 * crown * front) - .017 * crown;
+    point.z = z * (1 + .127 * crown) + .024 * crown;
+    const liftFront = .039 * THREE.MathUtils.smoothstep(z, .06, .34);
+    point.y += .054 * x + .062 * z + brim * (.032 * Math.sin(a - .27) ** 2 + liftFront - .006 * Math.cos(a));
+    point.y -= crown * .028 * Math.exp(-((x + .021) ** 2) / .007);
+  };
   const felt = new THREE.LatheGeometry(feltProfile.map(([r, y]) => new THREE.Vector2(r, y)), 36);
-  const hatVerts = felt.getAttribute("position");
-  for (let i = 0; i < hatVerts.count; i++) {
-    const x = hatVerts.getX(i), z = hatVerts.getZ(i);
-    hatVerts.setY(i, hatVerts.getY(i) + 0.076 * x + 0.095 * z);
-  }
-  felt.computeVertexNormals();
-  hat.add(felt, C.dark);
-  hat.add(new THREE.CylinderGeometry(0.235, 0.243, 0.041, 36, 1, true).rotateZ(0.075).rotateX(-0.095), C.teal, [0, 0.398, 0]);
+  hat.add(reshapeGarment(felt, crownPinch), "#293b35");
+  const hatBand: readonly ClothSection[] = [[.382, .240, .241], [.388, .242, .243], [.414, .232, .235], [.421, .228, .231]];
+  hat.add(reshapeGarment(garmentVolume(hatBand, 36, y => y > .413 ? "#45877a" : "#12766d"), crownPinch), null);
+  hat.add(new THREE.SphereGeometry(1, 10, 6).scale(.033, .023, .029).rotateZ(-.18), "#234b42", [-.212, .401, -.096]);
   hat.finish("breton-felt-hat", face.head, material);
   const ribbon = new Assembly();
   ribbon.sweep([[-0.02, 0, 0], [-0.029, -0.058, -0.008], [-0.054, -0.126, -0.014], [-0.063, -0.178, 0]],
     [0.026, 0.029, 0.025, 0.009], C.dark);
   ribbon.sweep([[0.017, 0, 0], [0.017, -0.073, 0.018], [0.008, -0.134, 0.033]], [0.018, 0.023, 0.009], C.teal);
   const tails = ribbon.finish("breton-wind-ribbons", face.head, material);
-  tails.position.set(-0.182, 0.369, -0.145);
+  tails.position.set(-.206, .399, -.111);
 
   const bagArt = new Assembly();
-  bagArt.add(new THREE.SphereGeometry(1, 22, 14).scale(0.227, 0.177, 0.153).rotateZ(-0.24), "#0a7b76");
-  bagArt.sweep([[-0.214, 0.003, 0.033], [-0.159, -0.091, 0.084], [-0.039, -0.14, 0.081], [0.068, -0.14, 0.064],
-    [0.151, -0.092, 0.063], [0.196, -0.047, 0.056]], [0.003, 0.007, 0.008, 0.008, 0.006, 0.003], "#ceb270", 8);
+  const bagPattern: readonly ClothSection[] = [[-.154, 0, 0, .011], [-.148, .095, .075, .016],
+    [-.120, .169, .109, .007], [-.080, .216, .126, .001], [-.026, .228, .143, -.001],
+    [.036, .206, .147, -.002], [.090, .169, .124, -.005], [.133, .110, .098, -.010],
+    [.157, .055, .045, -.003], [.166, 0, 0, -.002]];
+  const hideFold = (y: number, a: number) => .011 * Math.sin(Math.PI * (y + .154) / .32) * Math.cos(a * 4 - .5);
+  const tuck = (point: THREE.Vector3) => {
+    const gather = THREE.MathUtils.smoothstep(point.y, .027, .162);
+    point.x += .034 * gather;
+    point.y -= point.x * .15;
+    point.z *= 1 - .14 * (1 - THREE.MathUtils.smoothstep(point.x, -.20, -.095));
+  };
+  bagArt.add(reshapeGarment(garmentVolume(bagPattern, 28, undefined, hideFold), tuck), "#176f63");
+  const seam = bagPattern.slice(1, -1).map(row => {
+    const angle = .71 + .31 * Math.sin((row[0] + .15) * 8);
+    const point = new THREE.Vector3(...clothPoint(row, angle, (y, a) => hideFold(y, a) + .003));
+    tuck(point);
+    return point.toArray();
+  });
+  bagArt.sweep(seam, [.002, .004, .006, .007, .007, .006, .004, .002], "#c9a66c", 7);
   const bag = bagArt.finish("breton-air-bag", rig, material);
   bag.position.set(-0.22, 0.29, 0.15);
 
@@ -130,15 +130,18 @@ export function createVillageBreton(): VillageNpcRig {
   // Short chanter, directly attached to the forward bag stock.
   const chanterA: Point = [-0.1, 0.34, 0.27], chanterB: Point = [0.04, 0.015, 0.43];
   pipes.rod(chanterA, chanterB, 0.022, C.dark, 0.035);
-  pipes.ball(chanterA, 0.045, C.wood);
+  pipes.rod([-.116, .373, .249], [-.088, .311, .283], .050, "#ad7546", .039);
+  pipes.rod([-.101, .345, .266], [-.094, .328, .275], .046, C.wood, .042);
   pipes.rod([0.025, 0.05, 0.413], [0.055, -0.02, 0.448], 0.046, C.wood, 0.025);
   // Mouth to bag. The little pale ferrule marks the separate blowpipe clearly.
   const blowpipeArt = new Assembly();
   blowpipeArt.rod([0, 0, 0], [0.2, 0.255, 0.08], 0.021, C.dark);
   blowpipeArt.rod([0.175, 0.223, 0.07], [0.2, 0.255, 0.08], 0.025, C.cream);
   const blowpipe = blowpipeArt.finish("breton-blowpipe", rig, material); blowpipe.position.set(-0.2, 0.43, 0.15);
+  pipes.rod([-.214, .408, .150], [-.189, .443, .157], .039, "#ab7347", .032);
   const droneA = new THREE.Vector3(-0.3, 0.42, 0.04), droneB = new THREE.Vector3(-0.47, 1.25, -0.33);
   pipes.rod(droneA.toArray() as Point, droneB.toArray() as Point, 0.027, C.dark, 0.038);
+  pipes.rod([-.287, .371, .087], [-.302, .440, .030], .044, "#b7834d", .034);
   for (const t of [0.06, 0.38, 0.72, 0.96]) {
     const low = droneA.clone().lerp(droneB, t - 0.018), high = droneA.clone().lerp(droneB, t + 0.018);
     pipes.rod(low.toArray() as Point, high.toArray() as Point, 0.043, C.cream);
@@ -167,25 +170,41 @@ export function createVillageBreton(): VillageNpcRig {
     art.ball([0, 0, 0], 0.057, "#edbd93", [0.80, 1, 0.73]);
     art.sweep([[side * -0.012, 0.017, -0.008], [side * 0.012, 0.039, -0.017], [side * 0.035, 0.037, -0.012]],
       [0.018, 0.021, 0.01], "#edbd93");
+    const digitStarts: number[] = [];
     for (let digit = 0; digit < 3; digit++) {
+      digitStarts.push(art.vertexCount);
       const y = 0.026 - digit * 0.025;
       art.sweep([[side * 0.003, y, 0.022], [side * 0.021, y - 0.002, 0.044],
-        [side * 0.041, y - 0.008, 0.049], [side * 0.059, y - 0.014, 0.033]],
+      [side * 0.041, y - 0.008, 0.049], [side * 0.059, y - 0.014, 0.033]],
         [0.015, 0.017, 0.015, 0.009], "#f2c69c");
     }
     const mesh = art.finish(`breton-fingers-${index}`, rig, material); mesh.position.set(...at);
+    const vertices = mesh.geometry.getAttribute("position");
+    mesh.geometry.morphTargetsRelative = true;
+    mesh.geometry.morphAttributes.position = digitStarts.map((from, digit) => {
+      const offsets = new Float32Array(vertices.count * 3);
+      for (let i = from; i < (digitStarts[digit + 1] ?? vertices.count); i++) {
+        const fromKnuckle = THREE.MathUtils.smoothstep(side * vertices.getX(i), .011, .057);
+        offsets[3 * i] = side * .005 * fromKnuckle;
+        offsets[3 * i + 1] = .011 * fromKnuckle;
+        offsets[3 * i + 2] = .022 * fromKnuckle;
+      }
+      return new THREE.BufferAttribute(offsets, 3);
+    });
+    mesh.updateMorphTargets();
     return mesh;
   });
   const sleeves = hands.map((hand, index) => {
     const side = index === 0 ? -1 : 1, sleeve = new Assembly();
     const points: Point[] = [[side * 0.151, 0.39, -0.012], [side * 0.232, 0.39, -0.002],
-      [side * 0.287, 0.307, 0.054], [side * (index ? 0.326 : 0.391), index ? 0.186 : 0.217, 0.161],
-      [side * (index ? 0.255 : 0.307), index ? 0.139 : 0.203, 0.236],
-      [hand[0] + side * 0.091, hand[1] - 0.014, hand[2] - 0.040], [hand[0] + side * 0.029, hand[1], hand[2] - 0.014]];
-    sleeve.sweep(points, [0.06, 0.106, 0.088, 0.079, 0.076, 0.065, 0.049], C.cream, 14);
+    [side * 0.287, 0.307, 0.054], [side * (index ? 0.326 : 0.391), index ? 0.186 : 0.217, 0.161],
+    [side * (index ? 0.255 : 0.307), index ? 0.139 : 0.203, 0.236],
+    [hand[0] + side * 0.091, hand[1] - 0.014, hand[2] - 0.040], [hand[0] + side * 0.029, hand[1], hand[2] - 0.014]];
+    sleeve.sweep(points, [0.066, 0.109, 0.095, 0.084, 0.078, 0.063, 0.047], C.cream, 12);
     const cuffFrom = points[5], cuffTo = points[6];
-    sleeve.rod(cuffFrom, cuffTo, 0.072, "#e2cea5", 0.055);
-    sleeve.ball([cuffFrom[0], cuffFrom[1] + 0.056, cuffFrom[2] + 0.017], 0.01, C.gold);
+    sleeve.rod(cuffFrom, cuffTo, 0.070, "#d2b285", 0.054);
+    const binding = cuffFrom.map((n, j) => THREE.MathUtils.lerp(n, cuffTo[j], .76)) as Point;
+    sleeve.rod(binding, cuffTo, 0.058, "#f3ddb0", 0.055);
     return sleeve.finish(`breton-folded-sleeve-${index}`, rig, material);
   });
   // The outside of the pressing sleeve moves against the air bag. Both ends
@@ -212,7 +231,7 @@ export function createVillageBreton(): VillageNpcRig {
     const ease = characterEase(delta, reduced);
     playingBlend += (playing - playingBlend) * ease;
     singingBlend += (Number(singing) - singingBlend) * ease;
-    gait += ((!reduced ? Math.min(1, (pose?.speed ?? 0) / 0.55) : 0) - gait) * ease;
+    gait = reduced ? 0 : pose?.walkBlend ?? gait + (Math.min(1, (pose?.speed ?? 0) / .55) - gait) * ease;
     rig.position.y = 0.72 + updateGait(pose?.stride ?? 0, gait);
     const breathCycle = (t % 3.6) / 3.6;
     const breath = breathCycle < 0.28
@@ -223,13 +242,14 @@ export function createVillageBreton(): VillageNpcRig {
     pressed.morphTargetInfluences![0] = squeeze / 0.025;
     const emphasis = pose?.emphasis ?? 0.35;
     rig.rotation.z = reduced ? 0 : THREE.MathUtils.lerp(Math.sin(t * 0.57) * 0.012, Math.sin(t * 2.4) * 0.035 * emphasis, singingBlend);
+    rig.rotation.z += reduced ? 0 : Math.sin(updateGait.stride) * gait * .023 - .054 * (pose?.turnLean ?? 0);
     const yaw = THREE.MathUtils.clamp(pose?.lookYaw ?? 0, -0.78, 0.78);
     rig.rotation.y += (yaw * 0.22 * (pose?.attention ?? 0) - rig.rotation.y) * ease;
     head.rotation.y += (yaw * (1 - playingBlend) - head.rotation.y) * ease;
     head.rotation.x += ((pose ? THREE.MathUtils.clamp(pose.lookPitch, -0.27, 0.25) * (1 - playingBlend) : (1 - playing) * 0.055) + Math.sin(t * 1.3) * 0.018 * (singingBlend * emphasis + playingBlend) - head.rotation.x) * ease;
     head.rotation.z = reduced ? 0 : THREE.MathUtils.lerp(Math.sin(t * 0.73) * 0.012, Math.sin(t * 2.3) * 0.03 * emphasis, singingBlend);
     const opening = 0.28 - 0.16 * playingBlend + singingBlend * (0.46 + Math.sin(t * 5.1) * 0.21 * emphasis);
-    face.setExpression(t, reduced, pose?.attention ?? 0, yaw, opening, THREE.MathUtils.lerp(0.18, emphasis, singingBlend));
+    face.setExpression(t, reduced, pose?.attention ?? 0, yaw, opening, THREE.MathUtils.lerp(0.18, emphasis, singingBlend), detail);
     face.mouth.scale.x *= 1 - playingBlend * 0.59;
     // The hinged blowpipe rests away from the mouth during speech and singing.
     blowpipe.rotation.x += ((pose ? (1 - playingBlend) * 1.05 : 0) - blowpipe.rotation.x) * ease;
@@ -242,7 +262,11 @@ export function createVillageBreton(): VillageNpcRig {
       const note = Math.floor(notePhase) % 5;
       const lift = note === 0 || note === 3;
       const articulation = Math.sin((notePhase % 1) * Math.PI) ** 2;
-      finger.rotation.y = !reduced && quality === "high" && lift ? (index === 0 ? -0.17 : 0.17) * playingBlend * articulation * detail : 0;
+      // The palm and thumb keep the chanter anchored while individual fingertips vent the holes.
+      for (let digit = 0; digit < 3; digit++) {
+        finger.morphTargetInfluences![digit] = !reduced && quality === "high" && (lift || digit === 1) && digit === (note + index) % 3
+          ? playingBlend * articulation * detail : 0;
+      }
     });
     const musical = pose ? Math.min(1, playingBlend + singingBlend) : Number(!pause) * phrasePlaying;
     notes.forEach((note, index) => {

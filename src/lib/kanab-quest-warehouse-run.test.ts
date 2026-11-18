@@ -32,7 +32,8 @@ describe("physical warehouse through the shared culture", () => {
     expect(completed.harvestGrams).toBeLessThanOrEqual(warehouse.estimatedHarvestGrams);
     expect(completed.harvestGrams! / 40).toBeCloseTo(small.harvestGrams!, 1);
     expect(completed.quality).toBe(small.quality);
-    expect(completed.history).toEqual(small.history);
+    // The recorded care history includes plant positions and spread on the room's plan.
+    expect(completed.history).toEqual(finish(startKqGame(300, { warehouse })).history);
     expect(getKqHarvestBreakdown(completed).tentHarvests).toBeNull();
     expect(parseKqGameSave(encodeKqSave(completed))).toEqual(completed);
   });

@@ -31,6 +31,8 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
   const layout = useMemo(() => getKqWarehouseSpatialLayout(plan), [plan]);
   const host = useRef<HTMLDivElement>(null), canvas = useRef<HTMLCanvasElement>(null), proxy = useRef<HTMLSpanElement>(null), warning = useRef<HTMLParagraphElement>(null);
   const runtime = useRef<ReturnType<typeof createRoomRenderer> | null>(null), current = useRef<WorldInput | null>(null);
+  const lastPosition = useRef<WorldPose | null>(null);
+  const [fallbackPosition, setFallbackPosition] = useState<WorldPose | null>(null);
   const [camera, setCamera] = useState<GrowCamera>(OVERVIEW), [size, setSize] = useState({ width: 640, height: 365 });
   const [renderMode, setMode] = useState<"loading" | "webgl" | "plan">("loading"), [generation, setGeneration] = useState(0);
   const [delivered, setDelivered] = useState<KqGrowRoomEvent | null>(null);
@@ -72,6 +74,7 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
     let active = true, loading = false;
     let lastDelivery: KqGrowRoomEvent | null = null;
     const pose = (p: WorldPose) => {
+      lastPosition.current = p;
       const el = proxy.current; if (!el) return;
       el.dataset.worldX = p.x.toFixed(3); el.dataset.worldZ = p.z.toFixed(3); el.dataset.facing = p.yaw.toFixed(3);
       el.dataset.actorState = p.state; el.dataset.actorTarget = p.targetId ?? ""; el.dataset.personalized = String(p.personalized); el.dataset.actorVisible = String(p.visible);
@@ -89,7 +92,7 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
     }
     const intersection = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver(entries => { if (entries.some(e => e.isIntersecting)) { intersection?.disconnect(); void init(); } });
     if (intersection) intersection.observe(node); else void init();
-    function lost(e: Event) { e.preventDefault(); setMode("plan"); }
+    function lost(e: Event) { e.preventDefault(); setFallbackPosition(lastPosition.current); setMode("plan"); }
     function restored() { setGeneration(g => g + 1); }
     picture.addEventListener("webglcontextlost", lost); picture.addEventListener("webglcontextrestored", restored);
     return () => { active = false; intersection?.disconnect(); picture.removeEventListener("webglcontextlost", lost); picture.removeEventListener("webglcontextrestored", restored); runtime.current?.dispose(); runtime.current = null; };
@@ -266,7 +269,7 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
       <canvas ref={canvas} data-grow-canvas="" className={styles.worldCanvas} aria-hidden="true" />
       <svg viewBox={"0 0 " + size.width + " " + size.height} className={styles.isoOverlay} aria-hidden="true" data-alt-plan={renderMode !== "webgl"}>
         <polygon className={styles.floorFallback} points={projectedFootprint(shell.slab, camera, scale, size.width, size.height)} />
-        {renderMode === "plan" && <Suspense fallback={null}><FallbackPlan plan={plan} layout={layout} zones={zones} camera={camera}
+        {renderMode === "plan" && <Suspense fallback={null}><FallbackPlan profile={profile} position={fallbackPosition ?? layout.entry} plan={plan} layout={layout} zones={zones} camera={camera}
           scale={scale} width={size.width} height={size.height}/></Suspense>}
         {shell.landmarks.map(id => {
           const at = shell.landmark(id), screen = projectRoomPoint(at.x, 0, at.z, camera, scale, size.width, size.height);

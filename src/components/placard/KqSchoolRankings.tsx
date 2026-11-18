@@ -7,6 +7,7 @@ import type { KqTournamentIdentity, KqTournamentSnapshot } from '@/lib/kanab-que
 import { getKqStaffReconnectHref } from '@/lib/kanab-quest-staff-reauth';
 import { ChanvrierAvatar } from '../contest/ChanvrierAvatar';
 import { KqChapterHeading } from './KqChapterHeading';
+import { KqQuizzShowScene } from './KqQuizzShowScene';
 import { KqProgressMeter } from './KqVisuals';
 import styles from './KqSchoolRankings.module.css';
 
@@ -92,15 +93,20 @@ function RankingsSession({ ownerId, onTournament }: Props) {
   const reconnect = () => window.location.assign(getKqStaffReconnectHref(window.location));
 
   return <section className={styles.rankings} data-school-rankings data-tutorial-observation={snapshot && !error && !loading ? "school-ranking" : undefined} aria-label="Classement de QuizzShow">
-    <KqChapterHeading art="school" title="Classement">
-      {snapshot ? <p>Édition du <time dateTime={snapshot.event.editionDate}>{editionDate(snapshot.event.editionDate)}</time>.</p>
-        : <p>Les finales de la semaine et les titres remportés.</p>}
-    </KqChapterHeading>
-    <div className={styles.actions}>
-      <button type="button" className={styles.primary} onClick={onTournament}>Tournoi <ArrowRight size={18} aria-hidden="true" /></button>
-      {ownerId ? <button type="button" onClick={() => void load()} disabled={loading} data-school-ranking-refresh>
-        <RefreshCw size={17} aria-hidden="true" />Actualiser
-      </button> : null}
+    <div className={styles.opening}>
+      <KqQuizzShowScene mode="ranking" />
+      <div>
+        <KqChapterHeading art="school" title="Classement">
+          {snapshot ? <p>Édition du <time dateTime={snapshot.event.editionDate}>{editionDate(snapshot.event.editionDate)}</time>.</p>
+            : <p>Les finales de la semaine et les titres remportés.</p>}
+        </KqChapterHeading>
+        <div className={styles.actions}>
+          <button type="button" className={styles.primary} onClick={onTournament}>Tournoi <ArrowRight size={18} aria-hidden="true" /></button>
+          {ownerId ? <button type="button" onClick={() => void load()} disabled={loading} data-school-ranking-refresh>
+            <RefreshCw size={17} aria-hidden="true" />Actualiser
+          </button> : null}
+        </div>
+      </div>
     </div>
 
     {!ownerId ? <div className={styles.notice}>

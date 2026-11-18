@@ -9,7 +9,7 @@ import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-acces
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 import { getArenaIntroductionState } from "@/lib/supabase/arena-introduction-backend";
 import { getArenaBetaConnectionKey } from "@/lib/supabase/arena-beta-connection";
-import { parseKqWorldMode } from "@/lib/kanab-quest-world-mode";
+import { normalizeKqVillageLocation } from "@/lib/kanab-quest-world-mode";
 
 export const metadata: Metadata = {
   title: "Kanab Quest",
@@ -28,13 +28,13 @@ export default async function PlacardPlayerPage({ searchParams }: {
       if (typeof value === "string") query.append(key, value);
       else if (Array.isArray(value)) for (const entry of value) query.append(key, entry);
     }
-    const nextPath = sanitizeNextPath(`/arene/placard${query.size ? `?${query.toString()}` : ""}`, "/arene/placard");
+    const search = normalizeKqVillageLocation(query.size ? `?${query}` : "");
+    const nextPath = sanitizeNextPath(`/arene/placard${search}`, "/arene/placard");
     redirect(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
   }
   if (!await isKqPlayerRequestEnabled()) notFound();
   const [introductionState, betaConnectionKey] = await Promise.all([
     getArenaIntroductionState(session.customerId), getArenaBetaConnectionKey(session.customerId),
   ]);
-  const worldMode = parseKqWorldMode((await searchParams).world);
-  return <ArenaGameEntry key={session.customerId} userId={session.customerId} introductionState={introductionState} betaConnectionKey={betaConnectionKey} {...(worldMode ? { worldMode } : {})} />;
+  return <ArenaGameEntry key={session.customerId} userId={session.customerId} introductionState={introductionState} betaConnectionKey={betaConnectionKey} />;
 }

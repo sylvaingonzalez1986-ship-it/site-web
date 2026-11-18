@@ -1,14 +1,129 @@
 {
+  "portraitsEtCostumesDuQuartier20261118": {
+    "date": "2026-11-18",
+    "constat": "Le joueur et les trois habitants avaient des profils proches, des yeux ronds saillants, des habits de coupe similaire et des coiffes aux volumes réguliers. Le plafond de zoom limitait le personnage à environ un cinquième de l’écran sur ordinateur dans Observer.",
+    "integration": "Le modèle du joueur est partagé entre la création de personnage, le Quartier, la culture et les candidats du QuizzShow. Les trois PNJ ont des profils, coiffes, vêtements et chaussures distincts. La poche du biniou est modelée sous le bras. Les contacts des semelles suivent le terrain et se dissipent au lever du pied. L’observation rapproche la caméra et la recentre vers les yeux au zoom manuel. Les portraits de secours interpolent les couleurs et la lumière sur les triangles.",
+    "coutDesModeles": "Sur les six poses du joueur en pied, le nombre d’appels de rendu reste identique. Exemple en T-shirt et short au repos : 37 264 à 32 396 triangles pour 21 appels. Les vêtements, coiffes et biniou des trois PNJ conservent 27 maillages et passent de 24 000 à 24 358 triangles. Leurs trois têtes passent ensemble de 32 736 à 31 324 triangles, hors coiffes.",
+    "fluidite": "Chrome 157 et Intel Iris Xe. Trois fenêtres de 5 s en carte avec le joueur et les trois PNJ, puis 5 s en observation. Bureau 1440 × 1000 : 58,4–60,0 i/s avant, 56,1–59,9 après ; gros plan 60,1 puis 60,0 i/s. Paysage tactile 844 × 390 émulé à DPR 2 (tampon 1055 × 487) : 30,1 i/s avant et après dans les trois séries ; gros plan 30,2 i/s. P95 mobile final de 34,1 à 39,8 ms sur la carte. Un premier essai mobile avait atteint 83,6 ms ; après mise en cache des appuis immobiles et ajustement de la cadence des poses lointaines, le maximum final était de 42,1 ms. Aucun appareil physique relié.",
+    "parcours": "Comparaison des modèles de départ et des modèles livrés, à pose, caméra et lumière identiques. Essai des prises du sonneur et du pêcheur, de la marche et du salut de Loïc. Dialogues et tutoriel exercés au pointeur et au toucher émulé en 844 × 390, 568 × 320 et 320 × 568.",
+    "verification": "118 tests ciblés, ESLint, TypeScript et compilation Next.js de production réussis. 27 poses de référence et deux démontages sans géométrie ni texture retenue. Lors du contrôle final sur écran tactile émulé de 320 × 568, les trois habitants mesurent de 159 à 175 pixels CSS dans Observer et aucun des six points testés par personnage n’est masqué par un bâtiment. Les yeux de Loïc restent cadrés au zoom manuel × 2,5. L’atelier a enregistré puis rechargé la personnalisation avec les API locales simulées. Le portrait de secours a été vérifié avec WebGL désactivé.",
+    "evidence": ["output/portraits-quartier/portraits-habitants.webp", "output/portraits-quartier/portraits-joueur.webp", "output/portraits-quartier/joueur-avant-apres.png", "output/portraits-quartier/quartier-avant-apres.png", "output/portraits-quartier/marche-virage-salut.gif", "output/portraits-quartier/dialogues/report.json", "output/portraits-quartier/atelier/report.json", "output/portraits-quartier/observer-mobile/report.json", "output/portraits-quartier/after/report.json", "output/portraits-quartier/timing/before/report.json", "output/portraits-quartier/timing/after/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Confirmer les vues rapprochées et le confort des dialogues sur téléphone physique."
+  },
+  "finitionVillageEtFaune20261118": {
+    "date": "2026-11-18",
+    "parcours": "Le quartier, la ferme et sa pâture, le chenal, les personnages, l’entrepôt aménageable et le QuizzShow ont été revus aux mêmes cadrages. Trois moutons noirs broutent près de la ferme. Huit mouettes volent par petits groupes sur trois circuits maritimes.",
+    "diagnostic": [
+      "Les chemins, toits et fondations se confondaient à l’échelle de la carte. Des matières procédurales partagées distinguent l’ardoise, le granit, le bois et la terre. Les bâtiments et la boîte aux lettres passent de 194 à 88 maillages.",
+      "Les reflets blancs dominaient la pleine mer. Les reflets courts suivent la houle et l’écume se concentre sur les obstacles, le quai et les rivages.",
+      "La laine et les pieds du troupeau se lisaient mal sur l’herbe. La toison est sculptée et nuancée, les sabots suivent le relief et leurs ombres s’estompent au lever du pied. Le parcours du troupeau évite les chemins et le débord de l’auvent.",
+      "Les membres se déformaient uniformément et le regard du pêcheur sautait à la reprise. Les plis suivent la flexion des vêtements, les transitions des regards et du salut sont continues. Les articulations lointaines sont mises à jour moins souvent que les trajectoires."
+    ],
+    "verification": "96 tests ciblés, ESLint ciblé, compilation de production Next.js. Jeu local sous Chrome sur Intel Iris Xe avec données de partie simulées. Marche, dialogue, accès à l’atelier, observation tactile du troupeau, rotation, pause et mouvement réduit. Navigation du Quartier contrôlée à 320 × 568, 390 × 844, 844 × 390 et 1440 × 900.",
+    "mesures": "Chrome 157 sur Intel Iris Xe Direct3D 11. Trois fenêtres de 4,5 s en vue générale. Bureau 1440 × 900 à DPR 1 : 55,0–60,0 puis 59,9–60,2 i/s. Paysage tactile émulé 844 × 390 : 29,9–30,1 i/s avant et après. Le tampon mobile passe de 1266 × 585 à 1055 × 487 ; chaque commande HTML garde sa résolution native. Le rendu passe de 343–345 à 239–244 appels par image et d’environ 565 000 à 519 000 triangles. Aucun intervalle supérieur à 50 ms sur ces fenêtres. Première scène disponible après 3,6 s sur ordinateur et 2,2 s en paysage, contre 6,4 s et 3,8 s sur le serveur local de recette.",
+    "rotations": "Sur le premier parcours de rotations et recentrage, maximum de 118,2 ms sur ordinateur et de 35,2 ms en paysage tactile émulé. Trois nouvelles séries identiques donnent 58,4–60,1 i/s sur ordinateur avec un pic à 53,2 ms pendant une rotation, et 42,7–43,3 i/s pendant le parcours tactile avec deux images à 50,1 et 50,3 ms, caméra immobile. Le pic à 118 ms ne s’est pas reproduit. Avant modification, les maxima des trois parcours répétés étaient de 35,8 ms sur ordinateur et 51 ms en paysage.",
+    "equipe": "Coordination et intégration par Codex (GPT-6), avec trois agents GPT-6.2-Sol pour les décors, le littoral et les animations. Revue croisée de la ferme, du troupeau, de la mer et du QuizzShow.",
+    "evidence": ["output/village-faune/comparatif-quartier.webp", "output/village-faune/comparatif-parcours.webp", "output/village-faune/comparatif-interieurs.webp", "output/village-faune/apres/troupeau.webm", "output/village-faune/apres/vol-littoral.webm", "output/village-faune/avant/mesures.json", "output/village-faune/apres/mesures.json", "output/village-faune/avant/parcours.json", "output/village-faune/apres/parcours.json", "output/village-faune/avant/parcours-reprises.json", "output/village-faune/apres/parcours-reprises.json", "output/placard-navigation/coast-after.json"],
+    "deployed": false,
+    "nextBoundedTask": "Rejouer le parcours sur un smartphone physique avec une partie enregistrée."
+  },
+  "coinDuLittoral20261118": {
+    "date": "2026-11-18",
+    "parcours": "Le littoral rejoint les deux côtés du carré de mer. La lande occupe tout le coin arrière jusqu’à la pointe, y compris au dézoom maximal.",
+    "verification": "14 tests sur la mer et la vie du village, dont les limites des sommets du terrain et de l’écume, la présence de terre émergée derrière le rivage et le passage du bateau. Vue du carré entier vérifiée dans Chromium à la molette puis par rotation.",
+    "evidence": ["output/placard-navigation/coin-littoral-vue-haute-apres.png", "output/placard-navigation/coast-corner-after.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier ce cadrage à la prochaine mise en ligne."
+  },
+  "littoralQuartier20261118": {
+    "date": "2026-11-18",
+    "parcours": "Le canvas du Quartier occupe tout l’écran. Le titre reste accessible aux lecteurs d’écran. Menu et Ma partie flottent sur le paysage. En paysage tactile, Mon équipe se place en bas à droite. Les caps de granite, les anses, la lande, les pins et les ajoncs utilisent la projection et l’éclairage du village. La mer anime l’écume sur ce deuxième rivage.",
+    "verification": "Chromium local avec données de jeu simulées, en 1440 × 900, 390 × 844, 844 × 390 et 320 × 568 : bords du canvas, ratio de rendu, interactions à travers l’espace libre, ouverture des commandes et des panneaux, clavier, rotation, encoche simulée et plein écran. 13 tests de mer, de vie du village et de faune.",
+    "evidence": ["output/placard-navigation/comparatif-littoral-bureau.webp", "output/placard-navigation/comparatif-littoral-paysage.webp", "output/placard-navigation/comparatif-littoral-portrait.webp", "output/placard-navigation/coast-after.json"],
+    "deployed": false,
+    "nextBoundedTask": "Contrôler la fluidité sur un téléphone physique lors de la prochaine recette matérielle."
+  },
+  "quartier3dUniquement20261118": {
+    "date": "2026-11-18",
+    "parcours": "Le Quartier s’ouvre en 3D pour tous les joueurs. Les anciens liens 2D retrouvent l’activité demandée en 3D. Le jeu ignore les anciennes préférences de vue. Sans WebGL, une liste donne accès aux bâtiments et au courrier. La relève conserve son objectif et la reprise du chapitre.",
+    "verification": "96 tests ciblés réussis. Chromium à 320 et 1440 px avec données locales simulées : 15 scénarios de navigation et 18 contrôles du village, dont favoris 2D, préférence mémorisée, démarrage sans WebGL et perte de contexte. Reprise de La relève vérifiée au clavier au chapitre 5.",
+    "evidence": ["output/placard-navigation/world-3d-report.json", "output/village-3d/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier l’entrée en 3D depuis un ancien favori à la prochaine mise en ligne."
+  },
+  "quizzShowIsometrique20261118": {
+    "date": "2026-11-18",
+    "parcours": "Salle Three.js avec quatre pupitres numérotés et leurs buzzers, tableau du classement et grande bibliothèque. Les meubles ouvrent leur destination, également accessible au clavier. Le catalogue garde recherche, index et neuf rayons. Les articles reprennent la vignette de la bibliothèque et le lien de retour.",
+    "tournoi": "Une scène orthographique du salon à la finale. Les places, avatars, réponses et scores proviennent du salon serveur. Chaque réponse enregistrée allume le témoin du pupitre. Affiches isométriques et silhouettes par place en secours WebGL. Les commandes, noms, points et temps restent en HTML.",
+    "verification": "Tournoi local avec le SQL en mémoire, douze réponses au clavier, trois éliminations et finale. Clics sur les meubles, accès aux articles, au classement et au tournoi dans Chromium à 320 et 1440 px. Repli sans WebGL, puis perte et restauration du contexte depuis le Quartier 3D. Compilation Next.js, ESLint ciblé et 35 tests de navigation, contrat et backend du tournoi réussis.",
+    "evidence": ["output/quizzshow-3d-tournament/report.json", "output/quizzshow-isometric/navigation.json", "output/quizzshow-isometric/world.json", "output/quizzshow-isometric/home-1440.png"],
+    "nextBoundedTask": "Vérifier la lisibilité du plateau avec quatre participants et le toucher des réponses sur un téléphone physique."
+  },
+  "finitionPersonnages3d20261118": {
+    "date": "2026-11-18",
+    "perimetre": "Joueur personnalisable, sonneur, pêcheur et Loïc. Direction, intégration et revue visuelle par Astra avec deux agents gpt-6.2-sol consacrés au corps et au mouvement.",
+    "constatsEtCorrections": [
+      "Genoux et coudes coupés en flexion. Les anciens segments se superposaient autour d’une articulation ponctuelle. Des sections elliptiques réparties de part et d’autre du pivot déforment ensemble le tissu, avec des normales continues. Vérifié sur le short accroupi, la marinière en marche et le pêcheur assis de profil.",
+      "Cols, coiffures et traits semblaient rapportés. Les profils de mâchoire, d’orbite et de nez diffèrent maintenant par PNJ. Les yeux et les lèvres suivent le relief du visage. Les mèches suivent les tempes, les cols entourent le cou, la coiffe et les sourcils restent lisibles en vue haute. Vérifié au salut de Loïc, au souffle du sonneur et à la gorgée du pêcheur.",
+      "Le haut de la cuisse traversait plusieurs ourlets, le ciré laissait sortir le vêtement intérieur. Les coupes du bassin et du haut de pantalon ont été ajustées. Vérifié au repos, en torsion et en flexion sur trois gabarits, le tee-shirt, la marinière, le ciré, le chupenn et le pull de Loïc.",
+      "Les mains pinçaient les objets ou s’en écartaient. Chaque prise tient compte de la paume, du pouce et de la direction du manche. Les doigts du sonneur s’articulent sur le tuyau mélodique, la bouteille garde son contact avec la bouche, les deux paumes entourent le balai.",
+      "Au démarrage, la racine avançait pendant que le pied porteur glissait. Le contrôleur utilise la distance parcourue, accélère et freine, ancre la semelle dans le repère du sol, échantillonne chaque pied et coordonne le regard avec le buste. Sur le trajet simulé de 2,80 m, la dérive de départ passe de 25 cm à moins de 10⁻⁸ m en appui."
+    ],
+    "verification": "78 tests ciblés sur 12 fichiers. Recette sur le vrai créateur, sauvegarde avec refus simulé puis reprise, rechargement et passage par la culture, la boutique et le Quartier. Cinq scénarios PNJ sous Chromium, dont neuf segments de chanson, six phases de pêche, interruption de gorgée, reprise et ouverture du tutoriel après rechargement.",
+    "captures": ["output/finition-personnages/quartier-avant-apres.png", "output/finition-personnages/joueur-avant-apres.png", "output/finition-personnages/joueur-details-avant-apres.png", "output/finition-personnages/comparaison-sonneur.png", "output/finition-personnages/comparaison-pecheur.png", "output/finition-personnages/comparaison-loic.png", "output/finition-personnages/marche-virage-salut.gif"],
+    "protocole": "Instantané des sources de départ, 27 poses à temps fixé, réglages de caméra et lumière identiques. Quatre comparaisons recadrées sur le terrain, prélevées à la résolution du jeu. Séquence filmée de Loïc de 12 secondes à dix images par seconde. Les captures du créateur et des interactions utilisent des réponses API simulées.",
+    "mesuresQuartier": {
+      "protocole": "Chromium 157, Intel Iris Xe, trois fenêtres de cinq secondes par format et version, même scène. Les valeurs résument les médianes des trois fenêtres. L’intervalle P95 représente les images les plus lentes.",
+      "ordinateur1440x1000": "Avant puis après : 60,1 et 60,1 i/s, intervalle P95 de 17,5 et 17,9 ms, soumission CPU médiane de 3,9 et 5,9 ms. 477 314 et 501 242 triangles, 292 et 288 appels, 276 et 278 géométries, 4 et 9 textures actives. Tas JS observé de 154,7 et 163,1 Mio.",
+      "paysageEmule844x390": "Avant puis après : 30,1 et 30,0 i/s, intervalle P95 de 34,1 et 34,4 ms, soumission CPU médiane de 3,1 et 4,6 ms. Tas JS observé de 268,7 et 301,4 Mio, sans collecte forcée.",
+      "animation": "Lot de trois PNJ et trois animaux témoins, hors rendu : 0,042 à 0,575 ms CPU médians par image ; P95 final de 0,627 ms. Joueur seul en pose de marche : 0,64 ms. Les compteurs géométries et textures retrouvent leur niveau initial après chaque démontage sur deux cycles.",
+      "atelier": "Marche à 60 i/s en moyenne sur ordinateur et en portrait tactile émulé. 18 changements de tenue, 12 de coiffure et 6 de couleur, puis sauvegarde, rechargement et contrôle du rendu logiciel.",
+      "rapports": ["output/finition-personnages/timing/before/report.json", "output/finition-personnages/timing/after/report.json", "output/finition-personnages/after/report.json", "output/finition-personnages/joueur-mesures.json", "output/chanvrier-studio/report.json", "output/village-npcs/report.json"]
+    },
+    "limites": "Paysage 844 × 390 émulé sous Chromium sur Intel Iris Xe. Le test d’appui reproduit le terrain porteur hors galets décoratifs. La mémoire exposée par le navigateur est le tas JavaScript. Le chronométrage des commandes GPU et la mémoire vidéo ne sont pas disponibles dans ces relevés.",
+    "integration": "Compilation de production Next.js et TypeScript réussis, 151 pages générées. Avertissements d’accès réseau aux articles, au CMS et à la boutique pendant le pré-rendu local. ESLint ciblé et validation PostgreSQL locale de la personnalisation réussis.",
+    "prochaineVerification": "Reproduire le trajet et une interruption de gorgée sur téléphone physique, avec un relevé de temps d’image après plusieurs minutes. Aucun appareil Android physique n’était connecté à ADB pendant la recette."
+  },
+  "atelierPersonnage3d20261118": {
+    "date": "2026-11-18",
+    "inventaireInitial": "Le créateur composait un portrait en calques 2D. Les identifiants couvraient déjà six visages, douze choix de cheveux et trois expressions. Le modèle articulé de culture et les vues isométriques fournissaient les gestes et les scènes à réutiliser.",
+    "parcours": "Création à la première arrivée et modification depuis Observer ou Ma partie. Trois vues, rotation au clavier ou au doigt, repos et marche, brouillon local jusqu’à validation. Le Quartier, les intérieurs, la culture et les portraits reprennent le même modèle articulé et la même apparence.",
+    "directionArtistique": "Sourire et paupières affinés, nez, joues et orbites modelés, clignement et transfert d’appui. Les cheveux suivent le crâne et les oreilles. Les coupes longues ont un revers, les tresses trois brins et les boucles un relief sculpté. Chaque coiffe a sa ligne de pose. Le studio ouvre de trois quarts. La vue Quartier garde sa lumière de jeu.",
+    "catalogue": "Deux silhouettes et trois gabarits. Huit visages, quatorze choix de cheveux dont tête nue, quatre formes d’yeux, trois sourcils, trois nez, trois bouches et quatre choix de pilosité. Douze hauts, huit bas, six paires de chaussures, cinq vestes, huit couvre-chefs et huit accessoires. Six carnations, huit teintes de cheveux, six teintes d’iris, seize couleurs de tissu et neuf zones de couleur libre.",
+    "ensembles": {
+      "maritimes": ["Quart au port", "Retour de pêche", "Grain au large"],
+      "traditionnels": ["Dimanche glazik", "Fête en pays bigouden", "Matin au marché"],
+      "references": ["https://www.musee-marine.fr/ressources/ressources-en-ligne/mer-en-famille/un-vrai-look-de-marin.html", "https://musee-breton.finistere.fr/fr/notice/1991-19-1-42-breton-en-costume-traditionnel-musee-departemental-breton-c86062f3-a086-4de2-ac9d-85bb0ae60668", "https://musee-breton.finistere.fr/r/9b3d0240-62ed-4a09-9820-92a2eeb68885"]
+    },
+    "sauvegarde": "Migration 20261118000500_chanvrier_appearance_v2.sql. Les choix connus et les identifiants sont repris, les emplacements manquants reçoivent une valeur déterministe. Les anciens clients fusionnent uniquement leurs choix connus avec la ligne verrouillée. Migration, rechargement, refus de sauvegarde, reprise, spécialité et bonus unique testés localement.",
+    "verification": "Comparaison avant/après, face, profil et dos, vêtements en mouvement, intégration dans le Quartier, la boutique en qualité réduite et la culture. Sur cinq configurations et les huit couvre-chefs, 10 350 rayons au-dessus des bords n’ont rencontré ni peau ni cheveux devant la coiffe. Parcours Chromium avec API simulée en 1360 × 900, 390 × 844 tactile, 844 × 390 et 320 × 640. Les options restent locales pendant dix-huit changements de tenue, douze de coiffure et six de couleur. Portrait logiciel vérifié en l’absence de WebGL.",
+    "mesures": "Chromium sur Intel Iris Xe, marche dans l’atelier sur deux fenêtres de 2,4 s. Ordinateur et téléphone émulé à 60 images/s en moyenne, 95e percentile de 17,5 ms dans les deux vues. Le tas JavaScript de la page passe de 27,0 à 27,9 Mio entre les relevés encadrant dix-huit changements de tenue. La mémoire GPU et les téléphones physiques restent à mesurer.",
+    "controles": "Compilation de production Next.js et TypeScript réussis, 50 tests ciblés sur 7 fichiers, ESLint ciblé, migration testée avec PGlite et contrôle des permissions sur 404 migrations.",
+    "evidence": ["output/chanvrier-model-check/avant-apres.png", "output/chanvrier-model-check/portraits-atelier.png", "output/chanvrier-wardrobe/coiffes/report.json", "output/chanvrier-studio/report.json"],
+    "equipe": "Astra pour la direction et l’intégration, trois agents gpt-6.2-sol au niveau high pour le personnage, le vestiaire et l’atelier. Revue visuelle croisée après intégration.",
+    "nextBoundedTask": "Tester la rotation, le sélecteur de couleur et la fluidité sur un smartphone physique avant la mise en production de la migration."
+  },
+  "cultureDiceThrow20261118": {
+    "date": "2026-11-18",
+    "changes": "La vue Culture utilise les mêmes dés 3D au repos, à la prise d’élan, pendant les rebonds et à l’arrivée. Sur PC, le feutre passe de 340 à 620 px de large. Le résultat et son bilan apparaissent après le lancer ou au passage direct.",
+    "verification": "Vingt trajectoires physiques vérifiées à trois et quatre dés. Recette Chromium sur la vue joueur à 1440, 390 et 320 px avec une API locale contrôlée, incluant chargement à froid, réponse lente, refus, reprise au clavier, rendu statique et mouvement réduit. À 1440 px, la mise à jour de la salle et des heures déplaçait le tapis de 74 px. Son bord supérieur tient désormais à 1 px près sur les images affichées.",
+    "preview": "output/placard-workshop/dice/player-throw-1440.gif",
+    "browserReport": "output/placard-workshop/dice/report.json",
+    "nextBoundedTask": "Recueillir le retour du joueur sur le rythme du lancer sur PC."
+  },
   "warehouseIsometricEditor20261118": {
     "date": "2026-11-18",
-    "status": "Vue isométrique unique intégrée à l’entrepôt ; vérifications finales en cours.",
+    "status": "Terminé localement : sélection et aménagement dans l’unique vue isométrique de l’entrepôt.",
     "changes": "Le plan de dessus est retiré de l’entrepôt. La scène isométrique permet sélection, tracé Culture/Séchage/Stockage, déplacement et taille, avec une seule liste accessible de postes. Brouillon, devis, confirmations, Buddies, parois enregistrées, verrouillages et destinations séchage/stockage sont conservés. Le repli sans WebGL garde la même projection et les mêmes commandes.",
     "interactionReview": "Clic tactile traité après le relâchement, sans activation dans le dialogue ouvert ; désélection sur case vide ; gestes attachés à leur zone d’origine ; rejet parent sans faux message de succès. Le dock Buddie consomme le clic suivant un dépôt sans minuterie. Dimensions et consignes sur papier lisible.",
-    "validation": "185 tests ciblés, TypeScript global sur les sources finales et ESLint ciblé réussis. 27 scénarios entrepôt réussis : souris/tactile/clavier, trois types de zone, déplacement/taille, parois, devis et confirmation, sauvegarde/rechargement, conflit/réponse perdue, Buddies, suppression/revente et tutoriel. Captures finales 320/1440 px inspectées, dont repli illustré chargé sans WebGL à 320 px.",
+    "validation": "185 tests ciblés, TypeScript global sur les sources finales et ESLint ciblé réussis. 27 scénarios entrepôt réussis : souris/tactile/clavier, trois types de zone, déplacement/taille, parois, devis et confirmation, sauvegarde/rechargement, conflit/réponse perdue, Buddies, suppression/revente et tutoriel. Captures finales 320/1440 px inspectées, dont repli illustré chargé sans WebGL à 320 px. Vérifications séparées réussies : statut réel du séchage, stock en grammes, retour Culture sans écriture, sélection et ciblage PBI hors éditeur avec une seule action acceptée sur la bonne case.",
     "browserReport": "output/warehouse-zone-actions/report.json",
+    "regressionReports": ["output/culture-room/warehouse-services/report.json", "output/culture-room/pbi-smoke/report.json"],
     "documentation": "docs/bete-de-concours/salle-de-culture.md",
+    "limits": "API simulées et tactile émulé ; aucune transaction distante ni migration. Le premier rapport warehouse reste en échec historique : géométrie/sélection aux trois largeurs franchies, statut service corrigé puis revérifié séparément. La marche chronométrée à 30 s a expiré sous Chromium logiciel lors d’une relance intermédiaire ; aucune performance sur téléphone physique n’est revendiquée. Comparatif de parité complet non relancé, modèles inchangés.",
     "deployed": false,
-    "nextBoundedTask": "Terminer uniquement la non-régression du groupe entrepôt et un smoke PBI. Aucun nouvel audit général ni publication implicite."
+    "nextBoundedTask": "Demande terminée. Nouveau chantier ou publication uniquement sur instruction ; ne pas rétablir le doublon avec le plan de dessus."
   },
   "equipeQuartier20261118": {
     "date": "2026-11-18",

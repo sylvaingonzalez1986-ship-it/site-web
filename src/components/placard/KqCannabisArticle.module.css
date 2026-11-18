@@ -1,5 +1,6 @@
 ﻿.article { min-width: 0; color: var(--game-ink, #172923); }
 .article *, .article *::before, .article *::after { box-sizing: border-box; }
+.article { scroll-margin-top: var(--reference-scroll-offset, 96px); }
 .article h2, .article h3 { font-family: var(--font-display), Impact, sans-serif; text-transform: none; line-height: 1.2; }
 .article h3 { font-size: 25px; margin: 0 0 16px; }
 .article .title { margin: 10px 0 26px; padding-bottom: 15px; border-bottom: 1px solid #17292355; font-size: clamp(30px, 3.4vw, 43px); overflow-wrap: anywhere; scroll-margin-top: var(--reference-scroll-offset, 96px); }
@@ -8,7 +9,9 @@
 .article :is(a, summary, [tabindex="-1"]):focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
 .article [tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
 .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; }
-.breadcrumb a { min-height: 32px; align-content: center; }
+.breadcrumb a { min-height: 44px; align-content: center; }
+.libraryLink { display: inline-flex; gap: 7px; align-items: center; }
+.libraryLink .libraryMark { width: clamp(52px, 6vw, 72px); }
 .layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 34px; align-items: start; }
 .contents { position: sticky; top: var(--reference-scroll-offset, 96px); padding-right: 18px; border-right: 1px solid #17292325; }
 .contents h3 { font-family: var(--font-body), Arial, sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 10px; }

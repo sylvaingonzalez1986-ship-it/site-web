@@ -1,40 +1,54 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { projectVillageSurface, villageMaterial, type VillageSurface } from "./village-surfaces";
 
 export type VillageBuildingKind = "warehouse" | "bank" | "office" | "market" | "shop" | "arena" | "missions" | "collection";
 
 const C = {
-  cream: "#f6e6bc", light: "#fff2cf", slate: "#30464c", tile: "#40575b",
+  cream: "#f6e6bc", light: "#fff2cf", slate: "#344c56", tile: "#516872",
+  slateGreen: "#37564e", slateViolet: "#51566a", lime: "#f4e2bc",
   teal: "#008f8c", tealDark: "#00615f", wood: "#ad713d", woodLight: "#d99a57",
-  gold: "#efb33b", ink: "#243b37", stone: "#c7b78e", glass: "#3b7777",
+  gold: "#efb33b", ink: "#243b37", stone: "#bcb092", granite: "#93988a", glass: "#3b7777",
   paper: "#fff4d6", red: "#ba503b", green: "#477c50", white: "#fff9e7",
 } as const;
 type Paint = keyof typeof C;
 type XYZ = readonly [number, number, number];
+type RoofSlate = "slate" | "slateGreen" | "slateViolet";
+type MaterialFamily = "masonry" | "roof" | "joinery" | "metal" | "solid";
 
-/** Merge the sculptural parts by paint, rather than drawing every plank separately. */
+const familyByPaint: Partial<Record<Paint, MaterialFamily>> = {
+  lime: "masonry", stone: "masonry", granite: "masonry", slate: "roof", tile: "roof", slateGreen: "roof", slateViolet: "roof",
+  wood: "joinery", woodLight: "joinery", teal: "joinery", tealDark: "joinery", gold: "metal",
+};
+const surfaceByFamily: Partial<Record<MaterialFamily, VillageSurface>> = { masonry: "granite", roof: "slate", joinery: "timber" };
+
+/** Pigment is baked into the vertices, leaving one mesh per material on each animated part. */
 class BuildingParts {
-  private batches = new Map<Paint, THREE.BufferGeometry[]>();
+  private batches = new Map<MaterialFamily, THREE.BufferGeometry[]>();
   private children: THREE.Group[] = [];
+  private pigment = new THREE.Color();
 
   constructor(private readonly origin: XYZ = [0, 0, 0]) {}
 
   add(geometry: THREE.BufferGeometry, paint: Paint, position: XYZ, rotation: XYZ = [0, 0, 0], tone = 1) {
+    const colors = new Float32Array(geometry.getAttribute("position").count * 3);
+    this.pigment.set(C[paint]).multiplyScalar(tone);
+    for (let i = 0; i < colors.length; i += 3) this.pigment.toArray(colors, i);
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    geometry.deleteAttribute("uv");
+    this.append(geometry, familyByPaint[paint] ?? "solid", position, rotation);
+  }
+
+  private append(geometry: THREE.BufferGeometry, family: MaterialFamily, position: XYZ, rotation: XYZ) {
     geometry.applyMatrix4(new THREE.Matrix4().compose(
       new THREE.Vector3(position[0] - this.origin[0], position[1] - this.origin[1], position[2] - this.origin[2]),
       new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)),
       new THREE.Vector3(1, 1, 1),
     ));
-    // Per-piece pigment variation survives merging without adding a draw call.
-    if (!geometry.getAttribute("color")) {
-      const colors = new Float32Array(geometry.getAttribute("position").count * 3);
-      colors.fill(tone);
-      geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-    }
-    const batch = this.batches.get(paint) ?? [];
+    const batch = this.batches.get(family) ?? [];
     batch.push(geometry.index ? geometry.toNonIndexed() : geometry);
     if (geometry.index) geometry.dispose();
-    this.batches.set(paint, batch);
+    this.batches.set(family, batch);
   }
 
   box(size: XYZ, position: XYZ, paint: Paint, rotation: XYZ = [0, 0, 0], tone = 1) {
@@ -93,22 +107,24 @@ class BuildingParts {
     const details = new BuildingParts();
     build(details);
     if (details.children.length) throw new Error("Animated details need their own named hinge");
-    for (const [paint, geometries] of details.batches) {
-      for (const geometry of geometries) this.add(geometry, paint, position, [0, yaw, 0]);
+    for (const [family, geometries] of details.batches) {
+      for (const geometry of geometries) this.append(geometry, family, position, [0, yaw, 0]);
     }
   }
 
   private buildGroup(name: string, meshPrefix = name) {
     const group = new THREE.Group();
     group.name = name;
-    for (const [paint, geometries] of this.batches) {
+    for (const [family, geometries] of this.batches) {
       const merged = mergeGeometries(geometries, false);
       geometries.forEach(geometry => geometry.dispose());
-      if (!merged) throw new Error(`Unable to merge village ${name}/${paint}`);
+      if (!merged) throw new Error(`Unable to merge village ${name}/${family}`);
       merged.computeBoundingSphere();
-      const material = new THREE.MeshStandardMaterial({ color: C[paint], vertexColors: true, roughness: 0.92, metalness: paint === "gold" ? 0.2 : 0, flatShading: true });
+      const surface = surfaceByFamily[family];
+      if (surface) projectVillageSurface(merged, surface);
+      const material = villageMaterial({ vertexColors: true, roughness: 0.92, metalness: family === "metal" ? 0.2 : 0, flatShading: true }, surface);
       const mesh = new THREE.Mesh(merged, material);
-      mesh.name = `${meshPrefix}-${paint}`;
+      mesh.name = `${meshPrefix}-${family}`;
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       group.add(mesh);
@@ -131,52 +147,90 @@ function arch(width: number, height: number) {
   return shape;
 }
 
-function wall(p: BuildingParts, width: number, depth: number, height: number, rise: number) {
-  p.box([width, height, depth], [0, height / 2 + 0.12, 0], "cream");
+function graniteBlock(p: BuildingParts, width: number, height: number, at: XYZ, salt: number, paint: Paint = "stone", yaw = 0) {
+  const w = width / 2, h = height / 2, bevel = 0.032;
+  const shape = new THREE.Shape();
+  shape.moveTo(-w, -h + bevel); shape.lineTo(-w + bevel, -h);
+  shape.lineTo(w - bevel * (1 + salt % 2), -h + Math.sin(salt) * 0.016); shape.lineTo(w, -h + bevel * 1.3);
+  shape.lineTo(w - bevel * 0.3, h - bevel); shape.lineTo(w - bevel * 1.5, h);
+  shape.lineTo(-w + bevel * 1.4, h + Math.cos(salt) * 0.01); shape.lineTo(-w, h - bevel); shape.closePath();
+  p.add(new THREE.ExtrudeGeometry(shape, { depth: 0.055, bevelEnabled: true, bevelThickness: 0.016, bevelSize: 0.014, bevelSegments: 1 }),
+    paint, at, [0, yaw, Math.sin(salt * 1.5) * 0.037], 0.86 + salt % 7 * 0.028);
+}
+
+function wall(p: BuildingParts, width: number, depth: number, height: number, rise: number, farm = false) {
+  p.box([width, height, depth], [0, height / 2 + 0.12, 0], "lime");
   p.box([width + 0.15, 0.23, depth + 0.13], [0, 0.14, 0], "stone");
   const gable = new THREE.Shape();
   gable.moveTo(-width / 2, 0); gable.lineTo(width / 2, 0); gable.lineTo(0, rise); gable.closePath();
-  p.shape(gable, depth, [0, height + 0.12, -depth / 2], "cream", 0);
+  p.shape(gable, depth, [0, height + 0.12, -depth / 2], "lime", 0);
   // Staggered Breton granite footing and alternating dressed corner stones.
   for (const side of [-1, 1]) {
     for (let row = 0; row < 2; row++) for (let i = 0; i < Math.ceil(width / 0.5); i++) {
       const unit = width / Math.ceil(width / 0.5), x = -width / 2 + unit * (i + 0.5);
-      p.box([unit - 0.027, 0.16, 0.15], [x, 0.19 + row * 0.18, side * (depth / 2 + 0.025)], "stone", [0, 0, Math.sin(i * 9 + row) * 0.018], 0.88 + (i * 3 + row) % 5 * 0.04);
+      graniteBlock(p, unit - 0.068, 0.145, [x, 0.19 + row * 0.18, side * (depth / 2 + 0.027)], i * 3 + row + 1,
+        (i + row) % 4 === 0 ? "granite" : "stone", side === 1 ? 0 : Math.PI);
     }
     for (let i = 0; i < Math.ceil(depth / 0.5); i++) {
       const unit = depth / Math.ceil(depth / 0.5);
-      p.box([0.16, 0.3, unit - 0.035], [side * (width / 2 + 0.02), 0.27, -depth / 2 + unit * (i + 0.5)], "stone", [0, 0, 0], 0.9 + i % 4 * 0.045);
+      graniteBlock(p, unit - 0.06, 0.283, [side * (width / 2 + 0.021), 0.275, -depth / 2 + unit * (i + 0.5)], i + 4,
+        i % 4 === 0 ? "granite" : "stone", side * Math.PI / 2);
     }
     for (const back of [-1, 1]) for (let row = 0; row < Math.floor(height / 0.34); row++) {
       const long = row % 2 === 0;
       p.box([long ? 0.43 : 0.27, 0.27, 0.13], [side * (width / 2 - (long ? 0.15 : 0.07)), 0.52 + row * 0.33, back * (depth / 2 + 0.035)], row % 3 ? "stone" : "light", [0, 0, side * 0.012], 0.92 + row % 3 * 0.04);
       p.box([0.13, 0.27, long ? 0.26 : 0.43], [side * (width / 2 + 0.035), 0.52 + row * 0.33, back * (depth / 2 - (long ? 0.07 : 0.15))], "stone", [0, 0, 0], 0.9 + row % 3 * 0.045);
     }
-    // Exposed stone patches at the foot of the rendered side walls.
-    for (let i = 0; i < 5; i++) {
-      p.box([0.045, 0.14 + i % 2 * 0.04, 0.27 + i % 3 * 0.06], [side * (width / 2 + 0.021), 0.52 + i % 2 * 0.17, -0.62 + i * 0.3], "stone", [Math.sin(i) * 0.04, 0, 0], 0.95);
+    // Under the limewash, staggered stones follow the old masonry courses.
+    for (let i = 0; i < (farm ? 8 : 4); i++) {
+      const mortarCourse = i % 3;
+      const z = -depth * 0.36 + depth * 0.69 * (i + 0.5) / (farm ? 8 : 4);
+      graniteBlock(p, 0.27 + i % 3 * 0.09, 0.11 + i % 2 * 0.04, [side * (width / 2 + 0.001), 0.51 + mortarCourse * 0.17, z], i + 2,
+        i % 5 === 0 ? "granite" : "stone", side * Math.PI / 2);
     }
     p.box([width - 0.12, 0.11, 0.1], [0, height + 0.07, side * (depth / 2 + 0.035)], "wood");
   }
 }
 
-function roof(p: BuildingParts, width: number, depth: number, base: number, rise: number) {
+function slateShingle(length: number, width: number, seed: number, side: number) {
+  const l = length / 2, w = width / 2;
+  const corner = Math.min(l * 0.4, w * 0.6, 0.022 + seed % 4 * 0.008);
+  const outline = [[-l, -w + corner], [-l + corner, -w], [l - corner, -w], [l, -w + corner * 0.7],
+    [l, w - corner * 1.2], [l - corner, w], [-l + corner, w], [-l, w - corner]];
+  const positions = outline.flatMap(([x, z]) => [x, 0.028 - x * side * 0.105, z]);
+  positions.push(...outline.flatMap(([x, z]) => [x, -0.035, z]));
+  const indices: number[] = [];
+  for (let i = 1; i < outline.length - 1; i++) indices.push(0, i + 1, i);
+  for (let i = 0; i < outline.length; i++) {
+    const next = (i + 1) % outline.length;
+    indices.push(i, next, i + 8, next, next + 8, i + 8);
+  }
+  const tile = new THREE.BufferGeometry();
+  tile.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  tile.setIndex(indices);
+  tile.computeVertexNormals();
+  return tile;
+}
+
+function roof(p: BuildingParts, width: number, depth: number, base: number, rise: number, slate: RoofSlate = "slate") {
   const half = width / 2, slope = Math.hypot(half, rise), angle = Math.atan2(rise, half);
   for (const side of [-1, 1]) {
     const rotation: XYZ = [0, 0, -side * angle];
-    p.box([slope, 0.16, depth], [side * width / 4, base + rise / 2, 0], "slate", rotation);
+    p.box([slope, 0.16, depth], [side * width / 4, base + rise / 2, 0], slate, rotation, 0.82);
     p.box([0.1, 0.17, depth + 0.04], [side * half, base, 0], "ink");
-    const rows = Math.max(3, Math.ceil(slope / 0.39)), columns = Math.max(3, Math.ceil(depth / 0.37));
+    const rows = Math.max(3, Math.ceil(slope / 0.46)), columns = Math.max(3, Math.ceil(depth / 0.44));
     for (let row = 0; row < rows; row++) for (let col = 0; col <= columns; col++) {
       const unit = depth / columns, offset = row % 2 * unit / 2;
-      const left = Math.max(-depth / 2, -depth / 2 + col * unit - offset);
-      const right = Math.min(depth / 2, -depth / 2 + (col + 1) * unit - offset);
-      if (right - left < 0.04) continue;
+      const bias = Math.sin(row * 3.2 + col * 6.7 + side) * 0.044;
+      const nextBias = Math.sin(row * 3.2 + (col + 1) * 6.7 + side) * 0.044;
+      const left = Math.max(-depth / 2, -depth / 2 + col * unit - offset + bias);
+      const right = Math.min(depth / 2, -depth / 2 + (col + 1) * unit - offset + nextBias);
+      if (right - left < 0.085) continue;
       const t = (row + 0.48) / rows, seed = (row * 17 + col * 11 + side + 1) % 13;
-      const x = side * half * t, y = base + rise * (1 - t) + 0.115;
-      p.box([slope / rows + 0.035, 0.055 + seed % 3 * 0.007, right - left - 0.025], [x, y, (left + right) / 2], seed % 5 === 0 ? "tile" : "slate", [0, Math.sin(seed) * 0.009, -side * angle], 0.8 + seed * 0.027);
-      // A small chipped edge gives each overlapping slate an inked lip.
-      if (seed % 4 === 0) p.box([0.025, 0.016, (right - left) * 0.44], [x + side * half / rows * 0.48, y - rise / rows * 0.48 + 0.04, (left + right) / 2], "tile", rotation, 1.05);
+      const x = side * half * t, y = base + rise * (1 - t) + 0.124 + seed % 4 * 0.003;
+      const paint = seed % 7 === 0 ? "tile" : slate;
+      p.add(slateShingle(slope / rows + 0.027, right - left - 0.021, seed, side), paint, [x, y, (left + right) / 2],
+        [0, Math.sin(seed) * 0.014, -side * angle], 0.89 + seed * 0.016);
     }
     for (const z of [-depth / 2, depth / 2]) {
       p.beam([0, base + rise + 0.015, z], [side * half, base + 0.015, z], 0.13, "ink");
@@ -187,7 +241,9 @@ function roof(p: BuildingParts, width: number, depth: number, base: number, rise
     p.cylinder(0.075, depth + 0.16, [side * (half + 0.025), base - 0.05, 0], "ink", [Math.PI / 2, 0, 0]);
   }
   p.box([0.12, 0.13, depth + 0.09], [0, base + rise + 0.06, 0], "ink");
-  for (let i = 0; i < Math.ceil(depth / 0.37); i++) p.cylinder(0.12, 0.35, [0, base + rise + 0.1, -depth / 2 + 0.18 + i * 0.37], i % 3 ? "slate" : "tile", [Math.PI / 2, 0, 0]);
+  const caps = Math.ceil(depth / 0.37), capLength = depth / caps;
+  for (let i = 0; i < caps; i++) p.cylinder(0.12, capLength - 0.016, [0, base + rise + 0.1, -depth / 2 + (i + 0.5) * capLength],
+    i % 4 ? slate : "tile", [Math.PI / 2, 0, 0], 0.112);
 }
 
 function chimney(p: BuildingParts, x: number, y: number, z: number) {
@@ -482,13 +538,22 @@ function juryActivity(p: BuildingParts) {
 }
 
 function warehouse(p: BuildingParts) {
-  wall(p, 4.35, 3.1, 2.52, 1.42); roof(p, 4.85, 3.65, 2.65, 1.44);
+  wall(p, 4.35, 3.1, 2.52, 1.42, true); roof(p, 4.85, 3.65, 2.65, 1.44, "slateGreen");
+  // Breathing boards close the two gables of the barn over the limewashed masonry.
+  for (const face of [-1, 1]) for (let col = -7; col <= 7; col++) {
+    const x = col * 0.255;
+    const topAt = (edge: number) => 4.015 - 1.42 * Math.abs(edge) / 2.175;
+    const board = new THREE.Shape();
+    board.moveTo(-0.116, 0); board.lineTo(0.116, 0);
+    board.lineTo(0.116, topAt(x + 0.116) - 2.695); board.lineTo(-0.116, topAt(x - 0.116) - 2.695); board.closePath();
+    p.shape(board, 0.037, [x, 2.695, face === 1 ? 1.558 : -1.594], col % 3 ? "wood" : "woodLight", 0.006);
+  }
   cottageDetails(p, 4.35, 3.1, 2.52, 1.42);
   p.group("idle-culture", [0, 0, 0], idle => door(idle, 0.1, 1.57, 2.3, 2.32, "teal", true));
   cultureActivity(p);
   p.box([2.65, 0.26, 0.16], [0.1, 2.78, 1.72], "woodLight", [0, 0, -0.035]);
   p.box([1.1, 1.67, 2.1], [-2.64, 0.9, -0.1], "wood");
-  for (let i = 0; i < 6; i++) p.box([0.028, 1.6, 0.04], [-3.17 + i * 0.21, 0.9, 0.98], "woodLight");
+  for (let i = 0; i < 6; i++) p.box([0.162, 1.6, 0.04], [-3.08 + i * 0.178, 0.9, 0.958], i % 3 ? "wood" : "woodLight", [0, 0, 0], 0.88 + i % 4 * 0.04);
   p.box([1.5, 0.14, 2.5], [-2.72, 1.96, -0.1], "slate", [0, 0, 0.25]);
   for (let row = 0; row < 4; row++) for (let column = 0; column < 7; column++) {
     p.box([0.4, 0.055, 0.34], [-3.29 + row * 0.37, 1.96 + (-0.57 + row * 0.37) * Math.sin(0.25) + 0.09, -1.15 + column * 0.35], column % 4 ? "slate" : "tile", [0, 0, 0.25], 0.88 + (row + column) % 4 * 0.05);
@@ -715,7 +780,7 @@ function stool(p: BuildingParts, x: number, z: number, height: number) {
 }
 
 function shop(p: BuildingParts) {
-  wall(p, 3.95, 2.95, 2.6, 1.22); roof(p, 4.45, 3.45, 2.73, 1.26);
+  wall(p, 3.95, 2.95, 2.6, 1.22); roof(p, 4.45, 3.45, 2.73, 1.26, "slateGreen");
   cottageDetails(p, 3.95, 2.95, 2.6, 1.22);
   chimney(p, -0.98, 3.68, -0.58); door(p, -1.0, 1.51, 0.82, 1.88);
   p.anchor("anchor-smoke", [-0.94, 4.52, -0.58]);
@@ -787,7 +852,7 @@ function arena(p: BuildingParts) {
     p.box([0.24, 0.11, 2.4], [x, 1.26, -0.1], "woodLight");
     for (let i = 0; i < 6; i++) p.box([0.105, 0.56, 0.075], [x, 0.95, -1 + i * 0.37], "woodLight");
   }
-  p.box([4.37, 0.22, 0.23], [0, 2.94, 1.22], "woodLight"); roof(p, 5.05, 3.58, 3.05, 1.05);
+  p.box([4.37, 0.22, 0.23], [0, 2.94, 1.22], "woodLight"); roof(p, 5.05, 3.58, 3.05, 1.05, "slateGreen");
   for (let i = 0; i < 3; i++) stool(p, -1.15 + i * 1.15, 0.47, 1.1);
   p.box([1.88, 0.16, 0.48], [0, 0.12, 1.94], "woodLight");
   p.box([1.88, 0.18, 0.43], [0, 0.27, 1.66], "woodLight");
@@ -862,7 +927,7 @@ function missions(p: BuildingParts) {
 }
 
 function collection(p: BuildingParts) {
-  wall(p, 4.35, 3.08, 2.6, 1.3); roof(p, 4.85, 3.58, 2.73, 1.32);
+  wall(p, 4.35, 3.08, 2.6, 1.3); roof(p, 4.85, 3.58, 2.73, 1.32, "slateViolet");
   cottageDetails(p, 4.35, 3.08, 2.6, 1.3);
   p.box([2.86, 1.72, 0.16], [-0.32, 1.16, 1.59], "ink");
   p.box([2.73, 0.15, 0.9], [-0.32, 0.32, 1.86], "red");

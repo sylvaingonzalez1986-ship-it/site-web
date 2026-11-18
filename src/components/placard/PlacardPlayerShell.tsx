@@ -9,9 +9,8 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { KqPlacardLobby } from "./KqPlacardLobby";
 import { KqPrintedArt, type KqPrintedArtKind } from "./KqPrintedArt";
 import printedArt from "./KqPrintedArt.module.css";
-import { KqPlacardNavigation, type PlacardNavKey } from "./KqPlacardNavigation";
+import type { PlacardNavKey } from "./KqPlacardNavigation";
 import { useGameViewport } from "@/hooks/useGameViewport";
-import { useKqWorldMode, type KqWorldMode } from "@/hooks/useKqWorldMode";
 import { useGamePanelScroll } from "@/hooks/useGamePanelScroll";
 import { normalizeKqVillageLocation } from "@/lib/kanab-quest-world-mode";
 import { ArenaJourneyEntry } from "../contest/ArenaJourneyEntry";
@@ -76,7 +75,10 @@ const KqPlacardHud = dynamic(() => import("./KqPlacardHud").then((module) => mod
 
 const KqHarvests = dynamic(() => import("./KqHarvests").then(module => module.KqHarvests), { loading: PlacardViewLoading });
 const KqFarmGuide = dynamic(() => import("./KqFarmGuide").then(module => module.KqFarmGuide), { ssr: false });
-const VillageWorld = dynamic(() => import("./world/VillagePrototype").then(module => module.VillagePrototype), { ssr: false, loading: PlacardViewLoading });
+const VillageWorld = dynamic(() => import("./world/VillagePrototype").then(module => module.VillagePrototype), {
+  ssr: false,
+  loading: () => <div className={styles.worldLoading} role="status"><span className={styles.statusSign}>Chargement du quartier…</span></div>,
+});
 
 type PlacardView = "harvests" | "hub" | "shop" | "school" | "game" | "arena" | "market" | "social" | "treasury" | "staff" | "missions" | "workshop";
 const VIEW_ART: Record<PlacardView, KqPrintedArtKind> = {
@@ -145,17 +147,15 @@ const PLACARD_RETURN_LABELS: Record<PlacardView, { label: string; accessibleLabe
   school: { label: "QuizzShow", accessibleLabel: "Retour à QuizzShow" },
 };
 
-export function PlacardPlayerShell({ draftOwnerId, initialGuideOpen = false, initialGuideStep, worldMode }: { draftOwnerId?: string; initialGuideOpen?: boolean; initialGuideStep?: "zone"; worldMode?: KqWorldMode } = {}) {
-  return <KqMissionFocusProvider key={draftOwnerId ?? "guest"} ownerId={draftOwnerId}><KqStaffRecoveryProvider ownerId={draftOwnerId}><PlacardPlayerShellContent draftOwnerId={draftOwnerId} initialGuideOpen={initialGuideOpen} initialGuideStep={initialGuideStep} worldMode={worldMode} /></KqStaffRecoveryProvider></KqMissionFocusProvider>;
+export function PlacardPlayerShell({ draftOwnerId, initialGuideOpen = false, initialGuideStep }: { draftOwnerId?: string; initialGuideOpen?: boolean; initialGuideStep?: "zone" } = {}) {
+  return <KqMissionFocusProvider key={draftOwnerId ?? "guest"} ownerId={draftOwnerId}><KqStaffRecoveryProvider ownerId={draftOwnerId}><PlacardPlayerShellContent draftOwnerId={draftOwnerId} initialGuideOpen={initialGuideOpen} initialGuideStep={initialGuideStep} /></KqStaffRecoveryProvider></KqMissionFocusProvider>;
 }
 
-function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuideStep, worldMode: initialWorldMode }: { draftOwnerId?: string; initialGuideOpen: boolean; initialGuideStep?: "zone"; worldMode?: KqWorldMode }) {
-  const { worldMode, setWorldMode } = useKqWorldMode(draftOwnerId, initialWorldMode);
-  const is3d = worldMode === "3d";
+function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuideStep }: { draftOwnerId?: string; initialGuideOpen: boolean; initialGuideStep?: "zone" }) {
   const [overviewOpen, setOverviewOpen] = useState(false);
   const location = useSyncExternalStore(subscribePlacardLocation, getPlacardLocation, () => "");
-  const panelRef = useGamePanelScroll(location, is3d);
   const activityLocation = normalizeKqVillageLocation(location);
+  const panelRef = useGamePanelScroll(activityLocation);
   const params = new URLSearchParams(activityLocation);
   useEffect(() => {
     if (activityLocation === location || window.location.search !== location) return;
@@ -199,10 +199,8 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
   const [preparation, setPreparation] = useState<KqPreparationSelection | null>(() => readKqPreparationDraft(kqPreparationStorage(), draftOwnerId));
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
   const navigationTimerRef = useRef<number | null>(null);
-  const [highlightedBuilding, setHighlightedBuilding] = useState<string | null>(null);
   const [workAvailability, setWorkAvailability] = useState<KqPlayerWorkAvailability>({ status: "loading" });
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const previousViewRef = useRef(view);
   const requestedFlowerId = params.get("flower") ?? undefined;
   const requestedEmployeeId = params.get("employee") ?? undefined;
   const requestedLotId = params.get("lot") ?? undefined;
@@ -442,10 +440,10 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
   };
 
   const guideNavigate = (destination: FarmGuideDestination & { flowerId?: string }) => {
-    if (is3d && destination.view === "hub") { openView("hub", {}, true); return; }
+    if (destination.view === "hub") { openView("hub", {}, true); return; }
     if (destination.href) {
       const target = new URL(destination.href, window.location.origin);
-      if (is3d && target.origin === window.location.origin && target.pathname === "/arene/placard") openWorldHref(target.href);
+      if (target.origin === window.location.origin && target.pathname === "/arene/placard") openWorldHref(target.href);
       else navigateWithDraftGuard(() => window.location.assign(destination.href!));
       return;
     }
@@ -468,15 +466,12 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
   };
 
   useEffect(() => {
-    const previousView = previousViewRef.current;
-    previousViewRef.current = view;
     if (view === "hub") {
-      if (is3d && !overviewOpen) return;
-      if (previousView === "hub" && !overviewOpen) return;
+      if (!overviewOpen) return;
       // The return button unmounts; resume before the recommendation, even while it loads.
       surfaceRef.current?.querySelector<HTMLElement>('main[data-placard-lobby][aria-label="Mon quartier"][tabindex="-1"]')?.focus({ preventScroll: true });
     } else if (!(requestedFlowerId && (view === "harvests" || (view === "workshop" && warehouseSection === "storage")))) headingRef.current?.focus({ preventScroll: true });
-  }, [view, treasuryPole, harvestSection, requestedFlowerId, warehouseSection, surfaceRef, is3d, overviewOpen]);
+  }, [view, treasuryPole, harvestSection, requestedFlowerId, warehouseSection, surfaceRef, overviewOpen]);
 
   const panelOpen = view !== "hub" || overviewOpen;
   const openWorldHref = (href: string) => {
@@ -501,7 +496,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
     onNavigate={guideNavigate} onActiveChange={updateGuideActive} />;
   const content = <>
       {navigationFeedback}
-      <div ref={panelRef} className={`${styles.content} ${is3d ? styles.worldPanel : ""}`} id="placard-content" hidden={is3d && !panelOpen} data-village-activity-panel={is3d && panelOpen || undefined}>
+      <div ref={panelRef} className={`${styles.content} ${styles.worldPanel}`} id="placard-content" hidden={!panelOpen} data-village-activity-panel={panelOpen || undefined}>
         {view === "hub" ? <header className={styles.exitHeader}><Link href="/arene"><ArrowLeft size={18} aria-hidden="true" /> Retour à l’Arène</Link><span>{currentTitle}</span></header> : <header className={styles.sectionHeader}>
           <button type="button" data-placard-back={returnView} aria-label={returnLabel.accessibleLabel} onClick={returnToParent}><ArrowLeft size={18} aria-hidden="true" />{returnLabel.label}</button>
           <KqPrintedArt kind={VIEW_ART[view]} className={printedArt.sectionMark} />
@@ -509,11 +504,10 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
         </header>}
         {view === "hub" ? <ArenaJourneyEntry /> : null}
         {view === "hub" ? <KqQuarterWorkHelp availability={workAvailability} /> : view !== "school" ? <KqPlayerWorkStatus view={view} onOpenPersonal={() => openView("staff")} onAvailabilityChange={setWorkAvailability} /> : null}
-        {!is3d ? guide : null}
         <div className={styles.viewStage} key={view} data-placard-stage={view}>
         {view === "hub" ? (
-          <KqPlacardLobby onOpen={openView} onOpenCollection={() => openCollection()} highlightedBuilding={highlightedBuilding} workAvailability={workAvailability} showMap={!is3d}
-            teamPanel={!is3d || panelOpen ? <KqQuarterTeamAccess onAvailabilityChange={setWorkAvailability} /> : undefined}>
+          <KqPlacardLobby onOpen={openView} workAvailability={workAvailability}
+            teamPanel={panelOpen ? <KqQuarterTeamAccess onAvailabilityChange={setWorkAvailability} /> : undefined}>
             <KqPinnedMission onChoose={() => openView("missions")} onContinue={code => { const target = getKqMissionTarget(code); if (target.view === "collection") { openCollection("buddies"); return; } openView(target.view, target.options); }} />
           </KqPlacardLobby>
         ) : view === "harvests" ? (
@@ -589,8 +583,8 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
   </>;
   return (
     <KqPlayerWorkAvailabilityContext.Provider value={workAvailability}>
-    <div ref={surfaceRef} className={`${retro.gameSurface} ${is3d ? styles.worldShell : styles.shell}`} data-placard-view={view} data-placard-world={worldMode} onClickCapture={event => {
-      if (!is3d || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    <div ref={surfaceRef} className={`${retro.gameSurface} ${styles.worldShell}`} data-placard-view={view} data-placard-world="3d" onClickCapture={event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const link = (event.target as Element).closest<HTMLAnchorElement>("a[href]");
       if (!link || link.getAttribute("href")?.startsWith("#") || link.hasAttribute("download") || link.target && link.target !== "_self") return;
       if (link.closest("[data-playable-lesson], [data-releve-native-culture], [data-releve-production], [data-arena-journey-ui]")) return;
@@ -598,15 +592,14 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen, initialGuid
       if (target.origin !== window.location.origin || target.pathname !== "/arene/placard") return;
       event.preventDefault(); event.stopPropagation(); openWorldHref(link.href);
     }}>
-      <a className={styles.skipLink} href="#placard-content" onClick={is3d && view === "hub" ? () => setOverviewOpen(true) : undefined}>Aller à l’activité</a>
-      {is3d ? <VillageWorld activeNav={activeNav}
+      <a className={styles.skipLink} href="#placard-content" onClick={view === "hub" ? () => setOverviewOpen(true) : undefined}>Aller à l’activité</a>
+      <VillageWorld activeNav={activeNav}
         onNavigate={key => { if (key === "hub" && view === "hub") setOverviewOpen(false); else navigate(key); }}
-        onNavigateHref={openWorldHref} activityOpen={panelOpen} tutorialActive={guideActive} onOpenOverview={() => setOverviewOpen(true)} onCloseActivity={closeWorldActivity}
-        onSwitchTo2D={() => navigateWithDraftGuard(() => setWorldMode("2d"))}>
+        onNavigateHref={openWorldHref} activityOpen={panelOpen} tutorialActive={guideActive} onOpenOverview={() => setOverviewOpen(true)} onCloseActivity={closeWorldActivity}>
         {content}
         {view === "hub" && !panelOpen ? <KqQuarterTeamAccess onAvailabilityChange={setWorkAvailability} /> : null}
-      </VillageWorld> : <><KqPlacardNavigation active={activeNav} onNavigate={navigate} onHighlight={setHighlightedBuilding} />{content}</>}
-      {is3d ? guide : null}
+      </VillageWorld>
+      {guide}
     </div>
     </KqPlayerWorkAvailabilityContext.Provider>
   );

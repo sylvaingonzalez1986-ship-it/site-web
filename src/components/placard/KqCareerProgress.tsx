@@ -1,5 +1,7 @@
 "use client";
 
+import { useContext } from "react";
+import { QuarterAppearanceEditorContext, QuarterCharacterContext } from "../contest/QuarterCharacterContext";
 import { ChevronDown, Sprout, UserRound } from "lucide-react";
 import { CHANVRIER_STRENGTHS, type ChanvrierProfile } from "@/lib/arena-chanvrier";
 import {
@@ -29,12 +31,15 @@ const milestones = CHANVRIER_CAREER_LEVEL_XP.map((xp, index) => {
 });
 const format = (value: number) => value.toLocaleString("fr-FR");
 
-export function KqCareerProgress({ career, profile, compact = false }: {
+export function KqCareerProgress({ career, profile: savedProfile, compact = false }: {
   career?: ChanvrierCareerSnapshot | null;
   profile?: ChanvrierProfile | null;
   compact?: boolean;
 }) {
   const { isTutorial } = useKqTutorialApi();
+  const character = useContext(QuarterCharacterContext);
+  const editor = useContext(QuarterAppearanceEditorContext);
+  const profile = isTutorial ? savedProfile : character ?? savedProfile;
   const strength = CHANVRIER_STRENGTHS.find(item => item.code === profile?.strength);
   const nextMilestone = career ? milestones.find(item => item.level > career.level && item.unlocks.length) : undefined;
   const pendingPractice = career ? equipment.map(item => ({ item, access: getChanvrierEquipmentAccess(career, item.code) }))
@@ -52,6 +57,7 @@ export function KqCareerProgress({ career, profile, compact = false }: {
         <div className={styles.identityText}>
           <small>{isTutorial ? "Parcours de démonstration" : profile?.gender === "female" ? "Ton métier de Chanvrière" : "Ton métier de Chanvrier"}</small>
           <strong className={styles.nickname}>{profile?.nickname ?? (isTutorial ? "Chanvrier d’essai" : "Ton chanvrier")}</strong>
+          {editor && character && !isTutorial && <button type="button" className={styles.editAppearance} onClick={editor.open}>Modifier mon personnage</button>}
           <div className={styles.identityMeta}>
             {career ? <span className={styles.level}>Niveau {career.level}<span> / {CHANVRIER_CAREER_LEVEL_XP.length}</span></span> : null}
             {strength ? <span className={styles.strength}>{strength.name}</span> : null}

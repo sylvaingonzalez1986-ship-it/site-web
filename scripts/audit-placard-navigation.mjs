@@ -25,7 +25,11 @@ import {auditQuarterTeam,createQuarterTeamFixture} from './audit-quarter-team-sc
 const root=process.cwd(), output=resolve(root,'output/placard-navigation'), port=Number(process.env.NAVIGATION_AUDIT_PORT??3248), origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview');
 const clarityOnly=process.argv.includes('--clarity-only');
 const quarterTeam=process.argv.includes('--quarter-team');
-const world3d=quarterTeam||process.argv.includes('--world-3d');
+const coastCorner=process.argv.includes('--coast-corner');
+const coast=coastCorner||process.argv.includes('--coast');
+const coastBaseline=coast&&process.argv.includes('--baseline');
+const coastReport=`coast${coastCorner?'-corner':''}-${coastBaseline?'before':'after'}.json`;
+const world3d=coast||quarterTeam||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
 const focusOnly=process.argv.includes('--focus-only');
 const cardsOnly=process.argv.includes('--cards-only');
@@ -81,7 +85,7 @@ async function previewApi(req,res,url){
    if(!['GET','POST'].includes(req.method))return json(405,{error:'Méthode non simulée'});
    if(req.method==='POST'&&req.headers['x-kq-school-owner']!==owner)return json(409,{error:'Le compte a changé.',code:'school_owner_changed'});
    let body='';for await(const chunk of req){body+=chunk;if(Buffer.byteLength(body)>8192)return json(413,{error:'Requête trop volumineuse'});}
-   tournamentFixturePromise??=createTournamentFixture({seedReplays:false});
+   tournamentFixturePromise??=createTournamentFixture({seedReplays:false,now:process.env.SCHOOL_PREVIEW_NOW || null});
    const fixture=await tournamentFixturePromise;
    const outcome=await fixture.request(req.method,req.method==='GET'?null:JSON.parse(body),owner);
    return json(outcome.status,outcome.body);
@@ -344,7 +348,10 @@ else try {
   assert.equal(await page.$eval('[data-map-building="warehouse"]',element=>element===document.activeElement),true,'Keyboard activation restores the original building after Escape');
   return {geometry,landmarks};
  };
- if(quarterTeam){
+ if(coast){
+   const {auditVillageCoast}=await import('./audit-village-coast.mjs');
+   await auditVillageCoast({page,visit,results,baseline:coastBaseline,output,corner:coastCorner});
+ }else if(quarterTeam){
    await auditQuarterTeam({page,visit,screenshot,assertNoOverflow,results,fixture:teamFixture});
  }else if(world3d){
    await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin});
@@ -802,9 +809,9 @@ else try {
  results.push({scenario:'buddies-shop-album',initialSection:'buddies'});
  }
  assert.deepEqual(errors,[]);assert(requests.every(request=>request.method==='GET'||schoolReal&&request.path.startsWith('/api/arena/placard/school')||quarterTeam&&request.path==='/api/arena/placard/staff'),'Only isolated fixtures receive mutations');
- await writeFile(resolve(output,quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests},null,2));
+ await writeFile(resolve(output,coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests},null,2));
  console.log(JSON.stringify({success:true,output,widths:results.filter(result=>result.width).map(result=>result.width),scenarios:results.filter(result=>result.scenario).length,errors:errors.length},null,2));
 }catch(error){
  if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,quarterTeam?'quarter-team-failure.png':world3d?'world-3d-failure.png':motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
- await writeFile(resolve(output,quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
+ await writeFile(resolve(output,coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
 }finally{if(!preview){await browser?.close();await server.close();}}

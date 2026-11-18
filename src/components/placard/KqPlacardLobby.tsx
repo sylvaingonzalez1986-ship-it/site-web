@@ -8,13 +8,12 @@ import type { KqPlacardResumeAttention } from "@/lib/kanab-quest-hub";
 import type { KqPlayerWorkAvailability } from "@/lib/kanab-quest-player-work";
 import { getKqHubFinanceAttention } from "@/lib/kanab-quest-hub-finance";
 import { getKqHubSalesAttention } from "@/lib/kanab-quest-hub-sales";
-import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { getKqStorageRefreshDelay, KQ_STORAGE_REFRESH_MS } from "@/lib/kanab-quest-storage-refresh";
 import { useKqTentSelection } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
-import { KqPlacardMap, type PlacardMapOpen } from "./KqPlacardMap";
+import type { PlacardMapOpen } from "./KqPlacardMap";
 import { KqFinancialSupport } from "./KqFinancialSupport";
 import styles from "./KqPlacardLobby.module.css";
 
@@ -29,14 +28,11 @@ type LobbySnapshot = {
   cashCents: number;
 };
 
-export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, workAvailability, children, teamPanel, showMap = true }: {
+export function KqPlacardLobby({ onOpen, workAvailability, children, teamPanel }: {
   onOpen: PlacardMapOpen;
-  onOpenCollection: () => void;
-  highlightedBuilding?: string | null;
   workAvailability?: KqPlayerWorkAvailability;
   children?: ReactNode;
   teamPanel?: ReactNode;
-  showMap?: boolean;
 }) {
   const api = useKqTutorialApi();
   const tentNumber = useKqTentSelection();
@@ -134,8 +130,6 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, 
   const resume = getKqPlacardResume(snapshot, storage, attention, workAvailability);
   const nextAction = resume.primary;
   const loading = !storageLoaded || (!snapshot && !error);
-  const recommended = resume.kind === "storage" ? "harvests" : nextAction?.destination === "shop" || nextAction?.destination === "storage" ? "workshop" : nextAction?.destination;
-  const tents = snapshot ? getKqProductionUnits(snapshot.productionUnits) : null;
   const openResumeView = onOpen;
   const retrySummary = async () => {
     if (refreshing) return;
@@ -152,7 +146,6 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, 
   };
 
   return <main className={styles.lobby} data-placard-lobby aria-label="Mon quartier" tabIndex={-1}>
-    <div className={styles.quarterLayout} data-summary-only={!showMap || undefined}>
     <div className={styles.dayBrief}>
     {teamPanel}
     {loading ? <div className={styles.loading} role="status">Vérification de tes activités et de ton stockage…</div> : <section className={styles.nextAction} aria-label={resume.tone === "attention" ? "À faire maintenant" : resume.tone === "waiting" ? "Attente automatique" : "Reprendre ma partie"} data-placard-next-action data-priority={resume.kind} data-tone={resume.tone}>
@@ -166,8 +159,6 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, 
       {resume.additionalFacts.length ? <details className={styles.moreActivities} data-resume-details><summary>Autres activités ({resume.additionalFacts.length})</summary><ul className={styles.resumeFacts}>{resume.additionalFacts.map(renderFact)}</ul></details> : null}
     </section>}
     {children}
-    </div>
-    {showMap ? <KqPlacardMap onOpen={onOpen} onOpenCollection={onOpenCollection} activeRun={snapshot?.activeRun} cashCents={snapshot?.cashCents ?? null} tents={tents} readyLotCount={snapshot?.readyLotCount} availableFlowerCount={snapshot?.availableFlowerCount} curingFlowerCount={snapshot?.curingFlowerCount} recommended={recommended} highlightedBuilding={highlightedBuilding} /> : null}
     </div>
     {!api.isTutorial ? <KqFinancialSupport /> : null}
   </main>;

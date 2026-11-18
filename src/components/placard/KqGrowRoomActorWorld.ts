@@ -4,6 +4,7 @@ import { createGrowRoomPaths, type GrowPoint } from "@/lib/kanab-quest-grow-room
 import type { WarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
 import { growRoomGestureDuration, type KqGrowRoomEvent } from "./KqGrowRoomModel";
 import { createGrowWorker } from "./kq-grow-worker-model";
+import { approachVillageValue, villageAngleDifference, villageApproachSpeed, villageWalkBlend } from "./world/village-character-motion";
 
 type Gesture = KqGrowRoomEvent["gesture"];
 type ActorState = "idle" | "walking" | "turning" | "blocked" | Gesture;
@@ -22,18 +23,19 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
   let pos: GrowPoint = { x: 0, z: 0 }, yaw = 0, distance = 0, targetYaw = 0, speed = 0;
   let route: GrowPoint[] = [], waypoint = 0, acting: Gesture | null = null, elapsed = 0;
   let workReceipt: KqGrowRoomEvent | null = null, deposited: KqGrowRoomEvent | null = null;
-  let state: ActorState = "idle", time: number | null = null, settling = 0;
+  let state: ActorState = "idle", time: number | null = null, walk = 0, poseTime = 0;
   let name = "", blockedUnderFurniture = false, deviceCode: string | undefined;
 
   function update(next: ActorInput) {
     const prev = input;
     const look = JSON.stringify(next.profile ?? null);
-    if (!worker || profileKey !== look) {
-      worker?.dispose();
-      worker = createGrowWorker(next.profile ?? undefined);
-      profileKey = look;
+    if (!worker) {
+      worker = createGrowWorker(next.profile ?? undefined, { groundAt: () => 0 });
       world.add(worker.object);
+    } else if (profileKey !== look) {
+      worker.updateAppearance(next.profile ?? undefined);
     }
+    profileKey = look;
     const key = prev?.layout === next.layout ? layoutKey : JSON.stringify([next.layout.width, next.layout.depth,
       ...next.layout.items.map(i => [i.id, i.name, i.kind, i.x, i.z, i.width, i.depth, i.rotation, i.deviceCode])]);
     const rebuilt = !paths || key !== layoutKey;
@@ -75,22 +77,25 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
         acting = prev && station?.kind === "culture" && next.stage !== null && next.stage < 5 ? "inspect" : null;
       }
       elapsed = 0;
-      settling = 0;
       speed = 0;
       state = next.targetId && !routeTo ? "blocked" : "idle";
-      if (!routeTo) worker.pose(distance, 0, null, 0, next.stage);
+      if (!routeTo) { walk = 0; worker.pose(distance, 0, null, 0, next.stage); }
     }
     if (!prev || prev.motion !== next.motion || prev.visible !== next.visible) time = null;
     worker.object.visible = !blockedUnderFurniture;
     worker.object.position.set(pos.x, 0, pos.z);
     worker.object.rotation.y = yaw;
-    if (!next.motion) worker.pose(distance, 0, null, 0, next.stage);
+    if (!next.motion) {
+      speed = 0;
+      walk = 0;
+      worker.pose(distance, 0, null, 0, next.stage);
+    }
     requestFrame();
   }
 
   function turn(to: number, dt: number) {
-    const diff = Math.atan2(Math.sin(to - yaw), Math.cos(to - yaw));
-    yaw += THREE.MathUtils.clamp(diff, -speeds.turn * dt, speeds.turn * dt);
+    const diff = villageAngleDifference(to, yaw);
+    yaw += approachVillageValue(0, diff, speeds.turn * dt);
     return Math.abs(diff) > speeds.turn * dt + .003;
   }
 
@@ -99,32 +104,29 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
       time = null;
       return false;
     }
-    const dt = time === null ? 0 : THREE.MathUtils.clamp((now - time) / 1000, 0, .09);
+    const dt = time === null ? 0 : THREE.MathUtils.clamp((now - time) / 1000, 0, .05);
     time = now;
+    poseTime += dt;
     while (waypoint < route.length && Math.hypot(route[waypoint].x - pos.x, route[waypoint].z - pos.z) < .001) waypoint++;
-    let more = true, activity: Gesture | null = null, phase = 0, walk = 0;
+    let more = true, activity: Gesture | null = null, phase = 0, step = 0;
     if (waypoint < route.length) {
       const next = route[waypoint], dx = next.x - pos.x, dz = next.z - pos.z, remaining = Math.hypot(dx, dz);
-      if (turn(Math.atan2(dx, dz), dt)) {
+      const heading = Math.atan2(dx, dz);
+      if (turn(heading, dt) && Math.abs(villageAngleDifference(heading, yaw)) > .22) {
         state = "turning";
-        speed = 0;
-      }
-      else {
+      } else {
         state = "walking";
-        speed = Math.min(speeds.walk, speed + dt * 3.7, Math.max(.18, Math.sqrt(remaining * 6)));
-        const step = Math.min(remaining, speed * dt);
+        const following = route[waypoint + 1];
+        const corner = following ? villageAngleDifference(Math.atan2(following.x - next.x, following.z - next.z), heading) : 0;
+        const target = !following || Math.abs(corner) > .22 ? Math.min(speeds.walk, Math.sqrt(remaining * 6)) : speeds.walk;
+        speed = villageApproachSpeed(speed, target, dt, 3.7, 3);
+        step = Math.min(remaining, speed * dt);
         pos.x += dx / remaining * step;
         pos.z += dz / remaining * step;
         distance += step;
-        walk = Math.min(1, speed / .45);
-        settling = walk;
       }
     } else if (turn(targetYaw, dt)) { state = "turning"; }
-    else if (settling > .01) {
-      settling = Math.max(0, settling - dt * 6);
-      walk = settling;
-      state = "idle";
-    }
+    else if (walk > 0) state = "idle";
     else if (acting) {
       state = acting;
       activity = acting;
@@ -140,9 +142,11 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
       state = "idle";
       more = false;
     }
+    if (dt > 0) speed = step / dt;
+    walk = villageWalkBlend(walk, speed, dt);
     worker.object.position.set(pos.x, 0, pos.z);
     worker.object.rotation.y = yaw;
-    worker.pose(distance, walk, activity, phase, input.stage, deviceCode);
+    worker.pose(distance, walk, activity, phase, input.stage, deviceCode, poseTime);
     if (!more) time = null;
     return more;
   }

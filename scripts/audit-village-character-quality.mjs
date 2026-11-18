@@ -2,22 +2,25 @@
 import assert from 'node:assert/strict';
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { cpus } from 'node:os';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const baseline = process.argv.includes('--baseline');
+const humanFinish = process.argv.includes('--human-finish');
 const studioOnly = process.argv.includes('--studio-only');
 const desktopProbe = process.argv.includes('--desktop-probe');
+const timingOnly = process.argv.includes('--timing-only');
 const observerMobile = process.argv.includes('--observer-mobile');
 const label = baseline ? 'before' : 'after';
 const origin = process.env.VILLAGE_CHARACTER_ORIGIN ?? 'http://127.0.0.1:3618';
-const outputRoot = resolve('output/village-character-quality');
+const outputRoot = resolve(process.env.VILLAGE_CHARACTER_AUDIT_DIR ?? 'output/village-character-quality');
 const output = observerMobile ? resolve(outputRoot, 'observer-mobile')
+  : timingOnly ? resolve(outputRoot, 'timing', label)
   : desktopProbe ? resolve(outputRoot, 'desktop-probe', label)
   : resolve(outputRoot, studioOnly ? (baseline ? 'review-draft-before' : 'review-draft') : label);
 const worldPath = '/src/components/placard/world/';
-const snapshotPath = '/output/village-character-quality/source-before/';
+const snapshotPath = '/' + relative(process.cwd(), outputRoot).replaceAll('\\', '/') + '/source-before/';
 const studioPath = '/character-audit-stage';
 const apiFixtures = {
   equipment: { activeRun: false, cashCents: 125000, readyLotCount: 0, availableFlowerCount: 0 },
@@ -28,8 +31,8 @@ const viewports = [{ width: 1440, height: 1000 }, { width: 844, height: 390 }, {
 const ready = 'canvas[data-village-ready="true"][data-motion-state="running"][data-life-npcs]';
 const report = {
   label, studioOnly, desktopProbe, observerMobile, origin, passed: false, requests: [], external: [], errors: [], performance: [], village: [], studio: [],
-  sources: baseline ? 'Saved world sources at output/village-character-quality/source-before, loaded through Vite at the original module paths.' : 'Current production world sources.',
-  limits: 'Desktop headless Chrome, DPR 1. Mobile sizes emulate the viewport and touch, not device hardware. The 5 s measurements check actual render submissions and CPU time, not GPU execution. API fixtures and all studio work are local.',
+  sources: baseline ? 'Saved world sources from ' + snapshotPath : 'Current production world sources.',
+  limits: 'Desktop headless Chrome at DPR 1. The landscape timing series uses touch emulation at DPR 2 with the production pixel budget. Captures use DPR 1. Frame intervals and CPU submission are measured; handset hardware and GPU execution time are not. Local API fixtures.',
 };
 
 function percentile(values, fraction) {
@@ -65,12 +68,12 @@ async function configurePage(page) {
 
 async function mountVillage(page, viewport) {
   const mobile = viewport.width < 1000;
-  await page.setViewport({ ...viewport, deviceScaleFactor: 1, isMobile: mobile, hasTouch: mobile, isLandscape: mobile && viewport.width > viewport.height });
+  await page.setViewport({ ...viewport, deviceScaleFactor: timingOnly && mobile ? 2 : 1, isMobile: mobile, hasTouch: mobile, isLandscape: mobile && viewport.width > viewport.height });
   await page.goto(origin, { waitUntil: 'networkidle0', timeout: 90000 });
   await page.waitForSelector(ready);
 }
 
-async function measureVillage(page, viewport) {
+async function measureVillage(page, viewport, view='carte') {
   const systemBefore = cpus();
   const measurement = await page.$eval(ready, canvas => new Promise(resolve => {
     const samples = [], start = performance.now();
@@ -115,10 +118,11 @@ async function measureVillage(page, viewport) {
     };
   });
   report.performance.push({
-    viewport, ...browser, elapsedMs, renderedFrames, animationFrames, sampledFrames: samples.length,
+    viewport, view, ...browser, elapsedMs, renderedFrames, animationFrames, sampledFrames: samples.length,
     systemCpuBusyFraction: totalTime > 0 ? (totalTime - idleTime) / totalTime : null,
     skippedSamples: values('skipped').reduce((sum, skipped) => sum + skipped, 0), actualFps: 1000 * renderedFrames / elapsedMs,
     medianFps: 1000 / percentile(values('interval'), 0.5), frameP95Ms: percentile(values('interval'), 0.95),
+    frameMaxMs: Math.max(...values('interval')), framesAbove50Ms: samples.filter(sample=>sample.interval>50).length,
     cpuMedianMs: percentile(values('cpu'), 0.5), cpuP95Ms: percentile(values('cpu'), 0.95),
     drawCalls: range('drawCalls'), triangles: range('triangles'), geometries: range('geometries'), textures: range('textures'),
   });
@@ -132,9 +136,94 @@ async function captureVillage(page, name) {
 }
 
 async function observeVillage(page, id) {
-  await page.click('summary');
-  await page.click(`[data-observe-life="${id}"]`);
+  const menu = 'details:has([data-observe-life])';
+  const activate = selector => page.viewport().hasTouch ? page.tap(selector) : page.click(selector);
+  await activate(menu + ' summary');
+  const option = `${menu}[open] [data-observe-life="${id}"]`;
+  await page.waitForSelector(option, { visible: true });
+  await activate(option);
   await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`);
+}
+
+/** Repeat a fixed performance inside the live village, at the unmodified map/observer zoom.
+ * The screenshot uses the production renderer, buildings and lights. The live routine resumes
+ * immediately afterward; the normal pointer/dialogue tests exercise the unfrozen actors. */
+async function captureVillagePose(page,id,name) {
+  const prior = baseline ? null : JSON.parse(await readFile(resolve(outputRoot,'before',name+'.json'),'utf8'));
+  const result=await page.$eval(ready,async(canvas,{id,worldPath,prior})=>{
+    const T=await import('/@id/__x00__character-audit-three');
+    const {scene,camera,gl}=T.fiberRoots.get(canvas).store.getState();
+    const source=await import(worldPath+'village-'+id+'.ts');
+    const factory={breton:'createVillageBreton',loic:'createVillageLoic',fisherman:'createVillageFisherman'}[id];
+    const rig=source[factory](), live=scene.getObjectByName('village-'+id);
+    const lens=camera.clone();
+    const lights=[];scene.traverse(o=>{if(o.isLight)lights.push(o);});
+    const lightValues=lights.map(l=>[l.color.getHex(),l.intensity]);
+    const fixed=prior??{position:live.position.toArray(),orientation:live.rotation.y,camera:camera.position.toArray(),
+      quaternion:camera.quaternion.toArray(),zoom:camera.zoom,lights:lightValues,phase:2.25};
+    try {
+      lens.position.fromArray(fixed.camera);lens.quaternion.fromArray(fixed.quaternion);lens.zoom=fixed.zoom;lens.updateProjectionMatrix();
+      rig.object.position.fromArray(fixed.position);rig.object.rotation.y=fixed.orientation;
+      const pose={activity:id==='loic'?'greeting':id==='fisherman'?'drinking':'playing',speed:0,stride:0,
+        lookYaw:id==='loic'?.38:0,lookPitch:0,emphasis:.8,attention:id==='loic'?1:0,fishingPhase:'sip',phaseProgress:.8};
+      for(let tick=0;tick<=fixed.phase*60;tick++)rig.update({time:tick/60,delta:1/60,reduced:false,quality:'high',visible:()=>true},pose);
+      fixed.lights.forEach(([hex,intensity],i)=>{lights[i].color.setHex(hex);lights[i].intensity=intensity;});
+      live.visible=false;live.parent.add(rig.object);gl.render(scene,lens);
+      return {fixed,png:canvas.toDataURL('image/png').split(',')[1]};
+    } finally {
+      rig.dispose();live.visible=true;
+      lightValues.forEach(([hex,intensity],i)=>{lights[i].color.setHex(hex);lights[i].intensity=intensity;});
+      gl.render(scene,camera);
+    }
+  },{id,worldPath,prior});
+  await writeFile(resolve(output,name+'.png'),Buffer.from(result.png,'base64'));
+  await writeFile(resolve(output,name+'.json'),JSON.stringify(result.fixed));
+}
+
+/** Compare the saved and current player at a marked spot on the actual path. */
+async function captureVillagePlayerPair(page) {
+  const fixed = JSON.parse(await readFile(resolve(outputRoot, 'before/quartier-loic.json'), 'utf8'));
+  const versions = await page.$eval(ready, async (canvas, { fixed, snapshotPath }) => {
+    const { fiberRoots } = await import('/@id/__x00__character-audit-three');
+    const { DEFAULT_CHANVRIER_APPEARANCE } = await import('/src/lib/arena-chanvrier.ts');
+    const profile = { gender: 'female', clothing: 'blue', skin: 'copper', appearance: {
+      ...DEFAULT_CHANVRIER_APPEARANCE, body: 'compact', top: 'mariniere', bottom: 'sailor-trousers', hair: 'braids',
+    } };
+    const modules = await Promise.all([
+      import(snapshotPath.replace('source-before/', 'player-before/') + 'kq-grow-worker-model.ts'),
+      import('/src/components/placard/kq-grow-worker-model.ts'),
+    ]);
+    const { scene, camera, gl } = fiberRoots.get(canvas).store.getState();
+    const guide = scene.getObjectByName('village-loic'), lens = camera.clone();
+    lens.position.fromArray(fixed.camera); lens.quaternion.fromArray(fixed.quaternion);
+    lens.zoom = fixed.zoom; lens.updateProjectionMatrix();
+    const lights = [];
+    scene.traverse(node => { if (node.isLight) lights.push(node); });
+    const liveLights = lights.map(l => [l.color.getHex(), l.intensity]);
+    const rendered = [];
+    try {
+      fixed.lights.forEach(([color, intensity], i) => { lights[i].color.setHex(color); lights[i].intensity = intensity; });
+      guide.visible = false;
+      for (const version of modules) {
+        const rig = version.createGrowWorker(profile, { tools: false });
+        try {
+          rig.object.position.fromArray(fixed.position); rig.object.rotation.y = fixed.orientation;
+          rig.object.traverse(node => { node.castShadow = false; });
+          rig.pose(.35, 1, null, 0, null, undefined, 1.25);
+          guide.parent.add(rig.object); gl.render(scene, lens);
+          rendered.push(canvas.toDataURL('image/png').split(',')[1]);
+        } finally { rig.dispose(); }
+      }
+    } finally {
+      guide.visible = true;
+      liveLights.forEach(([color, intensity], i) => { lights[i].color.setHex(color); lights[i].intensity = intensity; });
+      gl.render(scene, camera);
+    }
+    return rendered;
+  }, { fixed, snapshotPath });
+  for (const [i, version] of ['before', 'after'].entries()) {
+    await writeFile(resolve(outputRoot, version, 'quartier-joueur.png'), Buffer.from(versions[i], 'base64'));
+  }
 }
 
 async function captureMobileObservation(page) {
@@ -176,6 +265,23 @@ async function captureMobileObservation(page) {
     assert.ok(observation.screenHeight > 100, `${observation.id}: character is under 100 CSS pixels tall`);
     assert.ok(observation.points.every(point => point.hits === 0), `${observation.id}: building blocks a body sample`);
   }
+  const eyePosition = () => page.$eval(ready, async canvas => {
+    const {fiberRoots,Vector3}=await import('/@id/__x00__character-audit-three');
+    const {scene,camera}=fiberRoots.get(canvas).store.getState();
+    const eye=scene.getObjectByName('loic-eyes').getWorldPosition(new Vector3()).project(camera);
+    return {zoom:camera.zoom, x:eye.x, y:eye.y};
+  });
+  const fullLength=await eyePosition();
+  const zoomIn='button[aria-label="Agrandir le village"]';
+  for(let i=0;i<8;i++) await page.tap(zoomIn);
+  await page.waitForSelector(zoomIn+':disabled');
+  await page.waitForSelector('canvas[data-camera-transition="idle"]');
+  const portrait=await eyePosition();
+  assert.ok(portrait.zoom>2.3*fullLength.zoom && Math.abs(portrait.x)<.85 && Math.abs(portrait.y)<.85,'Eyes remain inside the manual close-up');
+  await page.screenshot({path:resolve(output,'portrait-loic-320.png')});
+  report.manualPortrait={fullLength,portrait};
+  await page.tap('button[aria-label="Recentrer la vue isométrique"]');
+  await page.waitForSelector('canvas[data-camera-transition="idle"][data-life-observe=""]');
 }
 
 async function configureStudio(page) {
@@ -212,6 +318,11 @@ async function configureStudio(page) {
     floor.receiveShadow = true;
     scene.add(floor);
     const factories = { breton: breton.createVillageBreton, fisherman: fisherman.createVillageFisherman, loic: loic.createVillageLoic };
+    let references;
+    window.loadPortraitReferences = async path => {
+      const [b, f, l] = await Promise.all(['breton','fisherman','loic'].map(id=>import(path+'village-'+id+'.ts')));
+      references = { breton:b.createVillageBreton, fisherman:f.createVillageFisherman, loic:l.createVillageLoic };
+    };
     const surface = { isWalkable: () => true, heightAt: () => 0 };
     const fps = 60;
     let actors, lastCamera;
@@ -242,9 +353,9 @@ async function configureStudio(page) {
       return { ...renderer.info.memory };
     };
 
-    window.characterAuditCapture = ({ actor, through, phases, yaw, vertical, targetY }) => {
+    window.characterAuditCapture = ({ actor, through, phases, yaw, vertical, targetY, neutral, reference }) => {
       releaseActors();
-      actors = factories[actor]?.() ?? animals.createVillageAnimals(surface);
+      actors = (reference ? references : factories)[actor]?.() ?? animals.createVillageAnimals(surface);
       const subject = factories[actor] ? actors.object : actors.object.getObjectByName(`village-animal-${actor}`);
       if (!subject) throw new Error(`No production rig for ${actor}`);
       if (factories[actor]) {
@@ -268,6 +379,8 @@ async function configureStudio(page) {
         for (const child of actors.object.children) child.visible = child === subject;
       }
       scene.add(actors.object);
+      sun.color.set(neutral ? 0xffffff : 0xfff0cc);rim.color.set(neutral ? 0xffffff : 0xc7e9ed);
+      sun.intensity=neutral ? 2.05 : 2.7;sun.position.set(...(neutral ? [-7,12,22] : [-12,28,18]));
       subject.traverse(node => { if (node.isMesh) node.castShadow = true; });
       const horizontal = vertical * innerWidth / innerHeight;
       const camera = new THREE.OrthographicCamera(-horizontal / 2, horizontal / 2, vertical / 2, -vertical / 2, 0.1, 50);
@@ -276,6 +389,62 @@ async function configureStudio(page) {
       lastCamera = camera;
       renderer.render(scene, camera);
       return { time: through / fps, state: { ...subject.userData }, resource: { ...renderer.info.render, ...renderer.info.memory } };
+    };
+
+    window.characterAuditWalkToGreeting = async beforePath => {
+      const [oldGuide, oldRoute, newRoute] = await Promise.all([import(beforePath+'village-loic.ts'),
+        import(beforePath+'village-npc-routine.ts'), import(worldPath+'village-npc-routine.ts')]);
+      releaseActors();
+      const routePoints = [];
+      for(let i=0;i<=6;i++)routePoints.push({x:0,z:i*.30});
+      for(let i=1;i<=9;i++)routePoints.push({x:i*.30,z:1.80});
+      const walkable = {isWalkable: (x,z) => (Math.abs(x)<.53 && z>-.55 && z<2.32) ||
+        (Math.abs(z-1.8)<.53 && x>-.54 && x<3.24), heightAt:()=>0};
+      const make = (factory,controller) => {
+        const rig=factory(walkable.heightAt);
+        const routine=controller('loic',walkable,[{samples:routePoints,width:.82}],[0,0,0],0);
+        scene.add(rig.object);
+        return {rig,routine,trail:[],distance:0,last:[0,0],afterRelease:0,maxSpeed:0};
+      };
+      const performers = [make(oldGuide.createVillageLoic,oldRoute.createVillageNpcRoutine),
+        make(loic.createVillageLoic,newRoute.createVillageNpcRoutine)];
+      const savedSize=renderer.getSize(new THREE.Vector2());
+      const w=328,h=270;
+      const result=document.createElement('canvas');result.width=w*2;result.height=h+34;
+      const paint=result.getContext('2d');
+      const camera=new THREE.OrthographicCamera(-2.06,2.06,1.70,-1.70,.1,30);
+      camera.position.set(5.30,2.62,7.99); camera.lookAt(.95,.90,1.19);
+      const frames=[];
+      renderer.setSize(w*2,h,false);renderer.setScissorTest(true);
+      sun.position.set(-12,28,18);sun.color.set(0xfff0cc);sun.intensity=2.7;
+      rim.color.set(0xc7e9ed);
+      try{
+        for(let tick=0;tick<30*12;tick++){
+          const time=tick/30, contact=time>=5.55 && time<8.45;
+          const frame={time,delta:1/30,reduced:false,quality:'high',detail:1,visible:()=>true};
+          for(const [i,p] of performers.entries()){
+            const state=p.routine.update(frame,contact?[1.80,1.53,3.20]:undefined,contact?{type:'tutorial',emphasis:.8}:undefined);
+            const moved=Math.hypot(state.position[0]-p.last[0],state.position[2]-p.last[1]);
+            p.distance+=moved;if(time>=8.45)p.afterRelease+=moved;p.maxSpeed=Math.max(p.maxSpeed,state.pose.speed);
+            p.last=[state.position[0],state.position[2]];
+            p.rig.object.position.fromArray(state.position);p.rig.object.rotation.y=state.yaw;
+            p.rig.update(frame,state.pose);
+            if(tick%15===0)p.trail.push([time,...p.last,state.yaw,state.pose.speed,state.pose.activity]);
+            if(tick%3)continue;
+            performers.forEach((q,j)=>{q.rig.object.visible=i===j;});
+            renderer.setViewport(i*w,0,w,h);renderer.setScissor(i*w,0,w,h);renderer.render(scene,camera);
+          }
+          if(tick%3)continue;
+          paint.fillStyle='#f6ebd7';paint.fillRect(0,0,w*2,h+34);
+          paint.drawImage(renderer.domElement,0,34);paint.fillStyle='#213d35';paint.font='16px system-ui';
+          paint.fillText('Avant',12,23);paint.fillText('Apr'+String.fromCharCode(232)+'s',w+12,23);
+          frames.push(result.toDataURL('image/png').split(',')[1]);
+        }
+      }finally{
+        performers.forEach(p=>p.rig.dispose());renderer.setScissorTest(false);
+        renderer.setSize(savedSize.x,savedSize.y,false);renderer.setViewport(0,0,savedSize.x,savedSize.y);
+      }
+      return {frames,stats:performers.map(({distance,afterRelease,maxSpeed,trail})=>({distance,afterRelease,maxSpeed,trail}))};
     };
 
     window.characterAuditAnimationCost = async snapshotPath => {
@@ -350,18 +519,24 @@ async function captureStudio(page) {
     ['loic', 'repos', rest, 1.5], ['loic', 'marche-1', walk, 1.15], ['loic', 'marche-2', walk, 1.64], ['loic', 'salut', greeting, 2.1],
     ...['wolf', 'fox', 'weasel'].flatMap(actor => [[actor, 'veille', rest, 0.6], [actor, 'marche', rest, actor === 'weasel' ? 4 : 2.6]]),
   ];
+  if(humanFinish){
+    studioCases.push(['loic','salut-face',greeting,2.1,{yaw:0,vertical:2.20,targetY:1.02,neutral:true}],
+      ['loic','salut-profil',greeting,2.1,{yaw:1.45,vertical:2.20,targetY:1.02,neutral:true}],
+      ['breton','souffle-trois-quarts',music,1.6,{yaw:-.64,vertical:1.35,targetY:1.32,neutral:true}],
+      ['fisherman','flexion-profil',fishing,4.6,{yaw:1.40,vertical:1.98,targetY:.91,neutral:true}]);
+  }
   const firstFramePerActor = new Map();
-  for (const [actor, name, phases, time] of studioCases) {
+  for (const [actor, name, phases, time, fixed] of studioCases) {
     const animal = ['wolf', 'fox', 'weasel'].includes(actor);
     const frame = {
       actor, phases, through: Math.round(time * 60), yaw: animal ? 0.83 : actor === 'fisherman' ? 0.57 : 0.34,
       vertical: animal ? actor === 'weasel' ? 1.04 : 1.7 : actor === 'fisherman' ? 2.35 : 2.5,
-      targetY: animal ? actor === 'weasel' ? 0.29 : 0.44 : actor === 'fisherman' ? 0.83 : 1.02,
+      targetY: animal ? actor === 'weasel' ? 0.29 : 0.44 : actor === 'fisherman' ? 0.83 : 1.02, ...fixed,
     };
     const pose = await page.evaluate(params => window.characterAuditCapture(params), frame);
     await page.screenshot({ path: resolve(output, `${actor}-${name}.png`) });
-    const { yaw, vertical, targetY } = frame;
-    report.studio.push({ actor, name, camera: { yaw, vertical, targetY }, ...pose });
+    const { yaw, vertical, targetY, neutral=false } = frame;
+    report.studio.push({ actor, name, camera: { yaw, vertical, targetY, ...(neutral?{neutral}: {}) }, ...pose });
     if (!firstFramePerActor.has(actor)) firstFramePerActor.set(actor, frame);
   }
   const bottleLift = name => report.studio.find(pose => pose.actor === 'fisherman' && pose.name === name).state.bottleLift;
@@ -384,6 +559,47 @@ async function captureStudio(page) {
   }
 }
 
+async function motionProof(page){
+  const {frames,stats}=await page.evaluate(path=>window.characterAuditWalkToGreeting(path),snapshotPath);
+  assert(stats.every(v=>v.distance>1 && v.maxSpeed>.15 && v.afterRelease>.17),'Both guides must move and resume their route');
+  assert(stats.every(v=>v.trail.some(t=>t.at(-1)==='greeting')),'The recorded route must include the interaction');
+  const {default:sharp}=await import('sharp');
+  await sharp(frames.map(frame=>Buffer.from(frame,'base64')),{join:{animated:true}}).gif({delay:100,loop:0,effort:3})
+    .toFile(resolve(outputRoot,'marche-virage-salut.gif'));
+  report.motionSequence={file:'marche-virage-salut.gif',seconds:12,fps:10,before:stats[0],after:stats[1]};
+}
+
+async function portraitSheet(page) {
+  const {default:sharp}=await import('sharp');
+  await page.evaluate(path=>window.loadPortraitReferences(path),snapshotPath);
+  const portraits=[
+    ['loic','Loïc',1.72,.23,'idle'],
+    ['breton','Sonneur',1.67,-.48,'playing'],
+    ['fisherman','Pêcheur',1.39,.55,'fishing'],
+  ];
+  const width=420, height=384, margin=10, gap=8, header=42, row=height+32;
+  const canvasWidth=2*margin+3*width+2*gap, canvasHeight=header+2*row;
+  const pieces=[], labels=[];
+  for(const [i,[actor,label,targetY,yaw,activity]] of portraits.entries()) {
+    const x=margin+i*(width+gap);
+    labels.push(`<text x="${x}" y="28">${label}</text>`);
+    for(const [j,version] of ['Avant','Après'].entries()) {
+      const y=header+j*row;
+      const phases=[{end:2,pose:{activity,fishingPhase:'wait'}}];
+      await page.evaluate(frame=>window.characterAuditCapture(frame),{
+        actor,phases,through:78,vertical:1.04,targetY,yaw,neutral:true,reference:j===0,
+      });
+      const input=await page.screenshot();
+      pieces.push({input:await sharp(input).resize(width,height).png().toBuffer(),top:y+24,left:x});
+      if(i===0) labels.push(`<text x="${x}" y="${y+18}" font-size="16">${version}</text>`);
+    }
+  }
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}"><g fill="#294641" font-family="Arial, sans-serif" font-size="21">${labels.join('')}</g></svg>`;
+  pieces.push({input:Buffer.from(svg),top:0,left:0});
+  await sharp({create:{width:canvasWidth,height:canvasHeight,channels:3,background:'#f4ecdc'}}).composite(pieces)
+    .webp({quality:92}).toFile(resolve(outputRoot,'portraits-habitants.webp'));
+}
+
 async function measureAnimationCost(page) {
   try {
     await access(resolve(outputRoot, 'source-before/village-breton.ts'));
@@ -397,6 +613,34 @@ async function measureAnimationCost(page) {
     workload: 'Three NPC rigs and all three animals. Same browser session, alternating order. Fixed 60 Hz timeline with culling disabled. No render, rig construction, disposal or screenshots in the timed interval.',
     framesPerSeries, warmupSeries, before: stats(times.before), after: stats(times.after),
   };
+}
+
+async function compareVillageCharacters() {
+  const { default: sharp } = await import('sharp');
+  const actors = [['joueur', 'Joueuse'], ['breton', 'Sonneur'], ['fisherman', 'Pêcheur'], ['loic', 'Loïc']];
+  const size = 308, gap = 8, margin = 65, top = 49;
+  const width = margin + actors.length * (size + gap), height = top + 2 * (size + gap);
+  const crops = [], labels = [];
+  const label = (x, y, name) => labels.push(`<text x="${x}" y="${y}" font-size="18" font-family="Arial,sans-serif" fill="#294641">${name}</text>`);
+  label(7, top + size / 2, 'Avant');
+  label(7, top + size * 1.5 + gap, 'Après');
+  for (const [column, [id, name]] of actors.entries()) {
+    const left = margin + column * (size + gap);
+    label(left, 32, name);
+    if (id !== 'joueur') {
+      const camera = async version => JSON.parse(await readFile(resolve(outputRoot, version, `quartier-${id}.json`), 'utf8'));
+      assert.deepEqual(await camera('before'), await camera('after'));
+    }
+    for (const [row, version] of ['before', 'after'].entries()) {
+      const shot = sharp(resolve(outputRoot, version, `quartier-${id}.png`));
+      const frame = await shot.metadata();
+      const area = { left: Math.round((frame.width - size) / 2), top: Math.round((frame.height - size) / 2), width: size, height: size };
+      crops.push({ input: await shot.extract(area).png().toBuffer(), left, top: top + row * (size + gap) });
+    }
+  }
+  const captions = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${labels.join('')}</svg>`);
+  await sharp({ create: { width, height, channels: 3, background: '#f4ecdc' } })
+    .composite([{ input: captions, left: 0, top: 0 }, ...crops]).png().toFile(resolve(outputRoot, 'quartier-avant-apres.png'));
 }
 
 async function compareCaptures(page) {
@@ -459,12 +703,21 @@ async function compareCaptures(page) {
 
 await mkdir(output, { recursive: true });
 const browser = await puppeteer.launch({
-  executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox'],
+  executablePath: Launcher.getInstallations()[0], headless: true, userDataDir: resolve(output,'chrome'), args: ['--no-sandbox'],
 });
 try {
   const page = await browser.newPage();
   await configurePage(page);
-  if (observerMobile) {
+  if (timingOnly) {
+    for (const viewport of viewports.slice(0, 2)) {
+      await mountVillage(page, viewport);
+      for (let repeat = 0; repeat < 3; repeat++) await measureVillage(page, viewport);
+      if(humanFinish) {
+        await observeVillage(page,'player');
+        await measureVillage(page,viewport,'observation-joueur');
+      }
+    }
+  } else if (observerMobile) {
     await captureMobileObservation(page);
   } else if (desktopProbe) {
     await page.bringToFront();
@@ -476,19 +729,26 @@ try {
       await mountVillage(page, viewport);
       await measureVillage(page, viewport);
       await captureVillage(page, `village-${viewport.width}x${viewport.height}`);
+      if(humanFinish && viewport.width>=844)await captureVillagePose(page,'loic','carte-loic-'+viewport.width);
       for (const id of viewport.width === 844 ? [] : ['breton', 'fisherman', 'loic']) {
         await observeVillage(page, id);
         await captureVillage(page, `observe-${id}-${viewport.width}x${viewport.height}`);
+        if (humanFinish && viewport.width === 1440) {
+          await captureVillagePose(page, id, 'quartier-' + id);
+          if (!baseline && id === 'loic') await captureVillagePlayerPair(page);
+        }
       }
     }
   }
-  if (!observerMobile && !desktopProbe && !process.argv.includes('--village-only')) {
+  if (!timingOnly && !observerMobile && !desktopProbe && !process.argv.includes('--village-only')) {
     await page.setViewport({ width: 700, height: 640, deviceScaleFactor: 1 });
     await page.goto(`${origin}${studioPath}`, { waitUntil: 'networkidle0' });
     await configureStudio(page);
     await captureStudio(page);
     if (!baseline && !studioOnly) await measureAnimationCost(page);
+    if (humanFinish && !baseline) { await portraitSheet(page); await motionProof(page); }
     if (!baseline) await compareCaptures(page);
+    if (humanFinish && !baseline && !studioOnly) await compareVillageCharacters();
   }
   assert.deepEqual(report.errors, []);
   assert.deepEqual(report.external, []);

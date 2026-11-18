@@ -1,69 +1,39 @@
-"use client";
+﻿"use client";
 import { useEffect, useRef, useState } from "react";
-import { renderChanvrierHead } from "./chanvrier-head-renderer";
-import { renderChanvrierBody } from "./chanvrier-body-renderer";
-import { CHANVRIER_FRAME as FRAME } from "./chanvrier-composition";
-import { CHANVRIER_APPEARANCE_OPTIONS as OPTIONS, getChanvrierAppearance, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { CHANVRIER_APPEARANCE_OPTIONS as options, getChanvrierAppearance, type ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 
-type Profile = Pick<ChanvrierProfile, "gender" | "clothing" | "skin" | "appearance">;
-const accessories = new Map<string, Promise<HTMLImageElement>>();
-function loadAccessory(name: string) {
-  const cached = accessories.get(name);
-  if (cached) return cached;
-  const promise = new Promise<HTMLImageElement>((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = () => { accessories.delete(name); reject(new Error("Accessoire indisponible.")); };
-    image.src = `/contest/avatars/chanvrier-v6/accessory-${name}.webp`;
-  });
-  accessories.set(name, promise);
-  return promise;
-}
-
-/** Head and clothing share a fixed drawing frame, including every ankle and hem. */
-export function ChanvrierAvatar({ profile, className, view = "full" }: { profile: Profile; className?: string; view?: "full" | "portrait" }) {
+export function ChanvrierAvatar({ profile, className, view = "full" }: { profile: ChanvrierAvatarProfile; className?: string; view?: "full" | "portrait" }) {
   const canvas = useRef<HTMLCanvasElement>(null);
-  const [rendered, setRendered] = useState("");
-  const [failedSignature, setFailedSignature] = useState("");
-  const signature = JSON.stringify([profile.gender, profile.clothing, profile.skin, profile.appearance, view]);
-  const failed = failedSignature === signature;
+  const [result, setResult] = useState({ key: "", ok: false });
+  const appearance = getChanvrierAppearance(profile);
+  const signature = JSON.stringify({ gender: profile.gender, skin: profile.skin, clothing: profile.clothing, appearance });
+  const key = view + signature;
   useEffect(() => {
-    let cancelled = false;
-    const accessory = getChanvrierAppearance(profile).accessory;
-    const ornament = accessory === "earrings" || accessory === "scarf" ? loadAccessory(accessory) : Promise.resolve(null);
-    void Promise.all([renderChanvrierBody(profile), renderChanvrierHead(profile), ornament]).then(([body, head, ornament]) => {
-      if (cancelled || !canvas.current) return;
-      const frame = document.createElement("canvas");
-      frame.width = FRAME.width; frame.height = FRAME.height;
-      const context = frame.getContext("2d")!;
-      context.imageSmoothingQuality = "high";
-      context.save();
-      // Scale the whole body around the collar, keeping every clothing joint intact.
-      const bodyScale = FRAME.bodyScale[profile.gender];
-      context.translate(FRAME.collar.x, FRAME.collar.y);
-      context.scale(bodyScale, bodyScale);
-      context.translate(-FRAME.collar.x, -FRAME.collar.y);
-      context.drawImage(body, 0, 0);
-      if (ornament && accessory === "scarf") {
-        const { x, y, width } = FRAME.scarf;
-        context.drawImage(ornament, x, y, width, width * ornament.height / ornament.width);
-      }
-      context.restore();
-      context.drawImage(head, FRAME.head.x, FRAME.head.y, FRAME.head.size, FRAME.head.size);
-      if (ornament && accessory === "earrings") {
-        const { x, y, width } = FRAME.earring;
-        context.drawImage(ornament, x, y, width, width * ornament.height / ornament.width);
-      }
-      const destination = canvas.current.getContext("2d")!;
-      destination.clearRect(0, 0, FRAME.width, view === "portrait" ? FRAME.width : FRAME.height);
-      destination.imageSmoothingQuality = "high";
-      // Leave room around the registered v6 braids and the leftmost ponytail.
-      if (view === "portrait") destination.drawImage(frame, FRAME.portrait.x, FRAME.portrait.y, FRAME.portrait.size, FRAME.portrait.size, 0, 0, FRAME.width, FRAME.width);
-      else destination.drawImage(frame, 0, 0);
-      setFailedSignature(""); setRendered(signature);
-    }).catch(() => { if (!cancelled) setFailedSignature(signature); });
-    return () => { cancelled = true; };
-  }, [profile, signature, view]);
-  const a = getChanvrierAppearance(profile);
-  return <canvas ref={canvas} width={FRAME.width} height={view === "portrait" ? FRAME.width : FRAME.height} className={className} style={{ opacity: !failed && rendered === signature ? 1 : 0 }} role="img" aria-busy={!failed && rendered !== signature} data-avatar-state={failed ? "error" : rendered === signature ? "ready" : "loading"} aria-label={failed ? "Le portrait est indisponible. Réouvre le profil pour réessayer." : `Ton personnage dans le style cartoon de Loïc : ${OPTIONS.hair.find(c => c.code === a.hair)?.name}, visage ${OPTIONS.face.find(c => c.code === a.face)?.name}, yeux ${OPTIONS.eyes.find(c => c.code === a.eyes)?.name}, nez ${OPTIONS.nose.find(c => c.code === a.nose)?.name}, ${OPTIONS.top.find(c => c.code === a.top)?.name}`} />;
+    const node = canvas.current;
+    if (!node) return;
+    const controller = new AbortController();
+    const paint = async () => {
+      try {
+        const { renderChanvrierSnapshot } = await import("./chanvrier-snapshot");
+        controller.signal.throwIfAborted();
+        const width = Math.min(448, Math.max(72, Math.ceil(node.getBoundingClientRect().width * Math.min(devicePixelRatio, 2) / 32) * 32));
+        const stamp = await renderChanvrierSnapshot({ profile: JSON.parse(signature), view, width }, controller.signal);
+        if (controller.signal.aborted) return;
+        node.width = stamp.width;
+        node.height = stamp.height;
+        node.getContext("2d")!.drawImage(stamp, 0, 0);
+        setResult({ key, ok: true });
+      } catch { if (!controller.signal.aborted) setResult({ key, ok: false }); }
+    };
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); void paint(); }
+    }, { rootMargin: "60px" });
+    observer.observe(node);
+    return () => { observer.disconnect(); controller.abort(); };
+  }, [key, signature, view]);
+  const state = result.key === key ? result.ok ? "ready" : "error" : "loading";
+  const name = (items: readonly { code: string; name: string }[], id: string) => items.find(item => item.code === id)?.name;
+  return <canvas ref={canvas} className={className} width={160} height={view === "full" ? 237 : 160}
+    role="img" aria-busy={state === "loading"} data-avatar-state={state} style={{ opacity: state === "ready" ? 1 : 0 }}
+    aria-label={`Ton personnage dans le style cartoon de Loïc : ${name(options.hair, appearance.hair)}, visage ${name(options.face, appearance.face)}, ${name(options.top, appearance.top)}, ${name(options.headwear, appearance.headwear)}`} />;
 }

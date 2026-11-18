@@ -111,14 +111,14 @@
 .connection > div:first-child > div > strong { display: none; }
 .connection small { font-size: .74rem; }
 :global([data-village-prototype]) > .host {
-  position: absolute; z-index: 3; top: 82px; right: 16px;
-  width: clamp(290px, 24vw, 352px); max-height: calc(100dvh - 98px);
+  position: absolute; z-index: 3; top: var(--hud-top); right: var(--hud-right);
+  width: clamp(290px, 24vw, 352px); max-height: calc(100% - var(--hud-top) - max(12px, env(safe-area-inset-bottom)));
 }
 :global([data-village-prototype]) > .host:not([data-team-expanded]) { width: auto; }
 .desk .paper { display: flex; flex-direction: column; max-height: clamp(300px, 58dvh, 640px); }
 .desk .header { flex-shrink: 0; }
 .desk .register { overflow: auto; padding: 0 4px 4px; overscroll-behavior: contain; scrollbar-width: thin; }
-:global([data-village-prototype]) > .host .desk .paper { max-height: calc(100dvh - 98px); }
+:global([data-village-prototype]) > .host .desk .paper { max-height: calc(100dvh - var(--hud-top) - max(12px, env(safe-area-inset-bottom))); }
 .sheet { position: fixed; inset: auto 0 0; width: min(100%, 560px); max-width: 100vw; max-height: 93dvh; margin: 0 auto; padding: 0; }
 .sheet::backdrop { background: #182d27a8; }
 .sheet .paper { display: flex; flex-direction: column; max-height: calc(93dvh - 4px); padding: 12px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); border: 0; }
@@ -126,6 +126,7 @@
 .sheet .register { overflow-y: auto; overscroll-behavior: contain; padding-inline: 4px; scrollbar-width: thin; }
 @media (max-width: 999px) {
   .host { position: fixed; z-index: 90; right: max(10px, env(safe-area-inset-right)); bottom: calc(77px + env(safe-area-inset-bottom)); }
+  :global([data-village-activity-panel]) .host { position: static; }
   :global([data-village-prototype]) > .host {
     position: fixed; right: auto; top: auto; bottom: max(10px, env(safe-area-inset-bottom)); left: 50%;
     width: max-content; translate: -50% 0;
@@ -134,4 +135,7 @@
   .summary { font-size: .87rem; }
   .budget li { font-size: .77rem; }
   .actions button, .mode button { min-height: 46px; }
+}
+@media (max-width: 999px) and (orientation: landscape) {
+  :global([data-village-prototype]) > .host { left: auto; right: var(--hud-right); translate: none; }
 }

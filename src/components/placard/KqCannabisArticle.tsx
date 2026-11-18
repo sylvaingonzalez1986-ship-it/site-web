@@ -6,6 +6,7 @@ import type { CannabisReferenceArticle, CannabisReferenceTopic, CannabisTopicId 
 import type { HistorySource } from "@/lib/kanab-quest-school-history-types";
 import styles from "./KqCannabisArticle.module.css";
 import { KqTerpeneArticleCard } from './KqTerpeneCards';
+import { KqPrintedArt } from './KqPrintedArt';
 import { cannabisArticleReferences } from '@/lib/kanab-quest-cannabis-citations';
 
 export type KqCannabisArticleProps = {
@@ -41,7 +42,7 @@ export function KqCannabisArticle({ article, sources, relatedArticles, topic, on
       const aliasHeading = target?.hasAttribute('data-reference-anchor') ? target.closest('section')?.querySelector<HTMLElement>('h3') : undefined;
       const focusTarget = target?.querySelector<HTMLElement>('h3') || aliasHeading || target;
       if (focusTarget) { focusTarget.tabIndex = -1; focusTarget.focus({ preventScroll: true }); }
-      target?.scrollIntoView({ block: "start", behavior: "instant" });
+      (target === title ? articleElement : target)?.scrollIntoView({ block: "start", behavior: "instant" });
     };
     const frame = requestAnimationFrame(focusPassage);
     window.addEventListener('hashchange', focusPassage);
@@ -79,7 +80,9 @@ export function KqCannabisArticle({ article, sources, relatedArticles, topic, on
 
   return <article className={styles.article} data-cannabis-article={article.id}>
     <nav className={styles.breadcrumb} aria-label="Fil d’Ariane">
-      <a href="?view=school&section=learn" onClick={event => { if (onHome && plainActivation(event)) { event.preventDefault(); onHome(); } }}>Encyclopédie</a>
+      <a className={styles.libraryLink} href="?view=school&section=learn" onClick={event => { if (onHome && plainActivation(event)) { event.preventDefault(); onHome(); } }}>
+        <KqPrintedArt kind="school-library" className={styles.libraryMark} sizes="72px"/>Encyclopédie
+      </a>
       <span aria-hidden>›</span>
       <a href={`?view=school&section=learn&passage=library-theme-${article.topicId}`} onClick={event => { if (plainActivation(event)) { event.preventDefault(); onOpenTopic(article.topicId); } }}>{topic?.title || topicNames[article.topicId]}</a>
     </nav>

@@ -2,20 +2,24 @@
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { MAP_ENTRANCES, MAP_SCENERY } from "../KqPlacardMap.scene";
 import { paintingToGround, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition } from "./village-layout";
+import { createVillageMainland } from "./village-mainland";
+import { VILLAGE_SHEEP_PASTURE } from "./village-sheep-pasture";
+import { projectVillageSurface, villageGraniteBlock, villageMaterial, type VillageSurface } from "./village-surfaces";
 
 type Point = readonly [number, number];
 type XYZ = readonly [number, number, number];
-type Layer = "ground" | "details" | "water";
+type Layer = "ground" | "track" | "rocks" | "details";
+type Pigment = string | ((color: THREE.Color, x: number, y: number, z: number) => void);
+const surfaces: Partial<Record<Layer, VillageSurface>> = { ground: "turf", track: "silt", rocks: "granite" };
 const C = {
-  turf: "#9fb879", grass: "#6f985a", grassLight: "#bdd391", grassDark: "#467956",
-  leaf: "#287158", leafLight: "#478b63", leafDark: "#155344", leafTip: "#70a26b",
-  sand: "#eddbac", path: "#e7d5aa", stone: "#b3b29a", stoneLight: "#d8ceb1", stoneDark: "#858e80",
+  turf: "#a6bc7c", grass: "#759653", grassLight: "#c4d28c", grassDark: "#4b7749",
+  leaf: "#397856", leafLight: "#62985e", leafDark: "#265d49", leafTip: "#82aa68",
+  sand: "#eddbac", path: "#dec99e", stone: "#a6a895", stoneLight: "#c8c1a6", stoneDark: "#858e80",
   wood: "#9c7145", woodLight: "#c69658", woodDark: "#634d38", ink: "#294942",
   cream: "#fff0ca", teal: "#087f7c", gold: "#edc153", blue: "#82bfcf", flower: "#b5d9dc",
-  water: "#179b9b", waterDeep: "#128a90", waterLight: "#61c5b5", foam: "#d6edcf",
 } as const;
 
-/** Vertex-colour batches keep the richer village to three static draw calls. */
+/** The static landscape shares one batch per surface. */
 class LandscapeParts {
   private batches = new Map<Layer, THREE.BufferGeometry[]>();
   private matrix = new THREE.Matrix4();
@@ -25,18 +29,22 @@ class LandscapeParts {
   private color = new THREE.Color();
   count = 0;
 
-  add(geometry: THREE.BufferGeometry, color: string, at: XYZ, scale: XYZ = [1, 1, 1], rotation: XYZ = [0, 0, 0], layer: Layer = "details") {
-    // Animated water is owned by village-marine, with one shared wave clock.
-    if (layer === "water") { geometry.dispose(); return; }
+  add(geometry: THREE.BufferGeometry, color: Pigment, at: XYZ, scale: XYZ = [1, 1, 1], rotation: XYZ = [0, 0, 0], layer: Layer = "details") {
     const source = geometry.index ? geometry.toNonIndexed() : geometry;
     if (source !== geometry) geometry.dispose();
     source.deleteAttribute("uv");
     this.matrix.compose(this.position.set(...at), this.rotation.setFromEuler(new THREE.Euler(...rotation)), this.scale.set(...scale));
     source.applyMatrix4(this.matrix);
-    this.color.set(color);
-    const colors = new Float32Array(source.getAttribute("position").count * 3);
-    for (let i = 0; i < colors.length; i += 3) this.color.toArray(colors, i);
-    source.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    if (!source.hasAttribute("color")) {
+      const positions = source.getAttribute("position");
+      const colors = new Float32Array(positions.count * 3);
+      if (typeof color === "string") this.color.set(color);
+      for (let i = 0; i < positions.count; i++) {
+        if (typeof color === "function") color(this.color, positions.getX(i), positions.getY(i), positions.getZ(i));
+        this.color.toArray(colors, i * 3);
+      }
+      source.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    }
     const batch = this.batches.get(layer) ?? [];
     batch.push(source); this.batches.set(layer, batch); this.count++;
   }
@@ -51,6 +59,24 @@ class LandscapeParts {
 
   stone(color: string, at: XYZ, radius: number, scale: XYZ = [1, 0.6, 1], angle = 0, layer: Layer = "details") {
     this.add(new THREE.IcosahedronGeometry(radius, 1), color, at, scale, [0.13, angle, 0.08], layer);
+  }
+
+  granite(color: string, at: XYZ, size: XYZ, angle: number, layer: Layer = "rocks") {
+    this.add(villageGraniteBlock(angle), color, at, size, [0.1, angle, 0.14], layer);
+  }
+
+  foliage(color: string, at: XYZ, size: XYZ, salt: number) {
+    const geometry = new THREE.IcosahedronGeometry(1, 1);
+    const positions = geometry.getAttribute("position"), shade = new THREE.Color(color), low = new THREE.Color(C.leafDark);
+    const rgb = new Float32Array(positions.count * 3);
+    for (let i = 0; i < positions.count; i++) {
+      const x = positions.getX(i), y = positions.getY(i), z = positions.getZ(i);
+      const cut = 1 + Math.sin(x * 5.6 + y * 8.6 + z * 4.4 + salt) * 0.11;
+      positions.setXYZ(i, x * cut, y * cut, z * cut);
+      this.color.copy(shade).lerp(low, (1 - y) * 0.21).multiplyScalar(0.96 + cut * 0.055).toArray(rgb, i * 3);
+    }
+    geometry.setAttribute("color", new THREE.BufferAttribute(rgb, 3));
+    this.add(geometry, color, at, size, [0.04, salt * 0.32, -0.12]);
   }
 
   beam(color: string, start: XYZ, end: XYZ, radius: number, round = true) {
@@ -74,13 +100,15 @@ class LandscapeParts {
       if (!geometry) throw new Error("Unable to merge village terrain " + layer);
       geometry.computeBoundingSphere();
       triangles += geometry.getAttribute("position").count / 3;
-      const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: layer === "water" ? 0.55 : 0.96 }));
+      const surface = surfaces[layer];
+      if (surface) projectVillageSurface(geometry, surface);
+      const mesh = new THREE.Mesh(geometry, villageMaterial({ vertexColors: true, roughness: 0.96 }, surface));
       mesh.name = "landscape-" + layer;
-      mesh.castShadow = layer === "details";
+      mesh.castShadow = layer === "details" || layer === "rocks";
       mesh.receiveShadow = true;
       // Decoration cannot mask the buildings/mailbox. Ground keeps the existing
       // raycast and click-to-dismiss behaviour.
-      if (layer !== "ground") mesh.raycast = () => {};
+      if (layer !== "ground" && layer !== "track") mesh.raycast = () => {};
       group.add(mesh);
     }
     group.userData.detailCount = this.count;
@@ -93,6 +121,7 @@ const COAST: readonly Point[] = [[-40, 195], [70, 70], [260, -5], [500, 5], [700
 const RIVER: readonly Point[] = [[1580, 675], [1495, 712], [1380, 775], [1250, 840], [1120, 920], [940, 1015], [780, 1100], [715, 1200], [1030, 1200], [1100, 1090], [1250, 1010], [1390, 920], [1490, 840], [1600, 790]];
 export const VILLAGE_COAST = COAST;
 export const VILLAGE_RIVER = RIVER;
+export const VILLAGE_SECOND_BANK: readonly Point[] = [[1450, 870], [1530, 806], [1600, 800], [1670, 1050], [1480, 1180], [1030, 1200], [1100, 1100], [1270, 1015]];
 
 function inside(point: Point, polygon: readonly Point[]) {
   let result = false;
@@ -113,6 +142,8 @@ export function createVillageTerrain() {
   const places = VILLAGE_PLACES.map(place => ({ ...place, position: villagePlacePosition(place) }));
   const animatedPlants = MAP_SCENERY.filter(piece => piece.id === "daisies" || piece.id === "hydrangea").map(piece => ground(piece.anchor));
   const paths: { samples: THREE.Vector3[]; width: number }[] = [];
+  const groundTiles = new Map<string, number[][]>();
+  const groundAprons: { x: number; z: number; radius: number }[] = [];
   const navigationObstacles: { x: number; z: number; radius: number }[] = [];
 
   function unoccupied(x: number, z: number, margin = 0) {
@@ -130,6 +161,8 @@ export function createVillageTerrain() {
   }
   function free(point: Point, margin = 0) {
     const [x, z] = paintingToGround(...point);
+    const pasture = VILLAGE_SHEEP_PASTURE;
+    if (x > pasture.minX - margin && x < pasture.maxX + margin && z > pasture.minZ - margin && z < pasture.maxZ + margin) return false;
     return inside(point, COAST) && !inside(point, RIVER) && unoccupied(x, z, margin) && awayFromPaths(x, z, margin);
   }
 
@@ -139,20 +172,65 @@ export function createVillageTerrain() {
     const geometry = thickness ? new THREE.ExtrudeGeometry(shape, { depth: thickness, bevelEnabled: false, curveSegments: 2 }) : new THREE.ShapeGeometry(shape);
     p.add(geometry, color, [0, height, 0], [1, 1, 1], [-Math.PI / 2, 0, 0], layer);
   }
-  function ribbon(samples: THREE.Vector3[], width: number, color: string, height: number, layer: Layer, irregular = 0) {
+  function indexGround(vertices: readonly number[], floor: number) {
+    for (let i = 0; i < vertices.length; i += 9) {
+      const [ax, , az, bx, , bz, cx, , cz] = vertices.slice(i, i + 9);
+      const triangle = [ax, az, bx, bz, cx, cz, floor];
+      for (let x = Math.floor(Math.min(ax, bx, cx)); x <= Math.floor(Math.max(ax, bx, cx)); x++) {
+        for (let z = Math.floor(Math.min(az, bz, cz)); z <= Math.floor(Math.max(az, bz, cz)); z++) {
+          const key = `${x},${z}`, tile = groundTiles.get(key);
+          if (tile) tile.push(triangle);
+          else groundTiles.set(key, [triangle]);
+        }
+      }
+    }
+  }
+  function groundHeightAt(x: number, z: number) {
+    let height = 0.006;
+    for (const [ax, az, bx, bz, cx, cz, floor] of groundTiles.get(`${Math.floor(x)},${Math.floor(z)}`) ?? []) {
+      if (floor <= height) continue;
+      const ab = (bx - ax) * (z - az) - (bz - az) * (x - ax);
+      const bc = (cx - bx) * (z - bz) - (cz - bz) * (x - bx);
+      const ca = (ax - cx) * (z - cz) - (az - cz) * (x - cx);
+      if ((ab >= 0 && bc >= 0 && ca >= 0) || (ab <= 0 && bc <= 0 && ca <= 0)) height = floor;
+    }
+    for (const apron of groundAprons) {
+      if ((x - apron.x) ** 2 + ((z - apron.z) / 0.62) ** 2 < apron.radius ** 2) height = Math.max(height, 0.0585);
+    }
+    return height;
+  }
+  function ribbon(samples: THREE.Vector3[], width: number, color: string, height: number, layer: Layer, irregular = 0, floor?: number, edge?: string) {
+    if (samples.length < 2) return;
     const vertices: number[] = [];
+    const pigments: number[] = [];
+    const face = new THREE.Color(color), rim = new THREE.Color(edge ?? color), tint = new THREE.Color();
+    const lanes = edge ? [-1, -0.69, 0, 0.69, 1] : [-1, 1];
     const offset = (index: number) => {
       const before = samples[Math.max(0, index - 1)], after = samples[Math.min(samples.length - 1, index + 1)];
       const length = Math.max(0.0001, Math.hypot(after.x - before.x, after.z - before.z));
-      const w = width / 2 * (1 + Math.sin(index * 1.7) * irregular);
+      const w = width / 2 * (1 + (Math.sin(index * 0.29) * 0.75 + Math.sin(index * 1.45) * 0.25) * irregular);
       return [(after.z - before.z) / length * w, -(after.x - before.x) / length * w];
     };
+    const row = samples.map((at, index) => {
+      const [dx, dz] = offset(index);
+      return lanes.map(lane => [at.x + dx * lane, height, at.z + dz * lane]);
+    });
+    const vertex = (index: number, lane: number) => {
+      const [x, y, z] = row[index][lane];
+      vertices.push(x, y, z);
+      const fade = THREE.MathUtils.smoothstep(Math.abs(lanes[lane]), 0.56, 1);
+      tint.copy(face).lerp(rim, fade).multiplyScalar(0.96 + Math.sin(x * 1.68 + z * .85) * 0.034 + Math.cos(z * 1.43) * 0.024);
+      pigments.push(tint.r, tint.g, tint.b);
+    };
     for (let i = 0; i < samples.length - 1; i++) {
-      const a = samples[i], b = samples[i + 1], [ax, az] = offset(i), [bx, bz] = offset(i + 1);
-      vertices.push(a.x - ax, height, a.z - az, b.x + bx, height, b.z + bz, a.x + ax, height, a.z + az,
-        a.x - ax, height, a.z - az, b.x - bx, height, b.z - bz, b.x + bx, height, b.z + bz);
+      for (let lane = 0; lane < lanes.length - 1; lane++) {
+        vertex(i, lane); vertex(i + 1, lane + 1); vertex(i, lane + 1);
+        vertex(i, lane); vertex(i + 1, lane); vertex(i + 1, lane + 1);
+      }
     }
+    if (floor !== undefined) indexGround(vertices, floor);
     const geometry = new THREE.BufferGeometry(); geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3)); geometry.computeVertexNormals();
+    geometry.setAttribute("color", new THREE.Float32BufferAttribute(pigments, 3));
     p.add(geometry, color, [0, 0, 0], [1, 1, 1], [0, 0, 0], layer);
   }
   function curve(points: readonly Point[], step = 0.45) {
@@ -160,47 +238,69 @@ export function createVillageTerrain() {
     return line.getSpacedPoints(Math.max(8, Math.ceil(line.getLength() / step)));
   }
 
-  // Turf, sandstone undercut and tidal shelf retain the irregular island edge.
-  outline(COAST, "#aa976e", -0.8, 0.78);
+  // Exposed granite strata meet the same coastline as the walkable turf above.
   outline(COAST, C.turf, 0.006);
-  outline([[1450, 870], [1530, 806], [1600, 800], [1670, 1050], [1480, 1180], [1030, 1200], [1100, 1100], [1270, 1015]], C.turf, -0.6, 0.6);
-  outline(RIVER, C.waterDeep, 0.018, 0, "water");
-  const coastLine = curve([...COAST, COAST[0]], 0.55);
-  ribbon(coastLine, 0.45, C.sand, -0.025, "ground", 0.4);
-  for (let i = 0; i < coastLine.length; i += 2) {
-    const at = coastLine[i];
-    p.stone(i % 3 ? C.stone : C.stoneLight, [at.x, -0.21, at.z], 0.3 + random() * 0.28, [1.3, 0.8, 1], random() * 3);
-    if (i % 8 === 0) p.stone(C.grass, [at.x, 0.01, at.z], 0.45, [1.1, 0.18, 1]);
+  outline(VILLAGE_SECOND_BANK, C.turf, -0.6, 0.6);
+  const coastCurve = new THREE.CatmullRomCurve3(COAST.map(point => new THREE.Vector3(...ground(point))), true, "centripetal");
+  const coastLine = coastCurve.getPoints(160);
+  const landBoundary = coastLine.map(at => [at.x, at.z] as const);
+  const rockRows = coastLine.map((at, i) => {
+    const before = coastLine[(i + 159) % 160], after = coastLine[(i + 1) % 160];
+    const dx = after.x - before.x, dz = after.z - before.z, length = Math.hypot(dx, dz);
+    const cut = Math.sin(i * 0.39) * 0.19 + Math.sin(i * 1.38) * 0.06;
+    const point = (height: number, out: number): XYZ => [at.x + out * dz / length, height, at.z - out * dx / length];
+    return [point(0.004, 0), point(-0.105, 0.052 + cut * 0.18), point(-0.32 + cut * 0.34, 0.23 + cut), point(-0.62, 0.31 + cut)];
+  });
+  const cliffGeometry = new THREE.BufferGeometry(), cliffPositions: number[] = [];
+  for (let i = 0; i < rockRows.length - 1; i++) {
+    const a = rockRows[i], b = rockRows[i + 1];
+    for (let band = 0; band < a.length - 1; band++) cliffPositions.push(...a[band], ...b[band], ...a[band + 1], ...a[band + 1], ...b[band], ...b[band + 1]);
+  }
+  cliffGeometry.setAttribute("position", new THREE.Float32BufferAttribute(cliffPositions, 3));
+  cliffGeometry.computeVertexNormals();
+  const moss = new THREE.Color(C.grassDark), graniteHighlight = new THREE.Color(C.stoneLight);
+  p.add(cliffGeometry, (color, x, y, z) => {
+    color.set(y < -0.27 ? "#777e71" : "#999782");
+    color.lerp(y > -0.12 ? moss : graniteHighlight, 0.26 + Math.sin(x * 2.7 + z) * 0.16);
+  }, [0, 0, 0], [1, 1, 1], [0, 0, 0], "rocks");
+  const ledges = coastCurve.getSpacedPoints(Math.ceil(coastCurve.getLength() / 0.56));
+  for (let i = 0; i < ledges.length - 1; i += 2) {
+    const at = ledges[i], cluster = Math.sin(i * 0.29) + Math.cos(i * 0.57) * 0.52;
+    if (cluster < -0.45) continue;
+    p.granite(choose([C.stone, C.stoneLight, C.stoneDark]), [at.x, -0.13, at.z], [0.31 + random() * 0.36, 0.22 + random() * 0.21, 0.26 + random() * 0.3], random() * 6.28);
+    if (cluster > 0.6) {
+      p.granite(C.stoneDark, [at.x + 0.22, -0.26, at.z - 0.22], [0.34, 0.26, 0.45], random() * 6.28);
+      p.stone(C.grass, [at.x, 0.02, at.z], 0.48, [1.15, 0.08, 0.85], random() * 6.28);
+    }
   }
   const riverBanks: Point[][] = [RIVER.slice(0, 8) as Point[], [...RIVER.slice(8)].reverse() as Point[]];
   for (const points of riverBanks) {
     const samples = curve(points, 0.45);
-    ribbon(samples, 0.48, C.sand, 0.027, "ground", 0.3);
-    ribbon(samples, 0.1, C.foam, 0.039, "water", 0.6);
-  }
-  const riverCurrent = curve([[1560, 750], [1405, 832], [1245, 927], [1040, 1040], [900, 1180]], 0.5);
-  ribbon(riverCurrent, 0.95, C.water, 0.024, "water", 0.25);
-  for (let i = 1; i < riverCurrent.length - 2; i += 3) {
-    const at = riverCurrent[i], next = riverCurrent[i + 1], side = (random() - 0.5) * 1.1;
-    p.tube(i % 2 ? C.foam : C.waterLight, [[at.x + side, 0.052, at.z], [(at.x + next.x) / 2 + side + 0.08, 0.053, (at.z + next.z) / 2], [next.x + side, 0.052, next.z]], 0.018, "water");
+    ribbon(samples, 0.42, C.sand, 0.027, "track", 0.26);
   }
 
   function path(points: readonly Point[], width: number) {
-    const samples = curve(points, 0.36); paths.push({ samples, width });
-    ribbon(samples, width + 0.2, "#b1ac7c", 0.029, "ground", 0.1);
-    ribbon(samples, width, C.path, 0.044, "ground", 0.07);
-    for (let i = 1; i < samples.length - 1; i++) {
-      const at = samples[i], before = samples[i - 1], after = samples[i + 1];
+    const samples = curve(points, 0.36);
+    // Millimetre offsets in the rendered layers avoid depth fighting at crossings.
+    const lift = paths.length * 0.0016;
+    paths.push({ samples, width });
+    const visible = samples.filter(point => inside([point.x, point.z], landBoundary));
+    ribbon(visible, width + 0.24, "#bab489", 0.027 + lift, "track", 0.15, 0.029, "#a4b37a");
+    ribbon(visible, width, C.path, 0.044 + lift, "track", 0.09, 0.044, "#c3b68b");
+    for (let i = 1; i < visible.length - 1; i++) {
+      const at = visible[i], before = visible[i - 1], after = visible[i + 1];
       const angle = Math.atan2(after.x - before.x, after.z - before.z);
       for (const side of [-1, 1]) {
-        if (random() > 0.83) continue;
-        const offset = width * (0.45 + random() * 0.04);
-        p.add(new THREE.CylinderGeometry(0.19, 0.21, 0.065, 6), choose([C.stone, C.stoneLight, "#c3bd9c"]),
-          [at.x + Math.cos(angle) * offset * side, 0.065, at.z - Math.sin(angle) * offset * side], [0.8 + random() * 0.3, 1, 1.35], [0, angle + random() * 0.12, 0], "ground");
+        if (random() > 0.34 + Math.sin(i * 0.42 + side) * 0.23) continue;
+        const offset = width * (0.46 + random() * 0.065);
+        p.granite(choose([C.stone, C.stoneLight, "#c3bd9c"]),
+          [at.x + Math.cos(angle) * offset * side, 0.042 + lift, at.z - Math.sin(angle) * offset * side],
+          [0.13 + random() * 0.1, 0.037, 0.13 + random() * 0.18], angle + random() * 0.36, "track");
       }
-      if (i % 2 === 0) {
-        const across = (random() - 0.5) * width * 0.65;
-        p.stone(choose(["#c9bd99", "#d9cba7", "#ddd0ad"]), [at.x + Math.cos(angle) * across, 0.065, at.z - Math.sin(angle) * across], 0.14 + random() * 0.09, [1.35, 0.13, 0.8], angle, "ground");
+      if (i % 2 === 0 && random() < 0.74) {
+        const across = (random() - 0.5) * width * 0.8;
+        p.granite(choose(["#c4b592", "#cfc09e", "#dbceae"]), [at.x + Math.cos(angle) * across, 0.048 + lift, at.z - Math.sin(angle) * across],
+          [0.08 + random() * 0.1, 0.023, 0.1 + random() * 0.09], angle, "track");
       }
     }
   }
@@ -210,17 +310,23 @@ export function createVillageTerrain() {
   path([[350, 326], [430, 375], [600, 405]], 1.6);
   path([[1260, 775], [1270, 850]], 1.55);
   const mainPaths = [...paths];
-  for (const place of places) {
+  for (const [index, place] of places.entries()) {
     const entrance = ground(MAP_ENTRANCES[place.id]);
     const front = new THREE.Vector3(entrance[0], 0, entrance[2] + 0.8);
     const nearest = mainPaths.flatMap(path => path.samples).reduce((best, point) => point.distanceToSquared(front) < best.distanceToSquared(front) ? point : best);
     const line = new THREE.CatmullRomCurve3([new THREE.Vector3(...entrance), front, nearest.clone()], false, "centripetal");
     const samples = line.getSpacedPoints(Math.max(5, Math.ceil(line.getLength() / 0.3)));
     paths.push({ samples, width: 1.5 });
-    ribbon(samples, 1.5, C.path, 0.049, "ground", 0.03);
-    p.add(new THREE.CylinderGeometry(place.id === "warehouse" ? 2.6 : 2.2, 2.2, 0.025, 32), C.path, [entrance[0], 0.046, entrance[2] + 0.5], [1, 1, 0.62], [0, 0, 0], "ground");
-    for (let row = 0; row < 3; row++) for (let col = -2; col <= 2; col++) p.add(new THREE.CylinderGeometry(0.18, 0.19, 0.055, 6), (row + col) % 3 ? C.stoneLight : C.stone,
-      [entrance[0] + col * 0.35 + row % 2 * 0.12, 0.067, entrance[2] + 0.25 + row * 0.3], [1, 1, 0.72], [0, 0.14, 0], "ground");
+    const lift = index * 0.0011;
+    ribbon(samples, 1.5, C.path, 0.049 + lift, "track", 0.07, 0.049, "#c3b68b");
+    const radius = place.id === "warehouse" ? 2.6 : 2.2;
+    p.add(new THREE.CylinderGeometry(radius, radius, 0.025, 32), C.path, [entrance[0], 0.046 + lift, entrance[2] + 0.5], [1, 1, 0.62], [0, 0, 0], "track");
+    groundAprons.push({ x: entrance[0], z: entrance[2] + 0.5, radius });
+    for (let row = 0; row < 3; row++) for (let col = -2; col <= 2; col++) {
+      const tone = (row + col) % 3 ? C.stoneLight : C.stone;
+      p.granite(tone, [entrance[0] + col * 0.36 + row % 2 * 0.12, 0.073 + lift, entrance[2] + 0.25 + row * 0.29],
+        [0.18, 0.032, 0.127], Math.sin(row * 4.3 + col) * 0.22, "track");
+    }
   }
 
   function grass(x: number, z: number, size = 1, color: string = C.grassDark) {
@@ -237,21 +343,38 @@ export function createVillageTerrain() {
     const geometry = new THREE.BufferGeometry(); geometry.setAttribute("position", new THREE.Float32BufferAttribute(blades, 3)); geometry.computeVertexNormals();
     p.add(geometry, color, [0, 0, 0]);
   }
-  // Broad irregular colour patches and small grass clumps give a painted rhythm.
+  // Low grass tufts gather above soft pigment patches on the windward turf.
+  const dryTurf = new THREE.Color("#bbc98c"), baseTurf = new THREE.Color(C.turf), dampTurf = new THREE.Color("#8eaa6a");
   for (let i = 0; i < 420; i++) {
     const point: Point = [-45 + random() * 1590, 45 + random() * 1050];
     if (!free(point, 0.5)) continue;
-    const [x, z] = paintingToGround(...point), radius = 0.25 + random() * 0.6;
-    p.add(new THREE.CircleGeometry(radius, 9), choose(["#a9bf7f", "#95af71", "#b1c587"]), [x, 0.013 + i * 0.000005, z], [1.25, 0.65, 1], [-Math.PI / 2, 0, random() * 6], "ground");
-    for (let j = 0; j < 3; j++) grass(x + (random() - 0.5) * radius, z + (random() - 0.5) * radius, 0.55 + random() * 0.55, choose([C.grass, C.grassDark, C.grassLight]));
+    const [x, z] = paintingToGround(...point), radius = 0.42 + random() * 0.65;
+    if (i % 3 !== 1) {
+      const patch = new THREE.CircleGeometry(radius, 9);
+      const positions = patch.getAttribute("position");
+      for (let j = 1; j < positions.count; j++) {
+        const shape = 1 + Math.sin(j * 2.8 + i) * 0.29;
+        positions.setXY(j, positions.getX(j) * shape, positions.getY(j) * shape);
+      }
+      p.add(patch, (color, px, _y, pz) => {
+        const inside = 1 - THREE.MathUtils.smoothstep(Math.hypot(px - x, pz - z), 0, radius * 0.65);
+        color.copy(baseTurf).lerp(i % 2 ? dryTurf : dampTurf, inside * 0.77);
+      }, [x, 0.014 + i * 0.000005, z], [1.28, 0.8, 1], [-Math.PI / 2, 0, i * 2.4], "ground");
+    }
+    for (let j = 0; j < 2; j++) grass(x + (random() - 0.5) * radius, z + (random() - 0.5) * radius, 0.52 + random() * 0.62, choose([C.grass, C.grassDark, C.grassLight]));
+  }
+
+  function petal(x: number, y: number, z: number, a: number, color: string) {
+    const petal = new THREE.IcosahedronGeometry(0.072);
+    p.add(petal, color, [x, y, z], [1.2, 0.34, 0.72], [0, -a, 0.09]);
   }
 
   function flower(x: number, z: number, height: number, color: string = C.gold) {
     p.beam(C.grassDark, [x, 0.04, z], [x + 0.03, height, z], 0.018);
     p.sphere(C.leafLight, [x - 0.05, height * 0.45, z], 0.085, [1.3, 0.23, 0.65]);
-    for (let petal = 0; petal < 5; petal++) {
-      const a = petal * Math.PI * 0.4;
-      p.sphere(color, [x + Math.cos(a) * 0.085, height, z + Math.sin(a) * 0.085], 0.07, [1, 0.4, 1]);
+    for (let index = 0; index < 5; index++) {
+      const a = index * Math.PI * 0.4;
+      petal(x + Math.cos(a) * 0.081, height, z + Math.sin(a) * 0.081, a, color);
     }
     p.sphere(color === C.gold ? C.woodLight : C.gold, [x, height + 0.025, z], 0.043, [1, 0.7, 1]);
   }
@@ -259,13 +382,14 @@ export function createVillageTerrain() {
     const [x, z] = paintingToGround(px, py);
     if (!unoccupied(x, z, radius * 0.5) || !awayFromPaths(x, z, radius * 0.3)) return;
     navigationObstacles.push({ x, z, radius: radius * 1.12 });
-    for (let i = 0; i < 7; i++) {
-      const a = i * 2.4, bx = x + Math.cos(a) * radius * 0.5, bz = z + Math.sin(a) * radius * 0.5;
-      p.sphere(choose([C.leaf, C.leafLight, C.leafDark]), [bx, radius * 0.5 + i % 2 * 0.13, bz], radius * (0.47 + random() * 0.2), [1, 0.85, 1]);
+    for (let i = 0; i < 5; i++) {
+      const a = i * 2.4, bx = x + Math.cos(a) * radius * 0.47, bz = z + Math.sin(a) * radius * 0.47;
+      const spread = radius * (0.49 + random() * 0.13);
+      p.foliage(choose([C.leaf, C.leafLight, C.leafDark]), [bx, radius * 0.46 + i % 2 * 0.13, bz], [spread, spread * 0.8, spread], a);
       if (hydrangea && i % 2 === 0) {
         const fy = radius * 0.95 + i % 3 * 0.07;
-        p.sphere(C.blue, [bx, fy, bz], radius * 0.29);
-        for (let j = 0; j < 7; j++) {
+        p.foliage(C.blue, [bx, fy, bz], [radius * 0.29, radius * 0.26, radius * 0.28], a);
+        for (let j = 0; j < 6; j++) {
           const a = j * 2.4;
           p.sphere(j % 3 ? C.flower : C.blue, [bx + Math.cos(a) * radius * 0.22, fy + 0.07 + Math.sin(j) * 0.07, bz + Math.sin(a) * radius * 0.22], radius * 0.09, [1, 0.65, 1]);
         }
@@ -287,19 +411,24 @@ export function createVillageTerrain() {
     if (!unoccupied(x, z, size * 1.6) || !awayFromPaths(x, z, size)) return;
     navigationObstacles.push({ x, z, radius: size * 0.65 });
     p.stone(C.grass, [x, 0.028, z], size * 1.4, [1, 0.035, 0.9]);
-    const trunk: XYZ = [x - size * 0.12, size * 1.9, z];
-    p.beam(C.woodDark, [x, 0, z], trunk, size * 0.16);
-    p.beam(C.wood, [x + size * 0.04, 0.1, z + size * 0.04], [trunk[0] + size * 0.04, trunk[1], trunk[2] + size * 0.04], size * 0.075);
+    const pine = (px + py) % 7 < 3;
+    const lean = pine ? 0.52 : 0.18;
+    const footing: XYZ = [x, 0.018, z];
+    const fork: XYZ = [x + size * lean * 0.5, size * 1.12, z - size * 0.17];
+    const trunk: XYZ = [x + size * lean, size * (pine ? 2.54 : 2.26), z - size * 0.28];
+    p.beam(C.woodDark, footing, fork, size * 0.2);
+    p.beam(C.wood, fork, trunk, size * 0.135);
     for (let i = 0; i < 5; i++) {
       const a = i * 2.4;
       p.beam(C.woodDark, [x, 0.2, z], [x + Math.cos(a) * size * 0.55, 0.03, z + Math.sin(a) * size * 0.55], size * 0.09);
-      const branch: XYZ = [x + Math.cos(a) * size * 0.85, size * (1.9 + i % 3 * 0.21), z + Math.sin(a) * size * 0.85];
-      p.beam(C.wood, [x, size * 1.1, z], branch, size * 0.09);
-      p.sphere(choose([C.leaf, C.leafLight, C.leafDark]), branch, size * 0.87, [1, 0.86, 1]);
-      for (let j = 0; j < 3; j++) p.sphere(j === 0 ? C.leafTip : C.leafLight,
-        [branch[0] + Math.cos(j * 2.2 + a) * size * 0.5, branch[1] + size * (0.37 + j * 0.07), branch[2] + Math.sin(j * 2.2 + a) * size * 0.5], size * 0.32, [1.1, 0.7, 1]);
+      const branch: XYZ = [fork[0] + Math.cos(a) * size * 0.66, size * (1.78 + i % 3 * 0.2), fork[2] + Math.sin(a) * size * 0.69];
+      p.beam(C.wood, fork, branch, size * 0.089);
+      p.foliage(i % 3 === 0 ? C.leafDark : C.leaf, branch, [size * 0.86, size * (pine ? 0.47 : 0.78), size * 0.79], a + px);
+      if (i % 2 === 0) p.foliage(C.leafLight, [branch[0] + size * 0.14, branch[1] + size * 0.37, branch[2]],
+        [size * 0.72, size * (pine ? 0.37 : 0.53), size * 0.61], a + py);
     }
-    p.sphere(C.leafLight, [x - size * 0.12, size * 2.65, z], size * 0.83, [1, 0.8, 1]);
+    p.foliage(C.leafLight, trunk, [size * 0.92, size * (pine ? 0.43 : 0.77), size * 0.85], px + py);
+    p.foliage(C.leafTip, [trunk[0] + size * 0.28, trunk[1] + size * 0.27, trunk[2] - size * 0.28], [size * 0.55, size * 0.32, size * 0.53], px);
   }
   [[80, 100, 1.05], [150, 65, 1.1], [540, 95, 1.2], [620, 150, 0.9], [985, 165, 0.85], [1470, 555, 0.95], [110, 790, 1.05], [40, 930, 1.1], [170, 1030, 0.8], [1100, 790, 0.72], [1420, 1040, 1.2]].forEach(([px, py, size]) => tree(px, py, size));
 
@@ -431,17 +560,14 @@ export function createVillageTerrain() {
     p.box(C.teal, [lx + 1.1 + side * 0.23, 0.43, lz + 0.18], [0.12, 0.17, 0.025]);
   }
   p.box(C.woodLight, [lx + 1.1, 0.3, lz + 0.18], [0.15, 0.35, 0.03]);
-  for (let i = 0; i < 90; i++) {
-    const point: Point = [-50 + random() * 1700, -160 + random() * 330];
-    if (inside(point, COAST)) continue;
-    const [x, z] = paintingToGround(...point), length = 0.2 + random() * 0.8;
-    // Include the full stroke and its radius within the 51 × 52 sea slab.
-    if (x < -23.4 || x + length * 0.8 > 27.4 || z - length * 0.8 < -23.9 || z > 27.9) continue;
-    p.tube(i % 3 ? C.waterLight : C.foam, [[x, -0.787, z], [x + length * 0.4, -0.785, z - length * 0.5], [x + length * 0.8, -0.787, z - length * 0.8]], 0.02, "water");
-  }
   const result = p.finish();
+  const mainland = createVillageMainland();
+  result.add(mainland);
+  result.userData.triangles += mainland.geometry.getAttribute("position").count / 3;
   result.userData.navigationObstacles = navigationObstacles;
   result.userData.groundPaths = paths;
+  result.userData.groundAprons = groundAprons;
+  result.userData.groundHeightAt = groundHeightAt;
   return result;
 }
 

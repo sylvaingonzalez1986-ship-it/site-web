@@ -119,7 +119,7 @@ import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { canReuseKqBootstrapProgress } from "@/lib/kanab-quest-bootstrap-policy";
 import { formatKqQueueWait } from "@/lib/kanab-quest-random-queue";
 import { getKqRemainingDailyChallengePoints, KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
-import { KqPhysicsDice, type KqDiceMotionPhase, type KqPhysicsDiceHandle } from "./KqPhysicsDice";
+import { KqPhysicsDice, type KqDiceMotionPhase, type KqDiceTableStatus, type KqPhysicsDiceHandle } from "./KqPhysicsDice";
 import { assistKqPlayableLesson, type KqPlayableLessonPort } from "@/lib/kanab-quest-playable-lesson";
 import { getKqPlayerCardChoices, getKqPlayerCardPermission } from "@/lib/kanab-quest-player-feedback";
 import { getKqCareAvailabilityScope, type KqCareAvailabilityNotice } from "@/lib/kanab-quest-care-reserve";
@@ -137,6 +137,33 @@ import styles from "./KanabQuestDicePrototype.module.css";
 
 const LOCAL_COLLECTION_CODES = KQ_ACTIVE_CARDS.map((card) => card.code);
 const DEFAULT_LOCAL_INVENTORY = Object.fromEntries(KQ_ACTIVE_CARDS.map((card) => [card.code, 3]));
+
+function keepDiceInView(surface: HTMLElement, tray: HTMLElement, until: AbortSignal) {
+  const board = tray.closest<HTMLElement>("[data-culture-decision]");
+  if (!board) return;
+  board.focus({ preventScroll: true });
+  const bounds = tray.getBoundingClientRect();
+  if (bounds.top < parseFloat(getComputedStyle(board).scrollMarginTop) || bounds.bottom > window.innerHeight) {
+    board.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+  const top = tray.getBoundingClientRect().top;
+  const input = new AbortController();
+  // The work receipt and the room above the tray can resize independently
+  // when the server confirms the turn. Keep that reflow out of the throw.
+  const observer = new ResizeObserver(() => {
+    const shift = tray.getBoundingClientRect().top - top;
+    if (Math.abs(shift) > 1) window.scrollBy({ top: shift, behavior: "instant" });
+  });
+  observer.observe(surface);
+  function release() {
+    observer.disconnect();
+    input.abort();
+  }
+  for (const event of ["wheel", "pointerdown", "touchmove", "keydown", "resize"]) {
+    window.addEventListener(event, release, { passive: true, signal: input.signal });
+  }
+  until.addEventListener("abort", release, { once: true, signal: input.signal });
+}
 const isVerifiedInventory = (value: unknown): value is Record<string, number> => Boolean(value) && typeof value === "object"
   && !Array.isArray(value) && Object.values(value as Record<string, unknown>).every(count => Number.isSafeInteger(count) && Number(count) >= 0);
 const RecoveryTrial = dynamic(() => import("./KqFirstCultureTrial").then(module => module.KqFirstCultureTrial), { ssr: false });
@@ -497,7 +524,7 @@ function KqGameSession({
   const savedLocalRoll = useRef<KqGameState | null>(null);
   const displayedDiceScope = useRef("");
   const focusAfterDiceSkip = useRef(false);
-  const [diceReady, setDiceReady] = useState(false);
+  const [diceStatus, setDiceStatus] = useState<KqDiceTableStatus>("loading");
   const [reducedMotion, setReducedMotion] = useState(false);
   const [fastDice, setFastDice] = useState(false);
   const [gameActionError, setGameActionError] = useState("");
@@ -508,7 +535,8 @@ function KqGameSession({
   const returnToProduct = useRef<HTMLElement | null>(null);
   const [cultureRecapPanel, setCultureRecapPanel] = useState<KqCulturePanelId>("harvest");
   const [careAvailability, setCareAvailability] = useState<KqCareAvailabilityNotice | null>(null);
-  const [physicsDiceActive, setPhysicsDiceActive] = useState(false);
+  const staticDice = directDiceResult || reducedMotion || diceStatus === "error";
+  const physicsDiceActive = !staticDice && diceStatus === "ready";
   const [diceMotionPhase, setDiceMotionPhase] = useState<KqDiceMotionPhase>("idle");
   const [diceVisualSyncing, setDiceVisualSyncing] = useState(false);
   const [battle, setBattle] = useState<KqBattle | null>(null);
@@ -540,6 +568,7 @@ function KqGameSession({
   const [boosterNonce, setBoosterNonce] = useState(0);
   const [pendingBattleVerdict, setPendingBattleVerdict] = useState(false);
   const physicsDiceRef = useRef<KqPhysicsDiceHandle | null>(null);
+  const diceTrayRef = useRef<HTMLDivElement>(null);
   const verdictTimerRef = useRef<number | null>(null);
   const repositoryRef = useRef<KqRepository | null>(null);
   const remoteInventoryRef = useRef<Record<string, number>>({});
@@ -1349,26 +1378,27 @@ function KqGameSession({
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const renderer = physicsDiceRef.current;
-    if (!diceReady || !renderer || directDiceResult || reducedMotion || !state.dice || state.phase === "prepare") {
-      setPhysicsDiceActive(false);
+    if (rolling) return;
+    if (!renderer || !physicsDiceActive || !state.dice || state.phase === "prepare") {
+      displayedDiceScope.current = "";
+      if (state.phase === "prepare") renderer?.rest();
       setDiceVisualSyncing(false);
       return;
     }
-    if (rolling) return;
     const values = state.bonusDie ? [...state.dice, state.bonusDie] : [...state.dice];
     const controller = new AbortController();
     const sameThrow = displayedDiceScope.current === diceScope;
     setDiceVisualSyncing(true);
     void playKqDiceAnimation(() => renderer.sync(values, sameThrow), undefined, controller.signal).then(ok => {
       if (controller.signal.aborted) return;
-      setPhysicsDiceActive(ok && (state.phase !== "resolved" || renderer.reveal(values)));
-      if (ok) displayedDiceScope.current = diceScope;
+      if (ok && (state.phase !== "resolved" || renderer.reveal(values))) displayedDiceScope.current = diceScope;
+      else setDiceStatus("error");
       setDiceVisualSyncing(false);
     });
     return () => controller.abort();
-  }, [diceReady, diceScope, directDiceResult, reducedMotion, rolling, state.bonusDie, state.dice, state.phase]);
+  }, [physicsDiceActive, diceScope, rolling, state.bonusDie, state.dice, state.phase]);
 
   const presentConfirmedAction = (next: KqGameState) => {
     if (!lifecycle.current.mounted || currentPresentationView.current === "arena" || document.visibilityState !== "visible") return;
@@ -1494,25 +1524,30 @@ function KqGameSession({
     cardSyncGeneration.current += 1;
     const presentation = new AbortController();
     rollPresentation.current = presentation;
+    if (gameViewportRef.current && diceTrayRef.current) keepDiceInView(gameViewportRef.current, diceTrayRef.current, presentation.signal);
     setRolling(true);
     setDiceMotionPhase("preparing");
+    let renderer = staticDice ? null : physicsDiceRef.current;
+    try {
+      renderer?.gather(fastDice);
+    } catch {
+      renderer = null;
+      setDiceStatus("error");
+    }
     try {
       const confirmed = await applyGameAction("roll");
       if (!confirmed?.dice || confirmed.phase !== "rolled" || presentation.signal.aborted || !lifecycle.current.mounted) return;
-      if (directDiceResult || document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const renderer = physicsDiceRef.current;
-      if (!renderer) return;
+      if (!renderer || renderer !== physicsDiceRef.current || document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const values = confirmed.bonusDie ? [...confirmed.dice, confirmed.bonusDie] : [...confirmed.dice];
-      setPhysicsDiceActive(true);
       const completed = await playKqDiceAnimation(() => renderer.roll(values, phase => {
         if (!presentation.signal.aborted && lifecycle.current.mounted) setDiceMotionPhase(phase);
-      }, fastDice), undefined, presentation.signal);
+      }, fastDice, presentation.signal), undefined, presentation.signal);
       if (rollPresentation.current !== presentation || !lifecycle.current.mounted) return;
-      if (completed) displayedDiceScope.current = diceScope;
-      else {
-        renderer.finish?.();
-        setPhysicsDiceActive(false);
+      if (!completed) {
+        renderer.finish();
+        if (!presentation.signal.aborted) setDiceStatus("error");
       }
+      displayedDiceScope.current = diceScope;
     } catch (error) {
       if (!presentation.signal.aborted && lifecycle.current.mounted) setGameActionError(error instanceof Error ? error.message : "Le lancer est indisponible. Actualise la culture.");
     } finally {
@@ -2932,8 +2967,10 @@ function KqGameSession({
     sum + getKqRunProjection(getKqCampaignMemberState(state, member)).harvestGrams, 0) : runProjection.harvestGrams;
   const lastStageReward = state.phase === "resolved" ? state.history.at(-1) ?? null : null;
   const primaryAction = state.phase === "prepare" ? "roll" : state.phase === "rolled" ? "resolve" : "advance";
-  const actionContext = state.phase === "prepare"
-    ? `${getKqStageTarget(state)} réussite${getKqStageTarget(state) > 1 ? "s" : ""} requise${getKqStageTarget(state) > 1 ? "s" : ""} · ${cardChoices.label.toLowerCase()}`
+  const stageTarget = getKqStageTarget(state);
+  const requiredSuccesses = `${stageTarget} ${stageTarget > 1 ? "réussites requises" : "réussite requise"}`;
+  const actionContext = rolling ? requiredSuccesses : state.phase === "prepare"
+    ? `${requiredSuccesses} · ${cardChoices.label.toLowerCase()}`
     : state.phase === "rolled" && preview
       ? turnPreview?.dead ? "Valider ce bilan entraînera la mort de la culture, sans récolte."
         : turnPreview?.rescued ? "Valider ce bilan utilisera ton secours de première culture."
@@ -2959,7 +2996,6 @@ function KqGameSession({
       return;
     }
     if (primaryAction === "roll") {
-      focusTurnElement("[data-culture-decision]");
       await roll();
     } else {
       const nextState = await applyGameAction(primaryAction);
@@ -3004,7 +3040,7 @@ function KqGameSession({
   };
   const turnControls = <div className={styles.turnActions} data-culture-actionbar data-suspended={Boolean(pendingBurnCode) || undefined}>
             {culturePanel === "care" || culturePanel === "cards" ? <button type="button" className={styles.turnOptionsLink} data-culture-show-room onClick={showRoom}>Voir la salle</button> : state.phase !== "resolved" ? <button type="button" className={styles.turnOptionsLink} data-culture-options-action={cardChoices.playableCount > 0 ? "cards" : "options"} onClick={showTurnOptions}>{cardChoices.playableCount > 0 ? "Cartes" : "Soins"} <KqActionBadge count={cardChoices.playableCount > 0 ? playableActionCount : careActionCount} /></button> : null}
-            <small className={styles.turnActionContext} data-warning={state.phase === "rolled" && (turnPreview?.dead || turnPreview?.rescued || preview?.total === 0) || undefined}>{actionContext}</small>
+            <small className={styles.turnActionContext} data-warning={!rolling && state.phase === "rolled" && (turnPreview?.dead || turnPreview?.rescued || preview?.total === 0) || undefined}>{actionContext}</small>
             <button type="button" className={state.phase === "prepare" ? styles.rollButton : styles.primaryButton}
               data-culture-primary-action data-action={primaryAction}
               disabled={Boolean(cardRecovery) || Boolean(pendingBurnCode) || (remoteAction !== null || careBusy) || rolling || diceVisualSyncing || culturePanel === "play" && state.phase === "prepare" && cultureRollBlocked}
@@ -3080,7 +3116,7 @@ function KqGameSession({
             <p>{situation.story}</p>
             <div className={styles.tags}>{situation.tags.map((tag) => <span key={tag}>{tag === "pest" ? state.care ? "Ravageur suivi dans le panneau de santé" : state.revealedPest ? `Ravageur : ${PEST_LABELS[state.revealedPest]}` : "Ravageur non identifié" : SITUATION_TAG_LABELS[tag] ?? tag}</span>)}</div>
           </div>
-          <div className={styles.target}><small>Réussites requises</small><strong>{getKqStageTarget(state)}</strong></div>
+          <div className={styles.target}><small>Réussites requises</small><strong>{stageTarget}</strong></div>
         </div>
 
         <div className={styles.diceBoard} aria-label="Décision du tour" data-culture-decision data-phase={state.phase} tabIndex={-1}>
@@ -3091,19 +3127,19 @@ function KqGameSession({
             <span>{[1, 2, 3, 4].map((level) => <i key={level} data-filled={level <= state.pressure || undefined} data-danger={level >= 3 || undefined} />)}</span>
             <small>{getKqPressureHint(state)}</small>
           </div>
-          <div className={styles.diceTray} data-phase={state.phase} data-motion-phase={diceMotionPhase} data-rolling={rolling || undefined} data-result={state.phase === "rolled" && !rolling || undefined} data-direct-result={directDiceResult || undefined} data-physics={physicsDiceActive || undefined}>
-            {hydrated && !directDiceResult && !reducedMotion ? <KqPhysicsDice ref={physicsDiceRef} onReadyChange={setDiceReady} /> : null}
-            {diceMotionPhase !== "idle" ? <span className={styles.diceMotionStatus} role="status"><i aria-hidden="true" /><small>{diceMotionPhase === "preparing" ? "Préparation du lancer" : diceMotionPhase === "rolling" ? "Lancer" : "Derniers rebonds"}</small></span> : null}
+          <div ref={diceTrayRef} className={styles.diceTray} data-phase={state.phase} data-motion-phase={diceMotionPhase} data-rolling={rolling || undefined} data-result={state.phase === "rolled" && !rolling || undefined} data-direct-result={directDiceResult || undefined} data-physics={physicsDiceActive || undefined}>
+            {hydrated && !directDiceResult && !reducedMotion ? <KqPhysicsDice ref={physicsDiceRef} onStatusChange={setDiceStatus} /> : null}
+            {diceMotionPhase === "preparing" || (!staticDice && diceStatus === "loading") ? (
+              <span className={styles.diceMotionStatus} role="status">{rolling ? "Préparation du lancer…" : "Chargement des dés…"}</span>
+            ) : null}
             <div className={styles.dice} role="status" aria-live="polite" aria-label={rolling ? "Lancer en cours" : state.dice ? `Résultat des dés : ${state.dice[0]}, ${state.dice[1]} et ${state.dice[2]}${state.bonusDie ? `. Quatrième dé ${state.bonusDie} écarté` : ""}` : "Les dés n’ont pas encore été lancés"}>
-              <GameDie value={state.dice?.[0]} index={0} rolling={rolling} validated={state.phase === "resolved"} />
-              <GameDie value={state.dice?.[1]} index={1} rolling={rolling} validated={state.phase === "resolved"} />
-              <GameDie value={state.dice?.[2]} index={2} rolling={rolling} validated={state.phase === "resolved"} />
+              {staticDice && [0, 1, 2].map(index => <GameDie key={index} value={rolling ? undefined : state.dice?.[index]} index={index} validated={state.phase === "resolved"} />)}
             </div>
-            {state.bonusDie && !physicsDiceActive ? <span className={styles.discardedDie}><GameDie value={state.bonusDie} index={3} validated={state.phase === "resolved"} /><small>4e dé · écarté</small></span> : null}
+            {staticDice && !rolling && state.bonusDie ? <span className={styles.discardedDie}><GameDie value={state.bonusDie} index={3} validated={state.phase === "resolved"} /><small>4e dé · écarté</small></span> : null}
           </div>
           {culturePanel === "play" && turnControls}
           <div className={styles.roomShortcuts}><button type="button" data-dice-show-room onClick={showRoom}>Revenir à la salle</button></div>
-          {rolling && diceMotionPhase !== "preparing" ? <button className={styles.skipDice} type="button" onClick={() => {
+          {rolling && state.dice && !staticDice ? <button className={styles.skipDice} type="button" onClick={() => {
             focusAfterDiceSkip.current = true;
             finishDiceMotion();
           }}>Voir le résultat</button> : null}

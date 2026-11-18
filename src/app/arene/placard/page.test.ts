@@ -106,15 +106,16 @@ describe("Placard page entry", () => {
     expect(entry.key).toBe("verified-id");
   });
 
-  it.each(["2d", "3d"])("passes an explicit %s presentation through the existing authenticated gate", async world => {
-    mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
-    const entry = await renderPage({ world });
-    expect(entry.props).toEqual({ userId: "verified-id", introductionState: "new", betaConnectionKey: "test-connection", worldMode: world });
+  it("returns a signed-out player with a 2D bookmark to the same activity in 3D", async () => {
+    const query = { world: "2d", view: "treasury", pole: "bank" };
+    const error = await renderPage(query).catch(error => error);
+    const login = new URL(error.digest.split(";")[2], "https://example.test");
+    expect(login.searchParams.get("next")).toBe("/arene/placard?world=3d&view=treasury&pole=bank");
   });
 
-  it.each(["invalid", ["3d", "2d"]])("does not pass an invalid or ambiguous presentation: %j", async world => {
+  it.each([{ world: "2d" }, { world: "3d" }, { world: "invalid" }, { world: ["3d", "2d"] }])("ignores presentation overrides at the game entry: %j", async query => {
     mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
-    const entry = await renderPage({ world });
+    const entry = await renderPage(query);
     expect(entry.props).not.toHaveProperty("worldMode");
   });
 });

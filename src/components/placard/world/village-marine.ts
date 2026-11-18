@@ -1,12 +1,12 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { paintingToGround } from "./village-layout";
-import { VILLAGE_COAST, VILLAGE_RIVER } from "./village-terrain";
+import { paintingToGround, VILLAGE_SEA_LEVEL as SEA_LEVEL, VILLAGE_SEA_SIZE } from "./village-layout";
+import { VILLAGE_COAST, VILLAGE_RIVER, VILLAGE_SECOND_BANK } from "./village-terrain";
+import { VILLAGE_MAINLAND_SHORE } from "./village-mainland";
 import type { VillageLifeController } from "./village-life-types";
 
 type Point = readonly [number, number];
 type XYZ = readonly [number, number, number];
-const SEA_LEVEL = -0.32;
 const RIVER_LEVEL = 0.018;
 const TAU = Math.PI * 2;
 const C = { teal: "#087f7c", wood: "#c69658", darkWood: "#825d3c", cream: "#fff0ca", ink: "#294942", gold: "#dca642", stone: "#b3b29a", kelp: "#427c64", fish: "#acd1bd" };
@@ -87,16 +87,17 @@ export function sampleMarineCoast(points: readonly Point[] = VILLAGE_COAST): Poi
   }), true, "centripetal").getPoints(160).map(point => [point.x, point.z]);
 }
 
-function segmentDistance(x: number, z: number, a: Point, b: Point) {
+function segmentDistanceSquared(x: number, z: number, a: Point, b: Point) {
   const dx = b[0] - a[0], dz = b[1] - a[1];
   const t = THREE.MathUtils.clamp(((x - a[0]) * dx + (z - a[1]) * dz) / Math.max(0.000001, dx * dx + dz * dz), 0, 1);
-  return Math.hypot(x - a[0] - dx * t, z - a[1] - dz * t);
+  const ex = x - a[0] - dx * t, ez = z - a[1] - dz * t;
+  return ex * ex + ez * ez;
 }
 
-function distanceToCoast(x: number, z: number, coast: readonly Point[]) {
-  let distance = 80;
-  for (let i = 0; i < coast.length - 1; i++) distance = Math.min(distance, segmentDistance(x, z, coast[i], coast[i + 1]));
-  return distance;
+function distanceToCoastSquared(x: number, z: number, coast: readonly Point[]) {
+  let distanceSquared = 80 * 80;
+  for (let i = 0; i < coast.length - 1; i++) distanceSquared = Math.min(distanceSquared, segmentDistanceSquared(x, z, coast[i], coast[i + 1]));
+  return distanceSquared;
 }
 
 const waveGLSL = `
@@ -113,10 +114,12 @@ const waveGLSL = `
 
 function waterMaterial(river = false, foam = false) {
   return new THREE.ShaderMaterial({
+    transparent: foam, depthWrite: !foam, side: foam ? THREE.DoubleSide : THREE.FrontSide, forceSinglePass: foam,
     uniforms: {
       uTime: { value: 0 }, uRiver: { value: river ? 1 : 0 }, uFoam: { value: foam ? 1 : 0 }, uDetail: { value: 1 },
-      uDeepColor: { value: new THREE.Color(river ? "#168e8e" : "#148c95") },
-      uShallowColor: { value: new THREE.Color("#6abca6") }, uFoamColor: { value: new THREE.Color("#d5e8cb") },
+      uDeepColor: { value: new THREE.Color(river ? "#218d86" : "#176c7c") },
+      uWaterColor: { value: new THREE.Color(river ? "#3ca79a" : "#279ba1") },
+      uShallowColor: { value: new THREE.Color("#79c4aa") }, uFoamColor: { value: new THREE.Color("#e2efd6") },
     },
     vertexShader: `
       uniform float uTime; uniform float uRiver;
@@ -131,7 +134,7 @@ function waterMaterial(river = false, foam = false) {
     `,
     fragmentShader: `
       uniform float uTime; uniform float uRiver; uniform float uFoam; uniform float uDetail;
-      uniform vec3 uDeepColor; uniform vec3 uShallowColor; uniform vec3 uFoamColor;
+      uniform vec3 uDeepColor; uniform vec3 uWaterColor; uniform vec3 uShallowColor; uniform vec3 uFoamColor;
       varying vec2 vWater; varying float vCoast;
       ${waveGLSL}
       float hash21(vec2 p) {
@@ -143,34 +146,48 @@ function waterMaterial(river = false, foam = false) {
         return mix(mix(hash21(cell), hash21(cell+vec2(1.,0.)), f.x),
           mix(hash21(cell+vec2(0.,1.)), hash21(cell+vec2(1.,1.)), f.x), f.y);
       }
+      float brokenRipples(vec2 p) {
+        vec2 cell = floor(p);
+        float lengthSeed = hash21(cell);
+        float bendSeed = hash21(cell + vec2(19.3, 7.1));
+        vec2 at = fract(p) - vec2(.5 + (lengthSeed - .5)*.22, .5 + (bendSeed - .5)*.38);
+        at.y += at.x*(bendSeed - .5)*.48 + at.x*at.x*(lengthSeed - .5)*.6;
+        at /= vec2(.12 + .24*lengthSeed, .045 + .065*bendSeed);
+        return (1. - smoothstep(.08, 1., dot(at, at))) * smoothstep(.26, .84, lengthSeed);
+      }
       void main() {
-        vec3 waves = wave(vWater);
-        float shallows = exp(-max(0., vCoast) * .65);
-        vec3 color = mix(uDeepColor, uShallowColor, shallows * .38);
-        float ripple = sin(dot(vWater, vec2(5.4, 2.1)) - uTime * 1.42)
-          * sin(dot(vWater, vec2(-1.7, 4.2)) - uTime * .65);
-        vec3 normal = normalize(vec3(-waves.y - ripple*.005*uDetail, 1., -waves.z));
-        float light = dot(normal, normalize(vec3(-.4, 1., .2)));
-        color *= .91 + light * .12;
-        // Broad travelling crests bend with spatial noise. Independently hashed
-        // patches break them into sparse, unequal highlights instead of tiled dashes.
-        float warp = noise(vWater*.22 + vec2(uTime*.008, 0.));
-        float crest = sin(dot(vWater, vec2(.92, .42)) - uTime*.74 + warp*1.2);
-        float patches = noise(vWater*vec2(.31,.49) + vec2(-uTime*.012,0.));
-        float glint = pow(max(0., crest), 36.) * smoothstep(.66,.85,patches);
-        color += vec3(.12, .18, .14) * glint * .24 * uDetail;
-        float fineCrest = sin(dot(vWater,vec2(2.1,.87))-uTime*.97+warp*2.4);
-        float streak = pow(max(0.,fineCrest),28.) * smoothstep(.43,.73,patches);
-        color = mix(color,uFoamColor,streak*.055*uDetail);
-        float waterEdge = 1. - smoothstep(.07, .34, vCoast);
-        float broken = .65 + .35*sin(dot(vWater, vec2(4.1, 3.7)) + uTime*.82);
-        float wash = smoothstep(.28, .87, sin(vCoast*22. - uTime*.92 + sin(vWater.x*2.2)));
-        float foam = uFoam * waterEdge * broken * (.48 + wash*.30);
-        // The river's bank line remains quiet and its current runs diagonally downstream.
-        float current = pow(max(0., sin(dot(vWater, vec2(4.5, 4.7)) - uTime*1.3 + warp)), 28.);
-        current *= smoothstep(.65, .9, patches);
-        color = mix(color, uFoamColor, max(foam, current*.20*uRiver));
-        gl_FragColor = vec4(color, 1.);
+        if (uFoam > .5) {
+          float swell = noise(vWater*.61 + vec2(uTime*.095, -uTime*.054));
+          float grains = noise(vWater*4.2 + vec2(uTime*.18, -uTime*.12));
+          float lip = 1. - smoothstep(.04, .17 + swell*.23, vCoast);
+          float backwashOffset = (vCoast - .21 - swell*.17) * 17.;
+          float backwash = exp(-backwashOffset * backwashOffset);
+          float thread = smoothstep(.22, .76, grains*.5 + swell*.5);
+          float limit = 1. - smoothstep(.57, .76, vCoast);
+          gl_FragColor = vec4(uFoamColor, (.71*lip*thread + .36*backwash*thread) * limit);
+        } else {
+          vec3 waves = wave(vWater);
+          float warp = noise(vWater*.19 + vec2(uTime*.012, 0.));
+          float patches = noise(vWater*vec2(.30,.48) + vec2(-uTime*.023, 0.));
+          // A broad tidal shelf and a sharper inner band follow the actual coast.
+          float bed = max(0., vCoast + (warp - .44)*2.4);
+          vec3 color = mix(uWaterColor, uDeepColor, smoothstep(5., 18., bed));
+          color = mix(color, uShallowColor, (1. - smoothstep(.15, 4.6, bed))*(.63 + patches*.28));
+          float ripple = sin(dot(vWater, vec2(5.4, 2.1)) - uTime*1.42)
+            * sin(dot(vWater, vec2(-1.7, 4.2)) - uTime*.65);
+          vec3 normal = normalize(vec3(-waves.y - ripple*.007*uDetail, 1., -waves.z));
+          float light = dot(normal, vec3(-.58, .77, .27));
+          color *= .73 + light*.33 + .05*(warp - .5);
+          // Short, tapered reflections drift on two slightly different headings.
+          vec2 swellSpace = vec2(dot(vWater, vec2(.89, -.46)), dot(vWater, vec2(.46, .89)));
+          vec2 banks = vec2(warp*.62, patches*-.28);
+          float swells = brokenRipples(swellSpace*vec2(.44, .61) + banks + vec2(.036, -.14)*uTime);
+          vec2 chopSpace = vec2(swellSpace.x + swellSpace.y*.28, swellSpace.y);
+          vec2 drift = mix(vec2(.045, -.19), vec2(-.24, -.17), uRiver);
+          float chop = brokenRipples(chopSpace*vec2(.94, 1.36) + banks + vec2(14.11, 2.18) + drift*uTime);
+          color += vec3(.023, .056, .052)*(swells*.70 + chop*.44*uDetail);
+          gl_FragColor = vec4(color, 1.);
+        }
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }
@@ -178,11 +195,14 @@ function waterMaterial(river = false, foam = false) {
   });
 }
 
-function setCoastDistances(geometry: THREE.BufferGeometry, coast: readonly Point[], lighthouse: Point, river = false) {
+function setCoastDistances(geometry: THREE.BufferGeometry, coasts: readonly (readonly Point[])[], lighthouse?: Point) {
   const vertices = geometry.getAttribute("position"), distances = new Float32Array(vertices.count);
   for (let i = 0; i < vertices.count; i++) {
     const x = vertices.getX(i), z = vertices.getZ(i);
-    distances[i] = Math.min(distanceToCoast(x, z, coast), river ? 80 : Math.abs(Math.hypot((x - lighthouse[0]) / 1.12, z - lighthouse[1]) - 2.3));
+    const lighthouseDistance = lighthouse ? Math.hypot((x - lighthouse[0]) / 1.12, z - lighthouse[1]) - 2.3 : 80;
+    let distanceSquared = lighthouseDistance * lighthouseDistance;
+    for (const coast of coasts) distanceSquared = Math.min(distanceSquared, distanceToCoastSquared(x, z, coast));
+    distances[i] = Math.sqrt(distanceSquared);
   }
   geometry.setAttribute("coastDistance", new THREE.BufferAttribute(distances, 1));
 }
@@ -207,16 +227,17 @@ function subdivideRiver(source: THREE.BufferGeometry) {
   return geometry;
 }
 
-function foamRibbon(coast: readonly Point[], outward: boolean, height: number, width = 0.48) {
+function foamRibbon(coast: readonly Point[], outward: boolean, height: number, width = 0.48, closed = true) {
   const positions: number[] = [], distances: number[] = [];
-  const count = coast.length - 1;
+  const count = closed ? coast.length - 1 : coast.length;
   const pairs = coast.slice(0, count).map((point, i) => {
-    const prev = coast[(i + count - 1) % count], next = coast[(i + 1) % count];
+    const prev = coast[closed ? (i + count - 1) % count : Math.max(0, i - 1)];
+    const next = coast[closed ? (i + 1) % count : Math.min(count - 1, i + 1)];
     const tangent = new THREE.Vector2(next[0] - prev[0], next[1] - prev[1]).normalize();
     const sign = outward ? 1 : -1;
     return [[point[0], height, point[1]], [point[0] + tangent.y * width * sign, height, point[1] - tangent.x * width * sign]] as const;
   });
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < pairs.length - (closed ? 0 : 1); i++) {
     const a = pairs[i], b = pairs[(i + 1) % count];
     for (const [point, distance] of [[a[0], 0], [b[1], width], [a[1], width], [a[0], 0], [b[0], 0], [b[1], width]] as const) {
       positions.push(...point); distances.push(distance);
@@ -228,6 +249,36 @@ function foamRibbon(coast: readonly Point[], outward: boolean, height: number, w
   // Winding follows the sampled contour; double-sided also handles inset river rings.
   geometry.computeVertexNormals();
   return geometry;
+}
+
+function wakeMaterial() {
+  return new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false,
+    uniforms: { uTime: { value: 0 }, uRiver: { value: 0 }, uFoamColor: { value: new THREE.Color("#daeace") } },
+    vertexShader: `
+      uniform float uTime; uniform float uRiver;
+      varying vec2 vStroke; varying float vOpacity;
+      ${waveGLSL}
+      void main() {
+        vStroke = uv;
+        vOpacity = instanceColor.r;
+        vec4 p = instanceMatrix * vec4(position, 1.);
+        p.y += wave(p.xz).x;
+        gl_Position = projectionMatrix * modelViewMatrix * p;
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uFoamColor;
+      varying vec2 vStroke; varying float vOpacity;
+      void main() {
+        vec2 p = (vStroke - .5) * 2.;
+        float edge = 1. - smoothstep(.1, 1., dot(p, p));
+        gl_FragColor = vec4(uFoamColor, edge * vOpacity);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }
+    `,
+  });
 }
 
 /** Small coloured parts merge once; moving gear stays separate from the hull. */
@@ -351,29 +402,51 @@ function createBoat(material: THREE.MeshStandardMaterial) {
 
 export function createVillageMarine(): VillageLifeController {
   const object=new THREE.Group(); object.name="village-marine";
-  const coast=sampleMarineCoast(), riverCoast=sampleMarineCoast(VILLAGE_RIVER);
+  const coast=sampleMarineCoast(), riverCoast=sampleMarineCoast(VILLAGE_RIVER), bank=sampleMarineCoast(VILLAGE_SECOND_BANK);
   const lighthouse=paintingToGround(1420,15);
   const seaMaterial=waterMaterial(), riverMaterial=waterMaterial(true), foamMaterial=waterMaterial(false,true);
-  foamMaterial.side=THREE.DoubleSide;
-  const seaGeometry=new THREE.PlaneGeometry(160,160,96,96); seaGeometry.rotateX(-Math.PI/2); seaGeometry.translate(0,SEA_LEVEL,0);
-  setCoastDistances(seaGeometry,coast,lighthouse);
+  const waterMaterials = [seaMaterial, riverMaterial, foamMaterial];
+  const seaGeometry=new THREE.PlaneGeometry(VILLAGE_SEA_SIZE,VILLAGE_SEA_SIZE,96,96); seaGeometry.rotateX(-Math.PI/2); seaGeometry.translate(0,SEA_LEVEL,0);
+  setCoastDistances(seaGeometry,[coast,bank,VILLAGE_MAINLAND_SHORE],lighthouse);
   const sea=new THREE.Mesh(seaGeometry,seaMaterial); sea.name="sea-directional-swells"; sea.raycast=()=>{}; sea.frustumCulled=false; object.add(sea);
   const riverShape=new THREE.Shape(riverCoast.map(([x,z])=>new THREE.Vector2(x,-z)));
   const riverGeometry=subdivideRiver(new THREE.ShapeGeometry(riverShape)); riverGeometry.rotateX(-Math.PI/2); riverGeometry.translate(0,RIVER_LEVEL,0);
-  setCoastDistances(riverGeometry,riverCoast,lighthouse,true);
+  setCoastDistances(riverGeometry,[riverCoast]);
   const river=new THREE.Mesh(riverGeometry,riverMaterial); river.name="river-current"; river.raycast=()=>{}; object.add(river);
   // Coast matches the terrain's exact curve. The foam is on the seaward side only.
-  const coastFoam=new THREE.Mesh(foamRibbon(coast,true,SEA_LEVEL+.004),foamMaterial); coastFoam.name="coast-contact-foam"; coastFoam.raycast=()=>{}; object.add(coastFoam);
+  const foamHeight = SEA_LEVEL + .034;
+  const addFoam = (geometry: THREE.BufferGeometry, name: string) => {
+    const foam = new THREE.Mesh(geometry, foamMaterial);
+    foam.name = name;
+    foam.raycast = () => {};
+    object.add(foam);
+  };
+  const islandWash = [
+    foamRibbon(coast, true, foamHeight, .76),
+    foamRibbon(bank, true, foamHeight, .63),
+  ];
+  addFoam(mergeGeometries(islandWash)!, "coast-contact-foam");
+  islandWash.forEach(geometry => geometry.dispose());
+  addFoam(foamRibbon(VILLAGE_MAINLAND_SHORE, false, foamHeight, .76, false), "mainland-contact-foam");
   const islandRing: Point[]=Array.from({length:65},(_,i)=>[lighthouse[0]+Math.cos(i/64*TAU)*2.52,lighthouse[1]+Math.sin(i/64*TAU)*2.16]);
-  const islandFoam=new THREE.Mesh(foamRibbon(islandRing,true,SEA_LEVEL+.005,.35),foamMaterial); islandFoam.name="lighthouse-rock-foam"; islandFoam.raycast=()=>{}; object.add(islandFoam);
+  addFoam(foamRibbon(islandRing, true, foamHeight, .67), "lighthouse-rock-foam");
   const material=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.91,flatShading:true,side:THREE.DoubleSide});
   const props=new MarineParts();
+  const eddies: THREE.BufferGeometry[] = [];
+  const addEddy = (x: number, z: number, radius: number, depth: number, width: number, angle: number) => {
+    const points: Point[] = Array.from({ length: 15 }, (_, i) => {
+      const t = angle + i / 14 * TAU * .74;
+      return [x + Math.cos(t) * radius, z + Math.sin(t) * depth];
+    });
+    eddies.push(foamRibbon(points, true, foamHeight + .003, width, false));
+  };
   // Sparse shore outcrops and kelp follow the actual contour, away from entrances.
   for(const index of [8,22,49,65,81,109,127,146]) {
     const at=coast[index], prev=coast[index-1], next=coast[index+1];
     const dx=next[0]-prev[0],dz=next[1]-prev[1],length=Math.hypot(dx,dz);
     const x=at[0]+dz/length*.66,z=at[1]-dx/length*.66;
     const rock=new THREE.IcosahedronGeometry(.30,1); rock.scale(1.3,.72,1); props.add(rock,C.stone,[x,-.28,z],[.1,index,.1]);
+    addEddy(x, z, .33, .25, .29, index);
     for(let blade=0;blade<3;blade++) {
       const px=x+.23+blade*.06,pz=z-.18;
       const geometry=new THREE.BufferGeometry(); geometry.setAttribute("position",new THREE.Float32BufferAttribute([px-.025,-.41,pz,px+.025,-.41,pz,px+.10,-.05-blade*.045,pz+.06],3)); geometry.computeVertexNormals(); props.add(geometry,C.kelp);
@@ -386,10 +459,14 @@ export function createVillageMarine(): VillageLifeController {
   for(const x of [-.68,.36]) for(const z of [-.36,.36]) {
     props.beam(C.darkWood,shoreAt(x,-.55,z),shoreAt(x,.25,z),.055);
     props.add(new THREE.TorusGeometry(.072,.018,5,10),C.cream,shoreAt(x,.18,z),[Math.PI/2,0,0]);
+    const [px, , pz] = shoreAt(x, foamHeight, z);
+    if (x > 0) addEddy(px, pz, .08, .08, .19, angle);
   }
   props.box(C.wood,shoreAt(.75,.13,.15),[.35,.26,.3],[0,angle,0]);
   props.tube(C.cream,[shoreAt(.36,.17,.36),shoreAt(.0,.08,.47),shoreAt(-.68,.17,.36)],.016);
   object.add(props.finish("shore-kelp-rocks-and-mooring",material));
+  addFoam(mergeGeometries(eddies)!, "shore-eddy-foam");
+  eddies.forEach(eddy => eddy.dispose());
 
   const buoyParts=new MarineParts();
   buoyParts.ball(C.teal,[0,.07,0],.13,[1,1.3,1]);
@@ -400,22 +477,26 @@ export function createVillageMarine(): VillageLifeController {
   const buoyLocations=[sampleFishingRoute(.25),sampleFishingRoute(.50),sampleFishingRoute(.75),sampleFishingRoute(.97)].map(p=>({x:p.x+Math.cos(p.heading)*2.25,z:p.z-Math.sin(p.heading)*2.25}));
   const {boat,pot,line,catchFish,fishingFloat}=createBoat(material); object.add(boat);
 
-  // Instanced, opaque broken wake strokes: short lifetimes, no accumulated meshes.
-  const wakeGeometry=new THREE.PlaneGeometry(1,.035); wakeGeometry.rotateX(-Math.PI/2);
-  const wakeMaterial=new THREE.MeshBasicMaterial({color:"#a6d6bf",side:THREE.DoubleSide});
-  const wake=new THREE.InstancedMesh(wakeGeometry,wakeMaterial,24); wake.name="fishing-boat-wake"; wake.raycast=()=>{}; wake.instanceMatrix.setUsage(THREE.DynamicDrawUsage); wake.frustumCulled=false; object.add(wake);
+  // Every stroke rides the same wave field. Its opacity follows its age and speed.
+  const wakeGeometry=new THREE.PlaneGeometry(1,1); wakeGeometry.rotateX(-Math.PI/2);
+  const wakeShader = wakeMaterial();
+  const wake=new THREE.InstancedMesh(wakeGeometry,wakeShader,24); wake.name="fishing-boat-wake"; wake.raycast=()=>{}; wake.instanceMatrix.setUsage(THREE.DynamicDrawUsage); wake.frustumCulled=false; object.add(wake);
+  wake.setColorAt(0, new THREE.Color(0, 0, 0));
+  wake.instanceColor!.setUsage(THREE.DynamicDrawUsage);
   const matrix=new THREE.Matrix4(), quaternion=new THREE.Quaternion(), position=new THREE.Vector3(), scale=new THREE.Vector3(), euler=new THREE.Euler();
   const floatBase=new THREE.Vector3(),floatUp=new THREE.Vector3();
-  const wakeColor=new THREE.Color(), wakeWaterColor=new THREE.Color("#258e8c"), wakeFoamColor=new THREE.Color("#c0dfc9");
+  const lineStart = new THREE.Vector3(-1.12, 1.29, -.53), lineEnd = new THREE.Vector3(), lineDirection = new THREE.Vector3(), vertical = new THREE.Vector3(0, 1, 0);
+  const wakeOpacity = new THREE.Color();
   const setInstance=(mesh:THREE.InstancedMesh,index:number,x:number,y:number,z:number,rotation:XYZ,size:XYZ)=>{
     matrix.compose(position.set(x,y,z),quaternion.setFromEuler(euler.set(...rotation)),scale.set(...size)); mesh.setMatrixAt(index,matrix);
   };
   let disposed=false;
-  object.userData={decorative:true,drawCalls:12,seaLevel:SEA_LEVEL,routeLength,cycleSeconds:VILLAGE_FISHING_CYCLE_SECONDS};
+  object.userData={decorative:true,drawCalls:14,seaLevel:SEA_LEVEL,routeLength,cycleSeconds:VILLAGE_FISHING_CYCLE_SECONDS};
   const update:VillageLifeController["update"]=(frame)=>{
     if(disposed) return;
     const time=frame.reduced?0:frame.time;
-    for(const water of [seaMaterial,riverMaterial,foamMaterial]) {water.uniforms.uTime.value=time; water.uniforms.uDetail.value=frame.quality==="low"?.55:1;}
+    for(const water of waterMaterials) {water.uniforms.uTime.value=time; water.uniforms.uDetail.value=frame.quality==="low"?.55:1;}
+    wakeShader.uniforms.uTime.value=time;
     const cycleTime=time+VILLAGE_MARINE_PRESENTATION_OFFSET;
     const cycle=sampleFishingCycle(cycleTime), routeProgress=(cycle.progress+.75)%1, location=sampleFishingRoute(routeProgress);
     const wave=sampleVillageWaves(location.x,location.z,time);
@@ -431,8 +512,12 @@ export function createVillageMarine(): VillageLifeController {
       const gearX=THREE.MathUtils.lerp(-1.12,-.38,stow),gearZ=THREE.MathUtils.lerp(-.53,-1.0,stow);
       const gearY=THREE.MathUtils.lerp(.56,.58,stow)-cycle.gearDepth*1.13;
       pot.position.set(gearX,gearY,gearZ); pot.rotation.y=Math.sin(time*.65)*.06*cycle.gearDepth;
-      const lineLength=1.29-gearY-.14;
-      line.position.set(-1.12,1.29-lineLength/2,-.53); line.scale.y=Math.max(.01,lineLength); line.visible=stow<.02;
+      lineEnd.copy(pot.position); lineEnd.y += .14;
+      lineDirection.subVectors(lineEnd, lineStart);
+      line.position.copy(lineStart).lerp(lineEnd, .5);
+      line.scale.y = lineDirection.length();
+      line.quaternion.setFromUnitVectors(vertical, lineDirection.multiplyScalar(1 / line.scale.y));
+      line.visible = stow < .98;
       catchFish.visible=cycle.catchVisible;
       catchFish.position.set(gearX,gearY+.15,gearZ+.05); catchFish.rotation.set(0,Math.sin(time*3)*.2,Math.sin(time*4)*.18);
       if(cycle.phase==="stow") {catchFish.position.x=THREE.MathUtils.lerp(-1.12,-.23,cycle.phaseProgress); catchFish.position.y=.60+Math.sin(cycle.phaseProgress*Math.PI)*.23; catchFish.position.z=THREE.MathUtils.lerp(-.53,-.73,cycle.phaseProgress);}
@@ -453,16 +538,25 @@ export function createVillageMarine(): VillageLifeController {
     buoys.instanceMatrix.needsUpdate=true;
     const wakeCount=frame.quality==="low"?12:24; wake.count=wakeCount;
     wake.visible=!frame.reduced&&visible&&(cycle.speed>.01||sampleFishingCycle(cycleTime-6).speed>.01);
-    for(let i=0;i<(wake.visible?wakeCount:0);i++) {
-      const age=(i>>1)*.55+.25, oldCycle=sampleFishingCycle(cycleTime-age),old=sampleFishingRoute(oldCycle.progress+.75);
-      const speed=oldCycle.speed/(routeLength/216), fade=(1-age/7)*speed;
-      const side=i%2?1:-1, spread=.32+age*.15;
-      const x=old.x-Math.sin(old.heading)*1.48+Math.cos(old.heading)*spread*side;
-      const z=old.z-Math.cos(old.heading)*1.48-Math.sin(old.heading)*spread*side;
-      setInstance(wake,i,x,sampleVillageWaves(x,z,time).height+.009,z,[0,old.heading+Math.PI/2+side*.38,0],[Math.max(.001,fade*.52),1,Math.max(.001,fade)]);
-      wake.setColorAt(i,wakeColor.lerpColors(wakeWaterColor,wakeFoamColor,Math.max(0,fade)*.63));
+    if (wake.visible) for (let i = 0; i < wakeCount / 2; i++) {
+      const age = i === 0 ? 0 : (i - .6) * .57;
+      const oldCycle = age ? sampleFishingCycle(cycleTime - age) : cycle;
+      const old = age ? sampleFishingRoute(oldCycle.progress + .75) : location;
+      const strength = oldCycle.speed / (routeLength / 216);
+      const fade = (1 - age / 7) * strength;
+      const forward = i === 0 ? .78 : -1.47;
+      const spread = i === 0 ? .48 : .26 + age * .21;
+      const sx = Math.sin(old.heading), sz = Math.cos(old.heading);
+      for (let side = -1; side <= 1; side += 2) {
+        const index = 2 * i + Number(side > 0);
+        const x = old.x + sx * forward + sz * spread * side;
+        const z = old.z + sz * forward - sx * spread * side;
+        const heading = old.heading + Math.PI / 2 - side * (i === 0 ? .33 : .59);
+        setInstance(wake, index, x, foamHeight + .008, z, [0, heading, 0], [.38 + fade * .57, 1, .08 + fade * .14]);
+        wake.setColorAt(index, wakeOpacity.setRGB(fade * .84, 0, 0));
+      }
     }
-    wake.instanceMatrix.needsUpdate=true; if(wake.instanceColor) wake.instanceColor.needsUpdate=true;
+    if (wake.visible) { wake.instanceMatrix.needsUpdate = true; wake.instanceColor!.needsUpdate = true; }
   };
   update({time:0,delta:0,reduced:false,quality:"high",visible:()=>true});
   return {object,update,dispose:()=>{

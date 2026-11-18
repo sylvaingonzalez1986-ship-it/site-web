@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { parseChanvrierProfile, getChanvrierStartingXp, CHANVRIER_STRENGTHS, CHANVRIER_APPEARANCE_OPTIONS, getChanvrierAppearance } from "./arena-chanvrier";
+import { parseChanvrierProfile, getChanvrierStartingXp, CHANVRIER_STRENGTHS, CHANVRIER_APPEARANCE_OPTIONS, getChanvrierAppearance, getChanvrierColors } from "./arena-chanvrier";
+import { CHANVRIER_BRETON_OUTFITS } from "./chanvrier-wardrobe-catalog";
 import { startKqGame, KQ_BUDDIES } from "./kanab-quest-game";
 import { getKqMachineCondition } from "./kanab-quest-maintenance";
 import { quoteKqCommerce, type KqCommerceState, type KqCommerceStock } from "./kanab-quest-commerce";
@@ -71,6 +72,24 @@ describe("machine maintenance", () => {
 });
 
 describe("independent appearance choices", () => {
+  it("keeps dye zones and underlying pieces across a JSON round trip for each Breton outfit", () => {
+    for (const kit of CHANVRIER_BRETON_OUTFITS) {
+      const appearance = { ...getChanvrierAppearance({gender:"female"}), hair:"braids", ...kit.appearance,
+        dyes:{ ...kit.appearance.dyes, eyes:"#1a8272", hair:"#684265" } };
+      const saved = parseChanvrierProfile(JSON.parse(JSON.stringify({...profile, clothing:kit.clothing, appearance})))!;
+      expect(saved.appearance).toEqual(appearance);
+      expect(getChanvrierColors(saved)).toMatchObject(appearance.dyes);
+      expect(saved.strength).toBe(profile.strength);
+    }
+  });
+
+  it("rejects unsupported versions, incomplete v2 records and invalid dye parameters", () => {
+    const base = getChanvrierAppearance({gender:"female"});
+    for (const appearance of [{version:2}, {...base, version:3}, {...base,dyes:{top:"url(x)"}}, {...base,dyes:{wallet:"#ffffff"}}]) {
+      expect(parseChanvrierProfile({...profile,appearance})).toBeNull();
+    }
+    expect(parseChanvrierProfile({...profile,appearance:{version:1, hair:"long"}})?.appearance).toEqual({...base,hair:"long"});
+  });
   it("preserves old profiles and fills the new default appearance", () => {
     const legacy = parseChanvrierProfile(profile)!;
     expect(legacy).toEqual(profile);

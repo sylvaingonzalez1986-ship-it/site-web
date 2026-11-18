@@ -195,7 +195,8 @@
 .editorGroup { display: flex; flex-wrap: wrap; gap: .16rem; }
 .editorGroup .stationChoice { padding-inline: .55rem; }
 .editorHint { margin: .1rem 0 .35rem; font-size: .83rem; }
-.iso[data-warehouse-iso-viewport] :is(.cameraBar, .editorHint) {
+.iso[data-warehouse-iso-viewport] :is(.cameraBar, .editorHint),
+.info[data-warehouse-service-status] {
   --game-panel-art: var(--game-panel-paper,url("/placard/ui/panel-paper-v1.webp"));
   padding: .3rem .7rem;
   color: var(--arcade-ink,#172923);
@@ -216,3 +217,4 @@
   .stationDisclosure[aria-expanded="true"] svg { transform: rotate(180deg); }
 }
 @media(max-width:500px) { .isoFrame { height: clamp(308px,83vw,385px); } }
+.fallbackFigure { display: block; width: 100%; height: 100%; object-fit: contain; }

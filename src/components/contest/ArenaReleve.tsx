@@ -9,6 +9,7 @@ import { AppDialog } from '@/components/ui/AppDialog';
 import { ARENA_RELEVE_CHAPTERS, ARENA_RELEVE_MEETINGS, ARENA_RELEVE_SCENES, type ArenaReleveMeetingId, type ArenaReleveStage } from '@/lib/arena-releve';
 import { advanceArenaReleve, createArenaReleveSession, getArenaReleveProgress, restartArenaReleveChapter } from '@/lib/arena-releve-session';
 import { getKqReleveProductionProgress } from '@/lib/kanab-quest-releve-production';
+import { formatKqCash } from '@/lib/kanab-quest-equipment';
 import { getReleveCommerceCash, getReleveCommerceProgress } from '@/lib/kanab-quest-releve-commerce';
 import { createReleveMeetingSession } from '@/lib/arena-releve-meeting-session';
 import type { ArenaPlayableLessonId } from '@/lib/arena-playable-learning';
@@ -21,7 +22,6 @@ import { ArenaReleveJournal } from './ArenaReleveJournal';
 import { useArenaLearningStorage } from './ArenaLearningStorage';
 import { KqPlacardNavigation, type PlacardNavKey } from '../placard/KqPlacardNavigation';
 import type { KqReleveDestination } from '../placard/KqReleveCommerce';
-import { KqPlacardMap, type PlacardMapOpen } from '../placard/KqPlacardMap';
 import placardStyles from '../placard/PlacardPlayerShell.module.css';
 import retro from './ArenaRetro.module.css';
 import styles from './ArenaReleve.module.css';
@@ -90,8 +90,6 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
   const [quarter, setQuarter] = useState(false);
   const [warehouseVisit, setWarehouseVisit] = useState(false);
   const [commerceDestination, setCommerceDestination] = useState<KqReleveDestination>(() => ARENA_RELEVE_CHAPTERS[session.getSnapshot().state.chapter].stage === 'ledger' ? 'accounts' : 'market');
-  const [quarterNotice, setQuarterNotice] = useState('');
-  const [highlightedBuilding, setHighlightedBuilding] = useState<string | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const chapter = ARENA_RELEVE_CHAPTERS[state.chapter];
   const isArrival = !state.completed && chapter.stage === 'arrival';
@@ -104,7 +102,6 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
   const place = warehouseVisit ? CHAPTER_PLACES.plan : commerceChapter ? COMMERCE_PLACES[commerceDestination] : CHAPTER_PLACES[chapter.stage];
   const nextChapter = ARENA_RELEVE_CHAPTERS[state.chapter + 1];
   const nextNav = nextChapter ? CHAPTER_NAV[nextChapter.stage] : null;
-  const recommendedBuilding = currentNav === 'game' || currentNav === 'workshop' ? 'warehouse' : currentNav === 'harvests' ? 'arena' : currentNav === 'treasury' ? 'office' : currentNav;
   const unavailable = Object.fromEntries(NAV_KEYS.filter(key => key !== 'hub' && key !== currentNav && !commerceNavs.includes(key) && !(canVisitWarehouse && key === 'workshop') && !(progress.complete && key === nextNav)).map(key => [key, 'Cette activité se découvre dans les autres chapitres ou les rencontres du didacticiel.'])) as Partial<Record<PlacardNavKey, string>>;
   useEffect(() => {
     if (chapter.stage === 'arrival') void import('../placard/KqReleveProduction').catch(() => undefined);
@@ -120,24 +117,15 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
     if (result.chapter !== state.chapter && ARENA_RELEVE_CHAPTERS[result.chapter].stage !== 'delivery') setCommerceDestination(ARENA_RELEVE_CHAPTERS[result.chapter].stage === 'ledger' ? 'accounts' : 'market');
     setQuarter(false);
     setWarehouseVisit(false);
-    setQuarterNotice('');
     if (result.completed) onCompleted?.();
   };
   const resumeCulture = () => { setWarehouseVisit(false); setGeneration(value => value + 1); };
   const navigate = (key: PlacardNavKey) => {
-    if (key === 'hub') { setQuarter(true); setQuarterNotice(''); return; }
-    if (commerceNavs.includes(key) && NAV_DESTINATIONS[key]) { setCommerceDestination(NAV_DESTINATIONS[key]); setQuarter(false); setQuarterNotice(''); return; }
-    if (key === 'workshop' && canVisitWarehouse) { setWarehouseVisit(true); setQuarter(false); setQuarterNotice(''); return; }
-    if (key === currentNav) { if (warehouseVisit) resumeCulture(); setQuarter(false); setQuarterNotice(''); return; }
-    if (progress.complete && key === nextNav) { next(); return; }
-    setQuarterNotice(`Nous découvrirons ce lieu plus tard. Loïc t’attend : ${CHAPTER_PLACES[chapter.stage]}.`);
-  };
-  const openMap: PlacardMapOpen = (view, options) => {
-    if (view === 'treasury' && options?.treasuryPole === 'bank') {
-      setQuarterNotice('Loïc te présentera la banque après ta première récolte, dans les rencontres du quartier.');
-      return;
-    }
-    navigate(view === 'arena' ? 'harvests' : view);
+    if (key === 'hub') { setQuarter(true); return; }
+    if (commerceNavs.includes(key) && NAV_DESTINATIONS[key]) { setCommerceDestination(NAV_DESTINATIONS[key]); setQuarter(false); return; }
+    if (key === 'workshop' && canVisitWarehouse) { setWarehouseVisit(true); setQuarter(false); return; }
+    if (key === currentNav) { if (warehouseVisit) resumeCulture(); setQuarter(false); return; }
+    if (progress.complete && key === nextNav) next();
   };
   const guide: ReleveGuideStep[] = quarter ? [{ id: 'quarter-resume', selector: '[data-releve-resume]', title: place, instruction: 'Ta ferme est sauvegardée. Retrouve-moi pour continuer.' }] : warehouseVisit ? [
     { id: 'warehouse-resume', selector: '[data-warehouse-campaign-action="resume"], [data-warehouse-campaign-action="start"]', title: 'Retour à ta culture', instruction: 'Retrouve ta campagne avec ce bouton, comme dans le jeu.' },
@@ -153,10 +141,16 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
   </ArenaReleveGuide>;
   const journal = <ArenaReleveJournal chapter={chapter} chapterIndex={state.chapter} completed={state.completed} onPause={onClose} onRestartChapter={() => setConfirm('chapter')} onRestartAll={() => setConfirm('all')} />;
   return <>
-    <StoryFrame title={isArrival ? 'La relève' : quarter ? 'Mon quartier' : place} onClose={onClose} coach={coach} immersive={isArrival} navigation={!isArrival ? <KqPlacardNavigation active={quarter ? 'hub' : warehouseVisit ? 'workshop' : currentNav} onNavigate={navigate} onHighlight={setHighlightedBuilding} unavailable={unavailable} localNavigation /> : undefined}>
-      {!isArrival ? <header className={placardStyles.sectionHeader} data-releve-hud><button type="button" onClick={() => { if (canVisitWarehouse && !warehouseVisit && !quarter) setWarehouseVisit(true); else setQuarter(value => !value); setQuarterNotice(''); }} aria-label={quarter ? 'Revenir à mon activité' : canVisitWarehouse && !warehouseVisit ? 'Retour à l’entrepôt' : 'Retour au quartier'}><ArrowLeft size={18} aria-hidden="true" />{quarter ? 'Mon activité' : canVisitWarehouse && !warehouseVisit ? 'Entrepôt' : 'Quartier'}</button><h1>{quarter ? 'Mon quartier' : place}</h1><details className={styles.storyMenu}><summary aria-label="Registre et options de l’essai"><BookOpen size={20} aria-hidden="true" /></summary><div>{journal}<button type="button" onClick={onClose}>Mettre l’essai en pause</button></div></details></header> : null}
+    <StoryFrame title={isArrival ? 'La relève' : quarter ? 'Mon quartier' : place} onClose={onClose} coach={coach} immersive={isArrival} navigation={!isArrival ? <KqPlacardNavigation active={quarter ? 'hub' : warehouseVisit ? 'workshop' : currentNav} onNavigate={navigate} onHighlight={() => undefined} unavailable={unavailable} localNavigation /> : undefined}>
+      {!isArrival ? <header className={placardStyles.sectionHeader} data-releve-hud><button type="button" onClick={() => { if (canVisitWarehouse && !warehouseVisit && !quarter) setWarehouseVisit(true); else setQuarter(value => !value); }} aria-label={quarter ? 'Revenir à mon activité' : canVisitWarehouse && !warehouseVisit ? 'Retour à l’entrepôt' : 'Retour au quartier'}><ArrowLeft size={18} aria-hidden="true" />{quarter ? 'Mon activité' : canVisitWarehouse && !warehouseVisit ? 'Entrepôt' : 'Quartier'}</button><h1>{quarter ? 'Mon quartier' : place}</h1><details className={styles.storyMenu}><summary aria-label="Registre et options de l’essai"><BookOpen size={20} aria-hidden="true" /></summary><div>{journal}<button type="button" onClick={onClose}>Mettre l’essai en pause</button></div></details></header> : null}
       {storageWarning ? <p className={styles.warning} role="status">{storageWarning}</p> : null}
-      {quarter ? <section className={styles.quarter} data-releve-quarter><div className={styles.resumeTask}><MapPin size={18} aria-hidden="true" /><div><small>Ton objectif en cours</small><strong>{chapter.title}</strong></div><button type="button" data-releve-resume onClick={() => setQuarter(false)}>Reprendre<ArrowRight size={17} aria-hidden="true" /></button></div>{quarterNotice ? <p role="status" className={styles.warning}>{quarterNotice}</p> : null}<KqPlacardMap isolated cashCents={cashCents} tents={1} activeRun={!!state.production.game && state.production.game.phase !== 'complete'} recommended={recommendedBuilding} highlightedBuilding={highlightedBuilding} onOpen={openMap} onOpenCollection={() => navigate('collection')} /></section> : null}
+      {quarter ? <section className={styles.quarter} data-releve-quarter>
+        <div className={styles.resumeTask}>
+          <MapPin size={18} aria-hidden="true" />
+          <div><small>Chapitre {state.chapter + 1} sur {ARENA_RELEVE_CHAPTERS.length}</small><strong>{chapter.title}</strong><small>Argent de l’essai · {formatKqCash(cashCents)}</small></div>
+          <button type="button" data-releve-resume onClick={() => setQuarter(false)}>Reprendre<ArrowRight size={17} aria-hidden="true" /></button>
+        </div>
+      </section> : null}
       {warehouseVisit && !quarter ? <Production chapter="plan" state={state.production} onChange={production => session.update(current => ({ ...current, production }))} onOpenCulture={resumeCulture} /> : null}
       <div hidden={quarter || warehouseVisit} className={isArrival ? styles.immersiveActivity : styles.activity} data-releve-activity>
       {!isArrival ? <h2 ref={heading} tabIndex={-1} className={styles.activityHeading}>{state.completed ? 'Le registre se remplit.' : chapter.title}</h2> : null}
@@ -174,7 +168,7 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
     </StoryFrame>
     <AppDialog open={!!confirm} onClose={() => setConfirm(null)} title={confirm === 'all' ? 'Recommencer La relève ?' : 'Revenir au début du chapitre ?'} className={styles.confirm}>
       <p>{confirm === 'all' ? 'Le plan, les achats et la récolte de cette aventure d’essai seront remis à zéro.' : 'Tu retrouveras exactement le budget, le matériel et les stocks du début de ce chapitre. Les actions réalisées depuis seront annulées dans cet essai.'}</p>
-      <div className={styles.coachActions}><button type="button" onClick={() => setConfirm(null)}>Garder ma progression</button><button type="button" className={styles.primary} onClick={() => { if (confirm === 'all') session.restart(); else session.update(restartArenaReleveChapter); setCommerceDestination(chapter.stage === 'ledger' ? 'accounts' : 'market'); setGeneration(value => value + 1); setQuarter(false); setWarehouseVisit(false); setQuarterNotice(''); setConfirm(null); }}>Recommencer cet essai</button></div>
+      <div className={styles.coachActions}><button type="button" onClick={() => setConfirm(null)}>Garder ma progression</button><button type="button" className={styles.primary} onClick={() => { if (confirm === 'all') session.restart(); else session.update(restartArenaReleveChapter); setCommerceDestination(chapter.stage === 'ledger' ? 'accounts' : 'market'); setGeneration(value => value + 1); setQuarter(false); setWarehouseVisit(false); setConfirm(null); }}>Recommencer cet essai</button></div>
     </AppDialog>
   </>;
 }

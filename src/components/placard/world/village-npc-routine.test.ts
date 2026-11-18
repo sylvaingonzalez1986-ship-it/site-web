@@ -3,7 +3,7 @@ import { createVillageBuilding } from "./village-buildings";
 import { VILLAGE_CHARACTER_STRIDE_PER_METER } from "./village-character-gait";
 import { paintingToGround, VILLAGE_PLACES, villagePlacePosition } from "./village-layout";
 import type { VillageLifeFrame, VillageWalkSurface } from "./village-life-types";
-import { createVillageNpcRoutine, findVillageNpcPathSpawn, VILLAGE_NPC_WALK_RADIUS } from "./village-npc-routine";
+import { createVillageNpcRoutine, createVillagePlayerRoute, findVillageNpcPathSpawn, VILLAGE_NPC_WALK_RADIUS } from "./village-npc-routine";
 import { createVillageTerrain, disposeVillageObject } from "./village-terrain";
 import { createVillageWalkSurface, type VillageGroundPath } from "./village-walk-surface";
 import type { FishingPhase, NpcPoint } from "./village-npc-types";
@@ -17,6 +17,10 @@ describe("village NPC routines", () => {
     const surface = createVillageWalkSurface(terrain, buildings), paths: VillageGroundPath[] = terrain.userData.groundPaths;
     const [bx, bz] = paintingToGround(1030, 640), [lx, lz] = paintingToGround(620, 580);
     try {
+      const pathHeights = new Set(paths.flatMap(path => path.samples.map(({ x, z }) => surface.heightAt(x, z))));
+      expect(pathHeights).toContain(0.044);
+      expect(pathHeights).toContain(0.049);
+      expect(pathHeights).toContain(0.0585);
       for (const [id, preferred] of [["breton", [bx, 0.08, bz]], ["loic", [lx, 0.08, lz]]] as const) {
         const spawn = findVillageNpcPathSpawn(surface, paths, [...preferred])!;
         expect(spawn).not.toBeNull();
@@ -66,9 +70,21 @@ describe("village NPC routines", () => {
     let state = routine.update(frame(0));
     for (let i = 0; i < 120; i++) state = routine.update(frame(i / 30));
     expect(state.pose.speed).toBeGreaterThan(0.1);
+    expect(state.pose.walkBlend).toBeGreaterThan(0.9);
     const goal = state.destination, start = [...state.position];
-    for (let i = 0; i < 90; i++) state = routine.update(frame(4 + i / 30), [-10, 5, -10], { type: "tutorial", emphasis: 0.5 });
+    const walkingYaw = state.yaw, walkingSpeed = state.pose.speed, originalLook = state.pose.lookYaw;
+    const interruption = { type: "tutorial", emphasis: 0.5 } as const;
+    for (let i = 0; i < 8; i++) {
+      const previousBlend = state.pose.walkBlend!;
+      state = routine.update(frame(4 + i / 30), [-10, 5, -10], interruption);
+      expect(state.yaw).toBe(walkingYaw);
+      expect(Math.abs(state.pose.walkBlend! - previousBlend)).toBeLessThanOrEqual(5 / 30 + 1e-8);
+    }
+    expect(state.pose.speed).toBeLessThan(walkingSpeed);
+    expect(Math.abs(state.pose.lookYaw - originalLook)).toBeGreaterThan(0.1);
+    for (let i = 8; i < 90; i++) state = routine.update(frame(4 + i / 30), [-10, 5, -10], interruption);
     expect(state.destination).toBe(goal); expect(state.pose.speed).toBeLessThan(0.01);
+    expect(state.pose.walkBlend).toBe(0);
     expect(Math.hypot(state.position[0] - start[0], state.position[2] - start[2])).toBeLessThan(0.2);
     expect(Math.abs(state.pose.lookYaw)).toBeLessThanOrEqual(0.75); expect(Math.abs(state.pose.lookPitch)).toBeLessThanOrEqual(0.3);
     const paused = [...state.position];
@@ -100,6 +116,7 @@ describe("village NPC routines", () => {
     const routine = createVillageNpcRoutine("loic", surface, paths, [0, 0.08, 0], -Math.PI / 2);
     let x = 0, z = 0, yaw = -Math.PI / 2, stride = 0;
     let moving = 0, pivoting = 0, steppedForward = false, steppedBack = false;
+    let turnAnticipation = 0;
     const turn = Math.PI * 2;
     for (let i = 0; i < 1500; i++) {
       const state = routine.update(frame(i / 30));
@@ -107,6 +124,7 @@ describe("village NPC routines", () => {
       const yawChange = Math.abs(state.yaw - yaw), change = (state.pose.stride - stride + turn) % turn;
       expect(change).toBeCloseTo(distance * VILLAGE_CHARACTER_STRIDE_PER_METER, 8);
       expect(yawChange).toBeLessThanOrEqual(3.4 / 30 + 1e-8);
+      turnAnticipation = Math.max(turnAnticipation, Math.abs(state.pose.turnLean ?? 0));
       if (distance > 1e-8) {
         const facing = Math.atan2(dx, dz) - state.yaw;
         expect(Math.abs(Math.atan2(Math.sin(facing), Math.cos(facing)))).toBeLessThanOrEqual(0.3 + 1e-8);
@@ -121,8 +139,31 @@ describe("village NPC routines", () => {
       [x, , z] = state.position; yaw = state.yaw; stride = state.pose.stride;
     }
     expect(pivoting).toBeGreaterThan(20);
+    expect(turnAnticipation).toBeGreaterThan(0.5);
     expect(moving).toBeGreaterThan(300);
     expect(steppedForward && steppedBack).toBe(true);
+  });
+
+  it("smooths the player's detour only where its complete footprint fits", () => {
+    const surface: VillageWalkSurface = {
+      isWalkable: (x, z, radius) => Math.hypot(x - 2, z) > 0.6 + radius,
+      heightAt: () => 0.08,
+    };
+    const paths = [{ samples: Array.from({ length: 11 }, (_, i) => ({ x: i * 0.4, z: -1.4 })), width: 0.9 }];
+    const spawn = { x: 0, z: 0 }, target = { x: 4, z: 0 };
+    const route = createVillagePlayerRoute(surface, paths, spawn)(spawn, target);
+    expect(route.length).toBeGreaterThan(1);
+    expect(route.length).toBeLessThan(6);
+    expect(route.at(-1)).toEqual(target);
+    let previous = spawn;
+    for (const point of route) {
+      for (let i = 0; i <= 100; i++) {
+        const x = previous.x + (point.x - previous.x) * i / 100;
+        const z = previous.z + (point.z - previous.z) * i / 100;
+        expect(surface.isWalkable(x, z, VILLAGE_NPC_WALK_RADIUS)).toBe(true);
+      }
+      previous = point;
+    }
   });
 
   it("waits safely for a transient obstruction and resumes the retained route", () => {

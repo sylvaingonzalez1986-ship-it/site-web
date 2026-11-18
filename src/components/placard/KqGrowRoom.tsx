@@ -78,6 +78,7 @@ export function KqGrowRoom({ zones, selectedZoneId, onSelectZone, playerProfile,
   const equipment = zone ? [...new Set([zone.deviceCode,zone.lightingCode,zone.airCode,zone.supportCode,...(zone.optionCodes??[])].filter((code): code is string => !!code))] : [];
   const effects = zone?.effects?.filter(Boolean) ?? [];
   const infoId = "grow-info-"+id;
+  const showServiceStatus = !!warehouseEditor && warehouseEditor.managing === false && (zone?.kind === "drying" || zone?.kind === "storage");
 
   return <div ref={sceneRef} className={styles.room} style={{"--room-width":width,"--room-height":ROOM_HEIGHT,"--count":Math.max(1,visible.length)} as CSSProperties}
     data-grow-room="" data-grow-has-plan={!!plan} data-grow-motion={status} aria-label={warehouseEditor ? "Entrepôt" : "Salle de culture"}>
@@ -107,18 +108,18 @@ export function KqGrowRoom({ zones, selectedZoneId, onSelectZone, playerProfile,
       </div>
     </div></>}
     {pbiTargeting && <SectorPicker targeting={pbiTargeting} zones={zones} affectedPlants={affectedPlants}/>}
-    {(!warehouseEditor || !plan) && (zone ? <div className={styles.info}>
+    {(!warehouseEditor || !plan || showServiceStatus) && (zone ? <div className={styles.info} data-warehouse-service-status={showServiceStatus || undefined}>
       <div id={infoId} className={styles.status}><strong>{zone.name}</strong><span>{zoneStatus(zone)}{zone.variety ? " · "+zone.variety : ""}{typeof zone.areaM2==="number" ? " · "+zone.areaM2.toLocaleString("fr-FR")+" m²" : ""}</span></div>
-      <div className={styles.tools}>
+      {!showServiceStatus && <div className={styles.tools}>
         {!plan && zones.length>1 && <div className={styles.travel}>
           <button type="button" aria-label="Zone précédente" disabled={selected===0} onClick={()=>select(selected-1)}><ChevronLeft size={16}/></button>
           {zones.length>PAGE_SIZE ? <select aria-label="Choisir une zone de culture" value={zone.id} onChange={e=>select(zones.findIndex(z=>z.id===e.target.value))}>{zones.map(z=><option key={z.id} value={z.id}>{z.name}</option>)}</select> : <span>{selected+1} / {zones.length}</span>}
           <button type="button" aria-label="Zone suivante" disabled={selected===zones.length-1} onClick={()=>select(selected+1)}><ChevronRight size={16}/></button>
         </div>}
         {!reducedMotion && <button type="button" aria-label={paused?"Reprendre l’animation de la salle":"Mettre l’animation de la salle en pause"} aria-pressed={paused} onClick={()=>setPaused(!paused)}>{paused?<Play size={15}/>:<Pause size={15}/>}</button>}
-      </div>
+      </div>}
       {zone.attention && <p className={styles.attention}><TriangleAlert size={15} aria-hidden="true"/>{zone.attention}</p>}
-      {!!affectedPlants?.length && <details className={styles.details}>
+      {!showServiceStatus && !!affectedPlants?.length && <details className={styles.details}>
         <summary><span className={styles.plantLegend} aria-hidden="true">×</span> {affectedPlants.length} {affectedPlants.length === 1 ? "plante atteinte" : "plantes atteintes"} dans la salle</summary>
         <ul>{affectedPlants.map(plant => <li key={roomSectorKey(plant) + ":" + plant.slot}>
           {zones.find(item => item.id === plant.zoneId)?.name ?? plant.zoneId} · case {plant.x + 1}, {plant.y + 1} · {["nord-ouest", "nord-est", "sud-ouest", "sud-est"][plant.slot]}{plant.label && " · " + plant.label}

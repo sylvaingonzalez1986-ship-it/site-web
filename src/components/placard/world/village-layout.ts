@@ -1,6 +1,9 @@
 import type { VillageBuildingKind } from "./village-buildings";
 import { MAP_ENTRANCES } from "../KqPlacardMap.scene";
 
+export const VILLAGE_SEA_SIZE = 160;
+export const VILLAGE_SEA_LEVEL = -.32;
+
 /** Inverse ground-plane projection of the existing painting; never economy coordinates. */
 export function paintingToGround(px: number, py: number): [number, number] {
   const horizontal = (px - 768) / 49;

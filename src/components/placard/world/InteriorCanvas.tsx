@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import * as THREE from "three";
+import { createGrowWorker } from "../kq-grow-worker-model";
 import { createInteriorObjectArt, createInteriorRoomArt, disposeInteriorArt } from "./interior-art";
 import { findInteriorSpawn, interiorFloorCell, INTERIOR_EYE_HEIGHT, interiorMovementVector, interiorPositionIsFree, moveInteriorPlayer, type InteriorPoint } from "./interior-movement";
+import { approachVillageValue, villageAngleDifference, villageApproachSpeed, villageWalkBlend } from "./village-character-motion";
 import type { InteriorSceneProps } from "./interior-types";
 import styles from "./InteriorCanvas.module.css";
 
@@ -36,6 +38,10 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
   const scene = new THREE.Scene();
+  let worker: ReturnType<typeof createGrowWorker> | undefined;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let walked = 0, walk = 0, actorTime = 0, speed = 0;
+  let actorYaw = Math.PI, previousCameraYaw = yaw;
   scene.background = new THREE.Color("#f4dfb8");
   scene.add(new THREE.HemisphereLight("#fff7de", "#ad9a74", 2.4));
   const sunlight = new THREE.DirectionalLight("#fff2cf", 2.3);
@@ -88,17 +94,40 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
   function request() { if (active() && !frame) frame = requestAnimationFrame(draw); }
   function stop() {
     keys.clear(); drag = null; previousFrame = 0;
+    speed = 0; walk = 0;
+    worker?.pose(walked, 0, null, 0, null);
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
     if (document.pointerLockElement === canvas) document.exitPointerLock();
   }
   function setCamera() {
+    if (worker) worker.object.visible = props.overhead;
     if (props.overhead) {
       const distance = Math.max(props.room.depth, props.room.width / camera.aspect) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) * 1.12;
       camera.position.set(planPan.x, distance / planZoom, planPan.z); camera.up.set(0, 0, -1); camera.lookAt(planPan.x, 0, planPan.z);
     } else {
       camera.up.set(0, 1, 0); camera.position.set(point.x, INTERIOR_EYE_HEIGHT, point.z);
       camera.rotation.set(pitch, yaw, 0, "YXZ");
+      if (props.followPlayer && worker) {
+        // At a doorway the wall behind the player is too close for a full figure.
+        // Look across the aisle from the nearest unobstructed shoulder instead.
+        let distance = 0, angle = yaw;
+        for (const offset of [0, .65, -.65, 1.25, -1.25, 1.82, -1.82, Math.PI]) {
+          let clear = 0;
+          const direction = yaw + offset, dx = Math.sin(direction), dz = Math.cos(direction);
+          for (let d = .2; d <= 3.41; d += .2) {
+            if (!interiorPositionIsFree({ x: point.x + dx*d, z: point.z + dz*d }, props.room)) break;
+            clear = d;
+          }
+          if (clear > distance) { distance = clear; angle = direction; }
+          if (distance >= 2.65) break;
+        }
+        if (distance >= 1.65) {
+          camera.position.set(point.x + Math.sin(angle)*distance, Math.min(props.room.height-.2, 1.55 + distance*.24), point.z + Math.cos(angle)*distance);
+          camera.lookAt(point.x, 1 + Math.sin(pitch)*.7, point.z);
+          worker.object.visible = true;
+        }
+      }
     }
     camera.updateMatrixWorld();
   }
@@ -119,7 +148,29 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
     previousFrame = now;
     const sideways = Number(keys.has("right")) - Number(keys.has("left"));
     const forward = Number(keys.has("forward")) - Number(keys.has("back"));
-    if (!staticOnly && !props.overhead && (sideways || forward)) point = moveInteriorPlayer(point, interiorMovementVector(sideways, forward, yaw, 2.5 * dt), props.room);
+    const moving = !staticOnly && !props.overhead && (sideways !== 0 || forward !== 0);
+    const reduced = reducedMotion.matches;
+    const before = point;
+    if (moving) {
+      const followSpeed = villageApproachSpeed(speed, 1.55, dt, 4.5, 5);
+      const requested = props.followPlayer && worker && !reduced ? followSpeed : 2.5;
+      point = moveInteriorPlayer(point, interiorMovementVector(sideways, forward, yaw, requested * dt), props.room);
+    }
+    const step = Math.hypot(point.x - before.x, point.z - before.z);
+    speed = dt > 0 ? step / dt : 0;
+    if (worker) {
+      walked += step;
+      if (!staticOnly) actorTime += dt;
+      const cameraTurn = villageAngleDifference(yaw, previousCameraYaw);
+      if (!moving) actorYaw += cameraTurn;
+      previousCameraYaw = yaw;
+      const turn = step > 1e-5 ? villageAngleDifference(Math.atan2(point.x - before.x, point.z - before.z), actorYaw) : 0;
+      actorYaw += reduced ? turn : approachVillageValue(0, turn, 8 * dt);
+      walk = reduced ? 0 : villageWalkBlend(walk, speed, dt);
+      worker.object.position.set(point.x, 0, point.z);
+      worker.object.rotation.y = actorYaw;
+      worker.pose(walked, walk, null, 0, null, undefined, reduced ? undefined : actorTime);
+    }
     setCamera();
     const started = performance.now();
     renderer.render(scene, camera);
@@ -146,10 +197,13 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
       slowFrames = slow ? slowFrames + 1 : Math.max(0, slowFrames - 1);
       if (slowFrames >= 6) { autoLow = true; resize(); }
     }
-    if (!staticOnly && (sideways || forward)) request(); else previousFrame = 0;
+    if (!staticOnly && (moving || (props.followPlayer && walk > 0))) request(); else previousFrame = 0;
   }
   function sync(next: InteriorSceneProps) {
     const old = props; props = next;
+    if (!next.profile) { worker?.dispose(); worker = undefined; }
+    else if (!worker) { worker = createGrowWorker(next.profile, { tools: false, groundAt: () => 0 }); scene.add(worker.object); }
+    else if (next.profile !== old.profile) worker.updateAppearance(next.profile);
     if (next.editing && !old.editing) { planZoom = 1; planPan.x = 0; planPan.z = 0; }
     const oldPreviewSignature = previewSignature;
     roomArt.traverse(child => { if (child.userData.interiorRoof) child.visible = !next.overhead; });
@@ -227,7 +281,8 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
       let object: THREE.Object3D | null = hit.object;
       while (object && !object.userData.interiorId) object = object.parent;
       if (!object) return null; // A wall or floor occludes the target.
-      return { id: object.userData.interiorId as string, distance: hit.distance };
+      const distance = props.followPlayer && !props.overhead ? Math.hypot(hit.point.x-point.x, hit.point.y-INTERIOR_EYE_HEIGHT, hit.point.z-point.z) : hit.distance;
+      return { id: object.userData.interiorId as string, distance };
     }
     return null;
   }
@@ -341,6 +396,7 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
   canvas.addEventListener("wheel", wheel, { passive: false });
   canvas.addEventListener("keydown", keyDown); canvas.addEventListener("blur", canvasBlur); canvas.addEventListener("webglcontextlost", contextLost);
   document.addEventListener("mousemove", lockedMove); document.addEventListener("visibilitychange", visibility);
+  reducedMotion.addEventListener("change", request);
   document.addEventListener("pointerlockchange", pointerLockChange);
   document.addEventListener("click", consumeHandledTouchClick, true);
   document.addEventListener("pointerdown", newPointer, true);
@@ -357,12 +413,14 @@ function createRuntime(canvas: HTMLCanvasElement, initial: InteriorSceneProps): 
     destroy() {
       if (disposed) return;
       stop(); disposed = true; observer.disconnect(); intersection?.disconnect();
+      worker?.dispose();
       canvas.removeEventListener("pointerdown", down); canvas.removeEventListener("pointermove", pointerMove); canvas.removeEventListener("pointerup", up);
       canvas.removeEventListener("pointercancel", cancelDrag); canvas.removeEventListener("lostpointercapture", cancelDrag);
       canvas.removeEventListener("pointerleave", pointerLeave);
       canvas.removeEventListener("wheel", wheel);
       canvas.removeEventListener("keydown", keyDown); canvas.removeEventListener("blur", canvasBlur); canvas.removeEventListener("webglcontextlost", contextLost);
       document.removeEventListener("mousemove", lockedMove); document.removeEventListener("visibilitychange", visibility);
+      reducedMotion.removeEventListener("change", request);
       document.removeEventListener("pointerlockchange", pointerLockChange);
       document.removeEventListener("click", consumeHandledTouchClick, true);
       document.removeEventListener("pointerdown", newPointer, true);

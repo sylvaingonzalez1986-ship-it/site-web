@@ -7,7 +7,6 @@ import { useCallback, useRef, useState, useSyncExternalStore } from 'react';
 import { useCookieConsent } from '@/components/cookies/CookieConsentProvider';
 import { createArenaLearningStorage, getArenaLearningEntryScreen, hasSeenArenaIntroduction, readArenaLearningEntryChoice, rememberArenaIntroduction, rememberArenaLearningEntryChoice, type ArenaIntroductionState } from '@/lib/arena-introduction';
 import { ARENA_RELEVE_SCENES } from '@/lib/arena-releve';
-import { requestedKqWorldMode, type KqWorldMode } from '@/lib/kanab-quest-world-mode';
 import { ArenaLearningStorageProvider } from './ArenaLearningStorage';
 import { KqBetaWelcome } from '../placard/KqBetaWelcome';
 import { QuarterCharacterGate } from './QuarterCharacterGate';
@@ -24,10 +23,10 @@ const Game = dynamic(() => import('../placard/PlacardPlayerShell').then(module =
   loading: () => <p role="status">Ton quartier se prépare…</p>,
 });
 const subscribeHydration = () => () => undefined;
-type EntryProps = { userId: string; introductionState: ArenaIntroductionState; betaConnectionKey?: string | null; worldMode?: KqWorldMode };
+type EntryProps = { userId: string; introductionState: ArenaIntroductionState; betaConnectionKey?: string | null };
 type EntryScreen = 'choice' | 'quarter';
 
-function ReadyEntry({ userId, introductionState, betaConnectionKey, worldMode }: EntryProps) {
+function ReadyEntry({ userId, introductionState, betaConnectionKey }: EntryProps) {
   const { showBanner } = useCookieConsent();
   const [storage] = useState(() => createArenaLearningStorage(userId, introductionState === 'seen' && !hasSeenArenaIntroduction(userId)));
   const [preference] = useState(() => readArenaLearningEntryChoice(userId, storage));
@@ -55,9 +54,9 @@ function ReadyEntry({ userId, introductionState, betaConnectionKey, worldMode }:
   }, [onReady, storage, userId]);
   const startArrival = () => {
     const url = new URL(window.location.href);
-    const requestedWorld = requestedKqWorldMode(url.search);
+    const hadWorldParam = url.searchParams.has('world');
     url.search = '?view=workshop&guide=1';
-    if (requestedWorld) url.searchParams.set('world', requestedWorld);
+    if (hadWorldParam) url.searchParams.set('world', '3d');
     url.hash = '';
     window.history.replaceState(window.history.state, '', url.pathname + url.search);
     setArrivalStarted(true);
@@ -68,7 +67,7 @@ function ReadyEntry({ userId, introductionState, betaConnectionKey, worldMode }:
     {showBanner ? <IntroductionLoading /> : <QuarterCharacterGate key={userId} ownerId={userId} onArrivalComplete={startArrival}>
     {screen === 'quarter' ? <>
       <KqBetaWelcome ownerId={userId} connectionKey={betaConnectionKey} />
-      <Game draftOwnerId={userId} initialGuideOpen={guideOpen} initialGuideStep={arrivalStarted ? 'zone' : undefined} {...(worldMode ? { worldMode } : {})} />
+      <Game draftOwnerId={userId} initialGuideOpen={guideOpen} initialGuideStep={arrivalStarted ? 'zone' : undefined} />
     </> : <main className={styles.entry} data-arena-entry-choice>
         <picture className={styles.scene}>
           <source media="(max-width: 850px)" srcSet="/contest/releve/arrival-sylvain-portrait-v1.webp" />

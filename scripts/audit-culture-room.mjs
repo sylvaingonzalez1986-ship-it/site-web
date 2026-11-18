@@ -14,7 +14,7 @@ const previewOnly = process.argv.includes("--preview-only");
 if(previewOnly&&!serve)throw Error("--preview-only requires --serve.");
 const refreshVisuals=process.argv.includes("--refresh-visuals");
 const group = process.argv.find(arg=>arg.startsWith("--check="))?.slice(8);
-if (group && !["warehouse","campaign","orientation","parity","pbi","pbi-smoke"].includes(group)) throw Error("--check accepts warehouse, campaign, orientation, parity, pbi or pbi-smoke.");
+if (group && !["warehouse","warehouse-services","campaign","orientation","parity","pbi","pbi-smoke"].includes(group)) throw Error("--check accepts warehouse, warehouse-services, campaign, orientation, parity, pbi or pbi-smoke.");
 if(refreshVisuals&&group)throw Error("--refresh-visuals runs the complete browser route with existing measured frame data.");
 const output = resolve(root, "output/culture-room", group || (serve ? "preview" : "."));
 const port = Number(process.env.CULTURE_ROOM_PORT ?? (serve ? 3693 : 3694));
@@ -150,9 +150,13 @@ function mount() {
     document.getElementById("root").append(host);
     const reference=createRoot(host);
     const plan=building.state;
+    const noAction=()=>{};
     reference.render(e(KqWarehousePlan,{
       zones:plan.zones,serviceZones:plan.serviceZones,dimensions:getKqWarehouseDimensions(plan),
-      partitions:plan.partitions,selectedId:plan.zones[0]?.id,drawing:false,zoom:100,managing:false,
+      partitions:plan.partitions,selectedId:plan.zones[0]?.id,drawing:false,drawingKind:"culture",
+      anchor:null,cursor:{x:0,y:0},zoom:100,managing:false,locked:true,growing:building.activeRun,
+      onZoom:noAction,onToggleDrawing:noAction,onDrawingKind:noAction,onSelectPoint:noAction,
+      onCursor:noAction,onKeyDown:noAction,onDrawZone:()=>false,onConfigureZone:noAction,onTransformZone:noAction,
     }));
     window.unmountReferencePlan=()=>{reference.unmount();host.remove();};
   };
@@ -572,7 +576,7 @@ async function audit(){
     assert.equal(await page.evaluate(()=>window.inspectFixture().calls.filter(c=>c.method==="POST").length),0);
     pass("Harvest gesture, drying, completed two-variety campaign and read-only return to its report");
     }
-    if(!group||group==="warehouse"){
+    if(!group||group==="warehouse"||group==="warehouse-services"){
     await viewport(390);
     await visit("warehouse");await visibleRoom();
     const warehouse=await state();assert.ok(warehouse.stockGrams>0&&warehouse.stockLots===2);
@@ -581,7 +585,7 @@ async function audit(){
     const ids=[...warehouse.plan.zones,...warehouse.plan.serviceZones].map(zone=>zone.id);
     assert.equal((await page.$$("[data-grow-posts]")).length,1,"One keyboard station list");
     assert.equal((await page.$$("[data-grow-pick]")).length,ids.length,"Real warehouse zone controls mounted");
-    for(const width of [320,390,1440]){
+    for(const width of group==="warehouse-services"?[]:[320,390,1440]){
       await viewport(width);await visibleRoom();await resetCamera();
       await geometry(warehouse.plan);
       assert.equal((await page.$$("[data-grow-camera]")).length,1,"One warehouse viewport");
@@ -601,8 +605,20 @@ async function audit(){
       await selectOnFloor("drying");
       await page.waitForSelector(actor("idle"));
     }
+    if(group==="warehouse-services")await selectOnFloor("drying");
     await page.waitForSelector('[data-warehouse-room="drying"][aria-selected="true"]');
     assert.match(await page.$eval(room,n=>n.innerText),/1 culture en séchage/);
+    if(group==="warehouse-services"){
+      await selectOnFloor("storage");
+      await page.waitForSelector('[data-warehouse-room="storage"][aria-selected="true"]');
+      const stockLabel=warehouse.stockGrams.toLocaleString("fr-FR")+" g";
+      assert.ok((await page.$eval(room,n=>n.innerText)).includes(stockLabel),"Storage inspection displays the occupied stock in grams");
+      await selectOnFloor("culture-2");
+      await page.waitForSelector('[data-warehouse-room="culture"][aria-selected="true"]');
+      assert.deepEqual((await state()).plan,warehouse.plan);
+      assert.equal((await state()).calls.filter(c=>c.method!=="GET").length,0);
+      pass("Drying and stock status, return to culture and no mutation",{stockGrams:warehouse.stockGrams});
+    }else{
     await closer("worker-drying-close-1440","drying");
     await viewport(390);await visibleRoom();await resetCamera();
     const baseline=await camera();await tap("[data-grow-zoom-in]");const enlarged=await camera();
@@ -627,7 +643,8 @@ async function audit(){
     await openStationButtons();
     await page.focus(pick("culture-1"));await page.keyboard.press("Tab");
     assert.equal(await page.evaluate(()=>document.activeElement?.dataset.growPick),"culture-2");
-    await page.keyboard.press("Shift+Tab");assert.equal(await page.evaluate(()=>document.activeElement?.dataset.growPick),"culture-1");
+    await page.keyboard.down("Shift");await page.keyboard.press("Tab");await page.keyboard.up("Shift");
+    assert.equal(await page.evaluate(()=>document.activeElement?.dataset.growPick),"culture-1");
     await selectOnFloor("storage");const storageSteps=await walk("storage",obstacles);
     await page.waitForSelector('[data-warehouse-room="storage"][aria-selected="true"]');
     const stockLabel=warehouse.stockGrams.toLocaleString("fr-FR")+" g";
@@ -649,6 +666,7 @@ async function audit(){
     await selectOnFloor("culture-3");pass("Reduced motion preserves inspection");
     await visit("empty");await page.waitForSelector("[data-grow-pick]",{hidden:true});await page.waitForFunction(()=>window.inspectFixture?.().calls.some(c=>c.path.includes("/warehouse")&&c.status===200));
     assert.equal((await page.$$("[data-grow-pick]")).length,0);pass("Empty warehouse has no invented crops");
+    }
     }
     if(!group||group==="warehouse"||group==="orientation"){
       if(group==="orientation"){

@@ -13,6 +13,7 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
   const menu='button[aria-label="Ouvrir le menu du quartier"]';
   const drawer='dialog[aria-label="Menu de Kanab Quest"][open]';
   const panel='[data-village-activity-panel]';
+  const legacyPresentation='[data-placard-map], img[src*="placard-world-quizzshow-v9.webp"], [aria-label="Passer à la carte 2D"], [aria-label="Voir la carte d’origine"], [aria-label="Voir le village en 3D"]';
   const waitView=async view=>{
     await page.waitForSelector(`[data-placard-view="${view}"][data-placard-world="3d"]`);
     if(view!=='hub')await page.waitForSelector('[data-destination], [data-placard-collections]');
@@ -21,7 +22,7 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
   };
   const sameCanvas=async()=>{
     assert.equal(await page.evaluate(()=>window.__worldAuditCanvas===document.querySelector('canvas[data-village-ready="true"]')),true,'Activity navigation retains the same Three canvas');
-    assert.equal(await page.$('[data-placard-map], [data-map-mailbox]'),null,'No duplicate 2D map or mailbox is mounted behind the village');
+    assert.equal(await page.$(legacyPresentation+', [data-map-mailbox]'),null,'The village has a single presentation and mailbox');
   };
   const rememberCanvas=()=>page.evaluate(()=>{window.__worldAuditCanvas=document.querySelector('canvas[data-village-ready="true"]');});
   const noInterior=async()=>{
@@ -39,6 +40,67 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     for(const [key,value] of params)assert.equal(new URL(page.url()).searchParams.get(key),value,`${building} retains ${key}=${value}`);
     await sameCanvas();
   };
+
+  await visit('starter');
+  await page.waitForSelector('canvas[data-village-ready="true"]',{timeout:60000});
+  await waitView('hub');
+  assert.equal(new URL(page.url()).searchParams.has('world'),false);
+  await rememberCanvas();await sameCanvas();
+  await page.evaluate(()=>localStorage.setItem('kq:world-mode:v1:world-audit-player','2d'));
+  await visit('starter','view=market&section=sales&flower=fixture-flower');
+  await page.waitForSelector('canvas[data-village-ready="true"]');await waitView('market');
+  assert.equal(new URL(page.url()).searchParams.has('world'),false);
+  await visit('starter','world=2d&view=market&section=sales&flower=fixture-flower');
+  await page.waitForFunction(()=>new URLSearchParams(location.search).get('world')==='3d');
+  await page.reload({waitUntil:'networkidle0'});
+  await page.waitForSelector('canvas[data-village-ready="true"]');await waitView('market');
+  assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower');
+  assert.equal(await page.$eval('[data-market-section]',node=>node.textContent),'sales');
+  await rememberCanvas();await sameCanvas();
+  await page.evaluate(async()=>{
+    const {registerNavigationGuard}=await import('/src/lib/navigation-guard.ts');
+    window.__worldDraftGuardCleanup=registerNavigationGuard(next=>{window.__worldDraftContinue=next;});
+  });
+  await click('button[aria-label="Revenir au village 3D"]');
+  assert.equal(await page.evaluate(()=>typeof window.__worldDraftContinue),'function');
+  await waitView('market');await sameCanvas();
+  await page.evaluate(()=>{
+    window.__worldDraftGuardCleanup();window.__worldDraftContinue();
+    delete window.__worldDraftGuardCleanup;delete window.__worldDraftContinue;
+  });
+  await waitView('hub');await sameCanvas();
+  results.push({scenario:'world-3d-only-entry',ordinaryLinks:true,obsoletePreferenceIgnored:true,legacy2dLink:true,reload:true,activityParameters:true,draftGuard:true});
+
+  const noWebGL=await page.evaluateOnNewDocument(()=>{
+    const getContext=HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext=function(context,...args){
+      if(['webgl','webgl2','experimental-webgl'].includes(context))return null;
+      return getContext.call(this,context,...args);
+    };
+  });
+  try {
+    await page.setViewport({width:320,height:844,isMobile:true,hasTouch:true});
+    await visit('starter');
+    const fallback='[data-village-unavailable]';
+    await page.waitForSelector(fallback,{visible:true});await waitView('hub');
+    assert.equal(await page.$(legacyPresentation),null);
+    const bank=`${fallback} [data-village-building="bank"]`;
+    await page.focus(bank);await page.keyboard.press('Enter');
+    const activity='#village-building-activities a[href="/arene/placard?view=treasury&pole=bank"]';
+    await page.waitForSelector(activity,{visible:true});
+    await page.focus(activity);await page.keyboard.press('Enter');
+    await waitView('treasury');
+    assert.equal(await page.$eval('[data-treasury-pole]',node=>node.textContent),'bank');
+    await click('button[aria-label="Revenir au village 3D"]');
+    await waitView('hub');
+    await page.waitForSelector(activity,{visible:true});
+    await click('[aria-label="Fermer les activités du bâtiment"]');
+    await page.waitForFunction(selector=>document.activeElement?.matches(selector),{},bank);
+    await assertNoOverflow('Village activity navigation without WebGL');
+    results.push({scenario:'world-3d-without-webgl',width:320,keyboardBankActivity:true,returnToVillage:true});
+  } finally {
+    await page.removeScriptToEvaluateOnNewDocument(noWebGL.identifier);
+  }
 
   for(const width of [1440,320]) {
     await page.setViewport({width,height:width===320?844:1000,isMobile:width===320,hasTouch:width===320,deviceScaleFactor:1});
@@ -152,27 +214,6 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     await rememberCanvas();await noInterior();await close();
     results.push({scenario:'exterior-with-2d-activities',width,noInterior:true,warehousePlanLink:true,real2dPanel:true,persistentCanvas:true,history:true,legacyRoomActivities:['workshop','treasury'],preciseParametersPreserved:true,reload:true});
   }
-
-  // An ordinary existing URL has no world parameter; it must resume the saved mode.
-  await visit('starter','view=market&section=sales&flower=fixture-flower');
-  await page.waitForSelector('canvas[data-village-ready="true"]');await waitView('market');
-  assert.equal(new URL(page.url()).searchParams.has('world'),false);
-  await rememberCanvas();
-  await page.evaluate(async()=>{const {registerNavigationGuard}=await import('/src/lib/navigation-guard.ts');window.__worldDraftGuardCleanup=registerNavigationGuard(next=>{window.__worldDraftContinue=next;});});
-  await click('button[aria-label="Passer à la carte 2D"]');
-  assert.equal(await page.$eval('[data-placard-world]',node=>node.dataset.placardWorld),'3d','An unresolved draft blocks a presentation switch');
-  assert.equal(await page.evaluate(()=>typeof window.__worldDraftContinue),'function');
-  await sameCanvas();
-  await page.evaluate(()=>{window.__worldDraftGuardCleanup();window.__worldDraftContinue();delete window.__worldDraftContinue;delete window.__worldDraftGuardCleanup;});
-  await page.waitForSelector('[data-placard-world="2d"][data-placard-view="market"]');
-  assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower','Switching presentation preserves activity context');
-  await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-placard-world="2d"]');
-  await visit('starter','view=market');await page.waitForSelector('[data-placard-world="2d"]');
-  await page.evaluate(()=>{localStorage.setItem('kq:world-mode:v1:another-player','3d');window.dispatchEvent(new StorageEvent('storage',{key:'kq:world-mode:v1:another-player',newValue:'3d'}));});
-  assert.equal(await page.$eval('[data-placard-world]',node=>node.dataset.placardWorld),'2d','Another account does not change this presentation');
-  await page.evaluate(()=>{localStorage.setItem('kq:world-mode:v1:world-audit-player','3d');window.dispatchEvent(new StorageEvent('storage',{key:'kq:world-mode:v1:world-audit-player',newValue:'3d'}));});
-  await page.waitForSelector('canvas[data-village-ready="true"]');await waitView('market');
-  results.push({scenario:'world-3d-presentation-persistence',ordinaryLinks:true,explicit2d:true,reload:true,accountIsolation:true,storageNotification:true,draftGuard:true});
 
   await visit('world-signed-out','world=3d&view=game&run=fixture-run&entryGate=1');
   await page.waitForSelector('[data-quarter-character-gate] a[href^="/compte/connexion"]');

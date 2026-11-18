@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { CHANVRIER_CLOTHES, CHANVRIER_SKINS, getChanvrierAppearance, type ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
-import { renderChanvrierHead } from "../contest/chanvrier-head-renderer";
+import type { ChanvrierStampPose } from "../contest/chanvrier-snapshot";
 import { bayOrigin, growRoomGestureDuration, type KqGrowRoomEvent } from "./KqGrowRoomModel";
 import styles from "./KqGrowRoom.module.css";
 
@@ -13,34 +13,13 @@ type Position = { x: number; y: number };
 type Gesture = KqGrowRoomEvent["gesture"];
 const translate = (x: number, y: number) => `translate(${x.toFixed(2)} ${y.toFixed(2)})`;
 
-function Face({ profile }: { profile?: ChanvrierAvatarProfile | null }) {
-  const head = useRef<SVGImageElement>(null);
-  useEffect(() => {
-    const node = head.current;
-    if (!node || !profile) return;
-    let active = true;
-    // Bake the registered portrait once. Only the actor's joints move during a walk.
-    void renderChanvrierHead(profile).then(source => {
-      if (!active) return;
-      const portrait = document.createElement("canvas");
-      portrait.width = portrait.height = 144;
-      const ctx = portrait.getContext("2d");
-      if (!ctx) return;
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(source, 0, 0, 144, 144);
-      node.setAttribute("href", portrait.toDataURL("image/png"));
-      node.parentElement?.setAttribute("data-painted-face","true");
-    }).catch(() => {});
-    return () => { active = false; node.removeAttribute("href"); node.parentElement?.removeAttribute("data-painted-face"); };
-  }, [profile]);
+function VisitorFace() {
   return <g className={styles.face}>
     <g className={styles.visitorHead} stroke={INK} strokeWidth="1.3">
-      <path d="M-8-75q-1-11 8-11 14 2 11 14l3 4-4 1q-1 8-9 7-8-2-9-15Z" fill={CHANVRIER_SKINS.find(s => s.code === profile?.skin)?.color ?? "#c79066"}/>
+      <path d="M-8-75q-1-11 8-11 14 2 11 14l3 4-4 1q-1 8-9 7-8-2-9-15Z" fill="#c79066"/>
       <path d="M-11-75q-2-14 10-15 10-1 14 9l-13-1-6 6Z" fill="#587c70"/>
       <path d="M-3-82q7-4 18 1l-3 3-14-1Z" fill="#94a790"/><circle cx="6" cy="-74" r="1.2"/>
     </g>
-    <image ref={head} x="-26" y="-105" width="53" height="53"/>
-    {profile?.appearance?.accessory === "earrings" && <circle cx="-8" cy="-68" r="2" fill="none" stroke="#f6c84b" strokeWidth="1.6"/>}
   </g>;
 }
 
@@ -93,6 +72,7 @@ type ActorProps = { index: number; stage: number | null; event?: KqGrowRoomEvent
   motion: boolean; visible: boolean; left: number; width: number };
 export function GrowRoomActor({ index, stage, event, profile, motion, visible, left, width }: ActorProps) {
   const root = useRef<SVGGElement>(null);
+  const sprite = useRef<HTMLCanvasElement>(null);
   const position = useRef<Position | null>(null);
   const distance = useRef(0);
   const completed = useRef("");
@@ -113,6 +93,27 @@ export function GrowRoomActor({ index, stage, event, profile, motion, visible, l
     const rig = node.querySelector<SVGGElement>("[data-rig]")!, body = node.querySelector<SVGGElement>("[data-body]")!;
     const legs = Array.from(node.querySelectorAll<SVGGElement>("[data-leg]")), arms = Array.from(node.querySelectorAll<SVGGElement>("[data-arm]"));
     const tool = node.querySelector<SVGGElement>("[data-tool]")!;
+    const controller = new AbortController();
+    let pending: ChanvrierStampPose | undefined, painting = false, lastStamp = "";
+    const paintStamp = async () => {
+      if (!profile || painting) return;
+      painting = true;
+      try {
+        const { renderChanvrierSnapshot } = await import("../contest/chanvrier-snapshot");
+        while (pending && !controller.signal.aborted) {
+          const pose = pending;
+          pending = undefined;
+          const stamp = await renderChanvrierSnapshot({ profile, view: "full", width: 144, pose }, controller.signal);
+          const canvas = sprite.current;
+          if (canvas && !controller.signal.aborted) {
+            const context = canvas.getContext("2d");
+            context?.clearRect(0, 0, canvas.width, canvas.height);
+            context?.drawImage(stamp, 0, 0, canvas.width, canvas.height);
+          }
+        }
+      } catch { /* Unmount cancels any outstanding portrait job. */ }
+      finally { painting = false; }
+    };
     const start = position.current ?? { x: Math.max(left+10,targetX-42), y:AISLE };
     const pos = { x:Math.max(left-17,Math.min(left+width+17,start.x)), y:start.y };
     const waypoints: Position[] = [];
@@ -132,6 +133,16 @@ export function GrowRoomActor({ index, stage, event, profile, motion, visible, l
       const bob = walking ? -.8*Math.abs(Math.sin(distance.current*Math.PI/10)) : 0;
       node!.setAttribute("transform",translate(pos.x,pos.y));
       rig.setAttribute("transform",`scale(${direction} 1)`);
+      if (profile) {
+        const walkFrame = walking ? Math.floor(distance.current / 2.5) % 8 : 0;
+        const pose = { distance: walkFrame * .12, walking: Number(walking), gesture: act ? gesture : null,
+          phase: act ? Math.round(gestureProgress * 12) / 12 : 0, stage };
+        const key = JSON.stringify(pose);
+        if (lastStamp !== key) { lastStamp = key; pending = pose; void paintStamp(); }
+        node!.setAttribute("data-actor-state", walking ? "walking" : act ? gesture : "idle");
+        position.current = { ...pos };
+        return;
+      }
       body.setAttribute("transform",translate(0,bob+crouch)+` rotate(${reach*(low?9:4)} 0 -29)`);
       node!.setAttribute("data-actor-state",walking ? "walking" : act ? gesture : "idle");
       legs.forEach((leg,i) => {
@@ -151,10 +162,10 @@ export function GrowRoomActor({ index, stage, event, profile, motion, visible, l
     if (!motion) {
       pos.x=targetX; pos.y=targetY; direction=facing; completed.current=token;
       paint(false,0,0,accepted ? .47 : -1);
-      return;
+      return () => controller.abort();
     }
     const arrived = Math.abs(pos.x-targetX)<.05 && Math.abs(pos.y-targetY)<.05;
-    if (arrived && completed.current===token) { direction=facing; paint(false,0,0,-1); return; }
+    if (arrived && completed.current===token) { direction=facing; paint(false,0,0,-1); return () => controller.abort(); }
     function frame(now: number) {
       const dt = last ? Math.min(40,now-last) : 0;
       last=now;
@@ -175,8 +186,8 @@ export function GrowRoomActor({ index, stage, event, profile, motion, visible, l
       request=requestAnimationFrame(frame);
     }
     request=requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(request);
-  }, [accepted, atTable, facing, gesture, left, look.bottom, motion, stage, targetX, targetY, token, visible, width]);
+    return () => { controller.abort(); cancelAnimationFrame(request); };
+  }, [accepted, atTable, facing, gesture, left, look.bottom, profile, motion, stage, targetX, targetY, token, visible, width]);
 
   function leg(side: number) {
     return <g data-leg={side} strokeLinecap="round" strokeLinejoin="round">
@@ -192,7 +203,9 @@ export function GrowRoomActor({ index, stage, event, profile, motion, visible, l
   }
   return <g ref={root} transform={translate(targetX,STATION)} data-grow-actor={profile?"player":"visitor"} aria-hidden="true">
     <ellipse cy=".5" rx="14" ry="3.3" fill="#435d4c" opacity=".27"/>
-    <g data-rig=""><g>{leg(-1)}{leg(1)}</g>
+    <g data-rig="">{profile ? <foreignObject x="-36" y="-103" width="72" height="107">
+      <canvas ref={sprite} width={144} height={213} style={{ width: "100%", height: "100%" }} />
+    </foreignObject> : <><g>{leg(-1)}{leg(1)}</g>
       <g data-body="">{arm(-1)}
         <path d="M-6-59q5-4 11-1 6 8 5 16l1 14q-10 4-21 0l2-19Z" fill={shirt} stroke={INK} strokeWidth="1.5"/>
         {(look.top==="overalls" || look.top==="apron") && <path d="m-6-58 3-1 2 10h6l-1-10h2l3 15 1 14-19 .5 2-16Z" fill={look.top==="apron"?"#b7a279":trousers} stroke={INK} strokeWidth="1"/>}
@@ -201,11 +214,12 @@ export function GrowRoomActor({ index, stage, event, profile, motion, visible, l
         {look.bottom==="skirt" && <path d="M-8-34h17l3 12q-10 3-23-.5Z" fill={trousers} stroke={INK}/>}
         {look.bottom==="cargo" && <path d="m-7-29 6 .5-1 5-5-.5Z" fill={trousers} stroke={INK} strokeWidth=".8"/>}
         <path d="M-5-66h9l1 8q-4 3-8 0Z" fill={skin} stroke={INK}/>
-        <Face profile={profile}/>
+        <VisitorFace/>
         {look.accessory==="scarf" && <path d="m-7-61 13-1 1 3-8 3-3 9-4-2 4-9Z" fill="#ce9460" stroke={INK}/>}
         {arm(1)}
         <g data-tool="" style={{display:"none"}} stroke={INK} strokeWidth="1" strokeLinejoin="round">{heldTool(gesture)}</g>
       </g>
+    </>}
     </g>
   </g>;
 }

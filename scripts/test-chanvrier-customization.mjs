@@ -79,6 +79,25 @@ try {
   assert.equal((await savings(treasury)).cashCents,100000);
   const { CHANVRIER_APPEARANCE_OPTIONS, getChanvrierAppearance } = await vite.ssrLoadModule('/src/lib/arena-chanvrier.ts');
   const appearance=getChanvrierAppearance({gender:'male'});
+  const oldLook = { hair: 'braids', accessory: 'round-glasses', top: 'apron', bottomColor: 'berry' };
+  await save(legacy, {...profile, nickname:'Legacy', gender:'female', appearance:oldLook});
+  const previousCash = (await savings(legacy)).cashCents;
+  await db.exec(await migration('20261118000500_chanvrier_appearance_v2.sql'));
+  const loadLook = async user => (await db.query('SELECT appearance FROM arena_chanvrier_profiles WHERE user_id=$1', [user])).rows[0].appearance;
+  assert.deepEqual(await loadLook(legacy), {...getChanvrierAppearance({gender:'female'}), ...oldLook});
+  assert.equal((await savings(legacy)).cashCents,previousCash);
+  assert.deepEqual(await loadLook(treasury), appearance);
+  const dyed = {...appearance, dyes:{skin:'#bd8459', top:'#6ab9ca', accent:'#483d28'}};
+  await save(treasury,{...profile,appearance:dyed});
+  assert.deepEqual(await loadLook(treasury),dyed);
+  for (const malformed of [{...dyed,dyes:{unknown:'#123456'}},{...dyed,dyes:{skin:'red'}},{...dyed,version:7},{version:2,body:'regular'}]) {
+    await assert.rejects(()=>save(treasury,{...profile,appearance:malformed}),/check constraint/);
+    assert.deepEqual(await loadLook(treasury),dyed);
+  }
+  await save(treasury,{...profile,appearance:{hair:'curls'}});
+  assert.deepEqual(await loadLook(treasury),{...dyed,hair:'curls'},'legacy edit preserves modern slots and dyes');
+  await save(treasury,{...profile,appearance});
+  assert.deepEqual(await loadLook(treasury),appearance,'v2 edit can clear dyes');
   for(const [key,choices] of Object.entries(CHANVRIER_APPEARANCE_OPTIONS)) for(const choice of choices){
     const saved=await save(treasury,{...profile,appearance:{...appearance,[key]:choice.code}});
     assert.deepEqual(saved.profile.appearance,{...appearance,[key]:choice.code});

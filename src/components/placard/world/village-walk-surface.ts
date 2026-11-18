@@ -5,6 +5,9 @@ import type { VillageWalkSurface } from "./village-life-types";
 
 export type VillageObstacle = { x: number; z: number; radius: number };
 export type VillageGroundPath = { samples: { x: number; z: number }[]; width: number };
+export type VillageGrazingSurface = VillageWalkSurface & {
+  isGrazable: (x: number, z: number, radius: number) => boolean;
+};
 
 function polygon(points: readonly (readonly [number, number])[]) {
   return new THREE.CatmullRomCurve3(points.map(point => {
@@ -21,7 +24,7 @@ function contains(points: THREE.Vector3[], x: number, z: number) {
   }
   return result;
 }
-function clearOfEdge(points: THREE.Vector3[], x: number, z: number, margin: number) {
+function clearOfEdge(points: VillageGroundPath["samples"], x: number, z: number, margin: number) {
   for (let i = 1; i < points.length; i++) {
     const a = points[i - 1], b = points[i], dx = b.x - a.x, dz = b.z - a.z;
     const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / Math.max(1e-9, dx * dx + dz * dz)));
@@ -31,10 +34,12 @@ function clearOfEdge(points: THREE.Vector3[], x: number, z: number, margin: numb
 }
 
 /** Physical props come from the terrain generator, not a second approximate map. */
-export function createVillageWalkSurface(terrain: THREE.Group, buildings: readonly { object: THREE.Group; position: [number, number, number]; place: { scale: number } }[], reserved: readonly VillageObstacle[] = []): VillageWalkSurface {
+export function createVillageWalkSurface(terrain: THREE.Group, buildings: readonly { object: THREE.Group; position: [number, number, number]; place: { scale: number } }[], reserved: readonly VillageObstacle[] = []): VillageGrazingSurface {
   const obstacles: VillageObstacle[] = [...(terrain.userData.navigationObstacles ?? []), ...reserved,
     { x: VILLAGE_MAILBOX_POSITION[0], z: VILLAGE_MAILBOX_POSITION[2], radius: 0.85 }];
   const paths: VillageGroundPath[] = terrain.userData.groundPaths ?? [];
+  const aprons: VillageObstacle[] = terrain.userData.groundAprons ?? [];
+  const groundHeightAt = terrain.userData.groundHeightAt as VillageWalkSurface["heightAt"] | undefined;
   const boxes = buildings.map(({ object, position, place }) => {
     const box = new THREE.Box3().setFromObject(object);
     // Models still have their local transform when the scene is constructed.
@@ -43,14 +48,22 @@ export function createVillageWalkSurface(terrain: THREE.Group, buildings: readon
     box.max.z += 0.65; // Doorstep and occupied entrance apron.
     return box;
   });
+  function isWalkable(x: number, z: number, radius: number) {
+    if (!contains(coast, x, z) || contains(river, x, z)) return false;
+    if (!clearOfEdge(coast, x, z, radius + 0.65) || !clearOfEdge(river, x, z, radius + 0.5)) return false;
+    if (boxes.some(box => x > box.min.x - radius && x < box.max.x + radius && z > box.min.z - radius && z < box.max.z + radius)) return false;
+    return !obstacles.some(obstacle => (x - obstacle.x) ** 2 + (z - obstacle.z) ** 2 < (radius + obstacle.radius) ** 2);
+  }
   return {
-    isWalkable(x, z, radius) {
-      if (!contains(coast, x, z) || contains(river, x, z)) return false;
-      if (!clearOfEdge(coast, x, z, radius + 0.65) || !clearOfEdge(river, x, z, radius + 0.5)) return false;
-      if (boxes.some(box => x > box.min.x - radius && x < box.max.x + radius && z > box.min.z - radius && z < box.max.z + radius)) return false;
-      return !obstacles.some(obstacle => (x - obstacle.x) ** 2 + (z - obstacle.z) ** 2 < (radius + obstacle.radius) ** 2);
+    isWalkable,
+    isGrazable(x, z, radius) {
+      return isWalkable(x, z, radius)
+        && paths.every(path => clearOfEdge(path.samples, x, z, path.width / 2 + radius + 0.2))
+        && aprons.every(apron => ((x - apron.x) / (apron.radius + radius)) ** 2
+          + ((z - apron.z) / (apron.radius * 0.62 + radius)) ** 2 >= 1);
     },
     heightAt(x, z) {
+      if (groundHeightAt) return groundHeightAt(x, z);
       return paths.some(path => path.samples.some(point => (x - point.x) ** 2 + (z - point.z) ** 2 < (path.width / 2) ** 2)) ? 0.08 : 0.019;
     },
   };

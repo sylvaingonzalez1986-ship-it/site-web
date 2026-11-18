@@ -97,6 +97,21 @@ function texture(kind: "wood" | "wall" | "floor" | "shadow" | "net") {
   else {
     ctx.fillStyle = kind === "floor" ? "#e9e8df" : "#faf8ee";
     ctx.fillRect(0, 0, 256, 256);
+    if (kind === "floor") {
+      // The resin is one pour. Broad tonal clouds stay readable between stations
+      // and leave the registered edges and the player's placement grid intact.
+      for (let i = 0; i < 18; i++) {
+        const x = rng() * 256, y = rng() * 256, radius = 18 + 39 * rng();
+        const wash = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        wash.addColorStop(0, i % 3 ? "rgba(118,135,133,.105)" : "rgba(248,241,218,.50)");
+        wash.addColorStop(1, "rgba(204,210,195,0)");
+        ctx.fillStyle = wash; ctx.fillRect(x-radius, y-radius, radius*2, radius*2);
+      }
+    } else if (kind === "wall") {
+      const base = ctx.createLinearGradient(0, 0, 0, 256);
+      base.addColorStop(0, "#fcfaec"); base.addColorStop(.7, "#f0efdf"); base.addColorStop(1, "#d6d9cc");
+      ctx.fillStyle = base; ctx.fillRect(0, 0, 256, 256);
+    }
     for (let i = 0; i < 5000; i++) {
       ctx.fillStyle = rng() > .45 ? "rgba(87,72,50,.06)" : "rgba(255,255,249,.26)";
       ctx.fillRect(rng() * 256, rng() * 256, rng() * 2 + .5, rng() * 1.7 + .5);
@@ -121,7 +136,7 @@ export function createRoomResources() {
   const floor = texture("floor"), timber = texture("wood"), plaster = texture("wall"), contact = texture("shadow"), net = texture("net");
   const standard = (props: THREE.MeshStandardMaterialParameters) => new THREE.MeshStandardMaterial({ roughness: .79, ...props });
   const materials: Record<Metal, THREE.Material> = {
-    steel: standard({ metalness: .49, roughness: .37 }), wood: standard({ map: timber, roughness: .88 }), plastic: standard({ roughness: .51 }),
+    steel: standard({ metalness: .38, roughness: .48 }), wood: standard({ map: timber, roughness: .88 }), plastic: standard({ roughness: .59 }),
     soil: standard({ roughness: 1 }), leaf: standard({ side: THREE.DoubleSide, vertexColors: true, roughness: .74 }),
     flower: standard({ vertexColors: true, roughness: 1 }), stone: standard({ roughness: .95 }), wall: standard({ map: plaster, roughness: .96 }),
     floor: standard({ map: floor, roughness: .94 }), glass: standard({ metalness: .18, roughness: .23 }), light: new THREE.MeshBasicMaterial({ color: "#fff6ca" }),

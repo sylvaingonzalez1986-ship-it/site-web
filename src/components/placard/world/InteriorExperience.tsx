@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Component, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Component, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { QuarterCharacterContext } from "../../contest/QuarterCharacterContext";
 import { AppDialog } from "@/components/ui/AppDialog";
 import { registerNavigationGuard } from "@/lib/navigation-guard";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
@@ -25,6 +26,8 @@ export function InteriorExperience({ id, suspended, onNavigate, onExit }: {
   id: VillageBuildingKind; suspended: boolean; onNavigate: (href: string) => void; onExit: () => void;
 }) {
   const warehouse = useInteriorWarehouse(id === "warehouse", suspended);
+  const profile = useContext(QuarterCharacterContext);
+  const [followPlayer, setFollowPlayer] = useState(false);
   const room = useMemo(() => createInteriorRoom(id, warehouse.snapshot), [id, warehouse.snapshot]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
@@ -90,7 +93,7 @@ export function InteriorExperience({ id, suspended, onNavigate, onExit }: {
   const frozen = warehouse.pending || warehouse.uncertain || warehouse.conflict;
 
   return <div className={styles.root} data-interior={id} data-interior-ready={ready || undefined} data-interior-editing={editing || undefined} data-interior-overhead={overhead || undefined} data-interior-draft={warehouse.dirty || undefined} hidden={suspended}>
-    {!unavailable ? <InteriorBoundary onError={onUnavailable}><Scene room={room} suspended={suspended || overlayOpen || warehouse.pending || warehouse.loading} editing={editing} overhead={overhead} grid={grid} sensitivity={sensitivity} quality={quality}
+    {!unavailable ? <InteriorBoundary onError={onUnavailable}><Scene room={room} profile={profile} followPlayer={followPlayer} suspended={suspended || overlayOpen || warehouse.pending || warehouse.loading} editing={editing} overhead={overhead} grid={grid} sensitivity={sensitivity} quality={quality}
       selectedId={focusedId} preview={preview} previewValid={!warehouse.validation.length} onSelect={choose} onInteract={interact}
       selectedCell={cell ? { x: cell.x + .5 - dimensions.columns / 2, z: cell.y + .5 - dimensions.rows / 2 } : null} onPlace={pickCell} onExit={onExit} onReady={onReady} onUnavailable={onUnavailable} /></InteriorBoundary> : null}
     <div className={styles.top}>
@@ -98,13 +101,14 @@ export function InteriorExperience({ id, suspended, onNavigate, onExit }: {
       <button type="button" onClick={onExit}>Au village</button>
       {id === "warehouse" && <button type="button" aria-pressed={editing} disabled={!canEdit || warehouse.dirty} data-interior-build-toggle onClick={() => { const next = !editing; setEditing(next); setOverhead(next); setGrid(true); setSelectedId(null); setCell(null); setBuildMenu(false); }}>{editing ? "Terminer" : "Aménager"}</button>}
       <details className={styles.settings}><summary>Commandes et qualité</summary><div>
+        {profile && !overhead && <label><input type="checkbox" checked={followPlayer} onChange={event => setFollowPlayer(event.target.checked)} /> Voir mon personnage</label>}
         <p>ZQSD / WASD ou flèches : avancer. Glisser : regarder. E : agir. Échap : libérer la souris. Les commandes tactiles sont en bas de l’écran.</p>
         <label>Sensibilité du regard <input type="range" min="0.3" max="2" step="0.1" value={sensitivity} onChange={event => setSensitivity(Number(event.target.value))} /></label>
         <label>Qualité <select value={quality} onChange={event => setQuality(event.target.value as InteriorQuality)}><option value="auto">Automatique</option><option value="high">Élevée</option><option value="low">Réduite</option></select></label>
         <p>Les actions et leurs coûts restent disponibles dans les panneaux.</p>
       </div></details>
     </div>
-    {unavailable && <p className={styles.fallback} role="alert">La vue 3D est indisponible. Les activités ci-dessous restent accessibles ; tu peux aussi choisir « Vue 2D ».</p>}
+    {unavailable && <p className={styles.fallback} role="alert">La vue 3D est indisponible. {editing ? "Utilise « Choisir une case au clavier » pour aménager l’entrepôt." : "Utilise « Choisir un objet » pour accéder aux activités du lieu."}</p>}
     {!ready && !unavailable ? <p className={styles.loading} role="status">Préparation de l’intérieur…</p> : null}
     {!editing && <aside className={styles.inspector} aria-label="Activités du lieu">
       {id === "warehouse" && <div className={styles.balance}>

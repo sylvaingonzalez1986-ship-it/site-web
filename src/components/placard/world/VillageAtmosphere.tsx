@@ -6,12 +6,14 @@ import * as THREE from "three";
 import { createVillageAnimation, type AnimatedVillageBuilding, type VillageActivityState } from "./village-animation";
 import type { VillageBuildingKind } from "./village-buildings";
 import { createVillageAnimals } from "./village-animals";
+import { createVillageGulls } from "./village-gulls";
+import { createVillageSheep } from "./village-sheep";
 import { createVillageBreton } from "./village-breton";
 import { createVillageFisherman, VILLAGE_FISHERMAN_YAW } from "./village-fisherman";
 import { createVillageLoic } from "./village-loic";
 import { createVillageMarine } from "./village-marine";
-import { createVillageContactShadowGeometry } from "./village-contact-shadow";
-import { createVillageWalkSurface } from "./village-walk-surface";
+import { createCharacterContactShadow } from "./village-contact-shadow";
+import type { VillageGrazingSurface } from "./village-walk-surface";
 import { createVillageNpcRoutine, findVillageNpcPathSpawn } from "./village-npc-routine";
 import { createVillageNpcTapGate } from "./village-npc-pointer";
 import { positionVillageBubble } from "./village-bubble";
@@ -26,32 +28,31 @@ export type VillageMotionProps = {
   reaction: { building: VillageBuildingKind; sequence: number } | null;
 };
 
-export function VillageAtmosphere({ terrain, buildings, activity, motion, focusBuilding, reaction, dragging, quality, npc, labelNodes }: VillageMotionProps & { terrain: THREE.Group; buildings: readonly AnimatedVillageBuilding[]; dragging: boolean; quality: "low" | "high"; npc: VillageNpcBridge; labelNodes: RefObject<Map<string, HTMLButtonElement>> }) {
+export function VillageAtmosphere({ terrain, surface, buildings, activity, motion, focusBuilding, reaction, dragging, quality, npc, labelNodes }: VillageMotionProps & { terrain: THREE.Group; surface: VillageGrazingSurface; buildings: readonly AnimatedVillageBuilding[]; dragging: boolean; quality: "low" | "high"; npc: VillageNpcBridge; labelNodes: RefObject<Map<string, HTMLButtonElement>> }) {
   const controller = useMemo(() => createVillageAnimation(buildings), [buildings]);
   const { life, npcs } = useMemo(() => {
-    const surface = createVillageWalkSurface(terrain, buildings);
-    const rigs: [VillageNpcId, VillageNpcRig][] = [["breton", createVillageBreton()], ["fisherman", createVillageFisherman()], ["loic", createVillageLoic()]];
-    const actors = rigs.map(([id, rig]) => {
+    const rigs: [VillageNpcId, VillageNpcRig][] = [
+      ["breton", createVillageBreton(surface.heightAt)], ["fisherman", createVillageFisherman()], ["loic", createVillageLoic(surface.heightAt)],
+    ];
+    const actors = rigs.map(([id, rig], index) => {
       const initial = rig.object.position.toArray() as NpcPoint;
       const spawn = id === "fisherman" ? initial : findVillageNpcPathSpawn(surface, terrain.userData.groundPaths, initial) ?? initial;
       rig.object.position.set(...spawn);
       // The landscape shadow map is static. A small moving contact shadow avoids
       // baking a villager's initial pose permanently onto the path.
       rig.object.traverse(child => { if (child instanceof THREE.Mesh) child.castShadow = false; });
-      const contact = new THREE.Mesh(createVillageContactShadowGeometry(), new THREE.MeshBasicMaterial({ color: "#294942", vertexColors: true, transparent: true, opacity: 0.24, depthWrite: false }));
-      const diameter = id === "fisherman" ? 1 : 0.74;
-      contact.name = `npc-contact-${id}`; contact.rotation.x = -Math.PI / 2; contact.position.y = 0.009;
-      contact.scale.set(diameter, diameter * 0.8, 1); contact.raycast = () => {};
-      rig.object.add(contact);
+      const ankles = [-1, 1].map(side => rig.object.getObjectByName(`${id}-ankle-${side}`)!);
+      const contact = createCharacterContactShadow(rig.object, ankles, .105, id === "fisherman" ? 1 : .76, surface.heightAt);
+      contact.mesh.name = `npc-contact-${id}`;
       const hit = new THREE.Mesh(new THREE.CapsuleGeometry(0.36, 1.05, 4, 8), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
       hit.name = `npc-hit-${id}`; hit.position.y = id === "fisherman" ? 0.85 : 1; hit.userData.npc = id;
       rig.object.add(hit);
       const others = rigs.filter(([otherId]) => otherId !== id && otherId !== "fisherman");
-      return { id, rig, routine: createVillageNpcRoutine(id, surface, terrain.userData.groundPaths, spawn, id === "fisherman" ? VILLAGE_FISHERMAN_YAW : rig.object.rotation.y,
+      return { id, rig, contact, lastPoseTime: -1, posePhase: index / rigs.length, routine: createVillageNpcRoutine(id, surface, terrain.userData.groundPaths, spawn, id === "fisherman" ? VILLAGE_FISHERMAN_YAW : rig.object.rotation.y,
         () => others.map(([, other]) => ({ x: other.object.position.x, z: other.object.position.z, radius: 0.4 }))) };
     });
-    return { life: [createVillageAnimals(surface), createVillageMarine()], npcs: actors };
-  }, [terrain, buildings]);
+    return { life: [createVillageAnimals(surface), createVillageMarine(), createVillageGulls(), createVillageSheep(surface)], npcs: actors };
+  }, [terrain, surface]);
   const ownership = useMemo(() => {
     let leases = 0, disposed = false;
     return {
@@ -59,7 +60,7 @@ export function VillageAtmosphere({ terrain, buildings, activity, motion, focusB
       release() {
         leases--;
         queueMicrotask(() => {
-          if (!leases && !disposed) { disposed = true; controller.dispose(); life.forEach(part => part.dispose()); npcs.forEach(({ rig }) => rig.dispose()); }
+          if (!leases && !disposed) { disposed = true; controller.dispose(); life.forEach(part => part.dispose()); npcs.forEach(({ rig, contact }) => { contact.mesh.dispose(); rig.dispose(); }); }
         });
       },
     };
@@ -113,10 +114,11 @@ export function VillageAtmosphere({ terrain, buildings, activity, motion, focusB
   }, [npc.active, npc.interaction, npc.bubbleNode, invalidate]);
   useEffect(() => {
     gl.domElement.setAttribute("data-motion-state", state);
+    gl.domElement.setAttribute("data-life-quality", quality);
     gl.domElement.setAttribute("data-motion-parts", controller.parts.join(","));
     gl.domElement.setAttribute("data-active-activities", Object.entries(activity).filter(([, active]) => active).map(([name]) => name).join(","));
     invalidate();
-  }, [activity, controller, gl, invalidate, state]);
+  }, [activity, controller, gl, invalidate, quality, state]);
   const greet = useEffectEvent((building: VillageBuildingKind | null) => {
     if (running && building) controller.react(building, time.current);
     invalidate();
@@ -146,11 +148,22 @@ export function VillageAtmosphere({ terrain, buildings, activity, motion, focusB
     const frame = { time: time.current, delta: step, reduced: motion.reduced, quality, detail, visible: visibility.visible };
     life.forEach(part => part.update(frame));
     gaze[0] = camera.position.x; gaze[1] = camera.position.y; gaze[2] = camera.position.z;
-    const targets: Record<string, { x: number; y: number; visible: boolean }> = {};
-    for (const { id, rig, routine } of npcs) {
+    const now = performance.now();
+    const targets: Record<string, { x: number; y: number; visible: boolean }> | null =
+      now >= diagnosticsAt.current || !running ? {} : null;
+    const distantPoseRate = quality === "low" ? 20 : 24;
+    for (const actor of npcs) {
+      const { id, rig, routine } = actor;
       const state = routine.update(frame, gaze, npc.active === id ? npc.interaction : undefined);
       rig.object.position.set(...state.position); rig.object.rotation.y = state.yaw;
-      rig.update(frame, state.pose);
+      // Small figures keep a continuous trajectory while distant joints update in turns.
+      const poseDue = Math.floor(frame.time * distantPoseRate + actor.posePhase) !== Math.floor(actor.lastPoseTime * distantPoseRate + actor.posePhase);
+      if (!running || detail > 0.25 || npc.active === id || poseDue) {
+        const dt = Math.min(0.08, frame.time - Math.max(0, actor.lastPoseTime));
+        rig.update(running && dt > step + 0.0001 ? { ...frame, delta: dt } : frame, state.pose);
+        if (visibility.visible(rig.object, 1.6)) actor.contact.update();
+        actor.lastPoseTime = frame.time;
+      }
       rig.object.userData.destination = state.destination;
       rig.object.userData.routine = state.pose.activity;
       rig.object.userData.attention = state.pose.attention;
@@ -161,21 +174,25 @@ export function VillageAtmosphere({ terrain, buildings, activity, motion, focusB
       projection.copy(rig.object.position); projection.y += 1; projection.project(camera);
       const x = (projection.x + 1) * size.width / 2, y = (1 - projection.y) * size.height / 2;
       const onScreen = Math.abs(projection.x) <= 1 && Math.abs(projection.y) <= 1 && projection.z <= 1;
-      targets[id] = { x, y, visible: onScreen };
+      if (targets) targets[id] = { x, y, visible: onScreen };
       const label = labelNodes.current.get(`npc-${id}`);
-      if (label) { label.style.transform = `translate(${Math.max(75, Math.min(size.width - 75, x))}px, ${Math.max(10, Math.min(size.height - 50, y + 22))}px) translate(-50%, 0)`; label.dataset.offscreen = String(!onScreen); }
+      projection.copy(rig.object.position).project(camera);
+      const feetY = (1 - projection.y) * size.height / 2;
+      if (label) {
+        const labelX = Math.max(75, Math.min(size.width - 75, x));
+        const labelY = Math.max(10, Math.min(size.height - 50, feetY + 8));
+        label.style.transform = `translate(${labelX}px, ${labelY}px) translate(-50%, 0)`;
+        label.dataset.offscreen = String(!onScreen);
+      }
       if (npc.active === id && npc.bubbleNode.current) {
-        projection.copy(rig.object.position).project(camera);
-        const feetY = (1 - projection.y) * size.height / 2;
         projection.copy(rig.object.position); projection.y += 2.15; projection.project(camera);
         positionVillageBubble(npc.bubbleNode.current, npc.bubbleTail.current, (projection.x + 1) * size.width / 2, (1 - projection.y) * size.height / 2, size.width, size.height, true, feetY);
       }
     }
     gl.domElement.setAttribute("data-motion-time", time.current.toFixed(3));
-    gl.domElement.setAttribute("data-life-quality", quality);
     // Small bounded snapshots at 4 Hz, rather than serializing rigs every frame.
-    if (performance.now() >= diagnosticsAt.current || !running) {
-      diagnosticsAt.current = performance.now() + 250;
+    if (targets) {
+      diagnosticsAt.current = now + 250;
       gl.domElement.setAttribute("data-life-animals", JSON.stringify(life[0].object.children.map(animal => ({ ...animal.userData, x: animal.position.x, z: animal.position.z }))));
       const boat = life[1].object.getObjectByName("fishing-boat");
       gl.domElement.setAttribute("data-life-boat", JSON.stringify(boat?.userData ?? {}));

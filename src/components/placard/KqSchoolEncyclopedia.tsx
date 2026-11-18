@@ -9,6 +9,7 @@ import styles from "./KqSchoolEncyclopedia.module.css";
 import { KqTerpeneCardDeck, KqTerpeneCardDialog } from './KqTerpeneCards';
 import { TERPENE_CARDS } from '@/lib/kanab-quest-terpene-cards';
 import { KqChapterHeading } from './KqChapterHeading';
+import { KqQuizzShowScene } from './KqQuizzShowScene';
 
 const HistoryTimeline = dynamic(() => import('./KqHistoryTimeline').then(module => module.KqHistoryTimeline), { ssr: false, loading: () => <p role="status">Ouverture de la frise historique…</p> });
 
@@ -133,13 +134,26 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
   }
 
   return <section className={styles.library} aria-labelledby={titleId} data-school-encyclopedia data-reference-view={view}>
-    <div className={styles.header}><KqChapterHeading art="school" title={isHistory ? 'Histoire et anecdotes' : 'Encyclopédie du cannabis'} titleId={titleId}/></div>
+    <div className={styles.header}>{view === 'home'
+      ? <h2 id={titleId}>Encyclopédie du cannabis</h2>
+      : <KqChapterHeading compact art="school-library" title={isHistory ? 'Histoire et anecdotes' : 'Encyclopédie du cannabis'} titleId={titleId}/>}</div>
     {!isHistory ? <search className={styles.search} aria-label="Recherche encyclopédique"><label htmlFor={searchId}><Search size={19} aria-hidden/>Rechercher dans l’encyclopédie</label><div className={styles.inputRow}><input ref={input} id={searchId} type="search" autoComplete="off" maxLength={200} value={query} placeholder="Une plante, une molécule, une variété…" onChange={event => { returnTarget.current = { id: undefined, y: undefined }; setState({ ...INITIAL, view: event.target.value ? "search" : "home", query: event.target.value }); }}/>{query ? <button type="button" aria-label="Effacer la recherche" onClick={() => { setState(INITIAL); input.current?.focus(); }}><X size={18} aria-hidden/></button> : null}</div></search> : null}
-    <nav className={styles.mainNav} aria-label="Navigation de l’encyclopédie"><button type="button" aria-current={view === "home" ? "page" : undefined} onClick={() => navigate({ view: "home" })}>{isHistory ? <ArrowLeft size={17} aria-hidden/> : null}Rubriques</button>{!isHistory ? <><button type="button" data-reference-index aria-current={view === "index" ? "page" : undefined} onClick={() => navigate({ view: "index" })}>Articles A–Z</button><button type="button" data-reference-glossary aria-current={view === "glossary" ? "page" : undefined} onClick={() => navigate({ view: "glossary" })}>Lexique A–Z</button></> : null}</nav>
+    <nav className={styles.mainNav} aria-label="Navigation de l’encyclopédie"><button type="button" aria-current={view === "home" ? "page" : undefined} onClick={() => navigate({ view: "home" })}>{isHistory ? <ArrowLeft size={17} aria-hidden/> : null}Rayons</button>{!isHistory ? <><button type="button" data-reference-index aria-current={view === "index" ? "page" : undefined} onClick={() => navigate({ view: "index" })}>Articles A–Z</button><button type="button" data-reference-glossary aria-current={view === "glossary" ? "page" : undefined} onClick={() => navigate({ view: "glossary" })}>Lexique A–Z</button></> : null}</nav>
     <div ref={content} className={styles.content} data-reference-content>
       {error ? <div role="alert"><p>L’encyclopédie n’a pas pu être chargée.</p><button type="button" onClick={() => { setError(false); setRetry(value => value + 1); }}>Réessayer</button></div> : !catalog ? <p role="status">Chargement des articles…</p> : <>
         {view === "home" ? <>
-          <section className={styles.directory}><h3>Choisir une rubrique</h3><ul>{catalog.topics.map(item => <li key={item.id}><a href={`?view=school&section=learn&passage=library-theme-${item.id}`} onClick={event => topicLink(event, item.id)} data-reference-topic={item.id}><span className={styles.topicArt}><Image src={item.image} alt="" width={600} height={400} sizes="(max-width: 600px) 120px, (max-width: 1000px) 230px, 300px" unoptimized/></span><span className={styles.topicCopy}><strong>{item.title}</strong><span>{item.description}</span><span className={styles.topicAction}>Explorer<ArrowRight size={17} aria-hidden/></span></span></a></li>)}</ul></section>
+          <div className={styles.readingRoom}>
+            <KqQuizzShowScene mode="library"/>
+            <nav className={styles.directory} aria-label="Rayons de la bibliothèque">
+              <h3>Choisir un rayon</h3>
+              <ul>{catalog.topics.map(item => <li key={item.id}>
+                <a href={`?view=school&section=learn&passage=library-theme-${item.id}`}
+                  onClick={event => topicLink(event, item.id)} data-reference-topic={item.id}>
+                  {item.title}<ArrowRight size={16} aria-hidden/>
+                </a>
+              </li>)}</ul>
+            </nav>
+          </div>
           {featured ? <section className={styles.featured}><div><h3><a href={articleHref(featured.id)} data-reference-entry={featured.id} onClick={event => openArticle(event, featured.id)}>{featured.title}</a></h3><p>{featured.lead}</p><a href={articleHref(featured.id)} className={styles.readLink} onClick={event => openArticle(event, featured.id)}>Lire l’article<ArrowRight size={16} aria-hidden/></a></div><figure><Image src={featured.image.src} alt={featured.image.alt} width={600} height={400} sizes="(max-width: 700px) 140px, 300px" unoptimized/><figcaption>{featured.image.caption}</figcaption></figure></section> : null}
         </> : null}
         {view === "topic" && topic ? <>
@@ -151,7 +165,7 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
         </> : null}
         {view === "index" ? <section><h3>Articles A–Z</h3>{alphabet(articles.map(article => firstLetter(article.title)))}<p className={styles.count} role="status">{alphabetArticles.length} article{alphabetArticles.length > 1 ? "s" : ""} à la lettre {letter}.</p>{articleList(pageItems(alphabetArticles), true)}{pagination(alphabetArticles.length)}</section> : null}
         {view === "glossary" ? <section><h3>Lexique A–Z</h3>{alphabet(terms.map(term => firstLetter(term.term)))}<p className={styles.count} role="status">{alphabetTerms.length} définition{alphabetTerms.length > 1 ? "s" : ""} à la lettre {letter}.</p>{termList(pageItems(alphabetTerms))}{pagination(alphabetTerms.length)}</section> : null}
-        {view === "search" ? <section data-reference-results><h3>Résultats pour « {query.trim()} »</h3><p className={styles.count} role="status">{matches.length} article{matches.length > 1 ? "s" : ""}{matchingTerms.length ? ` · ${matchingTerms.length} définition${matchingTerms.length > 1 ? "s" : ""}` : ""}</p>{articleList(pageItems(matches), true)}{pagination(matches.length)}{matchingTerms.length ? <section className={styles.definitions}><h3>Définitions</h3>{termList(matchingTerms.slice(0, 6))}{matchingTerms.length > 6 ? <p className={styles.meta}>Les autres définitions sont classées dans le lexique A–Z.</p> : null}</section> : null}{!matches.length && !matchingTerms.length ? <p>Aucun résultat pour ce terme. Essaie un autre mot ou consulte les rubriques.</p> : null}</section> : null}
+        {view === "search" ? <section data-reference-results><h3>Résultats pour « {query.trim()} »</h3><p className={styles.count} role="status">{matches.length} article{matches.length > 1 ? "s" : ""}{matchingTerms.length ? ` · ${matchingTerms.length} définition${matchingTerms.length > 1 ? "s" : ""}` : ""}</p>{articleList(pageItems(matches), true)}{pagination(matches.length)}{matchingTerms.length ? <section className={styles.definitions}><h3>Définitions</h3>{termList(matchingTerms.slice(0, 6))}{matchingTerms.length > 6 ? <p className={styles.meta}>Les autres définitions sont classées dans le lexique A–Z.</p> : null}</section> : null}{!matches.length && !matchingTerms.length ? <p>Aucun résultat pour ce terme. Essaie un autre mot ou consulte les rayons.</p> : null}</section> : null}
       </>}
     </div>
     {terpeneCard ? <KqTerpeneCardDialog initialId={terpeneCard.id} ids={terpeneCard.ids} onClose={() => setTerpeneCard(undefined)} onRead={id => { remember({ ...state, returnTo: id, scrollY: window.scrollY }); onOpen('reference', id); }}/> : null}

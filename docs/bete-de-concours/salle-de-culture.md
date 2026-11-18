@@ -10,7 +10,7 @@ L’entrepôt, le choix des cultures indépendantes et la partie partagent `KqGr
 
 Les dimensions affichées correspondent à la surface aménageable. L’entrée et l’allée périphérique du référentiel spatial servent à la circulation. Leur surface est exclue des capacités et des devis.
 
-La vue de dessus sert aussi de référence visuelle. Sur les plans de 10 × 10 et de 40 × 25 m, la double porte turquoise, les gaines, les armoires électriques et les luminaires sont calés sur le dessin de l’entrepôt rénové. Les murs au premier plan sont montrés en coupe pour laisser voir les postes. Les hauteurs des meubles et des murs sont interprétées en trois dimensions.
+Le dessin de dessus reste une référence artistique du décor. Sur les plans de 10 × 10 et de 40 × 25 m, la double porte turquoise, les gaines, les armoires électriques et les luminaires sont calés sur le dessin de l’entrepôt rénové. Les murs au premier plan sont montrés en coupe pour laisser voir les postes. Les hauteurs des meubles et des murs sont interprétées en trois dimensions.
 
 Chaque case de culture retrouve son plateau de quatre pots. Lampes et extracteurs partagent leurs positions avec le plan. Les claies en bois, les caisses de bocaux, les rayonnages et les fûts reprennent les silhouettes du mobilier installé. Leurs façades suivent la rotation enregistrée. Les numéros, couleurs et portraits des Buddies permettent de retrouver chaque zone. En cas d’indisponibilité de WebGL, le jeu projette le fond et les équipements illustrés de l’éditeur.
 

@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import { createVillageMarine, sampleFishingCycle, sampleFishingRoute, sampleMarineCoast, sampleVillageWaves, VILLAGE_FISHING_CYCLE_SECONDS, VILLAGE_MARINE_PRESENTATION_OFFSET } from "./village-marine";
-import { paintingToGround } from "./village-layout";
+import { paintingToGround, VILLAGE_SEA_LEVEL, VILLAGE_SEA_SIZE } from "./village-layout";
+import { createVillageMainland, VILLAGE_MAINLAND_SHORE } from "./village-mainland";
+import { VILLAGE_SECOND_BANK } from "./village-terrain";
 import type { VillageLifeFrame } from "./village-life-types";
 
 const frame=(time:number,overrides:Partial<VillageLifeFrame>={}):VillageLifeFrame=>({time,delta:1/30,reduced:false,quality:"high",visible:()=>true,...overrides});
@@ -12,20 +14,57 @@ const pointSegment=(x:number,z:number,a:readonly number[],b:readonly number[])=>
 };
 
 describe("village marine motion",()=>{
-  it("keeps the complete hull route clear of the island, lighthouse and second bank",()=>{
+  it("fits the mainland and its surf inside the water tile and fills the land behind the coast", () => {
+    const limit = VILLAGE_SEA_SIZE / 2;
+    const mainland = createVillageMainland();
+    const marine = createVillageMarine();
+    const foam = marine.object.getObjectByName("mainland-contact-foam") as THREE.Mesh;
+    for (const geometry of [mainland.geometry, foam.geometry]) {
+      geometry.computeBoundingBox();
+      const box = geometry.boundingBox!;
+      for (const axis of ["x", "z"] as const) {
+        expect(box.min[axis]).toBeGreaterThanOrEqual(-limit);
+        expect(box.max[axis]).toBeLessThanOrEqual(limit);
+      }
+    }
+    expect(VILLAGE_MAINLAND_SHORE[0][0]).toBeCloseTo(-limit);
+    expect(VILLAGE_MAINLAND_SHORE.at(-1)![1]).toBeCloseTo(-limit);
+
+    // The production mesh ignores pointer hits. Sample its actual triangles from above.
+    const land = new THREE.Mesh(mainland.geometry, mainland.material);
+    const ray = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0));
+    function expectDryLand(x: number, z: number) {
+      ray.ray.origin.set(x, 50, z);
+      const [hit] = ray.intersectObject(land, false);
+      expect(hit?.point.y, `land at ${x}, ${z}`).toBeGreaterThan(VILLAGE_SEA_LEVEL + .042);
+    }
+    expectDryLand(-limit + .01, -limit + .01);
+    for (let i = 1; i < VILLAGE_MAINLAND_SHORE.length - 1; i += 3) {
+      const [x, z] = VILLAGE_MAINLAND_SHORE[i];
+      const toEdge = Math.min(x, z) + limit;
+      for (const fraction of [.25, .6, .99]) expectDryLand(x - toEdge * fraction, z - toEdge * fraction);
+    }
+    mainland.geometry.dispose();
+    mainland.material.dispose();
+    marine.dispose();
+  });
+
+  it("keeps the complete hull route clear of the island, lighthouse, second bank and mainland",()=>{
     const coast=sampleMarineCoast();
-    const bank=sampleMarineCoast([[1450,870],[1530,806],[1600,800],[1670,1050],[1480,1180],[1030,1200],[1100,1100],[1270,1015]]);
+    const bank=sampleMarineCoast(VILLAGE_SECOND_BANK);
     const lighthouse=paintingToGround(1420,15);
-    let coastClearance=Infinity,bankClearance=Infinity,lighthouseClearance=Infinity;
+    let coastClearance=Infinity,bankClearance=Infinity,lighthouseClearance=Infinity,mainlandClearance=Infinity;
     for(let i=0;i<=1600;i++) {
       const p=sampleFishingRoute(i/1600);
       for(let j=0;j<coast.length-1;j++) coastClearance=Math.min(coastClearance,pointSegment(p.x,p.z,coast[j],coast[j+1]));
       for(let j=0;j<bank.length-1;j++) bankClearance=Math.min(bankClearance,pointSegment(p.x,p.z,bank[j],bank[j+1]));
+      for(let j=0;j<VILLAGE_MAINLAND_SHORE.length-1;j++) mainlandClearance=Math.min(mainlandClearance,pointSegment(p.x,p.z,VILLAGE_MAINLAND_SHORE[j],VILLAGE_MAINLAND_SHORE[j+1]));
       lighthouseClearance=Math.min(lighthouseClearance,Math.hypot(p.x-lighthouse[0],p.z-lighthouse[1]));
     }
     // 1.6 m half hull, ~0.9 m shore rocks, plus an unobstructed water margin.
     expect(coastClearance).toBeGreaterThan(3.2);
     expect(bankClearance).toBeGreaterThan(3.2);
+    expect(mainlandClearance).toBeGreaterThan(3.2);
     expect(lighthouseClearance).toBeGreaterThan(5.2);
     const start=sampleFishingRoute(0),end=sampleFishingRoute(1-1e-7);
     expect(Math.hypot(start.x-end.x,start.z-end.z)).toBeLessThan(.001);
@@ -130,6 +169,50 @@ describe("village marine motion",()=>{
     marine.update(frame(39.9)); expect(boat.userData.phase).toBe("stow");
     expect(catchFish.visible).toBe(true); expect(catchFish.position.x).toBeLessThan(-.19);
     marine.update(frame(40)); expect(boat.userData.phase).toBe("depart"); expect(catchFish.visible).toBe(false);
+    marine.dispose();
+  });
+
+  it("joins the line to the tilted boat and pot throughout approach, deployment and stowage", () => {
+    const marine = createVillageMarine();
+    const boat = marine.object.getObjectByName("fishing-boat")!;
+    const line = boat.getObjectByName("fishing-line")!;
+    const pot = boat.getObjectByName("fishing-pot")!;
+    const lineTop = new THREE.Vector3(), lineBottom = new THREE.Vector3();
+    const pulley = new THREE.Vector3(), pottedEnd = new THREE.Vector3();
+    for (const time of [3, 9, 15, 29, 36, 39.5]) {
+      marine.update(frame(time));
+      boat.updateWorldMatrix(true, true);
+      line.localToWorld(lineTop.set(0, -.5, 0));
+      line.localToWorld(lineBottom.set(0, .5, 0));
+      boat.localToWorld(pulley.set(-1.12, 1.29, -.53));
+      pot.localToWorld(pottedEnd.set(0, .14, 0));
+      expect(line.visible).toBe(true);
+      expect(lineTop.distanceTo(pulley)).toBeLessThan(.00001);
+      expect(lineBottom.distanceTo(pottedEnd)).toBeLessThan(.00001);
+    }
+    marine.dispose();
+  });
+
+  it("layers translucent shore wash and a speed-dependent wake on the common wave clock", () => {
+    const marine = createVillageMarine();
+    const foam = marine.object.getObjectByName("shore-eddy-foam") as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+    const mainland = marine.object.getObjectByName("mainland-contact-foam") as typeof foam;
+    const wake = marine.object.getObjectByName("fishing-boat-wake") as THREE.InstancedMesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+    expect(foam.material).toBe(mainland.material);
+    expect(foam.material.transparent).toBe(true);
+    expect(foam.material.depthWrite).toBe(false);
+    expect(foam.geometry.getAttribute("coastDistance").count).toBe(foam.geometry.getAttribute("position").count);
+    marine.update(frame(66));
+    expect(foam.material.uniforms.uTime.value).toBe(66);
+    expect(wake.material.uniforms.uTime.value).toBe(66);
+    const strength = new THREE.Color();
+    expect(wake.visible).toBe(true);
+    wake.getColorAt(0, strength);
+    const bow = strength.r;
+    wake.getColorAt(wake.count - 1, strength);
+    expect(bow).toBeGreaterThan(strength.r);
+    marine.update(frame(17));
+    expect(wake.visible).toBe(false);
     marine.dispose();
   });
 

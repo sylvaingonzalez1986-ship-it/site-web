@@ -3,6 +3,10 @@
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
+import { useVillagePlayer } from "./useVillagePlayer";
+import { createVillageWalkSurface } from "./village-walk-surface";
+import { VILLAGE_LIGHT as light } from "./village-lighting";
+import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createVillageBuilding, createVillageMailbox, type VillageBuildingKind } from "./village-buildings";
 import { createVillageTerrain, disposeVillageObject } from "./village-terrain";
@@ -11,10 +15,13 @@ import { positionVillageBubble } from "./village-bubble";
 import { VillageAtmosphere, type VillageMotionProps } from "./VillageAtmosphere";
 import type { VillageNpcBridge } from "./VillageNpcDialogue";
 
-export type VillageLifeSubject = "wolf" | "fox" | "weasel" | "boat" | "breton" | "fisherman" | "loic";
+export type VillageLifeSubject = "player" | "sheep" | "wolf" | "fox" | "weasel" | "boat" | "breton" | "fisherman" | "loic";
 export type VillageCameraRequest = { rotation: number; zoom: number; reset: number; observe?: VillageLifeSubject };
-const LIFE_NAMES: Record<VillageLifeSubject, string> = { wolf: "village-animal-wolf", fox: "village-animal-fox", weasel: "village-animal-weasel", boat: "fishing-boat", breton: "village-breton", fisherman: "village-fisherman", loic: "village-loic" };
+const VILLAGE_VIEW_CENTER = new THREE.Vector3(-4.3, 1.2, -1.8);
+const LIFE_NAMES: Record<VillageLifeSubject, string> = { player: "chanvrier", sheep: "village-sheep-pasture", wolf: "village-animal-wolf", fox: "village-animal-fox", weasel: "village-animal-weasel", boat: "fishing-boat", breton: "village-breton", fisherman: "village-fisherman", loic: "village-loic" };
+const RESIDENT_EYE_HEIGHT: Partial<Record<VillageLifeSubject, number>> = { player: 1.57, breton: 1.65, fisherman: 1.35, loic: 1.66 };
 type Props = VillageMotionProps & {
+  profile: ChanvrierAvatarProfile | null;
   npc: VillageNpcBridge;
   controlsBlocked: boolean;
   selected: VillageBuildingKind | null;
@@ -50,7 +57,7 @@ function frameResident(scene: THREE.Scene, subject: THREE.Object3D, orbit: THREE
   });
   const origin = subject.getWorldPosition(new THREE.Vector3());
   const ray = new THREE.Ray(origin), angles = [0.36, -0.36, 0.85, -0.85];
-  for (const phi of [1.06, 0.82, 0.65]) {
+  for (const phi of [1.14, 0.95, 0.78, 0.65]) {
     for (const angle of angles) {
       const theta = subject.rotation.y + angle;
       ray.direction.setFromSphericalCoords(1, phi, theta);
@@ -71,17 +78,20 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
   const stopped = motion.reduced || motion.paused || motion.hidden || controlsBlocked;
   const tracking = useRef(false);
   const observation = useMemo(() => new THREE.Vector3(), []);
+  const eyeHeight = request.observe && RESIDENT_EYE_HEIGHT[request.observe];
+  // At full length centre the torso. A deliberate close-up moves towards the eyes.
+  const observationHeight = eyeHeight ? THREE.MathUtils.lerp(eyeHeight * .59, eyeHeight, THREE.MathUtils.smoothstep(request.zoom, 1, 2.5)) : .4;
 
   // Run before the labels/bubble project their anchors, using only demand frames.
-  useFrame(() => {
+  useFrame((_, delta) => {
     const tween = transition.current, orbit = controls.current;
     if (tracking.current && request.observe && !focus && orbit && !stopped) {
       const subject = scene.getObjectByName(LIFE_NAMES[request.observe]);
       if (subject) {
-        subject.getWorldPosition(observation); observation.y += ["breton", "loic", "fisherman"].includes(request.observe) ? 0.9 : 0.4;
+        subject.getWorldPosition(observation); observation.y += observationHeight;
         if (tween) tween.toTarget.copy(observation);
         else {
-          observation.sub(orbit.target).multiplyScalar(0.2);
+          observation.sub(orbit.target).multiplyScalar(-Math.expm1(-14 * Math.min(delta, .06)));
           camera.position.add(observation); orbit.target.add(observation); orbit.update(); camera.updateMatrixWorld();
         }
       }
@@ -114,7 +124,7 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
 
   useEffect(() => {
     const orbit = new OrbitControls(camera, gl.domElement);
-    orbit.target.set(1.5, 1.2, 4);
+    orbit.target.copy(VILLAGE_VIEW_CENTER);
     orbit.enableDamping = false;
     orbit.minPolarAngle = Math.PI / 7;
     orbit.maxPolarAngle = Math.PI / 2.6;
@@ -150,10 +160,10 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
   useEffect(() => {
     const orbit = controls.current;
     if (!orbit || !(camera instanceof THREE.OrthographicCamera)) return;
-    if (controlsBlocked) return;
     const prior = previous.current.request;
     const focusChanged = !!focus && focus !== previous.current.focus;
     const resized = size.width !== previous.current.width || size.height !== previous.current.height;
+    if (controlsBlocked && prior && !resized) return;
     if (prior && !focusChanged && request === prior && !resized) {
       previous.current.focus = focus;
       return;
@@ -166,13 +176,13 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
       target.copy(focus).add(new THREE.Vector3(0, 3.5, 0));
     }
     const subject = request.observe && !focus ? scene.getObjectByName(LIFE_NAMES[request.observe]) : null;
-    const observingResident = !!subject && (request.observe === "breton" || request.observe === "loic" || request.observe === "fisherman");
-    if (subject) { subject.getWorldPosition(target); target.y += observingResident ? 0.9 : 0.4; }
+    const observingResident = !!subject && !!eyeHeight;
+    if (subject) { subject.getWorldPosition(target); target.y += observationHeight; }
     tracking.current = !!subject;
     gl.domElement.dataset.lifeObserve = subject ? request.observe! : "";
     const reset = !prior || request.reset !== prior.reset;
     if (reset) {
-      if (!focus || prior) target.set(1.5, 1.2, 4);
+      if (!focus || prior) target.copy(VILLAGE_VIEW_CENTER);
       const angle = Math.PI / 4 + request.rotation * Math.PI / 4;
       offset.setFromVector3(new THREE.Vector3(Math.sin(angle) * 46, 32.527, Math.cos(angle) * 46));
     } else if (request.rotation !== prior.rotation) {
@@ -185,9 +195,10 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
     const fromOrbit = new THREE.Spherical().setFromVector3(camera.position.clone().sub(orbit.target));
     // Cross the -PI/PI seam through the nearest angle instead of orbiting all the way around.
     offset.theta = fromOrbit.theta + Math.atan2(Math.sin(offset.theta - fromOrbit.theta), Math.cos(offset.theta - fromOrbit.theta));
-    const subjectZoom = observingResident ? Math.min(size.width / 3.6, size.height / 4.6) : Math.min(size.width / 8, size.height / 6);
+    const subjectZoom = observingResident ? Math.min(size.width / 3.1, size.height / 4.1) : Math.min(size.width / 8, size.height / 6);
+    orbit.maxZoom = observingResident ? Math.max(110, subjectZoom * 2.5) : 110;
     const toZoom = subject ? THREE.MathUtils.clamp(subjectZoom * request.zoom, orbit.minZoom, orbit.maxZoom) : reset || resized || request.zoom !== prior?.zoom || prior?.observe
-      ? THREE.MathUtils.clamp(Math.min(size.width / 38, size.height / 30) * request.zoom, orbit.minZoom, orbit.maxZoom)
+      ? THREE.MathUtils.clamp(Math.min(size.width / 38, size.height / 36) * request.zoom, orbit.minZoom, orbit.maxZoom)
       : pending?.toZoom ?? camera.zoom;
     const changed = target.distanceToSquared(orbit.target) > 0.000001 || Math.abs(offset.theta - fromOrbit.theta) > 0.000001 || Math.abs(offset.phi - fromOrbit.phi) > 0.000001 || Math.abs(toZoom - camera.zoom) > 0.000001;
     if (prior && changed && !stopped && !document.hidden) {
@@ -206,11 +217,11 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
     previous.current = { request, focus, width: size.width, height: size.height };
     // Motion changes cancel separately; resuming must not restart an old camera command.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [camera, focus, gl, invalidate, request, scene, size.width, size.height]);
+  }, [camera, eyeHeight, focus, gl, invalidate, observationHeight, request, scene, size.width, size.height]);
   return null;
 }
 
-function VillageWorld({ selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, npc, controlsBlocked }: Omit<Props, "onUnavailable">) {
+function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, npc, controlsBlocked }: Omit<Props, "onUnavailable">) {
   const [dragging, setDragging] = useState(false);
   const terrain = useMemo(() => createVillageTerrain(), []);
   const mailbox = useMemo(() => createVillageMailbox(), []);
@@ -220,10 +231,15 @@ function VillageWorld({ selected, keyboardFocus, onSelect, onHover, onOpenMailbo
     const roof = new THREE.Box3().setFromObject(object).max.y * place.scale;
     return { place, object, position, anchor: new THREE.Vector3(position[0], position[1] + roof + 0.25, position[2]) };
   }), []);
+  const surface = useMemo(() => createVillageWalkSurface(terrain, buildings), [terrain, buildings]);
+  const walkTo = useVillagePlayer(profile, terrain, surface, controlsBlocked || motion.paused || motion.hidden, motion.reduced);
   const active = buildings.find(({ place }) => place.id === selected);
   const { camera, size, gl, invalidate } = useThree();
   const quality = Math.min(size.width, size.height) < 600 ? "low" : "high";
   const labelPosition = useMemo(() => new THREE.Vector3(), []);
+  const labelCamera = useMemo(() => new THREE.Matrix4(), []);
+  const projectedCamera = useMemo(() => new THREE.Matrix4(), []);
+  const layoutDirty = useRef(true);
   const ready = useRef(false);
   useEffect(() => () => {
     disposeVillageObject(terrain);
@@ -232,13 +248,18 @@ function VillageWorld({ selected, keyboardFocus, onSelect, onHover, onOpenMailbo
     gl.domElement.style.removeProperty("cursor");
   }, [buildings, terrain, mailbox, gl]);
   useEffect(() => {
+    layoutDirty.current = true;
     const node = bubbleNode.current;
     if (!node) return;
-    const observer = new ResizeObserver(() => invalidate());
+    const observer = new ResizeObserver(() => { layoutDirty.current = true; invalidate(); });
     observer.observe(node);
     return () => observer.disconnect();
-  }, [bubbleNode, selected, invalidate]);
+  }, [bubbleNode, selected, invalidate, size.width, size.height]);
   useFrame(() => {
+    projectedCamera.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    if (!layoutDirty.current && projectedCamera.equals(labelCamera)) return;
+    labelCamera.copy(projectedCamera);
+    layoutDirty.current = false;
     const positionLabel = (id: string, x3: number, z3: number) => {
       const label = labelNodes.current.get(id);
       if (!label) return;
@@ -269,8 +290,8 @@ function VillageWorld({ selected, keyboardFocus, onSelect, onHover, onOpenMailbo
   };
   return <>
     <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} controlsBlocked={controlsBlocked} />
-    <VillageAtmosphere terrain={terrain} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
-    <primitive object={terrain} onClick={(event: ThreeEvent<MouseEvent>) => { if (event.delta <= 5) { event.stopPropagation(); onCloseActivities(); } }} />
+    <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
+    <primitive object={terrain} onClick={(event: ThreeEvent<MouseEvent>) => { if (event.delta <= 5) { event.stopPropagation(); onCloseActivities(); walkTo(event.point); } }} />
     <group position={VILLAGE_MAILBOX_POSITION}
       onClick={event => { if (event.delta > 5) return; event.stopPropagation(); onOpenMailbox(); }}
       onPointerOver={event => { event.stopPropagation(); gl.domElement.style.setProperty("cursor", "pointer"); }}
@@ -301,11 +322,14 @@ function ContextRecovery({ onUnavailable }: Pick<Props, "onUnavailable">) {
 }
 
 /** Bounded diagnostics: CPU submission, not GPU execution time. */
-function RenderMetrics() {
-  const { gl } = useThree();
+function RenderMetrics({ onDprChange }: { onDprChange: (value: number) => void }) {
+  const { gl, size } = useThree();
+  const smallViewport = Math.min(size.width, size.height) < 600;
   useEffect(() => {
     const original = gl.render;
-    let last = 0, frames = 0;
+    const preferred = Math.min(window.devicePixelRatio || 1, smallViewport ? 1.25 : 1.5);
+    onDprChange(preferred);
+    let last = 0, frames = 0, lateFrames = 0, adapted = false;
     gl.render = function (scene, camera) {
       const started = performance.now();
       original.call(gl, scene, camera);
@@ -316,33 +340,41 @@ function RenderMetrics() {
       data.renderSubmitMs = (performance.now() - started).toFixed(3);
       data.frameInterval = (last ? started - last : 0).toFixed(3);
       data.renderFrames = String(++frames);
-      data.drawCalls = String(gl.info.render.calls);
-      data.triangles = String(gl.info.render.triangles);
-      data.geometries = String(gl.info.memory.geometries);
-      data.textures = String(gl.info.memory.textures);
-      data.dpr = String(gl.getPixelRatio());
+      if (frames === 1 || frames % 8 === 0) {
+        data.drawCalls = String(gl.info.render.calls);
+        data.triangles = String(gl.info.render.triangles);
+        data.geometries = String(gl.info.memory.geometries);
+        data.textures = String(gl.info.memory.textures);
+        data.dpr = String(gl.getPixelRatio());
+      }
+      if (smallViewport && preferred > 1 && !adapted && data.motionState === "running") {
+        const interval = started - last;
+        lateFrames = interval > 42 && interval < 160 ? lateFrames + 1 : Math.max(0, lateFrames - 1);
+        if (lateFrames >= 12) { adapted = true; onDprChange(1); }
+      }
       last = started;
     };
     return () => { gl.render = original; };
-  }, [gl]);
+  }, [gl, onDprChange, smallViewport]);
   return null;
 }
 
 export default function VillageCanvas(props: Props) {
-  return <Canvas orthographic frameloop="demand" shadows={{ type: THREE.PCFShadowMap }} dpr={[1, 1.5]}
+  const [dpr, setDpr] = useState<number | [number, number]>([1, 1.5]);
+  return <Canvas orthographic frameloop="demand" shadows={{ type: THREE.PCFShadowMap }} dpr={dpr}
     camera={{ position: [34, 33, 36], near: 0.1, far: 180, zoom: 20 }}
     gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-    fallback={<p role="alert">La 3D n’est pas disponible. La carte d’origine reste accessible.</p>}
-    onCreated={({ gl }) => { gl.setClearColor("#f4e8ce", 0); gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.12; }}>
-    <ambientLight intensity={0.28} />
-    <hemisphereLight args={["#fff3dd", "#708d7c", 1.25]} />
-    <directionalLight position={[15, 14, -20]} intensity={0.55} color="#c7e9ed" />
-    <directionalLight position={[-12, 28, 18]} intensity={2.7} color="#fff0cc" castShadow
+    fallback={<p>La vue 3D est indisponible sur ce navigateur.</p>}
+    onCreated={({ gl }) => { gl.setClearColor("#159a9e", 1); gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = light.exposure; }}>
+    <ambientLight intensity={light.ambient} />
+    <hemisphereLight args={[light.sky, light.ground, light.hemi]} />
+    <directionalLight position={light.rim.position} intensity={light.rim.power} color={light.rim.color} />
+    <directionalLight position={light.key.position} intensity={light.key.power} color={light.key.color} castShadow
       shadow-mapSize={[2048, 2048]} shadow-camera-left={-33} shadow-camera-right={33}
       shadow-camera-top={33} shadow-camera-bottom={-33} shadow-camera-near={1} shadow-camera-far={100}
       shadow-bias={-0.0005} shadow-normalBias={0.04} />
     <ContextRecovery onUnavailable={props.onUnavailable} />
-    <RenderMetrics />
+    <RenderMetrics onDprChange={setDpr} />
     <VillageWorld {...props} />
   </Canvas>;
 }

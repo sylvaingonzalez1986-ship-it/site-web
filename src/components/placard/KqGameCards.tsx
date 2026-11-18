@@ -119,15 +119,13 @@ const getDieFaceValues = (value: number | undefined) => {
   return [value, opposite, remainingPairs[0][0], remainingPairs[0][1], remainingPairs[1][0], remainingPairs[1][1]];
 };
 
-export function KqGameDie({ value, index, rolling = false, validated = false }: { value: number | undefined; index: number; rolling?: boolean; validated?: boolean }) {
-  const rollingFaces = [2, 5, 6] as const;
-  const renderedValue = rolling ? rollingFaces[index % rollingFaces.length] : value;
-  const faceValues = getDieFaceValues(renderedValue);
+export function KqGameDie({ value, index, validated = false }: { value: number | undefined; index: number; validated?: boolean }) {
+  const faceValues = getDieFaceValues(value);
 
   return (
     <span
       className={styles.gameDie}
-      data-kind={rolling ? "rolling" : validated ? dieKind(value) : undefined}
+      data-kind={validated ? dieKind(value) : undefined}
       data-die-index={index + 1}
       aria-hidden="true"
     >

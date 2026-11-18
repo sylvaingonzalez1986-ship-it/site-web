@@ -26,7 +26,7 @@ createRoot(document.getElementById('main-content')).render(<React.StrictMode><Ap
 `;
 
 export async function runVillageNpcAudit(origin) {
-  const output = resolve('output/village-npcs'); await mkdir(output, { recursive: true });
+  const output = resolve(process.env.VILLAGE_NPC_AUDIT_DIR ?? 'output/village-npcs'); await mkdir(output, { recursive: true });
   const report = { passed: false, cases: [], errors: [], external: [], requests: [], limits: 'Local API fixtures, desktop Chromium and touch/viewport emulation; no physical phone or remote writes.' };
   const browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox'], userDataDir: resolve(output, 'chrome') });
   let page;
@@ -52,11 +52,14 @@ export async function runVillageNpcAudit(origin) {
     const ready = () => page.waitForSelector('canvas[data-village-ready="true"][data-life-npcs]');
     await ready();
     await page.evaluate(() => { window.__npcSeed('empty'); });
-    await page.reload({ waitUntil: 'networkidle0' }); await ready();
+    await page.reload({ waitUntil: 'domcontentloaded' }); await ready();
     const stats = () => page.$eval('canvas', node => ({ ...node.dataset }));
     const npcStats = async () => JSON.parse((await stats()).lifeNpcs);
     const observe = async id => {
-      await page.click('summary'); await page.click(`[data-observe-life="${id}"]`);
+      const activate = selector => page.viewport().hasTouch ? page.tap(selector) : page.click(selector);
+      await activate('details:has([data-observe-life]) summary');
+      const option = `details[open] [data-observe-life="${id}"]`;
+      await page.waitForSelector(option,{visible:true}); await activate(option);
       await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`); await sleep(300);
     };
     const point = async id => page.$eval('canvas', (node, id) => { const p = JSON.parse(node.dataset.npcTargets)[id], r = node.getBoundingClientRect(); return { x: p.x + r.x, y: p.y + r.y }; }, id);
@@ -112,7 +115,7 @@ export async function runVillageNpcAudit(origin) {
     await page.click('[data-farm-guide-close]'); await page.waitForSelector('canvas[data-camera-controls="enabled"]');
     for (const kind of ['current', 'complete']) {
       const saved = await page.evaluate(kind => window.__npcSeed(kind), kind);
-      await page.reload({ waitUntil: 'networkidle0' }); await ready(); await observe('loic'); await tap('loic'); await page.waitForSelector('[data-farm-guide]'); await sleep(300);
+      await page.reload({ waitUntil: 'domcontentloaded' }); await ready(); await observe('loic'); await tap('loic'); await page.waitForSelector('[data-farm-guide]'); await sleep(300);
       const after = await page.evaluate(() => JSON.parse(localStorage.getItem(window.__npcProgressKey)));
       assert.deepEqual(after.completed, saved.completed); assert.equal(after.flowerId, saved.flowerId);
       if (kind === 'current') assert.equal(await page.$eval('[data-farm-guide]', node => node.dataset.guideStep), 'assign');

@@ -1,6 +1,7 @@
 import { Object3D } from "three";
 import { MAP_ENTRANCES } from "../KqPlacardMap.scene";
 import { VILLAGE_CHARACTER_STRIDE_PER_METER } from "./village-character-gait";
+import { villageAngleDifference, villageApproachSpeed, villageWalkBlend } from "./village-character-motion";
 import { paintingToGround } from "./village-layout";
 import type { VillageLifeFrame, VillageWalkSurface } from "./village-life-types";
 import type { FishingPhase, NpcActivity, NpcPoint, VillageNpcId, VillageNpcInteraction, VillageNpcRoutineState } from "./village-npc-types";
@@ -12,7 +13,6 @@ export type VillageNpcObstacle = Point & { radius: number };
 type Node = Point & { edges: number[] };
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.z - b.z);
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const angleDifference = (a: number, b: number) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
 const phaseNames: readonly FishingPhase[] = ["adjust", "wait", "watch", "reach", "sip", "replace"];
 const phaseDurations = [3.2, 12.5, 5.4, 1.5, 3.1, 1.8];
 const walkHeadingLimit = 0.3;
@@ -107,10 +107,37 @@ function routeTo(nodes: Node[], start: number, destination: number, allowed: (a:
   return [];
 }
 
+/** A tapped point can sit off the paths. Join it to the existing village network
+ * only through walkable ground, using the same footprint for every outfit. */
+export function createVillagePlayerRoute(surface: VillageWalkSurface, paths: readonly VillageGroundPath[], spawn: Point) {
+  let network: Node[] | undefined;
+  return (from: Point, to: Point): Point[] => {
+    if (!surface.isWalkable(to.x, to.z, VILLAGE_NPC_WALK_RADIUS)) return [];
+    if (clearSegment(surface, from, to)) return [to];
+    const nodes = network ??= buildGraph(surface, paths, spawn);
+    const nearest = (p: Point) => nodes.map((node, i) => ({ i, d: distance(p, node) }))
+      .filter(n => n.d < 4).sort((a, b) => a.d - b.d).find(n => clearSegment(surface, p, nodes[n.i]))?.i;
+    const a = nearest(from), b = nearest(to);
+    if (a === undefined || b === undefined) return [];
+    const steps = routeTo(nodes, a, b);
+    if (a !== b && !steps.length) return [];
+    const route = [nodes[a], ...steps.map(i => nodes[i]), to];
+    const smoothed: Point[] = [];
+    let anchor = from;
+    for (let i = 0; i < route.length; i++) {
+      const next = route[i + 1];
+      if (next && clearSegment(surface, anchor, next)) continue;
+      smoothed.push(route[i]);
+      anchor = route[i];
+    }
+    return smoothed;
+  };
+}
+
 export function createVillageNpcRoutine(id: VillageNpcId, surface: VillageWalkSurface, paths: readonly VillageGroundPath[], initial: NpcPoint, initialYaw = 0.46, dynamicObstacles: () => readonly VillageNpcObstacle[] = () => []) {
   const state: VillageNpcRoutineState = {
     position: [...initial], yaw: initialYaw, destination: 0,
-    pose: { activity: id === "fisherman" ? "fishing" : "observing", speed: 0, stride: 0, lookYaw: 0, lookPitch: 0, emphasis: 0, attention: 0, fishingPhase: "adjust", phaseProgress: 0 },
+    pose: { activity: id === "fisherman" ? "fishing" : "observing", speed: 0, stride: 0, walkBlend: 0, turnLean: 0, lookYaw: 0, lookPitch: 0, emphasis: 0, attention: 0, fishingPhase: "adjust", phaseProgress: 0 },
   };
   const probe = new Object3D();
   const nodes = id === "fisherman" ? [] : buildGraph(surface, paths, { x: initial[0], z: initial[2] });
@@ -136,13 +163,15 @@ export function createVillageNpcRoutine(id: VillageNpcId, surface: VillageWalkSu
     if (frame.reduced) {
       pose.speed = 0; pose.activity = interaction ? interaction.type === "song" ? "singing" : "greeting" : id === "fisherman" ? "fishing" : "idle";
       pose.attention = interaction ? 1 : 0; pose.emphasis = interaction?.emphasis ?? 0;
-      pose.lookYaw = 0; pose.lookPitch = 0;
+      pose.walkBlend = 0; pose.turnLean = 0; pose.lookYaw = 0; pose.lookPitch = 0;
       return state;
     }
     clock += dt;
     pose.attention += ((interaction ? 1 : 0) - pose.attention) * (1 - Math.exp(-dt * 5));
     pose.emphasis += ((interaction?.emphasis ?? (pose.activity === "playing" ? 0.5 : 0)) - pose.emphasis) * (1 - Math.exp(-dt * 7));
 
+    let routeLook = Math.sin(clock * 0.4 + visit) * 0.19;
+    let turning = 0;
     if (id === "fisherman") {
       // Pause the exact fishing phase; attention lowers the bottle in the rig.
       if (!interaction && pose.attention < 0.04) {
@@ -204,15 +233,19 @@ export function createVillageNpcRoutine(id: VillageNpcId, surface: VillageWalkSu
         const dx = next.x - point.x, dz = next.z - point.z;
         const remaining = Math.hypot(dx, dz), heading = Math.atan2(dx, dz);
         const canResume = !interaction && pose.attention < 0.1;
-        const turn = angleDifference(heading, state.yaw);
-        if (canResume) state.yaw += clamp(turn, -dt * 3.4, dt * 3.4);
-        const aligned = Math.abs(angleDifference(heading, state.yaw)) <= walkHeadingLimit;
+        const turn = villageAngleDifference(heading, state.yaw);
         const following = nodes[route[1]];
-        const corner = following ? Math.abs(angleDifference(Math.atan2(following.x - next.x, following.z - next.z), heading)) : Math.PI;
+        const corner = following ? villageAngleDifference(Math.atan2(following.x - next.x, following.z - next.z), heading) : 0;
+        const anticipation = clamp(1 - remaining / 0.65, 0, 1) * clamp(corner, -0.7, 0.7);
+        routeLook = clamp(turn + anticipation, -0.6, 0.6);
+        turning = canResume ? clamp((turn + anticipation) * 1.8, -1, 1) : 0;
+        const turnRate = 1.9 + 1.5 * Math.abs(pose.turnLean ?? 0);
+        if (canResume) state.yaw += clamp(turn, -dt * turnRate, dt * turnRate);
+        const aligned = Math.abs(villageAngleDifference(heading, state.yaw)) <= walkHeadingLimit;
         const topSpeed = id === "loic" ? 0.82 : 0.7;
-        const approachSpeed = corner > walkHeadingLimit ? Math.min(topSpeed, Math.sqrt(2 * 1.4 * remaining)) : topSpeed;
+        const approachSpeed = !following || Math.abs(corner) > walkHeadingLimit ? Math.min(topSpeed, Math.sqrt(2 * 1.4 * remaining)) : topSpeed;
         const wanted = canResume && aligned ? approachSpeed : 0;
-        const speed = pose.speed + clamp(wanted - pose.speed, -dt * brake, dt * 1.25);
+        const speed = villageApproachSpeed(pose.speed, wanted, dt, 1.25, brake);
         const step = aligned ? Math.min(remaining, speed * dt) : 0;
         if (step > 0) {
           const factor = step / remaining;
@@ -232,19 +265,26 @@ export function createVillageNpcRoutine(id: VillageNpcId, surface: VillageWalkSu
       } else pose.speed = 0;
       state.position[1] += clamp(ground - state.position[1], -dt * 0.7, dt * 0.7);
       pose.activity = interaction ? interaction.type === "song" ? "singing" : "greeting" : pose.speed > 0.04 ? "walking" : calmActivity();
+      pose.walkBlend = villageWalkBlend(pose.walkBlend ?? 0, pose.speed, dt);
+      const lean = pose.turnLean ?? 0;
+      pose.turnLean = lean + (turning - lean) * (1 - Math.exp(-dt * 7));
     }
 
-    let wantedLook = Math.sin(clock * 0.4 + visit) * 0.19, wantedPitch = -0.035;
-    if (interaction && target) {
+    let wantedLook = routeLook, wantedPitch = -0.035;
+    if (target && pose.attention > 0) {
       const dx = target[0] - state.position[0], dz = target[2] - state.position[2];
-      const gaze = Math.atan2(dx, dz);
-      // The musician/guide accompany a wide gaze with shoulders/body; the seated fisherman keeps his tackle anchored.
-      if (id !== "fisherman" && pose.speed < 0.025) {
-        const excess = angleDifference(gaze, state.yaw);
+      const range = Math.hypot(dx, dz);
+      const gaze = range > 0.001 ? Math.atan2(dx, dz) : state.yaw;
+      // The eyes lead. Standing residents can turn the rest of the body after their feet settle.
+      if (interaction && id !== "fisherman" && pose.attention > 0.56 && (pose.walkBlend ?? 0) < 0.1) {
+        const excess = villageAngleDifference(gaze, state.yaw);
         if (Math.abs(excess) > 0.65) state.yaw += clamp(excess - Math.sign(excess) * 0.65, -dt * 1.7, dt * 1.7);
       }
-      wantedLook = clamp(angleDifference(gaze, state.yaw), -0.75, 0.75);
-      wantedPitch = clamp(-Math.atan2(target[1] - state.position[1] - 1.55, Math.max(0.1, Math.hypot(dx, dz))), -0.3, 0.3);
+      const focusYaw = clamp(villageAngleDifference(gaze, state.yaw), -0.75, 0.75);
+      const eyeHeight = id === "fisherman" ? 1.42 : 1.52;
+      const focusPitch = clamp(-Math.atan2(target[1] - state.position[1] - eyeHeight, Math.max(0.1, range)), -0.3, 0.3);
+      wantedLook += (focusYaw - wantedLook) * pose.attention;
+      wantedPitch += (focusPitch - wantedPitch) * pose.attention;
     }
     pose.lookYaw += (wantedLook - pose.lookYaw) * (1 - Math.exp(-dt * 5));
     pose.lookPitch += (wantedPitch - pose.lookPitch) * (1 - Math.exp(-dt * 5));

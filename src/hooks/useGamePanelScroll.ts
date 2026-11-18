@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 
 /** Activity windows keep their own scroll position when browser Back is used. */
-export function useGamePanelScroll(location: string, enabled: boolean) {
+export function useGamePanelScroll(location: string) {
   const ref = useRef<HTMLDivElement>(null);
   const positions = useRef(new Map<string, number>());
   const restoring = useRef(false);
@@ -11,7 +11,7 @@ export function useGamePanelScroll(location: string, enabled: boolean) {
   const navigating = useRef(false);
   useLayoutEffect(() => {
     const record = () => {
-      if (enabled && ref.current && !navigating.current) positions.current.set(currentLocation.current, ref.current.scrollTop);
+      if (ref.current && !navigating.current) positions.current.set(currentLocation.current, ref.current.scrollTop);
       navigating.current = true;
     };
     const back = () => {
@@ -24,10 +24,10 @@ export function useGamePanelScroll(location: string, enabled: boolean) {
     window.addEventListener("popstate", back, true);
     window.addEventListener("game:navigate", navigate, true);
     return () => { window.removeEventListener("popstate", back, true); window.removeEventListener("game:navigate", navigate, true); };
-  }, [enabled]);
+  }, []);
   useLayoutEffect(() => {
     const node = ref.current;
-    if (!enabled || !node) return;
+    if (!node) return;
     currentLocation.current = location;
     navigating.current = false;
     const storedPositions = positions.current;
@@ -51,6 +51,6 @@ export function useGamePanelScroll(location: string, enabled: boolean) {
       node.removeEventListener("scroll", record);
       node.removeEventListener("wheel", interact); node.removeEventListener("touchstart", interact); node.removeEventListener("keydown", interact);
     };
-  }, [location, enabled]);
+  }, [location]);
   return ref;
 }

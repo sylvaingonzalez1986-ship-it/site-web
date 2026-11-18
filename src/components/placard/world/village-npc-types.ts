@@ -10,6 +10,10 @@ export type VillageNpcPose = {
   activity: NpcActivity;
   speed: number;
   stride: number;
+  /** Continuous gait weight, including the last step into and out of a stop. */
+  walkBlend?: number;
+  /** Signed anticipation of a turn. Positive yaw turns toward local +X. */
+  turnLean?: number;
   lookYaw: number;
   lookPitch: number;
   emphasis: number;

@@ -55,8 +55,8 @@ function findAstNode<T extends ts.Node>(root: ts.Node, predicate: (node: ts.Node
   if (!found) throw new Error("Expected player-policy syntax node was not found");
   return found;
 }
-const placardMap = readFileSync(
-  join(process.cwd(), "src/components/placard/KqPlacardMap.tsx"),
+const placardLobby = readFileSync(
+  join(process.cwd(), "src/components/placard/KqPlacardLobby.tsx"),
   "utf8",
 );
 const placardHud = readFileSync(
@@ -153,8 +153,8 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
     expect(playerShell).toContain("<KqPlacardLobby");
-    expect(placardMap).toContain('src={KQ_PLACARD_MAP_SCENE.image}');
-    expect(placardMap).toContain('loading="eager" fetchPriority="high"');
+    expect(playerShell).toContain("<VillageWorld");
+    expect(placardLobby).not.toContain("<KqPlacardMap");
   });
 
   it("opens the recommended investment directly without forcing it into the cart", () => {
