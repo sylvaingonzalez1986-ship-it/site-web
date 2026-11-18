@@ -41,8 +41,10 @@
   .nextAction > :is(button, a), .resumeFacts { grid-column: 1 / -1; width: 100%; }
   .loading { min-height: 126px; }
 }
-@media (max-width: 1150px) {
+@media (max-width: 999px) {
   .quarterLayout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .dayBrief, .quarterLayout > [data-placard-map] { grid-column: 1; grid-row: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .nextAction :is(button, a) { transition: none; } }
+.quarterLayout[data-summary-only] { grid-template-columns: minmax(0, 1fr); }
+.quarterLayout[data-summary-only] .dayBrief { grid-column: 1; }

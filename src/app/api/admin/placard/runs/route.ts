@@ -7,7 +7,7 @@ import { getKqAdminRunsSnapshot, readKqRunSelection, startKqAdminRun } from "@/l
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET(request?: Request) {
+export async function GET(request: Request) {
   const admin = await getValidatedAdminContext();
   if (!admin) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   let selection;

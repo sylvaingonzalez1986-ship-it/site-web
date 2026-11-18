@@ -1,0 +1,1518 @@
+{
+  "batchId": "d-legacy-03",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "status": "awaiting-independent-review",
+  "sourceReuse": {
+    "registry": "docs/encyclopedia-revision/bibliography.json et sources des lots déjà produits",
+    "rule": "Objets enregistrés référencés sans redéfinition ; consultations du présent lot consignées séparément.",
+    "sourceIds": [
+      "qh-hist-un-treaties",
+      "qh-hist-csa",
+      "qh-hist-prop215",
+      "qh-hist-un-2020",
+      "qh-hist-canada",
+      "qh-hist-statutes",
+      "qh-hist-hemp-commission",
+      "qh-hist-uruguay-impo",
+      "qh-nature-hurd-tissue-paper",
+      "qh-nature-hemp-stubble-paper",
+      "qh-nature-composite-review",
+      "q2-dlegacy02-acma-composites"
+    ]
+  },
+  "deduplication": {
+    "comparedWith": [
+      "docs/quiz-2000/fact-index.jsonl",
+      "docs/quiz-2000/audit-f-active-snapshot.json#entries",
+      "docs/quiz-2000/batches/pilot-d.json",
+      "docs/quiz-2000/batches/d-01.json",
+      "docs/quiz-2000/batches/d-legacy-01.json",
+      "docs/quiz-2000/batches/d-legacy-02.json"
+    ],
+    "method": "Recherche ciblée des propriétés et réponses dans l'index compact, lecture des questions proches et des passages externes. Les 27 IDs réservés remplacent les versions historiques : ce ne sont pas des ajouts. Contrôle des factKeys et prompts normalisés avant livraison.",
+    "nearExistingFacts": [
+      {
+        "ids": [
+          "hemp-hs-hist-psychotropic"
+        ],
+        "existing": [
+          "hemp-hs-hist-un-psychotropics-city"
+        ],
+        "distinction": "La possibilité de recherche sous autorisation est distincte de la ville de la conférence de 1971. Clé commune convention1971."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-1988-name",
+          "hemp-hs-hist-1988-adoption"
+        ],
+        "existing": [],
+        "distinction": "Incrimination des profits blanchis et limitation d'un motif de refus d'entraide sont deux dispositions indépendantes ; aucun intitulé ou calendrier répété. Clé commune convention1988."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-un2020-schedule"
+        ],
+        "existing": [
+          "hemp-hs-hist-vote",
+          "hemp-hs-hist-vote-numbers"
+        ],
+        "distinction": "La portée du changement et le maintien au tableau I ne sont ni l'identité de l'organe ni le décompte des voix. Clé commune vote-cannabis2020 car l'ancien prompt sur les voix évoque déjà le retrait IV."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-canada-scope"
+        ],
+        "existing": [
+          "hemp-hs-hist-canada-date"
+        ],
+        "distinction": "Le modèle de légalisation avec offre réglementée est distinct de la clause de réexamen parlementaire, qui a remplacé le jour d'entrée en vigueur dans d-legacy-02. Clé commune cannabis-act-canada."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-1937-date"
+        ],
+        "existing": [
+          "hemp-hs-hist-1937-law",
+          "hemp-hs-hist-1937-exemptions"
+        ],
+        "distinction": "L'identification concrète du formulaire de transfert ne répète ni le nom du texte fiscal ni les exclusions de définition. Clé commune marihuana-tax-act ; le jour de promulgation a été abandonné."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-uruguay-policy",
+          "hemp-hs-hist-uruguay-promulgation-publication"
+        ],
+        "existing": [
+          "hemp-hs-hist-uruguay-law",
+          "hemp-hs-hist-uruguay-control"
+        ],
+        "distinction": "Finalité de réduction des dommages et qualification de données sensibles sont distinctes du pays et de l'institution créée. Clé commune loi19172. Les dates de promulgation/publication sont remplacées."
+      },
+      {
+        "ids": [
+          "hemp-en-3-03",
+          "hemp-en-3-15",
+          "hemp-en-3-20"
+        ],
+        "existing": [
+          "hemp-profiles-papier"
+        ],
+        "distinction": "Application absorbante, essai de pénétration à la bille et identification d'un essai de traction sont trois objets techniques distincts. Clé commune naithani-2020-hemp-tissue-paper pour éviter des indices entre questions sur la même expérience. L'organisation du papier en réseau concerne un autre fait général."
+      },
+      {
+        "ids": [
+          "hemp-en-3-05"
+        ],
+        "existing": [
+          "hemp-profiles-papier"
+        ],
+        "distinction": "Suspension avant égouttage distincte du réseau de la feuille formée ; clé commune hemp-papermaking."
+      },
+      {
+        "ids": [
+          "hemp-en-3-04",
+          "hemp-en-3-07"
+        ],
+        "existing": [
+          "hemp-profiles-chenevotte",
+          "hemp-profiles-etoupes"
+        ],
+        "distinction": "Résidu de récolte avec racines et comparaison morphologique liber/cœur distincts de l'emplacement de la chènevotte et des étoupes issues du traitement."
+      },
+      {
+        "ids": [
+          "hemp-en-3-06",
+          "hemp-en-3-08",
+          "hemp-en-3-10",
+          "hemp-en-3-11",
+          "hemp-en-3-13",
+          "hemp-en-3-16",
+          "hemp-en-3-18",
+          "hemp-en-3-19"
+        ],
+        "existing": [
+          "hemp-en-3-02",
+          "hemp-q2-d01-fibrilles-z-s",
+          "hemp-profiles-pectines",
+          "hemp-profiles-hygroscopie"
+        ],
+        "distinction": "Rôle de la lignine, cavité, module élastique, groupes chimiques, ordre moléculaire, microfibrilles, zone intercellulaire et famille des hémicelluloses sont distincts. Ni pourcentage arbitraire ni résultat de Herzog ne sont redemandés. Clé fibres-chanvre réutilisée pour les concepts de constitution et structure ; les autres questions concernent un test textile, un substrat de rouissage et l'échange avec l'air."
+      },
+      {
+        "ids": [
+          "hemp-en-3-09",
+          "hemp-en-3-17"
+        ],
+        "existing": [
+          "hemp-profiles-renfort",
+          "hemp-profiles-matrice",
+          "hemp-q2-d01-composite-temoin-matrice"
+        ],
+        "distinction": "Objectif d'une surface hydrophobe et séparation de plis sont distincts des constituants du composite et d'un témoin d'émissions. La délamination est limitée aux couches et partage hemp-fibre-composite avec les concepts de constitution."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "q2-dlegacy03-un-report-2021",
+      "title": "International cooperation against the world drug problem — Report of the Secretary-General, A/76/121",
+      "organization": "Organisation des Nations unies",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=A%2F76%2F121&t=pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Secrétaire général des Nations unies",
+      "published": "2021-06-30",
+      "passage": "§12, décision de décembre 2020 et maintien au tableau I.",
+      "access": "full-text",
+      "documentKind": "Rapport institutionnel à l'Assemblée générale",
+      "limitation": "Passage historique utilisé pour décrire la décision de 2020 ; aucune affirmation sur une réforme postérieure.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§12, PDF p. 4, lignes 135–144 du texte extrait",
+        "result": "Le rapport confirme le retrait du tableau IV et le maintien du cannabis et de sa résine au tableau I de la Convention de 1961."
+      }
+    },
+    {
+      "id": "q2-dlegacy03-faa-delamination",
+      "title": "AC 20-107B — Composite Aircraft Structure, with Change 1",
+      "organization": "Federal Aviation Administration, U.S. Department of Transportation",
+      "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_20-107B_with_change_1.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Federal Aviation Administration, AIR-100",
+      "published": "2009-09-08 ; Change 1 du 2010-08-24",
+      "passage": "Appendix 2, définition 11, Delamination.",
+      "access": "full-text",
+      "documentKind": "Guide technique institutionnel",
+      "limitation": "Définition de dommage d'un stratifié, applicable au vocabulaire des composites ; ce document ne décrit pas un essai sur du chanvre et n'est pas présenté comme une réglementation actuelle.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Appendix 2, définition 11, PDF p. 32, page A2-1",
+        "result": "La délamination est la séparation de couches de matériau dans un stratifié. La définition 14 distingue également un défaut d'adhésion à une interface collée."
+      }
+    },
+    {
+      "id": "q2-dlegacy03-usda-cell-wall-chemistry",
+      "title": "Cell Wall Chemistry — Handbook of Wood Chemistry and Wood Composites, 2nd edition, Chapter 3",
+      "organization": "USDA Forest Service, Forest Products Laboratory ; CRC Press",
+      "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Roger M. Rowell, Roger Pettersen et Mandla A. Tshabalala",
+      "published": "2013 (citation USDA de la deuxième édition)",
+      "passage": "§3.1.1, p. 35 : hydroxyles et sorption ; §3.1.2, p. 36 : cristallinité ; §3.1.3, p. 37–38 : hémicelluloses.",
+      "access": "full-text",
+      "documentKind": "Chapitre scientifique hébergé par une institution de recherche",
+      "limitation": "Le chapitre porte sur le bois ; seuls les concepts moléculaires généraux des polymères sont utilisés. La présence de ces composants dans le chanvre est étayée séparément par une source spécifique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Pages imprimées 35–38, PDF p. 3–6",
+        "result": "Les groupes hydroxyle sont associés à la sorption d'humidité ; les régions cristallines ont un empilement plus dense ; les hémicelluloses sont des polymères polysaccharidiques de sucres."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "hemp-hs-hist-psychotropic",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Pour le tableau I de la Convention de 1971, quel régime le texte prévoit-il pour la recherche scientifique ?",
+      "options": [
+        "Interdiction de toute étude, même publique",
+        "Autorisation spéciale et contrôle étroit",
+        "Simple déclaration après la fin de l'étude",
+        "Même régime que la vente aux particuliers"
+      ],
+      "answer": 1,
+      "explanation": "L'article 7 réserve des usages scientifiques et médicaux très limités à des personnes et établissements autorisés, sous contrôle. L'inscription au tableau I n'interdit donc pas toute recherche.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "convention1971",
+        "subjectKey": "convention1971",
+        "property": "le maintien d'un accès scientifique strictement contrôlé",
+        "expectedAnswer": "Autorisation spéciale et contrôle étroit",
+        "learningObjective": "Comprendre le maintien d'un accès scientifique strictement contrôlé.",
+        "factKey": "convention1971--schedule-i-scientific-use-authorized",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-un-treaties",
+            "locator": "Part Two, article 7(a)-(c), PDF p. 66 (page imprimée 60)",
+            "support": "Les usages scientifiques sont admis pour des personnes et établissements autorisés ; licence spéciale ou autorisation préalable et supervision étroite sont prévues."
+          }
+        ],
+        "jurisdiction": "International ; texte historique",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "convention1971--schedule-i-scientific-use-authorized",
+          "reason": "L'ancien titre à deviner répétait sa réponse. Remplacement par une propriété distincte du régime scientifique historique."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1988-name",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle infraction financière la Convention de 1988 demande-t-elle d'incriminer pour les profits du trafic ?",
+      "options": [
+        "La fraude à la TVA",
+        "Le délit d'initié",
+        "Le blanchiment des produits du trafic",
+        "La contrefaçon monétaire"
+      ],
+      "answer": 2,
+      "explanation": "L'article 3 vise notamment la dissimulation de l'origine des biens issus du trafic. La convention ne porte donc pas seulement sur les substances : elle s'attaque aussi à leurs produits financiers.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "convention1988",
+        "subjectKey": "convention1988",
+        "property": "l'incrimination du blanchiment des produits du trafic",
+        "expectedAnswer": "Le blanchiment des produits du trafic",
+        "learningObjective": "Comprendre l'incrimination du blanchiment des produits du trafic.",
+        "factKey": "convention1988--criminalize-laundering-trafficking-proceeds",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-un-treaties",
+            "locator": "Part Three, article 3, paragraphe 1(b), PDF p. 94 (page imprimée 88)",
+            "support": "La convention prévoit l'incrimination de la conversion, du transfert ou de la dissimulation de biens issus des infractions de trafic, dans les conditions exposées."
+          }
+        ],
+        "jurisdiction": "International ; texte historique",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "convention1988--criminalize-laundering-trafficking-proceeds",
+          "reason": "La récitation du titre est remplacée par la dimension financière du traité."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-act-schedule",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quel « Schedule » américain le cannabis était-il classé initialement par le Controlled Substances Act de 1970 ?",
+      "options": [
+        "Schedule I",
+        "Schedule II",
+        "Schedule III",
+        "Schedule IV"
+      ],
+      "answer": 0,
+      "explanation": "Le Congrès a placé initialement le cannabis en Schedule I en 1970. La question concerne ce classement d'origine, dans le système fédéral américain, distinct des tableaux de l'ONU.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-csa"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "controlled-substances-act-1970",
+        "subjectKey": "controlled-substances-act",
+        "property": "le classement fédéral américain initial du cannabis en 1970",
+        "expectedAnswer": "Schedule I",
+        "learningObjective": "Comprendre le classement fédéral américain initial du cannabis en 1970.",
+        "factKey": "csa1970--initial-marijuana-schedule-i",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-csa",
+            "locator": "PDF p. 10, II. Background, première phrase du paragraphe commençant « When Congress enacted »",
+            "support": "La DEA rappelle explicitement qu'en adoptant le CSA en 1970, le Congrès a placé marijuana en Schedule I."
+          }
+        ],
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "csa1970--initial-marijuana-schedule-i",
+          "reason": "Fait historique conservé ; toute remarque sur une réforme actuelle ou future est supprimée."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-hemp-archival-date",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel nom porte la Proposition 215 californienne de 1996 sur le cannabis médical ?",
+      "options": [
+        "Adult Use of Marijuana Act",
+        "Medical Cannabis Regulation and Safety Act",
+        "Medicinal and Adult-Use Cannabis Regulation and Safety Act",
+        "Compassionate Use Act"
+      ],
+      "answer": 3,
+      "explanation": "Le texte de la Proposition 215 indique le nom « Compassionate Use Act of 1996 ». Ses objectifs historiques concernent notamment les patients et leurs aidants, sur recommandation d'un médecin.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-prop215"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "prop215-california",
+        "subjectKey": "prop215-california",
+        "property": "le nom de la mesure californienne médicale de 1996",
+        "expectedAnswer": "Compassionate Use Act",
+        "learningObjective": "Comprendre le nom de la mesure californienne médicale de 1996.",
+        "factKey": "prop215--compassionate-use-act-name",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-prop215",
+            "locator": "Section 1, nouvel article 11362.5(a)",
+            "support": "Le texte proposé nomme cette section Compassionate Use Act of 1996."
+          }
+        ],
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "prop215--compassionate-use-act-name",
+          "reason": "Même identification, sans répéter Proposition 215 dans le bon choix ; quatre noms de textes californiens comparables."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-un2020-schedule",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Après la décision de l'ONU de décembre 2020, que devient le classement du cannabis et de sa résine dans la Convention de 1961 ?",
+      "options": [
+        "Retrait du tableau I, maintien au IV",
+        "Retrait du tableau IV, maintien au I",
+        "Transfert des tableaux I et IV vers le II",
+        "Retrait des tableaux I et IV"
+      ],
+      "answer": 1,
+      "explanation": "La décision de 2020 les retire du tableau IV. Ils demeurent au tableau I et restent soumis au contrôle international : ce vote n'est pas un retrait de l'ensemble des tableaux.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-2020",
+        "q2-dlegacy03-un-report-2021"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "vote-cannabis2020",
+        "subjectKey": "vote-cannabis2020",
+        "property": "la portée du retrait du tableau IV décidé en 2020",
+        "expectedAnswer": "Retrait du tableau IV, maintien au I",
+        "learningObjective": "Comprendre la portée du retrait du tableau IV décidé en 2020.",
+        "factKey": "cnd2020--cannabis-resin-delete-iv-retain-i",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-un-2020",
+            "locator": "Décision 63/17, PDF p. 13 ; §45, PDF p. 24",
+            "support": "La commission décide de supprimer cannabis et résine du tableau IV."
+          },
+          {
+            "sourceId": "q2-dlegacy03-un-report-2021",
+            "locator": "A/76/121, §12, PDF p. 4",
+            "support": "Le rapport précise qu'ils demeurent au tableau I et soumis aux contrôles prévus."
+          }
+        ],
+        "jurisdiction": "International ; texte historique",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "cnd2020--cannabis-resin-delete-iv-retain-i",
+          "reason": "Grammaire et terminologie corrigées ; portée de la décision explicitée par un rapport institutionnel."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-canada-scope",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Au Canada, quel modèle la loi entrée en vigueur en 2018 crée-t-elle pour le cannabis non médical des adultes ?",
+      "options": [
+        "Dépénalisation de l'usage, sans offre légale",
+        "Maintien du cadre réservé à l'usage médical",
+        "Légalisation avec production et vente encadrées",
+        "Distribution réservée aux pharmacies sur ordonnance"
+      ],
+      "answer": 2,
+      "explanation": "En 2018, la réforme légalise et encadre notamment production, distribution, vente et possession pour les adultes ayant l'âge légal. Elle crée donc une offre légale réglementée.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-canada"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "cannabis-act-canada",
+        "subjectKey": "cannabis-act-canada",
+        "property": "la différence entre légalisation réglementée et seule dépénalisation",
+        "expectedAnswer": "Légalisation avec production et vente encadrées",
+        "learningObjective": "Comprendre la différence entre légalisation réglementée et seule dépénalisation.",
+        "factKey": "cannabis-act2018--regulated-adult-nonmedical-supply",
+        "form": "comparaison",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-canada",
+            "locator": "Introduction, deux premières phrases",
+            "support": "Le document décrit la légalisation et la réglementation stricte de la production, distribution, vente, import-export et possession pour les adultes."
+          }
+        ],
+        "jurisdiction": "Canada",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "cannabis-act2018--regulated-adult-nonmedical-supply",
+          "reason": "Portée expressément historique en 2018 ; comparaison de modèles de politique publique."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1937-date",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Sous le Marihuana Tax Act de 1937, quel document encadrait les transferts ordinaires soumis à son article 6 ?",
+      "options": [
+        "Un bon écrit sur formulaire officiel du Trésor",
+        "Un acte de vente authentifié par un notaire",
+        "Une déclaration annuelle de stocks à la douane",
+        "Un permis municipal de transport de marchandises"
+      ],
+      "answer": 0,
+      "explanation": "L'article 6 prévoyait un ordre écrit de l'acquéreur sur un formulaire du Trésor. Des exceptions existaient, notamment pour certains actes médicaux : cette règle n'était pas universelle.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "marihuana-tax-act",
+        "subjectKey": "marihuana-tax-act",
+        "property": "le document prévu pour les transferts ordinaires en 1937",
+        "expectedAnswer": "Un bon écrit sur formulaire officiel du Trésor",
+        "learningObjective": "Comprendre le document prévu pour les transferts ordinaires en 1937.",
+        "factKey": "marihuana-tax-act--section6-written-treasury-order",
+        "form": "identification",
+        "difficultyRationale": "Une disposition précise doit être distinguée de mécanismes juridiques voisins : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-statutes",
+            "locator": "50 Stat. 553, chapitre 553, §6(a)-(b), PDF p. 3",
+            "support": "Les transferts doivent suivre un ordre écrit du destinataire sur un formulaire émis par le Secretary, défini comme le secrétaire au Trésor ; le paragraphe b prévoit des exceptions."
+          }
+        ],
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "marihuana-tax-act--section6-written-treasury-order",
+          "reason": "Le jour de promulgation est remplacé par un mécanisme documentaire distinct de l'identification fiscale déjà traitée."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-canada-federal",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Selon la résolution coloniale de 1895, jusqu'où devait s'étendre l'Indian Hemp Drugs Commission ?",
+      "options": [
+        "Au Bengale et à ses ports, comme enquête locale",
+        "Au seul Pendjab, principale région étudiée",
+        "Aux seules provinces du Nord-Ouest",
+        "À l'ensemble de l'Inde, au-delà du Bengale"
+      ],
+      "answer": 3,
+      "explanation": "L'enquête envisagée au Bengale est étendue à l'ensemble de l'Inde. La résolution précise toutefois des restrictions aux séances dans les États princiers, tout en demandant d'en recueillir des informations.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-hemp-commission"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "indian-hemp-drugs-commission",
+        "subjectKey": "indian-hemp-drugs-commission",
+        "property": "l'élargissement géographique d'une enquête coloniale",
+        "expectedAnswer": "À l'ensemble de l'Inde, au-delà du Bengale",
+        "learningObjective": "Comprendre l'élargissement géographique d'une enquête coloniale.",
+        "factKey": "indian-hemp-commission--whole-india-not-bengal-only",
+        "form": "identification",
+        "difficultyRationale": "Une disposition précise doit être distinguée de mécanismes juridiques voisins : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-hemp-commission",
+            "locator": "Résolution du 21 mars 1895, §1 et §2",
+            "support": "Le secrétaire d'État estime que l'enquête ne peut se limiter au Bengale et doit s'étendre à toute l'Inde ; le texte distingue les modalités d'enquête dans les Native States."
+          }
+        ],
+        "jurisdiction": "International ; texte historique",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "indian-hemp-commission--whole-india-not-bengal-only",
+          "reason": "Quatre périmètres indiens crédibles ; niveau ramené de 4 à 3. Pas d'affirmation d'auditions partout."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-policy",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle priorité l'article premier de la loi uruguayenne 19.172 de 2013 donne-t-il à la politique du cannabis ?",
+      "options": [
+        "Développer une filière nationale d'exportation",
+        "Protéger la santé par la réduction des risques et dommages",
+        "Financer les soins par une taxe spécifique sur les ventes",
+        "Réserver les usages autorisés à la prescription médicale"
+      ],
+      "answer": 1,
+      "explanation": "L'article premier présente une politique de santé publique : réduction des risques et dommages, information, prévention et accompagnement des usages problématiques.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-uruguay-impo"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "loi19172",
+        "subjectKey": "loi19172",
+        "property": "la finalité de santé publique affirmée dans la loi de 2013",
+        "expectedAnswer": "Protéger la santé par la réduction des risques et dommages",
+        "learningObjective": "Comprendre la finalité de santé publique affirmée dans la loi de 2013.",
+        "factKey": "loi19172--article1-health-risk-harm-reduction",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-uruguay-impo",
+            "locator": "Article 1, texte consulté à https://www.impo.com.uy/bases/leyes/19172-2013/1",
+            "support": "L'article déclare d'intérêt public la protection et l'amélioration de la santé par une politique de minimisation des risques et réduction des dommages."
+          }
+        ],
+        "jurisdiction": "Uruguay",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "loi19172--article1-health-risk-harm-reduction",
+          "reason": "Le principe est conservé avec quatre orientations de politique nationale plausibles et niveau 2."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1988-adoption",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans la Convention de 1988, quel motif ne peut à lui seul justifier un refus d'entraide judiciaire ?",
+      "options": [
+        "Un risque pour la sécurité de l'État requis",
+        "Une demande non conforme aux règles du traité",
+        "Le secret bancaire",
+        "Une incompatibilité avec les règles d'entraide de l'État requis"
+      ],
+      "answer": 2,
+      "explanation": "L'article 7 écarte le secret bancaire comme motif de refus. Il conserve d'autres motifs encadrés, par exemple une menace pour la souveraineté ou la sécurité de l'État requis.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "convention1988",
+        "subjectKey": "convention1988",
+        "property": "la limite au secret bancaire dans l'entraide judiciaire",
+        "expectedAnswer": "Le secret bancaire",
+        "learningObjective": "Comprendre la limite au secret bancaire dans l'entraide judiciaire.",
+        "factKey": "convention1988--mutual-assistance-no-bank-secrecy-refusal",
+        "form": "identification",
+        "difficultyRationale": "Une disposition précise doit être distinguée de mécanismes juridiques voisins : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-un-treaties",
+            "locator": "Part Three, article 7, paragraphes 5 et 15, PDF p. 104 et 106",
+            "support": "Le §5 interdit de refuser l'entraide au motif du secret bancaire ; le §15 énumère d'autres motifs de refus possibles."
+          }
+        ],
+        "jurisdiction": "International ; texte historique",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "convention1988--mutual-assistance-no-bank-secrecy-refusal",
+          "reason": "Les dates de conférence sont remplacées par une disposition distincte du blanchiment, avec des motifs de refus comparables."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel statut la loi uruguayenne de 2013 donne-t-elle à certaines données d'identité des inscrits aux registres de l'IRCCA ?",
+      "options": [
+        "Données personnelles ordinaires",
+        "Données relatives à des condamnations pénales",
+        "Données fiscales couvertes par le secret fiscal",
+        "Données sensibles au sens de la protection des données"
+      ],
+      "answer": 3,
+      "explanation": "L'article 8 qualifie de sensibles les données d'identité des titulaires des inscriptions qu'il précise. Le contrôle des registres s'accompagne ainsi d'une protection de certaines données personnelles.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-uruguay-impo"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "loi19172",
+        "subjectKey": "loi19172",
+        "property": "la protection juridique de certaines identités inscrites",
+        "expectedAnswer": "Données sensibles au sens de la protection des données",
+        "learningObjective": "Comprendre la protection juridique de certaines identités inscrites.",
+        "factKey": "loi19172--article8-identity-sensitive-data",
+        "form": "identification",
+        "difficultyRationale": "La question demande une connaissance historique cadrée, sans mémorisation d'un jour exact : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-uruguay-impo",
+            "locator": "Article 8, alinéa relatif à l'identité ; https://www.impo.com.uy/bases/leyes/19172-2013/8",
+            "support": "L'identité des titulaires des actes d'inscription visés pour les points E et F est qualifiée de donnée sensible conformément à la loi 18.331."
+          }
+        ],
+        "jurisdiction": "Uruguay",
+        "reviewAfter": "2028-11-16",
+        "legacyRevision": {
+          "finalFact": "loi19172--article8-identity-sensitive-data",
+          "reason": "Les dates administratives arbitraires sont remplacées par une garantie de données personnelles ; portée limitée aux inscriptions visées."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-03",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel produit Naithani et ses collègues ont-ils réalisé avec un mélange de fibres de bois et de chènevotte ?",
+      "options": [
+        "Un carton ondulé d'emballage",
+        "Un papier-filtre de laboratoire",
+        "Un papier absorbant de type essuie-tout",
+        "Un papier photographique couché"
+      ],
+      "answer": 2,
+      "explanation": "L'étude fabrique des feuilles expérimentales destinées aux papiers absorbants, dont les essuie-tout, avec des mélanges bois-chanvre. Elle ne décrit pas un produit constitué uniquement de chanvre.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "naithani-2020-hemp-tissue-paper",
+        "subjectKey": "naithani-2020-hemp-tissue-paper",
+        "property": "l'application absorbante d'un mélange papetier bois-chènevotte",
+        "expectedAnswer": "Un papier absorbant de type essuie-tout",
+        "learningObjective": "Distinguer l'application absorbante d'un mélange papetier bois-chènevotte.",
+        "factKey": "naithani2020--wood-hemp-blend-tissue-towel-paper",
+        "form": "identification",
+        "difficultyRationale": "Il faut connaître l'application expérimentale de cette étude parmi quatre produits papetiers plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hurd-tissue-paper",
+            "locator": "Titre, abstract et Experimental, Tissue handsheet preparation",
+            "support": "L'étude présente des fibres de chènevotte pour tissue et towel papers et fabrique des feuilles de mélanges de pâte de bois feuillu et de chanvre."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "naithani2020--wood-hemp-blend-tissue-towel-paper",
+          "reason": "La portée expérimentale et le mélange sont explicites ; quatre produits papetiers."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-04",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Dans l'étude de Parlak sur la pâte à papier de chanvre, que comprend la fraction de chaume récupérée au champ ?",
+      "options": [
+        "Les tronçons de tige laissés au pied, avec leurs racines",
+        "Les sommets de tiges réunis avec les feuilles de récolte",
+        "Les fragments d'écorce retirés lors du défibrage",
+        "Les poussières de tige séparées lors du tamisage"
+      ],
+      "answer": 0,
+      "explanation": "Les auteurs étudient du chaume comprenant les bases de tiges et les racines. Ces restes de récolte se distinguent des fibres du liber et des fragments de chènevotte séparés en atelier.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp-pulp-parlak-2026",
+        "subjectKey": "hemp-pulp-parlak-2026",
+        "property": "le résidu de récolte étudié avec les racines",
+        "expectedAnswer": "Les tronçons de tige laissés au pied, avec leurs racines",
+        "learningObjective": "Distinguer le résidu de récolte étudié avec les racines.",
+        "factKey": "parlak2026--field-stubble-basal-stems-and-roots",
+        "form": "identification",
+        "difficultyRationale": "Notion accessible avec quatre matières ou propriétés comparables : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hemp-stubble-paper",
+            "locator": "Abstract ; Introduction, dernier paragraphe ; Materials, stubble including roots",
+            "support": "L'étude s'intéresse aux résidus laissés au champ et définit son échantillon Hsr comme chaume incluant les racines."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "parlak2026--field-stubble-basal-stems-and-roots",
+          "reason": "Les quatre choix sont des fractions de tiges ou résidus de traitement crédibles."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-05",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Avant la formation d'une feuille de papier de chanvre, sous quelle forme la pâte diluée se présente-t-elle ?",
+      "options": [
+        "Une solution de cellulose entièrement dissoute",
+        "Une suspension de fibres dans l'eau",
+        "Une pâte de particules minérales liées à la chaux",
+        "Un mélange de fibres imprégnées de résine"
+      ],
+      "answer": 1,
+      "explanation": "La pâte diluée contient des fibres dispersées dans l'eau. Lors de la formation de la feuille, l'eau s'égoutte et le réseau fibreux se constitue ; les fibres ne sont pas intégralement dissoutes.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp-papermaking",
+        "subjectKey": "hemp-papermaking",
+        "property": "l'état de suspension aqueuse d'une pâte papetière",
+        "expectedAnswer": "Une suspension de fibres dans l'eau",
+        "learningObjective": "Distinguer l'état de suspension aqueuse d'une pâte papetière.",
+        "factKey": "hemp-pulp--dilute-aqueous-fibre-suspension",
+        "form": "identification",
+        "difficultyRationale": "Notion accessible avec quatre matières ou propriétés comparables : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hurd-tissue-paper",
+            "locator": "Water Absorption, PDF p. 8 (p. 713), définition de freeness ; Experimental, Tissue handsheet preparation",
+            "support": "Le texte définit l'égouttage comme l'écoulement d'une suspension diluée de pâte et décrit la préparation des feuilles à partir des pâtes fibreuses."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-pulp--dilute-aqueous-fibre-suspension",
+          "reason": "Ajout du passage explicite sur la suspension, absent du premier dossier ciblé ; distinction solution/suspension."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-06",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Parmi les constituants des parois du chanvre, lequel est un polymère majoritairement aromatique ?",
+      "options": [
+        "La pectine",
+        "La cellulose",
+        "L'hémicellulose",
+        "La lignine"
+      ],
+      "answer": 3,
+      "explanation": "La lignine possède principalement des unités aromatiques. La cellulose, les hémicelluloses et les pectines sont des polysaccharides : plusieurs composants structurent la paroi, mais leurs chimies diffèrent.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "q2-dlegacy03-usda-cell-wall-chemistry",
+        "qh-nature-hemp-stubble-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "la nature aromatique distinctive de la lignine pariétale",
+        "expectedAnswer": "La lignine",
+        "learningObjective": "Distinguer la lignine aromatique des polysaccharides de la paroi.",
+        "factKey": "hemp-cell-wall--lignin-mainly-aromatic-polymer",
+        "form": "identification",
+        "difficultyRationale": "Il faut connaître la famille chimique du polymère, au-delà de son rôle structural partagé avec d'autres constituants : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+            "locator": "§3.2 Lignin, p. 41, PDF p. 9, premier paragraphe ; nouveau passage consulté le 2026-11-16",
+            "support": "Le chapitre définit les lignines comme des polymères complexes majoritairement aromatiques, construits à partir d'unités phénylpropane."
+          },
+          {
+            "sourceId": "qh-nature-hemp-stubble-paper",
+            "locator": "Results and discussion, analyse FTIR, paragraphe précédant Figure 2 et Table 3, bande à 1598 cm⁻¹",
+            "support": "L'étude des pâtes de chanvre attribue à la lignine les vibrations du squelette aromatique, en particulier la bande vers 1598 cm⁻¹ des fractions contenant le cœur ligneux."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-cell-wall--lignin-mainly-aromatic-polymer",
+          "reason": "La rigidité n'isolait pas la lignine de la cellulose. Le fait final porte sur sa nature aromatique, avec USDA §3.2 réellement relu et FTIR du chanvre ; aucune exclusivité du rôle structural n'est affirmée."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-07",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle association décrit généralement les fibres du liber et du cœur ligneux de la tige de chanvre ?",
+      "options": [
+        "Liber plutôt court ; cœur ligneux plutôt long",
+        "Liber et cœur ligneux tous deux plutôt longs",
+        "Liber plutôt long ; cœur ligneux plutôt court",
+        "Liber et cœur ligneux tous deux plutôt courts"
+      ],
+      "answer": 2,
+      "explanation": "Les fibres libériennes sont généralement longues, celles du cœur ligneux courtes. Cette différence de morphologie explique pourquoi on distingue les deux fractions dans les usages textiles et papetiers.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper",
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "la différence de longueur entre fibres libériennes et ligneuses",
+        "expectedAnswer": "Liber plutôt long ; cœur ligneux plutôt court",
+        "learningObjective": "Distinguer la différence de longueur entre fibres libériennes et ligneuses.",
+        "factKey": "hemp-stem--bast-long-hurd-short-fibres",
+        "form": "comparaison",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hemp-stubble-paper",
+            "locator": "Introduction, objectif : hurd and root fibers are typically short ; Conclusion, rôle des long bast fibers",
+            "support": "L'étude distingue les fibres courtes du cœur et des racines des fibres longues du liber."
+          },
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, phrase précédant la Figure 3",
+            "support": "Le texte oppose explicitement long bast fibres et short-core woody fibres."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-stem--bast-long-hurd-short-fibres",
+          "reason": "Toutes les associations comparent la même grandeur ; aucune affirmation sur des parois absentes."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-08",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Où se situe le lumen d'une cellule fibreuse de chanvre ?",
+      "options": [
+        "Dans la cavité centrale délimitée par la paroi",
+        "Dans la couche externe qui unit deux cellules",
+        "Dans la paroi primaire à l'extérieur de la paroi secondaire",
+        "Dans la paroi secondaire riche en cellulose"
+      ],
+      "answer": 0,
+      "explanation": "Le lumen est la cavité centrale de la cellule fibreuse, entourée par ses parois. Il ne faut pas le confondre avec une couche de paroi ou la zone qui unit les cellules voisines.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "la cavité centrale d'une cellule fibreuse",
+        "expectedAnswer": "Dans la cavité centrale délimitée par la paroi",
+        "learningObjective": "Distinguer la cavité centrale d'une cellule fibreuse.",
+        "factKey": "hemp-fibre--lumen-central-cell-cavity",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, structure de la fibre, Figure 3 et paragraphe surrounding a central lumen",
+            "support": "Les couches de paroi sont décrites autour d'un lumen central ; les fibres ont une structure tubulaire creuse."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-fibre--lumen-central-cell-cavity",
+          "reason": "Quatre localisations anatomiques ; l'explication évite de nommer la réponse de l'autre question sur la lamelle moyenne."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-09",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quel effet recherche-t-on avec un revêtement hydrophobe sur une fibre de chanvre ?",
+      "options": [
+        "Augmenter sa capacité de sorption d'eau",
+        "Renforcer sa polarité de surface",
+        "Accroître la montée d'eau par capillarité",
+        "Réduire son affinité de surface pour l'eau"
+      ],
+      "answer": 3,
+      "explanation": "Un revêtement hydrophobe vise à limiter l'affinité de la surface pour l'eau. Il ne transforme pas le cœur de la fibre et ne garantit pas, à lui seul, l'étanchéité de tout le composite.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp-fibre-surface",
+        "subjectKey": "hemp-fibre-surface",
+        "property": "l'effet recherché d'une surface rendue hydrophobe",
+        "expectedAnswer": "Réduire son affinité de surface pour l'eau",
+        "learningObjective": "Distinguer l'effet recherché d'une surface rendue hydrophobe.",
+        "factKey": "hemp-fibre--hydrophobic-coating-reduces-water-affinity",
+        "form": "identification",
+        "difficultyRationale": "Notion accessible avec quatre matières ou propriétés comparables : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "Introduction, application of hydrophobic coatings to reduce water affinity",
+            "support": "La revue énonce la réduction d'affinité pour l'eau comme objectif des revêtements hydrophobes."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-fibre--hydrophobic-coating-reduces-water-affinity",
+          "reason": "Quatre modifications réalistes liées à l'interaction avec l'eau ; niveau 1 pour une définition directe."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-10",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel paramètre décrit la rigidité élastique d'une fibre de chanvre, avant sa rupture ?",
+      "options": [
+        "Sa contrainte de rupture",
+        "Son allongement à la rupture",
+        "Son module de Young",
+        "Son énergie de rupture"
+      ],
+      "answer": 2,
+      "explanation": "Le module de Young relie contrainte et déformation dans le domaine élastique. Une fibre rigide n'est pas nécessairement celle qui supporte la plus grande contrainte avant de rompre.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-acma-composites",
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "la rigidité élastique distincte de la résistance à la rupture",
+        "expectedAnswer": "Son module de Young",
+        "learningObjective": "Distinguer la rigidité élastique distincte de la résistance à la rupture.",
+        "factKey": "hemp-fibre--young-modulus-elastic-stiffness",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-acma-composites",
+            "locator": "Glossaire, Modulus of Elasticity, PDF p. 60 (page imprimée 46) ; §3.2.4",
+            "support": "Le module est la pente de la courbe contrainte-déformation, utile pour la déformation attendue sous charge."
+          },
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2.3 et tableau 4",
+            "support": "La revue distingue module de Young, résistance en traction et allongement à la rupture pour les fibres de chanvre."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-fibre--young-modulus-elastic-stiffness",
+          "reason": "Propriétés mécaniques comparables ; aucune couleur, odeur ou composition alimentaire."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-11",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quels groupes abondants sur la cellulose favorisent les interactions d'une fibre de chanvre avec l'eau ?",
+      "options": [
+        "Les groupes méthyle –CH₃",
+        "Les groupes hydroxyle –OH",
+        "Les groupes thiol –SH",
+        "Les groupes nitrile –C≡N"
+      ],
+      "answer": 1,
+      "explanation": "Les nombreux groupes hydroxyle de la cellulose peuvent former des liaisons hydrogène avec l'eau. Ils contribuent à l'affinité des fibres végétales pour l'humidité.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review",
+        "q2-dlegacy03-usda-cell-wall-chemistry"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "le rôle des groupes hydroxyle de la cellulose",
+        "expectedAnswer": "Les groupes hydroxyle –OH",
+        "learningObjective": "Distinguer le rôle des groupes hydroxyle de la cellulose.",
+        "factKey": "hemp-cellulose--hydroxyl-groups-water-affinity",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, abondance des groupes hydroxyle et hygroscopicité, paragraphe après Figure 3",
+            "support": "Le texte attribue l'affinité de la cellulose pour l'eau à l'abondance de ses groupes hydroxyle."
+          },
+          {
+            "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+            "locator": "§3.1.1, p. 35 ; riches en groupes hydroxyle",
+            "support": "Le chapitre explique la sorption d'humidité par les groupes hydroxyle et leurs liaisons hydrogène."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-cellulose--hydroxyl-groups-water-affinity",
+          "reason": "Quatre fonctions chimiques correctement nommées ; suppression du prétendu groupe chlorure."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-13",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Par rapport à une zone amorphe, comment les chaînes de cellulose sont-elles organisées dans une zone cristalline du chanvre ?",
+      "options": [
+        "Plus ordonnées et plus compactes",
+        "Plus ordonnées et moins compactes",
+        "Moins ordonnées et plus compactes",
+        "Moins ordonnées et moins compactes"
+      ],
+      "answer": 0,
+      "explanation": "Dans une zone cristalline, les chaînes de cellulose présentent une organisation plus régulière et compacte. Une zone amorphe a une organisation moins ordonnée ; les deux peuvent coexister dans une fibre.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review",
+        "q2-dlegacy03-usda-cell-wall-chemistry"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "l'organisation cristalline distincte de l'organisation amorphe",
+        "expectedAnswer": "Plus ordonnées et plus compactes",
+        "learningObjective": "Distinguer l'organisation cristalline distincte de l'organisation amorphe.",
+        "factKey": "hemp-cellulose--crystalline-ordered-compact-regions",
+        "form": "comparaison",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§3, régions cristallines et amorphes, paragraphe Crystalline regions are more compact and ordered",
+            "support": "La revue oppose les régions compactes et ordonnées aux régions amorphes."
+          },
+          {
+            "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+            "locator": "§3.1.2, p. 36, formation des régions cristallines",
+            "support": "Le chapitre distingue l'empilement plus dense des régions cristallines de la portion amorphe."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-cellulose--crystalline-ordered-compact-regions",
+          "reason": "Comparaison d'organisations moléculaires ; niveau 2, sans options physiquement impossibles."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-15",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans l'étude de papier bois-chanvre de Naithani, l'essai « ball burst » mesure quelle résistance ?",
+      "options": [
+        "À un effort de traction dans le plan de la feuille",
+        "À la progression d'une déchirure amorcée",
+        "À la compression d'une bande sur sa tranche",
+        "À la pénétration mécanique d'une bille dans la feuille"
+      ],
+      "answer": 3,
+      "explanation": "L'essai à la bille sollicite la feuille jusqu'à la pénétration mécanique. Ce mode d'éclatement se distingue des essais où une bande est tirée ou une déchirure propagée.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "naithani-2020-hemp-tissue-paper",
+        "subjectKey": "naithani-2020-hemp-tissue-paper",
+        "property": "le mode de sollicitation de l'essai d'éclatement à la bille",
+        "expectedAnswer": "À la pénétration mécanique d'une bille dans la feuille",
+        "learningObjective": "Distinguer le mode de sollicitation de l'essai d'éclatement à la bille.",
+        "factKey": "naithani2020--ball-burst-mechanical-penetration",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hurd-tissue-paper",
+            "locator": "Mechanical Strength, PDF p. 9 (p. 714), phrase Resistance to mechanical penetration ; Figure 7",
+            "support": "Les auteurs définissent le ball burst comme la résistance à une pénétration mécanique de la feuille."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "naithani2020--ball-burst-mechanical-penetration",
+          "reason": "L'essai réellement employé remplace la formulation générique sous pression ; quatre sollicitations mécaniques."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-16",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Dans la paroi d'une fibre de chanvre, sous quelle forme la cellulose constitue-t-elle son réseau structural ?",
+      "options": [
+        "Un empilement en feuillets moléculaires continus",
+        "Un entrelacs de chaînes individuelles dispersées dans la matrice",
+        "Un assemblage en microfibrilles formant un réseau",
+        "Un maillage de chaînes réticulées par des ponts covalents"
+      ],
+      "answer": 2,
+      "explanation": "La cellulose s'organise en microfibrilles participant au réseau de la paroi. Leur orientation et leur association avec les autres constituants influencent les propriétés mécaniques des fibres.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "l'organisation supramoléculaire de la cellulose pariétale",
+        "expectedAnswer": "Un assemblage en microfibrilles formant un réseau",
+        "learningObjective": "Distinguer l'organisation supramoléculaire de la cellulose pariétale.",
+        "factKey": "hemp-cellulose--microfibrils-wall-structural-network",
+        "form": "identification",
+        "difficultyRationale": "Il faut situer une structure ou une mesure technique parmi des notions voisines : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, paragraphe primary fibrils organised into microfibrils forming the structural network ; §2.3",
+            "support": "La revue décrit les microfibrilles de cellulose comme éléments du réseau structural et relie leur orientation aux propriétés mécaniques."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-cellulose--microfibrils-wall-structural-network",
+          "reason": "Les quatre choix décrivent des organisations supramoléculaires de chaînes dans une paroi. Les granules de réserve et les gouttelettes hors contexte sont remplacés ; niveau 3."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-17",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans un panneau composite stratifié à fibres de chanvre, quel dommage est une délamination ?",
+      "options": [
+        "Une rupture des fibres dans un pli",
+        "Une séparation entre deux plis du stratifié",
+        "Une fissure dans la matrice à l'intérieur d'un pli",
+        "Une perte d'adhérence entre une fibre et sa matrice"
+      ],
+      "answer": 1,
+      "explanation": "La délamination sépare des plis ou couches du stratifié. Une perte d'adhérence à l'interface entre une fibre et sa matrice est une décohésion interfaciale, à distinguer de ce dommage entre couches.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "q2-dlegacy03-faa-delamination"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp-fibre-composite",
+        "subjectKey": "hemp-fibre-composite",
+        "property": "la séparation de plis distincte des autres dommages du composite",
+        "expectedAnswer": "Une séparation entre deux plis du stratifié",
+        "learningObjective": "Distinguer la séparation de plis distincte des autres dommages du composite.",
+        "factKey": "laminated-composite--delamination-between-plies",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy03-faa-delamination",
+            "locator": "AC 20-107B, Appendix 2, définition 11, PDF p. 32 (A2-1)",
+            "support": "La FAA définit la délamination comme une séparation entre les couches de matériau d'un stratifié."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "laminated-composite--delamination-between-plies",
+          "reason": "Correction du sens technique : ni toute interface ni toute rupture. Une source institutionnelle explicite remplace le passage trop large."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-18",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Quelle zone riche en pectines assure la cohésion entre cellules voisines dans un faisceau de fibres de chanvre ?",
+      "options": [
+        "La paroi secondaire interne",
+        "La paroi primaire de chaque cellule",
+        "La lamelle moyenne entre cellules",
+        "La couche tertiaire au contact du lumen"
+      ],
+      "answer": 2,
+      "explanation": "La lamelle moyenne se trouve entre les cellules et contribue à leur cohésion. Sa richesse en pectines explique le lien entre l'organisation des faisceaux et les transformations qui facilitent leur séparation.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "la zone intercellulaire qui lie les cellules en faisceaux",
+        "expectedAnswer": "La lamelle moyenne entre cellules",
+        "learningObjective": "Distinguer la zone intercellulaire qui lie les cellules en faisceaux.",
+        "factKey": "hemp-fibre--middle-lamella-bundle-cohesion",
+        "form": "identification",
+        "difficultyRationale": "Il faut situer une structure ou une mesure technique parmi des notions voisines : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, structure de la fibre, phrase The middle lamella rich in pectin and lignin binds bast fibres",
+            "support": "La revue décrit la lamelle moyenne, riche en pectines et lignine, comme liaison des fibres libériennes en faisceaux."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-fibre--middle-lamella-bundle-cohesion",
+          "reason": "Quatre couches ou zones anatomiques pertinentes ; niveau ramené de 4 à 3."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-19",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "À quelle famille de molécules appartiennent les hémicelluloses des parois de fibres de chanvre ?",
+      "options": [
+        "Aux polysaccharides",
+        "Aux protéines structurales",
+        "Aux polymères phénoliques",
+        "Aux lipides complexes"
+      ],
+      "answer": 0,
+      "explanation": "Les hémicelluloses sont des polysaccharides : leurs chaînes comprennent des unités de sucres. Elles se distinguent de la cellulose par leur structure et leur composition, et de la lignine, polymère phénolique.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "q2-dlegacy03-usda-cell-wall-chemistry",
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "fibres-chanvre",
+        "subjectKey": "fibres-chanvre",
+        "property": "la famille moléculaire des hémicelluloses",
+        "expectedAnswer": "Aux polysaccharides",
+        "learningObjective": "Distinguer la famille moléculaire des hémicelluloses.",
+        "factKey": "hemp-cell-wall--hemicelluloses-polysaccharides",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+            "locator": "§3.1.3 Hemicelluloses, p. 37, première phrase et p. 38",
+            "support": "Le chapitre définit la fraction hémicellulosique comme un ensemble de polymères polysaccharidiques de différentes unités de sucres."
+          },
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, structure et composition de la fibre, tableau 3",
+            "support": "La revue situe les hémicelluloses parmi les constituants des fibres de chanvre."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "hemp-cell-wall--hemicelluloses-polysaccharides",
+          "reason": "Définition biochimique désormais explicite ; niveau 2 au lieu de 4."
+        }
+      }
+    },
+    {
+      "id": "hemp-en-3-20",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Pour comparer un papier bois-chanvre sec puis mouillé, on tire une bande jusqu'à rupture. Quelle résistance mesure-t-on ?",
+      "options": [
+        "La résistance à la déchirure",
+        "La résistance à l'éclatement",
+        "La résistance à la compression",
+        "La résistance à la traction"
+      ],
+      "answer": 3,
+      "explanation": "L'essai de traction sollicite une bande dans sa longueur. Le réaliser à sec puis à l'état humide permet de comparer son comportement selon l'état d'humidité, plutôt que d'assimiler les deux résultats.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "naithani-2020-hemp-tissue-paper",
+        "subjectKey": "naithani-2020-hemp-tissue-paper",
+        "property": "la résistance en traction évaluée à sec et à l'état humide",
+        "expectedAnswer": "La résistance à la traction",
+        "learningObjective": "Distinguer la résistance en traction évaluée à sec et à l'état humide.",
+        "factKey": "naithani2020--dry-wet-tensile-test-distinct-moisture-states",
+        "form": "situation",
+        "difficultyRationale": "Vocabulaire technique usuel ou application directe de sa définition : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hurd-tissue-paper",
+            "locator": "Mechanical Strength, PDF p. 9 ; Figure 6, PDF p. 10 ; références TAPPI T494 et T456",
+            "support": "Les auteurs évaluent les résistances en traction à sec et à l'état humide et présentent les deux séries de mesures."
+          }
+        ],
+        "legacyRevision": {
+          "finalFact": "naithani2020--dry-wet-tensile-test-distinct-moisture-states",
+          "reason": "La situation décrit le mode d'essai, car plusieurs propriétés peuvent être mesurées à sec et mouillées. Quatre résistances papetières."
+        }
+      }
+    }
+  ],
+  "consultations": [
+    {
+      "sourceId": "qh-hist-un-treaties",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Part Two, article 7(a)-(c), PDF p. 66 (page imprimée 60) ; Part Three, article 3, paragraphe 1(b), PDF p. 94 (page imprimée 88) ; Part Three, article 7, paragraphes 5 et 15, PDF p. 104 et 106",
+      "result": "Les usages scientifiques sont admis pour des personnes et établissements autorisés ; licence spéciale ou autorisation préalable et supervision étroite sont prévues. La convention prévoit l'incrimination de la conversion, du transfert ou de la dissimulation de biens issus des infractions de trafic, dans les conditions exposées. Le §5 interdit de refuser l'entraide au motif du secret bancaire ; le §15 énumère d'autres motifs de refus possibles."
+    },
+    {
+      "sourceId": "qh-hist-csa",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "PDF p. 10, II. Background, première phrase du paragraphe commençant « When Congress enacted »",
+      "result": "La DEA rappelle explicitement qu'en adoptant le CSA en 1970, le Congrès a placé marijuana en Schedule I."
+    },
+    {
+      "sourceId": "qh-hist-prop215",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Section 1, nouvel article 11362.5(a)",
+      "result": "Le texte proposé nomme cette section Compassionate Use Act of 1996."
+    },
+    {
+      "sourceId": "qh-hist-un-2020",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Décision 63/17, PDF p. 13 ; §45, PDF p. 24",
+      "result": "La commission décide de supprimer cannabis et résine du tableau IV."
+    },
+    {
+      "sourceId": "q2-dlegacy03-un-report-2021",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "A/76/121, §12, PDF p. 4",
+      "result": "Le rapport précise qu'ils demeurent au tableau I et soumis aux contrôles prévus."
+    },
+    {
+      "sourceId": "qh-hist-canada",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, deux premières phrases",
+      "result": "Le document décrit la légalisation et la réglementation stricte de la production, distribution, vente, import-export et possession pour les adultes."
+    },
+    {
+      "sourceId": "qh-hist-statutes",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "50 Stat. 553, chapitre 553, §6(a)-(b), PDF p. 3",
+      "result": "Les transferts doivent suivre un ordre écrit du destinataire sur un formulaire émis par le Secretary, défini comme le secrétaire au Trésor ; le paragraphe b prévoit des exceptions."
+    },
+    {
+      "sourceId": "qh-hist-hemp-commission",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Résolution du 21 mars 1895, §1 et §2",
+      "result": "Le secrétaire d'État estime que l'enquête ne peut se limiter au Bengale et doit s'étendre à toute l'Inde ; le texte distingue les modalités d'enquête dans les Native States."
+    },
+    {
+      "sourceId": "qh-hist-uruguay-impo",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Article 1, texte consulté à https://www.impo.com.uy/bases/leyes/19172-2013/1 ; Article 8, alinéa relatif à l'identité ; https://www.impo.com.uy/bases/leyes/19172-2013/8",
+      "result": "L'article déclare d'intérêt public la protection et l'amélioration de la santé par une politique de minimisation des risques et réduction des dommages. L'identité des titulaires des actes d'inscription visés pour les points E et F est qualifiée de donnée sensible conformément à la loi 18.331."
+    },
+    {
+      "sourceId": "qh-nature-hurd-tissue-paper",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Titre, abstract et Experimental, Tissue handsheet preparation ; Water Absorption, PDF p. 8 (p. 713), définition de freeness ; Experimental, Tissue handsheet preparation ; Mechanical Strength, PDF p. 9 (p. 714), phrase Resistance to mechanical penetration ; Figure 7 ; Mechanical Strength, PDF p. 9 ; Figure 6, PDF p. 10 ; références TAPPI T494 et T456",
+      "result": "L'étude présente des fibres de chènevotte pour tissue et towel papers et fabrique des feuilles de mélanges de pâte de bois feuillu et de chanvre. Le texte définit l'égouttage comme l'écoulement d'une suspension diluée de pâte et décrit la préparation des feuilles à partir des pâtes fibreuses. Les auteurs définissent le ball burst comme la résistance à une pénétration mécanique de la feuille. Les auteurs évaluent les résistances en traction à sec et à l'état humide et présentent les deux séries de mesures."
+    },
+    {
+      "sourceId": "qh-nature-hemp-stubble-paper",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Abstract ; Introduction, dernier paragraphe ; Materials, stubble including roots ; Chemical composition analysis ; FTIR, bandes aromatiques de lignine des pâtes de cœur ; Introduction, objectif : hurd and root fibers are typically short ; Conclusion, rôle des long bast fibers",
+      "result": "L'étude s'intéresse aux résidus laissés au champ et définit son échantillon Hsr comme chaume incluant les racines. L'étude caractérise la lignine dans les fractions de chènevotte et la composition des parties ligneuses. L'étude distingue les fibres courtes du cœur et des racines des fibres longues du liber."
+    },
+    {
+      "sourceId": "qh-nature-composite-review",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "§2, structure du réseau et rôle de la lignine, paragraphes précédant la Figure 3 ; §2, phrase précédant la Figure 3 ; §2, structure de la fibre, Figure 3 et paragraphe surrounding a central lumen ; Introduction, application of hydrophobic coatings to reduce water affinity ; §2.3 et tableau 4 ; §2, abondance des groupes hydroxyle et hygroscopicité, paragraphe après Figure 3 ; §3, régions cristallines et amorphes, paragraphe Crystalline regions are more compact and ordered ; §2, paragraphe primary fibrils organised into microfibrils forming the structural network ; §2.3 ; §2, structure de la fibre, phrase The middle lamella rich in pectin and lignin binds bast fibres ; §2, structure et composition de la fibre, tableau 3",
+      "result": "Le dépôt de lignine augmente la rigidité du réseau et le cœur ligneux se distingue du liber. Le texte oppose explicitement long bast fibres et short-core woody fibres. Les couches de paroi sont décrites autour d'un lumen central ; les fibres ont une structure tubulaire creuse. La revue énonce la réduction d'affinité pour l'eau comme objectif des revêtements hydrophobes. La revue distingue module de Young, résistance en traction et allongement à la rupture pour les fibres de chanvre. Le texte attribue l'affinité de la cellulose pour l'eau à l'abondance de ses groupes hydroxyle. La revue oppose les régions compactes et ordonnées aux régions amorphes. La revue décrit les microfibrilles de cellulose comme éléments du réseau structural et relie leur orientation aux propriétés mécaniques. La revue décrit la lamelle moyenne, riche en pectines et lignine, comme liaison des fibres libériennes en faisceaux. La revue situe les hémicelluloses parmi les constituants des fibres de chanvre."
+    },
+    {
+      "sourceId": "q2-dlegacy02-acma-composites",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Glossaire, Modulus of Elasticity, PDF p. 60 (page imprimée 46) ; §3.2.4",
+      "result": "Le module est la pente de la courbe contrainte-déformation, utile pour la déformation attendue sous charge."
+    },
+    {
+      "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "§3.1.1, p. 35 ; §3.1.2, p. 36 ; §3.1.3, p. 37–38 ; nouveau passage relu §3.2 Lignin, p. 41, PDF p. 9, premier paragraphe",
+      "result": "Le chapitre explique hydroxyles et sorption, empilement cristallin et définition polysaccharidique des hémicelluloses. Le passage §3.2 relu le 2026-11-16 définit les lignines comme des polymères majoritairement aromatiques d'unités phénylpropane. L'objet source enregistré reste inchangé ; cette lecture complémentaire est consignée ici."
+    },
+    {
+      "sourceId": "q2-dlegacy03-faa-delamination",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "AC 20-107B, Appendix 2, définition 11, PDF p. 32 (A2-1)",
+      "result": "La FAA définit la délamination comme une séparation entre les couches de matériau d'un stratifié."
+    }
+  ],
+  "authoringSummary": {
+    "reservedEntries": 27,
+    "submittedQuestions": 27,
+    "replacedHistoricalFacts": [
+      "hemp-hs-hist-psychotropic",
+      "hemp-hs-hist-1988-name",
+      "hemp-hs-hist-1937-date",
+      "hemp-hs-hist-1988-adoption",
+      "hemp-hs-hist-uruguay-promulgation-publication",
+      "hemp-en-3-06"
+    ],
+    "levels": {
+      "1": 3,
+      "2": 18,
+      "3": 6
+    },
+    "forms": {
+      "identification": 23,
+      "comparaison": 3,
+      "situation": 1
+    },
+    "reviewStatus": "Independent review required; no approval claimed"
+  }
+}

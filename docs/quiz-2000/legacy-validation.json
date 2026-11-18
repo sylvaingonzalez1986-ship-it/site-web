@@ -1,0 +1,1310 @@
+[
+  {
+    "id": "hemp-plant-monoecie",
+    "status": "approved",
+    "runtimeHash": "eb6ecb97098e21926d19024169aaa43c62bfeed27462e41d9e52a0773fe52da5",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-genetics-synthases-chromosome",
+    "status": "approved",
+    "runtimeHash": "f16f0a83a24e40fee13090829f9bd4ff5a830ece1b1e64dad31b45b645b78161",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-ocimene-e",
+    "status": "approved",
+    "runtimeHash": "9c1359474736b094fc212538451f8d501ec1cd1cd5bb0a5b9803d303caa3b619",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-hhc-epimeres",
+    "status": "approved",
+    "runtimeHash": "91029c4a7df107fe0da1bf7bfa45f54eee06af1af65032cba2493c23fa0012dc",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-thc-1964",
+    "status": "approved",
+    "runtimeHash": "c56269b69b5caa8b242a0da277334c77a3c2bafe01a34d37b875808c629ac849",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb1-brain",
+    "status": "approved",
+    "runtimeHash": "999d9300117175410197811339a6543e7be194855c8f4d3bb0e9c0151dda5f6c",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cbd-not-thc",
+    "status": "approved",
+    "runtimeHash": "10057a7ee44bec8c369812a0529b6344d92618fa56f9829d0bd459817b6a275d",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb2-tissue",
+    "status": "approved",
+    "runtimeHash": "64320daafb3d1ea6f94e6ecd98f6e398c616f1161011792a8f2800ee56ccbeaf",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb1-cb2-sequence",
+    "status": "approved",
+    "runtimeHash": "c205951e5d2341398d4eba6ac7f325f011812fecafb5c2729df7830c7941fa64",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-anandamide-tissue",
+    "status": "approved",
+    "runtimeHash": "d9891a8487192f120bb91c78fe0dd73c9398367c7af08df0efc104c914863902",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-thc-stereochemistry",
+    "status": "approved",
+    "runtimeHash": "c872f528bbc53edca3f9fb760e2aceb400fcaa612511c4a86897766c7c8e2a82",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-anandamide-precursor",
+    "status": "approved",
+    "runtimeHash": "3795fd065a3feac12618057169539eb83db17d7c785cf402253afb5d26678751",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb-receptors-contrast",
+    "status": "approved",
+    "runtimeHash": "d0d4fed472630a10a8fad33b4890bd15e449fc4ca047128e136f6b42d7725f4b",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-2ag-cb1cb2",
+    "status": "approved",
+    "runtimeHash": "305a702bba9ba55d43d88de358043fc186ae609eae641bca8774fbbf160a1724",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-en-1-10",
+    "status": "approved",
+    "runtimeHash": "a92d8c4a78074e06eb61aa09cc57f9ceb01d7321a9b9aea88cd9b7f7bd76475f",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-en-1-11",
+    "status": "approved",
+    "runtimeHash": "b87716bb502996214730acab4efed60d0fe4c1b57d6c6c7f0d4743f1e1033934",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-en-1-13",
+    "status": "approved",
+    "runtimeHash": "b682605b99b93c25f76a56181f7034a8a4bb8e1d284eadb3483de164c3cac43f",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-06",
+    "status": "approved",
+    "runtimeHash": "227c39bab84b46092d52348869a571e49545f5f9c744d10c45764cbc5ef9e825",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-08",
+    "status": "approved",
+    "runtimeHash": "dc4184373e8e7831e869169b294c5be44d2b0e9edf3c8a8443581d00c1af99d3",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-11",
+    "status": "approved",
+    "runtimeHash": "71cf9b185c206d6eaf86aa10d33797c9854bda05a44671b71cff3a8d1dd1e825",
+    "reviewer": "E / e_engine_audit"
+  },
+  {
+    "id": "hemp-plant-antheres",
+    "status": "approved",
+    "runtimeHash": "29d2ec1bca5c4de7ac9cb3d24eb5f466eede239794a48f562995c6f7bcc477c2",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-plant-bractee",
+    "status": "approved",
+    "runtimeHash": "4c85dec51ef7f2a3d97f927127267ffcca8afcb23b9ef33934ba65fddd114890",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-plant-inflorescence",
+    "status": "approved",
+    "runtimeHash": "d6c1c69cc0edb3866d9ca83d981d79ec2bc61288d38313cfe438d59b48d736d9",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-cineole",
+    "status": "approved",
+    "runtimeHash": "64e40cc0727bf7574322833c63119d3c17775b7a9ea9c11abf5b1146e814254e",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-linalol-fonction",
+    "status": "approved",
+    "runtimeHash": "0d4fff0cef9dcbc71bc5d49f2edf4a295573a0724c7f4234f689756eb40deecd",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-humulene",
+    "status": "approved",
+    "runtimeHash": "d4e3e381417d0e9e6dfd3740a197e3135e2337cc2588066dde234e45cdbc7a2e",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-pinenes-isomeres",
+    "status": "approved",
+    "runtimeHash": "538af2639e6a31e4f1ba50a87f1ec8cfcbf4876cd2a248e50cd5b4bda7ef3162",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-cineole-fonction",
+    "status": "approved",
+    "runtimeHash": "90a1a22127b87ff241ce684bbe999b7e0f2c8aff7b8ab5a55f800cb05aa2ab7e",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-enantiomeres",
+    "status": "approved",
+    "runtimeHash": "94af4135ef19a8748242eaa05740fdb0865f1b9324d15b7c0fe596e52a437c63",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-caryophyllene-oxyde",
+    "status": "approved",
+    "runtimeHash": "45b1ad6338daa993cf62a0404db08ca2b188c687d7273e2067e76df72b4a16d3",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-molecules-guaiol",
+    "status": "approved",
+    "runtimeHash": "fad6c4004970e65092626a562e9104f08c697918a004320bab2bae4f453d985e",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-anandamide",
+    "status": "approved",
+    "runtimeHash": "54f9e1bd973662227baac0c203c9643b7dd3a8beaf7723d37d007df8c4a87f3d",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-cbn-oxydation",
+    "status": "approved",
+    "runtimeHash": "7aa82f35e2d9f5e7afd75e6fbdb33c18cdf1fb3eadc3f556b3f805eb2cc31aab",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-delta9",
+    "status": "approved",
+    "runtimeHash": "4c6b2d9be2384979c133805782ebba667fb62eacb7a38ab75ce5452f4a480627",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-decarboxylation",
+    "status": "approved",
+    "runtimeHash": "c2b7d31b43ad26d30e3de9f91240f3ef358712827c926e0a66266951593d9cdf",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-cbd-thc-isomeres",
+    "status": "approved",
+    "runtimeHash": "096bdbc4fc1fdbac91f7880fd616beeea8a82948c865f6e775dedd5565b8ebf0",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-2ag",
+    "status": "approved",
+    "runtimeHash": "ecc4a9688223d1d2cd1daa1e43e0107fb36c93419016a8242f642b22b36b46f2",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-thca-a-b",
+    "status": "approved",
+    "runtimeHash": "a179a91814d60820cce6d89d41a32716c97183d5a2adce3d963d7474c853d4cc",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-evidence-branches",
+    "status": "approved",
+    "runtimeHash": "1e523abe9783f465603cdb388bdafe5c029e2b0b05b1be1a99b159c1e62ba81e",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-osaughnessy",
+    "status": "approved",
+    "runtimeHash": "bd3757a4bf7cc5a4714966cec5973bdc31ec6823eb5a819e05db3f62670a16ac",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cbd-1940",
+    "status": "approved",
+    "runtimeHash": "6a0e9062e8592f8b039685a4d5b61a98b2d86b2c45213d32bf9906e66719b7e3",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-anandamide",
+    "status": "approved",
+    "runtimeHash": "f859084ce7425a7435be40a480abdfe35cfb1a8e09819056897678888a0d864a",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-2ag",
+    "status": "approved",
+    "runtimeHash": "1309c1bbeed8398cfef7f592c9ad5761785bc782c92eaac38a542773cb2f019f",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-receptors-type",
+    "status": "approved",
+    "runtimeHash": "51f21701bb2911fbcaa05ca094370d873511ff541482cc1c8a394a4f3dc7c86e",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cbd-structure-date",
+    "status": "approved",
+    "runtimeHash": "af9800136b2931aff70e807c551cba55b3ea994396ad3efa15000848110e05a8",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-prevention-paille",
+    "status": "approved",
+    "runtimeHash": "05949ea0fd6b92741de548a619440e5ad89047edbebff16da017de2a052f4531",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-prevention-echauffement",
+    "status": "approved",
+    "runtimeHash": "f9341c27b2441b3143f7cf65926e8aae84505938524f985a47f67277481434ac",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-prevention-huile-rance",
+    "status": "approved",
+    "runtimeHash": "49ddab2ee274e9a1fdf4b63a15323fc7343bf8f1027840587669e84168f907fd",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-prevention-bris-graines",
+    "status": "approved",
+    "runtimeHash": "8fd169d0fa93f3dd5db0b9ff5b962aec61d024df6c2b38877b099a878ba2433c",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-prevention-hydroperoxydes",
+    "status": "approved",
+    "runtimeHash": "ebeeb272dcff44e7ca0ee26965a162139b89bacfe6a6cfa0e96d03880d0f2755",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-prevention-maturite",
+    "status": "approved",
+    "runtimeHash": "0cbdca63b94c5945a9986cd5ebaa62d179744352eaee633f452e1766fcae75f0",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-2ag-study-assay",
+    "status": "approved",
+    "runtimeHash": "840d0fdd43323467f0d3b7334fadda128f7aaf5442c33b587e45621230f74772",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cbd-mn-vs-indian",
+    "status": "approved",
+    "runtimeHash": "c95889ccc82bd9fe1682126a738f2670a9cbfce5eb699254b3ca6624571a27ca",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-10",
+    "status": "approved",
+    "runtimeHash": "a0a6a5b45d609e5ad0307e83f5f3ab882f808fbc747a813bed10ccba02fce712",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-12",
+    "status": "approved",
+    "runtimeHash": "9bda5c758590c965d14342c509b7bff4f26aab3748fa3a8617542fcee3a3670c",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-13",
+    "status": "approved",
+    "runtimeHash": "2469fe7899e87cc2676370e5ade54de1b8ec234126a7d2dbee70b4a6d536f249",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-15",
+    "status": "approved",
+    "runtimeHash": "4fdb07d3f1ab9b6ae0f6079af5d4bc59d4501202a8e6a0f77fcfdfe36787747b",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-18",
+    "status": "approved",
+    "runtimeHash": "2bf3b34b2720328e7506bfc68d95a227afdd75a80b698c4704391366fdd4343d",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-19",
+    "status": "approved",
+    "runtimeHash": "d20c0f0479fd12a8bc82a5d301cdde1da62c2fafa4e3959159018be975a25780",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-en-2-20",
+    "status": "approved",
+    "runtimeHash": "3a0ad206a806e6afbf1dd4440b7e20a42c2abf4d355257d80876f55f6b2fc520",
+    "reviewer": "e_engine_audit"
+  },
+  {
+    "id": "hemp-hc-001",
+    "status": "approved",
+    "runtimeHash": "ef4f628e479253871780820c4401e4abcc97b5b4062c27dc5c7af6d31f897804",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-002",
+    "status": "approved",
+    "runtimeHash": "0aae88c3fcf6d8ff9df4de03a565cf5a653653bea66d04ac59950e178b668eff",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-003",
+    "status": "approved",
+    "runtimeHash": "867073cb6c5a599eb788b42202cd0c7252ad213b3e055f4bcd2a33eccf047814",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-004",
+    "status": "approved",
+    "runtimeHash": "32dec87623e513f0a1a6c76b765beeda3601b06bc68a9b4ed3c7b2dd30c23fc3",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-005",
+    "status": "approved",
+    "runtimeHash": "a171fd75c7b11cbdb76427336de9e2f18cfb953f574949abfb00c6525c2616e7",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-008",
+    "status": "approved",
+    "runtimeHash": "06aa26ed3ae0acfc5f34b630a66f7dff89b8431457eb28573e0accac979e7e3f",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-009",
+    "status": "approved",
+    "runtimeHash": "90ac627bd1ebf88a56469eff763c853a83b0d41580a9fa86dd16de1fad195104",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-011",
+    "status": "approved",
+    "runtimeHash": "9a845799b5a8cd05cc7fecacf486758fd93cdf4c2582c3366f76b5b302edd8b9",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-012",
+    "status": "approved",
+    "runtimeHash": "811d824641b30524890c6e754de5ea61c09479aa3c6caed5d350fc320ee7669b",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-013",
+    "status": "approved",
+    "runtimeHash": "04f9704376376481ed8d1b5d64c36b9b29932d6e2160a29f8435925dd932d38a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-014",
+    "status": "approved",
+    "runtimeHash": "654e34f19114885da9af701e63074cfb6caa1af3dd982fed1c5eebe3dbd7d975",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-015",
+    "status": "approved",
+    "runtimeHash": "e94efb150c20c2f25afb66f38d4025c06e31ccbc871e6351dfdea5174a09bab8",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-016",
+    "status": "approved",
+    "runtimeHash": "c03399e76ace64e3932b7225403886feca7109b0cb236a3c6b4c3fb1e7633219",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-019",
+    "status": "approved",
+    "runtimeHash": "33c2ee6bc7693bc0acc975e05a16cc45e0d4043ccce78692e81133337e430d74",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-023",
+    "status": "approved",
+    "runtimeHash": "a880320172093f8021abae1fe6fc2a13efd41cfcd062b5bfe03ebe79da83961a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-029",
+    "status": "approved",
+    "runtimeHash": "8d9e0b297bb907a0e570e3e104cd9e607ac15f3be6163949641561c64e3613ca",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-032",
+    "status": "approved",
+    "runtimeHash": "f9e0903a43df420c3ba4e0e9d38790cdeeaeb2568bae7165d23fc109661baa54",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-033",
+    "status": "approved",
+    "runtimeHash": "70c3338c49c289f872b95c1fda25f68c96d6d491e5655e34148ec7b3f11cb5bb",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-034",
+    "status": "approved",
+    "runtimeHash": "70e5d33f7c58ef38fcb08d98ae29e190c9a00a212799d355dd214ce57c58bb06",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-035",
+    "status": "approved",
+    "runtimeHash": "9fca394f867b3b4127e3bc7b4bd352b5dc8819d84c670962ca49b0edd32a062d",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-037",
+    "status": "approved",
+    "runtimeHash": "185f6204e6ec5f153e6a4108518efe2b989864e8088dfeafe09a728dbf887672",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-039",
+    "status": "approved",
+    "runtimeHash": "f6d9e7f8e9b79f54bb46a30494a93b76e08b6538ff9cbf2dcf97cc70bc787805",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-042",
+    "status": "approved",
+    "runtimeHash": "d712ccb32af942b64e665656f1eb302d945b391d9cd013c30f297c144b62ef20",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-048",
+    "status": "approved",
+    "runtimeHash": "6f89a2eb650cfde8dad2fd42d35db9dde6249cbb7f686a1dee20bd222e938b81",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-050",
+    "status": "approved",
+    "runtimeHash": "76c96bf1a4575b1651588229100ea23f269680518e2667e03ee3a071beb069ff",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-051",
+    "status": "approved",
+    "runtimeHash": "a9850d8305ff2075fc0f54a7591852138e150549b9adf391c58689aae41dc468",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-052",
+    "status": "approved",
+    "runtimeHash": "196e604f2b194e14cb60eb23cc28d0affa9972f6c5ce7cb1ef081aba92804df7",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-054",
+    "status": "approved",
+    "runtimeHash": "1f54b43a08d53c129bb31929e516a94e0189951d7637bbbb78375517a00d17c1",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-055",
+    "status": "approved",
+    "runtimeHash": "dd96bcf567a9a9e3de3e08f817d26316d9fda2e4e458cd367bd2b839ce5100ff",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-060",
+    "status": "approved",
+    "runtimeHash": "bf87769f0742591df6f13392849145c0fe9324f19e4f85dcfa22fd464949bd2f",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-1937-law",
+    "status": "approved",
+    "runtimeHash": "5252b1855c958d547dd129c0d8524d5acdac6719f7009950e068ffc8a354ebd6",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-chenevis",
+    "status": "approved",
+    "runtimeHash": "ec59f75124fd0e5552ae81fdc2fa3615d859d86f1922eea12b6a3114749c1384",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-decorticage",
+    "status": "approved",
+    "runtimeHash": "5d7659ee5c6ab7cd148a146642019738ab189adf1314c592c41594fcdffb53f4",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-farine",
+    "status": "approved",
+    "runtimeHash": "b550f5354de09e40b6e65344d5895202714fd8ffc51b2217a2270d87fa51c9a1",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-tourteau-fractions",
+    "status": "approved",
+    "runtimeHash": "eb418701af28f72150766f71d335684adb78f34732b498a488b2d31b334afe17",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-edestine",
+    "status": "approved",
+    "runtimeHash": "24d6adcde9310ce0fde0ff7fa7c24e493f124b3153cbd1860c930a164b2e7754",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-pigment-huile",
+    "status": "approved",
+    "runtimeHash": "975a86d43608c520b641820072ae1ad061af4bb689d6c12a58877c146cc2b167",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-fractions-proteines",
+    "status": "approved",
+    "runtimeHash": "1fb2d06f1a0940b4519ab1a9bd46a462ce7668ec4cab1dd653c721dd4522dd1d",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-solubilite",
+    "status": "approved",
+    "runtimeHash": "19377a45c7a9a25d0945601615463f8a5506a85be7ce69b7b6a9fa538e6d8f0a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-chenevotte",
+    "status": "approved",
+    "runtimeHash": "27ad13ff4f2f97a71309e21d0bec0511c0ce97f66bc17cb7fc06c5df44ea6bd1",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-beton",
+    "status": "approved",
+    "runtimeHash": "932d3ee3cf7ed0833d6731b7727e9bbab28bdd7b9674be0ef3e9d9784ea21935",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-tissage",
+    "status": "approved",
+    "runtimeHash": "0f8b829355f4536b85738e5f5470a3b1b5a4fb4bc3eefd7026f2cd91073ce3d8",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-papier",
+    "status": "approved",
+    "runtimeHash": "ddce95066e24406fa70ff3501025a93ffdd05d0f6683ccb82f9867e9cdb7665f",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-renfort",
+    "status": "approved",
+    "runtimeHash": "2f5345714958722319a0be847532b6bf5aef0383aac159778211af9b468f66cb",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-isolation",
+    "status": "approved",
+    "runtimeHash": "de2e4b0e34ebe722585f06dd23eb620e90b38eab34955c83b690ca9a5a15afa4",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-peignage",
+    "status": "approved",
+    "runtimeHash": "ad8dbc0f86a21ef375961751ba5889f3be96c4c65ce9384a9bd2a0bed89b4f6e",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-pectines",
+    "status": "approved",
+    "runtimeHash": "2067cfb3470dec31e0558bb9265fa2cd1694b69cbdd29655e31ec97ebcfeb6bb",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-remplissage",
+    "status": "approved",
+    "runtimeHash": "cb679180adb86c0a32696cd0fa9d3de07c9c39bc9a66a5b6401e0f132cf186da",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-carbonatation",
+    "status": "approved",
+    "runtimeHash": "fd947e2b66cf49a93bc073a1fb38d4684fcedfc2cee4d85871a165c2347ed541",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-fines",
+    "status": "approved",
+    "runtimeHash": "a28333233e1fcbaecb2d08dac961dffe2b728d5e584ee79341878828ed3b4a91",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-rouissage-organismes",
+    "status": "approved",
+    "runtimeHash": "6fb3763e44575571d315f335dd54583c8f625e66e4e0ee84a726d5f22b9d4005",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-hempfilm",
+    "status": "approved",
+    "runtimeHash": "7c3a07cb58265bd7e5023a18a78d875b0576bcaf8ee65a81f4f2dedcbde69007",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-canada-date",
+    "status": "approved",
+    "runtimeHash": "3678953b823c38bd549feb9901f7a1868804fa8184f599093ae0b5cd1e51fe3a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-act-schedule",
+    "status": "approved",
+    "runtimeHash": "3fcd34c9071b699048feb6c96e5acf8d3baf8ed54c69fb8ac74948d07419afa3",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-hs-hist-hemp-archival-date",
+    "status": "approved",
+    "runtimeHash": "a3d98ecd2dcebd8f3b7668b6eab77dd043d748139158b1a2e8a64add0aff6b90",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-un2020-schedule",
+    "status": "approved",
+    "runtimeHash": "2d9cf504c07b23325cb8cee023044111c4b39872ac7b08277908aa4ee3f59ee0",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-canada-scope",
+    "status": "approved",
+    "runtimeHash": "46df458b14b9416da87a41d5754f14acb51d086eac3d948b24dacb3bef57a8d7",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-1937-date",
+    "status": "approved",
+    "runtimeHash": "486710ad41a66f422b0dc8b58c02de1a8717aaa1abd3d1a990cdf205847b8af1",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-canada-federal",
+    "status": "approved",
+    "runtimeHash": "2336cf3dddd2b966b55b28e9be3f6457cbb28759c130d898287bcf0305c64471",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-uruguay-policy",
+    "status": "approved",
+    "runtimeHash": "2ac934f7887ef2a07c0fc4381f34d8dba551ac09e7c4b4f69d6b59a216296b2a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-uruguay-promulgation-publication",
+    "status": "approved",
+    "runtimeHash": "cee24241dcc2cc1deb245e3c6bb7218a878cc9f870ae787623c95a5378b5ed40",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-en-3-03",
+    "status": "approved",
+    "runtimeHash": "c4ef1d5760a04b9bad53cb02a424f2088fb93a360212393cd1a664895b297d62",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-en-3-04",
+    "status": "approved",
+    "runtimeHash": "570b20cb24045db92aec56073f699ea55acc057ecd9402c5bd129e041b8d2751",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-3-05",
+    "status": "approved",
+    "runtimeHash": "426c98a5ecdbb9f72cc146b3f9ceebbf2401888a310e98257168aabf781c4ed6",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-3-07",
+    "status": "approved",
+    "runtimeHash": "7cfb1924044efe05e712e6a46e3c7e29e201d95b3a1b1195883ff8be9aee6890",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-3-11",
+    "status": "approved",
+    "runtimeHash": "a62c9921ca4f60af25cc3b6aad645b5019886610368a36199f93aaf6442d73e0",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-3-16",
+    "status": "approved",
+    "runtimeHash": "e72bcf63bb8361b1a4147f11ff55f57e64d1f728a070ddf51367018f3ef1e51c",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-en-3-18",
+    "status": "approved",
+    "runtimeHash": "05c51a502a18bc1656298a11ca76a95fb606e009346e3fcc9196cbdc5702a546",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-transport-pollen",
+    "status": "approved",
+    "runtimeHash": "81a265c3fc9c76c83cda83d10e030abefc50ce7f539ae3dfaaf70af38b2477ce",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-dioecie",
+    "status": "approved",
+    "runtimeHash": "22c4093df0a5dc39af3ceb7ced646719eb21c93032c7ef1eda82fd4a718008ee",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-stigmate",
+    "status": "approved",
+    "runtimeHash": "3464fdbbc32e879ca6e7a6ce732fff1e3f8492d0ad30a0411083f1e30e54141d",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-filaments-femelles",
+    "status": "approved",
+    "runtimeHash": "001de2331d72ca543e7579ec220a8a1f504a165146e73b3c0d51b6175bd2d82a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-perianthe",
+    "status": "approved",
+    "runtimeHash": "06dea7cd401a037ceee6618ecc1b31515c60b935654c205eb18d69448fa32527",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-gpp",
+    "status": "approved",
+    "runtimeHash": "243218be92d33e043f17b640cd6afbfd8e78755ffb4f936e2ca00f23a3ab0e88",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-fpp",
+    "status": "approved",
+    "runtimeHash": "9531a4a7a039f9af727b7e436bcbb22d7b97e346512ea6f7d7a0de75f69078fd",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cb1-cb2",
+    "status": "approved",
+    "runtimeHash": "cd9fa5e90f91eef68998a63e7050b87d1050d65bdcf4069d79bd5acba55c8d73",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb1",
+    "status": "approved",
+    "runtimeHash": "b313b38ed55c8a966d4ee175c1d7bc6e041aa44b535c8f83726c1997259e8b9b",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb2",
+    "status": "approved",
+    "runtimeHash": "4fa9ea9c7a4c095f3a14b8c6f58b161381c593b3623a269942123597c50d4804",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-1-08",
+    "status": "approved",
+    "runtimeHash": "8623b69bdbc1fcbc641150f747c559c50aabb85a154391b1cb974445827c1137",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-1-09",
+    "status": "approved",
+    "runtimeHash": "0aefb48004b57e6773de2c473a5f6bf7a611fcd0a4fc4db050eb4931dfd0f789",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-1-12",
+    "status": "approved",
+    "runtimeHash": "2afa587eeefe523ea926eb1d74c83d11446783fd4dbc08928562f61483d36f59",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-trichome",
+    "status": "approved",
+    "runtimeHash": "bb731ef795974f7286d5708a3e45dd42ba5389432ea3c9f55f2483fbaf2e43f0",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-plant-autofloraison",
+    "status": "approved",
+    "runtimeHash": "7580ece9bbd92a2bf8b9f6bb64778ed80a6373f317e8bc10e435e3f6e8c7287a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-genetics-xy",
+    "status": "approved",
+    "runtimeHash": "b9a65a62bac19af0587c3f8f91417bc984a209f0633421cfe9c6db1d11984d6f",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-limonene",
+    "status": "approved",
+    "runtimeHash": "23835a494100cbe235d1c5099f439fa35a2b16d5f1432c4e0c629ed8586357af",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-linalol-arome",
+    "status": "approved",
+    "runtimeHash": "ea9680cb683f8af814e989a17d63720853ae7b76730f789240096325b1d432e3",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-pinene-arome",
+    "status": "approved",
+    "runtimeHash": "c1505167e2d076c0b2b236aa697cbce981f5e9f1a853e3ee480de095cc46c9f9",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-caryophyllene-arome",
+    "status": "approved",
+    "runtimeHash": "dde39147c691f13c31f71568de6ed4516e33d4072f7de1dba675d1d874a52e88",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-monoterpene",
+    "status": "approved",
+    "runtimeHash": "4670961cfcb8138618f9d7d64b998a7d03c17dc3a881155b26c1592af1619eaa",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-sesquiterpene",
+    "status": "approved",
+    "runtimeHash": "33d14f4780129893f5782f6afd0c3076052a8d200ffedb193f0af5136a2a1e44",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-myrcene",
+    "status": "approved",
+    "runtimeHash": "9db462c9e2d942db3fbc1c1273bca79dd1e3eff6bd3d4325624bf322f18561dd",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-skunk-thiol",
+    "status": "approved",
+    "runtimeHash": "d88e5cb326fc4628a582012683709bd3ae145dad935e1194c155fb17de323da2",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-molecules-ester",
+    "status": "approved",
+    "runtimeHash": "ecc4f37536bdbdaafbfa39cd1e67e595b9e965c4b1e871aaa5483708607ad277",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-01",
+    "status": "approved",
+    "runtimeHash": "a1601577b82ca052f6e196200637d53cb349e897466781872155602cf72a817d",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-02",
+    "status": "approved",
+    "runtimeHash": "0354b9cee6447d1adcd17365874089311b165ecbd143fa2ba439d5aedf695bee",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-03",
+    "status": "approved",
+    "runtimeHash": "aa66a71d1cf15249fd31f7ba3e51253887549ddd8e3da4b5597b4b6c692d1cf6",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-04",
+    "status": "approved",
+    "runtimeHash": "9310089f89f3603b04c508141f7f42895f60578f19940da7afb21ec0b4513c0e",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-07",
+    "status": "approved",
+    "runtimeHash": "3169e3b8a953c083aeeace63418a7e3b52b518e7591967a1b4591caf1651f79a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-09",
+    "status": "approved",
+    "runtimeHash": "1a1d9fdbdfeba386e1f79cdfc6ffa293d1dc4ac463109e36a9613f80b2e20d0e",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-14",
+    "status": "approved",
+    "runtimeHash": "7cf807ec49129d7d27a6aa2da9ad407a2758f4b661900fb65bb925538186767c",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-16",
+    "status": "approved",
+    "runtimeHash": "93f508b70bfd0756e99b3de4d991d15238434058c8ec9726406da766b760ab5f",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-2-17",
+    "status": "approved",
+    "runtimeHash": "446e9980c0bc9e1fe7a531a1ff7fe7552105ee16648cf351fa53efea48829430",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-thc-nom",
+    "status": "approved",
+    "runtimeHash": "10e0f42d16b1dabb348313429e6188257a889171789b7398cf9fc7c788a9ad7b",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cbd-nom",
+    "status": "approved",
+    "runtimeHash": "0bee946935de5272de7a28d608be0a7aaf7c6b73af43f287ec4016808c20bd82",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cannabinoide",
+    "status": "approved",
+    "runtimeHash": "f9034873386314cf4b375cba5affaaf9f280cb94a5e91770b46af61c9cbedfd9",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cbda",
+    "status": "approved",
+    "runtimeHash": "42fe44b7322647aa25383d4d4a24efe95ca6f3c89cb8921161d57c08b5890c03",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cbga-carrefour",
+    "status": "approved",
+    "runtimeHash": "f6c40185b2904cbc8f242c940cc90857fff9da24c9847ed6c9e8a8c273f77f1a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-variniques",
+    "status": "approved",
+    "runtimeHash": "cb21aa49b1616b1d2ceb1599b9c805269909286179a6aa1a2d96ea1eea1bed97",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-thcp",
+    "status": "approved",
+    "runtimeHash": "0c9c4dd53d95d7363ab6e159874b751e3f6e61a5f1af4b65f56feeae40bf6554",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-pparg",
+    "status": "approved",
+    "runtimeHash": "24545448231879ac847c8332d1f6a2bde6f0d29e8fed1fee02b2c8f496f9cbd5",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cbdas-reaction",
+    "status": "approved",
+    "runtimeHash": "928dbcb58a31f84d160ce29d8bf0b73139e9c7d6cac937251584bbda0d64f4df",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-evidence-cbgva",
+    "status": "approved",
+    "runtimeHash": "66734b336a3887c3c4ad835d4591b665c6cc77142028c86a1940bef6919c78c3",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-anandamide-name",
+    "status": "approved",
+    "runtimeHash": "5175c192288192d56795d674b4f78fe5b7b451c8594806b61d4f802c989ab8ac",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-mechoulam-country",
+    "status": "approved",
+    "runtimeHash": "6413df942d78533a5943019880e0510185b0517318d7c5394b53af139aa0820d",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-2ag-1995",
+    "status": "approved",
+    "runtimeHash": "9c9149fdd58861dac5d23f60dea55ec0d8caff738c6e5256a0dee506be73a697",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb1-clone",
+    "status": "approved",
+    "runtimeHash": "eff3b82d02385d65134882b8e53c6f1bdb1dcc604f278c0a81a04189a1dcaad1",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cb-receptor-gprotein",
+    "status": "approved",
+    "runtimeHash": "6beb7afda9d4f5a69996b4ddf48f1f7636c1501e79e6fe6fd62640ff15621763",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-sci-cbd-workers",
+    "status": "approved",
+    "runtimeHash": "b86d4214a9d382c45ca2820884d5b585994a69959f0cc279ee79e170734aa570",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-huile",
+    "status": "approved",
+    "runtimeHash": "a50e7d5073c35805a7fbc681c2579232e4ebb5c040ebda91166b952b541ddb25",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-reserves",
+    "status": "approved",
+    "runtimeHash": "1c53a8a6733acb6b52050f23dbb23c8c8370d695a1c329da5ebc4ec2955970b1",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-tourteau",
+    "status": "approved",
+    "runtimeHash": "90123f69cf20e167f593ecfa793294a0eb3a7e801ff52ea56739ed500294d7d3",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-insaturation",
+    "status": "approved",
+    "runtimeHash": "3f5bf721deee9d35bf59fe79a14a1cee6ac7fa890b42e4feb7aa55cef226e47e",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-linoleique",
+    "status": "approved",
+    "runtimeHash": "b1d282062f12484492c66c76eafce066be2e83643a3d95c7a600153b0901a4ca",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-omega-trois",
+    "status": "approved",
+    "runtimeHash": "c9f85ebe17363e3440a575d8dbf3d2bd522b799ceb4b6e1bfb3cbdb2260ee5ec",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-stearidonique",
+    "status": "approved",
+    "runtimeHash": "08b341af6311eb911841466b6bf01638d2f16cb9a0aed58f8208ad32a1fe9914",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-seeds-tocopherol",
+    "status": "approved",
+    "runtimeHash": "5fbae35359314a3b2b1809735fd925db602c92be0ef5089e17d9a7f1d1ccb331",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-position-fibres",
+    "status": "approved",
+    "runtimeHash": "b1ec7812671f3302a608bdf48712b0a8abc26c2f4e360a49db028add3153c528",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-filature",
+    "status": "approved",
+    "runtimeHash": "a16312d4c86bc50414eb1815e064ea41ec8be344d0a89986321c1ab14edee80b",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-teillage",
+    "status": "approved",
+    "runtimeHash": "a30f4db473e3acd60d75a5a855fa3f67f08d4fdbc4448555216ca78e389963f0",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-etoupes",
+    "status": "approved",
+    "runtimeHash": "e7cbaf0adf6318311e6504e4ee4624eafa6f90396600c0f628126afb78fbc84e",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-profiles-ourdissage",
+    "status": "approved",
+    "runtimeHash": "53791ff0c8ae032998b014da438920261ab93190b05913bf88ba5d90c32286bf",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-3-01",
+    "status": "approved",
+    "runtimeHash": "a734514091f6c85b5bcecb8f4f200370d63eac1345595f59b8634c2f605edb16",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-en-3-02",
+    "status": "approved",
+    "runtimeHash": "87d88b8eefef41436a51f2339a58110e68b7e36032d50f9e995351c3aa765197",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-006",
+    "status": "approved",
+    "runtimeHash": "eb1310e67362b23fabd5c8248969c44da2777f772a50714104f6f3aff16efad4",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-007",
+    "status": "approved",
+    "runtimeHash": "fe3882d97afa7ac56dd4250e7856a4a651826559c621e4dc3017cbe45729e38a",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-017",
+    "status": "approved",
+    "runtimeHash": "72993fa85b9a829f355ba115e96bd867c4b8d15815317c15248a46d76bebe88d",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-hc-018",
+    "status": "approved",
+    "runtimeHash": "9cc77e6eeb9b67884e3b6525530b5a582b007b8181a01f7134867371c9fdd0ca",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-020",
+    "status": "approved",
+    "runtimeHash": "9b59fa4daeaab76f508082f27692bd81554ff50e4c49cbe1ef20af1099019c24",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-021",
+    "status": "approved",
+    "runtimeHash": "cac8d982e9ef8310bca82f59086eee6d398aa096cec37c85f9feb91ee41cfa1f",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-022",
+    "status": "approved",
+    "runtimeHash": "7505db65ee99222db31be6ec14fae6183d616ed1c2701a2d610df26f59dc3f7d",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-024",
+    "status": "approved",
+    "runtimeHash": "50e72b746c088e40b27c99a451a9827f091cb9d5156d83a3f211cadebe67c992",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-025",
+    "status": "approved",
+    "runtimeHash": "178bc6d147fda2519680e5ec42b9ae8ff8263894fb9b2dfdde9b73f0496f3aa2",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-031",
+    "status": "approved",
+    "runtimeHash": "e13466fb9116e31020591761dc76648bdc5f0971d12d5ad3b779d9be48f26e17",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-036",
+    "status": "approved",
+    "runtimeHash": "6209e1df5921fa0da5ba583d7ea350fd92591743df2378abcd199ef805eb71a0",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-038",
+    "status": "approved",
+    "runtimeHash": "70d2628a5cbc05117e4d9396d0231063644791d01f08639a172fc794a42e5a70",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-hc-040",
+    "status": "approved",
+    "runtimeHash": "4086560e2677934dbeb598897974d40a59025c4630816986a9d613f8f249ce26",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-hc-043",
+    "status": "approved",
+    "runtimeHash": "a29c3088f58727730c4fa9f08d84660d4093aa98814d74272654e73f7b0bab95",
+    "reviewer": "root"
+  },
+  {
+    "id": "hemp-hc-044",
+    "status": "approved",
+    "runtimeHash": "cb5a1a25c293560044c5cb77318e56832d8225bf59d5be1fb70edc3b76907841",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-045",
+    "status": "approved",
+    "runtimeHash": "f4c35f8f53c2f3d9b5bee4868371c8549a26a18658fe0e2ccf8d7c301262db31",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-053",
+    "status": "approved",
+    "runtimeHash": "aa25216e536115a65933a76f41662b7bdf8566f4f6f59a880a4e98e9a229e225",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hc-058",
+    "status": "approved",
+    "runtimeHash": "303effce0f2f4282a11f338b37f92ae24857cb2d2504a435bbbfa50d87069113",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-uruguay-law",
+    "status": "approved",
+    "runtimeHash": "ad016e5d18aceee00fc3f3449ed3c124130e3e2ec8d9892b8cb97c3016b1e212",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-vote",
+    "status": "approved",
+    "runtimeHash": "799b2263a80c4f31a6ec9569aaebab4e222443f57b0e81d6334d8399ac02ea47",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-1937-exemptions",
+    "status": "approved",
+    "runtimeHash": "8e54f59bf2ec23de3c756e45bcd9b0752fa034521143fe930e1a0420da2923de",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-vote-numbers",
+    "status": "approved",
+    "runtimeHash": "223232e9cf22c08b70d09f8b2ef93b6223e76a380c667573fda3f4791a4abf78",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-uruguay-control",
+    "status": "approved",
+    "runtimeHash": "badd708339a80ad26ade7b50957edba05ff3ce4143d85d774127dc7042ca5f2e",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-1971-subject",
+    "status": "approved",
+    "runtimeHash": "1c71cfc7f001c0a9d1487b8564678f803796851f95fe98273dddd4e21aab7717",
+    "reviewer": "f_existing_audit"
+  },
+  {
+    "id": "hemp-hs-hist-csa-5schedules",
+    "status": "approved",
+    "runtimeHash": "c816a637c2beaab75de4275aa01e68369fa1389dc2a6d0866a6326bb5d99617c",
+    "reviewer": "f_existing_audit"
+  }
+]

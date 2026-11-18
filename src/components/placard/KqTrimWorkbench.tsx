@@ -36,7 +36,7 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
   const workday = getKqPlayerWorkday(snapshot);
   const level = getKqStaffLevel(player ? getKqPlayerSkills(snapshot.state).processing : employee?.skills.processing ?? 0);
   const effectiveLevel = Math.min(10, level + (employee?.trait === "versatile" ? 1 : 0));
-  const remainingHours = player ? workday.remainingHours : employee ? getKqStaffCapacity(employee, snapshot.calendar).remainingHours : 0;
+  const remainingHours = player ? workday.remainingHours : employee ? getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans).remainingHours : 0;
   const hours = Number(hourInput);
   let quote: ReturnType<typeof getKqStaffSharedTrimQuote> | null = null, quoteError = "";
   try { quote = getKqStaffSharedTrimQuote({ mode, hours, level: effectiveLevel, trait: employee?.trait }); }
@@ -66,7 +66,7 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
           detail: `Niv. ${getKqStaffLevel(getKqPlayerSkills(snapshot.state).processing)} · ${hoursLabel(workday.remainingHours)}`,
           disabledReason: workday.remainingHours < .5 ? "Heures épuisées" : undefined },
         ...employees.map(person => {
-          const capacity = getKqStaffCapacity(person, snapshot.calendar);
+          const capacity = getKqStaffCapacity(person, snapshot.calendar, snapshot.state.dayPlans);
           return { id: person.id, name: person.name, portrait: <KqStaffPortrait person={person} />,
             detail: `Niv. ${getKqStaffLevel(person.skills.processing)} · ${hoursLabel(capacity.remainingHours)}`,
             disabledReason: snapshot.outstandingCents > 0 ? "Paie à régulariser" : capacity.remainingHours < .5 ? "Aucune heure disponible" : undefined };

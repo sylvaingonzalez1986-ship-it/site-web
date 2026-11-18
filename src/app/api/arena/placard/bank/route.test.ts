@@ -68,3 +68,9 @@ describe("bank API", () => {
     const response = await GET(getRequest()); expect(response.status).toBe(503); expect(JSON.stringify(await response.json())).not.toContain("credentials");
   });
 });
+
+it("rejects a persisted confirmation after the connected owner changes", async () => {
+ session.mockResolvedValue({customerId:"11111111-1111-4111-8111-111111111111",customer:{email:"test@example.test"}});
+ const response=await POST(request({action:"confirm",orderId:"22222222-2222-4222-8222-222222222222",expectedOwnerId:"33333333-3333-4333-8333-333333333333"}));
+ expect(response.status).toBe(409);expect((await response.json()).code).toBe("finance_owner_changed");expect(bank).not.toHaveBeenCalled();
+});

@@ -1,0 +1,427 @@
+{
+  "batchId": "r-mixed-02",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "author_complete_pending_independent_review",
+  "count": 25,
+  "domains": {
+    "active": 10,
+    "food": 7,
+    "materials": 8
+  },
+  "levels": {
+    "1": 7,
+    "2": 9,
+    "3": 9
+  },
+  "neighbourSearch": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "terms": [
+      "warfar",
+      "everol",
+      "ketene",
+      "brodifacoum",
+      "hot pockets",
+      "Spice",
+      "banger",
+      "tryps",
+      "digestibil",
+      "sitost",
+      "capillar",
+      "decortic",
+      "rouiss",
+      "conductiv",
+      "katabira",
+      "recycl"
+    ],
+    "openedNeighbours": [
+      "hemp-q2-rp01-dabbing-vaporizing-concentrate",
+      "hemp-q2-rp02-bong-water-cools-smoke",
+      "hemp-q2-rp02-spice-k2-synthetic-cannabinoid-products",
+      "hemp-q2-d01-lysine-limitante",
+      "hemp-q2-d04-hemp-dehulling-fibre-down-protein-concentrated",
+      "hemp-q2-d01-gouttes-et-depot",
+      "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction",
+      "hemp-profiles-pectines",
+      "hemp-profiles-rouissage-organismes",
+      "hemp-q2-d01-beton-densite-chaleur",
+      "hemp-q2-d01-beton-grands-pores"
+    ],
+    "distinctions": [
+      "Spice : nouveaux faits distribution locale et épidémie précise, pas nature synthétique déjà testée.",
+      "Pipe : matériaux, pas rôle de l’eau ou présence générale de fumée toxique.",
+      "Antinutriments TI distincts des phytates/minéraux.",
+      "Digestibilité au bioessai distincte de concentration protéique par décorticage.",
+      "Bêta-sitostérol dominant distinct de la seule famille phytostérols dans insaponifiable.",
+      "Isolat émulsifiant face au soja distinct de taille des gouttes/sédimentation et de solubilité à pH acide.",
+      "Rouissage excessif : qualité en traction distincte des organismes ou du substrat pectique ciblé.",
+      "Remontées depuis soubassement distinctes du gobetis extérieur contre pluie.",
+      "Orientation du béton distincte des variations de densité, humidité et taille de pores déjà couvertes.",
+      "Recyclage : tri chanvre/coton distinct de dissolution-régénération chimique."
+    ]
+  },
+  "actualReadings": [
+    {
+      "sourceId": "q2-rm02-hc-pipe-dab-components",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "access": "official-page",
+      "locator": "Smoking accessories, Pipes ; Dabbing accessories, Dab rigs",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-alberta-cannabis-tobacco",
+      "url": "https://myhealth.alberta.ca/Alberta/Pages/Using-cannabis-and-tobacco-together.aspx",
+      "access": "official-page",
+      "locator": "Risks of using, liste",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-euda-synthetic-hot-pockets",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/new-psychoactive-substances/distribution-and-supply/synthetic-cannabinoids_en",
+      "access": "official-page",
+      "locator": "Overview, dernier paragraphe avant Production",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-cdc-brodifacoum-2018",
+      "url": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6721a4.htm",
+      "access": "full-text",
+      "locator": "Paragraphes signes cliniques et analyses des prélèvements",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-grayson-cbd-warfarin",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5789126/",
+      "access": "full-text",
+      "locator": "§2 Case report ; §3 Discussion ; §4 Conclusions",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-fda-cbd-everolimus",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "access": "full-text",
+      "locator": "§7.2 Orally Administered P-gp Substrates ; §12.3 Everolimus",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-gi-kush-2025",
+      "url": "https://globalinitiative.net/wp-content/uploads/2025/02/Lucia-Bird-Ruiz-Benitez-de-Lugo-and-Dr-Kars-de-Bruijne-Kush-in-Sierra-Leone-%E2%80%93-West-Africas-growing-synthetic-drugs-challenge-GI-TOC-and-Clingendael-Institute-February-2025.final_.pdf",
+      "access": "full-text",
+      "locator": "p.5–6 imprimées, méthodes ; p.8–9, Components of kush et Figure1",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-munger-acetates-ketene",
+      "url": "https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/627401c36cae1c94a5fe8fe7/original/vaping-cannabinoid-acetates-leads-to-ketene-formation.pdf",
+      "access": "full-text",
+      "locator": "Abstract ; Study limitations ; Conclusion",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-canada-transparent-flower",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2018-144/section-108.html",
+      "access": "official-page",
+      "locator": "Article108(1)(a) et108(2)",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-galasso-trypsin",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+      "access": "full-text",
+      "locator": "Introduction ; Results, Table2 et paragraphe TI",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-uf-hemp-milk-nutrition",
+      "url": "https://ask.ifas.ufl.edu/publication/FS420/pdf",
+      "access": "official-page",
+      "locator": "p.1, comparaison nutritionnelle ; p.4, Table1",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-tang-emulsifying-comparison",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17090145/",
+      "access": "abstract",
+      "locator": "Abstract, phrases emulsifying activity et emulsion stability",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-montserrat-sterol",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24422510/",
+      "access": "abstract",
+      "locator": "Abstract, concentrations de la fraction insaponifiable",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-house-dehulling-digestibility",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20977230/",
+      "access": "abstract",
+      "locator": "Abstract, derniers paragraphes",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-eu-food-thc-limits",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/eng",
+      "access": "excerpt",
+      "locator": "AnnexeI, points2.6.1 à2.6.3, extrait original indexé",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Ouvertures EUR-Lex protégées par contrôle JavaScript ; extrait original indexé du tableau2.6 effectivement lu, accès déclaré excerpt."
+    },
+    {
+      "sourceId": "q2-rm02-defra-green-decortication",
+      "url": "https://www.votehemp.com/wp-content/uploads/2018/09/file.pdf",
+      "access": "full-text",
+      "locator": "p.1, Executive Summary",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-dabiret-geotextile-ageing",
+      "url": "https://www.issmge.org/uploads/publications/1/141/694.pdf",
+      "access": "full-text",
+      "locator": "p.6299 Abstract ; p.6301 §3.1 ; p.6302 Conclusions",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-dgmr-capillary-moisture",
+      "url": "https://dgmr.nl/wp-content/uploads/2023/02/Whitepaper-Hempcrete_feb2023_DGMR.pdf",
+      "access": "full-text",
+      "locator": "p.5, The application, liste et Figure6",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-walker-soluble-shiv",
+      "url": "https://www.academia.edu/64707331/Effect_of_Hemp_S_Soluble_Components_on_the_Physical_Properties_of_Hemp_Concrete",
+      "access": "full-text",
+      "locator": "p.12 Abstract ; p.15–16 §3.1 Effect of Water-Soluble Hemp Components on Setting Time",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-mazian-over-retting",
+      "url": "https://www.mdpi.com/2079-6439/7/12/108",
+      "access": "full-text",
+      "locator": "§3, propriétés en traction ; §4 Conclusions",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-refashion-hemp-textiles",
+      "url": "https://pro.refashion.fr/ressource/fiche-pratique/le-lin-et-le-chanvre",
+      "access": "official-page",
+      "locator": "Propriétés distinctives ; Enjeux éco-conception, Recyclabilité et Incorporation",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    },
+    {
+      "sourceId": "q2-rm02-williams-directional-hemp-lime",
+      "url": "https://link.springer.com/article/10.1617/s11527-016-0976-4",
+      "access": "full-text",
+      "locator": "§3.3 Thermal conductivity ; §4 Discussion, Fig.7 ; §5 Conclusions",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+    }
+  ],
+  "coordination": {
+    "agentA": "Interactions pratiques, dispositifs et règles de produits laissés à Sol ; A garde contaminants des fleurs, clinique générale, CHS et allergie cannabis.",
+    "agentB": "Aucune nouvelle lignée ou histoire générale. Confusion kush Sierra Leone limitée à la nature du produit et autorisée par le coordinateur."
+  },
+  "safeguards": [
+    "Aucune autoapprobation ni fichier actif ou revue modifié",
+    "Aucun protocole/dose/paramètre de fabrication ou culture de cannabis à actifs",
+    "EUR-Lex accès excerpt déclaré honnêtement",
+    "Manuscrit original ChemRxiv et article original sur dépôt autrice, limites d’accès explicites",
+    "Aucun niveau4 artificiel",
+    "Tous les faits restent situés et sans promesse universelle"
+  ],
+  "facts": [
+    {
+      "id": "hemp-q2-rm02-dab-rig-banger-component",
+      "domain": "active",
+      "factKey": "dab-rig-banger-component",
+      "expectedAnswer": "Au compartiment où l’extrait est chauffé"
+    },
+    {
+      "id": "hemp-q2-rm02-pipe-glass-ceramic",
+      "domain": "active",
+      "factKey": "pipe-glass-ceramic",
+      "expectedAnswer": "Le verre et la céramique"
+    },
+    {
+      "id": "hemp-q2-rm02-cannabis-tobacco-dual-dependence",
+      "domain": "active",
+      "factKey": "cannabis-tobacco-dual-dependence",
+      "expectedAnswer": "Une dépendance au cannabis comme au tabac"
+    },
+    {
+      "id": "hemp-q2-rm02-synthetic-hot-pockets",
+      "domain": "active",
+      "factKey": "synthetic-hot-pockets",
+      "expectedAnswer": "Des zones surconcentrées en actifs au sein du mélange"
+    },
+    {
+      "id": "hemp-q2-rm02-spice-brodifacoum-bleeding",
+      "domain": "active",
+      "factKey": "spice-brodifacoum-bleeding",
+      "expectedAnswer": "Des hémorragies avec trouble de la coagulation"
+    },
+    {
+      "id": "hemp-q2-rm02-cbd-warfarin-inr-rise",
+      "domain": "active",
+      "factKey": "cbd-warfarin-inr-rise",
+      "expectedAnswer": "Une anticoagulation accrue avec hausse de l’INR"
+    },
+    {
+      "id": "hemp-q2-rm02-cbd-everolimus-exposure",
+      "domain": "active",
+      "factKey": "cbd-everolimus-exposure",
+      "expectedAnswer": "Une exposition plasmatique à l’évérolimus augmentée"
+    },
+    {
+      "id": "hemp-q2-rm02-sierra-leone-kush-name",
+      "domain": "active",
+      "factKey": "sierra-leone-kush-name",
+      "expectedAnswer": "Des mélanges à cannabinoïdes de synthèse ou à nitazènes"
+    },
+    {
+      "id": "hemp-q2-rm02-thc-acetate-ketene-emission",
+      "domain": "active",
+      "factKey": "thc-acetate-ketene-emission",
+      "expectedAnswer": "Le cétène"
+    },
+    {
+      "id": "hemp-q2-rm02-canada-transparent-dried-fresh",
+      "domain": "active",
+      "factKey": "canada-transparent-dried-fresh",
+      "expectedAnswer": "Le cannabis séché ou frais"
+    },
+    {
+      "id": "hemp-q2-rm02-seed-trypsin-inhibitors",
+      "domain": "food",
+      "factKey": "seed-trypsin-inhibitors",
+      "expectedAnswer": "Les inhibiteurs de trypsine"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-milk-protein-energy-profile",
+      "domain": "food",
+      "factKey": "hemp-milk-protein-energy-profile",
+      "expectedAnswer": "Moins de protéines et moins de calories"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-milk-calcium-fortification",
+      "domain": "food",
+      "factKey": "hemp-milk-calcium-fortification",
+      "expectedAnswer": "Un enrichissement de la boisson en calcium"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-isolate-soy-emulsifying",
+      "domain": "food",
+      "factKey": "hemp-isolate-soy-emulsifying",
+      "expectedAnswer": "Activité et stabilité émulsifiantes plus faibles"
+    },
+    {
+      "id": "hemp-q2-rm02-seed-oil-beta-sitosterol",
+      "domain": "food",
+      "factKey": "seed-oil-beta-sitosterol",
+      "expectedAnswer": "Le bêta-sitostérol"
+    },
+    {
+      "id": "hemp-q2-rm02-dehulling-protein-digestibility",
+      "domain": "food",
+      "factKey": "dehulling-protein-digestibility",
+      "expectedAnswer": "Le retrait de l’enveloppe extérieure"
+    },
+    {
+      "id": "hemp-q2-rm02-eu-seed-oil-thc-food-maxima",
+      "domain": "food",
+      "factKey": "eu-seed-oil-thc-food-maxima",
+      "expectedAnswer": "3 mg/kg et 7,5 mg/kg"
+    },
+    {
+      "id": "hemp-q2-rm02-green-decortication-no-retting",
+      "domain": "materials",
+      "factKey": "green-decortication-no-retting",
+      "expectedAnswer": "Des tiges fraîches, avant séchage ou rouissage"
+    },
+    {
+      "id": "hemp-q2-rm02-geotextile-buried-tensile-loss",
+      "domain": "materials",
+      "factKey": "geotextile-buried-tensile-loss",
+      "expectedAnswer": "Une forte perte de résistance en traction"
+    },
+    {
+      "id": "hemp-q2-rm02-hempcrete-capillary-base",
+      "domain": "materials",
+      "factKey": "hempcrete-capillary-base",
+      "expectedAnswer": "Les remontées depuis le soubassement"
+    },
+    {
+      "id": "hemp-q2-rm02-shiv-solubles-delay-binder",
+      "domain": "materials",
+      "factKey": "shiv-solubles-delay-binder",
+      "expectedAnswer": "Les constituants hydrosolubles, dont des pectines"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-over-retting-tensile-risk",
+      "domain": "materials",
+      "factKey": "hemp-over-retting-tensile-risk",
+      "expectedAnswer": "Une baisse de résistance des fibres en traction"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-textile-softens-washing",
+      "domain": "materials",
+      "factKey": "hemp-textile-softens-washing",
+      "expectedAnswer": "Un adoucissement progressif"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-textile-sorting-cotton",
+      "domain": "materials",
+      "factKey": "hemp-textile-sorting-cotton",
+      "expectedAnswer": "Le coton"
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-lime-directional-performance",
+      "domain": "materials",
+      "factKey": "hemp-lime-directional-performance",
+      "expectedAnswer": "Conductivité et résistance en compression plus élevées"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+[
+  {
+    "id": "hemp-hc-057",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "23631b823d84d6bcb969cdf3edb278e817afe73cd691e4539931d08aecd16fd0",
+    "reason": "Retrait éditorial du doublon D07 : Conservation Yanghai : aridité, profondeur, alcalinité. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-hc-047",
+      "hemp-hc-057"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  },
+  {
+    "id": "hemp-hs-hist-two-treaties",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "31b5a4e89594044b98501c3b359c41df6a84a0386b5ccedccc624014a129a426",
+    "reason": "Retrait éditorial du doublon D04 : Retrait du tableau IV de 1961, maintien I après 2020. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-hs-hist-un2020-schedule",
+      "hemp-hs-hist-two-treaties"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  },
+  {
+    "id": "hemp-hs-sci-2ag-lipid",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "ce5806dc7b1713f8cf34ed65607cf8499c3544944c5e5a9a38852fc5dc85f03e",
+    "reason": "Retrait éditorial du doublon D01 : Classe monoacylglycérol du 2-AG. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-evidence-2ag",
+      "hemp-hs-sci-2ag-lipid"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  },
+  {
+    "id": "hemp-hs-sci-cb1-discovery-v-clone",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "de863b5abff2a8d5e083eb2cf067d9fad6bcf94182fa35dd3c58e193bcb629aa",
+    "reason": "Retrait éditorial du doublon D03 : Clonage CB1 en 1990 puis CB2 en 1993. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-hs-sci-cb1",
+      "hemp-hs-sci-cb2",
+      "hemp-hs-sci-cb1-discovery-v-clone"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  },
+  {
+    "id": "hemp-hs-sci-2ag-early-study-limit",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "c6b392824e80e27249c9fa88546cbad91ff2a6ddf4a8c5e12802eed3cf7b196c",
+    "reason": "Retrait éditorial du doublon D02 : FAAH hydrolyse l’anandamide. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-hs-sci-receptors-type",
+      "hemp-hs-sci-2ag-early-study-limit"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  },
+  {
+    "id": "hemp-en-2-05",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "132b5adb681007ed86fcdea34e6b30af17fdd7905e4244f8c05325c5ebb8d524",
+    "reason": "Retrait éditorial du doublon D06 : Houblon proche parent Cannabaceae, brasserie comme nouvel habillage. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-genetics-famille",
+      "hemp-en-1-01",
+      "hemp-en-2-05"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  },
+  {
+    "id": "hemp-en-3-12",
+    "status": "approved",
+    "proposedBy": "f_existing_audit",
+    "reviewer": "root",
+    "reviewedAt": "2026-11-16",
+    "contentHash": "f17b57913e42fe25e96cc5d037c586ff983cceeb7633526ed8e84148895eba7a",
+    "reason": "Retrait éditorial du doublon D05 : Chènevotte plus lignifiée que liber. Ce retrait ne signifie pas que le fait est faux.",
+    "comparisonIds": [
+      "hemp-en-3-06",
+      "hemp-en-3-12"
+    ],
+    "statisticsImpact": "Retired only from future draws. Existing room plans, answers, scores and historical IDs remain unchanged; no remote database write or retrospective rescore.",
+    "evidence": "Initial full F audit; root compared the full stems, correct answers and explanations of the seven duplicate clusters."
+  }
+]

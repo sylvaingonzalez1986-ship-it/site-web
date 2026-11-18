@@ -1,0 +1,1947 @@
+{
+  "batchId": "e-new-02",
+  "author": "a_cbd_inventory",
+  "role": "E — prévention, lecture critique, réglementation et risques",
+  "questions": [
+    {
+      "id": "hemp-q2-en02-edible-onset-duration",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Par rapport au cannabis fumé, quelle évolution des effets d'un aliment au THC peut surprendre et favoriser une intoxication ?",
+      "options": [
+        "Un début plus tardif et une durée plus longue",
+        "Un début plus précoce et une durée plus longue",
+        "Un début plus tardif et une durée plus courte",
+        "Un début plus précoce et une durée plus courte"
+      ],
+      "answer": 0,
+      "explanation": "Les effets d'un aliment au THC peuvent tarder et durer plus longtemps qu'attendu. En reprendre avant de les ressentir expose à une intoxication ; aucun délai personnel de sécurité n'en découle.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-poison"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis ingéré : délai et durée des effets",
+        "subjectKey": "cdc-cannabis-poisoning",
+        "property": "effets retardés et prolongés",
+        "expectedAnswer": "Un début plus tardif et une durée plus longue",
+        "learningObjective": "Reconnaître le risque du décalage entre ingestion et effets perçus.",
+        "factKey": "en02-edible-onset-duration",
+        "form": "comparaison",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-poison",
+            "locator": "Effects of edible cannabis, deux premières puces",
+            "support": "Les effets des comestibles peuvent être retardés et plus durables qu'attendu, favorisant une consommation excessive."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-locked-storage-children",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Des bonbons au THC sont présents dans un logement avec enfants. Quel rangement correspond à la recommandation des autorités sanitaires américaines ?",
+      "options": [
+        "Un contenant verrouillé, hors de portée et de vue",
+        "Une boîte non verrouillée sur une étagère haute",
+        "Un sachet fermé dans le tiroir des goûters",
+        "Le réfrigérateur commun, à côté des confiseries"
+      ],
+      "answer": 0,
+      "explanation": "Les autorités américaines recommandent un contenant verrouillé, hors de portée et de vue des enfants et des animaux. L'aspect de bonbon peut faciliter une confusion avec un aliment ordinaire.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-poison"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Prévention des ingestions accidentelles",
+        "subjectKey": "cdc-cannabis-poisoning",
+        "property": "rangement verrouillé hors de portée et de vue",
+        "expectedAnswer": "Un contenant verrouillé, hors de portée et de vue",
+        "learningObjective": "Choisir une mesure concrète contre l'accès accidentel des enfants au THC.",
+        "factKey": "en02-locked-storage-children",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-poison",
+            "locator": "Cannabis Product Alert",
+            "support": "Les CDC recommandent de verrouiller les produits et de les garder hors de portée et de vue des enfants et des animaux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-screening-confirmation",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France, après un dépistage salivaire positif aux stupéfiants au volant, quelle étape sert à vérifier la consommation ?",
+      "options": [
+        "La seule évaluation clinique de l'équilibre et de la parole",
+        "La seule vérification des médicaments déclarés par le conducteur",
+        "L'analyse d'un prélèvement par un laboratoire ou expert agréé",
+        "Une simple répétition du test rapide sans analyse de prélèvement"
+      ],
+      "answer": 2,
+      "explanation": "Service Public distingue dépistage et vérification : un prélèvement est analysé par un laboratoire ou expert agréé. La fiche décrit aussi la possibilité de réserver une contre-expertise.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-service-public-driving"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Dépistage routier et vérification",
+        "subjectKey": "france-drug-driving-rules",
+        "property": "analyse d'un prélèvement après dépistage positif",
+        "expectedAnswer": "L'analyse d'un prélèvement par un laboratoire ou expert agréé",
+        "learningObjective": "Distinguer test de dépistage et vérification analytique dans la procédure routière.",
+        "factKey": "en02-france-screening-confirmation",
+        "form": "chronologie",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-service-public-driving",
+            "locator": "Dépistage de drogues : quelle est la procédure ? Vérification",
+            "support": "Après un dépistage positif, un prélèvement salivaire, ou sanguin dans les situations prévues, est analysé par un laboratoire ou expert agréé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-driving-reaction",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Face à un imprévu routier, quelle combinaison d'effets le cannabis peut-il provoquer selon les CDC américains ?",
+      "options": [
+        "Réaction ralentie et prise de décision ralentie",
+        "Réaction accélérée et prise de décision ralentie",
+        "Réaction ralentie et prise de décision accélérée",
+        "Réaction accélérée et prise de décision accélérée"
+      ],
+      "answer": 0,
+      "explanation": "Le cannabis peut ralentir les réactions et les décisions, altérer la coordination et déformer la perception. Ces capacités sont nécessaires pour répondre à un danger routier.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-driving"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis et capacités de conduite",
+        "subjectKey": "cdc-cannabis-driving",
+        "property": "ralentissement des réactions et décisions",
+        "expectedAnswer": "Réaction ralentie et prise de décision ralentie",
+        "learningObjective": "Relier un effet du cannabis à un risque concret sur la route.",
+        "factKey": "en02-driving-reaction",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-driving",
+            "locator": "What you need to know about cannabis use and driving",
+            "support": "Le cannabis peut ralentir les réactions et décisions, altérer la coordination et la perception."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-alcohol-cannabis-impairment",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Pour la conduite, quel risque les CDC américains associent-ils au mélange de cannabis et d'alcool ?",
+      "options": [
+        "Une altération comparable à celle de l'alcool seul",
+        "Une altération accrue par rapport à une seule substance",
+        "Une altération limitée au plus fort des deux effets",
+        "Une altération comparable à celle du cannabis seul"
+      ],
+      "answer": 1,
+      "explanation": "Les autorités sanitaires américaines indiquent que l'association de substances, notamment cannabis et alcool, peut accroître l'altération des capacités. L'alcool ne compense pas les effets du cannabis.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-driving"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Association alcool et cannabis",
+        "subjectKey": "cdc-cannabis-driving",
+        "property": "altération accrue lors d'une association",
+        "expectedAnswer": "Une altération accrue par rapport à une seule substance",
+        "learningObjective": "Identifier le surcroît de risque d'une association de substances.",
+        "factKey": "en02-alcohol-cannabis-impairment",
+        "form": "comparaison",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-driving",
+            "locator": "Paragraphe sur l'usage simultané de plusieurs substances",
+            "support": "L'usage simultané de cannabis et d'alcool peut augmenter l'altération des capacités."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-thc-level-not-driving-score",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Selon les CDC américains, comment distinguer un taux de THC de l'évaluation des capacités de conduite ?",
+      "options": [
+        "Il renseigne surtout la coordination, peu l'exposition",
+        "Il renseigne surtout la tolérance, peu l'exposition",
+        "Il renseigne l'exposition, sans mesurer directement les capacités",
+        "Il renseigne surtout la récupération de vigilance, peu l'exposition"
+      ],
+      "answer": 2,
+      "explanation": "Les CDC soulignent la difficulté à relier présence ou concentration de THC et altération de la conduite chez une personne. Un résultat biologique n'est pas un score individuel de conduite.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-driving"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Interprétation d'un taux de THC",
+        "subjectKey": "cdc-cannabis-driving",
+        "property": "concentration et altération individuelle distinctes",
+        "expectedAnswer": "Il renseigne l'exposition, sans mesurer directement les capacités",
+        "learningObjective": "Distinguer détection d'une substance et mesure des capacités individuelles.",
+        "factKey": "en02-thc-level-not-driving-score",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-driving",
+            "locator": "Paragraphe après la liste des capacités altérées",
+            "support": "Il est difficile de relier présence ou concentration de THC et degré d'altération de la conduite chez un individu."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-sober-return-driver",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Un groupe prévoit de consommer du cannabis pendant une sortie. Quel choix de conducteur pour le retour répond à la prévention routière ?",
+      "options": [
+        "La personne qui connaît le mieux l'itinéraire",
+        "La personne qui se sent la moins fatiguée",
+        "La personne qui a mangé le repas le plus copieux",
+        "Une personne qui ne consomme ni alcool ni drogue"
+      ],
+      "answer": 3,
+      "explanation": "Les CDC recommandent un retour avec une personne n'ayant consommé ni alcool ni drogue, ou un transport adapté. Connaître la route ne rétablit pas les capacités altérées.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-driving"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Organisation d'un retour sans conduite sous influence",
+        "subjectKey": "cdc-cannabis-driving",
+        "property": "conducteur n'ayant consommé ni alcool ni drogue",
+        "expectedAnswer": "Une personne qui ne consomme ni alcool ni drogue",
+        "learningObjective": "Préparer un retour sans confier le volant à une personne sous influence.",
+        "factKey": "en02-sober-return-driver",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-driving",
+            "locator": "What you can do to prevent impaired driving",
+            "support": "Les CDC préconisent un conducteur désigné sans alcool ni drogue, ou un autre transport."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-pregnancy-ingestion-not-safe-route",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Pour une femme enceinte ayant ingéré un aliment au THC, quel devenir des substances est signalé par les CDC américains ?",
+      "options": [
+        "Une élimination avant l'entrée dans le sang maternel",
+        "Un passage de l'organisme maternel vers le bébé",
+        "Un maintien dans le tube digestif maternel",
+        "Un passage vers le bébé différé jusqu'à l'allaitement"
+      ],
+      "answer": 1,
+      "explanation": "Les CDC recommandent de ne pas consommer de cannabis pendant la grossesse. Le risque ne se limite pas à la fumée : le THC peut passer de la mère au bébé.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-pregnancy"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis et grossesse",
+        "subjectKey": "cdc-cannabis-pregnancy",
+        "property": "risque non limité à la fumée",
+        "expectedAnswer": "Un passage de l'organisme maternel vers le bébé",
+        "learningObjective": "Distinguer absence de fumée et absence d'exposition pendant la grossesse.",
+        "factKey": "en02-pregnancy-ingestion-not-safe-route",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-pregnancy",
+            "locator": "Key points ; Potential health effects of using cannabis during pregnancy",
+            "support": "Les risques pendant la grossesse concernent différentes voies de consommation ; le THC peut passer de la mère au bébé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-breastmilk-persistent-exposure",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Pendant l'allaitement, quel réservoir explique que le THC puisse encore exposer le bébé après l'arrêt du cannabis ?",
+      "options": [
+        "Les réserves osseuses maternelles",
+        "Les graisses maternelles",
+        "Les globules rouges du bébé",
+        "Les réserves de glycogène du bébé"
+      ],
+      "answer": 1,
+      "explanation": "Des substances du cannabis peuvent passer dans le lait maternel. Le THC est stocké dans les graisses et libéré progressivement ; l'exposition ne cesse donc pas forcément dès l'arrêt.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-pregnancy"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Persistance possible d'exposition pendant l'allaitement",
+        "subjectKey": "cdc-cannabis-pregnancy",
+        "property": "stockage maternel du THC dans les graisses",
+        "expectedAnswer": "Les graisses maternelles",
+        "learningObjective": "Comprendre pourquoi l'exposition par le lait ne cesse pas nécessairement dès l'arrêt.",
+        "factKey": "en02-breastmilk-persistent-exposure",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-pregnancy",
+            "locator": "Does using cannabis affect breastfeeding?",
+            "support": "Le THC est stocké dans les graisses maternelles et libéré progressivement ; l'exposition du bébé par le lait peut persister après l'arrêt."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-events-versus-cases",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans le rapport cannabis 2023 de Santé Canada, qu'explique un nombre d'événements supérieur à celui des cas uniques ?",
+      "options": [
+        "Chaque produit suspect est compté comme un événement supplémentaire",
+        "Un symptôme est recompté à chaque message de suivi du cas",
+        "Plusieurs déclarants d'un cas sont comptés comme plusieurs événements",
+        "Plusieurs symptômes peuvent être déclarés pour un même cas"
+      ],
+      "answer": 3,
+      "explanation": "Un cas peut associer plusieurs événements, par exemple vertiges et vomissements. Le nombre d'événements n'est donc pas le nombre de personnes concernées.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en02-canada-vigilance"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Rapport canadien de vigilance cannabis 2023",
+        "subjectKey": "health-canada-cannabis-vigilance-2023",
+        "property": "plusieurs événements possibles par cas",
+        "expectedAnswer": "Plusieurs symptômes peuvent être déclarés pour un même cas",
+        "learningObjective": "Distinguer cas individuels et événements dans une communication de vigilance.",
+        "factKey": "en02-events-versus-cases",
+        "form": "identification",
+        "difficultyRationale": "Il faut distinguer des conventions plausibles de décompte des symptômes, des cas et des déclarations, dans un rapport de vigilance.",
+        "jurisdiction": "Canada — rapport de vigilance 2023",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-vigilance",
+            "locator": "Figure 11, Caveats : multiple individual events per case",
+            "support": "Chaque cas peut comporter plusieurs événements individuels, expliquant un total d'événements supérieur au nombre de cas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-psychosis-meaning",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans l'information sur les risques du cannabis, à quoi renvoie un épisode psychotique ?",
+      "options": [
+        "Une difficulté à se rappeler un fait récent",
+        "Une difficulté à coordonner les mouvements",
+        "Une perte de contact avec la réalité",
+        "Une alternance rapide de faim et de satiété"
+      ],
+      "answer": 2,
+      "explanation": "Les CDC décrivent la psychose par une perturbation du rapport au réel, pouvant inclure hallucinations et paranoïa. Cette définition informe sur un risque ; elle ne permet pas un diagnostic individuel.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-mental"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Comprendre un risque psychique du cannabis",
+        "subjectKey": "cdc-cannabis-mental-health",
+        "property": "sens d'un épisode psychotique",
+        "expectedAnswer": "Une perte de contact avec la réalité",
+        "learningObjective": "Comprendre un terme employé dans l'information sur les risques psychiques.",
+        "factKey": "en02-psychosis-meaning",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-mental",
+            "locator": "Mental health, définition entre parenthèses de psychosis",
+            "support": "Les CDC décrivent la psychose comme une perte du rapport au réel avec notamment hallucinations et paranoïa."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-early-frequent-psychosis-association",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Selon les CDC américains, dans quel profil d'usage l'association entre cannabis et schizophrénie est-elle plus forte ?",
+      "options": [
+        "Un début plus jeune et un usage plus fréquent",
+        "Un début plus jeune et un usage plus espacé",
+        "Un début plus tardif et un usage plus fréquent",
+        "Un début plus tardif et un usage plus espacé"
+      ],
+      "answer": 0,
+      "explanation": "L'association est plus forte lors d'un début précoce et d'un usage fréquent. Il s'agit d'un risque observé en population, pas d'une prédiction certaine pour chaque personne.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-mental"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis et troubles psychotiques",
+        "subjectKey": "cdc-cannabis-mental-health",
+        "property": "association plus forte avec début précoce et fréquence",
+        "expectedAnswer": "Un début plus jeune et un usage plus fréquent",
+        "learningObjective": "Identifier deux facteurs liés à une association plus forte avec les troubles psychotiques.",
+        "factKey": "en02-early-frequent-psychosis-association",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-mental",
+            "locator": "Mental health, paragraphe sur la schizophrénie",
+            "support": "L'association entre cannabis et schizophrénie est plus forte chez les personnes commençant plus tôt et consommant plus fréquemment."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-loss-control-seek-help",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel comportement relève d'une difficulté à contrôler l'usage de cannabis, parmi les signes décrits par les CDC ?",
+      "options": [
+        "Préférer le goût d'un produit à celui d'un autre",
+        "Éprouver une gêne en présence de fumée d'autrui",
+        "Échouer à réduire malgré des problèmes qui persistent",
+        "Ressentir de la somnolence après un produit inhabituel"
+      ],
+      "answer": 2,
+      "explanation": "La difficulté à arrêter malgré des conséquences sur la santé ou la vie sociale fait partie des signes décrits. Un professionnel peut évaluer la situation et proposer un accompagnement.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-disorder"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Repérage d'un usage problématique",
+        "subjectKey": "cdc-cannabis-use-disorder",
+        "property": "poursuite malgré conséquences et difficulté d'arrêt",
+        "expectedAnswer": "Échouer à réduire malgré des problèmes qui persistent",
+        "learningObjective": "Repérer une difficulté de contrôle et ouvrir l'accès à une aide.",
+        "factKey": "en02-loss-control-seek-help",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-disorder",
+            "locator": "Key points ; Signs of cannabis use disorder",
+            "support": "Ne pas parvenir à arrêter malgré des problèmes de santé ou sociaux fait partie des signes d'un trouble de l'usage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-tolerance-meaning",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Lors d'usages répétés de cannabis, comment nomme-t-on une diminution de l'effet ressenti à exposition comparable ?",
+      "options": [
+        "L'intoxication aiguë",
+        "La tolérance",
+        "La sensibilisation",
+        "Le sevrage"
+      ],
+      "answer": 1,
+      "explanation": "La tolérance correspond à une diminution de l'effet à exposition comparable. Elle se distingue du sevrage, qui désigne des manifestations liées à la réduction ou à l'arrêt.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-canada-side-effects"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Tolérance au cannabis",
+        "subjectKey": "health-canada-cannabis-medical-side-effects",
+        "property": "diminution de l'effet à exposition comparable",
+        "expectedAnswer": "La tolérance",
+        "learningObjective": "Distinguer tolérance, sensibilisation et sevrage.",
+        "factKey": "en02-tolerance-meaning",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "Canada — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-side-effects",
+            "locator": "Possible health concerns from long-term use : decrease in effects (tolerance)",
+            "support": "Santé Canada décrit la tolérance comme une diminution des effets du cannabis avec l'usage prolongé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-withdrawal-sleep-irritability",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel tableau Santé Canada décrit-il pour le sevrage après un usage fréquent de cannabis ?",
+      "options": [
+        "Irritabilité, anxiété et difficultés de sommeil",
+        "Désorientation, hallucinations et idées de persécution",
+        "Somnolence, réflexes ralentis et difficultés de coordination",
+        "Agitation, sentiment de puissance et pensées accélérées"
+      ],
+      "answer": 0,
+      "explanation": "Santé Canada décrit notamment irritabilité, anxiété et troubles du sommeil lors du sevrage. Un accompagnement est possible ; ces manifestations ne permettent pas seules un diagnostic.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-canada-addiction"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Manifestations possibles à l'arrêt du cannabis",
+        "subjectKey": "health-canada-cannabis-addiction",
+        "property": "irritabilité et difficultés de sommeil",
+        "expectedAnswer": "Irritabilité, anxiété et difficultés de sommeil",
+        "learningObjective": "Connaître des difficultés possibles à l'arrêt sans les confondre avec un échec personnel.",
+        "factKey": "en02-withdrawal-sleep-irritability",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître un ensemble de manifestations de sevrage parmi plusieurs tableaux psychiques et comportementaux plausibles.",
+        "jurisdiction": "Canada — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-addiction",
+            "locator": "Withdrawal symptoms, Mental symptoms",
+            "support": "L'arrêt d'un usage fréquent peut s'accompagner d'irritabilité et de troubles du sommeil, parmi d'autres symptômes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-smoke-toxic-compounds",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Que partagent les fumées de cannabis et de tabac, selon les autorités sanitaires américaines ?",
+      "options": [
+        "Une même concentration pour tous les gaz",
+        "De nombreux toxiques, irritants et cancérogènes",
+        "Un même dosage en cannabinoïdes",
+        "Une même teneur en nicotine"
+      ],
+      "answer": 1,
+      "explanation": "La fumée de cannabis contient de nombreux toxiques, irritants et cancérogènes également présents dans celle du tabac. Une origine végétale n'empêche pas les risques de combustion.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-lungs"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Fumée de cannabis et santé pulmonaire",
+        "subjectKey": "cdc-cannabis-lung-health",
+        "property": "toxiques irritants et cancérogènes communs à la fumée de tabac",
+        "expectedAnswer": "De nombreux toxiques, irritants et cancérogènes",
+        "learningObjective": "Distinguer origine végétale et innocuité d'une fumée.",
+        "factKey": "en02-smoke-toxic-compounds",
+        "form": "comparaison",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-lungs",
+            "locator": "Lung health and smoking cannabis",
+            "support": "La fumée de cannabis contient de nombreux toxiques, irritants et cancérogènes également présents dans la fumée de tabac."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-secondhand-thc-exposure",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Un enfant ne consomme pas de cannabis mais respire la fumée d'autrui. Quelle conclusion correspond aux données des CDC américains ?",
+      "options": [
+        "L'exposition au THC nécessite de toucher la plante",
+        "Il peut être exposé au THC par cette fumée",
+        "Il est exposé à l'odeur mais pas au THC",
+        "Le THC devient inactif dès qu'il quitte le fumeur"
+      ],
+      "answer": 1,
+      "explanation": "La fumée secondaire contient du THC ainsi que des substances toxiques. Des études citées par les CDC ont retrouvé du THC chez des enfants exposés à la fumée d'autrui.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-cdc-secondhand"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Exposition passive à la fumée de cannabis",
+        "subjectKey": "cdc-cannabis-secondhand-smoke",
+        "property": "THC atteignant des non-fumeurs",
+        "expectedAnswer": "Il peut être exposé au THC par cette fumée",
+        "learningObjective": "Reconnaître que l'absence de consommation directe n'exclut pas une exposition.",
+        "factKey": "en02-secondhand-thc-exposure",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cdc-secondhand",
+            "locator": "Exposure to cannabis smoke",
+            "support": "Le THC peut atteindre les enfants par la fumée secondaire ; des études décrivent du THC détectable chez des enfants exposés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-learning-memory-impairment",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Sous l'effet du cannabis, retenir des consignes nouvelles devient difficile. Quelle capacité peut ainsi être altérée ?",
+      "options": [
+        "L'apprentissage et la mémorisation",
+        "L'équilibre et la coordination des gestes",
+        "L'estimation des distances et des trajectoires",
+        "La discrimination des couleurs et des formes"
+      ],
+      "answer": 0,
+      "explanation": "Santé Canada décrit des difficultés possibles de concentration, de réflexion et de mémoire. Elles peuvent gêner l'apprentissage et les tâches scolaires ou professionnelles.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-canada-health"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis et apprentissage",
+        "subjectKey": "health-canada-cannabis-health-effects",
+        "property": "altération possible de l'apprentissage et de la mémoire",
+        "expectedAnswer": "L'apprentissage et la mémorisation",
+        "learningObjective": "Relier un effet cognitif possible à une activité quotidienne.",
+        "factKey": "en02-learning-memory-impairment",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "Canada — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-health",
+            "locator": "The short-term effects of cannabis use : learn and remember",
+            "support": "Le cannabis peut rendre l'apprentissage et la mémorisation plus difficiles et altérer la concentration."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-higher-thc-poisoning-risk",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Selon Santé Canada, que change généralement une teneur plus élevée en THC pour le risque d'effets indésirables ?",
+      "options": [
+        "Elle augmente leur probabilité",
+        "Elle protège davantage les personnes inexpérimentées",
+        "Elle réduit leur probabilité",
+        "Elle modifie seulement le goût du produit"
+      ],
+      "answer": 0,
+      "explanation": "Une teneur plus élevée en THC augmente la probabilité d'effets indésirables ou d'intoxication, particulièrement chez les personnes inexpérimentées. La puissance n'est pas un indicateur de sécurité.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-canada-health"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "THC et risque d'intoxication",
+        "subjectKey": "health-canada-cannabis-health-effects",
+        "property": "effets indésirables plus probables avec une teneur élevée",
+        "expectedAnswer": "Elle augmente leur probabilité",
+        "learningObjective": "Distinguer puissance d'un produit et sécurité d'usage.",
+        "factKey": "en02-higher-thc-poisoning-risk",
+        "form": "comparaison",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "Canada — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-health",
+            "locator": "Cannabis poisoning : higher THC content",
+            "support": "La probabilité d'effets indésirables ou d'intoxication augmente avec la teneur en THC, notamment chez les personnes inexpérimentées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cbd-adulterated-substances",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans son alerte 2026 sur le CBD adultéré, quelle présence non déclarée la Mildeca française met-elle en avant ?",
+      "options": [
+        "Des cannabinoïdes de synthèse ou semi-synthétiques",
+        "Des bactéries pathogènes de conditionnement",
+        "Des résidus de pesticides agricoles",
+        "Des métaux lourds issus du sol"
+      ],
+      "answer": 0,
+      "explanation": "La Mildeca décrit des produits vendus comme du CBD contenant des cannabinoïdes non déclarés. Certains peuvent être très actifs et provoquer des intoxications graves.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-en02-mildeca-2026"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Alerte sur le CBD adultéré",
+        "subjectKey": "france-cbd-adulteration-alert",
+        "property": "cannabinoïdes de synthèse ou semi-synthétiques non déclarés",
+        "expectedAnswer": "Des cannabinoïdes de synthèse ou semi-synthétiques",
+        "learningObjective": "Identifier la nature du danger visé par une alerte sur le CBD adultéré.",
+        "factKey": "en02-cbd-adulterated-substances",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-mildeca-2026",
+            "locator": "Page 1 : Protéger les consommateurs ; Le mot de l'expert",
+            "support": "La Mildeca signale des produits au CBD contenant des cannabinoïdes de synthèse ou semi-synthétiques non déclarés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cbd-medication-review",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Une personne sous traitement envisage du CBD. Quelle démarche répond au risque d'interaction signalé par la FDA américaine ?",
+      "options": [
+        "Espacer les prises de sa propre initiative",
+        "Prendre le CBD uniquement avec des aliments",
+        "Faire vérifier l'association par un professionnel de santé",
+        "Choisir un CBD naturel sans informer le prescripteur"
+      ],
+      "answer": 2,
+      "explanation": "Le CBD peut augmenter ou diminuer l'effet d'autres médicaments, avec davantage d'effets indésirables ou une efficacité réduite. Un médecin ou pharmacien peut vérifier l'association.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-en02-fda-cbd"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "CBD et traitements médicamenteux",
+        "subjectKey": "fda-cbd-safety-approval",
+        "property": "vérification des interactions avec un professionnel",
+        "expectedAnswer": "Faire vérifier l'association par un professionnel de santé",
+        "learningObjective": "Identifier l'intérêt d'un avis professionnel avant d'associer CBD et traitement.",
+        "factKey": "en02-cbd-medication-review",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-fda-cbd",
+            "locator": "Potential harm ; Drug Interactions",
+            "support": "La FDA recommande de discuter l'usage de CBD avec un professionnel, notamment en raison d'interactions modifiant l'effet d'autres médicaments."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-emergency-unconsciousness",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En France, une personne perd connaissance après un produit présenté comme du CBD. Quel numéro les autorités demandent-elles d'appeler immédiatement ?",
+      "options": [
+        "Le 39 39",
+        "Le 39 89",
+        "Le 17",
+        "Le 15"
+      ],
+      "answer": 3,
+      "explanation": "L'Anses et l'ANSM demandent d'appeler immédiatement le 15 en cas de risque de détresse vitale. Un signalement ultérieur ne remplace pas la prise en charge urgente.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-en02-anses-alert"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Urgence après un produit présenté comme CBD",
+        "subjectKey": "france-cbd-adulteration-alert",
+        "property": "appel au 15 en cas de détresse vitale",
+        "expectedAnswer": "Le 15",
+        "learningObjective": "Distinguer appel d'urgence et démarche de signalement.",
+        "factKey": "en02-france-emergency-unconsciousness",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-anses-alert",
+            "locator": "Page 2 : Que faire en cas d'effets indésirables ?",
+            "support": "En cas de risque de détresse vitale, dont une perte de connaissance, le communiqué recommande l'appel immédiat au 15."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-keep-suspect-product-for-analysis",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Après un effet indésirable lié à du CBD, quel geste peut aider les autorités françaises à identifier les substances en cause ?",
+      "options": [
+        "Garder seulement une photographie sans le produit",
+        "Renvoyer l'emballage vide sans conserver de produit",
+        "Tout jeter avant de signaler l'événement",
+        "Conserver le reste du produit pour une éventuelle analyse"
+      ],
+      "answer": 3,
+      "explanation": "Les autorités demandent de conserver le produit restant pour une éventuelle analyse. Elles demandent aussi d'interrompre sa consommation et de rechercher une aide adaptée aux symptômes.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-en02-anses-alert"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Produit au CBD suspect après un effet indésirable",
+        "subjectKey": "france-cbd-adulteration-alert",
+        "property": "conservation du reste pour analyse",
+        "expectedAnswer": "Conserver le reste du produit pour une éventuelle analyse",
+        "learningObjective": "Préserver un élément utile à l'identification d'un produit impliqué dans une intoxication.",
+        "factKey": "en02-keep-suspect-product-for-analysis",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-anses-alert",
+            "locator": "Page 3 : S'il vous reste du produit",
+            "support": "Les autorités demandent de conserver le produit restant pour qu'il puisse éventuellement être analysé par SINTES."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-adverse-event-reporting-portal",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France, quel portail l'alerte Anses–ANSM indique-t-elle aux consommateurs pour déclarer un effet indésirable après du CBD ?",
+      "options": [
+        "RappelConso",
+        "PHAROS",
+        "Signalement des événements sanitaires indésirables",
+        "SignalConso"
+      ],
+      "answer": 2,
+      "explanation": "Le portail signalement.social-sante.gouv.fr permet de déclarer l'événement sanitaire. Cette démarche de vigilance complète l'accès aux soins ; elle ne le remplace pas.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-en02-anses-alert"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Signalement d'un effet indésirable au CBD",
+        "subjectKey": "france-cbd-adulteration-alert",
+        "property": "portail national des événements sanitaires indésirables",
+        "expectedAnswer": "Signalement des événements sanitaires indésirables",
+        "learningObjective": "Orienter un signalement sanitaire vers le dispositif adapté.",
+        "factKey": "en02-adverse-event-reporting-portal",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-anses-alert",
+            "locator": "Page 3 : Combattre et prévenir les intoxications",
+            "support": "Les consommateurs sont invités à déclarer les effets indésirables au portail national de signalement sanitaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cannabinoid-hyperemesis",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel tableau Santé Canada associe-t-il au syndrome d'hyperémèse cannabinoïde ?",
+      "options": [
+        "Une baisse de coordination avec troubles visuels",
+        "Une somnolence accompagnée d'une faim accrue",
+        "Une toux persistante avec irritation de la gorge",
+        "Des épisodes répétés de nausées et vomissements intenses"
+      ],
+      "answer": 3,
+      "explanation": "Ce syndrome comporte des épisodes de nausées sévères, de vomissements intenses et prolongés, et de douleurs abdominales. Cette description ne suffit pas à diagnostiquer une personne.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-canada-side-effects"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Syndrome d'hyperémèse cannabinoïde",
+        "subjectKey": "health-canada-cannabis-medical-side-effects",
+        "property": "épisodes répétés de vomissements intenses",
+        "expectedAnswer": "Des épisodes répétés de nausées et vomissements intenses",
+        "learningObjective": "Connaître un risque digestif décrit avec le cannabis sans poser de diagnostic individuel.",
+        "factKey": "en02-cannabinoid-hyperemesis",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "Canada — information sanitaire générale",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-side-effects",
+            "locator": "Side effects of cannabis ; Possible health concerns from long-term use",
+            "support": "Santé Canada décrit l'hyperémèse cannabinoïde par des nausées sévères, vomissements intenses et prolongés, et douleurs abdominales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cjc-parents-alone",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France, un adolescent consommant du cannabis refuse de consulter. Quel accueil est prévu pour ses parents en consultation jeunes consommateurs ?",
+      "options": [
+        "Les parents sont reçus seulement après un entretien du jeune",
+        "L'entretien familial est réservé aux jeunes majeurs",
+        "Le jeune doit assister à chaque entretien des parents",
+        "Les parents peuvent être reçus sans l'adolescent"
+      ],
+      "answer": 3,
+      "explanation": "Les consultations jeunes consommateurs peuvent accueillir les parents sans leur enfant. Elles peuvent les aider à dialoguer et à favoriser l'accès à un accompagnement.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-ameli-help"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Consultations jeunes consommateurs",
+        "subjectKey": "france-addiction-help-ameli",
+        "property": "accueil des parents sans présence de l'enfant",
+        "expectedAnswer": "Les parents peuvent être reçus sans l'adolescent",
+        "learningObjective": "Connaître une porte d'entrée vers l'aide pour les proches d'un jeune.",
+        "factKey": "en02-cjc-parents-alone",
+        "form": "situation",
+        "difficultyRationale": "Connaître une règle précise d'accueil d'un dispositif français : les parents peuvent être reçus sans la présence du jeune.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-ameli-help",
+            "locator": "Les consultations jeunes consommateurs, accueil des parents",
+            "support": "Les parents peuvent être reçus sans leur enfant pour être aidés dans les démarches de dialogue ou de consultation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-csapa-multidisciplinary",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En France, un CSAPA, centre d'aide en addictologie, réunit notamment quelle équipe pour accompagner une difficulté avec le cannabis ?",
+      "options": [
+        "Urgentistes, chirurgiens et anesthésistes",
+        "Biologistes, radiologues et techniciens d'imagerie",
+        "Médecins, psychologues et professionnels socio-éducatifs",
+        "Médecins légistes, toxicologues et experts judiciaires"
+      ],
+      "answer": 2,
+      "explanation": "Les CSAPA réunissent des compétences médicales, psychologiques et socio-éducatives. L'accompagnement peut porter sur la santé et sur les difficultés sociales liées aux consommations.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-ameli-help"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Équipes des CSAPA",
+        "subjectKey": "france-addiction-help-ameli",
+        "property": "prise en charge médicale psychologique et sociale",
+        "expectedAnswer": "Médecins, psychologues et professionnels socio-éducatifs",
+        "learningObjective": "Comprendre le caractère pluridisciplinaire de l'aide en addictologie.",
+        "factKey": "en02-csapa-multidisciplinary",
+        "form": "identification",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-ameli-help",
+            "locator": "Les centres de soins, d'accompagnement et de prévention en addictologie",
+            "support": "Les CSAPA disposent d'équipes pluridisciplinaires comprenant médecins, psychologues et professionnels socio-éducatifs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-drug-helpline-anonymous-free",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En France, une personne souhaite parler de son cannabis sans donner son identité. Quel accueil téléphonique offre Drogues info service ?",
+      "options": [
+        "Anonyme et payant",
+        "Anonyme et gratuit",
+        "Nominatif et payant",
+        "Nominatif et gratuit"
+      ],
+      "answer": 1,
+      "explanation": "Drogues info service propose une écoute téléphonique anonyme et gratuite. On peut demander de l'information ou une orientation sans être déjà engagé dans des soins.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-ameli-help"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Drogues info service",
+        "subjectKey": "france-addiction-help-ameli",
+        "property": "appel anonyme et gratuit",
+        "expectedAnswer": "Anonyme et gratuit",
+        "learningObjective": "Lever un obstacle d'accès à une écoute spécialisée.",
+        "factKey": "en02-drug-helpline-anonymous-free",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-ameli-help",
+            "locator": "Pour tout public : l'écoute téléphonique ou la communication par internet",
+            "support": "L'appel à Drogues info service est anonyme et gratuit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cbd-liver-risk",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel organe la FDA américaine désigne-t-elle dans son avertissement sur un risque du CBD parfois peu perceptible au début ?",
+      "options": [
+        "Le pancréas",
+        "La thyroïde",
+        "Le foie",
+        "Les reins"
+      ],
+      "answer": 2,
+      "explanation": "La FDA décrit un risque d'atteinte hépatique, parfois détecté par des analyses avant des signes perceptibles. Cela fait partie des raisons d'un suivi médical pour les médicaments au CBD.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-en02-fda-cbd"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Risque hépatique du CBD",
+        "subjectKey": "fda-cbd-safety-approval",
+        "property": "atteinte du foie possible",
+        "expectedAnswer": "Le foie",
+        "learningObjective": "Connaître un risque documenté qui ne se réduit pas au ressenti immédiat.",
+        "factKey": "en02-cbd-liver-risk",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-fda-cbd",
+            "locator": "Liver Injury",
+            "support": "La FDA identifie un risque de lésion du foie avec le CBD, pouvant survenir sans signes immédiatement perçus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-fda-approved-cbd-product-type",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Aux États-Unis, quelle indication correspond au médicament au CBD autorisé par la FDA ?",
+      "options": [
+        "Des insomnies liées à certains troubles du sommeil",
+        "Des accès d'anxiété liés à certains troubles anxieux",
+        "Des douleurs articulaires liées à certaines arthroses",
+        "Des crises d'épilepsie liées à certaines maladies"
+      ],
+      "answer": 3,
+      "explanation": "La FDA distingue le médicament de prescription au CBD autorisé pour certaines épilepsies des autres produits au CBD. Cette autorisation ne valide pas toutes les huiles ou tous les usages du marché.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-fda-cbd"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Autorisation d'un médicament au CBD",
+        "subjectKey": "fda-cbd-safety-approval",
+        "property": "Indication du médicament au CBD autorisé par la FDA",
+        "expectedAnswer": "Des crises d'épilepsie liées à certaines maladies",
+        "learningObjective": "Distinguer l'indication autorisée pour certaines épilepsies des autres usages revendiqués pour le CBD.",
+        "factKey": "en02-fda-approved-cbd-product-type",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-fda-cbd",
+            "locator": "Liste initiale ; Unanswered questions about the science, safety, and quality",
+            "support": "La FDA indique avoir autorisé un produit au CBD de prescription pour certaines épilepsies, pas l'ensemble des produits commercialisés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cell-study-not-cancer-cure",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Un cannabinoïde agit sur des cellules tumorales en laboratoire. Quelle étape reste nécessaire pour établir un bénéfice chez des patients ?",
+      "options": [
+        "Une reproduction de l'expérience sur les mêmes cellules",
+        "Des tests sur d'autres lignées cellulaires uniquement",
+        "Des essais cliniques évaluant efficacité et sécurité",
+        "Une comparaison des seules structures chimiques"
+      ],
+      "answer": 2,
+      "explanation": "Le National Cancer Institute distingue les études sur cellules ou animaux des essais chez l'humain. Un résultat de laboratoire ne démontre pas à lui seul une efficacité clinique contre un cancer.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-nci-cancer"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Portée d'une recherche préclinique sur les cannabinoïdes",
+        "subjectKey": "nci-cannabis-cancer-pdq",
+        "property": "cellules et animaux distincts d'un essai chez l'humain",
+        "expectedAnswer": "Des essais cliniques évaluant efficacité et sécurité",
+        "learningObjective": "Lire une annonce sur des cellules tumorales sans la convertir en promesse de guérison.",
+        "factKey": "en02-cell-study-not-cancer-cure",
+        "form": "deduction",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-nci-cancer",
+            "locator": "Questions 5 et 6 : études de laboratoire/animales et études chez des personnes",
+            "support": "Le NCI distingue les études de laboratoire et animales des essais chez l'humain ; les essais de traitement du cancer par cannabis sont limités."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cannabinoid-supportive-care",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Aux États-Unis, pour quel objectif le NCI décrit-il l'autorisation du dronabinol et du nabilone chez certains patients sous chimiothérapie ?",
+      "options": [
+        "Traiter des nausées et vomissements liés au traitement",
+        "Renforcer directement l'effet antitumoral de la chimiothérapie",
+        "Prévenir le développement de métastases",
+        "Détruire directement les cellules de la tumeur"
+      ],
+      "answer": 0,
+      "explanation": "Le NCI décrit leur autorisation contre certaines nausées et certains vomissements liés à la chimiothérapie. Soulager un effet du traitement ne signifie pas traiter la tumeur elle-même.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-en02-nci-cancer"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Objectif de certains médicaments cannabinoïdes en cancérologie",
+        "subjectKey": "nci-cannabis-cancer-pdq",
+        "property": "nausées et vomissements liés à la chimiothérapie",
+        "expectedAnswer": "Traiter des nausées et vomissements liés au traitement",
+        "learningObjective": "Distinguer soins de support et traitement visant le cancer.",
+        "factKey": "en02-cannabinoid-supportive-care",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-nci-cancer",
+            "locator": "Overview ; Question 6, Nausea and vomiting",
+            "support": "Le dronabinol et le nabilone sont autorisés aux États-Unis pour certaines nausées et certains vomissements de chimiothérapie, pas comme traitements antitumoraux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-cbd-driving-no-exemption",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France, un conducteur positif au THC invoque un produit au CBD autorisé à la vente. Que retient la Cour de cassation en 2023 ?",
+      "options": [
+        "Il est relaxé s'il présente une facture du vendeur",
+        "L'achat autorisé n'écarte pas l'infraction liée au THC",
+        "Il est relaxé si aucune conduite anormale n'est constatée",
+        "Il est relaxé si l'étiquette indique moins de 0,3 % de THC"
+      ],
+      "answer": 1,
+      "explanation": "L'arrêt du 21 juin 2023 distingue commercialisation du produit et conduite après usage d'une substance stupéfiante. Le caractère autorisé de la vente n'écarte pas l'infraction liée au THC.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-cassation-cbd"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "CBD et conduite après usage de stupéfiants",
+        "subjectKey": "france-drug-driving-rules",
+        "property": "vente autorisée sans effet sur l'infraction après usage de THC",
+        "expectedAnswer": "L'achat autorisé n'écarte pas l'infraction liée au THC",
+        "learningObjective": "Distinguer autorisation d'un produit et règle applicable à la conduite.",
+        "factKey": "en02-france-cbd-driving-no-exemption",
+        "form": "situation",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-cassation-cbd",
+            "locator": "Arrêt du 21 juin 2023, point 10 et résumé d'analyse",
+            "support": "L'autorisation de commercialiser certains dérivés contenant peu de THC est sans incidence sur l'infraction de conduite après usage de stupéfiants."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-accompanying-driver",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France, comment l'interdiction de conduite après usage de stupéfiants s'applique-t-elle à l'accompagnateur d'un élève conducteur ?",
+      "options": [
+        "Elle le concerne même s'il ne tient pas le volant",
+        "Elle le concerne seulement sur autoroute",
+        "Elle le concerne seulement si l'élève est mineur",
+        "Elle le concerne seulement s'il reprend le volant"
+      ],
+      "answer": 0,
+      "explanation": "Service Public précise que l'interdiction concerne aussi l'accompagnateur de l'élève conducteur. Cette fonction implique une responsabilité de sécurité, même sans tenir le volant.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-service-public-driving"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Conduite accompagnée et stupéfiants",
+        "subjectKey": "france-drug-driving-rules",
+        "property": "interdiction également applicable à l'accompagnateur",
+        "expectedAnswer": "Elle le concerne même s'il ne tient pas le volant",
+        "learningObjective": "Connaître la portée de la règle dans une situation de conduite accompagnée.",
+        "factKey": "en02-france-accompanying-driver",
+        "form": "situation",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-service-public-driving",
+            "locator": "Peut-on conduire après avoir consommé de la drogue ?",
+            "support": "L'interdiction après usage de stupéfiants concerne aussi la personne accompagnant l'élève en conduite accompagnée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-occupational-medical-confidentiality",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En France, une personne parle de son cannabis au médecin du travail. Quel principe l'INRS rappelle-t-il pour cet échange ?",
+      "options": [
+        "Le diagnostic est communiqué aux représentants du personnel",
+        "Le diagnostic est joint à l'avis d'aptitude remis à l'employeur",
+        "Le diagnostic est envoyé aux ressources humaines",
+        "Le secret médical couvre l'entretien"
+      ],
+      "answer": 3,
+      "explanation": "L'INRS rappelle que les professionnels de santé sont soumis au secret médical. La démarche de santé au travail se distingue d'une diffusion du diagnostic dans l'entreprise.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-inrs-work"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis et entretien avec le médecin du travail",
+        "subjectKey": "inrs-addiction-regulation",
+        "property": "application du secret médical",
+        "expectedAnswer": "Le secret médical couvre l'entretien",
+        "learningObjective": "Identifier une protection de confidentialité favorisant l'accès à l'aide.",
+        "factKey": "en02-occupational-medical-confidentiality",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-inrs-work",
+            "locator": "Les différents acteurs, rôle du médecin du travail",
+            "support": "Les professionnels de santé, dont le médecin du travail, sont soumis au secret médical."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-vaping-under18",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Un commerce français veut distribuer des liquides de vapotage au CBD à des moins de 18 ans. Quel régime s'applique ?",
+      "options": [
+        "Vente permise et offre gratuite permise",
+        "Vente interdite et offre gratuite permise",
+        "Vente interdite et offre gratuite interdite",
+        "Vente permise et offre gratuite interdite"
+      ],
+      "answer": 2,
+      "explanation": "La Mildeca rappelle en octobre 2026 l'interdiction de vendre ou d'offrir gratuitement des produits de vapotage aux moins de 18 ans dans les commerces et lieux publics.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-mildeca-2026"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Offre de produits de vapotage aux mineurs",
+        "subjectKey": "france-cbd-product-rules-2026",
+        "property": "offre gratuite également interdite avant dix-huit ans",
+        "expectedAnswer": "Vente interdite et offre gratuite interdite",
+        "learningObjective": "Comprendre que la protection des mineurs couvre aussi l'offre gratuite.",
+        "factKey": "en02-france-vaping-under18",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-mildeca-2026",
+            "locator": "Page 2 : Produits de vapotage, interdiction aux mineurs",
+            "support": "Vente et offre gratuite de produits du vapotage aux moins de dix-huit ans sont interdites dans les commerces et lieux publics."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-canada-border-domestic-legal",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Du cannabis récréatif acheté légalement peut-il franchir la frontière canadienne sans autorisation, vers un pays où il est légal ?",
+      "options": [
+        "Oui, avec un achat déclaré aux douanes",
+        "Non, la légalité locale ne suffit pas au passage de frontière",
+        "Oui, avec une facture et l'emballage d'origine",
+        "Oui, si les deux pays autorisent l'usage adulte"
+      ],
+      "answer": 1,
+      "explanation": "Pour le cannabis récréatif, la légalité locale ne suffit pas : le passage de la frontière canadienne reste interdit sans autorisation. Les médicaments autorisés contenant du cannabis ont des règles distinctes.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-canada-border"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Cannabis et frontière canadienne",
+        "subjectKey": "canada-cannabis-international-border",
+        "property": "droit intérieur distinct du passage de frontière",
+        "expectedAnswer": "Non, la légalité locale ne suffit pas au passage de frontière",
+        "learningObjective": "Distinguer droit intérieur et autorisation de transport transfrontalier.",
+        "factKey": "en02-canada-border-domestic-legal",
+        "form": "situation",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "Canada — frontière internationale",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-border",
+            "locator": "Cannabis and international borders ; Medical cannabis exemptions",
+            "support": "Pour les produits récréatifs, la légalité des lieux de départ et d'arrivée ne lève pas l'interdiction de passage de la frontière canadienne sans autorisation. Les médicaments autorisés ont un régime distinct."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-wada-2026-cbd-exception",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans la liste 2026 de l'Agence mondiale antidopage, quelle substance fait exception à l'interdiction des cannabinoïdes en compétition ?",
+      "options": [
+        "Le cannabidiol (CBD)",
+        "Le delta-9-THC",
+        "Le delta-8-THC",
+        "Un cannabinoïde de synthèse imitant le THC"
+      ],
+      "answer": 0,
+      "explanation": "La section S8 de la liste 2026 prévoit une exception pour le cannabidiol. Elle vise les cannabinoïdes naturels et synthétiques en compétition ; l'exception ne garantit pas la composition d'un produit.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-wada-2026"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Liste antidopage 2026 des cannabinoïdes",
+        "subjectKey": "wada-prohibited-list-2026",
+        "property": "exception du cannabidiol",
+        "expectedAnswer": "Le cannabidiol (CBD)",
+        "learningObjective": "Distinguer statut antidopage d'une molécule et composition d'un produit.",
+        "factKey": "en02-wada-2026-cbd-exception",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire d'un mécanisme, d'un terme clinique, d'une règle précise ou d'une limite d'interprétation ; une simple impression ne suffit pas.",
+        "jurisdiction": "International — organisations appliquant le Code mondial antidopage 2026",
+        "reviewAfter": "2026-12-31",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-wada-2026",
+            "locator": "Page 18, section S8 Cannabinoids, Exceptions",
+            "support": "La liste AMA 2026 interdit les cannabinoïdes en compétition, avec une exception pour le cannabidiol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-vigilance-reports-not-incidence",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans le bilan cannabis de Santé Canada, quel manque empêche d'estimer la fréquence réelle des effets parmi les consommateurs ?",
+      "options": [
+        "Le nom des produits et les dates de leurs achats",
+        "La durée des symptômes et les voies de consommation",
+        "Le total des personnes exposées et les cas non signalés",
+        "L'âge moyen des déclarants et la répartition par sexe"
+      ],
+      "answer": 2,
+      "explanation": "Santé Canada précise que ces notifications ne donnent ni incidence ni prévalence en population. Des événements ne sont pas signalés et la base ne recense pas tous les consommateurs exposés.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en02-canada-vigilance"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Limites des notifications de vigilance cannabis",
+        "subjectKey": "health-canada-cannabis-vigilance-2023",
+        "property": "notifications distinctes de l'incidence en population",
+        "expectedAnswer": "Le total des personnes exposées et les cas non signalés",
+        "learningObjective": "Lire un bilan d'alertes sans convertir son décompte en fréquence de risque.",
+        "factKey": "en02-vigilance-reports-not-incidence",
+        "form": "identification",
+        "difficultyRationale": "Distinguer les données nécessaires au calcul d'une fréquence en population des caractéristiques cliniques décrites dans les signalements.",
+        "jurisdiction": "Canada — rapport de vigilance 2023",
+        "reviewAfter": "2027-05-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-canada-vigilance",
+            "locator": "Considerations, limites de la déclaration spontanée",
+            "support": "Les déclarations spontanées ne permettent pas de déterminer l'incidence ou la prévalence des réactions au cannabis dans la population générale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en02-recall-already-sold",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Un cosmétique au chanvre présente un risque de sécurité. Quelle mesure correspond à un rappel, selon les autorités françaises ?",
+      "options": [
+        "Bloquer les stocks chez les distributeurs avant leur vente",
+        "Suspendre la fabrication des futurs lots du produit",
+        "Contrôler la composition avant l'autorisation de vente",
+        "Informer les détenteurs et agir sur les produits déjà vendus"
+      ],
+      "answer": 3,
+      "explanation": "Le retrait empêche la vente d'un produit ; le rappel vise ceux déjà vendus. Il faut consulter l'avis officiel et suivre ses consignes, qui peuvent prévoir un retour ou une autre mesure.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en02-recall-france"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Retrait et rappel d'un produit au chanvre",
+        "subjectKey": "france-product-withdrawal-recall",
+        "property": "rappel visant les produits déjà vendus",
+        "expectedAnswer": "Informer les détenteurs et agir sur les produits déjà vendus",
+        "learningObjective": "Comprendre pourquoi un rappel peut concerner un produit déjà présent au domicile.",
+        "factKey": "en02-recall-already-sold",
+        "form": "situation",
+        "difficultyRationale": "Situation de prévention courante ou repère compréhensible sans vocabulaire spécialisé ; la réponse exige de choisir la conséquence ou la démarche adaptée.",
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-16",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en02-recall-france",
+            "locator": "Retrait ou rappel de produit : quelle est la différence ?",
+            "support": "Le retrait vise les produits non vendus ; le rappel concerne les produits déjà vendus aux consommateurs."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-en02-cdc-poison",
+      "title": "Cannabis and Poisoning",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/poisoning.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2024-02-15",
+      "passage": "Les effets des comestibles peuvent être retardés et prolongés. Les produits doivent être verrouillés, hors de portée et de vue des enfants et animaux.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Information sanitaire américaine ; aucune durée personnelle de sécurité ou modalité de consommation n'est tirée de la fiche.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Effects of edible cannabis ; Cannabis Product Alert",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cdc-driving",
+      "title": "Cannabis and Driving",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/driving.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2024-02-22",
+      "passage": "Le cannabis peut ralentir les réactions et altérer la coordination. L'alcool peut accroître l'altération. Un taux de THC ne décrit pas aisément l'altération individuelle. Prévoir un conducteur sans alcool ni drogues.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Ne fournit pas de seuil biologique ni de délai individuel autorisant à conduire. Les règles françaises sont sourcées séparément.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "What you need to know ; What you can do to prevent impaired driving",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cdc-pregnancy",
+      "title": "Cannabis and Pregnancy",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/pregnancy.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2025-01-31",
+      "passage": "Le THC peut passer de la mère au bébé et des substances peuvent passer par le lait. Le THC stocké dans les graisses est libéré progressivement. L'absence de fumée n'écarte pas les risques.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Information générale de prévention, sans diagnostic ou conduite individuelle de grossesse/allaitement.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Key points ; Potential health effects ; Does using cannabis affect breastfeeding?",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-canada-vigilance",
+      "title": "Data on cannabis adverse reactions: 2023 annual report",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/publications/drugs-health-products/data-cannabis-adverse-reactions-2023-annual-report.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Santé Canada",
+      "published": "Page details : 2025-11-19 ; données de 2023",
+      "passage": "Un cas peut comporter plusieurs événements. Les notifications spontanées ne permettent pas d'établir l'incidence ou la prévalence en population générale.",
+      "access": "official-page",
+      "documentKind": "Rapport primaire de vigilance sanitaire",
+      "limitation": "Rapport primaire de vigilance ; déclarations sélectives et sous-déclaration possibles. Les nombres de signalements ne mesurent pas le risque absolu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Considerations ; Figure 11, Caveats",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cdc-mental",
+      "title": "Cannabis and Mental Health",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/mental-health.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2024-02-15",
+      "passage": "La psychose implique une perturbation du rapport au réel. L'association cannabis–schizophrénie est plus forte avec un début plus précoce et un usage plus fréquent.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Associations en population, sans prédiction déterministe ni diagnostic individuel.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Mental health, définition de psychosis et association avec schizophrénie",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cdc-disorder",
+      "title": "Understanding Your Risk for Cannabis Use Disorder",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/cannabis-use-disorder.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2024-12-05",
+      "passage": "Difficulté à arrêter malgré des problèmes, poursuite malgré les conséquences et perte de contrôle figurent parmi les signes d'un trouble de l'usage.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Un signe ne constitue pas à lui seul un diagnostic. Les chiffres de prévalence et les descriptions de produits concentrés ne sont pas repris.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Key points ; Signs of cannabis use disorder",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-canada-side-effects",
+      "title": "Cannabis for medical purposes: Side effects",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Santé Canada",
+      "published": "Page details : 2026-01-22",
+      "passage": "La tolérance est décrite comme une baisse des effets. L'hyperémèse cannabinoïde comporte des épisodes répétés de nausées sévères, vomissements intenses et douleurs abdominales.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Liste générale d'effets possibles, non exhaustive ; aucune recommandation de traitement ou auto-identification diagnostique.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Possible health concerns from long-term use ; Side effects of cannabis",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-canada-addiction",
+      "title": "Is cannabis addictive?",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/publications/drugs-health-products/cannabis-addictive.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Santé Canada",
+      "published": "2018-10-03",
+      "passage": "L'arrêt après usage fréquent peut s'accompagner d'irritabilité, d'anxiété et de troubles du sommeil, entre autres manifestations.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Publication institutionnelle de prévention ; critères chiffrés de diagnostic et durées de sevrage non repris.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Withdrawal symptoms, Mental symptoms",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cdc-lungs",
+      "title": "Cannabis and Lung Health",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/lung-health.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2024-02-15",
+      "passage": "La fumée de cannabis contient de nombreux toxiques, irritants et cancérogènes également présents dans celle du tabac.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "La similitude des substances n'établit pas des risques quantitatifs identiques ; aucun chiffre de cancer ou équivalence avec le tabac n'est repris.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Lung health and smoking cannabis",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cdc-secondhand",
+      "title": "Cannabis and Secondhand Smoke",
+      "organization": "Centers for Disease Control and Prevention (CDC)",
+      "url": "https://www.cdc.gov/cannabis/health-effects/secondhand-smoke.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Centers for Disease Control and Prevention (CDC)",
+      "published": "2024-02-15",
+      "passage": "La fumée secondaire contient du THC. Des études citées trouvent du THC détectable chez des enfants exposés à la fumée de cannabis d'autrui.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Ne quantifie pas une exposition ou un risque individuel ; les effets à long terme de l'exposition passive nécessitent davantage de recherche.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Exposure to cannabis smoke",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-canada-health",
+      "title": "Cannabis and your health",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/services/health/campaigns/cannabis/health-effects.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Santé Canada",
+      "published": "Date de publication non relevée sur la page consultée",
+      "passage": "Le cannabis peut gêner l'apprentissage et la mémoire. Une teneur plus élevée en THC augmente la probabilité d'effets indésirables ou d'intoxication, notamment chez les personnes inexpérimentées.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Information générale ; aucune probabilité personnelle ni recommandation de produit ou de consommation.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "The short-term effects of cannabis use ; Cannabis poisoning",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-mildeca-2026",
+      "title": "L'indispensable sur le cannabidiol : CBD, qu'est-ce qui est interdit ou autorisé ?",
+      "organization": "Mission interministérielle de lutte contre les drogues et les conduites addictives (Mildeca)",
+      "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Mission interministérielle de lutte contre les drogues et les conduites addictives (Mildeca)",
+      "published": "2026-10",
+      "passage": "Certains produits au CBD contiennent des cannabinoïdes non déclarés. Vente et offre gratuite de produits du vapotage aux moins de dix-huit ans sont interdites en commerce et lieux publics.",
+      "access": "full-text",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Seuls les passages cités sont utilisés ; pas de reprise des règles de culture, des seuils alimentaires ou des recommandations de consommation.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Page 1, CBD adultéré ; page 2, produits de vapotage",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-fda-cbd",
+      "title": "What You Need to Know (And What We're Working to Find Out) About Products Containing Cannabis or Cannabis-derived Compounds, Including CBD",
+      "organization": "U.S. Food and Drug Administration (FDA)",
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-you-need-know-and-what-were-working-find-out-about-products-containing-cannabis-or-cannabis",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration (FDA)",
+      "published": "Date de mise à jour non affichée dans le texte consulté",
+      "passage": "La FDA distingue le médicament de prescription au CBD autorisé pour certaines épilepsies des autres produits. Elle signale des interactions médicamenteuses et un risque d'atteinte hépatique.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Autorisation et statut américain, sans extrapolation automatique à la France ou à l'ensemble des produits. Aucun dosage ni bénéfice thérapeutique individuel promis.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Liste initiale ; Liver Injury ; Drug Interactions ; Unanswered questions",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-anses-alert",
+      "title": "Augmentation des intoxications causées par des produits à base de CBD contenant d'autres substances",
+      "organization": "Anses et Agence nationale de sécurité du médicament et des produits de santé (ANSM)",
+      "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Anses et Agence nationale de sécurité du médicament et des produits de santé (ANSM)",
+      "published": "2025-06-19",
+      "passage": "Le communiqué recommande le 15 en cas de détresse vitale, le signalement sanitaire et la conservation du produit restant pour une éventuelle analyse.",
+      "access": "full-text",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Alerte datée ; les règles alimentaires et pourcentages de l'étude d'étiquetage ne sont pas repris. Le signalement ne remplace pas les soins.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Pages 2–3 : Que faire en cas d'effets indésirables ? Combattre et prévenir les intoxications",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-ameli-help",
+      "title": "Addictions : à qui s'adresser ?",
+      "organization": "Assurance Maladie",
+      "url": "https://www.ameli.fr/assure/sante/themes/addictions/suivi",
+      "verifiedAt": "2026-11-16",
+      "author": "Assurance Maladie",
+      "published": "2025-11-07",
+      "passage": "Drogues info service propose un appel anonyme et gratuit. Les CSAPA sont pluridisciplinaires. Les consultations jeunes consommateurs peuvent recevoir les parents sans leur enfant.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Organisation française des aides, non garantie de disponibilité locale immédiate ; horaires et numéros non indispensables aux questions ne sont pas testés.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Écoute téléphonique ; CSAPA ; Consultations jeunes consommateurs",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-nci-cancer",
+      "title": "Cannabis and Cannabinoids (PDQ), Patient Version",
+      "organization": "National Cancer Institute (NCI)",
+      "url": "https://www.cancer.gov/about-cancer/treatment/cam/patient/cannabis-pdq",
+      "verifiedAt": "2026-11-16",
+      "author": "National Cancer Institute (NCI)",
+      "published": "2023-08-15, date Updated indiquée en bas de page",
+      "passage": "Le NCI distingue études de laboratoire/animales et essais humains. Il décrit l'autorisation du dronabinol et du nabilone contre certaines nausées et vomissements de chimiothérapie, sans autorisation comme traitement antitumoral.",
+      "access": "official-page",
+      "documentKind": "Synthèse médicale institutionnelle",
+      "limitation": "Résumé institutionnel daté ; aucune affirmation sur l'absence actuelle de tout essai en cours ni promesse de traitement. Distinction entre soutien symptomatique et action sur le cancer.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Questions 5–6 ; Overview ; Nausea and vomiting",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-cassation-cbd",
+      "title": "Cour de cassation, chambre criminelle, 21 juin 2023, pourvoi 22-85.530",
+      "organization": "Cour de cassation ; diffusion Légifrance",
+      "url": "https://www.legifrance.gouv.fr/juri/id/JURITEXT000047738124",
+      "verifiedAt": "2026-11-16",
+      "author": "Cour de cassation ; diffusion Légifrance",
+      "published": "2023-06-21",
+      "passage": "La vente autorisée de certains dérivés du cannabis contenant peu de THC est sans incidence sur l'infraction de conduite après usage d'une substance stupéfiante.",
+      "access": "official-page",
+      "documentKind": "Décision de justice originale",
+      "limitation": "Portée de l'arrêt français ; ne signifie pas que le CBD lui-même est un stupéfiant. Aucun délai d'élimination ou seuil individuel de conduite n'est donné.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Point 10 ; Analyse, titrages et résumés",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-service-public-driving",
+      "title": "Drogue au volant",
+      "organization": "Direction de l'information légale et administrative, Service Public",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2886",
+      "verifiedAt": "2026-11-16",
+      "author": "Direction de l'information légale et administrative, Service Public",
+      "published": "2026-08-27, date de vérification affichée",
+      "passage": "L'interdiction après usage de stupéfiants concerne aussi l'accompagnateur. Un dépistage positif est suivi d'une vérification par analyse de prélèvement.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Fiche officielle française actualisée ; sanctions chiffrées, délais de contre-expertise et techniques destinées à contourner un test ne sont pas enseignés.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Peut-on conduire ? ; Dépistage de drogues, Vérification",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-inrs-work",
+      "title": "Addictions : réglementation",
+      "organization": "Institut national de recherche et de sécurité (INRS)",
+      "url": "https://www.inrs.fr/risques/addictions/reglementation",
+      "verifiedAt": "2026-11-16",
+      "author": "Institut national de recherche et de sécurité (INRS)",
+      "published": "2021-11-29, mise à jour affichée",
+      "passage": "L'INRS rappelle que les professionnels de santé sont soumis au secret médical, dans son exposé de la prévention des pratiques addictives au travail.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Page institutionnelle ancienne consultée à la date indiquée ; seul le principe de secret médical est repris, sans généralisation aux résultats de tests réalisés par l'employeur.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Les différents acteurs : le médecin du travail",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-canada-border",
+      "title": "Drugs, alcohol and travel outside Canada",
+      "organization": "Gouvernement du Canada, Conseils aux voyageurs",
+      "url": "https://travel.gc.ca/travelling/health-safety/drugs-alcohol",
+      "verifiedAt": "2026-11-16",
+      "author": "Gouvernement du Canada, Conseils aux voyageurs",
+      "published": "Date de publication non relevée dans le passage consulté",
+      "passage": "Le passage de frontière avec cannabis ou CBD requiert les autorisations compétentes, même si les lieux de départ et d'arrivée l'autorisent. La prescription seule ne remplace pas l'autorisation.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Les médicaments commercialisés contenant du cannabis ont des règles propres. Les rares exemptions spécifiques et les pays de transit sont mentionnés dans la page.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Cannabis and international borders ; Medical cannabis exemptions",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-wada-2026",
+      "title": "World Anti-Doping Code, International Standard, Prohibited List 2026",
+      "organization": "Agence mondiale antidopage (AMA/WADA)",
+      "url": "https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Agence mondiale antidopage (AMA/WADA)",
+      "published": "Liste 2026, entrée en vigueur le 2026-01-01 ; date de publication non indiquée sur la couverture",
+      "passage": "La section S8 interdit les cannabinoïdes naturels et synthétiques en compétition, avec une exception pour le cannabidiol.",
+      "access": "full-text",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Règle 2026 des organisations appliquant le Code ; ne garantit pas la pureté d'un produit étiqueté CBD et ne décrit pas le droit pénal local.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Page 18, section S8 Cannabinoids, Exceptions",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    },
+    {
+      "id": "q2-en02-recall-france",
+      "title": "Retraits et rappels de produits : comment signaler et s'informer sur les produits à risque ?",
+      "organization": "Ministère de l'Économie, economie.gouv.fr",
+      "url": "https://www.economie.gouv.fr/particuliers/mes-droits-conso/bien-consommer/retraits-et-rappels-de-produits-comment-signaler-et-sinformer-sur-les-produits-risque",
+      "verifiedAt": "2026-11-16",
+      "author": "Ministère de l'Économie, economie.gouv.fr",
+      "published": "2026-03-30",
+      "passage": "Le retrait concerne les stocks non vendus ; le rappel vise les produits déjà vendus et l'information de leurs détenteurs.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle de prévention",
+      "limitation": "Principe général appliqué à un exemple de cosmétique au chanvre, sans inventer un rappel de produit ou un fabricant réel.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Retrait ou rappel de produit : quelle est la différence ?",
+        "result": "Source institutionnelle ouverte ; passages indiqués lus. Soutien limité aux faits et à la portée décrits, sans conseil individuel."
+      }
+    }
+  ]
+}

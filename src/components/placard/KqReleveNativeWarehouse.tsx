@@ -27,7 +27,7 @@ export function KqReleveNativeWarehouse({ chapter, state, onChange, onOpenCultur
   });
   useLayoutEffect(() => { store.sync(state, onChange); }, [store, state, onChange]);
   const [ticket, setTicket] = useState<LotteryTicket | null>(() => chapter === 'buddies' && state.ownedBuddies.length < 3 ? {
-    id: 'releve-buddies', userId: 'releve', ticketNumber: 'Le pack prêté par Sylvain', orderAmount: 0,
+    id: 'releve-buddies', userId: 'releve', ticketNumber: 'Le pack prêté par Loïc', orderAmount: 0,
     status: 'available', createdAt: new Date(state.clock).toISOString(),
   } : null);
   const commit = store.setState;
@@ -67,7 +67,7 @@ export function KqReleveNativeWarehouse({ chapter, state, onChange, onOpenCultur
     });
     const byRarity = { common: 0, silver: 0, gold: 0, epic: 0, legendary: 0 };
     cards.forEach(card => { byRarity[card.rarity]++; });
-    return { ticketId: 'releve-buddies', ticketNumber: 'Le pack prêté par Sylvain', scratchedAt: at, card: cards[0], cards,
+    return { ticketId: 'releve-buddies', ticketNumber: 'Le pack prêté par Loïc', scratchedAt: at, card: cards[0], cards,
       inventory: { totalCards: KQ_BUDDIES.length, uniqueOwned: cards.length, totalOwnedCopies: cards.length, duplicateCopies: 0, byRarity } };
   };
   return <KqTutorialApiProvider api={api}><div data-releve-production={chapter} data-releve-native="warehouse" onClickCapture={observe} onAuxClickCapture={observe}
@@ -77,6 +77,6 @@ export function KqReleveNativeWarehouse({ chapter, state, onChange, onOpenCultur
       onOpenHarvests={() => setNotice('Cette rencontre prépare ton installation. La conservation des récoltes se découvre dans la suite de La Relève.')}
       onOpenMarket={() => setNotice('Cette rencontre prépare ton installation. La vente se découvre dans la rencontre Commerce de La Relève.')} />
     <PackOpeningFlowModal inline ticket={ticket} onOpen={openPack} onClose={() => setTicket(null)} />
-    {chapter === 'buddies' && !ticket && state.ownedBuddies.length < 3 ? <button type="button" data-releve-guide="buddie-pack" onClick={() => setTicket({ id: 'releve-buddies', userId: 'releve', ticketNumber: 'Le pack prêté par Sylvain', orderAmount: 0, status: 'available', createdAt: new Date(state.clock).toISOString() })}>Ouvrir le pack prêté par Sylvain</button> : null}
+    {chapter === 'buddies' && !ticket && state.ownedBuddies.length < 3 ? <button type="button" data-releve-guide="buddie-pack" onClick={() => setTicket({ id: 'releve-buddies', userId: 'releve', ticketNumber: 'Le pack prêté par Loïc', orderAmount: 0, status: 'available', createdAt: new Date(state.clock).toISOString() })}>Ouvrir le pack prêté par Loïc</button> : null}
   </div></KqTutorialApiProvider>;
 }

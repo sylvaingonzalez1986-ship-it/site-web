@@ -1,0 +1,1960 @@
+{
+  "batchId": "c-legacy-02",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-plant-antheres",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans une fleur mâle de chanvre, où se forment les grains de pollen ?",
+      "options": [
+        "Dans les anthères",
+        "Dans les filets des étamines",
+        "Dans les sépales",
+        "Dans les bractées"
+      ],
+      "answer": 0,
+      "explanation": "L’anthère contient les sacs polliniques. Le filet est la petite tige qui la porte : ces deux parties forment une étamine.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-c02-openstax-reproduction",
+        "bf-kew-1975"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Anthères du chanvre",
+        "subjectKey": "cannabis-anthere",
+        "property": "Lieu de formation du pollen",
+        "expectedAnswer": "Dans les anthères",
+        "learningObjective": "Distinguer les anthères des autres parties d’une fleur mâle.",
+        "factKey": "cannabis-pollen-formation-antheres",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître un organe floral parmi quatre structures botaniques.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-openstax-reproduction",
+            "locator": "Male Gametophyte, premier paragraphe et figure 32.6",
+            "support": "Les sacs où se développe le pollen sont situés dans les anthères, au bout des étamines."
+          },
+          {
+            "sourceId": "bf-kew-1975",
+            "locator": "Morphology, Reproductive morphology, Flowers et sex Male",
+            "support": "La description des fleurs mâles du chanvre nomme étamines, filets et anthères."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-plant-bractee",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "À quelle catégorie d’organe appartient une bractée de l’inflorescence du chanvre ?",
+      "options": [
+        "Un axe floral raccourci",
+        "Une feuille modifiée",
+        "Une pièce du pistil",
+        "Une étamine stérile"
+      ],
+      "answer": 1,
+      "explanation": "Une bractée est une feuille modifiée associée à une fleur ou à un groupe de fleurs. Sa position ne la transforme pas en pétale ni en organe reproducteur.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-c02-purdue-bract",
+        "bf-kew-1975"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Bractée du chanvre",
+        "subjectKey": "cannabis-bractee",
+        "property": "Nature botanique d’une bractée",
+        "expectedAnswer": "Une feuille modifiée",
+        "learningObjective": "Reconnaître la nature foliaire d’une bractée.",
+        "factKey": "cannabis-bractee-feuille-modifiee",
+        "form": "identification",
+        "difficultyRationale": "Terminologie botanique intermédiaire, sans distracteur d’une autre discipline.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-purdue-bract",
+            "locator": "Définition Bract",
+            "support": "La bractée est définie comme feuille modifiée faisant partie d’un groupe floral ou entourant une fleur."
+          },
+          {
+            "sourceId": "bf-kew-1975",
+            "locator": "Morphology, Reproductive morphology, Inflorescences",
+            "support": "Kew décrit les bractées des inflorescences mâles et femelles du chanvre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-plant-inflorescence",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Que regroupe l’inflorescence femelle compacte du chanvre, souvent appelée « tête » ?",
+      "options": [
+        "Plusieurs carpelles réunis en un pistil",
+        "Plusieurs anthères portées par une même étamine",
+        "Plusieurs fleurs portées par des axes ramifiés",
+        "Plusieurs ovules dans une même grande fleur"
+      ],
+      "answer": 2,
+      "explanation": "L’inflorescence réunit de nombreuses fleurs, des bractées et des rameaux très rapprochés. L’étude de sa structure montre une grappe composée fortement ramifiée.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-florogenesis-2019"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Inflorescence femelle du chanvre",
+        "subjectKey": "cannabis-inflorescence-femelle",
+        "property": "Organisation en fleurs et axes",
+        "expectedAnswer": "Plusieurs fleurs portées par des axes ramifiés",
+        "learningObjective": "Distinguer un regroupement de fleurs d’un organe appartenant à une fleur.",
+        "factKey": "cannabis-inflorescence-ensemble-fleurs-axes",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d’une organisation florale ; les quatre choix décrivent des regroupements botaniques.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-florogenesis-2019",
+            "locator": "Discussion, The Inflorescence of Cannabis Is a Highly Branched Compound Raceme",
+            "support": "Chaque inflorescence comporte des rameaux condensés portant notamment des fleurs et des bractées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-genetics-feral",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel scénario explique la formation des populations de chanvre férales américaines étudiées par Aina et al. (2025) ?",
+      "options": [
+        "Des plantes sauvages persistent sans histoire de domestication",
+        "Des plantes sauvages sont sélectionnées puis maintenues en culture",
+        "Des plantes cultivées sont conservées en banque de graines",
+        "Des plantes cultivées s’échappent et se reproduisent dans la nature"
+      ],
+      "answer": 3,
+      "explanation": "Ces populations se sont établies après s’être échappées des cultures et ont continué à se reproduire dans la nature. « Féral » décrit cette histoire, pas une espèce différente.",
+      "articleId": "ref-populations-domestication",
+      "sourceIds": [
+        "q2-c02-aina-feral-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Populations férales américaines",
+        "subjectKey": "aina-feral-hemp-2025",
+        "property": "Origine d’une population féralisée",
+        "expectedAnswer": "Des plantes cultivées s’échappent et se reproduisent dans la nature",
+        "learningObjective": "Distinguer populations férales, sauvages et encore cultivées.",
+        "factKey": "feral-hemp-escaped-production-wild-reproduction",
+        "form": "identification",
+        "difficultyRationale": "Le terme féral demande un vocabulaire de domestication, sans date à mémoriser.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-aina-feral-2025",
+            "locator": "Introduction, Despite the cessation of cultivation",
+            "support": "Des populations féralisées de chanvre industriel ont échappé à la production puis persisté en se reproduisant dans la nature."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-genetics-landrace",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "En génétique du chanvre, que désigne le mieux une « landrace » ?",
+      "options": [
+        "Une population cultivée traditionnelle à identité locale",
+        "Une lignée pure issue d’un programme moderne de sélection",
+        "Un hybride commercial de première génération",
+        "Une population sauvage sans histoire de culture"
+      ],
+      "answer": 0,
+      "explanation": "Une landrace est une population cultivée avec une histoire et une identité propres, sans amélioration formelle. Elle est souvent diverse et adaptée localement, sans être nécessairement uniforme.",
+      "articleId": "ref-populations-domestication",
+      "sourceIds": [
+        "q2-c02-landrace-definition-2005"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Landrace de chanvre",
+        "subjectKey": "cannabis-landrace",
+        "property": "Définition d’une population traditionnelle",
+        "expectedAnswer": "Une population cultivée traditionnelle à identité locale",
+        "learningObjective": "Distinguer une population traditionnelle d’une lignée moderne, d’un F1 et d’une population sauvage.",
+        "factKey": "crop-landrace-traditional-cultivated-population-historical-identity",
+        "form": "identification",
+        "difficultyRationale": "Notion de génétique des populations, avec quatre types de matériel comparables.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-landrace-definition-2005",
+            "locator": "Abstract, définition de travail finale",
+            "support": "Les auteurs définissent une population cultivée dynamique, d’origine historique et d’identité distincte, sans amélioration formelle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-genetics-recombinaison",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Lors de la méiose du chanvre, que peut produire un crossing-over entre chromosomes homologues ?",
+      "options": [
+        "Une augmentation du nombre de copies de tous les gènes",
+        "De nouvelles associations d’allèles sur un chromosome",
+        "Un doublement du nombre de chromosomes",
+        "Une nouvelle mutation à chaque gène échangé"
+      ],
+      "answer": 1,
+      "explanation": "Le crossing-over échange des segments entre chromosomes homologues. Il réassocie des allèles existants : il ne faut pas le confondre avec la création d’une mutation.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-c02-nhgri-crossing-over"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Crossing-over chez le chanvre",
+        "subjectKey": "cannabis-crossing-over",
+        "property": "Conséquence des échanges homologues",
+        "expectedAnswer": "De nouvelles associations d’allèles sur un chromosome",
+        "learningObjective": "Comprendre comment la recombinaison réassocie les variantes génétiques.",
+        "factKey": "crossing-over-new-allele-combinations",
+        "form": "identification",
+        "difficultyRationale": "Conséquence d’un mécanisme de méiose, opposée à trois autres types de changement génétique.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-nhgri-crossing-over",
+            "locator": "Definition et Narration",
+            "support": "Les échanges d’ADN entre chromosomes homologues pendant la méiose entraînent de nouvelles combinaisons d’allèles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-genetics-pangenome",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que cherche à représenter un pangénome du chanvre ?",
+      "options": [
+        "La liste des protéines détectées dans une inflorescence",
+        "L’arbre de parenté construit à partir d’un seul marqueur",
+        "Les séquences communes et variables de plusieurs génomes",
+        "La succession des ARN produits par une plante au cours du jour"
+      ],
+      "answer": 2,
+      "explanation": "Un pangénome rassemble la diversité de plusieurs génomes. Il inclut des régions partagées et d’autres présentes dans une partie des plantes étudiées.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Pangénome du chanvre",
+        "subjectKey": "cannabis-pangenome",
+        "property": "Périmètre d’un pangénome",
+        "expectedAnswer": "Les séquences communes et variables de plusieurs génomes",
+        "learningObjective": "Distinguer le pangénome d’un transcriptome, d’un protéome et d’un arbre fondé sur un marqueur.",
+        "factKey": "cannabis-pangenome-shared-variable-genomic-sequences",
+        "form": "identification",
+        "difficultyRationale": "Notion intermédiaire de génomique, sans exiger les outils informatiques de l’étude.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Fig.1c–e ; The pangenome reveals five populations, classement des gènes",
+            "support": "L’étude compare plusieurs assemblages et distingue gènes partagés par tous les génomes et classes de présence variable."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-cineole",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel autre nom porte le 1,8-cinéole, détecté dans un hydrolat de chanvre ?",
+      "options": [
+        "Terpinéol",
+        "Bornéol",
+        "Géraniol",
+        "Eucalyptol"
+      ],
+      "answer": 3,
+      "explanation": "Eucalyptol et 1,8-cinéole désignent la même molécule. Sa détection dans un hydrolat étudié ne signifie pas qu’elle est abondante dans tous les chanvres.",
+      "articleId": "record-terpene-eucalyptol",
+      "sourceIds": [
+        "q2-c02-eucalyptol-scf-2002",
+        "tp-ovidi2022"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "1,8-cinéole",
+        "subjectKey": "cineole",
+        "property": "Synonyme chimique",
+        "expectedAnswer": "Eucalyptol",
+        "learningObjective": "Relier deux noms d’un même composé volatil.",
+        "factKey": "cineole-synonym-eucalyptol",
+        "form": "identification",
+        "difficultyRationale": "Synonymie spécialisée parmi quatre noms réels de composés volatils.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-eucalyptol-scf-2002",
+            "locator": "Chemical characterisation, Name",
+            "support": "La ligne de nom associe explicitement eucalyptol et 1,8-cinéole."
+          },
+          {
+            "sourceId": "tp-ovidi2022",
+            "locator": "Table 2, ligne 12, colonne Hemp Hy",
+            "support": "Le 1,8-cinéole figure parmi les composés détectés dans l’hydrolat de chanvre analysé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-linalol-fonction",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quelle fonction oxygénée porte le linalol ?",
+      "options": [
+        "Une fonction alcool",
+        "Une fonction cétone",
+        "Une fonction aldéhyde",
+        "Une fonction éther"
+      ],
+      "answer": 0,
+      "explanation": "Le linalol possède un groupe hydroxyle –OH porté par un carbone lié à trois autres carbones : c’est un alcool tertiaire.",
+      "articleId": "ref-terpenes-terpenoides",
+      "sourceIds": [
+        "q2-c02-chebi-linalool"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Linalol",
+        "subjectKey": "linalol",
+        "property": "Fonction oxygénée",
+        "expectedAnswer": "Une fonction alcool",
+        "learningObjective": "Identifier la fonction alcool du linalol.",
+        "factKey": "linalool-oxygen-function-tertiary-alcohol",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire de chimie organique de base ; distinction de quatre fonctions oxygénées.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-linalool",
+            "locator": "Definition ; ChEBI Ontology, tertiary alcohol",
+            "support": "La définition décrit un hydroxyle en C3 et le classement identifie un alcool tertiaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-humulene",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quel nom est un synonyme chimique de l’α-humulène ?",
+      "options": [
+        "β-Bisabolène",
+        "α-Caryophyllène",
+        "β-Caryophyllène",
+        "α-Farnésène"
+      ],
+      "answer": 1,
+      "explanation": "L’α-humulène est aussi nommé α-caryophyllène. Malgré cette parenté de noms, il ne faut pas l’assimiler au β-caryophyllène.",
+      "articleId": "record-terpene-alpha-humulene",
+      "sourceIds": [
+        "q2-c02-chebi-humulene"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Alpha-humulène",
+        "subjectKey": "alpha-humulene",
+        "property": "Synonyme alpha-caryophyllène",
+        "expectedAnswer": "α-Caryophyllène",
+        "learningObjective": "Éviter une confusion entre noms proches de sesquiterpènes.",
+        "factKey": "alpha-humulene-synonym-alpha-caryophyllene",
+        "form": "identification",
+        "difficultyRationale": "Synonymie chimique spécialisée avec quatre noms réels de sesquiterpènes.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-humulene",
+            "locator": "Synonyms, lignes α-caryophyllene et α-humulene",
+            "support": "Les deux noms sont rattachés à la même entité CHEBI:5768 ; β-caryophyllène n’est pas donné comme synonyme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-pinenes-isomeres",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quelle différence structurale distingue l’α-pinène du β-pinène ?",
+      "options": [
+        "La présence d’un atome d’oxygène",
+        "Le nombre de leurs cycles carbonés",
+        "La position de leur double liaison",
+        "Le nombre de leurs atomes de carbone"
+      ],
+      "answer": 2,
+      "explanation": "Les deux ont pour formule C10H16. La double liaison est dans le cycle chez l’α-pinène et exocyclique chez le β-pinène : ce sont des isomères de constitution.",
+      "articleId": "ref-terpenes-terpenoides",
+      "sourceIds": [
+        "q2-c02-chebi-alpha-pinene",
+        "q2-c02-chebi-beta-pinene"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Alpha-pinène et bêta-pinène",
+        "subjectKey": "pinenes-alpha-beta",
+        "property": "Position endocyclique ou exocyclique de la double liaison",
+        "expectedAnswer": "La position de leur double liaison",
+        "learningObjective": "Distinguer des isomères de position à formule identique.",
+        "factKey": "alpha-beta-pinene-double-bond-position",
+        "form": "comparaison",
+        "difficultyRationale": "Différence de structure précise entre deux monoterpènes proches.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-alpha-pinene",
+            "locator": "Definition ; Formula ; IUPAC Names, pin-2-ene",
+            "support": "La notice indique C10H16 et une double liaison endocyclique de l’hept-2-ène."
+          },
+          {
+            "sourceId": "q2-c02-chebi-beta-pinene",
+            "locator": "Definition ; Formula ; IUPAC Names, pin-2(10)-ene",
+            "support": "La notice indique la même formule et définit une double liaison exocyclique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-cineole-fonction",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "À quelle famille de fonctions oxygénées appartient le 1,8-cinéole ?",
+      "options": [
+        "Les alcools",
+        "Les cétones",
+        "Les esters",
+        "Les éthers"
+      ],
+      "answer": 3,
+      "explanation": "L’oxygène du 1,8-cinéole relie deux carbones par un pont éther. Il n’est pas porté sous forme de groupe hydroxyle –OH.",
+      "articleId": "record-terpene-eucalyptol",
+      "sourceIds": [
+        "q2-c02-eucalyptol-scf-2002"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "1,8-cinéole",
+        "subjectKey": "cineole",
+        "property": "Pont éther",
+        "expectedAnswer": "Les éthers",
+        "learningObjective": "Distinguer un oxygène de pont éther d’un hydroxyle ou d’un carbonyle.",
+        "factKey": "cineole-oxygen-function-ether",
+        "form": "identification",
+        "difficultyRationale": "Fonction moins familière que celle des terpènes portant un nom en -ol.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-eucalyptol-scf-2002",
+            "locator": "Chemical characterisation, première phrase et structure",
+            "support": "L’avis décrit un pont éther entre les carbones 1 et 8 et donne la structure du composé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-enantiomeres",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Les formes R et S du linalol sont des énantiomères. Quelle relation spatiale ont-elles ?",
+      "options": [
+        "Images miroir non superposables",
+        "Images miroir superposables",
+        "Même molécule après rotation d’une liaison simple",
+        "Configurations différentes sans être images miroir"
+      ],
+      "answer": 0,
+      "explanation": "Les énantiomères ont les mêmes liaisons entre atomes, mais sont images miroir non superposables. Les formes R et S du linalol constituent une telle paire.",
+      "articleId": "ref-terpenes-terpenoides",
+      "sourceIds": [
+        "revision-iupac-stereochemistry",
+        "q2-c02-chebi-linalool"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Énantiomères du linalol",
+        "subjectKey": "linalol",
+        "property": "Relation spatiale des énantiomères",
+        "expectedAnswer": "Images miroir non superposables",
+        "learningObjective": "Reconnaître une relation d’énantiomérie.",
+        "factKey": "linalool-r-s-nonsuperposable-mirror-images",
+        "form": "comparaison",
+        "difficultyRationale": "Raisonnement spatial de stéréochimie ; les distracteurs décrivent d’autres relations moléculaires.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "revision-iupac-stereochemistry",
+            "locator": "P-92.1.1, définition de la chiralité ; P-92.1.2.1.1",
+            "support": "La chiralité est la non-superposabilité à l’image miroir ; les centres énantiomères sont désignés R et S."
+          },
+          {
+            "sourceId": "q2-c02-chebi-linalool",
+            "locator": "ChEBI Ontology, relations entrantes R-linalool et S-linalool",
+            "support": "La notice relie les deux configurations R et S à l’entité linalol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-molecules-caryophyllene-oxyde",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quel motif oxygéné caractérise la structure de l’oxyde de caryophyllène ?",
+      "options": [
+        "Un acide carboxylique",
+        "Un époxyde",
+        "Un ester",
+        "Une cétone"
+      ],
+      "answer": 1,
+      "explanation": "L’oxyde de caryophyllène comporte un époxyde : l’oxygène appartient à un petit cycle avec deux carbones. Le mot « oxyde » ne décrit donc pas à lui seul toute sa structure.",
+      "articleId": "record-terpene-beta-caryophyllene",
+      "sourceIds": [
+        "q2-c02-chebi-caryophyllene-oxide"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Oxyde de caryophyllène",
+        "subjectKey": "caryophyllene-oxide",
+        "property": "Motif époxyde",
+        "expectedAnswer": "Un époxyde",
+        "learningObjective": "Reconnaître le motif époxyde d’un sesquiterpénoïde oxygéné.",
+        "factKey": "caryophyllene-oxide-epoxide-functional-motif",
+        "form": "identification",
+        "difficultyRationale": "Identification d’un motif chimique précis, avec quatre fonctions oxygénées plausibles.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-caryophyllene-oxide",
+            "locator": "ChEBI Ontology, is a epoxide ; structure et SMILES",
+            "support": "La notice classe l’entité parmi les époxydes et en représente la structure."
+          }
+        ],
+        "identityImpact": "Remplace l’ancien test de la présence d’oxygène, annoncé par le mot oxyde, par l’identification du motif époxyde."
+      }
+    },
+    {
+      "id": "hemp-molecules-guaiol",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "À quelle catégorie chimique appartient le guaiol ?",
+      "options": [
+        "Une cétone sesquiterpénique",
+        "Un éther monoterpénique",
+        "Un alcool sesquiterpénique",
+        "Un alcool monoterpénique"
+      ],
+      "answer": 2,
+      "explanation": "Le guaiol est un sesquiterpénoïde de type guaiane portant une fonction alcool. Sa formule C15H26O et son nom guai-1(5)-en-11-ol décrivent ces caractéristiques.",
+      "articleId": "record-terpene-guaiol",
+      "sourceIds": [
+        "q2-c02-chebi-guaiol"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Guaiol",
+        "subjectKey": "guaiol",
+        "property": "Classe et fonction alcool",
+        "expectedAnswer": "Un alcool sesquiterpénique",
+        "learningObjective": "Associer le guaiol à sa famille terpénique et à sa fonction oxygénée.",
+        "factKey": "guaiol-guaiane-sesquiterpenoid-alcohol",
+        "form": "identification",
+        "difficultyRationale": "Deux distinctions chimiques combinées pour un composé peu familier.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-guaiol",
+            "locator": "Formula ; ChEBI Ontology ; IUPAC Name",
+            "support": "La notice donne C15H26O, le classement guaiane sesquiterpenoid et le nom terminé en -11-ol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-anandamide",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quelle est l’origine biologique de l’anandamide ?",
+      "options": [
+        "La synthèse dans les trichomes du cannabis",
+        "La synthèse par des champignons associés au chanvre",
+        "La synthèse dans un laboratoire de chimie",
+        "La biosynthèse par l’organisme animal"
+      ],
+      "answer": 3,
+      "explanation": "« Endogène » indique une production par l’organisme. L’anandamide est notamment un métabolite humain ; sa découverte historique provient de tissu cérébral porcin.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "q2-cfix-chebi-anandamide",
+        "q2-cfix-ben-shabat-2ag-1998"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Anandamide",
+        "subjectKey": "anandamide",
+        "property": "Origine endogène",
+        "expectedAnswer": "La biosynthèse par l’organisme animal",
+        "learningObjective": "Distinguer un endocannabinoïde d’un composé produit par la plante.",
+        "factKey": "anandamide-endogenous-animal-metabolite",
+        "form": "identification",
+        "difficultyRationale": "Le terme endogène doit être compris dans un contexte biologique précis.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-chebi-anandamide",
+            "locator": "Roles Classification ; Species of Metabolite ; ChEBI Ontology",
+            "support": "La notice classe l’anandamide comme métabolite humain et endocannabinoïde."
+          },
+          {
+            "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+            "locator": "p.23, Introduction, premier paragraphe",
+            "support": "Les auteurs rappellent l’identification de l’anandamide dans le cerveau porcin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-cbn-oxydation",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel cannabinoïde peut se former lors de l’oxydation du Δ9-THC ?",
+      "options": [
+        "Le CBN",
+        "Le CBD",
+        "Le CBG",
+        "Le CBC"
+      ],
+      "answer": 0,
+      "explanation": "Le cannabinol, ou CBN, peut résulter de l’oxydation du Δ9-THC. Cette transformation chimique se distingue de la décarboxylation d’une forme acide.",
+      "articleId": "ref-formes-acides-neutres",
+      "sourceIds": [
+        "q2-c02-kim-figure1-2022"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Formation du cannabinol",
+        "subjectKey": "cbn",
+        "property": "Origine par oxydation du THC",
+        "expectedAnswer": "Le CBN",
+        "learningObjective": "Distinguer l’oxydation du THC des autres transformations de cannabinoïdes.",
+        "factKey": "delta9-thc-oxidation-produces-cbn",
+        "form": "identification",
+        "difficultyRationale": "Transformation descriptive entre molécules usuelles, sans conditions opératoires.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-kim-figure1-2022",
+            "locator": "Figure 1, dernière phrase de la légende ; paragraphe suivant",
+            "support": "La légende attribue la formation du CBN à l’oxydation du Δ9-THC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-delta9",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Dans la numérotation dibenzopyrane du Δ9-THC, quels carbones sont reliés par la double liaison indiquée par Δ9 ?",
+      "options": [
+        "Les carbones 6a et 7",
+        "Les carbones 9 et 10",
+        "Les carbones 8 et 9",
+        "Les carbones 7 et 8"
+      ],
+      "answer": 1,
+      "explanation": "Le Δ9 situe la double liaison entre C9 et C10 dans cette convention. Le Δ8-THC porte la liaison entre C8 et C9 : préciser la numérotation évite les ambiguïtés.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-c02-euda-thc-chemistry"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Delta-9-THC",
+        "subjectKey": "delta9-thc",
+        "property": "Position de la double liaison selon la numérotation",
+        "expectedAnswer": "Les carbones 9 et 10",
+        "learningObjective": "Lire la notation delta dans la nomenclature du THC.",
+        "factKey": "delta9-thc-dibenzopyran-double-bond-c9-c10",
+        "form": "identification",
+        "difficultyRationale": "Convention spécialisée et positions proches ; la numérotation est explicitée.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-euda-thc-chemistry",
+            "locator": "Chemistry, premier et deuxième paragraphes",
+            "support": "La fiche situe explicitement la liaison du Δ9 entre C9 et C10 et celle du Δ8 entre C8 et C9."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-decarboxylation",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quelle petite molécule est libérée lors de la décarboxylation du THCA en THC ?",
+      "options": [
+        "Le dioxygène O2",
+        "Le dihydrogène H2",
+        "Le dioxyde de carbone CO2",
+        "L’eau H2O"
+      ],
+      "answer": 2,
+      "explanation": "La décarboxylation élimine du CO2 à partir de la fonction acide carboxylique. Le THCA et le THC sont donc deux composés distincts.",
+      "articleId": "ref-formes-acides-neutres",
+      "sourceIds": [
+        "q2-c02-kim-figure1-2022"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Décarboxylation du THCA",
+        "subjectKey": "thca-decarboxylation",
+        "property": "Molécule éliminée",
+        "expectedAnswer": "Le dioxyde de carbone CO2",
+        "learningObjective": "Comprendre le bilan chimique d’une décarboxylation sans protocole.",
+        "factKey": "thca-decarboxylation-carbon-dioxide-release",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une transformation et de son produit gazeux parmi quatre petites molécules.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-kim-figure1-2022",
+            "locator": "Figure 1, légende, passage decarboxylate (-CO2)",
+            "support": "La conversion des formes acides en formes neutres est associée explicitement à une perte de CO2."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-cbd-thc-isomeres",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Le CBD et le Δ9-THC ont la même formule C21H30O2, mais des liaisons organisées différemment. Ce sont des…",
+      "options": [
+        "Énantiomères",
+        "Conformères",
+        "Isotopologues",
+        "Isomères de constitution"
+      ],
+      "answer": 3,
+      "explanation": "Une formule brute compte les atomes sans préciser leurs liaisons. CBD et Δ9-THC partagent cette formule mais ont des structures différentes : ce sont des isomères de constitution.",
+      "articleId": "record-cannabinoid-cbd",
+      "sourceIds": [
+        "q2-c02-chebi-cbd",
+        "q2-c02-euda-thc-chemistry"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "CBD et delta-9-THC",
+        "subjectKey": "cbd-thc",
+        "property": "Même formule et connectivité différente",
+        "expectedAnswer": "Isomères de constitution",
+        "learningObjective": "Distinguer formule brute et organisation des liaisons.",
+        "factKey": "cbd-delta9-thc-constitutional-isomers-same-formula",
+        "form": "deduction",
+        "difficultyRationale": "Classification d’une relation moléculaire à partir des informations fournies.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-cbd",
+            "locator": "Formula ; Definition et SMILES",
+            "support": "La notice donne C21H30O2 et une structure à deux hydroxyles phénoliques pour le CBD."
+          },
+          {
+            "sourceId": "q2-c02-euda-thc-chemistry",
+            "locator": "Chemistry, nom systématique ; Molecular structure et formule",
+            "support": "La fiche donne la formule C21H30O2 du THC et sa structure cyclisée comportant un oxygène de cycle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-2ag",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "À quelle famille de lipides appartient le 2-arachidonoylglycérol, ou 2-AG ?",
+      "options": [
+        "Les monoacylglycérols",
+        "Les N-acyléthanolamines",
+        "Les diacylglycérols",
+        "Les phospholipides"
+      ],
+      "answer": 0,
+      "explanation": "Le 2-AG associe un glycérol à un seul acide gras, l’acide arachidonique, par une liaison ester. Il appartient donc aux monoacylglycérols.",
+      "articleId": "record-cannabinoid-2-ag",
+      "sourceIds": [
+        "q2-c02-chebi-2ag"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "2-arachidonoylglycérol",
+        "subjectKey": "2-ag",
+        "property": "Famille lipidique",
+        "expectedAnswer": "Les monoacylglycérols",
+        "learningObjective": "Identifier le squelette lipidique du 2-AG.",
+        "factKey": "2ag-monoacylglycerol-lipid-class",
+        "form": "identification",
+        "difficultyRationale": "Classification biochimique spécialisée parmi quatre familles de lipides.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-2ag",
+            "locator": "Definition ; ChEBI Ontology, is a 2-acylglycerol 20:4",
+            "support": "La définition décrit l’ester d’acide arachidonique et de glycérol, et le classement précise un 2-acylglycérol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-evidence-thca-a-b",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Sous quelle forme se trouvent majoritairement les principaux cannabinoïdes dans une plante de cannabis fraîche ?",
+      "options": [
+        "Sous forme de glucuronides",
+        "Sous forme acide carboxylique",
+        "Sous forme neutre décarboxylée",
+        "Sous forme d’esters méthyliques"
+      ],
+      "answer": 1,
+      "explanation": "Dans la plante fraîche, les principales formes sont acides, comme le THCA et le CBDA. Une analyse doit donc distinguer ces formes du THC et du CBD correspondants.",
+      "articleId": "ref-formes-acides-neutres",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Cannabinoïdes de la plante fraîche",
+        "subjectKey": "fresh-cannabis-cannabinoid-forms",
+        "property": "Prédominance des formes carboxyliques",
+        "expectedAnswer": "Sous forme acide carboxylique",
+        "learningObjective": "Comprendre pourquoi formes acides et neutres sont distinguées dans une analyse.",
+        "factKey": "fresh-cannabis-cannabinoids-predominantly-acidic",
+        "form": "identification",
+        "difficultyRationale": "Distinction utile entre formes moléculaires, sans paramètres de transformation.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "Section 4.2.1 Cannabinoids, premier paragraphe sur les formes fraîches",
+            "support": "Le document indique que les cannabinoïdes sont principalement présents sous forme d’acides carboxyliques dans le cannabis frais."
+          }
+        ],
+        "identityImpact": "Remplace le détail A/B du THCA non vérifié dans l’ancienne preuve par la prédominance des formes acides dans la plante fraîche ; le fait A/B est abandonné."
+      }
+    },
+    {
+      "id": "hemp-evidence-branches",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle double origine biosynthétique caractérise le squelette des phytocannabinoïdes du cannabis ?",
+      "options": [
+        "Un noyau stéroïdien associé à un acide aminé",
+        "Un noyau nucléotidique associé à un acide gras",
+        "Un noyau polycétidique associé à une unité terpénique",
+        "Un noyau peptidique associé à un sucre"
+      ],
+      "answer": 2,
+      "explanation": "Les phytocannabinoïdes sont des polycétides prénylés : leur structure combine des éléments provenant de voies polycétidiques et terpéniques.",
+      "articleId": "ref-biosynthese-cannabinoides",
+      "sourceIds": [
+        "q2-c02-gagne-polyketide-2012"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Origine du squelette des phytocannabinoïdes",
+        "subjectKey": "phytocannabinoid-polyketide-terpenoid-origin",
+        "property": "Origine biosynthétique hybride",
+        "expectedAnswer": "Un noyau polycétidique associé à une unité terpénique",
+        "learningObjective": "Reconnaître l’origine chimique hybride des phytocannabinoïdes.",
+        "factKey": "phytocannabinoids-prenylated-polyketides-fatty-acid-isoprenoid-origin",
+        "form": "identification",
+        "difficultyRationale": "Deux familles biosynthétiques à associer ; connaissance de chimie des produits naturels.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-gagne-polyketide-2012",
+            "locator": "Introduction, The biosynthesis of cannabinoids ; Abstract",
+            "support": "Les cannabinoïdes sont définis comme polycétides prénylés dérivés de précurseurs d’acides gras et d’isoprénoïdes."
+          }
+        ],
+        "identityImpact": "Remplace l’inversion des branches du CBGA, doublon de hemp-evidence-cbga-carrefour, par l’origine polycétidique et terpénique du squelette ; l’ancien doublon n’est pas réutilisé."
+      }
+    },
+    {
+      "id": "hemp-biodiversity-coccinelle",
+      "topicId": "biodiversity",
+      "level": 1,
+      "prompt": "Selon Purdue, quelle proie domine le régime des coccinelles prédatrices observées sur le chanvre ?",
+      "options": [
+        "Les cochenilles",
+        "Les acariens",
+        "Les œufs d’insectes",
+        "Les pucerons"
+      ],
+      "answer": 3,
+      "explanation": "Les larves et les adultes de ces coccinelles se nourrissent surtout de pucerons. Leur régime peut aussi inclure d’autres petits arthropodes et des œufs d’insectes.",
+      "articleId": "record-health-ladybirds",
+      "sourceIds": [
+        "health-atlas-beneficial-purdue"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Coccinelles prédatrices du chanvre",
+        "subjectKey": "hemp-predatory-ladybirds",
+        "property": "Proie principale",
+        "expectedAnswer": "Les pucerons",
+        "learningObjective": "Reconnaître une relation proie–prédateur fréquente sur le chanvre.",
+        "factKey": "hemp-predatory-ladybirds-mainly-aphids",
+        "form": "identification",
+        "difficultyRationale": "Association coccinelle–puceron familière ; les autres choix sont des proies secondaires réellement possibles.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-atlas-beneficial-purdue",
+            "locator": "Lady Beetles, premier paragraphe",
+            "support": "Larves et adultes consomment principalement des pucerons ; cochenilles, acariens et œufs font aussi partie des proies possibles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-puceron",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Quelle ressource prélève le puceron du chanvre, Phorodon cannabis, avec ses pièces buccales piqueuses-suceuses ?",
+      "options": [
+        "La sève du phloème",
+        "La sève du xylème",
+        "Le contenu des cellules du mésophylle",
+        "Le contenu des grains de pollen"
+      ],
+      "answer": 0,
+      "explanation": "Phorodon cannabis prélève les fluides du phloème sur les feuilles et les tiges. Il ne broute pas le limbe comme un insecte broyeur.",
+      "articleId": "record-health-phorodon-cannabis",
+      "sourceIds": [
+        "health-atlas-aphids"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Puceron du chanvre",
+        "subjectKey": "phorodon-cannabis",
+        "property": "Ressource alimentaire végétale",
+        "expectedAnswer": "La sève du phloème",
+        "learningObjective": "Distinguer le prélèvement de sève du phloème des autres modes d’alimentation végétale.",
+        "factKey": "phorodon-cannabis-phloem-feeding",
+        "form": "identification",
+        "difficultyRationale": "Distinction de tissus et ressources végétales parmi quatre options biologiques.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-atlas-aphids",
+            "locator": "Biology, premier paragraphe, dernière phrase",
+            "support": "La fiche indique explicitement que l’insecte prélève les fluides végétaux du phloème avec ses pièces buccales piqueuses-suceuses."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-thrips",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Quel aspect foliaire peut accompagner l’alimentation des thrips sur le chanvre ?",
+      "options": [
+        "Des galles sphériques renflées sur les nervures",
+        "De petites ponctuations blanches et des cicatrices",
+        "Des galeries sinueuses à l’intérieur du limbe",
+        "Des trous ronds traversant toute l’épaisseur du limbe"
+      ],
+      "answer": 1,
+      "explanation": "Les thrips peuvent laisser de petites zones blanches, des cicatrices et des feuilles déformées. De petits points sombres de déjections peuvent aussi être visibles.",
+      "articleId": "record-health-thrips",
+      "sourceIds": [
+        "health-atlas-thrips-unh"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Dégâts de thrips sur chanvre",
+        "subjectKey": "hemp-thrips",
+        "property": "Aspect des dégâts foliaires",
+        "expectedAnswer": "De petites ponctuations blanches et des cicatrices",
+        "learningObjective": "Reconnaître des signes compatibles avec l’alimentation des thrips sans diagnostic exclusif.",
+        "factKey": "hemp-thrips-white-stippling-scarring-dark-feces",
+        "form": "identification",
+        "difficultyRationale": "Comparaison de quatre types de lésions d’insectes ; le prompt ne prétend pas établir un diagnostic certain.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-atlas-thrips-unh",
+            "locator": "Thrips, paragraphe Feeding damage",
+            "support": "La fiche décrit cicatrices, déformations et ponctuations blanches, accompagnées de petits points de fèces sombres."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-parasitoide",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Quel comportement décrit un parasitoïde susceptible d’attaquer un puceron du chanvre ?",
+      "options": [
+        "L’adulte récolte du miellat et protège les pucerons",
+        "La larve consomme les restes d’insectes déjà morts",
+        "La larve se développe dans l’hôte puis le tue",
+        "L’adulte capture et mange plusieurs pucerons successifs"
+      ],
+      "answer": 2,
+      "explanation": "La larve d’un parasitoïde se développe aux dépens d’un hôte qu’elle finit par tuer. Sur le chanvre, certains parasitoïdes attaquent notamment les pucerons ou les chenilles.",
+      "articleId": "record-health-aphid-parasitoids",
+      "sourceIds": [
+        "health-atlas-beneficial-purdue"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Parasitoïdes d’insectes du chanvre",
+        "subjectKey": "hemp-insect-parasitoids",
+        "property": "Issue du développement pour l’hôte",
+        "expectedAnswer": "La larve se développe dans l’hôte puis le tue",
+        "learningObjective": "Distinguer parasitoïdie, prédation et association avec les producteurs de miellat.",
+        "factKey": "insect-parasitoid-larval-development-kills-host",
+        "form": "comparaison",
+        "difficultyRationale": "Concept écologique intermédiaire appliqué aux auxiliaires présents sur le chanvre.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-atlas-beneficial-purdue",
+            "locator": "Predators AND Parasitoids (Wasps and Flies), deux premiers paragraphes",
+            "support": "La larve se nourrit dans le corps d’un autre insecte, finit par le tuer et donne un adulte ; les hôtes incluent pucerons et chenilles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-altise",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "À quel ordre appartient Psylliodes attenuata, l’altise du chanvre ?",
+      "options": [
+        "Les Hémiptères",
+        "Les Hyménoptères",
+        "Les Thysanoptères",
+        "Les Coléoptères"
+      ],
+      "answer": 3,
+      "explanation": "Psylliodes attenuata est un Coléoptère de la famille des Chrysomelidae. L’EPPO lui associe les noms d’altise du chanvre et d’altise du houblon.",
+      "articleId": "record-health-psylliodes-attenuata",
+      "sourceIds": [
+        "q2-c02-eppo-altise"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Altise du chanvre",
+        "subjectKey": "psylliodes-attenuata",
+        "property": "Ordre taxonomique",
+        "expectedAnswer": "Les Coléoptères",
+        "learningObjective": "Situer un ravageur du chanvre dans la classification des insectes.",
+        "factKey": "psylliodes-attenuata-coleoptera-chrysomelidae",
+        "form": "identification",
+        "difficultyRationale": "Taxonomie d’une espèce précise parmi quatre ordres d’insectes.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-eppo-altise",
+            "locator": "Common names ; Taxonomy",
+            "support": "La notice associe l’espèce aux noms français cités et la classe dans Coleoptera, famille Chrysomelidae."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-miellat",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Comment appelle-t-on le liquide sucré et collant excrété par les pucerons du chanvre ?",
+      "options": [
+        "Le miellat",
+        "Le nectar",
+        "L’exsudat de guttation",
+        "Le mucilage"
+      ],
+      "answer": 0,
+      "explanation": "Le miellat est une excrétion des pucerons. Il peut attirer des fourmis et favoriser des moisissures noires appelées fumagines ; ce n’est pas une sécrétion florale.",
+      "articleId": "record-health-phorodon-cannabis",
+      "sourceIds": [
+        "health-atlas-aphids"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Miellat des pucerons du chanvre",
+        "subjectKey": "phorodon-cannabis",
+        "property": "Nom de l’excrétion sucrée",
+        "expectedAnswer": "Le miellat",
+        "learningObjective": "Distinguer une excrétion de puceron des liquides d’origine végétale.",
+        "factKey": "phorodon-cannabis-sweet-sticky-honeydew",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire biologique courant ; quatre liquides associés aux organismes végétaux ou à leurs interactions.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-atlas-aphids",
+            "locator": "Damage in Industrial Hemp, premier paragraphe",
+            "support": "Les pucerons excrètent un fluide sucré et collant nommé honeydew ; il favorise la fumagine et attire les fourmis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-predateurs",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "À quelle famille appartient Phytoseiulus persimilis, acarien prédateur de tétranyques ?",
+      "options": [
+        "Les Eriophyidae",
+        "Les Phytoseiidae",
+        "Les Tetranychidae",
+        "Les Tarsonemidae"
+      ],
+      "answer": 1,
+      "explanation": "Phytoseiulus persimilis appartient aux Phytoseiidae. Ce prédateur est spécialisé dans les tétranyques tisseurs de toiles : un acarien peut donc être l’ennemi naturel d’un autre.",
+      "articleId": "record-health-predatory-mites",
+      "sourceIds": [
+        "q2-c02-cornell-phytoseiulus"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Phytoseiulus persimilis",
+        "subjectKey": "phytoseiulus-persimilis",
+        "property": "Famille d’un acarien prédateur",
+        "expectedAnswer": "Les Phytoseiidae",
+        "learningObjective": "Distinguer la famille du prédateur de celle de ravageurs acariens.",
+        "factKey": "phytoseiulus-persimilis-phytoseiidae-taxonomy",
+        "form": "identification",
+        "difficultyRationale": "Taxonomie spécialisée parmi quatre familles d’acariens.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-cornell-phytoseiulus",
+            "locator": "En-tête Acarina: Phytoseiidae ; Pests Attacked (Host Range)",
+            "support": "Cornell donne la famille Phytoseiidae et décrit la spécialisation envers les tétranyques tisseurs de toiles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-oomycetes",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "À quel groupe appartiennent les Pythium associés à des pourritures racinaires du chanvre ?",
+      "options": [
+        "Aux basidiomycètes",
+        "Aux mucoromycètes",
+        "Aux oomycètes",
+        "Aux ascomycètes"
+      ],
+      "answer": 2,
+      "explanation": "Les Pythium sont des oomycètes. Leur croissance peut ressembler à celle d’un champignon, mais ils appartiennent à une autre lignée, parmi les straménopiles.",
+      "articleId": "ref-maladies-chanvre",
+      "sourceIds": [
+        "health-lesson-oomycetes",
+        "q2-c02-pnw-pythium-hemp"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Pythium du chanvre",
+        "subjectKey": "hemp-pythium",
+        "property": "Groupe taxonomique",
+        "expectedAnswer": "Aux oomycètes",
+        "learningObjective": "Distinguer les oomycètes des lignées de vrais champignons.",
+        "factKey": "hemp-pythium-oomycetes-not-true-fungi",
+        "form": "identification",
+        "difficultyRationale": "Distinction phylogénétique spécialisée ; les trois distracteurs sont de vrais groupes de champignons.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-lesson-oomycetes",
+            "locator": "Introduction, premiers paragraphes et paragraphe Pythiaceae",
+            "support": "APS situe les oomycètes parmi les Stramenopila et cite Pythium parmi les genres de ce groupe."
+          },
+          {
+            "sourceId": "q2-c02-pnw-pythium-hemp",
+            "locator": "Cause ; légende de la photographie",
+            "support": "La fiche sur le chanvre cite Pythium dissotocum et P. myriotylum comme agents de pourriture des racines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-hlvd",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "Quelle est la nature du HLVd, agent infectieux signalé sur le cannabis ?",
+      "options": [
+        "Un ARN double brin linéaire dans une capside",
+        "Un ADN simple brin circulaire dans une capside",
+        "Un ADN double brin linéaire sans capside",
+        "Un ARN simple brin circulaire sans capside"
+      ],
+      "answer": 3,
+      "explanation": "Le HLVd est un viroïde : un petit ARN circulaire simple brin, sans coque protéique. Cette organisation le distingue d’un virus muni d’une capside.",
+      "articleId": "ref-virus-viroides",
+      "sourceIds": [
+        "q2-c02-osu-hlvd-2024"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Hop latent viroid",
+        "subjectKey": "hlvd",
+        "property": "Nature de l’acide nucléique et absence de capside",
+        "expectedAnswer": "Un ARN simple brin circulaire sans capside",
+        "learningObjective": "Reconnaître l’organisation moléculaire d’un viroïde présent chez Cannabis.",
+        "factKey": "hlvd-circular-single-stranded-rna-without-capsid",
+        "form": "identification",
+        "difficultyRationale": "Combinaison de trois caractéristiques moléculaires, sans se limiter au développement du sigle.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-osu-hlvd-2024",
+            "locator": "Trois premiers paragraphes",
+            "support": "La fiche identifie HLVd comme particule d’ARN pathogène du cannabis, décrit un acide nucléique circulaire simple brin et l’absence de coque protéique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-biodiversity-podosphaera",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "Quelle espèce de champignon a été identifiée comme agent d’oïdium sur le chanvre ?",
+      "options": [
+        "Podosphaera macularis",
+        "Botrytis cinerea",
+        "Fusarium oxysporum",
+        "Sclerotinia sclerotiorum"
+      ],
+      "answer": 0,
+      "explanation": "Podosphaera macularis peut causer l’oïdium du chanvre. Il n’est pas le seul agent : l’étude tchèque de 2024 décrit aussi Golovinomyces ambrosiae, parfois sur le même prélèvement.",
+      "articleId": "record-health-podosphaera-macularis",
+      "sourceIds": [
+        "health-atlas-powdery-2024"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Oïdium du chanvre",
+        "subjectKey": "podosphaera-macularis",
+        "property": "Espèce associée à l’oïdium",
+        "expectedAnswer": "Podosphaera macularis",
+        "learningObjective": "Identifier un agent d’oïdium parmi des champignons phytopathogènes.",
+        "factKey": "podosphaera-macularis-hemp-powdery-mildew",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance spécialisée entre quatre champignons réels, sans prétendre à une cause unique.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "health-atlas-powdery-2024",
+            "locator": "Abstract ; Results, Molecular analysis ; Discussion",
+            "support": "L’étude identifie P. macularis et G. ambrosiae sur Cannabis ; la microscopie et les séquences étayent les déterminations."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-osaughnessy",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel médecin signe le mémoire de 1843 sur le chanvre indien, avec des observations sur le tétanos ?",
+      "options": [
+        "William Brooke Herapath",
+        "William B. O’Shaughnessy",
+        "Jacques-Joseph Moreau de Tours",
+        "Robert Christison"
+      ],
+      "answer": 1,
+      "explanation": "La page de titre attribue ce mémoire à W. B. O’Shaughnessy. C’est une source historique d’observations, dont les affirmations médicales ne sont pas des recommandations actuelles.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-oshaughnessy"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Mémoire d’O’Shaughnessy",
+        "subjectKey": "oshaughnessy-indian-hemp-1843",
+        "property": "Auteur du mémoire historique",
+        "expectedAnswer": "William B. O’Shaughnessy",
+        "learningObjective": "Situer un auteur de l’histoire scientifique du cannabis.",
+        "factKey": "oshaughnessy-1843-indian-hemp-tetanus-memoir-author",
+        "form": "identification",
+        "difficultyRationale": "Auteur historique spécialisé ; les distracteurs sont des médecins ou chimistes du XIXe siècle.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-sci-oshaughnessy",
+            "locator": "Page de titre ; note de réimpression des périodiques de 1838 et 1843",
+            "support": "Le titre mentionne le chanvre indien et le tétanos ; la signature est W. B. O’Shaughnessy, M.D."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cbd-1940",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Comment sont disposés les deux groupes hydroxyle –OH du cannabidiol, ou CBD ?",
+      "options": [
+        "Sur les extrémités de deux chaînes latérales",
+        "Sur un même carbone d’une chaîne latérale",
+        "Sur un même cycle aromatique",
+        "Sur deux cycles saturés différents"
+      ],
+      "answer": 2,
+      "explanation": "Les deux –OH du CBD sont attachés à son cycle aromatique. Le CBD est ainsi classé parmi les résorcinols, des composés à deux hydroxyles phénoliques.",
+      "articleId": "record-cannabinoid-cbd",
+      "sourceIds": [
+        "q2-c02-chebi-cbd"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Groupes hydroxyle du CBD",
+        "subjectKey": "cbd",
+        "property": "Position des deux hydroxyles",
+        "expectedAnswer": "Sur un même cycle aromatique",
+        "learningObjective": "Reconnaître la partie phénolique de la structure du CBD.",
+        "factKey": "cbd-two-hydroxyls-on-aromatic-ring-resorcinol",
+        "form": "identification",
+        "difficultyRationale": "Disposition précise des groupes fonctionnels ; les quatre choix décrivent des arrangements chimiques possibles.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-cbd",
+            "locator": "Definition ; ChEBI Ontology, resorcinols ; IUPAC Name",
+            "support": "La définition décrit un groupe dihydroxyphényle et le classement rattache le CBD aux résorcinols."
+          }
+        ],
+        "identityImpact": "Remplace l’ancienne anecdote bibliographique sur le CBN dans une page de 1964 par un fait structural explicite sur le CBD ; l’anecdote est abandonnée."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-anandamide",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel ligand endogène du récepteur cannabinoïde a été décrit par Devane et ses collègues en 1992 ?",
+      "options": [
+        "Le 2-arachidonoylglycérol",
+        "La palmitoyléthanolamide",
+        "L’oléoyléthanolamide",
+        "L’anandamide"
+      ],
+      "answer": 3,
+      "explanation": "L’étude de Devane et al. a décrit l’anandamide, isolée du cerveau porcin. Le 2-AG est un autre endocannabinoïde, identifié dans des travaux ultérieurs.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-ben-shabat-2ag-1998"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Découverte de l’anandamide",
+        "subjectKey": "devane-anandamide-1992",
+        "property": "Nom du ligand décrit en 1992",
+        "expectedAnswer": "L’anandamide",
+        "learningObjective": "Relier la découverte de 1992 à l’anandamide.",
+        "factKey": "devane-1992-endogenous-ligand-anandamide",
+        "form": "identification",
+        "difficultyRationale": "Repère historique spécialisé parmi quatre lipides biologiques réels.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+            "locator": "p.23, Introduction, premier paragraphe",
+            "support": "Les auteurs attribuent l’anandamide du cerveau porcin à Devane et al. 1992 et le 2-AG à Mechoulam et al. 1995."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-2ag",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel nom biochimique est abrégé en « 2-AG » dans le système endocannabinoïde ?",
+      "options": [
+        "2-Arachidonoylglycérol",
+        "1-Arachidonoylglycérol",
+        "2-Linoléoylglycérol",
+        "2-Oléoylglycérol"
+      ],
+      "answer": 0,
+      "explanation": "Le 2-AG est le 2-arachidonoylglycérol. Son nom indique un résidu d’acide arachidonique lié à la position 2 du glycérol.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-c02-chebi-2ag"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Nom du 2-AG",
+        "subjectKey": "2-ag",
+        "property": "Développement de l’abréviation",
+        "expectedAnswer": "2-Arachidonoylglycérol",
+        "learningObjective": "Relier une abréviation courante à un nom biochimique précis.",
+        "factKey": "2ag-abbreviation-2-arachidonoylglycerol",
+        "form": "identification",
+        "difficultyRationale": "Abréviation spécialisée ; les distracteurs sont des acylglycérols réels de noms proches.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-chebi-2ag",
+            "locator": "ChEBI Name ; Synonyms, 2-AG ; IUPAC Name",
+            "support": "La notice nomme le 2-arachidonoylglycérol, donne 2-AG comme synonyme et place l’ester sur le carbone central du glycérol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-receptors-type",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle enzyme hydrolyse l’anandamide en acide arachidonique et en éthanolamine ?",
+      "options": [
+        "La NAPE-phospholipase D (NAPE-PLD)",
+        "La FAAH",
+        "La monoacylglycérol lipase (MAGL)",
+        "La diacylglycérol lipase (DAGL)"
+      ],
+      "answer": 1,
+      "explanation": "La FAAH est une hydrolase d’amides d’acides gras. La réaction consomme de l’eau et libère l’acide arachidonique et l’éthanolamine.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-c02-iubmb-faah"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Hydrolyse de l’anandamide",
+        "subjectKey": "faah",
+        "property": "Enzyme catalysant l’hydrolyse",
+        "expectedAnswer": "La FAAH",
+        "learningObjective": "Relier la FAAH à la dégradation de l’anandamide.",
+        "factKey": "faah-anandamide-hydrolysis-arachidonic-acid-ethanolamine",
+        "form": "identification",
+        "difficultyRationale": "Choix entre quatre enzymes réelles liées au métabolisme lipidique.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-iubmb-faah",
+            "locator": "Accepted name ; Reaction (1) ; Other names",
+            "support": "L’entrée FAAH donne l’anandamide et l’eau comme réactifs, l’acide arachidonique et l’éthanolamine comme produits."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-molecule",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle relation la FAAH, enzyme du métabolisme de l’anandamide, entretient-elle avec les membranes cellulaires ?",
+      "options": [
+        "C’est une protéine sécrétée dans le milieu extracellulaire",
+        "C’est une protéine confinée dans le nucléole",
+        "C’est une protéine intégrale de membrane",
+        "C’est une protéine soluble sans ancrage membranaire"
+      ],
+      "answer": 2,
+      "explanation": "La FAAH est une protéine intégrale de membrane : elle est insérée dans une membrane cellulaire. Sa fonction enzymatique s’exerce donc dans un contexte membranaire.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "q2-c02-iubmb-faah"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Organisation de la FAAH",
+        "subjectKey": "faah",
+        "property": "Association intégrale à une membrane",
+        "expectedAnswer": "C’est une protéine intégrale de membrane",
+        "learningObjective": "Distinguer une enzyme membranaire d’une enzyme soluble ou sécrétée.",
+        "factKey": "faah-integral-membrane-protein",
+        "form": "identification",
+        "difficultyRationale": "Caractéristique cellulaire d’une enzyme précise, distincte de la réaction qu’elle catalyse.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-iubmb-faah",
+            "locator": "Comments, première phrase",
+            "support": "Le commentaire identifie explicitement la FAAH comme protéine intégrale de membrane."
+          }
+        ],
+        "identityImpact": "Remplace la composition de l’anandamide, doublon de hemp-hs-sci-anandamide-name, par l’organisation membranaire de la FAAH ; l’ancien doublon est abandonné."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cbd-structure-date",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle avancée sur le CBD Mechoulam et Shvo ont-ils publiée en 1963 ?",
+      "options": [
+        "Sa première isolation à partir du cannabis",
+        "Sa première synthèse totale",
+        "L’identification de ses premiers métabolites humains",
+        "L’élucidation de sa structure chimique"
+      ],
+      "answer": 3,
+      "explanation": "Leur article de 1963 propose la structure du cannabidiol. Cette étape doit être distinguée de l’isolation d’un composé et de sa synthèse totale.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Structure du CBD en 1963",
+        "subjectKey": "mechoulam-shvo-cbd-1963",
+        "property": "Avancée chimique publiée",
+        "expectedAnswer": "L’élucidation de sa structure chimique",
+        "learningObjective": "Distinguer isolation, élucidation structurale et synthèse dans l’histoire du CBD.",
+        "factKey": "mechoulam-shvo-1963-cbd-structure-elucidation",
+        "form": "identification",
+        "difficultyRationale": "Repère spécialisé ; les quatre choix portent sur des étapes plausibles de la chimie du CBD.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-sci-cbd-structure",
+            "locator": "p.2073, titre, auteurs, en-tête Tetrahedron 1963 et Abstract",
+            "support": "L’article de Mechoulam et Shvo est consacré à la structure du cannabidiol ; le résumé annonce la structure proposée IIIa."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-c02-openstax-reproduction",
+      "title": "32.1 Reproductive Development and Structure",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/32-1-reproductive-development-and-structure",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Les microsporanges où se forme le pollen sont contenus dans les anthères, à l’extrémité des étamines.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Définition générale des organes floraux ; contexte chanvre documenté séparément par Kew.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Male Gametophyte (The Pollen Grain), premier paragraphe et figure 32.6",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-purdue-bract",
+      "title": "Bract — Purdue Arboretum Explorer",
+      "organization": "Purdue University",
+      "url": "https://www.arboretum.purdue.edu/explorer/definitions/bract/",
+      "verifiedAt": "2026-11-16",
+      "author": "Purdue Arboretum",
+      "published": "s.d.",
+      "passage": "Une bractée est une feuille modifiée qui appartient à un groupe de fleurs ou entoure une fleur.",
+      "access": "official-page",
+      "documentKind": "Glossaire botanique universitaire",
+      "limitation": "Définition botanique générale, complétée par la description du chanvre chez Kew.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Définition Bract, phrase sous Categories",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-aina-feral-2025",
+      "title": "Genetic diversity, population structure, and cannabinoid variation in feral Cannabis sativa germplasm from the United States",
+      "organization": "University of Wisconsin–Madison et partenaires ; Scientific Reports ; PMC",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12215616/",
+      "verifiedAt": "2026-11-16",
+      "author": "Ademola Aina, Jonathan P. Wenger, Eliot Stanton, Chandrani Gon Majumdar, Mahmoud ElSohly, George D. Weiblen et Shelby Ellison",
+      "published": "2025-07-01",
+      "passage": "L’introduction décrit des populations de chanvre industriel échappées de production puis se reproduisant dans la nature.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire",
+      "limitation": "Populations américaines étudiées ; pas d’affirmation sur l’origine de toute plante spontanée mondiale.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, paragraphe commençant Despite the cessation of cultivation",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-landrace-definition-2005",
+      "title": "Defining and identifying crop landraces",
+      "organization": "Wageningen University & Research / Plant Genetic Resources",
+      "url": "https://research.wur.nl/en/publications/defining-and-identifying-crop-landraces/",
+      "verifiedAt": "2026-11-16",
+      "author": "T. C. Camacho Villa, N. Maxted, M. Scholten et B. Ford-Lloyd",
+      "published": "2005",
+      "passage": "Définition de travail : population cultivée dynamique, d’origine historique et d’identité distincte, sans amélioration formelle ; diversité et adaptation locale sont fréquentes.",
+      "access": "abstract",
+      "documentKind": "Résumé institutionnel d’un article scientifique",
+      "limitation": "Définition transversale aux cultures ; les caractères fréquents ne sont pas tous obligatoires pour chaque landrace.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, définition de travail finale",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-nhgri-crossing-over",
+      "title": "Crossing Over",
+      "organization": "National Human Genome Research Institute",
+      "url": "https://www.genome.gov/genetics-glossary/Crossing-Over",
+      "verifiedAt": "2026-11-16",
+      "author": "NHGRI ; narration Kris A. Wetterstrand",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Le crossing-over échange de l’ADN entre chromosomes homologues pendant la méiose et produit de nouvelles combinaisons d’allèles.",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel de génétique",
+      "limitation": "Définition générale du mécanisme ; pas de promesse de performance d’un croisement. La date dynamique de mise à jour n’est pas prise pour une date de publication.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, premier paragraphe ; Narration",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-eucalyptol-scf-2002",
+      "title": "Opinion of the Scientific Committee on Food on Eucalyptol",
+      "organization": "Commission européenne / Scientific Committee on Food",
+      "url": "https://food.ec.europa.eu/system/files/2020-12/sci-com_scf_out126_en.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Scientific Committee on Food",
+      "published": "2002",
+      "passage": "La caractérisation chimique donne eucalyptol et 1,8-cinéole comme même substance et décrit un pont éther entre les carbones 1 et 8.",
+      "access": "full-text",
+      "documentKind": "Avis scientifique institutionnel",
+      "limitation": "Seule l’identité chimique est utilisée ; ni évaluation sanitaire ancienne ni recommandation d’usage reprises.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Page 3 du PDF, Chemical characterisation",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-linalool",
+      "title": "Linalool (CHEBI:17580)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:17580",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Définition : monoterpénoïde portant un hydroxyle sur le carbone 3 ; classement comme alcool tertiaire et formes R et S liées.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; ChEBI Ontology, tertiary alcohol et relations R/S-linalool",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-humulene",
+      "title": "(1E,4E,8E)-alpha-humulene (CHEBI:5768)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:5768",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "La rubrique Synonyms associe α-caryophyllene et α-humulene à la même entité chimique.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Synonyms, deux lignes attribuées au NIST Chemistry WebBook",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-alpha-pinene",
+      "title": "Alpha-pinene (CHEBI:36740)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:36740",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Formule C10H16 ; définition et nom pin-2-ene situent la double liaison dans le cycle.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Formula ; IUPAC Names, pin-2-ene",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-beta-pinene",
+      "title": "Beta-pinene (CHEBI:50025)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:50025",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Formule C10H16 ; la définition précise une double liaison exocyclique ; nom pin-2(10)-ene.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Formula ; IUPAC Names",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-caryophyllene-oxide",
+      "title": "Caryophyllene oxide (CHEBI:67818)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:67818",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Le classement ChEBI identifie un époxyde ; formule C15H24O et structure enregistrées.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "ChEBI Ontology, relation is a epoxide ; Formula et SMILES",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-guaiol",
+      "title": "Guaiol (CHEBI:5552)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:5552",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Le guaiol est classé comme sesquiterpénoïde de type guaiane ; son nom guai-1(5)-en-11-ol et la structure montrent l’alcool.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Formula ; ChEBI Ontology ; IUPAC Name et SMILES",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-kim-figure1-2022",
+      "title": "Profiling Cannabinoid Contents and Expression Levels of Corresponding Biosynthetic Genes in Commercial Cannabis (Cannabis sativa L.) Cultivars",
+      "organization": "Jeonbuk National University et partenaires / Plants",
+      "url": "https://www.mdpi.com/2223-7747/11/22/3088",
+      "verifiedAt": "2026-11-16",
+      "author": "Ae Lim Kim, Young Jae Yun et al.",
+      "published": "2022-11-14",
+      "passage": "La légende de la figure 1 indique la perte de CO2 lors de la décarboxylation et l’oxydation du Δ9-THC en CBN.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire, version éditeur",
+      "limitation": "Passage descriptif uniquement. Conditions expérimentales, protocole et chiffres du résumé exclus. Même article que cb-kim-2022, mais preuve précise relue sur version éditeur accessible.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, Figure 1, légende ; paragraphes suivants",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-euda-thc-chemistry",
+      "title": "Cannabis drug profile — Chemistry",
+      "organization": "European Union Drugs Agency, anciennement EMCDDA",
+      "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+      "verifiedAt": "2026-11-16",
+      "author": "EMCDDA / EUDA",
+      "published": "2013-05-08",
+      "passage": "La section Chemistry situe la double liaison du Δ9-THC entre C9 et C10 dans la numérotation dibenzopyrane ; formule C21H30O2.",
+      "access": "official-page",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Seule la chimie est utilisée ; les rubriques sanitaires, légales et pratiques anciennes ne sont pas reprises.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Chemistry, premier paragraphe ; Molecular structure et formule",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-cbd",
+      "title": "Cannabidiol (CHEBI:69478)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:69478",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Définition d’un substituant dihydroxyphényle ; formule C21H30O2 ; classement parmi les résorcinols.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Formula ; ChEBI Ontology ; IUPAC Name",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-chebi-2ag",
+      "title": "2-arachidonoylglycerol (CHEBI:52392)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:52392",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Le 2-AG est un ester d’acide arachidonique et de glycérol ; classement 2-acylglycérol et synonyme 2-AG.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; aucune propriété clinique ou composition de lot déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; ChEBI Ontology ; Synonyms",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-gagne-polyketide-2012",
+      "title": "Identification of olivetolic acid cyclase from Cannabis sativa reveals a unique catalytic route to plant polyketides",
+      "organization": "National Research Council Canada / University of Saskatchewan / PNAS",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3411943/",
+      "verifiedAt": "2026-11-16",
+      "author": "Steve J. Gagne, Jake M. Stout, Enwu Liu, Zakia Boubakir, Shawn M. Clark et Jonathan E. Page",
+      "published": "2012-07-16",
+      "passage": "L’introduction classe les cannabinoïdes comme polycétides prénylés issus de précurseurs d’acides gras et d’isoprénoïdes.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire",
+      "limitation": "Classification et origine biosynthétique seulement ; aucun procédé de production ou paramètre expérimental repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, paragraphe commençant The biosynthesis of cannabinoids ; Abstract, polyketide nucleus",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-eppo-altise",
+      "title": "Psylliodes attenuata (PSYIAT)",
+      "organization": "European and Mediterranean Plant Protection Organization",
+      "url": "https://gd.eppo.int/taxon/PSYIAT",
+      "verifiedAt": "2026-11-16",
+      "author": "EPPO Global Database",
+      "published": "s.d., base évolutive",
+      "passage": "La taxonomie place Psylliodes attenuata dans les Coleoptera et les Chrysomelidae ; le nom français altise du chanvre figure dans les noms communs.",
+      "access": "catalogue",
+      "documentKind": "Base taxonomique institutionnelle",
+      "limitation": "Lien nom–taxon ; aucun diagnostic visuel ou traitement déduit.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Common names ; Taxonomy, Coleoptera et Chrysomelidae",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-cornell-phytoseiulus",
+      "title": "Phytoseiulus persimilis",
+      "organization": "Cornell University, Biological Control",
+      "url": "https://biocontrol.entomology.cornell.edu/predators/Phytoseiulus.php",
+      "verifiedAt": "2026-11-16",
+      "author": "M. P. Hoffmann et A. C. Frodsham ; adaptation Cornell",
+      "published": "1993, ressource web sans date de mise à jour affichée",
+      "passage": "L’en-tête classe Phytoseiulus persimilis parmi les Phytoseiidae ; Host Range décrit un prédateur spécialisé des tétranyques tisseurs de toiles.",
+      "access": "official-page",
+      "documentKind": "Fiche universitaire d’entomologie",
+      "limitation": "Taxonomie et relation trophique seulement ; paramètres de lâcher et de culture exclus.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "En-tête Acarina: Phytoseiidae ; Pests Attacked (Host Range)",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-pnw-pythium-hemp",
+      "title": "Hemp (Cannabis sativa) — Root and Crown Rot",
+      "organization": "Oregon State University / Pacific Northwest Pest Management Handbooks",
+      "url": "https://pnwhandbooks.org/node/12931/print",
+      "verifiedAt": "2026-11-16",
+      "author": "N. K. Osterbauer et C. M. Ocamb",
+      "published": "2026-03, révision affichée",
+      "passage": "La rubrique Cause cite Pythium dissotocum et P. myriotylum parmi les agents de pourriture racinaire du chanvre.",
+      "access": "official-page",
+      "documentKind": "Fiche phytopathologique universitaire",
+      "limitation": "Cas chanvre et agents nommés ; conseils culturaux exclus. Classification des oomycètes documentée séparément par APS.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Titre ; Cause ; légende de la photo Pythium root rot",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-osu-hlvd-2024",
+      "title": "Hop latent viroid in hemp — EM 9570",
+      "organization": "Oregon State University Extension",
+      "url": "https://extension.oregonstate.edu/catalog/em-9570-hop-latent-viroid-hemp",
+      "verifiedAt": "2026-11-16",
+      "author": "Cynthia M. Ocamb",
+      "published": "2024-08",
+      "passage": "Le HLVd est une particule pathogène d’ARN observée chez Cannabis ; son acide nucléique est circulaire, simple brin et dépourvu de coque protéique protectrice.",
+      "access": "official-page",
+      "documentKind": "Bulletin universitaire relu par des pairs",
+      "limitation": "Nature de l’agent uniquement ; aucun protocole de multiplication ou de gestion sanitaire repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Trois premiers paragraphes ; date August 2024 et auteur en fin de fiche",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-c02-iubmb-faah",
+      "title": "EC 3.5.1.99 — Fatty acid amide hydrolase",
+      "organization": "IUBMB / Queen Mary University of London",
+      "url": "https://iubmb.qmul.ac.uk/enzyme/EC3/5/1/99.html",
+      "verifiedAt": "2026-11-16",
+      "author": "IUBMB Enzyme Nomenclature",
+      "published": "2009, création de l’entrée ; page sans date de révision affichée",
+      "passage": "Réaction 1 : hydrolyse de l’anandamide en acide arachidonique et éthanolamine ; Comments décrit une protéine intégrale de membrane.",
+      "access": "official-page",
+      "documentKind": "Nomenclature enzymatique institutionnelle",
+      "limitation": "Description biochimique ; pas d’inférence thérapeutique ou de modulation pratique.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Accepted name ; Reaction (1) ; Other names ; Comments",
+        "result": "Document ouvert et passages indiqués effectivement lus ; soutien paraphrasé dans les questions."
+      }
+    }
+  ]
+}

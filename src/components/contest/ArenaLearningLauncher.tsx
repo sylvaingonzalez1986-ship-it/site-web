@@ -16,11 +16,11 @@ export function ArenaLearningLauncher({ className, disabled = false }: { classNa
     try { storage?.setItem(ARENA_LEARNING_ENTRY_KEY, 'quarter'); }
     catch { /* Opening the guide still works when this browser cannot remember it. */ }
     navigateAfterOverlays(() => {
-      if (pathname === '/arene/placard') window.dispatchEvent(new Event(KQ_FARM_GUIDE_OPEN_EVENT));
+      if (pathname === '/arene/placard' || document.querySelector('[data-farm-guide-anchor]')) window.dispatchEvent(new Event(KQ_FARM_GUIDE_OPEN_EVENT));
       else router.push('/arene/placard?guide=1');
     });
   };
   return <button type="button" className={className} data-arena-learning-trigger disabled={disabled} onClick={startGuide}>
-      <Compass size={17} aria-hidden="true" />Apprendre à jouer
+      <Compass size={17} aria-hidden="true" />Tutoriel
     </button>;
 }

@@ -72,7 +72,7 @@ export function createKqOperationsLesson(lesson: KqOperationsLessonId): KqOperat
   trial.commerce.computerOwned = true;
   trial.commerce.online = createKqOnlinePreview(trial.clock);
   trial.commerce.customerDemand = createKqCustomerDemandSnapshot(trial.clock);
-  if (trial.commerce.business) trial.commerce.business.shop = { name: 'Le shop de Sylvain · essai', createdAt: new Date(trial.clock).toISOString(), paidUntil: null, renew: false, active: true, tier: 'basic', monthlyCents: 0 };
+  if (trial.commerce.business) trial.commerce.business.shop = { name: 'Le shop de Loïc · essai', createdAt: new Date(trial.clock).toISOString(), paidUntil: null, renew: false, active: true, tier: 'basic', monthlyCents: 0 };
   const tent: Tent = { ...inventory(KQ_STARTING_EQUIPMENT_CODES), tentNumber: 1 };
   const building: Building = { ...inventory(lesson === 'equipment' ? [] : ['DRYING-ROOM']), buildingNumber: 1, anchorTentNumber: 1 };
   const shared = inventory(lesson === 'equipment' ? [] : ['SIFT-TRAY', 'PRESS-0600']);
@@ -138,7 +138,7 @@ export function getKqOperationsStorage(state: KqOperationsLessonState) {
       usedUnits: projection.capacity!.protectedUnits, reservedUnits: projection.capacity!.reservedCapacityUnits,
       freeUnits: containers.reduce((sum, item) => sum + item.freeQuantity * item.capacityUnits, 0), overflowUnits: projection.capacity!.overflowUnits },
     lots: state.prepared && state.trial.commerce.stocks.every(stock => stock.remainingUnits === 0) ? [] : [{
-      flowerId: LOT_ID, varietyName: 'La récolte de Sylvain · essai', harvestGrams: state.trial.game?.harvestGrams ?? 0,
+      flowerId: LOT_ID, varietyName: 'La récolte de Loïc · essai', harvestGrams: state.trial.game?.harvestGrams ?? 0,
       flowerStatus: state.trial.battle!.playerFlower.status, projection,
       // This standalone lesson does not simulate staff work.
       trim: { status: "ready" as const, totalGrams: null, completedGrams: null },
@@ -183,7 +183,7 @@ function routes(state: KqOperationsLessonState) {
 }
 
 export function getKqOperationsCommerce(state: KqOperationsLessonState): KqCommerceSnapshot {
-  return { ...state.trial.commerce, customerDemand: getKqOperationsCustomerDemand(state), rawLots: state.prepared ? [] : [{ flowerId: LOT_ID, varietyCode: state.trial.game?.varietyCode, varietyName: 'La récolte de Sylvain · essai', juryScore: trialQuality(state.trial), harvestGrams: (state.storage.lot.capacity?.totalUnits ?? 0) / 10, options: routes(state), storage: projectKqStorageLot(state.storage.lot, state.trial.clock, state.storage.lot.juryApplied ? trialQuality(state.trial) : undefined) }], electricityOutstandingCents: state.trial.electricity };
+  return { ...state.trial.commerce, customerDemand: getKqOperationsCustomerDemand(state), rawLots: state.prepared ? [] : [{ flowerId: LOT_ID, varietyCode: state.trial.game?.varietyCode, varietyName: 'La récolte de Loïc · essai', juryScore: trialQuality(state.trial), harvestGrams: (state.storage.lot.capacity?.totalUnits ?? 0) / 10, options: routes(state), storage: projectKqStorageLot(state.storage.lot, state.trial.clock, state.storage.lot.juryApplied ? trialQuality(state.trial) : undefined) }], electricityOutstandingCents: state.trial.electricity };
 }
 
 export function getKqOperationsEnergy(state: KqOperationsLessonState) {
@@ -397,7 +397,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       requireCondition(quote.available || route === 'raw' || route === 'biomass', quote.blockedReason ?? 'Filière indisponible.');
       const cost = quote.market?.processingCostCents ?? 0;
       requireCondition(body.expectedCostCents === cost, 'Le coût a changé.'); spend(cost);
-      const stock = (id: string, target: KqMarketRouteCode, grams: number, equivalent: number, base: number): KqCommerceStock => ({ id, flowerId: LOT_ID, varietyCode: state.trial.game?.varietyCode, name: 'La récolte de Sylvain · essai', route: target, batchRoute: target, juryScore: trialQuality(state.trial), initialUnits: Math.round(grams * 10), remainingUnits: Math.round(grams * 10), equivalentUnits: Math.round(equivalent * 10), originalUnits: Math.round((state.trial.game?.harvestGrams ?? 0) * 10), baseUnitCents: base, payoutExact: 0, payoutRounded: 0, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, storage: projectKqStorageLot(state.storage.lot, state.trial.clock, state.storage.lot.juryApplied ? trialQuality(state.trial) : undefined), storageRevision: state.storage.revision });
+      const stock = (id: string, target: KqMarketRouteCode, grams: number, equivalent: number, base: number): KqCommerceStock => ({ id, flowerId: LOT_ID, varietyCode: state.trial.game?.varietyCode, name: 'La récolte de Loïc · essai', route: target, batchRoute: target, juryScore: trialQuality(state.trial), initialUnits: Math.round(grams * 10), remainingUnits: Math.round(grams * 10), equivalentUnits: Math.round(equivalent * 10), originalUnits: Math.round((state.trial.game?.harvestGrams ?? 0) * 10), baseUnitCents: base, payoutExact: 0, payoutRounded: 0, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, storage: projectKqStorageLot(state.storage.lot, state.trial.clock, state.storage.lot.juryApplied ? trialQuality(state.trial) : undefined), storageRevision: state.storage.revision });
       c.stocks = [stock('operations-stock', route, quote.productGrams, quote.processedInputGrams, quote.productBaseUnitCents ?? 30)];
       if (quote.remainderGrams > 0) {
         const remainderRoute = quote.remainderDestination === 'raw' ? 'raw' : 'biomass';
@@ -461,7 +461,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
 }
 
 export function getKqOperationsProgress(state: KqOperationsLessonState) {
-  if (state.lesson === 'market') return { complete: state.events.includes('sell'), instruction: state.events.includes('sell') ? 'Ta vente est enregistrée dans cet essai. Compare un autre circuit avec le reste du lot, ou explore un autre espace.' : state.events.includes('online-listing') ? 'Tes paquets sont en rayon. Essaie une mission pour attirer des visiteurs, puis avance de 24 heures fictives pour observer les ventes.' : state.prepared ? 'Ton produit est prêt. Vends aux professionnels, ou achète des emballages et fixe le prix de tes paquets dans ton commerce en ligne.' : `${KQ_TUTORIAL_STORAGE_NOTICE} Des bocaux suffisants et un site de base sont prêtés pour ce lot. Ouvre le lot de Sylvain, puis choisis une transformation et un circuit.` };
+  if (state.lesson === 'market') return { complete: state.events.includes('sell'), instruction: state.events.includes('sell') ? 'Ta vente est enregistrée dans cet essai. Compare un autre circuit avec le reste du lot, ou explore un autre espace.' : state.events.includes('online-listing') ? 'Tes paquets sont en rayon. Essaie une mission pour attirer des visiteurs, puis avance de 24 heures fictives pour observer les ventes.' : state.prepared ? 'Ton produit est prêt. Vends aux professionnels, ou achète des emballages et fixe le prix de tes paquets dans ton commerce en ligne.' : `${KQ_TUTORIAL_STORAGE_NOTICE} Des bocaux suffisants et un site de base sont prêtés pour ce lot. Ouvre le lot de Loïc, puis choisis une transformation et un circuit.` };
   if (state.lesson === 'warehouse') return { complete: state.events.some(event => ['upgrade', 'repair', 'expand', 'replace', 'storage-assign', 'storage-purchase', 'storage-overflow-sale'].includes(event)), instruction: state.events.length ? 'Observe les contenants occupés et la place disponible. Achète de la capacité pour ton surplus ou cède-le au grossiste ; tu peux aussi améliorer tes machines.' : 'Explore l’entrepôt avec ce lot prêté, déjà évalué par le jury. Dans une nouvelle partie, les fleurs sont rangées et affinées six heures avant le jury. Deux bocaux de 1 L sont offerts ; le temps reste fictif dans cet atelier.' };
   return { complete: state.events.includes('purchase') && state.events.includes('install'), instruction: state.events.includes('install') ? 'Ton matériel est installé. Observe sa place dans l’entrepôt, puis compare les modes d’énergie.' : state.events.includes('purchase') ? 'Ton achat est en réserve. Ouvre l’entrepôt et installe-le à son emplacement.' : 'Choisis une lampe dans la vraie boutique. Ajoute-la au panier et confirme ton achat avec le budget prêté.' };
 }

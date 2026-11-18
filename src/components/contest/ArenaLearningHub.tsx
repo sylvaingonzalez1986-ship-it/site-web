@@ -18,7 +18,7 @@ import styles from "./ArenaLearningHub.module.css";
 
 const Story = dynamic(() => import("./ArenaReleve").then(module => module.ArenaReleve), {
   ssr: false,
-  loading: () => <p role="status">Sylvain prépare ta ferme d’essai…</p>,
+  loading: () => <p role="status">Loïc prépare ta ferme d’essai…</p>,
 });
 const Meeting = dynamic(() => import("./ArenaReleve").then(module => module.ArenaReleveMeeting), {
   ssr: false,
@@ -117,9 +117,9 @@ export function ArenaLearningHub({ onClose, onOpenQuarter, onStartGuide }: { onC
           <div className={styles.heroImage}><div className={styles.imageWindow}><Image src={ARENA_RELEVE_SCENES.arrival} alt="La ferme de Grand-père t’attend." fill sizes="(max-width: 700px) 100vw, 700px" priority /></div></div>
           <div className={styles.storyBody}>
             <h3 id="learning-farm-title">Les clés de la ferme</h3>
-            <p>« Ton grand-père t’a laissé les clés. Viens, on a une ferme à faire revivre ! » — Sylvain</p>
-            <p>De la première culture à ton équipe : découvre aussi les recrutements, les missions, les formations, les congés et la paie avec Sylvain.</p>
-            <button type="button" className={styles.primary} data-learning-live-start onClick={startGuide}><KeyRound size={19} aria-hidden="true" />Reprendre la ferme avec Sylvain<ArrowRight size={19} aria-hidden="true" /></button>
+            <p>« Ton grand-père t’a laissé les clés. Viens, on a une ferme à faire revivre ! » — Loïc</p>
+            <p>De la première culture à ton équipe : découvre aussi les recrutements, les missions, les formations, les congés et la paie avec Loïc.</p>
+            <button type="button" className={styles.primary} data-learning-live-start onClick={startGuide}><KeyRound size={19} aria-hidden="true" />Reprendre la ferme avec Loïc<ArrowRight size={19} aria-hidden="true" /></button>
           </div>
         </section>
         <details className={styles.storyDetails} data-learning-practice open={practiceOpen} onToggle={event => setPracticeOpen(event.currentTarget.open)}>
@@ -141,11 +141,11 @@ export function ArenaLearningHub({ onClose, onOpenQuarter, onStartGuide }: { onC
           </div>
         </section> : group === "story" ? <>
           <section className={styles.story} aria-labelledby="releve-story-heading">
-            <div className={styles.heroImage}><div className={styles.imageWindow}><Image src={ARENA_RELEVE_SCENES[resumeChapter?.scene ?? "arrival"]} alt="Sylvain t’accompagne dans ta ferme d’essai." fill sizes="(max-width: 700px) 100vw, 700px" priority /></div></div>
+            <div className={styles.heroImage}><div className={styles.imageWindow}><Image src={ARENA_RELEVE_SCENES[resumeChapter?.scene ?? "arrival"]} alt="Loïc t’accompagne dans ta ferme d’essai." fill sizes="(max-width: 700px) 100vw, 700px" priority /></div></div>
             <div className={styles.storyBody}>
               <span className={styles.eyebrow}>{resume && !storyComplete ? `Chapitre ${resume.chapter + 1} / ${ARENA_RELEVE_CHAPTERS.length} · En cours` : `${ARENA_RELEVE_CHAPTERS.length} chapitres à jouer`}</span>
               <h3 id="releve-story-heading">{resumeChapter && !storyComplete ? resumeChapter.title : storyComplete ? "Ta ferme a pris vie." : "La ferme t’attend."}</h3>
-              <p>{resume && !storyComplete ? resume.objective : storyComplete ? "Retrouve ta ferme ou choisis une rencontre pour apprendre une autre activité du quartier." : "Grand-père t’a confié les clés. Apprends à cultiver, vendre et suivre tes comptes avec Sylvain."}</p>
+              <p>{resume && !storyComplete ? resume.objective : storyComplete ? "Retrouve ta ferme ou choisis une rencontre pour apprendre une autre activité du quartier." : "Grand-père t’a confié les clés. Apprends à cultiver, vendre et suivre tes comptes avec Loïc."}</p>
               <button type="button" className={styles.primary} data-releve-start onClick={() => { trigger.current = '[data-releve-start]'; setActive("story"); }}>
                 {storyComplete ? <Check size={19} aria-hidden="true" /> : <KeyRound size={19} aria-hidden="true" />}
                 {storyComplete ? "Retrouver ma ferme d’essai" : resumeChapter ? `Reprendre · ${resumeChapter.title}` : "Jouer l’histoire complète"}<ArrowRight size={19} aria-hidden="true" />

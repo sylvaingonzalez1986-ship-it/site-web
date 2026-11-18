@@ -1,0 +1,215 @@
+{
+  "batchId": "r-products-05",
+  "reviewer": "rebalance_classify_a",
+  "consultedAt": "2026-11-17",
+  "status": "preconsultation-only-no-question-approved",
+  "purpose": "Lectures indépendantes autorisées par root avant gel, à rapprocher des27objets complets et notices finales au gel. Aucun hash ni approbation anticipée.",
+  "items": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8596598/",
+      "access": "full-text",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Abstract, Results, Discussion",
+      "result": "Thai, Tayo, Critchley ; en ligne5mai2021, numéro novembre2021. Le CBD à l’état stationnaire augmente l’exposition à la caféine, surtout AUC ; aucun résultat clinique universel ni fréquence de symptômes ne peut être déduit.",
+      "limitation": "Essai pharmacocinétique chez volontaires sains ; pas conseil de dose."
+    },
+    {
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "access": "full-text",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "§7.1, PDF p.10 ; §12.3",
+      "result": "Notice EPIDIOLEX : rifampicine, inducteur CYP3A4/CYP2C19, diminue concentrations CBD et7-OH-CBD ; impact sur efficacité non connu.",
+      "limitation": "Notice réglementaire primaire, non essai de symptômes. Écarter ajustement posologique."
+    },
+    {
+      "url": "https://hashmuseum.com/en/collection/history-of-smoking/",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Sebsi, lignes71–72",
+      "result": "Le musée décrit la pipe marocaine longue et fine, tige en bois et foyer d’argile.",
+      "limitation": "Définition d’objet culturel ; ne pas reprendre proportions, gestes de consommation ni allégations."
+    },
+    {
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1711213&lang=2&reg=48",
+      "access": "excerpt",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Paragraphe Malana dans communiqué NCB/PIB12avril2021",
+      "result": "L’extrait primaire situe Malana Cream dans la vallée de Parvati, district de Kullu ; partie Himachal Pradesh.",
+      "limitation": "Ouverture directe cachemiss. Recherche ciblée a effectivement livré le communiqué original indexé ; aucune lecture intégrale directe revendiquée. Écarter superlatifs et quantités de saisie."
+    },
+    {
+      "url": "https://cannaprovisions.com/blog/30-years-of-chemdog-spotlighted-in-northeast-leaf-2021-harvest-issue/",
+      "access": "full-text",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "lignes23–30",
+      "result": "Greg Krzanowski relie son récit de1991 à des fleurs acquises auprès de Joe B/Pbud lors d’un concert Grateful Dead ; numéro Northeast Leaf novembre2021.",
+      "limitation": "Témoignage direct repris par son employeur ; lieu Deer Park ne doit pas être certifié. Fait concert distinct de l’identité civile ra06."
+    },
+    {
+      "url": "https://www.seriousseeds.com/cannabis-seeds/chronic",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Genetics, lignes114–116",
+      "result": "Serious annonce AK47, Northern Light et un croisement Northern Light/Skunk.",
+      "limitation": "Introduction strawberry incohérente paraît copiée ; aucun arôme ni effet ni conseil de culture utilisé."
+    },
+    {
+      "url": "https://www.seriousseeds.com/cannabis-seeds/kali-mist",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Titre et présentation",
+      "result": "Le titre de la maison annonce Kali Mist Strain Created by Serious Seeds.",
+      "limitation": "Attribution commerciale, pas pedigree précis ni garantie d’effet."
+    },
+    {
+      "url": "https://sweetseeds.es/upload/catalogos/2024/es.pdf",
+      "access": "unavailable",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Tentative d’ouverture directe",
+      "result": "Ouverture inaccessible ; ma recherche primaire ciblée n’a pas renvoyé ce PDF, donc le passage2024 n’est pas encore indépendamment confirmé.",
+      "limitation": "Ne pas hériter de la consultation auteur. Une autre édition primaire accessible est documentée ci-dessous comme corroboration, pas comme lecture du catalogue2024."
+    },
+    {
+      "url": "https://wholesales.sweetseeds.info/descargas/descripciones/2020/en/descripciones.pdf",
+      "access": "full-text",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "PDF p.23, SWS04, lignes1100–1111",
+      "result": "Notice officielle Cream Caramel : croisement Blue Black × Maple Leaf Indica × White Rhino.",
+      "limitation": "Autre édition primaire effectivement lue ; ne remplace pas silencieusement l’objet source final auteur et son hash. Promesses thérapeutiques et conseils exclus."
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27249330/",
+      "access": "abstract",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Résumé original complet, Results et Conclusions",
+      "result": "Meier et al., JAMA Psychiatry2016 : cohorte Dunedin, usage de cannabis associé à santé parodontale dégradée après contrôle du tabac et de facteurs précoces.",
+      "limitation": "Étude longitudinale observationnelle, pas preuve de causalité ; pas généraliser à toute santé physique."
+    },
+    {
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0248062",
+      "access": "full-text",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Abstract, Results and discussion, limites",
+      "result": "Imasogie, Rose, Wilson,4mars2021 : usage déclaré associé à dose de propofol plus élevée en endoscopie, y compris modèle ajusté ; quotidien supérieur aux fréquences moindres.",
+      "limitation": "Un centre, cas-témoins ; association, pas adaptation thérapeutique universelle. Distinct de douleur postopératoire ra06."
+    },
+    {
+      "url": "https://www.redcrossblood.org/local-homepage/news/article/can-you-donate-blood-if-you-use-cannabis-.html",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Key Points et Details, lignes102–115",
+      "result": "Croix-Rouge américaine18avril2024 : usage ne disqualifie pas automatiquement ; mémoire/compréhension altérées empêchent le don ; pas de délai universel fixé.",
+      "limitation": "Règle américaine, pas française ; ne pas inventer délai d’attente."
+    },
+    {
+      "url": "https://ircca.gub.uy/resumen-de-datos-del-cannabis-de-uso-adulto-al-31-12-2025/",
+      "access": "excerpt",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Introduction, conditions du registre",
+      "result": "L’extrait primaire IRCCA donne majorité18ans et citoyenneté uruguayenne ou résidence permanente, ainsi que choix d’une seule voie enregistrée.",
+      "limitation": "Ouverture directe timeout. Recherche ciblée a réellement livré l’introduction primaire ; ne pas confondre bilan au31décembre2025 et date de publication."
+    },
+    {
+      "url": "https://ircca.gub.uy/vias-de-acceso/donde-y-como-registrarse/",
+      "access": "excerpt",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Extrait indexé, conditions Adquirentes",
+      "result": "Confirme personnes capables de plus18ans, citoyenneté naturelle/légale ou résidence permanente dûment prouvée.",
+      "limitation": "Ouverture directe502 ; preuve lue en extrait primaire seulement."
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39535063/",
+      "access": "abstract",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Résumé original complet",
+      "result": "Robertson et al., en ligne13novembre2024, numéro16décembre2024 : tous cannabinoïdes étudiés sauf CBDA donnent hydroxyquinones ; CBDA décarboxyle majoritairement en CBD ; conversionCBD→THC non observée dans ces conditions.",
+      "limitation": "Étude expérimentale d’aérosols ; ne pas généraliser à tous produits/conditions ni déduire un risque clinique quantifié."
+    },
+    {
+      "url": "https://learn.ocswholesale.ca/vape-education-and-troubleshooting/",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Compatibility et Crystallization",
+      "result": "Samantha Lobo28janvier2021 : cartouches/batteries510 compatibles mais certains systèmes sont propriétaires ; cristallisation naturelle possible si CBD élevé et pas nécessairement défaut.",
+      "limitation": "Ne pas reprendre réglages, chaleur, seuils ou gestes pour optimiser la consommation."
+    },
+    {
+      "url": "https://www.hempfest.org/about/",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "About et Hempfest History",
+      "result": "Hempfest Seattle : protestival pour la réforme du cannabis ; début en1991 comme Washington Hemp Expo à Volunteer Park.",
+      "limitation": "Le retour annoncé2024 est périmé et n’est pas utilisé ; pas de record de taille vérifié."
+    },
+    {
+      "url": "https://rickjames.com/pages/biography",
+      "access": "excerpt",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Paragraphe premier album1978 et Mary Jane",
+      "result": "La biographie officielle désigne Mary Jane comme pot paean et l’attribue à Rick James ; lien cannabique et artiste soutenus.",
+      "limitation": "Ouverture directe402. Paragraphe primaire indexé effectivement lu via requête ciblée ; aucune lecture intégrale directe ni paroles reproduites."
+    },
+    {
+      "url": "https://710labs.com/persy-water-hash",
+      "access": "official-page",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Paragraphe Persy Water Hash, ligne90",
+      "result": "Le fabricant relie full melt au comportement des têtes résineuses à la chaleur plutôt qu’à un noircissement.",
+      "limitation": "Description commerciale attribuée, pas résultat de contrôle analytique ni garantie sanitaire."
+    },
+    {
+      "url": "https://www.maratek.com/hubfs/Whitepapers%20December%202021/Water%20Extraction%20Whitepaper.pdf?hsLang=en",
+      "access": "full-text",
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "PDF p.2, Introduction to Bubble Hash, lignes33–35",
+      "result": "Le fabricant d’équipements décrit full melt comme laissant peu ou pas de matière végétale après fusion ; échelle1–6 présentée comme usage commercial.",
+      "limitation": "Document commercial, pas norme officielle. Méthodes, généralisation tamis et promesses de santé exclues. Date2021 issue du chemin seulement, non validée comme date documentaire."
+    }
+  ],
+  "neighbourReadings": [
+    {
+      "candidate": "Dr Grinspoon fleurs perlées",
+      "existingId": "hemp-q2-rb05-grinspoon-fleurs-perles",
+      "file": "docs/quiz-2000/batches/r-actives-b-05.json",
+      "result": "Objet complet, quatre choix, explication et métadonnées relus ; doublon exact si le candidat pose cette architecture. Alerte transmise à auteur et coordinateur avant gel."
+    },
+    {
+      "candidate": "Hempfest mission politique ou ville",
+      "existingId": "hemp-q2-rb02-hempfest-protestival",
+      "file": "docs/quiz-2000/batches/r-actives-b-02.json",
+      "result": "Mission protestival déjà testée ; Seattle déjà au prompt. Un déplacement vers seule date de création ne justifie pas mécaniquement un nouvel apprentissage."
+    },
+    {
+      "candidate": "Portugal dépénalisation ≠ vente légale",
+      "existingId": "hemp-q2-ra03-portugal-personal-cannabis-possession-administrative",
+      "file": "docs/quiz-2000/batches/r-actives-a-03.json",
+      "result": "Objet complet relu ; régime administratif testé et vente non légalisée explicitement expliquée."
+    },
+    {
+      "candidate": "Sebsi matériaux et forme",
+      "existingId": "hemp-q2-rb05-sebsi-pipe",
+      "file": "docs/quiz-2000/batches/r-actives-b-05.json",
+      "result": "Voisin teste seulement une pipe, sans bois/argile dans explication. Fait descriptif distinct possible ; clé commune morocco-kif-tradition. Décision finale dépend de la question rédigée."
+    }
+  ]
+}

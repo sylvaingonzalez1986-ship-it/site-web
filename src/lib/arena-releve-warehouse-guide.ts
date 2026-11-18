@@ -15,7 +15,7 @@ export function getReleveWarehouseGuide(chapter: 'plan' | 'buddies' | 'expansion
       ['pack-next', 'Carte suivante', 'Découvre le Buddie suivant.'],
       ['pack-loot', 'Voir mon butin', 'Tes trois cartes sont révélées. Regarde ton butin.'],
       ['pack-store', 'Ranger dans mon album', 'Range tes Buddies dans ton album, puis retrouve le plan.'],
-    ]) steps.push({ id: `${chapter}:${id}`, title: 'Le pack de Sylvain', instruction, text: label, scope: `${scope} .contest-pack-opening-modal` });
+    ]) steps.push({ id: `${chapter}:${id}`, title: 'Le pack de Loïc', instruction, text: label, scope: `${scope} .contest-pack-opening-modal` });
     if (state.ownedBuddies.length < 3) { add('pack', 'Reprends l’ouverture de ton pack prêté.', '[data-releve-guide="buddie-pack"]'); return steps; }
     steps.push({ id: 'buddies:choose-profile', title: 'La fiche du Buddie', instruction: 'Lis sa fiche, puis choisis « Placer ce Buddie ».', selector: '[data-buddie-variety-choose]' });
     steps.push({ id: 'buddies:close-profile', title: 'La fiche du Buddie', instruction: 'Ce Buddie attend sa rotation. Ferme sa fiche et choisis une variété disponible.', selector: '[data-buddie-variety-close]' });

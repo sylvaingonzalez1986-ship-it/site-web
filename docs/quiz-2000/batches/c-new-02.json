@@ -1,0 +1,1689 @@
+{
+  "batchId": "c-new-02",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-cn02-evaporation-can-cool-leaf-by-heat-consumption",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Pourquoi l’évaporation d’eau peut-elle refroidir une feuille de chanvre ?",
+      "options": [
+        "Le passage liquide-gaz absorbe de la chaleur",
+        "Le passage liquide-gaz libère de la chaleur",
+        "Le passage gaz-liquide absorbe de la chaleur",
+        "Le passage solide-liquide libère de la chaleur"
+      ],
+      "answer": 0,
+      "explanation": "Passer de l’état liquide à l’état gazeux demande de l’énergie. L’évaporation peut ainsi emporter de la chaleur de la feuille, même si sa température dépend aussi du rayonnement et des échanges avec l’air.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-water"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Refroidissement par évaporation",
+        "subjectKey": "evaporation-eau",
+        "property": "Consommation de chaleur lors de la vaporisation",
+        "expectedAnswer": "Le passage liquide-gaz absorbe de la chaleur",
+        "learningObjective": "Comprendre le rôle thermique possible de l’évaporation foliaire.",
+        "factKey": "evaporation-can-cool-leaf-by-heat-consumption",
+        "form": "identification",
+        "difficultyRationale": "Une propriété physique accessible, sans température ni condition de culture à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-water",
+            "locator": "Water’s Heat of Vaporization, dernier paragraphe",
+            "support": "L’évaporation absorbe de l’énergie et refroidit le milieu où elle se produit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-plant-cellular-respiration-day-and-night",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quand les cellules vivantes d’un chanvre peuvent-elles pratiquer la respiration cellulaire ?",
+      "options": [
+        "Seulement pendant la germination",
+        "Le jour comme la nuit",
+        "Seulement en pleine lumière",
+        "Seulement pendant la nuit"
+      ],
+      "answer": 1,
+      "explanation": "La respiration cellulaire fournit de l’énergie aux cellules de jour comme de nuit. Elle ne doit pas être confondue avec la photosynthèse, dont les réactions lumineuses exigent de la lumière.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-ncsu-botany"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Respiration et cycle journalier",
+        "subjectKey": "respiration-vegetale",
+        "property": "Respiration possible en lumière et dans l’obscurité",
+        "expectedAnswer": "Le jour comme la nuit",
+        "learningObjective": "Comprendre que photosynthèse et respiration peuvent coexister le jour.",
+        "factKey": "plant-cellular-respiration-day-and-night",
+        "form": "identification",
+        "difficultyRationale": "Correction d’une confusion fréquente et accessible.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-ncsu-botany",
+            "locator": "Environmental Factors That Affect Plant Growth, Temperature, Photosynthesis and Respiration",
+            "support": "Le texte décrit photosynthèse et respiration durant le jour et maintien de la respiration la nuit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-germination-starts-with-seed-water-uptake",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Au début de la germination, quelle matière entre dans une graine sèche de chanvre qui commence à gonfler ?",
+      "options": [
+        "De la cellulose",
+        "De la chlorophylle",
+        "De l’eau",
+        "De l’amidon"
+      ],
+      "answer": 2,
+      "explanation": "La réhydratation, appelée imbibition, précède la reprise de nombreuses activités de la graine. Il s’agit d’une absorption d’eau, et non de l’entrée de réserves nouvelles venues du sol.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-cn02-imbibition"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Réhydratation initiale de la graine",
+        "subjectKey": "germination-chanvre",
+        "property": "Absorption d’eau initiale",
+        "expectedAnswer": "De l’eau",
+        "learningObjective": "Comprendre le premier changement physique d’une graine sèche qui germe.",
+        "factKey": "germination-starts-with-seed-water-uptake",
+        "form": "identification",
+        "difficultyRationale": "Phénomène familier sans mémorisation de conditions de culture.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-imbibition",
+            "locator": "Imbibition, premier paragraphe",
+            "support": "Une graine sèche doit se réhydrater pour que la germination commence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-plant-tissue-group-of-cells",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans une feuille de chanvre, comment appelle-t-on un ensemble organisé de cellules assurant des fonctions communes ?",
+      "options": [
+        "Un organe",
+        "Un organite",
+        "Un organisme",
+        "Un tissu"
+      ],
+      "answer": 3,
+      "explanation": "Un tissu rassemble des cellules organisées pour certaines fonctions. Une feuille est un organe contenant plusieurs tissus ; un organite est une structure à l’intérieur d’une cellule.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-ncsu-botany"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Niveaux d’organisation de la plante",
+        "subjectKey": "organisation-vegetale",
+        "property": "Tissu formé de cellules",
+        "expectedAnswer": "Un tissu",
+        "learningObjective": "Distinguer cellule, tissu, organe et organisme.",
+        "factKey": "plant-tissue-group-of-cells",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire fondamental de l’organisation du vivant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-ncsu-botany",
+            "locator": "Anatomy and Morphology, Cells, dernier paragraphe",
+            "support": "Des groupes de cellules aux fonctions similaires forment des tissus, lesquels constituent les parties de la plante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-flower-organ-sexual-reproduction",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quelle fonction les fleurs du chanvre assurent-elles principalement ?",
+      "options": [
+        "La reproduction sexuée",
+        "L’absorption d’eau dans le sol",
+        "Le soutien mécanique de la tige",
+        "Le stockage saisonnier dans la racine"
+      ],
+      "answer": 0,
+      "explanation": "Les fleurs portent les structures de la reproduction sexuée. Leur aspect discret ne les empêche pas de remplir la même fonction générale que les fleurs plus voyantes d’autres plantes.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-cn01-ncsu-botany"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Fonction de la fleur",
+        "subjectKey": "fleur-chanvre",
+        "property": "Organe de reproduction sexuée",
+        "expectedAnswer": "La reproduction sexuée",
+        "learningObjective": "Reconnaître la fonction d’une fleur, même peu voyante.",
+        "factKey": "flower-organ-sexual-reproduction",
+        "form": "identification",
+        "difficultyRationale": "Notion fondamentale sur les organes d’une plante à fleurs.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-ncsu-botany",
+            "locator": "Flowers, premier paragraphe",
+            "support": "La fonction de la fleur est la reproduction sexuée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-seed-embryo-is-young-plant",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Que représente l’embryon à l’intérieur d’une graine de chanvre ?",
+      "options": [
+        "Une enveloppe protectrice externe du fruit",
+        "Un ensemble de réserves alimentaires",
+        "La jeune plante au début de son développement",
+        "Un tissu nourricier distinct de la jeune plante"
+      ],
+      "answer": 2,
+      "explanation": "L’embryon est la jeune plante issue du développement de l’œuf fécondé. Il possède déjà un axe embryonnaire et des cotylédons, même si sa croissance est temporairement ralentie.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Embryon de la graine",
+        "subjectKey": "embryon-chanvre",
+        "property": "Jeune plante en développement",
+        "expectedAnswer": "La jeune plante au début de son développement",
+        "learningObjective": "Identifier ce qui donnera la future plante dans une graine.",
+        "factKey": "seed-embryo-is-young-plant",
+        "form": "identification",
+        "difficultyRationale": "Sens biologique du mot embryon, accessible sans anatomie fine.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Double Fertilization puis Development of the Seed",
+            "support": "Le zygote forme l’embryon ; sa croissance reprend lors de la germination de la graine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-leaf-eating-animal-herbivory",
+      "topicId": "biodiversity",
+      "level": 1,
+      "prompt": "Comment nomme-t-on la consommation de feuilles de chanvre par un animal ?",
+      "options": [
+        "La décomposition",
+        "La compétition",
+        "L’herbivorie",
+        "La pollinisation"
+      ],
+      "answer": 2,
+      "explanation": "L’herbivorie est la consommation de végétaux par des animaux, notamment des insectes. Elle concerne des parties de plante et n’exige pas que la plante entière soit mangée.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-community"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Herbivorie du chanvre",
+        "subjectKey": "herbivorie",
+        "property": "Consommation d’un végétal par un animal",
+        "expectedAnswer": "L’herbivorie",
+        "learningObjective": "Identifier une relation alimentaire entre un animal et une plante.",
+        "factKey": "leaf-eating-animal-herbivory",
+        "form": "identification",
+        "difficultyRationale": "Notion écologique simple illustrée par une feuille consommée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-community",
+            "locator": "Predation and Herbivory, définition de herbivory",
+            "support": "L’herbivorie est la consommation de plantes par des insectes ou d’autres animaux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-neighbouring-plants-limited-resource-competition",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Chanvre et plantes voisines prélèvent une même eau du sol devenue rare. Quelle relation cela illustre-t-il ?",
+      "options": [
+        "Une coopération obligatoire",
+        "Une relation prédateur-proie",
+        "Une décomposition de matière morte",
+        "Une compétition pour une ressource"
+      ],
+      "answer": 3,
+      "explanation": "Des organismes peuvent entrer en compétition lorsqu’ils utilisent une ressource limitée commune. Cette relation existe entre espèces différentes, mais aussi entre individus d’une même espèce.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "q2-cn02-ecosystems"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Compétition entre plantes",
+        "subjectKey": "competition-vegetale",
+        "property": "Utilisation commune d’une ressource limitée",
+        "expectedAnswer": "Une compétition pour une ressource",
+        "learningObjective": "Reconnaître la compétition sans supposer un contact physique entre plantes.",
+        "factKey": "neighbouring-plants-limited-resource-competition",
+        "form": "identification",
+        "difficultyRationale": "Situation concrète dont la ressource limitante est explicitement indiquée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-ecosystems",
+            "locator": "Introduction, compétition pour les ressources limitées",
+            "support": "Les organismes entrent en compétition au sein d’une espèce et entre espèces pour des ressources limitées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-ecosystem-includes-living-and-abiotic-environment",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quelle description correspond à l’écosystème d’une chanvrière ?",
+      "options": [
+        "Les êtres vivants, le milieu physique et leurs interactions",
+        "Les plantes de chanvre, sans les autres organismes",
+        "Les animaux présents, sans les végétaux ni le sol",
+        "Les seuls microorganismes vivant dans le sol"
+      ],
+      "answer": 0,
+      "explanation": "Un écosystème associe une communauté vivante et son milieu non vivant : eau, air, sol ou température. Les échanges entre ces composantes font partie de son fonctionnement.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "q2-cn02-ecosystems"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Écosystème de la chanvrière",
+        "subjectKey": "ecosysteme",
+        "property": "Composantes biotiques et abiotiques",
+        "expectedAnswer": "Les êtres vivants, le milieu physique et leurs interactions",
+        "learningObjective": "Intégrer le milieu physique dans la notion d’écosystème.",
+        "factKey": "ecosystem-includes-living-and-abiotic-environment",
+        "form": "identification",
+        "difficultyRationale": "Une notion générale d’écologie appliquée à une parcelle de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-ecosystems",
+            "locator": "Introduction, définition de ecosystem",
+            "support": "Un écosystème comprend une communauté d’organismes et ses interactions avec l’environnement abiotique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-population-conspecific-plants-same-area",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "En écologie, que forment les plants de Cannabis sativa vivant ensemble dans un même secteur ?",
+      "options": [
+        "Une communauté",
+        "Une population",
+        "Un écosystème",
+        "Un biome"
+      ],
+      "answer": 1,
+      "explanation": "Une population regroupe des individus d’une même espèce dans une zone donnée à un même moment. Elle se distingue d’une communauté, qui réunit plusieurs espèces.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-ecology-scope"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Population écologique de chanvre",
+        "subjectKey": "population-ecologique",
+        "property": "Individus de la même espèce et du même espace",
+        "expectedAnswer": "Une population",
+        "learningObjective": "Situer la population parmi les niveaux d’organisation écologique.",
+        "factKey": "population-conspecific-plants-same-area",
+        "form": "identification",
+        "difficultyRationale": "Définition accessible ancrée dans un exemple concret.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-ecology-scope",
+            "locator": "Population Ecology, premier paragraphe",
+            "support": "Une population rassemble les organismes d’une même espèce vivant dans la même aire au même moment."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-decomposers-feed-on-dead-organic-matter",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Dans un sol de chanvrière, quelle ressource caractérise le rôle des décomposeurs dans le réseau détritique ?",
+      "options": [
+        "Des tissus vivants de feuilles intactes",
+        "Des exsudats libérés par des racines vivantes",
+        "Des débris d’organismes morts",
+        "Du contenu de graines encore vivantes"
+      ],
+      "answer": 2,
+      "explanation": "Les décomposeurs, dont de nombreuses bactéries et de nombreux champignons, utilisent la matière organique morte. Ils contribuent ainsi au recyclage de la matière dans l’écosystème.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "q2-cn02-ecosystems"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Décomposeurs du sol",
+        "subjectKey": "decomposeurs-sol",
+        "property": "Utilisation de matière organique morte",
+        "expectedAnswer": "Des débris d’organismes morts",
+        "learningObjective": "Reconnaître la ressource alimentaire d’un réseau détritique.",
+        "factKey": "decomposers-feed-on-dead-organic-matter",
+        "form": "identification",
+        "difficultyRationale": "Relation écologique fondamentale, sans nom d’espèce à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-ecosystems",
+            "locator": "Food Chains and Food Webs, réseau détritique",
+            "support": "Les organismes du réseau détritique se nourrissent de matière organique morte et contribuent à son recyclage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-biotic-factor-living-organism-environment",
+      "topicId": "biodiversity",
+      "level": 1,
+      "prompt": "Quel élément de l’environnement d’un chanvre est un facteur biotique ?",
+      "options": [
+        "La température de l’air",
+        "La lumière solaire reçue",
+        "La teneur en eau du sol",
+        "Un champignon vivant sur la plante"
+      ],
+      "answer": 3,
+      "explanation": "Un facteur biotique est lié aux êtres vivants et à leurs interactions. Température, lumière et eau sont des composantes abiotiques, c’est-à-dire non vivantes, du milieu.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-ecology-scope"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Facteurs biotiques",
+        "subjectKey": "facteur-biotique",
+        "property": "Composante vivante de l’environnement",
+        "expectedAnswer": "Un champignon vivant sur la plante",
+        "learningObjective": "Distinguer influence d’un organisme et condition physique du milieu.",
+        "factKey": "biotic-factor-living-organism-environment",
+        "form": "identification",
+        "difficultyRationale": "Classement écologique accessible par un exemple concret.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-ecology-scope",
+            "locator": "Levels of Ecological Study, composantes biotiques et abiotiques",
+            "support": "L’écologie distingue les organismes et les composantes non vivantes de leur environnement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-fertilization-fusion-of-male-female-gametes",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel événement correspond à la fécondation qui forme l’œuf à l’origine d’un nouvel embryon de chanvre ?",
+      "options": [
+        "La fusion d’un gamète mâle et d’un gamète femelle",
+        "Le transfert du pollen jusqu’au stigmate",
+        "La sortie de la racine hors de la graine",
+        "La libération du pollen par une anthère"
+      ],
+      "answer": 0,
+      "explanation": "La fécondation réunit deux gamètes et forme un zygote, ou œuf fécondé. Le transport du pollen est une étape distincte, appelée pollinisation.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Fécondation",
+        "subjectKey": "fecondation-chanvre",
+        "property": "Fusion des gamètes et formation du zygote",
+        "expectedAnswer": "La fusion d’un gamète mâle et d’un gamète femelle",
+        "learningObjective": "Distinguer fécondation et transport du pollen.",
+        "factKey": "fertilization-fusion-of-male-female-gametes",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme de reproduction fondamental.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Double Fertilization, fusion sperm and egg",
+            "support": "Un gamète mâle fusionne avec l’oosphère et forme un zygote diploïde."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-seed-dispersal-can-reduce-parent-competition",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel avantage la dispersion des fruits-graines peut-elle donner aux descendants d’un chanvre ?",
+      "options": [
+        "Concentrer les ressources au pied de la plante mère",
+        "Conserver le même milieu pour tous les descendants",
+        "Empêcher les échanges de pollen entre populations",
+        "Atteindre des lieux moins occupés par la plante mère"
+      ],
+      "answer": 3,
+      "explanation": "La dispersion peut éloigner les descendants de la plante mère et de sa concurrence locale. Elle ne garantit ni la germination ni la survie : les conditions du lieu d’arrivée restent déterminantes.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Dispersion des descendants",
+        "subjectKey": "dispersion-graines",
+        "property": "Éloignement et concurrence locale",
+        "expectedAnswer": "Atteindre des lieux moins occupés par la plante mère",
+        "learningObjective": "Comprendre un intérêt écologique de la dispersion, sans garantie de réussite.",
+        "factKey": "seed-dispersal-can-reduce-parent-competition",
+        "form": "identification",
+        "difficultyRationale": "Notion écologique simple sur le déplacement des graines.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Fruit and Seed Dispersal, premier paragraphe",
+            "support": "La dispersion éloigne les graines de la plante mère et peut leur donner des conditions moins concurrentielles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-water-cohesion-attraction-between-water-molecules",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Dans le transport d’eau chez le chanvre, que désigne la cohésion de l’eau ?",
+      "options": [
+        "Le passage de l’eau liquide à l’état gazeux",
+        "Le passage d’eau à travers une membrane sélective",
+        "L’attraction des molécules d’eau entre elles",
+        "L’attraction de l’eau pour les parois des conduits"
+      ],
+      "answer": 2,
+      "explanation": "La cohésion relie les molécules d’eau entre elles. Elle se distingue de l’adhésion aux parois ; ces propriétés contribuent à maintenir la continuité de la colonne d’eau dans les conduits.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn02-water"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cohésion de l’eau",
+        "subjectKey": "cohesion-eau",
+        "property": "Attraction entre molécules d’eau",
+        "expectedAnswer": "L’attraction des molécules d’eau entre elles",
+        "learningObjective": "Distinguer cohésion, adhésion, évaporation et osmose.",
+        "factKey": "water-cohesion-attraction-between-water-molecules",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire physique intermédiaire lié à la circulation de l’eau.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-water",
+            "locator": "Water’s Cohesive and Adhesive Properties",
+            "support": "La cohésion correspond à l’attraction entre molécules d’eau, par opposition à leur adhésion à d’autres surfaces."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-root-downward-growth-response-gravity",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Même dans l’obscurité, une jeune racine s’oriente généralement vers le bas. Quel signal peut guider ce comportement du chanvre ?",
+      "options": [
+        "La direction du vent",
+        "La direction de la lumière",
+        "La gravité",
+        "La répartition de l’humidité"
+      ],
+      "answer": 2,
+      "explanation": "La gravité est un signal d’orientation pour la croissance racinaire. Cette réponse, appelée gravitropisme positif, peut fonctionner sans lumière : la racine n’a pas besoin de « voir » le sol.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn02-sensory"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Orientation gravitaire des racines",
+        "subjectKey": "gravitropisme",
+        "property": "Gravité comme stimulus de croissance",
+        "expectedAnswer": "La gravité",
+        "learningObjective": "Comprendre qu’une racine peut s’orienter sans lumière.",
+        "factKey": "root-downward-growth-response-gravity",
+        "form": "identification",
+        "difficultyRationale": "Un phénomène observable et une cause physique familière.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-sensory",
+            "locator": "Plant Responses to Gravity, premier paragraphe",
+            "support": "Les racines croissent vers le bas même dans l’obscurité ; il s’agit d’un gravitropisme positif."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-chlorosis-means-leaf-yellowing",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Que décrit le mot « chlorose » sur une feuille de chanvre ?",
+      "options": [
+        "Un jaunissement de la feuille",
+        "Un flétrissement sans changement de couleur",
+        "Une perforation du limbe",
+        "Une prolifération de poils à la surface"
+      ],
+      "answer": 0,
+      "explanation": "La chlorose désigne un jaunissement du feuillage. C’est une description de symptôme, pas un diagnostic unique : plusieurs causes peuvent produire une apparence proche.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "revision-agro-openstax"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Chlorose foliaire",
+        "subjectKey": "chlorose",
+        "property": "Jaunissement du feuillage",
+        "expectedAnswer": "Un jaunissement de la feuille",
+        "learningObjective": "Lire un terme de description végétale sans le confondre avec une cause précise.",
+        "factKey": "chlorosis-means-leaf-yellowing",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître un terme de symptomatologie végétale sans attribuer arbitrairement une cause au symptôme.",
+        "sourceEvidence": [
+          {
+            "sourceId": "revision-agro-openstax",
+            "locator": "Essential Nutrients, nutrient deficiencies, Figure 31.4",
+            "support": "Le manuel définit la chlorose comme un jaunissement des feuilles et la mentionne parmi les symptômes possibles de carence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-seed-coat-protects-seed-contents",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quelle fonction remplit le tégument qui entoure la véritable graine du chanvre, à l’intérieur du petit fruit ?",
+      "options": [
+        "Constituer la principale réserve d’énergie",
+        "Produire les premiers tissus de la racine",
+        "Nourrir directement l’embryon en sucres",
+        "Protéger le contenu de la graine"
+      ],
+      "answer": 3,
+      "explanation": "Le tégument est une enveloppe protectrice de la graine. Il se distingue du péricarpe, paroi du fruit qui entoure l’ensemble dans le chènevis.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Tégument de la graine",
+        "subjectKey": "tegument-graine",
+        "property": "Protection du contenu de la graine",
+        "expectedAnswer": "Protéger le contenu de la graine",
+        "learningObjective": "Associer une enveloppe de graine à sa fonction sans la confondre avec le fruit.",
+        "factKey": "seed-coat-protects-seed-contents",
+        "form": "identification",
+        "difficultyRationale": "Fonction fondamentale d’une enveloppe, avec distinction graine-fruit explicitée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Development of the Seed, paragraphe seed coat",
+            "support": "Le tégument issu des enveloppes de l’ovule protège la graine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-phototropism-directional-growth-light",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Comment appelle-t-on une croissance qui courbe une jeune tige de chanvre vers une source de lumière ?",
+      "options": [
+        "Un hydrotropisme positif",
+        "Un thigmotropisme positif",
+        "Un phototropisme positif",
+        "Un gravitropisme positif"
+      ],
+      "answer": 2,
+      "explanation": "Le phototropisme est une orientation de la croissance par la lumière. Il est positif lorsque la croissance se fait vers la source ; il ne correspond pas au déplacement de toute la plante.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-sensory"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Phototropisme de la pousse",
+        "subjectKey": "phototropisme",
+        "property": "Croissance dirigée vers la lumière",
+        "expectedAnswer": "Un phototropisme positif",
+        "learningObjective": "Nommer une réponse directionnelle à un stimulus lumineux.",
+        "factKey": "phototropism-directional-growth-light",
+        "form": "identification",
+        "difficultyRationale": "Plusieurs tropismes comparables doivent être distingués.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-sensory",
+            "locator": "The Blue Light Responses, définition de positive phototropism",
+            "support": "Le phototropisme positif est une croissance dirigée vers une source de lumière."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-mutualism-both-partners-benefit",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Deux espèces associées aux racines du chanvre tirent chacune un bénéfice de leur relation. Comment qualifier cette interaction ?",
+      "options": [
+        "Un parasitisme",
+        "Une prédation",
+        "Une compétition",
+        "Un mutualisme"
+      ],
+      "answer": 3,
+      "explanation": "Dans un mutualisme, les deux partenaires bénéficient de l’interaction. Le terme décrit le bilan de la relation et ne désigne pas, à lui seul, un champignon ou un type précis de racine.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn02-community"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Mutualisme",
+        "subjectKey": "mutualisme",
+        "property": "Bénéfice réciproque des partenaires",
+        "expectedAnswer": "Un mutualisme",
+        "learningObjective": "Classer une interaction selon son effet sur chacun des deux partenaires.",
+        "factKey": "mutualism-both-partners-benefit",
+        "form": "identification",
+        "difficultyRationale": "Une distinction écologique intermédiaire fondée sur le bilan réciproque.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-community",
+            "locator": "Mutualism, premier paragraphe",
+            "support": "Le mutualisme est une relation entre deux espèces dans laquelle toutes deux bénéficient de l’interaction."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-parasitism-benefits-parasite-harms-living-host",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Un organisme vit sur un chanvre, y prélève ses nutriments et affaiblit la plante. Quelle relation décrit ce bilan ?",
+      "options": [
+        "Un parasitisme",
+        "Un mutualisme",
+        "Un commensalisme",
+        "Une coopération"
+      ],
+      "answer": 0,
+      "explanation": "Le parasite tire profit d’un hôte vivant auquel il cause un dommage. Un organisme simplement présent sur une plante n’est donc pas nécessairement un parasite : le bilan de l’interaction compte.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-community"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Parasitisme du chanvre",
+        "subjectKey": "parasitisme",
+        "property": "Bénéfice pour l’un et dommage pour l’hôte",
+        "expectedAnswer": "Un parasitisme",
+        "learningObjective": "Classer une relation à partir de ses conséquences, sans identifier un agent pathogène.",
+        "factKey": "parasitism-benefits-parasite-harms-living-host",
+        "form": "identification",
+        "difficultyRationale": "Distinction intermédiaire entre plusieurs bilans d’interaction.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-community",
+            "locator": "Parasitism, premier paragraphe",
+            "support": "Le parasite se nourrit aux dépens d’un organisme vivant ; il bénéficie de la relation tandis que l’hôte subit un dommage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-ovule-seed-ovary-fruit-development",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Après fécondation d’une fleur de chanvre, quels devenirs correspondent respectivement à l’ovule et à l’ovaire ?",
+      "options": [
+        "Ovule : embryon ; ovaire : tégument",
+        "Ovule : graine ; ovaire : fruit",
+        "Ovule : fruit ; ovaire : graine",
+        "Ovule : albumen ; ovaire : cotylédon"
+      ],
+      "answer": 1,
+      "explanation": "L’ovule fécondé se développe en graine, tandis que l’ovaire donne le fruit. Le petit chènevis est ainsi un fruit contenant une graine, et non une graine nue.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Devenir de l’ovule et de l’ovaire",
+        "subjectKey": "developpement-fruit-graine",
+        "property": "Origines distinctes de la graine et du fruit",
+        "expectedAnswer": "Ovule : graine ; ovaire : fruit",
+        "learningObjective": "Relier les deux structures de la fleur aux produits de la reproduction.",
+        "factKey": "ovule-seed-ovary-fruit-development",
+        "form": "identification",
+        "difficultyRationale": "Deux structures proches doivent être associées à leur devenir.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Double Fertilization, dernier paragraphe",
+            "support": "Après fécondation, l’ovule forme la graine et les tissus de l’ovaire deviennent le fruit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-pollen-tube-delivers-male-gametes-to-ovule",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Après le dépôt du pollen sur le stigmate du chanvre, quelle structure achemine les gamètes mâles vers l’ovule ?",
+      "options": [
+        "Le vaisseau du xylème",
+        "Un élément criblé du phloème",
+        "Le tube pollinique",
+        "Le filament de l’étamine"
+      ],
+      "answer": 2,
+      "explanation": "Le grain de pollen germe et développe un tube pollinique. Ce tube constitue la voie par laquelle les gamètes mâles atteignent le sac embryonnaire à l’intérieur de l’ovule.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Tube pollinique",
+        "subjectKey": "tube-pollinique",
+        "property": "Acheminement des gamètes mâles",
+        "expectedAnswer": "Le tube pollinique",
+        "learningObjective": "Comprendre comment la reproduction se poursuit après l’arrivée du pollen.",
+        "factKey": "pollen-tube-delivers-male-gametes-to-ovule",
+        "form": "identification",
+        "difficultyRationale": "Anatomie reproductive intermédiaire, distincte du transport du pollen par le vent.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Double Fertilization, deux premiers paragraphes",
+            "support": "Le pollen forme un tube qui progresse vers l’ovule et transporte les cellules reproductrices mâles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-hermaphrodite-flower-male-female-organs-same-flower",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Une même fleur de cannabis porte des étamines et des organes femelles fonctionnels. Comment la qualifier ?",
+      "options": [
+        "De mâle unisexuée",
+        "De femelle unisexuée",
+        "De stérile",
+        "D’hermaphrodite"
+      ],
+      "answer": 3,
+      "explanation": "Une fleur hermaphrodite porte les deux types d’organes reproducteurs. C’est différent de la monoécie, où une même plante porte des fleurs mâles et femelles distinctes.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-c02-openstax-reproduction"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Fleur hermaphrodite",
+        "subjectKey": "fleur-hermaphrodite",
+        "property": "Deux fonctions sexuelles dans une seule fleur",
+        "expectedAnswer": "D’hermaphrodite",
+        "learningObjective": "Distinguer le sexe d’une fleur de la répartition des fleurs sur une plante.",
+        "factKey": "hermaphrodite-flower-male-female-organs-same-flower",
+        "form": "identification",
+        "difficultyRationale": "Distinction reproductive intermédiaire entre fleur et individu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-openstax-reproduction",
+            "locator": "Flower Structure, perfect or hermaphrodite flowers",
+            "support": "Une fleur qui possède à la fois un androcée et un gynécée est dite hermaphrodite."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-starch-plant-carbohydrate-storage",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Sous quelle forme une cellule végétale de chanvre peut-elle stocker temporairement un excès de sucres ?",
+      "options": [
+        "Sous forme d’amidon",
+        "Sous forme de lignine",
+        "Sous forme de cellulose",
+        "Sous forme de cutine"
+      ],
+      "answer": 0,
+      "explanation": "L’amidon est une forme de réserve glucidique des plantes. Il se distingue de polymères surtout structuraux ou protecteurs, comme la cellulose, la lignine ou la cutine.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-carbohydrates"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Réserve glucidique végétale",
+        "subjectKey": "amidon",
+        "property": "Stockage des sucres sous forme d’amidon",
+        "expectedAnswer": "Sous forme d’amidon",
+        "learningObjective": "Distinguer réserve métabolique et constituants structuraux de la plante.",
+        "factKey": "starch-plant-carbohydrate-storage",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître la fonction d’un polymère parmi plusieurs substances végétales.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-carbohydrates",
+            "locator": "Polysaccharides, paragraphe de l’amidon",
+            "support": "Les plantes stockent l’excès de sucres sous forme d’amidon dans différents organes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-carotenoids-dissipate-excess-light-energy",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel rôle protecteur certains caroténoïdes jouent-ils dans les feuilles d’une plante comme le chanvre ?",
+      "options": [
+        "Conduire les électrons entre les deux photosystèmes",
+        "Fixer directement le CO₂ dans une molécule organique",
+        "Dissiper un excès d’énergie lumineuse",
+        "Scinder les molécules d’eau pour libérer du dioxygène"
+      ],
+      "answer": 2,
+      "explanation": "Des caroténoïdes contribuent à dissiper en chaleur un excès d’énergie absorbée. Ces pigments participent donc aussi à la photoprotection, au-delà de leur contribution à la capture de lumière.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-light-reactions"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Caroténoïdes foliaires",
+        "subjectKey": "carotenoides",
+        "property": "Dissipation d’énergie et photoprotection",
+        "expectedAnswer": "Dissiper un excès d’énergie lumineuse",
+        "learningObjective": "Découvrir une fonction protectrice des pigments photosynthétiques.",
+        "factKey": "carotenoids-dissipate-excess-light-energy",
+        "form": "identification",
+        "difficultyRationale": "Physiologie intermédiaire des pigments, sans voie moléculaire détaillée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-light-reactions",
+            "locator": "Absorption of Light, carotenoids",
+            "support": "Les caroténoïdes peuvent absorber l’énergie excédentaire et la dissiper en chaleur pour limiter les dommages lumineux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-phytochrome-perceives-red-far-red-signals",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Quels photorécepteurs végétaux perçoivent les signaux rouge et rouge lointain chez une plante comme le chanvre ?",
+      "options": [
+        "Les phototropines",
+        "Les récepteurs des ultraviolets UVR8",
+        "Les phytochromes",
+        "Les cryptochromes"
+      ],
+      "answer": 2,
+      "explanation": "Les phytochromes possèdent des formes interconvertibles sensibles au rouge et au rouge lointain. Ils participent à la lecture de l’environnement lumineux, pas seulement à la capture d’énergie.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-sensory"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Phytochromes",
+        "subjectKey": "phytochromes",
+        "property": "Perception du rouge et du rouge lointain",
+        "expectedAnswer": "Les phytochromes",
+        "learningObjective": "Distinguer photorécepteurs de signalisation et simple intensité lumineuse.",
+        "factKey": "phytochrome-perceives-red-far-red-signals",
+        "form": "identification",
+        "difficultyRationale": "Rappel spécialisé de la correspondance entre une famille de photorécepteurs et son domaine spectral, parmi quatre familles plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-sensory",
+            "locator": "The Phytochrome System and the Red/Far-Red Response, premier paragraphe",
+            "support": "Les phytochromes passent entre les formes Pr et Pfr après absorption de rouge ou de rouge lointain."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-ethylene-is-gaseous-plant-hormone",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle hormone végétale se distingue par sa nature gazeuse chez le chanvre comme chez d’autres plantes ?",
+      "options": [
+        "L’auxine",
+        "L’acide abscissique",
+        "Une cytokinine",
+        "L’éthylène"
+      ],
+      "answer": 3,
+      "explanation": "L’éthylène est une petite molécule gazeuse qui joue un rôle de signal végétal. Il intervient notamment dans des processus de vieillissement et d’abscission, selon le tissu et l’espèce.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-sensory"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Éthylène",
+        "subjectKey": "ethylene",
+        "property": "Nature gazeuse d’une hormone",
+        "expectedAnswer": "L’éthylène",
+        "learningObjective": "Reconnaître qu’un signal hormonal végétal peut être gazeux.",
+        "factKey": "ethylene-is-gaseous-plant-hormone",
+        "form": "identification",
+        "difficultyRationale": "Une connaissance intermédiaire de physiologie hormonale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-sensory",
+            "locator": "Ethylene, premier paragraphe",
+            "support": "L’éthylène est inhabituel parmi les hormones végétales parce qu’il est un gaz volatil."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-abscisic-acid-promotes-stomatal-closure-drought",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel signal hormonal contribue à la fermeture des stomates lors d’un déficit hydrique chez les plantes, dont le chanvre ?",
+      "options": [
+        "L’acide abscissique",
+        "Une gibbérelline",
+        "Une cytokinine",
+        "L’acide indole-acétique"
+      ],
+      "answer": 0,
+      "explanation": "L’acide abscissique, ou ABA, participe à la réponse au manque d’eau et favorise la fermeture stomatique. Il s’agit d’un signal de régulation, distinct des ions qui permettent le mouvement des cellules de garde.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-ncsu-botany"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Signal hormonal du déficit hydrique",
+        "subjectKey": "acide-abscissique",
+        "property": "ABA et fermeture stomatique",
+        "expectedAnswer": "L’acide abscissique",
+        "learningObjective": "Relier une hormone à une réponse de conservation de l’eau.",
+        "factKey": "abscisic-acid-promotes-stomatal-closure-drought",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre régulation hormonale et mécanique cellulaire des stomates.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-ncsu-botany",
+            "locator": "Plant Growth Regulators, Abscisic acid",
+            "support": "L’ABA est un signal qui induit la fermeture stomatique lors d’un stress hydrique ou thermique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-plasma-membrane-phospholipid-bilayer",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle organisation constitue la base lipidique de la membrane plasmique d’une cellule de chanvre ?",
+      "options": [
+        "Un réseau de cellulose sans lipides",
+        "Une bicouche de phospholipides",
+        "Une monocouche de phospholipides",
+        "Une couche de triglycérides sans phospholipides"
+      ],
+      "answer": 1,
+      "explanation": "La membrane repose sur deux couches de phospholipides dont les queues hydrophobes se font face. Des protéines s’insèrent dans cette structure ; elle diffère de l’enveloppe d’un corps lipidique de graine.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-membrane"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Structure de la membrane plasmique",
+        "subjectKey": "membrane-plasmique",
+        "property": "Bicouche de phospholipides",
+        "expectedAnswer": "Une bicouche de phospholipides",
+        "learningObjective": "Relier la membrane cellulaire à son organisation lipidique.",
+        "factKey": "plasma-membrane-phospholipid-bilayer",
+        "form": "identification",
+        "difficultyRationale": "Organisation moléculaire intermédiaire d’une structure cellulaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-membrane",
+            "locator": "Phospholipids, paragraphe de la lipid bilayer et Figure 5.4",
+            "support": "Les phospholipides s’organisent en deux couches avec les têtes hydrophiles vers l’eau et les queues hydrophobes face à face."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-messenger-rna-carries-coding-information-to-ribosomes",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une cellule de chanvre, quelle molécule porte vers les ribosomes une copie de l’information d’un gène codant une protéine ?",
+      "options": [
+        "Un ARN ribosomique",
+        "Une molécule d’ADN chromosomique",
+        "Un ARN messager",
+        "Un ARN de transfert"
+      ],
+      "answer": 2,
+      "explanation": "L’ARN messager est produit à partir de l’ADN puis lu par les ribosomes. Il sert d’intermédiaire entre l’information du gène et l’ordre des acides aminés dans la protéine.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-gene-expression"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ARN messager",
+        "subjectKey": "expression-genique",
+        "property": "Intermédiaire entre ADN et synthèse protéique",
+        "expectedAnswer": "Un ARN messager",
+        "learningObjective": "Distinguer les rôles de différents types d’ARN.",
+        "factKey": "messenger-rna-carries-coding-information-to-ribosomes",
+        "form": "identification",
+        "difficultyRationale": "Un mécanisme intermédiaire d’expression d’un gène, au-delà du seul nom du ribosome.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-gene-expression",
+            "locator": "Regulation of Gene Expression, eukaryotic cells et Figure 16.3",
+            "support": "L’ADN nucléaire est transcrit en ARN messager, exporté dans le cytoplasme où il est traduit par les ribosomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-gill-2025-water-conservation-carbon-cost",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Chez Gill et al. (2025), comment évoluent les pertes d’eau et l’assimilation de carbone du chanvre industriel en déficit hydrique ?",
+      "options": [
+        "Plus d’eau perdue et plus de carbone assimilé",
+        "Moins d’eau perdue et plus de carbone assimilé",
+        "Plus d’eau perdue et moins de carbone assimilé",
+        "Moins d’eau perdue et moins de carbone assimilé"
+      ],
+      "answer": 3,
+      "explanation": "Dans cette expérience, la baisse de conductance stomatique limite les pertes d’eau mais aussi l’assimilation de carbone et la production de biomasse. Conserver l’eau n’est donc pas sans coût pour la croissance.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-gill-water-2025"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Compromis eau-carbone du chanvre",
+        "subjectKey": "gill-2025-eau-carbone",
+        "property": "Conservation de l’eau au prix de l’assimilation",
+        "expectedAnswer": "Moins d’eau perdue et moins de carbone assimilé",
+        "learningObjective": "Comprendre un compromis physiologique observé sans le transformer en conseil de culture.",
+        "factKey": "gill-2025-water-conservation-carbon-cost",
+        "form": "identification",
+        "difficultyRationale": "Rappel d’un résultat expérimental spécialisé dans une publication nommée, sans observation fournie permettant de le déduire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-gill-water-2025",
+            "locator": "Résumé p. 1 et Conclusion p. 9, premières phrases",
+            "support": "La diminution de conductance stomatique limite la perte d’eau au détriment de l’assimilation de carbone et de la production de biomasse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-circadian-rhythm-endogenous-near-daily-clock",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Que désigne un rythme circadien chez les plantes, dont le chanvre ?",
+      "options": [
+        "Un cycle interne d’environ vingt-quatre heures",
+        "Un cycle annuel imposé par les saisons",
+        "Un mouvement déclenché uniquement au contact d’un objet",
+        "Une croissance irréversible vers une source lumineuse"
+      ],
+      "answer": 0,
+      "explanation": "Les rythmes circadiens sont liés à une horloge interne d’environ une journée. La lumière peut les synchroniser : ils ne se réduisent pas à une réponse immédiate à chaque changement d’éclairement.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-sensory",
+        "q2-cn02-creux-circadian-2019"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Rythme circadien végétal",
+        "subjectKey": "horloge-circadienne",
+        "property": "Cycle interne proche d’une journée",
+        "expectedAnswer": "Un cycle interne d’environ vingt-quatre heures",
+        "learningObjective": "Distinguer horloge biologique et réponse instantanée à un stimulus.",
+        "factKey": "circadian-rhythm-endogenous-near-daily-clock",
+        "form": "identification",
+        "difficultyRationale": "Notion intermédiaire d’organisation temporelle de la physiologie.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-sensory",
+            "locator": "The Blue Light Responses, cryptochromes and circadian rhythm",
+            "support": "Les cryptochromes contribuent à régler le cycle d’activité de vingt-quatre heures, appelé rythme circadien, à partir de signaux lumineux bleus."
+          },
+          {
+            "sourceId": "q2-cn02-creux-circadian-2019",
+            "locator": "Introduction après Abstract, paragraphes 2–4, oscillator and environmental input signals",
+            "support": "Les plantes possèdent un mécanisme temporel interne ; l’oscillateur maintient un rythme proche de 24 heures sans signal externe, et les entrées lumineuses ou thermiques peuvent le resynchroniser."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-trophic-energy-transfer-dissipates-heat",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans une chaîne chanvre → insecte herbivore → prédateur, pourquoi toute l’énergie végétale ne passe-t-elle pas au prédateur ?",
+      "options": [
+        "Les organismes transmettent toujours la même énergie",
+        "Une partie est dissipée en chaleur ou reste dans les déchets",
+        "L’énergie est intégralement transformée en matière minérale",
+        "Le prédateur reçoit seulement l’énergie lumineuse directe"
+      ],
+      "answer": 1,
+      "explanation": "À chaque niveau, une partie de l’énergie sert au métabolisme et se dissipe en chaleur ; une autre reste dans les parties non consommées ou non assimilées. Seule une fraction atteint le niveau suivant.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn02-energy-flow"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Transfert d’énergie trophique",
+        "subjectKey": "transfert-energie-trophique",
+        "property": "Transfert incomplet et dissipation thermique",
+        "expectedAnswer": "Une partie est dissipée en chaleur ou reste dans les déchets",
+        "learningObjective": "Comprendre pourquoi une chaîne alimentaire ne transmet pas intégralement l’énergie reçue.",
+        "factKey": "trophic-energy-transfer-dissipates-heat",
+        "form": "identification",
+        "difficultyRationale": "Un bilan écologique qualitatif à plusieurs étapes, sans pourcentage universel.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-energy-flow",
+            "locator": "Ecological Efficiency: The Transfer of Energy between Trophic Levels",
+            "support": "Les transferts trophiques perdent de l’énergie sous forme de chaleur métabolique ; des fractions de matière ne sont pas consommées ou assimilées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-rubisco-catalyses-calvin-carbon-fixation",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Quelle enzyme réalise la fixation initiale du CO₂ dans le cycle de Calvin des feuilles du chanvre ?",
+      "options": [
+        "Une amylase",
+        "Une cellulose synthase",
+        "La Rubisco",
+        "L’ATP synthase"
+      ],
+      "answer": 2,
+      "explanation": "La Rubisco ajoute du CO₂ au ribulose-1,5-bisphosphate au début du cycle de Calvin. Cette incorporation du carbone minéral est distincte des réactions qui captent directement la lumière.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-calvin"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Rubisco et fixation du carbone",
+        "subjectKey": "rubisco",
+        "property": "Catalyse de l’entrée du CO₂ dans le cycle de Calvin",
+        "expectedAnswer": "La Rubisco",
+        "learningObjective": "Identifier une enzyme centrale de l’assimilation du carbone.",
+        "factKey": "rubisco-catalyses-calvin-carbon-fixation",
+        "form": "identification",
+        "difficultyRationale": "Biochimie photosynthétique spécialisée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-calvin",
+            "locator": "Stage 1: Fixation, premier paragraphe et Figure 8.19",
+            "support": "La Rubisco catalyse la réaction entre le CO₂ et le ribulose bisphosphate au début du cycle de Calvin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-c3-first-stable-carbon-fixation-product-three-carbons",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Le chanvre est généralement classé parmi les plantes C3. Que signifie ici le chiffre 3 ?",
+      "options": [
+        "Le nombre de carbones du premier produit stable de fixation",
+        "Le nombre de carbones de la molécule qui accueille le CO₂",
+        "Le nombre de carbones d’une molécule de glucose",
+        "Le nombre de carbones d’une molécule de chlorophylle"
+      ],
+      "answer": 0,
+      "explanation": "Dans la voie C3, la première incorporation du CO₂ donne deux molécules de 3-phosphoglycérate, chacune à trois carbones. Cette classification concerne la photosynthèse, pas la durée de vie de la plante.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn02-gill-water-2025",
+        "q2-cn02-calvin"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Photosynthèse C3 du chanvre",
+        "subjectKey": "photosynthese-c3",
+        "property": "Premier produit stable à trois carbones",
+        "expectedAnswer": "Le nombre de carbones du premier produit stable de fixation",
+        "learningObjective": "Comprendre ce que décrit une classe photosynthétique.",
+        "factKey": "c3-first-stable-carbon-fixation-product-three-carbons",
+        "form": "identification",
+        "difficultyRationale": "Lien spécialisé entre classification et produit biochimique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-gill-water-2025",
+            "locator": "Discussion p. 9, paragraphe avant la Conclusion",
+            "support": "Les auteurs situent le chanvre parmi les espèces C3 efficaces et précisent que de possibles caractères intermédiaires restent à examiner."
+          },
+          {
+            "sourceId": "q2-cn02-calvin",
+            "locator": "Stage 1: Fixation et Figure 8.19",
+            "support": "La fixation du CO₂ dans le cycle de Calvin produit des molécules de 3-phosphoglycérate à trois carbones."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-amyloplast-statoliths-gravity-sensing-root-cap",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Dans la coiffe racinaire, quels organites peuvent sédimenter et participer à la perception de la gravité ?",
+      "options": [
+        "Des amyloplastes riches en grains d’amidon",
+        "Des chloroplastes riches en chlorophylle",
+        "Des mitochondries aux membranes repliées",
+        "Des vacuoles remplies d’eau et de solutés"
+      ],
+      "answer": 0,
+      "explanation": "Des amyloplastes chargés d’amidon sédimentent dans des cellules spécialisées, notamment de la coiffe. Ce déplacement contribue à la perception de la gravité, un mécanisme général applicable aux racines du chanvre.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn02-sensory"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Statolithes racinaires",
+        "subjectKey": "statolithes",
+        "property": "Sédimentation d’amyloplastes riches en amidon",
+        "expectedAnswer": "Des amyloplastes riches en grains d’amidon",
+        "learningObjective": "Relier un signal gravitaire à une structure intracellulaire.",
+        "factKey": "amyloplast-statoliths-gravity-sensing-root-cap",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme spécialisé de perception végétale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn02-sensory",
+            "locator": "Plant Responses to Gravity, deuxième paragraphe",
+            "support": "Les amyloplastes riches en amidon, ou statolithes, se déposent selon la gravité dans des cellules spécialisées de la coiffe et des pousses."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-leaf-evaporation-tension-pulls-xylem-water",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans le modèle de cohésion-tension, quel phénomène attire principalement la colonne d’eau vers le haut du xylème du chanvre ?",
+      "options": [
+        "La seule pression positive produite dans les racines",
+        "Un transport actif de l’eau par les cellules du xylème",
+        "L’évaporation d’eau au niveau des feuilles",
+        "La capillarité seule, sans tension créée dans les feuilles"
+      ],
+      "answer": 2,
+      "explanation": "L’évaporation foliaire crée une tension qui se transmet à la colonne d’eau du xylème. La cohésion de l’eau et son adhésion aux parois contribuent au fonctionnement de ce transport.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "revision-agro-water"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Ascension de la sève brute",
+        "subjectKey": "ascension-seve-brute",
+        "property": "Tension créée par l’évaporation foliaire",
+        "expectedAnswer": "L’évaporation d’eau au niveau des feuilles",
+        "learningObjective": "Comprendre le moteur principal du transport d’eau dans les conduits.",
+        "factKey": "leaf-evaporation-tension-pulls-xylem-water",
+        "form": "identification",
+        "difficultyRationale": "Modèle physique intégrant tension et continuité de la colonne d’eau.",
+        "sourceEvidence": [
+          {
+            "sourceId": "revision-agro-water",
+            "locator": "Movement of Water and Minerals in the Xylem, Transpiration",
+            "support": "L’évaporation foliaire crée une pression négative qui tire l’eau vers le haut du xylème."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-angiosperm-pollen-haploid-gametophyte",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans le cycle de vie du chanvre, à quelle génération appartient le grain de pollen ?",
+      "options": [
+        "Au zygote diploïde",
+        "À l’embryon triploïde",
+        "Au gamétophyte mâle haploïde",
+        "Au sporophyte mâle diploïde"
+      ],
+      "answer": 2,
+      "explanation": "Le pollen est le gamétophyte mâle très réduit d’une plante à fleurs. Il porte un jeu de chromosomes, alors que le plant visible correspond au sporophyte généralement diploïde.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-c02-openstax-reproduction"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Génération du pollen",
+        "subjectKey": "cycle-vie-angiosperme",
+        "property": "Gamétophyte mâle haploïde",
+        "expectedAnswer": "Au gamétophyte mâle haploïde",
+        "learningObjective": "Distinguer les générations végétales sans confondre pollen et gamète isolé.",
+        "factKey": "angiosperm-pollen-haploid-gametophyte",
+        "form": "identification",
+        "difficultyRationale": "Cycle de vie spécialisé des plantes à fleurs.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c02-openstax-reproduction",
+            "locator": "Sexual Reproduction in Angiosperms et Development of the Male Gametophyte",
+            "support": "Le pollen constitue le gamétophyte mâle haploïde ; il se développe à partir des microspores."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn02-double-fertilization-zygote-and-endosperm",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Que produisent les deux fusions de la double fécondation chez les plantes à fleurs, dont le chanvre ?",
+      "options": [
+        "Deux embryons indépendants dans chaque ovule",
+        "Un zygote et un nouveau grain de pollen",
+        "Une graine et un gamète femelle non fécondé",
+        "Un zygote et le début d’un tissu nourricier, l’albumen"
+      ],
+      "answer": 3,
+      "explanation": "Un gamète mâle fusionne avec l’oosphère pour former le zygote. L’autre participe à la formation de l’albumen, tissu nourricier : deux fusions ne signifient donc pas deux embryons.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Double fécondation",
+        "subjectKey": "double-fecondation",
+        "property": "Origines du zygote et de l’albumen",
+        "expectedAnswer": "Un zygote et le début d’un tissu nourricier, l’albumen",
+        "learningObjective": "Comprendre les deux devenirs de la fécondation des angiospermes.",
+        "factKey": "double-fertilization-zygote-and-endosperm",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme reproducteur spécialisé à deux fusions.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Double Fertilization, deuxième paragraphe et Figure 32.18",
+            "support": "Un spermatozoïde fusionne avec l’oosphère, l’autre avec la cellule centrale ; ces événements forment le zygote et l’endosperme."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cn02-sensory",
+      "title": "Biology 2e — 30.6 Plant Sensory Systems and Responses",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Plant Responses to Light ; Phytochrome System ; Blue Light Responses ; Plant Responses to Gravity ; Growth Responses, Ethylene et Abscisic Acid",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Plant Responses to Light ; Phytochrome System ; Blue Light Responses ; Plant Responses to Gravity ; Growth Responses, Ethylene et Abscisic Acid",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-energy-flow",
+      "title": "Biology 2e — 46.2 Energy Flow through Ecosystems",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/46-2-energy-flow-through-ecosystems",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "How Organisms Acquire Energy in a Food Web ; Ecological Efficiency: The Transfer of Energy between Trophic Levels",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "How Organisms Acquire Energy in a Food Web ; Ecological Efficiency: The Transfer of Energy between Trophic Levels",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-community",
+      "title": "Biology 2e — 45.6 Community Ecology",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/45-6-community-ecology",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Predation and Herbivory ; Mutualism ; Parasitism",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Predation and Herbivory ; Mutualism ; Parasitism",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-ecology-scope",
+      "title": "Biology 2e — 44.1 The Scope of Ecology",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/44-1-the-scope-of-ecology",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Levels of Ecological Study, Figure 44.2 ; Population Ecology",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Levels of Ecological Study, Figure 44.2 ; Population Ecology",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-ecosystems",
+      "title": "Biology 2e — 46.1 Ecology of Ecosystems",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/46-1-ecology-of-ecosystems",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction, compétition et définition de l’écosystème ; Food Chains and Food Webs, réseau détritique",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, compétition et définition de l’écosystème ; Food Chains and Food Webs, réseau détritique",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-calvin",
+      "title": "Biology 2e — 8.3 Using Light Energy to Make Organic Molecules",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/8-3-using-light-energy-to-make-organic-molecules",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "The Calvin Cycle ; Stage 1: Fixation ; Figure 8.19",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "The Calvin Cycle ; Stage 1: Fixation ; Figure 8.19",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-membrane",
+      "title": "Biology 2e — 5.1 Components and Structure",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/5-1-components-and-structure",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Phospholipids, organisation de la bicouche et Figure 5.4",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Phospholipids, organisation de la bicouche et Figure 5.4",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-water",
+      "title": "Biology 2e — 2.2 Water",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/2-2-water",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Water’s Heat of Vaporization, refroidissement par évaporation ; Water’s Cohesive and Adhesive Properties, rôle dans le transport racine-feuille",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Water’s Heat of Vaporization, refroidissement par évaporation ; Water’s Cohesive and Adhesive Properties, rôle dans le transport racine-feuille",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-carbohydrates",
+      "title": "Biology 2e — 3.2 Carbohydrates",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/3-2-carbohydrates",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Polysaccharides, amidon comme réserve végétale",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Polysaccharides, amidon comme réserve végétale",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-imbibition",
+      "title": "Plant Propagation — Seed Germination: Imbibition",
+      "organization": "University of Florida, IFAS",
+      "url": "https://propg.ifas.ufl.edu/04-seeds/03-germination/08-seedsgermination-imbibition.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif pédagogique Plant Propagation",
+      "published": "s.d.",
+      "passage": "Imbibition, paragraphes sur la réhydratation et l’absorption d’eau initiale",
+      "access": "official-page",
+      "documentKind": "Ressource universitaire de botanique",
+      "limitation": "Principes botaniques généraux appliqués au chanvre ; aucune spécificité du cannabis n’en est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Imbibition, paragraphes sur la réhydratation et l’absorption d’eau initiale",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-gill-water-2025",
+      "title": "Water conservation and assimilation is driven by stomatal behaviour in industrial hemp (Cannabis sativa L.)",
+      "organization": "Environmental and Experimental Botany ; dépôt University of Adelaide",
+      "url": "https://digital.library.adelaide.edu.au/server/api/core/bitstreams/c29a3560-ccfd-485a-9164-ac86e3858790/content",
+      "verifiedAt": "2026-11-16",
+      "author": "Alison R. Gill, Aaron L. Phillips, Stephen D. Tyerman, Tracy Lawson, Timothy R. Cavagnaro, Rachel A. Burton et Beth R. Loveys",
+      "published": "2025-02-24",
+      "passage": "Résumé p. 1 ; Discussion p. 9, qualification C3 ; Conclusion p. 9–10, compromis eau-assimilation",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Expérience en environnement contrôlé sur du chanvre industriel ; le compromis décrit n’est ni un conseil d’irrigation ni une garantie au champ. L’hypothèse de caractères C3–C4 intermédiaires reste à tester.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Résumé p. 1 ; Discussion p. 9, qualification C3 ; Conclusion p. 9–10, compromis eau-assimilation",
+        "result": "Passages lus dans le document accessible ; soutien paraphrasé pour chaque question, sans reprendre de protocole."
+      }
+    },
+    {
+      "id": "q2-cn02-creux-circadian-2019",
+      "title": "Circadian Rhythms in Plants",
+      "organization": "Cold Spring Harbor Perspectives in Biology ; University of California, Davis",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6719598/",
+      "verifiedAt": "2026-11-16",
+      "author": "Nicky Creux et Stacey Harmer",
+      "published": "2019-09",
+      "passage": "Introduction après Abstract, paragraphes sur le mécanisme temporel interne, l’oscillateur autonome et les signaux environnementaux ; Abstract",
+      "access": "full-text",
+      "documentKind": "Synthèse universitaire de physiologie végétale",
+      "limitation": "Synthèse de mécanismes végétaux généraux ; ne démontre pas une période mesurée propre à un cultivar de chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract et Introduction, paragraphes 2–4 (lignes 69 et 73–77 de la version consultée)",
+        "result": "Passages lus : mécanisme interne, maintien approximatif de 24 heures sans signal d’entrée et remise à l’heure par lumière/température explicitement décrits."
+      }
+    }
+  ]
+}

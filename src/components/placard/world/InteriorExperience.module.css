@@ -1,0 +1,81 @@
+.root { position: absolute; inset: 0; color: #203d37; background: #ecdfc8; }
+.root[hidden] { display: none; }
+.top { position: absolute; z-index: 4; top: 10px; left: 14px; right: 14px; display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.top > * { pointer-events: auto; }
+.top h2 { font: 800 25px/1.1 var(--font-display), sans-serif; padding: 10px 15px; margin: 0 auto 0 0; }
+.top h2, .inspector, .settings > div, .fallback { border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.root button, .dialog button, .dialog select, .settings > summary, .add > summary, .root select, .root input[type='number'], .cellPicker > summary { color: #203d37; background: transparent; border: 2px solid transparent; box-shadow: none; border-radius: 0; border-image: var(--game-control-art, url('/placard/ui/control-paper-v2.webp')) var(--game-control-slice, 40) fill / var(--game-control-edge, 12px) / 0 stretch; min-height: 44px; font: 650 12px/1.35 var(--font-body), system-ui, sans-serif; padding: 9px 12px; }
+.dialog button { margin: 5px; cursor: pointer; }
+.dialog button:focus-visible { outline: 3px solid #087b70; outline-offset: 3px; }
+.root button, .root summary { cursor: pointer; }
+.root button:disabled { opacity: .5; cursor: default; }
+.root button:hover:not(:disabled), .root button[aria-pressed='true'] { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+.root :is(button, summary, select, input):focus-visible { outline: 3px solid #087b70; outline-offset: 3px; }
+.settings { position: relative; }
+.settings > div { position: absolute; top: 50px; right: 0; width: min(350px, calc(100vw - 30px)); max-height: 65vh; overflow: auto; padding: 18px; font-size: 12px; }
+.root label { display: grid; gap: 5px; font-size: 12px; min-width: 0; }
+.root select { width: 100%; min-width: 0; }
+.root select option { background: #fff5df; }
+.root input { min-width: 0; width: 100%; }
+.root input[type='checkbox'] { width: 16px; }
+.root p { font-size: 12px; line-height: 1.5; margin: 8px 0; }
+.inspector { position: absolute; z-index: 3; top: 76px; right: 14px; width: 310px; max-height: calc(100% - 170px); overflow-y: auto; overscroll-behavior: contain; padding: 15px; }
+.balance { display: flex; flex-wrap: wrap; gap: 5px 12px; font-size: 11px; margin-bottom: 10px; }
+.balance strong { font-size: 18px; }
+.destination { margin-bottom: 8px; }
+.selection h3, .edit h3 { font-size: 18px; margin: 8px 0; }
+.selection > button { width: 100%; margin-top: 5px; }
+.edit { border-top: 1px solid #bcb39a; margin-top: 12px; padding-top: 8px; }
+.row { display: flex; align-items: center; gap: 8px; }
+.row label { display: flex; align-items: center; }
+.coordinates { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-block: 9px; }
+.coordinates button { grid-column: 1 / -1; }
+.add { margin-top: 8px; }
+.add label { margin-top: 7px; }
+.root [data-interior-placement-valid='false'], .error { color: #842f24; font-weight: 700; }
+.root [data-interior-placement-valid='true'] { color: #15644e; font-weight: 700; }
+.loading { position: absolute; top: 45%; left: 25%; right: 25%; text-align: center; pointer-events: none; }
+.fallback { position: absolute; left: 20px; top: 90px; width: min(480px, calc(100% - 370px)); padding: 18px; }
+.buildBar { position: absolute; z-index: 4; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(780px, calc(100% - 28px)); padding: 10px 17px; color: #203d37; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.buildBar > p { margin: 2px 0 7px; }
+.buildBarActions, .buildActions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.buildDialog { width: min(560px, calc(100vw - 16px)); color: #203d37; }
+.buildDialog p { font-size: 14px; line-height: 1.5; }
+.buildDialog label { display: grid; gap: 6px; margin: 12px 0; font-size: 13px; }
+.buildDialog select { width: 100%; min-width: 0; }
+.buildDialog select option { background: #fff5df; }
+.buildDialog :is(button, select):focus-visible { outline: 3px solid #087b70; outline-offset: 3px; }
+.buildDialog button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+.buildDialog button:disabled { opacity: .5; cursor: default; }
+.buildChoices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+.buildChoices button { display: grid; justify-items: center; gap: 8px; min-height: 118px; margin: 0; text-align: center; padding: 16px 10px; }
+.buildChoices strong { font-size: 19px; }
+.buildChoices span { font-size: 12px; font-weight: 450; }
+.wallLength { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-block: 15px; }
+.wallLength output { font-size: 25px; font-weight: 800; }
+.cellPicker { position: relative; margin-left: auto; }
+.cellPicker > summary { cursor: pointer; }
+.cellPicker form { position: absolute; bottom: calc(100% + 10px); right: 0; width: min(290px, calc(100vw - 36px)); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 16px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.cellPicker form button { grid-column: 1 / -1; }
+@media (max-width: 760px) {
+  .top { top: 3px; left: 6px; right: 6px; flex-wrap: wrap; gap: 4px; }
+  .top h2 { font-size: 19px; padding: 7px 10px; }
+  .top > button, .settings > summary { font-size: 10px; padding: 7px 9px; }
+  .settings { margin-left: auto; }
+  .inspector { top: auto; bottom: 108px; left: 6px; right: 6px; width: auto; max-height: 34%; padding: 10px 13px; }
+  .root[data-interior-editing] .inspector { max-height: 49%; }
+  .root[data-interior-overhead] [data-interior-scene] { top: 100px; bottom: 44%; }
+  .root[data-interior-overhead] .inspector { bottom: 6px; max-height: 42%; }
+  .root[data-interior-editing][data-interior-overhead] [data-interior-scene] { top: 96px; bottom: 132px; }
+  .buildBar { bottom: 6px; width: calc(100% - 12px); padding: 10px 12px; }
+  .buildBarActions { gap: 3px; }
+  .buildBarActions button, .cellPicker > summary { font-size: 10px; padding: 7px 8px; }
+  .buildChoices { gap: 7px; }
+  .buildChoices button { min-height: 108px; }
+  .buildChoices strong { font-size: 17px; }
+  .root .destination { grid-template-columns: auto 1fr; align-items: center; }
+  .balance { margin-bottom: 4px; }
+  .balance strong { font-size: 14px; }
+  .selection > button { width: auto; }
+  .fallback { top: 110px; left: 8px; width: calc(100% - 16px); }
+}

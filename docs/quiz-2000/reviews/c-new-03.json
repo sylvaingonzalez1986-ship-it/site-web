@@ -1,0 +1,1929 @@
+{
+  "batchId": "c-new-03",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16T21:09:06.814Z",
+  "reviewScope": "Lecture indépendante des40questions entières, quatre choix, réponse, explication, niveaux et métadonnées. Vingt-trois objets sources contrôlés avec ouverture réelle des passages nécessaires ; index des faits existants, candidats/retraits et voisinagesC01/C02/C04 comparés. Aucun lot auteur ni fichier actif modifié. Revalidation ciblée : onze versions corrigées relues en entier ;29approbations inchangées préservées exactement. Sources antérieurement relues réutilisées après contrôle des empreintes ; nouveau passage Evolution effectivement ouvert.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière) ; sourceHash de JSON.stringify(objet source complet dans son registre originel).",
+  "sourceTiming": "Passages ouverts le16novembre2026 pendant cette revue. Pas de lecture intégrale revendiquée pour un manuel ou un article dont seules les sections nécessaires sont lues. La sourceLynch réutilisée dans le registre a fait l’objet d’une nouvelle lectureF des sectionsTE/méthylation ; la consultation initiale de l’auteur sur les synthases ne sert pas de preuve supposée pour ces faits. Les pages NHGRI affichent des mises à jour de novembre2026 ; les mentions s.d. du lot sont honnêtes quant à la date de première publication non donnée. Heure exacte de chaque ouverture non conservée ; reviewedAt date le scellement.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-cn03-dna-facts",
+      "url": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+      "sourceHash": "81d3a3ac6d2ea564bcf2371122f15356c1b31dd71f9d69ead13a009730195831",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Introduction, What is DNA made of?/What does DNA do?, lignes10,24–25,39–46",
+      "result": "L’ADN porte l’information héréditaire ; nucléotides et ordre des quatre bases, gènes et expression.",
+      "limitation": "Exemples humains et nombres de chromosomes exclus ; la simplification nucléaire de cette fiche ne remplace pas la définition complète du génome dans le glossaire.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-gene",
+      "url": "https://www.genome.gov/genetics-glossary/Gene",
+      "sourceHash": "d9d343eba152c7c2b50d68a7c577c26160446970cf231ce92ec42b2e1ce99af7",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition et Narration, lignes15–22",
+      "result": "La définition élargie inclut les régions produisant un ARN fonctionnel et les gènes codant une protéine.",
+      "limitation": "Seul le principe moléculaire commun est appliqué au chanvre ; aucune pathologie humaine extrapolée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-genome",
+      "url": "https://www.genome.gov/genetics-glossary/Genome",
+      "sourceHash": "4b128a6057d7a5dcb288a4b00d49ccce40628d6a1156d857830857b97e48ad2d",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes16,20–21",
+      "result": "Le génome est l’ensemble de l’ADN ; sa taille ne mesure pas simplement la complexité biologique.",
+      "limitation": "Exemples comparatifs humains/plantes non convertis en chiffres propres au chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-chromosome",
+      "url": "https://www.genome.gov/genetics-glossary/Chromosome",
+      "sourceHash": "8b1fb59d6e26400392b1815973e0459f2791d6c3ade01b22e3b3f2e29ca1d2ca",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes14–15,20–22",
+      "result": "Un chromosome associe ADN et protéines ; les histones contribuent au compactage.",
+      "limitation": "Les nombres humains sont exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-rna",
+      "url": "https://www.genome.gov/genetics-glossary/Ribonucleic-Acid-RNA",
+      "sourceHash": "9b775ade6ffeae537f2f8cebf3af4eb48934489c663c2966b10e996ccd2a6869",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes14–20",
+      "result": "ARN généralement simple brin, ribose et uracile ; plusieurs classes fonctionnelles d’ARN.",
+      "limitation": "Le caractère généralement simple brin n’exclut pas replis, duplex ou autres formes particulières.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-variation",
+      "url": "https://www.genome.gov/genetics-glossary/Genomic-Variation",
+      "sourceHash": "fb326dfe9877a0a8b5c5f9a5305e5011b14f18e121b38505f8e9bc51b076c8ae",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes16–19",
+      "result": "Différences de séquence entre individus/populations ; effets variables, parfois absents.",
+      "limitation": "Absence d’effet détectable ne prouve pas une neutralité absolue dans tous les contextes.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-locus",
+      "url": "https://www.genome.gov/genetics-glossary/Locus",
+      "sourceHash": "b695f3329732d9869b5d290ad8ce4f8c3750c30ab8a566f1af2d3119ddbb65b9",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes16–19",
+      "result": "Locus = emplacement physique dans le génome, distinct d’une version de séquence.",
+      "limitation": "Définition générale, pas un marqueur expérimental du chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-chromatid",
+      "url": "https://www.genome.gov/genetics-glossary/Chromatid",
+      "sourceHash": "1cb43ac845c3c22a4d00d768130c3cf1667e54441b680e8a69b76cfb9e8486ca",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes15,19–20",
+      "result": "Chromatides sœurs issues de la réplication d’un chromosome et séparées lors de la division.",
+      "limitation": "Identité normale après copie, hors erreur ou modification ; pas les deux brins d’une hélice.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-duplication",
+      "url": "https://www.genome.gov/genetics-glossary/Duplication",
+      "sourceHash": "acc083be85b1e97488c1313d7c5dc84b96d1b096a98103bde252edea9a7a134e",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition, ligne15",
+      "result": "Duplication mutationnelle = copie(s) supplémentaire(s) d’un segment d’ADN.",
+      "limitation": "Ne pas confondre ce variant structural avec la réplication physiologique entière.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-alternative-splicing",
+      "url": "https://www.genome.gov/genetics-glossary/Alternative-Splicing",
+      "sourceHash": "31ecf4ff0be6bc0d633986e35359e94f3e1749361e7e74216d7b5016c75c1740",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition, ligne14",
+      "result": "Différentes combinaisons d’exons du même gène produisent des transcrits apparentés.",
+      "limitation": "Seule la définition est retenue ; la narration humaine et immunologique n’est pas transférée au chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-dna-structure",
+      "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+      "sourceHash": "b5e7f8c2259363d0dcc34f4103ee1ceeac9d5f9133d0a43c9b33af9422d0a4e4",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§14.2, lignes37–45, Figure14.7",
+      "result": "Nucléotide sucre/phosphate/base ; désoxyribose ; double hélice, complémentarité A–T/G–C et antiparallélisme 5′/3′.",
+      "limitation": "Lecture des paragraphes structuraux ; aucun protocole de séquençage repris.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-dna-replication",
+      "url": "https://openstax.org/books/biology-2e/pages/14-3-basics-of-dna-replication",
+      "sourceHash": "93eb38e55d5de5d161c26a76bbaabaf25932c5ca397880d53b0788eaa264df40",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§14.3, lignes29–33,41–42, Figure14.12",
+      "result": "Chaque ADN fille conserve un brin parental et reçoit un brin synthétisé.",
+      "limitation": "L’expérience historique bactérienne démontre le modèle ; seul le mécanisme général est testé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-euk-replication",
+      "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+      "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§14.5, lignes31–33,43,47–51",
+      "result": "ADN polymérases allongent les brins ; ligase joint les fragments, hélicase ouvre l’hélice.",
+      "limitation": "Nombres et vitesses d’enzymes humains/levures non appliqués au chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-dna-repair",
+      "url": "https://openstax.org/books/biology-2e/pages/14-6-dna-repair",
+      "sourceHash": "b7c039ab2d7019c427dbc0c35e8be7740401e186375b5eafe8d4d820f830aab4",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§14.6, lignes29–38,46–53, Figure14.21",
+      "result": "Réparation de mésappariements/lésions ; mutations silencieuses, faux-sens, non-sens et décalages de lecture distingués.",
+      "limitation": "Exemples médicaux humains exclus ; la source ne promet pas une réparation infaillible.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-rna-processing",
+      "url": "https://openstax.org/books/biology-2e/pages/15-4-rna-processing-in-eukaryotes",
+      "sourceHash": "53cb8906bf100a2825d01a08940420503ea010fdb4c43311277761e6f0d17ce2",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§15.4, lignes30–36,55",
+      "result": "Les introns sont retirés et les exons reliés pendant la maturation du pré-ARNm.",
+      "limitation": "Les exons peuvent comporter des régions non traduites ; la question ne les réduit pas tous à des séquences codantes.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-genetic-code",
+      "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+      "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5",
+      "result": "Transcription ADN→ARN ; codons triplets, redondance, codons de terminaison et effet d’une insertion d’un nucléotide sur le cadre.",
+      "limitation": "Lecture des paragraphes ; l’alt-text de Figure15.3 inverse malencontreusement exons/introns, écarté au profit du texte exact de §15.4. L’alt-text de Figure15.5 est également imprécis ; la démonstration des lignes42–44 suffit.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-epigenetics",
+      "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+      "sourceHash": "ac1f9256f9b020143cb7b23966789b2e929e4d6f69e6e10648f1a0f9e42d2865",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§16.3, lignes30–38,43–48,51–52",
+      "result": "Modifications épigénétiques sans changement de séquence ; nucléosomes ADN/histones ; ajout de groupes méthyle à des bases.",
+      "limitation": "Les généralisations CpG/promoteurs et les exemples humains ne sont pas extrapolés à toutes les marques végétales ; aucune affirmation de transmission systématique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-mendel",
+      "url": "https://openstax.org/books/biology-2e/pages/12-1-mendels-experiments-and-the-laws-of-probability",
+      "sourceHash": "a26e3fadbf8c24027c5d14881c5b31da0f9802c3ca784b7405ec13a02321b29c",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§12.1, lignes33–41,53–57",
+      "result": "Pois comme modèle principal ; caractères distincts et retour d’un caractère masqué réfutent le mélange irréversible.",
+      "limitation": "Mendel n’a pas mené ces essais sur le chanvre ; transfert limité au modèle mendélien simple explicitement annoncé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-cell-division",
+      "url": "https://openstax.org/books/biology-2e/pages/10-1-cell-division",
+      "sourceHash": "82c7bbc207d1b5996619bff01c64650928787d9ec16565484a12d143c91033a2",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§10.1, lignes35–44,50,57",
+      "result": "Deux jeux parentaux à la fécondation ; homologues aux loci correspondants et allèles éventuellement distincts ; chromatides après réplication.",
+      "limitation": "Exemples et comptes humains exclus ; la question d’homologie vise les autosomes et l’apport parental vise l’embryon, pas l’endosperme.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-transposon",
+      "url": "https://www.nature.com/scitable/definition/transposable-element-transposon-dna-transposon-jumping-gene-52/",
+      "sourceHash": "65f0b43e71e0e2a177e7e9b208a7d3bc393f0544b35868f84a2cd98b60f803d4",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "archived-official-page-targeted",
+      "locator": "Définition principale, lignes0–7",
+      "result": "Un transposon est un fragment d’ADN mobile qui peut changer de position génomique.",
+      "limitation": "Redirection cookies observée mais définition archivée accessible ; aucune assertion que chaque copie conserve son activité.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-linkage",
+      "url": "https://openstax.org/books/biology-2e/pages/13-1-chromosomal-theory-and-genetic-linkage",
+      "sourceHash": "ad5c7cf2fa2f2015d0e54eefc7a25e6cccadea19b2ddb05607b37a9ef132c45e",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§13.1, ligne47, Chromosomal Theory of Inheritance/Genetic Linkage",
+      "result": "Chaque chromosome peut porter de nombreux gènes liés, plus nombreux que les chromosomes.",
+      "limitation": "Principe chromosomique général ; aucune carte ou distance propre au chanvre inventée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-trna",
+      "url": "https://www.genome.gov/genetics-glossary/Transfer-RNA-tRNA",
+      "sourceHash": "c0ced3138c5210d82badbd7203afb6e52475ee510b0798b79e5dedc8cf5d1d85",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes15,19",
+      "result": "ARNt adaptateur associant codon et acide aminé apporté à la chaîne protéique.",
+      "limitation": "La définition moléculaire est retenue, sans reprendre les raccourcis de l’analogie culinaire de la narration.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cfix-lynch-pangenome-2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+      "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+      "sourceRegistry": "docs/quiz-2000/batches/c-legacy-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction ligne245 ; sectionTE, lignes366–368 ; Base-calling methylated cytosines, lignes506–509",
+      "result": "Éléments transposables et leurs vestiges dans le génome du cannabis ; transcrits de certaines familles ; profils de méthylation et cytosines méthylées mesurés.",
+      "limitation": "Nouveaux passages réellement ouverts pour cette revue, malgré référence réutilisée. Présence/transcription ne prouve pas la mobilité actuelle de chaque copie ; l’étude n’établit pas une causalité générale entre chaque marque et chaque expression.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn04-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+      "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§18.1 Processes and Patterns of Evolution, lignes65–69",
+      "result": "Trois classes d’effets des mutations sur la valeur sélective et dépendance au milieu explicitement établies.",
+      "limitation": "Principe général de génétique évolutive, pas une mesure expérimentale du chanvre. Seule cette section est relue.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-cn03-dna-carries-hereditary-instructions",
+      "status": "approved",
+      "comment": "Information héréditaire portée par l’ADN correctement distinguée des autres grandes molécules végétales ; introduction réellement accessible.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-facts",
+          "url": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+          "locator": "Introduction, What is DNA made of?/What does DNA do?, lignes10,24–25,39–46 ; preuve ciblée : Introduction",
+          "result": "Passage effectivement relu et soutien confirmé : L’ADN contient des instructions biologiques et se transmet aux descendants lors de la reproduction.",
+          "sourceHash": "81d3a3ac6d2ea564bcf2371122f15356c1b31dd71f9d69ead13a009730195831",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "a080a2979f165121fc863f5124489238a19ff19f04ec07c13a5b61e4f4e060d5",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-french-name-deoxyribonucleic-acid",
+      "status": "approved",
+      "comment": "Nom français exact ; choix correspondant à des molécules réelles et sigles différents.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-facts",
+          "url": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+          "locator": "Introduction, What is DNA made of?/What does DNA do?, lignes10,24–25,39–46 ; preuve ciblée : Titre et Introduction",
+          "result": "Passage effectivement relu et soutien confirmé : La fiche nomme la molécule deoxyribonucleic acid, soit acide désoxyribonucléique en français.",
+          "sourceHash": "81d3a3ac6d2ea564bcf2371122f15356c1b31dd71f9d69ead13a009730195831",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "40f621c7e0e5c8e80d866b5ccc5d46fb3e8658171efacb01181d9451e456e78c",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-double-helix-two-strands",
+      "status": "approved",
+      "comment": "Double hélice habituelle correctement qualifiée ; pas d’absolu ni confusion entre chromosome et hélice.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-structure",
+          "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+          "locator": "§14.2, lignes37–45, Figure14.7 ; preuve ciblée : Paragraphe du modèle de Watson et Crick",
+          "result": "Passage effectivement relu et soutien confirmé : Deux brins d’ADN s’enroulent l’un autour de l’autre en une double hélice.",
+          "sourceHash": "b5e7f8c2259363d0dcc34f4103ee1ceeac9d5f9133d0a43c9b33af9422d0a4e4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "68bbbc13476c27890fe2f2732f556014cfb026826d2b09d971566ea62fbcb3e9",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-four-canonical-bases-acgt",
+      "status": "approved",
+      "comment": "Alphabet canonique exact, uracile distingué ; pas de négation des bases modifiées.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-facts",
+          "url": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+          "locator": "Introduction, What is DNA made of?/What does DNA do?, lignes10,24–25,39–46 ; preuve ciblée : What is DNA made of?",
+          "result": "Passage effectivement relu et soutien confirmé : Les quatre bases des nucléotides d’ADN sont l’adénine, la thymine, la guanine et la cytosine.",
+          "sourceHash": "81d3a3ac6d2ea564bcf2371122f15356c1b31dd71f9d69ead13a009730195831",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "b773322a66fc2eb2e3a410568abfc506ddfaf1899c580ab61bafbfb0bb727739",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-complementary-base-pairs-at-gc",
+      "status": "approved",
+      "comment": "Complémentarité correcte et utile pour comprendre la copie ; quatre propositions d’appariements comparables.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-structure",
+          "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+          "locator": "§14.2, lignes37–45, Figure14.7 ; preuve ciblée : Double hélice, paragraphe base pairing",
+          "result": "Passage effectivement relu et soutien confirmé : Les appariements complémentaires sont adénine-thymine et guanine-cytosine.",
+          "sourceHash": "b5e7f8c2259363d0dcc34f4103ee1ceeac9d5f9133d0a43c9b33af9422d0a4e4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "0c1329d24bdbbf9403460bd49e78b01564be03d7e56dead60e2c3aff4939804f",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-base-order-encodes-information",
+      "status": "approved",
+      "comment": "Ordre des bases correctement distingué des caractéristiques du squelette et de l’orientation ; l’explication reste exacte malgré une comparaison couleur/prélèvement sans rapport avec les choix.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-facts",
+          "url": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+          "locator": "Introduction, What is DNA made of?/What does DNA do?, lignes10,24–25,39–46 ; preuve ciblée : What is DNA made of?",
+          "result": "Passage effectivement relu et soutien confirmé : L’ordre, ou séquence, des bases détermine les instructions biologiques portées par un brin d’ADN.",
+          "sourceHash": "81d3a3ac6d2ea564bcf2371122f15356c1b31dd71f9d69ead13a009730195831",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "9b08e95d141921db14bf5572f94448cc124b4f5ee4bd438e8c409d3ee6233ecc",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-gene-functional-dna-region",
+      "status": "approved",
+      "comment": "Définition fonctionnelle du gène incluant les ARN non codants ; ni gène=protéine ni gène=chromosome.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-gene",
+          "url": "https://www.genome.gov/genetics-glossary/Gene",
+          "locator": "Definition et Narration, lignes15–22 ; preuve ciblée : Definition et Narration, définition élargie",
+          "result": "Passage effectivement relu et soutien confirmé : Un gène constitue une unité d’hérédité ; il encode une protéine ou un ARN fonctionnel.",
+          "sourceHash": "d9d343eba152c7c2b50d68a7c577c26160446970cf231ce92ec42b2e1ce99af7",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "4ba7fae6830e74a65d887917582a3305bba703282dbe89db6a714519098fd74a",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genome-entire-dna-set",
+      "status": "approved",
+      "comment": "Définition complète exacte ; la définition du transcriptome qui révélait C04 est retirée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genome",
+          "url": "https://www.genome.gov/genetics-glossary/Genome",
+          "locator": "Definition/Narration, lignes16,20–21 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : Le génome est l’ensemble des instructions d’ADN d’une cellule ou d’un organisme.",
+          "sourceHash": "4b128a6057d7a5dcb288a4b00d49ccce40628d6a1156d857830857b97e48ad2d",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "2bcda238972c42db2ffc4ad8823df110365c4f632f9272ca625a5e801d690455",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "de82210528d6af9c50b7da9fb1d14942743953231f10af4c59dbc5f00d6204b4",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.813Z"
+    },
+    {
+      "id": "hemp-q2-cn03-chromosome-dna-associated-proteins",
+      "status": "approved",
+      "comment": "Quatre compositions moléculaires comparables ; association ADN/protéines correctement distinguée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-chromosome",
+          "url": "https://www.genome.gov/genetics-glossary/Chromosome",
+          "locator": "Definition/Narration, lignes14–15,20–22 ; preuve ciblée : Definition et Narration",
+          "result": "Passage effectivement relu et soutien confirmé : Un chromosome est constitué d’une molécule d’ADN et de protéines qui contribuent à son empaquetage.",
+          "sourceHash": "8b1fb59d6e26400392b1815973e0459f2791d6c3ade01b22e3b3f2e29ca1d2ca",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "722b82478296dbd0fd2770a4b30db94b3aa605a7254fe3a82eda21f1ae3f3f24",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "a9e71a5389a40dda5fcb7f9f4b9486d4e4ce9004602a6d3448cd04f14ff4a8ba",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-rna-usually-single-stranded",
+      "status": "approved",
+      "comment": "Simple brin correctement présenté comme le cas le plus fréquent, sans interdire les appariements et formes particulières.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-rna",
+          "url": "https://www.genome.gov/genetics-glossary/Ribonucleic-Acid-RNA",
+          "locator": "Definition/Narration, lignes14–20 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : L’ARN est le plus souvent simple brin, contrairement à l’ADN.",
+          "sourceHash": "9b775ade6ffeae537f2f8cebf3af4eb48934489c663c2966b10e996ccd2a6869",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "0b3dcb6cb5922a933dd005f1e72c4eca97cc3a571cb21509504d24123be8bf2c",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-many-genes-per-chromosome",
+      "status": "approved",
+      "comment": "Relation nombreux gènes par chromosome exacte ; ce fait est distinct du nombre diploïde de chromosomes déjà validé.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-linkage",
+          "url": "https://openstax.org/books/biology-2e/pages/13-1-chromosomal-theory-and-genetic-linkage",
+          "locator": "§13.1, ligne47, Chromosomal Theory of Inheritance/Genetic Linkage ; preuve ciblée : Genetic Linkage and Distances, premier paragraphe",
+          "result": "Passage effectivement relu et soutien confirmé : Chaque chromosome peut porter de nombreux gènes, ce qui explique qu’il y ait plus de caractères héréditaires que de chromosomes.",
+          "sourceHash": "ad5c7cf2fa2f2015d0e54eefc7a25e6cccadea19b2ddb05607b37a9ef132c45e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "b635f0c4eef58d53f464e4d075f2d0444db36500eede8debca0b0a2bca71b554",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-repair-can-correct-damage",
+      "status": "approved",
+      "comment": "Cas concret de base incorrecte : retrait/remplacement distingué des processus de lecture ou compaction ; niveau2 et situation justifiés par le mécanisme.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-repair",
+          "url": "https://openstax.org/books/biology-2e/pages/14-6-dna-repair",
+          "locator": "§14.6, lignes29–38,46–53, Figure14.21 ; preuve ciblée : Introduction et paragraphes mismatch repair et excision repair",
+          "result": "Passage effectivement relu et soutien confirmé : Des mécanismes réparent des erreurs de réplication ou remplacent des régions d’ADN endommagées.",
+          "sourceHash": "b7c039ab2d7019c427dbc0c35e8be7740401e186375b5eafe8d4d820f830aab4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "b7c5a48c6b65c2f5ffa6a1aa421e60daeb40f1728b4ed4d495be5c6a44e68594",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "dd44262809bd8fe242a2667389d368d6581854383c4a81ef62cb013a5c13f56b",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-genetic-variants-can-have-no-observable-effect",
+      "status": "approved",
+      "comment": "Éventail favorable/défavorable/neutre établi dans les deux sources. Les choix portent désormais sur les classes possibles, sans trois promesses absolues ; niveau1 défendable pour la correction d’une idée reçue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-variation",
+          "url": "https://www.genome.gov/genetics-glossary/Genomic-Variation",
+          "locator": "Definition/Narration, lignes16–19 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : Certains variants influencent une fonction biologique ; d’autres n’ont pas d’effet biologique.",
+          "sourceHash": "fb326dfe9877a0a8b5c5f9a5305e5011b14f18e121b38505f8e9bc51b076c8ae",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        },
+        {
+          "sourceId": "q2-cn04-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+          "locator": "§18.1 Processes and Patterns of Evolution, lignes65–69",
+          "result": "Passage réellement ouvert le16novembre2026 : mutations réduisant la valeur sélective, effets favorables ou neutres, ampleurs variables et dépendance au milieu.",
+          "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "63aadbb9d7e95547d9674353edb37b9a2d86934102a1c85896d95421b150d66b",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "2659a77f71619fab320de2da162b8dadfa5286671fd09a67bf4b974138546397",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-offspring-nuclear-genome-from-both-parents",
+      "status": "approved",
+      "comment": "Apport nucléaire biparental exact pour l’embryon diploïde normal ; l’endosperme n’est pas confondu avec l’embryon.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-cell-division",
+          "url": "https://openstax.org/books/biology-2e/pages/10-1-cell-division",
+          "locator": "§10.1, lignes35–44,50,57 ; preuve ciblée : Genomic DNA, fertilization and homologous pairs",
+          "result": "Passage effectivement relu et soutien confirmé : La fécondation réunit un jeu de chromosomes de chacun des deux parents en une cellule diploïde.",
+          "sourceHash": "82c7bbc207d1b5996619bff01c64650928787d9ec16565484a12d143c91033a2",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "f2522e09a677fdd26299e6d335b756ecc3e63c6208604d161d6a3ab45fd04a90",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-mendel-garden-pea-model-for-inheritance",
+      "status": "approved",
+      "comment": "Pois correctement attribué à Mendel ; pas d’essai sur le chanvre inventé ni universalisation de tous ses rapports simples.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-mendel",
+          "url": "https://openstax.org/books/biology-2e/pages/12-1-mendels-experiments-and-the-laws-of-probability",
+          "locator": "§12.1, lignes33–41,53–57 ; preuve ciblée : Introduction et Mendel’s Model System",
+          "result": "Passage effectivement relu et soutien confirmé : Le pois de jardin, Pisum sativum, est le principal modèle des expériences de Mendel.",
+          "sourceHash": "a26e3fadbf8c24027c5d14881c5b31da0f9802c3ca784b7405ec13a02321b29c",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "9e749b4431d9219da7d971b21b4e8daffd227dee57a55f03a96b7ccd63ffd3ae",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genetic-diversity-dna-differences-within-species",
+      "status": "approved",
+      "comment": "Observations désormais entre plantes, incluant des caractères sensibles au milieu ; la différence de séquence fournit la preuve directement génétique.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-variation",
+          "url": "https://www.genome.gov/genetics-glossary/Genomic-Variation",
+          "locator": "Definition/Narration, lignes16–19 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : La variation génomique correspond à des différences de séquence d’ADN entre individus ou populations.",
+          "sourceHash": "fb326dfe9877a0a8b5c5f9a5305e5011b14f18e121b38505f8e9bc51b076c8ae",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "1a085e64fea52767fd206740babe733929a20481d3cec70a4acc152578d2198c",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "a4d1ad92ba2f219d0626b4713b70c8ffee2fa4e137683d36cedf4fcfd3efdc2d",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-genome-size-not-simple-complexity-scale",
+      "status": "approved",
+      "comment": "Choix de modèles explicites de relation taille/complexité ; niveau2 justifié. La forme identification correspond au rappel conceptuel désormais demandé.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genome",
+          "url": "https://www.genome.gov/genetics-glossary/Genome",
+          "locator": "Definition/Narration, lignes16,20–21 ; preuve ciblée : Narration, comparaison des tailles de génomes",
+          "result": "Passage effectivement relu et soutien confirmé : Il n’existe pas de corrélation cohérente simple entre complexité biologique et taille du génome.",
+          "sourceHash": "4b128a6057d7a5dcb288a4b00d49ccce40628d6a1156d857830857b97e48ad2d",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "e07b97f57189fc431e64b50dcd63caff073c359fbbd156408daad3b8438f4c21",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "965d69508f4db1a582054ea2f0b65ddbfe0ae8659159dd0f4ae5a7a9c1a5b2ad",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-mendelian-alleles-not-irreversibly-blended",
+      "status": "approved",
+      "comment": "L’erreur de transmission ensemble dans tous les gamètes remplace le milieu qui remplaçait les allèles. Quatre conceptions de transmission comparables, niveau2 mieux justifié.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-mendel",
+          "url": "https://openstax.org/books/biology-2e/pages/12-1-mendels-experiments-and-the-laws-of-probability",
+          "locator": "§12.1, lignes33–41,53–57 ; preuve ciblée : Introduction, blending theory of inheritance",
+          "result": "Passage effectivement relu et soutien confirmé : Les facteurs héréditaires ne se mélangent pas irréversiblement ; ils conservent leur identité et peuvent être retransmis.",
+          "sourceHash": "a26e3fadbf8c24027c5d14881c5b31da0f9802c3ca784b7405ec13a02321b29c",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "0e26ebf0ee71320e6080839864941c2c46eaeddb243add93d9eb1d14a077e924",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "5689e7c3b0333f5d23449fcf9877cf850dc871804f5fea240b904aa309528028",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-nucleotide-building-block-dna",
+      "status": "approved",
+      "comment": "Unité nucléotide correctement identifiée par ses trois composants, distincte des unités de lipides/protéines/sucres.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-structure",
+          "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+          "locator": "§14.2, lignes37–45, Figure14.7 ; preuve ciblée : Premier paragraphe et structure des nucléotides",
+          "result": "Passage effectivement relu et soutien confirmé : Le nucléotide comprend une base azotée, un sucre à cinq carbones et un phosphate.",
+          "sourceHash": "b5e7f8c2259363d0dcc34f4103ee1ceeac9d5f9133d0a43c9b33af9422d0a4e4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "5091d2f79f0dca9cd35b525848109ec18d9af4ff302cdb5086c39937ca45c22c",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-sugar-is-deoxyribose",
+      "status": "approved",
+      "comment": "Seul changement de clé : adn, désormais commune avec le nom développé ADN. Fait/choix/preuve strictement inchangés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-structure",
+          "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+          "locator": "§14.2, lignes37–45, Figure14.7 ; preuve ciblée : Paragraphe The sugar is deoxyribose",
+          "result": "Passage effectivement relu et soutien confirmé : L’ADN contient du désoxyribose, tandis que l’ARN contient du ribose.",
+          "sourceHash": "b5e7f8c2259363d0dcc34f4103ee1ceeac9d5f9133d0a43c9b33af9422d0a4e4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "58583e9e2dcff9fb65b5293ba11a652a40c33a29b990ea66c1f0d2f0de9af0c8",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "7f0f16ac4529e03ab6e12583eba9d2a8bb21f83e1b94551b7688f4e8953cdf87",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-locus-physical-genomic-position",
+      "status": "approved",
+      "comment": "Locus correctement distingué d’un allèle, transcript et paire de chromosomes ; définition distincte de celle d’allèle déjà validée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-locus",
+          "url": "https://www.genome.gov/genetics-glossary/Locus",
+          "locator": "Definition/Narration, lignes16–19 ; preuve ciblée : Definition et Narration",
+          "result": "Passage effectivement relu et soutien confirmé : Un locus est un site physique du génome, comme l’emplacement d’un gène ou d’un segment d’intérêt.",
+          "sourceHash": "b695f3329732d9869b5d290ad8ce4f8c3750c30ab8a566f1af2d3119ddbb65b9",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "4dc09bf55333e04a01726b540caa8fa7575ce76fb486b65f9f668a2aea74d2e9",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "metadataAdjustment": {
+        "id": "hemp-q2-cn03-locus-physical-genomic-position",
+        "from": "locus",
+        "to": "cannabis-allele",
+        "beforeHash": "874f98f11834e6f2b0f1461d8f982ecac55dad22f4d5c4a6fadecb83baab154b",
+        "proposedBy": "f_existing_audit",
+        "approvedAndAppliedBy": "root",
+        "basedOn": "reviews/c-new-03.json#deduplication",
+        "reason": "Locus and allele are distinct properties, but the locus explanation explicitly defines the answer of the approved historical allele question.",
+        "scope": "Subject grouping only; question wording, choices, answer, explanation and source evidence unchanged.",
+        "afterHash": "4dc09bf55333e04a01726b540caa8fa7575ce76fb486b65f9f668a2aea74d2e9"
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-homologous-chromosomes-same-gene-loci",
+      "status": "approved",
+      "comment": "Autosomes homologues aux loci correspondants avec allèles éventuellement différents ; pas de fausse identité stricte et pas d’extrapolation aux X/Y.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-cell-division",
+          "url": "https://openstax.org/books/biology-2e/pages/10-1-cell-division",
+          "locator": "§10.1, lignes35–44,50,57 ; preuve ciblée : Genomic DNA, homologous chromosomes",
+          "result": "Passage effectivement relu et soutien confirmé : Les chromosomes homologues ont les gènes aux mêmes loci, mais les allèles hérités de chaque parent peuvent différer.",
+          "sourceHash": "82c7bbc207d1b5996619bff01c64650928787d9ec16565484a12d143c91033a2",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "a1f63bb32a2cd409641fbd2d0511aecb6110fff4e367ec53382245824e76f5df",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-sister-chromatids-replicated-chromosome-copies",
+      "status": "approved",
+      "comment": "Copies sœurs issues de la réplication correctement distinguées des homologues et des brins d’ADN ; qualification temporelle adéquate.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-chromatid",
+          "url": "https://www.genome.gov/genetics-glossary/Chromatid",
+          "locator": "Definition/Narration, lignes15,19–20 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : Les chromatides sœurs sont les deux moitiés identiques d’un chromosome répliqué en préparation de la division.",
+          "sourceHash": "1cb43ac845c3c22a4d00d768130c3cf1667e54441b680e8a69b76cfb9e8486ca",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "6be755de40762d77fbc101c759db72bdee038f21f20911ca9479fef8ca7a7fa9",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-polymerase-builds-new-dna-strand",
+      "status": "approved",
+      "comment": "Activité d’allongement de l’ADN polymérase correctement distinguée de ligase, hélicase et ARN polymérase.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "locator": "§14.5, lignes31–33,43,47–51 ; preuve ciblée : Réplication eucaryote, paragraphes DNA polymerases et elongation",
+          "result": "Passage effectivement relu et soutien confirmé : Les ADN polymérases assurent l’allongement des nouveaux brins pendant la réplication.",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "d79b82aa1a3598b7fb01443a1ab33f6e47b1da244e86e98776b4e6a9f1b57258",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-transcription-dna-to-rna-process",
+      "status": "approved",
+      "comment": "Transcription correctement identifiée ; fait distinct du rôle de l’ARN messager déjà validé, clé expression-genique commune pertinente.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genetic-code",
+          "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+          "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5 ; preuve ciblée : Introduction et Central Dogma",
+          "result": "Passage effectivement relu et soutien confirmé : La transcription génère un ARN messager à partir de l’information d’un gène d’ADN.",
+          "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "71f9025d5e45d23a8ed36641af34eb1bdf8b440134f8be677def00e280da4825",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-codon-three-rna-nucleotides",
+      "status": "approved",
+      "comment": "Triplet de nucléotides correctement distingué d’unités géniques, protéiques et de complexes ; définition de lecture non réduite aux seuls acides aminés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genetic-code",
+          "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+          "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5 ; preuve ciblée : The Genetic Code Is Degenerate and Universal",
+          "result": "Passage effectivement relu et soutien confirmé : Un codon est un triplet de nucléotides de l’ARN qui spécifie un acide aminé ou la terminaison.",
+          "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "9667453bf8052271fd1d42b112e26f9a15ccc1a14ad3a5c1c1b358e813bcf92d",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: the question now tests the specific UAG termination signal, without naming a ribosome or stop in the prompt. All four options are translation outcomes. It no longer inversely tests ribosome function. The new NHGRI definition was opened by root and explicitly lists UAG among termination codons; F previous genetic-code support for chain release is retained.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genetic-code",
+          "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+          "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5 ; preuve ciblée : Paragraphe stop codons après Figure du code génétique",
+          "result": "Passage effectivement relu et soutien confirmé : Des codons particuliers terminent la synthèse et libèrent la chaîne protéique de la machinerie de traduction.",
+          "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        },
+        {
+          "sourceId": "q2-cn03-stop-codon",
+          "url": "https://www.genome.gov/genetics-glossary/Stop-Codon",
+          "locator": "Definition, rendered line16; Narration line21",
+          "result": "Root opened the official NHGRI page on2026-11-16 and read its distinction between amino-acid codons and the three termination codons, explicitly including UAG. Existing F evidence supports the release outcome.",
+          "sourceHash": "5995d1fd70d6f8473992d4788bf63700a944b7713514ef6bc47c0d361bc410ad",
+          "checkedAt": "2026-11-16",
+          "reader": "root",
+          "consultationBasis": "New targeted reading for final arbitration after independent initial Sol review."
+        }
+      ],
+      "contentHash": "f318caad985fa4ed19bf36184f462df0a10e4e8a2a65277be437d779e660df62",
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "function_inversion_near_duplicate",
+          "reason": "L’énoncé donne le ribosome et les trois distracteurs sont des processus qui ne relèvent pas de sa fonction ; assemblage des acides aminés s’impose sans connaître un codon stop. C01-ribosome-direct-protein-assembly identifie le ribosome à cette même fonction.",
+          "requestedChange": "Faire dépendre la réponse du signal de terminaison lui-même, en comparant des issues plausibles au sein de la traduction (et sans simple stop=terminer). Garder une seule propriété moléculaire utile ; ne pas reproduire le fait fonction-du-ribosome."
+        }
+      ],
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "707a8c810f4ae82c6e977c634a601d2db3af5f62aeee2d5f846cff8ee8bd3675",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16",
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-cn03-genetic-code-several-codons-same-amino-acid",
+      "status": "approved",
+      "comment": "Redondance du code correctement distinguée de trois autres propriétés réelles du même code.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genetic-code",
+          "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+          "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5 ; preuve ciblée : The Genetic Code Is Degenerate and Universal",
+          "result": "Passage effectivement relu et soutien confirmé : Un acide aminé peut être spécifié par plusieurs triplets différents, ce qui définit la dégénérescence du code.",
+          "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "626b6689f027d5f1d164fe2ab36ed1f931f270a85a869ac19f57659d6543a1c6",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-transfer-rna-delivers-amino-acids",
+      "status": "approved",
+      "comment": "Fonction adaptatrice de l’ARNt exacte, en concurrence avec des catégories d’ARN réelles.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-trna",
+          "url": "https://www.genome.gov/genetics-glossary/Transfer-RNA-tRNA",
+          "locator": "Definition/Narration, lignes15,19 ; preuve ciblée : Definition et Narration",
+          "result": "Passage effectivement relu et soutien confirmé : L’ARN de transfert associe la reconnaissance d’un codon et l’apport de l’acide aminé approprié à la chaîne en synthèse.",
+          "sourceHash": "c0ced3138c5210d82badbd7203afb6e52475ee510b0798b79e5dedc8cf5d1d85",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "e0663ab14a0948c0ab291020f91024b8c27df455126bc9012c7890f33c04beda",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-missense-substitution-changes-amino-acid",
+      "status": "approved",
+      "comment": "Quatre conséquences de variants codants maintenant comparables ; faux-sens distinct de synonyme, non-sens et décalage de cadre.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-repair",
+          "url": "https://openstax.org/books/biology-2e/pages/14-6-dna-repair",
+          "locator": "§14.6, lignes29–38,46–53, Figure14.21 ; preuve ciblée : Mutations, paragraphe amino acid replacement et schéma des classes",
+          "result": "Passage effectivement relu et soutien confirmé : Une mutation faux-sens substitue un acide aminé à un autre dans la protéine.",
+          "sourceHash": "b7c039ab2d7019c427dbc0c35e8be7740401e186375b5eafe8d4d820f830aab4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "15c66b220cb8199873962d8a6b854538d9c7fcd56473ecd84fc7615e710f9e4b",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "df174320467ede8a57317f354c53f22e9888572fd21e1849efcea14247275906",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-rna-splicing-removes-introns-joins-exons",
+      "status": "approved",
+      "comment": "Retrait des introns et jonction des exons exacts ; l’explication ne prétend pas que tous les exons sont entièrement traduits.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-rna-processing",
+          "url": "https://openstax.org/books/biology-2e/pages/15-4-rna-processing-in-eukaryotes",
+          "locator": "§15.4, lignes30–36,55 ; preuve ciblée : mRNA Processing, premiers paragraphes",
+          "result": "Passage effectivement relu et soutien confirmé : Les introns sont retirés et les exons sont joints pour former l’ARN messager mature.",
+          "sourceHash": "53cb8906bf100a2825d01a08940420503ea010fdb4c43311277761e6f0d17ce2",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "5ad7013f06ccd7241208c9bbc36c6b58e71d2dff2c5280084ba8ccedf60eece4",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-epigenetic-regulation-without-dna-sequence-change",
+      "status": "approved",
+      "comment": "Modification épigénétique distincte d’une modification de séquence ; stabilité et transmission nuancées. Fait distinct de l’expression différentielle entre types cellulaires de C01.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-epigenetics",
+          "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+          "locator": "§16.3, lignes30–38,43–48,51–52 ; preuve ciblée : Introduction",
+          "result": "Passage effectivement relu et soutien confirmé : Des changements épigénétiques de l’expression ne résultent pas d’un changement de séquence de l’ADN.",
+          "sourceHash": "ac1f9256f9b020143cb7b23966789b2e929e4d6f69e6e10648f1a0f9e42d2865",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "c8850fff2dad36581d5deeec94fbf53f1521704385ab201cbfc639cc7d29f541",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-transposable-element-mobile-dna",
+      "status": "approved",
+      "comment": "Éléments transposables et vestiges présents dans le cannabis ; définition mobile étayée sans activité actuelle imputée à toutes les copies.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-transposon",
+          "url": "https://www.nature.com/scitable/definition/transposable-element-transposon-dna-transposon-jumping-gene-52/",
+          "locator": "Définition principale, lignes0–7 ; preuve ciblée : Définition principale",
+          "result": "Passage effectivement relu et soutien confirmé : Un élément transposable est un fragment mobile d’ADN capable de changer de position dans un génome.",
+          "sourceHash": "65f0b43e71e0e2a177e7e9b208a7d3bc393f0544b35868f84a2cd98b60f803d4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "archived-official-page-targeted"
+        },
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Introduction ligne245 ; sectionTE, lignes366–368 ; Base-calling methylated cytosines, lignes506–509 ; preuve ciblée : Introduction et section sur les éléments transposables",
+          "result": "Passage effectivement relu et soutien confirmé : L’étude décrit une forte présence d’éléments transposables et une activité de certaines familles dans le cannabis.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "sourceRegistry": "docs/quiz-2000/batches/c-legacy-01.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "ce97cf79e5434752f6bcbc5a3334bfe2ac5231e21205298686baa42e51da2774",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-duplication-additional-segment-copy",
+      "status": "approved",
+      "comment": "Duplication structurale ajoutant une copie exacte ; distinction pertinente avec substitution, perte et inversion.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-duplication",
+          "url": "https://www.genome.gov/genetics-glossary/Duplication",
+          "locator": "Definition, ligne15 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : Une duplication produit une ou plusieurs copies d’un segment d’ADN, de tailles très variables.",
+          "sourceHash": "acc083be85b1e97488c1313d7c5dc84b96d1b096a98103bde252edea9a7a134e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "66bf955b1434497cddf63885ad9393a296679b7d7f08e3a6aa8c8e13c1243684",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-nucleosome-dna-wrapped-around-histones",
+      "status": "approved",
+      "comment": "Nucléosome ADN/histones exact ; niveau spécialisé défendable pour ce nom et ce complexe.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-epigenetics",
+          "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+          "locator": "§16.3, lignes30–38,43–48,51–52 ; preuve ciblée : Epigenetic Control, premiers paragraphes",
+          "result": "Passage effectivement relu et soutien confirmé : L’ADN s’enroule autour des histones pour constituer des complexes appelés nucléosomes.",
+          "sourceHash": "ac1f9256f9b020143cb7b23966789b2e929e4d6f69e6e10648f1a0f9e42d2865",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "854c447cb467187405d786f005df82e4ab6161c3b8532c0e33b91f7098f9255f",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-strands-antiparallel-orientation",
+      "status": "approved",
+      "comment": "Orientation chimique opposée 5′/3′ exacte ; l’explication fournit le sens moléculaire au-delà du préfixe anti.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-structure",
+          "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+          "locator": "§14.2, lignes37–45, Figure14.7 ; preuve ciblée : Paragraphe suivant base pairing",
+          "result": "Passage effectivement relu et soutien confirmé : Les brins sont antiparallèles : l’extrémité 3′ de l’un fait face à l’extrémité 5′ de l’autre.",
+          "sourceHash": "b5e7f8c2259363d0dcc34f4103ee1ceeac9d5f9133d0a43c9b33af9422d0a4e4",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "940002c70cc148d26521471b694f5ab0f7861605aee5b7346baf83157e3545d3",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-replication-semiconservative-old-new-strand",
+      "status": "approved",
+      "comment": "Modèle semi-conservatif exact ; construction moléculaire des copies distincte de la conservation chromosomique de la mitose déjà validée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-3-basics-of-dna-replication",
+          "locator": "§14.3, lignes29–33,41–42, Figure14.12 ; preuve ciblée : Paragraphe décrivant la réplication semi-conservative",
+          "result": "Passage effectivement relu et soutien confirmé : Chaque double hélice répliquée comporte un brin parental et un brin nouveau.",
+          "sourceHash": "93eb38e55d5de5d161c26a76bbaabaf25932c5ca397880d53b0788eaa264df40",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "3b1aeeaff6aa35e7f1bd98cfb1a3db556e597410fbbccb9b1dfbe11de9bf7cd4",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-coding-insertion-one-base-shifts-reading-frame",
+      "status": "approved",
+      "comment": "Décalage du cadre après insertion d’un nucléotide en région codante étayé ; portée « peut » et comparaison avec trois nucléotides convenables.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genetic-code",
+          "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+          "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5 ; preuve ciblée : Genetic Code Is Degenerate and Universal, insertions de un, deux ou trois nucléotides",
+          "result": "Passage effectivement relu et soutien confirmé : L’insertion d’un ou deux nucléotides modifie le cadre de lecture des triplets en aval.",
+          "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "5d142f898ec1e32a269ca5291b2b2fcfefdab042e07f17ae86505764d7c46228",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-alternative-splicing-one-gene-different-transcripts",
+      "status": "approved",
+      "comment": "Quatre opérations crédibles de maturation, combinaison d’exons bien distinguée ; clé epissage-arn commune avec l’épissage simple.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-alternative-splicing",
+          "url": "https://www.genome.gov/genetics-glossary/Alternative-Splicing",
+          "locator": "Definition, ligne14 ; preuve ciblée : Definition",
+          "result": "Passage effectivement relu et soutien confirmé : Les exons d’un même gène sont joints selon différentes combinaisons et produisent des transcrits apparentés distincts.",
+          "sourceHash": "31ecf4ff0be6bc0d633986e35359e94f3e1749361e7e74216d7b5016c75c1740",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted"
+        }
+      ],
+      "contentHash": "9848214bf04dd46ffa427545d4e1c63cd18959ef3521859c930b3bd28aa6dfec",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "previousDecision": {
+        "status": "changes_requested",
+        "contentHash": "a97e1e9de309e52096b441d4310b2e6a94fe4e7aab75a1a9966598dd0776ee3d",
+        "reviewedAt": "2026-11-16T20:59:58.917Z"
+      },
+      "revalidatedAt": "2026-11-16T21:09:06.814Z"
+    },
+    {
+      "id": "hemp-q2-cn03-dna-methylation-adds-methyl-groups",
+      "status": "approved",
+      "comment": "Ajout de méthyle aux bases exact ; distinction avec acétylation des histones et modification de séquence, cannabis effectivement couvert par Lynch.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-epigenetics",
+          "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+          "locator": "§16.3, lignes30–38,43–48,51–52 ; preuve ciblée : Derniers paragraphes, DNA methylation",
+          "result": "Passage effectivement relu et soutien confirmé : La méthylation ajoute un groupe méthyle à une base de l’ADN.",
+          "sourceHash": "ac1f9256f9b020143cb7b23966789b2e929e4d6f69e6e10648f1a0f9e42d2865",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        },
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Introduction ligne245 ; sectionTE, lignes366–368 ; Base-calling methylated cytosines, lignes506–509 ; preuve ciblée : Section sur les éléments transposables, paragraphes DNA methylation",
+          "result": "Passage effectivement relu et soutien confirmé : Des profils de méthylation sont décrits dans le génome du cannabis, notamment en relation avec les éléments transposables.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "sourceRegistry": "docs/quiz-2000/batches/c-legacy-01.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted"
+        }
+      ],
+      "contentHash": "aebcc7f79767595833b05887b678b45447a61804faa48a65a78a5b66b4b647a5",
+      "checked": {
+        "prompt": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourceSupport": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "deduplication": [
+    {
+      "ids": [
+        "hemp-q2-cn03-locus-physical-genomic-position",
+        "hemp-genetics-allele"
+      ],
+      "decision": "distinct",
+      "reason": "Adresse physique et version de séquence sont deux notions différentes ; l’explication du locus définit toutefois l’allèle, déjà validé. Une partie devrait éviter cette paire si elle vise une évaluation indépendante.",
+      "suggestedSubjectKey": "cannabis-allele",
+      "action": "Raccord de métadonnées à arbitrer par root, sans nouveau fait ni source."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-transcription-dna-to-rna-process",
+        "hemp-q2-cn02-messenger-rna-carries-coding-information-to-ribosomes",
+        "hemp-q2-cn01-different-cell-functions-differential-gene-expression"
+      ],
+      "decision": "distinct",
+      "reason": "Processus de synthèse ARN, identité de l’intermédiaire et différence d’expression entre types cellulaires ne testent pas la même propriété ; clé expression-genique commune déjà présente."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-dna-replication-semiconservative-old-new-strand",
+        "hemp-q2-cn01-mitotic-division-conserves-chromosome-information"
+      ],
+      "decision": "distinct",
+      "reason": "Composition moléculaire de chaque double hélice après copie versus conservation de l’ensemble chromosomique lors de la division."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-epigenetic-regulation-without-dna-sequence-change",
+        "hemp-q2-cn01-different-cell-functions-differential-gene-expression"
+      ],
+      "decision": "distinct",
+      "reason": "Modification durable d’activité sans changement de séquence versus groupes de gènes exprimés dans des types cellulaires ; le premier ne prétend pas que toute différence d’expression est une modification épigénétique stable."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-genome-entire-dna-set",
+        "hemp-q2-cn04-transcriptome-set-of-rna-transcripts"
+      ],
+      "decision": "distinct_with_answer_leak",
+      "reason": "Périmètres ADN et ARN différents, mais l’explicationC03 donne mot pour mot la notion recherchéeC04 ; demande éditoriale portée par l’itemC03."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-dna-french-name-deoxyribonucleic-acid",
+        "hemp-q2-cn03-dna-sugar-is-deoxyribose"
+      ],
+      "decision": "distinct_with_answer_leak",
+      "reason": "Sigle et sucre ne sont pas le même fait, mais le nom développé fournit la racine de la bonne réponse ; clé commune demandée à l’item20.",
+      "suggestedSubjectKey": "adn"
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-rna-splicing-removes-introns-joins-exons",
+        "hemp-q2-cn03-alternative-splicing-one-gene-different-transcripts"
+      ],
+      "decision": "distinct",
+      "reason": "Retrait des introns/jonction et diversification par combinaisons d’exons distincts ; processus récurrent à regrouper.",
+      "suggestedSubjectKey": "epissage-arn"
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-transposable-element-mobile-dna",
+        "hemp-q2-cn04-cannabis-genome-majority-transposable-derived-sequences"
+      ],
+      "decision": "distinct",
+      "reason": "Définition d’une classe de séquences versus proportion majoritaire du paysage génomique cannabis ; l’explicationC03 ne donne pas cette proportion."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-dna-duplication-additional-segment-copy",
+        "hemp-q2-cn04-lynch-cannabis-local-duplications-not-recent-wgd"
+      ],
+      "decision": "distinct",
+      "reason": "Définition du variant structural versus mode d’évolution attribué à une étude du cannabis ; l’explicationC03 ne dit rien d’un doublement génomique récent."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-homologous-chromosomes-same-gene-loci",
+        "hemp-q2-cn03-sister-chromatids-replicated-chromosome-copies",
+        "hemp-q2-cn04-meiosis-one-homologs-two-sister-chromatids"
+      ],
+      "decision": "distinct",
+      "reason": "Définitions de deux structures versus ordre des deux séparations méiotiques ; les définitionsC03 ne donnent pas l’ordreC04."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-dna-methylation-adds-methyl-groups",
+        "hemp-q2-cn04-lynch-y-sdr-gene-poor-high-methylation"
+      ],
+      "decision": "distinct",
+      "reason": "Nature chimique d’une marque versus distribution particulière de la méthylation dans une région sexuelle cannabis ; aucune distributionSDR révélée par l’explicationC03."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+        "hemp-q2-cn01-ribosome-direct-protein-assembly"
+      ],
+      "decision": "changes_requested",
+      "reason": "La version corrigée donne le ribosome et demande sa fonction, sans exiger la propriété du codon de terminaison ; reprise ciblée nécessaire."
+    }
+  ],
+  "editorialAssessment": {
+    "interest": "Socle utile de génétique moléculaire applicable au chanvre. L’usage répété du mot chanvre ne transforme pas ces principes généraux en résultats expérimentaux propres à Cannabis ; les sources et formulations respectent cette limite.",
+    "forms": "Les40formes déclarées identification dominent le lot ; ce n’est pas une raison pour refuser les bonnes définitions. L’item17 pose cependant une inférence/situation, à déclarer selon sa version corrigée. Une diversification future est souhaitable sans remplir artificiellement un quota.",
+    "difficulty": "Les niveaux sont évalués sur les connaissances requises, pas sur la longueur. Les termes nucléosome, antiparallélisme, cadre et épissage alternatif justifient un degré spécialisé. Les items17/18 nécessitent une nouvelle justification après réécriture ; aucune redistribution artificielle vers niveau1 n’est demandée.",
+    "optionalPolish": [
+      {
+        "id": "hemp-q2-cn03-dna-base-order-encodes-information",
+        "suggestion": "Remplacer ultérieurement la comparaison couleur/prélèvement par un contraste avec le squelette ou l’orientation, qui sont les distracteurs réellement affichés. Ce décalage ne rend pas le fait faux et n’est pas bloquant."
+      }
+    ]
+  },
+  "summary": {
+    "total": 40,
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourceObjects": 25,
+    "sourceChecks": 44,
+    "finalLevels": {
+      "1": 15,
+      "2": 18,
+      "3": 7,
+      "4": 0
+    },
+    "decision": "All40 final versions approved. The UAG correction and subject grouping are resolved; previous requests are historical.",
+    "sourceReadingScope": "Distinct source IDs and checks in the final approved items. Actual readers, targeted passages, earlier readings and supplemental consultations remain recorded in the individual proof objects; these counts do not claim full-book reading or a fresh opening of every source."
+  },
+  "history": [
+    {
+      "phase": "initial-independent-review",
+      "reviewedAt": "2026-11-16T20:59:58.917Z",
+      "summary": {
+        "total": 40,
+        "approved": 29,
+        "changesRequested": 11,
+        "rejected": 0,
+        "sourceObjects": 23,
+        "sourceChecks": 42,
+        "unverifiedSources": 0,
+        "exactDuplicateConfirmed": 0,
+        "blockingFactualContradictionConfirmed": 0,
+        "sourceAccessBlocked": 0,
+        "declaredLevels": {
+          "1": 18,
+          "2": 16,
+          "3": 6,
+          "4": 0
+        },
+        "decisions": "Demandes principalement sur distracteurs/tâche et deux fuites de réponses/clés ; les40réponses factuelles sont soutenues. Onze objets doivent être corrigés/revalidés, sans maintien automatique du compteur."
+      },
+      "items": [
+        {
+          "id": "hemp-q2-cn03-genome-entire-dna-set",
+          "status": "changes_requested",
+          "comment": "Définition du génome exacte ; correction éditoriale demandée pour éviter de révéler l’item transcriptome de C04.",
+          "contentHash": "de82210528d6af9c50b7da9fb1d14942743953231f10af4c59dbc5f00d6204b4"
+        },
+        {
+          "id": "hemp-q2-cn03-chromosome-dna-associated-proteins",
+          "status": "changes_requested",
+          "comment": "Fond exact, mais la composition ADN/protéines n’est pas testée par quatre compositions crédibles.",
+          "contentHash": "a9e71a5389a40dda5fcb7f9f4b9486d4e4ce9004602a6d3448cd04f14ff4a8ba"
+        },
+        {
+          "id": "hemp-q2-cn03-dna-repair-can-correct-damage",
+          "status": "changes_requested",
+          "comment": "Fond exact sur l’entretien du génome, mais la tâche traduit seulement le mot réparation.",
+          "contentHash": "dd44262809bd8fe242a2667389d368d6581854383c4a81ef62cb013a5c13f56b"
+        },
+        {
+          "id": "hemp-q2-cn03-genetic-variants-can-have-no-observable-effect",
+          "status": "changes_requested",
+          "comment": "Effets des variants correctement nuancés ; la structure prudente/absolus livre toutefois la réponse.",
+          "contentHash": "2659a77f71619fab320de2da162b8dadfa5286671fd09a67bf4b974138546397"
+        },
+        {
+          "id": "hemp-q2-cn03-genetic-diversity-dna-differences-within-species",
+          "status": "changes_requested",
+          "comment": "Définition moléculaire exacte mais distracteurs hors échelle populationnelle et sans concurrence biologique.",
+          "contentHash": "a4d1ad92ba2f219d0626b4713b70c8ffee2fa4e137683d36cedf4fcfd3efdc2d"
+        },
+        {
+          "id": "hemp-q2-cn03-genome-size-not-simple-complexity-scale",
+          "status": "changes_requested",
+          "comment": "Absence de relation simple taille/complexité étayée ; question et difficulté à reprendre pour éviter le choix par précaution verbale.",
+          "contentHash": "965d69508f4db1a582054ea2f0b65ddbfe0ae8659159dd0f4ae5a7a9c1a5b2ad"
+        },
+        {
+          "id": "hemp-q2-cn03-mendelian-alleles-not-irreversibly-blended",
+          "status": "changes_requested",
+          "comment": "Hérédité particulaire et persistance d’un allèle masqué exactes ; un distracteur et la justification de niveau doivent être revus.",
+          "contentHash": "5689e7c3b0333f5d23449fcf9877cf850dc871804f5fea240b904aa309528028"
+        },
+        {
+          "id": "hemp-q2-cn03-dna-sugar-is-deoxyribose",
+          "status": "changes_requested",
+          "comment": "Désoxyribose exact ; seul le raccord de clé protégeant contre l’indice direct donné par item2 est demandé.",
+          "contentHash": "7f0f16ac4529e03ab6e12583eba9d2a8bb21f83e1b94551b7688f4e8953cdf87"
+        },
+        {
+          "id": "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+          "status": "changes_requested",
+          "comment": "Fond exact, mais stop→terminer fournit la réponse sans connaissance du processus cellulaire.",
+          "contentHash": "707a8c810f4ae82c6e977c634a601d2db3af5f62aeee2d5f846cff8ee8bd3675"
+        },
+        {
+          "id": "hemp-q2-cn03-missense-substitution-changes-amino-acid",
+          "status": "changes_requested",
+          "comment": "Faux-sens correctement relié au remplacement d’un acide aminé ; une option structurale entière est hors classe et doit être remplacée.",
+          "contentHash": "df174320467ede8a57317f354c53f22e9888572fd21e1849efcea14247275906"
+        },
+        {
+          "id": "hemp-q2-cn03-alternative-splicing-one-gene-different-transcripts",
+          "status": "changes_requested",
+          "comment": "Production de transcrits apparentés par combinaisons d’exons exacte ; choix et clé du processus demandent correction.",
+          "contentHash": "a97e1e9de309e52096b441d4310b2e6a94fe4e7aab75a1a9966598dd0776ee3d"
+        }
+      ],
+      "scope": "Décisions initiales, commentaires et empreintes conservés en historique compact ; les contrôles source inchangés sont ceux des objets relus dans la revue courante, avec nouvelle référence Evolution explicitement séparée."
+    }
+  ],
+  "revalidation": {
+    "changedQuestions": 11,
+    "newlyApproved": 10,
+    "unchangedApprovedPreserved": 29,
+    "sourcesUnchanged": true,
+    "newSourceReference": "q2-cn04-evolution",
+    "oldSourceReadingsReused": "PassagesF déjà lus lors de la première revue ; mêmes objets et même portée, sans nouvelle consultation prétendue."
+  },
+  "beforeRootFinalStopReview": {
+    "id": "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+    "status": "changes_requested",
+    "comment": "La source établit bien la terminaison, mais la nouvelle tâche peut être résolue par la seule fonction du ribosome : inversion d’un fait déjà validé dans C01.",
+    "sourceChecks": [
+      {
+        "sourceId": "q2-cn03-genetic-code",
+        "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+        "locator": "§15.1, lignes29,35–37,41–54, Figures15.4/15.5 ; preuve ciblée : Paragraphe stop codons après Figure du code génétique",
+        "result": "Passage effectivement relu et soutien confirmé : Des codons particuliers terminent la synthèse et libèrent la chaîne protéique de la machinerie de traduction.",
+        "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+        "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+        "reader": "f_existing_audit",
+        "consultedOn": "2026-11-16",
+        "accessObserved": "full-text-targeted"
+      }
+    ],
+    "contentHash": "e2caba2e43e0de59496cf36a12774e000598da9d1bddd762f954fa5954dd7cf5",
+    "issues": [
+      {
+        "severity": "blocking",
+        "code": "function_inversion_near_duplicate",
+        "reason": "L’énoncé donne le ribosome et les trois distracteurs sont des processus qui ne relèvent pas de sa fonction ; assemblage des acides aminés s’impose sans connaître un codon stop. C01-ribosome-direct-protein-assembly identifie le ribosome à cette même fonction.",
+        "requestedChange": "Faire dépendre la réponse du signal de terminaison lui-même, en comparant des issues plausibles au sein de la traduction (et sans simple stop=terminer). Garder une seule propriété moléculaire utile ; ne pas reproduire le fait fonction-du-ribosome."
+      }
+    ],
+    "checked": {
+      "prompt": true,
+      "fourOptions": true,
+      "answerUniqueness": true,
+      "explanation": true,
+      "sourceSupport": true,
+      "levelAndForm": true,
+      "nearbyFacts": true
+    },
+    "previousDecision": {
+      "status": "changes_requested",
+      "contentHash": "707a8c810f4ae82c6e977c634a601d2db3af5f62aeee2d5f846cff8ee8bd3675",
+      "reviewedAt": "2026-11-16T20:59:58.917Z"
+    },
+    "revalidatedAt": "2026-11-16T21:09:06.814Z"
+  },
+  "rootFinalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "id": "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+    "scope": "One final corrected question and its new NHGRI reference; prior39 F approvals retained, except the separately traced subject normalization below."
+  },
+  "summaryBeforeDeliveryNormalization": {
+    "historicalContext": true,
+    "record": {
+      "total": 40,
+      "approved": 40,
+      "changesRequested": 1,
+      "rejected": 0,
+      "sourceObjects": 24,
+      "sourceChecks": 43,
+      "unverifiedSources": 0,
+      "exactDuplicateConfirmed": 0,
+      "blockingFactualContradictionConfirmed": 0,
+      "sourceAccessBlocked": 0,
+      "declaredLevels": {
+        "1": 15,
+        "2": 19,
+        "3": 6,
+        "4": 0
+      },
+      "decisions": "Dix corrections approuvées ; une demande subsiste pour éviter une inversion du fait ribosome déjà validé. Historique de la première revue conservé.",
+      "changes_requested": 0,
+      "finalNote": "All40 approved after final root review of UAG and a traced locus/allele subject normalization. Source readings remain attributed to their actual reader."
+    }
+  }
+}

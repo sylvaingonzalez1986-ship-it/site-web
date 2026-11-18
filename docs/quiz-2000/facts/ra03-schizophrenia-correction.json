@@ -1,0 +1,37 @@
+{
+  "questionId": "hemp-q2-ra03-cbd-schizophrenia-adjunct-positive-symptom-signal",
+  "author": "rebalance_classify_a",
+  "status": "proposal-awaiting-independent-review",
+  "batchUntouched": true,
+  "originalClinicalSource": "q2-ra03-mcguire",
+  "newSource": {
+    "id": "q2-ra03-nhs-schizophrenia-positive-symptoms",
+    "title": "Symptoms - Schizophrenia",
+    "organization": "NHS",
+    "url": "https://www.nhs.uk/mental-health/conditions/schizophrenia/symptoms/",
+    "verifiedAt": "2026-11-17",
+    "author": "NHS",
+    "published": "2023-04-13 (page last reviewed ; prochaine revue affichée2026-04-13)",
+    "passage": "Positive and negative symptoms ; Hallucinations ; Delusions",
+    "access": "official-page",
+    "documentKind": "Information institutionnelle de santé",
+    "limitation": "Source utilisée seulement pour définir le terme clinique symptômes positifs, pas pour prouver un effet du CBD.",
+    "consultation": {
+      "reader": "rebalance_classify_a",
+      "date": "2026-11-17",
+      "locator": "Positive and negative symptoms, liste de classification",
+      "result": "Page NHS effectivement ouverte et paragraphe lu : symptômes positifs illustrés par hallucinations et delusions, par contraste aux symptômes négatifs de retrait/émoussement."
+    }
+  },
+  "proposedQuestionPatch": {
+    "explanation": "Les symptômes « positifs » désignent notamment hallucinations et idées délirantes. Le CBD ajouté aux antipsychotiques a donné un signal de réduction dans ce petit essai ; cela ne valide ni l’automédication ni leur remplacement.",
+    "additionalSourceId": "q2-ra03-nhs-schizophrenia-positive-symptoms",
+    "additionalSourceEvidence": {
+      "sourceId": "q2-ra03-nhs-schizophrenia-positive-symptoms",
+      "locator": "Positive and negative symptoms ; Hallucinations ; Delusions",
+      "support": "Le NHS classe hallucinations et idées délirantes parmi les symptômes positifs ; le mot positif ne signifie pas bénéfique."
+    }
+  },
+  "reason": "Rendre le terme de résultat compréhensible tout en conservant le fait McGuire et les quatre choix ; la nouvelle source n’est pas une nouvelle preuve d’efficacité.",
+  "note": "NIMH brochure également ouverte mais ne rattache pas explicitement le mot positif à la liste : NHS retenu pour ce lien terminologique exact."
+}

@@ -21,8 +21,9 @@ export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCa
   const guide = getKqCardGuide(card), role = getKqCardRole(card);
   const artwork = getKqCardArtwork(card.code);
   if (typeof document === "undefined") return null;
-  return createPortal(<dialog ref={dialog} className={styles.detailDialog} aria-labelledby="botte-detail-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }} style={{ "--card-role": role.color } as CSSProperties}>
+  return createPortal(<dialog ref={dialog} className={styles.detailDialog} data-tutorial-card-detail aria-labelledby="botte-detail-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }} style={{ "--card-role": role.color } as CSSProperties}>
     <button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la carte agrandie"><X aria-hidden="true" /></button>
+    <div data-farm-guide-host />
     <div className={styles.detailLayout}>
       <div className={styles.enlargedCard}>{artwork ? <Image src={artwork} alt={`Carte ${card.name} agrandie`} width={1024} height={1536} sizes="(max-width: 700px) 85vw, 480px" priority /> : null}</div>
       <section className={styles.detailCopy}>

@@ -1,0 +1,45 @@
+{
+  "batchId": "r-products-04",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "research_in_progress_not_a_batch",
+  "target": 27,
+  "domain": "active",
+  "remainingAfterThisTarget": 27,
+  "parentScopeExtension": "Tout fait actif utile, y compris culture des usages/objets et particularités des fleurs résineuses. Pas de remplissage par alias, règles canadiennes ou prévention répétée.",
+  "candidateReadings": [
+    {"fact":"Papiers à rouler non réglementés : métaux et pesticides possibles", "url":"https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html", "access":"official-page", "actuallyRead":"Smoking accessories, Rolling papers. Distinct des métaux provenant de cartouches et des contaminants de fleurs chez A."},
+    {"fact":"Comestibles canadiens stables avant ouverture, pas chaîne du froid requise pour leur sécurité", "url":"https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html", "access":"official-page", "actuallyRead":"Shelf-stable, article102.4 ; page datée14octobre2026. Aucun seuil thermique à mémoriser nécessaire."},
+    {"fact":"Aliments supplémentés exclus comme ingrédients des comestibles au cannabis canadiens", "url":"https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html", "access":"official-page", "actuallyRead":"Supplemented foods et Vitamins and mineral nutrients. Garder exceptions : vitamines naturelles, additifs permis, farine enrichie autorisée."},
+    {"fact":"Depuis réforme2025, seuls totauxTHC/CBD obligatoires plutôt que actual et total", "url":"https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors43-eng.html", "access":"excerpt", "actuallyRead":"Extrait original indexé de réforme, pas encore ouverture ciblée complète. À confirmer avant rédaction."},
+    {"fact":"Sugar leaves : petites feuilles résineuses au sein des buds, distinctes des grandes fan leaves", "url":"https://extension.unr.edu/publication.aspx?PubID=4479", "access":"official-page", "actuallyRead":"Paragraphe Sugar leaves, ficheMcGue/Morawska/Robinson/O’Callaghan2021. Exclure conseils de culture et assertion douteuse corrélant couleur stigmates/maturation trichomes."},
+    {"fact":"Stigmates filiformes et trichomes glandulaires sont des structures distinctes", "url":"https://extension.unr.edu/publication.aspx?PubID=4479", "access":"official-page", "actuallyRead":"Premier paragraphe, stigmates dépassant la bractée ; paragraphe formes de trichomes. Voisins B : couleur stigmates et ordre d’apparition, pas leur confusion avec glandes."},
+    {"fact":"Cola : regroupement floral couvert de trichomes", "url":"https://extension.unr.edu/publication.aspx?PubID=4479", "access":"official-page", "actuallyRead":"Premier paragraphe. À juger contre voisin inflorescence vs fleur, risque alias seulement ; ne pas forcer."},
+    {"fact":"Chillum : pipe sans réservoir d’eau contrairement au hukkah", "url":"https://artsandculture.google.com/asset/chillum/SgFoYeYzgjKoDQ", "access":"official-page", "actuallyRead":"Notice Sanskriti Museum/JyotindraJain. Exclure datation introduction tabac attribuée auXVe siècle, manifestement contestable ; ne retenir que typologie de l’objet."},
+    {"fact":"Cannabis Cup Amsterdam", "url":"https://cannabiscup.com/about/", "access":"official-page", "actuallyRead":"Page originale organisateur lue, mais FAIT CÉDÉ À B après coordination, NE PAS RÉDIGER."}
+  ],
+  "reservedBySolPendingRead": [
+    "VOLCANO CLASSIC et ballon détachable, source fabricant primaire (pas réglage de température)",
+    "DynaVap sans batterie intégrée, chaleur externe (pas protocole de chauffe)",
+    "Frenchy Cannoli, artisan et transmetteur du haschich ; site de sa succession ouvert en recherche seulement",
+    "Emerald Cup, concours californien de cannabis cultivé au soleil ; source organisateur à ouvrir",
+    "Spannabis, salon cannabique ; source organisateur à ouvrir",
+    "bogart/bogarting, accaparer le joint partagé ; dictionnaire original à ouvrir",
+    "Curing comme maturation du produit fini après séchage, sans procédure ; A laisse ce sujet",
+    "Mélange commercial HHC9R/9S ; A garde leur pharmacologie et épimérie déjà retenue",
+    "Foxtail : architecture florale, source adaptée pas encore trouvée",
+    "Cannabinoïdes dans fleurs mâles non nuls ; comparer voisin richesse glandulaire femelle avant de retenir",
+    "Pollen commercial résineux distinct du pollen reproducteur ; source originale encore nécessaire",
+    "Blunt : nicotine du wrapper après retrait du tabac intérieur, distinct définition wrapper et mélange de tabac",
+    "Comestibles ingérés par chien : chocolat/xylitol peuvent ajouter une toxicité propre, source vétérinaire à lire"
+  ],
+  "possibleExtensionsPendingCoordination": [
+    "DisponibilitéCB1/reversibilité avec abstinence : demande à A envoyée",
+    "Chronologie du sevrage THC : demande à A envoyée",
+    "THC et sommeil paradoxal : demande à A envoyée",
+    "GorillaGlue renommageGG4 après conflit de marque : sources primaires/voisins à chercher",
+    "Weed the People ou MurderMountain : sources originales et voisins à vérifier"
+  ],
+  "avoidedDuplicates": ["420/Waldos", "HighTimes magazine", "CannabisCup Amsterdam maintenant B", "richesse glandulaire femelle", "couleur des stigmates", "ganja/dagga/Thai sticks/roach/grinder/roachclip chez B", "CHS/allergies/clinique générale chez A", "tauxTHC total0,877 déjà rp01", "apparence/moisissures/pesticides des fleurs chez A"],
+  "safeguards": ["Aucun fichier de lot écrit avant27questions complètes", "Aucune autoapprobation", "Pas de méthode, dose, réglage ou culture psychoactive", "Une lecture indexée seule reste excerpt, pas full-text"]
+}

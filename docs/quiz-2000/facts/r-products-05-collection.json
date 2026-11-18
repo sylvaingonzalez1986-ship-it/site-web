@@ -1,0 +1,51 @@
+{
+  "batchId": "r-products-05",
+  "author": "rebalance_products_sol",
+  "status": "research-only-no-batch-written",
+  "targetCount": 27,
+  "domain": "active",
+  "extraReplacementPending": {
+    "batchId": "r-products-04",
+    "oldId": "hemp-q2-rp04-dog-edible-chocolate-xylitol",
+    "reason": "Root et B classent hors périmètre : toxicologie alimentaire générale du chien, cannabis décor.",
+    "instruction": "Attendre rapportB avant toute mutation ; préparer un fait culturel concret distinct, en supplément des27rp05."
+  },
+  "readSources": [
+    {"candidate":"CBD pharmaceutique augmente exposition caféine","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC8596598/","access":"full-text","read":"Abstract complet, résultats cafeine et Discussion ciblée. ChingThai, BolaTayo, DavidCritchley ; publié5mai2021, numéro novembre2021. Aucun protocole ni dose dans QCM ; essai petite population, effet pharmacocinétique, pas fréquence de symptômes.","reservedWithA":true},
+    {"candidate":"Rifampicine diminue exposition auCBD pharmaceutique","url":"https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf","access":"full-text","read":"§7.1 et§12.3, passages rifampin effectivement lus. NoticeFDAmai2026 ; document institutionnel-réglementaire, pas recherche-originale. Aconfirme libre ; ne pas donner ajustement thérapeutique."},
+    {"candidate":"Sebsi pipe marocaine : longue tige bois, foyer argile","url":"https://hashmuseum.com/en/collection/history-of-smoking/","access":"official-page","read":"§Sebsi effectivement lu. Écarter proportions du mélange, gestes de fumage et allégations. Voisin rb05kif teste mélange cannabis-tabac, sans sebsi dans son explication ; objet complet relu."},
+    {"candidate":"MalanaCream : résine de régionMalana/Kullu,HimachalPradesh","url":"https://www.pib.gov.in/PressReleasePage.aspx?PRID=1711213&lang=2&reg=48","access":"excerpt","read":"OriginalNCB/PIB12avril2021, extrait indexé complet communiqué lu puis URL tentée cachemiss. ParagrapheMalanaParvatiValleyKullu ; aucun chiffre de saisie ni superlatif de puissance repris. Passage reste extrait, pas fulltext."},
+    {"candidate":"Chemdog récit du concertGratefulDead1991","url":"https://cannaprovisions.com/blog/30-years-of-chemdog-spotlighted-in-northeast-leaf-2021-harvest-issue/","access":"official-page","read":"Paragraphes23–26, témoignage directGregKrzanowski repris par son employeur. Récit duconcert1991 etGratefulDead effectivement lus ; ne pas reprendre détails de culture. Lieu sourceDeerParkIndiana peu fiable, NE PAS tester lieu exact.","subjectKey":"chemdog-chem91-history","distinction":"A ra06 identifieGregKrzanowski ; faitconcertdifférent coordonné."},
+    {"candidate":"Chronic pedigreeSeriousSeeds","url":"https://www.seriousseeds.com/cannabis-seeds/chronic","access":"official-page","read":"Genetics§114–116 : AK47,NorthernLight et croisementNorthernLight/Skunk. Note : prose introductive strawberry visiblementcopiée, ne pas utiliser arômes ou promesses. Tester uniquement parenté précise attribuée ou identitébreeder."},
+    {"candidate":"KaliMist appartientSeriousSeeds","url":"https://www.seriousseeds.com/cannabis-seeds/kali-mist","access":"official-page","read":"TitreKaliMistStrainCreatedbySeriousSeeds, description etGenetics lus. Pas de parenté précise publiée, pas de promesseeffets. LibreA/B confirmé."},
+    {"candidate":"CreamCaramel croisementBlueBlack/MapleLeafIndica/WhiteRhino","url":"https://sweetseeds.es/upload/catalogos/2024/es.pdf","access":"excerpt","read":"Extrait indexé original p47 catalogue2024 lu, URL ouverte inaccessible. PDF2022 anglais pareil originalp39 extrait. Ne pas prétendrelectureintégrale ; dates2024/2022 sont éditions catalogues attestées, pas chemin seulement. Sourcepageproduit8inaccessible."},
+    {"candidate":"Usage de cannabis et parodontite","url":"https://pubmed.ncbi.nlm.nih.gov/27249330/","access":"abstract","read":"Résuméoriginalcomplet Meier2016 lu : association santéparodontaledégradée après contrôle tabac ; cohortesuivieDunedin. Pas de tailleséchantillon, âges ni chiffres dansjeu ; pas causalitéprouvée. Aconfirme libre."},
+    {"candidate":"Usage cannabis et quantitépropofol requise enendoscopie","url":"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0248062","access":"full-text","read":"Imasogie/Rose/Wilson,4mars2021 ; AbstractResults,Conclusion,Discussionlimitations effectivement lus. Besoinsplusélevés associés au cannabis, même analyseajustée ; pas de consignepersonnelle, dose ou causationcertaine. A traite douleurpostopératoire, distinct."},
+    {"candidate":"Cannabis ne disqualifie pas automatiquement don de sangCroixRougeUS","url":"https://www.redcrossblood.org/local-homepage/news/article/can-you-donate-blood-if-you-use-cannabis-.html","access":"official-page","read":"Page18avril2024 KeyPoints lus : usage ne disqualifiepas, pasdon si mémoire/compréhension altérées. Cadre américain, pas règleFrance ni délai inventé. Aconfirmelibre."},
+    {"candidate":"Uruguay inscriptioncitoyens/résidentspermanents, pas simpletouriste","url":"https://ircca.gub.uy/resumen-de-datos-del-cannabis-de-uso-adulto-al-31-12-2025/","access":"excerpt","read":"ExtraitoriginalIRCCA actuel bilan2025 lu ; URL tentée timeout. Donne conditions citoyenuruguayen ou résidentpermanent. À ouvrir de nouveau ou primairegub.uyart34 avantrédaction.","neighbour":"ra05-uruguay-one-access-route teste interdictioncumuler3voies, queA signalelibrepropriétérésidence."},
+    {"candidate":"AérosolsCBD2024 : hydroxyquinones ; pasconversionTHC dansessai","url":"https://pubmed.ncbi.nlm.nih.gov/39535063/","access":"abstract","read":"RésuméoriginalcompletRobertsonetal2024 lu. TousCB étudiés saufCBDAformenthydroxyquinones ; CBDAdecarboxyleCBD ; CBD→THCnonobservé. Peut soutenirUNfait de produit utile, pas2Q de résultatsobscurs. ConversionCBDenTHC2021pyrolyse controversée, ne pasgénéraliser.","reservedWithA":true},
+    {"candidate":"510cartouche compatibilité batterie ; CBDriche peutcristalliser","url":"https://learn.ocswholesale.ca/vape-education-and-troubleshooting/","access":"official-page","read":"SamanthaLobo28janvier2021, rubriquesCompatibility etCrystallization effectivement lues. Batterie510réutilisable, certaines cartouchespropriétaires ; cristallisationpossibleCBDriche n’implique pasdéfaut. NEPAS reprendre seuil%, chauffe, réglage, gestes, quantités ou optimisations dupassage."},
+    {"candidate":"HempfestSeattle mobilisationculturelle","url":"https://www.hempfest.org/about/","access":"official-page","read":"About etHempfestHistory effectivement lus :Seattle, protestival et origineWashingtonHempExpo1991VolunteerPark. Ne pas reprendre annonce retour2024 périmée ni superlatifs."}
+  ],
+  "openedButPassageStillToRead": [
+    {"url":"https://hashmuseum.com/en/collection/history-of-smoking/mellow-yellow/","candidate":"MellowYellowpionniercoffeeshopAmsterdam","access":"official-page"},
+    {"url":"https://hashmuseum.com/en/collection/history-of-smoking/picasso-paris-and-hashish/","candidate":"PicassoHashishprésentationmuséale","access":"official-page"}
+  ],
+  "pendingEvidence": [
+    "WalterBenjaminOnHashish expériencesnotes — URLHarvard9780674022218inaccessible ; catalogue universitaireNIIpossible mais descriptionoriginale àouvrir",
+    "RickJamesMaryJane : originalaudioUniversal officiel existe YouTube ; sujetcannabis doitêtre soutenu parsourceoriginale, pas seulementWikipedia",
+    "Dugout kitportablepipe/fleurs : sourcefabricantoriginaloumusée encoreàtrouver",
+    "Carbcap rôle surbanger : descriptionaccessoirepasoptimisation, sourceoriginaleencoreàlire",
+    "Portugal cannabisconsommationdécriminalisée≠vente légalisée : sourceinstitutionactuelle àouvrir",
+    "ÉtatsUnis parcNationalfédéral même si cannabisautoriséÉtat : sourceNPSàouvrir",
+    "ÉventuellementDrGrinspoon têtesenperles, sourcebreeder externe, sansconseilculture ; vérifiervoisins"
+  ],
+  "avoid": [
+    "CBNparoxydation déjàhemp-evidence-cbn-oxydation",
+    "nicotineenveloppeblunt déjàexpliquéerp02",
+    "AK47, CriticalMass, Gelato,Runtz déjàA/B ; ChemdogidentitéA àdistinguerconcert",
+    "Autres réservesA : HHCclassementFrance, Allemagnefleursrésineseulesassociations etexpéditiongraines, NLtabaccoffeeshops, accèsmédicalCanada≠AMM,Thaïlandeventesenligne",
+    "Pas de répétitionraisonclinique ; aucune tailleéchantillon/datepublication commefaittesté",
+    "Ne pas rempliravec toxicologiegénéralechien, stats ou matérielphysiquegénéral habilléencannabis"
+  ]
+}

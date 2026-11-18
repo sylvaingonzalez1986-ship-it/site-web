@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-15",
+  "status": "Implémentation locale vérifiée, sans déploiement",
+  "weeklyBeforeHiringFollowup": {
+    "date": "2026-11-15",
+    "change": "staff-week conserve son identifiant et devient Comprendre la semaine type, une aide dans Personnel → Bilan accessible sans équipe. Sa lecture avec les données chargées valide l’observation ; aucun recrutement nécessaire. Les plannings existants et la progression sauvegardée restent reconnus.",
+    "validation": "73 tests ciblés, TypeScript, ESLint et 20 cas navigateur réussis. Parcours à 6/8 sans salarié vérifié à 320 et 1440 px, avec chargement, erreur et rechargement. Simulateur Next Image adapté à preload."
+  },
+  "chapterLibraryFollowup": {
+    "date": "2026-11-15",
+    "change": "Les chapitres sont désormais dans une fenêtre ouverte sur demande, avec défilement interne. La reprise du tutoriel et les changements de chapitre ne déploient plus la liste dans la page de jeu.",
+    "validation": "18 cas navigateur réussis, dont stabilité de la position de l’activité, fermeture au clavier et conservation du mode réduit ; TypeScript et ESLint réussis."
+  },
+  "diagnostic": [
+    "Parcours linéaire bloqué par les attentes de récolte, de trim et d’affinage.",
+    "Entrée d’aide masquée après achèvement et guide absent de QuizzShow.",
+    "Découvertes parfois validées à l’ouverture d’un onglet, avant la fiche utile.",
+    "Couverture incomplète des fonctions annexes et reprise insuffisamment contextualisée."
+  ],
+  "implementation": {
+    "objectives": 57,
+    "confirmedActions": 14,
+    "observations": 43,
+    "onboarding": ["Choisir une destination", "Consulter les heures disponibles", "Ouvrir une fiche Buddie", "Enregistrer une zone"],
+    "content": "src/lib/kanab-quest-tutorial-content.ts",
+    "coverage": "docs/bete-de-concours/tutorial-coverage.json",
+    "orchestration": "src/components/placard/KqFarmGuide.tsx",
+    "engine": "src/lib/kanab-quest-farm-progress.ts",
+    "navigation": "Entrée Tutoriel permanente, chapitres indépendants, choix d’un objectif, relecture, cibles stables et focus conservé.",
+    "practice": "13 entraînements existants accessibles avec budget fictif. Observation du parcours réel suspendue pendant un essai ; aucun crédit de réussite dans la partie réelle.",
+    "persistence": "Version 2 et identifiants stables ; localStorage par compte, préférence de suspension séparée, sauvegardes inconnues préservées et synchronisation entre onglets.",
+    "reconciliation": "Lecture des cultures actives et fleurs du compte au démarrage/reprise, sans polling ni commande économique. Les écrans ajoutent leurs preuves confirmées.",
+    "artwork": "Quatre portraits contextuels Sylvain en WebP transparent, 512 × 512, environ 137 ko au total.",
+    "artworkProvenance": "docs/bete-de-concours/tutorial-sylvain-art-provenance.json"
+  },
+  "verification": {
+    "automated": "128 tests ciblés réussis dans 8 fichiers : catalogue, progression, persistance, reprise, ouverture de packs, isolation des API et onboarding.",
+    "typeScript": "tsc --noEmit réussi",
+    "eslint": "Contrôles ciblés réussis",
+    "diff": "git diff --check réussi",
+    "browser": "16 scénarios réussis avec vrais composants de tutoriel/navigation/ouverture de pack et données de jeu simulées, à 320 et 1440 px. Entraînements Banque et Collection réellement ouverts puis quittés à 320 px.",
+    "browserEvidence": "output/tutorial/report.json",
+    "browserChecks": [
+      "Navigation au clavier et cibles visibles",
+      "Clic sans preuve refusé ; erreur puis réussite confirmée",
+      "Suspension, rechargement et reprise par le menu permanent",
+      "Chapitre indépendant pendant l’affinage",
+      "Relecture sans effacement ni dépense",
+      "Échec GET immédiat puis reprise sur récolte antérieure confirmée",
+      "Aperçu de pack sans crédit ; résultat confirmé crédité",
+      "Sauvegardes corrompues ou futures préservées",
+      "Stockage navigateur indisponible signalé",
+      "Essais isolés, aucune mutation réseau réelle",
+      "Aucun débordement horizontal, erreur JavaScript ou requête externe"
+    ],
+    "staticReview": "Chaque objectif possède un geste, un critère de réussite, une cible, des prérequis, une aide en cas d’indisponibilité et une réaction. Raccordement des 57 critères relu dans les sources."
+  },
+  "limits": [
+    "Recette locale avec données simulées ; aucune partie de production connectée utilisée et aucun achat réel effectué.",
+    "Sauvegarde du tutoriel propre à ce navigateur et à ce compte ; pas de synchronisation entre appareils.",
+    "Les anciens verdicts et ventes absents des réponses actuelles ne sont pas reconstruits. Les acquis déjà sauvegardés sont conservés ; relecture et autres chapitres restent accessibles.",
+    "Une observation valide l’ouverture d’une information utile, pas la compréhension du joueur ni l’exécution de la transaction correspondante.",
+    "Les 57 raccordements ont été relus dans le code ; les 16 scénarios navigateur ne constituent pas une exécution de chaque variante économique."
+  ],
+  "databaseMigrationRequired": false,
+  "deployed": false,
+  "nextBoundedTask": "Recette du parcours sur un compte de test connecté si souhaitée ; ne pas relancer un audit général."
+}

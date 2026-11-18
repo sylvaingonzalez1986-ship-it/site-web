@@ -7,6 +7,8 @@ import { compactKqWarehouseToStarterFloor, createKqWarehouseStarter, getKqWareho
 import { getKqWarehouseProcessingEquipment, getKqWarehouseRunSnapshot, getKqWarehouseSnapshot, saveKqWarehouseLayout } from "./kanab-quest-warehouse-backend";
 import { getKqWarehouseSalesForecast } from "./kanab-quest-warehouse-flow-backend";
 import { initializeKqWarehouseCondition } from "../kanab-quest-warehouse-condition";
+import { createKqCareState } from "../kanab-quest-care";
+import { moveKqWarehouseSpatialItem } from "../kanab-quest-warehouse-spatial";
 
 const userId = "11111111-1111-4111-8111-111111111111";
 const requestKey = "22222222-2222-4222-8222-222222222222";
@@ -21,6 +23,126 @@ const current = () => ({ state: starter, revision: 1, cashCents: 100_000, active
 
 describe("warehouse service boundary", () => {
   beforeEach(() => vi.clearAllMocks());
+
+  it("reads each active campaign once for the owner and discards health from a different phase", async () => {
+    const run = { runId: requestKey, leaderRunId: requestKey, zoneId: "a", stageIndex: 2, phase: "rolled", buddieCode: "HH2026-002", startedAt: "2026-11-17T08:00:00Z" };
+    const snapshot = { ...current(), activeRun: true, activeRuns: [run, { ...run, runId: userId, zoneId: "b" }] };
+    const rpc = vi.fn().mockResolvedValue({ error: null, data: snapshot });
+    const eq = vi.fn();
+    const care = { ...createKqCareState(), vitality: 24 };
+    const row = { id: requestKey, stage: 2, phase: "rolled", care, outage: true };
+    const read = vi.fn().mockResolvedValueOnce({ data: [row] }).mockResolvedValueOnce({ data: [{ ...row, phase: "prepare" }] });
+    eq.mockReturnValue({ eq, in: read });
+    const from = vi.fn().mockReturnValue({ select: () => ({ eq }) });
+    createSupabaseServiceClient.mockReturnValue({ rpc, from });
+    const overview = await getKqWarehouseSnapshot(userId, { cultureDetails: true });
+    expect(from).toHaveBeenCalledWith("kq_runs");
+    expect(eq).toHaveBeenCalledWith("user_id", userId);
+    expect(eq).toHaveBeenCalledWith("status", "active");
+    expect(read).toHaveBeenCalledWith("id", [requestKey]);
+    expect(overview.activeRuns?.map(item => item.roomCare)).toEqual([0, 1].map(() => ({ vitality: 24, attention: "Santé critique", effects: [] })));
+    expect(overview.activeRuns?.[0].powerOutage).toBe(true);
+    const stale = await getKqWarehouseSnapshot(userId, { cultureDetails: true });
+    expect(stale.activeRuns).toEqual(snapshot.activeRuns);
+  });
+
+  it("persists only named partition geometry at zero charge and returns it after a fresh server read", async () => {
+    let stored: ReturnType<typeof current> & { state: KqWarehouseState } = current();
+    const rpc = vi.fn().mockImplementation(async (name, args) => {
+      if (name === "rpc_kq_warehouse_receipt") return { error: null, data: null };
+      if (name === "rpc_kq_warehouse_save") stored = { ...stored, state: args.p_next_state, revision: 2 };
+      return { error: null, data: stored };
+    });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    const partition = { id: "stable-wall", x: 2, y: 2, axis: "x" as const, length: 3 };
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: {
+      ...starter, spatial: { version: 1 }, partitions: [{ ...partition, costCents: 999_999, capacityGrams: 999_999 }],
+    }, expectedCostCents: 0 });
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1]).toMatchObject({
+      p_cost_cents: 0, p_expected_revision: 1, p_next_state: { partitions: [partition], equipment: starter.equipment, preparedAreaM2: starter.preparedAreaM2 },
+    });
+    expect(stored.state.partitions).toEqual([partition]);
+    expect(stored.cashCents).toBe(current().cashCents);
+    expect((await getKqWarehouseSnapshot(userId, { preserveLayout: true })).state.partitions).toEqual([partition]);
+  });
+
+  it("retains saved walls for older 2D payloads and checks new zones against their effective geometry", async () => {
+    const state: KqWarehouseState = { ...starter, partitions: [{ id: "wall", x: 2, y: 2, axis: "x", length: 3 }] };
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), state } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    const candidate = { ...state, zones: state.zones.map(zone => ({ ...zone, x: 1, y: 1 })) }; delete candidate.partitions;
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: candidate, expectedCostCents: 0 });
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1].p_next_state.partitions).toEqual(state.partitions);
+    const colliding = { ...candidate, zones: candidate.zones.map(zone => ({ ...zone, x: 2, y: 2 })) };
+    await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: colliding, expectedCostCents: 0 }))
+      .rejects.toMatchObject({ status: 400, message: "Une paroi ne peut pas traverser une zone de culture, de séchage ou de stockage." });
+    expect(rpc.mock.calls.filter(([name]) => name === "rpc_kq_warehouse_save")).toHaveLength(1);
+  });
+
+  it("saves non-overlapping walls without requiring a 3D doorway", async () => {
+    const state: KqWarehouseState = { ...starter, serviceZones: [], zones: [{ ...starter.zones[0], x: 4, y: 4 }], partitions: [
+      { id: "top", x: 2, y: 2, axis: "x", length: 6 }, { id: "bottom", x: 2, y: 6, axis: "x", length: 6 },
+      { id: "left", x: 2, y: 2, axis: "y", length: 5 }, { id: "right-top", x: 7, y: 2, axis: "y", length: 2 },
+      { id: "right-bottom", x: 7, y: 5, axis: "y", length: 2 },
+    ] };
+    const candidate: KqWarehouseState = { ...state, partitions: [...state.partitions!, { id: "closed-door", x: 7, y: 4, axis: "y", length: 1 }] };
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), state } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: candidate, expectedCostCents: 0 });
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1]).toMatchObject({
+      p_next_state: { zones: candidate.zones, partitions: candidate.partitions }, p_cost_cents: 0, p_expected_revision: 1,
+    });
+  });
+
+  it("persists a free spatial rearrangement through the revision-checked economic RPC", async () => {
+    const state = moveKqWarehouseSpatialItem(starter, "starter-drying", { x: -1.5, z: -1.5, rotation: 90 });
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : current() }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state, expectedCostCents: 0 });
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1]).toMatchObject({
+      p_expected_revision: 1, p_previous_state: starter, p_next_state: state, p_cost_cents: 0,
+      p_request: { state, expectedRevision: 1, expectedCostCents: 0 },
+    });
+  });
+
+  it("preserves a valid historical layout when the interior requests it", async () => {
+    const state = legacyFloor();
+    const rpc = vi.fn().mockResolvedValue({ error: null, data: { ...current(), state } });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    expect((await getKqWarehouseSnapshot(userId, { preserveLayout: true })).state).toEqual(state);
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_warehouse_compact")).toBe(false);
+  });
+
+  it("keeps busy-zone and stale-revision locks on purely spatial moves", async () => {
+    const state = moveKqWarehouseSpatialItem(starter, "starter", { x: -1.5, z: -1.5, rotation: 90 });
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), activeRun: true, activeRuns: [{ zoneId: "starter" }] } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state, expectedCostCents: 0 })).rejects.toMatchObject({ status: 409 });
+    await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 2, state, expectedCostCents: 0 })).rejects.toMatchObject({ status: 409 });
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_warehouse_save")).toBe(false);
+  });
+
+  it("allows free footprints during a zone culture without modifying its immutable source zone", async () => {
+    const state = moveKqWarehouseSpatialItem(starter, "starter-drying", { x: -1.5, z: -1.5, rotation: 90 });
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), activeRun: true, activeRuns: [{ zoneId: "starter" }] } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state, expectedCostCents: 0 });
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1]).toMatchObject({
+      p_next_state: { zones: starter.zones, serviceZones: state.serviceZones }, p_cost_cents: 0,
+    });
+  });
+
+  it("saves adjacent 2D zones without requiring a passage around an enclosed zone", async () => {
+    const zone = (id: string, x: number, y: number, width: number, height: number) => ({ ...starter.zones[0], id, name: id, x, y, width, height });
+    const state = getKqWarehouseQuote({ ...starter, serviceZones: [], zones: [zone("inner", 4, 4, 1, 1), zone("left", 3, 3, 1, 3), zone("right", 5, 3, 1, 3), zone("top", 4, 3, 1, 1), zone("bottom", 4, 7, 1, 1)] }).nextState;
+    const candidate = { ...state, zones: state.zones.map(item => item.id === "bottom" ? { ...item, y: 5 } : item) };
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), state } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: candidate, expectedCostCents: 0 });
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1]).toMatchObject({
+      p_next_state: { zones: candidate.zones }, p_cost_cents: 0, p_expected_revision: 1,
+    });
+  });
 
   it("settles idle enabled production then uses the atomic equipment RPC with unchanged player settings", async () => {
     const cultureEquipment = initializeKqWarehouseCondition(starter, true);

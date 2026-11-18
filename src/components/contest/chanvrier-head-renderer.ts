@@ -1,10 +1,11 @@
 import { CHANVRIER_APPEARANCE_OPTIONS as OPTIONS, CHANVRIER_SKINS, getChanvrierAppearance, type ChanvrierAppearance, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { CHANVRIER_HEAD_REGISTRATION as REGISTRATION } from "./chanvrier-head-registration";
 
 type Profile = Pick<ChanvrierProfile, "skin" | "appearance" | "gender">;
 type Box = readonly [number, number, number, number];
 type Rgb = readonly [number, number, number];
-const SIZE = 768;
-const SCALE = SIZE / 1254;
+const SIZE = REGISTRATION.frameSize;
+const SCALE = SIZE / REGISTRATION.masterSize;
 const ROOT = "/contest/avatars/chanvrier-v6/";
 const images = new Map<string, Promise<HTMLImageElement>>();
 const rendered = new Map<string, HTMLCanvasElement>();
@@ -44,9 +45,9 @@ const lightness = (r: number, g: number, b: number) => .2126 * r + .7152 * g + .
 // The painted chestnut has both deep umber strands and copper highlights. Keep
 // warm skin, the coral tongue and dark antialiasing out of that colour range.
 const isHair = (r: number, g: number, b: number) => r > 30 && r < 242 && r > g * 1.3 && g > b * 1.15 && b < 150 && r < g * 2.8;
-const EYE_BOXES: readonly Box[] = [[625, 575, 744, 718], [753, 540, 864, 673]];
+const EYE_BOXES: readonly Box[] = REGISTRATION.eyes;
 const inEyes = (x: number, y: number) => EYE_BOXES.some(([left, top, right, bottom]) => x >= left * SCALE && x <= right * SCALE && y >= top * SCALE && y <= bottom * SCALE);
-const inMouth = (x: number, y: number) => x >= 665 * SCALE && x <= 850 * SCALE && y >= 755 * SCALE && y <= 870 * SCALE;
+const inMouth = (x: number, y: number) => x >= REGISTRATION.mouth[0] * SCALE && x <= REGISTRATION.mouth[2] * SCALE && y >= REGISTRATION.mouth[1] * SCALE && y <= REGISTRATION.mouth[3] * SCALE;
 const isTongue = (r: number, g: number, b: number, x: number, y: number) => inMouth(x, y) && r > 100 && r > g * 1.85 && b > g * .5;
 const isNeutral = (r: number, g: number, b: number) => r < g * 1.055 && g < b * 1.16;
 
@@ -55,7 +56,7 @@ const isNeutral = (r: number, g: number, b: number) => r < g * 1.055 && g < b * 
 function creamMask(source: Uint8ClampedArray) {
   const candidates = new Uint8Array(SIZE * SIZE);
   const mask = new Uint8Array(candidates.length);
-  for (const box of [...EYE_BOXES, [665, 755, 850, 870] as const]) {
+  for (const box of [...EYE_BOXES, REGISTRATION.mouth]) {
     const [left, top, right, bottom] = box.map(value => Math.round(value * SCALE));
     for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
       const pixel = y * SIZE + x, i = pixel * 4;
@@ -124,20 +125,23 @@ function hairMask(data: Uint8ClampedArray) {
 }
 
 /** All coordinates refer to the same untrimmed 1254 px drawing. */
-function patch(target: ImageData, source: ImageData, box: Box, protectedHair: Uint8Array, feather = 8) {
+function patch(target: ImageData, source: ImageData, box: Box, protectedHair: Uint8Array, feather = 8, replaceContour = false, paintedRegion?: Uint8Array) {
   const [left, top, right, bottom] = box.map(value => value * SCALE);
   const edge = feather * SCALE;
   for (let y = Math.floor(top); y < Math.ceil(bottom); y++) {
     for (let x = Math.floor(left); x < Math.ceil(right); x++) {
       const pixel = y * SIZE + x;
-      if (protectedHair[pixel]) continue;
+      if (protectedHair[pixel] || (paintedRegion && !paintedRegion[pixel])) continue;
       const i = pixel * 4;
       const fade = smooth(Math.min(x - left, right - x, y - top, bottom - y) / edge);
       const alpha = source.data[i + 3] / 255 * fade;
-      if (!alpha) continue;
+      if (!alpha && !replaceContour) continue;
       const under = target.data[i + 3] / 255;
-      const output = alpha + under * (1 - alpha);
-      for (let channel = 0; channel < 3; channel++) target.data[i + channel] = (source.data[i + channel] * alpha + target.data[i + channel] * under * (1 - alpha)) / output;
+      // A full beard supplies its own jaw outline. Crossfade that complete
+      // contour, including alpha, so the old cheek ink cannot remain beside it.
+      const remaining = under * (1 - (replaceContour ? fade : alpha));
+      const output = alpha + remaining;
+      for (let channel = 0; channel < 3; channel++) target.data[i + channel] = output ? (source.data[i + channel] * alpha + target.data[i + channel] * remaining) / output : 0;
       target.data[i + 3] = output * 255;
     }
   }
@@ -200,7 +204,7 @@ function eyeWarp(image: ImageData, box: Box, center: readonly [number, number], 
 
 function protectBrows(image: ImageData, protectedHair: Uint8Array) {
   const mask = new Uint8Array(protectedHair);
-  for (const box of [[600, 520, 720, 592], [745, 480, 850, 542]]) {
+  for (const box of REGISTRATION.brows) {
     const [left, top, right, bottom] = box.map(value => Math.round(value * SCALE));
     for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
       const pixel = y * SIZE + x, offset = pixel * 4;
@@ -211,7 +215,27 @@ function protectBrows(image: ImageData, protectedHair: Uint8Array) {
   return mask;
 }
 
-function faceWarp(image: ImageData, face: ChanvrierAppearance["face"], protectedHair: Uint8Array) {
+// Horizontal offsets in the master frame. The last landmark is the common chin:
+// face choices change the jaw, never its attachment to the collar or the features.
+const JAW_ROWS = [620, 680, 740, 800, 850, 885, 915, 938] as const;
+const JAW_OFFSETS: Record<ChanvrierAppearance["face"], readonly number[]> = {
+  oval: [0, 0, -2, -6, -10, -8, -4, 0],
+  round: [0, 2, 10, 18, 24, 20, 12, 0],
+  square: [0, 2, 8, 22, 36, 38, 24, 0],
+  heart: [0, 6, 8, -6, -26, -26, -14, 0],
+  long: [0, -4, -14, -26, -32, -24, -12, 0],
+  angular: [0, 4, 15, 9, -6, -10, -5, 0],
+};
+
+function jawOffset(face: ChanvrierAppearance["face"], y: number) {
+  if (y <= JAW_ROWS[0] || y >= JAW_ROWS[JAW_ROWS.length - 1]) return 0;
+  const next = JAW_ROWS.findIndex(row => row > y);
+  const amount = smooth((y - JAW_ROWS[next - 1]) / (JAW_ROWS[next] - JAW_ROWS[next - 1]));
+  const offsets = JAW_OFFSETS[face];
+  return offsets[next - 1] + (offsets[next] - offsets[next - 1]) * amount;
+}
+
+function faceWarp(image: ImageData, master: ImageData, face: ChanvrierAppearance["face"], protectedHair: Uint8Array) {
   const source = new Uint8ClampedArray(image.data);
   const distance = new Uint8Array(SIZE * SIZE);
   for (let i = 0; i < distance.length; i++) distance[i] = protectedHair[i] ? 0 : 96;
@@ -223,53 +247,39 @@ function faceWarp(image: ImageData, face: ChanvrierAppearance["face"], protected
     const i = y * SIZE + x;
     distance[i] = Math.min(distance[i], x < SIZE - 1 ? distance[i + 1] + 1 : 96, y < SIZE - 1 ? distance[i + SIZE] + 1 : 96);
   }
-  // Each outline is a continuous ellipse/superellipse. Map the skin between
-  // the unchanged facial features and that outline with a monotone transform;
-  // varying the scale across a cheek can otherwise fold the black ink over.
-  const contours = {
-    oval: { radius: 255, power: 2, height: 1.18 },
-    round: { radius: 312, power: 2, height: .88 },
-    square: { radius: 285, power: 3.2, height: 1.04 },
-    heart: { radius: 298, power: 1.3, height: 1.22 },
-    long: { radius: 235, power: 2, height: 1.5 },
-    angular: { radius: 318, power: 1.55, height: 1.1 },
-  };
-  const contour = contours[face];
-  for (let y = Math.floor(600 * SCALE); y < Math.ceil(1100 * SCALE); y++) {
+  // Follow the actual inked bald master. A theoretical ellipse overestimated
+  // its lower cheek and made pinched temples and oversized, empty square chins.
+  for (let y = Math.floor(JAW_ROWS[0] * SCALE); y < Math.ceil(938 * SCALE); y++) {
     const masterY = y / SCALE;
-    for (let x = Math.floor(440 * SCALE); x < Math.ceil(1120 * SCALE); x++) {
+    let first: number = SIZE, last = -1;
+    for (let x = Math.floor(300 * SCALE); x < Math.ceil(1000 * SCALE); x++) {
+      if (master.data[(y * SIZE + x) * 4 + 3] < 128) continue;
+      first = Math.min(first, x); last = x;
+    }
+    if (last < first) continue;
+    const offset = jawOffset(face, masterY);
+    // Hair stays fixed. Fade the whole side of a row at the hair contact,
+    // avoiding the local pinches caused by changing displacement pixel by pixel.
+    const rightShift = offset * smooth(distance[y * SIZE + last] / 32);
+    const leftShift = -offset * smooth((masterY - 855) / 65) * smooth(distance[y * SIZE + first] / 32);
+    const rightEdge = last / SCALE + rightShift;
+    const leftEdge = first / SCALE + leftShift;
+    const rightInk = rightEdge - 22, leftInk = leftEdge + 22;
+    const rightAnchor = Math.min(860 - 185 * smooth((masterY - 835) / 85), rightInk - Math.max(42, Math.abs(rightShift) * 2));
+    const leftAnchor = Math.max(650, leftInk + Math.max(42, Math.abs(leftShift) * 2));
+    for (let x = Math.floor(440 * SCALE); x < Math.ceil(1020 * SCALE); x++) {
       const pixel = y * SIZE + x;
       if (protectedHair[pixel]) continue;
       const masterX = x / SCALE;
-      const boundary = smooth((masterX - 440) / 100) * (1 - smooth((masterX - 1060) / 60)) * (1 - smooth((masterY - 1040) / 60));
-      // Only lengthen skin below the mouth. Both the original mouth and its
-      // replacement patches end above this anchor, so no ink gets duplicated.
-      const hairWeight = smooth(distance[pixel] / 48);
-      const chinShift = (contour.height - 1) * 73;
-      const sourceMasterY = masterY - chinShift * smooth((masterY - 865) / (73 + chinShift)) * boundary * hairWeight;
-      const normalizedY = clamp((sourceMasterY - 650) / 288, 0, .9999);
-      const originalRadius = 282 * Math.sqrt(1 - normalizedY ** 2);
-      const chosenRadius = contour.radius * (1 - normalizedY ** contour.power) ** (1 / contour.power);
-      const radius = originalRadius + (chosenRadius - originalRadius) * smooth((sourceMasterY - 600) / 130);
-      // The right anchor tracks the empty skin outside the smile. It always
-      // remains inside both outlines, which keeps sampling ordered left/right.
-      const rightShift = (radius - originalRadius) * hairWeight;
-      const rightEdge = 660 + originalRadius + rightShift;
-      const rightAnchor = Math.min(850 - 200 * smooth((sourceMasterY - 835) / 80), rightEdge - Math.max(40, rightShift * 2));
-      const leftShift = -rightShift * smooth((sourceMasterY - 850) / 70);
-      const leftEdge = 660 - originalRadius + leftShift;
-      const leftAnchor = Math.max(650, leftEdge + Math.max(40, -leftShift * 2));
-      // Fade displacement through skin, then translate the complete outer ink
-      // at constant scale: tapered chins keep the same outline thickness.
-      const sourceMasterX = masterX >= rightAnchor ? masterX - rightShift * smooth((masterX - rightAnchor) / (rightEdge - rightAnchor))
-        : masterX < leftAnchor ? masterX - leftShift * smooth((leftAnchor - masterX) / (leftAnchor - leftEdge)) : masterX;
+      // Keep the facial-feature area untouched, then translate the outer ink
+      // at constant scale. No vertical stretch: beard and jaw share the chin.
+      const sourceMasterX = masterX >= rightAnchor ? masterX - rightShift * smooth((masterX - rightAnchor) / (rightInk - rightAnchor))
+        : masterX < leftAnchor ? masterX - leftShift * smooth((leftAnchor - masterX) / (leftAnchor - leftInk)) : masterX;
       const shiftX = (sourceMasterX - masterX) * SCALE;
-      const shiftY = (sourceMasterY - masterY) * SCALE;
-      const safeWeight = Math.min(1, distance[pixel] * .65 / (Math.abs(shiftX) + Math.abs(shiftY) || 1));
+      const safeWeight = Math.min(1, distance[pixel] * .65 / (Math.abs(shiftX) || 1));
       const sourceX = x + shiftX * safeWeight;
-      const sourceY = y + shiftY * safeWeight;
-      if (protectedHair[Math.round(sourceY) * SIZE + Math.round(sourceX)]) continue;
-      sample(source, image.data, pixel * 4, sourceX, sourceY);
+      if (protectedHair[y * SIZE + Math.round(sourceX)]) continue;
+      sample(source, image.data, pixel * 4, sourceX, y);
     }
   }
 }
@@ -292,13 +302,23 @@ function recolor(image: ImageData, skinHex: string, hairHex: string, eyesHex: st
       const shade = clamp(light / 53, .2, 1.45);
       for (let channel = 0; channel < 3; channel++) image.data[i + channel] = Math.min(255, eyes[channel] * shade);
     } else if (!eye && hairRegion?.[pixel] && (isHair(r, g, b) || neutral)) {
-      const shade = light / 84;
+      if (neutral) continue;
+      const chestnut = [105, 68, 50] as const;
+      const warmPalette = hair[0] > hair[2] * 1.4 && hair[0] > hair[1] * 1.15;
       for (let channel = 0; channel < 3; channel++) {
-        // A highlight approaches light gently instead of clipping blonde hair
-        // to white or flattening dark hair into one solid swatch.
-        image.data[i + channel] = shade <= 1
-          ? hair[channel] * shade
-          : hair[channel] + (255 - hair[channel]) * clamp((shade - 1) * .35, 0, .45);
+        // Preserve each painted channel's shadows and warm highlights. The
+        // chestnut choice is the original artwork, with no grey/white wash.
+        const value = source[i + channel], base = chestnut[channel];
+        image.data[i + channel] = value <= base
+          ? hair[channel] * value / base
+          : hair[channel] + (255 - hair[channel]) * (value - base) / (255 - base);
+        // Neutral/cool choices need neutral highlights, rather than inheriting
+        // copper strands that would make the black or silver choice look brown.
+        if (!warmPalette) {
+          const shade = light / 84;
+          image.data[i + channel] = shade <= 1 ? hair[channel] * shade
+            : hair[channel] + (255 - hair[channel]) * clamp((shade - 1) * .35, 0, .45);
+        }
       }
     } else if (neutral || (r >= g * .985 && r < g * 1.9 && g >= b * .98 && b > 10)) {
       // Per-channel ratios retain the warm cheek wash, lower-jaw shadow and
@@ -312,7 +332,7 @@ function recolor(image: ImageData, skinHex: string, hairHex: string, eyesHex: st
 async function render(profile: Profile): Promise<HTMLCanvasElement> {
   const appearance = getChanvrierAppearance(profile);
   const glasses = appearance.accessory === "glasses" || appearance.accessory === "round-glasses";
-  const names = [`head-${appearance.hair}`];
+  const names = [`head-${appearance.hair}`, "head-bald"];
   if (appearance.nose !== "round") names.push(`patch-nose-${appearance.nose}`);
   if (appearance.mouth !== "grin") names.push(`patch-mouth-${appearance.mouth}`);
   if (appearance.eyebrows !== "natural") names.push(`patch-eyebrows-${appearance.eyebrows}`);
@@ -324,15 +344,18 @@ async function render(profile: Profile): Promise<HTMLCanvasElement> {
   const protectedHair = appearance.hair === "bald" ? new Uint8Array(SIZE * SIZE) : hairMask(result.data);
   const facialHair = appearance.facialHair;
   if (facialHair !== "none") {
-    patch(result, parts.get(`patch-facialHair-${facialHair}`)!, facialHair === "moustache" ? [625, 707, 900, 820] : [300, 635, 980, 1050], protectedHair);
+    const drawing = parts.get(`patch-facialHair-${facialHair}`)!;
+    // Only add the hair and its ink. The complete source head has a slightly
+    // different cheek outline; copying its skin would cut a notch under the eye.
+    patch(result, drawing, facialHair === "moustache" ? [625, 707, 900, 820] : [300, 635, 980, 1050], protectedHair, 8, true, hairMask(drawing.data));
   }
-  if (appearance.eyebrows !== "natural") patch(result, parts.get(`patch-eyebrows-${appearance.eyebrows}`)!, [600, 475, 865, 595], protectedHair);
+  if (appearance.eyebrows !== "natural") patch(result, parts.get(`patch-eyebrows-${appearance.eyebrows}`)!, REGISTRATION.browPatch, protectedHair);
   if (appearance.mouth !== "grin" || facialHair !== "none") {
     const mouth = parts.get(appearance.mouth === "grin" ? "head-bald" : `patch-mouth-${appearance.mouth}`)!;
     // The new facial hair and its ink stay above every expression. Replace the
     // entire old mouth, including its upper lip, without painting over the beard.
     const protectedFacialHair = facialHair === "none" ? protectedHair : hairMask(result.data);
-    patch(result, mouth, [640, 730, 885, 884], protectedFacialHair);
+    patch(result, mouth, REGISTRATION.mouthPatch, protectedFacialHair);
   }
   const paintedHair = hairMask(result.data);
   const protectedFacialHair = facialHair === "none" ? protectedHair : paintedHair;
@@ -348,17 +371,19 @@ async function render(profile: Profile): Promise<HTMLCanvasElement> {
     eyeWarp(result, [753, 540, 864, 676], [809, 671], scale, protectedBrows);
   }
   // The master supplies the round nose. Separate nose drawings are applied after
-  // the eyes and expressions. Three small skin patches avoid resetting any eye.
+  // the eyes and expressions. The lower nose tile stops before the old smile's
+  // right corner: a full rectangle would reintroduce it into the calm expression.
   if (appearance.nose !== "round") {
     const nose = parts.get(`patch-nose-${appearance.nose}`)!;
     recolor(nose, ...palette);
-    patch(result, nose, [745, 657, 875, 758], protectedFacialHair, 3);
+    patch(result, nose, [745, 657, 875, 740], protectedFacialHair, 3);
+    patch(result, nose, [745, 734, 830, 758], protectedFacialHair, 3);
     if (appearance.nose === "wide") {
       patch(result, nose, [714, 696, 756, 758], protectedFacialHair, 3);
       patch(result, nose, [729, 680, 756, 714], protectedFacialHair, 3);
     }
   }
-  faceWarp(result, appearance.face, protectedHair);
+  faceWarp(result, parts.get("head-bald")!, appearance.face, protectedHair);
   if (glasses) glassesPatch(result, parts.get(`patch-accessory-${appearance.accessory}`)!, parts.get("head-bald")!, protectedHair);
   const output = canvas();
   output.getContext("2d")!.putImageData(result, 0, 0);

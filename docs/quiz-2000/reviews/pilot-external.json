@@ -1,0 +1,271 @@
+{
+  "batchId": "pilot-external",
+  "reviewer": "E / e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Contrôle indépendant des10questions, quatre choix, corrections et passages des6sources primaires ouvertes durant cette revue. Aucun catalogue ou document issu du site utilisé pour sélectionner des sujets. Comparaison aux360questions et aux20items C/D uniquement pour exclure les doublons.",
+  "summary": {
+    "approved": 10,
+    "changes_requested": 0,
+    "rejected": 0,
+    "requiredCorrections": [],
+    "sourceAssessment": "Les six publications étayent les faits relus et leurs dates bibliographiques. Les miroirs hébergent les articles primaires identifiés par titre, auteurs, pagination et DOI ; ils ne sont pas présentés comme les sites des éditeurs.",
+    "readingLimit": "Les passages pertinents ont été lus dans le texte accessible et les métadonnées contrôlées. Les captures PDF de la page341 de deMeijer et de la page75 de Kurtz ont échoué ; aucune lecture visuelle de ces captures n’est revendiquée. Leurs textes extraits étaient accessibles.",
+    "difficulty": "Pas de quota forcé. Calcul triploïde accessible1 ; interprétations2 ; nomenclature et résultats spécialisés3. Un cas formulé concrètement ne devient pas une déduction si aucune inférence n’est demandée.",
+    "finalValidation": "Deux versions corrigées approuvées après nouvelle lecture des passages Lynch2025 et Paryani2024. Empreintes des huit autres questions et des six objets sources strictement inchangées ; leurs avis précédents sont conservés."
+  },
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-ext-demeijer-2003",
+      "url": "https://3402974.fs1.hubspotusercontent-na1.net/hubfs/3402974/MGC%20Website%20PDFs/The-inheritence-of-Phenotype-in.pdf",
+      "publishedChecked": "2003-01",
+      "consultedAt": "2026-11-16",
+      "accessObserved": "full-text pertinent passages",
+      "sourceHash": "e36119e72542607a649d3cca317e973ecd1dcfbba91aa414e86edcae9ff501f5"
+    },
+    {
+      "sourceId": "q2-ext-lynch-pangenome-2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+      "publishedChecked": "2025-05-28",
+      "consultedAt": "2026-11-16",
+      "accessObserved": "full-text pertinent passages",
+      "sourceHash": "45deec6e3ea6e3a76c5319d868f66176c3b183f35899aab77a028ac9b9cbcbcc"
+    },
+    {
+      "sourceId": "q2-ext-kurtz-triploids-2024",
+      "url": "https://overgrow.com/uploads/short-url/gT0F9J2nKW6OtpDDP3Tlzwn7p9R.pdf",
+      "publishedChecked": "2024-02-09",
+      "consultedAt": "2026-11-16",
+      "accessObserved": "full-text pertinent passages",
+      "sourceHash": "9af9521e628c87ccca0a11e4d3c62213e41feb589d2c7ada0fbc0450893186bb"
+    },
+    {
+      "sourceId": "q2-ext-oswald-aroma-2023",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10601067/",
+      "publishedChecked": "2023-10-12",
+      "consultedAt": "2026-11-16",
+      "accessObserved": "full-text pertinent passages",
+      "sourceHash": "d897aa0b728c73fdcb93a23d44fcd552861008f17ce877f3db7eb1338ace9641"
+    },
+    {
+      "sourceId": "q2-ext-paryani-aroma-2024",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11223244/",
+      "publishedChecked": "2024-06-19",
+      "consultedAt": "2026-11-16",
+      "accessObserved": "full-text pertinent passages",
+      "sourceHash": "fca6372513039b81d85adbfc548d83ce10a16b682cb32fc08e1e7feb93ab07e6"
+    },
+    {
+      "sourceId": "q2-ext-parsons-polyploidy-2019",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00476/full",
+      "publishedChecked": "2019-04-30",
+      "consultedAt": "2026-11-16",
+      "accessObserved": "full-text pertinent passages",
+      "sourceHash": "01862773b23fc0cac185f16d94a19f8caa65a3f3611dc6c6ad68a7e64d2f10ad"
+    }
+  ],
+  "duplicateChecks": {
+    "files": [
+      "docs/quiz-2000/audit-f-active-snapshot.json",
+      "docs/quiz-2000/batches/pilot-c.json",
+      "docs/quiz-2000/batches/pilot-d.json"
+    ],
+    "method": "Recherche des termes et concepts concernés dans les360entrées, puis lecture des questions génétiques/moléculaires proches et des20items C/D. Aucun fichier de l’ancien lotAB utilisé.",
+    "result": "Aucun même fait répété identifié. Les questions sur triploïdie distinguent comptage des jeux et fertilité résiduelle ; la tétraploïdie/stomates porte un troisième fait anatomique."
+  },
+  "items": [
+    {
+      "id": "hemp-q2-ext-f2-rapport-mixte",
+      "status": "approved",
+      "comment": "Le rapport et le calcul sont justes ; quatre proportions plausibles. La formulation historique évite d’ériger ce modèle en loi universelle. Niveau2 conservable pour l’interprétation d’une descendance, quoique le calcul fourni soit accessible1.",
+      "contentHash": "bdf1c580381a923a55e91cac04386bee22eebfe1bc6a830d5bfef88185e6d8b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-demeijer-2003",
+          "url": "https://3402974.fs1.hubspotusercontent-na1.net/hubfs/3402974/MGC%20Website%20PDFs/The-inheritence-of-Phenotype-in.pdf",
+          "locator": "PDF pp.335 et341, résumé puis tableau4 « Chemotype segregation data » ; discussion p.342.",
+          "result": "Le résumé et le tableau4 donnent CBD, mixte, THC selon1:2:1. La part mixte vaut donc2/4. Le tableau présente des effectifs expérimentaux variables, pas une garantie pour chaque famille.",
+          "sourceHash": "e36119e72542607a649d3cca317e973ecd1dcfbba91aa414e86edcae9ff501f5",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Distinct de hemp-genetics-f1 : définition d’une génération versus lecture d’un rapport de profils chimiques.",
+      "optionalPolish": "Développer F2 en « deuxième génération filiale » dans l’énoncé ou retirer ce sigle non nécessaire au calcul."
+    },
+    {
+      "id": "hemp-q2-ext-pangenome-core-classe",
+      "status": "approved",
+      "comment": "Définition scientifique correctement appliquée. Niveau3 honnête pour une classification spécialisée, même si le cas est simple une fois la définition connue. Les quatre choix appartiennent bien à cette nomenclature.",
+      "contentHash": "5288db3a844220d4240903433d29c2e181628323b6d585ed5ffc9777f53dc58b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Methods — Identification of pangenome core and dispensable genes, paragraphes définissant les cinq catégories.",
+          "result": "Les méthodes définissent core par une présence dans les193génomes et nearly-core par95–99%. Les catégories shell et unique sont également définies dans le même passage.",
+          "sourceHash": "45deec6e3ea6e3a76c5319d868f66176c3b183f35899aab77a028ac9b9cbcbcc",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Distinct de hemp-genetics-pangenome : définir le pangénome n’est pas classer un gène selon sa fréquence de présence."
+    },
+    {
+      "id": "hemp-q2-ext-y-par-sdr-recombinaison",
+      "status": "approved",
+      "comment": "PAR et SDR sont désormais développés avant les choix. Le contraste entre régions reste correctement attribué, la réponse est unique et le niveau3 cohérent. Le fait testé n’a pas changé.",
+      "contentHash": "fae95808579169c5f1fab6e3f87abb1546324b02a8e92e8f5c89e3bcd598eaee",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Sex chromosome evolution — paragraphe débutant « Unlike most angiosperms », passage décrivant la recombinaison dans les régions du Y.",
+          "result": "Passage relu : la recombinaison est décrite dans la PAR et supprimée dans la SDR du chromosomeY. Le développement préalable des sigles résout le défaut éditorial.",
+          "sourceHash": "45deec6e3ea6e3a76c5319d868f66176c3b183f35899aab77a028ac9b9cbcbcc",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Distinct de hemp-genetics-recombinaison et hemp-genetics-xy : localisation différentielle sur le Y, plutôt que définition générale ou association XY/mâle.",
+      "revalidation": {
+        "previousContentHash": "8c35f128b002df40baafe68e7b72ce726548635c23f146858f5e5a14513aff5c",
+        "previousStatus": "changes_requested",
+        "decision": "Définitions ajoutées avant réponse ; même fait et même identité."
+      }
+    },
+    {
+      "id": "hemp-q2-ext-triploide-trois-jeux",
+      "status": "approved",
+      "comment": "Le calcul explicite enseigne jeux versus chromosomes, sans demander un nombre à mémoriser. Niveau1 cohérent : taille d’un jeu et définition de triploïde fournies, choix homogènes.",
+      "contentHash": "a63fefc99d979d8d55766cfdac84a17ec0d6c414d112ce80fdb69f795fd0d15f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-kurtz-triploids-2024",
+          "url": "https://overgrow.com/uploads/short-url/gT0F9J2nKW6OtpDDP3Tlzwn7p9R.pdf",
+          "locator": "PDF p.75, introduction : espèce diploïde2x=20 ; paragraphe présentant la notation3x.",
+          "result": "L’introduction indique2x=20 et présente les triploïdes comme3x. Le total30résulte de trois jeux de dix ; c’est une déduction explicitée, pas un nombre expérimental prétendument cité.",
+          "sourceHash": "9af9521e628c87ccca0a11e4d3c62213e41feb589d2c7ada0fbc0450893186bb",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Distinct du rappel20chromosomes diploïdes : application à trois jeux. Distinct de l’autre question Kurtz, qui examine une fertilité observée."
+    },
+    {
+      "id": "hemp-q2-ext-triploides-fertilite-residuelle",
+      "status": "approved",
+      "comment": "Bonne interprétation d’observation : faible fertilité n’implique pas disparition absolue. Niveau2 cohérent ; les choix portent sur des conclusions concurrentes, sans conseils de production.",
+      "contentHash": "bc2a62a0cb2fc8de11e1722d5baba26aaf2656a773b1c23ef0d286b0c80549d1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-kurtz-triploids-2024",
+          "url": "https://overgrow.com/uploads/short-url/gT0F9J2nKW6OtpDDP3Tlzwn7p9R.pdf",
+          "locator": "PDF p.75, résumé, comparaisons champ et serre et définition de « filled seeds ».",
+          "result": "Le résumé rapporte moins de graines remplies chez les triploïdes et définit une graine remplie par un embryon développé. Les réductions décrites n’atteignent pas100%.",
+          "sourceHash": "9af9521e628c87ccca0a11e4d3c62213e41feb589d2c7ada0fbc0450893186bb",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Fertilité résiduelle observée, distincte du nombre de jeux chromosomiques et du changement anatomique des stomates."
+    },
+    {
+      "id": "hemp-q2-ext-anthranilate-methyle-raisin",
+      "status": "approved",
+      "comment": "Association précise d’un odorant à une note, quatre réponses sensorielles homogènes. Niveau3 honnête pour cette molécule peu connue ; attribution aux extraits étudiés préservée.",
+      "contentHash": "ef6ca30c22fb0c8f50c268bd60b077b258eb56a09bbe6cda9cf8e051506788e4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-oswald-aroma-2023",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10601067/",
+          "locator": "Results — Structurally Unique Compounds, paragraphe débutant « Compounds with even more diverse functionalities ».",
+          "result": "La section Structurally Unique Compounds signale l’anthranilate de méthyle et lui associe une forte note de raisinConcord. La correction reste limitée à la description publiée.",
+          "sourceHash": "d897aa0b728c73fdcb93a23d44fcd552861008f17ce877f3db7eb1338ace9641",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Aucune association anthranilate de méthyle/raisin trouvée dans les360questions ni C/D ; distinct des autres odorants déjà testés."
+    },
+    {
+      "id": "hemp-q2-ext-skatole-profil-olfactif",
+      "status": "approved",
+      "comment": "Profil sensoriel soutenu, choix plausibles et niveau3 approprié. La correction distingue odorant isolé et mélange ; pas de promesse d’un profil universel des fleurs.",
+      "contentHash": "056bf01c737ad35a71071f486d69c52ff56c07c28a956c8ea1bf1c04262f18c5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-oswald-aroma-2023",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10601067/",
+          "locator": "Results — Indole Derivatives, paragraphes sur skatole isolé, descriptions chimiques et masquage dans les mélanges.",
+          "result": "Indole Derivatives décrit un skatole isolé ammoniacal, des profils chimiques dans certains extraits et des effets du mélange ou de la concentration. L’association demandée est soutenue.",
+          "sourceHash": "d897aa0b728c73fdcb93a23d44fcd552861008f17ce877f3db7eb1338ace9641",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Aucun rappel skatole/profil ammoniacal dans les360+C/D. Différent de l’item indole : identité/profil d’un composé versus variation avec concentration."
+    },
+    {
+      "id": "hemp-q2-ext-indole-concentration-odeur",
+      "status": "approved",
+      "comment": "Situation recevable : une odeur florale ne permet pas d’exclure le composé. Niveau2 cohérent pour ce raisonnement prudent. Les distracteurs distinguent absence, volatilité et quantification ; le correct n’est pas une quantité devinée.",
+      "contentHash": "9f7deb7e0aab7c1e9c4f15287575d710da8cc5c1f29d727f1775a00b434bb3a2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-paryani-aroma-2024",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11223244/",
+          "locator": "Results — Flavorant Analysis, paragraphe débutant « A dramatic difference ».",
+          "result": "Flavorant Analysis décrit pour l’indole une qualité olfactive pouvant aller du chimique ou naphtaline au floral selon la concentration. La conclusion de compatibilité est justifiée.",
+          "sourceHash": "fca6372513039b81d85adbfc548d83ce10a16b682cb32fc08e1e7feb93ab07e6",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Distinct de skatole et des associations fixes terpène/odeur existantes : ici une qualité olfactive varie avec la concentration."
+    },
+    {
+      "id": "hemp-q2-ext-mercaptohexanol-notes-correlation",
+      "status": "approved",
+      "comment": "Le nom du composé et le symbole r sont développés. Les deux associations documentées servent à interpréter un signe commun ; les distracteurs distinguent composition, causalité et relation négative. Niveau2 cohérent, sans recherche d’un maximum arbitraire.",
+      "contentHash": "53178e7ac7ee67c0bdf8c73f7f61877cb2a54b3827504d4c416c2d37ec4d3e90",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-paryani-aroma-2024",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11223244/",
+          "locator": "Results — TCSC Analysis, paragraphes « Citrus-related sensory descriptors » et « In addition to the relationships », correspondant aux passages261–262 du texte PMC.",
+          "result": "Passages relus : r=0,96relie le3-mercaptohexanol au descriptif mandarine et r=0,87au classement agrumes. Les deux coefficients sont positifs. L’interprétation conserve le contexte des cinq phénotypes et ne conclut pas à une causalité.",
+          "sourceHash": "fca6372513039b81d85adbfc548d83ce10a16b682cb32fc08e1e7feb93ab07e6",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Nouvel objectif d’interprétation des deux associations, sans doublon identifié dans les360+C/D déjà comparés. L’ancien exercice de classement des quatre valeurs est exclu et archivé.",
+      "revalidation": {
+        "replaces": "hemp-q2-ext-mandarine-correlation-donnees",
+        "previousItemStatus": "changes_requested",
+        "previousItemHash": "e727000eb478873f3e8b06347d1a35cf8b9db20a1f9f1c89530ff559f0064ff4",
+        "decision": "Fait et objectif modifiés, donc nouvel ID et nouvelle empreinte ; aucun recyclage de l’approbation de l’ancien exercice."
+      }
+    },
+    {
+      "id": "hemp-q2-ext-tetraploides-stomates",
+      "status": "approved",
+      "comment": "Double comparaison anatomique bien étayée, quatre combinaisons homogènes et niveau3 cohérent. Limitation au matériel étudié explicite ; aucun protocole de polyploïdisation repris.",
+      "contentHash": "04c9933a8fa1aaf8b08443efb846af63047fcfdf8bd436afb96ee8fefd5222c4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-parsons-polyploidy-2019",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00476/full",
+          "locator": "Results — Tetraploid Phenotype, tableau2 ; Discussion, paragraphe sur la taille et densité stomatiques.",
+          "result": "Le tableau2 et la discussion concordent : stomates plus grands et densité réduite dans les tétraploïdes comparés. La correction décrit ces observations sans en faire une garantie générale.",
+          "sourceHash": "01862773b23fc0cac185f16d94a19f8caa65a3f3611dc6c6ad68a7e64d2f10ad",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Distinct des notions de transpiration et rôle du potassium déjà présentes ; compare taille/densité selon ploïdie, pas fonction des stomates."
+    }
+  ],
+  "revalidation": {
+    "reviewedAt": "2026-11-16",
+    "changedItems": [
+      "hemp-q2-ext-y-par-sdr-recombinaison",
+      "hemp-q2-ext-mercaptohexanol-notes-correlation"
+    ],
+    "unchangedApprovedItems": 8,
+    "unchangedSourceObjects": 6,
+    "retiredItem": "hemp-q2-ext-mandarine-correlation-donnees",
+    "retiredReviewArchive": "docs/quiz-2000/archive/replaced-items/pilot-external-corrections-2026-11-16.json",
+    "fingerprintCheck": "Chaque item courant porte SHA-256 de JSON.stringify(question) ; chaque sourceCheck porte SHA-256 de l’objet source complet. Les huit approbations précédentes sont reprises uniquement après égalité des empreintes."
+  }
+}

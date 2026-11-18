@@ -1,0 +1,2003 @@
+{
+  "batchId": "d-new-04",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "status": "awaiting-independent-review",
+  "sourceReuse": {
+    "registry": "docs/encyclopedia-revision/bibliography.json et sources des lots validés",
+    "sourceIds": [
+      "q2-d-natencyclopedia-hemp-spread",
+      "q2-d-polish-ministry-siemieniotka",
+      "q2-d-usda-japan-hemp-seed",
+      "q2-dlegacy02-dehulling-2026"
+    ],
+    "rule": "Objets enregistrés référencés sans redéfinition ; les passages du présent lot sont réellement consultés et décrits ci-dessous."
+  },
+  "deduplication": {
+    "comparedWith": [
+      "docs/quiz-2000/fact-index.jsonl",
+      "docs/quiz-2000/audit-f-active-snapshot.json#entries",
+      "docs/quiz-2000/batches/pilot-d.json",
+      "docs/quiz-2000/batches/d-01.json",
+      "docs/quiz-2000/batches/d-legacy-01.json",
+      "docs/quiz-2000/batches/d-legacy-02.json",
+      "docs/quiz-2000/batches/d-legacy-03.json"
+    ],
+    "method": "Recherche ciblée par ingrédients, phénomènes et noms de plats ; contrôle des IDs, factKeys et prompts normalisés. Source et objet culinaires communs reçoivent une clé commune ; aucun chiffre de tableau n'est à mémoriser.",
+    "nearExistingFacts": [
+      {
+        "newFacts": [
+          "hemp-oil-finishing-rather-than-frying",
+          "opened-hemp-seeds-airtight-cold-storage"
+        ],
+        "existing": [
+          "hemp-prevention-huile-rance",
+          "hemp-q2-d01-chlorophylles-lumiere"
+        ],
+        "distinction": "Choix de geste culinaire et rangement d'un paquet ouvert, distincts de l'identification chimique du rancissement et du rôle photosensibilisateur des pigments."
+      },
+      {
+        "newFacts": [
+          "kanepju-sviests-traditional-mortar-pestle",
+          "kanepju-sviests-butter-name-spreadable-use",
+          "kanepju-sviests-historical-butter-substitute",
+          "kanepju-sviests-interwar-poverty-association",
+          "kanepju-sviests-portable-work-provision"
+        ],
+        "existing": [
+          "hemp-q2-d-kanepju-sviests-lettonie"
+        ],
+        "distinction": "Outil de fabrication de pâte, sens du nom, substitution alimentaire, image sociale et provision de travail constituent des faits distincts. Le pays n'est pas redemandé ; clé commune kanepju-sviests."
+      },
+      {
+        "newFacts": [
+          "siemieniotka-thickened-ground-millet",
+          "siemieniotka-sieve-keeps-hemp-liquid",
+          "siemieniotka-grey-dark-seed-flecks"
+        ],
+        "existing": [
+          "hemp-q2-d-siemieniotka-reveillon"
+        ],
+        "distinction": "Ingrédient épaississant, séparation culinaire et repère visuel distincts de l'occasion de fête ; clé commune siemieniotka. Le repas de Noël n'apparaît pas dans les nouveaux prompts."
+      },
+      {
+        "newFacts": [
+          "traditional-shichimi-whole-unhulled-hempseed"
+        ],
+        "existing": [
+          "hemp-q2-d-shichimi-condiment",
+          "hemp-seeds-decorticage"
+        ],
+        "distinction": "La forme des graines dans une tradition de condiment est distincte du nom du mélange et de l'opération générale de décorticage ; clé commune shichimi pour le récit japonais."
+      },
+      {
+        "newFacts": [
+          "hemp-wheat-partial-substitution-still-gluten",
+          "hemp-wheat-bread-gluten-gas-retention"
+        ],
+        "existing": [
+          "hemp-q2-d-pain-proteines-elasticite"
+        ],
+        "distinction": "Présence résiduelle du blé et mécanisme de rétention du gaz distincts du résultat protéines/élasticité de Rusu. Les deux nouveaux concepts proches partagent hemp-wheat-gluten."
+      },
+      {
+        "newFacts": [
+          "hemp-pasta-cooking-loss-dry-solids",
+          "hemp-pasta-cooking-endpoint-white-core",
+          "hemp-pasta-stickiness-amylose-leaching",
+          "hemp-pasta-hedonic-test-consumer-liking"
+        ],
+        "existing": [
+          "hemp-q2-d01-isolat-purete-rendement",
+          "hemp-q2-d01-poudres-moussage"
+        ],
+        "distinction": "Mesures de cuisson, transformation de l'amidon et appréciation des dégustateurs distinctes du rendement d'extraction de protéines et d'un test de signification sur le moussage. Clé commune axentii-2023-hemp-pasta."
+      },
+      {
+        "newFacts": [
+          "hemp-beverage-controlled-fermentation-starter",
+          "hemp-beverage-fermentation-acids-lower-ph"
+        ],
+        "existing": [
+          "hemp-profiles-rouissage-organismes",
+          "hemp-seeds-solubilite",
+          "hemp-q2-d01-isolats-milieu-acide"
+        ],
+        "distinction": "Une culture de départ alimentaire et l'interprétation de son acidification ne redemandent ni les microbes du rouissage ni une propriété de solubilité. Clé commune merenkova-2022-hemp-beverage."
+      },
+      {
+        "newFacts": [
+          "hemp-oil-phytosterols-unsaponifiable-fraction"
+        ],
+        "existing": [
+          "hemp-seeds-insaturation",
+          "hemp-seeds-linoleique",
+          "hemp-seeds-tocopherol"
+        ],
+        "distinction": "La fraction insaponifiable n'est ni la famille d'acides gras dominante ni l'identité de son principal tocophérol. Clé huile-chenevis réutilisée."
+      },
+      {
+        "newFacts": [
+          "hemp-dehulling-fibre-down-protein-concentrated"
+        ],
+        "existing": [
+          "hemp-seeds-decorticage",
+          "hemp-seeds-reserves",
+          "hemp-seeds-tourteau-fractions"
+        ],
+        "distinction": "Conséquence comparative sur la composition des graines entières/décortiquées distincte de la partie retirée, des réserves de la graine et de la composition du résidu de pressage ; clé hempseed-dehulling réutilisée."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "q2-d04-acf-hemp-2021",
+      "title": "Hemp Seeds — Ingredient of the Month, April 2021",
+      "organization": "American Culinary Federation Education Foundation",
+      "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "American Culinary Federation Education Foundation",
+      "published": "2021-04",
+      "passage": "PDF p. 2, Storing Hemp Seeds et Hemp Seed Culinary Uses",
+      "access": "full-text",
+      "documentKind": "Fiche de formation culinaire professionnelle",
+      "limitation": "Lecture des usages culinaires et du rangement après ouverture. Les seuils juridiques, récits historiques et promesses de santé de la fiche ne sont pas repris.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF p. 2, Storing Hemp Seeds et Hemp Seed Culinary Uses",
+        "result": "L'ACF préconise une huile de finition plutôt qu'une huile de friture, notamment pour sauces et assaisonnements. Le document recommande de réfrigérer ou congeler le paquet ouvert ou son contenu dans un récipient hermétique. Les graines sont proposées comme substitut à la chapelure pour enrober poulet ou poisson."
+      }
+    },
+    {
+      "id": "q2-d04-ekgt-samogitia",
+      "title": "Žemaitija — Kulinarinis paveldas",
+      "organization": "Etninės kultūros globos taryba, Conseil de protection de la culture ethnique de Lituanie",
+      "url": "https://ekgt.lt/etnografiniai-regionai/zemaitija/kulinarinis-paveldas.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Etninės kultūros globos taryba",
+      "published": "Sans date affichée",
+      "passage": "Kulinarinis paveldas, paragraphe commençant Žemaičių tradicijoje",
+      "access": "official-page",
+      "documentKind": "Présentation institutionnelle du patrimoine culinaire",
+      "limitation": "Description régionale utilisée pour les plats nommés et leurs ingrédients ; pas d'origine absolue revendiquée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Kulinarinis paveldas, paragraphe commençant Žemaičių tradicijoje",
+        "result": "La page de la Samogitie cite kanapių taboka et kanapių rasalas parmi les spécialités régionales. Le rasalas associe du lait de chanvre, du hareng écrasé et des oignons."
+      }
+    },
+    {
+      "id": "q2-d04-kretinga-cuisine",
+      "title": "Žemaitiški patiekalai Nasrėnuose",
+      "organization": "Kretingos rajono savivaldybė, municipalité du district de Kretinga",
+      "url": "https://kretinga.lt/zemaitiski-patiekalai-nasrenuose",
+      "verifiedAt": "2026-11-16",
+      "author": "Kretingos rajono savivaldybė",
+      "published": "Sans date affichée dans le texte consulté",
+      "passage": "Paragraphe d'ouverture ; paragraphe Spirgynę ; conservation de la tradition au musée de Nasrėnai",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle de patrimoine vivant",
+      "limitation": "Le texte décrit la tradition de Nasrėnai ; ne généralise pas ces usages à tous les habitants de Lituanie.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphe d'ouverture ; paragraphe Spirgynę ; conservation de la tradition au musée de Nasrėnai",
+        "result": "Les pommes de terre sont cuites avec leur peau et accompagnées de spirgynė, dans laquelle elles sont trempées. Le sausasis pasninkas excluait non seulement la viande mais aussi les produits laitiers. Le texte autorise explicitement le remplacement du chanvre par des graines de lin."
+      }
+    },
+    {
+      "id": "q2-d04-ojha-himalayan-foods-2022",
+      "title": "Traditional Dietary Knowledge of a Marginal Hill Community in the Central Himalaya: Implications for Food, Nutrition, and Medicinal Security",
+      "organization": "G.B. Pant National Institute of Himalayan Environment ; HNB Garhwal University ; Regional Ayurveda Research Institute ; Frontiers in Pharmacology",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.789360/full",
+      "verifiedAt": "2026-11-16",
+      "author": "S. N. Ojha, Aryan Anand, R. C. Sundriyal et Deepshikha Arya",
+      "published": "2022-03-30",
+      "passage": "Table 6, rubrique G Chutney, entrées 70, 71, 74 et 75",
+      "access": "full-text",
+      "documentKind": "Enquête ethnobotanique originale",
+      "limitation": "Seuls les ingrédients culinaires recensés sont utilisés. Les croyances et usages médicinaux rapportés par les auteurs ne sont pas présentés comme des effets démontrés.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Table 6, rubrique G Chutney, entrées 70, 71, 74 et 75",
+        "result": "Les entrées distinguent hemp seed et perilla seeds, toutes deux avec lemon extract. Kaddu ke meethi Chutney est décrit par pumpkin, hemp seed, jaggery et lemon extract. Nimbu ke saani associe lemon, hemp seeds, curd et jaggery."
+      }
+    },
+    {
+      "id": "q2-d04-axentii-pasta-2023",
+      "title": "Development and Quality Evaluation of Rigatoni Pasta Enriched with Hemp Seed Meal",
+      "organization": "Stefan cel Mare University of Suceava ; Foods",
+      "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+      "verifiedAt": "2026-11-16",
+      "author": "Marina Axentii, Silviu-Gabriel Stroe et Georgiana Gabriela Codină",
+      "published": "2023-04-25",
+      "passage": "§2.5.1–2.5.3 ; §2.10 Sensory Analysis ; Discussion, gluten dilution et amylose leached",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Notions de formulation et méthodes de mesure réellement décrites ; aucun seuil d'incorporation présenté comme valable pour toutes les pâtes. Aucun conseil pour une maladie ni allégation de bénéfice clinique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§2.5.1–2.5.3 ; §2.10 Sensory Analysis ; Discussion, gluten dilution et amylose leached",
+        "result": "La perte de cuisson est la masse de solides récupérés dans l'eau de cuisson, exprimée par rapport aux pâtes crues. La cuisson optimale est atteinte lorsque toutes les particules blanches d'amidon ont disparu, après compression entre deux plaques de verre. L'incorporation de farine de chanvre sans gluten dilue la fraction de blé et affaiblit le réseau, sans le supprimer lors d'une substitution partielle. Le texte relie stickiness à la quantité d'amylose libérée par les granules d'amidon gélatinisés. Le panel utilise une échelle de dislike extremely à like extremely pour les caractéristiques et l'acceptabilité des pâtes."
+      }
+    },
+    {
+      "id": "q2-d04-marinopoulou-bread-2024",
+      "title": "Impact of Hemp (Cannabis sativa L.) Protein Addition on the Rheological Properties of Wheat Flour Dough and Bread Quality",
+      "organization": "International Hellenic University ; Applied Sciences",
+      "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+      "verifiedAt": "2026-11-16",
+      "author": "Anna Marinopoulou, Nikoleta Sevastopoulou, Kyriaki Farmouzi, Evdokia Konstantinidou, Afroditi Alexandri et Maria Papageorgiou",
+      "published": "2024-12-12",
+      "passage": "§3.1, Water Holding Capacity ; §3.3, couleur, humidité et texture de la mie",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Les mécanismes discutés sont attribués aux auteurs et complétés par les définitions générales de l'ASB ; aucune formule ni proportion universelle de recette n'est déduite.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§3.1, Water Holding Capacity ; §3.3, couleur, humidité et texture de la mie",
+        "result": "Le faible volume est attribué notamment à une perte de rétention du gaz liée à l'interruption et à l'affaiblissement du réseau de gluten. L'absorption d'eau de la farine de blé est liée à sa teneur en amidon endommagé, qui absorbe davantage d'eau. L'étude de pains enrichis en protéines de chanvre relie les changements au stockage, dont le durcissement, notamment à la rétrogradation de l'amidon. Le brunissement des pains enrichis est relié à la couleur propre de la poudre et aux réactions de Maillard associées à ses groupes aminés."
+      }
+    },
+    {
+      "id": "q2-d04-asb-staling",
+      "title": "Staling",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/staling/?topic=recipes-and-formulation",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date affichée",
+      "passage": "What is staling? ; Origin ; How staling works",
+      "access": "full-text",
+      "documentKind": "Fiche technique d'une société professionnelle",
+      "limitation": "Les sections textuelles consultées sont accessibles après une bannière de connexion. Seule la définition du rassissement et de la rétrogradation est utilisée ; les formulations absolues d'autres conseils de la page sont exclues.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is staling? ; Origin ; How staling works",
+        "result": "La fiche associe le rassissement à la recristallisation de l'amidon et à son réalignement moléculaire lors du refroidissement puis du stockage."
+      }
+    },
+    {
+      "id": "q2-d04-asb-maillard",
+      "title": "Maillard Reaction",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/maillard-reaction/",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date affichée",
+      "passage": "What is the Maillard reaction? ; How it works, réaction sucre réducteur–groupe aminé",
+      "access": "full-text",
+      "documentKind": "Fiche technique d'une société professionnelle",
+      "limitation": "Les sections textuelles consultées sont accessibles après une bannière de connexion. Pas de températures, de durées optimisées ni de généralisation sur les effets sanitaires.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is the Maillard reaction? ; How it works, réaction sucre réducteur–groupe aminé",
+        "result": "La fiche décrit une réaction entre sucres réducteurs et groupes aminés, notamment d'acides aminés ou de protéines."
+      }
+    },
+    {
+      "id": "q2-d04-merenkova-fermentation-2022",
+      "title": "Effect of Fermentation on the Biochemical Parameters Antioxidant Capacity and Dispersed Composition of Plant Beverages Based on Barley and Hemp Seeds",
+      "organization": "South Ural State University ; Fermentation",
+      "url": "https://www.mdpi.com/2311-5637/8/8/384",
+      "verifiedAt": "2026-11-16",
+      "author": "Svetlana Merenkova, Rinat Fatkullin et Irina Kalinina",
+      "published": "2022-08-11",
+      "passage": "Introduction, cultures de départ ; §3.1, acidification et acide lactique",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Seules des transformations de boisson alimentaire de graines sont décrites. Les effets in vitro, activités antioxydantes ou affirmations de santé de l'article ne deviennent pas des bénéfices cliniques.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, cultures de départ ; §3.1, acidification et acide lactique",
+        "result": "Une fermentation contrôlée utilise des cultures microbiennes identifiées et sélectionnées pour améliorer fiabilité et reproductibilité. Les boissons de chanvre accumulent de l'acide lactique pendant la fermentation et leur pH évolue vers l'acidité."
+      }
+    },
+    {
+      "id": "q2-d04-fda-plant-milk",
+      "title": "Milk and Plant-Based Milk Alternatives: Know the Nutrient Difference",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/consumers/consumer-updates/milk-and-plant-based-milk-alternatives-know-nutrient-difference",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée dans le texte consulté",
+      "passage": "Introduction ; Plant-Based Milk Alternatives ; Using the Nutrition Facts Label",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle sur la composition alimentaire",
+      "limitation": "La page nomme explicitement le chanvre parmi les sources de boissons. Le lot traite la lecture de composition, sans conseil nutritionnel personnalisé ni recommandation pédiatrique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Plant-Based Milk Alternatives ; Using the Nutrition Facts Label",
+        "result": "La FDA souligne la variabilité nutritionnelle des boissons végétales, dont celles de chanvre, et recommande le tableau nutritionnel pour les comparer."
+      }
+    },
+    {
+      "id": "q2-d04-fda-ingredient-types",
+      "title": "Types of Food Ingredients",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée",
+      "passage": "Premier paragraphe, ordre massique ; tableau, Humectants et Anti-caking agents",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle sur les ingrédients",
+      "limitation": "Définition de fonctions d'ingrédients généraux appliquées à des situations alimentaires au chanvre. L'ordre de liste est explicitement cadré aux États-Unis ; aucune recette commerciale réelle n'est inventée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Premier paragraphe, ordre massique ; tableau, Humectants et Anti-caking agents",
+        "result": "La FDA indique que les ingrédients sont listés par prédominance décroissante en poids. Le tableau donne retain moisture comme fonction des humectants et cite glycerin et sorbitol. Les antiagglomérants maintiennent les poudres fluides et le tableau cite silicon dioxide."
+      }
+    },
+    {
+      "id": "q2-d04-fda-added-sugars",
+      "title": "Added Sugars on the Nutrition Facts Label",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/nutrition-facts-label/added-sugars-nutrition-facts-label",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée",
+      "passage": "Added Sugars ; How Are Added Sugars Listed on the Nutrition Facts Label?",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle sur l'étiquetage alimentaire",
+      "limitation": "Le cas est explicitement américain et concerne le miel utilisé dans une barre composée. Aucune quantité recommandée ni jugement médical n'est demandé.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Added Sugars ; How Are Added Sugars Listed on the Nutrition Facts Label?",
+        "result": "Les sucres de miel sont inclus dans les sucres ajoutés ; les sucres totaux incluent sucres naturellement présents et ajoutés."
+      }
+    },
+    {
+      "id": "q2-d04-jozinovic-extrusion-2017",
+      "title": "Optimisation of Extrusion Variables for the Production of Corn Snack Products Enriched with Defatted Hemp Cake",
+      "organization": "J.J. Strossmayer University in Osijek ; University of Mostar ; Czech Journal of Food Sciences",
+      "url": "https://cjfs.agriculturejournals.cz/pdfs/cjf/2017/06/06.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Antun Jozinović, Đurđica Ačkar, Stela Jokić, Jurislav Babić, Jelena Panak Balentić, Marija Banožić et Drago Šubarić",
+      "published": "2017",
+      "passage": "Page 509, PDF p. 3, Expansion ratio équation 2 et Bulk density équation 3",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Définitions de mesures de texture et géométrie pour des snacks de graines alimentaires ; pas de mémorisation de réglages, valeurs optimales, températures ou proportions.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Page 509, PDF p. 3, Expansion ratio équation 2 et Bulk density équation 3",
+        "result": "L'indice ER est le diamètre de l'extrudat divisé par le diamètre de la filière. Le calcul de masse volumique utilise la masse et les dimensions du cylindre extrudé, soit masse divisée par volume."
+      }
+    },
+    {
+      "id": "q2-d04-oklahoma-hemp-oil-2020",
+      "title": "Hemp Seed Oil Properties, FAPC-235",
+      "organization": "Oklahoma State University Extension",
+      "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+      "verifiedAt": "2026-11-16",
+      "author": "Nurhan Dunford",
+      "published": "2020-10",
+      "passage": "Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content et phytosterol content",
+      "access": "official-page",
+      "documentKind": "Fiche technique universitaire",
+      "limitation": "Seule la composition de la fraction insaponifiable est utilisée. Récits historiques approximatifs, réglementation de 2020 et affirmations cliniques sont exclus.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content et phytosterol content",
+        "result": "La teneur élevée en insaponifiable est attribuée en partie à la teneur en phytostérols."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "hemp-q2-d04-hemp-oil-finishing-rather-than-frying",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Une huile de chènevis non raffinée doit apporter sa saveur à un plat. Quel geste est le plus adapté ?",
+      "options": [
+        "Faire une vinaigrette ou finir un plat",
+        "Cuire des beignets en bain de friture",
+        "Saisir une viande à feu très vif",
+        "Graisser une plaque pour une cuisson prolongée"
+      ],
+      "answer": 0,
+      "explanation": "Les fiches culinaires conseillent l'huile de chènevis en assaisonnement ou en finition. Elle apporte sa saveur au plat sans subir la forte chaleur d'une friture.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "huile-chenevis",
+        "subjectKey": "huile-chenevis",
+        "property": "Choisir un usage culinaire adapté à l'huile non raffinée",
+        "expectedAnswer": "Faire une vinaigrette ou finir un plat",
+        "learningObjective": "Choisir un usage culinaire adapté à l'huile non raffinée.",
+        "factKey": "hemp-oil-finishing-rather-than-frying",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "Hemp Seed Culinary Uses, PDF p. 2",
+            "support": "L'ACF préconise une huile de finition plutôt qu'une huile de friture, notamment pour sauces et assaisonnements."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Après ouverture d'un paquet de graines de chanvre, quel rangement conseille l'American Culinary Federation ?",
+      "options": [
+        "Un sachet papier dans un placard",
+        "Un bocal fermé près des plaques de cuisson",
+        "Un récipient hermétique au réfrigérateur",
+        "Un pot transparent sur le plan de travail"
+      ],
+      "answer": 2,
+      "explanation": "La fiche recommande un contenant hermétique et le froid après ouverture. Cela protège ces graines riches en huile ; l'emballage du produit reste à consulter pour ses consignes propres.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-seed",
+        "subjectKey": "hemp-food-seed",
+        "property": "Conserver les graines ouvertes dans un contenant hermétique au froid",
+        "expectedAnswer": "Un récipient hermétique au réfrigérateur",
+        "learningObjective": "Conserver les graines ouvertes dans un contenant hermétique au froid.",
+        "factKey": "opened-hemp-seeds-airtight-cold-storage",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "Storing Hemp Seeds, PDF p. 2, premier point",
+            "support": "Le document recommande de réfrigérer ou congeler le paquet ouvert ou son contenu dans un récipient hermétique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-traditional-mortar-pestle",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel outil réduit traditionnellement les graines torréfiées en pâte pour le kaņepju sviests letton ?",
+      "options": [
+        "Un moulin à meules",
+        "Un mortier et son pilon",
+        "Une presse à vis",
+        "Un broyeur à cylindres"
+      ],
+      "answer": 1,
+      "explanation": "L'encyclopédie décrit les graines torréfiées puis pilées au mortier jusqu'à former une masse grasse. Il s'agit de fabriquer une pâte, et non de séparer l'huile comme dans un pressage.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Distinguer le pilage d'une pâte de graines et l'extraction d'huile",
+        "expectedAnswer": "Un mortier et son pilon",
+        "learningObjective": "Distinguer le pilage d'une pâte de graines et l'extraction d'huile.",
+        "factKey": "kanepju-sviests-traditional-mortar-pestle",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Vēsturiskās un ģeogrāfiskās atšķirības ēdiena pagatavošanā",
+            "support": "Les graines sont d'abord torréfiées, puis écrasées au mortier pour former une masse grasse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-seed-coating-instead-wheat-breadcrumbs",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quel emploi des graines de chanvre avec du poulet ou du poisson la fiche culinaire de l'ACF propose-t-elle ?",
+      "options": [
+        "Épaissir le liquide d'un court-bouillon",
+        "Structurer une gelée de dressage",
+        "Parfumer un jus par infusion puis retrait",
+        "Former un enrobage à la place de la chapelure"
+      ],
+      "answer": 3,
+      "explanation": "La fiche culinaire propose les graines de chanvre pour enrober poulet ou poisson à la place de la chapelure. Cela change aussi la texture de l'enrobage ; la recette complète reste à considérer.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-seed",
+        "subjectKey": "hemp-food-seed",
+        "property": "Reconnaître un usage des graines comme enrobage culinaire",
+        "expectedAnswer": "Former un enrobage à la place de la chapelure",
+        "learningObjective": "Reconnaître un usage des graines comme enrobage culinaire.",
+        "factKey": "hemp-seed-coating-instead-wheat-breadcrumbs",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "Hemp Seed Culinary Uses, PDF p. 2",
+            "support": "Les graines sont proposées comme substitut à la chapelure pour enrober poulet ou poisson."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pourquoi le nom letton kaņepju sviests rapproche-t-il une pâte de graines de chanvre du beurre ?",
+      "options": [
+        "Sa consistance tartinable et son emploi d'accompagnement",
+        "Son goût lacté et sa douceur peu marquée",
+        "Sa couleur jaune pâle et sa surface brillante",
+        "Sa capacité à former une mousse légère au fouet"
+      ],
+      "answer": 0,
+      "explanation": "L'encyclopédie lettone explique le nom par la consistance et l'usage : les deux produits se tartinent. Le mot « beurre » ne suffit donc pas à décrire la composition exacte de la recette.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Comprendre l'analogie culinaire dans le nom kaņepju sviests",
+        "expectedAnswer": "Sa consistance tartinable et son emploi d'accompagnement",
+        "learningObjective": "Comprendre l'analogie culinaire dans le nom kaņepju sviests.",
+        "factKey": "kanepju-sviests-butter-name-spreadable-use",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Nosaukuma izcelsme, paragraphe sur sviests",
+            "support": "Le nom est fondé sur une association de consistance et d'usage, les deux produits étant tartinables et utilisés comme accompagnement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-historical-butter-substitute",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans l'alimentation paysanne lettone décrite par l'encyclopédie nationale, pourquoi préparait-on du kaņepju sviests ?",
+      "options": [
+        "Pour utiliser une crème devenue trop acide",
+        "Pour compléter ou remplacer un beurre trop peu abondant",
+        "Pour conserver les céréales sous une couche de matière grasse",
+        "Pour employer les résidus d'une fabrication de fromage"
+      ],
+      "answer": 1,
+      "explanation": "Cette pâte de graines de chanvre complétait le beurre ou le remplaçait quand il manquait. Des noms régionaux évoquent d'ailleurs un « beurre de la faim » ou des domestiques.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Découvrir le rôle historique d'une pâte de chanvre comme substitut du beurre",
+        "expectedAnswer": "Pour compléter ou remplacer un beurre trop peu abondant",
+        "learningObjective": "Découvrir le rôle historique d'une pâte de chanvre comme substitut du beurre.",
+        "factKey": "kanepju-sviests-historical-butter-substitute",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Ēdiena loma kultūrā, premier paragraphe",
+            "support": "Les paysans préparaient la pâte lorsque le beurre manquait ; elle en complétait la quantité ou le remplaçait entièrement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-interwar-poverty-association",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pourquoi certains Lettons devenus plus aisés ont-ils délaissé le kaņepju sviests entre les deux guerres ?",
+      "options": [
+        "Il était surtout proposé dans les menus religieux",
+        "Il était devenu plus cher que le beurre laitier",
+        "Il évoquait une alimentation paysanne pauvre",
+        "Il était associé aux repas de l'armée"
+      ],
+      "answer": 2,
+      "explanation": "Selon l'encyclopédie nationale, la pâte au chanvre était associée à la pauvreté paysanne. Certains préféraient alors le beurre laitier : un choix alimentaire pouvait aussi exprimer une position sociale.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Relier un choix alimentaire historique à son image sociale",
+        "expectedAnswer": "Il évoquait une alimentation paysanne pauvre",
+        "learningObjective": "Relier un choix alimentaire historique à son image sociale.",
+        "factKey": "kanepju-sviests-interwar-poverty-association",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Ēdiena loma kultūrā, paragraphe sur le XXe siècle et l'entre-deux-guerres",
+            "support": "La popularité diminue ; le produit évoque la pauvreté paysanne et les personnes devenues plus aisées choisissent le vrai beurre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel contexte d'usage rural du kaņepju sviests l'encyclopédie lettone documente-t-elle ?",
+      "options": [
+        "Les repas collectifs de fin de moisson au village",
+        "Les fêtes familiales marquant la première traite",
+        "Les veillées d'hiver autour du foyer",
+        "Les déplacements et les travaux forestiers ou pastoraux"
+      ],
+      "answer": 3,
+      "explanation": "On emportait la pâte de chanvre en chemin, aux travaux forestiers ou à la garde des troupeaux. L'encyclopédie la rapproche ainsi d'un en-cas dans les conditions de vie rurales.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Découvrir un usage pratique de la pâte de chanvre dans la vie rurale",
+        "expectedAnswer": "Les déplacements et les travaux forestiers ou pastoraux",
+        "learningObjective": "Découvrir un usage pratique de la pâte de chanvre dans la vie rurale.",
+        "factKey": "kanepju-sviests-portable-work-provision",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Ēdiena loma kultūrā, passage sur ceļā, meža darbos un ganos",
+            "support": "La pâte était emportée pendant les déplacements, le travail en forêt et la garde des troupeaux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-thickened-ground-millet",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quelle céréale moulue épaissit la siemieniotka dans la recette ancienne citée par le ministère polonais de l'Agriculture ?",
+      "options": [
+        "Le millet",
+        "Le seigle",
+        "L'avoine",
+        "Le maïs"
+      ],
+      "answer": 0,
+      "explanation": "La recette rapportée ajoute du millet très finement moulu au liquide obtenu des graines de chanvre. Cette céréale ne doit pas être confondue avec la matière première qui donne son nom à la soupe.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "Identifier le rôle du millet moulu dans une recette de soupe au chanvre",
+        "expectedAnswer": "Le millet",
+        "learningObjective": "Identifier le rôle du millet moulu dans une recette de soupe au chanvre.",
+        "factKey": "siemieniotka-thickened-ground-millet",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Tradycja, citation de Wera Sztabowa, derniers paragraphes",
+            "support": "Le texte mentionne de la kasza jaglana finement moulue, ajoutée à la polewka de chanvre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-sieve-keeps-hemp-liquid",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans la recette traditionnelle de siemieniotka citée par le ministère polonais, quelle partie recueille-t-on après le tamisage ?",
+      "options": [
+        "Les enveloppes sèches des graines uniquement",
+        "Le liquide blanchâtre provenant des graines écrasées",
+        "L'huile séparée par décantation",
+        "Les grains de millet encore entiers"
+      ],
+      "answer": 1,
+      "explanation": "Les graines de chanvre écrasées sont rincées, puis le liquide est passé au tamis et recueilli. Ce procédé culinaire sépare les gros résidus de la base liquide de la soupe.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "Comprendre la fonction du tamisage dans une soupe de graines",
+        "expectedAnswer": "Le liquide blanchâtre provenant des graines écrasées",
+        "learningObjective": "Comprendre la fonction du tamisage dans une soupe de graines.",
+        "factKey": "siemieniotka-sieve-keeps-hemp-liquid",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Tradycja, recette citée de Krupnioki i moczka",
+            "support": "Le passage décrit le liquide devenant blanc puis son passage par un tamis dans le récipient qui recueille le bouillon de chanvre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-grey-dark-seed-flecks",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "À quoi la fiche polonaise attribue-t-elle les points foncés visibles dans la soupe de chanvre siemieniotka ?",
+      "options": [
+        "À des grains de poivre",
+        "À des fragments de champignons séchés",
+        "À des restes de graines de chanvre moulues",
+        "À des graines de pavot ajoutées"
+      ],
+      "answer": 2,
+      "explanation": "La fiche décrit une soupe grise ponctuée de fragments du chanvre moulu. Ces repères visuels font partie du portrait d'un plat dont la recette et les gestes sont transmis entre générations.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "Reconnaître la présence visible de fragments de graines dans la soupe traditionnelle",
+        "expectedAnswer": "À des restes de graines de chanvre moulues",
+        "learningObjective": "Reconnaître la présence visible de fragments de graines dans la soupe traditionnelle.",
+        "factKey": "siemieniotka-grey-dark-seed-flecks",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Barwa",
+            "support": "La fiche décrit des points foncés comme les restes du siemienia konopnego moulu."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "À quelle région lituanienne le Conseil de la culture ethnique rattache-t-il les plats kanapių taboka et kanapių rasalas ?",
+      "options": [
+        "À la Dzūkija",
+        "À l'Aukštaitija",
+        "À la Suvalkija",
+        "À la Samogitie"
+      ],
+      "answer": 3,
+      "explanation": "Le Conseil de la culture ethnique rattache ces deux préparations à la Samogitie, appelée Žemaitija en lituanien. Cette région possède un patrimoine culinaire où les graines de chanvre ont une place spécifique.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ekgt-samogitia"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "samogitian-hemp-foods",
+        "subjectKey": "samogitian-hemp-foods",
+        "property": "Situer des préparations de chanvre dans le patrimoine régional lituanien",
+        "expectedAnswer": "À la Samogitie",
+        "learningObjective": "Situer des préparations de chanvre dans le patrimoine régional lituanien.",
+        "factKey": "samogitia-hemp-food-regional-heritage",
+        "form": "identification",
+        "difficultyRationale": "Identification précise d'un patrimoine culinaire régional lituanien, sans indice géographique familier dans l'énoncé : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ekgt-samogitia",
+            "locator": "Žemaitija, Kulinarinis paveldas, paragraphe sur kanapės",
+            "support": "La page de la Samogitie cite kanapių taboka et kanapių rasalas parmi les spécialités régionales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-served-with-skin-on-potatoes",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "À Nasrėnai, avec quel aliment sert-on traditionnellement la spirgynė, une préparation de graines de chanvre ?",
+      "options": [
+        "Des pommes de terre cuites avec leur peau",
+        "Des nouilles de sarrasin froides",
+        "Des tranches de pomme au miel",
+        "Des galettes de seigle grillées"
+      ],
+      "answer": 0,
+      "explanation": "La notice de Nasrėnai décrit des pommes de terre chaudes cuites avec leur peau, que l'on trempe dans la spirgynė. Le chanvre y joue le rôle d'accompagnement.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-kretinga-cuisine"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "spirgyne",
+        "subjectKey": "spirgyne",
+        "property": "Découvrir l'accompagnement traditionnel de la spirgynė",
+        "expectedAnswer": "Des pommes de terre cuites avec leur peau",
+        "learningObjective": "Découvrir l'accompagnement traditionnel de la spirgynė.",
+        "factKey": "spirgyne-served-with-skin-on-potatoes",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-kretinga-cuisine",
+            "locator": "Paragraphe d'ouverture et paragraphe Spirgynę",
+            "support": "Les pommes de terre sont cuites avec leur peau et accompagnées de spirgynė, dans laquelle elles sont trempées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanapiu-rasalas-hemp-milk-herring-onion",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans le kanapių rasalas décrit en Samogitie, quel ingrédient animal accompagne la base de chanvre et les oignons ?",
+      "options": [
+        "De la crème aigre",
+        "Du hareng écrasé",
+        "Du lard fumé",
+        "Du fromage frais"
+      ],
+      "answer": 1,
+      "explanation": "Le Conseil lituanien décrit le rasalas comme une base de « lait » de chanvre mêlée de hareng écrasé et d'oignons. Cet exemple montre qu'une préparation de graines végétales peut aussi comprendre du poisson.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ekgt-samogitia"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanapiu-rasalas",
+        "subjectKey": "kanapiu-rasalas",
+        "property": "Identifier une association traditionnelle de chanvre et de poisson",
+        "expectedAnswer": "Du hareng écrasé",
+        "learningObjective": "Identifier une association traditionnelle de chanvre et de poisson.",
+        "factKey": "kanapiu-rasalas-hemp-milk-herring-onion",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ekgt-samogitia",
+            "locator": "Kulinarinis paveldas, phrase Kanapių rasalas",
+            "support": "Le rasalas associe du lait de chanvre, du hareng écrasé et des oignons."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-dry-fast-excluded-dairy",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans le « jeûne sec » évoqué à propos de la spirgynė de Nasrėnai, quels aliments étaient écartés en plus de la viande ?",
+      "options": [
+        "Les pommes de terre",
+        "Le pain de seigle",
+        "Les produits laitiers",
+        "Les graines oléagineuses"
+      ],
+      "answer": 2,
+      "explanation": "La notice précise que ce jeûne excluait aussi les produits laitiers. La préparation de graines de chanvre s'inscrit donc dans un contexte alimentaire allant au-delà de la seule absence de viande.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-kretinga-cuisine"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "spirgyne",
+        "subjectKey": "spirgyne",
+        "property": "Comprendre un contexte alimentaire historique sans viande ni produits laitiers",
+        "expectedAnswer": "Les produits laitiers",
+        "learningObjective": "Comprendre un contexte alimentaire historique sans viande ni produits laitiers.",
+        "factKey": "spirgyne-dry-fast-excluded-dairy",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-kretinga-cuisine",
+            "locator": "Paragraphe Spirgynę, première phrase",
+            "support": "Le sausasis pasninkas excluait non seulement la viande mais aussi les produits laitiers."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-linseed-alternative-to-hempseed",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quelle autre graine la notice de Nasrėnai propose-t-elle à la place du chanvre pour préparer une spirgynė ?",
+      "options": [
+        "Le pavot",
+        "Le sésame",
+        "Le tournesol",
+        "Le lin"
+      ],
+      "answer": 3,
+      "explanation": "La notice cite les graines de lin comme variante. La préparation garde son rôle d'accompagnement des pommes de terre, même si la matière première oléagineuse change.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-kretinga-cuisine"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "spirgyne",
+        "subjectKey": "spirgyne",
+        "property": "Découvrir une variante de graine dans la préparation spirgynė",
+        "expectedAnswer": "Le lin",
+        "learningObjective": "Découvrir une variante de graine dans la préparation spirgynė.",
+        "factKey": "spirgyne-linseed-alternative-to-hempseed",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-kretinga-cuisine",
+            "locator": "Paragraphe Spirgynę, phrase Vietoj kanapių galima naudoti ir linų sėmenis",
+            "support": "Le texte autorise explicitement le remplacement du chanvre par des graines de lin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-himalayan-bhang-bhangeera-distinct-seeds",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'enquête d'Ojha en Himalaya, qu'est-ce qui distingue bhang ki chutney de bhangeera ki chutney ?",
+      "options": [
+        "Chanvre pour le premier, périlla pour le second",
+        "Périlla pour le premier, chanvre pour le second",
+        "Chanvre pour le premier, moutarde pour le second",
+        "Moutarde pour le premier, périlla pour le second"
+      ],
+      "answer": 0,
+      "explanation": "Les noms voisins ne désignent pas la même graine : le tableau associe bhang au chanvre et bhangeera à la périlla. Les deux recettes de chutney recensées contiennent également du citron.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ojha-himalayan-foods-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "ojha-2022-himalayan-hemp-foods",
+        "subjectKey": "ojha-2022-himalayan-hemp-foods",
+        "property": "Distinguer deux condiments de graines portant des noms proches",
+        "expectedAnswer": "Chanvre pour le premier, périlla pour le second",
+        "learningObjective": "Distinguer deux condiments de graines portant des noms proches.",
+        "factKey": "himalayan-bhang-bhangeera-distinct-seeds",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+            "locator": "Table 6, rubrique G, recettes 70 et 71",
+            "support": "Les entrées distinguent hemp seed et perilla seeds, toutes deux avec lemon extract."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kaddu-meethi-hemp-pumpkin-chutney",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'enquête d'Ojha en Himalaya central, quel légume accompagne le chanvre dans le kaddu ke meethi chutney ?",
+      "options": [
+        "L'aubergine",
+        "La courge",
+        "Le radis",
+        "La pomme de terre"
+      ],
+      "answer": 1,
+      "explanation": "La recette recensée associe courge, graines de chanvre, jaggery et citron. Ce chutney illustre une place des graines dans les accompagnements mêlant notes douces et acides.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ojha-himalayan-foods-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "ojha-2022-himalayan-hemp-foods",
+        "subjectKey": "ojha-2022-himalayan-hemp-foods",
+        "property": "Découvrir une association culinaire de courge et de graines de chanvre",
+        "expectedAnswer": "La courge",
+        "learningObjective": "Découvrir une association culinaire de courge et de graines de chanvre.",
+        "factKey": "kaddu-meethi-hemp-pumpkin-chutney",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+            "locator": "Table 6, rubrique G, recette 74",
+            "support": "Kaddu ke meethi Chutney est décrit par pumpkin, hemp seed, jaggery et lemon extract."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-nimbu-saani-hemp-curd-ingredient",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel ingrédient laitier accompagne le citron et les graines de chanvre dans le nimbu ke saani recensé par Ojha ?",
+      "options": [
+        "Du beurre clarifié",
+        "De la crème fouettée",
+        "Du lait caillé",
+        "Du fromage à pâte dure"
+      ],
+      "answer": 2,
+      "explanation": "Le tableau de terrain associe citron, graines de chanvre, curd et jaggery. Le curd correspond ici au lait caillé ; cette préparation assemble ainsi des ingrédients végétaux et laitiers.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ojha-himalayan-foods-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "ojha-2022-himalayan-hemp-foods",
+        "subjectKey": "ojha-2022-himalayan-hemp-foods",
+        "property": "Identifier un ingrédient laitier dans une préparation traditionnelle au chanvre",
+        "expectedAnswer": "Du lait caillé",
+        "learningObjective": "Identifier un ingrédient laitier dans une préparation traditionnelle au chanvre.",
+        "factKey": "nimbu-saani-hemp-curd-ingredient",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+            "locator": "Table 6, rubrique G, recette 75",
+            "support": "Nimbu ke saani associe lemon, hemp seeds, curd et jaggery."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-traditional-shichimi-whole-unhulled-hempseed",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Sous quelle forme le rapport de 2021 préparé pour l'ambassade américaine à Tokyo décrit-il le chanvre du shichimi traditionnel ?",
+      "options": [
+        "En huile raffinée",
+        "En farine déshuilée",
+        "En pâte fermentée",
+        "En graines avec leur enveloppe"
+      ],
+      "answer": 3,
+      "explanation": "Le rapport décrit des graines encore dans leur enveloppe dans le shichimi traditionnel. Leur forme se distingue des graines décortiquées souvent vendues pour être ajoutées directement aux plats.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-usda-japan-hemp-seed"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "shichimi",
+        "subjectKey": "shichimi",
+        "property": "Reconnaître la forme traditionnelle des graines de chanvre dans le shichimi",
+        "expectedAnswer": "En graines avec leur enveloppe",
+        "learningObjective": "Reconnaître la forme traditionnelle des graines de chanvre dans le shichimi.",
+        "factKey": "traditional-shichimi-whole-unhulled-hempseed",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-usda-japan-hemp-seed",
+            "locator": "Hemp Seed Market, page imprimée 6, PDF p. 7",
+            "support": "Le rapport mentionne hemp seed in the shell dans le shichimi courant."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-cooking-loss-dry-solids",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour des pâtes au chanvre, les « pertes à la cuisson » mesurées dans l'eau correspondent à quoi ?",
+      "options": [
+        "Aux matières sèches quittant les pâtes pour l'eau",
+        "À toute l'eau absorbée par les pâtes",
+        "À l'eau évaporée pendant l'ébullition",
+        "À la différence de poids entre pâtes sèches et cuites"
+      ],
+      "answer": 0,
+      "explanation": "On récupère l'eau de cuisson puis on en mesure le résidu solide après évaporation. Cette perte de matière se distingue du gain de poids lié à l'eau absorbée par les pâtes.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Distinguer perte de matières sèches et absorption d'eau pendant la cuisson",
+        "expectedAnswer": "Aux matières sèches quittant les pâtes pour l'eau",
+        "learningObjective": "Distinguer perte de matières sèches et absorption d'eau pendant la cuisson.",
+        "factKey": "hemp-pasta-cooking-loss-dry-solids",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "§2.5.3 Cooking Loss",
+            "support": "La perte de cuisson est la masse de solides récupérés dans l'eau de cuisson, exprimée par rapport aux pâtes crues."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-cooking-endpoint-white-core",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'essai d'Axentii sur les pâtes au chanvre, quel repère sert à déterminer la fin de cuisson après écrasement entre deux plaques ?",
+      "options": [
+        "Le doublement du volume apparent",
+        "La disparition des points blancs d'amidon",
+        "Le maximum d'adhérence entre les plaques",
+        "Le début de fissuration de la surface"
+      ],
+      "answer": 1,
+      "explanation": "Les auteurs surveillent la disparition des particules blanches d'amidon. Le repère expérimental concerne l'état interne de la pâte, pas seulement son aspect extérieur ou une durée identique pour toutes les recettes.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Reconnaître un repère expérimental de cuisson du cœur d'une pâte",
+        "expectedAnswer": "La disparition des points blancs d'amidon",
+        "learningObjective": "Reconnaître un repère expérimental de cuisson du cœur d'une pâte.",
+        "factKey": "hemp-pasta-cooking-endpoint-white-core",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "§2.5.1 Optimal Cooking Time",
+            "support": "La cuisson optimale est atteinte lorsque toutes les particules blanches d'amidon ont disparu, après compression entre deux plaques de verre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Des pâtes remplacent une partie de la farine de blé par de la farine de chanvre. Que peut-on dire du gluten ?",
+      "options": [
+        "Le gluten augmente avec la quantité totale de protéines",
+        "Le gluten reste en même proportion malgré moins de blé",
+        "Le gluten est dilué, mais le blé en apporte encore",
+        "Les protéines du chanvre deviennent la source du gluten"
+      ],
+      "answer": 2,
+      "explanation": "Le chanvre ne contient pas de gluten, mais une substitution partielle laisse du blé dans la recette. L'ajout d'un ingrédient sans gluten ne rend donc pas le mélange entier sans gluten.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-gluten",
+        "subjectKey": "hemp-wheat-gluten",
+        "property": "Distinguer dilution du gluten et présence de protéines de chanvre",
+        "expectedAnswer": "Le gluten est dilué, mais le blé en apporte encore",
+        "learningObjective": "Comprendre qu'une farine sans gluten dilue le gluten d'un mélange avec du blé, sans assimiler toutes les protéines au gluten.",
+        "factKey": "hemp-wheat-partial-substitution-still-gluten",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "Discussion, paragraphes sur gluten dilution et HSM non-gluten ingredient",
+            "support": "L'incorporation de farine de chanvre sans gluten dilue la fraction de blé et affaiblit le réseau, sans le supprimer lors d'une substitution partielle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-stickiness-amylose-leaching",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'étude des pâtes blé-chanvre d'Axentii, quel constituant libéré par l'amidon est lié à leur caractère collant ?",
+      "options": [
+        "La cellulose",
+        "L'amylopectine",
+        "L'hémicellulose",
+        "L'amylose"
+      ],
+      "answer": 3,
+      "explanation": "Les auteurs relient le caractère collant à l'amylose libérée par les granules d'amidon gélatinisés. Ce phénomène concerne la fraction céréalière de la recette, même lorsque celle-ci est enrichie en chanvre.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Relier un caractère collant à la libération d'un composant de l'amidon",
+        "expectedAnswer": "L'amylose",
+        "learningObjective": "Relier un caractère collant à la libération d'un composant de l'amidon.",
+        "factKey": "hemp-pasta-stickiness-amylose-leaching",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "Discussion, paragraphe sur adhesiveness and stickiness",
+            "support": "Le texte relie stickiness à la quantité d'amylose libérée par les granules d'amidon gélatinisés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-hedonic-test-consumer-liking",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour des pâtes au chanvre, que cherche à mesurer une échelle sensorielle hédonique ?",
+      "options": [
+        "Le plaisir ou le déplaisir ressenti par les dégustateurs",
+        "L'intensité de l'odeur perçue par les dégustateurs",
+        "La force de l'amertume perçue par les dégustateurs",
+        "La détection d'une différence entre deux échantillons"
+      ],
+      "answer": 0,
+      "explanation": "L'échelle hédonique porte sur l'appréciation des personnes, du déplaisir au plaisir. Elle complète les mesures de composition et de texture, sans les remplacer.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Distinguer appréciation hédonique, intensité et discrimination sensorielle",
+        "expectedAnswer": "Le plaisir ou le déplaisir ressenti par les dégustateurs",
+        "learningObjective": "Distinguer une mesure du plaisir de dégustation d'une mesure d'intensité ou d'une recherche de différence.",
+        "factKey": "hemp-pasta-hedonic-test-consumer-liking",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "§2.10 Sensory Analysis",
+            "support": "Le panel utilise une échelle de dislike extremely à like extremely pour les caractéristiques et l'acceptabilité des pâtes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans un pain blé-chanvre, quel rôle du réseau de gluten aide à obtenir une mie aérée ?",
+      "options": [
+        "Gonfler les granules d'amidon pendant la cuisson",
+        "Retenir le gaz dans les alvéoles de la pâte",
+        "Produire le dioxyde de carbone par fermentation",
+        "Brunir la croûte par les réactions de Maillard"
+      ],
+      "answer": 1,
+      "explanation": "Le réseau de gluten aide la pâte à retenir le gaz et à conserver du volume. Une hausse de la teneur totale en protéines ne garantit donc pas, à elle seule, la même structure de mie.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-marinopoulou-bread-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-gluten",
+        "subjectKey": "hemp-wheat-gluten",
+        "property": "Relier la structure du réseau de gluten à la rétention du gaz",
+        "expectedAnswer": "Retenir le gaz dans les alvéoles de la pâte",
+        "learningObjective": "Relier la structure du réseau de gluten à la rétention du gaz.",
+        "factKey": "hemp-wheat-bread-gluten-gas-retention",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-marinopoulou-bread-2024",
+            "locator": "§3.3.4 Texture Profile Analysis, discussion du volume spécifique et du réseau de gluten",
+            "support": "Le faible volume est attribué notamment à une perte de rétention du gaz liée à l'interruption et à l'affaiblissement du réseau de gluten."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-wheat-hemp-dough-damaged-starch-water-binding",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Pour une pâte blé-chanvre, quel état de l'amidon de blé favorise une absorption d'eau plus élevée ?",
+      "options": [
+        "Des granules moins endommagés",
+        "Des granules intacts plus gros",
+        "Des granules endommagés par la mouture",
+        "Des granules moins exposés à l'eau"
+      ],
+      "answer": 2,
+      "explanation": "L'article précise que l'amidon endommagé retient davantage d'eau. Les besoins d'une pâte dépendent ainsi de l'état de ses ingrédients, et pas seulement du nom des farines mélangées.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-marinopoulou-bread-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "marinopoulou-2024-hemp-bread",
+        "subjectKey": "marinopoulou-2024-hemp-bread",
+        "property": "Comprendre l'effet de l'endommagement de l'amidon sur la rétention d'eau",
+        "expectedAnswer": "Des granules endommagés par la mouture",
+        "learningObjective": "Comprendre l'effet de l'endommagement de l'amidon sur la rétention d'eau.",
+        "factKey": "wheat-hemp-dough-damaged-starch-water-binding",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-marinopoulou-bread-2024",
+            "locator": "§3.1, discussion de la Water Holding Capacity",
+            "support": "L'absorption d'eau de la farine de blé est liée à sa teneur en amidon endommagé, qui absorbe davantage d'eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-bread-staling-starch-retrogradation",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un pain au blé et au chanvre durcit pendant son stockage. Quel phénomène de l'amidon peut contribuer au rassissement ?",
+      "options": [
+        "L'hydrolyse en sucres simples",
+        "L'oxydation en acides organiques",
+        "La dissolution dans les matières grasses",
+        "La réorganisation des chaînes d'amidon"
+      ],
+      "answer": 3,
+      "explanation": "Le rassissement implique notamment une réorganisation de l'amidon après cuisson, appelée rétrogradation. Il ne se résume pas à une simple perte d'eau ; plusieurs changements de la mie interviennent.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-asb-staling",
+        "q2-d04-marinopoulou-bread-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "marinopoulou-2024-hemp-bread",
+        "subjectKey": "marinopoulou-2024-hemp-bread",
+        "property": "Comprendre la contribution de la rétrogradation de l'amidon au rassissement",
+        "expectedAnswer": "La réorganisation des chaînes d'amidon",
+        "learningObjective": "Comprendre la contribution de la rétrogradation de l'amidon au rassissement.",
+        "factKey": "hemp-bread-staling-starch-retrogradation",
+        "form": "situation",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-asb-staling",
+            "locator": "Origin et How staling works",
+            "support": "La fiche associe le rassissement à la recristallisation de l'amidon et à son réalignement moléculaire lors du refroidissement puis du stockage."
+          },
+          {
+            "sourceId": "q2-d04-marinopoulou-bread-2024",
+            "locator": "§3.3.3 et §3.3.4, stockage et changements de la mie",
+            "support": "L'étude de pains enrichis en protéines de chanvre relie les changements au stockage, dont le durcissement, notamment à la rétrogradation de l'amidon."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-bread-maillard-reducing-sugar-amino",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans un pain enrichi en protéines de chanvre, quel couple de réactifs participe au brunissement de Maillard ?",
+      "options": [
+        "Sucres réducteurs et groupes aminés",
+        "Triglycérides et lipases",
+        "Acides gras et oxygène",
+        "Amidon et amylases"
+      ],
+      "answer": 0,
+      "explanation": "Les réactions de Maillard mettent en jeu des sucres réducteurs et des groupes aminés, notamment ceux des protéines. Elles produisent des composés colorés et aromatiques lors de transformations thermiques.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-asb-maillard",
+        "q2-d04-marinopoulou-bread-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "marinopoulou-2024-hemp-bread",
+        "subjectKey": "marinopoulou-2024-hemp-bread",
+        "property": "Distinguer les réactifs de Maillard des autres constituants alimentaires",
+        "expectedAnswer": "Sucres réducteurs et groupes aminés",
+        "learningObjective": "Distinguer les réactifs de Maillard des autres constituants alimentaires.",
+        "factKey": "hemp-bread-maillard-reducing-sugar-amino",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-asb-maillard",
+            "locator": "What is the Maillard reaction? et How it works",
+            "support": "La fiche décrit une réaction entre sucres réducteurs et groupes aminés, notamment d'acides aminés ou de protéines."
+          },
+          {
+            "sourceId": "q2-d04-marinopoulou-bread-2024",
+            "locator": "§3.3.1, discussion de la couleur, paragraphe sur les groupes aminés",
+            "support": "Le brunissement des pains enrichis est relié à la couleur propre de la poudre et aux réactions de Maillard associées à ses groupes aminés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-controlled-fermentation-starter",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Pour fermenter une boisson de graines de chanvre, qu'appelle-t-on un « ferment » ou une culture de départ ?",
+      "options": [
+        "Des enzymes purifiées sans microorganismes",
+        "Des microorganismes sélectionnés introduits dans le produit",
+        "Un mélange de sels alimentaires acidifiants",
+        "Des extraits aromatiques de fermentation"
+      ],
+      "answer": 1,
+      "explanation": "Une culture de départ apporte des microorganismes choisis pour conduire la fermentation. Le choix de ces cultures permet de mieux maîtriser et reproduire les transformations du produit.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-merenkova-fermentation-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "merenkova-2022-hemp-beverage",
+        "subjectKey": "merenkova-2022-hemp-beverage",
+        "property": "Comprendre le rôle d'une culture de départ dans une fermentation alimentaire",
+        "expectedAnswer": "Des microorganismes sélectionnés introduits dans le produit",
+        "learningObjective": "Comprendre le rôle d'une culture de départ dans une fermentation alimentaire.",
+        "factKey": "hemp-beverage-controlled-fermentation-starter",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-merenkova-fermentation-2022",
+            "locator": "Introduction, controlled fermentation et starter cultures",
+            "support": "Une fermentation contrôlée utilise des cultures microbiennes identifiées et sélectionnées pour améliorer fiabilité et reproductibilité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-fermentation-acids-lower-ph",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Des acides s'accumulent pendant la fermentation d'une boisson de chanvre. Quelle tendance du pH accompagne ce phénomène dans l'étude ?",
+      "options": [
+        "Une hausse progressive",
+        "Une stabilité pendant toute la fermentation",
+        "Une baisse progressive",
+        "Une alternance de hausses et de baisses"
+      ],
+      "answer": 2,
+      "explanation": "La fermentation étudiée accumule notamment de l'acide lactique, tandis que le pH diminue. Cette production d'acides fait partie des transformations alimentaires observées dans la boisson.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-merenkova-fermentation-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "merenkova-2022-hemp-beverage",
+        "subjectKey": "merenkova-2022-hemp-beverage",
+        "property": "Interpréter l'acidification d'une boisson fermentée sur l'échelle de pH",
+        "expectedAnswer": "Une baisse progressive",
+        "learningObjective": "Interpréter l'acidification d'une boisson fermentée sur l'échelle de pH.",
+        "factKey": "hemp-beverage-fermentation-acids-lower-ph",
+        "form": "deduction",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-merenkova-fermentation-2022",
+            "locator": "§3.1, pH et accumulation d'acide lactique ; conclusion",
+            "support": "Les boissons de chanvre accumulent de l'acide lactique pendant la fermentation et leur pH évolue vers l'acidité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-nutrition-panel-not-name",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Pour comparer les protéines et le calcium de deux boissons de chanvre, quelle information est directement utile ?",
+      "options": [
+        "La liste des ingrédients",
+        "La liste des allergènes",
+        "La liste des vitamines ajoutées",
+        "Le tableau nutritionnel de chaque produit"
+      ],
+      "answer": 3,
+      "explanation": "La composition peut varier avec la source végétale, les procédés et les ingrédients ajoutés. Le tableau nutritionnel permet de comparer les quantités, plutôt que de les déduire du seul nom du produit.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-plant-milk"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-plant-beverage-label",
+        "subjectKey": "hemp-plant-beverage-label",
+        "property": "Comparer la composition de boissons végétales à partir de leurs données nutritionnelles",
+        "expectedAnswer": "Le tableau nutritionnel de chaque produit",
+        "learningObjective": "Comparer la composition de boissons végétales à partir de leurs données nutritionnelles.",
+        "factKey": "hemp-beverage-nutrition-panel-not-name",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-plant-milk",
+            "locator": "Introduction ; Using the Nutrition Facts Label",
+            "support": "La FDA souligne la variabilité nutritionnelle des boissons végétales, dont celles de chanvre, et recommande le tableau nutritionnel pour les comparer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Cas fictif US : 10 g de chanvre, 70 g d'eau, 5 g de sucre, 15 g d'amande dans une boisson. Quel ordre suit la règle FDA ?",
+      "options": [
+        "Eau, amande, chanvre, sucre",
+        "Eau, chanvre, amande, sucre",
+        "Chanvre, amande, eau, sucre",
+        "Sucre, chanvre, amande, eau"
+      ],
+      "answer": 0,
+      "explanation": "La règle américaine classe les ingrédients par masse décroissante : ici 70, 15, 10 puis 5 g. Cet exemple fictif comporte des masses différentes ; la règle générale admet aussi des égalités.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-ingredient-types"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "us-hemp-food-ingredient-list",
+        "subjectKey": "us-hemp-food-ingredient-list",
+        "property": "Lire l'ordre massique d'une liste d'ingrédients américaine",
+        "expectedAnswer": "Eau, amande, chanvre, sucre",
+        "learningObjective": "Lire l'ordre massique d'une liste d'ingrédients américaine.",
+        "factKey": "us-ingredient-list-descending-mass-hemp-drink",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-ingredient-types",
+            "locator": "Premier paragraphe, ordre des ingrédients",
+            "support": "La FDA indique que les ingrédients sont listés par prédominance décroissante en poids."
+          }
+        ],
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2028-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-food-glycerol-humectant-moisture",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans une confiserie au chanvre, à quoi sert un humectant tel que le glycérol ?",
+      "options": [
+        "Limiter les réactions d'oxydation de l'huile",
+        "Aider le produit à retenir son humidité",
+        "Neutraliser les acides formés par fermentation",
+        "Renforcer la couleur des ingrédients végétaux"
+      ],
+      "answer": 1,
+      "explanation": "Un humectant retient l'humidité et contribue ainsi à la texture du produit. Son rôle se distingue de celui d'un antioxydant, d'un correcteur d'acidité ou d'un colorant.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-ingredient-types"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-formulation-additives",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Distinguer la rétention d'humidité des autres fonctions d'ingrédients",
+        "expectedAnswer": "Aider le produit à retenir son humidité",
+        "learningObjective": "Distinguer la rétention d'humidité des autres fonctions d'ingrédients.",
+        "factKey": "hemp-food-glycerol-humectant-moisture",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-ingredient-types",
+            "locator": "Tableau Types of Ingredients, Humectants",
+            "support": "Le tableau donne retain moisture comme fonction des humectants et cite glycerin et sorbitol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-food-powder-silica-anticaking",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel problème un agent comme le dioxyde de silicium aide-t-il à limiter dans une poudre alimentaire à base de chanvre ?",
+      "options": [
+        "Le rancissement des matières grasses",
+        "L'acidification de la poudre",
+        "La formation de mottes empêchant son écoulement",
+        "La séparation d'une sauce en deux phases"
+      ],
+      "answer": 2,
+      "explanation": "Le dioxyde de silicium est cité parmi les antiagglomérants : ils aident les poudres à rester fluides. Cette fonction concerne leur comportement en vrac, distinct de la conservation des lipides.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-ingredient-types"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-formulation-additives",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Reconnaître la fonction d'un antiagglomérant dans un ingrédient en poudre",
+        "expectedAnswer": "La formation de mottes empêchant son écoulement",
+        "learningObjective": "Reconnaître la fonction d'un antiagglomérant dans un ingrédient en poudre.",
+        "factKey": "hemp-food-powder-silica-anticaking",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-ingredient-types",
+            "locator": "Tableau Types of Ingredients, Anti-caking agents",
+            "support": "Les antiagglomérants maintiennent les poudres fluides et le tableau cite silicon dioxide."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-us-hemp-bar-honey-counts-added-sugars",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur l'étiquette américaine d'une barre au chanvre sucrée au miel, comment les sucres du miel sont-ils comptés ?",
+      "options": [
+        "Dans les fibres alimentaires",
+        "Dans les glucides autres que les sucres",
+        "Dans les sucres naturels mais exclus des sucres ajoutés",
+        "Dans les sucres totaux et les sucres ajoutés"
+      ],
+      "answer": 3,
+      "explanation": "Le miel utilisé comme ingrédient sucrant contribue aux sucres ajoutés, lesquels font aussi partie des sucres totaux. Son origine ne le sort pas de cette catégorie d'étiquetage.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-added-sugars"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "us-hemp-food-added-sugars",
+        "subjectKey": "us-hemp-food-added-sugars",
+        "property": "Distinguer origine d'un sucrant et catégorie d'étiquetage des sucres",
+        "expectedAnswer": "Dans les sucres totaux et les sucres ajoutés",
+        "learningObjective": "Distinguer origine d'un sucrant et catégorie d'étiquetage des sucres.",
+        "factKey": "us-hemp-bar-honey-counts-added-sugars",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-added-sugars",
+            "locator": "Added Sugars et How Are Added Sugars Listed",
+            "support": "Les sucres de miel sont inclus dans les sucres ajoutés ; les sucres totaux incluent sucres naturellement présents et ajoutés."
+          }
+        ],
+        "jurisdiction": "États-Unis",
+        "reviewAfter": "2028-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-corn-extrudate-expansion-diameter-ratio",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'étude de Jozinović sur les snacks maïs-chanvre, quel rapport définit l'expansion à la sortie de la filière ?",
+      "options": [
+        "Diamètre du snack / diamètre de l'ouverture de la filière",
+        "Section du snack / section de l'ouverture de la filière",
+        "Longueur du snack / diamètre de l'ouverture de la filière",
+        "Volume du snack / volume du canal de la filière"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport compare le diamètre du produit expansé à celui de l'ouverture par laquelle il est passé. Il décrit le gonflement transversal, et ne correspond ni à une teneur ni à un rendement massique.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-jozinovic-extrusion-2017"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "jozinovic-2017-hemp-corn-snacks",
+        "subjectKey": "jozinovic-2017-hemp-corn-snacks",
+        "property": "Distinguer des indices géométriques possibles d'expansion",
+        "expectedAnswer": "Diamètre du snack / diamètre de l'ouverture de la filière",
+        "learningObjective": "Identifier l'indice fondé sur le diamètre transversal, distinct d'un rapport de sections, de longueur ou de volumes.",
+        "factKey": "hemp-corn-extrudate-expansion-diameter-ratio",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-jozinovic-extrusion-2017",
+            "locator": "Expansion ratio, équation 2, PDF p. 3 (p. 509)",
+            "support": "L'indice ER est le diamètre de l'extrudat divisé par le diamètre de la filière."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-snack-equal-mass-larger-volume-lower-density",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Deux snacks maïs-chanvre ont la même masse, mais l'un occupe plus de volume. Comment est sa masse volumique ?",
+      "options": [
+        "Plus élevée",
+        "Plus faible",
+        "Identique",
+        "Indéterminable sans sa composition chimique"
+      ],
+      "answer": 1,
+      "explanation": "La masse volumique rapporte la masse au volume. À masse identique, un produit occupant davantage de volume a une masse volumique plus faible, ce qui aide à comparer des snacks plus ou moins expansés.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-jozinovic-extrusion-2017"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "jozinovic-2017-hemp-corn-snacks",
+        "subjectKey": "jozinovic-2017-hemp-corn-snacks",
+        "property": "Relier masse volumique et expansion d'un snack sans confondre composition et volume",
+        "expectedAnswer": "Plus faible",
+        "learningObjective": "Relier masse volumique et expansion d'un snack sans confondre composition et volume.",
+        "factKey": "hemp-snack-equal-mass-larger-volume-lower-density",
+        "form": "deduction",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-jozinovic-extrusion-2017",
+            "locator": "Bulk density, équation 3, PDF p. 3 (p. 509)",
+            "support": "Le calcul de masse volumique utilise la masse et les dimensions du cylindre extrudé, soit masse divisée par volume."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Selon Oklahoma State University, quels constituants expliquent en partie l'insaponifiable élevé de l'huile de chanvre commercialement raffinée ?",
+      "options": [
+        "Les triglycérides",
+        "Les acides gras libres",
+        "Les phytostérols",
+        "Les esters de cire"
+      ],
+      "answer": 2,
+      "explanation": "La fiche relie en partie l'insaponifiable élevé de l'huile commercialement raffinée à ses phytostérols. Ce constat porte sur cette huile et ne définit pas la composition de toutes les huiles de chanvre.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d04-oklahoma-hemp-oil-2020"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "huile-chenevis",
+        "subjectKey": "huile-chenevis",
+        "property": "Identifier des constituants minoritaires de la fraction insaponifiable d'une huile",
+        "expectedAnswer": "Les phytostérols",
+        "learningObjective": "Identifier des constituants minoritaires de la fraction insaponifiable d'une huile.",
+        "factKey": "hemp-oil-phytosterols-unsaponifiable-fraction",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+            "locator": "Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content",
+            "support": "Dans l'huile de chanvre commercialement raffinée, l'insaponifiable élevé est attribué en partie à la teneur en phytostérols."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-dehulling-fibre-down-protein-concentrated",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans l'étude de Mierliță comparant graines de chanvre entières et décortiquées, quel profil caractérise les décortiquées ?",
+      "options": [
+        "Plus de fibres, protéines davantage concentrées",
+        "Moins de fibres, protéines moins concentrées",
+        "Plus de fibres, protéines moins concentrées",
+        "Moins de fibres, protéines davantage concentrées"
+      ],
+      "answer": 3,
+      "explanation": "Le retrait de l'enveloppe diminue la part des fibres et concentre les protéines du noyau. Cette modification de composition aide à choisir entre graines entières et décortiquées selon la recette.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-dehulling-2026"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-dehulling",
+        "subjectKey": "hempseed-dehulling",
+        "property": "Relier le décorticage à une modification de la composition alimentaire",
+        "expectedAnswer": "Moins de fibres, protéines davantage concentrées",
+        "learningObjective": "Relier le décorticage à une modification de la composition alimentaire.",
+        "factKey": "hemp-dehulling-fibre-down-protein-concentrated",
+        "form": "comparaison",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-dehulling-2026",
+            "locator": "§3.1 Chemical compositions and energy value, Table 1",
+            "support": "Le décorticage réduit les composants fibreux tandis que la teneur relative en protéines et lipides augmente."
+          }
+        ]
+      }
+    }
+  ],
+  "consultations": [
+    {
+      "sourceId": "q2-d04-acf-hemp-2021",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Hemp Seed Culinary Uses, PDF p. 2 ; Storing Hemp Seeds, PDF p. 2, premier point",
+      "result": "L'ACF préconise une huile de finition plutôt qu'une huile de friture, notamment pour sauces et assaisonnements. Le document recommande de réfrigérer ou congeler le paquet ouvert ou son contenu dans un récipient hermétique. Les graines sont proposées comme substitut à la chapelure pour enrober poulet ou poisson."
+    },
+    {
+      "sourceId": "q2-d-natencyclopedia-hemp-spread",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Vēsturiskās un ģeogrāfiskās atšķirības ēdiena pagatavošanā ; Nosaukuma izcelsme, paragraphe sur sviests ; Ēdiena loma kultūrā, premier paragraphe ; Ēdiena loma kultūrā, paragraphe sur le XXe siècle et l'entre-deux-guerres ; Ēdiena loma kultūrā, passage sur ceļā, meža darbos un ganos",
+      "result": "Les graines sont d'abord torréfiées, puis écrasées au mortier pour former une masse grasse. Le nom est fondé sur une association de consistance et d'usage, les deux produits étant tartinables et utilisés comme accompagnement. Les paysans préparaient la pâte lorsque le beurre manquait ; elle en complétait la quantité ou le remplaçait entièrement. La popularité diminue ; le produit évoque la pauvreté paysanne et les personnes devenues plus aisées choisissent le vrai beurre. La pâte était emportée pendant les déplacements, le travail en forêt et la garde des troupeaux."
+    },
+    {
+      "sourceId": "q2-d-polish-ministry-siemieniotka",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Tradycja, citation de Wera Sztabowa, derniers paragraphes ; Tradycja, recette citée de Krupnioki i moczka ; Barwa",
+      "result": "Le texte mentionne de la kasza jaglana finement moulue, ajoutée à la polewka de chanvre. Le passage décrit le liquide devenant blanc puis son passage par un tamis dans le récipient qui recueille le bouillon de chanvre. La fiche décrit des points foncés comme les restes du siemienia konopnego moulu."
+    },
+    {
+      "sourceId": "q2-d04-ekgt-samogitia",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Žemaitija, Kulinarinis paveldas, paragraphe sur kanapės ; Kulinarinis paveldas, phrase Kanapių rasalas",
+      "result": "La page de la Samogitie cite kanapių taboka et kanapių rasalas parmi les spécialités régionales. Le rasalas associe du lait de chanvre, du hareng écrasé et des oignons."
+    },
+    {
+      "sourceId": "q2-d04-kretinga-cuisine",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Paragraphe d'ouverture et paragraphe Spirgynę ; Paragraphe Spirgynę, première phrase ; Paragraphe Spirgynę, phrase Vietoj kanapių galima naudoti ir linų sėmenis",
+      "result": "Les pommes de terre sont cuites avec leur peau et accompagnées de spirgynė, dans laquelle elles sont trempées. Le sausasis pasninkas excluait non seulement la viande mais aussi les produits laitiers. Le texte autorise explicitement le remplacement du chanvre par des graines de lin."
+    },
+    {
+      "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Table 6, rubrique G, recettes 70 et 71 ; Table 6, rubrique G, recette 74 ; Table 6, rubrique G, recette 75",
+      "result": "Les entrées distinguent hemp seed et perilla seeds, toutes deux avec lemon extract. Kaddu ke meethi Chutney est décrit par pumpkin, hemp seed, jaggery et lemon extract. Nimbu ke saani associe lemon, hemp seeds, curd et jaggery."
+    },
+    {
+      "sourceId": "q2-d-usda-japan-hemp-seed",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Hemp Seed Market, page imprimée 6, PDF p. 7",
+      "result": "Le rapport mentionne hemp seed in the shell dans le shichimi courant."
+    },
+    {
+      "sourceId": "q2-d04-axentii-pasta-2023",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "§2.5.3 Cooking Loss ; §2.5.1 Optimal Cooking Time ; Discussion, paragraphes sur gluten dilution et HSM non-gluten ingredient ; Discussion, paragraphe sur adhesiveness and stickiness ; §2.10 Sensory Analysis",
+      "result": "La perte de cuisson est la masse de solides récupérés dans l'eau de cuisson, exprimée par rapport aux pâtes crues. La cuisson optimale est atteinte lorsque toutes les particules blanches d'amidon ont disparu, après compression entre deux plaques de verre. L'incorporation de farine de chanvre sans gluten dilue la fraction de blé et affaiblit le réseau, sans le supprimer lors d'une substitution partielle. Le texte relie stickiness à la quantité d'amylose libérée par les granules d'amidon gélatinisés. Le panel utilise une échelle de dislike extremely à like extremely pour les caractéristiques et l'acceptabilité des pâtes."
+    },
+    {
+      "sourceId": "q2-d04-marinopoulou-bread-2024",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "§3.3.4 Texture Profile Analysis, discussion du volume spécifique et du réseau de gluten ; §3.1, discussion de la Water Holding Capacity ; §3.3.3 et §3.3.4, stockage et changements de la mie ; §3.3.1, discussion de la couleur, paragraphe sur les groupes aminés",
+      "result": "Le faible volume est attribué notamment à une perte de rétention du gaz liée à l'interruption et à l'affaiblissement du réseau de gluten. L'absorption d'eau de la farine de blé est liée à sa teneur en amidon endommagé, qui absorbe davantage d'eau. L'étude de pains enrichis en protéines de chanvre relie les changements au stockage, dont le durcissement, notamment à la rétrogradation de l'amidon. Le brunissement des pains enrichis est relié à la couleur propre de la poudre et aux réactions de Maillard associées à ses groupes aminés."
+    },
+    {
+      "sourceId": "q2-d04-asb-staling",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Origin et How staling works",
+      "result": "La fiche associe le rassissement à la recristallisation de l'amidon et à son réalignement moléculaire lors du refroidissement puis du stockage."
+    },
+    {
+      "sourceId": "q2-d04-asb-maillard",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "What is the Maillard reaction? et How it works",
+      "result": "La fiche décrit une réaction entre sucres réducteurs et groupes aminés, notamment d'acides aminés ou de protéines."
+    },
+    {
+      "sourceId": "q2-d04-merenkova-fermentation-2022",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, controlled fermentation et starter cultures ; §3.1, pH et accumulation d'acide lactique ; conclusion",
+      "result": "Une fermentation contrôlée utilise des cultures microbiennes identifiées et sélectionnées pour améliorer fiabilité et reproductibilité. Les boissons de chanvre accumulent de l'acide lactique pendant la fermentation et leur pH évolue vers l'acidité."
+    },
+    {
+      "sourceId": "q2-d04-fda-plant-milk",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction ; Using the Nutrition Facts Label",
+      "result": "La FDA souligne la variabilité nutritionnelle des boissons végétales, dont celles de chanvre, et recommande le tableau nutritionnel pour les comparer."
+    },
+    {
+      "sourceId": "q2-d04-fda-ingredient-types",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Premier paragraphe, ordre des ingrédients ; Tableau Types of Ingredients, Humectants ; Tableau Types of Ingredients, Anti-caking agents",
+      "result": "La FDA indique que les ingrédients sont listés par prédominance décroissante en poids. Le tableau donne retain moisture comme fonction des humectants et cite glycerin et sorbitol. Les antiagglomérants maintiennent les poudres fluides et le tableau cite silicon dioxide."
+    },
+    {
+      "sourceId": "q2-d04-fda-added-sugars",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Added Sugars et How Are Added Sugars Listed",
+      "result": "Les sucres de miel sont inclus dans les sucres ajoutés ; les sucres totaux incluent sucres naturellement présents et ajoutés."
+    },
+    {
+      "sourceId": "q2-d04-jozinovic-extrusion-2017",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Expansion ratio, équation 2, PDF p. 3 (p. 509) ; Bulk density, équation 3, PDF p. 3 (p. 509)",
+      "result": "L'indice ER est le diamètre de l'extrudat divisé par le diamètre de la filière. Le calcul de masse volumique utilise la masse et les dimensions du cylindre extrudé, soit masse divisée par volume."
+    },
+    {
+      "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content",
+      "result": "La teneur élevée en insaponifiable est attribuée en partie à la teneur en phytostérols."
+    },
+    {
+      "sourceId": "q2-dlegacy02-dehulling-2026",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "§3.1 Chemical compositions and energy value, Table 1",
+      "result": "Le décorticage réduit les composants fibreux tandis que la teneur relative en protéines et lipides augmente."
+    }
+  ],
+  "authoringSummary": {
+    "count": 40,
+    "levels": {
+      "1": 9,
+      "2": 20,
+      "3": 11
+    },
+    "forms": {
+      "situation": 7,
+      "identification": 23,
+      "anecdote": 6,
+      "comparaison": 2,
+      "deduction": 2
+    },
+    "scope": "Ingrédients alimentaires de graines, gestes culinaires, patrimoine et compréhension de formulations. Aucun catalogue du site ni producteur du site.",
+    "reviewStatus": "Independent review required; no approval claimed"
+  }
+}

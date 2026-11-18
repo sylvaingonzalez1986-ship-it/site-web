@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-15",
+  "status": "Trois premières priorités implémentées et vérifiées localement ; aucune migration distante ni publication.",
+  "decisions": {
+    "markets": "Choix utilisateur : exécuter au prochain cours publié, avec ordre en attente.",
+    "execution": "Premier cours fournisseur admissible daté après la transmission et après toute cotation déjà connue ; prix capturé une seule fois. Actions : séance ouverte et nouveau change pour USD.",
+    "resources": "Budget d’achat ou quantité de vente fixé à la transmission. Fonds/titres non réservés ; rejet explicite si insuffisants à l’exécution. Sans nouveau cours dans les sept jours : rejet sans échange.",
+    "limits": "20 ordres en attente par compte ; traitement après publication plafonné à 100 comptes, complété lors de l’accès du joueur. La Bourse rafraîchit aussi jusqu’à six instruments en attente hors écran."
+  },
+  "changes": [
+    "Missions : réservations Culture/Transformation comptées uniquement avec heures numériques strictement positives ; Production exclue ; anciennes tâches hors réservation et récompenses déjà obtenues conservées.",
+    "Banque/Crypto/Bourse : confirmation conservée par compte avant envoi, clé/ordre identique au rejeu, verrou entre onglets, délai de 20 secondes couvrant réponse et JSON, retour explicite de session expirée ou compte changé.",
+    "Placements : file privée, reçus idempotents, prochaine cotation figée avant règlement, quantités/montants recalculés côté SQL, états en attente/exécuté/rejeté visibles. L’application utilise un nouveau RPC de soumission : sans migration, elle échoue sans appeler l’ancien exécuteur immédiat."
+  ],
+  "migrations": [
+    "supabase/migrations/20261115000100_kq_mission_productive_tasks.sql",
+    "supabase/migrations/20261115000200_kq_next_publication_orders.sql"
+  ],
+  "deploymentOrder": "Appliquer les deux migrations dans cet ordre puis publier l’application. Aucune de ces actions distantes n’a été effectuée.",
+  "validation": {
+    "missionSql": "292 contrôles réussis — node scripts/test-placard-mission-progression.mjs",
+    "marketSql": "44 contrôles réussis — node scripts/test-placard-market-queue.mjs : cours ancien, premier cours futur, rejouabilité, propriétaire, budget/quantité, manque de fonds, échéance, séance fermée, change ancien, ventes concurrentes séquencées et privilèges.",
+    "unitAndRoutes": "165 tests réussis — output/audit-global-jeu/implementation-tests.json",
+    "typescript": "tsc --noEmit réussi — output/audit-global-jeu/implementation-types.log",
+    "lint": "ESLint ciblé réussi sans avertissement — output/audit-global-jeu/implementation-lint.log",
+    "grants": "npm.cmd run check:supabase-grants réussi : 397 migrations contrôlées.",
+    "browserCommands": ["node scripts/audit-finance-recovery.mjs", "node scripts/audit-market-queue-ui.mjs"],
+    "browserReports": ["output/audit-global-jeu/finance-browser/report.json", "output/audit-global-jeu/market-browser/report.json"],
+    "screenshots": "Captures à 320 px inspectées : confirmation Crypto, ordre Bourse en attente, reprise bancaire après délai dépassé. Recettes aussi à 1440 px."
+  },
+  "verificationLimits": [
+    "SQL isolé avec PGlite, une connexion ; règlement métier périphérique simulé. La contention PostgreSQL réelle n’est pas mesurée.",
+    "Navigateur Vite avec composants réels et API en mémoire ; aucun échange financier ni appel API réel. Publication et authentification de production non testées.",
+    "Aucun nouvel audit général ni rééquilibrage des autres priorités du rapport."
+  ],
+  "nextBoundedTask": "Livraison locale terminée. Publication/migrations uniquement sur demande ; prochaine amélioration produit proposée : clarifier le repère de rentabilité avant frais."
+}

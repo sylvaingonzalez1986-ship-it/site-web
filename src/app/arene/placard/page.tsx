@@ -8,6 +8,8 @@ import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 import { getArenaIntroductionState } from "@/lib/supabase/arena-introduction-backend";
+import { getArenaBetaConnectionKey } from "@/lib/supabase/arena-beta-connection";
+import { parseKqWorldMode } from "@/lib/kanab-quest-world-mode";
 
 export const metadata: Metadata = {
   title: "Kanab Quest",
@@ -30,6 +32,9 @@ export default async function PlacardPlayerPage({ searchParams }: {
     redirect(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
   }
   if (!await isKqPlayerRequestEnabled()) notFound();
-  const introductionState = await getArenaIntroductionState(session.customerId);
-  return <ArenaGameEntry key={session.customerId} userId={session.customerId} introductionState={introductionState} />;
+  const [introductionState, betaConnectionKey] = await Promise.all([
+    getArenaIntroductionState(session.customerId), getArenaBetaConnectionKey(session.customerId),
+  ]);
+  const worldMode = parseKqWorldMode((await searchParams).world);
+  return <ArenaGameEntry key={session.customerId} userId={session.customerId} introductionState={introductionState} betaConnectionKey={betaConnectionKey} {...(worldMode ? { worldMode } : {})} />;
 }

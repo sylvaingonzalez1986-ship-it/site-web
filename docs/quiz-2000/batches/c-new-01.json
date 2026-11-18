@@ -1,0 +1,1681 @@
+{
+  "batchId": "c-new-01",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-cn01-chloroplast-photosynthesis-site",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans quel compartiment d’une cellule verte de chanvre se déroule la photosynthèse ?",
+      "options": [
+        "Le chloroplaste",
+        "La mitochondrie",
+        "Le noyau",
+        "La vacuole"
+      ],
+      "answer": 0,
+      "explanation": "Les chloroplastes réalisent la photosynthèse dans les cellules vertes. Ce rôle est commun au chanvre et aux autres plantes vertes.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-photosynthesis"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Chloroplaste",
+        "subjectKey": "chloroplaste",
+        "property": "Lieu cellulaire de photosynthèse",
+        "expectedAnswer": "Le chloroplaste",
+        "learningObjective": "Situer la photosynthèse à l’échelle cellulaire.",
+        "factKey": "chloroplast-photosynthesis-site",
+        "form": "identification",
+        "difficultyRationale": "Repère de biologie générale parmi quatre compartiments cellulaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-photosynthesis",
+            "locator": "Basic Photosynthetic Structures",
+            "support": "La photosynthèse des cellules végétales a lieu dans les chloroplastes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-mitochondria-respiration-atp-production",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans une cellule de chanvre, quel organite produit beaucoup d’ATP grâce à la respiration cellulaire ?",
+      "options": [
+        "L’appareil de Golgi",
+        "La mitochondrie",
+        "Le chloroplaste",
+        "La vacuole"
+      ],
+      "answer": 1,
+      "explanation": "Les mitochondries récupèrent de l’énergie des nutriments pour fabriquer de l’ATP. Les cellules végétales respirent, comme les cellules animales.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Mitochondrie",
+        "subjectKey": "mitochondrie",
+        "property": "Production d’ATP par respiration",
+        "expectedAnswer": "La mitochondrie",
+        "learningObjective": "Relier un organite à la respiration énergétique.",
+        "factKey": "mitochondria-respiration-atp-production",
+        "form": "identification",
+        "difficultyRationale": "Fonction cellulaire fondamentale ; ATP est présenté comme le produit, pas comme un sigle à développer.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "Mitochondria, premier paragraphe",
+            "support": "Les mitochondries produisent de l’ATP par respiration utilisant l’énergie des nutriments."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-plant-cell-most-dna-in-nucleus",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans quel compartiment se trouve la plus grande partie de l’ADN d’une cellule de chanvre ?",
+      "options": [
+        "La paroi",
+        "L’appareil de Golgi",
+        "Le noyau",
+        "La vacuole"
+      ],
+      "answer": 2,
+      "explanation": "Le noyau renferme les chromosomes nucléaires. Les mitochondries et les chloroplastes possèdent aussi un peu d’ADN : le noyau n’est donc pas son unique emplacement.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "ADN et noyau",
+        "subjectKey": "noyau-cellulaire",
+        "property": "Compartiment principal de l’ADN",
+        "expectedAnswer": "Le noyau",
+        "learningObjective": "Situer le principal génome d’une cellule végétale sans exclure l’ADN des organites.",
+        "factKey": "plant-cell-most-dna-in-nucleus",
+        "form": "identification",
+        "difficultyRationale": "Connaissance scolaire de base ; les alternatives sont des structures cellulaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "The Nucleus ; Chromatin and Chromosomes ; Chloroplasts",
+            "support": "Le noyau abrite les chromosomes ; mitochondries et chloroplastes possèdent aussi leur propre ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-plant-cell-central-vacuole-water-compartment",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel grand compartiment rempli d’eau et de solutés occupe souvent l’essentiel d’une cellule végétale adulte ?",
+      "options": [
+        "Le noyau",
+        "Le nucléole",
+        "Une mitochondrie",
+        "La vacuole centrale"
+      ],
+      "answer": 3,
+      "explanation": "La grande vacuole est une caractéristique fréquente des cellules végétales adultes, dont celles du chanvre. Son volume peut varier avec l’état hydrique de la cellule.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Vacuole centrale",
+        "subjectKey": "vacuole-centrale",
+        "property": "Grand compartiment aqueux cellulaire",
+        "expectedAnswer": "La vacuole centrale",
+        "learningObjective": "Reconnaître la vacuole d’une cellule végétale adulte.",
+        "factKey": "plant-cell-central-vacuole-water-compartment",
+        "form": "identification",
+        "difficultyRationale": "Identification d’une structure majeure à partir de sa taille et de son contenu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "The Central Vacuole, premier paragraphe",
+            "support": "La vacuole centrale occupe la majeure partie du volume cellulaire et participe à la régulation de l’eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-plasma-membrane-selective-cell-exchanges",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quelle structure contrôle les échanges de molécules entre une cellule de chanvre et son environnement immédiat ?",
+      "options": [
+        "La membrane plasmique",
+        "La paroi cellulaire",
+        "Le nucléole",
+        "Le chromosome"
+      ],
+      "answer": 0,
+      "explanation": "La membrane plasmique est une barrière sélective. Elle laisse passer certaines substances et utilise aussi des protéines pour en transporter d’autres.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-cells",
+        "q2-cn01-passive-transport"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Membrane plasmique",
+        "subjectKey": "membrane-plasmique",
+        "property": "Contrôle sélectif des échanges",
+        "expectedAnswer": "La membrane plasmique",
+        "learningObjective": "Distinguer la frontière sélective de la cellule de son enveloppe rigide.",
+        "factKey": "plasma-membrane-selective-cell-exchanges",
+        "form": "identification",
+        "difficultyRationale": "Fonction fondamentale d’une membrane, parmi quatre structures cellulaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "The Plasma Membrane, premier paragraphe",
+            "support": "La membrane contrôle l’entrée et la sortie de molécules, d’ions et d’eau."
+          },
+          {
+            "sourceId": "q2-cn01-passive-transport",
+            "locator": "Introduction, perméabilité sélective",
+            "support": "Une membrane laisse passer certaines substances et en limite d’autres."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-leaf-epidermis-outer-cellular-tissue",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel tissu forme la couche cellulaire extérieure d’une feuille de chanvre ?",
+      "options": [
+        "Le parenchyme palissadique",
+        "L’épiderme",
+        "Le phloème",
+        "Le xylème"
+      ],
+      "answer": 1,
+      "explanation": "L’épiderme recouvre la feuille. Il se distingue de la cuticule, qui est une couche superficielle déposée au-dessus des cellules.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-leaves-2018",
+        "q2-cn01-thai-leaf-anatomy"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Épiderme foliaire",
+        "subjectKey": "epiderme-foliaire",
+        "property": "Position du tissu protecteur",
+        "expectedAnswer": "L’épiderme",
+        "learningObjective": "Distinguer l’enveloppe cellulaire de la feuille de ses tissus internes.",
+        "factKey": "leaf-epidermis-outer-cellular-tissue",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’un tissu de surface ; quatre tissus végétaux sont proposés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-leaves-2018",
+            "locator": "Leaf Structure and Function, premier paragraphe",
+            "support": "L’épiderme forme la couche externe de cellules de la feuille."
+          },
+          {
+            "sourceId": "q2-cn01-thai-leaf-anatomy",
+            "locator": "Description, Microscopical, Upper epidermis et Lower epidermis",
+            "support": "La coupe de feuille de Cannabis comporte un épiderme supérieur et un inférieur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-leaf-cuticle-reduces-water-loss",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel rôle joue principalement la cuticule à la surface d’une feuille de chanvre ?",
+      "options": [
+        "Absorber les ions minéraux du sol",
+        "Produire les nouvelles cellules du bourgeon",
+        "Limiter les pertes d’eau",
+        "Transporter les sucres dans la tige"
+      ],
+      "answer": 2,
+      "explanation": "La cuticule constitue une barrière superficielle qui ralentit les pertes d’eau. La feuille conserve des ouvertures spécialisées, les stomates, pour ses échanges gazeux.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "bf-leaves-2018",
+        "q2-cn01-thai-leaf-anatomy"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cuticule foliaire",
+        "subjectKey": "cuticule-foliaire",
+        "property": "Barrière aux pertes d’eau",
+        "expectedAnswer": "Limiter les pertes d’eau",
+        "learningObjective": "Comprendre l’intérêt de la couverture cireuse d’une feuille terrestre.",
+        "factKey": "leaf-cuticle-reduces-water-loss",
+        "form": "identification",
+        "difficultyRationale": "Fonction protectrice concrète, sans détail biochimique ni réglage de culture.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-leaves-2018",
+            "locator": "Leaf Structure and Function, paragraphe de la cuticule",
+            "support": "La couche cireuse de la cuticule réduit les pertes d’eau de la surface foliaire."
+          },
+          {
+            "sourceId": "q2-cn01-thai-leaf-anatomy",
+            "locator": "Description, Microscopical",
+            "support": "La monographie décrit une cuticule sur les deux épidermes de la feuille de Cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-ribosome-direct-protein-assembly",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quelles structures assemblent directement les acides aminés en protéines dans les cellules du chanvre ?",
+      "options": [
+        "Les chromosomes",
+        "Les vacuoles",
+        "Les chloroplastes",
+        "Les ribosomes"
+      ],
+      "answer": 3,
+      "explanation": "Les ribosomes réalisent la synthèse des protéines à partir d’une information portée par un ARN messager. Ce sont des structures présentes dans les cellules végétales comme animales.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Ribosomes",
+        "subjectKey": "ribosome",
+        "property": "Assemblage des protéines",
+        "expectedAnswer": "Les ribosomes",
+        "learningObjective": "Associer la fabrication des protéines à la structure cellulaire qui l’effectue.",
+        "factKey": "ribosome-direct-protein-assembly",
+        "form": "identification",
+        "difficultyRationale": "Fonction cellulaire de base ; aucun détail de code génétique n’est requis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "Ribosomes, deux premiers paragraphes et Fig.4.13",
+            "support": "Les ribosomes assurent la synthèse protéique et assemblent les acides aminés dans l’ordre dicté par l’ARN messager."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-root-hairs-increase-absorbing-surface",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Que permettent surtout les poils absorbants des jeunes racines du chanvre ?",
+      "options": [
+        "Augmenter la surface d’échange avec le sol",
+        "Protéger la pointe contre les frottements",
+        "Produire les racines latérales dans la racine",
+        "Renforcer l’ancrage par des tissus ligneux"
+      ],
+      "answer": 0,
+      "explanation": "Ces prolongements de cellules superficielles multiplient le contact entre racine et sol. Ils ne sont pas de petites racines latérales.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Poils absorbants",
+        "subjectKey": "poils-absorbants",
+        "property": "Augmentation de surface racinaire",
+        "expectedAnswer": "Augmenter la surface d’échange avec le sol",
+        "learningObjective": "Relier une structure fine à la surface disponible pour l’absorption.",
+        "factKey": "root-hairs-increase-absorbing-surface",
+        "form": "identification",
+        "difficultyRationale": "Lien simple entre forme et fonction, appliqué aux racines.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Root Growth and Anatomy, paragraphe de l’épiderme et des root hairs",
+            "support": "Les poils sont des extensions de cellules épidermiques qui augmentent la surface et favorisent l’absorption."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-root-cap-protects-growing-tip",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quel est le rôle de la coiffe située à l’extrémité d’une racine de chanvre ?",
+      "options": [
+        "Sélectionner les ions à l’entrée du cylindre conducteur",
+        "Protéger la pointe qui avance dans le sol",
+        "Assurer le transport des sucres sur toute la racine",
+        "Former les poils absorbants de la zone mature"
+      ],
+      "answer": 1,
+      "explanation": "La coiffe protège les tissus fragiles de la pointe racinaire. Ses cellules se renouvellent à mesure que la racine progresse dans le sol.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Coiffe racinaire",
+        "subjectKey": "coiffe-racinaire",
+        "property": "Protection de la pointe",
+        "expectedAnswer": "Protéger la pointe qui avance dans le sol",
+        "learningObjective": "Comprendre pourquoi l’extrémité d’une racine porte une protection.",
+        "factKey": "root-cap-protects-growing-tip",
+        "form": "identification",
+        "difficultyRationale": "Rôle protecteur accessible à partir de la position de la coiffe.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Root Growth and Anatomy, premier paragraphe",
+            "support": "La pointe est protégée par une coiffe renouvelée car elle s’endommage au contact du sol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-leaflet-lamina-flat-expanded-part",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Comment nomme-t-on la partie plate et élargie d’une foliole de chanvre ?",
+      "options": [
+        "La stipule",
+        "Le bourgeon",
+        "Le limbe",
+        "Le pétiole"
+      ],
+      "answer": 2,
+      "explanation": "Le limbe est la partie étalée de la feuille ou de la foliole. Les nervures le parcourent ; le pétiole de la feuille entière la relie à la tige.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-leaves-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Limbe foliaire",
+        "subjectKey": "feuille-chanvre",
+        "property": "Nom de la partie étalée",
+        "expectedAnswer": "Le limbe",
+        "learningObjective": "Reconnaître le limbe parmi les principales pièces végétales.",
+        "factKey": "leaflet-lamina-flat-expanded-part",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire élémentaire de morphologie, sans nombre de folioles à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-leaves-2018",
+            "locator": "Structure of a Typical Leaf, premier paragraphe ; Leaf Form",
+            "support": "La partie large de la feuille est la lame ou lamina ; une feuille composée est divisée en folioles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-stem-supports-leaves-and-flowers",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quelle fonction remplit la tige du chanvre ?",
+      "options": [
+        "Fixer la plante au sol par des poils absorbants",
+        "Protéger l’embryon dans la graine",
+        "Recouvrir directement les cellules de chaque feuille",
+        "Porter les feuilles et les fleurs"
+      ],
+      "answer": 3,
+      "explanation": "La tige soutient les organes aériens et relie feuilles et racines. Ce rôle mécanique accompagne son rôle de passage pour les sèves.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-stems-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Soutien par la tige",
+        "subjectKey": "tige-chanvre",
+        "property": "Support des organes aériens",
+        "expectedAnswer": "Porter les feuilles et les fleurs",
+        "learningObjective": "Relier la tige à sa fonction mécanique dans la plante.",
+        "factKey": "stem-supports-leaves-and-flowers",
+        "form": "identification",
+        "difficultyRationale": "Fonctions concrètes des organes ; aucune terminologie anatomique spécialisée requise.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-stems-2018",
+            "locator": "Introduction, premier paragraphe",
+            "support": "Les tiges soutiennent la plante en portant feuilles, fleurs et bourgeons."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-photosynthetic-biomass-carbon-from-air-co2",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "D’où provient le carbone incorporé dans les sucres qu’une feuille de chanvre fabrique par photosynthèse ?",
+      "options": [
+        "Du dioxyde de carbone de l’air",
+        "Du dioxygène de l’air",
+        "De l’eau absorbée par les racines",
+        "Des ions nitrate du sol"
+      ],
+      "answer": 0,
+      "explanation": "Le CO2 apporte les atomes de carbone des sucres. Le sol fournit d’autres ressources indispensables, mais la matière végétale ne vient pas uniquement de la terre.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-photosynthesis"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Origine du carbone végétal",
+        "subjectKey": "photosynthese",
+        "property": "Carbone des sucres issu du CO2",
+        "expectedAnswer": "Du dioxyde de carbone de l’air",
+        "learningObjective": "Comprendre l’origine atmosphérique du carbone de la biomasse.",
+        "factKey": "photosynthetic-biomass-carbon-from-air-co2",
+        "form": "identification",
+        "difficultyRationale": "Bilan de matière de base ; quatre ressources réelles de la plante sont proposées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-photosynthesis",
+            "locator": "Main Structures and Summary of Photosynthesis ; Fig.8.4 et 8.5",
+            "support": "Les glucides sont formés à partir du carbone du CO2, avec l’énergie lumineuse et de l’eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-photosynthesis-releases-molecular-oxygen",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel gaz est produit par la photosynthèse d’une feuille de chanvre ?",
+      "options": [
+        "Le dioxyde de carbone CO2",
+        "Le dioxygène O2",
+        "Le diazote N2",
+        "Le méthane CH4"
+      ],
+      "answer": 1,
+      "explanation": "La photosynthèse produit du dioxygène. La plante en utilise aussi pour respirer : production photosynthétique et respiration sont deux processus distincts.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-photosynthesis"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Gaz produit par photosynthèse",
+        "subjectKey": "photosynthese",
+        "property": "Production de dioxygène",
+        "expectedAnswer": "Le dioxygène O2",
+        "learningObjective": "Identifier un produit gazeux de la photosynthèse.",
+        "factKey": "photosynthesis-releases-molecular-oxygen",
+        "form": "identification",
+        "difficultyRationale": "Connaissance scolaire familière ; quatre gaz sont proposés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-photosynthesis",
+            "locator": "Main Structures and Summary of Photosynthesis",
+            "support": "Le bilan photosynthétique comprend la libération de dioxygène."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-xylem-transports-water-mineral-ions",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel tissu transporte l’eau et les ions minéraux des racines vers les feuilles du chanvre ?",
+      "options": [
+        "L’épiderme",
+        "Le parenchyme palissadique",
+        "Le xylème",
+        "Le phloème"
+      ],
+      "answer": 2,
+      "explanation": "Le xylème assure le transport de la sève brute. Le phloème remplit une autre fonction de transport, notamment celle des sucres.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-body-2018",
+        "q2-cn01-thai-leaf-anatomy"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Transport par le xylème",
+        "subjectKey": "xyleme",
+        "property": "Eau et ions minéraux dans la sève brute",
+        "expectedAnswer": "Le xylème",
+        "learningObjective": "Distinguer les deux grands tissus conducteurs par leur contenu transporté.",
+        "factKey": "xylem-transports-water-mineral-ions",
+        "form": "identification",
+        "difficultyRationale": "Noms de tissus intermédiaires ; les alternatives appartiennent toutes à l’anatomie végétale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-body-2018",
+            "locator": "Plant Tissues, paragraphe du xylème",
+            "support": "Le xylème transporte eau et nutriments minéraux depuis les racines."
+          },
+          {
+            "sourceId": "q2-cn01-thai-leaf-anatomy",
+            "locator": "Description, Microscopical, Vascular tissue",
+            "support": "La monographie de Cannabis confirme la présence de xylème et de phloème dans la feuille."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-phloem-transports-photosynthetic-sugars",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel tissu distribue les sucres des feuilles de chanvre vers d’autres organes ?",
+      "options": [
+        "Le xylème",
+        "Le collenchyme",
+        "L’épiderme",
+        "Le phloème"
+      ],
+      "answer": 3,
+      "explanation": "Le phloème transporte des produits de la photosynthèse, dont le saccharose. Les organes qui grandissent ou constituent des réserves peuvent recevoir ces sucres.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-body-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Transport par le phloème",
+        "subjectKey": "phloeme",
+        "property": "Distribution des produits photosynthétiques",
+        "expectedAnswer": "Le phloème",
+        "learningObjective": "Relier le phloème à la circulation du carbone organique.",
+        "factKey": "phloem-transports-photosynthetic-sugars",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’un tissu spécialisé parmi quatre tissus végétaux.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-body-2018",
+            "locator": "Plant Tissues, paragraphe du phloème",
+            "support": "Le phloème transporte les composés organiques produits par photosynthèse vers d’autres parties de la plante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-roots-anchor-plant-in-soil",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "En plus d’absorber des ressources, quel rôle mécanique remplissent les racines du chanvre ?",
+      "options": [
+        "Ancrer la plante dans le sol",
+        "Porter les fleurs au-dessus du feuillage",
+        "Maintenir l’ouverture des stomates",
+        "Envelopper et protéger chaque graine"
+      ],
+      "answer": 0,
+      "explanation": "Le réseau racinaire fixe la plante au sol. Cette fonction d’ancrage est distincte de l’absorption de l’eau et des éléments minéraux.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Ancrage racinaire",
+        "subjectKey": "racines-chanvre",
+        "property": "Fixation mécanique au sol",
+        "expectedAnswer": "Ancrer la plante dans le sol",
+        "learningObjective": "Reconnaître une fonction mécanique des racines.",
+        "factKey": "roots-anchor-plant-in-soil",
+        "form": "identification",
+        "difficultyRationale": "Fonction concrète et accessible d’un organe familier.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Introduction, première phrase",
+            "support": "L’ancrage au sol figure parmi les trois grandes fonctions des racines des plantes à graines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-stomata-co2-entry-for-photosynthesis",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Par quelles ouvertures le CO2 de l’air entre-t-il principalement dans une feuille de chanvre ?",
+      "options": [
+        "Les tubes criblés du phloème",
+        "Les stomates",
+        "Les poils absorbants",
+        "Les vaisseaux du xylème"
+      ],
+      "answer": 1,
+      "explanation": "Les stomates sont des pores de l’épiderme permettant les échanges gazeux. Le CO2 atteint ensuite les tissus internes où se déroule la photosynthèse.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-photosynthesis"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Entrée du CO2 foliaire",
+        "subjectKey": "stomates",
+        "property": "Passage du CO2 par les stomates",
+        "expectedAnswer": "Les stomates",
+        "learningObjective": "Distinguer l’entrée d’un gaz par la feuille du transport des sèves.",
+        "factKey": "stomata-co2-entry-for-photosynthesis",
+        "form": "identification",
+        "difficultyRationale": "Fonction gazeuse de base ; les structures proposées sont toutes végétales.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-photosynthesis",
+            "locator": "Basic Photosynthetic Structures, premier paragraphe",
+            "support": "Les échanges de CO2 et d’O2 passent par des ouvertures régulées nommées stomates."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-plant-cell-wall-shape-mechanical-support",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel rôle remplit la paroi d’une cellule de chanvre ?",
+      "options": [
+        "Conserver les chromosomes dans un compartiment",
+        "Capter l’énergie lumineuse pour la photosynthèse",
+        "Soutenir la cellule et contribuer à sa forme",
+        "Assembler directement les protéines"
+      ],
+      "answer": 2,
+      "explanation": "La paroi est une enveloppe rigide située à l’extérieur de la membrane plasmique. Elle contribue à la tenue mécanique de la cellule végétale.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Paroi cellulaire",
+        "subjectKey": "paroi-cellulaire-vegetale",
+        "property": "Soutien mécanique et forme",
+        "expectedAnswer": "Soutenir la cellule et contribuer à sa forme",
+        "learningObjective": "Distinguer la paroi structurale des autres composants de la cellule.",
+        "factKey": "plant-cell-wall-shape-mechanical-support",
+        "form": "identification",
+        "difficultyRationale": "Fonction structurale simple, parmi quatre fonctions cellulaires réelles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "The Cell Wall, premier paragraphe",
+            "support": "La paroi extérieure à la membrane protège, soutient et donne sa forme à la cellule."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-palisade-mesophyll-packed-columnar-cells",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans une feuille de chanvre, quel tissu présente des cellules allongées et serrées sous l’épiderme supérieur ?",
+      "options": [
+        "Le parenchyme spongieux",
+        "Le phloème",
+        "Le xylème",
+        "Le parenchyme palissadique"
+      ],
+      "answer": 3,
+      "explanation": "Le parenchyme palissadique appartient au mésophylle, la partie interne photosynthétique de la feuille. Ses cellules en colonnes contrastent avec celles, plus lâches, du tissu spongieux.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-leaves-2018",
+        "q2-cn01-thai-leaf-anatomy"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Parenchyme palissadique",
+        "subjectKey": "mesophylle-foliaire",
+        "property": "Cellules en colonnes serrées",
+        "expectedAnswer": "Le parenchyme palissadique",
+        "learningObjective": "Identifier l’organisation d’un tissu photosynthétique foliaire.",
+        "factKey": "palisade-mesophyll-packed-columnar-cells",
+        "form": "identification",
+        "difficultyRationale": "Anatomie foliaire intermédiaire, sans nombre de couches universel à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-leaves-2018",
+            "locator": "Leaf Structure and Function, paragraphe du palisade mesophyll",
+            "support": "Les cellules palissadiques sont en colonnes et serrées sous l’épiderme."
+          },
+          {
+            "sourceId": "q2-cn01-thai-leaf-anatomy",
+            "locator": "Description, Microscopical, Mesophyll",
+            "support": "La monographie de Cannabis décrit une couche de cellules palissadiques cylindriques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-spongy-mesophyll-air-spaces-gas-exchange",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "À quoi servent les espaces entre les cellules du parenchyme spongieux d’une feuille de chanvre ?",
+      "options": [
+        "Faciliter la circulation des gaz dans la feuille",
+        "Acheminer la sève brute sous pression",
+        "Former une réserve compacte de protéines",
+        "Assurer la rigidité des nervures principales"
+      ],
+      "answer": 0,
+      "explanation": "Ces espaces communiquent avec les stomates et facilitent la diffusion des gaz. Le tissu spongieux contient aussi des cellules photosynthétiques.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-leaves-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Parenchyme spongieux",
+        "subjectKey": "mesophylle-foliaire",
+        "property": "Rôle des espaces intercellulaires",
+        "expectedAnswer": "Faciliter la circulation des gaz dans la feuille",
+        "learningObjective": "Relier l’organisation lâche du mésophylle aux échanges gazeux.",
+        "factKey": "spongy-mesophyll-air-spaces-gas-exchange",
+        "form": "identification",
+        "difficultyRationale": "Comprendre une fonction anatomique interne, au-delà du nom du tissu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-leaves-2018",
+            "locator": "Leaf Structure and Function, spongy mesophyll",
+            "support": "Les espaces aériens du mésophylle spongieux permettent les échanges gazeux entre les cellules et l’extérieur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-guard-cell-pair-controls-stomatal-aperture",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelles cellules règlent directement l’ouverture d’un stomate sur une feuille de chanvre ?",
+      "options": [
+        "Les cellules compagnes du phloème",
+        "Les deux cellules de garde",
+        "Les cellules du parenchyme palissadique",
+        "Les éléments conducteurs du xylème"
+      ],
+      "answer": 1,
+      "explanation": "Deux cellules de garde entourent le pore stomatique. Leurs changements de forme modifient son ouverture et règlent ainsi les échanges avec l’air.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "bf-leaves-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cellules de garde",
+        "subjectKey": "stomates",
+        "property": "Commande anatomique du pore",
+        "expectedAnswer": "Les deux cellules de garde",
+        "learningObjective": "Identifier les cellules qui actionnent un stomate.",
+        "factKey": "guard-cell-pair-controls-stomatal-aperture",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire et anatomie fonctionnelle intermédiaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-leaves-2018",
+            "locator": "Leaf Structure and Function, epidermis and guard cells",
+            "support": "Chaque stomate est bordé de deux cellules de garde qui régulent son ouverture."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-osmosis-net-water-selective-membrane",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Comment nomme-t-on le passage net d’eau à travers une membrane sélective dû à une différence de concentration en solutés ?",
+      "options": [
+        "La transpiration",
+        "La sédimentation",
+        "L’osmose",
+        "La capillarité"
+      ],
+      "answer": 2,
+      "explanation": "L’osmose est un mouvement net d’eau à travers une membrane sélective. Elle intervient notamment dans les échanges d’eau des cellules racinaires du chanvre.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-passive-transport"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Osmose",
+        "subjectKey": "osmose",
+        "property": "Mouvement membranaire de l’eau",
+        "expectedAnswer": "L’osmose",
+        "learningObjective": "Reconnaître l’osmose parmi des mouvements de matière.",
+        "factKey": "osmosis-net-water-selective-membrane",
+        "form": "identification",
+        "difficultyRationale": "Une définition physique utile à la physiologie végétale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-passive-transport",
+            "locator": "Osmosis, définition et Figure 5.11",
+            "support": "L’osmose est le mouvement de l’eau à travers une membrane semi-perméable selon une différence de concentration en solutés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-hemp-vascular-cambium-secondary-thickening",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel tissu produit les tissus conducteurs secondaires qui épaississent la tige de chanvre ?",
+      "options": [
+        "L’épiderme de la tige",
+        "Le parenchyme médullaire",
+        "Le méristème apical",
+        "Le cambium vasculaire"
+      ],
+      "answer": 3,
+      "explanation": "Le cambium vasculaire produit du xylème secondaire vers l’intérieur et du phloème secondaire vers l’extérieur. Cette croissance existe aussi chez le chanvre, pourtant herbacé.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-stems-2018",
+        "bf-fibres-2016"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cambium du chanvre",
+        "subjectKey": "cambium-vasculaire",
+        "property": "Production de tissus conducteurs secondaires",
+        "expectedAnswer": "Le cambium vasculaire",
+        "learningObjective": "Comprendre que la croissance en épaisseur n’est pas réservée aux arbres.",
+        "factKey": "hemp-vascular-cambium-secondary-thickening",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’un méristème latéral et de sa fonction.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-stems-2018",
+            "locator": "Secondary Growth in Stems, vascular cambium",
+            "support": "Le cambium vasculaire forme le xylème secondaire à l’intérieur et le phloème secondaire à l’extérieur."
+          },
+          {
+            "sourceId": "bf-fibres-2016",
+            "locator": "Abstract et Introduction, secondary growth",
+            "support": "Le chanvre possède une croissance secondaire et une activité cambiale malgré son port herbacé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-lateral-roots-originate-in-pericycle",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "De quel tissu interne naissent les racines latérales, chez une plante comme le chanvre ?",
+      "options": [
+        "Le péricycle",
+        "L’épiderme",
+        "La coiffe",
+        "Le parenchyme cortical externe"
+      ],
+      "answer": 0,
+      "explanation": "Les racines latérales se forment à partir du péricycle, près des tissus conducteurs. Elles traversent ensuite les tissus externes ; les poils absorbants sont, eux, des prolongements de l’épiderme.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Origine des racines latérales",
+        "subjectKey": "racines-laterales",
+        "property": "Origine interne dans le péricycle",
+        "expectedAnswer": "Le péricycle",
+        "learningObjective": "Distinguer la formation d’une racine latérale de celle d’un poil absorbant.",
+        "factKey": "lateral-roots-originate-in-pericycle",
+        "form": "identification",
+        "difficultyRationale": "Anatomie racinaire interne spécialisée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Root Anatomy, paragraphe pericycle",
+            "support": "Le péricycle est la couche externe du cylindre vasculaire et donne naissance aux racines latérales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-compound-leaf-axillary-bud-at-whole-leaf-base",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel repère distingue la base d’une feuille entière de chanvre de celle d’une simple foliole ?",
+      "options": [
+        "Une surface portant des stomates",
+        "Un bourgeon axillaire sur la tige",
+        "Une nervure visible dans le limbe",
+        "Un bord portant des dents"
+      ],
+      "answer": 1,
+      "explanation": "Le bourgeon axillaire marque la base de la feuille entière sur la tige. Une foliole appartient à cette feuille composée et n’a pas de bourgeon axillaire à sa propre base.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-ncsu-botany"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Feuille composée et bourgeon axillaire",
+        "subjectKey": "feuille-chanvre",
+        "property": "Critère de la feuille entière",
+        "expectedAnswer": "Un bourgeon axillaire sur la tige",
+        "learningObjective": "Identifier une feuille composée sans la confondre avec un rameau.",
+        "factKey": "compound-leaf-axillary-bud-at-whole-leaf-base",
+        "form": "identification",
+        "difficultyRationale": "Observation morphologique exigeant de distinguer deux niveaux d’organisation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-ncsu-botany",
+            "locator": "Leaves as a Means of Identifying Plants, paragraphes 1–2",
+            "support": "Une foliole n’a pas de bourgeon axillaire à sa base ; ce bourgeon repère la base de la feuille entière."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-embryonic-radicle-develops-root-system",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle partie de l’embryon contenu dans une graine de chanvre donne naissance à la racine ?",
+      "options": [
+        "Le cotylédon",
+        "Le tégument",
+        "La radicule",
+        "La plumule"
+      ],
+      "answer": 2,
+      "explanation": "La radicule est la racine embryonnaire. La plumule correspond au futur système aérien ; les cotylédons sont des feuilles embryonnaires, et le tégument est une enveloppe de la graine.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Radicule de l’embryon",
+        "subjectKey": "embryon-chanvre",
+        "property": "Origine embryonnaire de la racine",
+        "expectedAnswer": "La radicule",
+        "learningObjective": "Associer les parties de l’embryon à leur devenir.",
+        "factKey": "embryonic-radicle-develops-root-system",
+        "form": "identification",
+        "difficultyRationale": "Termes botaniques intermédiaires, sans stade chiffré à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Types of Root Systems, radicle",
+            "support": "La radicule est la première racine issue de la graine et participe à la formation du système racinaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-seedling-uses-seed-reserves-before-photosynthesis",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Avant de disposer de feuilles photosynthétiques, d’où une jeune plantule de chanvre tire-t-elle sa matière de croissance ?",
+      "options": [
+        "Des sels minéraux du sol, transformés seuls en sucres",
+        "Du dioxyde de carbone, sans apport d’énergie lumineuse",
+        "De l’énergie solaire, sans organes photosynthétiques",
+        "Des réserves de la graine"
+      ],
+      "answer": 3,
+      "explanation": "La graine apporte des réserves à la jeune plantule. Les premières feuilles actives prennent ensuite le relais en produisant de la matière organique grâce à la photosynthèse.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "bf-reproduction-2018",
+        "revision-agro-water"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Réserves et installation de la plantule",
+        "subjectKey": "embryon-chanvre",
+        "property": "Nutrition initiale avant les feuilles actives",
+        "expectedAnswer": "Des réserves de la graine",
+        "learningObjective": "Comprendre comment une plantule démarre avant son autonomie photosynthétique.",
+        "factKey": "seedling-uses-seed-reserves-before-photosynthesis",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme intuitif accessible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Seed and Fruit Formation, embryo and cotyledons",
+            "support": "Les réserves nourrissent la plantule jusqu’à ce que ses premières feuilles puissent photosynthétiser."
+          },
+          {
+            "sourceId": "revision-agro-water",
+            "locator": "Translocation, source and sink",
+            "support": "Les organes de réserve alimentent la croissance avant que les organes photosynthétiques deviennent des sources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-mitotic-division-conserves-chromosome-information",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Sans mutation, que transmet une division mitotique aux deux cellules filles d’un tissu de chanvre ?",
+      "options": [
+        "Le même ensemble de chromosomes",
+        "La moitié des chromosomes à chacune",
+        "Les chromosomes maternels à l’une, paternels à l’autre",
+        "Un ensemble de chromosomes réassemblé au hasard"
+      ],
+      "answer": 0,
+      "explanation": "Avant la division, l’ADN est copié. La division mitotique répartit les copies entre les deux cellules filles et conserve normalement l’information génétique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cell-cycle"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Division mitotique",
+        "subjectKey": "mitose",
+        "property": "Conservation de l’information entre cellules filles",
+        "expectedAnswer": "Le même ensemble de chromosomes",
+        "learningObjective": "Distinguer une division de croissance d’une division formant des gamètes.",
+        "factKey": "mitotic-division-conserves-chromosome-information",
+        "form": "identification",
+        "difficultyRationale": "Comprendre l’issue génétique d’une division cellulaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cell-cycle",
+            "locator": "The Cell Cycle, mitotic phase and DNA replication",
+            "support": "L’ADN est répliqué avant la phase mitotique, qui répartit les copies dans deux cellules filles génétiquement identiques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-cell-elongation-length-increase-without-division",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Un segment de racine de chanvre s’allonge sans augmenter son nombre de cellules. Quel phénomène explique cette observation ?",
+      "options": [
+        "La disparition de parois entre cellules voisines",
+        "L’élongation des cellules déjà présentes",
+        "La multiplication des cellules par division",
+        "La formation de nouveaux organes latéraux"
+      ],
+      "answer": 1,
+      "explanation": "Une racine s’allonge à la fois par production de cellules et par élongation. Ici, le nombre reste stable : l’augmentation de longueur vient de l’allongement des cellules.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Élongation cellulaire",
+        "subjectKey": "croissance-cellulaire",
+        "property": "Allongement sans augmentation du nombre de cellules",
+        "expectedAnswer": "L’élongation des cellules déjà présentes",
+        "learningObjective": "Interpréter une observation en séparant division et élongation.",
+        "factKey": "cell-elongation-length-increase-without-division",
+        "form": "deduction",
+        "difficultyRationale": "Une déduction à partir d’une longueur et d’un nombre de cellules.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Root Growth and Anatomy, zones of division and elongation",
+            "support": "La zone de division produit de nouvelles cellules ; celles de la zone d’élongation augmentent leur longueur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-growing-tissue-imports-sugars-is-sink",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Une jeune racine de chanvre reçoit des sucres fabriqués par des feuilles adultes. Quel rôle joue-t-elle dans ce transfert ?",
+      "options": [
+        "Un conduit sans consommation de sucre",
+        "Un organe exportateur net de sucre",
+        "Un puits de matière organique",
+        "Une source de matière organique"
+      ],
+      "answer": 2,
+      "explanation": "Un organe puits importe les produits de la photosynthèse pour croître ou les stocker. Une feuille adulte exportatrice est une source ; le rôle dépend de l’état et du développement de l’organe.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "revision-agro-water"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Relations source-puits",
+        "subjectKey": "phloeme",
+        "property": "Organe importateur de sucres",
+        "expectedAnswer": "Un puits de matière organique",
+        "learningObjective": "Reconnaître le rôle d’un tissu consommateur dans la distribution des sucres.",
+        "factKey": "growing-tissue-imports-sugars-is-sink",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire physiologique appliqué à un cas explicite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "revision-agro-water",
+            "locator": "Translocation, Sources and Sinks",
+            "support": "Les tissus en croissance, notamment racines et jeunes pousses, sont des puits qui reçoivent les produits des sources photosynthétiques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-different-cell-functions-differential-gene-expression",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Deux cellules de chanvre ont le même ADN mais des fonctions différentes. Quel mécanisme peut expliquer cette spécialisation ?",
+      "options": [
+        "Un code génétique différent dans chaque tissu",
+        "Une perte systématique de tous les gènes inutilisés",
+        "La même expression de tous les gènes dans chaque cellule",
+        "L’expression de groupes de gènes différents"
+      ],
+      "answer": 3,
+      "explanation": "Avoir les mêmes gènes ne signifie pas les utiliser tous de la même façon. Leur expression varie selon le type cellulaire, ce qui contribue à produire des protéines et des fonctions différentes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-gene-expression"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Spécialisation cellulaire",
+        "subjectKey": "expression-genique",
+        "property": "Expression différentielle des gènes",
+        "expectedAnswer": "L’expression de groupes de gènes différents",
+        "learningObjective": "Séparer contenu du génome et utilisation des gènes.",
+        "factKey": "different-cell-functions-differential-gene-expression",
+        "form": "deduction",
+        "difficultyRationale": "Interprétation d’une prémisse sur l’ADN commun de deux types cellulaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-gene-expression",
+            "locator": "Regulation of Gene Expression, introduction",
+            "support": "Une cellule n’exprime qu’une partie de ses gènes ; la régulation de leur expression contribue aux fonctions des différents types cellulaires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-chlorophyll-a-absorbs-blue-and-red-light",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelles couleurs de lumière la chlorophylle a absorbe-t-elle particulièrement bien dans les feuilles du chanvre ?",
+      "options": [
+        "Le bleu et le rouge",
+        "Le vert et le jaune",
+        "Le vert et l’orange",
+        "Le jaune et l’orange"
+      ],
+      "answer": 0,
+      "explanation": "La chlorophylle a absorbe fortement dans le bleu et le rouge, moins dans le vert. Cela concerne ce pigment : une feuille entière possède aussi d’autres pigments et peut utiliser de la lumière verte.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-light-reactions"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Absorption de la chlorophylle a",
+        "subjectKey": "chlorophylle",
+        "property": "Bandes bleue et rouge",
+        "expectedAnswer": "Le bleu et le rouge",
+        "learningObjective": "Relier un pigment photosynthétique aux couleurs absorbées, sans exclure le vert de toute photosynthèse.",
+        "factKey": "chlorophyll-a-absorbs-blue-and-red-light",
+        "form": "identification",
+        "difficultyRationale": "Notion intermédiaire de spectre d’absorption, sans longueur d’onde à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-light-reactions",
+            "locator": "Absorption of Light, chlorophyll a and absorption spectra",
+            "support": "La chlorophylle a absorbe les lumières bleue et rouge, tandis que davantage de vert est transmis ou réfléchi."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-apical-meristems-dividing-cells-at-tips",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Où se trouvent les méristèmes apicaux qui contribuent à la croissance en longueur du chanvre ?",
+      "options": [
+        "À la base des feuilles, dans les seuls tissus conducteurs",
+        "À l’extrémité des racines et des pousses",
+        "Sur la totalité de l’épiderme des feuilles adultes",
+        "Dans le cylindre central des portions racinaires adultes"
+      ],
+      "answer": 1,
+      "explanation": "Les méristèmes apicaux sont des zones de divisions cellulaires aux extrémités des racines et des pousses. Ils fournissent les cellules nécessaires à la croissance primaire.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-body-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Méristèmes apicaux",
+        "subjectKey": "meristeme-apical",
+        "property": "Position aux extrémités des axes",
+        "expectedAnswer": "À l’extrémité des racines et des pousses",
+        "learningObjective": "Localiser les zones de production cellulaire de la croissance primaire.",
+        "factKey": "apical-meristems-dividing-cells-at-tips",
+        "form": "identification",
+        "difficultyRationale": "Une notion anatomique intermédiaire, distincte de la croissance en épaisseur.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-body-2018",
+            "locator": "Plant Tissues, meristematic tissue and apical meristems",
+            "support": "Les méristèmes apicaux occupent les extrémités des racines et des pousses et contribuent à leur croissance en longueur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-mature-xylem-vessel-elements-dead-functional",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel est l’état des éléments de vaisseaux du xylème lorsqu’ils conduisent l’eau dans une tige de chanvre ?",
+      "options": [
+        "Ils sont vivants et gardent leur cytoplasme sans noyau",
+        "Ils sont vivants et riches en chloroplastes actifs",
+        "Ils sont morts mais leurs parois restent fonctionnelles",
+        "Ils sont vivants et possèdent un gros noyau actif"
+      ],
+      "answer": 2,
+      "explanation": "Les éléments de vaisseaux perdent leur contenu vivant à maturité. Leurs parois forment des conduits : une cellule morte peut donc encore assurer une fonction dans la plante.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-stems-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Éléments de vaisseaux matures",
+        "subjectKey": "xyleme",
+        "property": "Mort cellulaire et conduction fonctionnelle",
+        "expectedAnswer": "Ils sont morts mais leurs parois restent fonctionnelles",
+        "learningObjective": "Comprendre le fonctionnement de conduits formés par des cellules mortes.",
+        "factKey": "mature-xylem-vessel-elements-dead-functional",
+        "form": "identification",
+        "difficultyRationale": "Fait anatomique intermédiaire surprenant, sans détail moléculaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-stems-2018",
+            "locator": "Vascular Tissue, xylem vessel elements and tracheids",
+            "support": "Les éléments conducteurs du xylème sont morts à maturité et leurs parois demeurent comme conduits."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-plasmodesmata-connect-plant-cell-cytoplasms",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Quels petits canaux traversent les parois et relient les cytoplasmes de cellules végétales voisines, chez le chanvre ?",
+      "options": [
+        "Les stomates",
+        "Les vaisseaux du xylème",
+        "Les canaux résinifères",
+        "Les plasmodesmes"
+      ],
+      "answer": 3,
+      "explanation": "Les plasmodesmes relient directement les cytoplasmes à travers la paroi. Ils permettent des échanges et participent à la communication entre cellules végétales voisines.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cn01-cell-junctions"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Plasmodesmes",
+        "subjectKey": "plasmodesmes",
+        "property": "Continuité cytoplasmique entre cellules voisines",
+        "expectedAnswer": "Les plasmodesmes",
+        "learningObjective": "Reconnaître une voie de communication entre cellules végétales.",
+        "factKey": "plasmodesmata-connect-plant-cell-cytoplasms",
+        "form": "identification",
+        "difficultyRationale": "Anatomie subcellulaire spécialisée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cell-junctions",
+            "locator": "Plasmodesmata, définition et Figure 4.28",
+            "support": "Les plasmodesmes sont des canaux traversant les parois qui connectent les cytoplasmes de cellules végétales adjacentes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-photosynthetic-oxygen-originates-from-water",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Lors de la photosynthèse du chanvre, de quelle molécule proviennent les atomes de l’oxygène gazeux libéré ?",
+      "options": [
+        "De l’eau",
+        "Du dioxyde de carbone",
+        "Du glucose",
+        "Du nitrate"
+      ],
+      "answer": 0,
+      "explanation": "L’oxygène gazeux est formé lors de la séparation des molécules d’eau dans les réactions lumineuses. Il ne provient pas directement du dioxyde de carbone fixé dans les sucres.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-light-reactions"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Origine de l’oxygène photosynthétique",
+        "subjectKey": "photosynthese",
+        "property": "Atomes d’oxygène issus de l’eau",
+        "expectedAnswer": "De l’eau",
+        "learningObjective": "Distinguer l’origine du carbone des sucres de celle de l’oxygène libéré.",
+        "factKey": "photosynthetic-oxygen-originates-from-water",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme chimique précis au-delà du bilan global de la photosynthèse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-light-reactions",
+            "locator": "Photosystem II, splitting water and oxygen release",
+            "support": "La dissociation de l’eau au photosystème II fournit les électrons et libère de l’oxygène gazeux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-light-dependent-photosystems-thylakoid-membrane",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans un chloroplaste du chanvre, où se trouvent les photosystèmes des réactions lumineuses ?",
+      "options": [
+        "Dans l’espace entre les deux membranes de l’enveloppe",
+        "Dans la membrane des thylakoïdes",
+        "Dans le stroma entre les thylakoïdes",
+        "Dans la membrane externe du chloroplaste"
+      ],
+      "answer": 1,
+      "explanation": "Les photosystèmes sont intégrés à la membrane des thylakoïdes, à l’intérieur du chloroplaste. Ils captent l’énergie lumineuse nécessaire aux premières étapes de la photosynthèse.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-cn01-light-reactions"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Localisation des photosystèmes",
+        "subjectKey": "chloroplaste",
+        "property": "Membrane des thylakoïdes",
+        "expectedAnswer": "Dans la membrane des thylakoïdes",
+        "learningObjective": "Situer les réactions lumineuses dans l’architecture du chloroplaste.",
+        "factKey": "light-dependent-photosystems-thylakoid-membrane",
+        "form": "identification",
+        "difficultyRationale": "Organisation interne et vocabulaire subcellulaire spécialisés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-light-reactions",
+            "locator": "Light-Dependent Reactions, photosystems in thylakoid membranes",
+            "support": "Les complexes des photosystèmes sont situés dans la membrane des thylakoïdes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-casparian-strip-forces-membrane-crossing",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Dans une racine de chanvre, que fait la bande de Caspary à l’eau qui circule entre les parois vers les tissus conducteurs ?",
+      "options": [
+        "Elle la dirige entre les parois jusqu’aux vaisseaux",
+        "Elle la fait sortir du cylindre conducteur vers le cortex",
+        "Elle l’oblige à franchir une membrane cellulaire",
+        "Elle la laisse passer entre les parois sans contrôle"
+      ],
+      "answer": 2,
+      "explanation": "La bande de Caspary interrompt la voie entre les parois au niveau de l’endoderme. L’eau et les solutés doivent franchir une membrane, ce qui permet un contrôle des échanges vers le cylindre conducteur.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "q2-cn01-roots"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Bande de Caspary",
+        "subjectKey": "endoderme",
+        "property": "Interruption du trajet apoplastique",
+        "expectedAnswer": "Elle l’oblige à franchir une membrane cellulaire",
+        "learningObjective": "Comprendre le point de contrôle du transfert vers les tissus vasculaires.",
+        "factKey": "casparian-strip-forces-membrane-crossing",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme précis d’anatomie et de transport racinaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-roots",
+            "locator": "Root Anatomy, endodermis and Casparian strip",
+            "support": "La bande de Caspary bloque le passage entre les parois et force l’eau et les solutés à traverser une membrane cellulaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn01-companion-cells-support-enucleate-sieve-elements",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans le phloème du chanvre, quelles cellules soutiennent le métabolisme des éléments criblés qui ont perdu leur noyau ?",
+      "options": [
+        "Les cellules de garde",
+        "Les éléments de vaisseaux",
+        "Les cellules de la coiffe",
+        "Les cellules compagnes"
+      ],
+      "answer": 3,
+      "explanation": "Les éléments criblés matures restent vivants mais perdent notamment leur noyau. Les cellules compagnes voisines assurent une partie du soutien métabolique nécessaire au fonctionnement du phloème.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "bf-stems-2018"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cellules compagnes",
+        "subjectKey": "phloeme",
+        "property": "Soutien des éléments criblés matures",
+        "expectedAnswer": "Les cellules compagnes",
+        "learningObjective": "Comprendre la coopération de deux types cellulaires du phloème.",
+        "factKey": "companion-cells-support-enucleate-sieve-elements",
+        "form": "identification",
+        "difficultyRationale": "Une spécialisation cellulaire et son fonctionnement associé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-stems-2018",
+            "locator": "Vascular Tissue, sieve-tube elements and companion cells",
+            "support": "Les éléments criblés perdent leur noyau à maturité ; les cellules compagnes leur apportent un soutien métabolique."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cn01-cells",
+      "title": "Biology 2e — 4.3 Eukaryotic Cells",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Fonctions du noyau, des mitochondries, de la vacuole et des ribosomes ; membrane et paroi végétale.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Principe général des cellules ou des plantes vasculaires, applicable au chanvre ; pas présenté comme une particularité propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "The Plasma Membrane ; The Nucleus ; Ribosomes ; Mitochondria ; The Cell Wall ; The Central Vacuole",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-roots",
+      "title": "Biology 2e — 30.3 Roots",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Poils absorbants, coiffe, zones de croissance, péricycle et barrière endodermique.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Anatomie générale des racines ; les images de blé et de carotte ne sont pas des observations du chanvre. La composition chimique simplifiée de la bande de Caspary n’est pas reprise.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Root Growth and Anatomy, paragraphes sur coiffe, zones, épiderme, endoderme et péricycle",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-photosynthesis",
+      "title": "Biology 2e — 8.1 Overview of Photosynthesis",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Chloroplastes, entrée de CO2, incorporation du carbone et dégagement de dioxygène.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Principe général des cellules ou des plantes vasculaires, applicable au chanvre ; pas présenté comme une particularité propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Main Structures and Summary of Photosynthesis ; Basic Photosynthetic Structures",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-light-reactions",
+      "title": "Biology 2e — 8.2 The Light-Dependent Reactions of Photosynthesis",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Spectre d’absorption des chlorophylles, photosystèmes des thylakoïdes et formation d’O2 à partir de l’eau.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Mécanismes de photosynthèse des plantes ; aucune intensité, durée, qualité d’éclairage ou condition de production conseillée.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Pigments, absorption du bleu et du rouge ; photosystèmes ; Fig.8.17 et paragraphes sur la scission de H2O",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-passive-transport",
+      "title": "Biology 2e — 5.2 Passive Transport",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/5-2-passive-transport",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Perméabilité sélective et définition de l’osmose comme mouvement d’eau à travers une membrane.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Principe général des cellules ou des plantes vasculaires, applicable au chanvre ; pas présenté comme une particularité propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Selective Permeability ; Osmosis",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-cell-junctions",
+      "title": "Biology 2e — 4.6 Connections between Cells and Cellular Activities",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/4-6-connections-between-cells-and-cellular-activities",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Les plasmodesmes relient les cytoplasmes de cellules végétales voisines à travers leurs parois.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Principe général des cellules ou des plantes vasculaires, applicable au chanvre ; pas présenté comme une particularité propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Intercellular Junctions ; Plasmodesmata, deux paragraphes et Fig.4.28",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-cell-cycle",
+      "title": "Biology 2e — 10.2 The Cell Cycle",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Cycle mitotique : duplication puis répartition de l’ADN dans deux cellules filles.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Principe général des cellules ou des plantes vasculaires, applicable au chanvre ; pas présenté comme une particularité propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Fig.10.5 ; S Phase",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-gene-expression",
+      "title": "Biology 2e — 16.1 Regulation of Gene Expression",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/16-1-regulation-of-gene-expression",
+      "verifiedAt": "2026-11-16",
+      "author": "OpenStax, Biology 2e",
+      "published": "2018",
+      "passage": "Les cellules ne produisent pas tous les produits des gènes à tout instant ; l’expression est régulée.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire publié par son éditeur",
+      "limitation": "Principe général des cellules ou des plantes vasculaires, applicable au chanvre ; pas présenté comme une particularité propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Prokaryotic versus Eukaryotic Gene Expression ; Fig.16.2",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-thai-leaf-anatomy",
+      "title": "Thai Herbal Pharmacopoeia — Cannabis Sativa Leaf",
+      "organization": "Bureau of Drug and Narcotic, Department of Medical Sciences, Ministry of Public Health, Thailand",
+      "url": "https://bdn-thp.dmsc.moph.go.th/ebook/qQEcAUtlpR9gC3q0GT5gMJq0qT5co3uw",
+      "verifiedAt": "2026-11-16",
+      "author": "Department of Medical Sciences, Thailand",
+      "published": "THP 2021",
+      "passage": "Description microscopique de feuilles de Cannabis : épiderme avec cuticule, palissade cylindrique, tissu spongieux lâche, xylème et phloème.",
+      "access": "official-page",
+      "documentKind": "Monographie botanique officielle",
+      "limitation": "Anatomie seulement ; aucune indication médicale, norme de teneur ou méthode d’extraction reprise.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Cannabis Sativa Leaf, Description, Microscopical",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    },
+    {
+      "id": "q2-cn01-ncsu-botany",
+      "title": "3. Botany — Extension Gardener Handbook",
+      "organization": "NC State Extension",
+      "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe du manuel Extension Gardener",
+      "published": "s.d., page institutionnelle",
+      "passage": "Un bourgeon axillaire se trouve à la base d’une feuille entière, pas à la base de chaque foliole.",
+      "access": "official-page",
+      "documentKind": "Manuel universitaire",
+      "limitation": "Critère morphologique général des feuilles composées ; pas une particularité propre au chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Leaves as a Means of Identifying Plants, premier paragraphe",
+        "result": "Page ouverte ; passages indiqués effectivement lus. Énoncés rédigés sans transposer une image d’une autre espèce au chanvre."
+      }
+    }
+  ]
+}

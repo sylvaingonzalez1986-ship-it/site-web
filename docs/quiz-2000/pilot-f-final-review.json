@@ -1,0 +1,785 @@
+{
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16",
+  "status": "pilot-30-independently-approved",
+  "counts": {
+    "candidates": 30,
+    "approved": 30,
+    "pending": 0,
+    "distinctReferencedSources": 29,
+    "levels": {
+      "1": 4,
+      "2": 19,
+      "3": 6,
+      "4": 1
+    },
+    "forms": {
+      "identification": 25,
+      "anecdote": 3,
+      "comparaison": 1,
+      "situation": 1
+    }
+  },
+  "scope": "Lecture initiale des 30 objets complets, quatre choix, corrigés et passages source ; relecture finale des 7 modifications AB, 4 modifications C, 4 modifications existantes D, de sambe encore en attente et de la nouvelle question alimentaire D avec preuve primaire nouvelle. Les autres empreintes inchangées sont conservées.",
+  "mechanicalEditsByReviewer": "Uniquement les trois défauts autorisés du premier lot AB : BOM, apostrophes littérales, topicId. Aucune réécriture substantielle de lot par F ; corrections substantielles réalisées par les auteurs.",
+  "retiredCandidateIds": [
+    "hemp-q2-ab-trikoma-widow-deux-generations",
+    "hemp-q2-d-andongpo-compte-ol"
+  ],
+  "replacements": [
+    "hemp-q2-ab-trikoma-widow-bilbo-bcn",
+    "hemp-q2-d-pain-proteines-elasticite"
+  ],
+  "editorialReviewE": "Recommandations explicites de niveaux/formes comparées aux objets finaux : aucune divergence restante. Les variantes de choix, les limites de notice Met et la suppression du chiffre textile opaque ont été vérifiées.",
+  "factualNovelty": "Aucun doublon de fait identifié avec les 360 actifs ni entre les 30 finalistes ; comparaison humaine des notions et recherche locale, complétées par le contrôleur de proximité lexicale. L’absence de candidat lexical ne prouve pas à elle seule l’unicité sémantique.",
+  "checks": {
+    "command": "node scripts/check-quiz-2000.mjs",
+    "independentlyApproved": 30,
+    "pending": 0,
+    "issues": [],
+    "semanticCandidates": 0,
+    "diffCheck": "passed"
+  },
+  "limitations": [
+    "Le pilote compte 30 candidats approuvés, sans intégration à la banque active. La cible 2000 reste distincte.",
+    "Difficulté éditoriale estimée, sans mesure de joueurs. La dérogation aux ratios du pilote est conservée honnêtement.",
+    "25 identifications, 3 anecdotes, 1 comparaison et 1 situation : diversité des opérations cognitives encore limitée, à améliorer dans les lots ultérieurs sans variantes du même fait.",
+    "Les sources commerciales étayent des déclarations attribuées et datées ; elles ne certifient pas le parentage moléculaire ou la composition de tous les lots homonymes.",
+    "Les validations portent sur les objets complets dont les empreintes sont enregistrées. Toute modification ultérieure exige relecture ciblée et nouvelle empreinte."
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-ab-sweet-sour-widow-oignon",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "590d897acc58fae526a2144a5f82b9b4e3500879c21f590c033727163c7c9d82",
+      "sourceIds": [
+        "q2-ab-cbdcrew-widow"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-cbdcrew-widow",
+          "sourceHash": "e8fd4cea030c58dca55c75a5c5cd3f6ff73486de5619871b206f5bf1bfcfdf4c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-kanadea-pyrenees-botanic",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "ebb4b8a6d6ef42d4953bd767ad9cbed3d883e161aaa1c10cd5022ff102d84141",
+      "sourceIds": [
+        "q2-ab-kanadea"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-kanadea",
+          "sourceHash": "846b9a6472e0a47308546814d13a6a409dd7ea7f8a698a4420e27a09395cfa3b"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-cannatonic-correction-2015",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "8b668cf3602451e04ccecaad96057de5d793dd1c3fb9439e2c3951f3ee459e34",
+      "sourceIds": [
+        "q2-ab-resin-cannatonic"
+      ],
+      "level": 3,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-resin-cannatonic",
+          "sourceHash": "62f369b1f172376611b595bf2392a4fc184474b96bc23b3ec5402af1c88dbdc4"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-hawaiian-haze-obtenteur",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "a4540adae32242dc845b3277f40de86c4ad1097674e1fd969da0061a454f0e48",
+      "sourceIds": [
+        "q2-ab-gtr-hawaiian"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-gtr-hawaiian",
+          "sourceHash": "721fcf2cda46003cbbb47be9a83f7f02088804e6fa61d003f87ce519221272e1"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-lifter-gtr-catalogue-2026",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "e2990227f804e27577c9e627f7d9070d3f6933503c3e2e42efa1892fd8b06258",
+      "sourceIds": [
+        "q2-ab-gtr-lifter"
+      ],
+      "level": 3,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-gtr-lifter",
+          "sourceHash": "a3fd29317309eb7b2eff4beb2bcb8d347fbd0f191680b3f3f3db0cae3544b899"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-berry-blossom-chardonnay",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "6a191879d9d369bba970df08906777b69cee484aa087decaef19ec49357944d4",
+      "sourceIds": [
+        "q2-ab-aosca-berry"
+      ],
+      "level": 3,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-aosca-berry",
+          "sourceHash": "7ae68e2f15472df41c041720048b1a80fa808608521a32f59ad5e144a3161302"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-jack-herer-hommage",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "6a148f01c270d42aa8613f036b743131b53a7b5da9f259830ba36ad55e31480b",
+      "sourceIds": [
+        "q2-ab-sensi-jack"
+      ],
+      "level": 1,
+      "form": "anecdote",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-sensi-jack",
+          "sourceHash": "e3e0f4bcea778deb342f7aa57f7a8c3be42e7283a018016d9a50846ea243c01f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-blueberry-dj-short",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "a24d46b955b37498bf8ad89fb58584decad4f1704830264ac784070816d8df21",
+      "sourceIds": [
+        "q2-ab-dutchpassion-blueberry"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-dutchpassion-blueberry",
+          "sourceHash": "981cd6f105956f040d691afb04097f924d772f315d157954478a00ebe7c116d1"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-pineapple-express-barneys",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "cbaf7fcbc8d567a5ef2072cf92a65550fad7461628b2ca31d1a39a1c93dbea89",
+      "sourceIds": [
+        "q2-ab-barneys-pineapple"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-barneys-pineapple",
+          "sourceHash": "01508f8f5a667fc57e025a1226df2959184de1165c432c3b1e0d8c9db26d0221"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-trikoma-widow-bilbo-bcn",
+      "batchId": "pilot-ab",
+      "author": "/root/a_cbd_inventory",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "e015f531ff1f9b4b95ac95926d43e717a4e55ee3f055fa99b58ac87812431ba5",
+      "sourceIds": [
+        "q2-ab-trikoma-widow"
+      ],
+      "level": 3,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-ab-trikoma-widow",
+          "sourceHash": "b70310aa07ec23f7cd0741a70d63508607370a682f8eceb758d7a0fa8853f767"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-abeilles-ressource-pollen",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "84c02d6f0d96bb3fb90e6f59645d65ccfc37d5c6728b4d7a973178b615fb9175",
+      "sourceIds": [
+        "q2-c-flicker-bees-2020"
+      ],
+      "level": 1,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-flicker-bees-2020",
+          "sourceHash": "1bc28f0a5d21d8b24fb4f493f66f0ee4a541f171672e972fe0818db046b2e046"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-fleur-male-cinq-etamines",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "946f4399041be1b6ee8e59523a4b9eb18749f4f5b9ad2f35abfff51ffeaafaf3",
+      "sourceIds": [
+        "q2-c-flora-china-cannabaceae-2003"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-flora-china-cannabaceae-2003",
+          "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-chenevis-une-graine",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "102f8d14e172b50bc36e505a32a11026eaa591c44f073b50c7e55a2680d6db3e",
+      "sourceIds": [
+        "q2-c-flora-china-cannabaceae-2003"
+      ],
+      "level": 1,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-flora-china-cannabaceae-2003",
+          "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-cannflavines-flavonoides",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "68e41bade8a5209eb7005f5152fe842dc3a6ec4b1fec52d8f2954bd67ab21ad1",
+      "sourceIds": [
+        "q2-c-rea-cannflavins-2019"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-rea-cannflavins-2019",
+          "sourceHash": "9e9c7b262fe546b7a8cf943abfe8b3c5a0a6737687a1bee520e89d7f1e0415dd"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-trichome-cavite-sous-cuticule",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "9a3969d6394f8a94d37789247ed8f58001c2f1b9dff82786385bb69f51ff119c",
+      "sourceIds": [
+        "q2-c-livingston-trichomes-2020"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-livingston-trichomes-2020",
+          "sourceHash": "e7b549a3d104578faa216660016f6e26d8305432be983eb6d055cb751b3a6b8a"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-premieres-feuilles-une-foliole",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "b3f6970c61950f702f0cc7f25408627c616865f2dc9344cfecb0959425c987de",
+      "sourceIds": [
+        "q2-c-hesami-morphology-2023"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-hesami-morphology-2023",
+          "sourceHash": "f523f492f63eebf9ad8c6bc34b239b91a087908058772941501b4983335b7f6e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-chanvre-divergence-genome",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "dc962cdb7bc5585fcf9f7df50bfe3f1db99bbf0e8d17ef7ccc0feae4ea09a5c0",
+      "sourceIds": [
+        "q2-c-sawler-genetic-structure-2015"
+      ],
+      "level": 2,
+      "form": "comparaison",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-sawler-genetic-structure-2015",
+          "sourceHash": "5fdac0766015e43fe414cae165361db610d8e140a5b8a451637422f1a3f66138"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-graines-thc-contamination",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "92f8d29a7d2b5b2e92a15ee2544f11e38e2aff2f51866783aade0e01c1601de1",
+      "sourceIds": [
+        "q2-c-bfr-hemp-food-2022"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-bfr-hemp-food-2022",
+          "sourceHash": "8a8c175efa86d9ed469339088b0a6592890dea0eaab577c20a58f2e4bd3a20b9"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-trichomes-disques-cellules",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "9c088b4fc5eb1c35c54d12acdf6a3e12393abec21a1c5776a87961e66feb4c10",
+      "sourceIds": [
+        "q2-c-livingston-trichomes-2020"
+      ],
+      "level": 3,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-livingston-trichomes-2020",
+          "sourceHash": "e7b549a3d104578faa216660016f6e26d8305432be983eb6d055cb751b3a6b8a"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-thcas-cofacteur-fad",
+      "batchId": "pilot-c",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "829a14a2565e372908d18b676f0b4fb3e233ef2816a93b6fdae771703a877529",
+      "sourceIds": [
+        "q2-c-pdb-3vte-2012",
+        "q2-c-iubmb-thcas"
+      ],
+      "level": 4,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-c-pdb-3vte-2012",
+          "sourceHash": "68cc2d14c0aa996e3d788a40113856f1778b8acf102727e2185a53a3bd6d63bf"
+        },
+        {
+          "sourceId": "q2-c-iubmb-thcas",
+          "sourceHash": "51aed12de66acf85ec696635dde9f34bc0614fc1eb2270675195109fcf8f50ca"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-chenevis-saveur-noix",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "308da57b48ef5edbddf4fbcdcd714460e5cdfcb1da10c55b83716029ad2e061a",
+      "sourceIds": [
+        "q2-d-alberta-food-seed"
+      ],
+      "level": 1,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-alberta-food-seed",
+          "sourceHash": "a037fec6cbedb1228b09b7bdad87d9270dbb07dccf3bbe8d2cec5e50e5ba60d4"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-shichimi-condiment",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "c4657e9429ae5a50ebecbc864430f64253923ab202122dcc8fdbe6aed25cb2b6",
+      "sourceIds": [
+        "q2-d-usda-japan-hemp-seed"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-usda-japan-hemp-seed",
+          "sourceHash": "3ab958db1db996b1dfbae9f18333a11d1e6d03a8d0a9d5158df70501aec0dfde"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-met-accessoire-pieds",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "0b3487f59d85b3d38acd42a7dd79318149a9a5ed46972963eaa77f1db48e15ca",
+      "sourceIds": [
+        "q2-d-met-hemp-sandals"
+      ],
+      "level": 2,
+      "form": "anecdote",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-met-hemp-sandals",
+          "sourceHash": "d5706f4ef8e82b7c2f476b84a5c88363e4b532e32a335e80dbd8f7a9b89ddc9f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-kanepju-sviests-lettonie",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "b6dc64d9a9aea71f08306c32191cfd00c067dafe9e5ddd62ce3f18f62e6846f8",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-siemieniotka-reveillon",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "bb82bf7b6ab3e5e2984c23c7470ecdd97af2333e776bb1d64bafa370b06d1b77",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-polish-ministry-siemieniotka",
+          "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-asanoha-voeu-enfant",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "79a665f627e513ce39801e42726299caeab9ca2383a2c5466c26780448cca894",
+      "sourceIds": [
+        "q2-d-tokyo-toy-museum-asanoha"
+      ],
+      "level": 2,
+      "form": "anecdote",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-tokyo-toy-museum-asanoha",
+          "sourceHash": "4f6964039cfe6e340dc9cbf6985586da455e79a822757f46366344133b7fa5ef"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-hmong-cire-reserve",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "e013cd6a4e7097f7af2291e33dd8faf6c497a3c882ae346ef9e80d0a94759e11",
+      "sourceIds": [
+        "q2-d-auckland-hmong-skirt"
+      ],
+      "level": 2,
+      "form": "situation",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-auckland-hmong-skirt",
+          "sourceHash": "51ce8544b7be89ca50e7988e7e27999a5b863a21b6d807c0b32ded2e1df82443"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-sambe-rites-deuil",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "eab618b00a2a8171288a6ebf3cb1f4c9c74bf9af0fdd81a0858be05a1521ea9e",
+      "sourceIds": [
+        "q2-d-hwang-hemp-korea"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-hwang-hemp-korea",
+          "sourceHash": "8f45bd7c33d13132bfdda375950d13441561d47fc3e2e2cb6c6664616b7714a5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-rabelais-tiers-livre",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "a3313ec3cd0c1129c4747314cdd2c0aa240bd4275b7e78c014026963d45c48dd",
+      "sourceIds": [
+        "q2-d-rabelais-athena-tiers-livre"
+      ],
+      "level": 3,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-rabelais-athena-tiers-livre",
+          "sourceHash": "17c4ac80692b185ddc03158acedaec85d0cb9606f0d655d82fa0479738dc4d3c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-pain-proteines-elasticite",
+      "batchId": "pilot-d",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "status": "approved",
+      "contentHash": "6bdff3c1c538c8fc61485461026fc89c4bc97a91eef925449e2ee3ae2b954e36",
+      "sourceIds": [
+        "q2-d-rusu-hemp-wheat-bread"
+      ],
+      "level": 2,
+      "form": "identification",
+      "sourceHashes": [
+        {
+          "sourceId": "q2-d-rusu-hemp-wheat-bread",
+          "sourceHash": "f897c1da533c1212aad6a671e3b9a64a6f297d030807cc03673f9f49f38e0059"
+        }
+      ]
+    }
+  ],
+  "sourceSealing": {
+    "reviewer": "f_existing_audit",
+    "sealedAt": "2026-11-16",
+    "algorithm": "SHA-256(JSON.stringify(fullSourceObject))",
+    "questions": 30,
+    "sourceChecks": 31,
+    "distinctReferencedSources": 29,
+    "completeCoverage": true,
+    "questionHashesUnchanged": true,
+    "scope": "Each current question sourceId has an independent check binding the entire current source object. This binds source metadata and evidence, not a live remote webpage snapshot. No hash added for unreviewed or removed archival sources.",
+    "sources": [
+      {
+        "sourceId": "q2-ab-cbdcrew-widow",
+        "batchId": "pilot-ab",
+        "sourceHash": "e8fd4cea030c58dca55c75a5c5cd3f6ff73486de5619871b206f5bf1bfcfdf4c"
+      },
+      {
+        "sourceId": "q2-ab-kanadea",
+        "batchId": "pilot-ab",
+        "sourceHash": "846b9a6472e0a47308546814d13a6a409dd7ea7f8a698a4420e27a09395cfa3b"
+      },
+      {
+        "sourceId": "q2-ab-resin-cannatonic",
+        "batchId": "pilot-ab",
+        "sourceHash": "62f369b1f172376611b595bf2392a4fc184474b96bc23b3ec5402af1c88dbdc4"
+      },
+      {
+        "sourceId": "q2-ab-gtr-hawaiian",
+        "batchId": "pilot-ab",
+        "sourceHash": "721fcf2cda46003cbbb47be9a83f7f02088804e6fa61d003f87ce519221272e1"
+      },
+      {
+        "sourceId": "q2-ab-gtr-lifter",
+        "batchId": "pilot-ab",
+        "sourceHash": "a3fd29317309eb7b2eff4beb2bcb8d347fbd0f191680b3f3f3db0cae3544b899"
+      },
+      {
+        "sourceId": "q2-ab-aosca-berry",
+        "batchId": "pilot-ab",
+        "sourceHash": "7ae68e2f15472df41c041720048b1a80fa808608521a32f59ad5e144a3161302"
+      },
+      {
+        "sourceId": "q2-ab-sensi-jack",
+        "batchId": "pilot-ab",
+        "sourceHash": "e3e0f4bcea778deb342f7aa57f7a8c3be42e7283a018016d9a50846ea243c01f"
+      },
+      {
+        "sourceId": "q2-ab-dutchpassion-blueberry",
+        "batchId": "pilot-ab",
+        "sourceHash": "981cd6f105956f040d691afb04097f924d772f315d157954478a00ebe7c116d1"
+      },
+      {
+        "sourceId": "q2-ab-barneys-pineapple",
+        "batchId": "pilot-ab",
+        "sourceHash": "01508f8f5a667fc57e025a1226df2959184de1165c432c3b1e0d8c9db26d0221"
+      },
+      {
+        "sourceId": "q2-ab-trikoma-widow",
+        "batchId": "pilot-ab",
+        "sourceHash": "b70310aa07ec23f7cd0741a70d63508607370a682f8eceb758d7a0fa8853f767"
+      },
+      {
+        "sourceId": "q2-c-flicker-bees-2020",
+        "batchId": "pilot-c",
+        "sourceHash": "1bc28f0a5d21d8b24fb4f493f66f0ee4a541f171672e972fe0818db046b2e046"
+      },
+      {
+        "sourceId": "q2-c-flora-china-cannabaceae-2003",
+        "batchId": "pilot-c",
+        "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c"
+      },
+      {
+        "sourceId": "q2-c-rea-cannflavins-2019",
+        "batchId": "pilot-c",
+        "sourceHash": "9e9c7b262fe546b7a8cf943abfe8b3c5a0a6737687a1bee520e89d7f1e0415dd"
+      },
+      {
+        "sourceId": "q2-c-livingston-trichomes-2020",
+        "batchId": "pilot-c",
+        "sourceHash": "e7b549a3d104578faa216660016f6e26d8305432be983eb6d055cb751b3a6b8a"
+      },
+      {
+        "sourceId": "q2-c-hesami-morphology-2023",
+        "batchId": "pilot-c",
+        "sourceHash": "f523f492f63eebf9ad8c6bc34b239b91a087908058772941501b4983335b7f6e"
+      },
+      {
+        "sourceId": "q2-c-sawler-genetic-structure-2015",
+        "batchId": "pilot-c",
+        "sourceHash": "5fdac0766015e43fe414cae165361db610d8e140a5b8a451637422f1a3f66138"
+      },
+      {
+        "sourceId": "q2-c-bfr-hemp-food-2022",
+        "batchId": "pilot-c",
+        "sourceHash": "8a8c175efa86d9ed469339088b0a6592890dea0eaab577c20a58f2e4bd3a20b9"
+      },
+      {
+        "sourceId": "q2-c-pdb-3vte-2012",
+        "batchId": "pilot-c",
+        "sourceHash": "68cc2d14c0aa996e3d788a40113856f1778b8acf102727e2185a53a3bd6d63bf"
+      },
+      {
+        "sourceId": "q2-c-iubmb-thcas",
+        "batchId": "pilot-c",
+        "sourceHash": "51aed12de66acf85ec696635dde9f34bc0614fc1eb2270675195109fcf8f50ca"
+      },
+      {
+        "sourceId": "q2-d-alberta-food-seed",
+        "batchId": "pilot-d",
+        "sourceHash": "a037fec6cbedb1228b09b7bdad87d9270dbb07dccf3bbe8d2cec5e50e5ba60d4"
+      },
+      {
+        "sourceId": "q2-d-usda-japan-hemp-seed",
+        "batchId": "pilot-d",
+        "sourceHash": "3ab958db1db996b1dfbae9f18333a11d1e6d03a8d0a9d5158df70501aec0dfde"
+      },
+      {
+        "sourceId": "q2-d-met-hemp-sandals",
+        "batchId": "pilot-d",
+        "sourceHash": "d5706f4ef8e82b7c2f476b84a5c88363e4b532e32a335e80dbd8f7a9b89ddc9f"
+      },
+      {
+        "sourceId": "q2-d-natencyclopedia-hemp-spread",
+        "batchId": "pilot-d",
+        "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55"
+      },
+      {
+        "sourceId": "q2-d-polish-ministry-siemieniotka",
+        "batchId": "pilot-d",
+        "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d"
+      },
+      {
+        "sourceId": "q2-d-tokyo-toy-museum-asanoha",
+        "batchId": "pilot-d",
+        "sourceHash": "4f6964039cfe6e340dc9cbf6985586da455e79a822757f46366344133b7fa5ef"
+      },
+      {
+        "sourceId": "q2-d-auckland-hmong-skirt",
+        "batchId": "pilot-d",
+        "sourceHash": "51ce8544b7be89ca50e7988e7e27999a5b863a21b6d807c0b32ded2e1df82443"
+      },
+      {
+        "sourceId": "q2-d-hwang-hemp-korea",
+        "batchId": "pilot-d",
+        "sourceHash": "8f45bd7c33d13132bfdda375950d13441561d47fc3e2e2cb6c6664616b7714a5"
+      },
+      {
+        "sourceId": "q2-d-rabelais-athena-tiers-livre",
+        "batchId": "pilot-d",
+        "sourceHash": "17c4ac80692b185ddc03158acedaec85d0cb9606f0d655d82fa0479738dc4d3c"
+      },
+      {
+        "sourceId": "q2-d-rusu-hemp-wheat-bread",
+        "batchId": "pilot-d",
+        "sourceHash": "f897c1da533c1212aad6a671e3b9a64a6f297d030807cc03673f9f49f38e0059"
+      }
+    ]
+  }
+}

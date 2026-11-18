@@ -1,0 +1,1573 @@
+{
+  "batchId": "r-actives-b-02",
+  "author": "rebalance_classify_b",
+  "role": "Rédaction externe indépendante : culture, histoire et société du cannabis à actifs",
+  "questions": [
+    {
+      "id": "hemp-q2-rb02-reefer-alarmisme",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel regard le film devenu « Reefer Madness » portait-il initialement sur le cannabis ?",
+      "options": [
+        "Un message alarmiste associant cannabis et violence",
+        "Une défense du droit à l’usage adulte",
+        "Une enquête neutre sur les cannabinoïdes",
+        "Une promotion de l’usage médical en pharmacie"
+      ],
+      "answer": 0,
+      "explanation": "Le film dramatise une supposée menace pour la jeunesse. Son discours de peur renseigne sur une représentation culturelle du cannabis, pas sur une preuve scientifique.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-afi"
+      ],
+      "subjectKey": "reefer-madness",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "reefer-madness",
+        "subjectKey": "reefer-madness",
+        "property": "Discours initial alarmiste",
+        "expectedAnswer": "Un message alarmiste associant cannabis et violence",
+        "learningObjective": "Discours initial alarmiste.",
+        "factKey": "reefer-alarmisme",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-afi",
+            "locator": "History, préambule du film et rééditions",
+            "support": "Le préambule et le récit présentent le cannabis comme un danger menant notamment à la violence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-reefer-film-culte",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Comment « Reefer Madness » a-t-il ensuite trouvé un nouveau public ?",
+      "options": [
+        "Comme série familiale populaire aux heures de grande écoute",
+        "Comme film culte lors de rediffusions tardives",
+        "Comme succès critique des grands festivals de cinéma",
+        "Comme classique des programmes scolaires de prévention"
+      ],
+      "answer": 1,
+      "explanation": "Les rééditions et diffusions tardives ont fait de ce film alarmiste un objet culte. Une œuvre peut ainsi changer de réception sans que son récit initial devienne exact.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-afi"
+      ],
+      "subjectKey": "reefer-madness",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "reefer-madness",
+        "subjectKey": "reefer-madness",
+        "property": "Réception ultérieure comme film culte",
+        "expectedAnswer": "Comme film culte lors de rediffusions tardives",
+        "learningObjective": "Réception ultérieure comme film culte.",
+        "factKey": "reefer-film-culte",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-afi",
+            "locator": "History, préambule du film et rééditions",
+            "support": "Le catalogue décrit son succès ultérieur de film culte, en télévision nocturne et en vidéo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-cheech-chong-duo",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel duo est au centre du film de culture cannabique « Up in Smoke » de 1978 ?",
+      "options": [
+        "Bud Abbott et Lou Costello",
+        "Gene Wilder et Richard Pryor",
+        "Cheech Marin et Tommy Chong",
+        "Dan Aykroyd et John Belushi"
+      ],
+      "answer": 2,
+      "explanation": "Cheech et Chong ont porté leur humour de contre-culture au cinéma avec Up in Smoke. Le film prolonge le travail de scène et les enregistrements du duo.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-grammy"
+      ],
+      "subjectKey": "cheech-chong-up-in-smoke",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "cheech-chong-up-in-smoke",
+        "subjectKey": "cheech-chong-up-in-smoke",
+        "property": "Duo interprète du film",
+        "expectedAnswer": "Cheech Marin et Tommy Chong",
+        "learningObjective": "Duo interprète du film.",
+        "factKey": "cheech-chong-duo",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-grammy",
+            "locator": "Présentation du duo et du film, exposition Still Rollin’",
+            "support": "Le GRAMMY Museum présente Cheech Marin et Tommy Chong comme le duo de ce premier film théâtral."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-stoner-comedy-genre",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans quel registre de cinéma « Up in Smoke », avec Cheech et Chong, s’inscrit-il ?",
+      "options": [
+        "Le drame policier centré sur une enquête de trafic",
+        "Le documentaire sur les luttes de légalisation",
+        "Le thriller de contrebande entre bandes rivales",
+        "La comédie autour de consommateurs de cannabis"
+      ],
+      "answer": 3,
+      "explanation": "Up in Smoke est un repère de la stoner comedy : le cannabis et ses consommateurs alimentent la comédie. Ce genre ne constitue pas une étude des effets du produit.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-grammy"
+      ],
+      "subjectKey": "cheech-chong-up-in-smoke",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "cheech-chong-up-in-smoke",
+        "subjectKey": "cheech-chong-up-in-smoke",
+        "property": "Registre de stoner comedy",
+        "expectedAnswer": "La comédie autour de consommateurs de cannabis",
+        "learningObjective": "Registre de stoner comedy.",
+        "factKey": "stoner-comedy-genre",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-grammy",
+            "locator": "Présentation du duo et du film, exposition Still Rollin’",
+            "support": "La présentation de l’exposition qualifie le film de stoner comedy."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-legalize-it-artiste",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel artiste reggae a fait de « Legalize It » un titre emblématique de la cause du cannabis ?",
+      "options": [
+        "Peter Tosh",
+        "Jimmy Cliff",
+        "Toots Hibbert",
+        "Burning Spear"
+      ],
+      "answer": 0,
+      "explanation": "Peter Tosh, ancien membre des Wailers, a signé Legalize It. La chanson est devenue un repère musical du mouvement pour la légalisation.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-tosh"
+      ],
+      "subjectKey": "peter-tosh-legalize-it",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "peter-tosh-legalize-it",
+        "subjectKey": "peter-tosh-legalize-it",
+        "property": "Artiste de la chanson",
+        "expectedAnswer": "Peter Tosh",
+        "learningObjective": "Artiste de la chanson.",
+        "factKey": "legalize-it-artiste",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-tosh",
+            "locator": "Solo Career, Legalize It ; chronologie 1976",
+            "support": "La biographie officielle attribue l’album et son titre militant à Peter Tosh."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-hippie-hill-ville",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans quelle ville Hippie Hill a-t-elle accueilli de grands rassemblements « 420 » autour du cannabis ?",
+      "options": [
+        "Los Angeles",
+        "San Francisco",
+        "Denver",
+        "Seattle"
+      ],
+      "answer": 1,
+      "explanation": "Hippie Hill se trouve dans le Golden Gate Park de San Francisco. La ville a documenté ces rassemblements cannabiques ; cette histoire ne garantit pas la tenue d’un événement chaque année.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-sf-hippie-hill"
+      ],
+      "subjectKey": "hippie-hill-420",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Hippie Hill et rassemblements 420",
+        "subjectKey": "hippie-hill-420",
+        "property": "Ville des rassemblements historiques de Hippie Hill",
+        "expectedAnswer": "San Francisco",
+        "learningObjective": "Situer un lieu emblématique de rassemblement de la culture du cannabis.",
+        "factKey": "hippie-hill-420-san-francisco",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de culture du cannabis, sans date ou résultat spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-sf-hippie-hill",
+            "locator": "Communiqué du 18 avril 2022, premier paragraphe",
+            "support": "Le service municipal annonce le retour de la célébration 420 à Hippie Hill/Robin Williams Meadow dans le Golden Gate Park de San Francisco."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-420-heure-rendezvous",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Selon le récit des Waldos, à quoi renvoyait d’abord le nombre « 420 » dans leur groupe ?",
+      "options": [
+        "À un code policier national pour le cannabis",
+        "Au nombre de cannabinoïdes identifiés",
+        "À une heure de rendez-vous après les cours",
+        "À un numéro de loi fédérale sur le cannabis"
+      ],
+      "answer": 2,
+      "explanation": "Les Waldos racontent qu’ils se retrouvaient à 16 h 20. Le nombre est ensuite devenu dans leur groupe un code pour parler du cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-waldos"
+      ],
+      "subjectKey": "420-waldos",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "420-waldos",
+        "subjectKey": "420-waldos",
+        "property": "Origine horaire du code selon les protagonistes",
+        "expectedAnswer": "À une heure de rendez-vous après les cours",
+        "learningObjective": "Origine horaire du code selon les protagonistes.",
+        "factKey": "420-heure-rendezvous",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-waldos",
+            "locator": "Meet The Waldos, rendez-vous et emploi du code",
+            "support": "Le groupe décrit un rendez-vous à 4:20 p.m., puis l’usage de 420 comme code cannabique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-420-date-celebration",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "À quelle date ont lieu les rassemblements « 420 » de la culture du cannabis ?",
+      "options": [
+        "Le 4 février",
+        "Le 4 octobre",
+        "Le 20 août",
+        "Le 20 avril"
+      ],
+      "answer": 3,
+      "explanation": "Le 20 avril est devenu une date de célébration et de mobilisation de la culture du cannabis. Le bulletin de l’Illinois retrace cette tradition et sa diffusion.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-illinois"
+      ],
+      "subjectKey": "420-cannabis-culture",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "420-cannabis-culture",
+        "subjectKey": "420-cannabis-culture",
+        "property": "Date de la célébration 4/20",
+        "expectedAnswer": "Le 20 avril",
+        "learningObjective": "Date de la célébration 4/20.",
+        "factKey": "420-date-celebration",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-illinois",
+            "locator": "Page 8, A History of 420",
+            "support": "Le bulletin situe la célébration 420 au 20 avril et décrit sa diffusion."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-waldos-californie",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quel milieu les Waldos situent-ils la naissance de leur code cannabique « 420 » ?",
+      "options": [
+        "Un groupe de lycéens de Californie",
+        "Un cercle de pharmaciens de Berlin",
+        "Un club de jazz de La Nouvelle-Orléans",
+        "Un réseau de coffeeshops d’Amsterdam"
+      ],
+      "answer": 0,
+      "explanation": "Leur récit situe le code à San Rafael High School, en Californie, au début des années 1970. Il s’agit d’un témoignage des protagonistes, appuyé par leurs archives.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-waldos"
+      ],
+      "subjectKey": "420-waldos",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "420-waldos",
+        "subjectKey": "420-waldos",
+        "property": "Milieu social et géographique du témoignage d’origine",
+        "expectedAnswer": "Un groupe de lycéens de Californie",
+        "learningObjective": "Milieu social et géographique du témoignage d’origine.",
+        "factKey": "waldos-californie",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-waldos",
+            "locator": "Meet The Waldos, rendez-vous et emploi du code",
+            "support": "Le groupe se présente comme cinq amis de San Rafael High School, Marin County, Californie."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-rastafari-sacrement",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la tradition rastafari décrite par les anthropologues, quel rôle peut avoir le cannabis ?",
+      "options": [
+        "Un marqueur rituel d’entrée dans l’âge adulte",
+        "Un sacrement et un support de communion spirituelle",
+        "Un support de divination pour annoncer l’avenir",
+        "Une offrande destinée aux ancêtres défunts"
+      ],
+      "answer": 1,
+      "explanation": "Le cannabis prend un sens religieux dans ces pratiques rastafari. Réduire cet usage à une consommation récréative efface sa dimension rituelle et communautaire.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-rasta"
+      ],
+      "subjectKey": "rastafari-cannabis-ritual",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "rastafari-cannabis-ritual",
+        "subjectKey": "rastafari-cannabis-ritual",
+        "property": "Dimension sacramentelle de l’herbe sacrée",
+        "expectedAnswer": "Un sacrement et un support de communion spirituelle",
+        "learningObjective": "Dimension sacramentelle de l’herbe sacrée.",
+        "factKey": "rastafari-sacrement",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-rasta",
+            "locator": "Section B, pages PDF 8–10, sacred herb et reasoning",
+            "support": "Les anthropologues décrivent le cannabis comme sacrement, incense et support de communion dans la foi rastafari."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-rastafari-reasoning",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À quoi renvoie le « reasoning » dans les pratiques rastafari associées au cannabis ?",
+      "options": [
+        "À une compétition musicale entre groupes religieux",
+        "À une médiation destinée à régler un conflit familial",
+        "À une discussion collective de portée spirituelle",
+        "À une assemblée de négociation des prix entre vendeurs"
+      ],
+      "answer": 2,
+      "explanation": "Le reasoning est un échange collectif sur la foi et l’expérience religieuse. Le mémoire d’anthropologues le décrit en lien avec les pratiques rituelles autour de l’herbe sacrée.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-rasta"
+      ],
+      "subjectKey": "rastafari-cannabis-ritual",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "rastafari-cannabis-ritual",
+        "subjectKey": "rastafari-cannabis-ritual",
+        "property": "Nature du reasoning",
+        "expectedAnswer": "À une discussion collective de portée spirituelle",
+        "learningObjective": "Nature du reasoning.",
+        "factKey": "rastafari-reasoning",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-rasta",
+            "locator": "Section B, pages PDF 8–10, sacred herb et reasoning",
+            "support": "Le texte définit le reasoning comme discours religieux collectif lié à la communion et au développement de la foi."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-jamaica-2015-rastafari",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel usage religieux du cannabis la réforme jamaïcaine de 2015 reconnaît-elle explicitement ?",
+      "options": [
+        "L’usage comme offrande dans les temples hindous",
+        "L’usage comme encens dans les églises chrétiennes",
+        "L’usage pour la divination dans les cultes ancestraux",
+        "L’usage sacramentel dans la foi rastafari"
+      ],
+      "answer": 3,
+      "explanation": "Le texte de 2015 mentionne le cannabis comme sacrement de la foi rastafari. Cette reconnaissance ciblée ne signifie pas une autorisation générale de vente ou d’exportation.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-jamaica"
+      ],
+      "subjectKey": "jamaica-cannabis-religion-2015",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "jamaica-cannabis-religion-2015",
+        "subjectKey": "jamaica-cannabis-religion-2015",
+        "property": "Reconnaissance historique de l’usage religieux rastafari",
+        "expectedAnswer": "L’usage sacramentel dans la foi rastafari",
+        "learningObjective": "Reconnaissance historique de l’usage religieux rastafari.",
+        "factKey": "jamaica-2015-rastafari",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-jamaica",
+            "locator": "Pages PDF 3–5, usage religieux comme sacrement de la foi rastafari",
+            "support": "L’amendement de 2015 vise expressément l’usage religieux comme sacrement dans la foi rastafari."
+          }
+        ],
+        "jurisdiction": "Jamaïque",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-holi-cannabis-tradition",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans certaines traditions indiennes, à quelle fête une consommation de bhang est-elle associée ?",
+      "options": [
+        "Holi",
+        "Diwali",
+        "Raksha Bandhan",
+        "Onam"
+      ],
+      "answer": 0,
+      "explanation": "Un tableau ethnobotanique institutionnel décrit cet usage pendant Holi. Il s’agit de pratiques situées, qui ne représentent pas toutes les célébrations ni toutes les personnes en Inde.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-holi"
+      ],
+      "subjectKey": "indian-cannabis-ritual-traditions",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "indian-cannabis-ritual-traditions",
+        "subjectKey": "indian-cannabis-ritual-traditions",
+        "property": "Association de Holi à un usage traditionnel de cannabis",
+        "expectedAnswer": "Holi",
+        "learningObjective": "Association de Holi à un usage traditionnel de cannabis.",
+        "factKey": "holi-cannabis-tradition",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-holi",
+            "locator": "Page imprimée 66, PDF p.76 (index75), tableau ethnobotanique, ligne Cannabis sativa (Bhang)",
+            "support": "La ligne Cannabis sativa indique la consommation de bhang contenant des fleurs de cannabis pendant Holi."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-shiva-cannabis-tradition",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle divinité est associée au cannabis dans certaines pratiques religieuses décrites en Inde ?",
+      "options": [
+        "Lakshmi",
+        "Shiva",
+        "Vishnou",
+        "Ganesha"
+      ],
+      "answer": 1,
+      "explanation": "Le bulletin décrit un usage du cannabis pour le culte de Shiva, notamment lors de Shivratri. Cette observation ethnobotanique ne définit pas une pratique universelle de l’hindouisme.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-holi"
+      ],
+      "subjectKey": "indian-cannabis-ritual-traditions",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "indian-cannabis-ritual-traditions",
+        "subjectKey": "indian-cannabis-ritual-traditions",
+        "property": "Lien religieux local entre cannabis et Shiva",
+        "expectedAnswer": "Shiva",
+        "learningObjective": "Lien religieux local entre cannabis et Shiva.",
+        "factKey": "shiva-cannabis-tradition",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-holi",
+            "locator": "Page imprimée 66, PDF p.76 (index75), tableau ethnobotanique, ligne Cannabis sativa (Bhang)",
+            "support": "La ligne Cannabis sativa mentionne son emploi dans le culte de Shiva à Shivratri et Parthiv Puja."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-arad-contexte-cultuel",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À Arad, dans quel contexte les résidus de cannabis étudiés en 2020 ont-ils été retrouvés ?",
+      "options": [
+        "Dans une réserve de graines alimentaires",
+        "Dans un pressoir à huile",
+        "Sur un autel d’un sanctuaire",
+        "Dans un atelier de tissage"
+      ],
+      "answer": 2,
+      "explanation": "Des résidus sur le petit autel du sanctuaire d’Arad contenaient des marqueurs du cannabis. Leur contexte soutient une interprétation rituelle, sans restituer précisément l’expérience des participants.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-arad"
+      ],
+      "subjectKey": "arad-cannabis-shrine",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "arad-cannabis-shrine",
+        "subjectKey": "arad-cannabis-shrine",
+        "property": "Contexte cultuel de la découverte",
+        "expectedAnswer": "Sur un autel d’un sanctuaire",
+        "learningObjective": "Contexte cultuel de la découverte.",
+        "factKey": "arad-contexte-cultuel",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-arad",
+            "locator": "Pages PDF 7 et 10, analyses des deux autels et discussion cultuelle",
+            "support": "Les cannabinoïdes du résidu noir du petit autel sont discutés comme trace d’un usage rituel dans le sanctuaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-jiayi-plantes-linceul",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À Jiayi, comment des plantes de cannabis presque entières avaient-elles été disposées dans une sépulture ancienne ?",
+      "options": [
+        "En couverture sur le corps du défunt",
+        "En corde tressée autour d’un cercueil",
+        "En tas de graines dans un bol alimentaire",
+        "En enduit fibreux sur les parois"
+      ],
+      "answer": 0,
+      "explanation": "Les archéobotanistes décrivent des plantes presque entières arrangées comme un linceul. Cette disposition est observée ; l’effet psychoactif précis d’un éventuel rituel ne peut pas en être déduit.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-jiayi"
+      ],
+      "subjectKey": "jiayi-cannabis-burial",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "jiayi-cannabis-burial",
+        "subjectKey": "jiayi-cannabis-burial",
+        "property": "Disposition de plantes comme couverture funéraire",
+        "expectedAnswer": "En couverture sur le corps du défunt",
+        "learningObjective": "Disposition de plantes comme couverture funéraire.",
+        "factKey": "jiayi-plantes-linceul",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-jiayi",
+            "locator": "Résumé de l’article, plantes presque entières disposées sur le corps",
+            "support": "Le résumé décrit treize plantes presque entières délibérément disposées sur un corps masculin comme un burial shroud."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-jirzankal-selection-thc",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "À Jirzankal, quel profil du cannabis utilisé les résidus ont-ils conduit les chercheurs à proposer ?",
+      "options": [
+        "Presque dépourvu de cannabinoïdes",
+        "Plus riche en THC que les formes sauvages usuelles",
+        "À proportions comparables de THC et de CBD",
+        "À très forte dominante CBD"
+      ],
+      "answer": 1,
+      "explanation": "Les auteurs proposent que ces usages funéraires aient privilégié un cannabis relativement riche en THC. C’est une interprétation des résidus ; elle ne fournit ni teneur exacte ni identité de variété moderne.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-jirzankal"
+      ],
+      "subjectKey": "jirzankal-cannabis-residues",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "jirzankal-cannabis-residues",
+        "subjectKey": "jirzankal-cannabis-residues",
+        "property": "Interprétation d’une sélection ancienne pour le THC",
+        "expectedAnswer": "Plus riche en THC que les formes sauvages usuelles",
+        "learningObjective": "Interprétation d’une sélection ancienne pour le THC.",
+        "factKey": "jirzankal-selection-thc",
+        "form": "identification",
+        "difficultyRationale": "Attribution précise d’un vestige ou d’un marqueur chimique dans une découverte archéologique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-jirzankal",
+            "locator": "Results, paragraphes CBN, contrôle extérieur ; Discussion",
+            "support": "Le CBN dominant, sans signal CBD évident dans les braseros, conduit les auteurs à proposer l’usage de plantes plus riches en THC que les populations sauvages habituelles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-armstrong-muggles-titre",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Pourquoi le titre « Muggles », enregistré par Louis Armstrong en 1928, appartient-il aussi à l’histoire du cannabis ?",
+      "options": [
+        "Muggles désignait les clubs de danse nocturnes",
+        "Muggles désignait les improvisations des musiciens de rue",
+        "Muggles était un terme d’argot pour la marijuana",
+        "Muggles était un terme d’argot pour la contrebande d’alcool"
+      ],
+      "answer": 2,
+      "explanation": "Le titre reprend un terme d’argot alors associé à la marijuana. Il relie le vocabulaire du cannabis à une œuvre du jazz, sans que le morceau fournisse un témoignage médical.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-armstrong"
+      ],
+      "subjectKey": "louis-armstrong-muggles",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "louis-armstrong-muggles",
+        "subjectKey": "louis-armstrong-muggles",
+        "property": "Sens cannabique du titre historique",
+        "expectedAnswer": "Muggles était un terme d’argot pour la marijuana",
+        "learningObjective": "Sens cannabique du titre historique.",
+        "factKey": "armstrong-muggles-titre",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-armstrong",
+            "locator": "Passage sur Louis Armstrong, Muggles (1928) et lexique local",
+            "support": "La recherche historique relie le titre enregistré en 1928 au lexique marijuana/muggleheads."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-brownie-mary-solidarite",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle cause a marqué l’engagement de « Brownie Mary » à San Francisco ?",
+      "options": [
+        "La défense des anciens combattants privés de pension",
+        "L’accès à un hébergement pour les femmes victimes de violences",
+        "L’abolition de la peine de mort en Californie",
+        "L’aide à des personnes atteintes du sida ou gravement malades"
+      ],
+      "answer": 3,
+      "explanation": "Mary Jane Rathbun est connue pour ses brownies au cannabis et son soutien à des malades, notamment du sida. Son histoire relève de la solidarité et du militantisme autour du cannabis médical.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-mary"
+      ],
+      "subjectKey": "brownie-mary-rathbun",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "brownie-mary-rathbun",
+        "subjectKey": "brownie-mary-rathbun",
+        "property": "Contexte solidaire de son activisme cannabique",
+        "expectedAnswer": "L’aide à des personnes atteintes du sida ou gravement malades",
+        "learningObjective": "Contexte solidaire de son activisme cannabique.",
+        "factKey": "brownie-mary-solidarite",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-mary",
+            "locator": "Biographical note, Mary Jane Rathbun, brownies, Shanti Project et Ward 86",
+            "support": "La notice décrit ses brownies pour des personnes atteintes du sida et son bénévolat au Shanti Project et à Ward 86."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-peron-cannabis-buyers-club",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel militant les archives de San Francisco identifient-elles comme fondateur du Cannabis Buyers Club de la ville ?",
+      "options": [
+        "Dennis Peron",
+        "John Sinclair",
+        "Keith Stroup",
+        "Allen Ginsberg"
+      ],
+      "answer": 0,
+      "explanation": "La notice d’archives identifie Dennis Peron comme fondateur du San Francisco Cannabis Buyers Club. Il a aussi cosigné un livre avec Mary Jane Rathbun, dans le mouvement du cannabis médical.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-mary"
+      ],
+      "subjectKey": "dennis-peron-cannabis-buyers-club",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Dennis Peron et Cannabis Buyers Club",
+        "subjectKey": "dennis-peron-cannabis-buyers-club",
+        "property": "Fondateur identifié du club historique",
+        "expectedAnswer": "Dennis Peron",
+        "learningObjective": "Reconnaître un acteur de l’organisation du mouvement du cannabis médical.",
+        "factKey": "dennis-peron-founder-san-francisco-cannabis-buyers-club",
+        "form": "identification",
+        "difficultyRationale": "Attribution historique à distinguer d’autres militants du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-mary",
+            "locator": "Biographical / historical, paragraphe sur le livre avec Dennis Peron",
+            "support": "La notice identifie Dennis Peron comme fondateur du San Francisco Cannabis Buyers Club et coauteur d’un livre avec Rathbun."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-sans-alcool",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Aux Pays-Bas, quelle règle d’alcool s’impose aux coffeeshops où la vente de cannabis est tolérée sous conditions ?",
+      "options": [
+        "Ils peuvent servir du vin aux clients qui prennent un repas",
+        "Ils ne servent pas de boissons alcoolisées",
+        "Ils peuvent servir de la bière, mais pas de spiritueux",
+        "Ils peuvent servir de l’alcool avec une licence de bar"
+      ],
+      "answer": 1,
+      "explanation": "Le régime de tolérance des coffeeshops impose notamment l’absence de vente d’alcool. Le mot coffeeshop désigne ici un établissement lié au cannabis, avec des conditions propres.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-nl"
+      ],
+      "subjectKey": "netherlands-coffeeshop-policy",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "netherlands-coffeeshop-policy",
+        "subjectKey": "netherlands-coffeeshop-policy",
+        "property": "Absence d’alcool parmi les conditions de tolérance",
+        "expectedAnswer": "Ils ne servent pas de boissons alcoolisées",
+        "learningObjective": "Absence d’alcool parmi les conditions de tolérance.",
+        "factKey": "coffeeshop-sans-alcool",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-nl",
+            "locator": "Sections coffee shops et conditions de tolérance",
+            "support": "La page gouvernementale indique que les coffeeshops ne vendent pas d’alcool."
+          }
+        ],
+        "jurisdiction": "Pays-Bas",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-tolerance",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans le régime néerlandais classique des coffeeshops, que signifie la « tolérance » de la vente de cannabis ?",
+      "options": [
+        "Une autorisation nationale sans contrôle communal",
+        "Une obligation de vendre uniquement sur ordonnance",
+        "Une absence de poursuites sous conditions précises",
+        "Une liberté de vente identique à celle du café"
+      ],
+      "answer": 2,
+      "explanation": "La tolérance consiste à ne pas poursuivre certaines ventes sous conditions. Elle ne se confond pas avec une liberté générale de commerce ; des expérimentations d’approvisionnement existent par ailleurs.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-nl"
+      ],
+      "subjectKey": "netherlands-coffeeshop-policy",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "netherlands-coffeeshop-policy",
+        "subjectKey": "netherlands-coffeeshop-policy",
+        "property": "Tolérance conditionnelle distincte d’une liberté générale de vente",
+        "expectedAnswer": "Une absence de poursuites sous conditions précises",
+        "learningObjective": "Tolérance conditionnelle distincte d’une liberté générale de vente.",
+        "factKey": "coffeeshop-tolerance",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-nl",
+            "locator": "Sections coffee shops et conditions de tolérance",
+            "support": "Le gouvernement distingue infraction formelle et absence de poursuites pour les petites ventes respectant des conditions."
+          }
+        ],
+        "jurisdiction": "Pays-Bas",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-mineurs",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle règle les critères néerlandais imposent-ils aux coffeeshops concernant les moins de 18 ans ?",
+      "options": [
+        "L’entrée est permise avec un parent",
+        "Seule la vente de boissons leur est permise",
+        "L’entrée dépend uniquement de la commune",
+        "L’entrée et la vente leur sont interdites"
+      ],
+      "answer": 3,
+      "explanation": "Les critères nationaux interdisent la présence de mineurs et la vente aux mineurs dans les coffeeshops. Les conditions locales supplémentaires ne suppriment pas cette règle.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-nl-minors"
+      ],
+      "subjectKey": "netherlands-coffeeshop-policy",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "netherlands-coffeeshop-policy",
+        "subjectKey": "netherlands-coffeeshop-policy",
+        "property": "Interdiction d’accès et de vente aux mineurs",
+        "expectedAnswer": "L’entrée et la vente leur sont interdites",
+        "learningObjective": "Interdiction d’accès et de vente aux mineurs.",
+        "factKey": "coffeeshop-mineurs",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-nl-minors",
+            "locator": "Criteria voor coffeeshops, geen minderjarigen, geen alcohol",
+            "support": "Le critère geen minderjarigen interdit l’accès et la vente aux personnes de moins de 18 ans."
+          }
+        ],
+        "jurisdiction": "Pays-Bas",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-colorado-vote-adultes",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel changement l’amendement 64 approuvé au Colorado en 2012 demandait-il d’organiser ?",
+      "options": [
+        "Un marché réglementé du cannabis pour les adultes",
+        "La seule vente médicale sur ordonnance",
+        "La culture de chanvre textile exclusivement",
+        "Une interdiction des dispensaires médicaux"
+      ],
+      "answer": 0,
+      "explanation": "L’amendement 64 visait l’usage adulte et demandait un cadre de vente réglementée. Il se distingue du dispositif médical déjà adopté au Colorado auparavant.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-colorado"
+      ],
+      "subjectKey": "colorado-amendment-64",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "colorado-amendment-64",
+        "subjectKey": "colorado-amendment-64",
+        "property": "Objet de la réforme de 2012",
+        "expectedAnswer": "Un marché réglementé du cannabis pour les adultes",
+        "learningObjective": "Objet de la réforme de 2012.",
+        "factKey": "colorado-vote-adultes",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-colorado",
+            "locator": "History, 2012 Amendment 64 ; 2013 Retail Code ; January 1, 2014",
+            "support": "La chronologie officielle décrit l’approbation de l’amendement 64 et la mise en place d’un marché de détail adulte."
+          }
+        ],
+        "jurisdiction": "Colorado, États-Unis",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-colorado-vote-avant-vente",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle étape la chronologie de Denver situe-t-elle en 2013, entre le vote sur le cannabis adulte et les ventes de 2014 ?",
+      "options": [
+        "L’autorisation initiale du cannabis à usage médical",
+        "L’adoption du code de vente au détail et des licences",
+        "L’adoption de l’amendement constitutionnel sur l’usage adulte",
+        "L’ouverture des premières ventes de détail aux adultes"
+      ],
+      "answer": 1,
+      "explanation": "Le vote n’a pas ouvert instantanément les boutiques. La chronologie de Denver situe en 2013 le cadre légal et les licences, puis les premières ventes de détail en janvier 2014.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-colorado"
+      ],
+      "subjectKey": "colorado-amendment-64",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "colorado-amendment-64",
+        "subjectKey": "colorado-amendment-64",
+        "property": "Séquence vote, réglementation, ouverture du marché",
+        "expectedAnswer": "L’adoption du code de vente au détail et des licences",
+        "learningObjective": "Séquence vote, réglementation, ouverture du marché.",
+        "factKey": "colorado-vote-avant-vente",
+        "form": "chronologie",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-colorado",
+            "locator": "History, 2012 Amendment 64 ; 2013 Retail Code ; January 1, 2014",
+            "support": "Après le vote de 2012, Retail Marijuana Code et licences sont mis en place en 2013 ; les ventes commencent le 1er janvier 2014."
+          }
+        ],
+        "jurisdiction": "Colorado, États-Unis",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-south-africa-vie-privee",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel droit constitutionnel fonde l’arrêt Prince de 2018 sur le cannabis en Afrique du Sud ?",
+      "options": [
+        "Le droit à l’égalité devant la loi",
+        "Le droit d’accès aux soins de santé",
+        "Le droit à la vie privée",
+        "La liberté de religion"
+      ],
+      "answer": 2,
+      "explanation": "L’arrêt Prince s’appuie sur la vie privée pour l’usage personnel adulte dans un espace privé. Ce fondement ne signifie pas une autorisation de vente commerciale sans limites.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb02-sa"
+      ],
+      "subjectKey": "south-africa-prince-2018",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "south-africa-prince-2018",
+        "subjectKey": "south-africa-prince-2018",
+        "property": "Fondement constitutionnel de l’arrêt historique",
+        "expectedAnswer": "Le droit à la vie privée",
+        "learningObjective": "Fondement constitutionnel de l’arrêt historique.",
+        "factKey": "south-africa-vie-privee",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-sa",
+            "locator": "Pages PDF 52–54, rappel de l’arrêt Prince de 2018 et droit à la vie privée",
+            "support": "Le rapport parlementaire rappelle que l’interdiction de l’usage personnel privé adulte portait atteinte au droit à la vie privée."
+          }
+        ],
+        "jurisdiction": "Afrique du Sud",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-sinclair-rally-liberation",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel événement avait déclenché la mobilisation d’artistes autour de John Sinclair en 1971 ?",
+      "options": [
+        "Le refus d’une licence de vente de cannabis à son association",
+        "La censure d’un disque qu’il avait consacré au cannabis",
+        "L’interdiction d’un rassemblement cannabique qu’il organisait",
+        "Sa condamnation à dix ans de prison pour deux joints"
+      ],
+      "answer": 3,
+      "explanation": "La bibliothèque du Michigan rappelle sa condamnation à dix ans pour possession de deux joints. La mobilisation dénonçait cette peine ; elle a notamment réuni Lennon, Ono et Stevie Wonder.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-michigan"
+      ],
+      "subjectKey": "john-sinclair-freedom-rally",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "john-sinclair-freedom-rally",
+        "subjectKey": "john-sinclair-freedom-rally",
+        "property": "Condamnation cannabique à l’origine de la mobilisation",
+        "expectedAnswer": "Sa condamnation à dix ans de prison pour deux joints",
+        "learningObjective": "Condamnation cannabique à l’origine de la mobilisation.",
+        "factKey": "john-sinclair-ten-year-sentence-two-joints-rally",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-michigan",
+            "locator": "Paragraphes Free John Now et John Sinclair Freedom Rally ; jeu Pot Luck",
+            "support": "La bibliothèque indique une condamnation à dix ans en 1969 pour possession de deux joints, suivie de protestations et du rassemblement de 1971."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-sinclair-lennon-ono",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel couple d’artistes a participé au rassemblement de soutien à John Sinclair, emprisonné pour une affaire de cannabis ?",
+      "options": [
+        "John Lennon et Yoko Ono",
+        "Paul McCartney et Jane Asher",
+        "Sonny Bono et Cher",
+        "Ike Turner et Tina Turner"
+      ],
+      "answer": 0,
+      "explanation": "John Lennon et Yoko Ono figuraient parmi les artistes mobilisés, aux côtés notamment de Stevie Wonder. Les archives du rassemblement illustrent une rencontre entre musique et réforme des peines liées au cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-michigan"
+      ],
+      "subjectKey": "john-sinclair-freedom-rally",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "john-sinclair-freedom-rally",
+        "subjectKey": "john-sinclair-freedom-rally",
+        "property": "Participation de Lennon et Ono au rassemblement",
+        "expectedAnswer": "John Lennon et Yoko Ono",
+        "learningObjective": "Participation de Lennon et Ono au rassemblement.",
+        "factKey": "sinclair-lennon-ono",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-michigan",
+            "locator": "Paragraphes Free John Now et John Sinclair Freedom Rally ; jeu Pot Luck",
+            "support": "La notice universitaire cite John Lennon et Yoko Ono parmi les participants au Freedom Rally de 1971."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-pot-luck-jeu-societe",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel principe de jeu « Pot Luck », objet de culture cannabique conservé au Michigan, transpose-t-il ?",
+      "options": [
+        "La résolution d’une enquête du Cluedo",
+        "Le commerce de propriétés du Monopoly",
+        "La conquête de territoires du Risk",
+        "La formation de mots du Scrabble"
+      ],
+      "answer": 1,
+      "explanation": "La bibliothèque présente Pot Luck comme un jeu comparable au Monopoly, transposé au commerce fictif de marijuana. C’est un objet ludique de culture cannabique, pas un manuel pour une activité réelle.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-michigan"
+      ],
+      "subjectKey": "pot-luck-board-game",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "pot-luck-board-game",
+        "subjectKey": "pot-luck-board-game",
+        "property": "Nature ludique de l’objet culturel",
+        "expectedAnswer": "Le commerce de propriétés du Monopoly",
+        "learningObjective": "Nature ludique de l’objet culturel.",
+        "factKey": "pot-luck-jeu-societe",
+        "form": "identification",
+        "difficultyRationale": "Repère historique ou culturel demandant une connaissance au-delà du vocabulaire courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-michigan",
+            "locator": "Paragraphes Free John Now et John Sinclair Freedom Rally ; jeu Pot Luck",
+            "support": "La bibliothèque décrit Pot Luck comme un jeu de plateau similaire au Monopoly, avec des activités fictives liées à la marijuana."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-hempfest-protestival",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Comment les organisateurs présentent-ils le Seattle Hempfest, au-delà de ses concerts ?",
+      "options": [
+        "Un concours de groupes musicaux parrainé par des dispensaires",
+        "Une collecte caritative pour financer la recherche sur le cannabis",
+        "Un rassemblement pour réformer les lois sur le cannabis",
+        "Un salon commercial de contrats entre marques de cannabis"
+      ],
+      "answer": 2,
+      "explanation": "Le Hempfest se définit comme un protestival : une manifestation politique et culturelle autour du cannabis et de ses lois. Les concerts accompagnent cette mission revendiquée.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb02-hempfest"
+      ],
+      "subjectKey": "seattle-hempfest",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "seattle-hempfest",
+        "subjectKey": "seattle-hempfest",
+        "property": "Mission politique du festival cannabique",
+        "expectedAnswer": "Un rassemblement pour réformer les lois sur le cannabis",
+        "learningObjective": "Mission politique du festival cannabique.",
+        "factKey": "hempfest-protestival",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel concret ou distinction courante, sans date précise ni résultat d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb02-hempfest",
+            "locator": "What is Hempfest about? ; Is Hempfest a political rally, a concert, or arts and crafts fair?",
+            "support": "L’organisateur présente Hempfest avant tout comme un rassemblement politique pour changer les lois sur le cannabis."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rb02-afi",
+      "title": "Tell Your Children",
+      "organization": "American Film Institute",
+      "url": "https://catalog.afi.com/Film/7885-TELL-YOUR-CHILDREN?cxt=filmography",
+      "verifiedAt": "2026-11-17",
+      "author": "American Film Institute",
+      "published": "s.d.",
+      "passage": "History, préambule du film et rééditions",
+      "access": "official-page",
+      "documentKind": "Catalogue archivistique",
+      "limitation": "Le catalogue donne 1938 pour ce film : aucune question ne demande l’année, souvent donnée autrement dans les récits populaires.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "History, préambule du film et rééditions",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-grammy",
+      "title": "Cheech & Chong Set To Celebrate 40 Years Of Up In Smoke At GRAMMY Museum",
+      "organization": "Recording Academy / GRAMMY Museum",
+      "url": "https://www.grammy.com/news/cheech-chong-set-celebrate-40-years-smoke-grammy-museum/",
+      "verifiedAt": "2026-11-17",
+      "author": "Brian Haack",
+      "published": "2018-04-10",
+      "passage": "Présentation du duo et du film, exposition Still Rollin’",
+      "access": "official-page",
+      "documentKind": "Présentation muséale",
+      "limitation": "Le texte décrit une œuvre culturelle ; il ne prouve aucun effet du cannabis.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation du duo et du film, exposition Still Rollin’",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-tosh",
+      "title": "Peter Tosh — History",
+      "organization": "Peter Tosh official estate website",
+      "url": "https://petertosh.com/history",
+      "verifiedAt": "2026-11-17",
+      "author": "Peter Tosh Estate",
+      "published": "s.d.",
+      "passage": "Solo Career, Legalize It ; chronologie 1976",
+      "access": "official-page",
+      "documentKind": "Biographie officielle d’artiste",
+      "limitation": "Source liée à l’artiste : sa lecture militante de la chanson est attribuée, sans reprendre les allégations de santé de ses paroles.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Solo Career, Legalize It ; chronologie 1976",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-waldos",
+      "title": "Home — 420 Waldos",
+      "organization": "420 Waldos",
+      "url": "https://www.420waldos.com/",
+      "verifiedAt": "2026-11-17",
+      "author": "The Waldos",
+      "published": "s.d.",
+      "passage": "Meet The Waldos, rendez-vous et emploi du code",
+      "access": "official-page",
+      "documentKind": "Témoignage des protagonistes",
+      "limitation": "Récit d’origine attribué aux intéressés ; n’affirme pas une priorité universelle incontestable.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Meet The Waldos, rendez-vous et emploi du code",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-illinois",
+      "title": "Cannabis Quarterly — A History of 420",
+      "organization": "Illinois Department of Financial and Professional Regulation",
+      "url": "https://cannabis.illinois.gov/content/dam/soi/en/web/idfpr/forms/auc/spring23cannabisquarterly.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Illinois Department of Financial and Professional Regulation",
+      "published": "2023",
+      "passage": "Page 8, A History of 420",
+      "access": "excerpt",
+      "documentKind": "Bulletin institutionnel",
+      "limitation": "PDF non chargé directement par l’outil ; passage textuel indexé effectivement consulté. Aucune lecture intégrale revendiquée.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Page 8, A History of 420",
+        "result": "Extrait indexé effectivement lu ; le document complet n’a pas été chargé."
+      }
+    },
+    {
+      "id": "q2-rb02-rasta",
+      "title": "Brief of amici curiae anthropologists, Guam v. Guerrero",
+      "organization": "John P. Homiak / Smithsonian Institution ; Carole D. Yawney / York University",
+      "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "John P. Homiak et Carole D. Yawney",
+      "published": "s.d.",
+      "passage": "Section B, pages PDF 8–10, sacred herb et reasoning",
+      "access": "full-text",
+      "documentKind": "Mémoire d’experts anthropologues",
+      "limitation": "Argumentaire d’amici sur une tradition religieuse ; ne pas le présenter comme une décision du tribunal ni comme une preuve clinique.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Section B, pages PDF 8–10, sacred herb et reasoning",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-jamaica",
+      "title": "The Dangerous Drugs (Amendment) Act, 2015",
+      "organization": "Parliament of Jamaica / Cannabis Licensing Authority",
+      "url": "https://cla.gov.jm/sites/default/files/laws-regulations/the-dangerous-drugs-amendment-act-2015.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Parliament of Jamaica",
+      "published": "2015",
+      "passage": "Pages PDF 3–5, usage religieux comme sacrement de la foi rastafari",
+      "access": "full-text",
+      "documentKind": "Texte législatif historique",
+      "limitation": "Question sur le changement de 2015, sans exposer les autorisations ou règles actuelles en détail.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Pages PDF 3–5, usage religieux comme sacrement de la foi rastafari",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-holi",
+      "title": "ENVIS Bulletin Himalayan Ecology, Volume 29",
+      "organization": "G.B. Pant National Institute of Himalayan Environment, Ministry of Environment, India",
+      "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "G.B. Pant National Institute of Himalayan Environment",
+      "published": "2021",
+      "passage": "Page imprimée 66, PDF p.76 (index75), tableau ethnobotanique, ligne Cannabis sativa (Bhang)",
+      "access": "full-text",
+      "documentKind": "Bulletin scientifique institutionnel",
+      "limitation": "Traditions locales décrites dans un tableau ethnobotanique ; aucune universalité pour l’Inde ou l’hindouisme, aucune recette.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Page imprimée 66, PDF p.76 (index75), tableau ethnobotanique, ligne Cannabis sativa (Bhang)",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-arad",
+      "title": "Cannabis and Frankincense at the Judahite Shrine of Arad",
+      "organization": "Tel Aviv: Journal of the Institute of Archaeology of Tel Aviv University",
+      "url": "https://motorcityseeds.org/wp-content/uploads/2023/08/cannabis-and-frankincense-at-judahite-shrine-of-arad.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Eran Arie, Baruch Rosen et Dvory Namdar",
+      "published": "2020",
+      "passage": "Pages PDF 7 et 10, analyses des deux autels et discussion cultuelle",
+      "access": "full-text",
+      "documentKind": "Article scientifique original, copie PDF",
+      "limitation": "Copie du papier publié, hébergée chez un tiers ; aucune page de catalogue ni sélection de semences n’a été consultée. DOI 10.1080/03344355.2020.1732046.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Pages PDF 7 et 10, analyses des deux autels et discussion cultuelle",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-jiayi",
+      "title": "Ancient Cannabis Burial Shroud in a Central Eurasian Cemetery",
+      "organization": "Economic Botany / USDA National Agricultural Library / FAO AGRIS",
+      "url": "https://agris.fao.org/search/en/providers/122535/records/65df1e754c5aef494fdff498",
+      "verifiedAt": "2026-11-17",
+      "author": "Hongen Jiang et al.",
+      "published": "2016",
+      "passage": "Résumé de l’article, plantes presque entières disposées sur le corps",
+      "access": "abstract",
+      "documentKind": "Résumé scientifique original indexé",
+      "limitation": "Le résumé établit la disposition des plantes ; l’effet vécu et la teneur exacte ne sont pas démontrés par cette découverte.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Résumé de l’article, plantes presque entières disposées sur le corps",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-jirzankal",
+      "title": "The origins of cannabis smoking: Chemical residue evidence from the first millennium BCE in the Pamirs",
+      "organization": "Science Advances / Chinese Academy of Sciences / Max Planck Institute",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+      "verifiedAt": "2026-11-17",
+      "author": "Meng Ren et al.",
+      "published": "2019-06-12",
+      "passage": "Results, paragraphes CBN, contrôle extérieur ; Discussion",
+      "access": "full-text",
+      "documentKind": "Article scientifique original",
+      "limitation": "Les résidus permettent une interprétation archéochimique, pas un dosage exact du cannabis utilisé.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Results, paragraphes CBN, contrôle extérieur ; Discussion",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-armstrong",
+      "title": "Mapping the Muggleheads: New Orleans and the Marijuana Menace, 1920–1930",
+      "organization": "Southern Spaces / Emory University",
+      "url": "https://southernspaces.org/2018/mapping-muggleheads-new-orleans-and-marijuana-menace-1920-1930/",
+      "verifiedAt": "2026-11-17",
+      "author": "Adam R. Rathge",
+      "published": "2018-10-23",
+      "passage": "Passage sur Louis Armstrong, Muggles (1928) et lexique local",
+      "access": "full-text",
+      "documentKind": "Recherche historique fondée sur des archives",
+      "limitation": "Le vocabulaire est historique ; aucun rapprochement avec l’usage ultérieur du mot dans une œuvre de fiction.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Passage sur Louis Armstrong, Muggles (1928) et lexique local",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-mary",
+      "title": "Brownie Mary Collection, 1981–2001",
+      "organization": "San Francisco Public Library / Online Archive of California",
+      "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+      "verifiedAt": "2026-11-17",
+      "author": "Tami J. Suzuki / San Francisco History Center",
+      "published": "2019 (finding aid ; encodage 2019-02-16)",
+      "passage": "Biographical note, Mary Jane Rathbun, brownies, Shanti Project et Ward 86",
+      "access": "catalogue",
+      "documentKind": "Instrument de recherche archivistique",
+      "limitation": "Histoire de l’aide et de l’activisme, pas validation d’une efficacité thérapeutique ni recette.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Biographical note, Mary Jane Rathbun, brownies, Shanti Project et Ward 86",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-nl",
+      "title": "Toleration policy regarding soft drugs and coffee shops",
+      "organization": "Government of the Netherlands",
+      "url": "https://www.government.nl/themes/family-health-and-care/drugs/am-i-committing-a-criminal-offence-if-i-possess-produce-or-deal-in-drugs",
+      "verifiedAt": "2026-11-17",
+      "author": "Government of the Netherlands",
+      "published": "s.d.",
+      "passage": "Sections coffee shops et conditions de tolérance",
+      "access": "official-page",
+      "documentKind": "Information réglementaire officielle",
+      "limitation": "Régime classique de tolérance ; les expérimentations locales d’approvisionnement réglementé ne sont pas décrites comme une légalisation générale.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Sections coffee shops et conditions de tolérance",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-nl-minors",
+      "title": "Gedoogbeleid softdrugs en coffeeshops",
+      "organization": "Rijksoverheid",
+      "url": "https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/drugs/gedoogbeleid-softdrugs-en-coffeeshops",
+      "verifiedAt": "2026-11-17",
+      "author": "Rijksoverheid",
+      "published": "s.d.",
+      "passage": "Criteria voor coffeeshops, geen minderjarigen, geen alcohol",
+      "access": "official-page",
+      "documentKind": "Information réglementaire officielle",
+      "limitation": "Les communes peuvent imposer des conditions supplémentaires ; la question ne garantit pas l’accès à chaque établissement.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Criteria voor coffeeshops, geen minderjarigen, geen alcohol",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-colorado",
+      "title": "Laws, rules, and regulations — Marijuana information",
+      "organization": "City and County of Denver",
+      "url": "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Marijuana-information/Laws-rules-and-regulations",
+      "verifiedAt": "2026-11-17",
+      "author": "City and County of Denver",
+      "published": "s.d.",
+      "passage": "History, 2012 Amendment 64 ; 2013 Retail Code ; January 1, 2014",
+      "access": "official-page",
+      "documentKind": "Chronologie administrative officielle",
+      "limitation": "Histoire de la réforme du Colorado et des ventes, sans transposition au droit fédéral ou aux autres États.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "History, 2012 Amendment 64 ; 2013 Retail Code ; January 1, 2014",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-sa",
+      "title": "Report of the Portfolio Committee on Justice and Correctional Services on the Cannabis for Private Purposes Bill",
+      "organization": "Parliament of the Republic of South Africa",
+      "url": "https://www.parliament.gov.za/storage/app/media/Docs/atc/128dc265-fa8d-453d-bc47-7cf06748ef2f.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Portfolio Committee on Justice and Correctional Services",
+      "published": "2023-11-01",
+      "passage": "Pages PDF 52–54, rappel de l’arrêt Prince de 2018 et droit à la vie privée",
+      "access": "full-text",
+      "documentKind": "Rapport parlementaire officiel",
+      "limitation": "Le fait porte sur le fondement de l’arrêt de 2018 ; ne présente pas le projet de 2023 comme l’état actuel complet du droit.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Pages PDF 52–54, rappel de l’arrêt Prince de 2018 et droit à la vie privée",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-michigan",
+      "title": "Special Collections After Hours: Hash Bash",
+      "organization": "University of Michigan Library",
+      "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+      "verifiedAt": "2026-11-17",
+      "author": "Kristine Greive",
+      "published": "2019-04-08",
+      "passage": "Paragraphes Free John Now et John Sinclair Freedom Rally ; jeu Pot Luck",
+      "access": "official-page",
+      "documentKind": "Présentation de collections universitaires",
+      "limitation": "Objets et événements historiques ; les règles du jeu Pot Luck ne sont pas des conseils de culture réelle.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Paragraphes Free John Now et John Sinclair Freedom Rally ; jeu Pot Luck",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-hempfest",
+      "title": "Frequently Asked Questions",
+      "organization": "Seattle Hempfest",
+      "url": "https://www.hempfest.org/about/faq-2/",
+      "verifiedAt": "2026-11-17",
+      "author": "Seattle Hempfest",
+      "published": "s.d.",
+      "passage": "What is Hempfest about? ; Is Hempfest a political rally, a concert, or arts and crafts fair?",
+      "access": "official-page",
+      "documentKind": "Présentation officielle par l’organisateur",
+      "limitation": "Position revendiquée par l’organisateur ; aucune prévision de date d’événement ni approbation des revendications.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "What is Hempfest about? ; Is Hempfest a political rally, a concert, or arts and crafts fair?",
+        "result": "Document ouvert ; passages indiqués lus et soutien des faits vérifié."
+      }
+    },
+    {
+      "id": "q2-rb02-sf-hippie-hill",
+      "title": "Annual 420 Celebration Returns to Hippie Hill",
+      "organization": "San Francisco Recreation and Park Department",
+      "url": "https://sfrecpark.org/CivicAlerts.aspx?AID=701",
+      "verifiedAt": "2026-11-17",
+      "author": "San Francisco Recreation and Park Department",
+      "published": "2022-04-18",
+      "passage": "Premier paragraphe : Hippie Hill/Robin Williams Meadow, Golden Gate Park, San Francisco",
+      "access": "official-page",
+      "documentKind": "Communiqué municipal original",
+      "limitation": "Repère historique et culturel ; aucune annonce de tenue d’un événement futur, aucun guide de consommation ou règle actuelle déduite des dispositions de 2022.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Communiqué du 18 avril 2022, premier paragraphe",
+        "result": "Page officielle ouverte et premier paragraphe effectivement lu ; lieu et nature de la célébration vérifiés."
+      }
+    }
+  ]
+}

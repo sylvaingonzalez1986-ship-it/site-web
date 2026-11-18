@@ -1,0 +1,757 @@
+{
+  "batchId": "b-03",
+  "reviewer": "e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture indépendante complète des40 questions, quatre choix, explications et passages primaires pertinents ; comparaison sémantique ciblée avec l’index des faits actifs et candidats.",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "factualResult": "Les passages primaires consultés soutiennent les réponses ; les corrections conservent leurs faits et leurs limites d’attribution.",
+    "pedagogicalResult": "Les11versions corrigées sont approuvées : distracteurs resserrés, sigles compris avant les choix, portée appliquée à un cultivar non testé et formes/niveaux ajustés.",
+    "advisory": [
+      "Les objectifs, formes et raisons de niveau doivent décrire la tâche réellement présentée ; aucun quota ne justifie une étiquette de déduction.",
+      "Pour LHV-17, préférer « populations férales (redevenues spontanées) » si le terme est conservé ; l’explication actuelle donne déjà un appui accessible."
+    ]
+  },
+  "sourceAudit": [
+    {
+      "sourceId": "q2-b03-crea2026",
+      "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+      "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+      "access": "Passages pertinents réellement ouverts et lus, texte HTML ou extraction du PDF.",
+      "locator": "Annexes A1–A8, pages PDF 9–16",
+      "result": "Appuis des réponses contrôlés ; attribution, date et limites du corpus préservées."
+    },
+    {
+      "sourceId": "q2-b03-creapassport",
+      "url": "https://creafuturo.crea.gov.it/15368/?cat=184",
+      "sourceHash": "efec5752ed0c0a8ddfcb70f3b0a5b681fa59ceff8f6f9297a2f3352a890772ce",
+      "access": "Passages pertinents réellement ouverts et lus, texte HTML ou extraction du PDF.",
+      "locator": "Cos'è un passaporto molecolare? ; Caratterizzazione molecolare delle varietà italiane di canapa industriale",
+      "result": "Appuis des réponses contrôlés ; attribution, date et limites du corpus préservées."
+    },
+    {
+      "sourceId": "q2-b03-cpvo2026",
+      "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+      "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+      "access": "Passages pertinents réellement ouverts et lus, texte HTML ou extraction du PDF.",
+      "locator": "§3.6 Collection ; §4 DUS ; §6.3 ; tableau caractères 1, 4–6, 32 ; explications Ad.3, Ad.8, Ad.12–14",
+      "result": "Appuis des réponses contrôlés ; attribution, date et limites du corpus préservées."
+    },
+    {
+      "sourceId": "q2-b03-rutgersfibres",
+      "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+      "sourceHash": "1a7a9cef19b54503f4152bfdb67e4e0ef0494193d6d5db471a2d2d2c9acff8d6",
+      "access": "Passages pertinents réellement ouverts et lus, texte HTML ou extraction du PDF.",
+      "locator": "Paragraphe sur SEM avant Results ; définition de cN/tex et Pressley ; tableau 3 et commentaire associé",
+      "result": "Appuis des réponses contrôlés ; attribution, date et limites du corpus préservées."
+    },
+    {
+      "sourceId": "q2-b03-tamang2025",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+      "sourceHash": "bbb00a8cead7ba6747a140d79986303a84b15cf370f2371d8aec33471163065e",
+      "access": "Passages pertinents réellement ouverts et lus, texte HTML ou extraction du PDF.",
+      "locator": "§2.1 ; tableau 5 ; §3.1 et 3.2 ; §4.8",
+      "result": "Appuis des réponses contrôlés ; attribution, date et limites du corpus préservées."
+    }
+  ],
+  "duplicateCheck": {
+    "result": "Aucun fait répété non résolu relevé dans les recherches ciblées de fact-index.jsonl, y compris legacy, C, pilote et B-01/B-02.",
+    "arbitrations": [
+      {
+        "ids": [
+          "hemp-q2-b03-crea-codimono-monoecious",
+          "hemp-plant-monoecie",
+          "hemp-q2-b01-bialobrzeskie-monoecious-fibre-variety"
+        ],
+        "decision": "Attribution du caractère à Codimono distincte de sa définition générale et de l’attribution à Białobrzeskie."
+      },
+      {
+        "ids": [
+          "hemp-q2-b03-cpvo-renewed-reference-seed-side-by-side-identity",
+          "hemp-q2-b03-cpvo-stability-new-stock-same-characteristics"
+        ],
+        "decision": "Contrôle d’identité d’un remplacement de référence distinct de l’examen de stabilité d’une candidate."
+      },
+      {
+        "ids": [
+          "hemp-q2-b03-crea-molecular-passport-varietal-dna-identity",
+          "hemp-q2-b03-crea-wgs-discovery-before-snp-panel",
+          "hemp-q2-b03-crea-snp-discrimination-studied-corpus-scope"
+        ],
+        "decision": "Finalité, séquence méthodologique et domaine de validation sont distincts ; la troisième question applique désormais la limite à un cultivar non testé."
+      },
+      {
+        "ids": [
+          "hemp-q2-b03-cpvo-leaflet-number-predominant-centre-plant",
+          "hemp-q2-c-premieres-feuilles-une-foliole",
+          "hemp-plant-feuille-palmee"
+        ],
+        "decision": "Convention de relevé distincte du développement des premières feuilles et du nom de leurs parties."
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-q2-b03-crea-carmagnola-selected-piedmont",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "63b9f21235d72e32d20e5ba8dbe713b8bb021b606a8b90c7d62f79bf19c13c5e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A2 Carmagnola, p. PDF 10, premier paragraphe",
+          "result": "Sélection localisée au Piémont.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-cs-genealogical-selection-carmagnola",
+      "status": "approved",
+      "comment": "Forme identification corrigée ; rappel spécialisé correctement classé2.",
+      "contentHash": "b2cfbb576ad29c51de2df0e34a6ee5bd533c55adea4284a5d57a17d5d2713824",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A5 CS, p. PDF 13, premier paragraphe",
+          "result": "Sélection généalogique issue de Carmagnola.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-eletta-campana-selected-caserta",
+      "status": "approved",
+      "comment": "Les quatre lieux sont en Campanie ; le nom ne donne plus la réponse précise. Niveau2 cohérent.",
+      "contentHash": "57ccfc8e78e1ad87970b1f000ed5b27ec6f603458f16d68acea7afb7b7159526",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A6 Eletta Campana, p. PDF 14, premier paragraphe",
+          "result": "Sélection située en province de Caserte.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-stem-yellow-senescence",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "cb78313629fd21a9d5fec9cae7f21809bcdd8e34015be571fcc518c172e580c0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A3 Carmaleonte, p. PDF 11, premier paragraphe",
+          "result": "Tige jaune en sénescence.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-carmono-kompolti-sargaszaru",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "c0ed658c480fd039e45f87ed5e5af8c1095035e9e515c05a918ddc5837360980",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A3 Carmaleonte, p. PDF 11, première phrase",
+          "result": "Parents nommés dans l’annexe A3.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-codimono-monoecious",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "df70ecf836322481581d4e7b34eb6f04a3b2e9af95ee7ed589737328bebb8106",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A4 Codimono, p. PDF 12, première phrase",
+          "result": "Codimono est décrite monoïque.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-codimono-fibre-seed-dual-purpose",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "b95739566dec6de73d22675789361c963a3e65a6e995b94e77a63e9b19fa3de5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A4 Codimono, p. PDF 12, paragraphe descriptif",
+          "result": "Double destination fibre et graine.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-asso-carmagnola-kompolti-cross",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "9145dadeaf4eea4f7852f876b84561ece2e3235265c89c6f02b644e9a18fc37d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A1 Asso, p. PDF 9, première phrase",
+          "result": "Parents indiqués dans l’annexe A1.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-asso-di-candilo-attribution",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "eaf4dc8576787688888da4dbb72bf2a5289ea7ff0d5b520163d6f0adddd46cb8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A1 Asso, p. PDF 9, dernière ligne Costitutore",
+          "result": "Obtenteur nommé dans la fiche Asso.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-codimono-grassi-attribution",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "063bcdc9cb3e85b90842fc6705a30cbb96c5e8d9e22ec560aa2d5f085d5f88ae",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexes A3 et A4, p. PDF 11 et 12, lignes Costitutore",
+          "result": "Même obtenteur dans A3 et A4.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibranova-bredemann-eletta-carmagnola",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "f17f17fc86dc37229ea7084222e20838f48ee057550c9b99553f9123a50b4197",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A7 Fibranova, p. PDF 15, deuxième phrase",
+          "result": "Couple parental confirmé dans A7.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibrante-induced-mutant-from-fibranova",
+      "status": "approved",
+      "comment": "Origine annoncée rappelée sans fausse comparaison ; niveau2 justifié.",
+      "contentHash": "650a33f72ca8eb18a0c93c3367ba3629adab94d25dd93e716ae0efcf4427e9c3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A8 Fibrante, p. PDF 16, première phrase",
+          "result": "Mutant stable de Fibranova décrit dans A8.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-varieties-purity-maintainer-bologna",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "dda1f4a7b7fcd69c50a2a34c272c9cd126800bf194fe9e32914127e0ec0342c2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexes A1–A8, rubrique Responsabile della conservazione in purezza",
+          "result": "Maintien attribué à CREA-CI Bologna.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-cs-cycle-later-carmagnola",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "85b3e9a69c7d9254e3c3b8e958ede2d06449a80426cc9895907d86116ddea3ba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A5 CS, p. PDF 13, deuxième phrase",
+          "result": "Cycle décrit un peu plus tardif.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibranova-bark-hurd-ratio-interpretation",
+      "status": "approved",
+      "comment": "Rapports fournis et réponse de proportion unique ; niveau2 cohérent, sans extrapolation au rendement.",
+      "contentHash": "ee6d2cc6578e5776d5cea234fc05c66b522b912a25e826aa9313b98413321594",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A7 Fibranova, p. PDF 15, rapport poids écorce/poids canapulo",
+          "result": "Rapports annoncés permettant cette comparaison de masses.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-eletta-campana-late-female-low-preflower",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "017d4276dd406610adcf58d0927469d2a6b5d462ff53161ad8eb026d1aa965fe",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-crea2026",
+          "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+          "locator": "Annexe A6 Eletta Campana, p. PDF 14, deuxième paragraphe",
+          "result": "Les deux caractères floraux sont associés.",
+          "sourceHash": "a7ff35be4c789b165b57fadb816ff4b3bfa5f9b9201ee1efc4c60f5e3aa08df7",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-molecular-passport-varietal-dna-identity",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "cd69e805571fc0ca915aadf58139cd19bf276dae1d89b617f412a39b57498a89",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-creapassport",
+          "url": "https://creafuturo.crea.gov.it/15368/?cat=184",
+          "locator": "Cos'è un passaporto molecolare? ; liste verificare l'identità varietale",
+          "result": "Finalité variétale fondée sur les marqueurs ADN.",
+          "sourceHash": "efec5752ed0c0a8ddfcb70f3b0a5b681fa59ceff8f6f9297a2f3352a890772ce",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-wgs-discovery-before-snp-panel",
+      "status": "approved",
+      "comment": "SNP expliqué avant les choix ; chronologie et distinction du champ séquencé conservées.",
+      "contentHash": "27d4c1e0623b4c641d89021bd613e61e0ec8a3a5c99dd988acbc98e9495953e9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-creapassport",
+          "url": "https://creafuturo.crea.gov.it/15368/?cat=184",
+          "locator": "Caratterizzazione molecolare delle varietà italiane di canapa industriale",
+          "result": "Génomes entiers séquencés avant identification des marqueurs.",
+          "sourceHash": "efec5752ed0c0a8ddfcb70f3b0a5b681fa59ceff8f6f9297a2f3352a890772ce",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-crea-snp-discrimination-studied-corpus-scope",
+      "status": "approved",
+      "comment": "Application à un cultivar non testé ; la conclusion n’est plus recopiée dans l’énoncé. Niveau2 et choix cohérents.",
+      "contentHash": "f7dec85487b5d32301bce50f4af34e50a7c20d3e6f4b58fd1714c0063e84f703",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-creapassport",
+          "url": "https://creafuturo.crea.gov.it/15368/?cat=184",
+          "locator": "Caratterizzazione molecolare, phrases sur vingt génotypes et SNP discriminant les variétés étudiées",
+          "result": "Discrimination limitée aux génotypes étudiés.",
+          "sourceHash": "efec5752ed0c0a8ddfcb70f3b0a5b681fa59ceff8f6f9297a2f3352a890772ce",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-dus-three-criteria",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "b663603df1f31f85af90625b7e0f7ceb27a6cec54d42f14d708f6c0eb75627b5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "Titre et §4 Assessment of Distinctness, Uniformity and Stability",
+          "result": "Les trois dimensions figurent au titre.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-known-reference-varieties-comparison",
+      "status": "approved",
+      "comment": "Choix parallèles de matériels comparatifs ; une seule référence pertinente dans le cadre de distinction.",
+      "contentHash": "5399c7c759a52eeeee03e777262932a61a6e294bd31d46d62207b13dec4960d5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "§3.6 Collection ; §5.1–5.2 Grouping of varieties",
+          "result": "Collection connue pour comparer les candidates.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-renewed-reference-seed-side-by-side-identity",
+      "status": "approved",
+      "comment": "Type de matériel explicité ; distracteurs distinguent identité, homogénéité et comparaison variétale.",
+      "contentHash": "606087c76a5c493ea100ec1e6fb19e28a27a265ccf5aefc978ae604e8814cc67",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "§3.6.5(a), Maintenance and renewal/update of a living variety collection",
+          "result": "Comparaison ancien et nouveau matériel prescrite.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-stability-new-stock-same-characteristics",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "af4f96707617181d191ef156445b72ff3233d5d98e8619fb3b7af831bd03632f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "§4.3.2 Stability",
+          "result": "Nouveau stock comparé aux caractères initiaux.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-divina-leaf-variegation-example",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "63fb12f05f645734b88e9ebe37a78d963d53f8c180fdabd09da2ad7ac0481ae4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "Tableau, caractère 1 Leaf: variegation, p. PDF 11",
+          "result": "Divina illustre la panachure présente.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-orion33-central-leaflet-verylong-verybroad",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "ac8c5b0152530b82afa63eaf1f974de6dd003da2930bf0d0419a93bc5f182369",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "Tableau, caractères 4 et 5, p. PDF 11–12",
+          "result": "Orion33 illustre les deux états extrêmes.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-dioica88-strong-seed-marbling-example",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "067490b4e8996df88b9d448db0518f349bb05936d3fc9ee587d8ec5bab665ca3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "Tableau, caractère 32 Seed: marbling, p. PDF 20",
+          "result": "Dioica88 illustre les marbrures fortes.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-carmagnola-long-petiole-example",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "a506a59ddb3b53827ff4ea73f786750dc5178ab0a1d2e49c6875445cb241151c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "Tableau, caractère 6 Petiole: length, p. PDF 12",
+          "result": "Carmagnola illustre le pétiole long.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-leaflet-number-predominant-centre-plant",
+      "status": "approved",
+      "comment": "Quatre observations foliaires crédibles ; seule la modalité prédominante au centre correspond au protocole.",
+      "contentHash": "c4b3aa5307ca2e448f10e6b813402dd29e3c8bd2da4b82554d435fd29f7f468a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "§8.2, Ad.3 Leaf: number of leaflets",
+          "result": "Nombre prédominant observé au centre.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-male-flowering-half-male-bearing-plants",
+      "status": "approved",
+      "comment": "Code opaque retiré ; populations de référence distinguées, forme identification et niveau2 cohérents.",
+      "contentHash": "2f49f00b2a84d4a12df112ac046219c3f1e592c1fb1161224235074f488f22bb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "§8.2, Ad.8 Time of male flowering, p. PDF 21",
+          "result": "Ad.8 précise les plantes portant des fleurs mâles.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-limited-male-flowers-not-auto-monoecious",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "ecf1b710e49a50c40df3142311bfa1c810a7a0928f06511a5f79e1bcf47055bb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-cpvo2026",
+          "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+          "locator": "§8.2, Ad.12–14, p. PDF 22",
+          "result": "Exception explicite pour quelques fleurs mâles occasionnelles.",
+          "sourceHash": "5b14fe9c894904b823ef269b6213dc3935f649a081f35e35d7aa970e80308848",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-fibre-diameter-scanning-electron-microscope",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "99560908800217a759a9e816c12b935b3e05b9a613b7897322ecb8accc857138",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-rutgersfibres",
+          "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+          "locator": "Paragraphe avant Results, SEM ; en-tête tableau 3",
+          "result": "Microscopie électronique pour les diamètres.",
+          "sourceHash": "1a7a9cef19b54503f4152bfdb67e4e0ef0494193d6d5db471a2d2d2c9acff8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-fibre-bundle-strength-pressley-tester",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "29bc0ae48da17a22d57e0eefd014b5fddfd6a617bb6159121f816d0416639c22",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-rutgersfibres",
+          "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+          "locator": "Paragraphe A Pressley fiber strength tester, avant tableau 3",
+          "result": "Appareil Pressley pour la résistance.",
+          "sourceHash": "1a7a9cef19b54503f4152bfdb67e4e0ef0494193d6d5db471a2d2d2c9acff8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-tex-mass-per-fibre-length",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "ab6bddd52dbdd4ec4b122f61a2b740d53cb3f7b1a0cf94d5035396c13c24dd98",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-rutgersfibres",
+          "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+          "locator": "Définition Fiber bundle strength, measured in centinewtons per tex",
+          "result": "Définition de la masse linéique confirmée.",
+          "sourceHash": "1a7a9cef19b54503f4152bfdb67e4e0ef0494193d6d5db471a2d2d2c9acff8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-santhica70-finer-average-than-futura83",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "6146c9773d402c84c3b14223a2cbbe701932af718237ad69ce6b1605ee739243",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-rutgersfibres",
+          "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+          "locator": "Tableau 3 et commentaire associé",
+          "result": "Comparaison des moyennes dans le tableau3.",
+          "sourceHash": "1a7a9cef19b54503f4152bfdb67e4e0ef0494193d6d5db471a2d2d2c9acff8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-high-fibre-diameter-cv-within-sample",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "5a0ff964769fca19ef142322d928d26ecec58ec0b91fd2379a8ec10c6e218154",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-rutgersfibres",
+          "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+          "locator": "Tableau 3, colonne cv% du diamètre ; premier paragraphe suivant",
+          "result": "Dispersion interne explicitement commentée.",
+          "sourceHash": "1a7a9cef19b54503f4152bfdb67e4e0ef0494193d6d5db471a2d2d2c9acff8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-tamang-jinma-fibre-check-variety",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "a28fff783de93643bb6b47addb344d03a1aae46ea980680d09eaf66a5e48d93e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-tamang2025",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+          "locator": "§2 Materials and methods ; note du tableau 5",
+          "result": "Jinma sert de témoin fibre.",
+          "sourceHash": "bbb00a8cead7ba6747a140d79986303a84b15cf370f2371d8aec33471163065e",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-tamang-lhv17-feral-missouri-material",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "b2fcb5b2ce2ecb0c12f3dab1534a79bfea2faa6f9f4c33e23566bcfe98371049",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-tamang2025",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+          "locator": "§2.1 Plant materials, paragraphes sur American ferals et LHV-17",
+          "result": "Matériel spontané du Missouri sélectionné.",
+          "sourceHash": "bbb00a8cead7ba6747a140d79986303a84b15cf370f2371d8aec33471163065e",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-tamang-grain-type-little-height-after-flowering",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "c6c472ef93216983b4ad949757e32b1a4dc81b61dc55ac5c005ef5f6353d522b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-tamang2025",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+          "locator": "§3.2 Growth pattern and final plant height",
+          "result": "Faible croissance après floraison décrite.",
+          "sourceHash": "bbb00a8cead7ba6747a140d79986303a84b15cf370f2371d8aec33471163065e",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-tamang-germination-significant-field-emergence-not",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix, attribution, portée et niveau acceptables pour ce fait.",
+      "contentHash": "73876f1ce784995b51715cd55ff0e8a7dc4af9b4ab1d10c3b12e863b97c74efd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-tamang2025",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+          "locator": "§3.1 Germination and emergence percentage ; tableau 5, lignes P Value et Level of significance",
+          "result": "Contraste de significativité texte/tableau concordant.",
+          "sourceHash": "bbb00a8cead7ba6747a140d79986303a84b15cf370f2371d8aec33471163065e",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b03-tamang-csdrrp2-candidate-function-unvalidated",
+      "status": "approved",
+      "comment": "Distracteur hors domaine remplacé ; hypothèses fonctionnelles distinctes de la fonction encore non établie.",
+      "contentHash": "43f932e8a3bf92f7f8678df953ba75cbd6a76c7103b25043ab3d6301ecfbbff7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b03-tamang2025",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+          "locator": "§4.8 Molecular basis of seed shattering, paragraphe While the expression of the CsDrrp2",
+          "result": "Fonction exacte explicitement non établie.",
+          "sourceHash": "bbb00a8cead7ba6747a140d79986303a84b15cf370f2371d8aec33471163065e",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "date": "2026-11-16",
+    "correctedApprovals": 11,
+    "unchangedApprovals": 29,
+    "unchangedSources": 5,
+    "scope": "Lecture des11objets modifiés et vérification du dernier ajustement grammatical de la question sur le séquençage. Les sources et leurs passages n’ont pas changé ; les consultations de la revue initiale sont conservées.",
+    "previousQuestionHashes": {
+      "hemp-q2-b03-crea-cs-genealogical-selection-carmagnola": "51a1091cbb770f4d2cc2ba3a60e450c39fd0ae9b09d1daa84b1e57656a15d8fe",
+      "hemp-q2-b03-crea-eletta-campana-selected-caserta": "25c37cbd7639606ccfb8847bf9ee359ee9769759ec9c304e91059a5e10b730c9",
+      "hemp-q2-b03-crea-fibrante-induced-mutant-from-fibranova": "9f9abc79bea375d4322aa2acedf3854d6e340a8722098ed717aed35a7be68090",
+      "hemp-q2-b03-crea-fibranova-bark-hurd-ratio-interpretation": "bdbfaaba3448091be19d556f83bb1eec550e090a45a3f998bc580ded33ce78c3",
+      "hemp-q2-b03-crea-wgs-discovery-before-snp-panel": "051002c23b794c093d1fdc26cbe073945d1d1bb6b2b80fdc138e20376ceee99c",
+      "hemp-q2-b03-crea-snp-discrimination-studied-corpus-scope": "367f9f2989cec3c25c9cfcd7fd597168576a3db9228aa4c370118d57a92c4204",
+      "hemp-q2-b03-cpvo-known-reference-varieties-comparison": "3200faed315ca7fbf0fb86fe82db17ee2c7bce1ed5fcddf5e9bb4e68369c028b",
+      "hemp-q2-b03-cpvo-renewed-reference-seed-side-by-side-identity": "4b1589ca11de949355c2a586a3ce6eef0c10f077955f810da6b7dc509a0a8a60",
+      "hemp-q2-b03-cpvo-leaflet-number-predominant-centre-plant": "ca09794d40c787aa02b77816d1462a85b26e2d04876cf804554f2f4222c30ecd",
+      "hemp-q2-b03-cpvo-male-flowering-half-male-bearing-plants": "d76e04ead57657a1777e63ffdc3af5a5e72af25344ba0ad54bdf4e1a5285a70d",
+      "hemp-q2-b03-tamang-csdrrp2-candidate-function-unvalidated": "0b4811cd631b7a548b8c26d38474aceeb150e5a0ab1a4fa48a7f8bfd300da261"
+    }
+  }
+}

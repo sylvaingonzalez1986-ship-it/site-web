@@ -1,0 +1,366 @@
+{
+  "batchId": "d-new-04",
+  "status": "in-progress-not-a-batch",
+  "questions": [
+    {
+      "id": "hemp-q2-d04-hemp-pasta-cooking-loss-dry-solids",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour des pâtes au chanvre, les « pertes à la cuisson » mesurées dans l'eau correspondent à quoi ?",
+      "options": [
+        "Aux matières sèches quittant les pâtes pour l'eau",
+        "À toute l'eau absorbée par les pâtes",
+        "À l'eau évaporée pendant l'ébullition",
+        "À la différence de poids entre pâtes sèches et cuites"
+      ],
+      "answer": 0,
+      "explanation": "On récupère l'eau de cuisson puis on en mesure le résidu solide après évaporation. Cette perte de matière se distingue du gain de poids lié à l'eau absorbée par les pâtes.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Distinguer perte de matières sèches et absorption d'eau pendant la cuisson",
+        "expectedAnswer": "Aux matières sèches quittant les pâtes pour l'eau",
+        "learningObjective": "Distinguer perte de matières sèches et absorption d'eau pendant la cuisson.",
+        "factKey": "hemp-pasta-cooking-loss-dry-solids",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "§2.5.3 Cooking Loss",
+            "support": "La perte de cuisson est la masse de solides récupérés dans l'eau de cuisson, exprimée par rapport aux pâtes crues."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-cooking-endpoint-white-core",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'essai d'Axentii sur les pâtes au chanvre, quel repère sert à déterminer la fin de cuisson après écrasement entre deux plaques ?",
+      "options": [
+        "L'apparition d'une croûte brune",
+        "La disparition des points blancs d'amidon",
+        "La présence de gouttelettes d'huile",
+        "Le détachement complet de l'enveloppe"
+      ],
+      "answer": 1,
+      "explanation": "Les auteurs surveillent la disparition des particules blanches d'amidon. Le repère expérimental concerne l'état interne de la pâte, pas seulement son aspect extérieur ou une durée identique pour toutes les recettes.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Reconnaître un repère expérimental de cuisson du cœur d'une pâte",
+        "expectedAnswer": "La disparition des points blancs d'amidon",
+        "learningObjective": "Reconnaître un repère expérimental de cuisson du cœur d'une pâte.",
+        "factKey": "hemp-pasta-cooking-endpoint-white-core",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "§2.5.1 Optimal Cooking Time",
+            "support": "La cuisson optimale est atteinte lorsque toutes les particules blanches d'amidon ont disparu, après compression entre deux plaques de verre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Des pâtes remplacent une partie de la farine de blé par de la farine de chanvre. Que peut-on dire du gluten ?",
+      "options": [
+        "Le chanvre transforme le gluten en huile",
+        "Le mélange devient automatiquement sans gluten",
+        "Le blé restant apporte encore du gluten",
+        "La quantité de protéines suffit à garantir son absence"
+      ],
+      "answer": 2,
+      "explanation": "Le chanvre ne contient pas de gluten, mais une substitution partielle laisse du blé dans la recette. L'ajout d'un ingrédient sans gluten ne rend donc pas le mélange entier sans gluten.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-gluten",
+        "subjectKey": "hemp-wheat-gluten",
+        "property": "Distinguer la composition d'un ingrédient et celle d'une recette mélangée",
+        "expectedAnswer": "Le blé restant apporte encore du gluten",
+        "learningObjective": "Distinguer la composition d'un ingrédient et celle d'une recette mélangée.",
+        "factKey": "hemp-wheat-partial-substitution-still-gluten",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "Discussion, paragraphes sur gluten dilution et HSM non-gluten ingredient",
+            "support": "L'incorporation de farine de chanvre sans gluten dilue la fraction de blé et affaiblit le réseau, sans le supprimer lors d'une substitution partielle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-stickiness-amylose-leaching",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'étude des pâtes blé-chanvre d'Axentii, quel constituant libéré par l'amidon est lié à leur caractère collant ?",
+      "options": [
+        "La lignine",
+        "La caséine",
+        "La chlorophylle",
+        "L'amylose"
+      ],
+      "answer": 3,
+      "explanation": "Les auteurs relient le caractère collant à l'amylose libérée par les granules d'amidon gélatinisés. Ce phénomène concerne la fraction céréalière de la recette, même lorsque celle-ci est enrichie en chanvre.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Relier un caractère collant à la libération d'un composant de l'amidon",
+        "expectedAnswer": "L'amylose",
+        "learningObjective": "Relier un caractère collant à la libération d'un composant de l'amidon.",
+        "factKey": "hemp-pasta-stickiness-amylose-leaching",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "Discussion, paragraphe sur adhesiveness and stickiness",
+            "support": "Le texte relie stickiness à la quantité d'amylose libérée par les granules d'amidon gélatinisés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-hedonic-test-consumer-liking",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un panel note son appréciation de pâtes au chanvre sur une échelle hédonique. Quelle dimension mesure ce test ?",
+      "options": [
+        "Le plaisir ou le déplaisir ressenti par les dégustateurs",
+        "La quantité de protéines mesurée chimiquement",
+        "La force nécessaire pour comprimer les pâtes",
+        "La masse de solide perdue dans l'eau de cuisson"
+      ],
+      "answer": 0,
+      "explanation": "L'échelle hédonique porte sur l'appréciation des personnes, du déplaisir au plaisir. Elle complète les mesures de composition et de texture, sans les remplacer.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-axentii-pasta-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "axentii-2023-hemp-pasta",
+        "subjectKey": "axentii-2023-hemp-pasta",
+        "property": "Distinguer appréciation sensorielle et mesure instrumentale",
+        "expectedAnswer": "Le plaisir ou le déplaisir ressenti par les dégustateurs",
+        "learningObjective": "Distinguer appréciation sensorielle et mesure instrumentale.",
+        "factKey": "hemp-pasta-hedonic-test-consumer-liking",
+        "form": "situation",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-axentii-pasta-2023",
+            "locator": "§2.10 Sensory Analysis",
+            "support": "Le panel utilise une échelle de dislike extremely à like extremely pour les caractéristiques et l'acceptabilité des pâtes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans un pain blé-chanvre, quel rôle du réseau de gluten aide à obtenir une mie aérée ?",
+      "options": [
+        "Former des pigments verts",
+        "Retenir le gaz dans la pâte",
+        "Séparer l'huile des graines",
+        "Transformer les minéraux en sucre"
+      ],
+      "answer": 1,
+      "explanation": "Le réseau de gluten aide la pâte à retenir le gaz et à conserver du volume. Une hausse de la teneur totale en protéines ne garantit donc pas, à elle seule, la même structure de mie.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-marinopoulou-bread-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-gluten",
+        "subjectKey": "hemp-wheat-gluten",
+        "property": "Relier la structure du réseau de gluten à la rétention du gaz",
+        "expectedAnswer": "Retenir le gaz dans la pâte",
+        "learningObjective": "Relier la structure du réseau de gluten à la rétention du gaz.",
+        "factKey": "hemp-wheat-bread-gluten-gas-retention",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-marinopoulou-bread-2024",
+            "locator": "§3.3.4 Texture Profile Analysis, discussion du volume spécifique et du réseau de gluten",
+            "support": "Le faible volume est attribué notamment à une perte de rétention du gaz liée à l'interruption et à l'affaiblissement du réseau de gluten."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-wheat-hemp-dough-damaged-starch-water-binding",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Pour une pâte blé-chanvre, quel état de l'amidon de blé favorise une absorption d'eau plus élevée ?",
+      "options": [
+        "Des granules intacts et peu altérés",
+        "Une élimination des granules",
+        "Des granules endommagés par la mouture",
+        "Une absence complète d'amidon"
+      ],
+      "answer": 2,
+      "explanation": "L'article précise que l'amidon endommagé retient davantage d'eau. Les besoins d'une pâte dépendent ainsi de l'état de ses ingrédients, et pas seulement du nom des farines mélangées.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-marinopoulou-bread-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "marinopoulou-2024-hemp-bread",
+        "subjectKey": "marinopoulou-2024-hemp-bread",
+        "property": "Comprendre l'effet de l'endommagement de l'amidon sur la rétention d'eau",
+        "expectedAnswer": "Des granules endommagés par la mouture",
+        "learningObjective": "Comprendre l'effet de l'endommagement de l'amidon sur la rétention d'eau.",
+        "factKey": "wheat-hemp-dough-damaged-starch-water-binding",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-marinopoulou-bread-2024",
+            "locator": "§3.1, discussion de la Water Holding Capacity",
+            "support": "L'absorption d'eau de la farine de blé est liée à sa teneur en amidon endommagé, qui absorbe davantage d'eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-bread-staling-starch-retrogradation",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un pain au blé et au chanvre durcit pendant son stockage. Quel phénomène de l'amidon peut contribuer au rassissement ?",
+      "options": [
+        "La formation de nouvelles graines",
+        "La dissolution des protéines dans l'huile",
+        "La fermentation des minéraux",
+        "La réorganisation des chaînes d'amidon"
+      ],
+      "answer": 3,
+      "explanation": "Le rassissement implique notamment une réorganisation de l'amidon après cuisson, appelée rétrogradation. Il ne se résume pas à une simple perte d'eau ; plusieurs changements de la mie interviennent.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-asb-staling"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "marinopoulou-2024-hemp-bread",
+        "subjectKey": "marinopoulou-2024-hemp-bread",
+        "property": "Comprendre la contribution de la rétrogradation de l'amidon au rassissement",
+        "expectedAnswer": "La réorganisation des chaînes d'amidon",
+        "learningObjective": "Comprendre la contribution de la rétrogradation de l'amidon au rassissement.",
+        "factKey": "hemp-bread-staling-starch-retrogradation",
+        "form": "situation",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-asb-staling",
+            "locator": "Origin et How staling works",
+            "support": "La fiche associe le rassissement à la recristallisation de l'amidon et à son réalignement moléculaire lors du refroidissement puis du stockage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-bread-maillard-reducing-sugar-amino",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans un pain enrichi en protéines de chanvre, quel couple de réactifs participe au brunissement de Maillard ?",
+      "options": [
+        "Sucres réducteurs et groupes aminés",
+        "Acides gras et sels minéraux",
+        "Cellulose et eau pure",
+        "Chlorophylles et amidon"
+      ],
+      "answer": 0,
+      "explanation": "Les réactions de Maillard mettent en jeu des sucres réducteurs et des groupes aminés, notamment ceux des protéines. Elles produisent des composés colorés et aromatiques lors de transformations thermiques.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-asb-maillard"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "marinopoulou-2024-hemp-bread",
+        "subjectKey": "marinopoulou-2024-hemp-bread",
+        "property": "Distinguer les réactifs de Maillard des autres constituants alimentaires",
+        "expectedAnswer": "Sucres réducteurs et groupes aminés",
+        "learningObjective": "Distinguer les réactifs de Maillard des autres constituants alimentaires.",
+        "factKey": "hemp-bread-maillard-reducing-sugar-amino",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-asb-maillard",
+            "locator": "What is the Maillard reaction? et How it works",
+            "support": "La fiche décrit une réaction entre sucres réducteurs et groupes aminés, notamment d'acides aminés ou de protéines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-controlled-fermentation-starter",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Pour fermenter une boisson de graines de chanvre, qu'appelle-t-on un « ferment » ou une culture de départ ?",
+      "options": [
+        "Un arôme imitant le lait fermenté",
+        "Des microorganismes sélectionnés introduits dans le produit",
+        "Une poudre minérale qui remplace les graines",
+        "Un filtre qui sépare l'eau de l'huile"
+      ],
+      "answer": 1,
+      "explanation": "Une culture de départ apporte des microorganismes choisis pour conduire la fermentation. Le choix de ces cultures permet de mieux maîtriser et reproduire les transformations du produit.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-merenkova-fermentation-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "merenkova-2022-hemp-beverage",
+        "subjectKey": "merenkova-2022-hemp-beverage",
+        "property": "Comprendre le rôle d'une culture de départ dans une fermentation alimentaire",
+        "expectedAnswer": "Des microorganismes sélectionnés introduits dans le produit",
+        "learningObjective": "Comprendre le rôle d'une culture de départ dans une fermentation alimentaire.",
+        "factKey": "hemp-beverage-controlled-fermentation-starter",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-merenkova-fermentation-2022",
+            "locator": "Introduction, controlled fermentation et starter cultures",
+            "support": "Une fermentation contrôlée utilise des cultures microbiennes identifiées et sélectionnées pour améliorer fiabilité et reproductibilité."
+          }
+        ]
+      }
+    }
+  ]
+}

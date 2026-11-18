@@ -6,6 +6,7 @@ import { KQ_HERITAGE_EFFECT_TEMPLATES } from "@/lib/kanab-quest-heritage";
 
 const owner = "11111111-1111-4111-8111-111111111111";
 const retired = [
+  { code: "HERITAGE-004", producerId: "producer-1771159879557-3228", producerName: "Hot Alpine Weed", effect: "climate-danger-to-spark" },
   { code: "HERITAGE-013", producerId: "producer-1773871212890-5816", producerName: "Cannapache", effect: "flower-neutrals-to-success" },
   { code: "HERITAGE-014", producerId: "producer-1773871368477-5738", producerName: "Cap Estuaire", effect: "drying-lowest-to-spark" },
   { code: "HERITAGE-015", producerId: "producer-1773872025906-6885", producerName: "Skud Farm", effect: "dangers-to-success" },
@@ -107,6 +108,7 @@ beforeAll(async () => {
     code,name,timing,effect_code,description,advantage,drawback,image_url,is_active,auto_managed
   ) VALUES('HERITAGE-901','Nom personnalisé','once-per-run','opening-hand-reserve',
     'Ancien texte personnalisé','Ancien avantage','Usage personnalisé','/custom/heritage.webp',FALSE,FALSE)`);
+  await db.exec(sql("20261115000300_kq_retire_hot_alpine_heritage.sql"));
   otherDefinitionsBefore = (await db.query("SELECT * FROM public.kq_heritage_card_definitions WHERE effect_code<>'opening-hand-reserve' ORDER BY code")).rows;
   otherEffectsBefore = (await db.query("SELECT * FROM public.kq_heritage_effect_catalog WHERE effect_code<>'opening-hand-reserve' ORDER BY effect_code")).rows;
   await db.exec(sql("20261020000300_kq_ten_card_hand.sql"));
@@ -138,7 +140,7 @@ async function start(code: string | null, xp: number, tokens = 0, buddie = "HH20
 }
 
 describe("Heritage culture refresh migration", () => {
-  it("retires the three partnerships while preserving owned cards, producers and cultures", async () => {
+  it("retires the four partnerships while preserving owned cards, producers and cultures", async () => {
     expect((await db.query("SELECT * FROM public.kq_heritage_draws ORDER BY card_code")).rows).toEqual(drawsBefore);
     expect((await db.query("SELECT * FROM public.kq_runs")).rows).toEqual(cultureBefore);
     for (const card of retired) {

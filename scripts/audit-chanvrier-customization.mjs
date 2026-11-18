@@ -7,7 +7,8 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root = process.cwd();
-const output = resolve(root, 'output/chanvrier-customization');
+const phase = process.argv.includes('--before') ? 'before' : 'after';
+const output = resolve(root, 'output/chanvrier-calibration/editor', phase);
 const origin = 'http://127.0.0.1:3217';
 let profile = null, failSave = false, saveRequests = 0, saveDelay = 0;
 let balance = 0, cash = 100000;
@@ -39,7 +40,7 @@ const entry = [
   "function App() {",
   "  const [profile,setProfile]=useState(null), [open,setOpen]=useState(true);",
   "  return <main style={{maxWidth:700,margin:'20px auto'}}>",
-  "    {profile?<><ChanvrierAvatar profile={profile}/><button id='edit' onClick={()=>setOpen(true)}>Personnaliser</button><ChanvrierSavingsPanel/></>:<button id='reopen' onClick={()=>setOpen(true)}>Créer un personnage</button>}",
+  "    {profile?<><ChanvrierAvatar profile={profile} className='saved-avatar'/><button id='edit' onClick={()=>setOpen(true)}>Personnaliser</button><ChanvrierSavingsPanel/></>:<button id='reopen' onClick={()=>setOpen(true)}>Créer un personnage</button>}",
   "    {open?<ChanvrierProfileEditor profile={profile} onClose={()=>setOpen(false)} onSaved={p=>{window.__profileSaves++;setProfile(p);setOpen(false)}}/>:null}",
   "  </main>;",
   "}",
@@ -89,7 +90,7 @@ const server = await createServer({
         }
         if (req.url?.split('?')[0] !== '/') return next();
         res.setHeader('Content-Type', 'text/html');
-        res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{--font-display:Impact;--font-body:Arial}*{box-sizing:border-box}body{margin:0;background:#003f30;color:#fff8e8;font-family:Arial}button,input{font:inherit}</style><div id="root"></div><script type="module" src="/@id/__x00__avatar-entry"></script></html>');
+        res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{--font-display:Impact;--font-body:Arial}*{box-sizing:border-box}body{margin:0;background:#003f30;color:#fff8e8;font-family:Arial}button,input{font:inherit}.saved-avatar{display:block;width:min(100%,280px);height:auto}</style><div id="root"></div><script type="module" src="/@id/__x00__avatar-entry"></script></html>');
       });
     },
   }],
@@ -354,7 +355,7 @@ try {
     await page.screenshot({path:resolve(output,'sylvain-v5-preview.png'),fullPage:true});
   });
   assert.deepEqual(errors,[],'No browser runtime error');
-  console.log('PASS: inheritance → appearance → specialty → review at 320/390/1440; draft/back, validation, confirmation, error/retry, single submission, editing, keyboard focus, tutorial isolation, avatar variants, savings. Screenshots: output/chanvrier-customization');
+  console.log(`PASS: inheritance → appearance → specialty → review at 320/390/1440; draft/back, validation, confirmation, error/retry, single submission, editing, keyboard focus, tutorial isolation, avatar variants, savings. Screenshots: ${output}`);
 } catch (error) {
   checks.push({name:currentCheck,passed:false,error:String(error.stack??error)});
   await page?.screenshot({path:resolve(output,'failed-'+currentCheck+'.png'),fullPage:true}).catch(()=>{});

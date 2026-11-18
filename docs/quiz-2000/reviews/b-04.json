@@ -1,0 +1,1686 @@
+{
+  "batchId": "b-04",
+  "reviewer": "f_existing_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture indépendante des 31 questions complètes, de leurs quatre choix, corrigés, métadonnées et passages probants des 9 sources. Aucun fichier auteur ou runtime modifié.",
+  "hashMethod": "SHA-256(JSON.stringify(objet complet)), ordre des propriétés du lot lu ; chaque sourceHash scelle l’objet source complet de batches/b-04.json.",
+  "sourceTiming": "Lectures ciblées réellement effectuées le 16 novembre 2026 ; précision journalière. Aucun réemploi d’une simple déclaration de consultation de l’auteur comme preuve de lecture personnelle.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-b04-bielecka2014",
+      "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+      "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "primary-paper-targeted",
+      "locator": "PDF imprimé p.3–5, Results : Characterization of CSFAD2A/CSFAD3A ; High oleic hemp oil product performance ; légendes3–5",
+      "result": "Texte des résultats utile aux dix questions effectivement lu.",
+      "limitation": "Résultats limités aux lignées et témoins analysés. Annexes non ouvertes ; aucune mesure de graphe reconstruite. Capture PDF échouée, texte pertinent accessible.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-blandinieres2023",
+      "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+      "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "primary-paper-targeted",
+      "locator": "PDF p.5 §3.1 ; p.7 §3.2 ; p.9 §3.3–3.4 ; p.10 Discussion ; tableaux7–8 et conclusion",
+      "result": "Phénologie, couleur, fractions, absorbance et NUpE effectivement lus.",
+      "limitation": "Trois environnements étudiés ; aucune extrapolation universelle aux cultivars jaunes ni recommandation de fertilisation.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-dp-cbg-force",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/cbg-force",
+      "sourceHash": "107b5821ea3c9578faed646adfe8ded0aded717419d01fa641516f76a8c6bb9f",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "Product info, apparence des fleurs, lignes461,470,477–478",
+      "result": "Description de fleurs givrées mais peu adhérentes retrouvée.",
+      "limitation": "Page actuellement intitulée Discontinued ; seule la description commerciale est étayée, aucune causalité chimique ou médicale.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-dp-thc-victory",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/thc-victory",
+      "sourceHash": "23aca71c4b281c9caf067338f8a192e310bb314b5b603d5648d244759a3047cf",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "Product info, What kind of cannabis genetics…, lignes423–433",
+      "result": "Rapport THCV/THC annoncé proche de1:1 retrouvé.",
+      "limitation": "Annonce d’obtenteur non datée ; pas de garantie de teneurs de chaque plante.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-serious-seriotica",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/seriotica",
+      "sourceHash": "5cce384bf100cbf680e38c6a215581aa2471e2cb93c6df4e4c02ebcdabae3f24",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "Description, lignes48 et88–90",
+      "result": "Parenté déclarée et coloration des feuilles/fleurs retrouvées.",
+      "limitation": "Texte commercial seulement ; aucun rapport de laboratoire ou avis client utilisé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-dp-desfran",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/desfran",
+      "sourceHash": "ea8024e61d45a1fa8e14d327aa3ad324bc082add1c7fbc3b1fd6a2adcf59574b",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "What kind of genetics is in Desfrán exactly?, ligne459 ; mention du croisement ligne446",
+      "result": "Croisement et crédit d’introduction attribué à Alberto retrouvés.",
+      "limitation": "Récit de Dutch Passion ; ne prouve pas la création des ancêtres par Alberto.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-ace-erdpurt",
+      "url": "https://www.aceseeds.org/en/seeds/erdpurt-feminized-seeds/",
+      "sourceHash": "a7b973cc6307a232dbe26287c0963cd2e178d29a52b9fe37117052af75a154ee",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "Description ligne59 ; Additional information : Genetics, Structure, Bouquet, lignes95–97",
+      "result": "Quatre propriétés commerciales déclarées retrouvées.",
+      "limitation": "Orthographe Purpuera conservée comme citation de la fiche ; annonces, pas preuve génétique indépendante ni efficacité clinique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-ace-orient-express",
+      "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+      "sourceHash": "374388d3ef495668c86c692c4cd91b64ec1fc58497b3b5e4e38b952aa836e1d8",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "Additional information : Genetics, Structure, Terpene profile, lignes93–97",
+      "result": "Pedigree, port et deux fractions terpéniques annoncés retrouvés.",
+      "limitation": "Tableau descriptif de la fiche ; chromatogramme lié non ouvert, aucune généralisation à tous les lots.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-b04-ace-kali-china",
+      "url": "https://www.aceseeds.org/en/seeds/kali-china-feminized-seeds/",
+      "sourceHash": "360efed77f180573943184d8bef8f8be8c3ace598155bfb8919f85b88ead2352",
+      "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-commercial-page-targeted",
+      "locator": "Additional information : Genetics et Structure, lignes90–91",
+      "result": "Pedigree emboîté et contraste de port retrouvés.",
+      "limitation": "Description attribuée à ACE, sans preuve de filiation indépendante ni conduite de culture.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-b04-high-oleic-line-derived-finola",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "706d1fbace08f05283eab53ffa68448b143fb94607a8b58b2e15d893a698edba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Résultats CSFAD2A p.3 et High oleic… p.5",
+          "result": "Origine Finola et lignée expérimentale identifiées.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "La provenance de cette lignée expérimentale précise n’est pas une connaissance intermédiaire générale ; le nom High Oleic Hemp ne permet pas de retrouver Finola parmi les quatre cultivars.",
+          "requestedChange": "Classer niveau 3 et adapter difficultyRationale ; conserver le fait et l’attribution."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-mutant-oleic-majority",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope. The prompt now explicitly limits the result to homozygous csfad2a-1 mutants, matching the already verified result and explanation.",
+      "contentHash": "d7823c78ef5442fe4a130204bb2216a4d10ea95c7bbf10159dd16ede2d018cd6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Résultats CSFAD2A p.3, paragraphe homozygous csfad2a-1",
+          "result": "Oléique majoritaire chez les homozygotes, portée à préciser.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported_with_scope_correction"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "scope",
+          "reason": "L’énoncé vise les mutants csfad2a-1 en général, alors que la preuve et le corrigé concernent les graines homozygotes. Le génotype ne doit pas être réservé à l’explication.",
+          "requestedChange": "Préciser homozygotes dans l’énoncé."
+        },
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "L’identifiant csfad2a-1 impose une connaissance expérimentale et biochimique spécialisée ; aucune prémisse ne permet d’en déduire l’acide majoritaire.",
+          "requestedChange": "Classer niveau 3 et adapter la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-oleic-to-linoleic",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "528612133edc29428da381a14604c1523024eabe920c51f4150061b490f9ce5b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Characterization of CSFAD2A p.3, expression en levure",
+          "result": "Conversion oléique vers linoléique confirmée.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad3a-seed-omega3-depletion",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "6251053ddae3abf2a7c53de8264c3ffa1d1f2ee9d862a07220ad92c8e63f13b8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Characterization of CSFAD3A p.4, graines homozygotes",
+          "result": "ALA quasi nul et SDA non détecté.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad3a-leaf-tissue-specificity",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "629954bbed4678596804d20b2ae66c936f5b4f23a780a173d1f1f309b6827562",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Characterization of CSFAD3A p.4, dernier paragraphe foliaire",
+          "result": "Réduction foliaire modeste, contraste avec les graines.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-stability-extrapolation",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "dd2d8116736bb53e874ee4f7cd49c4757b8ef581dddbca9ba67584eb4b48e64f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic hemp oil product performance p.5, Rancimat",
+          "result": "Estimation par oxydation accélérée puis extrapolation.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "La tâche demande de rappeler le dispositif Rancimat d’une étude particulière ; elle ne fournit pas de résultat accéléré à interpréter. Ce rappel de méthode spécialisée est plus exigeant que l’objectif général annoncé.",
+          "requestedChange": "Classer niveau 3, ou reformuler une vraie tâche de portée de mesure au niveau 2 sans donner la réponse."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-tocopherol-increase",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "dada6cd050c1355ebb13a30e4685dea2f89ecf934dad36c1eb8cda5e325cb707",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic… p.5, paragraphe tocopherols ; Discussion p.8",
+          "result": "Tocophérols supérieurs ; contribution causale proposée seulement.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le sens de variation des tocophérols dans cette lignée n’est ni fourni ni déductible du nom High Oleic. C’est un résultat analytique précis à mémoriser.",
+          "requestedChange": "Classer niveau 3 et aligner la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-lower-volatile-aldehydes",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "69d6fece9b3da1d584df4d5eab64798cfa8ce36a3262a852883ee9a5e6bd6975",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic… p.5, head space analysis",
+          "result": "Moins d’aldéhydes volatils détectés.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le sens du résultat d’analyse des aldéhydes d’un comparatif précis exige une connaissance spécialisée ; aucun raisonnement n’est possible avec les seules données de l’énoncé.",
+          "requestedChange": "Classer niveau 3 et aligner la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-main-tag-triolein",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "682c4e85409d17c51e0bffd594390f9f31b72faf0c9ae6da4bd298ee7a757749",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic… p.5, paragraphe TAG",
+          "result": "Trioléine principale, absente du témoin comparé.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-hemp-desaturase-functional-test-yeast",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "3e7cbcbeaafacef8d77a2ec87bc0f5c4772cfb317e0bc14bf32ac3c653758826",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Characterization of CSFAD2A p.3 et CSFAD3A p.4",
+          "result": "Deux tests fonctionnels dans Saccharomyces cerevisiae.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Identifier le système hétérologue de cet article est un rappel de dispositif précis, avec quatre modèles expérimentaux crédibles. L’explication sur l’intérêt des tests ne simplifie pas la tâche réellement posée.",
+          "requestedChange": "Classer niveau 3 et adapter la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-maturity-colour",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "1fd297e23c88d89a8feda7b23c3bd015d3680623ec8dc9cd844a2dc1a518ec95",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.1 p.5, fin du paragraphe couleur",
+          "result": "Jaune foncé versus vert foncé au stade indiqué.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-similar-phenology",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "65d36cd581e250cbe97186b99be32dde24d88949cc7bbc5428237051e525e0c7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.1 p.5, phrase Crop phenology",
+          "result": "Phénologie similaire dans les trois environnements.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le constat de phénologie similaire n’est pas donné dans l’énoncé ; il faut connaître le bilan des trois environnements d’une étude précise. L’objectif couleur/précocité reste pertinent mais n’est pas testé sous forme de raisonnement.",
+          "requestedChange": "Classer niveau 3 ; autre possibilité, une vraie situation d’interprétation explicitement étayée, distincte d’une répétition de données."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-lower-leaf-par-absorbance",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "81fc59e7f898d8a7f5ecfc1f0d1f7a934e8311e78a0b94946176041872c34f74",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.3 p.9 et tableau7 p.10, absorbance foliaire",
+          "result": "Absorbance moindre ; écart croissant en profondeur.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-nitrogen-uptake-hypothesis-not-supported",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "0e3320e5d033b26b61616a14f01056d78b5af7f39bc94d540391922f0cd7bf85",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.4 p.9 ; Discussion p.10, NUpE",
+          "result": "Pas de moindre NUpE détectée ; supérieure à AB21.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-higher-bast-fraction",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "966bdc3cccb0cab336aa733c8ebb5d1480926e1e3281b55023c39d0265025f8f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.2 p.7, bast fibre content",
+          "result": "Fraction moyenne de fibres libériennes supérieure.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le sens de la différence de fraction libérienne est un résultat propre au comparatif, non déductible du nom Fibror ni du concept proportion/rendement. Ce concept est expliqué après la réponse mais ne constitue pas la tâche posée.",
+          "requestedChange": "Classer niveau 3 et adapter la justification, ou faire une vraie distinction proportion/production sans réutiliser un ancien exercice."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-cbg-force-frosty-less-sticky",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "f69f2d98264adab511acca314c73444f7b484c7a2cfec22c2473747a6ddf9d84",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-dp-cbg-force",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/cbg-force",
+          "locator": "Product info, lignes461,470,477",
+          "result": "Aspect givré et faible adhérence attribués à Dutch Passion.",
+          "sourceHash": "107b5821ea3c9578faed646adfe8ded0aded717419d01fa641516f76a8c6bb9f",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-thc-victory-thcv-thc-near-equal",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "dabf39978066e7999324235f60a6e4aa80b5df388ed953447d897fd04521fdbc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-dp-thc-victory",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/thc-victory",
+          "locator": "Product info, lignes423–433",
+          "result": "THCV et THC annoncés à concentrations comparables.",
+          "sourceHash": "23aca71c4b281c9caf067338f8a192e310bb314b5b603d5648d244759a3047cf",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-seriotica-serious-mimosa-cookies-cross",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "95b0d7312fb08f7a795218938b731fa8da0ff307eee7f48d93bf727c6de4a49f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-serious-seriotica",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/seriotica",
+          "locator": "Description lignes48,88",
+          "result": "Serious’ Mimosa × Cookies annoncé.",
+          "sourceHash": "5cce384bf100cbf680e38c6a215581aa2471e2cb93c6df4e4c02ebcdabae3f24",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-seriotica-leaves-flowers-colour",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "cf2af2ffe49891d48344bbd5ac2853647951ec046aed87d6b739b368eb6cc863",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-serious-seriotica",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/seriotica",
+          "locator": "Description ligne90",
+          "result": "Feuilles et fleurs colorées en fin de floraison.",
+          "sourceHash": "5cce384bf100cbf680e38c6a215581aa2471e2cb93c6df4e4c02ebcdabae3f24",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-desfran-destroyer-by-destroyer",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "ad2d03e926ffcd29b8069a682dfff12b07f8251ddebd4a32b244e3554ac60232",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-dp-desfran",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/desfran",
+          "locator": "What kind of genetics…, ligne459",
+          "result": "Destroyer × Destroyer annoncé.",
+          "sourceHash": "ea8024e61d45a1fa8e14d327aa3ad324bc082add1c7fbc3b1fd6a2adcf59574b",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-desfran-alberto-introduction-role",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "5fd06b9d635343fcbbace7d89d11865d91ebde79a14185290ead1d04bcf544fc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-dp-desfran",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/desfran",
+          "locator": "What kind of genetics…, ligne459",
+          "result": "Introduction européenne liée à la collaboration avec Alberto.",
+          "sourceHash": "ea8024e61d45a1fa8e14d327aa3ad324bc082add1c7fbc3b1fd6a2adcf59574b",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-erdbeer-ticinensis-cross",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "cf2c42ca35dbe690f1df517d0e5f63fa9a73e5c27758fdbb87ec92b389cd4c99",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-erdpurt",
+          "url": "https://www.aceseeds.org/en/seeds/erdpurt-feminized-seeds/",
+          "locator": "Additional information, Genetics ligne95",
+          "result": "Erdbeer × Purpuera Ticinensis dans le tableau.",
+          "sourceHash": "a7b973cc6307a232dbe26287c0963cd2e178d29a52b9fe37117052af75a154ee",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-balanced-most-common-chemotypes",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "085764f896fe17ec3d2b013dd8d5eb1c0f3fc3e1268f0e4142a7481074662d73",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-erdpurt",
+          "url": "https://www.aceseeds.org/en/seeds/erdpurt-feminized-seeds/",
+          "locator": "Description ligne59",
+          "result": "Profils équilibrés les plus fréquents, extrêmes occasionnels.",
+          "sourceHash": "a7b973cc6307a232dbe26287c0963cd2e178d29a52b9fe37117052af75a154ee",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-columnar-little-branching",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "5006b75468cdf959ff60bcb435876dc89407ea9134a4d757bd02b5c6159e12cc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-erdpurt",
+          "url": "https://www.aceseeds.org/en/seeds/erdpurt-feminized-seeds/",
+          "locator": "Additional information, Structure ligne96",
+          "result": "Port compact, colonnaire, très peu ramifié.",
+          "sourceHash": "a7b973cc6307a232dbe26287c0963cd2e178d29a52b9fe37117052af75a154ee",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-colourful-fruity-bouquet",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "005d5eebf3e5b3ff094b18adff3d69493efaa585a333b0871e7d3200b22a7f0a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-erdpurt",
+          "url": "https://www.aceseeds.org/en/seeds/erdpurt-feminized-seeds/",
+          "locator": "Additional information, Bouquet ligne97",
+          "result": "Notes mûre/fraise associées aux phénotypes colorés.",
+          "sourceHash": "a7b973cc6307a232dbe26287c0963cd2e178d29a52b9fe37117052af75a154ee",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-vietnam-yunnan-cross",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "0a2e0017f9d355c165fc46c1380d22f3a1ef4a14fe441b16517c53a632e182c7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-orient-express",
+          "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+          "locator": "Additional information, Genetics ligne93",
+          "result": "Vietnam Black × China Yunnan annoncé.",
+          "sourceHash": "374388d3ef495668c86c692c4cd91b64ec1fc58497b3b5e4e38b952aa836e1d8",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-main-monoterpenes",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "8c848b52e8e149414ea5940000412697e609580aa6faf78b23b2d56aa5acac23",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-orient-express",
+          "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+          "locator": "Additional information, Terpene profile ligne97",
+          "result": "Bêta-myrcène et alpha-pinène annoncés principaux monoterpènes.",
+          "sourceHash": "374388d3ef495668c86c692c4cd91b64ec1fc58497b3b5e4e38b952aa836e1d8",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Il faut retrouver deux molécules particulières parmi quatre couples chimiquement plausibles dans le profil d’une variété précise ; c’est un rappel spécialisé au même titre que le sesquiterpène de la question suivante.",
+          "requestedChange": "Classer niveau 3 pour ce profil analytique précis, sans modifier sa portée attribuée à ACE."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-nerolidol-sesquiterpenes",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "e0b73eff95d72cbb54baa45068aa4e2ef6947dc81ce67aa20ac910bd57d440ad",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-orient-express",
+          "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+          "locator": "Additional information, Terpene profile ligne97",
+          "result": "Nérolidol annoncé principal sesquiterpène.",
+          "sourceHash": "374388d3ef495668c86c692c4cd91b64ec1fc58497b3b5e4e38b952aa836e1d8",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-short-branching",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "c21fab12889dd5450dcff8547c84f77a49813e24b84a826e11b8b20a17c52a95",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-orient-express",
+          "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+          "locator": "Additional information, Structure ligne94",
+          "result": "Port court et ramifié annoncé.",
+          "sourceHash": "374388d3ef495668c86c692c4cd91b64ec1fc58497b3b5e4e38b952aa836e1d8",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-repeated-yunnan-parent",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: full corrected object read. Level3 and the rationale accurately describe recall of this particular published experimental result or attributed commercial profile/pedigree. Facts, choices, explanation and source proof retain their checked scope.",
+      "contentHash": "e1c659734f1957ce4272a3193b6dad9f7b53b4f0342597c2c80e219b9ef78335",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-kali-china",
+          "url": "https://www.aceseeds.org/en/seeds/kali-china-feminized-seeds/",
+          "locator": "Additional information, Genetics ligne90",
+          "result": "Pedigree avec seconde contribution China Yunnan annoncé.",
+          "sourceHash": "360efed77f180573943184d8bef8f8be8c3ace598155bfb8919f85b88ead2352",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le pedigree emboîté exact exige de distinguer trois contributions parentales d’une fiche précise ; le parent réintroduit n’est pas fourni. La tâche réelle dépasse la simple lecture d’un pedigree déjà affiché.",
+          "requestedChange": "Classer niveau 3 et adapter difficultyRationale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-habit-environment-description",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix, attribution, portée, explication et niveau acceptables pour ce fait.",
+      "contentHash": "2bfea533a37c003e0e251204d8791068dee3dde67844defe8314dd10b4c97017",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-kali-china",
+          "url": "https://www.aceseeds.org/en/seeds/kali-china-feminized-seeds/",
+          "locator": "Additional information, Structure ligne91",
+          "result": "Port intérieur/extérieur décrit différemment.",
+          "sourceHash": "360efed77f180573943184d8bef8f8be8c3ace598155bfb8919f85b88ead2352",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "deduplication": [
+    {
+      "ids": [
+        "hemp-q2-b04-high-oleic-line-derived-finola",
+        "hemp-q2-b01-finola-former-breeder-code-fin314"
+      ],
+      "decision": "distinct",
+      "reason": "Matériel source d’une nouvelle lignée expérimentale versus correspondance entre un code de sélection et un nom variétal. Objet proche mais propriété différente ; question B01 complète relue."
+    },
+    {
+      "ids": [
+        "hemp-q2-b04-csfad2a-mutant-oleic-majority",
+        "hemp-q2-b04-csfad2a-oleic-to-linoleic"
+      ],
+      "decision": "distinct",
+      "reason": "Phénotype de graines homozygotes versus réaction enzymatique démontrée en levure. Ces expériences ne sont pas deux formulations du même constat. Clé commune bielecka-2014-high-oleic-hemp conservée."
+    },
+    {
+      "ids": [
+        "hemp-q2-b04-csfad2a-mutant-oleic-majority",
+        "hemp-q2-b04-high-oleic-main-tag-triolein",
+        "hemp-q2-d05-triacylglycerol-glycerol-three-fatty-acids"
+      ],
+      "decision": "distinct",
+      "reason": "Acide gras majoritaire, espèce de triacylglycérol majoritaire et structure générale d’un triacylglycérol sont trois propriétés. Un acide gras majoritaire ne fixe pas à lui seul l’assemblage de toutes les espèces moléculaires. Objet D05 complet relu."
+    },
+    {
+      "ids": [
+        "hemp-q2-b04-high-oleic-tocopherol-increase",
+        "hemp-q2-d01-antioxydants-compromis",
+        "hemp-seeds-tocopherol"
+      ],
+      "decision": "distinct",
+      "reason": "Concentration totale entre deux lignées, compromis de filtration/stockage et identité d’un tocophérol habituellement dominant sont distincts. Énoncés/choix/corrigés des voisins relus ; pas de mélange des comparateurs."
+    },
+    {
+      "ids": [
+        "hemp-q2-b04-csfad3a-seed-omega3-depletion",
+        "hemp-seeds-stearidonique"
+      ],
+      "decision": "distinct",
+      "reason": "Phénotype d’un mutant précis versus nombre de doubles liaisons d’un acide gras ; l’explication nouvelle ne révèle pas le fait ancien."
+    },
+    {
+      "ids": [
+        "hemp-q2-b04-fibror-futura-maturity-colour",
+        "hemp-q2-b04-fibror-futura-similar-phenology"
+      ],
+      "decision": "distinct",
+      "reason": "Couleur au stade considéré versus calendrier comparable de développement. Couleur et précocité ne sont pas identiques ; clé commune blandinieres-2023-fibror-futura conservée."
+    },
+    {
+      "ids": [
+        "hemp-q2-b04-orient-express-main-monoterpenes",
+        "hemp-q2-b04-orient-express-nerolidol-sesquiterpenes"
+      ],
+      "decision": "distinct",
+      "reason": "Deux fractions chimiques distinctes du profil publié ; chaque explication reste centrée sur sa fraction. Clé commune orient-express."
+    }
+  ],
+  "editorialAssessment": {
+    "levels": "Aucune question n’est artificiellement rendue facile. Les rappels de résultats moléculaires ou de dispositifs expérimentaux précis ne deviennent pas intermédiaires parce que la comparaison est formulée simplement. Dix objets demandent recalibrage, dont csfad2a exige aussi une restriction aux homozygotes. Les descriptions variétales simples, visuelles ou parentales non emboîtées restent défendables au niveau 2.",
+    "forms": "Identification et comparaison correspondent aux tâches effectivement posées. Les objectifs pédagogiques plus généraux ne doivent pas être confondus avec un raisonnement que l’énoncé ne demande pas.",
+    "commercialClaims": "Sept pages d’obtenteurs consultées directement. Questions attribuées aux annonces ; aucun effet médical, parenté déduite du nom ou garantie de composition de tous les lots validé.",
+    "questionLeakage": "Pas de réponse d’une autre question explicitement copiée dans les explications constatée. Les propriétés connexes des deux études et des cultivars récurrents conservent leur subjectKey commun.",
+    "indexScope": "Recherche ciblée de tous les cultivars, mutants, acteurs, trioléine/TAG, tocophérols, désaturases et profils proches dans fact-index.jsonl. Lecture complète des voisins les plus proches ; pas de réaudit global. Aucun catalogue du site utilisé."
+  },
+  "summary": {
+    "total": 31,
+    "approved": 31,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourceObjects": 9,
+    "sourceChecks": 31,
+    "finalLevels": {
+      "1": 0,
+      "2": 14,
+      "3": 17,
+      "4": 0
+    },
+    "decision": "All31 final versions approved. Ten author corrections of difficulty and homozygote scope arbitrated by root after the independent F review.",
+    "sourceReadingScope": "Distinct source IDs and checks in the final approved items. Actual readers, targeted passages, earlier readings and supplemental consultations remain recorded in the individual proof objects; these counts do not claim full-book reading or a fresh opening of every source."
+  },
+  "beforeRootFinalArbitration": [
+    {
+      "id": "hemp-q2-b04-high-oleic-line-derived-finola",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "ec757a568f85e9476f3e80c3082dc479f98b53e188a7b724b14d69d9f91afcc0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Résultats CSFAD2A p.3 et High oleic… p.5",
+          "result": "Origine Finola et lignée expérimentale identifiées.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "La provenance de cette lignée expérimentale précise n’est pas une connaissance intermédiaire générale ; le nom High Oleic Hemp ne permet pas de retrouver Finola parmi les quatre cultivars.",
+          "requestedChange": "Classer niveau 3 et adapter difficultyRationale ; conserver le fait et l’attribution."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-mutant-oleic-majority",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "15000542f7574e444d1dc982f26580c3b1aa6172e73cf3bea11e0898001ef235",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Résultats CSFAD2A p.3, paragraphe homozygous csfad2a-1",
+          "result": "Oléique majoritaire chez les homozygotes, portée à préciser.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported_with_scope_correction"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "scope",
+          "reason": "L’énoncé vise les mutants csfad2a-1 en général, alors que la preuve et le corrigé concernent les graines homozygotes. Le génotype ne doit pas être réservé à l’explication.",
+          "requestedChange": "Préciser homozygotes dans l’énoncé."
+        },
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "L’identifiant csfad2a-1 impose une connaissance expérimentale et biochimique spécialisée ; aucune prémisse ne permet d’en déduire l’acide majoritaire.",
+          "requestedChange": "Classer niveau 3 et adapter la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-stability-extrapolation",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "19be775d22c2be37d4996331d31bd285befcb7f6763c6a4750b6b88e015d9f8e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic hemp oil product performance p.5, Rancimat",
+          "result": "Estimation par oxydation accélérée puis extrapolation.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "La tâche demande de rappeler le dispositif Rancimat d’une étude particulière ; elle ne fournit pas de résultat accéléré à interpréter. Ce rappel de méthode spécialisée est plus exigeant que l’objectif général annoncé.",
+          "requestedChange": "Classer niveau 3, ou reformuler une vraie tâche de portée de mesure au niveau 2 sans donner la réponse."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-tocopherol-increase",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "cacb429f41687d08915d36b067ffcc819d90540d0e715c3ceafc03bd7ff78198",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic… p.5, paragraphe tocopherols ; Discussion p.8",
+          "result": "Tocophérols supérieurs ; contribution causale proposée seulement.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le sens de variation des tocophérols dans cette lignée n’est ni fourni ni déductible du nom High Oleic. C’est un résultat analytique précis à mémoriser.",
+          "requestedChange": "Classer niveau 3 et aligner la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-lower-volatile-aldehydes",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "ccffec301826b3da8dc50daf491d523139a5d48cef4e64ce978ddec9a93c36bd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "High oleic… p.5, head space analysis",
+          "result": "Moins d’aldéhydes volatils détectés.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le sens du résultat d’analyse des aldéhydes d’un comparatif précis exige une connaissance spécialisée ; aucun raisonnement n’est possible avec les seules données de l’énoncé.",
+          "requestedChange": "Classer niveau 3 et aligner la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-hemp-desaturase-functional-test-yeast",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "a96b15c36644178b3bba290ad25dfef1729ea5d733c3b3d462d11fb3a50cb89c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-bielecka2014",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+          "locator": "Characterization of CSFAD2A p.3 et CSFAD3A p.4",
+          "result": "Deux tests fonctionnels dans Saccharomyces cerevisiae.",
+          "sourceHash": "6bafefd029deddd2deb890014366add9d9a5d3a8b00510ce2bcaed7f8ecb6c95",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Identifier le système hétérologue de cet article est un rappel de dispositif précis, avec quatre modèles expérimentaux crédibles. L’explication sur l’intérêt des tests ne simplifie pas la tâche réellement posée.",
+          "requestedChange": "Classer niveau 3 et adapter la justification."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-similar-phenology",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "7b148a625bf41aa846568a11b25085bce07ae2a79bff36fde2ade2d375d9a805",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.1 p.5, phrase Crop phenology",
+          "result": "Phénologie similaire dans les trois environnements.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le constat de phénologie similaire n’est pas donné dans l’énoncé ; il faut connaître le bilan des trois environnements d’une étude précise. L’objectif couleur/précocité reste pertinent mais n’est pas testé sous forme de raisonnement.",
+          "requestedChange": "Classer niveau 3 ; autre possibilité, une vraie situation d’interprétation explicitement étayée, distincte d’une répétition de données."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-higher-bast-fraction",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "17ce4020f4fe94bd42d5d8c7b531121cae36939424c42ecb69215d18d94bc417",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-blandinieres2023",
+          "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+          "locator": "§3.2 p.7, bast fibre content",
+          "result": "Fraction moyenne de fibres libériennes supérieure.",
+          "sourceHash": "ade1549645067a0ebf61542813cfc134f2b642c509f85d071defe61b23ca42b9",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-paper-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le sens de la différence de fraction libérienne est un résultat propre au comparatif, non déductible du nom Fibror ni du concept proportion/rendement. Ce concept est expliqué après la réponse mais ne constitue pas la tâche posée.",
+          "requestedChange": "Classer niveau 3 et adapter la justification, ou faire une vraie distinction proportion/production sans réutiliser un ancien exercice."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-main-monoterpenes",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "d8d209effe5201f898f33ae91e985af4224a3cd83ace8999ae95beb38028fe4e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-orient-express",
+          "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+          "locator": "Additional information, Terpene profile ligne97",
+          "result": "Bêta-myrcène et alpha-pinène annoncés principaux monoterpènes.",
+          "sourceHash": "374388d3ef495668c86c692c4cd91b64ec1fc58497b3b5e4e38b952aa836e1d8",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Il faut retrouver deux molécules particulières parmi quatre couples chimiquement plausibles dans le profil d’une variété précise ; c’est un rappel spécialisé au même titre que le sesquiterpène de la question suivante.",
+          "requestedChange": "Classer niveau 3 pour ce profil analytique précis, sans modifier sa portée attribuée à ACE."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-repeated-yunnan-parent",
+      "status": "changes_requested",
+      "comment": "Réponse étayée ; retouches de portée ou de difficulté demandées ci-dessous.",
+      "contentHash": "1d1dbda79c7bff08148ffd52a24a59289e0007a4bba207b07472d11f32e44974",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b04-ace-kali-china",
+          "url": "https://www.aceseeds.org/en/seeds/kali-china-feminized-seeds/",
+          "locator": "Additional information, Genetics ligne90",
+          "result": "Pedigree avec seconde contribution China Yunnan annoncé.",
+          "sourceHash": "360efed77f180573943184d8bef8f8be8c3ace598155bfb8919f85b88ead2352",
+          "sourceRegistry": "docs/quiz-2000/batches/b-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-commercial-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Le pedigree emboîté exact exige de distinguer trois contributions parentales d’une fiche précise ; le parent réintroduit n’est pas fourni. La tâche réelle dépasse la simple lecture d’un pedigree déjà affiché.",
+          "requestedChange": "Classer niveau 3 et adapter difficultyRationale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "rootFinalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "scope": "Ten corrected full objects after F source review;21 initial approvals and9 source objects preserved exactly. Nine level/rationale adjustments, plus one level/rationale and homozygote-scope adjustment.",
+    "sourceReadingAttribution": "All original sourceChecks remain attributed to f_existing_audit; root does not claim new browsing."
+  },
+  "summaryBeforeDeliveryNormalization": {
+    "historicalContext": true,
+    "record": {
+      "total": 31,
+      "approved": 31,
+      "changes_requested": 0,
+      "rejected": 0,
+      "sourceObjects": 9,
+      "sourceChecks": 31,
+      "documentsOrPassagesOpenedForThisReview": 9,
+      "earlierFReadingsReused": 0,
+      "sourceAccessBlocked": 0,
+      "unverifiedSources": 0,
+      "exactDuplicateConfirmed": 0,
+      "semanticOverlapAwaitingArbitration": 0,
+      "blockingFactualContradictionConfirmed": 0,
+      "scopeCorrectionsRequested": 1,
+      "difficultyAdjustmentsRequested": 10,
+      "declaredLevels": {
+        "2": 24,
+        "3": 7
+      },
+      "decisions": "Vingt-et-un objets approuvés sur leurs empreintes exactes ; dix retouches demandées, principalement de niveau, avec qualification homozygote nécessaire pour csfad2a. Toutes les preuves déclarées contrôlées dans leurs limites."
+    }
+  }
+}

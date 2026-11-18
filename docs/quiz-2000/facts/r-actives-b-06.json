@@ -1,0 +1,806 @@
+{
+  "batchId": "r-actives-b-06",
+  "author": "rebalance_classify_b",
+  "createdAt": "2026-11-17",
+  "status": "author-frozen-awaiting-independent-review",
+  "count": 35,
+  "domains": {
+    "active": 35
+  },
+  "newLineageQuestions": 11,
+  "totalNewLineageQuestionsByAuthor": 27,
+  "levels": {
+    "1": 15,
+    "2": 20,
+    "3": 0,
+    "4": 0
+  },
+  "sourceEvidence": [
+    {
+      "id": "hemp-q2-rb06-super-lemon-haze-parentage",
+      "contentHash": "eb7c0348835cc8ff68117884345667e08867e5850b400a097b02a6bab807477b",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-slh",
+          "locator": "GENETICS et Description : Lemon Skunk x Super Silver Haze",
+          "support": "La rubrique Genetics indique Lemon Skunk x Super Silver Haze."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-chocolope-parentage",
+      "contentHash": "d8d48d8c70b95f7d830a470ec9dcc04abfde9809b50f8d0422a4bf9ea51edbb1",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-chocolope",
+          "locator": "Discovering the Roots et Genetic Background : Chocolate Thai x Cannalope Haze ; introduction et A Sensory Delight : notes de café",
+          "support": "La page DNA et son tableau génétique indiquent les deux parents."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-nyc-diesel-pamplemousse",
+      "contentHash": "e2ff655964a577911b8d38c15145124ccaf453f78dbeb93b4ca6158c25507068",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-nyc",
+          "locator": "Strain Description : pamplemousse rouge ; croisement de lignées mexicaine et afghane",
+          "support": "Strain Description mentionne ripe red grapefruits puis lime and grapefruit."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-amnesia-haze-asie-sud-est",
+      "contentHash": "ad4ff5ac7fc634db05f673ab86ce8a69d6ae2f74e9ca6b536b744604b1260068",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-amnesia",
+          "locator": "Strain Description, apports Southeast Asian, Jamaican Haze et Afghani-Hawaiian",
+          "support": "La description cite Southeast Asian genetics, Thai sticks, Cambodian, Laotian."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-orange-bud-selection-skunk",
+      "contentHash": "25800c5415682267a2ddfda8c35e0cf090ddd45a2a06df021bddfce5126bf811",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-orange",
+          "locator": "Orange Bud, buds are very sweet ; Orange Bud is an easy to grow Skunk : sélection Skunk originale",
+          "support": "La page parle d’une extensive Skunk selection et unique Skunk selection."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-power-plant-afrique-sud",
+      "contentHash": "dab2bc0b8b78c673c8af81b858ad70da1d29bbe4b594a250e5236e52ff7c91ad",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-power",
+          "locator": "Rubrique What kind of genetics : origines South Africa ; rubrique aroma : woody spicy earthy floral",
+          "support": "La rubrique Genetics dit originate from South Africa."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-jack-flash-famille-jack",
+      "contentHash": "d850c2dc05511b5676c0a40d478ee8cc3e691ac1e709c39cfc45d4573336a3ee",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-jack",
+          "locator": "À propos de la Jack Flash et Schéma de croissance : Jack Herer, Super Skunk et Haze",
+          "support": "À propos et Schéma de croissance citent Jack Herer, Super Skunk et Haze."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-sensi-star-paradise",
+      "contentHash": "4d8ad0ed39b279dc67173e52282ed866b0418bb7b6697084e0ca54e5e10265e9",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-sensi",
+          "locator": "En-tête by Paradise Seeds et About this product",
+          "support": "La notice de marque est intitulée SENSI STAR, by Paradise Seeds."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-nyc-diesel-origines",
+      "contentHash": "fba0c981bedaf76947cca07f970ee395827c71dea2154922230375dca2ad5e50",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-nyc",
+          "locator": "Strain Description : pamplemousse rouge ; croisement de lignées mexicaine et afghane",
+          "support": "L’en-tête et Strain Description indiquent Mexican Sativa x Afghani et landraces mexicaine et afghane."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-power-plant-profil-boise",
+      "contentHash": "97f6e2eb2835d4884617aee701e56e4e39e3c69d20d1d8313d13b4c0a46cc3aa",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-power",
+          "locator": "Rubrique What kind of genetics : origines South Africa ; rubrique aroma : woody spicy earthy floral",
+          "support": "La rubrique aroma mentionne woody, spicy, earthy and floral."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-cone-papier-vide",
+      "contentHash": "d29d826187becf1dfcdfef88a1ef4bf5c401fcdd620f4cdfd5db9f50eb2c992b",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-cones",
+          "locator": "Are the pre-rolled cones empty or already filled? ; What is a crutch?",
+          "support": "La FAQ précise empty, paper formed into cone, crutch attached, no cannabis included."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-crutch-embout-joint",
+      "contentHash": "6dd07fe00d6faec790af35c0a2ad72929e06c953f4c6fb0b18fb538b449845c4",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-cones",
+          "locator": "Are the pre-rolled cones empty or already filled? ; What is a crutch?",
+          "support": "La FAQ définit crutch comme filter tip at the mouth end, structure et limitation des fragments."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-chocolope-note-cafe",
+      "contentHash": "44bcb1fdd13b0c06935b06d0262b057949f4039eb93412fe2654a869f5b6dd0f",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-chocolope",
+          "locator": "Discovering the Roots et Genetic Background : Chocolate Thai x Cannalope Haze ; introduction et A Sensory Delight : notes de café",
+          "support": "L’introduction et A Sensory Delight mentionnent coffee-like notes et robust coffee."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-grinder-tamis-kief",
+      "contentHash": "290088d10a98ae316d2e3fb0004ecdef465abf8a74ebac6a3cce56e62ab34d8c",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-screen",
+          "locator": "Best Kief Screen, tamis du grinder quatre parties et compartiment récupérateur",
+          "support": "La présentation Best Kief Screen décrit tamis et kief collector du modèle quatre parties."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-ganja-herbe",
+      "contentHash": "6d3f50cb0146ece36f89bce1b0880decd3c9d3708ee95efbb5f58c6e77b1a21f",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-ganja",
+          "locator": "§4.14, p16 imprimée, PDFindex21 : herbal cannabis, ganja, dried leaves and flowering tops",
+          "support": "Le rapport distingue herbal cannabis, dont ganja, cannabis resin et cannabis oil."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-dagga-afrique-australe",
+      "contentHash": "f7b64da2a5ed9f3931279ed5f4e71e2af681558a5b82659d78f60ed5889d1a9d",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-dagga",
+          "locator": "Paragraphe distinguant les appellations hemp et dagga au sein du cannabis",
+          "support": "Le communiqué officiel sud-africain emploie dagga pour parler de cannabis."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-thai-sticks-presentation",
+      "contentHash": "ec92a30694251aae83081538b28b788e4132b559d941f0a27c3d0dc4c21482dc",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-thai",
+          "locator": "Note3, dernière page du PDF : marijuana buds bound on short sections of bamboo",
+          "support": "La note3 définit notamment marijuana buds bound on short sections of bamboo."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-roach-megot",
+      "contentHash": "e3f7e7826b62c82aee2a73cae7fb6fe58f0a4402cd272c60b38c9a50c23635b9",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-roach",
+          "locator": "Description : roach = marijuana stub ; roach clip = petite pince tenant le mégot",
+          "support": "La notice muséale définit roach comme marijuana stub."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-roach-clip-pince",
+      "contentHash": "14adaa19b1d2a057bee8c2cf9724044503951d9f7f8ad87918d320c04486099a",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-roach",
+          "locator": "Description : roach = marijuana stub ; roach clip = petite pince tenant le mégot",
+          "support": "La notice décrit un small tweezer-like tool pour tenir le roach en évitant de brûler les doigts."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-grinder-fragmenter-fleurs",
+      "contentHash": "48cfc9f817a9f477c645018e7268eb07e89dd79ff830a231c6d84cb618040123",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-grinder",
+          "locator": "p1, liste des accessoires, Grinder : breaks marijuana up into smaller bits",
+          "support": "La liste SAMHSA définit grinder comme outil qui breaks marijuana up into smaller bits."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-afroman-because-high",
+      "contentHash": "5b4a7587f2b87f67c5795321ef42bac1e6685566e432b68443b8d6c8c0197f1d",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-afroman",
+          "locator": "Table des nominations : Because I Got High, Afroman,2002",
+          "support": "Le registre Recording Academy associe Because I Got High à Afroman."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-sweet-leaf-black-sabbath",
+      "contentHash": "99d029fe364ec9523fab1841b25210be1fc2696ac7dd5b0ba5a7a0495337f449",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-sabbath",
+          "locator": "Présentation de Sweet Leaf ; témoignage attribué au batteur Bill Ward sur le sujet marijuana",
+          "support": "La notice du label attribue le morceau et l’album à Black Sabbath et cite Ward sur son sujet marijuana."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-sublime-smoke-two-joints",
+      "contentHash": "a5f6225f83a1946013e0bb170178e0b27aab1eecfb417e9fcf1283853c80c9b9",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-sublime",
+          "locator": "Description de l’album de 1992 et piste Smoke Two Joints",
+          "support": "La boutique du label décrit l’album1992 de Sublime et donne cette piste."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-reefer-adaptation-musicale",
+      "contentHash": "8113993c7d65a3df62a98d7e3de6151895659f8dcf828d2e019fd1d97e0b1930",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-reefer",
+          "locator": "Synopsis : musical comedy satirique inspirée du film de 1936",
+          "support": "Le synopsis de la troupe universitaire indique musical comedy et satirical political commentary."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-toklas-film-sellers",
+      "contentHash": "895e1f0443a26dff1d41415eedc5a5c657d09a4293cdafd93d1e360783c759bf",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-toklas",
+          "locator": "Synopsis : Peter Sellers, avocat Harold Fine, brownies au cannabis et rapprochement de la contre-culture hippie",
+          "support": "Le synopsis AFI nomme Peter Sellers, Harold Fine, attorney et hash brownies."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-emerald-triangle-comtes",
+      "contentHash": "82eadab83cd16818a633b493ee18d49c1f33b4357f4441edae7750a675eaff71",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-emerald",
+          "locator": "§1.2.6 Other Crops, p1-18 imprimée/PDFindex26 : Humboldt, Mendocino, Trinity",
+          "support": "§1.2.6 énumère Humboldt, Mendocino et Trinity."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-emerald-retour-terre",
+      "contentHash": "b780a7cab633748bc58419d4eb5c9c1dadd324e21669d1e7190b423c3a56dcd5",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-backland",
+          "locator": "Historical Context, PDFp10–11/index9–10 : mouvements hippies de retour à la terre et développement des marchés locaux de cannabis",
+          "support": "Le rapport décrit migrations hippies/back-to-the-land et développement des marchés locaux de cannabis."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-hash-bash-ann-arbor",
+      "contentHash": "94d1b21531ffb337f1cbdba224b49ee0d3cc1c61400d4e034f36549ee54061e8",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-hashbash",
+          "locator": "Présentation de Hash Bash sur le Diag et localisation Ann Arbor",
+          "support": "La communication officielle universitaire situe Hash Bash sur le Diag et à Ann Arbor."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-cannabis-cup-amsterdam",
+      "contentHash": "603d22c62dd623be7d82a8f1f167e501c533b3f488e576d5452dcdccc58c991c",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-cup",
+          "locator": "Introduction et paragraphe sur le premier concours à Amsterdam en 1988",
+          "support": "Le récit organisateur situe le premier concours à Amsterdam en 1988."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-cannabis-cup-jury-public",
+      "contentHash": "e087bef65d8172d2bbfeb377cd5b0a6517094137d1fea8fde5f2b81aab85b4be",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-jury",
+          "locator": "Judging Process : clients/juges, notes apparence/arôme/goût/effet, scores déterminant les gagnants",
+          "support": "Judging Process : customers avec judge kits, notes et scores déterminant winners."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-caurd-equite-condamnations",
+      "contentHash": "3c3c8fa75640024fad46c8c0c1e4c30fa303089eb6860c2928a82babe64c0f73",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-caurd",
+          "locator": "Diapositive4/PDFindex3 : justice involved, impact d’une condamnation cannabis, y compris certaines familles",
+          "support": "La présentation définit justice involved par un impact de condamnation cannabis, personnel ou familial."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-ncaa2024-cannabinoides-retrait",
+      "contentHash": "2e81b58bc0aef2977e0d0eaeba3b138402c5e426fb3b2fc9d9eb5309f1540131",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-ncaa",
+          "locator": "PDFp19/index18, proposition 2024-20 : remove cannabinoids from banned drug classes, Adopted Final",
+          "support": "Le rapport juin 2024 donne2024-20 remove cannabinoids, adopté définitivement."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-pipes-verre-grateful-dead",
+      "contentHash": "6c66cd9954a3d59df9376fb2a98cfb544964fa35d54199f57b43f3c8c95010a8",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-glassart",
+          "locator": "Présentation de l’ouvrage : scène underground des concerts Grateful Dead dans les années 1980–1990",
+          "support": "La notice de l’ouvrage cite underground scene of Grateful Dead concerts1980s1990s."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-cbg-cannabigerol",
+      "contentHash": "38bedec1c6773da2d1aa652e6bc155ab55b80144ef4e1df1593d02253b550896",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-cbg",
+          "locator": "p1, première phrase du résumé : Cannabigerol (CBG)",
+          "support": "La première phrase du résumé identifie Cannabigerol (CBG)."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb06-thc-fatigue-somnolence",
+      "contentHash": "d9d2fe757f8b782322b19af6d636ae59a8a8d97cf8555bd807ec059cfb85fc51",
+      "evidence": [
+        {
+          "sourceId": "q2-rb06-sleep",
+          "locator": "Examples of THC side effects : feeling tired or sleepy",
+          "support": "La rubrique Examples of THC side effects inclut feeling tired or sleepy."
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rb06-slh",
+      "sourceHash": "16cc1c3bf069ac979101bdc4784f41c3681bd59766c0aef182857be3ada21046",
+      "url": "https://shop.greenhouseseeds.nl/feminised-cannabis-seeds/1-seed-pack/super-lemon-haze/?variation_id=26",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "GENETICS et Description : Lemon Skunk x Super Silver Haze",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-chocolope",
+      "sourceHash": "78bf97f9d3dae6af73a95c525a9f3cd1d54abef535fdd4e07c609c44845c0e24",
+      "url": "https://dnagenetics.com/chocolope/",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Discovering the Roots et Genetic Background : Chocolate Thai x Cannalope Haze ; introduction et A Sensory Delight : notes de café",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-nyc",
+      "sourceHash": "04dd7daf11b6a9ac8a37c70778de74d3079f0e938f23d0006bb2da5884ede0ec",
+      "url": "https://www.somaseeds.nl/product/new-york-city-diesel",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Strain Description : pamplemousse rouge ; croisement de lignées mexicaine et afghane",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-amnesia",
+      "sourceHash": "7efda16eb2a21f5b5cb780a12ffe7862cde9da8aa9827891566ddcc2cc6c51c8",
+      "url": "https://www.somaseeds.nl/product/amnesia-haze",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Strain Description, apports Southeast Asian, Jamaican Haze et Afghani-Hawaiian",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-orange",
+      "sourceHash": "695d39e3baec84fa68630bfb9410876c77368f5f7f3988c6dabfc7f1011287d0",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/orange-bud",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Orange Bud, buds are very sweet ; Orange Bud is an easy to grow Skunk : sélection Skunk originale",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-power",
+      "sourceHash": "e546ab56e4d6bd6660e702e783d7db8a003eaad3dd9af3d556a02890d93bda39",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/power-plant",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Rubrique What kind of genetics : origines South Africa ; rubrique aroma : woody spicy earthy floral",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-jack",
+      "sourceHash": "399b1819fca94138d78f80b4e35ddcb252693a60bd7c5ca0e5600d1e30a0b0a4",
+      "url": "https://sensiseeds.com/fr/graines-de-cannabis/sensi-seeds/jack-flash",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "À propos de la Jack Flash et Schéma de croissance : Jack Herer, Super Skunk et Haze",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-sensi",
+      "sourceHash": "d8b35de7b9d0293a70cddcc4e02486f6e2f600b1d80d4f843b5b3b4224ca87ae",
+      "url": "https://www.leafly.com/brands/paradise-seeds/products/paradise-seeds-sensi-star",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "En-tête by Paradise Seeds et About this product",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-cones",
+      "sourceHash": "ca930d6db53dfceae8cf842a353b97fdc9855a7930c046440c146ad22a26b6bf",
+      "url": "https://sanapackaging.com/pages/pre-rolled-cones-faq",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Are the pre-rolled cones empty or already filled? ; What is a crutch?",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-screen",
+      "sourceHash": "3901c0c2a568111aa07180332510e6c30d9a415fc98f25b22ef592f70c9fc59a",
+      "url": "https://santacruzshredder.com/blogs/news/1-grinder-with-the-fluffiest-grind",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Best Kief Screen, tamis du grinder quatre parties et compartiment récupérateur",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-ganja",
+      "sourceHash": "7a5180fafc1442139f24e11695e7d385e0cf5c30383eedfc56ee8d158e2bce32",
+      "url": "https://monographs.iarc.who.int/wp-content/uploads/2018/08/14-002.pdf",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "§4.14, p16 imprimée, PDFindex21 : herbal cannabis, ganja, dried leaves and flowering tops",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-dagga",
+      "sourceHash": "177468cd31fad002cfad7564e00a4b1ef1bc674c008427f454d1357205bc2a01",
+      "url": "https://www.gov.za/news/media-statements/minister-thoko-didiza-opening-application-process-hemp-permits-29-oct-2021",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Paragraphe distinguant les appellations hemp et dagga au sein du cannabis",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-thai",
+      "sourceHash": "a4cdf03fcf31b5a7178a4ca0245d24f7cc2b8b5b4919af062f1cc33b9be4d511",
+      "url": "https://doha.ogc.osd.mil/Industrial-Security-Program/Industrial-Security-Clearance-Decisions/ISCR-Hearing-Decisions/Archived-ISCR-Hearing-Decisions/2016-and-Prior-ISCR-Hearing-Decisions-13/FileId/146510/",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Note3, dernière page du PDF : marijuana buds bound on short sections of bamboo",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-roach",
+      "sourceHash": "5099046e2320893f80c59e9e7ade806a644863275c600745a49f1442272f789b",
+      "url": "https://www.americanhistory.si.edu/collections/object/nmah_2045735",
+      "access": "excerpt",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Description : roach = marijuana stub ; roach clip = petite pince tenant le mégot",
+        "result": "Extrait textuel indexé effectivement lu ; accès direct incomplet, aucune lecture intégrale revendiquée."
+      }
+    },
+    {
+      "id": "q2-rb06-grinder",
+      "sourceHash": "4f49676b4127dcba1695838b7881f521869a50a93eb4077e470d3ca3e37279fa",
+      "url": "https://dhhr.wv.gov/HealthCheck/teens/SiteAssets/Pages/Monthly/Talking%20With%20Your%20Teen%20About%20Marijuana.pdf",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "p1, liste des accessoires, Grinder : breaks marijuana up into smaller bits",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-afroman",
+      "sourceHash": "6aead0d389afa5de5fc70c4c89b7b1a85fb9eb7826bdb182b419350d37cd3872",
+      "url": "https://www.grammy.com/artists/afroman/369/",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Table des nominations : Because I Got High, Afroman,2002",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-sabbath",
+      "sourceHash": "f145233b75f25787fc64a8ae496e041bf2a90bc3f74aa4538357da6db343e29a",
+      "url": "https://www.rhino.com/article/doom-generation-inside-black-sabbaths-master-of-reality",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation de Sweet Leaf ; témoignage attribué au batteur Bill Ward sur le sujet marijuana",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-sublime",
+      "sourceHash": "f08254c9b7b029b5c3a0b87a55eda4a1ca6c0520885a80563053c19d43c9f348",
+      "url": "https://shop.udiscovermusic.com/collections/sublime/products/sublime-40oz-to-freedom-lp",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Description de l’album de 1992 et piste Smoke Two Joints",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-reefer",
+      "sourceHash": "24bb9d4e1d0022c8259e7872a19cc9602a4da8b8ced971a1b367e849120c34fe",
+      "url": "https://mtg.mit.edu/26/",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis : musical comedy satirique inspirée du film de 1936",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-toklas",
+      "sourceHash": "419d191700d39d70177a9f2aae55eb51ae5c31bd7fef0a477298ab2788e69340",
+      "url": "https://watch.afi.com/movie/i-love-you-alice-b-toklas",
+      "access": "catalogue",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis : Peter Sellers, avocat Harold Fine, brownies au cannabis et rapprochement de la contre-culture hippie",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-emerald",
+      "sourceHash": "73c03fb4dfcc7996811a398ea88cc0ade7953abcf0a1680fc779264186b26725",
+      "url": "https://humboldtgov.org/DocumentCenter/View/1428/Agricultural-Resources-and-Policies-Full-Report-PDF",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "§1.2.6 Other Crops, p1-18 imprimée/PDFindex26 : Humboldt, Mendocino, Trinity",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-backland",
+      "sourceHash": "57ab1cd556576851e807bdd7c42a36675bb9ff1cda97c2e40a1030442e30e655",
+      "url": "https://ccrp.humboldt.edu/sites/default/files/mendocino_county_cannabis_equity_assessment.pdf",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Historical Context, PDFp10–11/index9–10 : mouvements hippies de retour à la terre et développement des marchés locaux de cannabis",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-hashbash",
+      "sourceHash": "0c1f4b9e99de131ceb2a2eb729e5e371fc6fc19f5e086f6ad6a0190677b25127",
+      "url": "https://www.dpss.umich.edu/news-and-alerts/news/important-information-ahead-of-hash-bash-2026/",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation de Hash Bash sur le Diag et localisation Ann Arbor",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-cup",
+      "sourceHash": "53434450097ac7c36f060b406f5a59563ca2811db7ff3396562bf618ef7f8fcf",
+      "url": "https://cannabiscup.com/welcome-amsterdam-birthplace-cannabis-cup/",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction et paragraphe sur le premier concours à Amsterdam en 1988",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-jury",
+      "sourceHash": "e8cee325efa02822609af1d182194fdc700cd5444486d8b5e41c7ea7562bebe5",
+      "url": "https://cannabiscup.com/new-york-2025/",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Judging Process : clients/juges, notes apparence/arôme/goût/effet, scores déterminant les gagnants",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-caurd",
+      "sourceHash": "761a5dee9e9e647278abdbdffeccaab591fa0fcdec9da2ba998b5453857f9641",
+      "url": "https://cannabis.ny.gov/system/files/documents/2022/08/caurd-am-i-eligible.pdf",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Diapositive4/PDFindex3 : justice involved, impact d’une condamnation cannabis, y compris certaines familles",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-ncaa",
+      "sourceHash": "148c08ed1560fdf36d3a847f1ddce859cd3abe9de4a59c4510bcfb17e853a6e2",
+      "url": "https://ncaaorg.s3.amazonaws.com/committees/d1/council/Jun2024D1Council_Report.pdf",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "PDFp19/index18, proposition 2024-20 : remove cannabinoids from banned drug classes, Adopted Final",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-glassart",
+      "sourceHash": "a0ba1655975dcd4e3ee441f4625408922b6ea22321a365c15637d89c94b0ddb4",
+      "url": "https://shops.cmog.org/high-style-art-cannabis-pipes",
+      "access": "catalogue",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation de l’ouvrage : scène underground des concerts Grateful Dead dans les années 1980–1990",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-cbg",
+      "sourceHash": "852879fbbd85b5b8c8efede48348b9e75a3648818f30685f13947f21882690a6",
+      "url": "https://ethanrusso.org/wp-content/uploads/2024/07/Cuttler_et_al-Acute-effects-of-cannabigerol-on-anxiety-stressm-and-mood-A-double-blind-placebo-controled-crossover-field-trial-Scientific-Reports-2024.pdf",
+      "access": "full-text",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "p1, première phrase du résumé : Cannabigerol (CBG)",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb06-sleep",
+      "sourceHash": "aa5dec1385747d960544bfd436b7ae6c1a7032e7de681b8dd60bbbc1963209c4",
+      "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+      "access": "official-page",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Examples of THC side effects : feeling tired or sleepy",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    }
+  ],
+  "closePairs": [
+    {
+      "newId": "hemp-q2-rb06-grinder-tamis-kief",
+      "neighbor": "hemp-q2-rp01-kief-loose-trichome-powder",
+      "decision": "Le nouvel objet teste un compartiment d’accessoire, l’ancien définit la matière kief. Le nouveau conserve son identité en explication sans poser à nouveau la définition."
+    },
+    {
+      "newId": "hemp-q2-rb06-cone-papier-vide",
+      "neighbor": "hemp-q2-rp01-pre-roll-already-rolled-flower",
+      "decision": "Accessoire vendu vide et forme de papier préfabriquée, distinct du produit de cannabis rempli. Distinction de vocabulaire commercial explicitement donnée."
+    },
+    {
+      "newId": "hemp-q2-rb06-crutch-embout-joint",
+      "neighbor": "hemp-q2-rb06-roach-clip-pince",
+      "decision": "Embout papier faisant partie du joint versus pince extérieure tenant un mégot ; objets et fonctions distincts."
+    },
+    {
+      "newId": "hemp-q2-rb06-reefer-adaptation-musicale",
+      "neighbor": "hemp-q2-rb02-reefer-film-culte",
+      "decision": "Adaptation théâtrale musicale satirique versus réception du film original en séances de cinéma."
+    },
+    {
+      "newId": "hemp-q2-rb06-toklas-film-sellers",
+      "neighbor": "hemp-q2-rb03-toklas-livre-recettes",
+      "decision": "Fiction cinématographique et interprète, distincts de la nature du livre et de la contribution de Brion Gysin."
+    },
+    {
+      "newId": "hemp-q2-rb06-cbg-cannabigerol",
+      "neighbor": "hemp-q2-ra02-cbg-acute-anxiety-human-exploratory-signal",
+      "decision": "Identité du sigle CBG, distincte du résultat exploratoire anxiété. Transfert de fait explicitement coordonné avec A."
+    },
+    {
+      "newId": "hemp-q2-rb06-thc-fatigue-somnolence",
+      "neighbor": "hemp-q2-ra03-cbd-insomnia-severity-no-placebo-difference",
+      "decision": "Effet possible du THC, distinct d’un essai CBD/insomnie, de la tolérance et des interactions avec sédatifs. Disponibilité confirmée par A et C."
+    }
+  ],
+  "externalOnly": "Aucun catalogue du site ni producteur interne utilisé. Sources externes ouvertes indépendamment ; une notice Smithsonian en extrait primaire indexé honnêtement déclaré. Les11faits de lignées sont attribués aux versions commerciales exactes.",
+  "review": "Aucune approbation par l’auteur. Première relecture indépendante requise."
+}

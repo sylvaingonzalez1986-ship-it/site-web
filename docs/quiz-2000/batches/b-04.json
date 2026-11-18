@@ -1,0 +1,1296 @@
+{
+  "batchId": "b-04",
+  "author": "b_external_varieties",
+  "role": "B — variétés, lignées expérimentales et profils documentés par des sources externes indépendantes",
+  "questions": [
+    {
+      "id": "hemp-q2-b04-high-oleic-line-derived-finola",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "De quel cultivar provient la lignée expérimentale High Oleic Hemp présentée par Bielecka et coll. en 2014 ?",
+      "options": [
+        "Finola",
+        "Futura 75",
+        "Fedora 17",
+        "USO 31"
+      ],
+      "answer": 0,
+      "explanation": "Les auteurs ont recherché des mutations dans une population issue de Finola. High Oleic Hemp désigne ici leur lignée expérimentale à huile modifiée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Cultivar à l'origine de la lignée expérimentale",
+        "expectedAnswer": "Finola",
+        "learningObjective": "Relier une lignée expérimentale à son matériel de départ documenté.",
+        "factKey": "high-oleic-line-derived-finola",
+        "form": "identification",
+        "difficultyRationale": "La provenance exacte d'une lignée expérimentale doit être connue ; elle ne se déduit ni de son nom ni des cultivars proposés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 3, Results, identification of mutant alleles ; p. 5, High oleic hemp oil product performance",
+            "support": "La population mutagénisée est issue de Finola ; la lignée csfad2a-1 rétrocroisée est ensuite désignée High Oleic Hemp."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-mutant-oleic-majority",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans les graines des mutants homozygotes csfad2a-1 étudiés par Bielecka en 2014, quel acide gras devient majoritaire ?",
+      "options": [
+        "L'acide linoléique",
+        "L'acide alpha-linolénique",
+        "L'acide oléique",
+        "L'acide gamma-linolénique"
+      ],
+      "answer": 2,
+      "explanation": "Chez les homozygotes csfad2a-1, l'acide oléique devient majoritaire, tandis que les proportions d'acides linoléique et alpha-linolénique diminuent.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Acide gras majoritaire du mutant csfad2a-1",
+        "expectedAnswer": "L'acide oléique",
+        "learningObjective": "Reconnaître qu'une lignée de chanvre peut avoir un profil lipidique très différent du profil habituel.",
+        "factKey": "csfad2a-mutant-oleic-majority",
+        "form": "identification",
+        "difficultyRationale": "Il faut connaître le profil lipidique publié des homozygotes csfad2a-1 ; l'identifiant du mutant ne permet pas de déduire l'acide gras majoritaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 3, Results, lignes sur les homozygotes csfad2a-1 ; figure 3c",
+            "support": "Le profil des graines homozygotes est dominé par l'acide oléique, avec diminution des acides linoléique et alpha-linolénique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-oleic-to-linoleic",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle transformation l'expression de CSFAD2A de chanvre dans la levure a-t-elle confirmée en 2014 ?",
+      "options": [
+        "Acide linoléique → acide gamma-linolénique",
+        "Acide alpha-linolénique → acide stéaridonique",
+        "Acide linoléique → acide alpha-linolénique",
+        "Acide oléique → acide linoléique"
+      ],
+      "answer": 3,
+      "explanation": "Sur l'acide oléique, CSFAD2A ajoute une double liaison en position Δ12 et forme du linoléique. L'expérience confirme une fonction enzymatique, au-delà d'une ressemblance de séquence.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Fonction de désaturase Δ12 confirmée expérimentalement",
+        "expectedAnswer": "Acide oléique → acide linoléique",
+        "learningObjective": "Distinguer une fonction démontrée par expression et une annotation fondée seulement sur la séquence.",
+        "factKey": "csfad2a-oleic-to-linoleic",
+        "form": "identification",
+        "difficultyRationale": "Il faut distinguer plusieurs transformations entre acides gras proches et comprendre le rôle d'une désaturase.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 3, Results, Functional identity of hemp desaturase genes",
+            "support": "L'expression de CSFAD2A dans Saccharomyces cerevisiae entraîne la conversion de 18:1 Δ9 en 18:2 Δ9,12, confirmant l'activité Δ12."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad3a-seed-omega3-depletion",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel changement caractérise les graines homozygotes csfad3a-1 dans l'étude de Bielecka de 2014 ?",
+      "options": [
+        "Quasi-disparition des acides alpha-linolénique et stéaridonique",
+        "Quasi-disparition des acides oléique et linoléique",
+        "Hausse conjointe des acides alpha-linolénique et stéaridonique",
+        "Remplacement du linoléique par le gamma-linolénique"
+      ],
+      "answer": 0,
+      "explanation": "L'inactivation de CSFAD3A réduit fortement les deux acides gras oméga-3 étudiés : l'alpha-linolénique devient presque nul et le stéaridonique disparaît du profil des graines.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Conséquence lipidique de csfad3a-1 dans les graines",
+        "expectedAnswer": "Quasi-disparition des acides alpha-linolénique et stéaridonique",
+        "learningObjective": "Relier un défaut de désaturation à une modification ciblée du profil, sans conclure à l'absence de tout acide gras polyinsaturé.",
+        "factKey": "csfad3a-seed-omega3-depletion",
+        "form": "identification",
+        "difficultyRationale": "Le fait exige de distinguer deux mutants et plusieurs voies de désaturation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 4, Results, analyse des graines homozygotes csfad3a-1",
+            "support": "L'acide alpha-linolénique est presque absent et le stéaridonique n'est plus détecté ; le linoléique augmente, sans variation significative du gamma-linolénique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-csfad3a-leaf-tissue-specificity",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans les feuilles des mutants csfad3a-1 étudiés en 2014, comment évolue l'acide alpha-linolénique ?",
+      "options": [
+        "Il augmente fortement par rapport au témoin",
+        "Il diminue seulement légèrement par rapport au témoin",
+        "Il disparaît complètement du profil lipidique",
+        "Il est remplacé majoritairement par de l'acide oléique"
+      ],
+      "answer": 1,
+      "explanation": "La baisse foliaire n'est que modeste. Les auteurs envisagent l'activité d'autres gènes FAD3 dans les feuilles : l'effet d'un mutant peut dépendre du tissu observé.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Effet modeste de csfad3a-1 sur l'alpha-linolénique foliaire",
+        "expectedAnswer": "Il diminue seulement légèrement par rapport au témoin",
+        "learningObjective": "Comprendre qu'un effet mesuré dans un organe ne se généralise pas automatiquement à toute la plante.",
+        "factKey": "csfad3a-leaf-tissue-specificity",
+        "form": "comparaison",
+        "difficultyRationale": "La distinction entre effet sur les feuilles et effet sur les graines demande une lecture mécanistique du phénotype.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 4, fin des Results, analyse des lipides foliaires",
+            "support": "Les feuilles csfad3a-1 ne présentent qu'une faible baisse de l'alpha-linolénique par rapport au témoin ; les auteurs envisagent d'autres gènes FAD3 actifs dans les feuilles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-stability-extrapolation",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'étude de 2014, comment la meilleure stabilité de l'huile High Oleic Hemp a-t-elle été estimée ?",
+      "options": [
+        "Par suivi de bouteilles durant toute la durée prédite",
+        "Par dosage du nombre total de doubles liaisons seulement",
+        "Par oxydation accélérée puis extrapolation Rancimat",
+        "Par l'indice de peroxyde d'une seule bouteille à un seul instant"
+      ],
+      "answer": 2,
+      "explanation": "Le test Rancimat accélère l'oxydation, puis permet une extrapolation. La stabilité annoncée est une estimation expérimentale, pas l'observation de chaque bouteille sur toute cette durée.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Méthode et portée de l'estimation de stabilité",
+        "expectedAnswer": "Par oxydation accélérée puis extrapolation Rancimat",
+        "learningObjective": "Distinguer une prévision issue d'un essai accéléré d'une durée de conservation directement observée.",
+        "factKey": "high-oleic-stability-extrapolation",
+        "form": "identification",
+        "difficultyRationale": "La tâche demande de rappeler la méthode Rancimat employée dans une étude précise, sans fournir de prémisses permettant une interprétation générale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 5, High oleic hemp oil product performance, paragraphe Rancimat",
+            "support": "Les auteurs décrivent une estimation de la stabilité par extrapolation à partir d'oxydations réalisées à températures élevées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-tocopherol-increase",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'essai de 2014, comment les tocophérols de l'huile High Oleic Hemp se comparent-ils à ceux de Finola ?",
+      "options": [
+        "Leur teneur est significativement plus faible",
+        "Leur teneur est significativement plus élevée",
+        "Leur teneur est identique dans les deux huiles",
+        "Ils sont détectés seulement dans l'huile de Finola"
+      ],
+      "answer": 1,
+      "explanation": "Les tocophérols sont plus abondants dans l'huile expérimentale. Les auteurs évoquent une contribution possible à sa stabilité, sans démontrer qu'ils en sont l'unique cause.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Tocophérols mesurés dans l'huile expérimentale",
+        "expectedAnswer": "Leur teneur est significativement plus élevée",
+        "learningObjective": "Distinguer une différence mesurée de composition d'une explication causale encore proposée.",
+        "factKey": "high-oleic-tocopherol-increase",
+        "form": "comparaison",
+        "difficultyRationale": "Le sens de variation des tocophérols est un résultat analytique précis de cette lignée ; il ne découle pas de son nom ni de sa richesse en acide oléique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 5, High oleic hemp oil product performance, paragraphe tocopherols",
+            "support": "La concentration de tocophérols de High Oleic Hemp est significativement supérieure à celle de l'huile Finola et de l'huile de colza comparatrices."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-lower-volatile-aldehydes",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans la comparaison de 2014 avec Finola, quel résultat concerne les composés volatils de l'huile High Oleic Hemp ?",
+      "options": [
+        "Davantage d'aldéhydes volatils",
+        "Aucune différence d'aldéhydes volatils",
+        "Des aldéhydes volatils présents seulement dans High Oleic Hemp",
+        "Moins d'aldéhydes volatils"
+      ],
+      "answer": 3,
+      "explanation": "L'analyse de l'espace de tête détecte moins d'aldéhydes volatils dans l'huile expérimentale. C'est un résultat analytique du comparatif, sans garantir un arôme constant de tout lot.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Diminution des aldéhydes volatils mesurés",
+        "expectedAnswer": "Moins d'aldéhydes volatils",
+        "learningObjective": "Relier une huile de cultivar expérimental à une mesure analytique de composés volatils, sans confondre mesure et promesse sensorielle.",
+        "factKey": "high-oleic-lower-volatile-aldehydes",
+        "form": "comparaison",
+        "difficultyRationale": "La réponse exige de connaître le résultat de l'analyse des aldéhydes d'un comparatif précis ; aucune donnée fournie ne permet d'en déduire le sens.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 5, High oleic hemp oil product performance, paragraphe headspace analysis",
+            "support": "L'analyse des composés volatils montre une réduction des aldéhydes dans l'huile High Oleic Hemp par rapport à Finola."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-main-tag-triolein",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel triacylglycérol domine l'huile High Oleic Hemp analysée en 2014, tout en étant absent du témoin Finola ?",
+      "options": [
+        "La trilinoléine",
+        "La tripalmitine",
+        "La trioléine",
+        "La tristéarine"
+      ],
+      "answer": 2,
+      "explanation": "La trioléine est formée de trois résidus d'acide oléique. Elle domine le profil des triacylglycérols de cette huile expérimentale et n'est pas détectée dans l'huile Finola comparée.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Triacylglycérol dominant de l'huile expérimentale",
+        "expectedAnswer": "La trioléine",
+        "learningObjective": "Distinguer le profil en acides gras et l'assemblage de ces acides gras en triacylglycérols.",
+        "factKey": "high-oleic-main-tag-triolein",
+        "form": "identification",
+        "difficultyRationale": "La question porte sur une classe de lipides moléculaires et sur un résultat analytique précis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 5, High oleic hemp oil product performance, paragraphe TAG",
+            "support": "La trioléine constitue la principale espèce moléculaire de triacylglycérol de High Oleic Hemp, alors qu'elle est absente de l'huile Finola comparatrice."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-hemp-desaturase-functional-test-yeast",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans quel organisme Bielecka et coll. ont-ils testé en 2014 l'activité des désaturases CSFAD2A et CSFAD3A de chanvre ?",
+      "options": [
+        "La levure Saccharomyces cerevisiae",
+        "La bactérie Escherichia coli",
+        "La plante Arabidopsis thaliana",
+        "La plante Nicotiana benthamiana"
+      ],
+      "answer": 0,
+      "explanation": "Les auteurs ont exprimé les gènes dans la levure Saccharomyces cerevisiae. Ce système hétérologue sert à vérifier l'activité des protéines issues du chanvre.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b04-bielecka2014"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Lignées expérimentales de Bielecka et coll. (2014)",
+        "subjectKey": "bielecka-2014-high-oleic-hemp",
+        "property": "Organisme modèle des tests fonctionnels",
+        "expectedAnswer": "La levure Saccharomyces cerevisiae",
+        "learningObjective": "Reconnaître qu'un gène de chanvre peut être étudié dans un autre organisme pour vérifier sa fonction.",
+        "factKey": "hemp-desaturase-functional-test-yeast",
+        "form": "identification",
+        "difficultyRationale": "Identifier le système hétérologue de cet article exige un rappel expérimental spécialisé parmi quatre organismes modèles crédibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-bielecka2014",
+            "locator": "PDF p. 3–4, Results, Functional identity of hemp desaturase genes et Characterization of the Cannabis sativa microsomal desaturase CSFAD3A",
+            "support": "L'activité des deux désaturases est étudiée par expression dans Saccharomyces cerevisiae."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-maturity-colour",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "À maturité des graines, quelles couleurs distinguent Fibror 79 et Futura 75 dans l'étude de Blandinières de 2023 ?",
+      "options": [
+        "Fibror 79 vert foncé ; Futura 75 jaune foncé",
+        "Fibror 79 jaune foncé ; Futura 75 vert foncé",
+        "Les deux cultivars sont vert foncé",
+        "Les deux cultivars sont jaune foncé"
+      ],
+      "answer": 1,
+      "explanation": "Les auteurs décrivent Fibror 79 jaune foncé à maturité des graines, tandis que Futura 75 reste vert foncé. La couleur est ici un caractère comparé entre deux cultivars.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-blandinieres2023"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Comparaison Fibror 79 / Futura 75 (2023)",
+        "subjectKey": "blandinieres-2023-fibror-futura",
+        "property": "Couleur comparée à maturité des graines",
+        "expectedAnswer": "Fibror 79 jaune foncé ; Futura 75 vert foncé",
+        "learningObjective": "Identifier un caractère visuel documenté plutôt que le déduire du nom d'un cultivar.",
+        "factKey": "fibror-futura-maturity-colour",
+        "form": "comparaison",
+        "difficultyRationale": "Caractère spécifique de deux cultivars, observé à un stade précis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-blandinieres2023",
+            "locator": "PDF p. 5, §3.1 Environmental and crop characteristics",
+            "support": "Fibror 79 passe d'un vert légèrement plus clair après émergence à un jaune foncé à maturité des graines ; Futura 75 reste vert foncé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-similar-phenology",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Que constate l'étude de 2023 sur la phénologie de Fibror 79 et Futura 75 dans les trois environnements ?",
+      "options": [
+        "Fibror 79 termine systématiquement son cycle plus tôt",
+        "Futura 75 termine systématiquement son cycle plus tôt",
+        "Leurs stades de développement sont similaires",
+        "Leur ordre de précocité s'inverse entre les sites"
+      ],
+      "answer": 2,
+      "explanation": "Les auteurs indiquent une phénologie similaire dans les trois environnements. Le jaunissement de Fibror 79 ne suffit donc pas à conclure à un cycle plus court dans cet essai.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-blandinieres2023"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Comparaison Fibror 79 / Futura 75 (2023)",
+        "subjectKey": "blandinieres-2023-fibror-futura",
+        "property": "Phénologie comparable entre les deux cultivars",
+        "expectedAnswer": "Leurs stades de développement sont similaires",
+        "learningObjective": "Distinguer couleur des feuilles et calendrier de développement.",
+        "factKey": "fibror-futura-similar-phenology",
+        "form": "comparaison",
+        "difficultyRationale": "Il faut connaître le bilan phénologique d'une étude précise dans trois environnements ; la couleur du cultivar ne permet pas de retrouver ce résultat.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-blandinieres2023",
+            "locator": "PDF p. 5, §3.1, première phrase sur la phénologie",
+            "support": "La phénologie des deux cultivars est similaire dans chacun des trois environnements expérimentaux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-lower-leaf-par-absorbance",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans l'essai gallois de 2021, comment les feuilles de Fibror 79 absorbent-elles la lumière photosynthétique face à Futura 75 ?",
+      "options": [
+        "Moins, avec un écart accru dans les couches inférieures",
+        "Plus, avec un écart accru dans les couches inférieures",
+        "Autant dans toutes les couches du couvert",
+        "Moins au sommet, mais plus dans les couches inférieures"
+      ],
+      "answer": 0,
+      "explanation": "L'absorption foliaire est plus faible chez Fibror 79. L'écart avec Futura 75 est modeste dans les couches supérieures et plus marqué en bas du couvert.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-blandinieres2023"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Comparaison Fibror 79 / Futura 75 (2023)",
+        "subjectKey": "blandinieres-2023-fibror-futura",
+        "property": "Absorbance foliaire selon la profondeur du couvert",
+        "expectedAnswer": "Moins, avec un écart accru dans les couches inférieures",
+        "learningObjective": "Distinguer une couleur observée d'une mesure d'absorption lumineuse, et tenir compte de la position des feuilles.",
+        "factKey": "fibror-lower-leaf-par-absorbance",
+        "form": "comparaison",
+        "difficultyRationale": "Il faut interpréter une comparaison de profils verticaux d'absorption dans un environnement défini.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-blandinieres2023",
+            "locator": "PDF p. 9, §3.3, paragraphes sur leaf PAR absorbance à AB21",
+            "support": "À AB21, l'absorbance du rayonnement photosynthétiquement actif est plus élevée chez Futura 75 ; la différence augmente dans les couches basses."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-nitrogen-uptake-hypothesis-not-supported",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Quel bilan l'étude de 2023 tire-t-elle de l'efficience d'absorption de l'azote de Fibror 79, comparée à Futura 75 ?",
+      "options": [
+        "Elle est plus faible dans les trois environnements",
+        "Elle est toujours strictement identique",
+        "Elle est plus faible au pays de Galles, plus forte en Italie",
+        "Elle n'est jamais plus faible, et parfois plus élevée"
+      ],
+      "answer": 3,
+      "explanation": "L'hypothèse d'une absorption moins efficiente chez le cultivar jaune n'est pas confirmée : Fibror 79 n'est jamais inférieur à Futura 75 et le dépasse dans l'essai gallois de 2021.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "q2-b04-blandinieres2023"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Comparaison Fibror 79 / Futura 75 (2023)",
+        "subjectKey": "blandinieres-2023-fibror-futura",
+        "property": "Hypothèse d'une moindre efficience d'absorption non confirmée",
+        "expectedAnswer": "Elle n'est jamais plus faible, et parfois plus élevée",
+        "learningObjective": "Séparer une hypothèse sur un cultivar jaune du résultat réellement observé.",
+        "factKey": "fibror-nitrogen-uptake-hypothesis-not-supported",
+        "form": "comparaison",
+        "difficultyRationale": "La notion d'efficience d'absorption et le bilan multi-environnements sont techniques ; aucune dose de fertilisation n'est demandée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-blandinieres2023",
+            "locator": "PDF p. 9, §3.4 ; p. 10, Discussion, paragraphe sur NUpE",
+            "support": "L'efficience d'absorption de l'azote de Fibror 79 n'est jamais inférieure à celle de Futura 75 ; elle est supérieure à AB21, en contradiction avec l'hypothèse initiale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-fibror-higher-bast-fraction",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Comment la part de fibres libériennes des tiges de Fibror 79 se compare-t-elle à celle de Futura 75 dans l'étude de 2023 ?",
+      "options": [
+        "Elle est plus faible en moyenne",
+        "Elle est plus élevée en moyenne",
+        "Elle est identique, seule la masse totale de tiges diffère",
+        "L'étude ne la distingue pas de la production de fibres par hectare"
+      ],
+      "answer": 1,
+      "explanation": "La fraction moyenne de fibres libériennes est de 36,0 % pour Fibror 79 contre 28,9 % pour Futura 75. Il s'agit d'une composition des tiges, distincte d'une production par hectare.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-blandinieres2023"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Comparaison Fibror 79 / Futura 75 (2023)",
+        "subjectKey": "blandinieres-2023-fibror-futura",
+        "property": "Fraction de fibres libériennes plus élevée chez Fibror 79",
+        "expectedAnswer": "Elle est plus élevée en moyenne",
+        "learningObjective": "Distinguer la proportion d'un matériau dans la tige d'une quantité produite sur une surface.",
+        "factKey": "fibror-higher-bast-fraction",
+        "form": "comparaison",
+        "difficultyRationale": "Le classement des deux cultivars pour la fraction libérienne est un résultat expérimental précis, sans prémisse permettant de le déduire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-blandinieres2023",
+            "locator": "PDF p. 7, §3.2, paragraphe sur bast fibre content",
+            "support": "Le contenu moyen en fibres libériennes, toutes conditions confondues, est de 36,0 % chez Fibror 79 contre 28,9 % chez Futura 75."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-cbg-force-frosty-less-sticky",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle combinaison d'aspect et de toucher Dutch Passion décrit-il pour les fleurs de CBG Force ?",
+      "options": [
+        "Peu givrées et très collantes",
+        "Très givrées et très collantes",
+        "Peu givrées et peu collantes",
+        "Très givrées, mais relativement peu collantes"
+      ],
+      "answer": 3,
+      "explanation": "Dutch Passion signale un aspect givré avec moins de caractère collant que d'ordinaire. Ce constat commercial ne permet pas, à lui seul, de quantifier les cannabinoïdes ou les terpènes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-dp-cbg-force"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "CBG Force",
+        "subjectKey": "cbg-force",
+        "property": "Aspect givré associé à un faible caractère collant",
+        "expectedAnswer": "Très givrées, mais relativement peu collantes",
+        "learningObjective": "Reconnaître qu'aspect résineux et adhérence ne se superposent pas nécessairement dans une description variétale.",
+        "factKey": "cbg-force-frosty-less-sticky",
+        "form": "identification",
+        "difficultyRationale": "Particularité descriptive d'un cultivar précis, explicitement attribuée à l'obtenteur.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-dp-cbg-force",
+            "locator": "Product information, paragraphes sur les fleurs frosty et less sticky",
+            "support": "L'obtenteur décrit des fleurs d'aspect givré, mais nettement moins collantes que les fleurs habituelles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-thc-victory-thcv-thc-near-equal",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel rapport entre THCV et THC Dutch Passion annonce-t-il pour THC-Victory ?",
+      "options": [
+        "Environ cinq fois plus de THCV que de THC",
+        "Des concentrations proches de THCV et de THC",
+        "Environ cinq fois plus de THC que de THCV",
+        "Du THCV sans THC mesurable"
+      ],
+      "answer": 1,
+      "explanation": "La fiche annonce des teneurs comparables en THCV et THC, résumées par un rapport 1:1. C'est le profil revendiqué de cette variété, pas une teneur garantie pour chaque plante.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-dp-thc-victory"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "THC-Victory",
+        "subjectKey": "thc-victory",
+        "property": "Rapport commercial THCV/THC proche de 1:1",
+        "expectedAnswer": "Des concentrations proches de THCV et de THC",
+        "learningObjective": "Distinguer un profil relatif de cannabinoïdes d'une promesse de concentration constante.",
+        "factKey": "thc-victory-thcv-thc-near-equal",
+        "form": "identification",
+        "difficultyRationale": "Il faut connaître le profil annoncé de cette variété ; le nom ne donne pas le rapport entre les deux molécules.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-dp-thc-victory",
+            "locator": "Product information, paragraphes présentant les teneurs de THCV et THC",
+            "support": "Dutch Passion annonce des teneurs comparables des deux cannabinoïdes, avec un rapport décrit comme 1:1."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-seriotica-serious-mimosa-cookies-cross",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement Serious Seeds revendique-t-il pour Seriotica ?",
+      "options": [
+        "Serious' Mimosa × AK-47",
+        "Serious' Mimosa × Bubble Gum",
+        "Serious' Mimosa × Cookies",
+        "Serious' Mimosa × White Russian"
+      ],
+      "answer": 2,
+      "explanation": "Serious Seeds annonce Serious' Mimosa × Cookies. Il s'agit de la parenté attribuée par l'obtenteur, et non d'une parenté déduite du nom Seriotica.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-serious-seriotica"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Seriotica",
+        "subjectKey": "seriotica",
+        "property": "Parenté revendiquée par Serious Seeds",
+        "expectedAnswer": "Serious' Mimosa × Cookies",
+        "learningObjective": "Identifier une parenté attribuée à sa source originale.",
+        "factKey": "seriotica-serious-mimosa-cookies-cross",
+        "form": "identification",
+        "difficultyRationale": "Rappel spécialisé d'un pedigree commercial, sans indice fourni par le nom de la variété.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-serious-seriotica",
+            "locator": "Informations de variété ; description, premier paragraphe sur la création",
+            "support": "Serious Seeds présente Seriotica comme un croisement entre sa Mimosa et Cookies."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-seriotica-leaves-flowers-colour",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quels organes Serious Seeds décrit-il comme pouvant prendre des tons roses, cramoisis ou violets chez Seriotica ?",
+      "options": [
+        "Les feuilles et les fleurs",
+        "Les feuilles seules",
+        "Les fleurs seules",
+        "Les tiges et pétioles seuls"
+      ],
+      "answer": 0,
+      "explanation": "La description mentionne ces couleurs à la fois dans les feuilles et dans les fleurs en fin de floraison. La formulation exprime un caractère possible, variable entre plantes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-serious-seriotica"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Seriotica",
+        "subjectKey": "seriotica",
+        "property": "Coloration annoncée des feuilles et des fleurs",
+        "expectedAnswer": "Les feuilles et les fleurs",
+        "learningObjective": "Situer une particularité de couleur sur les organes réellement décrits par l'obtenteur.",
+        "factKey": "seriotica-leaves-flowers-colour",
+        "form": "identification",
+        "difficultyRationale": "Caractère morphologique propre à une description variétale ; les organes proposés sont tous botaniquement plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-serious-seriotica",
+            "locator": "Description, paragraphe sur les couleurs en fin de floraison",
+            "support": "L'obtenteur signale des nuances roses, cramoisies ou violettes dans les feuilles et les fleurs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-desfran-destroyer-by-destroyer",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement Dutch Passion indique-t-il à l'origine de Desfrán ?",
+      "options": [
+        "Panama × Panama",
+        "Destroyer × Destroyer",
+        "Thai × Thai",
+        "Colombian Gold × Colombian Gold"
+      ],
+      "answer": 1,
+      "explanation": "La fiche donne Destroyer × Destroyer. Deux parents portant le même nom de variété ne prouvent pas, à eux seuls, une autofécondation ni l'identité génétique des deux plantes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-dp-desfran"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Desfrán",
+        "subjectKey": "desfran",
+        "property": "Croisement Destroyer × Destroyer revendiqué",
+        "expectedAnswer": "Destroyer × Destroyer",
+        "learningObjective": "Lire un pedigree sans assimiler deux parents d'une même variété à un unique clone ou à une autofécondation.",
+        "factKey": "desfran-destroyer-by-destroyer",
+        "form": "identification",
+        "difficultyRationale": "Parenté commerciale spécialisée ; les quatre choix évitent un simple indice de structure du nom.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-dp-desfran",
+            "locator": "What kind of genetics does Desfrán have exactly?, premier paragraphe",
+            "support": "Dutch Passion présente Desfrán comme le résultat du croisement de Destroyer avec Destroyer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-desfran-alberto-introduction-role",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel rôle Dutch Passion attribue-t-il à Alberto dans l'histoire de Desfrán ?",
+      "options": [
+        "La création initiale de la lignée Meao Thai",
+        "La sélection de la lignée Colombian Punto Rojo",
+        "La création initiale du cultivar Destroyer",
+        "L'introduction de Desfrán chez Dutch Passion"
+      ],
+      "answer": 3,
+      "explanation": "Dutch Passion crédite Alberto, d'Argentine, pour l'introduction de Desfrán chez l'entreprise. Ce rôle ne lui attribue pas automatiquement la création des lignées ancestrales.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-dp-desfran"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Desfrán",
+        "subjectKey": "desfran",
+        "property": "Rôle d'introduction attribué à Alberto",
+        "expectedAnswer": "L'introduction de Desfrán chez Dutch Passion",
+        "learningObjective": "Distinguer introduction chez un semencier et création des lignées constituant un pedigree.",
+        "factKey": "desfran-alberto-introduction-role",
+        "form": "identification",
+        "difficultyRationale": "Il faut distinguer des rôles historiques plausibles dans le récit commercial d'une lignée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-dp-desfran",
+            "locator": "What kind of genetics does Desfrán have exactly?, paragraphe commençant par Alberto",
+            "support": "La fiche précise que l'introduction de Desfrán chez Dutch Passion a été rendue possible grâce à Alberto, d'Argentine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-erdbeer-ticinensis-cross",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle parenté ACE Seeds annonce-t-il pour ErdPurt ?",
+      "options": [
+        "Erdbeer × China Yunnan",
+        "Erdbeer × Pakistani Chitral Kush",
+        "Erdbeer × Purpuera Ticinensis",
+        "Erdbeer × Afghani"
+      ],
+      "answer": 2,
+      "explanation": "ACE indique Erdbeer × Purpuera Ticinensis, selon l'orthographe de sa fiche. La parenté est attribuée à l'obtenteur ; elle n'est pas reconstruite à partir des syllabes du nom.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-erdpurt"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "ErdPurt",
+        "subjectKey": "erdpurt",
+        "property": "Croisement parental déclaré",
+        "expectedAnswer": "Erdbeer × Purpuera Ticinensis",
+        "learningObjective": "Retrouver une parenté documentée dans la fiche originale.",
+        "factKey": "erdpurt-erdbeer-ticinensis-cross",
+        "form": "identification",
+        "difficultyRationale": "Parenté spécialisée ; les quatre choix partagent le même premier parent pour éviter un indice superficiel.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-erdpurt",
+            "locator": "Additional information, Genetics",
+            "support": "Le tableau Genetics donne Erdbeer x Purpuera Ticinensis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-balanced-most-common-chemotypes",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Comment ACE décrit-il la répartition des profils THC/CBD dans la population ErdPurt ?",
+      "options": [
+        "Tous les individus sont riches en THC, sans CBD",
+        "Le profil équilibré est le plus courant, avec des profils extrêmes",
+        "Tous les individus sont riches en CBD, sans THC",
+        "Les profils THC seul et CBD seul dominent à parts égales"
+      ],
+      "answer": 1,
+      "explanation": "ACE annonce surtout des profils THC/CBD équilibrés, avec quelques plantes riches en THC sans CBD ou riches en CBD sans THC. Un nom variétal ne résume donc pas chaque individu.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-erdpurt"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "ErdPurt",
+        "subjectKey": "erdpurt",
+        "property": "Profil équilibré le plus courant avec profils extrêmes occasionnels",
+        "expectedAnswer": "Le profil équilibré est le plus courant, avec des profils extrêmes",
+        "learningObjective": "Reconnaître la variabilité chimique annoncée au sein d'une variété.",
+        "factKey": "erdpurt-balanced-most-common-chemotypes",
+        "form": "identification",
+        "difficultyRationale": "Répartition propre à une population nommée, sans calcul ni simple lecture du nom.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-erdpurt",
+            "locator": "Description, paragraphe sur les profils de cannabinoïdes",
+            "support": "Le profil THC/CBD équilibré est donné comme le plus fréquent ; des individus THC sans CBD ou CBD sans THC sont occasionnels."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-columnar-little-branching",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel port ACE Seeds décrit-il pour ErdPurt ?",
+      "options": [
+        "Étalé et fortement ramifié",
+        "Très élancé, à longues branches souples",
+        "Haut, à longues branches latérales espacées",
+        "Compact, colonnaire et très peu ramifié"
+      ],
+      "answer": 3,
+      "explanation": "ACE décrit une plante robuste et compacte, au port colonnaire avec très peu de ramifications. C'est un caractère morphologique annoncé, distinct d'une prédiction d'effet.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-erdpurt"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "ErdPurt",
+        "subjectKey": "erdpurt",
+        "property": "Port colonnaire presque sans ramification",
+        "expectedAnswer": "Compact, colonnaire et très peu ramifié",
+        "learningObjective": "Lire une description de port comme un caractère botanique, sans en déduire un effet psychoactif.",
+        "factKey": "erdpurt-columnar-little-branching",
+        "form": "identification",
+        "difficultyRationale": "Particularité morphologique attribuée à un cultivar, avec plusieurs ports possibles comme alternatives.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-erdpurt",
+            "locator": "Additional information, Structure",
+            "support": "Le tableau décrit ErdPurt comme robuste, compacte, colonnaire et presque dépourvue de ramifications."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-colourful-fruity-bouquet",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel bouquet ACE associe-t-il davantage aux phénotypes colorés d'ErdPurt, par contraste avec les verts ?",
+      "options": [
+        "Mûre et fraise",
+        "Café torréfié et pin",
+        "Mousse et terre humide",
+        "Herbe coupée et haschisch"
+      ],
+      "answer": 0,
+      "explanation": "La fiche associe les phénotypes colorés à des notes plus fruitées, notamment mûre et fraise. Les verts sont décrits davantage par le café, le pin, la mousse ou la terre humide.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b04-ace-erdpurt"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "ErdPurt",
+        "subjectKey": "erdpurt",
+        "property": "Bouquet plus fruité annoncé pour les phénotypes colorés",
+        "expectedAnswer": "Mûre et fraise",
+        "learningObjective": "Distinguer une association sensorielle rapportée d'un dosage chimique ou d'une règle universelle.",
+        "factKey": "erdpurt-colourful-fruity-bouquet",
+        "form": "comparaison",
+        "difficultyRationale": "Association descriptive particulière à la population annoncée ; les quatre choix sont des bouquets plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-erdpurt",
+            "locator": "Additional information, Bouquet",
+            "support": "Les phénotypes verts sont associés au café torréfié, au pin et à la terre ; les colorés à des notes plus fruitées de mûre et de fraise."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-vietnam-yunnan-cross",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement ACE Seeds revendique-t-il pour Orient Express ?",
+      "options": [
+        "Vietnam Black × Thai",
+        "China Yunnan × Thai",
+        "Vietnam Black × China Yunnan",
+        "Vietnam Black × Pakistani Chitral Kush"
+      ],
+      "answer": 2,
+      "explanation": "ACE présente Orient Express comme un croisement Vietnam Black × China Yunnan. Les noms géographiques sont ici ceux des lignées déclarées, pas une preuve autonome de provenance.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-orient-express"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Orient Express",
+        "subjectKey": "orient-express",
+        "property": "Croisement revendiqué Vietnam Black × China Yunnan",
+        "expectedAnswer": "Vietnam Black × China Yunnan",
+        "learningObjective": "Identifier les lignées parentales déclarées sans confondre leur nom et une preuve géographique indépendante.",
+        "factKey": "orient-express-vietnam-yunnan-cross",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'un pedigree commercial.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-orient-express",
+            "locator": "Additional information, Genetics ; début de la description",
+            "support": "ACE indique Vietnam Black x China Yunnan."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-main-monoterpenes",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quels monoterpènes ACE donne-t-il comme principaux dans le profil publié d'Orient Express ?",
+      "options": [
+        "Limonène et linalol",
+        "Bêta-myrcène et alpha-pinène",
+        "Terpinolène et ocimène",
+        "Bêta-pinène et gamma-terpinène"
+      ],
+      "answer": 1,
+      "explanation": "La fiche place le bêta-myrcène et l'alpha-pinène parmi les principaux monoterpènes. Ce profil publié n'est pas une composition garantie de tous les lots.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b04-ace-orient-express"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Orient Express",
+        "subjectKey": "orient-express",
+        "property": "Principaux monoterpènes du profil publié",
+        "expectedAnswer": "Bêta-myrcène et alpha-pinène",
+        "learningObjective": "Lire un profil terpénique attribué à une variété sans le transformer en composition fixe.",
+        "factKey": "orient-express-main-monoterpenes",
+        "form": "identification",
+        "difficultyRationale": "Le couple moléculaire exact d'un profil variétal publié exige un rappel spécialisé parmi quatre couples de monoterpènes plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-orient-express",
+            "locator": "Additional information, Terpene profile, monoterpenes",
+            "support": "Le profil publié est principalement composé de bêta-myrcène et d'alpha-pinène pour les monoterpènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-nerolidol-sesquiterpenes",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quel sesquiterpène ACE décrit-il comme principal dans le profil publié d'Orient Express ?",
+      "options": [
+        "Le bêta-caryophyllène",
+        "L'alpha-humulène",
+        "L'alpha-bisabolol",
+        "Le nérolidol"
+      ],
+      "answer": 3,
+      "explanation": "ACE indique une fraction de sesquiterpènes dominée par le nérolidol, devant notamment le bêta-caryophyllène et le bisabolol. La question concerne ce profil publié, sans promettre un effet.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b04-ace-orient-express"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Orient Express",
+        "subjectKey": "orient-express",
+        "property": "Sesquiterpène principal du profil publié",
+        "expectedAnswer": "Le nérolidol",
+        "learningObjective": "Distinguer la fraction de sesquiterpènes des monoterpènes d'un profil variétal.",
+        "factKey": "orient-express-nerolidol-sesquiterpenes",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire spécialisé et distinction entre plusieurs sesquiterpènes crédibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-orient-express",
+            "locator": "Additional information, Terpene profile, sesquiterpenes",
+            "support": "Les sesquiterpènes sont annoncés comme principalement constitués de nérolidol, avec des quantités modérées de bêta-caryophyllène et de bisabolol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-short-branching",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel port ACE Seeds attribue-t-il à Orient Express ?",
+      "options": [
+        "Court et très ramifié",
+        "Colonnaire et presque sans ramifications",
+        "Très élancé et peu ramifié",
+        "Court et dominé par une tige non ramifiée"
+      ],
+      "answer": 0,
+      "explanation": "Le tableau Structure décrit une plante courte avec une forte ramification. Cette description ne se déduit ni du nom Orient Express ni d'une étiquette indica/sativa.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-orient-express"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Orient Express",
+        "subjectKey": "orient-express",
+        "property": "Port court avec forte ramification",
+        "expectedAnswer": "Court et très ramifié",
+        "learningObjective": "Retrouver une morphologie variétale documentée sans se fier à un nom ou à une catégorie commerciale générale.",
+        "factKey": "orient-express-short-branching",
+        "form": "identification",
+        "difficultyRationale": "Caractère spécifique de la variété ; les alternatives sont des descriptions de port comparables.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-orient-express",
+            "locator": "Additional information, Structure",
+            "support": "ACE décrit une structure courte avec une forte ramification."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-repeated-yunnan-parent",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel pedigree ACE Seeds donne-t-il pour Kali China ?",
+      "options": [
+        "(Old Kali Mist × China Yunnan) × Old Kali Mist",
+        "(China Yunnan × Thai) × China Yunnan",
+        "(Old Kali Mist × China Yunnan) × China Yunnan",
+        "(Old Kali Mist × Vietnam Black) × China Yunnan"
+      ],
+      "answer": 2,
+      "explanation": "La fiche annonce (Old Kali Mist × China Yunnan) × China Yunnan. La répétition de China Yunnan dans le pedigree est documentée ; elle n'est pas inférée du seul nom Kali China.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-kali-china"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Kali China",
+        "subjectKey": "kali-china",
+        "property": "Pedigree avec seconde contribution China Yunnan",
+        "expectedAnswer": "(Old Kali Mist × China Yunnan) × China Yunnan",
+        "learningObjective": "Lire un pedigree emboîté et identifier le parent réintroduit.",
+        "factKey": "kali-china-repeated-yunnan-parent",
+        "form": "identification",
+        "difficultyRationale": "Retrouver ce pedigree emboîté exige de connaître les contributions parentales exactes annoncées par ACE ; le nom ne fournit pas le parent réintroduit.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-kali-china",
+            "locator": "Additional information, Genetics",
+            "support": "Le pedigree annoncé est (Old Kali Mist x China Yunnan) x China Yunnan."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-habit-environment-description",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel contraste de port ACE Seeds rapporte-t-il pour Kali China entre intérieur et extérieur ?",
+      "options": [
+        "Plus ramifié en intérieur, plus colonnaire en extérieur",
+        "Colonnaire en intérieur, plus arrondi et ramifié en extérieur",
+        "Colonnaire dans les deux environnements",
+        "Arrondi dans les deux environnements"
+      ],
+      "answer": 1,
+      "explanation": "ACE décrit un port compact et colonnaire en intérieur, puis plus arrondi et ramifié en extérieur. C'est une observation descriptive attribuée, sans consigne de conduite de culture.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b04-ace-kali-china"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Kali China",
+        "subjectKey": "kali-china",
+        "property": "Port variable selon l'environnement décrit",
+        "expectedAnswer": "Colonnaire en intérieur, plus arrondi et ramifié en extérieur",
+        "learningObjective": "Reconnaître qu'une description variétale peut préciser un contexte d'observation plutôt qu'un port unique.",
+        "factKey": "kali-china-habit-environment-description",
+        "form": "comparaison",
+        "difficultyRationale": "Le contraste morphologique est propre à la fiche ; aucune méthode de culture n'est demandée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b04-ace-kali-china",
+            "locator": "Additional information, Structure",
+            "support": "ACE décrit Kali China comme compacte et colonnaire en intérieur, plus arrondie et ramifiée en extérieur."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-b04-bielecka2014",
+      "title": "Targeted mutation of Δ12 and Δ15 desaturase genes in hemp produce major alterations in seed fatty acid composition including a high oleic hemp oil",
+      "organization": "University of York — CNAP ; Biorenewables Development Centre",
+      "url": "https://www.votehemp.com/wp-content/uploads/2018/09/pbi12167.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Monika Bielecka, Filip Kaminski, Ian Adams, Helen Poulson, Raymond Sloan, Yi Li, Tony R. Larson, Thilo Winzer et Ian A. Graham",
+      "published": "2014-02-10",
+      "passage": "Résultats : fonctions des désaturases, mutants issus de Finola, profils des graines et des feuilles ; section High oleic hemp oil product performance.",
+      "access": "full-text",
+      "documentKind": "Article de recherche original, Plant Biotechnology Journal 12, 613–623, DOI 10.1111/pbi.12167",
+      "limitation": "Copie du texte publié hébergée par Vote Hemp. Lignées expérimentales et comparateurs de cette étude ; stabilité extrapolée par essai accéléré, sans garantie de conservation d'une huile commerciale.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "PDF p. 3–5, Results ; p. 5, High oleic hemp oil product performance",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-blandinieres2023",
+      "title": "Multi-environment assessment of a yellow hemp (Cannabis sativa L.) cultivar's eco-physiology and productivity under varying levels of nitrogen fertilisation",
+      "organization": "Università Cattolica del Sacro Cuore ; Aberystwyth University",
+      "url": "https://pure.aber.ac.uk/ws/portalfiles/portal/63567554/1_s2.0_S0926669023001243_main.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Henri Blandinières, Michele Croci, Giorgio Impollonia, Andrea Marcone, Alan Gay, Ana Winters, Sarah Palmer et Stefano Amaducci",
+      "published": "2023-02-09",
+      "passage": "Comparaison de Fibror 79 et Futura 75 en Italie et au pays de Galles : couleur, phénologie, fraction de fibres libériennes, absorption lumineuse et efficience d'absorption de l'azote.",
+      "access": "full-text",
+      "documentKind": "Article de recherche original, Industrial Crops and Products 195, 116360, DOI 10.1016/j.indcrop.2023.116360",
+      "limitation": "Résultats propres aux environnements étudiés ; aucune règle universelle sur tous les chanvres jaunes ni recommandation de fertilisation n'en est tirée.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "PDF p. 5, §3.1 ; p. 7, §3.2 ; p. 9, §3.3–3.4 ; p. 10, Discussion",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-dp-cbg-force",
+      "title": "CBG Force — informations de variété",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/cbg-force",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "s.d.",
+      "passage": "Description du contraste entre l'aspect givré des fleurs et leur caractère relativement peu collant.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Observation descriptive annoncée par l'obtenteur ; ce contraste ne constitue pas une mesure universelle de cannabinoïdes ou de terpènes. Allégations sanitaires et juridiques écartées.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Product information, paragraphes sur l'apparence givrée et le caractère peu collant",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-dp-thc-victory",
+      "title": "THC-Victory — informations de variété",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/thc-victory",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "s.d.",
+      "passage": "Le profil annoncé rapproche les concentrations de THCV et de THC, avec un rapport présenté comme 1:1.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Profil commercial annoncé, sans garantie d'une teneur fixe pour chaque plante ou lot ; aucun effet sanitaire ni conseil d'usage retenu.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Product information, paragraphes sur le rapport THCV/THC",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-serious-seriotica",
+      "title": "Seriotica",
+      "organization": "Serious Seeds",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/seriotica",
+      "verifiedAt": "2026-11-16",
+      "author": "Serious Seeds",
+      "published": "s.d.",
+      "passage": "Parenté annoncée Serious' Mimosa × Cookies ; coloration rose, cramoisie ou violette des feuilles et des fleurs en fin de floraison.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Parenté et caractères attribués à Serious Seeds ; couleurs variables et descriptives. Les rapports de laboratoire liés n'ont pas été consultés ni utilisés.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Informations de variété et description, paragraphes sur le croisement et les couleurs",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-dp-desfran",
+      "title": "Desfrán — informations génétiques",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/desfran",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "s.d.",
+      "passage": "La section génétique annonce Destroyer × Destroyer et crédite Alberto, d'Argentine, pour l'introduction de Desfrán chez Dutch Passion.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Récit et pedigree commerciaux attribués à Dutch Passion ; l'introduction chez cette entreprise n'est pas assimilée à la création initiale de toutes les lignées ancestrales.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "What kind of genetics does Desfrán have exactly?, deux paragraphes",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-ace-erdpurt",
+      "title": "ErdPurt feminized seeds",
+      "organization": "ACE Seeds",
+      "url": "https://www.aceseeds.org/en/seeds/erdpurt-feminized-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "ACE Seeds",
+      "published": "s.d.",
+      "passage": "Description de la variabilité THC/CBD ; tableau Additional information, rubriques Genetics, Structure et Bouquet.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Parenté, chimie et descriptions sensorielles annoncées par ACE. Le tableau écrit « Purpuera Ticinensis » ; les caractères annoncés ne valent pas mesure de chaque lot.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Description, paragraphe sur THC/CBD ; Additional information, Genetics, Structure, Bouquet",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-ace-orient-express",
+      "title": "Orient Express feminized seeds",
+      "organization": "ACE Seeds",
+      "url": "https://www.aceseeds.org/en/seeds/orient-express-feminized-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "ACE Seeds",
+      "published": "s.d.",
+      "passage": "Additional information : parenté Vietnam Black × China Yunnan, structure courte et ramifiée, profil terpénique publié dont les sesquiterpènes sont dominés par le nérolidol.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Pedigree, morphologie et profil terpénique attribués à ACE. La fiche n'établit pas une composition identique pour toutes les plantes et tous les lots.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Additional information, Genetics, Structure, Terpene profile",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    },
+    {
+      "id": "q2-b04-ace-kali-china",
+      "title": "Kali China feminized seeds",
+      "organization": "ACE Seeds",
+      "url": "https://www.aceseeds.org/en/seeds/kali-china-feminized-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "ACE Seeds",
+      "published": "s.d.",
+      "passage": "Additional information : parenté (Old Kali Mist × China Yunnan) × China Yunnan et port contrasté selon intérieur ou extérieur.",
+      "access": "official-page",
+      "documentKind": "Fiche commerciale originale de l'obtenteur",
+      "limitation": "Parenté et morphologie décrites par ACE, sans inférence de parenté d'après le nom, sans protocole de culture ni prédiction universelle du port.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Additional information, Genetics et Structure",
+        "result": "Passages indiqués réellement ouverts et lus ; faits retenus paraphrasés."
+      }
+    }
+  ]
+}

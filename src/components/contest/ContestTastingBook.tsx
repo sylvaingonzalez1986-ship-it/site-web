@@ -367,7 +367,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
         <aside className={styles.frontispiece} aria-label="Repères du carnet">
           <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br /><em>sa découverte !</em></> : <>Les fleurs {CONTEST_ENTRY_TRACK_LABELS[chapter.track]}<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
           <figure className={styles.chapterScene}>
-            <Image src="/contest/mascot/arena-scene-carnet-v1.png" alt="Sylvain prend ses notes de dégustation à son bureau, entouré de bocaux et de fiches botaniques." width={1536} height={1024} sizes="(min-width: 900px) 500px, 1px" />
+            <Image src="/contest/mascot/arena-scene-carnet-v1.png" alt="Loïc prend ses notes de dégustation à son bureau, entouré de bocaux et de fiches botaniques." width={1536} height={1024} sizes="(min-width: 900px) 500px, 1px" />
             <figcaption>Prendre le temps. Suivre mes sens.</figcaption>
           </figure>
           <p>{view === "contents" ? PRODUCER_REWARD_RULE : CULTURES[chapter.category].subtitle}</p>

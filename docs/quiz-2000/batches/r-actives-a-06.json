@@ -1,0 +1,2023 @@
+{
+  "batchId": "r-actives-a-06",
+  "author": "rebalance_classify_a",
+  "role": "Lignées récréatives externes, distinctions réglementaires et preuves utiles sur les actifs",
+  "questions": [
+    {
+      "id": "hemp-q2-ra06-green-crack-hso-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement HSO annonce-t-il pour sa version de Green Crack ?",
+      "options": [
+        "Skunk #1 SSSC 1989 × sélection afghane",
+        "Northern Lights × sélection mexicaine",
+        "White Widow × sélection colombienne",
+        "Super Silver Haze × sélection thaïe"
+      ],
+      "answer": 0,
+      "explanation": "HSO décrit une Skunk #1 SSSC de 1989 croisée avec une sélection afghane isolée. Cette déclaration vise sa version, sans établir un pedigree universel de Green Crack.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-green-crack-hso"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Parenté attribuée à la version HSO",
+        "subjectKey": "green-crack-hso",
+        "property": "Parenté attribuée à la version HSO",
+        "expectedAnswer": "Skunk #1 SSSC 1989 × sélection afghane",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "green-crack-hso-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-green-crack-hso",
+            "locator": "Cross et Reliable origins",
+            "support": "HSO annonce 1989 SSSC Skunk #1 × Isolated Afghani Cut pour sa version de Green Crack."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-g13-haze-hawaiian-parent",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Avec quelle origine de sativa le tableau génétique de Barney’s Farm associe-t-il G13 pour G13 Haze ?",
+      "options": [
+        "Une sativa colombienne",
+        "Une sativa hawaïenne",
+        "Une sativa mexicaine",
+        "Une sativa thaïlandaise"
+      ],
+      "answer": 1,
+      "explanation": "Le tableau Genetics annonce G13 × Hawaiian Sativa. Il s’agit de la parenté revendiquée pour cette version commerciale de G13 Haze.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-g13-haze"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Origine du parent associé à G13",
+        "subjectKey": "g13-haze-barneys",
+        "property": "Origine du parent associé à G13",
+        "expectedAnswer": "Une sativa hawaïenne",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "g13-haze-hawaiian-parent",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-g13-haze",
+            "locator": "Genetics et présentation détaillée",
+            "support": "La fiche précise G13 × Hawaiian Sativa dans le tableau Genetics et dans sa présentation détaillée. L’introduction abrège le second parent en Haze."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-granddaddy-purple-ken-estes",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel acteur l’entretien de Leafly associe-t-il à la popularisation de Granddaddy Purple en 2003 ?",
+      "options": [
+        "Kyle Kushman",
+        "DJ Short",
+        "Ken Estes",
+        "Nevil Schoenmakers"
+      ],
+      "answer": 2,
+      "explanation": "L’entretien raconte le rôle de Ken Estes dans la diffusion de Granddaddy Purple. Cette attribution de popularisation ne tranche pas toutes les versions de son origine génétique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-granddaddy-purple-interview"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Acteur de la popularisation de Granddaddy Purple",
+        "subjectKey": "granddaddy-purple-history",
+        "property": "Acteur de la popularisation de Granddaddy Purple",
+        "expectedAnswer": "Ken Estes",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "granddaddy-purple-ken-estes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-granddaddy-purple-interview",
+            "locator": "Introduction et entretien avec Ken Estes",
+            "support": "L’entretien présente Ken Estes comme la personne ayant popularisé Granddaddy Purple à partir de 2003. Il restitue son propre récit, sans résoudre les pedigrees disputés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-bubba-kush-hso-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quels parents HSO attribue-t-il à sa Bubba Kush ?",
+      "options": [
+        "Skunk #1 × Haze",
+        "Blueberry × White Widow",
+        "Durban Poison × Northern Lights",
+        "OG Kush × Afghan"
+      ],
+      "answer": 3,
+      "explanation": "La fiche HSO donne OG Kush × Afghan. La réponse concerne cette version et ne résout pas à elle seule l’histoire disputée des anciennes sélections de Bubba Kush.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-bubba-kush"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Parenté annoncée de la version HSO",
+        "subjectKey": "bubba-kush-hso",
+        "property": "Parenté annoncée de la version HSO",
+        "expectedAnswer": "OG Kush × Afghan",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "bubba-kush-hso-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-bubba-kush",
+            "locator": "Cross et description",
+            "support": "HSO annonce OG Kush × Afghan pour sa version de Bubba Kush."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-sour-diesel-rqs-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À quel groupe de lignées RQS associe-t-il Original Diesel pour sa Sour Diesel ?",
+      "options": [
+        "Northern Light, Shiva et Hawaiian",
+        "Skunk #1, Blueberry et Afghan",
+        "White Widow, Haze et Colombian",
+        "Durban Poison, Kush et Mexican"
+      ],
+      "answer": 0,
+      "explanation": "RQS annonce Original Diesel × (Northern Light × Shiva × Hawaiian). Cette attribution vise sa Sour Diesel ; elle ne désigne pas la NYC Diesel de Soma.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-sour-diesel-rqs"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Ascendances annoncées pour la version RQS",
+        "subjectKey": "sour-diesel-rqs",
+        "property": "Ascendances annoncées pour la version RQS",
+        "expectedAnswer": "Northern Light, Shiva et Hawaiian",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "sour-diesel-rqs-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-sour-diesel-rqs",
+            "locator": "Genetic Background et présentation",
+            "support": "La fiche donne Original Diesel × (Northern Light × Shiva × Hawaiian), concordant avec les quatre lignées citées dans le texte."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-bruce-banner-darkhorse-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quels parents DarkHorse annonce-t-il pour Original Bruce Banner #3 ?",
+      "options": [
+        "Girl Scout Cookies × Pink Panties",
+        "OG Kush × Strawberry Diesel",
+        "Blueberry × Super Silver Haze",
+        "Chem Sister × Sour Dubb"
+      ],
+      "answer": 1,
+      "explanation": "La présentation de DarkHorse donne OG Kush × Strawberry Diesel pour Original Bruce Banner #3. Cette parenté est attribuée à la maison qui présente cette sélection.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-bruce-banner"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Parents annoncés de Bruce Banner #3",
+        "subjectKey": "bruce-banner-darkhorse",
+        "property": "Parents annoncés de Bruce Banner #3",
+        "expectedAnswer": "OG Kush × Strawberry Diesel",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "bruce-banner-darkhorse-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-bruce-banner",
+            "locator": "Original Bruce Banner #3",
+            "support": "DarkHorse attribue Original Bruce Banner #3 au croisement OG Kush × Strawberry Diesel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-sunset-sherbert-mario-guzman",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel nom civil porte le breeder Sherbinski, associé à Sunset Sherbert ?",
+      "options": [
+        "Jai Chang",
+        "Greg Krzanowski",
+        "Mario Guzman",
+        "Ken Estes"
+      ],
+      "answer": 2,
+      "explanation": "L’entretien présente Mario Guzman sous le nom Sherbinski et retrace son lien avec Sunset Sherbert. Une identité de breeder ne garantit pas la composition de chaque produit nommé ainsi.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-sherbinski-interview"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Identité du breeder Sherbinski",
+        "subjectKey": "sunset-sherbert-history",
+        "property": "Identité du breeder Sherbinski",
+        "expectedAnswer": "Mario Guzman",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "sunset-sherbert-mario-guzman",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-sherbinski-interview",
+            "locator": "Introduction et entretien Sherbinski",
+            "support": "L’entretien présente Mario Guzman, connu comme Sherbinski, et son association à Sunset Sherbert."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-pineapple-express-barneys-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel parent Barney’s Farm associe-t-il à Hawaiian Landrace Sativa pour sa Pineapple Express ?",
+      "options": [
+        "Northern Lights",
+        "White Widow",
+        "Skunk #1",
+        "Trainwreck"
+      ],
+      "answer": 3,
+      "explanation": "La fiche annonce Hawaiian Landrace Sativa × Trainwreck. Ce fait porte sur la version de Barney’s Farm, distincte du film homonyme et de son intrigue cannabique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-pineapple-express"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Parent associé à Hawaiian Landrace Sativa",
+        "subjectKey": "pineapple-express-barneys",
+        "property": "Parent associé à Hawaiian Landrace Sativa",
+        "expectedAnswer": "Trainwreck",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "pineapple-express-barneys-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-pineapple-express",
+            "locator": "Genetics",
+            "support": "Barney’s Farm annonce Hawaiian Landrace Sativa × Trainwreck pour sa Pineapple Express."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-cinderella99-mr-soul-history",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel breeder raconte sa création de Cinderella 99 dans l’histoire officielle publiée par Brothers Grimm ?",
+      "options": [
+        "Mr Soul",
+        "DJ Short",
+        "Shantibaba",
+        "Kyle Kushman"
+      ],
+      "answer": 0,
+      "explanation": "Le récit est signé Mr Soul et retrace son travail sur Cinderella 99. C’est un témoignage du breeder, qui distingue ses sélections nommées de la parenté paternelle initiale incertaine.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-cinderella99-history"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Auteur breeder du récit de création de Cinderella 99",
+        "subjectKey": "cinderella99-history",
+        "property": "Auteur breeder du récit de création de Cinderella 99",
+        "expectedAnswer": "Mr Soul",
+        "learningObjective": "Identifier le breeder associé à Cinderella 99 dans son propre récit.",
+        "factKey": "cinderella99-mr-soul-history",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-cinderella99-history",
+            "locator": "Signature Mr Soul et récit Origins",
+            "support": "Le récit officiel est signé Mr Soul et retrace son travail ayant donné Cinderella 99, à partir de la sélection fondatrice Princess."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-sad-s1-black-domina-origin",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À quelle sélection Sweet Seeds rattache-t-il S.A.D. S1 dans sa notice SWS02 ?",
+      "options": [
+        "White Widow’95",
+        "Black Domina’98",
+        "Blueberry’99",
+        "Skunk #1’89"
+      ],
+      "answer": 1,
+      "explanation": "La notice attribue S.A.D. S1 à Black Domina’98, une sélection de la maison. S.A.D. S1, sa version CBD et sa version Auto sont des produits distincts.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-sad-s1"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Sélection fondatrice annoncée de S.A.D. S1",
+        "subjectKey": "sad-s1-sweet-seeds",
+        "property": "Sélection fondatrice annoncée de S.A.D. S1",
+        "expectedAnswer": "Black Domina’98",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "sad-s1-black-domina-origin",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-sad-s1",
+            "locator": "PDF p.24, section SWS02",
+            "support": "La notice SWS02 attribue S.A.D. S1 à une Black Domina sélectionnée en 1998, appelée Black Domina’98."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-black-domina-sensi-four-lines",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelles quatre lignées Sensi Seeds associe-t-il à Black Domina ?",
+      "options": [
+        "Skunk #1, Haze, Blueberry et Durban Poison",
+        "White Widow, AK-47, Thai et Mexican",
+        "Northern Lights, Ortega, Hash Plant et Afghani SA",
+        "OG Kush, Sour Diesel, Chem Sister et Hawaiian"
+      ],
+      "answer": 2,
+      "explanation": "Sensi décrit un assemblage de Northern Lights, Ortega, Hash Plant et Afghani SA. C’est la généalogie annoncée par cette maison pour Black Domina.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-black-domina"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Quatre composantes annoncées",
+        "subjectKey": "black-domina-sensi",
+        "property": "Quatre composantes annoncées",
+        "expectedAnswer": "Northern Lights, Ortega, Hash Plant et Afghani SA",
+        "learningObjective": "Reconnaître les quatre ascendances annoncées par Sensi pour Black Domina.",
+        "factKey": "black-domina-sensi-four-lines",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance précise de quatre lignées fondatrices annoncées, parmi plusieurs ensembles de noms variétaux crédibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-black-domina",
+            "locator": "Présentation des quatre lignées fondatrices",
+            "support": "Sensi donne Northern Lights, Ortega, Hash Plant et Afghani SA comme les quatre composantes de Black Domina."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-lemon-skunk-dna-parental-places",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "D’où viennent les deux sélections parentales de Lemon Skunk256 selon DNA Genetics ?",
+      "options": [
+        "Seattle et la Jamaïque",
+        "Los Angeles et le Maroc",
+        "Denver et la Thaïlande",
+        "Las Vegas et les Pays-Bas"
+      ],
+      "answer": 3,
+      "explanation": "DNA décrit Lemon Skunk256 comme l’association d’une sélection Skunk de Las Vegas et d’une sélection des Pays-Bas. Il s’agit du récit de cette maison pour la version présentée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-lemon-skunk-dna"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Lieux d’origine annoncés des deux sélections",
+        "subjectKey": "lemon-skunk-dna",
+        "property": "Lieux d’origine annoncés des deux sélections de Lemon Skunk256",
+        "expectedAnswer": "Las Vegas et les Pays-Bas",
+        "learningObjective": "Situer les deux sélections parentales annoncées pour la version Lemon Skunk256 de DNA.",
+        "factKey": "lemon-skunk-dna-parental-places",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-lemon-skunk-dna",
+            "locator": "Breeding Brilliance",
+            "support": "DNA situe les deux sélections Skunk réunies dans Lemon Skunk256 à Las Vegas et aux Pays-Bas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-strawberry-banana-dna-bubblegum",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel matériel DNA Genetics associe-t-il à Banana Kush pour Original Strawberry Banana ?",
+      "options": [
+        "Un phénotype Strawberry de Bubble Gum",
+        "Un phénotype Strawberry de White Widow",
+        "Un phénotype Strawberry de Northern Lights",
+        "Un phénotype Strawberry de Durban Poison"
+      ],
+      "answer": 0,
+      "explanation": "DNA attribue cette parenté à Banana Kush de Crockett et au phénotype Strawberry de Bubble Gum. Les arômes fruités annoncés ne prouvent pas seuls une composition chimique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-strawberry-banana"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Autre parent annoncé aux côtés de Banana Kush",
+        "subjectKey": "strawberry-banana-dna",
+        "property": "Autre parent annoncé aux côtés de Banana Kush",
+        "expectedAnswer": "Un phénotype Strawberry de Bubble Gum",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "strawberry-banana-dna-bubblegum",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-strawberry-banana",
+            "locator": "Genetic Background",
+            "support": "DNA annonce Banana Kush de Crockett croisée avec un phénotype Strawberry de Bubble Gum."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-lsd-barneys-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement Barney’s Farm annonce-t-il pour sa lignée appelée LSD ?",
+      "options": [
+        "White Widow × Thai Sativa",
+        "Original Skunk #1 × Afghan Indica",
+        "Northern Lights × Hawaiian Sativa",
+        "Blueberry × Colombian Sativa"
+      ],
+      "answer": 1,
+      "explanation": "La fiche donne Original Skunk #1 × Afghan Indica. Il s’agit d’un nom commercial de lignée cannabique et d’une parenté déclarée par cette maison.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-lsd-barneys"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Parenté annoncée de LSD",
+        "subjectKey": "lsd-barneys",
+        "property": "Parenté annoncée de LSD",
+        "expectedAnswer": "Original Skunk #1 × Afghan Indica",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "lsd-barneys-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-lsd-barneys",
+            "locator": "Genetics",
+            "support": "La fiche annonce Original Skunk #1 × Afghan Indica et précise Mazar-i-Sharif dans sa description."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-gsc-cookies-san-francisco",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans quelle ville le récit officiel de Cookies situe-t-il ses débuts autour de GSC ?",
+      "options": [
+        "Amsterdam",
+        "Denver",
+        "San Francisco",
+        "Los Angeles"
+      ],
+      "answer": 2,
+      "explanation": "Cookies raconte ses débuts dans un garage de San Francisco avec Jai et Berner, autour de la lignée GSC. Cette histoire de marque ne certifie pas chaque produit vendu sous ce nom.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-cookies-history"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Ville des débuts racontés par Cookies",
+        "subjectKey": "gsc-cookies-history",
+        "property": "Ville des débuts racontés par Cookies",
+        "expectedAnswer": "San Francisco",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "gsc-cookies-san-francisco",
+        "form": "identification",
+        "difficultyRationale": "Repère culturel ou distinction courante, sans vocabulaire technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-cookies-history",
+            "locator": "Cookies History",
+            "support": "L’histoire officielle situe les débuts de Cookies, avec Jai et Berner et sa lignée phare GSC, dans un garage à San Francisco."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-chemdog-greg-krzanowski",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel nom porte le breeder surnommé Chemdog dans le récit de Canna Provisions ?",
+      "options": [
+        "Mario Guzman",
+        "Ken Estes",
+        "Jai Chang",
+        "Greg Krzanowski"
+      ],
+      "answer": 3,
+      "explanation": "Canna Provisions présente Greg Krzanowski sous le surnom Chemdog. Le nom de la personne et celui de lignées qu’elle a diffusées sont liés, sans être des garanties de composition.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ra06-chemdog-identity"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "Identité civile du breeder surnommé Chemdog",
+        "subjectKey": "chemdog-chem91-history",
+        "property": "Identité civile du breeder surnommé Chemdog",
+        "expectedAnswer": "Greg Krzanowski",
+        "learningObjective": "Connaître ce fait cannabique et distinguer sa portée de ses limites.",
+        "factKey": "chemdog-greg-krzanowski",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de lignée, de règle ou de résultat, nécessitant son attribution et son contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-chemdog-identity",
+            "locator": "Présentation de Greg « Chemdog » Krzanowski",
+            "support": "La page de son employeur présente Greg Krzanowski, surnommé Chemdog, et reprend son témoignage original sur l’histoire de la lignée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-france-hhc-narcotic-classification",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans quelle catégorie l’ANSM a-t-elle classé le HHC à compter du 13 juin 2023 ?",
+      "options": [
+        "Les stupéfiants",
+        "Les compléments alimentaires",
+        "Les médicaments sans ordonnance",
+        "Les nouveaux aliments autorisés"
+      ],
+      "answer": 0,
+      "explanation": "La décision française classe le HHC parmi les stupéfiants, avec HHCO et HHCP. Sa présence antérieure dans des boutiques de CBD ne valait pas autorisation durable.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-france-hhc-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Classement français du HHC en 2023",
+        "subjectKey": "france-hhc-legal-status",
+        "property": "Classement français du HHC en 2023",
+        "expectedAnswer": "Les stupéfiants",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "france-hhc-narcotic-classification",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-france-hhc-2023",
+            "locator": "Premier paragraphe",
+            "support": "L’ANSM inscrit HHC, HHCO et HHCP sur la liste des stupéfiants, avec effet au 13 juin 2023 ; leur production, vente et usage sont notamment interdits."
+          }
+        ],
+        "jurisdiction": "France ; décision ANSM applicable le 13 juin 2023",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-germany-club-foods-excluded",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En Allemagne, quel produit une association de culture autorisée peut-elle remettre à ses membres dans le cadre consulté en 2026 ?",
+      "options": [
+        "Un biscuit contenant du haschisch",
+        "Du haschisch pur",
+        "Un joint mélangé à du tabac",
+        "Une boisson enrichie en THC"
+      ],
+      "answer": 1,
+      "explanation": "La FAQ limite la remise aux formes pures de marijuana ou de haschisch. Les mélanges avec des aliments, du tabac ou de la nicotine sont exclus de ce circuit associatif.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-germany-club-pure-forms"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Formes permises dans la remise associative",
+        "subjectKey": "germany-cannabis-distribution",
+        "property": "Formes permises dans la remise associative",
+        "expectedAnswer": "Du haschisch pur",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "germany-club-foods-excluded",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-germany-club-pure-forms",
+            "locator": "How is the cannabis cooperatively cultivated in cultivation associations passed on?",
+            "support": "Les associations ne peuvent remettre que marijuana ou haschisch purs ; les mélanges avec tabac, nicotine ou aliments, dont les biscuits au haschisch, sont interdits."
+          }
+        ],
+        "jurisdiction": "Allemagne ; associations autorisées, KCanG ; version consultée le 2026-11-17",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-germany-cbd-extraction-exception",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel cannabinoïde est expressément excepté de l’interdiction d’extraction du §2(2) du KCanG allemand consulté en 2026 ?",
+      "options": [
+        "Le THCA",
+        "Le CBN",
+        "Le CBD",
+        "Le Δ9-THC"
+      ],
+      "answer": 2,
+      "explanation": "Le paragraphe prévoit l’exception CBD, ainsi qu’une exception d’analyse réglementaire. Cela ne constitue pas une autorisation générale de fabriquer ou vendre n’importe quel extrait.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-germany-kcang"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Exception légale visant explicitement le CBD",
+        "subjectKey": "germany-cannabinoid-extraction-law",
+        "property": "Exception légale visant explicitement le CBD",
+        "expectedAnswer": "Le CBD",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "germany-cbd-extraction-exception",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-germany-kcang",
+            "locator": "§2, alinéa 2",
+            "support": "Le KCanG interdit l’extraction de cannabinoïdes de la plante, mais prévoit expressément une exception pour l’extraction de CBD et une autre pour certaines analyses réglementaires."
+          }
+        ],
+        "jurisdiction": "Allemagne ; KCanG §2(2), version consultée le 2026-11-17",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-germany-public-transport-vaporizing",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans les transports publics allemands, comment la FAQ officielle traite-t-elle la vaporisation du cannabis en 2026 ?",
+      "options": [
+        "Elle l’autorise en l’absence de combustion",
+        "Elle l’autorise si le cannabis contient peu de THC",
+        "Elle l’autorise sur présentation d’une ordonnance",
+        "Elle l’interdit comme le fait de fumer"
+      ],
+      "answer": 3,
+      "explanation": "La protection fédérale contre le tabagisme couvre aussi le cannabis vaporisé dans les transports publics. L’absence de combustion ne crée donc pas cette exemption.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-germany-public-transport"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Vaporisation incluse dans l’interdiction de transport public",
+        "subjectKey": "germany-cannabis-public-transport",
+        "property": "Vaporisation incluse dans l’interdiction de transport public",
+        "expectedAnswer": "Elle l’interdit comme le fait de fumer",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "germany-public-transport-vaporizing",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-germany-public-transport",
+            "locator": "Gesundheits- und Konsumierendenschutz, dernier point ; lignes194–197",
+            "support": "La FAQ indique l’interdiction de fumer et de vaporiser du cannabis dans les installations publiques fédérales et les transports publics, par extension de la protection contre le tabagisme."
+          }
+        ],
+        "jurisdiction": "Allemagne ; transports publics ; version consultée le 2026-11-17",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-netherlands-coffeeshop-tobacco-joint",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Aux Pays-Bas, quelle règle s’applique au joint avec tabac à l’intérieur d’un coffeeshop employant des salariés ?",
+      "options": [
+        "Il est couvert par l’interdiction de fumer",
+        "Il est exempté car vendu avec du cannabis",
+        "Il est autorisé après vérification de l’âge",
+        "Il est exempté si le cannabis est toléré"
+      ],
+      "answer": 0,
+      "explanation": "La NVWA cite explicitement les joints avec tabac parmi les produits concernés. La tolérance de la vente de cannabis n’exempte pas ce mélange des règles intérieures sur le tabac.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-netherlands-tobacco-joint"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Joint contenant du tabac et interdiction intérieure",
+        "subjectKey": "netherlands-coffeeshop-policy",
+        "property": "Joint contenant du tabac et interdiction intérieure",
+        "expectedAnswer": "Il est couvert par l’interdiction de fumer",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "netherlands-coffeeshop-tobacco-joint",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-netherlands-tobacco-joint",
+            "locator": "Waar geldt het rookverbod? et Welke producten vallen onder het rookverbod?",
+            "support": "La NVWA inclut les établissements horeca et les coffeeshops dans les lieux intérieurs soumis à interdiction ; les produits contenant du tabac, dont un joint avec tabac, sont expressément couverts."
+          }
+        ],
+        "jurisdiction": "Pays-Bas ; intérieur des coffeeshops ; page NVWA consultée le 2026-11-17",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-canada-medical-access-not-drug-approval",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans le guide canadien de 2018, quel élément distingue un médicament cannabique approuvé d’un simple accès médical ?",
+      "options": [
+        "Une licence de producteur de cannabis",
+        "Un DIN et un avis de conformité du produit",
+        "Une recommandation médicale nominative",
+        "Un profil détaillé des teneurs THC et CBD"
+      ],
+      "answer": 1,
+      "explanation": "Le guide exige un DIN et un avis de conformité pour le produit approuvé. Un accès médical au cannabis ne signifie donc pas que chaque fleur ou huile a été autorisée comme médicament.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-canada-medical-approval"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Accès médical distinct de l’approbation du produit",
+        "subjectKey": "canada-medical-cannabis-approval",
+        "property": "Accès médical distinct de l’approbation du produit",
+        "expectedAnswer": "Un DIN et un avis de conformité du produit",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "canada-medical-access-not-drug-approval",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-canada-medical-approval",
+            "locator": "Introduction, avertissement avant le sommaire",
+            "support": "Le guide distingue le cannabis accessible médicalement d’un produit thérapeutique approuvé : le produit particulier doit avoir un DIN et un avis de conformité (NOC)."
+          }
+        ],
+        "jurisdiction": "Canada ; distinction formulée dans le guide Santé Canada du printemps 2018",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-thailand-flower-online-sales-ban",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Selon l’avis officiel thaïlandais de juin 2025 sur les fleurs de cannabis, que devient leur vente en ligne ?",
+      "options": [
+        "Elle est réservée aux touristes adultes",
+        "Elle est permise avec un retrait en boutique",
+        "Elle est interdite",
+        "Elle est permise après déclaration du site"
+      ],
+      "answer": 2,
+      "explanation": "L’avis interdit la vente en ligne dans ce régime renforcé des fleurs. Cette règle de circuit de vente est distincte de la condition de prescription pour l’accès médical.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-thailand-online-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Interdiction du canal de vente en ligne",
+        "subjectKey": "thailand-cannabis-flower-regulation",
+        "property": "Interdiction du canal de vente en ligne",
+        "expectedAnswer": "Elle est interdite",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "thailand-flower-online-sales-ban",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-thailand-online-2025",
+            "locator": "Paragraphes sur les fleurs et interdictions de vente",
+            "support": "La notice officielle du 27 juin 2025 concernant le nouveau régime des fleurs indique l’interdiction de vente en ligne et par distributeur automatique, ainsi que de publicité."
+          }
+        ],
+        "jurisdiction": "Thaïlande ; avis officiel du 2025-06-27 sur les fleurs de cannabis",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-spain-club-association-not-general-license",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En Espagne, selon la jurisprudence de 2015 résumée par l’EUDA, que peut constituer l’approvisionnement organisé d’un club ouvert ?",
+      "options": [
+        "Un simple contrat privé sans portée pénale",
+        "Une vente légale par inscription associative",
+        "Une dispensation médicale collective",
+        "Un trafic de stupéfiants"
+      ],
+      "answer": 3,
+      "explanation": "La forme associative ne suffit pas à légaliser une distribution organisée et durable ouverte à de nouveaux membres. Le fait ne vise pas toute consommation partagée privée ni chaque club sans examen.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra06-spain-clubs-euda"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Association ouverte et risque de qualification de trafic",
+        "subjectKey": "spain-cannabis-social-clubs",
+        "property": "Association ouverte et risque de qualification de trafic",
+        "expectedAnswer": "Un trafic de stupéfiants",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "spain-club-association-not-general-license",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-spain-clubs-euda",
+            "locator": "Cannabis social clubs, paragraphes Espagne et jurisprudence2015",
+            "support": "L’EUDA rapporte que trois arrêts espagnols de 2015 qualifient de trafic la culture et distribution organisées, institutionnalisées et persistantes dans une association ouverte à de nouveaux membres."
+          }
+        ],
+        "jurisdiction": "Espagne ; doctrine de trois arrêts de 2015 résumée par l’EUDA, version avril2026",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-thcp-33-fold-binding-not-human-high",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Dans l’étude de découverte du THCP, à quoi renvoie la comparaison « environ 33 fois » avec le THC ?",
+      "options": [
+        "À l’affinité de liaison à CB1 mesurée in vitro",
+        "À l’activité de CB1 mesurée dans un essai fonctionnel",
+        "À la baisse de l’activité motrice observée chez la souris",
+        "À la concentration sanguine mesurée chez la souris"
+      ],
+      "answer": 0,
+      "explanation": "La comparaison porte sur une mesure de liaison à CB1 en laboratoire. Elle ne démontre pas un effet psychoactif humain 33 fois plus puissant ni une durée multipliée dans ce rapport.",
+      "articleId": "ref-cannabinoides-mineurs",
+      "sourceIds": [
+        "q2-ra06-thcp-affinity"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Affinité expérimentale distincte de puissance psychoactive humaine",
+        "subjectKey": "thcp",
+        "property": "Affinité expérimentale distincte de puissance psychoactive humaine",
+        "expectedAnswer": "À l’affinité de liaison à CB1 mesurée in vitro",
+        "learningObjective": "Décoder une allégation de puissance du THCP sans confondre liaison réceptorielle et effet humain.",
+        "factKey": "thcp-33-fold-binding-not-human-high",
+        "form": "deduction",
+        "difficultyRationale": "Interprétation pharmacologique nécessitant de distinguer la mesure expérimentale de sa portée clinique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-thcp-affinity",
+            "locator": "Binding affinity at human CB1 and CB2 receptors ; Figure3",
+            "support": "Le rapport d’environ33 entre THCP et THC compare leurs affinités pour CB1 dans un essai de liaison in vitro, avec Ki1,2 et40nM. Ce n’est pas une mesure de puissance psychoactive humaine."
+          }
+        ],
+        "jurisdiction": "Recherche préclinique ; publication2019",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-hhc-9r-9s-potency-efficacy",
+      "topicId": "evidence",
+      "level": 4,
+      "prompt": "Dans l’essai cellulaire de Persson, comment 9R-HHC et 9S-HHC se comparent-ils pour l’activation de CB1 ?",
+      "options": [
+        "9S plus puissant ; effet maximal similaire",
+        "9R plus puissant ; effet maximal similaire",
+        "Puissance similaire ; effet maximal plus fort pour 9R",
+        "Puissance similaire ; effet maximal plus fort pour 9S"
+      ],
+      "answer": 1,
+      "explanation": "9R-HHC agit à plus faible concentration que 9S-HHC, mais leurs maxima sont similaires dans cet essai. Ce résultat cellulaire ne quantifie pas leurs effets chez l’humain.",
+      "articleId": "ref-cannabinoides-mineurs",
+      "sourceIds": [
+        "q2-ra06-hhc-activity"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Puissance des épimères distincte de leur efficacité maximale",
+        "subjectKey": "hhc-9r-9s",
+        "property": "Puissance des épimères distincte de leur efficacité maximale",
+        "expectedAnswer": "9R plus puissant ; effet maximal similaire",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "hhc-9r-9s-potency-efficacy",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation pharmacologique nécessitant de distinguer la mesure expérimentale de sa portée clinique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-hhc-activity",
+            "locator": "Abstract, Results ; comparaison puissance/efficacité des épimères",
+            "support": "Dans les cellules CHO-K1 exprimant CB1 humain,9R-HHC est plus puissant que9S-HHC ; les deux épimères ont une efficacité maximale similaire dans ce modèle.9R est agoniste partiel."
+          }
+        ],
+        "jurisdiction": "Recherche cellulaire ; première publication2024",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-cdc-cannabis-use-disorder-estimate",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel ordre de grandeur la page CDC de décembre 2024 donne-t-elle pour le trouble de l’usage parmi les usagers de cannabis ?",
+      "options": [
+        "Environ une personne sur cent",
+        "Environ une personne sur dix",
+        "Environ trois personnes sur dix",
+        "Environ huit personnes sur dix"
+      ],
+      "answer": 2,
+      "explanation": "Le CDC indique environ trois sur dix. C’est une estimation de population dans cette information américaine, pas une prédiction pour chaque personne ni une constante de tous les pays.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra06-cdc-cud"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Ordre de grandeur du trouble de l’usage dans l’information CDC",
+        "subjectKey": "cdc-cannabis-use-disorder",
+        "property": "Ordre de grandeur du trouble de l’usage dans l’information CDC",
+        "expectedAnswer": "Environ trois personnes sur dix",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "cdc-cannabis-use-disorder-estimate",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-cdc-cud",
+            "locator": "Fast Statistics",
+            "support": "La page CDC donne comme estimation environ3personnes sur10 parmi celles utilisant du cannabis ayant un trouble de l’usage du cannabis."
+          }
+        ],
+        "jurisdiction": "États-Unis ; page CDC du2024-12-05",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-nida-gateway-not-inevitable",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Que précise le rapport NIDA sur le passage du cannabis à d’autres drogues dites « dures » ?",
+      "options": [
+        "Le passage à ces substances est le parcours le plus fréquent",
+        "Les études ne retrouvent pas d’association entre ces usages",
+        "Les associations observées établissent un effet causal du cannabis",
+        "La majorité des usagers de cannabis ne le font pas"
+      ],
+      "answer": 3,
+      "explanation": "Le NIDA écarte une progression inévitable : la majorité ne passe pas à ces autres substances. Cela n’efface ni les associations observées ni les vulnérabilités pouvant favoriser plusieurs usages.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra06-nida-gateway"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Progression non inévitable vers d’autres drogues",
+        "subjectKey": "cannabis-gateway-nida",
+        "property": "Progression non inévitable vers d’autres drogues",
+        "expectedAnswer": "La majorité des usagers de cannabis ne le font pas",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "nida-gateway-not-inevitable",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-nida-gateway",
+            "locator": "Chapitre gateway drug, extrait indexé du PDF, p.21",
+            "support": "Le rapport NIDA précise que la majorité des personnes utilisant du cannabis ne poursuivent pas vers d’autres substances dites plus dures ; il décrit aussi des associations et des facteurs de vulnérabilité communs."
+          }
+        ],
+        "jurisdiction": "États-Unis ; rapport NIDA consulté le2026-11-17",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-dronabinol-psychiatric-exacerbation",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle série d’antécédents la notice américaine du dronabinol signale-t-elle pour un risque d’aggravation sous traitement ?",
+      "options": [
+        "Manie, dépression ou schizophrénie",
+        "Migraine, sinusite ou acouphènes",
+        "Eczéma, urticaire ou psoriasis",
+        "Arthrose, tendinite ou lombalgie"
+      ],
+      "answer": 0,
+      "explanation": "La notice rapporte une aggravation de ces troubles sous dronabinol et prévoit une vigilance particulière. Cette mise en garde ne signifie pas qu’une prise provoque systématiquement une psychose.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra06-dronabinol-label"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Antécédents concernés par la mise en garde neuropsychiatrique",
+        "subjectKey": "dronabinol",
+        "property": "Antécédents concernés par la mise en garde neuropsychiatrique",
+        "expectedAnswer": "Manie, dépression ou schizophrénie",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "dronabinol-psychiatric-exacerbation",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante formulée sans calcul ni prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-dronabinol-label",
+            "locator": "§5.1 Psychiatric Adverse Reactions ; §8.6 Effect of CYP2C9 Polymorphism",
+            "support": "La notice rapporte une aggravation possible de manie, dépression ou schizophrénie avec le dronabinol. Elle signale aussi une clairance réduite et des concentrations accrues chez certains porteurs de variants diminuant CYP2C9."
+          }
+        ],
+        "jurisdiction": "États-Unis ; notice dronabinol oral révisée04/2026",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-dronabinol-cyp2c9-genetic-variability",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Les variants génétiques de quelle enzyme peuvent-ils modifier l’élimination du dronabinol selon sa notice américaine ?",
+      "options": [
+        "CYP2D6",
+        "CYP2C9",
+        "NAT2",
+        "UGT1A1"
+      ],
+      "answer": 1,
+      "explanation": "La notice vise certains variants diminuant la fonction de CYP2C9, avec exposition accrue au dronabinol. Il s’agit d’un facteur pharmacogénétique, distinct d’une interaction entre deux produits.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra06-dronabinol-label"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Variabilité pharmacogénétique de l’élimination du THC oral",
+        "subjectKey": "dronabinol",
+        "property": "Variabilité pharmacogénétique de l’élimination du THC oral",
+        "expectedAnswer": "CYP2C9",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "dronabinol-cyp2c9-genetic-variability",
+        "form": "identification",
+        "difficultyRationale": "Interprétation pharmacologique nécessitant de distinguer la mesure expérimentale de sa portée clinique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-dronabinol-label",
+            "locator": "§5.1 Psychiatric Adverse Reactions ; §8.6 Effect of CYP2C9 Polymorphism",
+            "support": "La notice rapporte une aggravation possible de manie, dépression ou schizophrénie avec le dronabinol. Elle signale aussi une clairance réduite et des concentrations accrues chez certains porteurs de variants diminuant CYP2C9."
+          }
+        ],
+        "jurisdiction": "États-Unis ; notice dronabinol oral révisée04/2026",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-thc-intoxication-supportive-care",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel principe de prise en charge le Missouri Poison Center décrit-il pour une intoxication au cannabis ?",
+      "options": [
+        "Une neutralisation par le CBD",
+        "Une réversion par la naloxone",
+        "Des soins symptomatiques et de soutien",
+        "Une réversion par le flumazénil"
+      ],
+      "answer": 2,
+      "explanation": "Le centre indique l’absence d’antidote spécifique et une prise en charge adaptée aux symptômes. Cela demande une évaluation clinique ; le CBD n’est pas présenté comme un antidote établi.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra06-poison-center-treatment"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Absence d’antidote spécifique et principe de soutien",
+        "subjectKey": "cannabis-intoxication-treatment",
+        "property": "Absence d’antidote spécifique et principe de soutien",
+        "expectedAnswer": "Des soins symptomatiques et de soutien",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "thc-intoxication-supportive-care",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-poison-center-treatment",
+            "locator": "Treatment",
+            "support": "Le centre antipoison précise qu’il n’existe pas d’antidote spécifique à la toxicité des cannabinoïdes et que le traitement est symptomatique et de soutien."
+          }
+        ],
+        "jurisdiction": "États-Unis ; information clinique du Missouri Poison Center consultée le2026-11-17",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-rimonabant-suspension-psychiatric-risk",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel risque a motivé la recommandation de suspension du rimonabant, bloqueur de CB1, par l’EMA en 2008 ?",
+      "options": [
+        "Des troubles cardiovasculaires, dont les arythmies",
+        "Des atteintes hépatiques, dont l’insuffisance hépatique",
+        "Des troubles métaboliques, dont l’hypoglycémie",
+        "Des troubles psychiatriques, dont la dépression"
+      ],
+      "answer": 3,
+      "explanation": "L’EMA a jugé le rapport bénéfice/risque défavorable, notamment pour les effets psychiatriques. Cet échec d’un médicament ciblant CB1 ne décrit pas les effets de tous les cannabinoïdes.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "q2-ra06-acomplia-suspension",
+        "q2-ra06-acomplia-epar",
+        "q2-ra06-acomplia-mechanism"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Sécurité psychiatrique d’un médicament antagoniste de CB1",
+        "subjectKey": "rimonabant-acomplia",
+        "property": "Sécurité psychiatrique d’un médicament antagoniste de CB1",
+        "expectedAnswer": "Des troubles psychiatriques, dont la dépression",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "rimonabant-suspension-psychiatric-risk",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-acomplia-suspension",
+            "locator": "Communiqué EMEA/CHMP/537777/2008",
+            "support": "L’EMA recommande la suspension de l’AMM de rimonabant en2008, les bénéfices ne compensant plus les risques ; les effets psychiatriques, particulièrement la dépression, motivent les préoccupations."
+          },
+          {
+            "sourceId": "q2-ra06-acomplia-epar",
+            "locator": "Overview",
+            "support": "La page confirme une suspension de commercialisation le13novembre2008, puis un retrait de l’AMM le16janvier2009."
+          },
+          {
+            "sourceId": "q2-ra06-acomplia-mechanism",
+            "locator": "PDF p.1, How does ACOMPLIA work?",
+            "support": "Le résumé présente le rimonabant comme antagoniste des récepteurs cannabinoïdes CB1. Le document porte le marquage médicament non autorisé."
+          }
+        ],
+        "jurisdiction": "Union européenne ; recommandation EMA du2008-10-23",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-cbd-acute-dental-pain-trial-signal",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans l’essai de Chrepa sur la douleur dentaire aiguë, quel signal le CBD oral purifié a-t-il montré face au placebo ?",
+      "options": [
+        "Une augmentation de la douleur rapportée",
+        "Une absence de différence sur la douleur rapportée",
+        "Une baisse de la douleur limitée au groupe placebo",
+        "Une diminution de la douleur rapportée"
+      ],
+      "answer": 3,
+      "explanation": "Ce petit essai rapporte un signal antalgique à court terme. Il ne montre ni guérison de la cause dentaire ni efficacité de tous les produits CBD ; des effets indésirables ont aussi été observés.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-ra06-cbd-dental-trial",
+        "q2-ra06-cbd-dental-corrigendum"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Signal préliminaire sur une douleur dentaire aiguë",
+        "subjectKey": "cbd-acute-dental-pain",
+        "property": "Signal préliminaire sur une douleur dentaire aiguë",
+        "expectedAnswer": "Une diminution de la douleur rapportée",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "cbd-acute-dental-pain-trial-signal",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-cbd-dental-trial",
+            "locator": "Abstract et Results, douleur mesurée VAS",
+            "support": "L’essai randomisé de61adultes souffrant de douleurs dentaires aiguës observe une réduction de la douleur rapportée dans les groupes CBD oral purifié comparés au placebo pendant le bref suivi."
+          },
+          {
+            "sourceId": "q2-ra06-cbd-dental-corrigendum",
+            "locator": "Panels1A–1D et figure corrigée",
+            "support": "Les auteurs corrigent des données descriptives et des conversions de force de morsure, en précisant que l’analyse et l’interprétation de réduction de douleur ne changent pas."
+          }
+        ],
+        "jurisdiction": "Essai clinique États-Unis ; publication2023 et corrigendum2024",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra06-chronic-thc-postoperative-pain-risk",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Selon le consensus ASRA de 2023, quel risque l’usage chronique de THC peut-il poser après une opération ?",
+      "options": [
+        "Une douleur accrue et davantage de besoins antalgiques",
+        "Une douleur réduite et moins de besoins antalgiques",
+        "Une douleur inchangée et moins de besoins antalgiques",
+        "Une douleur réduite et des besoins antalgiques inchangés"
+      ],
+      "answer": 0,
+      "explanation": "Le consensus signale une douleur postopératoire et des besoins d’opioïdes potentiellement accrus chez ces usagers. Ce risque ne prouve pas que chaque patient aura cette évolution.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra06-asra-postoperative"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Usage chronique de THC et douleur postopératoire",
+        "subjectKey": "cannabis-postoperative-pain",
+        "property": "Usage chronique de THC et douleur postopératoire",
+        "expectedAnswer": "Une douleur accrue et davantage de besoins antalgiques",
+        "learningObjective": "Comprendre cette distinction propre au cannabis, sans en élargir la portée au-delà de la preuve.",
+        "factKey": "chronic-thc-postoperative-pain-risk",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise de règle ou de résultat exigeant son contexte et ses limites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra06-asra-postoperative",
+            "locator": "PDF p.9, Question3, Statement1 ; imprimée p.105",
+            "support": "Le consensus indique que l’usage chronique de THC peut aggraver la douleur postopératoire et augmenter les besoins d’opioïdes ; certitude modérée. Il ne préconise pas un ajustement uniforme."
+          }
+        ],
+        "jurisdiction": "Recommandations ASRA2023 ; contexte de chirurgie",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-ra06-green-crack-hso",
+      "title": "Green Crack",
+      "organization": "Humboldt Seed Organization",
+      "url": "https://www.humboldtseeds.net/en/green-crack/",
+      "verifiedAt": "2026-11-17",
+      "author": "Humboldt Seed Organization",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "HSO annonce 1989 SSSC Skunk #1 × Isolated Afghani Cut pour sa version de Green Crack.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cross et Reliable origins",
+        "result": "Passage effectivement consulté. HSO annonce 1989 SSSC Skunk #1 × Isolated Afghani Cut pour sa version de Green Crack."
+      }
+    },
+    {
+      "id": "q2-ra06-g13-haze",
+      "title": "G13 Haze",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/g13-haze-6",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche précise G13 × Hawaiian Sativa dans le tableau Genetics et dans sa présentation détaillée. L’introduction abrège le second parent en Haze.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Genetics et présentation détaillée",
+        "result": "Passage effectivement consulté. La fiche précise G13 × Hawaiian Sativa dans le tableau Genetics et dans sa présentation détaillée. L’introduction abrège le second parent en Haze."
+      }
+    },
+    {
+      "id": "q2-ra06-granddaddy-purple-interview",
+      "title": "Meet the daddy of Granddaddy Purple",
+      "organization": "Leafly",
+      "url": "https://www.leafly.com/news/strains-products/ken-estes-granddaddy-purple-interview",
+      "verifiedAt": "2026-11-17",
+      "author": "Lindsay MaHarry ; témoignage original de Ken Estes",
+      "published": "Mis à jour le 2026-07-21",
+      "passage": "L’entretien présente Ken Estes comme la personne ayant popularisé Granddaddy Purple à partir de 2003. Il restitue son propre récit, sans résoudre les pedigrees disputés.",
+      "access": "full-text",
+      "documentKind": "Entretien original",
+      "limitation": "Témoignage rétrospectif original ; les ascendances contradictoires et les allégations thérapeutiques de l’entretien ne sont pas reprises.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Introduction et entretien avec Ken Estes",
+        "result": "Passage effectivement consulté. L’entretien présente Ken Estes comme la personne ayant popularisé Granddaddy Purple à partir de 2003. Il restitue son propre récit, sans résoudre les pedigrees disputés."
+      }
+    },
+    {
+      "id": "q2-ra06-bubba-kush",
+      "title": "Bubba Kush",
+      "organization": "Humboldt Seed Organization",
+      "url": "https://www.humboldtseeds.net/en/bubba-kush/",
+      "verifiedAt": "2026-11-17",
+      "author": "Humboldt Seed Organization",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "HSO annonce OG Kush × Afghan pour sa version de Bubba Kush.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cross et description",
+        "result": "Passage effectivement consulté. HSO annonce OG Kush × Afghan pour sa version de Bubba Kush."
+      }
+    },
+    {
+      "id": "q2-ra06-sour-diesel-rqs",
+      "title": "Sour Diesel",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/feminized-cannabis-seeds/185-sour-diesel.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Royal Queen Seeds",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche donne Original Diesel × (Northern Light × Shiva × Hawaiian), concordant avec les quatre lignées citées dans le texte.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Genetic Background et présentation",
+        "result": "Passage effectivement consulté. La fiche donne Original Diesel × (Northern Light × Shiva × Hawaiian), concordant avec les quatre lignées citées dans le texte."
+      }
+    },
+    {
+      "id": "q2-ra06-bruce-banner",
+      "title": "Current Catalog — Original Bruce Banner #3",
+      "organization": "DarkHorse Genetics",
+      "url": "https://www.darkhorsegenetics.com/current-catalog",
+      "verifiedAt": "2026-11-17",
+      "author": "DarkHorse Genetics",
+      "published": "Date non indiquée dans la page consultée",
+      "passage": "DarkHorse attribue Original Bruce Banner #3 au croisement OG Kush × Strawberry Diesel.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Original Bruce Banner #3",
+        "result": "Passage effectivement consulté. DarkHorse attribue Original Bruce Banner #3 au croisement OG Kush × Strawberry Diesel."
+      }
+    },
+    {
+      "id": "q2-ra06-sherbinski-interview",
+      "title": "Sherbinski: The Connection with the Plant Fuels My Passion to Continue Discovering New Seeds",
+      "organization": "Humboldt Seed Organization",
+      "url": "https://www.humboldtseeds.net/en/blog/sherbinski-connection-plant-fuels-passion-continue-discovering-seeds/",
+      "verifiedAt": "2026-11-17",
+      "author": "Mario Guzman (entretien) ; Humboldt Seed Organization",
+      "published": "2019-05-14",
+      "passage": "L’entretien présente Mario Guzman, connu comme Sherbinski, et son association à Sunset Sherbert.",
+      "access": "full-text",
+      "documentKind": "Entretien original",
+      "limitation": "Attribution et identité issues d’un entretien original ; les promesses d’effets et les conseils de culture sont exclus.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Introduction et entretien Sherbinski",
+        "result": "Passage effectivement consulté. L’entretien présente Mario Guzman, connu comme Sherbinski, et son association à Sunset Sherbert."
+      }
+    },
+    {
+      "id": "q2-ra06-pineapple-express",
+      "title": "Pineapple Express",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/us/pineapple-express-weed-strain-609",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "Barney’s Farm annonce Hawaiian Landrace Sativa × Trainwreck pour sa Pineapple Express.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Genetics",
+        "result": "Passage effectivement consulté. Barney’s Farm annonce Hawaiian Landrace Sativa × Trainwreck pour sa Pineapple Express."
+      }
+    },
+    {
+      "id": "q2-ra06-cinderella99-history",
+      "title": "Cinderella 99 History — The Official Story of a Legendary Strain",
+      "organization": "Brothers Grimm Seeds",
+      "url": "https://brothersgrimmseeds.com/cinderella-99-official-history/",
+      "verifiedAt": "2026-11-17",
+      "author": "Mr Soul",
+      "published": "2023-10-11",
+      "passage": "Le récit officiel est signé Mr Soul et retrace son travail ayant donné Cinderella 99, à partir de la sélection fondatrice Princess.",
+      "access": "full-text",
+      "documentKind": "Récit original du breeder",
+      "limitation": "Récit historique signé par le breeder, sans certificat génomique indépendant. Seule son attribution personnelle à Cinderella 99 est testée ; aucune méthode de sélection ou culture ni promesse d’effet reprise.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Signature Mr Soul et récit Origins",
+        "result": "Récit original signé par le breeder effectivement consulté. Le récit officiel est signé Mr Soul et retrace son travail ayant donné Cinderella 99, à partir de la sélection fondatrice Princess."
+      }
+    },
+    {
+      "id": "q2-ra06-sad-s1",
+      "title": "Variety descriptions — S.A.D. Sweet Afgani Delicious S1 (SWS02)",
+      "organization": "Sweet Seeds",
+      "url": "https://wholesales.sweetseeds.info/descargas/descripciones/2020/en/descripciones.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Sweet Seeds",
+      "published": "Version 2020 indiquée par le chemin et le nom du document",
+      "passage": "La notice SWS02 attribue S.A.D. S1 à une Black Domina sélectionnée en 1998, appelée Black Domina’98.",
+      "access": "catalogue",
+      "documentKind": "Catalogue officiel",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris. Le fait ne décrit pas la méthode d’obtention des semences.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "PDF p.24, section SWS02",
+        "result": "Passage effectivement consulté. La notice SWS02 attribue S.A.D. S1 à une Black Domina sélectionnée en 1998, appelée Black Domina’98."
+      }
+    },
+    {
+      "id": "q2-ra06-black-domina",
+      "title": "Black Domina Regular",
+      "organization": "Sensi Seeds",
+      "url": "https://sensiseeds.com/en/cannabis-seeds/sensi-seeds/black-domina",
+      "verifiedAt": "2026-11-17",
+      "author": "Sensi Seeds",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "Sensi donne Northern Lights, Ortega, Hash Plant et Afghani SA comme les quatre composantes de Black Domina.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Présentation des quatre lignées fondatrices",
+        "result": "Passage effectivement consulté. Sensi donne Northern Lights, Ortega, Hash Plant et Afghani SA comme les quatre composantes de Black Domina."
+      }
+    },
+    {
+      "id": "q2-ra06-lemon-skunk-dna",
+      "title": "Lemon Skunk 256 Marijuana Strain",
+      "organization": "DNA Genetics",
+      "url": "https://dnagenetics.com/lemon-skunk-256-marijuana-strain/",
+      "verifiedAt": "2026-11-17",
+      "author": "Adam",
+      "published": "2025-03-31 (affiché 31-3-2025)",
+      "passage": "DNA situe les deux sélections Skunk réunies dans Lemon Skunk à Las Vegas et aux Pays-Bas.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Breeding Brilliance",
+        "result": "Passage effectivement consulté. DNA situe les deux sélections Skunk réunies dans Lemon Skunk à Las Vegas et aux Pays-Bas."
+      }
+    },
+    {
+      "id": "q2-ra06-strawberry-banana",
+      "title": "Original Strawberry Banana Cannabis Strain",
+      "organization": "DNA Genetics",
+      "url": "https://dnagenetics.com/original-strawberry-banana-cannabis-strain/",
+      "verifiedAt": "2026-11-17",
+      "author": "Adam",
+      "published": "2025-04-18 (affiché 18-4-2025)",
+      "passage": "DNA annonce Banana Kush de Crockett croisée avec un phénotype Strawberry de Bubble Gum.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Genetic Background",
+        "result": "Passage effectivement consulté. DNA annonce Banana Kush de Crockett croisée avec un phénotype Strawberry de Bubble Gum."
+      }
+    },
+    {
+      "id": "q2-ra06-lsd-barneys",
+      "title": "LSD",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/us/lsd-weed-strain-10",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche annonce Original Skunk #1 × Afghan Indica et précise Mazar-i-Sharif dans sa description.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Genetics",
+        "result": "Passage effectivement consulté. La fiche annonce Original Skunk #1 × Afghan Indica et précise Mazar-i-Sharif dans sa description."
+      }
+    },
+    {
+      "id": "q2-ra06-cookies-history",
+      "title": "About — Cookies History",
+      "organization": "Cookies Ukiah",
+      "url": "https://ukiah.cookies.co/about/",
+      "verifiedAt": "2026-11-17",
+      "author": "Cookies",
+      "published": "Date non indiquée dans la page consultée",
+      "passage": "L’histoire officielle situe les débuts de Cookies, avec Jai et Berner et sa lignée phare GSC, dans un garage à San Francisco.",
+      "access": "official-page",
+      "documentKind": "Histoire officielle de la marque",
+      "limitation": "Déclaration commerciale attribuée à cette maison/version, sans certification génomique indépendante. Aucun conseil de culture, dosage, rendement ou effet garanti repris. Récit de la marque, utilisé pour le lieu de son origine et non pour une revendication d’invention absolue.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cookies History",
+        "result": "Passage effectivement consulté. L’histoire officielle situe les débuts de Cookies, avec Jai et Berner et sa lignée phare GSC, dans un garage à San Francisco."
+      }
+    },
+    {
+      "id": "q2-ra06-chemdog-identity",
+      "title": "30 Years of Chemdog Spotlighted in Northeast Leaf 2021 Harvest Issue",
+      "organization": "Canna Provisions",
+      "url": "https://cannaprovisions.com/blog/30-years-of-chemdog-spotlighted-in-northeast-leaf-2021-harvest-issue/",
+      "verifiedAt": "2026-11-17",
+      "author": "Canna Provisions ; Greg Krzanowski (entretien repris)",
+      "published": "Numéro Northeast Leaf de novembre 2021 cité ; date de page non déterminée",
+      "passage": "La page de son employeur présente Greg Krzanowski, surnommé Chemdog, et reprend son témoignage original sur l’histoire de la lignée.",
+      "access": "full-text",
+      "documentKind": "Présentation et entretien original repris",
+      "limitation": "Identité documentée ; récit rétrospectif, sans reprendre conseils de culture, guérison ni certifier une généalogie inconnue.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Présentation de Greg « Chemdog » Krzanowski",
+        "result": "Passage effectivement consulté. La page de son employeur présente Greg Krzanowski, surnommé Chemdog, et reprend son témoignage original sur l’histoire de la lignée."
+      }
+    },
+    {
+      "id": "q2-ra06-france-hhc-2023",
+      "title": "L’ANSM classe le HHC et deux de ses dérivés sur la liste des stupéfiants",
+      "organization": "ANSM",
+      "url": "https://ansm.sante.fr/actualites/lansm-classe-lhexahydrocannabinol-hhc-et-deux-de-ses-derives-sur-la-liste-des-stupefiants",
+      "verifiedAt": "2026-11-17",
+      "author": "ANSM",
+      "published": "Publié le 2023-06-12 ; mis à jour le 2023-06-13",
+      "passage": "L’ANSM inscrit HHC, HHCO et HHCP sur la liste des stupéfiants, avec effet au 13 juin 2023 ; leur production, vente et usage sont notamment interdits.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Premier paragraphe",
+        "result": "Passage original effectivement consulté. L’ANSM inscrit HHC, HHCO et HHCP sur la liste des stupéfiants, avec effet au 13 juin 2023 ; leur production, vente et usage sont notamment interdits."
+      }
+    },
+    {
+      "id": "q2-ra06-germany-club-pure-forms",
+      "title": "Frequently asked questions on the Cannabis Act",
+      "organization": "Bundesministerium für Gesundheit",
+      "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+      "verifiedAt": "2026-11-17",
+      "author": "Bundesministerium für Gesundheit",
+      "published": "Page en vigueur consultée le 2026-11-17 ; date de publication non affichée",
+      "passage": "Les associations ne peuvent remettre que marijuana ou haschisch purs ; les mélanges avec tabac, nicotine ou aliments, dont les biscuits au haschisch, sont interdits.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "How is the cannabis cooperatively cultivated in cultivation associations passed on?",
+        "result": "Passage original effectivement consulté. Les associations ne peuvent remettre que marijuana ou haschisch purs ; les mélanges avec tabac, nicotine ou aliments, dont les biscuits au haschisch, sont interdits."
+      }
+    },
+    {
+      "id": "q2-ra06-germany-kcang",
+      "title": "Konsumcannabisgesetz — KCanG",
+      "organization": "Bundesministerium der Justiz / Bundesamt für Justiz",
+      "url": "https://www.gesetze-im-internet.de/kcang/BJNR06D0B0024.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Législateur fédéral allemand",
+      "published": "Loi du 2024-03-27 ; texte mentionnant la modification du 2026-10-22",
+      "passage": "Le KCanG interdit l’extraction de cannabinoïdes de la plante, mais prévoit expressément une exception pour l’extraction de CBD et une autre pour certaines analyses réglementaires.",
+      "access": "full-text",
+      "documentKind": "Texte législatif consolidé",
+      "limitation": "Distinction juridique, sans décrire ni recommander une extraction. La page signale la modification du 22 octobre 2026 non encore entièrement traitée documentairement ; le paragraphe cité est lu tel qu’affiché.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§2, alinéa 2",
+        "result": "Passage original effectivement consulté. Le KCanG interdit l’extraction de cannabinoïdes de la plante, mais prévoit expressément une exception pour l’extraction de CBD et une autre pour certaines analyses réglementaires."
+      }
+    },
+    {
+      "id": "q2-ra06-germany-public-transport",
+      "title": "Fragen und Antworten zum Cannabisgesetz",
+      "organization": "Bundesministerium für Gesundheit",
+      "url": "https://www.bundesgesundheitsministerium.de/themen/cannabis/faq-cannabisgesetz",
+      "verifiedAt": "2026-11-17",
+      "author": "Bundesministerium für Gesundheit",
+      "published": "Version consultée le 2026-11-17 ; date de publication non affichée",
+      "passage": "La FAQ indique l’interdiction de fumer et de vaporiser du cannabis dans les installations publiques fédérales et les transports publics, par extension de la protection contre le tabagisme.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Gesundheits- und Konsumierendenschutz, dernier point ; lignes194–197",
+        "result": "Passage original effectivement consulté. La FAQ indique l’interdiction de fumer et de vaporiser du cannabis dans les installations publiques fédérales et les transports publics, par extension de la protection contre le tabagisme."
+      }
+    },
+    {
+      "id": "q2-ra06-netherlands-tobacco-joint",
+      "title": "Rookverbod: waar mag niet worden gerookt en gevapet?",
+      "organization": "NVWA",
+      "url": "https://www.nvwa.nl/onderwerpen/roken-drinken/roken-en-tabak/rookverbod",
+      "verifiedAt": "2026-11-17",
+      "author": "NVWA",
+      "published": "Version consultée le 2026-11-17 ; date de publication non affichée",
+      "passage": "La NVWA inclut les établissements horeca et les coffeeshops dans les lieux intérieurs soumis à interdiction ; les produits contenant du tabac, dont un joint avec tabac, sont expressément couverts.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Waar geldt het rookverbod? et Welke producten vallen onder het rookverbod?",
+        "result": "Passage original effectivement consulté. La NVWA inclut les établissements horeca et les coffeeshops dans les lieux intérieurs soumis à interdiction ; les produits contenant du tabac, dont un joint avec tabac, sont expressément couverts."
+      }
+    },
+    {
+      "id": "q2-ra06-canada-medical-approval",
+      "title": "For health care professionals: Cannabis and cannabinoids",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Santé Canada",
+      "published": "Dernière version du guide : printemps 2018",
+      "passage": "Le guide distingue le cannabis accessible médicalement d’un produit thérapeutique approuvé : le produit particulier doit avoir un DIN et un avis de conformité (NOC).",
+      "access": "full-text",
+      "documentKind": "Guide institutionnel destiné aux professionnels",
+      "limitation": "Question explicitement bornée au guide printemps 2018, non à l’ensemble des règles de 2026. L’accès médical et l’approbation d’un médicament sont des notions distinctes.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Introduction, avertissement avant le sommaire",
+        "result": "Passage original effectivement consulté. Le guide distingue le cannabis accessible médicalement d’un produit thérapeutique approuvé : le produit particulier doit avoir un DIN et un avis de conformité (NOC)."
+      }
+    },
+    {
+      "id": "q2-ra06-thailand-online-2025",
+      "title": "Cannabis Now Strictly Regulated in Thailand — Important Notice for Tourists",
+      "organization": "Tourism Authority of Thailand / THAILAND.GO.TH",
+      "url": "https://www.thailand.go.th/issue-focus-detail/cannabis-now-strictly-regulated-in-thailand--important-notice-for-tourists?hl=en",
+      "verifiedAt": "2026-11-17",
+      "author": "Tourism Authority of Thailand",
+      "published": "2025-06-27",
+      "passage": "La notice officielle du 27 juin 2025 concernant le nouveau régime des fleurs indique l’interdiction de vente en ligne et par distributeur automatique, ainsi que de publicité.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Paragraphes sur les fleurs et interdictions de vente",
+        "result": "Passage original effectivement consulté. La notice officielle du 27 juin 2025 concernant le nouveau régime des fleurs indique l’interdiction de vente en ligne et par distributeur automatique, ainsi que de publicité."
+      }
+    },
+    {
+      "id": "q2-ra06-spain-clubs-euda",
+      "title": "Cannabis laws in Europe FAQ — Cannabis regulation",
+      "organization": "European Union Drugs Agency",
+      "url": "https://www.euda.europa.eu/publications/faqs/cannabis-laws-in-europe-faq/regulation-trends_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EUDA",
+      "published": "Révisé le 2026-04-21",
+      "passage": "L’EUDA rapporte que trois arrêts espagnols de 2015 qualifient de trafic la culture et distribution organisées, institutionnalisées et persistantes dans une association ouverte à de nouveaux membres.",
+      "access": "official-page",
+      "documentKind": "Synthèse juridique institutionnelle",
+      "limitation": "Le fait vise la doctrine des arrêts de 2015 résumée par l’EUDA, non une affirmation que tous les clubs sont illégaux ou un jugement sur toute consommation privée. D’autres passages de la FAQ ont une chronologie ancienne et ne sont pas utilisés.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cannabis social clubs, paragraphes Espagne et jurisprudence2015",
+        "result": "Passage original effectivement consulté. L’EUDA rapporte que trois arrêts espagnols de 2015 qualifient de trafic la culture et distribution organisées, institutionnalisées et persistantes dans une association ouverte à de nouveaux membres."
+      }
+    },
+    {
+      "id": "q2-ra06-thcp-affinity",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. — Δ9-Tetrahydrocannabiphorol",
+      "organization": "Scientific Reports / Sapienza IRIS",
+      "url": "https://iris.uniroma1.it/bitstream/11573/1414577/1/Citti_A%20novel%20phytocannabinoid_2019.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Cinzia Citti et al.",
+      "published": "2019 ; Scientific Reports9:20335",
+      "passage": "Le rapport d’environ33 entre THCP et THC compare leurs affinités pour CB1 dans un essai de liaison in vitro, avec Ki1,2 et40nM. Ce n’est pas une mesure de puissance psychoactive humaine.",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Lecture ciblée du PDF primaire via recherche dans le document ; les premières ouvertures directes avaient échoué, puis le passage PDF a été rendu. Étude de liaison et essais animaux ; aucune comparaison de puissance humaine établie ici.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Binding affinity at human CB1 and CB2 receptors ; Figure3",
+        "result": "Passage original effectivement consulté. Le rapport d’environ33 entre THCP et THC compare leurs affinités pour CB1 dans un essai de liaison in vitro, avec Ki1,2 et40nM. Ce n’est pas une mesure de puissance psychoactive humaine."
+      }
+    },
+    {
+      "id": "q2-ra06-hhc-activity",
+      "title": "In vitro activation of CB1 by HHC, HHC-O and HHC-P",
+      "organization": "Drug Testing and Analysis / Wiley",
+      "url": "https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/10.1002/dta.3750",
+      "verifiedAt": "2026-11-17",
+      "author": "Mattias Persson, Robert Kronstrand, Michael Evans-Brown et Henrik Green",
+      "published": "Première publication en ligne : 2024-06-19 ; volume2025",
+      "passage": "Dans les cellules CHO-K1 exprimant CB1 humain,9R-HHC est plus puissant que9S-HHC ; les deux épimères ont une efficacité maximale similaire dans ce modèle.9R est agoniste partiel.",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Modèle cellulaire, non comparaison clinique chez l’humain. Puissance (EC50) et effet maximal ne sont pas synonymes ; la correction de structures du2juillet2024 figure sur la page.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, Results ; comparaison puissance/efficacité des épimères",
+        "result": "Passage original effectivement consulté. Dans les cellules CHO-K1 exprimant CB1 humain,9R-HHC est plus puissant que9S-HHC ; les deux épimères ont une efficacité maximale similaire dans ce modèle.9R est agoniste partiel."
+      }
+    },
+    {
+      "id": "q2-ra06-cdc-cud",
+      "title": "Understanding Your Risk for Cannabis Use Disorder",
+      "organization": "Centers for Disease Control and Prevention",
+      "url": "https://www.cdc.gov/cannabis/health-effects/cannabis-use-disorder.html",
+      "verifiedAt": "2026-11-17",
+      "author": "CDC",
+      "published": "2024-12-05",
+      "passage": "La page CDC donne comme estimation environ3personnes sur10 parmi celles utilisant du cannabis ayant un trouble de l’usage du cannabis.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Fast Statistics",
+        "result": "Passage original effectivement consulté. La page CDC donne comme estimation environ3personnes sur10 parmi celles utilisant du cannabis ayant un trouble de l’usage du cannabis."
+      }
+    },
+    {
+      "id": "q2-ra06-nida-gateway",
+      "title": "Marijuana Research Report — Is marijuana a gateway drug?",
+      "organization": "National Institute on Drug Abuse",
+      "url": "https://nida.nih.gov/sites/default/files/1380-marijuana.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "NIDA",
+      "published": "Date de version non déterminée dans l’extrait consulté",
+      "passage": "Le rapport NIDA précise que la majorité des personnes utilisant du cannabis ne poursuivent pas vers d’autres substances dites plus dures ; il décrit aussi des associations et des facteurs de vulnérabilité communs.",
+      "access": "excerpt",
+      "documentKind": "Rapport institutionnel, extrait primaire indexé",
+      "limitation": "Le PDF et la page HTML ont répondu par une protection JavaScript ; seul le paragraphe primaire indexé a été lu. Ni négation des risques du cannabis ni preuve de causalité ou d’absence de causalité individuelle.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Chapitre gateway drug, extrait indexé du PDF, p.21",
+        "result": "Extrait primaire indexé effectivement lu ; ouverture directe limitée. Le rapport NIDA précise que la majorité des personnes utilisant du cannabis ne poursuivent pas vers d’autres substances dites plus dures ; il décrit aussi des associations et des facteurs de vulnérabilité communs."
+      }
+    },
+    {
+      "id": "q2-ra06-dronabinol-label",
+      "title": "Dronabinol capsules — Full prescribing information",
+      "organization": "DailyMed / Major Pharmaceuticals",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=fd8c5d57-0173-4f62-8ff0-d8147986a976&type=display",
+      "verifiedAt": "2026-11-17",
+      "author": "Major Pharmaceuticals / Ascend Laboratories",
+      "published": "Révision04/2026 ; page mise à jour le2026-04-22",
+      "passage": "La notice rapporte une aggravation possible de manie, dépression ou schizophrénie avec le dronabinol. Elle signale aussi une clairance réduite et des concentrations accrues chez certains porteurs de variants diminuant CYP2C9.",
+      "access": "full-text",
+      "documentKind": "Notice réglementaire américaine",
+      "limitation": "Mises en garde et pharmacogénétique du médicament dronabinol oral. Pas une contre-indication formelle pour tous les troubles, pas un conseil de dose, pas une extrapolation à tous les produits.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§5.1 Psychiatric Adverse Reactions ; §8.6 Effect of CYP2C9 Polymorphism",
+        "result": "Passage original effectivement consulté. La notice rapporte une aggravation possible de manie, dépression ou schizophrénie avec le dronabinol. Elle signale aussi une clairance réduite et des concentrations accrues chez certains porteurs de variants diminuant CYP2C9."
+      }
+    },
+    {
+      "id": "q2-ra06-poison-center-treatment",
+      "title": "Marijuana and CBD: Use, Intoxication, and Treatment",
+      "organization": "Missouri Poison Center",
+      "url": "https://missouripoisoncenter.org/marijuana-and-cbd-use-intoxication-and-treatment/",
+      "verifiedAt": "2026-11-17",
+      "author": "Missouri Poison Center",
+      "published": "2019-11-15",
+      "passage": "Le centre antipoison précise qu’il n’existe pas d’antidote spécifique à la toxicité des cannabinoïdes et que le traitement est symptomatique et de soutien.",
+      "access": "official-page",
+      "documentKind": "Information clinique d’un centre antipoison",
+      "limitation": "Seul le principe clinique général est utilisé ; pas de traitement à domicile, ni dose ni reprise des stratégies détaillées de la page. La prise en charge dépend de l’évaluation clinique.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Treatment",
+        "result": "Passage original effectivement consulté. Le centre antipoison précise qu’il n’existe pas d’antidote spécifique à la toxicité des cannabinoïdes et que le traitement est symptomatique et de soutien."
+      }
+    },
+    {
+      "id": "q2-ra06-acomplia-suspension",
+      "title": "EMA recommends suspension of the marketing authorisation of Acomplia",
+      "organization": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/documents/press-release/european-medicines-agency-recommends-suspension-marketing-authorisation-acomplia_en.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "EMA",
+      "published": "2008-10-23",
+      "passage": "L’EMA recommande la suspension de l’AMM de rimonabant en2008, les bénéfices ne compensant plus les risques ; les effets psychiatriques, particulièrement la dépression, motivent les préoccupations.",
+      "access": "excerpt",
+      "documentKind": "Communiqué réglementaire primaire, extrait indexé",
+      "limitation": "Communiqué primaire lu dans son extrait indexé ; ouverture directe PDF429. La chronologie de suspension est confirmée par la page EPAR ouverte, et le mécanisme CB1 par le résumé EPAR ouvert.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Communiqué EMEA/CHMP/537777/2008",
+        "result": "Extrait primaire indexé effectivement lu ; ouverture directe limitée. L’EMA recommande la suspension de l’AMM de rimonabant en2008, les bénéfices ne compensant plus les risques ; les effets psychiatriques, particulièrement la dépression, motivent les préoccupations."
+      }
+    },
+    {
+      "id": "q2-ra06-acomplia-epar",
+      "title": "Acomplia — EPAR overview",
+      "organization": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/acomplia",
+      "verifiedAt": "2026-11-17",
+      "author": "EMA",
+      "published": "Mise à jour du dossier après retrait du2009-01-16",
+      "passage": "La page confirme une suspension de commercialisation le13novembre2008, puis un retrait de l’AMM le16janvier2009.",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle",
+      "limitation": "Portée limitée au texte, à la juridiction et à la version consultés ; aucun conseil médical individuel ni méthode de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Overview",
+        "result": "Passage original effectivement consulté. La page confirme une suspension de commercialisation le13novembre2008, puis un retrait de l’AMM le16janvier2009."
+      }
+    },
+    {
+      "id": "q2-ra06-acomplia-mechanism",
+      "title": "Acomplia — EPAR summary for the public",
+      "organization": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/documents/overview/acomplia-epar-summary-public_en.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "EMA",
+      "published": "Résumé©EMEA2007 ; signalé publié le2009-01-30 sur l’EPAR",
+      "passage": "Le résumé présente le rimonabant comme antagoniste des récepteurs cannabinoïdes CB1. Le document porte le marquage médicament non autorisé.",
+      "access": "full-text",
+      "documentKind": "Résumé réglementaire primaire",
+      "limitation": "Utilisé seulement pour le mécanisme CB1 ; l’ancienne indication ne constitue pas une recommandation actuelle.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "PDF p.1, How does ACOMPLIA work?",
+        "result": "Passage original effectivement consulté. Le résumé présente le rimonabant comme antagoniste des récepteurs cannabinoïdes CB1. Le document porte le marquage médicament non autorisé."
+      }
+    },
+    {
+      "id": "q2-ra06-cbd-dental-trial",
+      "title": "Cannabidiol as an Alternative Analgesic for Acute Dental Pain",
+      "organization": "Journal of Dental Research / PMC",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10900863/",
+      "verifiedAt": "2026-11-17",
+      "author": "V. Chrepa, S. Villasenor, A. Mauney, G. Kotsakis, L. Macpherson",
+      "published": "En ligne2023-11-01 ; numéro mars2024",
+      "passage": "L’essai randomisé de61adultes souffrant de douleurs dentaires aiguës observe une réduction de la douleur rapportée dans les groupes CBD oral purifié comparés au placebo pendant le bref suivi.",
+      "access": "full-text",
+      "documentKind": "Essai clinique primaire",
+      "limitation": "Petit essai à court terme de solution pharmaceutique orale, non preuve pour toutes les huiles ou traitement de la cause dentaire. Le corrigendum2024 est lu séparément ; aucun chiffre corrigé n’est testé.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract et Results, douleur mesurée VAS",
+        "result": "Passage original effectivement consulté. L’essai randomisé de61adultes souffrant de douleurs dentaires aiguës observe une réduction de la douleur rapportée dans les groupes CBD oral purifié comparés au placebo pendant le bref suivi."
+      }
+    },
+    {
+      "id": "q2-ra06-cbd-dental-corrigendum",
+      "title": "Corrigendum to Cannabidiol as an Alternative Analgesic for Acute Dental Pain",
+      "organization": "Journal of Dental Research / SAGE",
+      "url": "https://journals.sagepub.com/doi/full/10.1177/00220345241257653",
+      "verifiedAt": "2026-11-17",
+      "author": "V. Chrepa et al.",
+      "published": "2024-06-18",
+      "passage": "Les auteurs corrigent des données descriptives et des conversions de force de morsure, en précisant que l’analyse et l’interprétation de réduction de douleur ne changent pas.",
+      "access": "full-text",
+      "documentKind": "Corrigendum primaire",
+      "limitation": "Résultats descriptifs corrigés pris en compte ; aucune force, proportion de réduction ou dose n’est reprise dans la question.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Panels1A–1D et figure corrigée",
+        "result": "Passage original effectivement consulté. Les auteurs corrigent des données descriptives et des conversions de force de morsure, en précisant que l’analyse et l’interprétation de réduction de douleur ne changent pas."
+      }
+    },
+    {
+      "id": "q2-ra06-asra-postoperative",
+      "title": "ASRA Pain Medicine consensus guidelines on the management of the perioperative patient on cannabis and cannabinoids",
+      "organization": "ASRA Pain Medicine / Regional Anesthesia and Pain Medicine",
+      "url": "https://irp.cdn-website.com/cf1aabe0/files/uploaded/Guidelines-ASRA%20Guidelines%20Cannabis.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Shalini Shah et al.",
+      "published": "Première publication2023-01-03 ; volume48:97–117",
+      "passage": "Le consensus indique que l’usage chronique de THC peut aggraver la douleur postopératoire et augmenter les besoins d’opioïdes ; certitude modérée. Il ne préconise pas un ajustement uniforme.",
+      "access": "full-text",
+      "documentKind": "Recommandations de consensus primaires, copie du PDF éditeur",
+      "limitation": "PDF primaire identifié par DOI10.1136/rapm-2022-104013 et pagination, lu sur miroir après403du site éditeur. Distinction association/risque clinique, sans affirmer causalité universelle ni proposer dose ou sevrage.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "PDF p.9, Question3, Statement1 ; imprimée p.105",
+        "result": "Passage original effectivement consulté. Le consensus indique que l’usage chronique de THC peut aggraver la douleur postopératoire et augmenter les besoins d’opioïdes ; certitude modérée. Il ne préconise pas un ajustement uniforme."
+      }
+    }
+  ]
+}

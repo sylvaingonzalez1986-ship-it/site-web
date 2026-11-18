@@ -12,6 +12,18 @@ const fixture = () => {
 };
 
 describe("warehouse plan review", () => {
+  it("describes partition creation, removal, moves, lengths and rotations without changing prices", () => {
+    const starter = createKqWarehouseStarter();
+    const added: KqWarehouseState = { ...starter, partitions: [{ id: "wall", x: 2, y: 2, axis: "x", length: 1 }] };
+    expect(getKqWarehousePlanChanges(starter, added).otherChanges).toEqual(["Paroi 1 ajoutée : 1 m, horizontale"]);
+    const changed: KqWarehouseState = { ...added, partitions: [{ id: "wall", x: 3, y: 4, axis: "y", length: 2 }] };
+    expect(getKqWarehousePlanChanges(added, changed).otherChanges).toEqual([
+      "Paroi 1 : longueur 1 → 2 m", "Paroi 1 tournée : horizontale → verticale", "Paroi 1 déplacée",
+    ]);
+    expect(getKqWarehousePlanChanges(changed, { ...changed, partitions: [] }).otherChanges).toEqual(["Paroi 1 retirée : 2 m"]);
+    expect(getKqWarehousePlanChanges(added, starter).otherChanges).toEqual([]);
+    expect(getKqWarehouseQuote(added, starter).totalCostCents).toBe(0);
+  });
   it("retains the unknown price of an invalid plan rather than displaying a free installation", () => {
     expect(getKqWarehousePlanPayment(null, 10000, 5000)).toEqual({
       totalCents: null, creditUsedCents: null, payableCents: null,

@@ -1,0 +1,232 @@
+import { useRef, useState } from "react";
+import { Archive, Leaf, MousePointer2, Move, Scaling, Wind, X } from "lucide-react";
+import { doKqWarehouseZonesOverlap, type KqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
+import type { WarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
+import styles from "./KqGrowRoom.module.css";
+
+export type RoomPoint = { x: number; y: number };
+type Rectangle = Pick<KqWarehouseZone, "x" | "y" | "width" | "height">;
+type ZoneKind = "culture" | "drying" | "storage";
+type Tool = "inspect" | "move" | "resize";
+type Gesture = { id: number; floor: RoomPoint; screen: RoomPoint; moved: boolean } &
+  ({ kind: "draw"; zoneKind: ZoneKind } | { kind: "move" | "resize"; origin: Rectangle & { id: string } });
+export type KqGrowRoomWarehouseEditor = {
+  selectedId: string | null;
+  drawingKind?: ZoneKind | null;
+  onDrawingKind?: (kind: ZoneKind | null) => void;
+  locked: boolean;
+  managing?: boolean;
+  lockedZoneIds?: readonly string[];
+  selectedPartitionId?: string | null;
+  placingBuddie?: boolean;
+  buddieDrop?: { zoneId: string | null; allowed: boolean } | null;
+  interactionHint?: string;
+  onOpenZoneMenu: (id: string) => void;
+  onDrawZone: (start: RoomPoint, end: RoomPoint, kind: ZoneKind) => boolean;
+  onTransformZone: (id: string, patch: Rectangle) => boolean;
+  onSelectPartition?: (id: string) => void;
+  onChooseCell?: (point: RoomPoint) => void;
+  onDeselect?: () => void;
+  onCancel?: () => void;
+};
+
+const zoneTypes = [
+  { code: "culture", label: "Culture", icon: Leaf },
+  { code: "drying", label: "Séchage", icon: Wind },
+  { code: "storage", label: "Stockage", icon: Archive },
+] as const;
+const tools = [
+  { code: "inspect", label: "Voir", name: "Observer les zones", icon: MousePointer2 },
+  { code: "move", label: "Déplacer", name: "Déplacer la zone", icon: Move },
+  { code: "resize", label: "Taille", name: "Redimensionner la zone", icon: Scaling },
+] as const;
+const clamp = (value: number, max: number) => Math.max(0, Math.min(max, value));
+const rectangleBetween = (a: RoomPoint, b: RoomPoint): Rectangle => ({
+  x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), width: Math.abs(a.x - b.x) + 1, height: Math.abs(a.y - b.y) + 1,
+});
+const sameRectangle = (a: Rectangle, b: Rectangle) => a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+
+export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | undefined, plan: KqWarehouseState, layout: WarehouseSpatialLayout) {
+  const [localKind, setLocalKind] = useState<ZoneKind | null>(null);
+  const [tool, setTool] = useState<Tool>("inspect");
+  const [anchor, setAnchor] = useState<RoomPoint | null>(null);
+  const [cursor, setCursor] = useState<RoomPoint | null>(null);
+  const [pointerPreview, setPointerPreview] = useState<Rectangle | null>(null);
+  const [notice, setNotice] = useState("");
+  const gesture = useRef<Gesture | null>(null);
+  const zones = [...plan.zones, ...(plan.serviceZones ?? [])];
+  const selected = zones.find(zone => zone.id === editor?.selectedId);
+  const managing = !!editor && editor.managing !== false;
+  const disabled = !managing || editor.locked || !!editor.placingBuddie;
+  const transformDisabled = disabled || !selected || !!editor?.lockedZoneIds?.includes(selected.id);
+  const drawing = disabled ? null : editor?.drawingKind === undefined ? localKind : editor.drawingKind;
+  const activeTool = drawing ? "draw" : transformDisabled ? "inspect" : tool;
+  const [previousDrawing, setPreviousDrawing] = useState(drawing);
+  if (previousDrawing !== drawing) {
+    setPreviousDrawing(drawing);
+    setAnchor(null);
+    setCursor(null);
+    setPointerPreview(null);
+  }
+  const cell = (point: RoomPoint) => ({ x: clamp(Math.floor(point.x), layout.width - 1), y: clamp(Math.floor(point.y), layout.depth - 1) });
+  const inside = (point: RoomPoint) => point.x >= 0 && point.x < layout.width && point.y >= 0 && point.y < layout.depth;
+  const zoneAt = (point: RoomPoint) => zones.find(z => point.x >= z.x && point.x < z.x + z.width && point.y >= z.y && point.y < z.y + z.height);
+  const overlaps = (rectangle: Rectangle, ignore?: string) =>
+    zones.some(zone => zone.id !== ignore && doKqWarehouseZonesOverlap(rectangle, zone)) ||
+    layout.items.some(wall => wall.kind === "partition" && doKqWarehouseZonesOverlap(rectangle, {
+      x: wall.x + (layout.width - wall.width) / 2, y: wall.z + (layout.depth - wall.depth) / 2,
+      width: wall.width, height: wall.depth,
+    }));
+
+  function transform(origin: Rectangle, dx: number, dy: number): Rectangle {
+    if (activeTool === "move") return {
+      x: clamp(origin.x + dx, layout.width - origin.width), y: clamp(origin.y + dy, layout.depth - origin.height),
+      width: origin.width, height: origin.height,
+    };
+    return { x: origin.x, y: origin.y, width: 1 + clamp(origin.width + dx - 1, layout.width - origin.x - 1),
+      height: 1 + clamp(origin.height + dy - 1, layout.depth - origin.y - 1) };
+  }
+  function clearGesture() {
+    gesture.current = null;
+    setPointerPreview(null);
+    setAnchor(null);
+    setCursor(null);
+  }
+  function chooseKind(kind: ZoneKind | null) {
+    clearGesture();
+    setNotice("");
+    setTool("inspect");
+    if (editor?.onDrawingKind) {
+      if (editor.drawingKind !== kind) editor.onDrawingKind(kind);
+    } else setLocalKind(kind);
+  }
+  function chooseTool(next: Tool) {
+    chooseKind(null);
+    setTool(next);
+  }
+  function cancel() {
+    chooseKind(null);
+    editor?.onCancel?.();
+  }
+  function commitDraw(start: RoomPoint, end: RoomPoint) {
+    if (!editor || !drawing) return;
+    clearGesture();
+    if (overlaps(rectangleBetween(start, end))) {
+      setNotice("Le tracé chevauche une zone ou une paroi.");
+      return;
+    }
+    if (editor.onDrawZone(start, end, drawing)) {
+      chooseKind(null);
+      setNotice("Zone tracée. Sélectionne-la pour l’aménager.");
+    }
+  }
+  function commitTransform(rectangle: Rectangle) {
+    if (!editor || transformDisabled || !selected || sameRectangle(rectangle, selected)) return;
+    if (overlaps(rectangle, selected.id)) {
+      setNotice("Le nouvel emplacement chevauche une zone ou une paroi.");
+      return;
+    }
+    if (editor.onTransformZone(selected.id, rectangle)) {
+      setNotice(activeTool === "move" ? "Zone déplacée. Enregistre pour confirmer." : "Surface modifiée. Vérifie le devis.");
+    }
+  }
+  function begin(id: number, screen: RoomPoint, floor: RoomPoint, handle: boolean) {
+    const at = { id, floor, screen, moved: false };
+    if (drawing && inside(floor)) {
+      gesture.current = { ...at, kind: "draw", zoneKind: drawing };
+      setPointerPreview(rectangleBetween(anchor ?? cell(floor), cell(floor)));
+    } else if (selected && (activeTool === "move" && zoneAt(floor)?.id === selected.id || activeTool === "resize" && handle)) {
+      gesture.current = { ...at, kind: activeTool, origin: selected };
+    } else return false;
+    return true;
+  }
+  function stillEditable(current: Gesture) {
+    if (activeTool !== current.kind) return false;
+    if (current.kind === "draw") return current.zoneKind === drawing;
+    return selected?.id === current.origin.id && sameRectangle(selected, current.origin);
+  }
+  function movePointer(id: number, screen: RoomPoint, floor: RoomPoint) {
+    const current = gesture.current;
+    if (!current || current.id !== id) {
+      if (!current && drawing && inside(floor)) {
+        const next = cell(floor);
+        setCursor(old => old?.x === next.x && old.y === next.y ? old : next);
+      }
+      return false;
+    }
+    if (!stillEditable(current)) {
+      clearGesture();
+      return true;
+    }
+    current.moved ||= Math.hypot(current.screen.x - screen.x, current.screen.y - screen.y) > 5;
+    if (current.kind === "draw") setPointerPreview(rectangleBetween(anchor ?? cell(current.floor), cell(floor)));
+    else if (current.moved) setPointerPreview(transform(current.origin, Math.round(floor.x - current.floor.x), Math.round(floor.y - current.floor.y)));
+    return true;
+  }
+  function end(id: number, screen: RoomPoint, floor: RoomPoint) {
+    const current = gesture.current;
+    if (!current || current.id !== id) return false;
+    gesture.current = null;
+    setPointerPreview(null);
+    if (!stillEditable(current)) return true;
+    const moved = current.moved || Math.hypot(current.screen.x - screen.x, current.screen.y - screen.y) > 5;
+    if (current.kind === "draw") {
+      const start = cell(current.floor), end = cell(floor);
+      if (moved || anchor) commitDraw(anchor ?? start, end);
+      else {
+        setNotice("");
+        setAnchor(start);
+        setCursor(end);
+      }
+    } else if (moved) {
+      commitTransform(transform(current.origin, Math.round(floor.x - current.floor.x), Math.round(floor.y - current.floor.y)));
+    }
+    return true;
+  }
+  const keyboardCell = cursor ?? anchor ?? { x: 0, y: 0 };
+  function key(key: string, shift: boolean, inspect: (point: RoomPoint) => void) {
+    if (!editor) return false;
+    if (key === "Escape") { cancel(); return true; }
+    const step = shift ? 5 : 1;
+    const dx = key === "ArrowLeft" ? -step : key === "ArrowRight" ? step : 0;
+    const dy = key === "ArrowUp" ? -step : key === "ArrowDown" ? step : 0;
+    if (dx || dy) {
+      if (activeTool === "inspect" && (!editor.onChooseCell || disabled)) return false;
+      if (selected && (activeTool === "move" || activeTool === "resize")) commitTransform(transform(selected, dx, dy));
+      else setCursor(cell({ x: keyboardCell.x + dx, y: keyboardCell.y + dy }));
+      return true;
+    }
+    if (key !== "Enter" && key !== " ") return false;
+    if (drawing) {
+      if (anchor) commitDraw(anchor, keyboardCell);
+      else { setNotice(""); setAnchor(keyboardCell); }
+    } else if (activeTool === "inspect" && selected && !cursor) editor.onOpenZoneMenu(selected.id);
+    else if (activeTool === "inspect") inspect(keyboardCell);
+    return true;
+  }
+  const preview = activeTool === "inspect" ? null : pointerPreview ??
+    (drawing && anchor ? rectangleBetween(anchor, keyboardCell) : null);
+  const cursorRectangle = drawing || cursor && activeTool === "inspect" && editor?.onChooseCell ? rectangleBetween(keyboardCell, keyboardCell) : null;
+  const valid = !preview || !overlaps(preview, drawing ? undefined : selected?.id);
+  return { activeTool, drawing, disabled, transformDisabled, managing, selected, preview, valid, cursorRectangle, anchor, notice,
+    chooseTool, chooseKind, cancel, clearGesture, begin, movePointer, end, key, zoneAt, inside };
+}
+
+export function WarehouseEditControls({ room, focusMap }: { room: ReturnType<typeof useGrowRoomWarehouseEditor>; focusMap: () => void }) {
+  if (!room.managing) return null;
+  return <div className={styles.warehouseEditor}>
+    <div className={styles.editorGroup} role="group" aria-label="Tracer une nouvelle zone">
+      {zoneTypes.map(({ code, label, icon: Icon }) => <button key={code} type="button" className={styles.stationChoice}
+        data-warehouse-action={code === "culture" ? "draw" : undefined} data-warehouse-draw-kind={code}
+        disabled={room.disabled} aria-pressed={room.drawing === code}
+        onClick={() => { room.chooseKind(room.drawing === code ? null : code); focusMap(); }}><Icon size={15} aria-hidden="true" />{label}</button>)}
+    </div>
+    {(room.selected || room.drawing) && <div className={styles.editorGroup} role="group" aria-label="Outils du plan">
+      {room.drawing ? <button className={styles.stationChoice} type="button" onClick={() => room.chooseKind(null)}>
+        <X size={15} aria-hidden="true" /> Annuler le tracé</button> : tools.map(({ code, label, name, icon: Icon }) => <button key={code}
+          type="button" data-warehouse-tool={code} className={styles.stationChoice} aria-label={name}
+          disabled={code !== "inspect" && room.transformDisabled} aria-pressed={room.activeTool === code}
+          onClick={() => { room.chooseTool(code); focusMap(); }}><Icon size={15} aria-hidden="true" />{label}</button>)}
+    </div>}
+  </div>;
+}

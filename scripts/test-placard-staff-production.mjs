@@ -90,6 +90,7 @@ async function setup() {
     ALTER FUNCTION kq_zone_reserved_harvest(UUID) SET search_path=public;
     ALTER FUNCTION kq_mission_metrics(UUID) SET search_path=public;`);
   await db.exec(await migration('20261110000100_kq_staff_production.sql'));
+  await db.exec(await migration('20261118000200_kq_team_day_plans.sql'));
   console.log('Production SQL fixture: new migration installed');
 }
 try {
@@ -120,6 +121,43 @@ try {
     return id;
   }
   const user = await player(), other = await player();
+  {
+    const planner = await player();
+    let view = await read(planner);
+    const memberId = view.state.employees[0].id;
+    const personal = { action:'player-assign', kind:'communication', hours:2, expectedCostCents:0 };
+    const reserve = { action:'save-day-plan', assignment:personal, day:1, expectedDay:1, expectedVersion:0 };
+    const planId = randomUUID(), key = randomUUID();
+    const save = staff.applyKqStaffCommand(view,reserve,planId);
+    check('One-off planning advertised to every Quartier reader',view.context.dayPlanVersion,1);
+    await commit(planner,view,reserve,save,key);
+    await commit(planner,view,reserve,save,key);
+    await rejects('Two writers cannot reserve from a stale snapshot',()=>commit(planner,view,reserve,save),/staff_changed/);
+    view=await read(planner);
+    check('A fresh read contains one plan with no charged work', [view.state.dayPlans.length,view.state.playerWorkDays['1']?.usedHours??0,view.state.tasks.length],[1,0,0]);
+    const replacement={...reserve,planId,assignment:{action:'train',employeeId:memberId,skill:'culture',hours:2,expectedCostCents:7000},expectedVersion:1};
+    view=await commit(planner,view,replacement,staff.applyKqStaffCommand(view,replacement,randomUUID()));
+    check('Reassignment moves budget from player to employee without paying yet',[view.state.dayPlans[0].assigneeId,view.cashCents],[memberId,1000000]);
+    const add={...reserve,assignment:{action:'assign',employeeId:memberId,kind:'communication',hours:2},expectedVersion:2,beforeId:planId};
+    const another=randomUUID();
+    view=await commit(planner,view,add,staff.applyKqStaffCommand(view,add,another));
+    check('Queue reorder persists across reads',(await read(planner)).state.dayPlans.map(plan=>plan.id),[another,planId]);
+    const start={action:'start-day-plan',planId,expectedVersion:3,expectedDay:1};
+    assert.throws(()=>staff.applyKqStaffCommand(view,start,randomUUID()),/première tâche/);
+    const remove={action:'remove-day-plan',planId:another,expectedDay:1,expectedVersion:3};
+    view=await commit(planner,view,remove,staff.applyKqStaffCommand(view,remove,randomUUID()));
+    start.expectedVersion=4;
+    const launch=staff.applyKqStaffCommand(view,start,randomUUID()), launchKey=randomUUID();
+    await commit(planner,view,start,launch,launchKey);
+    await commit(planner,view,start,launch,launchKey);
+    view=await read(planner);
+    check('Launch and retry debit once and charge the original employee ledger', [view.cashCents,view.state.dayPlans.length,view.state.tasks.map(t=>t.id),view.state.employees[0].workDays['1'].usedHours],[993000,0,[planId],2]);
+    check('Receipt matches original user command, including after refresh', (await scalar('SELECT rpc_kq_staff_receipt($1,$2,$3::jsonb)',[planner,launchKey,JSON.stringify(start)])).replayed,true);
+    assert.throws(()=>staff.applyKqStaffCommand(view,{action:'start-team-task',assignment:add.assignment,expectedVersion:5,expectedDay:1},randomUUID()),/travaille déjà/);
+    const pstart={action:'start-team-task',assignment:personal,expectedVersion:5,expectedDay:1};
+    view=await commit(planner,view,pstart,staff.applyKqStaffCommand(view,pstart,randomUUID()));
+    check('Immediate player work passes the existing SQL workload guard',view.state.playerWorkDays['1'].usedHours,2);
+  }
   let raw = await read(user);
   check('Capability is explicit; existing game has no production automatically', [raw.context.productionVersion,raw.state.production], [1,undefined]);
   const config = { action:'set-production-rules',enabled:true,zoneId:'starter',route:'flower',maxDailyCostCents:100000,cashReserveCents:10000,expectedRevision:1 };

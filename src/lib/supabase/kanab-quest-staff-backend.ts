@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { applyKqStaffCommand, hasDueKqStaffWeeklyWork, isKqStaffState, parseKqStaffCommand, projectKqStaffSnapshot, type KqStaffCommand, type KqStaffRawSnapshot, type KqStaffSnapshot } from "@/lib/kanab-quest-staff";
 import { createSupabaseServiceClient } from "./admin";
 import { getKqPlayerWorkErrorMessage } from "../kanab-quest-player-work-errors";
+import { isKqTeamPlanCommand } from "../kanab-quest-team-day";
 import type { KqStaffArchiveCursor, KqStaffArchiveKind, KqStaffArchivePage, KqStaffEmployee } from "../kanab-quest-staff-types";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -15,6 +16,7 @@ function databaseError(error: { message: string; code?: string }): never {
   if (error.code === "PGRST202" || error.code === "42883") throw new StaffSchemaUnavailable("[supabase:staff] staff_migration_required");
   if (error.message.includes("staff_profile")) throw new StaffProfileUnavailable("Ouvre d’abord ta ferme avant de recruter.");
   const known: Record<string, string> = {
+    team_plan_changed: "La journée a changé. Actualise le planning avant de confirmer.",
     staff_invalid: "Demande de personnel invalide. Actualise le bureau.",
     staff_profile: "Ouvre d’abord ta ferme avant de recruter.",
     staff_changed: "Le planning ou les comptes ont changé. Actualise avant de confirmer.",
@@ -70,6 +72,11 @@ function snapshot(value: unknown): KqStaffRawSnapshot {
     || raw.state !== null && !isKqStaffState(raw.state)
     || raw.archiveCount !== undefined && (!Number.isSafeInteger(raw.archiveCount) || raw.archiveCount < 0)
     || (raw.context.staffBenefitsVersion === 1 || raw.benefits !== undefined) && !validBenefits(raw.benefits)) throw new Error("[supabase:staff] invalid_snapshot");
+  // The second migration exposes teamWork and protects building debits in the
+  // same transaction. Keep reservations closed while only the first is installed.
+  if (raw.context.dayPlanVersion === 1 && !Array.isArray(raw.context.teamWork)) {
+    return { ...raw, context: { ...raw.context, dayPlanVersion: undefined } };
+  }
   return raw;
 }
 async function read(userId: string) {
@@ -136,8 +143,11 @@ export async function handleKqStaffAction(userId: string, input: unknown): Promi
   // Replays must precede eligibility: an already hired candidate or paid invoice
   // is deliberately no longer eligible, but the original confirmation is valid.
   const replay = await receipt(userId, requestKey, command);
-  if (replay) return projectKqStaffSnapshot(replay);
-  return projectKqStaffSnapshot(await commit(userId, requestKey, command, randomUUID(), false));
+  const result = replay ?? await commit(userId, requestKey, command, randomUUID(), false);
+  // A lost response may be retried after a game day or a task deadline.
+  // The SQL receipt returns live balances but never settles pending work.
+  if ((replay || result.replayed) && isKqTeamPlanCommand(command)) return getKqStaffSnapshot(userId);
+  return projectKqStaffSnapshot(result);
 }
 
 async function readContractSource(userId: string, contractId: string): Promise<KqStaffEmployee> {

@@ -1,0 +1,67 @@
+{
+  "batchId": "r-products-04",
+  "author": "rebalance_products_sol",
+  "status": "proposal-awaiting-independent-review",
+  "replaces": "hemp-q2-rp04-dog-edible-chocolate-xylitol",
+  "reason": "Le fait retiré portait sur la toxicologie alimentaire générale du chien ; remplacement par un repère historique du commerce de haschich, propre au domaine actif.",
+  "question": {
+    "id": "hemp-q2-rp04-mellow-yellow-coffeeshop",
+    "topicId": "history",
+    "level": 2,
+    "prompt": "Dans l’histoire du commerce de cannabis à Amsterdam, qu’était « Mellow Yellow » ?",
+    "options": [
+      "Un coffeeshop pionnier de la vente de haschich",
+      "Un concours de dégustation de fleurs de cannabis",
+      "Un laboratoire public d’analyse des cannabinoïdes",
+      "Une coopérative de sélection de graines de cannabis"
+    ],
+    "answer": 0,
+    "explanation": "Le musée décrit Mellow Yellow comme un coffeeshop installé dans une ancienne boulangerie occupée. On pouvait y commander un café et acheter du haschich : un repère de l’histoire du commerce cannabique d’Amsterdam.",
+    "articleId": "ref-histoire-culture",
+    "sourceIds": ["q2-rp04-museum-mellow-yellow"],
+    "editorial": {
+      "domain": "active",
+      "category": "history",
+      "subject": "Établissement historique Mellow Yellow",
+      "subjectKey": "mellow-yellow-coffeeshop",
+      "property": "Nature de coffeeshop pionnier du commerce de haschich",
+      "expectedAnswer": "Un coffeeshop pionnier de la vente de haschich",
+      "learningObjective": "Reconnaître un lieu historique du commerce récréatif de cannabis.",
+      "factKey": "mellow-yellow-amsterdam-pioneer-coffeeshop",
+      "form": "identification",
+      "difficultyRationale": "Repère historique demandant de connaître le rôle d’un établissement nommé, au-delà du sens actuel du mot coffeeshop.",
+      "sourceEvidence": [{
+        "sourceId": "q2-rp04-museum-mellow-yellow",
+        "locator": "Notice Mellow Yellow, paragraphes55–56 du texte ouvert",
+        "support": "La notice identifie Mellow Yellow comme coffeeshop amstellodamois où les clients commandaient un café et achetaient du haschich."
+      }]
+    }
+  },
+  "sources": [{
+    "id": "q2-rp04-museum-mellow-yellow",
+    "title": "Mellow Yellow",
+    "organization": "Hash Marihuana & Hemp Museum",
+    "url": "https://hashmuseum.com/en/collection/history-of-smoking/mellow-yellow/",
+    "verifiedAt": "2026-11-17",
+    "author": "Hash Marihuana & Hemp Museum",
+    "published": "Date non indiquée sur la page consultée",
+    "passage": "Notice historique d’un coffeeshop à Amsterdam, installé dans une boulangerie occupée, associant café et vente de haschich.",
+    "access": "catalogue",
+    "documentKind": "museum-historical-notice",
+    "limitation": "La question ne teste ni la date exacte ni une priorité absolue : la notice donne1972, alors que d’autres récits donnent1973. Les prix anciens et l’anecdote d’adultération ne sont pas repris.",
+    "consultation": {
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "locator": "Deux paragraphes de la notice, lignes55–56 du texte ouvert",
+      "result": "Page originale du musée effectivement ouverte et corps de la notice lu : cafés et haschich vendus chez Mellow Yellow, ancienne boulangerie occupée. Aucun catalogue du site utilisé."
+    }
+  }],
+  "neighbourAudit": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "searchedTerms": ["Mellow Yellow", "coffeeshop", "Amsterdam"],
+    "distinctions": [
+      "Les questions coffeeshops de rb02 testent tolérance, alcool et mineurs ; rb05 teste le paradoxe d’approvisionnement. Aucune ne teste l’identité historique de Mellow Yellow.",
+      "La Cannabis Cup rb06 teste un concours, pas un coffeeshop ; le même type de ville ne constitue pas un même fait."
+    ]
+  }
+}

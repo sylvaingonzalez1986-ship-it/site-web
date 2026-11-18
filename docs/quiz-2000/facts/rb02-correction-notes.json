@@ -1,0 +1,116 @@
+{
+  "batchId": "r-actives-b-02",
+  "author": "rebalance_classify_b",
+  "correctedAt": "2026-11-17",
+  "basis": "reviews/r-actives-b-02.json, première revue indépendante Sol ; aucune auto-approbation",
+  "removed": [
+    {
+      "id": "hemp-q2-rb02-arad-encens-autre-autel",
+      "reason": "Fait réellement testé : oliban de l’autre autel, hors domaine actif. Place reportée à rb06, qui doit désormais compter 33 questions.",
+      "contentHash": "cedbda8bfd0e6502a3132d76b99fc1c8e1f2a84d01d0e9a0ebd6b067fba49712"
+    }
+  ],
+  "replacements": [
+    {
+      "oldId": "hemp-q2-rb02-legalize-it-message",
+      "newId": "hemp-q2-rb02-hippie-hill-ville",
+      "reason": "Traduction du titre remplacée par lieu historique de rassemblements 420 ; nouveau communiqué municipal lu."
+    },
+    {
+      "oldId": "hemp-q2-rb02-brownie-mary-surnom",
+      "newId": "hemp-q2-rb02-peron-cannabis-buyers-club",
+      "reason": "Traduction du surnom remplacée par attribution du Cannabis Buyers Club ; paragraphe archivistique relu."
+    }
+  ],
+  "newFactForLimitedReview": [
+    "hemp-q2-rb02-hippie-hill-ville",
+    "hemp-q2-rb02-peron-cannabis-buyers-club",
+    "hemp-q2-rb02-sinclair-rally-liberation"
+  ],
+  "sourceMetadataCorrections": [
+    "q2-rb02-holi",
+    "q2-rb02-mary"
+  ],
+  "changed": [
+    {
+      "id": "hemp-q2-rb02-reefer-film-culte",
+      "contentHash": "378ccb0bfb6e72b54f2cd979ce96c7d0cc54e8fbfdd9ec1e9d2256aa99240278"
+    },
+    {
+      "id": "hemp-q2-rb02-stoner-comedy-genre",
+      "contentHash": "a986d927daf95c9c91237822f4784db94c220ec47362838199139feb46064fea"
+    },
+    {
+      "id": "hemp-q2-rb02-hippie-hill-ville",
+      "contentHash": "3853522544b701404bdd14597ab2e9748997451cc69fa2669d7e24ecff759862"
+    },
+    {
+      "id": "hemp-q2-rb02-420-date-celebration",
+      "contentHash": "a1f27a03612a1c9754539bea14390d5a76db51d437c20ceadf26099337a90583"
+    },
+    {
+      "id": "hemp-q2-rb02-rastafari-sacrement",
+      "contentHash": "7393f6fc1bea9b8c65683dd797dc5def3a94b949aea5639935dd0fbdbdff0ae8"
+    },
+    {
+      "id": "hemp-q2-rb02-rastafari-reasoning",
+      "contentHash": "66bebbb64d39eaf7e67e1d3dfbea8e4956d1c7202675b26665aa1a2c6d2f24ab"
+    },
+    {
+      "id": "hemp-q2-rb02-jamaica-2015-rastafari",
+      "contentHash": "1263dcb08c0759b3700b95ecdc62bbe0d04dbf047e3552c59eea3bf2a2c6b5f9"
+    },
+    {
+      "id": "hemp-q2-rb02-holi-cannabis-tradition",
+      "contentHash": "e0a3c34af25ddea1531b39593d241a929cfaeb26f29ea4c9ce399d60aaba76c9"
+    },
+    {
+      "id": "hemp-q2-rb02-shiva-cannabis-tradition",
+      "contentHash": "203a317ae01201547f2799bbf72b17b1e29b962efc1b06005fcad84ba60763cb"
+    },
+    {
+      "id": "hemp-q2-rb02-armstrong-muggles-titre",
+      "contentHash": "5ddf0c8c6855490753325d41722e93440c27d1b2b7e9f1092e2501a0ccb28f3d"
+    },
+    {
+      "id": "hemp-q2-rb02-brownie-mary-solidarite",
+      "contentHash": "ee4a04494f0fb563aff8cb97f9f0fbcdca62e7386df53127bb353092bfe28f11"
+    },
+    {
+      "id": "hemp-q2-rb02-peron-cannabis-buyers-club",
+      "contentHash": "5ec56c4eef2604cda7a26236ff9db1a9472f82912575c4cf33d7ece212f194b3"
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-sans-alcool",
+      "contentHash": "c590a55cb5fbfda2666ae1962521a988c9ee62fbe195cb75cca6d59b7e098b8a"
+    },
+    {
+      "id": "hemp-q2-rb02-colorado-vote-avant-vente",
+      "contentHash": "07d125dbfb64c5ca9baafb1c68503accf8c26a1b3fd9deca10b5c8e495e26141"
+    },
+    {
+      "id": "hemp-q2-rb02-south-africa-vie-privee",
+      "contentHash": "cbb7d83e49697fdab8171cebba578a22145cdf1bdbee5ce99b5d6e57db6134f2"
+    },
+    {
+      "id": "hemp-q2-rb02-sinclair-rally-liberation",
+      "contentHash": "347c4818ff350440b47da7bef0e313e22793e8de25b987b0c70319d63e7ce4ef"
+    },
+    {
+      "id": "hemp-q2-rb02-pot-luck-jeu-societe",
+      "contentHash": "c075f2fed9457321da336ee4ae4170e1cae76c44bbc051d4ff1e0b8cd50253c6"
+    },
+    {
+      "id": "hemp-q2-rb02-hempfest-protestival",
+      "contentHash": "1c65a71a49e0f3793985cd34649a25d1a7b59ec2f858de80020f448221839874"
+    }
+  ],
+  "count": 30,
+  "sources": 20,
+  "levels": {
+    "1": 14,
+    "2": 15,
+    "3": 1,
+    "4": 0
+  }
+}

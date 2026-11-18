@@ -1,0 +1,271 @@
+{
+  "batchId": "d-new-04",
+  "sources": [
+    {
+      "id": "q2-d04-acf-hemp-2021",
+      "title": "Hemp Seeds — Ingredient of the Month, April 2021",
+      "organization": "American Culinary Federation Education Foundation",
+      "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "American Culinary Federation Education Foundation",
+      "published": "2021-04",
+      "passage": "PDF p. 2, Storing Hemp Seeds et Hemp Seed Culinary Uses",
+      "access": "full-text",
+      "documentKind": "Fiche de formation culinaire professionnelle",
+      "limitation": "Lecture des usages culinaires et du rangement après ouverture. Les seuils juridiques, récits historiques et promesses de santé de la fiche ne sont pas repris.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF p. 2, Storing Hemp Seeds et Hemp Seed Culinary Uses",
+        "result": "L'ACF préconise une huile de finition plutôt qu'une huile de friture, notamment pour sauces et assaisonnements. Le document recommande de réfrigérer ou congeler le paquet ouvert ou son contenu dans un récipient hermétique. Les graines sont proposées comme substitut à la chapelure pour enrober poulet ou poisson."
+      }
+    },
+    {
+      "id": "q2-d04-ekgt-samogitia",
+      "title": "Žemaitija — Kulinarinis paveldas",
+      "organization": "Etninės kultūros globos taryba, Conseil de protection de la culture ethnique de Lituanie",
+      "url": "https://ekgt.lt/etnografiniai-regionai/zemaitija/kulinarinis-paveldas.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Etninės kultūros globos taryba",
+      "published": "Sans date affichée",
+      "passage": "Kulinarinis paveldas, paragraphe commençant Žemaičių tradicijoje",
+      "access": "official-page",
+      "documentKind": "Présentation institutionnelle du patrimoine culinaire",
+      "limitation": "Description régionale utilisée pour les plats nommés et leurs ingrédients ; pas d'origine absolue revendiquée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Kulinarinis paveldas, paragraphe commençant Žemaičių tradicijoje",
+        "result": "La page de la Samogitie cite kanapių taboka et kanapių rasalas parmi les spécialités régionales. Le rasalas associe du lait de chanvre, du hareng écrasé et des oignons."
+      }
+    },
+    {
+      "id": "q2-d04-kretinga-cuisine",
+      "title": "Žemaitiški patiekalai Nasrėnuose",
+      "organization": "Kretingos rajono savivaldybė, municipalité du district de Kretinga",
+      "url": "https://kretinga.lt/zemaitiski-patiekalai-nasrenuose",
+      "verifiedAt": "2026-11-16",
+      "author": "Kretingos rajono savivaldybė",
+      "published": "Sans date affichée dans le texte consulté",
+      "passage": "Paragraphe d'ouverture ; paragraphe Spirgynę ; conservation de la tradition au musée de Nasrėnai",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle de patrimoine vivant",
+      "limitation": "Le texte décrit la tradition de Nasrėnai ; ne généralise pas ces usages à tous les habitants de Lituanie.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphe d'ouverture ; paragraphe Spirgynę ; conservation de la tradition au musée de Nasrėnai",
+        "result": "Les pommes de terre sont cuites avec leur peau et accompagnées de spirgynė, dans laquelle elles sont trempées. Le sausasis pasninkas excluait non seulement la viande mais aussi les produits laitiers. Le texte autorise explicitement le remplacement du chanvre par des graines de lin."
+      }
+    },
+    {
+      "id": "q2-d04-ojha-himalayan-foods-2022",
+      "title": "Traditional Dietary Knowledge of a Marginal Hill Community in the Central Himalaya: Implications for Food, Nutrition, and Medicinal Security",
+      "organization": "G.B. Pant National Institute of Himalayan Environment ; HNB Garhwal University ; Regional Ayurveda Research Institute ; Frontiers in Pharmacology",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.789360/full",
+      "verifiedAt": "2026-11-16",
+      "author": "S. N. Ojha, Aryan Anand, R. C. Sundriyal et Deepshikha Arya",
+      "published": "2022-03-30",
+      "passage": "Table 6, rubrique G Chutney, entrées 70, 71, 74 et 75",
+      "access": "full-text",
+      "documentKind": "Enquête ethnobotanique originale",
+      "limitation": "Seuls les ingrédients culinaires recensés sont utilisés. Les croyances et usages médicinaux rapportés par les auteurs ne sont pas présentés comme des effets démontrés.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Table 6, rubrique G Chutney, entrées 70, 71, 74 et 75",
+        "result": "Les entrées distinguent hemp seed et perilla seeds, toutes deux avec lemon extract. Kaddu ke meethi Chutney est décrit par pumpkin, hemp seed, jaggery et lemon extract. Nimbu ke saani associe lemon, hemp seeds, curd et jaggery."
+      }
+    },
+    {
+      "id": "q2-d04-axentii-pasta-2023",
+      "title": "Development and Quality Evaluation of Rigatoni Pasta Enriched with Hemp Seed Meal",
+      "organization": "Stefan cel Mare University of Suceava ; Foods",
+      "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+      "verifiedAt": "2026-11-16",
+      "author": "Marina Axentii, Silviu-Gabriel Stroe et Georgiana Gabriela Codină",
+      "published": "2023-04-25",
+      "passage": "§2.5.1–2.5.3 ; §2.10 Sensory Analysis ; Discussion, gluten dilution et amylose leached",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Notions de formulation et méthodes de mesure réellement décrites ; aucun seuil d'incorporation présenté comme valable pour toutes les pâtes. Aucun conseil pour une maladie ni allégation de bénéfice clinique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§2.5.1–2.5.3 ; §2.10 Sensory Analysis ; Discussion, gluten dilution et amylose leached",
+        "result": "La perte de cuisson est la masse de solides récupérés dans l'eau de cuisson, exprimée par rapport aux pâtes crues. La cuisson optimale est atteinte lorsque toutes les particules blanches d'amidon ont disparu, après compression entre deux plaques de verre. L'incorporation de farine de chanvre sans gluten dilue la fraction de blé et affaiblit le réseau, sans le supprimer lors d'une substitution partielle. Le texte relie stickiness à la quantité d'amylose libérée par les granules d'amidon gélatinisés. Le panel utilise une échelle de dislike extremely à like extremely pour les caractéristiques et l'acceptabilité des pâtes."
+      }
+    },
+    {
+      "id": "q2-d04-marinopoulou-bread-2024",
+      "title": "Impact of Hemp (Cannabis sativa L.) Protein Addition on the Rheological Properties of Wheat Flour Dough and Bread Quality",
+      "organization": "International Hellenic University ; Applied Sciences",
+      "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+      "verifiedAt": "2026-11-16",
+      "author": "Anna Marinopoulou, Nikoleta Sevastopoulou, Kyriaki Farmouzi, Evdokia Konstantinidou, Afroditi Alexandri et Maria Papageorgiou",
+      "published": "2024-12-12",
+      "passage": "§3.1, Water Holding Capacity ; §3.3, couleur, humidité et texture de la mie",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Les mécanismes discutés sont attribués aux auteurs et complétés par les définitions générales de l'ASB ; aucune formule ni proportion universelle de recette n'est déduite.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§3.1, Water Holding Capacity ; §3.3, couleur, humidité et texture de la mie",
+        "result": "Le faible volume est attribué notamment à une perte de rétention du gaz liée à l'interruption et à l'affaiblissement du réseau de gluten. L'absorption d'eau de la farine de blé est liée à sa teneur en amidon endommagé, qui absorbe davantage d'eau. L'étude de pains enrichis en protéines de chanvre relie les changements au stockage, dont le durcissement, notamment à la rétrogradation de l'amidon. Le brunissement des pains enrichis est relié à la couleur propre de la poudre et aux réactions de Maillard associées à ses groupes aminés."
+      }
+    },
+    {
+      "id": "q2-d04-asb-staling",
+      "title": "Staling",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/staling/?topic=recipes-and-formulation",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date affichée",
+      "passage": "What is staling? ; Origin ; How staling works",
+      "access": "full-text",
+      "documentKind": "Fiche technique d'une société professionnelle",
+      "limitation": "Les sections textuelles consultées sont accessibles après une bannière de connexion. Seule la définition du rassissement et de la rétrogradation est utilisée ; les formulations absolues d'autres conseils de la page sont exclues.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is staling? ; Origin ; How staling works",
+        "result": "La fiche associe le rassissement à la recristallisation de l'amidon et à son réalignement moléculaire lors du refroidissement puis du stockage."
+      }
+    },
+    {
+      "id": "q2-d04-asb-maillard",
+      "title": "Maillard Reaction",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/maillard-reaction/",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date affichée",
+      "passage": "What is the Maillard reaction? ; How it works, réaction sucre réducteur–groupe aminé",
+      "access": "full-text",
+      "documentKind": "Fiche technique d'une société professionnelle",
+      "limitation": "Les sections textuelles consultées sont accessibles après une bannière de connexion. Pas de températures, de durées optimisées ni de généralisation sur les effets sanitaires.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is the Maillard reaction? ; How it works, réaction sucre réducteur–groupe aminé",
+        "result": "La fiche décrit une réaction entre sucres réducteurs et groupes aminés, notamment d'acides aminés ou de protéines."
+      }
+    },
+    {
+      "id": "q2-d04-merenkova-fermentation-2022",
+      "title": "Effect of Fermentation on the Biochemical Parameters Antioxidant Capacity and Dispersed Composition of Plant Beverages Based on Barley and Hemp Seeds",
+      "organization": "South Ural State University ; Fermentation",
+      "url": "https://www.mdpi.com/2311-5637/8/8/384",
+      "verifiedAt": "2026-11-16",
+      "author": "Svetlana Merenkova, Rinat Fatkullin et Irina Kalinina",
+      "published": "2022-08-11",
+      "passage": "Introduction, cultures de départ ; §3.1, acidification et acide lactique",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Seules des transformations de boisson alimentaire de graines sont décrites. Les effets in vitro, activités antioxydantes ou affirmations de santé de l'article ne deviennent pas des bénéfices cliniques.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, cultures de départ ; §3.1, acidification et acide lactique",
+        "result": "Une fermentation contrôlée utilise des cultures microbiennes identifiées et sélectionnées pour améliorer fiabilité et reproductibilité. Les boissons de chanvre accumulent de l'acide lactique pendant la fermentation et leur pH évolue vers l'acidité."
+      }
+    },
+    {
+      "id": "q2-d04-fda-plant-milk",
+      "title": "Milk and Plant-Based Milk Alternatives: Know the Nutrient Difference",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/consumers/consumer-updates/milk-and-plant-based-milk-alternatives-know-nutrient-difference",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée dans le texte consulté",
+      "passage": "Introduction ; Plant-Based Milk Alternatives ; Using the Nutrition Facts Label",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle sur la composition alimentaire",
+      "limitation": "La page nomme explicitement le chanvre parmi les sources de boissons. Le lot traite la lecture de composition, sans conseil nutritionnel personnalisé ni recommandation pédiatrique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Plant-Based Milk Alternatives ; Using the Nutrition Facts Label",
+        "result": "La FDA souligne la variabilité nutritionnelle des boissons végétales, dont celles de chanvre, et recommande le tableau nutritionnel pour les comparer."
+      }
+    },
+    {
+      "id": "q2-d04-fda-ingredient-types",
+      "title": "Types of Food Ingredients",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée",
+      "passage": "Premier paragraphe, ordre massique ; tableau, Humectants et Anti-caking agents",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle sur les ingrédients",
+      "limitation": "Définition de fonctions d'ingrédients généraux appliquées à des situations alimentaires au chanvre. L'ordre de liste est explicitement cadré aux États-Unis ; aucune recette commerciale réelle n'est inventée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Premier paragraphe, ordre massique ; tableau, Humectants et Anti-caking agents",
+        "result": "La FDA indique que les ingrédients sont listés par prédominance décroissante en poids. Le tableau donne retain moisture comme fonction des humectants et cite glycerin et sorbitol. Les antiagglomérants maintiennent les poudres fluides et le tableau cite silicon dioxide."
+      }
+    },
+    {
+      "id": "q2-d04-fda-added-sugars",
+      "title": "Added Sugars on the Nutrition Facts Label",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/nutrition-facts-label/added-sugars-nutrition-facts-label",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée",
+      "passage": "Added Sugars ; How Are Added Sugars Listed on the Nutrition Facts Label?",
+      "access": "official-page",
+      "documentKind": "Information institutionnelle sur l'étiquetage alimentaire",
+      "limitation": "Le cas est explicitement américain et concerne le miel utilisé dans une barre composée. Aucune quantité recommandée ni jugement médical n'est demandé.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Added Sugars ; How Are Added Sugars Listed on the Nutrition Facts Label?",
+        "result": "Les sucres de miel sont inclus dans les sucres ajoutés ; les sucres totaux incluent sucres naturellement présents et ajoutés."
+      }
+    },
+    {
+      "id": "q2-d04-jozinovic-extrusion-2017",
+      "title": "Optimisation of Extrusion Variables for the Production of Corn Snack Products Enriched with Defatted Hemp Cake",
+      "organization": "J.J. Strossmayer University in Osijek ; University of Mostar ; Czech Journal of Food Sciences",
+      "url": "https://cjfs.agriculturejournals.cz/pdfs/cjf/2017/06/06.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Antun Jozinović, Đurđica Ačkar, Stela Jokić, Jurislav Babić, Jelena Panak Balentić, Marija Banožić et Drago Šubarić",
+      "published": "2017",
+      "passage": "Page 509, PDF p. 3, Expansion ratio équation 2 et Bulk density équation 3",
+      "access": "full-text",
+      "documentKind": "Publication expérimentale originale",
+      "limitation": "Définitions de mesures de texture et géométrie pour des snacks de graines alimentaires ; pas de mémorisation de réglages, valeurs optimales, températures ou proportions.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Page 509, PDF p. 3, Expansion ratio équation 2 et Bulk density équation 3",
+        "result": "L'indice ER est le diamètre de l'extrudat divisé par le diamètre de la filière. Le calcul de masse volumique utilise la masse et les dimensions du cylindre extrudé, soit masse divisée par volume."
+      }
+    },
+    {
+      "id": "q2-d04-oklahoma-hemp-oil-2020",
+      "title": "Hemp Seed Oil Properties, FAPC-235",
+      "organization": "Oklahoma State University Extension",
+      "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+      "verifiedAt": "2026-11-16",
+      "author": "Nurhan Dunford",
+      "published": "2020-10",
+      "passage": "Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content et phytosterol content",
+      "access": "official-page",
+      "documentKind": "Fiche technique universitaire",
+      "limitation": "Seule la composition de la fraction insaponifiable est utilisée. Récits historiques approximatifs, réglementation de 2020 et affirmations cliniques sont exclus.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content et phytosterol content",
+        "result": "La teneur élevée en insaponifiable est attribuée en partie à la teneur en phytostérols."
+      }
+    }
+  ]
+}

@@ -1,11 +1,248 @@
 {
+  "equipeQuartier20261118": {
+    "date": "2026-11-18",
+    "status": "Mon équipe est accessible sur les cartes 2D et 3D du Quartier. Le registre commun du personnel fournit les budgets, les missions et les reçus des bâtiments.",
+    "planning": "Une réservation ponctuelle peut être modifiée, déplacée, réaffectée, reportée dans les sept jours ou retirée. Les frais et les effets sont engagés au lancement. Les règles des missions confirmées et de la semaine type sont conservées.",
+    "validation": "Quatre parcours Chromium en 2D et 3D, à 320, 390 et 1440 px. Portrait du joueur, 24 modifications confirmées, reprise après rechargement et commandes tactiles ou clavier vérifiés. Le changement de jour renouvelle le budget à l’écran ouvert. Les notifications simultanées déclenchent une seule lecture. PostgreSQL local couvre les conflits, les reçus et les créneaux d’atelier. Droits vérifiés sur 402 migrations.",
+    "build": "Compilation de production et TypeScript réussis avec Next.js 16.4.6 et webpack. Les lectures distantes de la boutique et du CMS ont signalé des avertissements pendant le pré-rendu local.",
+    "browserReport": "output/placard-navigation/quarter-team-report.json",
+    "database": "Le 18 novembre 2026, les migrations 20261118000200 et 20261118000300 ont été appliquées au projet Supabase lié. Les deux versions figurent dans son historique distant.",
+    "deployed": false,
+    "nextBoundedTask": "Publier l’interface lors de la prochaine livraison, puis vérifier le parcours sur téléphone physique."
+  },
+  "culturePbiMobile20261118": {
+    "date": "2026-11-18",
+    "intrantsEtEntretien": "Les quatre intrants se posent sur 1 m². Le lombricompost est épandu, les trois liquides sont versés. Le nettoyage payé déclenche un balayage dans une allée accessible et revient à la salle. Les anciennes cultures sans plan gardent le passage complet.",
+    "migrationIntrants": "20261118000400_kq_care_input_sectors.sql, vérifiée par 261 contrôles PostgreSQL locaux. Le tarif affiché couvre le lot acheté. Un dépôt sur plan consomme 1 m².",
+    "recetteInterventions": "13 scénarios navigateur réussis, zéro erreur JavaScript. Les quatre intrants sont appliqués sur la case choisie. Le nettoyage payé ramène le joueur à la salle et consomme le prix affiché. Captures dans output/culture-room/pbi/lombricompost-390.png et nettoyage-390.png.",
+    "status": "PBI jouables au mètre carré dans la salle. Le joueur choisit le produit puis la case du plan. Le personnage rejoint l’allée et dépose le sachet.",
+    "changes": "Un foyer de parasites démarre sur un plant et peut gagner un voisin par bilan. Une protection compatible laisse une chance sur dix de propagation. Emplacements des plants, traitements actifs et réserves sont repris après rechargement. Sur téléphone, le lancer est sous les dés. La salle et le plateau disposent de raccourcis réciproques. La vue générale permet le défilement et le pincement passe au zoom.",
+    "validation": "Recette Chromium tactile à 320 × 690, 390 × 844 et 844 × 390, plus bureau à 1440 × 900. Huit scénarios PBI et six de campagne, dont choix hors foyer, retour aux dés, annulation et reprise. 206 contrôles PostgreSQL locaux, dont douze contrôles du retour de version. Droits vérifiés sur 400 migrations.",
+    "browserReport": "output/culture-room/pbi/report.json",
+    "mobileWarehouse": "Quatre postes visibles sur deux rangées. Les grandes listes sont dépliables. Entrepôt meublé de sept zones à 320, 390 et 1440 px, Chromium avec personnage en déplacement. À chaud 58,8 / 57,6 / 56,8 i/s et P95 de 17,0 / 16,9 / 16,9 ms. Rapport dans output/culture-room/warehouse/report.json.",
+    "build": "151 pages générées avec Next 16.4.6 et Node 24.22.3. TypeScript réussi. Des lectures du CMS et de la boutique distants ont signalé fetch failed pendant le pré-rendu local. Deux corrections de compilation dans l’écran Équipe, 58 tests du personnel réussis.",
+    "screenshot": "output/culture-room/pbi/smartphone-salle-390.png",
+    "checkpoint": "docs/bete-de-concours/salle-de-culture.md",
+    "rollback": "docs/bete-de-concours/retour-pbi-secteurs.md",
+    "deployed": false,
+    "nextBoundedTask": "Recette sur téléphone physique et application de la migration avec la publication."
+  },
+  "cultureRoom20261117": {
+    "date": "2026-11-17",
+    "status": "Salle de culture orthographique intégrée à l’entrepôt, au choix des parties et au cycle complet. Cartes, soins, dés physiques et personnage personnalisé branchés sur les actions acceptées.",
+    "changes": "Emprises, orientations et cloisons sauvegardées communes au rendu, à la sélection et aux trajets. Séchoir et réserve au poste installé. Mode Aménager conservé. Anciennes tentes consultables individuellement.",
+    "checkpoint": "docs/bete-de-concours/salle-de-culture.md",
+    "preparationHeader": "Illustration de la grange retirée au-dessus de l’aide. La préparation conserve son titre et son volet Aide.",
+    "visualParity": "Entrepôt recalé sur le dessin rénové pour les plans 10 × 10 et 40 × 25 m. Béton clair, ossature turquoise, double porte, armoires et gaines aux emplacements du plan. Pots, lampes, extracteurs, claies, rayonnages, fûts et caisses de bocaux reproduisent les équipements illustrés. Orientation commune, repères de zone et portraits Buddies. Le repli projette le vrai dessin et ses équipements.",
+    "visualParityReport": "output/culture-room/parity/report.json",
+    "visualParityValidation": "8 comparaisons du même entrepôt à 390 et 1440 px. Sept zones, deux parois, douze repères du bâtiment et 136 positions de luminaires et d’extracteurs vérifiés. Quatre rotations distinctes, badges et Buddies vérifiés, paroi tournée puis sauvegardée et rechargée. Repli illustré testé à 390 px sans WebGL. Les 22 scénarios de l’éditeur passent.",
+    "validation": "Recette locale à 320, 390 et 1440 px avec trois cultures en cours et 880,2 g en stock. 22 scénarios de l’éditeur, 927 contrôles PostgreSQL et contrôle des droits sur 399 migrations. Rejeu v2/v3 des six étapes, notes et sauvegardes après 36 h. Treize groupes navigateur, 469 positions de marche sans collision et 16 captures. Rotation du stockage vérifiée sur les pixels, séchoir lisible à côté du personnage.",
+    "performance": "Bâti et mobilier recalés, Chromium local avec tactile émulé et personnage en déplacement. Session isolée à chaud à 320/390/1440 px, cadence requestAnimationFrame de 58,4 / 60,0 / 59,6 i/s et P95 de 16,9 / 16,9 / 16,8 ms. Premier passage de 57,1 / 57,6 / 55,3 i/s. Le rapport contient également les intervalles maximaux. output/culture-room/warehouse/report.json.",
+    "browserReport": "output/culture-room/report.json",
+    "build": "151 pages générées avec Next 16.4.6 et Turbopack sous Node 24.22.3, version majeure de la CI. Webpack réussit également sous Node 25.3.0. Les workers Babel de Turbopack sous Node 25.3.0 ont échoué sur cette machine Windows.",
+    "demo": "node scripts/audit-culture-room.mjs --serve",
+    "deployed": false,
+    "nextBoundedTask": "Recette sur téléphone physique. L’installation distante de la fonction de lecture du plan reste à effectuer avec le déploiement."
+  },
+  "villageNpcs20261117": {
+    "date": "2026-11-17",
+    "status": "Terminé localement : pêcheur sur l'île au-delà du pont, Loïc guide mobile et sonneur promeneur avec chants segmentés.",
+    "changes": "Modèles et animations partagés, déplacements sur les vrais chemins avec évitement, regard et interactions tactiles, dialogues locaux exacts, bulles adaptées aux petits écrans. Loïc ouvre l'unique tutoriel existant sans réinitialisation ; menu conservé.",
+    "validation": "113 tests distincts, TypeScript et ESLint réussis. 5 groupes navigateur PNJ et 18 groupes de régression village réussis ; captures inspectées, tactile émulé et plein écran. Mesures séparées : 59.9 images/s bureau, 29.9–30 en paysage mobile émulé. Aucune écriture distante.",
+    "checkpoint": "docs/bete-de-concours/village-npcs-progress.json",
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; retour utilisateur et recette sur téléphone physique. Aucun nouvel audit ni déploiement implicite."
+  },
+  "warehouseZoneSelectionRollback": {
+    "date": "2026-11-17",
+    "status": "Ancienne sélection des zones rétablie à la demande du joueur, avant la refonte liée aux intérieurs 3D.",
+    "changes": "Boutons Culture, Séchage et Stockage directement visibles ; tracé sur le plan, sélection directe et inspecteur historique restaurés. Un clic ou Entrée sur une case vide n’ouvre plus le menu de construction. Contrainte de passage 3D retirée du client et du serveur ; géométrie, chevauchements, parois enregistrées, devis et protections de sauvegarde conservés.",
+    "validation": "143 tests ciblés réussis ; 22 scénarios navigateur réussis, dont tracé/déplacement souris et tactile 320 px, parois existantes, clavier, équipement, Buddies, suppression/revente et leçon. Captures 320/1440 px inspectées ; ESLint ciblé réussi. Premier TypeScript global réussi ; dernier contrôle après ajustement tactile bloqué par deux erreurs hors correctif dans village-breton.ts:212 (number | boolean) et VillageAtmosphere.tsx:10 (village-fisherman absent), fichiers modifiés pendant cette intervention.",
+    "browserReport": "output/warehouse-zone-actions/report.json",
+    "limits": "Recette avec données locales simulées, sans achat distant ni migration. Aucun déploiement.",
+    "nextBoundedTask": "Retour demandé terminé ; ne pas réactiver le menu par case ou les intérieurs 3D sans nouvelle demande."
+  },
+  "quizContentRebalance20261117": {
+    "date": "2026-11-17",
+    "status": "Rééquilibrage terminé localement : 1 000 questions, dont 800 sur le cannabis récréatif/CBD/actifs, 100 alimentaires et 100 textiles/bâtiment.",
+    "changes": "436 questions de la banque précédente conservées, 564 remplacées après recherche externe et relecture indépendante. Tirages 20 questions à 16/2/2 ; tournoi 12 questions pondéré vers 80/10/10. Les questions transmises contiennent les références bibliographiques sans leurs extraits factuels.",
+    "validation": "Contrôle strict réussi ; 30 tests banque/moteur/encyclopédie, 6 tests de preuves et 140 contrôles SQL locaux réussis. Build, TypeScript et ESLint passent. 7 scénarios UI à 320/390/1440 px réussis, captures inspectées. 1 000 identifiants privés absents des 210 fichiers JavaScript clients.",
+    "details": "docs/quiz-rebalance-2026-11-17/DELIVERY.md",
+    "evidence": "output/quiz-rebalance-2026-11-17/final-validation.json",
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; passage à 2 000 reporté. Aucun nouvel audit ni publication implicite. Un aperçu ancien conservant sa banque en mémoire doit être relancé."
+  },
+  "isometricVillagePrototype": {
+    "date": "2026-11-17",
+    "status": "Extérieur 3D animé et activités 2D conservés. Sélection historique des zones de l’entrepôt rétablie le 17 novembre ; voir warehouseZoneSelectionRollback.",
+    "migrationCheckpoint": "docs/bete-de-concours/village-3d-migration.json",
+    "integrationValidation": "18 groupes ext?rieur +14 sc?narios navigation partag?e1440/320 r?ussis : destinations2D, cam?ra fluide450ms, canvas persistant, courrier, anciens liens room, param?tres m?tier, historique et rechargement. Z?ro erreur JavaScript/externe. Rapports dans le checkpoint unique.",
+    "visualDetail": "Huit bâtiments et courrier enrichis : ardoises décalées/nuancées, granite, fenêtres sur quatre faces, charpentes, gouttières, ferrures et accessoires spécifiques. 194 meshes fusionnés, 230 212 triangles pour les 9 modèles avec variantes. Paysage : 4 012 pièces fusionnées en 3 meshes, 197 772 triangles, chemins reliés/bordés, jardins, feuillage structuré, berges, pont détaillé et maison du phare. Géométrie déterministe, coordonnées et libération des ressources vérifiées ; décoration non interceptante. Éclairage chaud/froid équilibré. Capture bureau inspectée.",
+    "gameIntegration": "PlacardPlayerShell possède un mode 3D partagé : même moteur, providers, brouillons, inventaires et callbacks pour toutes les rubriques. Canvas conservé derrière des panneaux défilants ; Ma partie expose bilan, personnage, missions suivies et soutien. Guide docké à droite ou en bas sur mobile, avec première étape ouvrant le bilan. Mode mémorisé par joueur, URL explicite prioritaire, choix 2D réversible sans perdre le contexte. Entrée canonique /arene/placard?world=3d soumise aux contrôles de session/bêta/arrivée/personnage existants ; ancien raccourci de développement redirigé vers cette entrée. Reconnexions canoniques conservant la présentation.",
+    "mailboxIntegration": "Surimpression Courrier retirée en vue 3D hors focus clavier : seul le modèle reçoit les clics et appuis. Sur mobile, les enseignes invisibles des autres bâtiments ne capturent plus les appuis (Personnel interceptait la boîte aux lettres). Accès clavier visible au focus, courrier/brouillon et accès sur peinture/repli conservés. ESLint et 17 groupes navigateur réussis après correction ; essais tactiles sur les vrais modèles. Vérification Next localhost:3000 : clic reçu par le canvas, courrier ouvert, aucune erreur JavaScript. API simulées, aucun envoi ; capture mailbox-next-check.png inspectée.",
+    "navigation": "Barre inférieure, consigne et signature retirées : le canvas occupe toute la hauteur restante. Bouton Menu en haut à gauche ouvrant le même KqPlacardNavigation que la 2D, en tiroir à gauche sur bureau/mobile : 11 entrées et Tutoriel. Mon quartier recentre la 3D ; les autres choix ouvrent les sections existantes. Échap, Retour, clic extérieur et croix ferment le menu avec restitution du focus. Mode tiroir optionnel sans modifier la présentation 2D par défaut. Accès aux activités et au courrier sur la carte ; enseignes accessibles au clavier avec recentrage, et recalées sur la peinture en comparaison/repli WebGL. Captures bureau et 320 px inspectées ; absence de barre inférieure et canvas jusqu’au bas de l’écran vérifiés.",
+    "scope": "Village ext?rieur 3D anim?, bulles d?activit?s et courrier ; interfaces m?tier2D partag?es. Int?rieurs3D suspendus. Entrep?t2D : cases cliquables, choix Culture/Stockage/S?chage/Paroi, devis, confirmation et annulation.",
+    "implementation": "src/components/placard/world + PlacardPlayerShell partagé ; entrée /arene/placard?world=3d depuis la carte 2D. useKqWorldMode et kanab-quest-world-mode mémorisent le choix par compte ; ArenaGameEntry conserve arrivée, personnage et tutoriel. Les activités réutilisent exactement leurs composants et paramètres métier, dans un panneau sur canvas persistant ; navigation native du quartier interceptée avec les gardes de brouillon et d’overlays. Three 0.187.0, Fiber 9.8.1 verrouillés. village-bubble ancre les choix au toit ; KqMailbox réutilise le dialogue et le chargement des courriers à l’ouverture. Aucun iframe ni seconde version des règles du jeu.",
+    "animations": "MAP_SCENERY fournit les 11 éléments mobiles et leurs rythmes : enseignes banque/cartes/QuizzShow, drapeau breton, 5 papiers des missions, hortensias et fleurs. Fumées des cheminées, 7 reflets d’eau, passage de mouette, lumières d’activité et réaction d’entrée transposés en 3D. Trois variantes actives : portes ouvertes/plantes/lampe, caisses/produits du marché, table et lanternes du jury. Snapshot identique à KqPlacardLobby via equipment?tentNumber, événements existants et polling visible120s ; argent et statuts réels, état inconnu distinct de zéro. Boucle décorative à 30 images/s maximum, suspendue durant la caméra, en pause, hors écran et en arrière-plan ; animations réduites statiques avec opt-in. Recentrage/s?lection/rotation/zoom interpol?s sur450ms, interrompus imm?diatement au glisser, pause ou r?duction du mouvement. Panneaux2D ? apparition douce.",
+    "validation": "25 tests mode/entr?e, TypeScript global et ESLint cibl? r?ussis. Entrep?t2D :8 groupes parcourscase/parois,3 groupes plan isol?,22 contr?les historiques r?ussis. Souris/clavier/tactile320, chevauchement, annulation, devis, sauvegarde, conflit409, r?ponse perdue et retryidentique v?rifi?s. Captures inspect?es ; donn?es locales simul?es.",
+    "browserReport": "output/village-3d/report.json",
+    "nextIntegration": "http://localhost:3000/arene/placard?world=3d ; raccourci /arene/village-3d redirige vers cette entrée avec les paramètres conservés. Redirections streamées Next vérifiées, dont visiteur anonyme vers connexion avec world/view/section. Le serveur existant et sa configuration sont conservés.",
+    "commands": "npm.cmd run audit:village ; node scripts/audit-placard-navigation.mjs --world-3d (NAVIGATION_AUDIT_PORT=3621 pour éviter l’aperçu existant) ; npm.cmd run preview:village pour l’aperçu géométrique isolé sur le port 3618.",
+    "limits": "Int?rieurs3D hors parcours joueur. Code conserv? pour une reprise ?ventuelle ; mod?le des parois r?utilis? dans le plan2D. Validation locale avec API simul?es, sans transaction distante ni d?ploiement.",
+    "deployed": false,
+    "nextBoundedTask": "Ancienne sélection de l’entrepôt rétablie à la demande du joueur. Ne pas réactiver le menu par case ni les intérieurs 3D sans nouvelle demande. Checkpoint : docs/bete-de-concours/village-3d-migration.json."
+  },
+  "tutorialGameOnly": {
+    "date": "2026-11-16",
+    "status": "Tutoriel limité au jeu ; affichage commun à l’Arène et au Carnet retiré.",
+    "changes": "Le layout /arene rend uniquement ses pages. Le tutoriel et son bouton restent dans PlacardPlayerShell et la navigation du jeu ; progression sauvegardée conservée.",
+    "validation": "54 tests ciblés Arène et tutoriel réussis ; TypeScript, ESLint ciblé et diff-check réussis.",
+    "deployed": false,
+    "nextBoundedTask": "Correction terminée localement ; aucune publication ni nouvelle revue implicite."
+  },
+  "tutorialWeekBeforeHiring": {
+    "date": "2026-11-15",
+    "status": "L’objectif Semaine type est réalisable dès le départ, sans salarié.",
+    "changes": "Comprendre la semaine type renvoie à une aide repliée dans Personnel → Bilan. L’ouverture de cette aide avec les données Personnel chargées valide la découverte ; aucun recrutement, planning enregistré ou paiement requis. La consultation d’un planning existant et les acquis sauvegardés restent reconnus.",
+    "validation": "73 tests ciblés, TypeScript, ESLint et diff-check réussis. 20 scénarios navigateur réussis à 320/1440 px, dont reprise à 6/8 avec zéro salarié, retour vers Bilan, aide fermée non validée, chargement/erreur, ouverture utile et rechargement. Captures mobiles inspectées ; données simulées, aucune écriture distante.",
+    "browserReport": "output/tutorial/report.json",
+    "deployed": false,
+    "nextBoundedTask": "Correction terminée localement ; aucune extension du tutoriel ni publication implicite."
+  },
+  "characterDrawingCalibration": {
+    "date": "2026-11-15",
+    "status": "Personnages corrigés et vérifiés localement : mâchoires, barbes, expressions, couleurs peau/cheveux et ordre du foulard. Dessins existants, identifiants et sauvegardes conservés.",
+    "causes": "Ellipse théorique déformant les mâchoires ; contours étrangers copiés avec la barbe ; coin de sourire recopié avec le nez ; peau et cheveux blanchis par la recoloration ; masque peau empiétant sur les manches du tablier.",
+    "validation": "24 tests unitaires, TypeScript et ESLint passent. 41 ressources actives chargées ; 72 associations visage/coiffure, 36 bouche/nez/pilosité, 16 bas/chaussures, 6 hauts, 12 silhouettes/peaux et 12 configurations difficiles. Éditeur 320/390/1440 px, badges 48 px, changements rapides, erreur/reprise et ancien profil sauvegardé/rechargé via API locale fictive. Comparaisons inspectées.",
+    "comparison": "output/chanvrier-calibration/comparaison.html",
+    "details": "docs/bete-de-concours/chanvrier-calibration-2026-11-15.json",
+    "limits": "Pas de session ni écriture en base distante. Cheveux couvrant la mâchoire atténuent les différences de forme. Aucun déploiement.",
+    "nextBoundedTask": "Recueillir un retour sur les comparaisons ; ne pas relancer un audit global ni ajouter des personnalisations."
+  },
+  "quarterBarnArrival": {
+    "date": "2026-11-15",
+    "status": "Nouvelle première arrivée intégrée localement : Tout commence dans une grange, avec le récit fourni par l’utilisateur et Loïc comme voisin-guide.",
+    "flow": "Après le consentement et la vérification du profil serveur : récit complet, réplique du futur meilleur grower, bouton de création du personnage directement à l’apparence (sans seconde introduction par lettre), spécialité et confirmation. La sauvegarde ouvre la suite du dialogue de Loïc. Aménager ma grange ouvre le plan de l’Entrepôt avec le guide sur Enregistrer une zone de culture, sans valider d’objectif ni effectuer d’achat.",
+    "continuity": "La scène suivant la création reprend après rechargement dans le même onglet, avec un repère sessionStorage par compte. Un personnage existant entre sans refaire le récit. Les erreurs, reprises, consentement et accueil bêta restent gérés ; l’accueil bêta attend la fin du récit. Le parcours reste utilisable sans stockage navigateur.",
+    "mentor": "Nom affiché du mentor remplacé par Loïc dans le Quartier, les leçons et les dialogues associés. Identifiants, chemins des illustrations et provenance historique conservés ; identité réelle de Sylvain et références scientifiques inchangées.",
+    "validation": "TypeScript et ESLint ciblé réussis ; 141 tests ciblés réussis. 13 scénarios navigateur avec réponses locales simulées, dont parcours complet à 320/1440 px, clavier, fermeture/reprise, erreur de sauvegarde, rechargement des deux phases, bon objectif du guide sans progrès inventé, consentement, profil/session invalides et stockage bloqué. Captures du récit, du personnage et de la rencontre inspectées.",
+    "browserReport": "output/quarter-character-entry/report.json",
+    "deployed": false,
+    "databaseMigrationRequired": false,
+    "nextBoundedTask": "Demande terminée localement ; aucune publication ni nouvelle revue générale implicite."
+  },
+  "quarterCharacterFirstArrival": {
+    "date": "2026-11-15",
+    "status": "Création du personnage déplacée au premier lancement du Quartier ; aucun accès au personnage depuis l’Arène, y compris en préouverture.",
+    "flow": "Après le choix guidé/libre et le consentement, le profil serveur est vérifié. Sans personnage : éditeur avec lettre de Grand-père, apparence, spécialité et confirmation. Le jeu et l’accueil bêta attendent l’enregistrement. Un personnage existant permet d’entrer directement. Fermeture possible avec reprise de la création ou retour à l’Arène.",
+    "profileAccess": "Carte du joueur et modification conservées dans l’accueil du Quartier. Bouton, zone interactive et chargement du profil retirés de la carte de l’Arène.",
+    "resilience": "Échec réseau : réessayer ; session expirée ou compte différent : reconnexion ; réponse invalide : aucune fausse création. Aucun indicateur local ne remplace le profil serveur.",
+    "validation": "TypeScript et ESLint ciblé réussis ; 10 tests unitaires réussis. 7 scénarios navigateur isolés à 320/1440 px : création réelle via réponses fictives, fermeture/reprise, sauvegarde unique, rechargement, absence d’accès depuis l’Arène, erreur/reprise, session/compte et consentement. Capture mobile inspectée.",
+    "browserReport": "output/quarter-character-entry/report.json",
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée localement ; aucun déploiement ni changement en base."
+  },
+  "tutorialChapterLibrary": {
+    "date": "2026-11-15",
+    "status": "Liste des chapitres retirée du flux de la page de jeu.",
+    "changes": "La reprise depuis Tutoriel affiche seulement l’objectif courant. Choisir un chapitre ouvre une fenêtre avec défilement interne et fermeture toujours visible. Le choix d’un objectif ferme cette fenêtre ; le mode réduit reste inchangé.",
+    "validation": "TypeScript, ESLint ciblé et diff-check réussis. 18 scénarios navigateur réussis à 320/1440 px, dont hauteur de page inchangée, absence de réouverture après rechargement, Échap, Retour, focus, relecture et entraînements isolés. Captures inspectées.",
+    "browserReport": "output/tutorial/report.json",
+    "deployed": false,
+    "nextBoundedTask": "Correction livrée localement ; aucun nouveau chantier implicite."
+  },
+  "tutorialRefonte": {
+    "date": "2026-11-15",
+    "status": "Implémentation locale vérifiée, sans déploiement",
+    "scope": {
+      "objectives": 57,
+      "confirmedActions": 14,
+      "observations": 43,
+      "practiceLessons": 13
+    },
+    "delivery": "docs/bete-de-concours/tutorial-delivery.json",
+    "coverage": "docs/bete-de-concours/tutorial-coverage.json",
+    "validation": {
+      "tests": 128,
+      "browserScenarios": 16,
+      "widths": [
+        320,
+        1440
+      ],
+      "typeScript": "passed",
+      "eslint": "passed",
+      "browserReport": "output/tutorial/report.json"
+    },
+    "persistence": "Version 2 et identifiants stables ; localStorage par compte, préférence de suspension séparée, sauvegardes inconnues préservées et synchronisation entre onglets.",
+    "limits": [
+      "Recette locale avec données simulées ; aucune partie de production connectée utilisée et aucun achat réel effectué.",
+      "Sauvegarde du tutoriel propre à ce navigateur et à ce compte ; pas de synchronisation entre appareils.",
+      "Les anciens verdicts et ventes absents des réponses actuelles ne sont pas reconstruits. Les acquis déjà sauvegardés sont conservés ; relecture et autres chapitres restent accessibles.",
+      "Une observation valide l’ouverture d’une information utile, pas la compréhension du joueur ni l’exécution de la transaction correspondante.",
+      "Les 57 raccordements ont été relus dans le code ; les 16 scénarios navigateur ne constituent pas une exécution de chaque variante économique."
+    ],
+    "deployed": false,
+    "databaseMigrationRequired": false,
+    "nextBoundedTask": "Recette du parcours sur un compte de test connecté si souhaitée ; ne pas relancer un audit général."
+  },
+  "gameResetPreparation": {
+    "date": "2026-11-15",
+    "status": "Reset réellement appliqué et vérifié le 15 novembre 2026. 39 portefeuilles repartent à 1000 EUR fictifs, dont 6 Pionniers à 6000 EUR ; avantages/cartes/boosters protégés conservés.",
+    "scope": "Préserver avis, points du Carnet, achats réels et droit Pionnier. Réinitialiser uniquement la progression du jeu.",
+    "evidence": "39 portefeuilles, 6 grants Pionnier, 484 cultures, 466 fleurs, 12 avis, 17 écritures de points, 4320 cartes, 241 boosters. Inventaire par provenance sans export de données personnelles.",
+    "dossier": "docs/bete-de-concours/game-reset-2026-11-15.json",
+    "inventoryScript": "scripts/preview-game-reset.mjs",
+    "inventoryDecision": "Utilisateur : supprimer les gains du jeu, conserver cartes et boosters liés aux achats. Les boosters achetés avec les points de fidélité sont protégés ; Pionnier conservé sans duplication des tirages.",
+    "connection": "Connexion existante confirmée hors sandbox ; aucune reconnexion nécessaire. Diagnostic précédent corrigé.",
+    "manualGifts": "Utilisateur : conserver les 145 attributions manuelles non identifiées (280 cartes restantes).",
+    "validation": "Copie locale autorisée, rollback et commit testés ; second reset refusé ; anciennes commandes rejetées pour 24 tables testables, nouvelle commande acceptée ; écritures commerciales/Carnet concurrentes autorisées et conservées ; 125 tables protégées identiques dans la transaction réelle.",
+    "result": "667 cartes et 101 boosters du jeu retirés ; 3649 cartes protégées, 12 avis et 17 écritures de points Carnet conservés. 72 packs de bienvenue disponibles. Archive privée game_reset_20261115 : 264372 lignes sauvegardées, 7902 anciennes commandes neutralisées ; 25 gardes actives.",
+    "cleanup": "Conteneur/volume isolés et copies locales des données supprimés après vérification du commit réel. Archive privée en base conservée pour récupération.",
+    "nextBoundedTask": "Demande terminée. Ne pas réexécuter le reset. Les autres changements applicatifs et migrations locales n’ont pas été publiés par cette opération."
+  },
+  "challengeContractsHidden": {
+    "date": "2026-11-15",
+    "status": "Rubrique Contrats retirée temporairement de Mes défis à la demande de l’utilisateur.",
+    "scope": "Onglet et panneau supprimés de KqMissionCenter ; aucune modification des données, contrats en cours ou récompenses acquises.",
+    "validation": "ESLint ciblé et diff vérifiés.",
+    "nextBoundedTask": "Demande terminée localement ; aucune publication."
+  },
+  "betaWelcomePerConnection": {
+    "date": "2026-11-15",
+    "status": "Fenêtre d’accueil bêta ajoutée à l’entrée du quartier, après l’écran d’arrivée et le bandeau cookies. Fermeture par bouton, croix ou Échap.",
+    "message": "Importance des retours via la boîte aux lettres ; contributions utiles récompensables en packs Botte du Chanvrier après validation de l’équipe, conformément au système existant.",
+    "persistence": "Empreinte serveur de la session Supabase après authentification : stable au renouvellement du jeton, différente à la reconnexion. Fermeture mémorisée par compte et connexion dans localStorage, partagée entre onglets. Aucun jeton ni identifiant brut de session envoyé au composant. Si le stockage est bloqué, fermeture mémorisée en mémoire pendant la visite.",
+    "validation": "18 tests réussis ; TypeScript et ESLint ciblé réussis. Navigateur isolé à 320/1440 px : fermeture, clavier, rechargement/navigation sans réapparition, nouvelle connexion, attente avant activation. Capture mobile inspectée.",
+    "browserReport": "output/beta-welcome/report.json",
+    "nextBoundedTask": "Demande terminée localement ; aucune migration ni publication."
+  },
+  "navigationHelpRemoval": {
+    "date": "2026-11-15",
+    "status": "Volet Comment jouer retiré du menu ordinateur et du tiroir mobile ; bouton Apprendre à jouer conservé.",
+    "validation": "ESLint ciblé et diff vérifiés ; aucune règle métier modifiée.",
+    "nextBoundedTask": "Demande terminée ; aucune publication effectuée."
+  },
+  "globalGameAudit20261115": {
+    "date": "2026-11-15",
+    "status": "Audit global livré ; aucune modification du jeu, migration ou publication.",
+    "report": "docs/audit-global-jeu.md",
+    "scope": "Une vague de trois spécialistes GPT-6.1 Sol ; mécanique, économie, parcours ; synthèse et contrôles locaux par le coordinateur.",
+    "validation": "202 tests ciblés et 206 contrôles SQL réussis ; 13 contrôles navigateur de préparation, dont 320/390/1440 px ; mission zéro travail reproduite en SQL isolé avec exclusion Production ultérieure.",
+    "limits": "Pas de cycle complet joué ni mesure de rétention ou production. Ancienne recette guide incompatible avec guide visible ; test mission-evidence bloqué par assert manquant dans bootstrap dynamique. Rapport détaille les limites.",
+    "evidence": "output/audit-global-jeu/",
+    "implementation": "Trois premières priorités implémentées localement après accord utilisateur ; détail et preuves : docs/bete-de-concours/global-audit-fixes.json. Deux migrations prêtes, non appliquées à distance.",
+    "nextBoundedTask": "Livraison locale terminée. Publication/migrations sur demande ; prochaine amélioration proposée : clarifier le repère de rentabilité avant frais. Pas de nouvel audit implicite."
+  },
   "historyTimeline": {
     "date": "2026-11-14",
     "status": "Rubrique Histoire et anecdotes refaite et vérifiée localement ; aucun déploiement.",
     "changes": "Frise de 34 événements sur 7 périodes, 51 références, 6 sujets. Chaque date ouvre un récit, une anecdote sourcée et les précisions de contexte ; navigation précédente/suivante, filtres période/sujet et recherche. Textes anciens, patrimoine breton, littérature, archéologie, sciences et politiques publiques. Accès réels aux sources explicités ; synthèses et liens existants conservés.",
     "validation": "TypeScript, ESLint ciblé et 7 tests réussis. Recette à 320/390/1627 px, 34 fenêtres ouvertes à 320 px, filtres, clavier, Échap, focus, historique et rechargement. Aucun débordement, erreur JS ou POST. Captures inspectées et quatre points historiques sensibles contre-vérifiés.",
     "delivery": "docs/history-timeline/delivery.json",
-    "research": ["docs/history-timeline/early-research.json", "docs/history-timeline/modern-research.json"],
+    "research": [
+      "docs/history-timeline/early-research.json",
+      "docs/history-timeline/modern-research.json"
+    ],
     "browserReport": "output/history-timeline/browser-report.json",
     "deployed": false,
     "databaseMigrationRequired": false,

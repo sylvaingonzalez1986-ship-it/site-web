@@ -1,0 +1,190 @@
+{
+  "reviewer": "e_engine_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16",
+  "scope": "Revue ciblée de la réservation des thèmes et de ses deux nouvelles régressions ; aucun code runtime modifié.",
+  "conclusion": "Les vérifications séparées réservent correctement les capacités par niveau, mais ne garantissent pas conjointement dix thèmes et douze sujets distincts lorsqu’une solution existe. Un contre-exemple reproductible subsiste.",
+  "findings": [
+    {
+      "priority": "P2",
+      "id": "independent-theme-subject-feasibility-can-discard-a-feasible-theme",
+      "paths": [
+        "src/lib/kanab-quest-school-challenge-server.ts:59",
+        "src/lib/kanab-quest-school-challenge-server.ts:104",
+        "src/lib/kanab-quest-school-tournament-server.test.ts:82"
+      ],
+      "detail": "canCoverUnseenTopics attribue un masque de niveaux par thème sans réserver les sujets entre thèmes encore inconnus. Deux thèmes peuvent donc compter chacun le même dernier sujet disponible. Un choix précoce préserve les deux tests Hall séparés, mais détruit une solution qui couvrait tous les thèmes avec douze sujets distincts. Le fallback conserve les sujets et abandonne ensuite un thème ; cette incompatibilité résulte du préfixe choisi, pas de la population globale.",
+      "reproduction": {
+        "method": "Exécution locale ciblée du vrai fichier, transpilé en mémoire via TypeScript ES2022/CommonJS ; imports de banque remplacés par une fixture, crypto réel. Aucun fichier de harness ni code actif écrit. Recherche bornée interrompue au premier seed.",
+        "questionsPerLevel": 3,
+        "seed": "independent-review-0",
+        "fixture": [
+          [
+            "history-z",
+            1,
+            "history",
+            "z"
+          ],
+          [
+            "plant-z",
+            1,
+            "plant",
+            "z"
+          ],
+          [
+            "h1-0",
+            1,
+            "history",
+            "h1-0"
+          ],
+          [
+            "h1-1",
+            1,
+            "history",
+            "h1-1"
+          ],
+          [
+            "h1-2",
+            1,
+            "history",
+            "h1-2"
+          ],
+          [
+            "l2-genetics",
+            2,
+            "genetics",
+            "l2-genetics"
+          ],
+          [
+            "l2-molecules",
+            2,
+            "molecules",
+            "l2-molecules"
+          ],
+          [
+            "l2-evidence",
+            2,
+            "evidence",
+            "l2-evidence"
+          ],
+          [
+            "l3-seeds",
+            3,
+            "seeds",
+            "l3-seeds"
+          ],
+          [
+            "l3-profiles",
+            3,
+            "profiles",
+            "l3-profiles"
+          ],
+          [
+            "l3-biodiversity",
+            3,
+            "biodiversity",
+            "l3-biodiversity"
+          ],
+          [
+            "plant-s",
+            4,
+            "plant",
+            "s"
+          ],
+          [
+            "uses-s",
+            4,
+            "uses",
+            "s"
+          ],
+          [
+            "l4-prevention",
+            4,
+            "prevention",
+            "l4-prevention"
+          ],
+          [
+            "h4-0",
+            4,
+            "history",
+            "h4-0"
+          ],
+          [
+            "h4-1",
+            4,
+            "history",
+            "h4-1"
+          ],
+          [
+            "h4-2",
+            4,
+            "history",
+            "h4-2"
+          ]
+        ],
+        "fixtureColumns": [
+          "id",
+          "level",
+          "topicId",
+          "subjectKey"
+        ],
+        "observed": {
+          "themes": 9,
+          "distinctSubjects": 12,
+          "missingTheme": "plant",
+          "selectedIds": [
+            "history-z",
+            "h1-2",
+            "h1-0",
+            "l2-molecules",
+            "l2-evidence",
+            "l2-genetics",
+            "l3-profiles",
+            "l3-seeds",
+            "l3-biodiversity",
+            "l4-prevention",
+            "uses-s",
+            "h4-0"
+          ]
+        },
+        "feasibleAlternative": {
+          "themes": 10,
+          "distinctSubjects": 12,
+          "selectedIds": [
+            "plant-z",
+            "h1-0",
+            "h1-1",
+            "l2-genetics",
+            "l2-molecules",
+            "l2-evidence",
+            "l3-seeds",
+            "l3-profiles",
+            "l3-biodiversity",
+            "uses-s",
+            "l4-prevention",
+            "h4-0"
+          ]
+        }
+      },
+      "recommendation": "Ajouter cette régression d’interaction et éviter de valider un préfixe uniquement par les deux conditions marginales si l’objectif est dix thèmes dès qu’une solution conjointe existe. À défaut, décrire explicitement la réservation des thèmes comme une préférence heuristique ; la garantie des douze sujets reste conservée."
+    }
+  ],
+  "confirmed": [
+    "La condition Hall sujets/niveaux utilise correctement les quinze sous-ensembles et la capacité unitaire de chaque sujet ; la réservation préserve douze sujets distincts quand le test global initial réussit.",
+    "La condition thèmes/niveaux réserve correctement une place pour un thème disponible seulement au niveau 1 lorsque les sujets sont indépendants.",
+    "Le nouveau code n’ajoute ni réponses ni métadonnées éditoriales à l’objet public des questions.",
+    "Les nouvelles régressions couvrent un thème réservé au niveau 1 et une incompatibilité globale entre deux thèmes partageant un sujet, mais pas la destruction évitable d’une solution conjointe par un choix précoce."
+  ],
+  "validation": {
+    "reportedByRoot": "14 tests, ESLint et TypeScript --noEmit réussis ; mesures 649 réels médiane 9,44 ms / p95 12,68 ms et 2000 synthétiques médiane 33,61 ms / p95 44,39 ms.",
+    "independentlyRun": "Un seul scénario synthétique ciblé pour vérifier le doute concret ci-dessus ; aucune répétition des tests, du lint, du tsc ou des mesures de performance.",
+    "limitations": "Le scénario démontre une limite de correction du tirage, pas une régression observée dans la banque réelle actuelle."
+  },
+  "coordinatorArbitration": {
+    "reviewedBy": "root",
+    "date": "2026-11-16",
+    "decision": "Limite acceptée : les dix thèmes ne sont pas exigés dans chaque partie. La couverture thématique est une préférence heuristique, y compris si un préfixe dégrade une solution globale ; la garantie des sujets distincts reste prioritaire.",
+    "followup": "Documenter la portée heuristique et protéger le fallback par une régression sans figer le nombre neuf. Aucun solveur combinatoire demandé.",
+    "findingStatus": "accepted-limitation"
+  }
+}

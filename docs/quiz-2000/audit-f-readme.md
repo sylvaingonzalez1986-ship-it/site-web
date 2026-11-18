@@ -1,0 +1,21 @@
+# Audit F — banque active
+
+16 novembre 2026. Audit éditorial achevé ; validation factuelle partielle. Aucun fichier actif modifié et aucun remplacement rédigé.
+
+La banque compte **360 questions actives**, et non 2 000 : 80 biology, 100 uses, 60 history-culture, 60 history-science et 60 expansion-nature. Les 360 entrées de `reviewed.json` correspondent aux mêmes 360 IDs et écrasent leur contenu. Le spread réimpose `id` et `level`, mais peut modifier les autres champs. Supprimer une révision réactive l’ancien texte ; cela ne retire pas la question. Aucun filtre de retrait n’existe dans la composition actuelle.
+
+La lecture a porté sur les 360 énoncés, les 1 440 choix et les 360 corrigés. Décisions proposées : **257 conserver provisoirement, 90 corriger, 6 remplacer, 7 retirer**. Conserver n’est jamais synonyme de fait validé. Une correction de distracteurs peut garder l’ID si fait et objectif restent identiques ; changer le fait exige un nouvel ID.
+
+Sept clusters forts justifient sept retraits éditoriaux : 2-AG/monoacylglycérol, FAAH/anandamide, chronologie CB1–CB2, classement ONU 2020, lignification chènevotte, houblon/Cannabaceae et conservation de Yanghai. Les 35 autres clusters sont des notions proches : ils ne sont pas comptés comme doublons exacts et n’entraînent aucun retrait automatique.
+
+Les principaux défauts réparables sont les distracteurs hors catégorie ou impossibles, jusque dans les niveaux 3–4. Les cas ambigus prioritaires concernent clones/conditions de croissance, dormance/quiescence, épimères, fonction éthanolamide et délamination/décohésion interfaciale. Les coquilles des tableaux ONU sont signalées. Les six remplacements concernent des détails arbitraires ou un objectif bibliographique profondément modifié, sans prétendre que ces faits sont faux.
+
+Les quatre niveaux comptent chacun 90 entrées. Les thèmes sont déséquilibrés : histoire 90, cannabinoïdes 50, plante/terpènes/fibres 40 chacun, cinq autres thèmes 20 chacun. Aucun énoncé n’est un doublon textuel exact. Les limites actuelles de longueur sont respectées. La bonne réponse stockée est en position 0 pour 213/360 questions (59,2 %) ; **les choix sont effectivement mélangés par hash dans le plan serveur**, donc cela ne prouve pas un biais de position affiché. Pour 117/360 questions, la bonne réponse est strictement la plus longue ; ce signal est descriptif et ne prouve pas à lui seul un indice exploitable. Aucun test de joueurs ne permet de revendiquer une difficulté ou une discrimination mesurée.
+
+Les 146 sources référencées existent dans le registre historique : 74 extraits, 23 pages officielles, 26 textes intégraux, 16 résumés et 7 catalogues, selon ce registre. Cette mission n’a pas relu ces 146 sources. Treize IDs disposent seulement d’un appui ciblé relu cette session, et 347 restent à vérifier à partir du registre historique. **Zéro ID est déclaré entièrement validé pour publication par cet audit.**
+
+Les passages effectivement consultés étayent le chromosome 7 dans le [pangénome de Lynch et al.](https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/), les clonages, distributions et 48 % d’identité dans le [résumé de la classification Howlett 2002](https://pubmed.ncbi.nlm.nih.gov/12037135/), le carbonate de calcium dans le [manuel original archivé du laboratoire de San Diego, p.24](https://www.sandiego.gov/sites/default/files/narcoticsmethodmanualjul2017-oct2017.pdf), et le vote de la CND dans le [rapport officiel ONU, décision 63/17](https://documents.un.org/api/symbol/access?l=en&s=e/2020/28/add.1&t=pdf). Les limites d’accès et tentatives échouées sont enregistrées dans le bilan JSON ; elles ne sont pas présentées comme des consultations réussies.
+
+Livrables : `audit-f-index.json` contient chaque ID et son texte complet, ses décisions, limites et sources historiques ; `audit-f-index.md` permet la lecture rapide ; `audit-f-duplicate-clusters.json` distingue doublons forts et proximité ; `audit-f-summary.json` contient comptes exacts, preuves ciblées et empreintes des entrées ; `audit-f-active-snapshot.json` conserve la composition lue. `audit-f-build.mjs` reproduit les métriques et fichiers dérivés à partir du snapshot, sans modifier la banque.
+
+Prochaine étape bornée : relecture indépendante du pilote, contrôle des passages précis et comparaison avec ces clusters avant toute intégration.

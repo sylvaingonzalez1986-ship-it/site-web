@@ -1,0 +1,30 @@
+{
+  "batchId": "r-mixed-01",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "corrected_frozen_pending_independent_review",
+  "replaced": [
+    {
+      "oldId": "hemp-q2-rm01-hemp-pp-mapp-interface",
+      "newId": "hemp-q2-rm01-katabira-hemp-summer-robe",
+      "reason": "General plastics compatibilizer function outside scope; replaced by historical hemp textile garment."
+    }
+  ],
+  "changedQuestions": [
+    "hemp-q2-rm01-seed-essential-amino-acids-present",
+    "hemp-q2-rm01-seed-cadmium-from-soil",
+    "hemp-q2-rm01-katabira-hemp-summer-robe",
+    "hemp-q2-rm01-hemp-wall-flexible-plaster",
+    "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+    "hemp-q2-rm01-hemp-wall-first-rain-protection",
+    "hemp-q2-rm01-earth-hemp-clay-binder"
+  ],
+  "changedApproved": [],
+  "changedSourceIds": [
+    "q2-rm01-cenc-finishes"
+  ],
+  "newSourceIds": [
+    "q2-rm01-kyoto-katabira"
+  ],
+  "sourceNote": "CenC documentKind changed to professional-guide. All four source hashes require renewal. New Kyoto source must be independently read."
+}

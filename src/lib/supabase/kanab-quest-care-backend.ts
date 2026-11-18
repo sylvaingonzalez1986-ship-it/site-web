@@ -2,6 +2,7 @@ import "server-only";
 
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_CARE_PRODUCTS, performKqBasicCare } from "@/lib/kanab-quest-care";
 import { isKqCarePurchasesPage, type KqCarePurchasesPage } from "@/lib/kanab-quest-care-purchases";
+import { getKqCareSectors, isKqCareSector, type KqCareSector } from "@/lib/kanab-quest-care-spatial";
 import type { KqGameState } from "@/lib/kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
@@ -25,6 +26,7 @@ function careError(operation: string, error: { message: string }): never {
     kq_stale_run: "La culture a évolué. Recharge son suivi avant d’intervenir.",
     kq_run_unavailable: "Culture active introuvable.",
     kq_care_request_mismatch: "Cette demande a déjà été utilisée pour une autre intervention.",
+    kq_care_invalid_target: "Choisis une case cultivée de 1 m² pour ce produit.",
     kq_care_invalid_request: "Demande de suivi invalide.",
     kq_care_legacy_run: "Cette culture conserve ses anciennes règles jusqu’à sa fin.",
   };
@@ -59,21 +61,36 @@ export async function purchaseKqCareProduct(input: { userId: string; productCode
 }
 
 export async function applyKqPlayerCare(input: {
-  userId: string; runId: string; productCode?: string; action?: "basic"; basicPriceCents?: number; requestKey: string; expectedUpdatedAt?: string;
+  userId: string; runId: string; productCode?: string; action?: "basic"; basicPriceCents?: number; target?: KqCareSector; requestKey: string; expectedUpdatedAt?: string;
 }): Promise<KqCareInterventionResult> {
   assertId(input.userId);
   assertId(input.runId);
   assertId(input.requestKey);
   const productCode = input.action === "basic" ? null : input.productCode;
   if (productCode === undefined || (productCode !== null && !getKqCareProduct(productCode))) throw new Error("Intervention invalide.");
+  if (input.target !== undefined && (!isKqCareSector(input.target) || productCode === null)) {
+    careError("rpc_kq_apply_care", { message: "kq_care_invalid_target" });
+  }
+  const target = input.target && { zoneId: input.target.zoneId, x: input.target.x, y: input.target.y };
   const supabase = createSupabaseServiceClient();
   // Replay lookup precedes state eligibility: a retry can arrive after the stage
   // advanced or the run completed, and must never consume a second charge.
-  const replay = await supabase.rpc("rpc_kq_care_intervention_receipt", {
-    p_user_id: input.userId, p_run_id: input.runId, p_request_key: input.requestKey, p_product_code: productCode,
-  });
-  if (replay.error) careError("rpc_kq_care_intervention_receipt", replay.error);
-  if (replay.data) return replay.data as KqCareInterventionResult;
+  const readReceipt = async (): Promise<KqCareInterventionResult | null> => {
+    const receipt = await supabase.rpc("rpc_kq_care_intervention_receipt", {
+      p_user_id: input.userId, p_run_id: input.runId, p_request_key: input.requestKey, p_product_code: productCode,
+      ...(target ? { p_target: target } : {}),
+    });
+    if (receipt.error) careError("rpc_kq_care_intervention_receipt", receipt.error);
+    return receipt.data as KqCareInterventionResult | null;
+  };
+  const replay = await readReceipt();
+  if (replay) return replay;
+  // A simultaneous request may have committed between the preflight and run read.
+  const replayOrReject = async (message: string) => {
+    const committed = await readReceipt();
+    if (committed) return committed;
+    throw new Error(message);
+  };
   // A former "free" button or a stale quote cannot authorize a new debit.
   // Receipt replays above keep their recorded amount, including historical 0.
   if (productCode === null && (!Number.isSafeInteger(input.basicPriceCents) || (input.basicPriceCents ?? 0) <= 0)) careError("rpc_kq_apply_care", { message: "kq_care_price_changed" });
@@ -82,18 +99,21 @@ export async function applyKqPlayerCare(input: {
   const run = await supabase.from("kq_runs").select("state,status,updated_at")
     .eq("id", input.runId).eq("user_id", input.userId).maybeSingle();
   if (run.error) careError("kq_runs:care", run.error);
-  if (!run.data || run.data.status !== "active") throw new Error("Culture active introuvable.");
-  if (input.expectedUpdatedAt && input.expectedUpdatedAt !== run.data.updated_at) throw new Error("La culture a évolué. Recharge son suivi avant d’intervenir.");
+  if (!run.data || run.data.status !== "active") return replayOrReject("Culture active introuvable.");
+  if (input.expectedUpdatedAt && input.expectedUpdatedAt !== run.data.updated_at) return replayOrReject("La culture a évolué. Recharge son suivi avant d’intervenir.");
   const state = parseKqGameSave(encodeKqSave(run.data.state));
   if (!state) throw new Error("État du suivi invalide. Actualise la culture.");
   if (productCode === null && input.basicPriceCents !== getKqCarePricing(state).basicCarePriceCents) careError("rpc_kq_apply_care", { message: "kq_care_price_changed" });
   if (state.campaign && state.campaign.leaderRunId !== input.runId) throw new Error("Ouvre la campagne commune pour intervenir sur ces cultures.");
   if (state.rulesVersion !== 3) throw new Error("Cette culture conserve ses anciennes règles jusqu’à sa fin.");
-  const permission = productCode === null ? canPerformKqBasicCare(state) : canApplyKqCareProduct(state, productCode);
-  if (!permission.allowed) throw new Error(permission.reason);
+  if (!target && productCode && getKqCareSectors(state).length) {
+    careError("rpc_kq_apply_care", { message: "kq_care_invalid_target" });
+  }
+  const permission = productCode === null ? canPerformKqBasicCare(state) : canApplyKqCareProduct(state, productCode, target);
+  if (!permission.allowed) return replayOrReject(permission.reason);
   // Only the server computes this transition. The browser quote confirms a
   // known price; it never sets the charge. SQL rechecks price/version under lock.
-  const nextState = productCode === null ? performKqBasicCare(state) : applyKqCareProduct(state, productCode);
+  const nextState = productCode === null ? performKqBasicCare(state) : applyKqCareProduct(state, productCode, target);
   const result = await supabase.rpc("rpc_kq_apply_care", {
     p_user_id: input.userId, p_run_id: input.runId, p_product_code: productCode,
     p_request_key: input.requestKey, p_expected_updated_at: run.data.updated_at, p_next_state: nextState,

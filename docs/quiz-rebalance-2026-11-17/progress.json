@@ -1,0 +1,196 @@
+{
+  "status": "complete-local",
+  "target": 1000,
+  "quotas": {
+    "active": 800,
+    "food": 100,
+    "materials": 100
+  },
+  "bankComplete": true,
+  "drawComplete": true,
+  "scope": "Cannabis recreational, CBD and active compounds lead. Generic biology, seed farming, food/industrial studies cannot be relabelled active merely because the word cannabis appears. External independent research; no site inspiration. Original source/review requirements preserved.",
+  "next": "Completed requested1000-question rebalance. Future2000 expansion deferred; no further audit or publication implied.",
+  "selected": 1000,
+  "retainedDomains": {
+    "active": 276,
+    "food": 81,
+    "materials": 79
+  },
+  "excluded": 564,
+  "engineImplemented": true,
+  "remaining": 0,
+  "assignments": {
+    "rebalance_classify_a": {
+      "active": 180,
+      "batches": 6,
+      "batchSizes": [
+        30,
+        28,
+        29,
+        25,
+        34,
+        34
+      ],
+      "additionalScope": "Numerical subtheme limits were coordination guides only. Up to20 external classics allowed, useful distinct legal facts and clinical/mechanistic facts within unchanged total180; coordinate with B/C, no site inspiration."
+    },
+    "rebalance_classify_b": {
+      "active": 185,
+      "batches": 6,
+      "batchSizes": [
+        29,
+        30,
+        29,
+        31,
+        31,
+        35
+      ]
+    },
+    "rebalance_products": {
+      "active": 159,
+      "food": 19,
+      "materials": 21,
+      "batches": 7,
+      "batchSizes": [
+        40,
+        30,
+        25,
+        25,
+        25,
+        27,
+        27
+      ],
+      "additionalScope": "Products/ways are no longer an exclusive lane. Direct recreational/CBD facts about usage culture, objects and resinous flowers allowed, with real scope/novelty evidence, unchanged159active+19food+21materials total."
+    }
+  },
+  "evidence": {
+    "classification": "1000 original questions read, classified and independently counter-reviewed; exact original question and classification hashes checked.",
+    "editorial": "All564 replacements approved across19complete lots:524active/19food/21materials. Exactly1000active=800/100/100;0pending,0issues,3existing lexical pairs resolved. Original436 retained,564previous entries excluded.",
+    "releaseGate": "npm.cmd run check:quiz passed on exactly1000 active and independently approved, 800/100/100, native exit0. Report output/quiz-rebalance-2026-11-17/release-check.json.",
+    "tests": "30/30 final-bank tests; all1000 reached under actual domain quotas; 6/6 proof-gate tests; 140/140 local SQL checks.",
+    "types": "Standalone TypeScript and final production build type-check passed.",
+    "eslint": "Targeted files and final runtime/UI harness deltas passed.",
+    "browser": {
+      "passed": 7,
+      "activeAtCheck": 1000,
+      "widths": [
+        320,
+        390,
+        1440
+      ],
+      "report": "output/quiz-rebalance-2026-11-17/ui/report.json",
+      "visuallyInspected": [
+        "question-320.png",
+        "correction-320.png",
+        "question-1440.png"
+      ],
+      "ownedPreviewStopped": true
+    },
+    "privacy": {
+      "ids": 1000,
+      "chunks": 210,
+      "matches": 0,
+      "report": "output/quiz-rebalance-2026-11-17/privacy.json"
+    },
+    "performance": {
+      "actual": {
+        "entries": 1000,
+        "draws": 100,
+        "questionsPerDraw": 12,
+        "domainCounts": {
+          "active": 958,
+          "food": 123,
+          "materials": 119
+        },
+        "domainPercentages": {
+          "active": 79.83,
+          "food": 10.25,
+          "materials": 9.92
+        },
+        "medianMs": 4.21,
+        "p95Ms": 5.53,
+        "privatePlanBytes": 12405,
+        "firstPublicQuestionBytes": 770
+      },
+      "actualChallenge20": {
+        "entries": 1000,
+        "draws": 100,
+        "questionsPerDraw": 20,
+        "domainCounts": {
+          "active": 1600,
+          "food": 200,
+          "materials": 200
+        },
+        "domainPercentages": {
+          "active": 80,
+          "food": 10,
+          "materials": 10
+        },
+        "medianMs": 3.75,
+        "p95Ms": 4.83,
+        "privatePlanBytes": 20742,
+        "firstPublicQuestionBytes": 770
+      },
+      "report": "output/quiz-rebalance-2026-11-17/performance.json",
+      "limits": "Local warm CPU draw and JSON size. Domain percentages describe these 100 deterministic draws per format, not an exact 80/10/10 guarantee in every 12-question game. The 1000 capacity entries are synthetic, not editorial content or a completion claim. Fixture loader time is not a production import benchmark. No network or database writes."
+    },
+    "engineIndependentReview": "docs/quiz-rebalance-2026-11-17/engine-independent-review.json",
+    "build": {
+      "exit": 0,
+      "report": "output/quiz-rebalance-2026-11-17/build.log",
+      "limitation": "Remote public Supabase cache reads unavailable; no remote integration claim."
+    },
+    "finalReport": "output/quiz-rebalance-2026-11-17/final-validation.json"
+  },
+  "domainCounts": {
+    "active": 800,
+    "food": 100,
+    "materials": 100
+  },
+  "retainedFromPrevious": 436,
+  "newValidated": 564,
+  "latestIntegration": {
+    "revision": "2026-11-17.hemp1000.5fe7f2039c81",
+    "selectionRevision": "2026-11-17.scope.26a494744199",
+    "report": "docs/quiz-2000/integration.json"
+  },
+  "reviewQueue": {
+    "approved": [
+      "r-products-01:40",
+      "r-products-02:30",
+      "r-actives-a-01:30",
+      "r-actives-a-02:28",
+      "r-actives-b-01:29",
+      "r-actives-b-02:30",
+      "r-actives-b-03:29",
+      "r-actives-a-03:29",
+      "r-actives-b-04:31",
+      "r-products-03:25",
+      "r-actives-b-05:31",
+      "r-mixed-01:25",
+      "r-actives-a-04:25",
+      "r-mixed-02:25",
+      "r-actives-a-05:34",
+      "r-actives-b-06:35",
+      "r-products-04:27",
+      "r-actives-a-06:34",
+      "r-products-05:27"
+    ],
+    "corrections": [],
+    "firstReview": [],
+    "writing": []
+  },
+  "notes": [
+    "19 approved replacement batches. Authoring and coordinator scripts under facts are historical single-use records; never rerun them to rebuild approved content.",
+    "All required local checks completed; no root-owned preview, browser or test process remains running.",
+    "No deployment or remote database write. Existing preview processes can retain an older bank until restarted."
+  ],
+  "unwritten": 0,
+  "writtenAwaitingReview": 0,
+  "secondaryDomainsComplete": true,
+  "preview": {
+    "port": 3266,
+    "pid": 35532,
+    "status": "stopped after successful final UI checks; user3248untouched"
+  },
+  "completedAt": "2026-11-17T15:17:31.236Z"
+}

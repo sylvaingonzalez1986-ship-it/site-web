@@ -37,6 +37,7 @@ function BuddieDetail({ slot, onClose, onLearnWithBuddy, onReturnToCourse }: { s
   return createPortal(<dialog ref={dialog} className={styles.detailDialog} data-buddie-collection-detail={slot.code} aria-labelledby="buddie-collection-detail-title" style={{ "--card-role": rarityAccentColor[slot.rarity] } as CSSProperties}
     onCancel={event => { event.preventDefault(); event.stopPropagation(); dismiss(); }} onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onClick={event => { if (clickedCollectionBackdrop(event)) dismiss(); }}>
     <button type="button" className={styles.close} aria-label="Fermer le Buddie agrandi" onClick={dismiss}><X aria-hidden="true" /></button>
+    <div data-farm-guide-host />
     <div className={styles.detailLayout}>
       <div className={`${styles.enlargedCard} ${styles.buddieEnlarged}`}><BuddieCard code={slot.code} name={slot.name} rarity={slot.rarity} cardNumber={slot.cardNumber} imageUrl={slot.imageUrl} hidden={!owned} sizes="(max-width: 700px) 85vw, 440px" priority /></div>
       <section className={styles.detailCopy}>

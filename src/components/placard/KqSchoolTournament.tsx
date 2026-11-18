@@ -6,7 +6,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, BookOpen, CalendarDays, Check, Circle, Clock, Crown, Diamond, LogOut, Square, Triangle, Trophy, Users, X } from 'lucide-react';
 import { KQ_TOURNAMENT_QUESTION_MS, KQ_TOURNAMENT_STAGES, KQ_TOURNAMENT_VERSION, parseKqSchoolTournamentCommand, type KqTournamentChampion, type KqTournamentCommand, type KqTournamentIdentity, type KqTournamentPlayer, type KqTournamentRoom, type KqTournamentSnapshot } from '@/lib/kanab-quest-school-tournament';
 import { ChanvrierAvatar } from '../contest/ChanvrierAvatar';
-import { HEMP_QUIZ_BANK_SIZE, HEMP_QUIZ_TOPICS } from '@/lib/kanab-quest-hemp-quiz-meta';
+import { HEMP_QUIZ_BANK_SIZE } from '@/lib/kanab-quest-hemp-quiz-meta';
 import styles from './KqSchoolTournament.module.css';
 
 type Props = { ownerId?: string; onEncyclopedia: () => void; onOpen: (module: string, passage: string) => void };
@@ -262,7 +262,7 @@ function TournamentSession({ ownerId, onEncyclopedia, onOpen }: Props) {
   const titleDecided = weeklyResult || room?.titleWon || room?.reason === 'champion_defended';
   const leave = () => { if (room) void submit({ action: 'leave', requestKey: createClientRequestKey(), roomId: room.id }); };
 
-  return <section className={styles.tournament} data-school-tournament data-motion={animations ? 'on' : 'off'} aria-label="Tournoi du fauteuil">
+  return <section className={styles.tournament} data-school-tournament data-tutorial-ready={!!snapshot && !loading && !connectionError} data-guide-school-answered={!commandError && !connectionError && room?.status === 'reveal' && room.reveal?.answers.some(answer => answer.userId === ownerId && answer.optionId !== null) || undefined} data-motion={animations ? 'on' : 'off'} aria-label="Tournoi du fauteuil">
     {connectionError ? <div className={styles.error} role="alert"><p>{connectionError}</p><button type="button" data-tournament-retry disabled={busy} onClick={() => void load()}>Actualiser la connexion</button></div> : null}
     {commandError ? <p className={styles.error} role="alert">{commandError}</p> : null}
     {pending ? <div className={styles.pending} role="status"><p>{busy ? 'Enregistrement en cours…' : !snapshot ? 'Vérification de ton action précédente…' : pendingFits ? 'Une action attend sa confirmation.' : 'Cette action n’est plus disponible dans l’état actuel du tournoi.'}</p>{!busy && snapshot ? pendingFits
@@ -275,7 +275,7 @@ function TournamentSession({ ownerId, onEncyclopedia, onOpen }: Props) {
 
     {snapshot && (!room || status === 'lobby') ? <div data-tournament-lobby>
       <header className={styles.intro}><div><h2>Le tournoi du champion</h2><p>Quatre pupitres. Trois manches éliminatoires. Une finale pour inscrire ton score dans la course au fauteuil.</p></div><span className={styles.format}><Users size={20} aria-hidden/>Plateau automatique</span></header>
-      <p className={styles.small} data-tournament-question-bank>{HEMP_QUIZ_BANK_SIZE} questions · {HEMP_QUIZ_TOPICS.length} thèmes · Histoire et anecdotes incluses</p>
+      <p className={styles.small} data-tournament-question-bank>{HEMP_QUIZ_BANK_SIZE} questions · Cannabis récréatif et CBD</p>
       {room ? <section className={styles.lobby}><div className={styles.sectionTop}><h3>Le plateau se remplit</h3><span role="status">{room.players.length} / 4 participants · {humans.length} joueur{humans.length > 1 ? 's' : ''} en direct</span></div><div className={styles.matchmaking} data-tournament-matchmaking><Users size={26} aria-hidden/><div><strong>{fillingSeconds !== null && fillingSeconds > 0 ? 'Recherche de joueurs' : 'Préparation du plateau…'}</strong><p>Les places libres seront complétées automatiquement avec les replays de la semaine, puis des bots.</p></div>{fillingSeconds !== null && fillingSeconds > 0 ? <span className={styles.searchCountdown} role="timer" aria-label={"Remplissage automatique dans " + fillingSeconds + " secondes"}>{fillingSeconds} s</span> : null}</div><div className={styles.actions}><button type="button" data-tournament-leave disabled={busy || Boolean(pending)} onClick={leave}>Quitter le salon<LogOut size={17} aria-hidden/></button></div></section>
         : <div className={styles.join}>{titleHolder ? <p className={styles.holder}>Tu détiens le fauteuil. Ton score reste à battre cette semaine. Le meilleur challenger prendra le fauteuil dimanche à minuit s’il fait mieux que toi.</p> : eventOpen ? <><button type="button" className={styles.primary} data-tournament-join disabled={busy || Boolean(pending)} onClick={() => void submit({ action: 'join', requestKey: createClientRequestKey() })}>Participer au tournoi<ArrowRight size={20} aria-hidden/></button><p>Recherche automatique · 3 questions par manche · 20 secondes pour répondre</p></> : <p>Le plateau est en cours d’actualisation.</p>}</div>}
       <Contestants room={room} ownerId={ownerId}/>

@@ -1,4 +1,5 @@
 import { readRequestBody } from "@/lib/body-size-guard";
+import { isKqCareSector } from "@/lib/kanab-quest-care-spatial";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -27,6 +28,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
     raw = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
   const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : {};
   if (typeof body.requestKey !== "string" || (body.action !== "basic" && typeof body.productCode !== "string")
+    || (body.target !== undefined && (body.action === "basic" || !isKqCareSector(body.target)))
     || (body.action !== undefined && body.action !== "basic") || (body.action === "basic" && body.productCode !== undefined)
     || (body.expectedUpdatedAt !== undefined && typeof body.expectedUpdatedAt !== "string")) {
     return NextResponse.json({ error: "Intervention invalide." }, { status: 400 });
@@ -40,6 +42,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
       userId: session.customerId, runId, requestKey: body.requestKey,
       ...(body.action === "basic" ? { action: "basic" as const, basicPriceCents: body.basicPriceCents as number } : { productCode: body.productCode as string }),
       ...(typeof body.expectedUpdatedAt === "string" ? { expectedUpdatedAt: body.expectedUpdatedAt } : {}),
+      ...(body.target !== undefined ? { target: body.target } : {}),
     }), { headers: { "Cache-Control": "private, no-store, max-age=0" } });
   } catch (error) {
     const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Intervention impossible.");

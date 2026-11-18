@@ -1,0 +1,54 @@
+{
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "proposalFile": "docs/quiz-2000/facts/rp04-replacement-proposal.json",
+  "batchId": "r-products-04",
+  "items": [
+    {
+      "id": "hemp-q2-rp04-mellow-yellow-coffeeshop",
+      "status": "approved",
+      "contentHash": "235ac805cdcdf919531a417dc6daa328fa423e743aabf11ee6c5fa48f6a35ca5",
+      "domain": "active",
+      "domainComment": "Lieu historique de vente de haschich et de culture récréative du cannabis : lien direct, sans généralité décorative.",
+      "comment": "Objet complet et quatre choix lus. La notice muséale soutient coffeeshop pionnier, vente de café et de haschich et ancienne boulangerie occupée. Niveau2 cohérent pour un établissement nommé ; options parallèles et crédibles dans le secteur cannabique, aucune réponse donnée par le nom. La priorité absolue et la date contestée sont volontairement absentes. Aucun doublon exact après lecture des voisins complets.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp04-museum-mellow-yellow",
+          "url": "https://hashmuseum.com/en/collection/history-of-smoking/mellow-yellow/",
+          "locator": "Notice originale Mellow Yellow, premier et second paragraphes, lignes55–56 du texte ouvert le17novembre2026",
+          "result": "Page originale effectivement ouverte et passage lu : Mellow Yellow est identifié comme coffeeshop dans une boulangerie occupée, où les clients commandaient un café et achetaient du haschich. Cela soutient directement corrigé et contexte. La question ne reprend ni date1972, ni priorité absolue, ni prix, ni anecdote de marchandise adultérée.",
+          "sourceHash": "831b253a0cb506221b7a326417dc672ed6a84678a1b047be01e74aa3760004ad"
+        }
+      ]
+    }
+  ],
+  "neighbourCheck": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "searchedTerms": [
+      "Mellow Yellow",
+      "coffeeshop",
+      "Amsterdam"
+    ],
+    "completeObjectsRead": [
+      "hemp-q2-rb02-coffeeshop-sans-alcool",
+      "hemp-q2-rb02-coffeeshop-tolerance",
+      "hemp-q2-rb02-coffeeshop-mineurs",
+      "hemp-q2-rb05-coffeeshops-paradoxe-approvisionnement",
+      "hemp-q2-rb05-coffeeshops-experience-chaine",
+      "hemp-q2-rb06-cannabis-cup-amsterdam",
+      "hemp-q2-rb06-cannabis-cup-jury-public"
+    ],
+    "result": "Les voisins testent règles de vente/tolérance, expérience de chaîne réglementée ou concours Cannabis Cup ; aucun ne demande la nature historique de Mellow Yellow. Les explications complètes ont été lues et ne donnent pas ce fait."
+  },
+  "verification": {
+    "contentHash": "235ac805cdcdf919531a417dc6daa328fa423e743aabf11ee6c5fa48f6a35ca5",
+    "sourceHashes": [
+      {
+        "id": "q2-rp04-museum-mellow-yellow",
+        "hash": "831b253a0cb506221b7a326417dc672ed6a84678a1b047be01e74aa3760004ad"
+      }
+    ],
+    "format": "Prompt150, options75, explication240, quatre choix distincts et expectedAnswer/corrigé vérifiés.",
+    "authorFilesModified": false
+  }
+}

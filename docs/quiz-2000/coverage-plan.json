@@ -1,0 +1,81 @@
+{
+  "target": 1000,
+  "status": "complete-local-1000-80-10-10",
+  "domainQuotas": {
+    "active": 800,
+    "food": 100,
+    "materials": 100
+  },
+  "scope": "External independent research. No inspiration from the site's varieties or producers, per the user's correction during this session.",
+  "difficulty": {
+    "accessible": 350,
+    "intermediate": 450,
+    "difficultAndExpert": 200
+  },
+  "productionPriorities": "The domainQuotas are authoritative. Replace generic biology, food science and industrial trivia with distinct useful facts about recreational cannabis, CBD and active compounds. Prefer about50-55% genuinely accessible new questions to correct the specialist bias; never lower an honest difficulty rating or manufacture variants for a quota. Research and first independent review remain assigned to Sol agents, without site inspiration.",
+  "reason": "User rejected the first delivery's focus. The full1000-question bank was independently classified and counter-reviewed; out-of-scope facts leave active play. Exact800/100/100 content quotas and80/10/10 draw proportions supersede the old category projections, which are historical below.",
+  "previousTarget": 2000,
+  "previousDeliveryCategoryCounts": {
+    "agronomy": 46,
+    "botany": 148,
+    "constituents": 80,
+    "food": 130,
+    "genetics": 200,
+    "hemp-uses": 60,
+    "history": 118,
+    "prevention": 44,
+    "quality": 60,
+    "varieties": 114
+  },
+  "previousDeliveryLevelCounts": {
+    "1": 216,
+    "2": 532,
+    "3": 219,
+    "4": 33
+  },
+  "previousDeliveryDifficultyOutcome": "Accessible/intermediate/difficult+expert:21.6%/53.2%/25.2%, versus indicative35%/45%/20%. These numbers describe the previous delivery, not the revision in progress.",
+  "previousPlannedCategoryCounts": {
+    "varieties": 129,
+    "genetics": 204,
+    "botany": 141,
+    "constituents": 80,
+    "history": 114,
+    "agronomy": 45,
+    "quality": 69,
+    "food": 122,
+    "hemp-uses": 56,
+    "prevention": 40
+  },
+  "actualCategoryCounts": {
+    "agronomy": 4,
+    "botany": 43,
+    "constituents": 233,
+    "food": 81,
+    "genetics": 20,
+    "hemp-uses": 59,
+    "history": 221,
+    "prevention": 133,
+    "quality": 68,
+    "varieties": 138
+  },
+  "actualLevelCounts": {
+    "1": 279,
+    "2": 530,
+    "3": 170,
+    "4": 21
+  },
+  "actualDisplayTopicCounts": {
+    "plant": 56,
+    "genetics": 100,
+    "molecules": 78,
+    "evidence": 183,
+    "seeds": 86,
+    "profiles": 80,
+    "uses": 0,
+    "biodiversity": 11,
+    "prevention": 190,
+    "history": 216
+  },
+  "actualDifficultyOutcome": "Editorial estimates, not player calibration. Accessible/intermediate/difficult+expert27.9/53/19.1 versus indicative35/45/20.",
+  "finalReport": "docs/quiz-rebalance-2026-11-17/DELIVERY.md"
+}

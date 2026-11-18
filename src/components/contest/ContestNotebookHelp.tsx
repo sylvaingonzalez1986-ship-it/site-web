@@ -21,7 +21,7 @@ export function ContestNotebookHelp({ className }: { className?: string }) {
     <button ref={trigger} type="button" className={className} data-notebook-help aria-haspopup="dialog" onClick={() => setOpen(true)}>
       <CircleHelp size={20} aria-hidden="true" />Comment faire ?
     </button>
-    {open ? createPortal(<Suspense fallback={<AppDialog open onClose={close} title="Comment faire ?" closeLabel="Retour au carnet" className={retro.gameSurface}><p role="status">Sylvain prépare ta fiche d’entraînement…</p></AppDialog>}>
+    {open ? createPortal(<Suspense fallback={<AppDialog open onClose={close} title="Comment faire ?" closeLabel="Retour au carnet" className={retro.gameSurface}><p role="status">Loïc prépare ta fiche d’entraînement…</p></AppDialog>}>
       <Lesson lesson="notebook" onClose={close} onCompleted={completed} />
     </Suspense>, document.body) : null}
   </>;

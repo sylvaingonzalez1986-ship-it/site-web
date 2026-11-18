@@ -99,7 +99,7 @@ try{
       assert.equal(await page.$eval('[data-culture-personal-recap]',el=>el.dataset.analysisCoverage),coverage);await page.waitForSelector('[data-culture-analysis]');await shot(name+'-'+width+'-summary');
       const mainText=await page.$eval('[data-culture-personal-recap]',el=>el.innerText);
       assert(!/fidélité cannabinoïde/i.test(mainText),'The ambiguous cannabinoid label has been removed');
-      const portrait=await loadedImages('[data-recap-sylvain]');assert(portrait.every(image=>/Sylvain/i.test(image.alt)),'The guide is explicitly Sylvain');
+      const portrait=await loadedImages('[data-recap-sylvain]');assert(portrait.every(image=>/Loïc/i.test(image.alt)),'The guide is explicitly Sylvain');
       if(receipt.rulesVersion===3&&!dead){
         assert(/(?:score|indice)/i.test(mainText)&&/(?:taux|pourcentage|%)/i.test(mainText),'The visible recap explains the score and its distinction from a cannabinoid percentage');
         await details('[data-recap-cannabinoids]');

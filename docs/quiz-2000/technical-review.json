@@ -1,0 +1,92 @@
+{
+  "reviewer": "E / e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Revue bornée des scripts check/integrate quiz-2000, du tirage challenge/tournament, de la banque, des sources publiques, des types/métadonnées et de leurs tests. Lecture seule des fichiers actifs ; seuls les deux rapports E sont modifiés.",
+  "editorialReportRepair": {
+    "file": "docs/quiz-2000/pilot-editorial-review.json",
+    "method": "Réparation UTF-8 par apply_patch ; accents, apostrophes et signes × restaurés. Les seuls points d'interrogation restants terminent des questions.",
+    "preserved": "Les 30 contentHash, avis, niveaux et identités sont conservés. Ils désignent les versions antérieures aux corrections des auteurs ; cette archive ne remplace pas la revue F finale."
+  },
+  "findings": [
+    {
+      "id": "E-TECH-01",
+      "priority": "P1",
+      "status": "open_when_reported_to_coordinator",
+      "title": "Une source modifiée ne périme pas l'approbation de sa question",
+      "location": "scripts/check-quiz-2000.mjs:28,35,85,87 ; scripts/integrate-quiz-2000.mjs:18,37",
+      "evidence": "contentHash porte sur JSON.stringify(question), qui contient des sourceIds mais pas les objets batch.sources. sourceChecks exige un sourceId, locator et result, sans hash de la source consultée. L'intégrateur relit puis publie les objets sources courants.",
+      "trigger": "Après approbation F, modifier url, passage, access ou consultation d'une nouvelle source en conservant son ID et la question. En l'absence de collision d'URL avec une autre définition, le contrôle de hash reste satisfait et les nouvelles métadonnées sont publiées sans invalidation de la revue.",
+      "impact": "La preuve affichée peut différer de celle effectivement relue, malgré une question marquée approuvée. Une redéfinition de source historique sous le même ID et la même URL est également autorisée par le seul contrôle de conflit d'URL.",
+      "recommendation": "Conserver dans la revue un hash du snapshot de chaque source effectivement consultée, puis le comparer au registre canonique lors du contrôle et de l'intégration. Toute modification de ce snapshot doit invalider la sourceCheck. Interdire les définitions concurrentes non identiques d'un même ID."
+    },
+    {
+      "id": "E-TECH-02",
+      "priority": "P1",
+      "status": "open_when_reported_to_coordinator",
+      "title": "Le contrôle --active exempte les anciens ID de comparaison au contenu attendu",
+      "location": "scripts/check-quiz-2000.mjs:126..129",
+      "evidence": "L'appartenance à legacyIds suffit au contrôle active without independent approval. La comparaison runtimeHash n'est exécutée que si !legacyIds.has(question.id), même lorsqu'une correction ancienne approuvée existe dans approvedById.",
+      "trigger": "Modifier une ancienne entrée dans reviewed.json ou son module TS après le snapshot initial, ou laisser le runtime diverger d'une correction ancienne approuvée. --active n'identifie pas cette divergence. --release possède un contrôle supplémentaire de legacy-validation, mais le contrôle local/pilote ne le possède pas.",
+      "impact": "Une régression de l'existant peut passer le contrôle destiné à vérifier la banque active, en réutilisant son identité historique.",
+      "recommendation": "Comparer tout ID ancien à sa version approuvée courante si elle existe, sinon au runtimeHash du snapshot initial. Continuer d'exiger la validation indépendante complète des anciens ID au moment du release."
+    },
+    {
+      "id": "E-TECH-03",
+      "priority": "P2",
+      "status": "open_when_reported_to_coordinator",
+      "title": "Une décision de distinction sémantique survit à la modification des deux questions",
+      "location": "scripts/check-quiz-2000.mjs:139..142",
+      "evidence": "Le set des résolutions ne retient que la paire d'ID triés. reviewer, reason et decision sont vérifiés, mais aucun hash des deux versions arbitrées n'est comparé.",
+      "trigger": "Résoudre une paire comme distinct, puis modifier une de ses questions tout en gardant son ID et en obtenant sa nouvelle revue individuelle. L'ancienne résolution de paire reste acceptée au release.",
+      "impact": "Un arbitrage de proximité devenu obsolète peut masquer un doublon introduit par une correction ultérieure.",
+      "recommendation": "Lier chaque décision sémantique aux hashes des deux questions courantes et invalider l'arbitrage dès qu'une version change."
+    },
+    {
+      "id": "E-TECH-04",
+      "priority": "P1",
+      "status": "corrected_by_coordinator_during_review_static_verification",
+      "title": "Un retrait initialement accepté sans approbation explicite ni version relue",
+      "location": "scripts/integrate-quiz-2000.mjs:45..48",
+      "initialEvidence": "Le premier état exigeait seulement id, reason, reviewer et statisticsImpact : un objet renseigné suffisait à désactiver une ancienne question.",
+      "verifiedCorrection": "Le fichier courant exige désormais une entrée initiale connue, proposedBy différent de reviewer, status=approved et contentHash=hash(original), ainsi que reason et statisticsImpact. Les retraits inconnus/doublons et l'activation simultanée d'un ID retiré restent refusés.",
+      "remainingValidation": "Le coordinateur conserve la responsabilité du test ciblé de refus d'une décision absente, auto-approuvée ou périmée. Aucun test supplémentaire exécuté par E."
+    },
+    {
+      "id": "E-TECH-05",
+      "priority": "P2",
+      "status": "corrected_by_coordinator_during_review_static_verification",
+      "title": "HTTP accepté par le checker mais rejeté par le backend du tournoi",
+      "location": "scripts/check-quiz-2000.mjs:32 ; src/lib/supabase/kanab-quest-school-tournament-backend.ts:72",
+      "initialEvidence": "Le checker acceptait /^https?:\\/\\// tandis que le DTO serveur exige /^https:\\/\\//. Une source HTTP pouvait être intégrée puis rendre invalide le snapshot de la question tirée.",
+      "verifiedCorrection": "Le checker courant exige HTTPS, conformément au contrat du backend.",
+      "remainingValidation": "Ajouter ou conserver une vérification ciblée du refus d'une source HTTP ; aucune source actuelle déclarée défaillante par cette revue."
+    },
+    {
+      "id": "E-TECH-06",
+      "priority": "P2",
+      "status": "corrected_by_coordinator_during_review_static_verification",
+      "title": "Le tri glouton pouvait répéter un sujet alors qu'un tirage totalement distinct existait",
+      "location": "src/lib/kanab-quest-school-challenge-server.ts:35..73 ; src/lib/kanab-quest-school-tournament-server.test.ts:55",
+      "reproductionExecuted": {
+        "kind": "Invocation locale du vrai helper avec pool synthétique, sans modification active, réseau ou SQL",
+        "seed": "counter-0",
+        "subjectsByLevel": [["A","B","C","D","E","F"],["G","H","I"],["J","K","L"],["A","B","C"]],
+        "initialSelected": ["E","C","F","G","I","H","K","J","L","B","A","C"],
+        "initialUnique": 11,
+        "feasibleUniqueAssignment": ["D","E","F","G","H","I","J","K","L","A","B","C"]
+      },
+      "verifiedCorrection": "Le helper courant calcule les masques de présence des sujets sur quatre niveaux et vérifie les 15 sous-ensembles de niveaux avant chaque sélection. Il retire temporairement un sujet candidat et n'accepte ce choix que si les besoins restants gardent une affectation distincte possible. Le fallback ne s'applique que si le pool initial ne permet déjà pas une affectation distincte complète. Un test de sujets rares réservés aux niveaux ultérieurs a été ajouté.",
+      "remainingValidation": "Analyse statique de la correction effectuée ; exécution du test corrigé et de la couverture réelle laissée au coordinateur. Le tirage direct12 reste conservé."
+    }
+  ],
+  "positiveChecks": [
+    "Le tournoi appelle directement createKqSchoolQuestionPlan(seed,3) : l'équilibrage porte désormais sur les 12 questions réellement jouées.",
+    "subjectKey reste dans le type privé et les données serveur. Le DTO question est reconstruit sans subjectKey, editorial, answer ou explanation avant révélation ; les tests vérifient notamment cette confidentialité.",
+    "Les sources publiques sont intégrées par liste blanche des métadonnées et un module séparé. L'encyclopédie n'importe pas les lots auteur ni la banque privée.",
+    "La prévisualisation Vite refuse maintenant additions.json, reviewed.json et docs/quiz-2000, en plus des modules privés existants.",
+    "L'intégration ajoute les nouvelles identités, applique explicitement les révisions anciennes et filtre les retraits ; elle ne modifie aucune table ni score distant. Les plans de tournoi déjà stockés restent autonomes.",
+    "Taille et révision proviennent du fichier release JSON : état lu390actives. L'intégrateur annonce releaseReady=false ; le checker --release exige exactement2000 et une validation propre des anciens ID.",
+    "Les tests ne confondent plus le tournoi12 avec une extraction du challenge20. Les contrôles historiques360 restent explicitement des archives, les nouvelles questions ayant leur propre gate de revue. La couverture de tirage vient d'être étendue par le coordinateur après le résultat389/390 sur600seeds."
+  ],
+  "limits": "Aucun nouveau tour de recherche factuelle, aucune modification active, aucun test large ni build relancé par E. Les points marqués corrigés ont été relus dans les fichiers actuels ; les trois autres ont été transmis au coordinateur et leur éventuelle correction ultérieure doit être attestée séparément. Cette revue ne constitue pas une autorisation de publication."
+}

@@ -1,0 +1,46 @@
+{
+  "target": 1000,
+  "activeCount": 1000,
+  "validatedActive": 1000,
+  "approvedAdditions": 782,
+  "validatedLegacy": 218,
+  "retained": 90,
+  "corrected": 128,
+  "retired": 7,
+  "legacyAwaitingValidation": 0,
+  "remainingValidatedToTarget": 0,
+  "validatedCategoryCounts": {
+    "agronomy": 4,
+    "botany": 43,
+    "constituents": 233,
+    "food": 81,
+    "genetics": 20,
+    "hemp-uses": 59,
+    "history": 221,
+    "prevention": 133,
+    "quality": 68,
+    "varieties": 138
+  },
+  "validatedLevelCounts": {
+    "1": 279,
+    "2": 530,
+    "3": 170,
+    "4": 21
+  },
+  "selectionRevision": "2026-11-17.scope.26a494744199",
+  "domainQuotas": {
+    "active": 800,
+    "food": 100,
+    "materials": 100
+  },
+  "domainCounts": {
+    "active": 800,
+    "food": 100,
+    "materials": 100
+  },
+  "excludedByScope": 564,
+  "legacyValidation": "See legacy-validation.json; historical membership does not imply fresh validation.",
+  "revision": "2026-11-17.hemp1000.5fe7f2039c81",
+  "deployed": false,
+  "remoteDatabaseWritten": false
+}

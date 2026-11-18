@@ -1,0 +1,2425 @@
+{
+  "batchId": "d-new-05",
+  "reviewer": "f_existing_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16T22:00:12.292Z",
+  "scope": "Relecture indépendante des40questions entières : énoncés, quatre choix, unicité, explications, niveaux, formes, preuves et voisinages alimentaires. Dix-sept nouvelles références et six références communes contrôlées au niveau de lecture déclaré. Comparaison ciblée de fact-index.jsonl, des versions proches du pilote, du snapshot legacy et des faitsD01/D04 ; aucune nouvelle revue deD04. Revalidation ciblée des sept corrections : cinq versions réécrites et deux remplacements factuels avec nouveaux IDs ;33approbations et23objets sources antérieurs préservés. Trois sources nouvelles et un nouveau passageOSU effectivement ouverts.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière) ; sourceHash de JSON.stringify(objet source complet dans son registre originel).",
+  "sourceTiming": "Passages relus le16novembre2026 pendant cette revue. Sources communes réellement rouvertes sur les passages nécessaires, sans confondre anciennes lectures et nouveaux passages. Pas de lecture intégrale d’un article/manuel revendiquée quand seuls des paragraphes utiles sont lus. reviewedAt date le scellement ; heure exacte de chaque ouverture non reconstituée.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-d05-merlino-gnocchi-2022",
+      "url": "https://www.mdpi.com/2304-8158/11/18/2783",
+      "sourceHash": "1a68f3518cfc5d439f8ab0eab01ae3d6673a70cc3c9cb7565dccf36a770dfffa",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résumé ligne185 ; §2.5–2.6, lignes239–241",
+      "result": "Gnocchis de pomme de terre ; remontée en surface ; facteurs énergétiques4/9.",
+      "limitation": "Méthodes et description culinaire seulement ; aucune recommandation de recette, allégation de santé ou seuil universel.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-illinois-kitchen-2014",
+      "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+      "sourceHash": "329eb3dab3bdc3584a064ea71a4a3df02ed68c31b13f110e610028affe1c85df",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Paragraphe nutritionnel lignes108–109 ; recetteHempPesto lignes119–127",
+      "result": "Magnésium minéral, vitamineE et pesto aux herbes/graines/huile/parmesan décrits.",
+      "limitation": "Article2014 ; histoire, droit et affirmations cliniques exclus. Recette réelle distinguée des principes généraux de régime végétalien.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-acf-hemp-2021",
+      "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+      "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "pdf-targeted",
+      "locator": "PDFp.1 lignes23–24,40–44 ; p.2 ligne77",
+      "result": "Saveur de noix, acides aminés essentiels obtenus par l’alimentation, graines rances à jeter.",
+      "limitation": "Nouvelle lecture des passages nécessaires ; ni seuil juridique ni garantie de santé repris. Définition nutritionnelle pour l’humain, pas pour toutes les plantes.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+      "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+      "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "SeedProcessing, ligne125",
+      "result": "Oléagineux traités pour l’huile ; corps étrangers retirés avant transformation.",
+      "limitation": "Opérations alimentaires seulement ; la généralisation erronée de la page sur huileCBD, son droit2020 et ses bénéfices cliniques sont exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dnext01-loturco-2023",
+      "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+      "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+      "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction ligne208, paragrapheCodex",
+      "result": "Obtention mécanique sans apport de chaleur ; filtration compatible avec ce principe.",
+      "limitation": "Définition de procédé citée par l’étude, sans valeur limite actuelle ni autorisation commerciale revendiquée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-fda-pasteurization",
+      "url": "https://www.fda.gov/food/hazard-analysis-critical-control-point-haccp/juice-haccp-regulator-training",
+      "sourceHash": "85101f73a8153864b6faa786ddeeed211b7e1f4be4a326491102f1cc263620e6",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Chapitre7, Pasteurization, lignes514–518",
+      "result": "Chauffage réduisant les pathogènes dans les produits liquides ; pas de stérilisation complète garantie.",
+      "limitation": "Principe général seul transféré à une boisson alimentaire ; validation, exigences légales, temps et températures des jus exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-colic-icecream-2024",
+      "url": "https://mdpi-res.com/bookfiles/book/11891/Sustainability_in_the_Global_Dairy_Sector.pdf?v=1764256586",
+      "sourceHash": "f9c02d641505a678d1421d70a48e1a67e82e691d7dceaada025e7d8ba01ee40e",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "pdf-full-text-targeted",
+      "locator": "RéimpressionPDFpp.79/85/88, lignes3399–3400,3692–3694,3814–3820",
+      "result": "Structure multiphasique, viscosité résistance à l’écoulement et air incorporé au foisonnement.",
+      "limitation": "Article lu dans la réimpression officielleMDPI, pas article original supposé ouvert. Aucun résultat de dosage ou effet clinique généralisé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-fda-ingredient-types",
+      "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+      "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Tableau lignes74–76",
+      "result": "Xanthane parmi texturants/épaississants ; bicarbonate parmi agents levants.",
+      "limitation": "Fonctions d’ingrédients généraux ; pas de formulation commerciale réelle ou d’autorisation juridique inventée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-asb-potassium-sorbate",
+      "url": "https://asbe.org/article/potassium-sorbate/?topic=ingredient",
+      "sourceHash": "3018de66d23a596bbf8621e55db4431ef21060ea2f5e57ae7e26700918b728bb",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "professional-page-targeted",
+      "locator": "What is potassium sorbate?, ligne385",
+      "result": "Sorbate de potassium conservateur contre moisissures et levures.",
+      "limitation": "Corps accessible malgré bannière ; ni dosage, pH optimal, autorisation ni bénéfice clinique repris.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-asb-fermentation",
+      "url": "https://asbe.org/article/fermentation/",
+      "sourceHash": "cf6399ea16b4b627264ccfda96f2f899811fb078bccdf9205e5a5bc7e4849aa0",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "professional-page-targeted",
+      "locator": "What is fermentation?/How it works, lignes383,399,412",
+      "result": "Fermentation boulangère des sucres produisant notamment duCO2.",
+      "limitation": "Rôle de la levure seulement ; pas de protocole ou récit ancien repris.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-kim-tofu-2026",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42967711/",
+      "sourceHash": "edacf6608165d89e13d2f2cbda6e5c4db314b9a1c862668f436db12c517be8f1",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "abstract-and-metadata",
+      "locator": "PubMed, métadonnées lignes177–179/214–219 ; résumé lignes240–242",
+      "result": "Gel de graines dégraissées par coagulation thermique ; réseau protéique, interactions hydrophobes/disulfure.",
+      "limitation": "Résumé seul lu ; publication électronique25septembre2026 distinguée du numéro1décembre2026. Aucun résultat in vitro extrapolé à la santé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-park-protease-2024",
+      "url": "https://www.mdpi.com/2311-5637/10/9/483",
+      "sourceHash": "513e9385d68ad9f60cb151f33dce9f997631c8114a64de504f14c90201dda6df",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§2.3/3.1, lignes201–202,239–246",
+      "result": "Protéase dégradant les protéines de chanvre en fragments de masse moléculaire plus faible.",
+      "limitation": "Seule l’hydrolyse est utilisée ; protocoles, concentrations, productionGABA et bénéfices cliniques exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-openstax-proteins",
+      "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+      "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§3.4 Denaturation and Protein Folding, lignes118–120",
+      "result": "Dénaturation modifiant la forme sans perte de séquence primaire.",
+      "limitation": "Nouveau passage relu ; pas de garantie de réversibilité, ni exemple pathologique transféré au chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-asb-staling",
+      "url": "https://asbe.org/article/staling/?topic=recipes-and-formulation",
+      "sourceHash": "ef90a4207f8785eedd2d409fce05b6716f3733ec39535cddeaff2697a4abd321",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "professional-page-targeted",
+      "locator": "Interventions against staling, Amylases, ligne412",
+      "result": "Amylases pouvant dégrader l’amidon en dextrines et sucres.",
+      "limitation": "Nouvelle lecture de ce passage ; aucune recette ou formulation absolue de la page retenue.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-hamidioglu-oleogels-2022",
+      "url": "https://www.mdpi.com/2304-8158/11/24/4030",
+      "sourceHash": "e02f8c59afa34c7c1b85a80b22fb2267562f8776363492d4f7f4172c1d3c4a4a",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction, Oleogelation, ligne178",
+      "result": "Réseau structurant solide immobilisant l’huile liquide.",
+      "limitation": "Définition structurale seulement ; pas d’optimisation de cires ou de propriétés sanitaires.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-nih-vitamin-e",
+      "url": "https://ods.od.nih.gov/factsheets/VitaminE-Consumer/",
+      "sourceHash": "776b9077bc15e230bd9b034401ff0ea791d1e7bb0da3d7b00033f1a80e1b648e",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "What is vitamin E and what does it do?, ligne53",
+      "result": "VitamineE classée comme nutriment liposoluble.",
+      "limitation": "Classification physicochimique seulement, pas d’apport, de supplément ou d’effet clinique conseillé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-asb-gelatinization",
+      "url": "https://asbe.org/article/starch-gelatinization/",
+      "sourceHash": "2179bdabb64075f782eb459e995775db29ee465d4ef2a67e313269554f307439",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "professional-page-targeted",
+      "locator": "What is starch gelatinization?/Starch in hot water, lignes384–395",
+      "result": "Eau et chaleur, gonflement des granules et perte d’organisation de l’amidon.",
+      "limitation": "Pas de transition vitreuse générale reprise, ni température universelle ou optimisation de recette.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-umn-freeze-drying",
+      "url": "https://extension.umn.edu/food/preparing/cooking-at-home/food-preservation/freeze-drying",
+      "sourceHash": "2f00c843a7d815ccc6b4f96c41de0a6ff2c744902be8b7409b9a11f1c2bda2ca",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Introduction/Wateractivity/Primarydrying, lignes256–270",
+      "result": "Sublimation glace→vapeur ; disponibilité de l’eau distinguée de sa quantité.",
+      "limitation": "La chaleur douce du séchage primaire n’est pas niée ; pas de garantie sanitaire ni de protocole domestique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-osu-oil-refining",
+      "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+      "sourceHash": "cec250e4f634f9fc5f1a55aabb18a580e4cf5226776b78a288c530533caca13e",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Degumming/Bleaching/Deodorization/Winterization, lignes112–118,139–151",
+      "result": "Phospholipides retirés ; adsorption sur terres ; entraînement vapeur ; fractions cristallisables au froid séparées.",
+      "limitation": "Opérations d’huiles alimentaires seulement ; sectionbiodiesel, durées, températures, solvants et doses pratiques exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-zahari-extrusion-2020",
+      "url": "https://www.mdpi.com/2304-8158/9/6/772",
+      "sourceHash": "337b60bd57e2a262ac4fced9b53891292f790cd59ff13b1301f00df3c1520c26",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§2.4/2.5, lignes216,222–223",
+      "result": "Structure fibreuse/feuilletée ; retour de forme et travail de mastication définis.",
+      "limitation": "Objectif textural et définitions ; pas de taux d’incorporation ou de réglage optimal généralisé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-osu-lipid-glossary",
+      "url": "https://extension.okstate.edu/fact-sheets/lipid-glossary",
+      "sourceHash": "35719e85b613969bac0ca45e3b81d08304d93427dc5dbbdf787f405e76c31e66",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Triacylglyceride(TAG), ligne299",
+      "result": "TAG formé de glycérol et de trois acides gras, stockage lipidique majeur.",
+      "limitation": "Structure seulement ; pas de lien clinique ou de jugement sur les acides gras.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-aktas-tempeh-2025",
+      "url": "https://doi.org/10.1016/j.lwt.2024.117264",
+      "sourceHash": "38719c13be0d7cb9fbf2e6289ab336ac77c061df7bba064608d50016eb12a091",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "indexed-publisher-excerpt",
+      "locator": "Extrait éditeur indexé, Introduction, paragraphe In this study, we employed solid-state fermentation",
+      "result": "Tourteau de chanvre fermenté avecR.oligosporus ; champignon filamenteux et tradition de soja indonésienne décrits.",
+      "limitation": "DOI direct en erreur ; résumé et extraits d’introduction réellement relus via résultat éditeur indexé. Aucune lecture intégrale revendiquée ; taxonomie familiale, statutGRAS et effets in vitro non utilisés.",
+      "earlierReadingReused": false,
+      "timePrecision": "day",
+      "accessedUrlsForThisReview": [
+        "https://doi.org/10.1016/j.lwt.2024.117264",
+        "https://www.sciencedirect.com/science/article/pii/S0023643824015470"
+      ],
+      "accessDetail": "Ouverture directeDOI en erreur ; extrait éditeur indexé retrouvé par recherche ciblée du titre et du termefilamentous. Résumé et paragraphe d’introduction lisibles, pas texte intégral."
+    },
+    {
+      "sourceId": "q2-d05-codex-tempe",
+      "url": "https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pt/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B313R-2013%252FCXS_313Re.pdf",
+      "sourceHash": "5d5dadf82a44e85be942bba8a39f4db509c7c891545de2939b57284c6d39f46d",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "institutional-pdf-targeted",
+      "locator": "PDFp.1–3, titre/amendements ; §2/§3.1, lignes23–29",
+      "result": "Tempe de soja décortiqué/bouilli fermenté parRhizopus ; R.oligosporus cité parmi les moisissures.",
+      "limitation": "Description de produit et nature du ferment seulement ; pas de règle actuelle d’étiquetage ou de conformité. Version2026 et amendements2015/2017 effectivement visibles.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-asb-caramelization",
+      "url": "https://asbe.org/article/caramelization/",
+      "sourceHash": "3c7f7d44601cfb404021a4664fb532bc5769a8e5228f8745c7eb8037bc2ea326",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "professional-page-targeted",
+      "locator": "What is caramelization?, lignes383–394",
+      "result": "Sucres chauffés, dont saccharose, donnant couleurs/arômes ; caramélisation distinguée de Maillard.",
+      "limitation": "Principe culinaire ou classification physicochimique seulement ; aucun dosage, protocole pratique ni effet clinique extrapolé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-ifst-chemical-raising",
+      "url": "https://www.ifst.org/lovefoodlovescience/resources/raising-agents-chemical",
+      "sourceHash": "cd2a5314014e0af87f498d95a4cb3e9c53a58fef9cc85318b19f8b96da070af9",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "What are chemical raising agents?/How do they work?, lignes24–30",
+      "result": "Poudre à lever associant bicarbonate et acide ; réaction dans l’eau produisantCO2.",
+      "limitation": "Principe culinaire ou classification physicochimique seulement ; aucun dosage, protocole pratique ni effet clinique extrapolé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d05-medlineplus-vitamins",
+      "url": "https://medlineplus.gov/healthdefinitions/vitaminsdefinitions.html",
+      "sourceHash": "97320b5a30d7832fef8b2bdfaa51ec01999bae384766c7cdd4da047138405191",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Fat-Soluble Vitamins ligne60 ; Vitamins ligne106 ; Water-Soluble Vitamins ligne110",
+      "result": "VitaminesA/D/E/K liposolubles ; toutes lesB etC hydrosolubles.",
+      "limitation": "Principe culinaire ou classification physicochimique seulement ; aucun dosage, protocole pratique ni effet clinique extrapolé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-d05-hemp-gnocchi-potato-base",
+      "status": "approved",
+      "comment": "Base culinaire familière ; quatre tubercules plausibles, formulation limitée aux gnocchis étudiés.",
+      "contentHash": "81adf167baff02300aa1074c3f602fcdb02722908d51010e3717f2e6eae9160a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-merlino-gnocchi-2022",
+          "url": "https://www.mdpi.com/2304-8158/11/18/2783",
+          "locator": "Résumé ligne185 ; §2.5–2.6, lignes239–241 ; appuiquestion : Introduction, paragraphe définissant les gnocchis",
+          "result": "Base de pomme de terre des gnocchis décrite, sans généralisation à toutes les recettes.",
+          "sourceHash": "1a68f3518cfc5d439f8ab0eab01ae3d6673a70cc3c9cb7565dccf36a770dfffa",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-pesto-parmesan-not-vegan",
+      "status": "approved",
+      "comment": "Parmesan donné, mais sa nature laitière et le sens de végétalien restent à connaître ; accessible.",
+      "contentHash": "27d93235d0d494e66dd9bd0b61cd00ca0f821bfc94e23f4295d90f16c1a941c1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-illinois-kitchen-2014",
+          "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+          "locator": "Paragraphe nutritionnel lignes108–109 ; recetteHempPesto lignes119–127 ; appuiquestion : Recette Hemp Pesto : ingrédients et dernière étape",
+          "result": "Parmesan présent dans la recette ; fromage explicitement indiqué à la dernière étape.",
+          "sourceHash": "329eb3dab3bdc3584a064ea71a4a3df02ed68c31b13f110e610028affe1c85df",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-pesto-herbs-seeds-oil-sauce",
+      "status": "approved",
+      "comment": "Reconnaissance culinaire réelle d’une sauce parmi quatre familles distinctes, sans recette arbitraire à mémoriser.",
+      "contentHash": "61fa644571bc54d8cca51c8d28fbb1b8ac807f5ce1b6279325cec34017b13c90",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-illinois-kitchen-2014",
+          "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+          "locator": "Paragraphe nutritionnel lignes108–109 ; recetteHempPesto lignes119–127 ; appuiquestion : Recette Hemp Pesto, ingrédients et mélange au robot",
+          "result": "Recette de pesto associant herbes, ail, graines et huile décrite.",
+          "sourceHash": "329eb3dab3bdc3584a064ea71a4a3df02ed68c31b13f110e610028affe1c85df",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+      "status": "approved",
+      "comment": "Nouveau fait réellement distinct du goût naturel des graines : transformation thermique de l’enrobage sucré, avec usage chanvre confirmé séparément parOSU. Quatre ingrédients réels, substrat saccharose unique ; niveau1 défendable.",
+      "contentHash": "63223ff00ae255c158a127f4b82c3e13f105b444af8caeef4b649d7516355d20",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-asb-caramelization",
+          "url": "https://asbe.org/article/caramelization/",
+          "sourceHash": "3c7f7d44601cfb404021a4664fb532bc5769a8e5228f8745c7eb8037bc2ea326",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "professional-page-targeted",
+          "locator": "What is caramelization?, lignes383–394",
+          "result": "Sucres chauffés, dont saccharose, donnant couleurs/arômes ; caramélisation distinguée de Maillard.",
+          "supportStatus": "supported"
+        },
+        {
+          "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+          "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+          "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "locator": "Seed and Oil Utilization, ligne149",
+          "result": "Graines de chanvre enrobées de caramel explicitement citées parmi les snacks.",
+          "supportStatus": "supported"
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.289Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+        "status": "changes_requested",
+        "contentHash": "4ec75c1ba8b395162fb6149e789f36643e42cea34697bfa92600daabc403ff31",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-rancid-hemp-seeds-discard",
+      "status": "approved",
+      "comment": "Conduite concrète de qualité alimentaire ; tentatives de masquer/rafraîchir une altération correctement écartées.",
+      "contentHash": "07e469e5785d723aec5969b9a29b46435f68874109e9816c136a95621c055ac8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-acf-hemp-2021",
+          "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+          "locator": "PDFp.1 lignes23–24,40–44 ; p.2 ligne77 ; appuiquestion : p. 2, Storing hemp seeds, dernière puce",
+          "result": "Conseil de jeter les graines rances explicitement donné.",
+          "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-essential-amino-acids-dietary-supply",
+      "status": "approved",
+      "comment": "Quatre raisons biologiques comparables ; définition désormais explicitement humaine. Besoin d’apport et insuffisance de synthèse exacts ; les caricatures de cuisson et de nutriment exclusif sont retirées.",
+      "contentHash": "991511ee63978239dedced34a45af7deea75b9c2fd58c0f0a64d121e14de7fd5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-acf-hemp-2021",
+          "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+          "locator": "PDFp.1 lignes23–24,40–44 ; p.2 ligne77 ; appuiquestion : p. 1, paragraphe sur les protéines",
+          "result": "Chez l’humain, neuf acides aminés essentiels doivent être obtenus par l’alimentation.",
+          "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported",
+          "readingReuse": "PassageF déjà réellement lu à la première revue ; objet source et portée inchangés."
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.290Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-essential-amino-acids-dietary-supply",
+        "status": "changes_requested",
+        "contentHash": "db50b26abec55e15ea0c0a923ddbedfd53397b786cdd9d28e197c9e235a746d6",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": null,
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hempseed-magnesium-mineral-nutrient",
+      "status": "approved",
+      "comment": "Classification nutritionnelle simple, quatre familles de constituants comparables ; aucun dosage ou bénéfice clinique.",
+      "contentHash": "9187204e0955d97b820457b359ff1a48b63ff122097a59c471406ebc1d083152",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-illinois-kitchen-2014",
+          "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+          "locator": "Paragraphe nutritionnel lignes108–109 ; recetteHempPesto lignes119–127 ; appuiquestion : Paragraphe nutritionnel, liste vitamine E et minéraux",
+          "result": "Magnésium explicitement rangé parmi les minéraux.",
+          "sourceHash": "329eb3dab3bdc3584a064ea71a4a3df02ed68c31b13f110e610028affe1c85df",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+      "status": "approved",
+      "comment": "Nouveau mécanisme distinct de la simple fonction gonflante du bicarbonate déjà testée : couple réactif acide/bicarbonate en présence d’eau. Options décrivent des transformations alimentaires réelles ; niveau2 justifié.",
+      "contentHash": "7b766cc278a9a110ae3a507d6023b1090ef9768bc9c663715afdd9073b157d03",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-ifst-chemical-raising",
+          "url": "https://www.ifst.org/lovefoodlovescience/resources/raising-agents-chemical",
+          "sourceHash": "cd2a5314014e0af87f498d95a4cb3e9c53a58fef9cc85318b19f8b96da070af9",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "What are chemical raising agents?/How do they work?, lignes24–30",
+          "result": "Poudre à lever associant bicarbonate et acide ; réaction dans l’eau produisantCO2.",
+          "supportStatus": "supported"
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.291Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+        "status": "changes_requested",
+        "contentHash": "27296e11a096a2e2fb112a9ad41c65e6568c1e7c1cad4a4715c04d73d8e413e3",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+      "status": "approved",
+      "comment": "Quatre observations plausibles de cuisson ; la remontée reste bien le repère documenté pour cette préparation. Pas de durée universelle ou propriété de toute recette de gnocchis affirmée.",
+      "contentHash": "1bc3bac998d6af821529220f76b8874b6ce16ec8fd1c61e18a5214389ec58377",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-merlino-gnocchi-2022",
+          "url": "https://www.mdpi.com/2304-8158/11/18/2783",
+          "locator": "Résumé ligne185 ; §2.5–2.6, lignes239–241 ; appuiquestion : §2.6 Pasta Cooking Conditions",
+          "result": "Cuisson jusqu’à remontée à la surface décrite dans la méthode.",
+          "sourceHash": "1a68f3518cfc5d439f8ab0eab01ae3d6673a70cc3c9cb7565dccf36a770dfffa",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported",
+          "readingReuse": "PassageF déjà réellement lu à la première revue ; objet source et portée inchangés."
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.291Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+        "status": "changes_requested",
+        "contentHash": "26f76d3d493968f3758c34cedf0becb12b8ba69c1e8f730d1e8dae0f1cdd73ec",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": null,
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-cold-pressed-hemp-oil-mechanical-no-added-heat",
+      "status": "approved",
+      "comment": "Définition du procédé utile ; sans apport de chaleur ne signifie pas huile congelée ou absence de tout échauffement mécanique.",
+      "contentHash": "a306e86f754b3d785a7d5214661a134c44280479ee4ca982185c6335e2cb1cf5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "locator": "Introduction ligne208, paragrapheCodex ; appuiquestion : Introduction, paragraphe citant le Codex sur les huiles pressées à froid",
+          "result": "Obtention mécanique sans application de chaleur confirmée.",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-pasteurization-targets-pathogenic-microorganisms",
+      "status": "approved",
+      "comment": "Objectif microbien général, sans transfert des normes de jus ni conseil de pasteurisation domestique.",
+      "contentHash": "d87eb6f8796f641bcd2a204849105d82e5959ef1f8c54ef5437762b8d7bbfb67",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-fda-pasteurization",
+          "url": "https://www.fda.gov/food/hazard-analysis-critical-control-point-haccp/juice-haccp-regulator-training",
+          "locator": "Chapitre7, Pasteurization, lignes514–518 ; appuiquestion : Chapitre 7, 5-Log Treatment Methods, Pasteurization",
+          "result": "Pasteurisation thermique visant réduire les pathogènes, non stériliser entièrement, confirmée.",
+          "sourceHash": "85101f73a8153864b6faa786ddeeed211b7e1f4be4a326491102f1cc263620e6",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-ice-cream-water-forms-ice-crystals",
+      "status": "approved",
+      "comment": "Fondation accessible sur les phases d’une glace ; explication distingue eau gelée, air et matière grasse.",
+      "contentHash": "d19b6eb7f3f2daa96dba293fe6d831ad980b1b8225b9cdfc15fdf851fa19c9aa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-colic-icecream-2024",
+          "url": "https://mdpi-res.com/bookfiles/book/11891/Sustainability_in_the_Global_Dairy_Sector.pdf?v=1764256586",
+          "locator": "RéimpressionPDFpp.79/85/88, lignes3399–3400,3692–3694,3814–3820 ; appuiquestion : Introduction, description de la structure de la crème glacée",
+          "result": "Structure incluant cristaux de glace, air et gouttelettes de graisse confirmée.",
+          "sourceHash": "f9c02d641505a678d1421d70a48e1a67e82e691d7dceaada025e7d8ba01ee40e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-viscosity-resistance-to-flow",
+      "status": "approved",
+      "comment": "Terme de texture utile, correctement relié à l’écoulement ; quatre propriétés alimentaires réelles.",
+      "contentHash": "e95faeb591c04ff5f5aa85bcd56fc0dae0e302856ae914f93bae52d9d53bce5f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-colic-icecream-2024",
+          "url": "https://mdpi-res.com/bookfiles/book/11891/Sustainability_in_the_Global_Dairy_Sector.pdf?v=1764256586",
+          "locator": "RéimpressionPDFpp.79/85/88, lignes3399–3400,3692–3694,3814–3820 ; appuiquestion : §3.1.3 Rheological Properties, première phrase",
+          "result": "Viscosité définie comme résistance d’un liquide à l’écoulement.",
+          "sourceHash": "f9c02d641505a678d1421d70a48e1a67e82e691d7dceaada025e7d8ba01ee40e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-ice-cream-whipping-incorporates-air",
+      "status": "approved",
+      "comment": "Air incorporé distingué de congélation et émulsification ; notion culinaire simple étayée.",
+      "contentHash": "ff1354856c6bb32200fbaf7e5763ea09fca3dfee22eda77bb3e4730e377e2516",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-colic-icecream-2024",
+          "url": "https://mdpi-res.com/bookfiles/book/11891/Sustainability_in_the_Global_Dairy_Sector.pdf?v=1764256586",
+          "locator": "RéimpressionPDFpp.79/85/88, lignes3399–3400,3692–3694,3814–3820 ; appuiquestion : §3.2.1 Overrun",
+          "result": "Foisonnement relié à la quantité d’air incorporé.",
+          "sourceHash": "f9c02d641505a678d1421d70a48e1a67e82e691d7dceaada025e7d8ba01ee40e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-xanthan-thickener-food-texture",
+      "status": "approved",
+      "comment": "Fonction technologique principale désormais explicitée, ce qui résout les effets possibles du saccharose sur la viscosité. Unicité de la fonction visée rétablie, source inchangée.",
+      "contentHash": "2feb9f80cf203c76f6c7c2ec7605385ec20725b144f8aaa70ce4cd56e66ad01a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-ingredient-types",
+          "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+          "locator": "Tableau lignes74–76 ; appuiquestion : Tableau, Stabilizers and Thickeners, Binders, Texturizers",
+          "result": "Xanthane classée parmi épaississants/texturants ; rôle principal confirmé, pas exclusivité de tout effet sur viscosité.",
+          "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported",
+          "readingReuse": "PassageF déjà réellement lu à la première revue ; objet source et portée inchangés."
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.291Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-xanthan-thickener-food-texture",
+        "status": "changes_requested",
+        "contentHash": "e98b0a4172136710eec223472d4c98eda750bee91a57805fb15f8d63fe910ab7",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": null,
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-baking-soda-leavening-rise",
+      "status": "approved",
+      "comment": "Fonction principale d’agent levant clairement visée, différente d’autres fonctions d’ingrédients.",
+      "contentHash": "39a38d7b5bb09df1e4f1676275bc72b8472c1c93d3d3d8f2a57aa7deb95aee0e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-ingredient-types",
+          "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+          "locator": "Tableau lignes74–76 ; appuiquestion : Tableau, Leavening Agents",
+          "result": "Bicarbonate cité parmi les agents favorisant la levée.",
+          "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-potassium-sorbate-antimicrobial-function",
+      "status": "approved",
+      "comment": "Additif nommé, fonction antimicrobienne à connaître ; niveau intermédiaire défendable.",
+      "contentHash": "b399def25bb414698cdac61abea0da9bdcd6297851443bfdf26ac816c0278bc6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-asb-potassium-sorbate",
+          "url": "https://asbe.org/article/potassium-sorbate/?topic=ingredient",
+          "locator": "What is potassium sorbate?, ligne385 ; appuiquestion : What is potassium sorbate?, premier paragraphe",
+          "result": "Sorbate de potassium utilisé contre moisissures et levures.",
+          "sourceHash": "3018de66d23a596bbf8621e55db4431ef21060ea2f5e57ae7e26700918b728bb",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "professional-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-bread-yeast-fermentation-carbon-dioxide",
+      "status": "approved",
+      "comment": "Identité du gaz distinguée de sa rétention déjà testée dans D04 ; niveau accessible.",
+      "contentHash": "e7804671eeab4c418b55850ac67811ea6ff68358285be3f5467261b141e0d84d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-asb-fermentation",
+          "url": "https://asbe.org/article/fermentation/",
+          "locator": "What is fermentation?/How it works, lignes383,399,412 ; appuiquestion : What is fermentation?, application en boulangerie",
+          "result": "Production deCO2 par fermentation boulangère confirmée.",
+          "sourceHash": "cf6399ea16b4b627264ccfda96f2f899811fb078bccdf9205e5a5bc7e4849aa0",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "professional-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-tofu-like-gel-protein-network",
+      "status": "approved",
+      "comment": "Familles de gélifiants comparables ; résumé suffisant pour cette propriété, sans lecture intégrale prétendue.",
+      "contentHash": "b92cbf1724044401882c973475ae2e8839964d7b7f61cfa0caea3d75ec47c54d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-kim-tofu-2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42967711/",
+          "locator": "PubMed, métadonnées lignes177–179/214–219 ; résumé lignes240–242 ; appuiquestion : Résumé, formation des gels et réseau protéique",
+          "result": "Réseau du gel protéique avec interactions hydrophobes et disulfure décrit dans le résumé.",
+          "sourceHash": "edacf6608165d89e13d2f2cbda6e5c4db314b9a1c862668f436db12c517be8f1",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "abstract-and-metadata",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-protease-cuts-proteins-peptides",
+      "status": "approved",
+      "comment": "Cible et fragments de protéase correctement décrits ; comparaison de substrats enzymatiques pertinente.",
+      "contentHash": "1f450f312afa8d2594f5bca34de0b5b382a379280fdb090e467f6717b423a92f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-park-protease-2024",
+          "url": "https://www.mdpi.com/2311-5637/10/9/483",
+          "locator": "§2.3/3.1, lignes201–202,239–246 ; appuiquestion : §2.3 et §3.1, préparation et suivi de l'hydrolysat",
+          "result": "Protéase dégradant les protéines en fragments plus petits confirmée.",
+          "sourceHash": "513e9385d68ad9f60cb151f33dce9f997631c8114a64de504f14c90201dda6df",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-protein-denaturation-shape-not-primary-sequence",
+      "status": "approved",
+      "comment": "Repliement et chaîne clairement distingués, sans garantie de réversibilité ; fait distinct de l’hydrolyse.",
+      "contentHash": "dc4ae0fdd91009e050bb43a9d1a1f690d525c54cecd15bdd76e4811680126e69",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-openstax-proteins",
+          "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+          "locator": "§3.4 Denaturation and Protein Folding, lignes118–120 ; appuiquestion : §3.4, Denaturation and Protein Folding",
+          "result": "Dénaturation modifiant le repliement sans perte de séquence primaire confirmée.",
+          "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-amylase-breaks-down-starch",
+      "status": "approved",
+      "comment": "Quatre enzymes réelles ; cible amidon distincte du phénomène de rétrogradation testé dans D04.",
+      "contentHash": "61550eb5bb261b0bbc5c2a9acdae58be73f9506c959610d5f81933e650b3f37f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-asb-staling",
+          "url": "https://asbe.org/article/staling/?topic=recipes-and-formulation",
+          "locator": "Interventions against staling, Amylases, ligne412 ; appuiquestion : Interventions against staling, puce Amylases",
+          "result": "Dégradation de l’amidon en dextrines et sucres par amylases confirmée.",
+          "sourceHash": "ef90a4207f8785eedd2d409fce05b6716f3733ec39535cddeaff2697a4abd321",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "professional-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-oleogel-liquid-oil-immobilized-network",
+      "status": "approved",
+      "comment": "Oléogel huile immobilisée distingué de gel aqueux et d’émulsion ; pas de résultat sanitaire déduit.",
+      "contentHash": "0b1fb71a0864cfd2efbe89e147ec31c3af9a25d02d47302abb0cdc5d6fbbeb9d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-hamidioglu-oleogels-2022",
+          "url": "https://www.mdpi.com/2304-8158/11/24/4030",
+          "locator": "Introduction, Oleogelation, ligne178 ; appuiquestion : Introduction, définition de l'oléogélification",
+          "result": "Réseau structurant immobilisant l’huile liquide décrit.",
+          "sourceHash": "e02f8c59afa34c7c1b85a80b22fb2267562f8776363492d4f7f4172c1d3c4a4a",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-vitamin-e-fat-soluble",
+      "status": "approved",
+      "comment": "Solubilité de la vitamineE désormais réellement testée, sans mot liposoluble donné dans l’énoncé. Trois vitamines hydrosolubles crédibles, classement confirmé par nouvelle sourceNIH ; niveau2 adapté.",
+      "contentHash": "4f3ce4e48ebc84c5046a6265b82d525c9321a160557aec02d4a0ca76a969cbae",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-nih-vitamin-e",
+          "url": "https://ods.od.nih.gov/factsheets/VitaminE-Consumer/",
+          "locator": "What is vitamin E and what does it do?, ligne53 ; appuiquestion : What is vitamin E and what does it do?",
+          "result": "VitamineE explicitement classée comme nutriment liposoluble.",
+          "sourceHash": "776b9077bc15e230bd9b034401ff0ea791d1e7bb0da3d7b00033f1a80e1b648e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported",
+          "readingReuse": "PassageF déjà réellement lu à la première revue ; objet source et portée inchangés."
+        },
+        {
+          "sourceId": "q2-d05-illinois-kitchen-2014",
+          "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+          "locator": "Paragraphe nutritionnel lignes108–109 ; recetteHempPesto lignes119–127 ; appuiquestion : Paragraphe nutritionnel, vitamine E des graines",
+          "result": "VitamineE explicitement citée parmi les constituants des graines.",
+          "sourceHash": "329eb3dab3bdc3584a064ea71a4a3df02ed68c31b13f110e610028affe1c85df",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported",
+          "readingReuse": "PassageF déjà réellement lu à la première revue ; objet source et portée inchangés."
+        },
+        {
+          "sourceId": "q2-d05-medlineplus-vitamins",
+          "url": "https://medlineplus.gov/healthdefinitions/vitaminsdefinitions.html",
+          "sourceHash": "97320b5a30d7832fef8b2bdfaa51ec01999bae384766c7cdd4da047138405191",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Fat-Soluble Vitamins ligne60 ; Vitamins ligne106 ; Water-Soluble Vitamins ligne110",
+          "result": "VitaminesA/D/E/K liposolubles ; toutes lesB etC hydrosolubles.",
+          "supportStatus": "supported"
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.291Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-vitamin-e-fat-soluble",
+        "status": "changes_requested",
+        "contentHash": "8b43657ce8b42d18efaab539761bb7ae5f25d997d183e3c2211b26954d11baa2",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": null,
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-starch-gelatinization-water-and-heat",
+      "status": "approved",
+      "comment": "Conditions eau/chaleur et gonflement d’amidon correctement liés ; gel et réorganisation au stockage distincts.",
+      "contentHash": "a892893a2d6c92cf49b4ba5e08fc781e9143fcc4091be1387f6046d71d3997fa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-asb-gelatinization",
+          "url": "https://asbe.org/article/starch-gelatinization/",
+          "locator": "What is starch gelatinization?/Starch in hot water, lignes384–395 ; appuiquestion : What is starch gelatinization? et Starch in hot water",
+          "result": "Gonflement/gélatinisation avec eau et chaleur confirmé.",
+          "sourceHash": "2179bdabb64075f782eb459e995775db29ee465d4ef2a67e313269554f307439",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "professional-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-freeze-drying-ice-directly-to-vapour",
+      "status": "approved",
+      "comment": "Trajets de phase comparables ; sublimation distinguée de fusion/évaporation ; séchage primaire précisé.",
+      "contentHash": "010255ffb7d16760fc3a247151a3df5b541b24cc348a4af0ca71d010666a8286",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-umn-freeze-drying",
+          "url": "https://extension.umn.edu/food/preparing/cooking-at-home/food-preservation/freeze-drying",
+          "locator": "Introduction/Wateractivity/Primarydrying, lignes256–270 ; appuiquestion : Introduction et Three steps, Primary drying",
+          "result": "Sublimation directe glace→vapeur au séchage primaire confirmée.",
+          "sourceHash": "2f00c843a7d815ccc6b4f96c41de0a6ff2c744902be8b7409b9a11f1c2bda2ca",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-deodorization-steam-stripping",
+      "status": "approved",
+      "comment": "Mécanisme d’entraînement des volatils à la vapeur maintenant nécessaire pour répondre ; autres séparations plausibles. La tâche dépasse l’appariement lexical odeur/désodorisation.",
+      "contentHash": "ab57464949aa343703277310b3c4fdd7310fae4e00dbce3b517e7b7e5eb29bcb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-osu-oil-refining",
+          "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+          "locator": "Degumming/Bleaching/Deodorization/Winterization, lignes112–118,139–151 ; appuiquestion : Deodorization",
+          "result": "Désodorisation par entraînement vapeur des composés volatils confirmée.",
+          "sourceHash": "cec250e4f634f9fc5f1a55aabb18a580e4cf5226776b78a288c530533caca13e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported",
+          "readingReuse": "PassageF déjà réellement lu à la première revue ; objet source et portée inchangés."
+        }
+      ],
+      "reviewer": "f_existing_audit",
+      "revalidatedAt": "2026-11-16T22:00:12.291Z",
+      "previousDecision": {
+        "id": "hemp-q2-d05-edible-oil-deodorization-steam-stripping",
+        "status": "changes_requested",
+        "contentHash": "ec3d32d969b864ae02d5525e800bdb6780debc14b86c20c6ade19dd946fdcaab",
+        "reviewedAt": "2026-11-16T21:48:01.389Z"
+      },
+      "replacementOf": null,
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-degumming-phospholipids",
+      "status": "approved",
+      "comment": "Familles lipidiques concurrentes, cible phospholipidique exacte ; connaissance technique spécialisée.",
+      "contentHash": "faadbb9adbb14c438c8b230fa349bfe50c35ddd2bb964e5edb9bd58900184373",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-osu-oil-refining",
+          "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+          "locator": "Degumming/Bleaching/Deodorization/Winterization, lignes112–118,139–151 ; appuiquestion : Degumming",
+          "result": "Phospholipides retirés lors du dégommage confirmés.",
+          "sourceHash": "cec250e4f634f9fc5f1a55aabb18a580e4cf5226776b78a288c530533caca13e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-bleaching-adsorbent-clays",
+      "status": "approved",
+      "comment": "Mécanismes de séparation comparables ; adsorption à la surface correctement distinguée d’entraînement/dissolution/cristallisation.",
+      "contentHash": "020e18531786bd135e8df284f7fe20981f6b6ccc8eff174de9e65e074e20aec3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-osu-oil-refining",
+          "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+          "locator": "Degumming/Bleaching/Deodorization/Winterization, lignes112–118,139–151 ; appuiquestion : Bleaching",
+          "result": "Adsorption sur terres puis séparation/filtration de l’huile décrites.",
+          "sourceHash": "cec250e4f634f9fc5f1a55aabb18a580e4cf5226776b78a288c530533caca13e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-food-texture-springiness-recovery",
+      "status": "approved",
+      "comment": "Observation concrète du retour de forme ; définition distincte d’une tendance de pain plus ou moins élastique.",
+      "contentHash": "c4851f1a0a58a5712ed243a40723b375c3e90261828fd8f80b336365b242f591",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-zahari-extrusion-2020",
+          "url": "https://www.mdpi.com/2304-8158/9/6/772",
+          "locator": "§2.4/2.5, lignes216,222–223 ; appuiquestion : §2.5 Texture Properties, définition de springiness",
+          "result": "Springiness définie comme retour de structure après compression.",
+          "sourceHash": "337b60bd57e2a262ac4fced9b53891292f790cd59ff13b1301f00df3c1520c26",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-food-texture-chewiness-work-to-swallow",
+      "status": "approved",
+      "comment": "Travail de mastication distinct de vitesse de retour, exsudat et adhérence ; vocabulaire intermédiaire.",
+      "contentHash": "ad8dff9ecc0f85b37bcb09bf3c34228b5d97abafbbb6a7eef6266f0ee45e6513",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-zahari-extrusion-2020",
+          "url": "https://www.mdpi.com/2304-8158/9/6/772",
+          "locator": "§2.4/2.5, lignes216,222–223 ; appuiquestion : §2.5 Texture Properties, définition de chewiness",
+          "result": "Chewiness définie par le travail nécessaire avant texture adaptée à ingestion.",
+          "sourceHash": "337b60bd57e2a262ac4fced9b53891292f790cd59ff13b1301f00df3c1520c26",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-high-moisture-extrusion-fibrous-food-structure",
+      "status": "approved",
+      "comment": "Objectif de texture de substitut de viande compréhensible sans mémoriser l’étude ; mécanisme expliqué séparément.",
+      "contentHash": "daba04927f44c2cc06709294cd767fa3f3022a95a4fb3b26ebe257a877ea645a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-zahari-extrusion-2020",
+          "url": "https://www.mdpi.com/2304-8158/9/6/772",
+          "locator": "§2.4/2.5, lignes216,222–223 ; appuiquestion : §2.4, passage dans la filière refroidie",
+          "result": "Filière refroidie donnant une structure feuilletée/fibreuse décrite.",
+          "sourceHash": "337b60bd57e2a262ac4fced9b53891292f790cd59ff13b1301f00df3c1520c26",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-winterization-removes-cold-crystals",
+      "status": "approved",
+      "comment": "Fractions cristallisables au froid correctement reliées au maintien de limpidité ; terme de procédé à connaître.",
+      "contentHash": "f3e1a6e483a550b2ed69f7615233e350ce6b8cdc0fdf315d755b16eabadab82c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-osu-oil-refining",
+          "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+          "locator": "Degumming/Bleaching/Deodorization/Winterization, lignes112–118,139–151 ; appuiquestion : Winterization",
+          "result": "Cires et fractions à plus haut point de fusion cristallisées puis séparées.",
+          "sourceHash": "cec250e4f634f9fc5f1a55aabb18a580e4cf5226776b78a288c530533caca13e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-triacylglycerol-glycerol-three-fatty-acids",
+      "status": "approved",
+      "comment": "Structures lipidiques réelles concurrentes ; glycérol et trois acides gras exacts.",
+      "contentHash": "885e97fbc2e5e9726ede867cd09e03765a12dfc47e9413eb25f10070f13608c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-osu-lipid-glossary",
+          "url": "https://extension.okstate.edu/fact-sheets/lipid-glossary",
+          "locator": "Triacylglyceride(TAG), ligne299 ; appuiquestion : Entrée Triacylglyceride (TAG)",
+          "result": "TAG associant glycérol et trois acides gras défini dans le glossaire.",
+          "sourceHash": "35719e85b613969bac0ca45e3b81d08304d93427dc5dbbdf787f405e76c31e66",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-cake-tempeh-filamentous-fungus",
+      "status": "approved",
+      "comment": "Champignon filamenteux distinct de levure/bactérie/microalgue ; deux preuves de portées honnêtement différenciées.",
+      "contentHash": "57d2ac52a33de0edb50f5789a478a8de55321e7883450277197276ac324809b2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-aktas-tempeh-2025",
+          "url": "https://doi.org/10.1016/j.lwt.2024.117264",
+          "locator": "Extrait éditeur indexé, Introduction, paragraphe In this study, we employed solid-state fermentation ; appuiquestion : Introduction, paragraphe In this study, we employed solid-state fermentation",
+          "result": "Extrait éditeur d’introduction : R.oligosporus nommé comme champignon filamenteux pour la fermentation solide du tourteau.",
+          "sourceHash": "38719c13be0d7cb9fbf2e6289ab336ac77c061df7bba064608d50016eb12a091",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "indexed-publisher-excerpt",
+          "supportStatus": "supported"
+        },
+        {
+          "sourceId": "q2-d05-codex-tempe",
+          "url": "https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pt/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B313R-2013%252FCXS_313Re.pdf",
+          "locator": "PDFp.1–3, titre/amendements ; §2/§3.1, lignes23–29 ; appuiquestion : PDF p. 3, §3.1 b",
+          "result": "§3.1 : R.oligosporus classé parmi les moisissures deRhizopus.",
+          "sourceHash": "5d5dadf82a44e85be942bba8a39f4db509c7c891545de2939b57284c6d39f46d",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "institutional-pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-seed-cleaning-before-oil-extraction",
+      "status": "approved",
+      "comment": "Opérations préparatoires distinctes ; retrait des corps étrangers séparé de l’enveloppe et de la partie intérieure.",
+      "contentHash": "8b4701aeccf015cd7d4f638ecfc419cf265125a25f42321b0de170275bb1e2b4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+          "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+          "locator": "SeedProcessing, ligne125 ; appuiquestion : Seed Processing, premières phrases",
+          "result": "Pierres, métal et autres parties végétales séparés avant transformation.",
+          "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-cold-pressed-oil-may-be-filtered",
+      "status": "approved",
+      "comment": "Procédé d’extraction distinct d’un traitement ultérieur autorisé par cette définition ; même clé huile pertinente.",
+      "contentHash": "0a5ce57ccd3c00addf1acc04f79bd3ba04507a519e3552222ad7b3f6a707b6bc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "locator": "Introduction ligne208, paragrapheCodex ; appuiquestion : Introduction, paragraphe citant le Codex",
+          "result": "Filtration compatible avec la définition mécanique sans apport de chaleur confirmée.",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-traditional-tempeh-soybean-base",
+      "status": "approved",
+      "comment": "Ingrédient traditionnel du tempeh correctement attribué, sans nier toutes ses variantes.",
+      "contentHash": "a5ecae4e00043b89aa9db0f9a5e4381733860b39308eb40d36cd5d5dbac313d2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-aktas-tempeh-2025",
+          "url": "https://doi.org/10.1016/j.lwt.2024.117264",
+          "locator": "Extrait éditeur indexé, Introduction, paragraphe In this study, we employed solid-state fermentation ; appuiquestion : Introduction, paragraphe sur la fermentation traditionnelle en Indonésie",
+          "result": "Extrait éditeur d’introduction : tempeh indonésien présenté comme dérivé principalement du soja cuit.",
+          "sourceHash": "38719c13be0d7cb9fbf2e6289ab336ac77c061df7bba064608d50016eb12a091",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "indexed-publisher-excerpt",
+          "supportStatus": "supported"
+        },
+        {
+          "sourceId": "q2-d05-codex-tempe",
+          "url": "https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pt/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B313R-2013%252FCXS_313Re.pdf",
+          "locator": "PDFp.1–3, titre/amendements ; §2/§3.1, lignes23–29 ; appuiquestion : PDF p. 3, §2 Description",
+          "result": "§2 : produit préparé avec soja décortiqué/bouilli et fermentRhizopus.",
+          "sourceHash": "5d5dadf82a44e85be942bba8a39f4db509c7c891545de2939b57284c6d39f46d",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "institutional-pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-water-activity-not-total-moisture",
+      "status": "approved",
+      "comment": "Concept de disponibilité de l’eau distinct d’une masse et d’une cinétique d’évaporation ; pas de seuil sanitaire testé.",
+      "contentHash": "a84de480c6ae15d6f121ac4d6d895a2f70c8acfcd0ef47fe19728f9ecc5eec0b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-umn-freeze-drying",
+          "url": "https://extension.umn.edu/food/preparing/cooking-at-home/food-preservation/freeze-drying",
+          "locator": "Introduction/Wateractivity/Primarydrying, lignes256–270 ; appuiquestion : Introduction, paragraphe water activity",
+          "result": "Activité de l’eau distinguée de sa quantité totale par sa disponibilité.",
+          "sourceHash": "2f00c843a7d815ccc6b4f96c41de0a6ff2c744902be8b7409b9a11f1c2bda2ca",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d05-fat-higher-energy-per-gram-protein-carbohydrate",
+      "status": "approved",
+      "comment": "Comparaison générale à masse égale, facteurs usuels précisés sans jugement diététique.",
+      "contentHash": "796d338204bfb418b76837a3c1279b979894794ad80a73191a00a4546f679701",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d05-merlino-gnocchi-2022",
+          "url": "https://www.mdpi.com/2304-8158/11/18/2783",
+          "locator": "Résumé ligne185 ; §2.5–2.6, lignes239–241 ; appuiquestion : §2.5 Proximate Chemical Analysis of Gnocchi Samples",
+          "result": "Facteurs énergétiques usuels4pour protéines/glucides et9pour lipides explicitement utilisés.",
+          "sourceHash": "1a68f3518cfc5d439f8ab0eab01ae3d6673a70cc3c9cb7565dccf36a770dfffa",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "deduplication": [
+    {
+      "ids": [
+        "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+        "hemp-q2-d-chenevis-saveur-noix"
+      ],
+      "decision": "duplicate_replace_requested",
+      "reason": "Même saveur légère de noix des graines ; descriptions et profil gustatif pratiquement identiques. Même clé déjà présente ne résout pas le doublon.",
+      "existingVersionRead": "Pilote : Quelle saveur légère caractérise des graines de chanvre de bonne qualité alimentaire ? → Une saveur de noix."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-oilseed-meaning-oil-extraction",
+        "hemp-seeds-huile",
+        "hemp-seeds-reserves"
+      ],
+      "decision": "semantic_inversion_replace_requested",
+      "reason": "Nouvelle tâche reformule graines→huile par le terme oléagineux ; le fait existant teste déjà que l’huile alimentaire vient des graines et son explication donne cette production.",
+      "existingVersionRead": "Snapshot legacy : Quelle partie du chanvre fournit son huile alimentaire ? → Les graines ; réserves lipidiques/protéiques et pressage expliqués."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-rancid-hemp-seeds-discard",
+        "hemp-prevention-huile-rance"
+      ],
+      "decision": "distinct",
+      "reason": "Action face à une altération versus identité de la réaction oxydative ; l’explication nouvelle ne livre pas le nom de cette réaction."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-hemp-pesto-parmesan-not-vegan",
+        "hemp-q2-d05-hemp-pesto-herbs-seeds-oil-sauce"
+      ],
+      "decision": "distinct_shared_subject",
+      "reason": "Origine animale d’un ingrédient versus identification d’une sauce ; clé de recette commune empêchant l’indice réciproque dans un même tirage."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-hemp-gnocchi-potato-base",
+        "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+        "hemp-q2-d04-hemp-pasta-cooking-endpoint-white-core"
+      ],
+      "decision": "distinct",
+      "reason": "Base d’un plat, repère de flottement et cœur blanc de pâtes différentes ; pas trois versions du même phénomène."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-cold-pressed-hemp-oil-mechanical-no-added-heat",
+        "hemp-q2-d05-cold-pressed-oil-may-be-filtered",
+        "hemp-q2-d01-huile-filtration-oxydation"
+      ],
+      "decision": "distinct",
+      "reason": "Définition d’obtention, compatibilité d’une étape de purification et résultat de stockage/filtration ne testent pas la même propriété. Clé huile-chenevis commune aux deux premiers."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-protein-denaturation-shape-not-primary-sequence",
+        "hemp-q2-d05-protease-cuts-proteins-peptides"
+      ],
+      "decision": "distinct",
+      "reason": "Modification du repliement avec séquence conservée versus coupure de la chaîne. Deux transformations effectivement différentes."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-amylase-breaks-down-starch",
+        "hemp-q2-d04-hemp-bread-staling-starch-retrogradation",
+        "hemp-q2-d05-starch-gelatinization-water-and-heat"
+      ],
+      "decision": "distinct",
+      "reason": "Cible d’une enzyme, réorganisation au stockage et gonflement/désorganisation à cuisson sont trois phénomènes différents."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-bread-yeast-fermentation-carbon-dioxide",
+        "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention"
+      ],
+      "decision": "distinct",
+      "reason": "Identité/production du gaz versus mécanisme de rétention dans la pâte, sans identité du gaz donnée dans l’ancienne explication."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-ice-cream-whipping-incorporates-air",
+        "hemp-q2-d01-corps-lipidiques-emulsion",
+        "hemp-q2-d01-poudres-moussage"
+      ],
+      "decision": "distinct",
+      "reason": "Incorporation gazeuse versus phases huile/eau et interprétation d’un test statistique de moussage ; pas inversion d’un même résultat."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-food-texture-springiness-recovery",
+        "hemp-q2-d05-food-texture-chewiness-work-to-swallow",
+        "hemp-q2-d-pain-proteines-elasticite"
+      ],
+      "decision": "distinct",
+      "reason": "Définitions de deux propriétés versus tendance expérimentale du pain ; cléZahari commune pour les définitions du même analogue."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-triacylglycerol-glycerol-three-fatty-acids",
+        "hemp-evidence-2ag"
+      ],
+      "decision": "distinct",
+      "reason": "Structure à trois acides gras du stockage lipidique versus classe d’un monoacylglycérol endocannabinoïde ; pas la même molécule ou structure."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-fat-higher-energy-per-gram-protein-carbohydrate",
+        "hemp-q2-d04-hemp-snack-equal-mass-larger-volume-lower-density"
+      ],
+      "decision": "distinct",
+      "reason": "Densité énergétique par masse versus masse volumique physique ; unités et conclusions distinctes."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+        "hemp-q2-d04-hemp-bread-maillard-reducing-sugar-amino"
+      ],
+      "decision": "distinct",
+      "reason": "Substrat et brunissement des sucres seuls versus réaction de sucres réducteurs avec groupes aminés ; pas une reformulation du même mécanisme."
+    },
+    {
+      "ids": [
+        "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+        "hemp-q2-d05-baking-soda-leavening-rise",
+        "hemp-q2-d05-bread-yeast-fermentation-carbon-dioxide"
+      ],
+      "decision": "distinct",
+      "reason": "Couple réactif de la levée chimique versus effet gonflant d’un agent et gaz de fermentation biologique ; clé commune avec l’agent levant déjà présente."
+    }
+  ],
+  "editorialAssessment": {
+    "interest": "Socle alimentaire simple défendable pour nutriments, phases et fonctions culinaires. L’ajout du mot chanvre ne suffit pas à produire un fait nouveau : deux entrées sont signalées pour doublon/inversion, les autres réserves portent sur la tâche réelle. Aucune place n’est sauvée pour maintenir40.",
+    "difficulty": "Répartition23/15/2 estimative et non quota. Les définitions simples comme minéral, viscosité, foisonnement et retour de forme peuvent être accessibles ; les références d’études ne sont pas à mémoriser. Propriétés moléculaires/enzymes et termes de procédés justifient un degré intermédiaire ; adsorption et cibles phospholipidiques restent spécialisées. Les sept versions reprises devront être réévaluées selon leur tâche finale.",
+    "forms": "Identifications et situations cohérentes avec les tâches réellement posées ; un début de scénario ne crée pas automatiquement une déduction. La comparaison énergétique requiert bien comparer à masse égale ; aucun chiffre de résultat expérimental à mémoriser.",
+    "sources": "Vingt-trois notices scellées :21documents/pages ouverts sur leur texte utile, un résuméPubMed et un extrait éditeur indexé. L’extraitAktaş est doublé par leCodex pour champignon/soja ; il ne devient pas lecture intégrale. Kim est publié en ligne avant la date courante, avec numéro futur explicitement distingué.",
+    "healthAndScope": "Aucune promesse médicale dérivée des graines, vitamines, gels ou fermentations. Nutrition de base et fonctions technologiques stables, sans prescription. Règles de conformité, dosages et paramètres de production ne sont pas transférés au chanvre.",
+    "optionalPolish": [
+      {
+        "id": "hemp-q2-d05-ice-cream-water-forms-ice-crystals",
+        "suggestion": "Fait volontairement élémentaire ; si le lot est développé plus tard, privilégier une distinction réellement utile entre les phases pour enrichir l’apprentissage, sans prétendre que la glace est exclusivement une phase huileuse."
+      },
+      {
+        "id": "hemp-q2-d05-seed-cleaning-before-oil-extraction",
+        "suggestion": "Un cas de choix entre nettoyage et décorticage rendrait cette opération préparatoire plus concrète ; la version actuelle reste une identification accessible et exacte."
+      }
+    ]
+  },
+  "summary": {
+    "total": 40,
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourceObjects": 26,
+    "newSources": 20,
+    "reusedSources": 6,
+    "sourceChecks": 45,
+    "fullDocumentTargetedOrOfficialPages": 24,
+    "abstractOnly": 1,
+    "indexedExcerptOnly": 1,
+    "sourceAccessUnavailableWithoutAlternative": 0,
+    "exactDuplicateConfirmed": 0,
+    "semanticInversionRequested": 0,
+    "declaredLevels": {
+      "1": 21,
+      "2": 17,
+      "3": 2,
+      "4": 0
+    },
+    "declaredForms": {
+      "identification": 27,
+      "situation": 12,
+      "comparaison": 1
+    },
+    "decision": "Les sept corrections sont approuvées sur leurs versions exactes. Deux anciens faits retirés du lot, non comptés comme candidats en attente ; historique initial conservé. Quarante objets actuels approuvés.",
+    "retiredQuestionIds": [
+      "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+      "hemp-q2-d05-oilseed-meaning-oil-extraction"
+    ]
+  },
+  "history": [
+    {
+      "phase": "initial-independent-review",
+      "reviewedAt": "2026-11-16T21:48:01.389Z",
+      "summary": {
+        "total": 40,
+        "approved": 33,
+        "changes_requested": 7,
+        "rejected": 0,
+        "sourceObjects": 23,
+        "newSources": 17,
+        "reusedSources": 6,
+        "sourceChecks": 43,
+        "fullDocumentTargetedOrOfficialPages": 21,
+        "abstractOnly": 1,
+        "indexedExcerptOnly": 1,
+        "sourceAccessUnavailableWithoutAlternative": 0,
+        "exactDuplicateConfirmed": 1,
+        "semanticInversionRequested": 1,
+        "declaredLevels": {
+          "1": 23,
+          "2": 15,
+          "3": 2
+        },
+        "declaredForms": {
+          "identification": 27,
+          "situation": 12,
+          "comparaison": 1
+        },
+        "decision": "Sept objets à reprendre : un doublon certain, une inversion de fait existant et cinq défauts de choix/portée/tâche. Trente-trois versions approuvées sur leur empreinte exacte. Aucun fichier auteur ou actif modifié."
+      },
+      "items": [
+        {
+          "id": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+          "status": "changes_requested",
+          "comment": "Doublon du profil noix déjà approuvé ; un nouvel habillage ne constitue pas un ajout.",
+          "contentHash": "4ec75c1ba8b395162fb6149e789f36643e42cea34697bfa92600daabc403ff31",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d04-acf-hemp-2021",
+              "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+              "locator": "PDFp.1 lignes23–24,40–44 ; p.2 ligne77 ; appuiquestion : p. 1, description des graines",
+              "result": "Saveur de noix confirmée ; même propriété déjà validée dans le pilote.",
+              "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "pdf-targeted",
+              "supportStatus": "supported"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "duplicate_fact",
+              "reason": "Même profil gustatif que hemp-q2-d-chenevis-saveur-noix déjà approuvé : goût léger/doux de noix. Le complément tournesol/pignon dans l’explication ne change pas le fait testé.",
+              "requestedChange": "Remplacer par un fait réellement distinct, ou retirer l’entrée. Changer adjectifs ou distracteurs ne suffit pas."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        },
+        {
+          "id": "hemp-q2-d05-essential-amino-acids-dietary-supply",
+          "status": "changes_requested",
+          "comment": "Fond exact pour l’humain ; alternatives caricaturales et organisme visé à préciser.",
+          "contentHash": "db50b26abec55e15ea0c0a923ddbedfd53397b786cdd9d28e197c9e235a746d6",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d04-acf-hemp-2021",
+              "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+              "locator": "PDFp.1 lignes23–24,40–44 ; p.2 ligne77 ; appuiquestion : p. 1, paragraphe sur les protéines",
+              "result": "Chez l’humain, neuf acides aminés essentiels doivent être obtenus par l’alimentation.",
+              "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "pdf-targeted",
+              "supportStatus": "supported"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "implausible_absolute_distractors",
+              "reason": "Trois assertions invraisemblables ou exclusives (« uniquement pendant la cuisson », seuls énergétiques, seuls végétaux) permettent d’éliminer sans comprendre le sens nutritionnel d’essentiel.",
+              "requestedChange": "Proposer quatre explications biologiques crédibles du caractère essentiel ; préciser organisme humain pour ne pas généraliser aux plantes. Le concept peut rester accessible sans caricaturer les alternatives."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        },
+        {
+          "id": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+          "status": "changes_requested",
+          "comment": "Rapport graines/huile déjà testé, ici reformulé par oléagineux ; intérêt distinct insuffisant.",
+          "contentHash": "27296e11a096a2e2fb112a9ad41c65e6568c1e7c1cad4a4715c04d73d8e413e3",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+              "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+              "locator": "SeedProcessing, ligne125 ; appuiquestion : Seed Processing",
+              "result": "Graines traitées en oléagineux pour leur huile ; relation déjà testée dans l’existant.",
+              "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "university-page-targeted",
+              "supportStatus": "supported"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "inverse_existing_fact",
+              "reason": "Le noyau testé est que l’on obtient une huile des graines de chanvre, déjà testé par hemp-seeds-huile et expliqué dans hemp-seeds-reserves. L’étiquette oléagineux n’ajoute ici qu’une reformulation lexicale.",
+              "requestedChange": "Remplacer par une autre propriété alimentaire réellement distincte. Ne pas compter cette inversion du rapport graines→huile comme nouveau fait."
+            },
+            {
+              "severity": "blocking",
+              "code": "implausible_distractor",
+              "reason": "Recueillir du latex dans ces graines est hors concurrence culinaire crédible avec extraire une huile.",
+              "requestedChange": "Si un autre fait est choisi, construire quatre choix comparables plutôt que sauver cette entrée par un seul changement de mot."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        },
+        {
+          "id": "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+          "status": "changes_requested",
+          "comment": "Repère courant étayé ; trois observations concurrentes insuffisamment plausibles dans l’eau.",
+          "contentHash": "26f76d3d493968f3758c34cedf0becb12b8ba69c1e8f730d1e8dae0f1cdd73ec",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d05-merlino-gnocchi-2022",
+              "url": "https://www.mdpi.com/2304-8158/11/18/2783",
+              "locator": "Résumé ligne185 ; §2.5–2.6, lignes239–241 ; appuiquestion : §2.6 Pasta Cooking Conditions",
+              "result": "Cuisson jusqu’à remontée à la surface décrite dans la méthode.",
+              "sourceHash": "1a68f3518cfc5d439f8ab0eab01ae3d6673a70cc3c9cb7565dccf36a770dfffa",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "full-text-targeted",
+              "supportStatus": "supported"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "implausible_cooking_endpoints",
+              "reason": "Croûte brune dans l’eau bouillante et éclatement de chaque pièce ne sont pas des repères crédibles de cuisson désirée. La remontée s’impose hors connaissance de la recette.",
+              "requestedChange": "Proposer des observations crédibles de cuisson dans l’eau, ou un cas qui distingue réellement le repère suivi. Garder l’attribution à la préparation étudiée, sans une durée d’étude arbitraire."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        },
+        {
+          "id": "hemp-q2-d05-xanthan-thickener-food-texture",
+          "status": "changes_requested",
+          "comment": "Fonction principale étayée mais « peut aider à épaissir » permet d’autres réponses selon la préparation.",
+          "contentHash": "e98b0a4172136710eec223472d4c98eda750bee91a57805fb15f8d63fe910ab7",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d04-fda-ingredient-types",
+              "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+              "locator": "Tableau lignes74–76 ; appuiquestion : Tableau, Stabilizers and Thickeners, Binders, Texturizers",
+              "result": "Xanthane classée parmi épaississants/texturants ; rôle principal confirmé, pas exclusivité de tout effet sur viscosité.",
+              "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "official-page-targeted",
+              "supportStatus": "main_function_supported_question_scope_ambiguous"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "answer_not_unique_without_function_qualifier",
+              "reason": "« Peut aider à épaissir » est trop large : le saccharose peut aussi épaissir une préparation ou un sirop selon sa concentration. La source classe les rôles principaux, pas toute influence possible sur la viscosité.",
+              "requestedChange": "Cadrer sur l’ingrédient classé/choisi principalement comme épaississant ou construire un cas et quatre fonctions non ambigus. Ne pas inventer une dose ou composition de sauce pour éliminer le sucre."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        },
+        {
+          "id": "hemp-q2-d05-vitamin-e-fat-soluble",
+          "status": "changes_requested",
+          "comment": "Propriété livrée par liposoluble dans l’énoncé, face à trois phases aqueuses ; reprise nécessaire.",
+          "contentHash": "8b43657ce8b42d18efaab539761bb7ae5f25d997d183e3c2211b26954d11baa2",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d05-nih-vitamin-e",
+              "url": "https://ods.od.nih.gov/factsheets/VitaminE-Consumer/",
+              "locator": "What is vitamin E and what does it do?, ligne53 ; appuiquestion : What is vitamin E and what does it do?",
+              "result": "VitamineE explicitement classée comme nutriment liposoluble.",
+              "sourceHash": "776b9077bc15e230bd9b034401ff0ea791d1e7bb0da3d7b00033f1a80e1b648e",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "official-page-targeted",
+              "supportStatus": "supported"
+            },
+            {
+              "sourceId": "q2-d05-illinois-kitchen-2014",
+              "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+              "locator": "Paragraphe nutritionnel lignes108–109 ; recetteHempPesto lignes119–127 ; appuiquestion : Paragraphe nutritionnel, vitamine E des graines",
+              "result": "VitamineE explicitement citée parmi les constituants des graines.",
+              "sourceHash": "329eb3dab3bdc3584a064ea71a4a3df02ed68c31b13f110e610028affe1c85df",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "university-page-targeted",
+              "supportStatus": "supported"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "property_given_in_stem",
+              "reason": "L’énoncé donne déjà liposoluble ; le bon choix traduit le mot, face à trois variantes de phase aqueuse. Il ne teste pas que la vitamineE possède cette propriété.",
+              "requestedChange": "Tester la propriété de la vitamineE sans la donner, ou une application de solubilité utile avec quatre choix crédibles. Garder les limites non cliniques de la question."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        },
+        {
+          "id": "hemp-q2-d05-edible-oil-deodorization-steam-stripping",
+          "status": "changes_requested",
+          "comment": "Appui exact, mais le nom désodorisation est donné par retirer les odeurs sans tester vapeur.",
+          "contentHash": "ec3d32d969b864ae02d5525e800bdb6780debc14b86c20c6ade19dd946fdcaab",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-d05-osu-oil-refining",
+              "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+              "locator": "Degumming/Bleaching/Deodorization/Winterization, lignes112–118,139–151 ; appuiquestion : Deodorization",
+              "result": "Désodorisation par entraînement vapeur des composés volatils confirmée.",
+              "sourceHash": "cec250e4f634f9fc5f1a55aabb18a580e4cf5226776b78a288c530533caca13e",
+              "sourceRegistry": "docs/quiz-2000/batches/d-new-05.json",
+              "reader": "f_existing_audit",
+              "consultedOn": "2026-11-16",
+              "accessObserved": "university-page-targeted",
+              "supportStatus": "supported"
+            }
+          ],
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "lexical_answer_cue",
+              "reason": "Retirer les composés odorants donne immédiatement désodorisation, sans exiger le principe de vapeur. L’objectif annoncé est pourtant comprendre le mécanisme de séparation.",
+              "requestedChange": "Faire dépendre la réponse de la volatilité et de l’entraînement à la vapeur, avec des mécanismes comparables ; éviter le simple appariement odeur/désodorisation."
+            }
+          ],
+          "checked": {
+            "entireQuestion": true,
+            "fourOptions": true,
+            "answerUniqueness": true,
+            "explanation": true,
+            "sourcePassages": true,
+            "levelsAndForms": true,
+            "nearbyFacts": true
+          }
+        }
+      ],
+      "deduplication": [
+        {
+          "ids": [
+            "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+            "hemp-q2-d-chenevis-saveur-noix"
+          ],
+          "decision": "duplicate_replace_requested",
+          "reason": "Même saveur légère de noix des graines ; descriptions et profil gustatif pratiquement identiques. Même clé déjà présente ne résout pas le doublon.",
+          "existingVersionRead": "Pilote : Quelle saveur légère caractérise des graines de chanvre de bonne qualité alimentaire ? → Une saveur de noix."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-oilseed-meaning-oil-extraction",
+            "hemp-seeds-huile",
+            "hemp-seeds-reserves"
+          ],
+          "decision": "semantic_inversion_replace_requested",
+          "reason": "Nouvelle tâche reformule graines→huile par le terme oléagineux ; le fait existant teste déjà que l’huile alimentaire vient des graines et son explication donne cette production.",
+          "existingVersionRead": "Snapshot legacy : Quelle partie du chanvre fournit son huile alimentaire ? → Les graines ; réserves lipidiques/protéiques et pressage expliqués."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-rancid-hemp-seeds-discard",
+            "hemp-prevention-huile-rance"
+          ],
+          "decision": "distinct",
+          "reason": "Action face à une altération versus identité de la réaction oxydative ; l’explication nouvelle ne livre pas le nom de cette réaction."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-hemp-pesto-parmesan-not-vegan",
+            "hemp-q2-d05-hemp-pesto-herbs-seeds-oil-sauce"
+          ],
+          "decision": "distinct_shared_subject",
+          "reason": "Origine animale d’un ingrédient versus identification d’une sauce ; clé de recette commune empêchant l’indice réciproque dans un même tirage."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-hemp-gnocchi-potato-base",
+            "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+            "hemp-q2-d04-hemp-pasta-cooking-endpoint-white-core"
+          ],
+          "decision": "distinct",
+          "reason": "Base d’un plat, repère de flottement et cœur blanc de pâtes différentes ; pas trois versions du même phénomène."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-cold-pressed-hemp-oil-mechanical-no-added-heat",
+            "hemp-q2-d05-cold-pressed-oil-may-be-filtered",
+            "hemp-q2-d01-huile-filtration-oxydation"
+          ],
+          "decision": "distinct",
+          "reason": "Définition d’obtention, compatibilité d’une étape de purification et résultat de stockage/filtration ne testent pas la même propriété. Clé huile-chenevis commune aux deux premiers."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-protein-denaturation-shape-not-primary-sequence",
+            "hemp-q2-d05-protease-cuts-proteins-peptides"
+          ],
+          "decision": "distinct",
+          "reason": "Modification du repliement avec séquence conservée versus coupure de la chaîne. Deux transformations effectivement différentes."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-amylase-breaks-down-starch",
+            "hemp-q2-d04-hemp-bread-staling-starch-retrogradation",
+            "hemp-q2-d05-starch-gelatinization-water-and-heat"
+          ],
+          "decision": "distinct",
+          "reason": "Cible d’une enzyme, réorganisation au stockage et gonflement/désorganisation à cuisson sont trois phénomènes différents."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-bread-yeast-fermentation-carbon-dioxide",
+            "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention"
+          ],
+          "decision": "distinct",
+          "reason": "Identité/production du gaz versus mécanisme de rétention dans la pâte, sans identité du gaz donnée dans l’ancienne explication."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-ice-cream-whipping-incorporates-air",
+            "hemp-q2-d01-corps-lipidiques-emulsion",
+            "hemp-q2-d01-poudres-moussage"
+          ],
+          "decision": "distinct",
+          "reason": "Incorporation gazeuse versus phases huile/eau et interprétation d’un test statistique de moussage ; pas inversion d’un même résultat."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-food-texture-springiness-recovery",
+            "hemp-q2-d05-food-texture-chewiness-work-to-swallow",
+            "hemp-q2-d-pain-proteines-elasticite"
+          ],
+          "decision": "distinct",
+          "reason": "Définitions de deux propriétés versus tendance expérimentale du pain ; cléZahari commune pour les définitions du même analogue."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-triacylglycerol-glycerol-three-fatty-acids",
+            "hemp-evidence-2ag"
+          ],
+          "decision": "distinct",
+          "reason": "Structure à trois acides gras du stockage lipidique versus classe d’un monoacylglycérol endocannabinoïde ; pas la même molécule ou structure."
+        },
+        {
+          "ids": [
+            "hemp-q2-d05-fat-higher-energy-per-gram-protein-carbohydrate",
+            "hemp-q2-d04-hemp-snack-equal-mass-larger-volume-lower-density"
+          ],
+          "decision": "distinct",
+          "reason": "Densité énergétique par masse versus masse volumique physique ; unités et conclusions distinctes."
+        }
+      ]
+    }
+  ],
+  "retiredItems": [
+    {
+      "retiredId": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+      "retiredFactKey": "hemp-seed-mild-nutty-flavour",
+      "newId": "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+      "newFactKey": "caramel-coated-seeds-sugar-browning",
+      "reason": "Le profil de noix était déjà testé dans le pilote. Le remplacement porte sur la transformation d'un enrobage sucré, et non sur le goût propre des graines.",
+      "status": "retired-from-batch",
+      "reviewer": "f_existing_audit",
+      "retiredOn": "2026-11-16",
+      "initialReview": {
+        "id": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+        "status": "changes_requested",
+        "comment": "Doublon du profil noix déjà approuvé ; un nouvel habillage ne constitue pas un ajout.",
+        "contentHash": "4ec75c1ba8b395162fb6149e789f36643e42cea34697bfa92600daabc403ff31",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+            "locator": "PDFp.1 lignes23–24,40–44 ; p.2 ligne77 ; appuiquestion : p. 1, description des graines",
+            "result": "Saveur de noix confirmée ; même propriété déjà validée dans le pilote.",
+            "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+            "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+            "reader": "f_existing_audit",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "pdf-targeted",
+            "supportStatus": "supported"
+          }
+        ],
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "duplicate_fact",
+            "reason": "Même profil gustatif que hemp-q2-d-chenevis-saveur-noix déjà approuvé : goût léger/doux de noix. Le complément tournesol/pignon dans l’explication ne change pas le fait testé.",
+            "requestedChange": "Remplacer par un fait réellement distinct, ou retirer l’entrée. Changer adjectifs ou distracteurs ne suffit pas."
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        }
+      }
+    },
+    {
+      "retiredId": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+      "retiredFactKey": "oilseed-meaning-oil-extraction",
+      "newId": "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+      "newFactKey": "baking-powder-acid-bicarbonate-reaction",
+      "reason": "L'entrée reformulait l'origine de l'huile. Le remplacement teste une réaction de levée chimique, distincte de l'origine de l'huile et du simple rôle gonflant du bicarbonate.",
+      "status": "retired-from-batch",
+      "reviewer": "f_existing_audit",
+      "retiredOn": "2026-11-16",
+      "initialReview": {
+        "id": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+        "status": "changes_requested",
+        "comment": "Rapport graines/huile déjà testé, ici reformulé par oléagineux ; intérêt distinct insuffisant.",
+        "contentHash": "27296e11a096a2e2fb112a9ad41c65e6568c1e7c1cad4a4715c04d73d8e413e3",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+            "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+            "locator": "SeedProcessing, ligne125 ; appuiquestion : Seed Processing",
+            "result": "Graines traitées en oléagineux pour leur huile ; relation déjà testée dans l’existant.",
+            "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+            "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+            "reader": "f_existing_audit",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "university-page-targeted",
+            "supportStatus": "supported"
+          }
+        ],
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "inverse_existing_fact",
+            "reason": "Le noyau testé est que l’on obtient une huile des graines de chanvre, déjà testé par hemp-seeds-huile et expliqué dans hemp-seeds-reserves. L’étiquette oléagineux n’ajoute ici qu’une reformulation lexicale.",
+            "requestedChange": "Remplacer par une autre propriété alimentaire réellement distincte. Ne pas compter cette inversion du rapport graines→huile comme nouveau fait."
+          },
+          {
+            "severity": "blocking",
+            "code": "implausible_distractor",
+            "reason": "Recueillir du latex dans ces graines est hors concurrence culinaire crédible avec extraire une huile.",
+            "requestedChange": "Si un autre fait est choisi, construire quatre choix comparables plutôt que sauver cette entrée par un seul changement de mot."
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        }
+      }
+    }
+  ],
+  "additionalReadingsF": [
+    {
+      "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+      "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+      "reader": "f_existing_audit",
+      "date": "2026-11-16",
+      "locator": "Seed and Oil Utilization, ligne149",
+      "result": "Nouveau passage explicitement relu sur les graines enrobées de caramel."
+    }
+  ],
+  "revalidation": {
+    "date": "2026-11-16T22:00:12.292Z",
+    "reviewer": "f_existing_audit",
+    "changedQuestions": 7,
+    "newFactReplacements": 2,
+    "oldApprovedPreserved": 33,
+    "oldSourceObjectsUnchanged": 23,
+    "newSourceObjectsRead": 3,
+    "newExistingSourcePassageRead": "q2-d04-oklahoma-hemp-oil-2020#Seed and Oil Utilization"
+  }
+}

@@ -73,7 +73,7 @@ export function reduceArenaQuickTrial(state: ArenaQuickTrialState, action: Arena
       if (state.step !== 'jury' || !state.game || !state.storage || projectKqStorageLot(state.storage, state.clock).stage !== 'ready') return state;
       const flower = createKqFlower(state.game, 'Essai court');
       const prepared = applyKqStorageToJury(state.storage, Object.fromEntries(Object.entries(flower.stats).filter((entry): entry is [string, number] => typeof entry[1] === 'number')), state.clock);
-      const opponent = { ...createKqOpponent(2026, { rulesVersion: 3, ownerName: 'Sylvain · essai' }), createdAt: new Date(state.clock).toISOString() };
+      const opponent = { ...createKqOpponent(2026, { rulesVersion: 3, ownerName: 'Loïc · essai' }), createdAt: new Date(state.clock).toISOString() };
       const battle = resolveKqBattle(lockKqBattle({ ...flower, stats: prepared.stats as typeof flower.stats }, opponent, 2026), 2026, new Date(state.clock));
       return { ...state, storage: prepared.lot, battle, step: 'verdict' };
     }

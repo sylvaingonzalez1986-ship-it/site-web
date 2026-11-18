@@ -1,11 +1,10 @@
 "use client";
 
-import { CircleHelp, Menu, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useOverlayHistory } from "@/hooks/useOverlayHistory";
 import { KqPrintedArt } from "./KqPrintedArt";
-import { KqHelpDashboard, KqHelpGrid, KqHelpSteps } from "./KqHelpDashboard";
 import { ArenaLearningLauncher } from "../contest/ArenaLearningLauncher";
 import styles from "./PlacardPlayerShell.module.css";
 
@@ -33,14 +32,17 @@ const activityGroups = [
   { label: "Apprendre et jouer", items: secondary.filter(item => item.key === "school" || item.key === "missions" || item.key === "shop") },
 ];
 
-export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailable, localNavigation = false, showLearning = true }: {
+export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailable, localNavigation = false, showLearning = true, drawerOnly = false, triggerClassName }: {
   active: PlacardNavKey;
   onNavigate: (key: PlacardNavKey) => void;
   onHighlight: (building: string | null) => void;
   unavailable?: Partial<Record<PlacardNavKey, string>>;
   localNavigation?: boolean;
   showLearning?: boolean;
+  drawerOnly?: boolean;
+  triggerClassName?: string;
 }) {
+  const drawerId = useId();
   const drawer = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -48,16 +50,17 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
     drawer.current?.close();
     setOpen(false);
     onHighlight(null);
-    if (localNavigation && trigger.current?.isConnected) trigger.current.focus({ preventScroll: true });
+    if ((localNavigation || drawerOnly) && trigger.current?.isConnected) trigger.current.focus({ preventScroll: true });
   });
   const closeMenu = history.close;
   useBodyScrollLock(open);
   useEffect(() => {
+    if (drawerOnly) return;
     const media = window.matchMedia("(min-width: 1001px)");
     const closeOnDesktop = () => { if (media.matches && drawer.current?.open) closeMenu(); };
     media.addEventListener("change", closeOnDesktop);
     return () => media.removeEventListener("change", closeOnDesktop);
-  }, [closeMenu]);
+  }, [closeMenu, drawerOnly]);
   const navigate = (key: PlacardNavKey) => {
     if (unavailable?.[key]) return;
     if (open && localNavigation) {
@@ -96,30 +99,19 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
         </button>)}
       </div>)}
     </nav>
-    <div className={styles.navFooter}>
-      {!localNavigation && showLearning ? <div className={styles.learningEntry} data-placard-learning-entry><ArenaLearningLauncher className={styles.learningButton} /></div> : null}
-      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><KqHelpDashboard>
-        <KqHelpSteps art="culture" steps={[
-          { label: "Cultive", art: "culture" },
-          { label: "Mes récoltes", detail: "Retrouve ta récolte et l’action disponible.", art: "harvest" },
-          { label: "Commerce", detail: "Prépare la vente.", art: "commerce" },
-        ]} />
-        <KqHelpGrid art="quarter" items={[
-          { label: "Entrepôt", value: "Matériel", detail: "Achats et gestion.", art: "warehouse" },
-          { label: "Maison des cartes", value: "Packs et collection", art: "card-shop" },
-          { label: "QuizzShow", value: "Tournoi et encyclopédie", art: "school" },
-          { label: "Réseaux", value: "Publications, aventures, partenariats", art: "social" },
-        ]} />
-      </KqHelpDashboard></details>
-    </div>
+    {!localNavigation && showLearning ? <div className={styles.navFooter}>
+      <div className={styles.learningEntry} data-placard-learning-entry><ArenaLearningLauncher className={styles.learningButton} /></div>
+    </div> : null}
   </>;
   return <>
+    {drawerOnly ? <button type="button" ref={trigger} className={triggerClassName} aria-haspopup="dialog" aria-label="Ouvrir le menu du quartier" aria-expanded={open} aria-controls={drawerId} onClick={() => { drawer.current?.showModal(); setOpen(true); }}><Menu size={21} aria-hidden="true" /><span>Menu</span></button> : <>
     <aside className={styles.sidebar}>{items()}</aside>
     <nav className={styles.mobileNav} aria-label="Accès rapides de Kanab Quest">
-      {mobilePrimary.map(item => <button key={item.key} type="button" aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)}><KqPrintedArt kind={item.art} className={styles.mobileArt} /><span>{item.key === "hub" ? "Quartier" : item.key === "harvests" ? "Récoltes" : item.label}</span></button>)}
-      <button type="button" ref={trigger} aria-haspopup="dialog" aria-label="Plus d’activités" aria-expanded={open} onClick={() => { drawer.current?.showModal(); setOpen(true); }}><Menu size={21} aria-hidden="true" /><span>Plus</span></button>
+      {mobilePrimary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)}><KqPrintedArt kind={item.art} className={styles.mobileArt} /><span>{item.key === "hub" ? "Quartier" : item.key === "harvests" ? "Récoltes" : item.label}</span></button>)}
+      <button type="button" ref={trigger} aria-haspopup="dialog" aria-label="Plus d’activités" aria-expanded={open} aria-controls={drawerId} onClick={() => { drawer.current?.showModal(); setOpen(true); }}><Menu size={21} aria-hidden="true" /><span>Plus</span></button>
     </nav>
-    <dialog ref={drawer} className={styles.navDrawer} aria-label="Menu de Kanab Quest" onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onCancel={event => { if (event.target !== event.currentTarget) return; event.preventDefault(); event.stopPropagation(); history.close(); }} onClick={event => { if (event.target === event.currentTarget) history.close(); }}>
+    </>}
+    <dialog ref={drawer} id={drawerId} className={styles.navDrawer} data-drawer-only={drawerOnly || undefined} aria-label="Menu de Kanab Quest" onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onCancel={event => { if (event.target !== event.currentTarget) return; event.preventDefault(); event.stopPropagation(); history.close(); }} onClick={event => { if (event.target === event.currentTarget) history.close(); }}>
       <header className={styles.drawerHeader}><strong>Le guide du quartier</strong><button className={styles.drawerClose} type="button" aria-label="Fermer le menu" onClick={history.close}><X size={22} aria-hidden="true" /></button></header>
       <div className={styles.drawerBody}>{items(true)}</div>
     </dialog>

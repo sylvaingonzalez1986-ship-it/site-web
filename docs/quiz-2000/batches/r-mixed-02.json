@@ -1,0 +1,1374 @@
+{
+  "batchId": "r-mixed-02",
+  "author": "rebalance_products_sol",
+  "role": "Produits à actifs, graines alimentaires et matériaux de chanvre",
+  "questions": [
+    {
+      "id": "hemp-q2-rm02-dab-rig-banger-component",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans un dab rig, à quel élément correspondent les noms « nail » ou « banger » ?",
+      "options": [
+        "Au compartiment où l’extrait est chauffé",
+        "À l’embout par lequel on aspire",
+        "Au réservoir contenant l’eau",
+        "À l’outil servant à déposer l’extrait"
+      ],
+      "answer": 0,
+      "explanation": "Le nail ou banger reçoit l’extrait concentré et constitue la partie chauffée du dispositif. Il se distingue du réservoir d’eau, de l’embout et du dabber servant à manipuler l’extrait.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rm02-hc-pipe-dab-components"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Pièces d’un dab rig",
+        "subjectKey": "cannabis-dabbing",
+        "property": "Rôle du nail ou banger",
+        "expectedAnswer": "Au compartiment où l’extrait est chauffé",
+        "learningObjective": "Reconnaître un élément courant d’un dispositif à concentrés.",
+        "factKey": "dab-rig-banger-component",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-hc-pipe-dab-components",
+            "locator": "Dabbing accessories, Dab rigs",
+            "support": "Le nail est le compartiment où l’extrait est chauffé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-pipe-glass-ceramic",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quels matériaux Santé Canada privilégie-t-il pour le corps d’une pipe à cannabis ?",
+      "options": [
+        "Le verre et l’acier galvanisé",
+        "Le verre et la céramique",
+        "La céramique et le plastique",
+        "Le plastique et le cuivre"
+      ],
+      "answer": 1,
+      "explanation": "Santé Canada recommande le verre ou la céramique. L’organisme signale que le chauffage de plastiques et d’autres matériaux peut libérer des substances nocives ensuite inhalées.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rm02-hc-pipe-dab-components"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Matériaux de pipe à cannabis",
+        "subjectKey": "cannabis-smoking-pipe",
+        "property": "Matériaux recommandés pour la pipe",
+        "expectedAnswer": "Le verre et la céramique",
+        "learningObjective": "Relier une caractéristique du dispositif à l’exposition par inhalation.",
+        "factKey": "pipe-glass-ceramic",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-hc-pipe-dab-components",
+            "locator": "Smoking accessories, Pipes",
+            "support": "Choisir une pipe en verre ou céramique ; exposition possible aux produits nocifs de matériaux chauffés."
+          }
+        ],
+        "jurisdiction": "Canada, conseil sanitaire consulté en novembre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-cannabis-tobacco-dual-dependence",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel risque d’usage la co-consommation de cannabis et de tabac ajoute-t-elle, selon Alberta Health Services ?",
+      "options": [
+        "Une dépendance limitée au cannabis, même avec du tabac",
+        "Une dépendance limitée au tabac, même avec du cannabis",
+        "Une dépendance au cannabis comme au tabac",
+        "Une dépendance unique où les deux produits se substituent"
+      ],
+      "answer": 2,
+      "explanation": "Le mélange peut renforcer la dépendance au cannabis comme au tabac et compliquer l’arrêt. Le tabac du joint constitue une exposition à part entière, au-delà des effets recherchés du cannabis.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rm02-alberta-cannabis-tobacco"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Co-consommation cannabis et tabac",
+        "subjectKey": "cannabis-tobacco-co-use",
+        "property": "Risque de double dépendance",
+        "expectedAnswer": "Une dépendance au cannabis comme au tabac",
+        "learningObjective": "Comprendre une conséquence propre au mélange, distincte de la définition d’un spliff.",
+        "factKey": "cannabis-tobacco-dual-dependence",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-alberta-cannabis-tobacco",
+            "locator": "Risks of using",
+            "support": "La co-consommation augmente les risques de dépendance et de troubles d’usage des deux substances."
+          }
+        ],
+        "jurisdiction": "Canada, conseil sanitaire Alberta2023",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-synthetic-hot-pockets",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans certains mélanges Spice, que désignent les « hot pockets » décrits par l’EUDA ?",
+      "options": [
+        "Des zones où les actifs sont répartis à concentration uniforme",
+        "Des amas de végétaux ne contenant aucun actif ajouté",
+        "Des couches d’actifs restant séparées du support végétal",
+        "Des zones surconcentrées en actifs au sein du mélange"
+      ],
+      "answer": 3,
+      "explanation": "Les actifs peuvent être répartis de manière inégale dans le produit. Des zones très concentrées en cannabinoïdes de synthèse rendent l’exposition imprévisible et augmentent le risque d’intoxication.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rm02-euda-synthetic-hot-pockets"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Hétérogénéité des mélanges Spice",
+        "subjectKey": "synthetic-cannabinoid-spice-k2",
+        "property": "Concentration locale des actifs",
+        "expectedAnswer": "Des zones surconcentrées en actifs au sein du mélange",
+        "learningObjective": "Comprendre un risque lié à la répartition des actifs dans le produit.",
+        "factKey": "synthetic-hot-pockets",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-euda-synthetic-hot-pockets",
+            "locator": "Overview, dernier paragraphe",
+            "support": "Hot pockets : forte concentration locale de la substance dans un produit hétérogène."
+          }
+        ],
+        "jurisdiction": "Europe, description EUDA2024",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-spice-brodifacoum-bleeding",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quelle complication a marqué l’épidémie liée aux cannabinoïdes de synthèse et au brodifacoum dans l’Illinois en 2018 ?",
+      "options": [
+        "Des hémorragies avec trouble de la coagulation",
+        "Des insuffisances rénales aiguës sans saignement",
+        "Des convulsions sans trouble de la coagulation",
+        "Des pneumonies lipidiques sans saignement"
+      ],
+      "answer": 0,
+      "explanation": "L’enquête a documenté des saignements graves et retrouvé du brodifacoum, anticoagulant employé dans des rodenticides. Il s’agit d’une contamination située, pas de la composition de tous les Spice.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rm02-cdc-brodifacoum-2018"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Épidémie Spice Illinois2018",
+        "subjectKey": "synthetic-cannabinoid-brodifacoum-2018",
+        "property": "Complication hémorragique de produits contaminés",
+        "expectedAnswer": "Des hémorragies avec trouble de la coagulation",
+        "learningObjective": "Connaître un risque documenté de cette famille de produits.",
+        "factKey": "spice-brodifacoum-bleeding",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-cdc-brodifacoum-2018",
+            "locator": "Signes cliniques ; analyses des81 prélèvements",
+            "support": "Saignements et INR élevés ; brodifacoum retrouvé dans les prélèvements analysés."
+          }
+        ],
+        "jurisdiction": "États-Unis, Illinois, épidémie2018",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-cbd-warfarin-inr-rise",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel effet a été observé lors de l’introduction du CBD pharmaceutique chez le patient sous warfarine décrit par Grayson ?",
+      "options": [
+        "Une anticoagulation diminuée avec baisse de l’INR",
+        "Une anticoagulation accrue avec hausse de l’INR",
+        "Une réaction allergique immédiate avec INR inchangé",
+        "Une hémolyse avec INR inchangé"
+      ],
+      "answer": 1,
+      "explanation": "Ce cas rapporte une hausse de l’INR avec le CBD et un suivi du traitement par le médecin. Il signale une interaction possible avec la warfarine ; il ne permet pas d’en chiffrer la fréquence.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-rm02-grayson-cbd-warfarin"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "CBD et warfarine",
+        "subjectKey": "cbd-warfarin-interaction",
+        "property": "Augmentation observée de l’effet anticoagulant",
+        "expectedAnswer": "Une anticoagulation accrue avec hausse de l’INR",
+        "learningObjective": "Identifier une interaction pratique au-delà du seul conseil général de consulter.",
+        "factKey": "cbd-warfarin-inr-rise",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-grayson-cbd-warfarin",
+            "locator": "§2 Case report ; §4 Conclusions",
+            "support": "INR augmenté après introduction du CBD ; adaptation médicale, sans saignement rapporté."
+          }
+        ],
+        "jurisdiction": "États-Unis, cas publié2017",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-cbd-everolimus-exposure",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Quel effet du CBD d’Epidiolex sur l’évérolimus oral sa notice décrit-elle dans l’étude d’interaction ?",
+      "options": [
+        "Une exposition plasmatique à l’évérolimus diminuée",
+        "Un pic retardé, sans changement de l’exposition totale",
+        "Une exposition plasmatique à l’évérolimus augmentée",
+        "Un pic plus précoce, sans changement de l’exposition totale"
+      ],
+      "answer": 2,
+      "explanation": "L’exposition à l’évérolimus a augmenté avec le CBD pharmaceutique. La notice prévoit donc une surveillance des concentrations de l’évérolimus lors de cette association.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-rm02-fda-cbd-everolimus"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "CBD et évérolimus",
+        "subjectKey": "cbd-everolimus-interaction",
+        "property": "Hausse de l’exposition à un médicament associé",
+        "expectedAnswer": "Une exposition plasmatique à l’évérolimus augmentée",
+        "learningObjective": "Connaître une interaction documentée de formulation orale.",
+        "factKey": "cbd-everolimus-exposure",
+        "form": "identification",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-fda-cbd-everolimus",
+            "locator": "§7.2 ; §12.3 Everolimus",
+            "support": "Hausse de l’exposition à l’évérolimus lors de la coadministration étudiée."
+          }
+        ],
+        "jurisdiction": "États-Unis, noticeFDAmai2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-sierra-leone-kush-name",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans les échantillons de « kush » de Freetown étudiés en 2024, qu’a identifié le rapport GI-TOC/Clingendael publié en 2025 ?",
+      "options": [
+        "Des fleurs seules de cannabis d’une lignée Kush",
+        "De la résine de cannabis sans autre substance active",
+        "Du tabac associé uniquement à un extrait de THC",
+        "Des mélanges à cannabinoïdes de synthèse ou à nitazènes"
+      ],
+      "answer": 3,
+      "explanation": "Dans cet échantillon, le nom kush recouvrait surtout l’un ou l’autre type d’actifs de synthèse. Cette appellation locale ne désigne donc pas nécessairement des fleurs d’une lignée cannabique Kush.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rm02-gi-kush-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Appellation kush en Sierra Leone",
+        "subjectKey": "sierra-leone-kush-2024",
+        "property": "Composition du produit distincte d’une lignée Kush",
+        "expectedAnswer": "Des mélanges à cannabinoïdes de synthèse ou à nitazènes",
+        "learningObjective": "Éviter une confusion entre nom de mélange et nom de fleurs.",
+        "factKey": "sierra-leone-kush-name",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-gi-kush-2025",
+            "locator": "p.8–9 imprimées, Components of kush ; Fig.1",
+            "support": "Échantillons contenant majoritairement soit nitazènes, soit cannabinoïde de synthèse, plutôt que les deux."
+          }
+        ],
+        "jurisdiction": "Sierra Leone, Freetown, échantillonnage2024",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-thc-acetate-ketene-emission",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Quel gaz toxique Munger et ses collègues ont-ils mis en évidence en chauffant notamment un produit THC-O-acétate ?",
+      "options": [
+        "Le cétène",
+        "L’acroléine",
+        "Le benzène",
+        "Le formaldéhyde"
+      ],
+      "answer": 0,
+      "explanation": "Les essais ont détecté une émission de cétène à partir de cannabinoïdes acétates, dont un produit commercial. Cette observation de laboratoire ne détermine pas à elle seule le risque clinique de chaque produit.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rm02-munger-acetates-ketene"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Émissions des cannabinoïdes acétates",
+        "subjectKey": "cannabis-acetate-vaping-ketene",
+        "property": "Émission expérimentale de cétène",
+        "expectedAnswer": "Le cétène",
+        "learningObjective": "Connaître un risque de dégradation propre aux formes acétates inhalées.",
+        "factKey": "thc-acetate-ketene-emission",
+        "form": "identification",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-munger-acetates-ketene",
+            "locator": "Abstract ; Study limitations ; Conclusion",
+            "support": "Cétène observé dans les condensats chauffés des acétates testés et d’un produit commercial."
+          }
+        ],
+        "jurisdiction": "Recherche expérimentale2022, produits étudiés",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-canada-transparent-dried-fresh",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Au Canada, quelle classe bénéficie de l’exception autorisant un contenant immédiat transparent à l’article 108 ?",
+      "options": [
+        "Les extraits de cannabis",
+        "Le cannabis séché ou frais",
+        "Le cannabis comestible",
+        "Les topiques au cannabis"
+      ],
+      "answer": 1,
+      "explanation": "Le texte permet cette transparence pour le cannabis séché ou frais. L’exception de 2025 ne s’étend pas aux autres classes, soumises à la règle opaque ou translucide.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rm02-canada-transparent-flower"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Emballage transparent des fleurs",
+        "subjectKey": "canada-cannabis-container-transparency",
+        "property": "Exception réglementaire pour fleurs séchées ou fraîches",
+        "expectedAnswer": "Le cannabis séché ou frais",
+        "learningObjective": "Lire une règle de conditionnement sans reprendre son ancienne version.",
+        "factKey": "canada-transparent-dried-fresh",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-canada-transparent-flower",
+            "locator": "Article108(1)(a) et108(2)",
+            "support": "Exception de transparence pour dried cannabis ou fresh cannabis."
+          }
+        ],
+        "jurisdiction": "Canada, règlement courant octobre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-seed-trypsin-inhibitors",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel antinutriment Galasso et ses collègues ont-ils quantifié dans les farines de graines de chanvre, en plus des phytates ?",
+      "options": [
+        "Les lectines",
+        "Les oxalates",
+        "Les inhibiteurs de trypsine",
+        "Les glucosinolates"
+      ],
+      "answer": 2,
+      "explanation": "Une activité inhibitrice de trypsine a été mesurée dans les farines dégraissées. Ces constituants peuvent réduire la digestion protéique ; leur présence distingue la composition brute d’une disponibilité totale.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm02-galasso-trypsin"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Antinutriments protéiques du chènevis",
+        "subjectKey": "hempseed-meal-antinutrients",
+        "property": "Présence d’inhibiteurs de trypsine",
+        "expectedAnswer": "Les inhibiteurs de trypsine",
+        "learningObjective": "Comprendre une limite réelle de la valeur alimentaire du tourteau.",
+        "factKey": "seed-trypsin-inhibitors",
+        "form": "identification",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-galasso-trypsin",
+            "locator": "Introduction ; Results, TI et Table2",
+            "support": "Inhibiteurs de trypsine présents et activité mesurée dans les farines dégraissées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-milk-protein-energy-profile",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans la comparaison UF/IFAS, quel profil a la boisson de chanvre non sucrée face aux laits de vache comparés ?",
+      "options": [
+        "Plus de protéines et moins de calories",
+        "Moins de protéines et plus de calories",
+        "Plus de protéines et plus de calories",
+        "Moins de protéines et moins de calories"
+      ],
+      "answer": 3,
+      "explanation": "La boisson comparée apporte moins de protéines et de calories à volume égal. Une graine riche en protéines ne donne donc pas automatiquement une boisson aussi protéinée que le lait de vache.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm02-uf-hemp-milk-nutrition"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Profil d’une boisson alimentaire de chanvre",
+        "subjectKey": "hempseed-milk-nutrient-profile",
+        "property": "Profil protéique et énergétique comparé",
+        "expectedAnswer": "Moins de protéines et moins de calories",
+        "learningObjective": "Distinguer valeur des graines et composition de leur boisson.",
+        "factKey": "hemp-milk-protein-energy-profile",
+        "form": "comparaison",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-uf-hemp-milk-nutrition",
+            "locator": "p.1 comparaison ; p.4 Table1",
+            "support": "Boisson chanvre3g protéines et60calories par tasse, contre8g et83à150calories pour les laits comparés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-milk-calcium-fortification",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans le tableau UF/IFAS, qu’explique la teneur en calcium de la boisson de chanvre comparable à celle du lait de vache ?",
+      "options": [
+        "Un enrichissement de la boisson en calcium",
+        "La forte teneur naturelle du seul jus de graines",
+        "L’ajout de protéines de lait à la boisson",
+        "L’emploi d’une eau naturellement très calcaire"
+      ],
+      "answer": 0,
+      "explanation": "La comparaison porte sur une boisson enrichie en calcium. Elle ne décrit pas une teneur garantie pour toute boisson de graines ou préparation maison au chanvre.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm02-uf-hemp-milk-nutrition"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Calcium d’une boisson de chanvre",
+        "subjectKey": "hempseed-milk-nutrient-profile",
+        "property": "Enrichissement du produit comparé",
+        "expectedAnswer": "Un enrichissement de la boisson en calcium",
+        "learningObjective": "Comprendre une caractéristique nutritionnelle de cette catégorie alimentaire.",
+        "factKey": "hemp-milk-calcium-fortification",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-uf-hemp-milk-nutrition",
+            "locator": "p.1, comparaison nutritionnelle, when fortified ; Table1",
+            "support": "La boisson de chanvre comparée est enrichie en calcium."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-isolate-soy-emulsifying",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Chez Tang, comment l’isolat de chanvre se compare-t-il au soja pour former et stabiliser une émulsion ?",
+      "options": [
+        "Activité et stabilité émulsifiantes plus élevées",
+        "Activité et stabilité émulsifiantes plus faibles",
+        "Activité plus élevée, stabilité plus faible",
+        "Activité plus faible, stabilité plus élevée"
+      ],
+      "answer": 1,
+      "explanation": "L’isolat de chanvre étudié formait et stabilisait moins bien les émulsions que celui de soja. Les auteurs relient ces limites notamment à l’agrégation des protéines ; d’autres formulations peuvent différer.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm02-tang-emulsifying-comparison"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Isolat de chanvre comme ingrédient émulsifiant",
+        "subjectKey": "hemp-protein-isolate-emulsifying",
+        "property": "Activité et stabilité comparées au soja",
+        "expectedAnswer": "Activité et stabilité émulsifiantes plus faibles",
+        "learningObjective": "Connaître une limite fonctionnelle d’un ingrédient alimentaire réel.",
+        "factKey": "hemp-isolate-soy-emulsifying",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-tang-emulsifying-comparison",
+            "locator": "Abstract, indices activité émulsifiante et stabilité",
+            "support": "Les deux indices étaient bien inférieurs pour l’isolat de chanvre étudié."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-seed-oil-beta-sitosterol",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel phytostérol domine dans l’huile de graines de chanvre analysée par Montserrat-de la Paz et ses collègues ?",
+      "options": [
+        "Le campestérol",
+        "Le stigmastérol",
+        "Le bêta-sitostérol",
+        "Le brassicastérol"
+      ],
+      "answer": 2,
+      "explanation": "Le bêta-sitostérol est un constituant majeur de la fraction stérolique de l’huile étudiée. Cette composition ne démontre pas que consommer l’huile produit un effet médical donné.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-rm02-montserrat-sterol"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Phytostérols de l’huile de graines",
+        "subjectKey": "huile-chenevis",
+        "property": "Identité du phytostérol dominant",
+        "expectedAnswer": "Le bêta-sitostérol",
+        "learningObjective": "Identifier un constituant minoritaire alimentaire au-delà de sa seule famille.",
+        "factKey": "seed-oil-beta-sitosterol",
+        "form": "identification",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-montserrat-sterol",
+            "locator": "Abstract, fraction insaponifiable",
+            "support": "Bêta-sitostérol1905mg/kg, campestérol505,69mg/kg dans l’huile étudiée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-dehulling-protein-digestibility",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans le bioessai de House, quel traitement des graines de chanvre a amélioré la digestibilité de leurs protéines ?",
+      "options": [
+        "La simple dessiccation des graines entières",
+        "Le lavage des graines à l’eau froide",
+        "L’adjonction d’huile de graines",
+        "Le retrait de l’enveloppe extérieure"
+      ],
+      "answer": 3,
+      "explanation": "Le décorticage a amélioré la digestibilité protéique mesurée et le score corrigé dans ce bioessai chez le rat. Ce résultat est distinct de la simple hausse de concentration des protéines après retrait de la coque.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm02-house-dehulling-digestibility"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Décorticage et valeur protéique",
+        "subjectKey": "hempseed-dehulling",
+        "property": "Digestibilité améliorée au bioessai",
+        "expectedAnswer": "Le retrait de l’enveloppe extérieure",
+        "learningObjective": "Distinguer concentration de protéines et proportion digérée.",
+        "factKey": "dehulling-protein-digestibility",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-house-dehulling-digestibility",
+            "locator": "Abstract, phrase Removal of the hull fraction",
+            "support": "Retrait de l’enveloppe : digestibilité et PDCAAS améliorés dans les produits étudiés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-eu-seed-oil-thc-food-maxima",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quels maxima UE en équivalents delta-9-THC s’appliquent respectivement aux graines alimentaires de chanvre et à leur huile ?",
+      "options": [
+        "3 mg/kg et 7,5 mg/kg",
+        "7,5 mg/kg et 3 mg/kg",
+        "3 mg/kg et 3 mg/kg",
+        "7,5 mg/kg et 7,5 mg/kg"
+      ],
+      "answer": 0,
+      "explanation": "Le règlement distingue les graines et leur huile :3 puis 7,5 mg/kg d’équivalents delta-9-THC. Ces limites de contaminants alimentaires ne sont pas le seuil agricole exprimé en pourcentage de THC.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm02-eu-food-thc-limits"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "THC résiduel dans les aliments de graines",
+        "subjectKey": "eu-hempseed-food-thc-maxima",
+        "property": "Limites alimentaires distinctes pour graines et huile",
+        "expectedAnswer": "3 mg/kg et 7,5 mg/kg",
+        "learningObjective": "Ne pas appliquer aux aliments le seuil agricole de THC.",
+        "factKey": "eu-seed-oil-thc-food-maxima",
+        "form": "identification",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-eu-food-thc-limits",
+            "locator": "AnnexeI, points2.6.1–2.6.3",
+            "support": "Maxima3mg/kg graines et produits concernés ;7,5mg/kg huile de graines."
+          }
+        ],
+        "jurisdiction": "Union européenne, texte consolidé19août2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-green-decortication-no-retting",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans le projet Defra NF 0616, quel état des tiges caractérise le « green decortication » du chanvre ?",
+      "options": [
+        "Des tiges sèches ayant déjà subi un rouissage",
+        "Des tiges fraîches, avant séchage ou rouissage",
+        "Des tiges séchées après immersion de rouissage",
+        "Des tiges rouies puis réhumidifiées avant défibrage"
+      ],
+      "answer": 1,
+      "explanation": "Le projet étudie le défibrage de tiges fraîches sans rouissage préalable. Cette voie industrielle diffère de la chaîne traditionnelle utilisant des tiges préalablement rouies et séchées.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm02-defra-green-decortication"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Défibrage de tiges fraîches",
+        "subjectKey": "hemp-green-decortication",
+        "property": "Absence de rouissage préalable",
+        "expectedAnswer": "Des tiges fraîches, avant séchage ou rouissage",
+        "learningObjective": "Reconnaître deux voies de préparation des fibres textiles.",
+        "factKey": "green-decortication-no-retting",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-defra-green-decortication",
+            "locator": "p.1 Executive Summary",
+            "support": "Fresh green stems plutôt que dried or retted stems."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-geotextile-buried-tensile-loss",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Quel effet l’enfouissement dans le béton concassé étudié par Dabiret a-t-il eu sur les géotextiles de chanvre non traités ?",
+      "options": [
+        "Une forte augmentation de résistance en traction",
+        "Une résistance stable malgré la coloration de surface",
+        "Une forte perte de résistance en traction",
+        "Une résistance accrue au laboratoire mais réduite sur site"
+      ],
+      "answer": 2,
+      "explanation": "Les essais sur plateforme et au laboratoire ont montré une forte perte de résistance. La biodégradabilité de ce textile devient ici une contrainte de durabilité pour son emploi enfoui en infrastructure.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm02-dabiret-geotextile-ageing"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Géotextiles de chanvre enfouis",
+        "subjectKey": "hemp-geotextile-road-ageing",
+        "property": "Dégradation mécanique en sol alcalin étudié",
+        "expectedAnswer": "Une forte perte de résistance en traction",
+        "learningObjective": "Comprendre une limite d’usage d’un textile technique de chanvre.",
+        "factKey": "geotextile-buried-tensile-loss",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-dabiret-geotextile-ageing",
+            "locator": "§3.1 et Conclusions",
+            "support": "Perte importante de résistance dans les deux environnements d’essai."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hempcrete-capillary-base",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quelle arrivée d’eau la protection au pied d’un mur en blocs de chanvre vise-t-elle à interrompre selon DGMR ?",
+      "options": [
+        "La pluie entrant par la face extérieure de l’enduit",
+        "La condensation de l’air intérieur sur la paroi",
+        "Les infiltrations depuis la couverture du toit",
+        "Les remontées depuis le soubassement"
+      ],
+      "answer": 3,
+      "explanation": "Les blocs doivent être protégés des remontées capillaires. Leur aptitude à échanger de la vapeur ne signifie pas qu’ils puissent rester en contact permanent avec de l’eau provenant du soubassement.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm02-dgmr-capillary-moisture"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Pied de mur chaux-chanvre",
+        "subjectKey": "hempcrete-capillary-base-protection",
+        "property": "Protection contre les remontées d’eau",
+        "expectedAnswer": "Les remontées depuis le soubassement",
+        "learningObjective": "Distinguer comportement à la vapeur et exposition à l’eau liquide.",
+        "factKey": "hempcrete-capillary-base",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-dgmr-capillary-moisture",
+            "locator": "p.5, Application et Fig.6",
+            "support": "Protection nécessaire contre capillary moisture rise."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-shiv-solubles-delay-binder",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Quelle fraction de chènevotte a retardé la prise des liants chaux-pouzzolane dans l’étude de Walker et Pavía ?",
+      "options": [
+        "Les constituants hydrosolubles, dont des pectines",
+        "La cellulose cristalline des parois",
+        "La lignine du tissu ligneux",
+        "Les cires insolubles de surface"
+      ],
+      "answer": 0,
+      "explanation": "Les constituants passés dans l’eau ont ralenti les réactions du liant et sa prise. L’étude distingue cet effet chimique d’une simple rétention d’eau : le choix chènevotte-liant compte pour le matériau.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm02-walker-soluble-shiv"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Chènevotte et compatibilité du liant",
+        "subjectKey": "hempcrete-shiv-soluble-binder-reactions",
+        "property": "Retard de prise par constituants solubles",
+        "expectedAnswer": "Les constituants hydrosolubles, dont des pectines",
+        "learningObjective": "Comprendre une contrainte chimique propre au composite de construction.",
+        "factKey": "shiv-solubles-delay-binder",
+        "form": "identification",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-walker-soluble-shiv",
+            "locator": "§3.1, p.15–16 imprimées",
+            "support": "Solubles ralentissent prise par interaction avec réactions chaux-pouzzolanes ; séchage comparable ne soutient pas rétention seule."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-over-retting-tensile-risk",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel risque textile les résultats de Mazian mettent-ils en évidence quand le rouissage du chanvre est prolongé à l’excès ?",
+      "options": [
+        "Une baisse de leur aptitude à se mouiller",
+        "Une baisse de résistance des fibres en traction",
+        "Une hausse durable de leur rigidité initiale",
+        "Une fixation insuffisante des teintures réactives"
+      ],
+      "answer": 1,
+      "explanation": "Après une amélioration initiale, les propriétés en traction peuvent reculer. Un rouissage plus poussé ne garantit donc pas une meilleure fibre textile : la cohésion de sa structure peut se dégrader.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm02-mazian-over-retting"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Rouissage excessif et fibres textiles",
+        "subjectKey": "hemp-retting",
+        "property": "Fragilisation possible des fibres surrouies",
+        "expectedAnswer": "Une baisse de résistance des fibres en traction",
+        "learningObjective": "Connaître une limite qualitative du rouissage industriel.",
+        "factKey": "hemp-over-retting-tensile-risk",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-mazian-over-retting",
+            "locator": "§4 Conclusions, propriétés en traction et over-retting",
+            "support": "Maximum initial des propriétés, puis baisse lors du rouissage prolongé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-textile-softens-washing",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quelle évolution du toucher des textiles de chanvre au fil des lavages la fiche Refashion décrit-elle ?",
+      "options": [
+        "Un durcissement progressif",
+        "Un toucher devenant plus abrasif",
+        "Un adoucissement progressif",
+        "Un toucher restant rigide sans évolution"
+      ],
+      "answer": 2,
+      "explanation": "Refashion décrit un adoucissement progressif du chanvre lavé. Cela ne prédit pas à lui seul le toucher de chaque vêtement : filature, armure, mélanges et finitions comptent aussi.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm02-refashion-hemp-textiles"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Toucher du textile de chanvre lavé",
+        "subjectKey": "hemp-textile-washing-handle",
+        "property": "Adoucissement décrit à l’usage",
+        "expectedAnswer": "Un adoucissement progressif",
+        "learningObjective": "Connaître une propriété concrète d’un vêtement de chanvre.",
+        "factKey": "hemp-textile-softens-washing",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-refashion-hemp-textiles",
+            "locator": "Propriétés distinctives, chanvre",
+            "support": "Le chanvre s’adoucit progressivement au fil des lavages."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-textile-sorting-cotton",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Avec quelle matière le chanvre textile peut-il être confondu lors du tri automatisé actuel, selon Refashion ?",
+      "options": [
+        "La laine",
+        "Le polyester",
+        "Le nylon",
+        "Le coton"
+      ],
+      "answer": 3,
+      "explanation": "La proximité des fibres cellulosiques complique l’identification du chanvre face au coton dans le tri. Cette difficulté contribue au manque de gisements de chanvre triés pour le recyclage textile.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm02-refashion-hemp-textiles"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Tri du chanvre textile usagé",
+        "subjectKey": "hemp-textile-recycling-sorting",
+        "property": "Confusion avec le coton au tri",
+        "expectedAnswer": "Le coton",
+        "learningObjective": "Comprendre une difficulté propre au recyclage de ces textiles.",
+        "factKey": "hemp-textile-sorting-cotton",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-refashion-hemp-textiles",
+            "locator": "Recyclabilité ; Incorporation de matière recyclée",
+            "support": "Fibres cellulosiques proches du coton, difficulté de détection et confusion au tri."
+          }
+        ],
+        "jurisdiction": "France, fiche professionnelle mise à jour octobre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-lime-directional-performance",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Chez Williams, comment se compare le chaux-chanvre testé perpendiculairement au compactage à celui testé parallèlement ?",
+      "options": [
+        "Conductivité et résistance en compression plus élevées",
+        "Conductivité et résistance en compression plus faibles",
+        "Conductivité plus élevée, résistance en compression plus faible",
+        "Conductivité plus faible, résistance en compression plus élevée"
+      ],
+      "answer": 0,
+      "explanation": "L’orientation de la chènevotte rend les performances directionnelles. Dans la formulation étudiée, les modèles distinguent donc les deux sens d’essai, même à densité comparable ; ce n’est pas un béton isotrope.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm02-williams-directional-hemp-lime"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Orientation dans le béton chaux-chanvre",
+        "subjectKey": "hemp-lime-casting-anisotropy",
+        "property": "Couple de performances dépendant de l’orientation",
+        "expectedAnswer": "Conductivité et résistance en compression plus élevées",
+        "learningObjective": "Relier la structure de la chènevotte aux performances de l’isolant.",
+        "factKey": "hemp-lime-directional-performance",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm02-williams-directional-hemp-lime",
+            "locator": "§3.3 ; §4, Fig.7 et fonctions directionnelles",
+            "support": "Conductivité plus forte transversalement au compactage ; modèle de rupture plus élevé dans cette direction à densité comparable."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rm02-hc-pipe-dab-components",
+      "title": "Cannabis accessories for inhalation: Minimizing your risk when smoking, vaping and dabbing",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Santé Canada",
+      "published": "2024-09-20",
+      "passage": "Le nail ou banger est le compartiment chauffant recevant l’extrait. Santé Canada privilégie le verre et la céramique pour les pipes, les plastiques chauffés pouvant exposer à des produits nocifs.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Nouvelle lecture de passages distincts du refroidissement par l’eau déjà traité en rp02 ; aucun réglage de chauffe ni mode d’emploi repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Smoking accessories, Pipes ; Dabbing accessories, Dab rigs",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-alberta-cannabis-tobacco",
+      "title": "Using cannabis and tobacco together",
+      "organization": "Alberta Health Services",
+      "url": "https://myhealth.alberta.ca/Alberta/Pages/Using-cannabis-and-tobacco-together.aspx",
+      "verifiedAt": "2026-11-17",
+      "author": "Tobacco, Vaping and Cannabis Program, Alberta Health Services",
+      "published": "2023-08-31",
+      "passage": "L’usage conjoint du cannabis et du tabac augmente les risques de dépendance aux deux substances et de troubles d’usage correspondants.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Passages indiqués effectivement lus ; résultats bornés au produit ou à l’étude, sans promesse sanitaire universelle.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Risks of using, liste",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-euda-synthetic-hot-pockets",
+      "title": "EU Drug Market: New psychoactive substances — Distribution and supply in Europe: Synthetic cannabinoids",
+      "organization": "EUDA et Europol",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/new-psychoactive-substances/distribution-and-supply/synthetic-cannabinoids_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EUDA et Europol",
+      "published": "2024-03-22 ; mise à jour 2024-06-27",
+      "passage": "Les hot pockets sont des zones du produit fortement concentrées en cannabinoïdes de synthèse ; leur répartition inégale participe au risque d’intoxication.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Description du marché européen en 2024 ; pas de méthode de formulation ni de dépistage ou de contournement de tests.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Overview, dernier paragraphe avant Production",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-cdc-brodifacoum-2018",
+      "title": "Outbreak of Severe Illness Linked to the Vitamin K Antagonist Brodifacoum and Use of Synthetic Cannabinoids — Illinois, March–April 2018",
+      "organization": "CDC / MMWR",
+      "url": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6721a4.htm",
+      "verifiedAt": "2026-11-17",
+      "author": "Erin Moritz et collaborateurs",
+      "published": "2018-06-01",
+      "passage": "L’enquête sur les cannabinoïdes de synthèse a documenté des saignements graves et retrouvé du brodifacoum, anticoagulant de rodenticides, dans les prélèvements analysés.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Épidémie située ; ne pas généraliser ce contaminant à tous les mélanges Spice ni affirmer que l’intention d’ajout était connue.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Paragraphes signes cliniques et analyses des prélèvements",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-grayson-cbd-warfarin",
+      "title": "An interaction between warfarin and cannabidiol, a case report",
+      "organization": "Epilepsy & Behavior Case Reports / University of Alabama at Birmingham",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5789126/",
+      "verifiedAt": "2026-11-17",
+      "author": "Leslie Grayson, Brannon Vines, Kate Nichol et Jerzy P. Szaflarski",
+      "published": "2017-10-12",
+      "passage": "Chez ce patient sous warfarine, l’introduction du CBD pharmaceutique s’est accompagnée d’une hausse de l’INR ; le suivi médical a adapté le traitement, sans complication hémorragique observée.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Cas individuel de CBD pharmaceutique ; interaction possible, pas fréquence mesurée ni conduite thérapeutique à appliquer soi-même. Aucun dosage repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§2 Case report ; §3 Discussion ; §4 Conclusions",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-fda-cbd-everolimus",
+      "title": "Epidiolex prescribing information — revised May 2026",
+      "organization": "FDA",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Jazz Pharmaceuticals, notice approuvée FDA",
+      "published": "2026-05",
+      "passage": "L’association du CBD pharmaceutique avec l’évérolimus oral a augmenté son exposition plasmatique dans l’étude décrite ; la notice demande un suivi des concentrations du médicament.",
+      "access": "full-text",
+      "documentKind": "institutional-regulatory-label",
+      "limitation": "Passage nouvellement lu, distinct des interactions clobazam/valproate/alcool de rp03. Aucun ajustement de dose ni généralisation à toute préparation de CBD.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§7.2 Orally Administered P-gp Substrates ; §12.3 Everolimus",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-gi-kush-2025",
+      "title": "Kush in Sierra Leone: West Africa’s growing synthetic drugs challenge",
+      "organization": "Global Initiative Against Transnational Organized Crime et Clingendael Institute",
+      "url": "https://globalinitiative.net/wp-content/uploads/2025/02/Lucia-Bird-Ruiz-Benitez-de-Lugo-and-Dr-Kars-de-Bruijne-Kush-in-Sierra-Leone-%E2%80%93-West-Africas-growing-synthetic-drugs-challenge-GI-TOC-and-Clingendael-Institute-February-2025.final_.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Lucia Bird Ruiz-Benitez de Lugo et Kars de Bruijne",
+      "published": "2025-02-25",
+      "passage": "Les échantillons de kush de Freetown collectés en 2024 et confirmés au laboratoire contenaient principalement soit des nitazènes, soit des cannabinoïdes de synthèse, plutôt que des fleurs seules d’une lignée Kush.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Un seul fait sur la confusion d’appellation, expressément accepté par le coordinateur. Échantillon situé, non composition universelle de tout produit appelé kush ; procédés exclus.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.5–6 imprimées, méthodes ; p.8–9, Components of kush et Figure1",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-munger-acetates-ketene",
+      "title": "Vaping Cannabinoid Acetates Leads to Ketene Formation",
+      "organization": "Portland State University / ChemRxiv",
+      "url": "https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/627401c36cae1c94a5fe8fe7/original/vaping-cannabinoid-acetates-leads-to-ketene-formation.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Kaelas R. Munger, Robert P. Jensen et Robert M. Strongin",
+      "published": "2022",
+      "passage": "Les essais ont mis en évidence du cétène dans les condensats de cannabinoïdes acétates chauffés, dont un produit commercial delta-8-THC-O-acétate.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Manuscrit original ChemRxiv effectivement ouvert, et poster original de l’équipe également lu ; version ACS bloquée. Petit nombre de produits, preuve expérimentale d’émission, pas diagnostic d’EVALI. Paramètres expérimentaux exclus.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract ; Study limitations ; Conclusion",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-canada-transparent-flower",
+      "title": "Cannabis Regulations, section108",
+      "organization": "Ministère de la Justice du Canada",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2018-144/section-108.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Ministère de la Justice du Canada",
+      "published": "Texte courant au2026-10-19 ; dernière modification2026-10-01",
+      "passage": "Le texte autorise un contenant immédiat transparent pour le cannabis séché ou frais, par exception à la règle opaque ou translucide.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Règle canadienne actuelle avec exception de2025, sans la présenter comme une règle mondiale ni une garantie de conservation.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Article108(1)(a) et108(2)",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-galasso-trypsin",
+      "title": "Variability in Seed Traits in a Collection of Cannabis sativa L. Genotypes",
+      "organization": "Frontiers in Plant Science",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+      "verifiedAt": "2026-11-17",
+      "author": "I. Galasso et collaborateurs",
+      "published": "2016-05-20",
+      "passage": "Une activité d’inhibition de trypsine a été mesurée dans les farines dégraissées des graines. Ces inhibiteurs peuvent réduire l’activité de cette enzyme de digestion protéique.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Nouveau passage réellement lu sur TI, distinct de GLA, acides aminés et phytates du lot précédent. Pas d’extrapolation clinique ni de classement de variétés.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Introduction ; Results, Table2 et paragraphe TI",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-uf-hemp-milk-nutrition",
+      "title": "Plant-Based Milks: Hemp",
+      "organization": "University of Florida, IFAS Extension",
+      "url": "https://ask.ifas.ufl.edu/publication/FS420/pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Sarah Curl, Daniela Rivero-Mendoza et Wendy J. Dahl",
+      "published": "2020-10 ; révision2024-05",
+      "passage": "La boisson de chanvre non sucrée comparée contient moins de protéines et de calories que les laits de vache du tableau. Sa teneur calcique comparable correspond à une boisson enrichie.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Comparaison de la boisson présentée, pas composition universelle de toutes boissons. Affirmations sur protéine complète, absence d’allergie et effets cliniques de l’introduction exclues.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.1, comparaison nutritionnelle ; p.4, Table1",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-tang-emulsifying-comparison",
+      "title": "Physicochemical and functional properties of hemp (Cannabis sativa L.) protein isolate",
+      "organization": "Journal of Agricultural and Food Chemistry / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17090145/",
+      "verifiedAt": "2026-11-17",
+      "author": "Chuan-He Tang, Zi Ten, Xian-Sheng Wang et Xiao-Quan Yang",
+      "published": "2006-11-15",
+      "passage": "L’isolat de chanvre étudié présentait des indices d’activité émulsifiante et de stabilité de l’émulsion inférieurs à l’isolat de soja comparé.",
+      "access": "abstract",
+      "documentKind": "original-research",
+      "limitation": "Résumé original complet effectivement lu ; ni texte intégral payant ni règle pour tous procédés commerciaux revendiqués. Pas de promesse infantile.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract, phrases emulsifying activity et emulsion stability",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-montserrat-sterol",
+      "title": "Hemp (Cannabis sativa L.) seed oil: analytical and phytochemical characterization of the unsaponifiable fraction",
+      "organization": "Journal of Agricultural and Food Chemistry / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24422510/",
+      "verifiedAt": "2026-11-17",
+      "author": "S. Montserrat-de la Paz, F. Marín-Aguilar, M. D. García-Giménez et M. A. Fernández-Arche",
+      "published": "2014-01-23",
+      "passage": "Le bêta-sitostérol est plus abondant que le campestérol et le cycloarténol dans la fraction stérolique de l’huile analysée.",
+      "access": "abstract",
+      "documentKind": "original-research",
+      "limitation": "Résumé original complet lu ; identité d’un constituant alimentaire minoritaire, sans allégation de baisse du cholestérol ou de bénéfice clinique.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract, concentrations de la fraction insaponifiable",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-house-dehulling-digestibility",
+      "title": "Evaluating the quality of protein from hemp seed products through the protein digestibility-corrected amino acid score method",
+      "organization": "Journal of Agricultural and Food Chemistry / University of Manitoba",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20977230/",
+      "verifiedAt": "2026-11-17",
+      "author": "James D. House, Jason Neufeld et Gero Leson",
+      "published": "2010-10-26",
+      "passage": "Le retrait de l’enveloppe a amélioré la digestibilité des protéines et le score corrigé dans les produits étudiés, avec bioessai chez le rat.",
+      "access": "abstract",
+      "documentKind": "original-research",
+      "limitation": "Résumé original complet lu. Bioessai chez le rat, non essai d’efficacité chez l’humain. Distinct de la concentration protéique après décorticage, déjà couverte.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract, derniers paragraphes",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-eu-food-thc-limits",
+      "title": "Règlement (UE)2023/915, version consolidée au19août2026 — AnnexeI, point2.6",
+      "organization": "Union européenne / EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/eng",
+      "verifiedAt": "2026-11-17",
+      "author": "Union européenne / EUR-Lex",
+      "published": "2023-04-25 ; consolidation2026-08-19",
+      "passage": "Les maxima en équivalents delta-9-THC sont3mg/kg pour les graines et produits de graines concernés,7,5mg/kg pour leur huile.",
+      "access": "excerpt",
+      "documentKind": "institutional-document",
+      "limitation": "URL originale ouverte mais protection JavaScript. Extrait indexé du texte consolidé effectivement lu ; aucune lecture intégrale revendiquée. Limites alimentaires, distinctes du seuil agricole de THC.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "AnnexeI, points2.6.1 à2.6.3, extrait original indexé",
+        "result": "Ouvertures EUR-Lex protégées par contrôle JavaScript ; extrait original indexé du tableau2.6 effectivement lu, accès déclaré excerpt."
+      }
+    },
+    {
+      "id": "q2-rm02-defra-green-decortication",
+      "title": "A supply chain assessment and development for hemp bast fibre in the non-woven and technical textile industries — NF0616",
+      "organization": "Defra / NNFCC",
+      "url": "https://www.votehemp.com/wp-content/uploads/2018/09/file.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Jacqueline Broadhead et partenaires du projet NF0616",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le green decortication étudié sépare les fibres de tiges fraîches, plutôt que de tiges préalablement séchées ou rouies.",
+      "access": "full-text",
+      "documentKind": "institutional-project-report",
+      "limitation": "Copie du document original Defra/NNFCC sur miroir Vote Hemp, titre et numéro de projet vérifiés. Pas de date de publication déduite du chemin de la copie.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.1, Executive Summary",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-dabiret-geotextile-ageing",
+      "title": "Durability assessment of nonwoven hemp geotextiles for road infrastructures: field and laboratory ageing under alkaline conditions",
+      "organization": "Gustave Eiffel University / ICSMGE2026",
+      "url": "https://www.issmge.org/uploads/publications/1/141/694.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Sama Angèle Dabiret, Fabienne Farcas, Laetitia Van Schoors, Carlos Minatchy, Lamis Makki, Philippe Reiffsteck, Dimitri Durin et Olivier Waterblez",
+      "published": "2026-06",
+      "passage": "Les géotextiles de chanvre enfouis dans le béton concassé étudié ont perdu une part importante de leur résistance en traction, au laboratoire comme sur plateforme.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Essai de produits non traités et conditions définies, pas durée de vie universelle de tout géotextile de chanvre ni promesse de remplacement de tous synthétiques.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.6299 Abstract ; p.6301 §3.1 ; p.6302 Conclusions",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-dgmr-capillary-moisture",
+      "title": "Hempcrete: The effectiveness of hempcrete in the reduction of environmental and financial costs of residences in the Netherlands",
+      "organization": "DGMR / TU Delft",
+      "url": "https://dgmr.nl/wp-content/uploads/2023/02/Whitepaper-Hempcrete_feb2023_DGMR.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Alexandra Vontetsianou",
+      "published": "2023-02",
+      "passage": "Les recommandations d’application prévoient de protéger les blocs de béton de chanvre contre les remontées capillaires depuis le soubassement.",
+      "access": "full-text",
+      "documentKind": "professional-white-paper",
+      "limitation": "Recommandation professionnelle attribuée, distincte d’une norme universelle. Aucun dimensionnement de chantier ni propriété de tous blocs non documentés.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.5, The application, liste et Figure6",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-walker-soluble-shiv",
+      "title": "Effect of Hemp’s Soluble Components on the Physical Properties of Hemp Concrete",
+      "organization": "Journal of Materials Science Research / Trinity College Dublin",
+      "url": "https://www.academia.edu/64707331/Effect_of_Hemp_S_Soluble_Components_on_the_Physical_Properties_of_Hemp_Concrete",
+      "verifiedAt": "2026-11-17",
+      "author": "Rosanne Walker et Sara Pavía",
+      "published": "2014-06-13",
+      "passage": "Les constituants hydrosolubles de la chènevotte ont retardé les réactions et la prise des liants chaux-pouzzolane étudiés ; la seule rétention d’eau ne l’expliquait pas.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Texte original intégral accessible sur le dépôt Academia de l’autrice, passages identifiés réellement lus. Résultats des liants testés, pas de recette ou règle universelle pour toute chaux.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.12 Abstract ; p.15–16 §3.1 Effect of Water-Soluble Hemp Components on Setting Time",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-mazian-over-retting",
+      "title": "A Comparative Study of the Effect of Field Retting Time on the Properties of Hemp Fibres Harvested at Different Growth Stages",
+      "organization": "Fibers / IMT Mines Alès",
+      "url": "https://www.mdpi.com/2079-6439/7/12/108",
+      "verifiedAt": "2026-11-17",
+      "author": "Brahim Mazian, Anne Bergeret, Jean-Charles Benezet et Luc Malhautier",
+      "published": "2019-12-07",
+      "passage": "Après une amélioration initiale, un rouissage prolongé peut dégrader les propriétés en traction des fibres de chanvre ; le résultat dépend de la matière et des conditions.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Question de qualité de fibres industrielles, sans calendrier de récolte, durée de rouissage ou optimisation de cannabis à actifs.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§3, propriétés en traction ; §4 Conclusions",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-refashion-hemp-textiles",
+      "title": "Le lin et le chanvre",
+      "organization": "Refashion",
+      "url": "https://pro.refashion.fr/ressource/fiche-pratique/le-lin-et-le-chanvre",
+      "verifiedAt": "2026-11-17",
+      "author": "Refashion",
+      "published": "Mise à jour2026-10",
+      "passage": "La fiche décrit un adoucissement du chanvre au fil des lavages et la difficulté du tri automatisé à le distinguer d’autres fibres cellulosiques, notamment du coton.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Observations professionnelles attribuées ; pas de garantie sur tout vêtement, apprêt ou technologie future. Affirmations hypoallergéniques et résistances biologiques générales non reprises.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Propriétés distinctives ; Enjeux éco-conception, Recyclabilité et Incorporation",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    },
+    {
+      "id": "q2-rm02-williams-directional-hemp-lime",
+      "title": "The influence of the casting process on the internal structure and physical properties of hemp-lime",
+      "organization": "Materials and Structures / University of Bath",
+      "url": "https://link.springer.com/article/10.1617/s11527-016-0976-4",
+      "verifiedAt": "2026-11-17",
+      "author": "Joseph Williams, Mike Lawrence et Pete Walker",
+      "published": "2016-12-09",
+      "passage": "L’orientation des particules de chènevotte conduit à des propriétés directionnelles ; à densité comparable les fonctions de conductivité et de rupture doivent distinguer les deux directions de chargement.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Résultats d’une formulation et d’un mode de compactage ; pas de valeur universelle ni paramètre de mise en œuvre conseillé.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§3.3 Thermal conductivity ; §4 Discussion, Fig.7 ; §5 Conclusions",
+        "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+      }
+    }
+  ]
+}

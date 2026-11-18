@@ -4,7 +4,7 @@
 .shopButton, .cultureToolbar button, .primary, .secondary, .danger {
   font-family: var(--font-display),"Arial Narrow",Impact,sans-serif; font-weight: 800; letter-spacing: .025em; text-transform: uppercase;
 }
-.tab, .zoneChip {
+.tab {
   font-family: var(--font-display),"Arial Narrow",Impact,sans-serif; font-weight: 800; letter-spacing: .025em; text-transform: uppercase;
 }
 .cultureIdentity h3,.inspectorHeader h3,.inspectorEmpty h3,.sectionTitle h3,.roomIntro h3,.deviceBody h4 {
@@ -86,22 +86,7 @@
 .cultureCosts span { display: grid; gap: 8px; font-size: 12px; color: var(--muted); }
 .cultureCosts strong { font-size: 17px; color: var(--ink); }
 .culturePanel > :is(a,button) { width: 100%; justify-content: center; }
-.zoneNavigation { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.zones { display: flex; flex: 1; min-width: 0; gap: 10px; overflow-x: auto; scrollbar-width: thin; padding: 4px 3px 8px; }
-.newZone { flex-shrink: 0; margin-bottom: 8px; min-height: 48px; }
-@media(max-width:640px) {
-  .zoneNavigation { flex-direction: column; align-items: stretch; gap: 4px; }
-  .zones { flex: auto; }
-  .newZone { justify-content: center; }
-}
-.zoneChip { position: relative; display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding: 8px 24px 8px 8px; color: var(--ink); text-align: left; line-height: 1.15; cursor: pointer; border: 1px solid #17292370; background: var(--zone-tint, #fffaf0); border-radius: var(--game-panel-radius, 2px); }
 .zoneNumber { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; min-width: 42px; min-height: 42px; padding: 3px 6px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: var(--zone-color, #efc451); color: #172923; font: 900 26px/1 var(--font-display),Impact,sans-serif; font-variant-numeric: tabular-nums; vertical-align: middle; }
-.zoneArea { display: inline-flex; align-items: center; gap: 6px; color: #172923; font: 750 14px/1.3 var(--font-body),sans-serif; white-space: nowrap; }
-.zoneSelected { position: absolute; right: 6px; top: 6px; visibility: hidden; }
-.zoneChip[aria-pressed=true] { border-color: #172923; box-shadow: 0 0 0 1px #172923; }
-.zoneChip[aria-pressed=true] .zoneSelected { visibility: visible; }
-.zoneChip:focus-visible { outline: 3px solid #172923; outline-offset: 2px; }
-.zoneChip:hover { border-color: #172923; }
 .activity { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0 4px; font-size: 13px; line-height: 1.5; color: var(--muted); }
 .activity > a { flex-shrink: 0; }
 .inspector { min-width: 0; overflow: hidden; scroll-margin-top: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
@@ -154,6 +139,20 @@
 .zoneDialog .zoneModules > .zoneOptionFields { display: grid; gap: 14px; padding-block: 10px; }
 .zoneDialog .check { min-height: 44px; }
 .zoneDialogBody { scrollbar-gutter: stable; }
+.cellMenu { display: grid; gap: 14px; padding: 16px; }
+.workspace[data-warehouse-cell-layout] { grid-template-columns: minmax(0, 1fr); }
+.workspace[data-warehouse-cell-layout][data-warehouse-managing] > .sceneColumn { grid-column: 1; grid-row: 1; }
+.workspace[data-warehouse-cell-layout][data-warehouse-managing] > .inspector { grid-column: 1; grid-row: 2; }
+.cellMenu p { margin: 0; line-height: 1.5; }
+.cellMenu summary { min-height: 44px; padding-block: 12px; cursor: pointer; }
+.cellMenu :is(button, input, select):disabled { opacity: .55; cursor: default; }
+.cellMenu :is(button, input, select, summary):focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.cellChoices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cellChoices button { display: grid; justify-items: center; align-content: center; gap: 8px; min-height: 122px; padding: 14px 8px; font-size: 17px; text-align: center; }
+.cellChoices span { font-size: 12px; font-weight: 450; }
+.cellWallLength { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.cellWallLength output { font-size: 24px; font-weight: 750; }
+.cellWallLength button { font-size: 15px; padding-inline: 10px; }
 .zoneDialogSummary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; padding: 12px 16px; background: var(--game-surface-warm, #ffae59); font-size: 13px; }
 .zoneDialogSummary strong { overflow-wrap: anywhere; }
 .zoneDialogSummary span { flex-shrink: 0; }
@@ -247,8 +246,8 @@
 @media(max-width:1000px) {
   .workspace { grid-template-columns: minmax(0,1fr); }
   .workspace[data-warehouse-cultures] > .inspector { grid-row: 3; }
-  .workspace[data-warehouse-managing] > .inspector { grid-column: 1; grid-row: 1; }
-  .workspace[data-warehouse-managing] > .sceneColumn { grid-column: 1; grid-row: 2; }
+  .workspace[data-warehouse-managing] > .inspector { grid-column: 1; grid-row: 2; }
+  .workspace[data-warehouse-managing] > .sceneColumn { grid-column: 1; grid-row: 1; }
   .inspectorBody { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px; }
   .inspectorBody > :is(.zoneSettings,.zoneModules,.quote,.full,.buttons,.error,.help) { grid-column: 1 / -1; }
   .zoneSettings > div { grid-template-columns: repeat(3,minmax(0,1fr)); }

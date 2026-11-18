@@ -29,12 +29,14 @@ type LobbySnapshot = {
   cashCents: number;
 };
 
-export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, workAvailability, children }: {
+export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, workAvailability, children, teamPanel, showMap = true }: {
   onOpen: PlacardMapOpen;
   onOpenCollection: () => void;
   highlightedBuilding?: string | null;
   workAvailability?: KqPlayerWorkAvailability;
   children?: ReactNode;
+  teamPanel?: ReactNode;
+  showMap?: boolean;
 }) {
   const api = useKqTutorialApi();
   const tentNumber = useKqTentSelection();
@@ -150,8 +152,9 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, 
   };
 
   return <main className={styles.lobby} data-placard-lobby aria-label="Mon quartier" tabIndex={-1}>
-    <div className={styles.quarterLayout}>
+    <div className={styles.quarterLayout} data-summary-only={!showMap || undefined}>
     <div className={styles.dayBrief}>
+    {teamPanel}
     {loading ? <div className={styles.loading} role="status">Vérification de tes activités et de ton stockage…</div> : <section className={styles.nextAction} aria-label={resume.tone === "attention" ? "À faire maintenant" : resume.tone === "waiting" ? "Attente automatique" : "Reprendre ma partie"} data-placard-next-action data-priority={resume.kind} data-tone={resume.tone}>
       <span className={styles.guidePortrait} aria-hidden="true"><Image src="/sylvain.png" alt="" width={88} height={88} /></span>
       <div className={styles.actionCopy}><span>{nextAction?.eyebrow ?? "Informations à vérifier"}</span><h2 ref={resumeHeading} tabIndex={-1}>{nextAction?.title ?? "Ton résumé est indisponible"}</h2></div>
@@ -164,7 +167,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding, 
     </section>}
     {children}
     </div>
-    <KqPlacardMap onOpen={onOpen} onOpenCollection={onOpenCollection} activeRun={snapshot?.activeRun} cashCents={snapshot?.cashCents ?? null} tents={tents} readyLotCount={snapshot?.readyLotCount} availableFlowerCount={snapshot?.availableFlowerCount} curingFlowerCount={snapshot?.curingFlowerCount} recommended={recommended} highlightedBuilding={highlightedBuilding} />
+    {showMap ? <KqPlacardMap onOpen={onOpen} onOpenCollection={onOpenCollection} activeRun={snapshot?.activeRun} cashCents={snapshot?.cashCents ?? null} tents={tents} readyLotCount={snapshot?.readyLotCount} availableFlowerCount={snapshot?.availableFlowerCount} curingFlowerCount={snapshot?.curingFlowerCount} recommended={recommended} highlightedBuilding={highlightedBuilding} /> : null}
     </div>
     {!api.isTutorial ? <KqFinancialSupport /> : null}
   </main>;

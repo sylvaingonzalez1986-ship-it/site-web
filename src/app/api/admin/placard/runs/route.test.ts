@@ -49,7 +49,7 @@ describe("POST /api/admin/placard/runs", () => {
   it("returns the active admin run without caching", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
     getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1", state: { seed: 42 }, burnReceipts: [] }, activeRuns: [] });
-    const response = await GET();
+    const response = await GET(new Request("http://localhost/api/admin/placard/runs"));
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(getKqAdminRunsSnapshot).toHaveBeenCalledWith("admin@example.test", {});

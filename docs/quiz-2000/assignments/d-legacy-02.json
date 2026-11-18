@@ -1,0 +1,277 @@
+{
+  "batchId": "d-legacy-02",
+  "status": "reserved-not-started",
+  "scope": "Local beta: rewrite or replace weak facts; no historical compatibility required. Source evidence and independent review required.",
+  "entries": [
+    {
+      "id": "hemp-seeds-chenevis",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "La page actuelle rendue en anglais énumère les fractions mais ne démontre ni le nom français ni la précision petit fruit sec. Ajouter définition lexicale et source botanique déjà disponible.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-decorticage",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "L’explication renvoie à « la photo » alors que la question autonome n’en contient aucune ; supprimer ce renvoi et les deux distracteurs « toute/toutes ». Source de l’anatomie à préciser.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-farine",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait étayé ; tissage/rouissage/peignage ne sont pas des opérations plausibles sur la graine. Remplacer par des procédés alimentaires comparables.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-acides-amines",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait étayé ; pollen et cristaux de silice ne sont pas des unités moléculaires comparables. Deux distracteurs à reprendre.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-pericarpe",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "La référence InterChanvre décrit la transformation, pas l’origine ovarienne du péricarpe. Ajouter une source botanique précise avant approbation complète.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-tourteau-fractions",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait étayé ; trois distracteurs « seulement/uniquement/pur » manifestement exclusifs ne sont pas plausibles. Refaire les choix sans changer le fait.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-edestine",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Réponse protéine étayée, mais le texte source comporte une incohérence edestin/albumin au §Protein recovery. Ajouter source structurale univoque pour l’explication globuline ; ne pas propager cette erreur éditoriale du papier.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-pigment-huile",
+      "topicId": "seeds",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Mélanine et hémoglobine donnent des éliminations triviales à L3 ; distracteurs végétaux crédibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-fractions-proteines",
+      "topicId": "seeds",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Les trois familles proposées en distracteurs sont animales ; niveau L3 surévalué sans choix végétaux plausibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-solubilite",
+      "topicId": "seeds",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Solubilité minimale généralement près du point isoélectrique : éviter de présenter le comportement comme absolu pour un mélange de protéines.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-ponts",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait de réticulation soutenu ; niveau4 surestimé pour identification directe soufre/soufre vers disulfure. Réestimer2–3 et ajouter source générale cystéines si maintien de toute l’explication.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-seeds-hexanal",
+      "topicId": "seeds",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait soutenu ; trois distracteurs macromolécules/sels permettent de répondre sans connaître l’hexanal. Refaire choix de fonctions organiques et réestimer difficulté.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-chenevotte",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "La référence attachée est surtout un inventaire de débouchés dans les passages relus ; ajouter la fiche textile p5 explicitant cœur et fibres. Fait cohérent mais preuve précise attachée à compléter.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-beton",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Cerema confirme chènevotte/liant/eau sans préciser la chimie du liant dans ce communiqué. Ajouter revue chanvre-chaux2025 réellement lue ; pollen/plâtre distracteur peu plausible.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-litiere",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait corroboré par fiche textile p5 réellement lue mais pas attachée ; ajouter cette preuve. Ne pas transférer le chiffre d’absorption à toutes chènevottes.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-tissage",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait source exact ; broyage graines/compression tiges/collage feuilles ne sont pas des assemblages textiles plausibles au niveau2. Choix à reprendre.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-papier",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Le rapport cite la papeterie mais déclare ce débouché non développé. Ajouter un passage papetier précis étayant organisation en feuille.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-renfort",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait cohérent ; carburant/pigment liquide/dissolvant ne sont pas des rôles structuraux comparables. Ajouter source d’adhésion/transfert et refaire les choix.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-isolation",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait cohérent ; « bloquer toute vapeur » et « porter seule » sont des absolus éliminatoires. Choix à reprendre, preuve thermique du rapport à préciser.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-peignage",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Dissoudre/transformer en graines/souder en blocs ne sont pas des effets textiles plausibles à L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-pectines",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Ni la page INRAE ni le passage de la fiche textile lu n’explicitent les pectines ; ajouter source biochimique du rouissage. Les trois distracteurs proviennent d’autres organes et sont peu plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-remplissage",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait Cerema étayé ; armature métallique/câble ne sont pas des fonctions plausibles du mélange. Réestimer niveau2 et proposer des rôles constructifs comparables.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-carbonatation",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Cerema n’explique pas cette réaction. Ajouter revue chanvre-chaux2025 et une équation explicitant carbonate de calcium ; niveau4 surestimé pour ce rappel.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-hygroscopie",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Des grains de sable/fibres/cristaux ne sont pas des échanges avec l’air plausibles à L4 ; revoir distracteurs.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-fines",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Les distracteurs ne sont pas des fractions plausibles du défibrage à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-matrice",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Champ/pollen/machine ne sont pas des constituants plausibles d’un composite à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-profiles-rouissage-organismes",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Oiseaux/vers/insectes pollinisateurs donnent la réponse sans connaissance du rouissage à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-hempfilm",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Notice titre/date/usages militaires vérifiée, film non visionné ; trois titres distracteurs non attestés. Proposer films réellement identifiables et niveau2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-canada-date",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Date institutionnelle historique vérifiée ; date précise étrangère mérite niveau2. Les quatre années voisines sont plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-single",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Textes ONU vérifiés ; nom d’un traité spécialisé mérite niveau2. L’entrée en vigueur1964 apparaît dans source dépositaire lue mais à ajouter pour explication complète.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    }
+  ]
+}

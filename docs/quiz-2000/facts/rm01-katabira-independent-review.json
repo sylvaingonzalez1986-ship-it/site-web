@@ -1,0 +1,25 @@
+{
+  "batchId": "r-mixed-01",
+  "reviewer": "rebalance_classify_a",
+  "reviewedAt": "2026-11-17",
+  "scope": "Reprise indépendante limitée au nouvel objet katabira et à sa nouvelle source, sans approbation des autres mutations du lot.",
+  "items": [
+    {
+      "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Usage textile historique concret de fibres de chanvre dans un vêtement ; la ramie alternative est explicitement conservée.",
+      "comment": "Objet complet et quatre choix lus. La page originale Kyoto National Museum, deuxième paragraphe, décrit le katabira comme kimono non doublé de ramie ou chanvre porté au pic estival, et oppose le hitoe de soie au début/fin d’été. Date d’exposition 19 juillet–2 septembre 2018 confirmée. Niveau 2 cohérent pour les noms vestimentaires. Voisins retenus ouverts en entier : sandales japonaises du Met et motif asanoha ; ni même objet ni même propriété. Aucun doublon katabira/kimono dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-kyoto-katabira",
+          "url": "https://www.kyohaku.go.jp/old/eng/theme/floor1_4/past/sensyoku_20180719.html",
+          "locator": "Deuxième paragraphe, ligne 34 de la page consultée ; dates d’exposition ligne32",
+          "result": "Page institutionnelle originale effectivement ouverte ; unlined ramie or hemp et peak of midsummer heat lus. Aucune exclusivité du chanvre ou propriété sanitaire inférée.",
+          "sourceHash": "9851553f0356e03e485b4328010cb0464d6430a4f6d5688823ddd6a3b48363ff"
+        }
+      ],
+      "contentHash": "2b7a8cd778d0a5de0ab0aa0cef90f24b45199d53dd2517a295f7056c2d14e099"
+    }
+  ]
+}

@@ -1,0 +1,2203 @@
+{
+  "batchId": "d-legacy-01",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "status": "awaiting-independent-review",
+  "sourceReuse": {
+    "registry": "docs/encyclopedia-revision/bibliography.json",
+    "rule": "Les sources déjà enregistrées sont référencées par leur ID, sans recopier ni redéfinir leur objet. Les consultations ci-dessous sont nouvelles ; elles ne modifient pas la date du registre historique.",
+    "sourceIds": [
+      "qh-culture-gautier",
+      "qh-culture-institut",
+      "qh-culture-moreau",
+      "qh-culture-pci",
+      "qh-culture-bretagne-process",
+      "qh-culture-yanghai",
+      "qh-culture-merriam",
+      "qh-culture-mount-vernon",
+      "qh-culture-research",
+      "qh-culture-bretagne-toiles",
+      "qh-culture-haimenkou",
+      "qh-culture-herodotus",
+      "qh-culture-etymology",
+      "qh-hist-statutes",
+      "qh-hist-csa-policy"
+    ]
+  },
+  "deduplication": {
+    "comparedWith": [
+      "docs/quiz-2000/fact-index.jsonl",
+      "docs/quiz-2000/audit-f-active-snapshot.json#entries",
+      "docs/quiz-2000/batches/d-01.json",
+      "docs/quiz-2000/batches/pilot-d.json"
+    ],
+    "method": "Recherche des concepts et réponses dans l'index compact ; lecture des propriétés voisines avant rédaction. Les quarante anciennes entrées réservées sont remplacées par leur version complète dans ce lot ; elles ne sont pas comptées comme quarante ajouts.",
+    "withinBatchNote": "Les sujets récurrents partagent une clé : réunions parisiennes, mot marijuana, Yanghai, Jirzankal, Haimenkou, Mount Vernon, teillage breton, corderie de Charlestown et Paradis artificiels. Ils doivent être espacés par le moteur de sélection. Les propriétés sont distinctes ; une réserve historiographique ne vaut pas une conclusion médicale.",
+    "nearExistingFacts": [
+      {
+        "ids": [
+          "hemp-hc-001",
+          "hemp-hc-002",
+          "hemp-hc-004",
+          "hemp-hc-005",
+          "hemp-hc-014",
+          "hemp-hc-015",
+          "hemp-hc-019"
+        ],
+        "existing": [
+          "hemp-hc-006",
+          "hemp-hc-017",
+          "hemp-hc-053"
+        ],
+        "distinction": "Auteur, lieu, rôle médical, titre, hôte, revue, mythe constituent des propriétés distinctes. La date précise de publication et le nom donnant celui du Club sont déjà traités ailleurs. Clé commune club-hachichins dans ce lot ; l'ensemble reste un contexte dense à surveiller lors de l'intégration."
+      },
+      {
+        "ids": [
+          "hemp-hc-009",
+          "hemp-hc-039"
+        ],
+        "existing": [
+          "hemp-profiles-teillage",
+          "hemp-profiles-etoupes",
+          "hemp-profiles-litiere",
+          "hemp-hc-038",
+          "hemp-hc-040"
+        ],
+        "distinction": "La bourre à matelas est un réemploi historique du bois, différent de l'absorption d'humidité d'une litière. La braie est l'outil qui casse le bois ; les autres faits portent sur l'opération générale, les fibres courtes, la pesselle ou le peigne."
+      },
+      {
+        "ids": [
+          "hemp-hc-010",
+          "hemp-hc-029",
+          "hemp-hc-047"
+        ],
+        "existing": [
+          "hemp-hc-030",
+          "hemp-hc-043"
+        ],
+        "distinction": "Remplace l'identification du cannabis, déjà testée par hc029, par une contamination moderne envisagée dans les résultats de l'étude. conditions de conservation des vestiges"
+      },
+      {
+        "ids": [
+          "hemp-hc-011",
+          "hemp-hc-046"
+        ],
+        "existing": [
+          "hemp-hc-044",
+          "hemp-hc-045",
+          "hemp-hc-058",
+          "hemp-q2-d01-huile-elements-icpms"
+        ],
+        "distinction": "Région et méthode moléculaire sont distinctes du second nom du site, de sa datation et du matériau des braseros. La GC-MS identifie des molécules organiques ; l'ICP-MS de d-01 dose les éléments minéraux d'une huile."
+      },
+      {
+        "ids": [
+          "hemp-hc-027"
+        ],
+        "existing": [
+          "hemp-hc-021",
+          "hemp-hc-022",
+          "hemp-hc-026"
+        ],
+        "distinction": "Les bretagnes de lin sont une production à distinguer des olonnes et noyales de chanvre ; le lieu des bretagnes et la matière des crées ne sont pas la même propriété. Maintien proposé pour ne pas attribuer toute toile bretonne au chanvre."
+      },
+      {
+        "ids": [
+          "hemp-hc-033",
+          "hemp-hc-055",
+          "hemp-hc-032"
+        ],
+        "existing": [
+          "hemp-q2-d01-cordier-recul",
+          "hemp-hc-007",
+          "hemp-hc-025"
+        ],
+        "distinction": "Alternance des torsions et protection par goudron sont distinctes du recul du fileur, de l'architecture d'une corderie et de la fibre employée à Rochefort. Remplace l'objectif psychique déjà donné par hc004 par une propriété distincte de l'histoire des matériaux navals."
+      },
+      {
+        "ids": [
+          "hemp-hc-048",
+          "hemp-hc-050"
+        ],
+        "existing": [
+          "hemp-hc-049",
+          "hemp-q2-d01-pollen-preuve-textile"
+        ],
+        "distinction": "Limite du classement par taille et hypothèse d'un stock alimentaire portent sur deux propriétés différentes. Le nombre de graines est déjà traité et n'est pas redemandé. La limite morphométrique est plus précise que la seule présence de pollen/graines, mais leur proximité d'objectif doit être relue indépendamment."
+      },
+      {
+        "ids": [
+          "hemp-hc-051",
+          "hemp-hc-052"
+        ],
+        "existing": [
+          "hemp-hc-020"
+        ],
+        "distinction": "Critique de la volonté et réaction de Balzac sont distinctes de l'identité de l'auteur des Paradis artificiels. Même œuvre, clé commune paradis-artificiels."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-1937-law",
+          "hemp-hs-hist-csa-name"
+        ],
+        "existing": [
+          "hemp-hs-hist-1937-exemptions",
+          "hemp-hs-hist-act-schedule",
+          "hemp-hs-hist-csa-5schedules"
+        ],
+        "distinction": "Identification et logique générale des lois distinctes de l'exclusion des tiges mûres et du classement initial. L'ancien ID csa-5schedules porte désormais sur le rapport LaGuardia, et ne constitue plus un doublon du nombre de schedules."
+      }
+    ],
+    "requiresIndependentReview": true
+  },
+  "consultations": [
+    {
+      "sourceId": "qh-culture-gautier",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "En-tête ; I, L'hôtel Pimodan",
+      "result": "Auteur, revue et lieu du récit relus dans la transcription primaire ; pas de lecture d'un registre de membres."
+    },
+    {
+      "sourceId": "qh-culture-institut",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Présentation de la conférence de Paolo Tortonese, paragraphes 1–3",
+      "result": "Moreau de Tours, Ferdinand Boissard et objectif d'investigation psychique relus ; présentation institutionnelle, pas procès-verbal."
+    },
+    {
+      "sourceId": "qh-culture-moreau",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Notice Google Books, titre, auteur, éditeur, date",
+      "result": "Titre et auteur vérifiés dans la notice de l'ouvrage primaire ; pas de prétention à une lecture intégrale du traité."
+    },
+    {
+      "sourceId": "qh-culture-pci",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "PDF p. 16–17, repères historiques et Teillouse",
+      "result": "Toponymie Canebière et foire de Redon relues. Les récits de conquêtes, de lobbying et d'origines anciennes non corroborés ne sont pas retenus."
+    },
+    {
+      "sourceId": "qh-culture-bretagne-process",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Les techniques de séchage et de teillage, paragraphes 5–7",
+      "result": "Braie/broye et récupération des parties ligneuses pour la bourre à matelas relues."
+    },
+    {
+      "sourceId": "qh-culture-bretagne-toiles",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Présentation, paragraphes sur mécanisation et ouvriers britanniques",
+      "result": "Recours aux travailleurs britanniques pour formation, encadrement et productivité relu ; distinction avec la simple importation de matières premières."
+    },
+    {
+      "sourceId": "qh-culture-yanghai",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Abstract ; Introduction, climat et tombe M90 ; Fig. 2",
+      "result": "Contenants, conditions de conservation et méthodes botanique/chimique/génétique relus. Le métier du défunt et l'emploi précis du dépôt restent interprétés."
+    },
+    {
+      "sourceId": "qh-culture-haimenkou",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Methods, Archaeological and archaeobotanical research ; Results, Haimenkou cannabis grain metrics",
+      "result": "Flottation, recouvrement des tailles et hypothèse de stockage alimentaire relus dans l'article original en accès libre."
+    },
+    {
+      "sourceId": "qh-culture-etymology",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Académie française, entrée marihuana, Étymologie",
+      "result": "Trajet espagnol mexicain → anglais des États-Unis → français relu ; aucune origine ultime déduite."
+    },
+    {
+      "sourceId": "qh-culture-merriam",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Word History, Etymology et note historique",
+      "result": "Origine ultime incertaine et graphies mexicaines relues ; le rapprochement avec les prénoms n'est pas une origine établie."
+    },
+    {
+      "sourceId": "qh-culture-mount-vernon",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Why Grow Hemp? ; Hemp History ; Washington's Use of Hemp",
+      "result": "Washington, réparation des sennes et usages de l'huile relus dans la présentation des archives du domaine. La taxonomie simplifiée et les généralisations sanitaires de la page ne sont pas reprises."
+    },
+    {
+      "sourceId": "qh-culture-research",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "PDF une page, présentation du livre, lignes 1–12",
+      "result": "Présentation d'Erwan Pointeau-Lagadec lue : réunions attestées mais mythe de société secrète à déconstruire ; ce n'est pas la lecture du livre complet."
+    },
+    {
+      "sourceId": "qh-culture-herodotus",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "Histoires IV, passage sur chanvre et Scythes, traduction Rawlinson",
+      "result": "Attribution du témoignage antique vérifiée ; aucun détail opératoire de pratique intoxicante repris."
+    },
+    {
+      "sourceId": "qh-hist-statutes",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "50 Stat. 551, chapitre 553, intitulé et §2 ; dernière page",
+      "result": "Taxation professionnelle, transferts et enregistrement du texte de 1937 relus ; aucune description du droit actuel."
+    },
+    {
+      "sourceId": "qh-hist-csa-policy",
+      "date": "2026-11-16",
+      "reader": "d_history_food_pilot",
+      "locator": "DEA Drug Policy, Controlled Substances Act of 1970",
+      "result": "Création historique du système de cinq schedules vérifiée ; pas de classement actuel du cannabis extrapolé."
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-dlegacy01-rooswijk",
+      "title": "Rooswijk Shipwreck Excavation: The Post Excavation Phase",
+      "organization": "Historic England ; Cultural Heritage Agency of the Netherlands",
+      "url": "https://historicengland.org.uk/whats-new/research/rooswijk-shipwreck-excavation-the-post-excavation-phase/",
+      "verifiedAt": "2026-11-16",
+      "author": "Angela Middleton ; Sarah Paynter ; Francesca Gherardi ; Ruth Pelling",
+      "published": "2020-08-27",
+      "passage": "Les graines de lin, chanvre et moutarde trouvées dans les sédiments d'une lampe, d'une cruche et d'une bouteille ont probablement été entraînées dans ces objets pendant ou après le naufrage.",
+      "access": "full-text",
+      "documentKind": "Compte rendu original de l'équipe de conservation et d'archéobotanique",
+      "limitation": "Hypothèse de déplacement des graines donnée par les chercheurs ; le contenant de découverte ne suffit pas à établir son contenu initial.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What plant and insect remains can tell us ; Discoveries of food plants, paragraphe Seeds of flax, hemp and mustard",
+        "result": "Contexte des sédiments et entraînement probable des graines pendant ou après le naufrage lus directement dans le compte rendu de l'équipe."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-met-paper",
+      "title": "The Arts of the Book in the Islamic World, 1600–1800",
+      "organization": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/essays/the-arts-of-the-book-in-the-islamic-world-1600-1800",
+      "verifiedAt": "2026-11-16",
+      "author": "Marika Sardar",
+      "published": "2003-10-01",
+      "passage": "Fabrication du papier à partir de chiffons de lin et de chanvre dans le monde islamique.",
+      "access": "full-text",
+      "documentKind": "Étude de musée",
+      "limitation": "Cadre du livre illustré étudié par le musée ; ne signifie pas que tout papier ancien avait la même composition.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphe commençant The first step in creating a book",
+        "result": "Matière première textile relue dans l'étude du Met ; aucune recette de fabrication proposée dans le quiz."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-met-brahma",
+      "title": "Brahma with Attendants and Musicians",
+      "organization": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/39887",
+      "verifiedAt": "2026-11-16",
+      "author": "The Metropolitan Museum of Art, département Asian Art",
+      "published": "Notice non datée ; œuvre de la fin du XVIe siècle",
+      "passage": "Rouleau suspendu coréen : encre et couleurs sur chanvre ; peintures bouddhiques sur chanvre et commandes hors élite royale.",
+      "access": "catalogue",
+      "documentKind": "Notice de collection",
+      "limitation": "Identification du support de cette œuvre ; aucune règle universelle sur toute la peinture asiatique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Description et Artwork Details, Medium",
+        "result": "Support en chanvre et origine coréenne lus directement dans la notice du musée."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-cnrtl-canevas",
+      "title": "Canevas — Trésor de la langue française informatisé",
+      "organization": "CNRTL / ATILF, CNRS et Université de Lorraine",
+      "url": "https://www.cnrtl.fr/definition/canevas",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction du Trésor de la langue française",
+      "published": "Trésor de la langue française, 1960–1990 ; notice numérique non datée",
+      "passage": "Sens textile de grosse toile ; histoire du mot issue des formes chanevas/chenevas et du radical de can(n)apus, chanvre.",
+      "access": "official-page",
+      "documentKind": "Notice lexicographique institutionnelle",
+      "limitation": "Étymologie du mot ; un canevas contemporain peut employer d'autres fibres.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "A. Textile ; Étymologie et histoire, fin de l'entrée",
+        "result": "Lien lexical avec le chanvre relu ; distinction entre étymologie et composition actuelle."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-quillio",
+      "title": "Le patrimoine lié à l'histoire toilière du Quillio",
+      "organization": "Région Bretagne, Inventaire général du patrimoine culturel",
+      "url": "https://www.patrimoine.bzh/gertrude-diffusion/dossier/IA22133675",
+      "verifiedAt": "2026-11-16",
+      "author": "Héloïse Gibault ; Judith Tanguy-Schröer",
+      "published": "Enquête et rédaction 2023",
+      "passage": "Présentation : les bretagnes sont de fines toiles de lin du Centre-Bretagne.",
+      "access": "full-text",
+      "documentKind": "Enquête d'inventaire patrimonial",
+      "limitation": "Histoire du lin utilisée pour distinguer les productions régionales de celles en chanvre ; aucun fait nouveau de botanique cannabis.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Présentation, deux premiers paragraphes",
+        "result": "Fibre et zone de fabrication des bretagnes vérifiées ensemble."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-mpg-jirzankal",
+      "title": "The Origins of Cannabis Smoking: Marijuana Use in the First Millennium BC",
+      "organization": "Max Planck Institute for the Science of Human History ; University of the Chinese Academy of Sciences",
+      "url": "https://www.shh.mpg.de/1338259/origins-of-cannabis-smoking?c=1208760",
+      "verifiedAt": "2026-11-16",
+      "author": "Communiqué conjoint des institutions de l'équipe de Meng Ren et collègues",
+      "published": "2019-06-12",
+      "passage": "Jirzankal dans le Pamir oriental ; identification des résidus par chromatographie en phase gazeuse couplée à la spectrométrie de masse.",
+      "access": "official-page",
+      "documentKind": "Présentation originale des instituts auteurs",
+      "limitation": "Le communiqué ne donne pas tous les contrôles de l'article ; le quiz ne revendique pas une lecture actuelle du PDF inaccessible ni un premier usage mondial absolu.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Ouverture ; paragraphe The international research team used a method",
+        "result": "Localisation et méthode analytique relues. L'article PMC et ses miroirs ont bloqué l'accès ; aucune preuve non lue ajoutée."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-nps-ropewalk",
+      "title": "Ropewalk — Charlestown Navy Yard",
+      "organization": "U.S. National Park Service",
+      "url": "https://www.nps.gov/places/ropewalk-cny.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "National Park Service, Boston National Historical Park",
+      "published": "Page institutionnelle non datée dans le texte consulté",
+      "passage": "Cordages de chanvre goudronnés contre l'eau ; alternance des torsions des composants et résistance au décommettage.",
+      "access": "official-page",
+      "documentKind": "Patrimoine industriel, présentation du site",
+      "limitation": "Techniques décrites pour cette corderie ; pas une propriété exclusive à toute corde de chanvre.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphes Tar House ; A rope's strength comes from the multiple and opposite twisting",
+        "result": "Fonction du goudron et alternance des torsions lues, sans mémorisation des dimensions du bâtiment."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-nps-portage",
+      "title": "Engine Houses — Allegheny Portage Railroad",
+      "organization": "U.S. National Park Service",
+      "url": "https://www.nps.gov/alpo/learn/historyculture/stationary-engine-house.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "National Park Service, Allegheny Portage Railroad National Historic Site",
+      "published": "Mise à jour 2026-01-25",
+      "passage": "Les machines à vapeur fixes tiraient ou retenaient les véhicules sur les plans inclinés au moyen d'une corde de chanvre, ensuite remplacée par un câble métallique.",
+      "access": "official-page",
+      "documentKind": "Présentation patrimoniale du fonctionnement historique",
+      "limitation": "Fonctionnement de ce chemin de fer au XIXe siècle ; pas une consigne d'équipement ferroviaire actuel.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Operation, deuxième paragraphe",
+        "result": "Usage de traction du cordage de chanvre lu directement ; aucune longueur ou puissance arbitraire retenue."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-nps-climb",
+      "title": "First Technical Climb — Devils Tower",
+      "organization": "U.S. National Park Service",
+      "url": "https://www.nps.gov/deto/learn/historyculture/firsttechnicalclimb.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "Newell F. Joyner, compte rendu de 1937 reproduit par le National Park Service",
+      "published": "Compte rendu 1937 ; page mise à jour 2025-04-24",
+      "passage": "Les grimpeurs portaient des chaussures à semelles de chanvre permettant l'appui et la perception des fissures.",
+      "access": "full-text",
+      "documentKind": "Compte rendu primaire reproduit par une institution",
+      "limitation": "Équipement historique de l'ascension ; aucune recommandation de matériel d'escalade actuel.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Devils Tower Climbed, paragraphe The climbers wore ordinary hiking clothes",
+        "result": "Le rôle des semelles en chanvre est explicite dans le compte rendu reproduit."
+      }
+    },
+    {
+      "id": "q2-dlegacy01-baudelaire-morale",
+      "title": "Les Paradis artificiels, Le Poème du haschisch, V : Morale",
+      "organization": "Wikisource, transcription de l'édition Michel Lévy Frères",
+      "url": "https://fr.wikisource.org/wiki/Les_Paradis_artificiels/Le_Po%C3%A8me_du_haschisch/V",
+      "verifiedAt": "2026-11-16",
+      "author": "Charles Baudelaire",
+      "published": "Œuvre 1860 ; édition transcrite 1869",
+      "passage": "Critique morale de l'abdication de la volonté ; anecdote où Balzac examine puis refuse le dawamesk.",
+      "access": "full-text",
+      "documentKind": "Texte littéraire primaire, transcription vérifiée",
+      "limitation": "Jugement et témoignage de Baudelaire ; ne constitue ni une évaluation médicale actuelle ni une biographie exhaustive de Balzac.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "V, Morale, ouverture et paragraphes Balzac pensait / On lui présenta",
+        "result": "Critique de la volonté et réaction de Balzac relues dans le texte ; aucun détail de préparation repris."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "hemp-hc-001",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel écrivain raconte une soirée parisienne dans « Le Club des Hachichins », publié en 1846 ?",
+      "options": [
+        "Théophile Gautier",
+        "Gérard de Nerval",
+        "Honoré de Balzac",
+        "Alfred de Musset"
+      ],
+      "answer": 0,
+      "explanation": "Gautier signe ce récit dans la Revue des Deux Mondes. Le texte raconte une expérience et met en scène un narrateur ; il ne fournit pas un registre complet des membres d'une association.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "auteur du récit littéraire",
+        "expectedAnswer": "Théophile Gautier",
+        "learningObjective": "Identifier une œuvre littéraire primaire et son auteur, sans la traiter comme un registre administratif.",
+        "factKey": "gautier-club--auteur-theophile",
+        "form": "identification",
+        "difficultyRationale": "Auteur d'un récit spécialisé : connaissance intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-gautier",
+            "locator": "En-tête bibliographique, auteur et titre",
+            "support": "Le récit est signé Théophile Gautier."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; contexte littéraire et niveau révisés.",
+          "originalPrompt": "Quel écrivain publie « Le Club des Hachichins » en 1846 ?",
+          "finalFact": "gautier-club--auteur-theophile"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-002",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quel hôtel parisien Gautier situe-t-il la soirée racontée dans « Le Club des Hachichins » ?",
+      "options": [
+        "Hôtel Carnavalet",
+        "Hôtel Pimodan",
+        "Hôtel de Soubise",
+        "Hôtel de Sens"
+      ],
+      "answer": 1,
+      "explanation": "Le récit s'ouvre à l'hôtel Pimodan, aujourd'hui hôtel de Lauzun. Le lieu est identifiable ; l'œuvre littéraire ne documente pas pour autant toutes les rencontres historiques.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "lieu mis en scène dans le récit",
+        "expectedAnswer": "Hôtel Pimodan",
+        "learningObjective": "Distinguer un lieu documenté dans un récit de l'ensemble de l'histoire supposée du Club.",
+        "factKey": "gautier-club--lieu-hotel-pimodan",
+        "form": "identification",
+        "difficultyRationale": "Repère patrimonial parisien spécialisé : niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-gautier",
+            "locator": "I, L'hôtel Pimodan, premier paragraphe",
+            "support": "Le narrateur se rend à l'hôtel Pimodan."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; attribution au récit et niveau corrigés.",
+          "originalPrompt": "Dans quel hôtel parisien Gautier situe-t-il une réunion du Club des Hachichins ?",
+          "finalFact": "gautier-club--lieu-hotel-pimodan"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-003",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans les ateliers du livre du monde islamique étudiés par le Met, quelle matière alimentait la fabrication du papier ?",
+      "options": [
+        "Des plaques d'écorce de bouleau",
+        "Des fibres de papyrus entrecroisées",
+        "Des chiffons de lin et de chanvre",
+        "Des feuilles de palmier assemblées"
+      ],
+      "answer": 2,
+      "explanation": "L'étude du Met décrit le recyclage de chiffons de lin et de chanvre en papier. Les fibres textiles pouvaient ainsi connaître une seconde vie comme support de manuscrit.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-met-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le papier des manuscrits du monde islamique",
+        "subjectKey": "islamic-manuscript-rag-paper",
+        "property": "origine textile du papier de manuscrit",
+        "expectedAnswer": "Des chiffons de lin et de chanvre",
+        "learningObjective": "Reconnaître le recyclage textile dans l'histoire des supports de l'écrit.",
+        "factKey": "islamic-book-paper--linen-hemp-rags",
+        "form": "identification",
+        "difficultyRationale": "Quatre supports végétaux historiques plausibles ; connaissance intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-met-paper",
+            "locator": "Paragraphe The first step in creating a book",
+            "support": "Le papier était fabriqué à partir de chiffons de lin et de chanvre."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace la localisation insulaire de l'hôtel : connaissance matérielle plus utile.",
+          "originalPrompt": "Sur quelle île de Paris se trouve l’hôtel Pimodan, associé au Club des Hachichins ?",
+          "finalFact": "islamic-book-paper--linen-hemp-rags"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-004",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel médecin étudiait le fonctionnement psychique au moyen des expériences au haschisch associées à l'hôtel Pimodan ?",
+      "options": [
+        "Jean-Martin Charcot",
+        "Philippe Pinel",
+        "Jean-Étienne Esquirol",
+        "Jacques Moreau de Tours"
+      ],
+      "answer": 3,
+      "explanation": "Moreau de Tours associe ces expériences à une investigation de la pensée et des perceptions. Il s'agit de psychiatrie du XIXe siècle, antérieure aux essais cliniques modernes.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "médecin associé aux expériences parisiennes",
+        "expectedAnswer": "Jacques Moreau de Tours",
+        "learningObjective": "Situer le rôle de Moreau dans l'histoire de l'étude des états psychiques.",
+        "factKey": "moreau-club--medecin-organisateur",
+        "form": "identification",
+        "difficultyRationale": "Quatre médecins de l'histoire de la psychiatrie ; niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-institut",
+            "locator": "Présentation de la conférence, paragraphes 1 et 3",
+            "support": "L'IEA nomme Jacques Moreau de Tours et son objectif d'investigation psychique."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; contexte et distracteurs médicaux comparables.",
+          "originalPrompt": "Quel médecin est associé aux réunions expérimentales du Club des Hachichins ?",
+          "finalFact": "moreau-club--medecin-organisateur"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-005",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Le traité de Moreau de Tours de 1845 s'intitule « Du hachisch et de… ». Quelle suite annonce son sujet ?",
+      "options": [
+        "l'aliénation mentale",
+        "la physiologie du sommeil",
+        "la pathologie des nerfs",
+        "la médecine expérimentale"
+      ],
+      "answer": 0,
+      "explanation": "Le titre est Du hachisch et de l'aliénation mentale : études psychologiques. L'expression appartient au vocabulaire médical de l'époque ; le titre n'établit aucune efficacité thérapeutique actuelle.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-moreau"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "champ annoncé dans le titre du traité",
+        "expectedAnswer": "l'aliénation mentale",
+        "learningObjective": "Comprendre le domaine historique d'un traité à partir de son titre.",
+        "factKey": "moreau-1845--titre-alienation-mentale",
+        "form": "identification",
+        "difficultyRationale": "Connaissance bibliographique spécialisée, avec quatre domaines médicaux : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-moreau",
+            "locator": "Notice Google Books, titre et auteur",
+            "support": "Titre : Du hachisch et de l'aliénation mentale : études psychologiques, Moreau, 1845."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; choix médicaux plausibles et difficulté corrigée.",
+          "originalPrompt": "Complète le titre du traité de Moreau de Tours paru en 1845 : « Du hachisch et de… »",
+          "finalFact": "moreau-1845--titre-alienation-mentale"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-008",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "La « Teillouse » de Redon réunissait notamment des chanvriers et tisserands de Peillac. Quel type de rendez-vous était-ce ?",
+      "options": [
+        "Une vente judiciaire d'ateliers",
+        "Une foire commerciale",
+        "Une assemblée de corporation",
+        "Une fête de fin de récolte"
+      ],
+      "answer": 1,
+      "explanation": "La fiche patrimoniale décrit une foire de Redon fréquentée par cette communauté jusqu'en 1940. Peillac est la commune des artisans mentionnés, et non le lieu de la foire.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "La Teillouse de Redon",
+        "subjectKey": "teillouse-redon",
+        "property": "fonction d'une foire patrimoniale",
+        "expectedAnswer": "Une foire commerciale",
+        "learningObjective": "Relier un nom de rendez-vous traditionnel aux échanges de la filière textile.",
+        "factKey": "teillouse-redon--foire-chanvriers-tisserands",
+        "form": "identification",
+        "difficultyRationale": "Détail patrimonial local ; quatre événements collectifs comparables : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "PDF p. 17, paragraphe À Peillac",
+            "support": "La communauté se retrouvait à la foire de Redon, la Teillouse."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; événements comparables et niveau réestimé.",
+          "originalPrompt": "À quelle activité renvoyait la « Teillouse » de Redon, fréquentée notamment par les artisans de Peillac ?",
+          "finalFact": "teillouse-redon--foire-chanvriers-tisserands"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-009",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans le teillage traditionnel breton, quel usage domestique pouvait-on faire des morceaux de bois retirés des tiges de chanvre ?",
+      "options": [
+        "Du fil à repriser",
+        "Des semelles tressées",
+        "De la bourre à matelas",
+        "Des mèches de chandelle"
+      ],
+      "answer": 2,
+      "explanation": "L'inventaire breton mentionne leur récupération comme bourre à matelas et litière. Ces morceaux ligneux se distinguent des longues fibres réservées au filage et au tissage.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le teillage traditionnel breton",
+        "subjectKey": "brittany-hemp-teillage",
+        "property": "réemploi domestique des résidus ligneux",
+        "expectedAnswer": "De la bourre à matelas",
+        "learningObjective": "Reconnaître un ancien réemploi de la fraction ligneuse, distinct de la fibre textile.",
+        "factKey": "brittany-teillage--woody-residues-mattress-stuffing",
+        "form": "identification",
+        "difficultyRationale": "Choix d'objets domestiques fibreux plausibles ; niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-bretagne-process",
+            "locator": "Les techniques de séchage et de teillage, paragraphe Les morceaux de bois",
+            "support": "Les fragments de bois sont récupérés notamment pour servir de bourre à matelas."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace l'essor carolingien non corroboré par un usage patrimonial directement décrit.",
+          "originalPrompt": "Selon la fiche patrimoniale « Les savoir-faire du chanvre textile », quel souverain est associé à un essor vers l’an 800 ?",
+          "finalFact": "brittany-teillage--woody-residues-mattress-stuffing"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-010",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans l'étude de Yanghai de 2008, quelle origine moderne les auteurs envisagent-ils pour les phtalates détectés ?",
+      "options": [
+        "Les gants de laboratoire en caoutchouc",
+        "Les joints des flacons de prélèvement",
+        "Les conservateurs appliqués aux vestiges",
+        "Les sachets d'expédition en polyéthylène"
+      ],
+      "answer": 3,
+      "explanation": "Les auteurs soupçonnent les sachets en polyéthylène dans lesquels l'échantillon a été envoyé. Un composé détecté dans un vestige ne provient donc pas nécessairement des usages anciens de la plante.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le cannabis de la tombe M90 de Yanghai",
+        "subjectKey": "yanghai-m90",
+        "property": "origine moderne envisagée pour une contamination analytique",
+        "expectedAnswer": "Les sachets d'expédition en polyéthylène",
+        "learningObjective": "Reconnaître qu'un emballage moderne peut introduire un composé dans l'analyse d'un vestige ancien.",
+        "factKey": "yanghai-2008--phthalates-suspected-polythene-shipping-bags",
+        "form": "identification",
+        "difficultyRationale": "Quatre sources modernes de contamination plausibles ; connaissance de cas analytique de niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-yanghai",
+            "locator": "Results, Phytochemical analysis, paragraphe There were two phthalate peaks",
+            "support": "Les auteurs attribuent à titre d'hypothèse deux pics de phtalates aux sachets en polyéthylène dans lesquels les échantillons ont été fournis."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace l'identification du cannabis, déjà testée par hc029, par une contamination moderne envisagée dans les résultats de l'étude.",
+          "originalPrompt": "Dans la tombe M90 de Yanghai contenant du cannabis, quel âge avait approximativement le défunt ?",
+          "finalFact": "yanghai-2008--phthalates-suspected-polythene-shipping-bags"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-011",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quelle région montagneuse d'Asie se situe Jirzankal, le cimetière aux braseros contenant des traces de cannabis ?",
+      "options": [
+        "Le Pamir oriental",
+        "L'Altaï méridional",
+        "Le plateau du Tibet",
+        "Le Caucase oriental"
+      ],
+      "answer": 0,
+      "explanation": "Jirzankal se trouve dans le Pamir oriental, à l'ouest de la Chine actuelle. Cette localisation situe un contexte archéologique ; elle ne désigne pas le berceau unique des usages du cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-mpg-jirzankal"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le site de Jirzankal et ses vestiges",
+        "subjectKey": "jirzankal",
+        "property": "situation géographique du site",
+        "expectedAnswer": "Le Pamir oriental",
+        "learningObjective": "Situer une découverte dans les régions montagneuses d'Asie centrale.",
+        "factKey": "jirzankal--localisation-pamir-oriental",
+        "form": "identification",
+        "difficultyRationale": "Quatre régions asiatiques archéologiquement plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-mpg-jirzankal",
+            "locator": "Ouverture, paragraphe The current study",
+            "support": "Le cimetière de Jirzankal est situé dans le Pamir oriental."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; géographie comparable et nouvelle preuve accessible des instituts auteurs.",
+          "originalPrompt": "Dans quelle région se trouve Jirzankal, où des résidus de cannabis ont été trouvés dans des braseros ?",
+          "finalFact": "jirzankal--localisation-pamir-oriental"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-012",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "De quelle variété d'espagnol proviennent les formes « mariguana » et « marihuana » dans l'histoire du mot « marijuana » ?",
+      "options": [
+        "De l'espagnol rioplatense",
+        "De l'espagnol mexicain",
+        "De l'espagnol andalou",
+        "De l'espagnol canarien"
+      ],
+      "answer": 1,
+      "explanation": "Les dictionnaires relient ces formes à l'espagnol mexicain. Ce trajet linguistique est documenté, tandis que l'origine ultime du mot demeure incertaine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-merriam"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Histoire du mot marijuana",
+        "subjectKey": "marijuana-word-history",
+        "property": "variété d'espagnol à l'origine de l'emprunt",
+        "expectedAnswer": "De l'espagnol mexicain",
+        "learningObjective": "Distinguer une langue d'emprunt documentée d'une origine ultime incertaine.",
+        "factKey": "marihuana--emprunt-espagnol-mexicain",
+        "form": "identification",
+        "difficultyRationale": "Quatre variétés réelles d'espagnol ; fait linguistique intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-merriam",
+            "locator": "Word History, Etymology",
+            "support": "Emprunt à l'espagnol mexicain mariguana, marihuana ; origine incertaine."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; niveau et comparabilité des choix corrigés.",
+          "originalPrompt": "« Marihuana » est emprunté à une variété d’espagnol parlée surtout où ?",
+          "finalFact": "marihuana--emprunt-espagnol-mexicain"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-013",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel fondateur des États-Unis cultivait du chanvre à Mount Vernon pour les besoins de son domaine ?",
+      "options": [
+        "John Adams",
+        "James Madison",
+        "George Washington",
+        "Thomas Jefferson"
+      ],
+      "answer": 2,
+      "explanation": "Les archives de Mount Vernon documentent le chanvre de Washington pour cordages, sacs, toiles et filets. Elles ne permettent pas d'en déduire une consommation intoxicante.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le chanvre dans les archives de Mount Vernon",
+        "subjectKey": "mount-vernon-hemp",
+        "property": "cultivateur documenté par les archives du domaine",
+        "expectedAnswer": "George Washington",
+        "learningObjective": "Associer un domaine et ses archives à des usages matériels documentés du chanvre.",
+        "factKey": "mount-vernon--washington-hemp-crop",
+        "form": "identification",
+        "difficultyRationale": "Quatre fondateurs contemporains, dont certains agriculteurs : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-mount-vernon",
+            "locator": "Ouverture ; Washington's Use of Hemp",
+            "support": "Washington cultive du chanvre à Mount Vernon pour des usages industriels et les besoins du domaine."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; suppression des présidents d'époques éloignées.",
+          "originalPrompt": "Quel futur président américain cultivait du chanvre dans son domaine de Mount Vernon ?",
+          "finalFact": "mount-vernon--washington-hemp-crop"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-014",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Selon la présentation de l'IEA de Paris, dans l'appartement de quel peintre se tenaient les réunions de Pimodan ?",
+      "options": [
+        "Eugène Delacroix",
+        "Théodore Chassériau",
+        "Ernest Meissonnier",
+        "Ferdinand Boissard"
+      ],
+      "answer": 3,
+      "explanation": "L'IEA désigne l'appartement du peintre Ferdinand Boissard. Le rôle d'hôte est distinct d'une liste de participants réguliers ; la source ne prouve pas leur présence à chaque rencontre.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "artiste occupant le lieu des réunions",
+        "expectedAnswer": "Ferdinand Boissard",
+        "learningObjective": "Distinguer hôte, médecin organisateur et participants dans l'histoire des réunions.",
+        "factKey": "pimodan--hote-peintre-ferdinand-boissard",
+        "form": "identification",
+        "difficultyRationale": "Nom spécialisé et quatre peintres du XIXe siècle : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-institut",
+            "locator": "Présentation de la conférence, premier paragraphe",
+            "support": "Les réunions sont organisées dans l'appartement du peintre Ferdinand Boissard."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Nom limité à Ferdinand Boissard, attesté dans la source ; difficulté réestimée.",
+          "originalPrompt": "Quel peintre accueillait les réunions du Club des Hachichins à l’hôtel Pimodan ?",
+          "finalFact": "pimodan--hote-peintre-ferdinand-boissard"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-015",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans quelle revue littéraire paraît le récit de Gautier « Le Club des Hachichins » en 1846 ?",
+      "options": [
+        "Revue des Deux Mondes",
+        "Revue de Paris",
+        "L'Artiste",
+        "La Revue indépendante"
+      ],
+      "answer": 0,
+      "explanation": "Le récit paraît dans la Revue des Deux Mondes. Sa publication dans une revue littéraire invite à examiner le genre et la mise en scène du texte, en plus de son intérêt comme témoignage.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "support de publication du récit",
+        "expectedAnswer": "Revue des Deux Mondes",
+        "learningObjective": "Identifier le support littéraire d'une source historique sur le cannabis.",
+        "factKey": "gautier-club--revue-deux-mondes-publication",
+        "form": "identification",
+        "difficultyRationale": "Quatre revues artistiques ou littéraires actives au XIXe siècle : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-gautier",
+            "locator": "En-tête bibliographique, Revue des Deux Mondes, tome 13",
+            "support": "La transcription donne la revue de publication du récit."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; revues contemporaines et difficulté corrigée.",
+          "originalPrompt": "Quelle revue publie le récit « Le Club des Hachichins » de Gautier en 1846 ?",
+          "finalFact": "gautier-club--revue-deux-mondes-publication"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-016",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Le rouleau coréen « Brahma avec assistants et musiciens » conservé au Met est peint sur quel support textile ?",
+      "options": [
+        "Une étoffe de laine",
+        "Une toile de chanvre",
+        "Une étoffe de soie",
+        "Une toile de coton"
+      ],
+      "answer": 1,
+      "explanation": "La notice décrit de l'encre et des couleurs sur chanvre. Cet usage montre que le textile de chanvre pouvait servir de support à une peinture religieuse, au-delà de l'habillement.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-met-brahma"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le rouleau de Brahma sur chanvre au Met",
+        "subjectKey": "met-brahma-hemp-scroll",
+        "property": "usage artistique du textile de chanvre",
+        "expectedAnswer": "Une toile de chanvre",
+        "learningObjective": "Découvrir un usage du chanvre comme support pictural en Corée.",
+        "factKey": "met-brahma--hemp-painting-support",
+        "form": "identification",
+        "difficultyRationale": "Quatre supports textiles plausibles pour une œuvre : niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-met-brahma",
+            "locator": "Artwork Details, Medium",
+            "support": "Le support est du chanvre, peint à l'encre et aux couleurs."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace une ville d'édition peu instructive et insuffisamment prouvée.",
+          "originalPrompt": "Dans quelle ville paraît en 1845 « Du hachisch et de l’aliénation mentale » de Moreau de Tours ?",
+          "finalFact": "met-brahma--hemp-painting-support"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-019",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans sa présentation du Club des Hachichins, Erwan Pointeau-Lagadec distingue les réunions attestées de quelle image à déconstruire ?",
+      "options": [
+        "Une école de peinture subventionnée",
+        "Une clinique psychiatrique officielle",
+        "Une société secrète vouée à la drogue",
+        "Une société savante de botanique"
+      ],
+      "answer": 2,
+      "explanation": "Pointeau-Lagadec reconnaît des réunions réelles mais critique leur transformation en mythe de société secrète. Le conte de Gautier et l'enquête historique n'ont pas le même statut documentaire.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-research"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les rencontres parisiennes autour de Moreau et du Club des Hachichins",
+        "subjectKey": "club-hachichins",
+        "property": "distinction entre réunions attestées et mythe du Club",
+        "expectedAnswer": "Une société secrète vouée à la drogue",
+        "learningObjective": "Distinguer événement historique, représentation littéraire et mythe ultérieur.",
+        "factKey": "pointeau-lagadec--meetings-not-permanent-secret-society-proof",
+        "form": "identification",
+        "difficultyRationale": "Interprétation d'une distinction historiographique explicitement attribuée : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-research",
+            "locator": "Présentation du livre, premier paragraphe",
+            "support": "Le texte oppose la tenue attestée de réunions au mythe d'une société secrète de prosélytes de la drogue."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace la mémorisation d'une plage de dates par la conclusion historiographique attribuée.",
+          "originalPrompt": "Quelle période la présentation de la recherche historique retient-elle pour les rencontres de l’hôtel Pimodan ?",
+          "finalFact": "pointeau-lagadec--meetings-not-permanent-secret-society-proof"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-023",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Le mot « canevas », aujourd'hui aussi employé pour le plan d'un récit, est historiquement lié au nom de quelle plante textile ?",
+      "options": [
+        "Le lin",
+        "Le coton",
+        "Le jute",
+        "Le chanvre"
+      ],
+      "answer": 3,
+      "explanation": "Le TLFi relie canevas aux anciennes formes chanevas/chenevas et au radical du nom du chanvre. Cette origine lexicale ne fixe pas la composition de tous les canevas actuels.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-cnrtl-canevas"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Histoire du mot canevas",
+        "subjectKey": "canevas-word-history",
+        "property": "lien étymologique d'un mot textile",
+        "expectedAnswer": "Le chanvre",
+        "learningObjective": "Relier un mot courant à l'histoire des textiles sans confondre étymologie et composition.",
+        "factKey": "canevas--etymology-hemp-cannapus",
+        "form": "identification",
+        "difficultyRationale": "Quatre plantes textiles plausibles ; connaissance lexicale intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-cnrtl-canevas",
+            "locator": "Étymologie et histoire, fin de l'entrée",
+            "support": "Les formes anciennes dérivent du radical de can(n)apus, renvoyant au chanvre."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace la variante orthographique aux faux distracteurs par une histoire lexicale attestée.",
+          "originalPrompt": "Quelle variante orthographique de « marijuana » est attestée en espagnol mexicain ?",
+          "finalFact": "canevas--etymology-hemp-cannapus"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-027",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quelle zone étaient fabriquées les « bretagnes », fines toiles de lin à distinguer des olonnes de chanvre ?",
+      "options": [
+        "Le Centre-Bretagne",
+        "Le Léon",
+        "Le pays de Locronan",
+        "Le pays de Noyal-sur-Vilaine"
+      ],
+      "answer": 0,
+      "explanation": "Les bretagnes sont des toiles de lin du Centre-Bretagne. Leur nom ne s'applique pas à toutes les toiles bretonnes : d'autres zones et appellations correspondent au chanvre.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-quillio"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les toiles dites bretagnes",
+        "subjectKey": "brittany-bretagnes-linen",
+        "property": "zone de production d'un textile régional distinct du chanvre",
+        "expectedAnswer": "Le Centre-Bretagne",
+        "learningObjective": "Distinguer les productions de lin de celles de chanvre dans l'histoire textile régionale.",
+        "factKey": "bretagnes--lin-centre-bretagne",
+        "form": "identification",
+        "difficultyRationale": "Quatre territoires toiliers bretons ; niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-quillio",
+            "locator": "Présentation, deux premiers paragraphes",
+            "support": "Les fines toiles de lin du Centre-Bretagne composent la manufacture des bretagnes."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; preuve attachée soutenant ensemble la fibre et la localisation.",
+          "originalPrompt": "Dans quelle région bretonne les toiles appelées « Bretagnes » étaient-elles fabriquées ?",
+          "finalFact": "bretagnes--lin-centre-bretagne"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-028",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Au XIXe siècle, quel rôle les ouvriers britanniques ont-ils dans la mécanisation du textile breton décrite par l'Inventaire ?",
+      "options": [
+        "Former les ouvriers à la teinture des toiles",
+        "Former et encadrer le travail mécanique",
+        "Organiser l'exportation des toiles vers Londres",
+        "Négocier l'achat de fibres dans les ports britanniques"
+      ],
+      "answer": 1,
+      "explanation": "L'inventaire décrit des ouvriers britanniques déjà habitués au travail mécanique. Leur venue accompagne un transfert de compétences, dans une région où le textile artisanal existait déjà.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "La mécanisation du textile breton",
+        "subjectKey": "brittany-textile-mechanisation",
+        "property": "circulation des savoir-faire de mécanisation",
+        "expectedAnswer": "Former et encadrer le travail mécanique",
+        "learningObjective": "Comprendre le transfert de compétences qui accompagne l'industrialisation textile.",
+        "factKey": "brittany-mechanisation--british-workers-training",
+        "form": "identification",
+        "difficultyRationale": "Quatre rôles économiques ou techniques possibles d'un déplacement de travailleurs : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-bretagne-toiles",
+            "locator": "Présentation, paragraphes La main d'œuvre bretonne / Ils ont un rôle",
+            "support": "Les travailleurs britanniques interviennent dans la formation, l'encadrement et la productivité du travail mécanisé."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace le port identifiable par élimination ; fait d'histoire industrielle plus utile.",
+          "originalPrompt": "Quel port breton exportait des toiles de lin et de chanvre ?",
+          "finalFact": "brittany-mechanisation--british-workers-training"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-029",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle plante l'examen botanique a-t-il identifiée dans le panier de cuir et le bol de bois de la tombe M90 de Yanghai ?",
+      "options": [
+        "Du raisin",
+        "De l'orge",
+        "Du cannabis",
+        "De la coriandre"
+      ],
+      "answer": 2,
+      "explanation": "La matière avait d'abord été prise pour de la coriandre ; l'examen l'a identifiée comme du cannabis. Ce dépôt est observé, tandis que sa fonction médicinale ou divinatoire reste interprétée.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le cannabis de la tombe M90 de Yanghai",
+        "subjectKey": "yanghai-m90",
+        "property": "nature du dépôt végétal de la tombe",
+        "expectedAnswer": "Du cannabis",
+        "learningObjective": "Reconnaître l'identification scientifique d'un dépôt végétal parmi des plantes archéologiquement plausibles.",
+        "factKey": "yanghai-m90--cannabis-in-leather-basket-wooden-bowl",
+        "form": "identification",
+        "difficultyRationale": "Quatre plantes attestées dans le contexte archéobotanique régional ; niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-yanghai",
+            "locator": "Introduction, paragraphe Near the head and foot",
+            "support": "Le panier et le bol contiennent la matière d'abord présumée coriandre, puis identifiée comme Cannabis sativa."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; distracteurs végétaux plausibles, dont l'identification initiale.",
+          "originalPrompt": "Quels vestiges végétaux étaient présents dans la tombe M90 de Yanghai ?",
+          "finalFact": "yanghai-m90--cannabis-in-leather-basket-wooden-bowl"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-032",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Vers quelle fibre synthétique la corderie navale de Charlestown réoriente-t-elle sa production après les fibres végétales ?",
+      "options": [
+        "Le polyester",
+        "Le polypropylène",
+        "Le polyéthylène",
+        "Le nylon"
+      ],
+      "answer": 3,
+      "explanation": "Le NPS décrit une réorientation vers la recherche et la fabrication de cordages en nylon après 1955. Cette évolution illustre le remplacement progressif de fibres végétales dans certains équipements navals.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-nps-ropewalk"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les cordages de la corderie navale de Charlestown",
+        "subjectKey": "charlestown-hemp-ropemaking",
+        "property": "transition historique vers une fibre synthétique",
+        "expectedAnswer": "Le nylon",
+        "learningObjective": "Identifier un matériau qui succède aux fibres végétales dans une filière navale historique.",
+        "factKey": "charlestown-ropewalk--nylon-research-manufacture-transition",
+        "form": "identification",
+        "difficultyRationale": "Quatre polymères employés dans des cordages ; connaissance d'histoire technique de niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-nps-ropewalk",
+            "locator": "Paragraphe After 1955, the Ropewalk no longer made all the rope",
+            "support": "La Navy change la mission de la corderie pour la recherche et la fabrication de cordages en nylon, qui commence à remplacer les fibres végétales."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace l'objectif psychique déjà donné par hc004 par une propriété distincte de l'histoire des matériaux navals.",
+          "originalPrompt": "Pourquoi le médecin Moreau de Tours s’intéressait-il aux effets du haschisch ?",
+          "finalFact": "charlestown-ropewalk--nylon-research-manufacture-transition"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-033",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À Charlestown, quelle organisation des composants contribue à la résistance du cordage et l'empêche de se défaire ?",
+      "options": [
+        "Des sens de torsion alternés entre fils, torons et corde",
+        "Un sens de torsion identique pour fils, torons et corde",
+        "Des torons non tordus autour d'un seul fil central",
+        "Des fibres parallèles serrées sans torsion des composants"
+      ],
+      "answer": 0,
+      "explanation": "Le NPS décrit une alternance de torsions entre les composants du cordage. Elle contribue à sa résistance et l'empêche de se défaire ; la corde résulte d'un assemblage organisé de fibres.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-nps-ropewalk"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les cordages de la corderie navale de Charlestown",
+        "subjectKey": "charlestown-hemp-ropemaking",
+        "property": "alternance des torsions d'un cordage",
+        "expectedAnswer": "Des sens de torsion alternés entre fils, torons et corde",
+        "learningObjective": "Comprendre une logique d'assemblage mécanique d'un cordage de fibres végétales.",
+        "factKey": "charlestown-rope--opposite-component-twists",
+        "form": "identification",
+        "difficultyRationale": "Quatre organisations comparables des composants ; connaissance technique de niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-nps-ropewalk",
+            "locator": "Paragraphe A rope's strength comes from the multiple and opposite twisting",
+            "support": "Les torsions opposées donnent de la résistance et empêchent la corde de se défaire."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace la fréquence mensuelle d'un récit par une technique matérielle documentée.",
+          "originalPrompt": "Dans « Le Club des Hachichins » de Gautier, à quelle fréquence ont lieu les séances ?",
+          "finalFact": "charlestown-rope--opposite-component-twists"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-034",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Sur les plans inclinés de l'Allegheny Portage Railroad, quelle fonction remplissait une grosse corde de chanvre ?",
+      "options": [
+        "Commander à distance les freins des véhicules",
+        "Transmettre la traction aux véhicules",
+        "Lever les marchandises hors des véhicules",
+        "Manœuvrer les aiguillages d'accès aux plans"
+      ],
+      "answer": 1,
+      "explanation": "Une machine à vapeur fixe tirait ou retenait les véhicules au moyen de la corde de chanvre. Celle-ci a ensuite été remplacée par un câble métallique : un usage industriel bien au-delà de la marine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-nps-portage"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "La traction sur les plans de l’Allegheny Portage Railroad",
+        "subjectKey": "allegheny-hemp-haulage",
+        "property": "fonction ferroviaire du cordage de chanvre",
+        "expectedAnswer": "Transmettre la traction aux véhicules",
+        "learningObjective": "Découvrir un usage historique du chanvre dans la traction ferroviaire.",
+        "factKey": "allegheny-portage--hemp-rope-incline-haulage",
+        "form": "identification",
+        "difficultyRationale": "Quatre fonctions mécaniques plausibles d'un cordage ; l'histoire du système distingue la traction des véhicules des commandes et du levage : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-nps-portage",
+            "locator": "Operation, deuxième paragraphe",
+            "support": "La corde relie les machines à vapeur fixes aux véhicules tirés ou descendus sur les plans inclinés."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; quatre fonctions mécaniques de cordage remplacent les fonctions de chaudière ou de cheminée.",
+          "originalPrompt": "Quel prénom de participante au Club des Hachichins est cité dans la biographie de Moreau publiée par l’Université de Tours ?",
+          "finalFact": "allegheny-portage--hemp-rope-incline-haulage"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-035",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans le compte rendu de l'ascension technique de Devils Tower en 1937, quelle partie des chaussures des grimpeurs est en chanvre ?",
+      "options": [
+        "La doublure intérieure",
+        "Le renfort du talon",
+        "Les semelles d'appui",
+        "Les lacets de serrage"
+      ],
+      "answer": 2,
+      "explanation": "Joyner décrit des semelles de chanvre qui favorisaient l'appui tout en laissant sentir les fissures. C'est un témoignage sur un équipement historique, pas une recommandation pour l'escalade actuelle.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-nps-climb"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les chaussures de l’ascension de Devils Tower en 1937",
+        "subjectKey": "devils-tower-1937-hemp-shoes",
+        "property": "partie de la chaussure en chanvre lors d'une ascension",
+        "expectedAnswer": "Les semelles d'appui",
+        "learningObjective": "Découvrir un usage du chanvre dans un équipement sportif historique.",
+        "factKey": "devils-tower-1937--hemp-shoe-soles",
+        "form": "identification",
+        "difficultyRationale": "Anecdote technique précise, quatre parties de chaussure : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-nps-climb",
+            "locator": "Compte rendu Devils Tower Climbed, paragraphe The climbers wore",
+            "support": "Les chaussures ont de lourdes semelles de chanvre permettant appui et perception des fissures."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace la localité d'envoi d'une lettre non consultée par un compte rendu primaire.",
+          "originalPrompt": "D’après la lettre citée par Michel Caire, de quelle localité Balzac écrit-il à Moreau après une soirée ?",
+          "finalFact": "devils-tower-1937--hemp-shoe-soles"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-037",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À Mount Vernon, quel équipement de pêche les archives citées par le domaine associent-elles à des réparations en chanvre ?",
+      "options": [
+        "Les voiles des bateaux de pêche",
+        "Les tresses des casiers à poissons",
+        "Les lignes de pêche individuelles",
+        "Les grands filets de senne"
+      ],
+      "answer": 3,
+      "explanation": "Les sources de Mount Vernon citent la réparation de sennes utilisées sur le Potomac. Une senne est un grand filet ; la fibre textile participait ainsi au fonctionnement de la pêche du domaine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le chanvre dans les archives de Mount Vernon",
+        "subjectKey": "mount-vernon-hemp",
+        "property": "équipement de pêche réparé avec la fibre",
+        "expectedAnswer": "Les grands filets de senne",
+        "learningObjective": "Relier les fibres de chanvre à un équipement de pêche documenté.",
+        "factKey": "mount-vernon--hemp-repair-seine-nets",
+        "form": "identification",
+        "difficultyRationale": "Quatre équipements de pêche susceptibles d'employer des fibres : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-mount-vernon",
+            "locator": "Why Grow Hemp? ; Washington's Use of Hemp",
+            "support": "Le chanvre servait à réparer les grands filets de senne des pêcheries."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; choix fibreux comparables et niveau réestimé.",
+          "originalPrompt": "À Mount Vernon, quels équipements de pêche étaient réparés avec du chanvre ?",
+          "finalFact": "mount-vernon--hemp-repair-seine-nets"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-039",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel outil manuel cassait la partie ligneuse des tiges de chanvre dans le teillage traditionnel breton ?",
+      "options": [
+        "La braie, ou broye",
+        "La pesselle",
+        "Le peigne à longues dents",
+        "Le rouet"
+      ],
+      "answer": 0,
+      "explanation": "La braie possède une partie mobile qui brise le bois de la tige. La pesselle et les peignes poursuivent ensuite la préparation ; le rouet sert à filer.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le teillage traditionnel breton",
+        "subjectKey": "brittany-hemp-teillage",
+        "property": "outil manuel qui brise le bois de la tige",
+        "expectedAnswer": "La braie, ou broye",
+        "learningObjective": "Distinguer les fonctions d'outils manuels d'une chaîne textile.",
+        "factKey": "brittany-hemp--braie-breaks-woody-core",
+        "form": "identification",
+        "difficultyRationale": "Quatre outils réels de préparation ou de filage ; niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-bretagne-process",
+            "locator": "Les techniques de séchage et de teillage, paragraphes braie et peignes",
+            "support": "La braie ou broye casse le squelette de bois de la plante."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; suppression du moulin à vent hors catégorie.",
+          "originalPrompt": "Quel outil brisait la partie ligneuse des tiges lors du teillage manuel du chanvre en Bretagne ?",
+          "finalFact": "brittany-hemp--braie-breaks-woody-core"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-041",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Sur le Rooswijk, des graines dont du chanvre viennent des sédiments de plusieurs récipients. Quelle explication l'équipe propose-t-elle ?",
+      "options": [
+        "Un stockage volontaire pour les repas à bord",
+        "Un entraînement dans les récipients pendant ou après le naufrage",
+        "Un dépôt d'offrande dans les récipients avant le départ",
+        "Une préparation de lots de semences pour leur transport"
+      ],
+      "answer": 1,
+      "explanation": "L'équipe propose un entraînement des grains et graines dans les objets pendant ou après le naufrage. Elle ne distribue pas chaque espèce entre les récipients ; le lieu de découverte ne fixe pas leur contenu initial.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-rooswijk"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les graines du naufrage du Rooswijk",
+        "subjectKey": "rooswijk-seed-deposition",
+        "property": "déplacement des graines après la perte d'un navire",
+        "expectedAnswer": "Un entraînement dans les récipients pendant ou après le naufrage",
+        "learningObjective": "Distinguer le contenant de découverte d'une graine de son lieu de stockage ou d'usage initial.",
+        "factKey": "rooswijk-hemp-seeds--wreck-water-redeposition-vessels",
+        "form": "situation",
+        "difficultyRationale": "Comprendre un déplacement de vestiges dans un contexte de naufrage : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-rooswijk",
+            "locator": "Discoveries of food plants, paragraphe Seeds of flax, hemp and mustard",
+            "support": "Le passage énumère collectivement grains et graines, puis les sédiments d'une lampe, d'une cruche et d'une bouteille. Il propose un entraînement dans ces objets pendant ou peu après le naufrage, sans attribuer chaque espèce à un récipient précis."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Formulation collective fidèle à la source ; suppression de l'association particulière chanvre-lampe non établie par le passage.",
+          "originalPrompt": "Quel site thaïlandais est cité dans l’étude de Haimenkou pour des textiles identifiés comme chanvre vers 400 avant notre ère ?",
+          "finalFact": "rooswijk-hemp-seeds--wreck-water-redeposition-vessels"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-042",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel statut faut-il donner à l'explication de « marijuana » par la réunion des prénoms « María » et « Juana » ?",
+      "options": [
+        "Une traduction littérale du nom savant latin",
+        "Un emprunt documenté à un nom de botaniste",
+        "Un rapprochement populaire, pas une origine établie",
+        "Une contraction espagnole historiquement certifiée"
+      ],
+      "answer": 2,
+      "explanation": "L'origine ultime reste incertaine. Les anciennes graphies mariguana et marihuana ne permettent pas de présenter simplement les deux prénoms comme l'origine démontrée du mot.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-merriam"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Histoire du mot marijuana",
+        "subjectKey": "marijuana-word-history",
+        "property": "statut du rapprochement avec deux prénoms",
+        "expectedAnswer": "Un rapprochement populaire, pas une origine établie",
+        "learningObjective": "Identifier une étymologie populaire sans la transformer en certitude historique.",
+        "factKey": "marijuana--maria-juana-folk-etymology-unproven",
+        "form": "identification",
+        "difficultyRationale": "Quatre types d'explication étymologique ; niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-merriam",
+            "locator": "Word History, Etymology et note sur les attestations mexicaines",
+            "support": "L'origine est dite incertaine malgré plusieurs hypothèses ; les formes anciennes sont mariguana et marihuana."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; quatre hypothèses lexicales au lieu d'un distracteur botanique hors sujet.",
+          "originalPrompt": "Quel rapport étymologique est établi entre « marijuana » et « María Juana » ?",
+          "finalFact": "marijuana--maria-juana-folk-etymology-unproven"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-046",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Quelle méthode l'équipe de Jirzankal emploie-t-elle pour identifier les composés conservés dans les braseros funéraires ?",
+      "options": [
+        "Datation radiocarbone des cernes du bois",
+        "Microscopie des fibres en lumière polarisée",
+        "Analyse des isotopes du strontium des dents",
+        "Chromatographie gazeuse couplée à la spectrométrie de masse"
+      ],
+      "answer": 3,
+      "explanation": "La GC-MS sépare des composés puis caractérise leurs signatures moléculaires. Cette identification chimique complète le contexte de fouille ; elle se distingue de la datation et de l'étude de mobilité humaine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-mpg-jirzankal"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le site de Jirzankal et ses vestiges",
+        "subjectKey": "jirzankal",
+        "property": "méthode de caractérisation moléculaire des résidus",
+        "expectedAnswer": "Chromatographie gazeuse couplée à la spectrométrie de masse",
+        "learningObjective": "Distinguer identification de résidus, datation, identification textile et étude de mobilité.",
+        "factKey": "jirzankal--gc-ms-residue-identification",
+        "form": "identification",
+        "difficultyRationale": "Quatre méthodes archéométriques réelles et fonctions à distinguer : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-mpg-jirzankal",
+            "locator": "Paragraphe The international research team used a method",
+            "support": "Le communiqué des instituts auteurs nomme la gas chromatography-mass spectrometry pour identifier les composés conservés."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace l'altitude exacte d'une zone par une méthode de preuve utile.",
+          "originalPrompt": "À quelle altitude se trouvait la zone B du cimetière de Jirzankal ?",
+          "finalFact": "jirzankal--gc-ms-residue-identification"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-047",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelles conditions les auteurs invoquent-ils pour expliquer la conservation exceptionnelle des vestiges végétaux de Yanghai ?",
+      "options": [
+        "Aridité, tombes profondes et sols alcalins",
+        "Gel permanent, tombes ouvertes et sols sableux",
+        "Immersion, tourbe acide et tombes superficielles",
+        "Humidité tropicale, sols argileux et racines denses"
+      ],
+      "answer": 0,
+      "explanation": "L'article cite l'aridité, la profondeur des tombes et l'alcalinité du sol. Ce sont des conditions proposées pour ce site ; la bonne conservation ne révèle pas l'emploi exact du cannabis déposé.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le cannabis de la tombe M90 de Yanghai",
+        "subjectKey": "yanghai-m90",
+        "property": "conditions de conservation des vestiges",
+        "expectedAnswer": "Aridité, tombes profondes et sols alcalins",
+        "learningObjective": "Relier un contexte de conservation à la nature des vestiges disponibles, sans causalité universelle.",
+        "factKey": "yanghai-m90--arid-deep-alkaline-preservation",
+        "form": "identification",
+        "difficultyRationale": "Quatre environnements de conservation plausibles ; niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-yanghai",
+            "locator": "Introduction, paragraphe Due to a combination of deep graves",
+            "support": "Les auteurs associent profondeur, aridité extrême et sols alcalins à la conservation remarquable."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; attribution et limites explicites, abandon du niveau 4 injustifié.",
+          "originalPrompt": "Quelles conditions ont favorisé la conservation du cannabis dans la tombe M90 de Yanghai ?",
+          "finalFact": "yanghai-m90--arid-deep-alkaline-preservation"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-048",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Les tailles des graines de Haimenkou recouvrent celles des groupes fibre/huile et psychoactif. Quelle interprétation est justifiée ?",
+      "options": [
+        "Les dimensions intermédiaires indiquent des usages mixtes",
+        "La taille sert d'indice, sans assigner un usage certain",
+        "Le groupe majoritaire précise l'usage de chaque graine",
+        "La taille permet d'estimer la teneur ancienne en THC"
+      ],
+      "answer": 1,
+      "explanation": "Les tailles se recouvrent largement dans l'étude. Les mesures peuvent éclairer la diversification du cannabis, mais elles ne donnent pas à chaque graine une fonction certaine ni sa teneur initiale en THC.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-haimenkou"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les graines de cannabis de Haimenkou",
+        "subjectKey": "haimenkou-archaeobotany",
+        "property": "limite de la classification morphométrique",
+        "expectedAnswer": "La taille sert d'indice, sans assigner un usage certain",
+        "learningObjective": "Comprendre une limite de classement lorsque des distributions morphologiques se recouvrent.",
+        "factKey": "haimenkou--overlapping-seed-size-not-certain-use",
+        "form": "deduction",
+        "difficultyRationale": "Quatre interprétations concurrentes du pouvoir de classement de la taille ; distinction entre indice et attribution certaine : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-haimenkou",
+            "locator": "Results, Haimenkou cannabis grain metrics ; Abstract",
+            "support": "La majorité des graines de Haimenkou se place dans la zone de recouvrement des tailles fibre/huile et psychoactives."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Concept conservé ; les choix portent désormais sur l'attribution d'usage, l'usage mixte, le groupe majoritaire et l'estimation chimique.",
+          "originalPrompt": "Selon la synthèse archéobotanique de 2025, à quelle culture sont associées les graines d’Oki-no-shima ?",
+          "finalFact": "haimenkou--overlapping-seed-size-not-certain-use"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-050",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "À Haimenkou, un amas surtout composé de graines de cannabis propres conduit Dal Martello et ses collègues à privilégier quelle hypothèse ?",
+      "options": [
+        "Un dépôt de graines d'offrande funéraire",
+        "Un amas de graines de plantes adventices",
+        "Un stock de graines alimentaires",
+        "Un stock de semences destinées aux semis"
+      ],
+      "answer": 2,
+      "explanation": "Les auteurs proposent un stockage comme graine alimentaire à partir d'un dépôt concentré et peu mélangé. Cette interprétation s'appuie sur le contexte, en plus des dimensions des graines.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-haimenkou"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les graines de cannabis de Haimenkou",
+        "subjectKey": "haimenkou-archaeobotany",
+        "property": "hypothèse d'usage appuyée par le contexte du dépôt",
+        "expectedAnswer": "Un stock de graines alimentaires",
+        "learningObjective": "Relier une hypothèse d'usage archéologique à la composition et à la concentration d'un dépôt.",
+        "factKey": "haimenkou--clean-seed-cluster-food-storage-hypothesis",
+        "form": "identification",
+        "difficultyRationale": "Interprétation contextualisée d'un dépôt, quatre hypothèses portant sur des graines : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-haimenkou",
+            "locator": "Results, Haimenkou cannabis grain metrics, paragraphe The archaeological contexts",
+            "support": "Un échantillon presque exclusivement composé de graines est interprété comme un amas carbonisé provenant d'une unité de stockage alimentaire."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace la comparaison de Pazyryk non vérifiée dans le compte rendu original.",
+          "originalPrompt": "Selon la discussion de l’étude de Jirzankal, quel objet était associé aux récipients de la tombe 2 de Pazyryk ?",
+          "finalFact": "haimenkou--clean-seed-cluster-food-storage-hypothesis"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-051",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans la partie « Morale » du Poème du haschisch, quelle faculté Baudelaire place-t-il au cœur de sa critique ?",
+      "options": [
+        "L'imagination créatrice",
+        "Le jugement moral",
+        "La mémoire des impressions",
+        "La volonté d'agir"
+      ],
+      "answer": 3,
+      "explanation": "Baudelaire condamne surtout ce qu'il voit comme une abdication de la volonté. C'est le jugement moral d'un écrivain du XIXe siècle, à lire comme tel et sans le substituer à une évaluation médicale actuelle.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-baudelaire-morale"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le Poème du haschisch de Baudelaire",
+        "subjectKey": "paradis-artificiels",
+        "property": "enjeu de la critique morale littéraire",
+        "expectedAnswer": "La volonté d'agir",
+        "learningObjective": "Comprendre une position littéraire sur le haschisch, au lieu de mémoriser seulement une date.",
+        "factKey": "baudelaire-morale--criticism-abdication-will",
+        "form": "identification",
+        "difficultyRationale": "Quatre facultés intellectuelles pertinentes dans une critique littéraire ; identification de l'enjeu spécifique de Morale : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-baudelaire-morale",
+            "locator": "V, Morale, ouverture et paragraphe Balzac pensait",
+            "support": "La volonté est désignée comme la plus précieuse des facultés ; l'abdication de celle-ci structure la critique."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; facultés intellectuelles concurrentes au lieu de fonctions neurologiques éloignées.",
+          "originalPrompt": "En quelle année Baudelaire publie-t-il Les Paradis artificiels ?",
+          "finalFact": "baudelaire-morale--criticism-abdication-will"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-052",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Selon Baudelaire dans « Morale », comment Balzac réagit-il lorsqu'on lui présente du dawamesk lors d'une réunion ?",
+      "options": [
+        "Il l'examine puis le rend sans y toucher",
+        "Il en demande une seconde portion",
+        "Il le distribue aux autres invités",
+        "Il l'emporte pour une expérience ultérieure"
+      ],
+      "answer": 0,
+      "explanation": "Baudelaire raconte que Balzac examine et flaire la préparation puis la refuse. Dans ce témoignage précis, être présent et curieux ne signifie donc pas avoir consommé.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-baudelaire-morale"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le Poème du haschisch de Baudelaire",
+        "subjectKey": "paradis-artificiels",
+        "property": "réaction d'un écrivain rapportée par un témoin littéraire",
+        "expectedAnswer": "Il l'examine puis le rend sans y toucher",
+        "learningObjective": "Distinguer présence à une réunion et consommation à partir d'un témoignage précisément attribué.",
+        "factKey": "baudelaire-morale--balzac-examined-refused-dawamesk",
+        "form": "anecdote",
+        "difficultyRationale": "Anecdote littéraire précise, quatre réactions possibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-baudelaire-morale",
+            "locator": "V, Morale, paragraphes Balzac pensait / On lui présenta",
+            "support": "Baudelaire affirme que Balzac examine, flaire puis rend le dawamesk sans y toucher."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Remplace une question sur l'opium et de Quincey par un témoignage directement lié au haschisch.",
+          "originalPrompt": "Quel auteur anglais Baudelaire reprend-il dans « Un mangeur d’opium », une partie des « Paradis artificiels » ?",
+          "finalFact": "baudelaire-morale--balzac-examined-refused-dawamesk"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-054",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel historien grec évoque le chanvre et des pratiques scythes au livre IV de ses Histoires ?",
+      "options": [
+        "Polybe",
+        "Hérodote",
+        "Thucydide",
+        "Xénophon"
+      ],
+      "answer": 1,
+      "explanation": "Hérodote décrit le chanvre, des textiles thraces et des pratiques scythes. Son texte est un témoignage littéraire antique, distinct des preuves matérielles apportées par les fouilles modernes.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-herodotus"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le témoignage antique d’Hérodote",
+        "subjectKey": "herodotus-hemp-scythians",
+        "property": "auteur d'un témoignage antique",
+        "expectedAnswer": "Hérodote",
+        "learningObjective": "Identifier et situer un témoignage antique sans le confondre avec un résultat de fouille.",
+        "factKey": "herodotus-histories--scythian-hemp-account",
+        "form": "identification",
+        "difficultyRationale": "Quatre historiens grecs réels ; connaissance spécialisée de niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-herodotus",
+            "locator": "Histoires IV, passages chanvre / Scythes, traduction Rawlinson",
+            "support": "Le passage sur chanvre et Scythes appartient au livre IV d'Hérodote."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; historiens comparables et difficulté réestimée.",
+          "originalPrompt": "Quel auteur grec décrit des usages du chanvre chez les Scythes dans ses « Histoires » ?",
+          "finalFact": "herodotus-histories--scythian-hemp-account"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-055",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la corderie de Charlestown, quel rôle le NPS attribue-t-il au goudron appliqué sur les cordages de chanvre ?",
+      "options": [
+        "Réduire le frottement dans les poulies",
+        "Accroître la souplesse des torons",
+        "Limiter la pénétration de l'eau",
+        "Diminuer le glissement dans les nœuds"
+      ],
+      "answer": 2,
+      "explanation": "Le NPS décrit le goudronnage du chanvre dans un bâtiment voisin de la corderie afin de protéger les cordages de l'eau. Ce traitement accompagne l'usage maritime des fibres végétales.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-dlegacy01-nps-ropewalk"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Les cordages de la corderie navale de Charlestown",
+        "subjectKey": "charlestown-hemp-ropemaking",
+        "property": "fonction du traitement historique des cordages",
+        "expectedAnswer": "Limiter la pénétration de l'eau",
+        "learningObjective": "Comprendre la fonction d'un traitement de protection d'un matériau maritime historique.",
+        "factKey": "charlestown-hemp--tar-water-protection",
+        "form": "identification",
+        "difficultyRationale": "Fonction familière d'un revêtement protecteur, parmi des effets plausibles d'un traitement de cordage : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy01-nps-ropewalk",
+            "locator": "Paragraphe Tar House",
+            "support": "Le goudron est appliqué pour rendre les cordages de chanvre résistants à l'eau."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Fait conservé ; comparaison de fonctions plausibles de traitement de cordage, avec attribution précise au NPS.",
+          "originalPrompt": "Quelle longueur de cordage naval illustre la fiche patrimoniale « Les savoir-faire du chanvre textile » ?",
+          "finalFact": "charlestown-hemp--tar-water-protection"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-056",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Que désigne le mot provençal auquel la fiche patrimoniale relie le nom marseillais « Canebière » ?",
+      "options": [
+        "Une filature",
+        "Une corderie",
+        "Une huilerie",
+        "Une chanvrière"
+      ],
+      "answer": 3,
+      "explanation": "La fiche relie Canebière à une chanvrière, un terrain cultivé en chanvre. Le nom de cette artère urbaine garde ainsi la trace d'un vocabulaire agricole et textile.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le nom de la Canebière",
+        "subjectKey": "canebiere-hemp-toponym",
+        "property": "sens agricole d'un toponyme urbain",
+        "expectedAnswer": "Une chanvrière",
+        "learningObjective": "Repérer la mémoire d'une plante et d'une activité dans un nom de lieu.",
+        "factKey": "canebiere--provencal-hemp-field",
+        "form": "identification",
+        "difficultyRationale": "Quatre lieux de la filière végétale ; étymologie locale de niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "PDF p. 16, paragraphe sur les villes approvisionnées",
+            "support": "Canebière est donnée comme signifiant chanvrière en langue provençale."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; choix de lieux comparables et difficulté réestimée.",
+          "originalPrompt": "Que désigne le mot provençal à l’origine du nom « Canebière » ?",
+          "finalFact": "canebiere--provencal-hemp-field"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-059",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quels usages techniques de l'huile de graines de chanvre la présentation historique de Mount Vernon documente-t-elle ?",
+      "options": [
+        "Peintures, vernis et savons",
+        "Colles d'amidon et pâtes à papier",
+        "Bains d'indigo et mordants d'alun",
+        "Encres au charbon et teintures de garance"
+      ],
+      "answer": 0,
+      "explanation": "La page mentionne l'huile de graines dans les peintures, vernis et savons, comme l'huile de lin. Les graines ont ainsi fourni des matières techniques en plus de leur intérêt alimentaire.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Usages techniques historiques de l’huile de chanvre",
+        "subjectKey": "hemp-oil-historical-technical-uses",
+        "property": "usages techniques historiques de l'huile",
+        "expectedAnswer": "Peintures, vernis et savons",
+        "learningObjective": "Distinguer l'huile technique des fibres et des ingrédients végétaux d'autres métiers.",
+        "factKey": "hempseed-oil-history--paints-varnishes-soaps",
+        "form": "identification",
+        "difficultyRationale": "Quatre ensembles de fabrications végétales historiques plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-mount-vernon",
+            "locator": "Hemp History, liste des produits",
+            "support": "L'huile des graines est utilisée dans des peintures, vernis et savons."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; remplacement des métaux et du verre par des techniques végétales comparables.",
+          "originalPrompt": "Outre l’alimentation, quel usage ancien de l’huile de graines de chanvre est documenté ?",
+          "finalFact": "hempseed-oil-history--paints-varnishes-soaps"
+        }
+      }
+    },
+    {
+      "id": "hemp-hc-060",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Selon l'Académie française, par quelle langue « marihuana » est-il passé de l'espagnol mexicain au français ?",
+      "options": [
+        "L'allemand",
+        "L'anglais des États-Unis",
+        "Le portugais du Brésil",
+        "L'italien"
+      ],
+      "answer": 1,
+      "explanation": "L'Académie indique un emprunt par l'anglais des États-Unis. La circulation d'un mot entre langues est distincte de son origine ultime, qui demeure incertaine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-etymology"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Histoire du mot marijuana",
+        "subjectKey": "marijuana-word-history",
+        "property": "langue intermédiaire de l'emprunt français",
+        "expectedAnswer": "L'anglais des États-Unis",
+        "learningObjective": "Reconnaître une langue relais dans l'histoire d'un emprunt lexical.",
+        "factKey": "marihuana-french--american-english-intermediary",
+        "form": "identification",
+        "difficultyRationale": "Trajet linguistique spécialisé ; niveau 3 sans prétention d'expertise médicale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-etymology",
+            "locator": "Entrée marihuana, Étymologie",
+            "support": "Le français emprunte par l'intermédiaire de l'anglais des États-Unis à l'espagnol du Mexique."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; difficulté ramenée de 4 à 3.",
+          "originalPrompt": "Par quelle langue le français a-t-il emprunté « marihuana » à l’espagnol mexicain ?",
+          "finalFact": "marihuana-french--american-english-intermediary"
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1937-law",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel texte américain de 1937 organisait taxation, enregistrement et obligations de transfert concernant la « marihuana » ?",
+      "options": [
+        "Harrison Narcotics Tax Act",
+        "Pure Food and Drug Act",
+        "Marihuana Tax Act",
+        "Controlled Substances Act"
+      ],
+      "answer": 2,
+      "explanation": "Le Marihuana Tax Act emploie un dispositif fiscal et d'enregistrement. Ses contraintes historiques ne se résument pas à une définition interdisant toute partie de la plante ; le texte prévoit des exclusions.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le Marihuana Tax Act de 1937",
+        "subjectKey": "marihuana-tax-act",
+        "property": "identification d'un dispositif fiscal historique",
+        "expectedAnswer": "Marihuana Tax Act",
+        "learningObjective": "Identifier la logique fiscale d'un texte historique américain sans la confondre avec le droit actuel.",
+        "factKey": "marihuana-tax-act--occupational-transfer-taxes-1937",
+        "form": "identification",
+        "difficultyRationale": "Quatre lois fédérales réelles, aux objets ou périodes distincts : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-statutes",
+            "locator": "50 Stat. 551, chapitre 553, intitulé ; §2 et transferts",
+            "support": "Le texte impose taxes professionnelles et de transfert, avec enregistrement."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; précision du mécanisme et niveau corrigés.",
+          "originalPrompt": "Quel texte fédéral américain de 1937 a instauré une forte taxation des opérations liées au cannabis ?",
+          "finalFact": "marihuana-tax-act--occupational-transfer-taxes-1937"
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-csa-name",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel texte américain de 1970 a organisé le contrôle fédéral des substances en cinq catégories appelées schedules ?",
+      "options": [
+        "Marihuana Tax Act",
+        "Harrison Narcotics Tax Act",
+        "Pure Food and Drug Act",
+        "Controlled Substances Act"
+      ],
+      "answer": 3,
+      "explanation": "Le Controlled Substances Act organise cinq schedules fédéraux américains. Ces catégories appartiennent au dispositif des États-Unis ; elles ne sont pas les tableaux des conventions de l'ONU.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-csa-policy"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "Le Controlled Substances Act de 1970",
+        "subjectKey": "controlled-substances-act",
+        "property": "création historique du système de catégories fédérales",
+        "expectedAnswer": "Controlled Substances Act",
+        "learningObjective": "Distinguer le système fédéral américain des classements conventionnels internationaux.",
+        "factKey": "controlled-substances-act--five-schedules-system-1970",
+        "form": "identification",
+        "difficultyRationale": "Identification d'une loi étrangère spécialisée ; niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-csa-policy",
+            "locator": "DEA Drug Policy, The Controlled Substances Act of 1970",
+            "support": "Le CSA organise les substances en cinq schedules."
+          }
+        ],
+        "legacyRevision": {
+          "reason": "Même fait ; lois fédérales comparables et niveau corrigé.",
+          "originalPrompt": "Quel texte fédéral américain de 1970 a créé un système de cinq catégories de substances contrôlées ?",
+          "finalFact": "controlled-substances-act--five-schedules-system-1970"
+        }
+      }
+    }
+  ],
+  "authoringSummary": {
+    "reservedEntries": 40,
+    "submittedQuestions": 40,
+    "correctedVersions": 40,
+    "replacedFacts": [
+      "hemp-hc-003",
+      "hemp-hc-009",
+      "hemp-hc-010",
+      "hemp-hc-016",
+      "hemp-hc-019",
+      "hemp-hc-023",
+      "hemp-hc-028",
+      "hemp-hc-033",
+      "hemp-hc-034",
+      "hemp-hc-035",
+      "hemp-hc-041",
+      "hemp-hc-046",
+      "hemp-hc-048",
+      "hemp-hc-050",
+      "hemp-hc-051",
+      "hemp-hc-052",
+      "hemp-hc-055",
+      "hemp-hc-032"
+    ],
+    "levels": {
+      "1": 1,
+      "2": 31,
+      "3": 8
+    },
+    "forms": {
+      "identification": 37,
+      "situation": 1,
+      "deduction": 1,
+      "anecdote": 1
+    },
+    "reviewStatus": "Independent review required; no approval claimed"
+  },
+  "authorRevision": {
+    "date": "2026-11-16",
+    "review": "docs/quiz-2000/reviews/d-legacy-01.json",
+    "modifiedIds": [
+      "hemp-hc-010",
+      "hemp-hc-032",
+      "hemp-hc-034",
+      "hemp-hc-041",
+      "hemp-hc-048",
+      "hemp-hc-051",
+      "hemp-hc-055"
+    ],
+    "unchangedPendingItem": "hemp-hc-029",
+    "resolutionForUnchangedItem": "hc029 is the sole remaining Yanghai cannabis-identification question; hc010 now tests modern packaging contamination.",
+    "sourceObjectsUnchanged": true,
+    "newPassagesConsulted": [
+      {
+        "sourceId": "qh-culture-yanghai",
+        "date": "2026-11-16",
+        "reader": "d_history_food_pilot",
+        "locator": "Results, Phytochemical analysis, phthalate peaks",
+        "result": "Les auteurs attribuent à titre d'hypothèse deux pics de phtalates aux sachets en polyéthylène dans lesquels les échantillons ont été fournis."
+      },
+      {
+        "sourceId": "q2-dlegacy01-nps-ropewalk",
+        "date": "2026-11-16",
+        "reader": "d_history_food_pilot",
+        "locator": "After 1955, mission changed to nylon-rope research and manufacture",
+        "result": "La Navy change la mission de la corderie pour la recherche et la fabrication de cordages en nylon, qui commence à remplacer les fibres végétales."
+      }
+    ]
+  }
+}

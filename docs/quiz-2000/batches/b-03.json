@@ -1,0 +1,1566 @@
+{
+  "batchId": "b-03",
+  "author": "b_external_varieties",
+  "role": "B — cultivars industriels, particularités documentées, références et profils mesurés",
+  "questions": [
+    {
+      "id": "hemp-q2-b03-crea-carmagnola-selected-piedmont",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans quelle région italienne le CREA situe-t-il la sélection de Carmagnola dans sa fiche de 2026 ?",
+      "options": [
+        "Le Piémont",
+        "La Campanie",
+        "La Sicile",
+        "Les Pouilles"
+      ],
+      "answer": 0,
+      "explanation": "La fiche CREA indique une sélection dans le nord de l'Italie, au Piémont. Le nom seul ne servirait pas de preuve.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Carmagnola",
+        "subjectKey": "carmagnola",
+        "property": "Région de sélection documentée",
+        "expectedAnswer": "Le Piémont",
+        "learningObjective": "Distinguer provenance documentée et origine supposée d'après un nom.",
+        "factKey": "crea-carmagnola-selected-piedmont",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A2 Carmagnola, p. PDF 10, premier paragraphe",
+            "support": "La fiche situe la sélection dans le nord de l'Italie, au Piémont."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-cs-genealogical-selection-carmagnola",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle origine le CREA donne-t-il à CS dans sa fiche de 2026 ?",
+      "options": [
+        "Un croisement de Carmagnola avec Kompolti",
+        "Une sélection généalogique de Carmagnola",
+        "Une sélection généalogique de Futura 75",
+        "Une mutation induite de Fibranova"
+      ],
+      "answer": 1,
+      "explanation": "Le CREA décrit CS comme une sélection généalogique à partir de Carmagnola, et non comme un croisement de deux lignées nommé ici.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "CS",
+        "subjectKey": "cs-hemp",
+        "property": "Type et matériel d'origine de la sélection",
+        "expectedAnswer": "Une sélection généalogique de Carmagnola",
+        "learningObjective": "Distinguer sélection dans une variété et croisement de deux variétés.",
+        "factKey": "crea-cs-genealogical-selection-carmagnola",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A5 CS, p. PDF 13, premier paragraphe",
+            "support": "CS est obtenue par sélection généalogique à partir de Carmagnola."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-eletta-campana-selected-caserta",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Où le CREA situe-t-il la sélection d'Eletta Campana dans sa fiche de 2026 ?",
+      "options": [
+        "En province de Naples, en Campanie",
+        "En province de Salerne, en Campanie",
+        "En province de Caserte, en Campanie",
+        "En province de Bénévent, en Campanie"
+      ],
+      "answer": 2,
+      "explanation": "La fiche indique Caserte, en Campanie. Cette précision vient du document de l'obtenteur, au-delà du nom de la variété.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Eletta Campana",
+        "subjectKey": "eletta-campana",
+        "property": "Lieu de sélection documenté",
+        "expectedAnswer": "En province de Caserte, en Campanie",
+        "learningObjective": "Retrouver une provenance précise sans la déduire du nom.",
+        "factKey": "crea-eletta-campana-selected-caserta",
+        "form": "identification",
+        "difficultyRationale": "La région est commune aux quatre choix ; il faut connaître le lieu précis indiqué par la fiche.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A6 Eletta Campana, p. PDF 14, premier paragraphe",
+            "support": "La sélection est située en Campanie, dans la province de Caserte."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-stem-yellow-senescence",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle couleur prend la tige de Carmaleonte en sénescence, selon le CREA en 2026 ?",
+      "options": [
+        "Rouge",
+        "Pourpre",
+        "Verte sans changement",
+        "Jaune"
+      ],
+      "answer": 3,
+      "explanation": "La fiche Carmaleonte met en avant le jaunissement de la tige en sénescence, caractère descriptif lié à cette phase du cycle.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Carmaleonte",
+        "subjectKey": "carmaleonte",
+        "property": "Couleur de tige en sénescence",
+        "expectedAnswer": "Jaune",
+        "learningObjective": "Associer un caractère variétal à sa phase d'expression.",
+        "factKey": "crea-carmaleonte-stem-yellow-senescence",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A3 Carmaleonte, p. PDF 11, premier paragraphe",
+            "support": "En sénescence, le fût vire au jaune."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-carmono-kompolti-sargaszaru",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel croisement le CREA revendique-t-il pour Carmaleonte dans sa fiche de 2026 ?",
+      "options": [
+        "Carmono × Kompolti Sargaszaru",
+        "Carmono × Kompolti",
+        "Carmagnola × Kompolti Sargaszaru",
+        "Carmagnola × Futura 75"
+      ],
+      "answer": 0,
+      "explanation": "La fiche attribue Carmaleonte à Carmono × Kompolti Sargaszaru. Le qualificatif Sargaszaru fait partie de l'ascendance indiquée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Carmaleonte",
+        "subjectKey": "carmaleonte",
+        "property": "Croisement annoncé",
+        "expectedAnswer": "Carmono × Kompolti Sargaszaru",
+        "learningObjective": "Lire une ascendance précise sans réduire le nom d'un parent.",
+        "factKey": "crea-carmaleonte-carmono-kompolti-sargaszaru",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A3 Carmaleonte, p. PDF 11, première phrase",
+            "support": "Le croisement indiqué est Carmono × Kompolti Sargaszaru."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-codimono-monoecious",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel système sexuel le CREA attribue-t-il à Codimono dans sa fiche de 2026 ?",
+      "options": [
+        "Dioïque",
+        "Monoïque",
+        "Exclusivement femelle",
+        "Exclusivement mâle"
+      ],
+      "answer": 1,
+      "explanation": "La fiche qualifie Codimono de chanvre monoïque. Ce caractère est attribué par le CREA à la variété décrite.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Codimono",
+        "subjectKey": "codimono",
+        "property": "Système sexuel décrit",
+        "expectedAnswer": "Monoïque",
+        "learningObjective": "Vérifier un caractère variétal dans la description de l'obtenteur.",
+        "factKey": "crea-codimono-monoecious",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A4 Codimono, p. PDF 12, première phrase",
+            "support": "Codimono est décrite comme variété de chanvre monoïque."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-codimono-fibre-seed-dual-purpose",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle double destination le CREA donne-t-il à Codimono ?",
+      "options": [
+        "La fibre et la résine",
+        "La graine et la racine",
+        "La fibre et la graine",
+        "La feuille et l'huile essentielle"
+      ],
+      "answer": 2,
+      "explanation": "Codimono est présentée comme une variété à double destination fibre et graine, en plus de la valorisation de biomasse.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Codimono",
+        "subjectKey": "codimono",
+        "property": "Double destination annoncée",
+        "expectedAnswer": "La fibre et la graine",
+        "learningObjective": "Identifier les deux compartiments valorisés d'un cultivar mixte.",
+        "factKey": "crea-codimono-fibre-seed-dual-purpose",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A4 Codimono, p. PDF 12, paragraphe descriptif",
+            "support": "La fiche parle d'une double destination fibre et semence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-asso-carmagnola-kompolti-cross",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel croisement le CREA indique-t-il pour Asso ?",
+      "options": [
+        "Carmagnola × Futura 75",
+        "Carmono × Kompolti",
+        "Bredemann Eletta × Carmagnola",
+        "Carmagnola × Kompolti"
+      ],
+      "answer": 3,
+      "explanation": "La fiche Asso de 2026 revendique Carmagnola × Kompolti ; elle distingue ainsi ce croisement de ceux des autres variétés du dossier.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Asso",
+        "subjectKey": "asso-hemp",
+        "property": "Croisement annoncé",
+        "expectedAnswer": "Carmagnola × Kompolti",
+        "learningObjective": "Identifier le pedigree attribué à Asso par son obtenteur.",
+        "factKey": "crea-asso-carmagnola-kompolti-cross",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A1 Asso, p. PDF 9, première phrase",
+            "support": "Asso est décrite comme issue du croisement Carmagnola × Kompolti."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-asso-di-candilo-attribution",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Qui la fiche CREA de 2026 nomme-t-elle comme obtenteur d'Asso ?",
+      "options": [
+        "Mario Sebastiano Di Candilo",
+        "Gianpaolo Grassi",
+        "Paolo Ranalli",
+        "Domenico Allavena"
+      ],
+      "answer": 0,
+      "explanation": "La fiche Asso cite Mario Sebastiano Di Candilo comme costitutore, c'est-à-dire obtenteur, et CREA-CI Bologna comme mainteneur.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Asso",
+        "subjectKey": "asso-hemp",
+        "property": "Attribution d'obtention dans la fiche",
+        "expectedAnswer": "Mario Sebastiano Di Candilo",
+        "learningObjective": "Séparer le nom d'un obtenteur et l'organisme chargé du maintien.",
+        "factKey": "crea-asso-di-candilo-attribution",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A1 Asso, p. PDF 9, dernière ligne Costitutore",
+            "support": "La fiche nomme Di Candilo Mario Sebastiano."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-codimono-grassi-attribution",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel obtenteur les fiches CREA de 2026 citent-elles à la fois pour Carmaleonte et Codimono ?",
+      "options": [
+        "Mario Sebastiano Di Candilo",
+        "Gianpaolo Grassi",
+        "Paolo Ranalli",
+        "Domenico Allavena"
+      ],
+      "answer": 1,
+      "explanation": "Les deux fiches nomment Gianpaolo Grassi. Cette attribution commune ne signifie pas que les deux variétés sont identiques.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Carmaleonte et Codimono",
+        "subjectKey": "crea-grassi-cultivars",
+        "property": "Obtenteur commun documenté",
+        "expectedAnswer": "Gianpaolo Grassi",
+        "learningObjective": "Reconnaître une attribution partagée sans confondre les cultivars.",
+        "factKey": "crea-carmaleonte-codimono-grassi-attribution",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexes A3 et A4, p. PDF 11 et 12, lignes Costitutore",
+            "support": "Les deux fiches portent Grassi Gianpaolo comme costitutore."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibranova-bredemann-eletta-carmagnola",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "D'après la fiche CREA de 2026, quels parents sont annoncés pour Fibranova ?",
+      "options": [
+        "Eletta Campana et Kompolti",
+        "Bredemann Eletta et Kompolti",
+        "Bredemann Eletta et Carmagnola",
+        "Carmagnola et Futura 75"
+      ],
+      "answer": 2,
+      "explanation": "Le CREA attribue Fibranova à Bredemann Eletta × Carmagnola. Bredemann Eletta ne doit pas être remplacée par Eletta Campana.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Fibranova",
+        "subjectKey": "fibranova",
+        "property": "Couple parental annoncé",
+        "expectedAnswer": "Bredemann Eletta et Carmagnola",
+        "learningObjective": "Distinguer des noms de lignées proches dans une filiation attribuée.",
+        "factKey": "crea-fibranova-bredemann-eletta-carmagnola",
+        "form": "identification",
+        "difficultyRationale": "Comparaison de filiations ou de rapports, portée d'une preuve ou distinction méthodologique avancée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A7 Fibranova, p. PDF 15, deuxième phrase",
+            "support": "Le croisement est décrit comme Bredemann Eletta × Carmagnola."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibrante-induced-mutant-from-fibranova",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle origine le CREA donne-t-il à Fibrante dans sa fiche de 2026 ?",
+      "options": [
+        "Un croisement de Fibranova avec Carmagnola",
+        "Un mélange de Fibranova et de Kompolti",
+        "Une sélection directe dans Carmono",
+        "Un mutant stable obtenu à partir de Fibranova"
+      ],
+      "answer": 3,
+      "explanation": "Le CREA décrit Fibrante comme un mutant stable issu d'un programme de mutagenèse induite sur Fibranova, sans fournir ici de protocole.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Fibrante",
+        "subjectKey": "fibrante",
+        "property": "Origine par mutation induite annoncée",
+        "expectedAnswer": "Un mutant stable obtenu à partir de Fibranova",
+        "learningObjective": "Distinguer mutation sélectionnée, mélange et croisement dans une histoire variétale.",
+        "factKey": "crea-fibrante-induced-mutant-from-fibranova",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'un type d'obtention précis, explicitement attribué à l'organisme obtenteur.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A8 Fibrante, p. PDF 16, première phrase",
+            "support": "Fibrante est un mutant stable issu de mutagenèse induite sur Fibranova."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-varieties-purity-maintainer-bologna",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel organisme les fiches CREA de 2026 désignent-elles pour le maintien en pureté de ces variétés italiennes ?",
+      "options": [
+        "CREA-CI de Bologne",
+        "CREA-CI de Foggia",
+        "CREA-OFA d'Acireale",
+        "CREA-GB de Fiorenzuola"
+      ],
+      "answer": 0,
+      "explanation": "Les annexes indiquent le Centro di ricerca Cerealicoltura e Colture Industriali du CREA, à Bologne, comme responsable du maintien.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Maintien des variétés de chanvre CREA",
+        "subjectKey": "crea-hemp-variety-collection",
+        "property": "Organisme de maintien en pureté",
+        "expectedAnswer": "CREA-CI de Bologne",
+        "learningObjective": "Distinguer responsabilité de maintien et distribution commerciale.",
+        "factKey": "crea-varieties-purity-maintainer-bologna",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexes A1–A8, rubrique Responsabile della conservazione in purezza",
+            "support": "Les fiches désignent CREA-CI Bologna."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-cs-cycle-later-carmagnola",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Comment le CREA compare-t-il le cycle de CS à celui de Carmagnola dans sa fiche de 2026 ?",
+      "options": [
+        "CS est nettement plus précoce",
+        "CS est un peu plus tardive",
+        "Les cycles sont annoncés identiques",
+        "La fiche ne compare pas leurs cycles"
+      ],
+      "answer": 1,
+      "explanation": "La fiche décrit CS comme tardive, avec un cycle d'environ une semaine de plus que Carmagnola, dans le contexte de sa sélection.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "CS et Carmagnola",
+        "subjectKey": "cs-hemp",
+        "property": "Cycle relatif annoncé",
+        "expectedAnswer": "CS est un peu plus tardive",
+        "learningObjective": "Interpréter une précocité relative sans fabriquer de calendrier universel.",
+        "factKey": "crea-cs-cycle-later-carmagnola",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A5 CS, p. PDF 13, deuxième phrase",
+            "support": "CS a un cycle tardif, décrit comme environ une semaine plus long que celui de Carmagnola."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibranova-bark-hurd-ratio-interpretation",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Le CREA donne écorce/chènevotte à 1:2–1:3 pour Fibranova, contre 1:5–1:6 pour Carmagnola. À chènevotte égale, que cela implique-t-il ?",
+      "options": [
+        "Davantage d'écorce chez Carmagnola",
+        "La même masse d'écorce chez les deux",
+        "Davantage d'écorce chez Fibranova",
+        "Aucune comparaison possible entre ces rapports"
+      ],
+      "answer": 2,
+      "explanation": "Le ratio annoncé implique plus d'écorce pour une même masse de chènevotte chez Fibranova. Il ne mesure pas un rendement par hectare.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Rapports écorce/chènevotte de Fibranova et Carmagnola",
+        "subjectKey": "fibranova",
+        "property": "Interprétation d'un rapport de masses annoncé",
+        "expectedAnswer": "Davantage d'écorce chez Fibranova",
+        "learningObjective": "Comparer les parts de tige sans les convertir en rendement de culture.",
+        "factKey": "crea-fibranova-bark-hurd-ratio-interpretation",
+        "form": "deduction",
+        "difficultyRationale": "Les rapports sont fournis ; il faut comparer des proportions de masses, sans savoir variétal préalable.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A7 Fibranova, p. PDF 15, rapport poids écorce/poids canapulo",
+            "support": "La fiche donne 1:2–1:3 pour Fibranova contre 1:5–1:6 pour Carmagnola."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-eletta-campana-late-female-low-preflower",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel ensemble de caractères floraux le CREA décrit-il pour Eletta Campana ?",
+      "options": [
+        "Floraison femelle précoce et forte préfloraison",
+        "Floraison femelle tardive et forte préfloraison",
+        "Floraison femelle précoce et absence de fleurs mâles",
+        "Floraison femelle tardive et très peu de préfloraison"
+      ],
+      "answer": 3,
+      "explanation": "La fiche associe floraison féminine tardive et quasi-absence de préfloraison chez Eletta Campana.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-crea2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Eletta Campana",
+        "subjectKey": "eletta-campana",
+        "property": "Caractères de floraison décrits",
+        "expectedAnswer": "Floraison femelle tardive et très peu de préfloraison",
+        "learningObjective": "Lire conjointement deux caractères phénologiques d'une variété.",
+        "factKey": "crea-eletta-campana-late-female-low-preflower",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-crea2026",
+            "locator": "Annexe A6 Eletta Campana, p. PDF 14, deuxième paragraphe",
+            "support": "La fiche décrit floraison féminine tardive et absence presque totale de préfloraison."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-molecular-passport-varietal-dna-identity",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quelle identité le « passeport moléculaire » du chanvre présenté par le CREA cherche-t-il à vérifier ?",
+      "options": [
+        "L'identité variétale à partir de l'ADN",
+        "La teneur exacte en CBD de chaque lot",
+        "La capacité germinative de chaque graine",
+        "L'âge exact des semences conservées"
+      ],
+      "answer": 0,
+      "explanation": "Le CREA utilise des différences de l'ADN comme marqueurs pour construire un identifiant moléculaire des variétés.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b03-creapassport"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Passeport moléculaire des variétés CREA",
+        "subjectKey": "crea-molecular-passport-2025",
+        "property": "Finalité d'identification par marqueurs ADN",
+        "expectedAnswer": "L'identité variétale à partir de l'ADN",
+        "learningObjective": "Distinguer identité génétique et caractéristiques commerciales d'un lot.",
+        "factKey": "crea-molecular-passport-varietal-dna-identity",
+        "form": "identification",
+        "difficultyRationale": "Interprétation concrète d'un principe ou de valeurs fournies dans la question.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-creapassport",
+            "locator": "Cos'è un passaporto molecolare? ; liste verificare l'identità varietale",
+            "support": "Le passeport vise l'identité variétale à partir de polymorphismes de l'ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-wgs-discovery-before-snp-panel",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Avant de choisir des marqueurs SNP (variations d'un nucléotide), quelle analyse réalise le projet CREA ?",
+      "options": [
+        "Le séquençage du seul gène THCAS",
+        "Le séquençage de génomes entiers",
+        "Le séquençage du seul ADN chloroplastique",
+        "Le génotypage de microsatellites uniquement"
+      ],
+      "answer": 1,
+      "explanation": "Le compte rendu décrit le séquençage de génomes entiers, puis le choix de SNP : des polymorphismes portant sur un seul nucléotide.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b03-creapassport"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Séquençage et marqueurs du projet CREA",
+        "subjectKey": "crea-molecular-passport-2025",
+        "property": "Séquence entre découverte génomique et choix de marqueurs",
+        "expectedAnswer": "Le séquençage de génomes entiers",
+        "learningObjective": "Distinguer le génome exploré et les marqueurs retenus pour l'identification.",
+        "factKey": "crea-wgs-discovery-before-snp-panel",
+        "form": "chronologie",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-creapassport",
+            "locator": "Caratterizzazione molecolare delle varietà italiane di canapa industriale",
+            "support": "Des génomes entiers sont séquencés, puis un ensemble de 454 SNP est identifié."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-crea-snp-discrimination-studied-corpus-scope",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Le CREA teste des SNP (variations d'un nucléotide) sur vingt génotypes. Que conclure pour un cultivar absent du test ?",
+      "options": [
+        "Sa discrimination est établie si son pays d'origine est le même",
+        "Sa discrimination est établie si son port ressemble aux références",
+        "Sa discrimination avec ce panel reste à vérifier",
+        "Sa discrimination est établie si son nom diffère des références"
+      ],
+      "answer": 2,
+      "explanation": "La discrimination montrée sur vingt génotypes ne garantit pas, à elle seule, celle d'un cultivar absent du test.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b03-creapassport"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Portée de la discrimination par SNP",
+        "subjectKey": "crea-molecular-passport-2025",
+        "property": "Domaine de validation du panel de marqueurs",
+        "expectedAnswer": "Sa discrimination avec ce panel reste à vérifier",
+        "learningObjective": "Distinguer une discrimination démontrée et une généralisation à du matériel non testé.",
+        "factKey": "crea-snp-discrimination-studied-corpus-scope",
+        "form": "deduction",
+        "difficultyRationale": "Application directe d'une limite de validation à un matériel qui n'a pas été testé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-creapassport",
+            "locator": "Caratterizzazione molecolare, phrases sur vingt génotypes et SNP discriminant les variétés étudiées",
+            "support": "Le résultat est annoncé pour toutes les variétés objet de cette étude, dans un corpus de vingt génotypes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-dus-three-criteria",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "À quels trois critères correspondent les examens DHS du chanvre décrits par l'OCVV en 2026 ?",
+      "options": [
+        "Densité, hauteur, sénescence",
+        "Durabilité, hydratation, saveur",
+        "Diversité, hybridation, stérilité",
+        "Distinction, homogénéité, stabilité"
+      ],
+      "answer": 3,
+      "explanation": "Le protocole porte sur la distinction, l'homogénéité et la stabilité des variétés, trois critères d'évaluation variétale.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Examens DHS du chanvre OCVV",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Trois critères évalués",
+        "expectedAnswer": "Distinction, homogénéité, stabilité",
+        "learningObjective": "Reconnaître les trois dimensions de l'examen variétal DHS.",
+        "factKey": "cpvo-dus-three-criteria",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "Titre et §4 Assessment of Distinctness, Uniformity and Stability",
+            "support": "Les trois critères du protocole sont distinction, homogénéité et stabilité."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-known-reference-varieties-comparison",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Pour évaluer si une variété de chanvre est distincte, quel matériel l'OCVV utilise-t-il comme comparaison ?",
+      "options": [
+        "Des variétés connues de la même espèce",
+        "Les parents annoncés du candidat exclusivement",
+        "Les seuls clones du candidat",
+        "Une population d'une espèce apparentée"
+      ],
+      "answer": 0,
+      "explanation": "Le protocole organise une collection de variétés connues et des comparaisons avec les candidates pour juger leur distinction.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Variétés de référence de l'examen OCVV",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Rôle des références connues",
+        "expectedAnswer": "Des variétés connues de la même espèce",
+        "learningObjective": "Comprendre la fonction de comparaison d'une collection de référence.",
+        "factKey": "cpvo-known-reference-varieties-comparison",
+        "form": "identification",
+        "difficultyRationale": "Interprétation concrète d'un principe ou de valeurs fournies dans la question.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "§3.6 Collection ; §5.1–5.2 Grouping of varieties",
+            "support": "Le protocole décrit une collection de variétés connues et leur choix pour l'essai de distinction."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-renewed-reference-seed-side-by-side-identity",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Comment l'OCVV vérifie-t-il un stock renouvelé de chanvre agricole monoïque ou dioïque multiplié par graines ?",
+      "options": [
+        "Comparer le nouveau stock à ses parents annoncés",
+        "Comparer côte à côte l'ancien et le nouveau matériel",
+        "Comparer le nouveau stock à une autre variété proche",
+        "Comparer seulement les plantes du nouveau stock entre elles"
+      ],
+      "answer": 1,
+      "explanation": "Pour ces variétés agricoles multipliées par graines, le protocole compare côte à côte l'ancien matériel conservé et son remplacement.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Renouvellement de semences de référence de chanvre agricole",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Contrôle d'identité lors du renouvellement de semences agricoles",
+        "expectedAnswer": "Comparer côte à côte l'ancien et le nouveau matériel",
+        "learningObjective": "Distinguer continuité d'identité et simple similitude d'étiquette.",
+        "factKey": "cpvo-renewed-reference-seed-side-by-side-identity",
+        "form": "situation",
+        "difficultyRationale": "Il faut distinguer un contrôle d'identité entre stocks d'un contrôle d'homogénéité ou de distinction entre variétés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "§3.6.5(a), Maintenance and renewal/update of a living variety collection",
+            "support": "L'identité du remplacement est vérifiée par comparaison côte à côte avec le matériel conservé."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-stability-new-stock-same-characteristics",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "En cas de doute sur la stabilité d'une variété, que peut comparer l'OCVV selon son protocole 2026 ?",
+      "options": [
+        "Les plantes d'un même stock entre elles seulement",
+        "Les caractères du candidat à ceux d'une variété voisine",
+        "Un nouveau stock aux caractères du matériel initial",
+        "Un même stock sous deux éclairages différents"
+      ],
+      "answer": 2,
+      "explanation": "Un nouveau stock de semences ou de plantes peut être testé pour vérifier qu'il exprime les mêmes caractères que le matériel initial.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Vérification de stabilité OCVV",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Maintien des caractères sur nouveau stock",
+        "expectedAnswer": "Un nouveau stock aux caractères du matériel initial",
+        "learningObjective": "Distinguer stabilité variétale et stabilité commerciale d'un produit.",
+        "factKey": "cpvo-stability-new-stock-same-characteristics",
+        "form": "situation",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "§4.3.2 Stability",
+            "support": "En cas de doute, le protocole prévoit un nouveau stock montrant les mêmes caractères que le matériel initial."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-divina-leaf-variegation-example",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle variété illustre les feuilles panachées dans le tableau d'exemples OCVV du chanvre de 2026 ?",
+      "options": [
+        "Aida",
+        "Futura 75",
+        "Fedora 17",
+        "Divina"
+      ],
+      "answer": 3,
+      "explanation": "Divina est donnée comme exemple de présence de panachure foliaire. C'est un exemple de caractère dans le référentiel.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Divina dans le référentiel OCVV 2026",
+        "subjectKey": "divina",
+        "property": "Panachure foliaire comme caractère d'exemple",
+        "expectedAnswer": "Divina",
+        "learningObjective": "Reconnaître une particularité foliaire documentée par un référentiel d'examen.",
+        "factKey": "cpvo-divina-leaf-variegation-example",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "Tableau, caractère 1 Leaf: variegation, p. PDF 11",
+            "support": "Divina est l'exemple de panachure présente."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-orion33-central-leaflet-verylong-verybroad",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle combinaison le tableau OCVV 2026 attribue-t-il à la foliole centrale d'Orion 33 ?",
+      "options": [
+        "Très longue et très large",
+        "Très courte et très étroite",
+        "Courte et très large",
+        "Très longue et très étroite"
+      ],
+      "answer": 0,
+      "explanation": "Orion 33 sert d'exemple aux états très long pour la longueur et très large pour la largeur de la foliole centrale.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Foliole centrale d'Orion 33",
+        "subjectKey": "orion-33",
+        "property": "Longueur et largeur dans les exemples OCVV",
+        "expectedAnswer": "Très longue et très large",
+        "learningObjective": "Lire deux caractères séparés qui décrivent une même foliole.",
+        "factKey": "cpvo-orion33-central-leaflet-verylong-verybroad",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "Tableau, caractères 4 et 5, p. PDF 11–12",
+            "support": "Orion 33 est cité pour longueur très longue et largeur très large."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-dioica88-strong-seed-marbling-example",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel état de marbrure des graines Dioica 88 illustre-t-elle dans le protocole OCVV 2026 ?",
+      "options": [
+        "Faible",
+        "Fort",
+        "Moyen",
+        "Absent"
+      ],
+      "answer": 1,
+      "explanation": "Dioica 88 sert d'exemple de marbrure forte des graines. Cette description n'est pas un indice de composition chimique du lot.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Marbrure des graines de Dioica 88",
+        "subjectKey": "dioica-88",
+        "property": "État de marbrure cité comme exemple",
+        "expectedAnswer": "Fort",
+        "learningObjective": "Identifier un caractère de l'enveloppe décrit indépendamment de la chimie.",
+        "factKey": "cpvo-dioica88-strong-seed-marbling-example",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "Tableau, caractère 32 Seed: marbling, p. PDF 20",
+            "support": "Dioica 88 est l'exemple d'état strong."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-carmagnola-long-petiole-example",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle longueur de pétiole Carmagnola illustre-t-elle dans le tableau OCVV 2026 ?",
+      "options": [
+        "Moyenne",
+        "Courte",
+        "Longue",
+        "Très courte"
+      ],
+      "answer": 2,
+      "explanation": "Carmagnola est l'exemple de pétiole long dans le tableau ; il s'agit du caractère du pétiole, distinct de la hauteur de plante.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Pétiole de Carmagnola",
+        "subjectKey": "carmagnola",
+        "property": "État de longueur du pétiole cité comme exemple",
+        "expectedAnswer": "Longue",
+        "learningObjective": "Séparer longueur du pétiole et port général d'une variété.",
+        "factKey": "cpvo-carmagnola-long-petiole-example",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "Tableau, caractère 6 Petiole: length, p. PDF 12",
+            "support": "Carmagnola est citée pour l'état long."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-leaflet-number-predominant-centre-plant",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Pour le nombre de folioles du chanvre, quelle observation demande l'OCVV en 2026 ?",
+      "options": [
+        "Le nombre sur la feuille basale la plus grande",
+        "Le nombre sur la dernière feuille apicale développée",
+        "La moyenne de toutes les feuilles adultes",
+        "Le nombre prédominant au centre de la plante"
+      ],
+      "answer": 3,
+      "explanation": "L'explication du caractère 3 demande le nombre de folioles prédominant au centre de la plante, pas un maximum isolé.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Observation du nombre de folioles",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Représentativité du comptage foliaire",
+        "expectedAnswer": "Le nombre prédominant au centre de la plante",
+        "learningObjective": "Distinguer un état prédominant d'une valeur extrême.",
+        "factKey": "cpvo-leaflet-number-predominant-centre-plant",
+        "form": "situation",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "§8.2, Ad.3 Leaf: number of leaflets",
+            "support": "Le nombre prédominant de folioles au centre de la plante est observé."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-male-flowering-half-male-bearing-plants",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Pour les chanvres agricoles monoïques ou dioïques, à quel groupe l'OCVV rapporte-t-il son seuil de 50 % pour la floraison mâle ?",
+      "options": [
+        "Les plantes portant des fleurs mâles",
+        "Toutes les plantes de la population",
+        "Les seules plantes exclusivement mâles",
+        "Les seules plantes monoïques"
+      ],
+      "answer": 0,
+      "explanation": "Le stade est atteint quand au moins une fleur mâle est ouverte sur 50 % des plantes portant des fleurs mâles, selon ce protocole.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Floraison mâle du type AS",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Population de référence du seuil d'observation",
+        "expectedAnswer": "Les plantes portant des fleurs mâles",
+        "learningObjective": "Lire le bon dénominateur dans un critère phénologique.",
+        "factKey": "cpvo-male-flowering-half-male-bearing-plants",
+        "form": "identification",
+        "difficultyRationale": "Rappel du groupe de référence défini dans le protocole ; distinction entre fleurs mâles et plantes exclusivement mâles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "§8.2, Ad.8 Time of male flowering, p. PDF 21",
+            "support": "Le dénominateur explicite est plants with male flowers."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-limited-male-flowers-not-auto-monoecious",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Quelques fleurs mâles apparaissent sur une plante à floraison femelle. Quelle prudence demande le protocole OCVV 2026 ?",
+      "options": [
+        "La classer automatiquement monoïque",
+        "Ne pas la classer monoïque sur ce seul constat",
+        "La classer comme une plante uniquement mâle",
+        "La classer comme une plante à fleurs bisexuées"
+      ],
+      "answer": 1,
+      "explanation": "Le protocole précise qu'un nombre limité de fleurs mâles sur une plante femelle ne doit pas suffire à la classer monoïque.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b03-cpvo2026"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Expression sexuelle ponctuelle et classification",
+        "subjectKey": "cpvo-hemp-protocol-2026",
+        "property": "Limite d'une observation de fleurs mâles rares",
+        "expectedAnswer": "Ne pas la classer monoïque sur ce seul constat",
+        "learningObjective": "Distinguer expression sexuelle occasionnelle et classification d'une plante.",
+        "factKey": "cpvo-limited-male-flowers-not-auto-monoecious",
+        "form": "situation",
+        "difficultyRationale": "Comparaison de filiations ou de rapports, portée d'une preuve ou distinction méthodologique avancée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-cpvo2026",
+            "locator": "§8.2, Ad.12–14, p. PDF 22",
+            "support": "Le texte mentionne l'influence du milieu et du stress, puis exclut un classement monoïque automatique sur quelques fleurs mâles."
+          }
+        ],
+        "jurisdiction": "Union européenne ; protocole technique OCVV CPVO-TP/276/3 du 1er avril 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-fibre-diameter-scanning-electron-microscope",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel instrument l'équipe Rutgers utilise-t-elle pour étudier l'hétérogénéité des diamètres de fibres de chanvre ?",
+      "options": [
+        "Un chromatographe en phase gazeuse",
+        "Un spectromètre de masse",
+        "Un microscope électronique à balayage",
+        "Un appareil de PCR quantitative"
+      ],
+      "answer": 2,
+      "explanation": "Le compte rendu utilise la microscopie électronique à balayage pour les diamètres ; cette observation est distincte d'une analyse chimique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-rutgersfibres"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Mesure des diamètres dans l'essai Rutgers",
+        "subjectKey": "rutgers-2025-fibre-quality",
+        "property": "Instrument de morphométrie des fibres",
+        "expectedAnswer": "Un microscope électronique à balayage",
+        "learningObjective": "Distinguer observation de dimension et analyse chimique ou génétique.",
+        "factKey": "rutgers-fibre-diameter-scanning-electron-microscope",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-rutgersfibres",
+            "locator": "Paragraphe avant Results, SEM ; en-tête tableau 3",
+            "support": "Les diamètres sont évalués par SEM, microscopie électronique à balayage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-fibre-bundle-strength-pressley-tester",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel appareil le compte rendu Rutgers cite-t-il pour mesurer la résistance des faisceaux de fibres ?",
+      "options": [
+        "Un microscope électronique à balayage",
+        "Un colorimètre",
+        "Un analyseur de graines par image",
+        "Un appareil Pressley"
+      ],
+      "answer": 3,
+      "explanation": "La résistance des faisceaux est mesurée par un appareil Pressley ; le microscope sert, lui, à la mesure des diamètres.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-rutgersfibres"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Mesure de résistance des faisceaux Rutgers",
+        "subjectKey": "rutgers-2025-fibre-quality",
+        "property": "Instrument du test mécanique",
+        "expectedAnswer": "Un appareil Pressley",
+        "learningObjective": "Séparer les instruments de mesure mécanique et de dimension.",
+        "factKey": "rutgers-fibre-bundle-strength-pressley-tester",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-rutgersfibres",
+            "locator": "Paragraphe A Pressley fiber strength tester, avant tableau 3",
+            "support": "Le texte cite Pressley pour générer les données de résistance."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-tex-mass-per-fibre-length",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans les mesures Rutgers de fibres de chanvre, que représente le tex utilisé dans l'unité cN/tex ?",
+      "options": [
+        "Une masse rapportée à une longueur de fibre",
+        "Une longueur rapportée à une surface de champ",
+        "Un diamètre rapporté à la hauteur de plante",
+        "Une proportion d'huile dans la graine"
+      ],
+      "answer": 0,
+      "explanation": "Le tex est une masse linéique : grammes pour 1 000 mètres. La résistance en cN/tex rapporte la force à cette masse linéique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-rutgersfibres"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Tex dans l'essai Rutgers",
+        "subjectKey": "rutgers-2025-fibre-quality",
+        "property": "Grandeur normalisant la résistance des fibres",
+        "expectedAnswer": "Une masse rapportée à une longueur de fibre",
+        "learningObjective": "Comprendre une résistance mécanique rapportée à une masse linéique.",
+        "factKey": "rutgers-tex-mass-per-fibre-length",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-rutgersfibres",
+            "locator": "Définition Fiber bundle strength, measured in centinewtons per tex",
+            "support": "Le tex est défini par la masse en grammes pour mille mètres de fibre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-santhica70-finer-average-than-futura83",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Chez Rutgers, Santhica 70 mesure 30,33 µm de diamètre moyen, contre 44,65 pour Futura 83. Quel constat est correct ?",
+      "options": [
+        "Les fibres de Futura 83 sont plus fines en moyenne",
+        "Les fibres de Santhica 70 sont plus fines en moyenne",
+        "Les deux diamètres moyens sont égaux",
+        "Les unités empêchent toute comparaison"
+      ],
+      "answer": 1,
+      "explanation": "Un plus petit diamètre signifie une fibre plus fine. Ce constat porte sur les moyennes des échantillons de cet essai.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-rutgersfibres"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Diamètres moyens de Santhica 70 et Futura 83",
+        "subjectKey": "rutgers-2025-fibre-quality",
+        "property": "Comparaison de finesse mesurée",
+        "expectedAnswer": "Les fibres de Santhica 70 sont plus fines en moyenne",
+        "learningObjective": "Comparer des dimensions avec la même unité sans généraliser à tous les lots.",
+        "factKey": "rutgers-santhica70-finer-average-than-futura83",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation concrète d'un principe ou de valeurs fournies dans la question.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-rutgersfibres",
+            "locator": "Tableau 3 et commentaire associé",
+            "support": "Le tableau indique 30,33 µm pour Santhica 70 et 44,65 µm pour Futura 83."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-high-fibre-diameter-cv-within-sample",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Les diamètres de fibres de l'essai Rutgers ont des coefficients de variation supérieurs à 40 %. Que souligne ce résultat ?",
+      "options": [
+        "Une précision analytique de 40 % pour chaque fibre",
+        "Une différence démontrée entre chaque paire de cultivars",
+        "Une variabilité importante à l'intérieur des échantillons",
+        "Une distribution identique de diamètres dans chaque cultivar"
+      ],
+      "answer": 2,
+      "explanation": "Les auteurs relient ces coefficients à une hétérogénéité interne notable. Une moyenne de cultivar ne décrit pas chaque fibre.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-rutgersfibres"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Dispersion des diamètres de fibres Rutgers",
+        "subjectKey": "rutgers-2025-fibre-quality",
+        "property": "Interprétation du coefficient de variation",
+        "expectedAnswer": "Une variabilité importante à l'intérieur des échantillons",
+        "learningObjective": "Distinguer moyenne, variation interne et différence entre groupes.",
+        "factKey": "rutgers-high-fibre-diameter-cv-within-sample",
+        "form": "deduction",
+        "difficultyRationale": "Comparaison de filiations ou de rapports, portée d'une preuve ou distinction méthodologique avancée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-rutgersfibres",
+            "locator": "Tableau 3, colonne cv% du diamètre ; premier paragraphe suivant",
+            "support": "Les coefficients dépassent 40 % et sont interprétés comme une forte variabilité interne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-tamang-jinma-fibre-check-variety",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel rôle Jinma joue-t-elle dans l'étude de Tamang et al. publiée en 2025 ?",
+      "options": [
+        "Un témoin de type grain",
+        "Un mélange de toutes les variétés",
+        "Une population ferale de référence",
+        "Un témoin de type fibre"
+      ],
+      "answer": 3,
+      "explanation": "Jinma est utilisée comme témoin de type fibre, en comparaison des variétés grain et à double usage de l'essai.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-tamang2025"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Jinma dans l'essai Tamang",
+        "subjectKey": "tamang-2025-hemp-varieties",
+        "property": "Rôle du cultivar témoin",
+        "expectedAnswer": "Un témoin de type fibre",
+        "learningObjective": "Identifier un témoin expérimental et sa classe d'usage.",
+        "factKey": "tamang-jinma-fibre-check-variety",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-tamang2025",
+            "locator": "§2 Materials and methods ; note du tableau 5",
+            "support": "Jinma, variété de type fibre, est utilisée comme check variety."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-tamang-lhv17-feral-missouri-material",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "De quel matériel LHV-17 provient-elle dans l'étude de Tamang et al. de 2025 ?",
+      "options": [
+        "De populations ferales collectées au Missouri",
+        "D'un lot commercial de Finola importé de Finlande",
+        "D'un clone de Futura 83 importé de France",
+        "D'un hybride Kompolti × Carmagnola annoncé par le CREA"
+      ],
+      "answer": 0,
+      "explanation": "Les auteurs sélectionnent LHV-17 parmi des matériels spontanés collectés au Missouri, puis la comparent aux variétés domestiquées.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-tamang2025"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "LHV-17 dans l'essai Tamang",
+        "subjectKey": "tamang-2025-hemp-varieties",
+        "property": "Origine du matériel comparatif",
+        "expectedAnswer": "De populations ferales collectées au Missouri",
+        "learningObjective": "Distinguer une ressource ferale locale des cultivars importés.",
+        "factKey": "tamang-lhv17-feral-missouri-material",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-tamang2025",
+            "locator": "§2.1 Plant materials, paragraphes sur American ferals et LHV-17",
+            "support": "LHV-17 est sélectionnée parmi les populations ferales collectées dans différentes parties du Missouri."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-tamang-grain-type-little-height-after-flowering",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Après floraison, quel comportement l'étude Tamang 2025 décrit-elle pour plusieurs types grain comme Uso 31 et Vega ?",
+      "options": [
+        "Une croissance plus prolongée que les types fibre",
+        "Une faible poursuite de croissance en hauteur",
+        "Une croissance entièrement limitée à l'après-floraison",
+        "Une forte élongation limitée aux plantes uniquement mâles"
+      ],
+      "answer": 1,
+      "explanation": "Dans cet essai, l'élongation devient faible chez ces types grain après floraison, alors que les types mixtes et fibre continuent davantage.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-tamang2025"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Croissance après floraison dans l'essai Tamang",
+        "subjectKey": "tamang-2025-hemp-varieties",
+        "property": "Différence de croissance entre classes d'usage",
+        "expectedAnswer": "Une faible poursuite de croissance en hauteur",
+        "learningObjective": "Distinguer trajectoire observée et taille finale seule.",
+        "factKey": "tamang-grain-type-little-height-after-flowering",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-tamang2025",
+            "locator": "§3.2 Growth pattern and final plant height",
+            "support": "Les types grain cités montrent une croissance minimale après floraison, contrairement aux types mixtes et fibre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-tamang-germination-significant-field-emergence-not",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Chez Tamang et al. (2025), quel contraste statistique concerne germination en serre et levée au champ ?",
+      "options": [
+        "Différences détectées au champ, pas de différence nette en serre",
+        "Aucune différence détectée dans les deux cadres",
+        "Différences détectées en serre, pas de différence nette au champ",
+        "Des différences détectées dans les deux cadres"
+      ],
+      "answer": 2,
+      "explanation": "L'étude rapporte une variation significative de germination en serre mais pas de différence statistiquement significative de levée au champ.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b03-tamang2025"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Germination et levée dans l'essai Tamang",
+        "subjectKey": "tamang-2025-hemp-varieties",
+        "property": "Contraste entre deux contextes d'évaluation",
+        "expectedAnswer": "Différences détectées en serre, pas de différence nette au champ",
+        "learningObjective": "Ne pas supposer qu'un classement de laboratoire se reproduit au champ.",
+        "factKey": "tamang-germination-significant-field-emergence-not",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance spécifique d'un cultivar ou lecture d'un référentiel technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-tamang2025",
+            "locator": "§3.1 Germination and emergence percentage ; tableau 5, lignes P Value et Level of significance",
+            "support": "La germination a p<0,001 ; la levée au champ a p>0,05."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b03-tamang-csdrrp2-candidate-function-unvalidated",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel statut les auteurs donnent-ils au rôle exact de CsDrrp2 dans l'égrenage du chanvre étudié en 2025 ?",
+      "options": [
+        "Une causalité déjà démontrée par mutation ciblée",
+        "Une absence prouvée de toute expression dans les graines",
+        "Une fonction démontrée dans le dépôt de lignine des bractées",
+        "Une fonction encore inconnue qui reste à valider"
+      ],
+      "answer": 3,
+      "explanation": "Les auteurs présentent une association possible mais disent ne pas connaître le rôle exact de CsDrrp2 ; une validation fonctionnelle reste nécessaire.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b03-tamang2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "CsDrrp2 dans l'étude Tamang",
+        "subjectKey": "tamang-2025-hemp-varieties",
+        "property": "Statut de la fonction du gène candidat",
+        "expectedAnswer": "Une fonction encore inconnue qui reste à valider",
+        "learningObjective": "Distinguer profil d'expression, hypothèse et preuve causale.",
+        "factKey": "tamang-csdrrp2-candidate-function-unvalidated",
+        "form": "deduction",
+        "difficultyRationale": "Comparaison de filiations ou de rapports, portée d'une preuve ou distinction méthodologique avancée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b03-tamang2025",
+            "locator": "§4.8 Molecular basis of seed shattering, paragraphe While the expression of the CsDrrp2",
+            "support": "Les auteurs déclarent le rôle exact inconnu et ne pas pouvoir attribuer sa fonction sur la base des résultats actuels."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-b03-crea2026",
+      "title": "Determina direttoriale 121 du 11 mars 2026 — Annexes A1–A8 : variétés de chanvre industriel CREA",
+      "organization": "CREA — Centro di ricerca Cerealicoltura e Colture Industriali",
+      "url": "https://www.crea.gov.it/documents/20126/0/Determina16871-CI.11-03-2026_Avviso-canapeCREA_F.to.pdf/9c880030-838a-43b8-6544-9fd2a876a01b?download=true&t=1773405619480&version=1.0",
+      "verifiedAt": "2026-11-16",
+      "author": "CREA-CI ; direction signataire Nicola Pecchioni",
+      "published": "2026-03-11",
+      "passage": "Les fiches décrivent Carmagnola sélectionnée au Piémont ; CS issue d'une sélection de Carmagnola et un peu plus tardive ; Eletta Campana sélectionnée à Caserte, à floraison féminine tardive. Carmaleonte est issue de Carmono × Kompolti Sargaszaru, avec tige jaunissant en sénescence ; elle et Codimono sont attribuées à Gianpaolo Grassi. Codimono est monoïque et à double usage fibre/graine. Asso est issue de Carmagnola × Kompolti, attribuée à Mario Sebastiano Di Candilo. Fibranova provient de Bredemann Eletta × Carmagnola ; Fibrante est un mutant stable obtenu à partir de Fibranova par mutagenèse induite. Les fiches nomment CREA-CI Bologna comme mainteneur.",
+      "access": "full-text",
+      "documentKind": "Document institutionnel",
+      "limitation": "Descriptions d'un organisme obtenteur, bornées à cette édition de 2026. L'attribution de Fibrante diffère dans d'autres présentations : aucune question d'auteur sur Fibrante n'est retenue. Les rendements, conseils culturaux, licences et affirmations juridiques ne sont pas utilisés.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Annexes A1–A8, pages PDF 9–16",
+        "result": "Source ouverte et passages indiqués lus. Seuls les caractères, filiations attribuées et limites des données sont utilisés ; procédures de culture et rendements exclus."
+      }
+    },
+    {
+      "id": "q2-b03-creapassport",
+      "title": "Le varietà di canapa del futuro hanno il passaporto molecolare",
+      "organization": "CREA futuro",
+      "url": "https://creafuturo.crea.gov.it/15368/?cat=184",
+      "verifiedAt": "2026-11-16",
+      "author": "Massimo Montanari, Roberta Paris, Laura Righetti, Irma Terracciano",
+      "published": "2025-09-28",
+      "passage": "Les chercheurs présentent un passeport d'identité fondé sur les polymorphismes de l'ADN. Le projet séquence des génomes entiers et identifie ensuite un ensemble de 454 SNP discriminant les variétés dans un corpus de vingt génotypes.",
+      "access": "official-page",
+      "documentKind": "Présentation des résultats par l'organisme de recherche",
+      "limitation": "Compte rendu institutionnel par les chercheurs ; la discrimination décrite concerne le corpus étudié, pas toutes les variétés mondiales. Aucun seuil légal ni effet médical repris.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Cos'è un passaporto molecolare? ; Caratterizzazione molecolare delle varietà italiane di canapa industriale",
+        "result": "Source ouverte et passages indiqués lus. Seuls les caractères, filiations attribuées et limites des données sont utilisés ; procédures de culture et rendements exclus."
+      }
+    },
+    {
+      "id": "q2-b03-cpvo2026",
+      "title": "CPVO-TP/276/3 — Cannabis sativa L. — Protocol for distinctness, uniformity and stability tests",
+      "organization": "Community Plant Variety Office (OCVV)",
+      "url": "https://cpvo.europa.eu/sites/default/files/documents/2026-04/cannabis-sativa.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "OCVV / CPVO",
+      "published": "2026-04-01",
+      "passage": "Le protocole décrit distinction, homogénéité et stabilité, des collections de référence, la comparaison ancien/nouveau matériel et la vérification de stabilité sur nouveau stock. Le tableau donne Divina comme exemple panaché, Orion 33 à foliole centrale très longue et très large, Carmagnola à pétiole long, Dioica 88 à marbrures de graine fortes. Le nombre de folioles est celui prédominant au centre de la plante. La floraison mâle AS est le moment où 50 % des plantes à fleurs mâles ont au moins une fleur mâle ouverte. Quelques fleurs mâles sur une plante femelle ne suffisent pas à la classer monoïque.",
+      "access": "full-text",
+      "documentKind": "Document institutionnel",
+      "limitation": "Référentiel technique daté ; les variétés sont des exemples d'expression de caractères dans un contexte défini, pas des garanties pour toute plante. Ne pas reprendre les protocoles d'extraction ni les instructions de culture. Dates de la fiche de téléchargement incohérentes : la date citée est celle du PDF.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "§3.6 Collection ; §4 DUS ; §6.3 ; tableau caractères 1, 4–6, 32 ; explications Ad.3, Ad.8, Ad.12–14",
+        "result": "Source ouverte et passages indiqués lus. Seuls les caractères, filiations attribuées et limites des données sont utilisés ; procédures de culture et rendements exclus."
+      }
+    },
+    {
+      "id": "q2-b03-rutgersfibres",
+      "title": "Assessing the feasibility of hemp for fiber production in the northeastern United States",
+      "organization": "Rutgers New Jersey Agricultural Experiment Station / Science Societies",
+      "url": "https://www.sciencesocieties.org/publications/crops-soils/2025/february/assessing-the-feasibility-of-hemp-for-fiber-production-in",
+      "verifiedAt": "2026-11-16",
+      "author": "Stephen Komar, William Bamka, John McLaughlin",
+      "published": "2025-01-20",
+      "passage": "Le diamètre des fibres est évalué par microscopie électronique à balayage, la résistance des faisceaux par appareil Pressley. Le tex est la masse en grammes pour 1 000 mètres. Le tableau 3 place le diamètre moyen de Santhica 70 sous celui de Futura 83 ; les coefficients de variation des diamètres dépassent 40 %, indiquant une variabilité interne.",
+      "access": "full-text",
+      "documentKind": "Compte rendu original d'essai par les chercheurs",
+      "limitation": "Résultats originaux rapportés par l'équipe de l'essai. Les années/données agronomiques et l'inclusion de Henola ne sont pas entièrement cohérentes entre sections ; seules les données et méthodes du tableau 3 sont utilisées. Aucune question n'est reprise du quiz pédagogique de la page.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Paragraphe sur SEM avant Results ; définition de cN/tex et Pressley ; tableau 3 et commentaire associé",
+        "result": "Source ouverte et passages indiqués lus. Seuls les caractères, filiations attribuées et limites des données sont utilisés ; procédures de culture et rendements exclus."
+      }
+    },
+    {
+      "id": "q2-b03-tamang2025",
+      "title": "Phenotypic and genetic characterization of sixteen grain and dual-type industrial hemp varieties (Cannabis sativa L.) for agronomic and yield component traits",
+      "organization": "Lincoln University of Missouri et partenaires / Frontiers in Plant Science",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1632346/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Kusum Raj Tamang et collaborateurs",
+      "published": "2025-10-20",
+      "passage": "Jinma est le témoin de type fibre ; LHV-17 vient de populations ferales collectées au Missouri. Dans l'essai, l'élongation des types grain devient faible après floraison, contrairement aux types mixtes et fibre. Les différences de levée au champ ne sont pas statistiquement significatives, contrairement à la germination en serre. Le rôle exact du gène candidat CsDrrp2 reste inconnu et nécessite une validation fonctionnelle.",
+      "access": "full-text",
+      "documentKind": "Article de recherche original",
+      "limitation": "Étude exploratoire limitée au Missouri, deux répétitions par essai ; plusieurs incohérences texte/tableaux sur classements et valeurs exclues de la rédaction. Aucune instruction culturale, rendement pratique ni interprétation causale non établie. Article sous CC BY.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "§2.1 ; tableau 5 ; §3.1 et 3.2 ; §4.8",
+        "result": "Source ouverte et passages indiqués lus. Seuls les caractères, filiations attribuées et limites des données sont utilisés ; procédures de culture et rendements exclus."
+      }
+    }
+  ]
+}

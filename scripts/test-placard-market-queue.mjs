@@ -1,0 +1,112 @@
+// Real market migrations and accounting in isolated PostgreSQL; no env/network.
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {randomUUID} from 'node:crypto';
+import {PGlite} from '@electric-sql/pglite';
+const db=new PGlite();
+const sql=name=>readFile(`supabase/migrations/${name}`,'utf8');
+const scalar=async(q,v=[])=>Object.values((await db.query(q,v)).rows[0])[0];
+let checks=0;
+const equal=(a,b,label)=>{assert.deepEqual(a,b,label);checks++;};
+const clock=at=>db.query("SELECT set_config('test.queue_now',$1,false)",[at]);
+const owner=randomUUID(),other=randomUUID();
+const command=(market,action,payload={},user=owner)=>scalar(market==='crypto'?'SELECT rpc_kq_crypto_command($1,$2,$3::jsonb,true)':'SELECT rpc_kq_stock_command($1,$2,$3::jsonb,ARRAY[\'TEST\'])',[user,action,JSON.stringify(payload)]);
+const confirm=(market,orderId,user=owner)=>scalar('SELECT rpc_kq_market_order_submit($1,$2,$3::jsonb)',[market,user,JSON.stringify({orderId,executionPolicy:'next-publication'})]);
+const preview=(market,extra={})=>command(market,'preview',{side:'buy',assetId:market==='crypto'?1:'TEST',amountCents:10000,...extra});
+try {
+ await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role; CREATE SCHEMA auth;
+ SELECT set_config('test.queue_now','2026-11-15T19:00:00Z',false);
+ CREATE OR REPLACE FUNCTION pg_catalog.now() RETURNS TIMESTAMPTZ LANGUAGE sql STABLE AS $$SELECT current_setting('test.queue_now')::TIMESTAMPTZ$$;
+ CREATE OR REPLACE FUNCTION pg_catalog.clock_timestamp() RETURNS TIMESTAMPTZ LANGUAGE sql VOLATILE AS $$SELECT current_setting('test.queue_now')::TIMESTAMPTZ$$;
+ CREATE TABLE auth.users(id UUID PRIMARY KEY);
+ CREATE TABLE kq_equipment_wallets(user_id UUID PRIMARY KEY REFERENCES auth.users(id),cash_cents INTEGER NOT NULL CHECK(cash_cents>=0),updated_at TIMESTAMPTZ);
+ CREATE TABLE kq_commerce_accounts(user_id UUID PRIMARY KEY,revision INTEGER DEFAULT 0);
+ CREATE TABLE kq_treasury_accounts(user_id UUID PRIMARY KEY);
+ CREATE TABLE kq_treasury_journal(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID,source_key TEXT,kind TEXT,reference TEXT,occurred_at TIMESTAMPTZ,postings JSONB,UNIQUE(user_id,source_key));
+ CREATE TABLE kq_treasury_balances(user_id UUID,account TEXT,balance_cents BIGINT,PRIMARY KEY(user_id,account));
+ CREATE FUNCTION kq_business_settle(UUID) RETURNS VOID LANGUAGE sql AS 'SELECT';
+ CREATE FUNCTION kq_treasury_initialize(UUID) RETURNS VOID LANGUAGE sql AS 'SELECT';`);
+ const treasury=await sql('20260921000200_kq_treasury_accounting.sql');
+ await db.exec(treasury.slice(treasury.indexOf('CREATE FUNCTION public.kq_treasury_post('),treasury.indexOf('-- Actual production cost')).replace("'expense_other'];","'expense_other','loan_payable','expense_loan_interest'];"));
+ for(const name of ['20260923000400_kq_crypto_portfolio.sql','20260923000600_kq_crypto_refresh_recovery.sql','20260924000200_kq_crypto_refresh_resilience.sql','20261005000100_kq_crypto_daily_refresh.sql','20260923000800_kq_stock_market.sql','20261115000200_kq_next_publication_orders.sql']) await db.exec(await sql(name));
+ for(const user of [owner,other]) {
+  await db.query('INSERT INTO auth.users VALUES($1)',[user]);
+  await db.query('INSERT INTO kq_equipment_wallets VALUES($1,1000000,now())',[user]);
+  await db.query('INSERT INTO kq_commerce_accounts(user_id) VALUES($1)',[user]);
+  await db.query('INSERT INTO kq_treasury_accounts VALUES($1)',[user]);
+ }
+ await db.exec(`INSERT INTO kq_crypto_quotes(asset_id,name,symbol,cmc_rank,price_eur,quoted_at,in_top100) VALUES(1,'Coin','COIN',1,100,now(),true);
+ INSERT INTO kq_stock_instruments(id,symbol,name,kind,markets,currency) VALUES('TEST','TEST','Test','stock',ARRAY['cac40'],'EUR');
+ INSERT INTO kq_stock_quotes(asset_id,price_native,price_eur,quoted_at,refreshed_at,market_state,fx_rate) VALUES('TEST',100,100,now(),now(),'open',1);`);
+ for(const market of ['crypto','stocks']) {
+  await clock('2026-11-15T19:00:10Z');
+  const order=await preview(market);
+  await assert.rejects(()=>command(market,'confirm',{orderId:order.orderId}),/market_policy_required/);checks++;
+  const cash=await scalar('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[owner]);
+  const queued=await confirm(market,order.orderId);
+  equal(queued.queuedOrder.status,'pending','accepted instructions are pending');
+  equal(await scalar('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[owner]),cash,'no debit at submission');
+  equal((await confirm(market,order.orderId)).replayed,true,'lost acknowledgement reuses the queue entry');
+  await assert.rejects(()=>confirm(market,order.orderId,other),/market_order_missing/);checks++;
+  const table=market==='crypto'?'kq_crypto_quotes':'kq_stock_quotes';
+  await db.exec(`UPDATE ${table} SET price_eur=110,refreshed_at=now()`);
+  equal(await scalar('SELECT execution_price FROM kq_pending_market_orders WHERE order_id=$1',[order.orderId]),null,'republication of old provider timestamp cannot execute');
+  await clock('2026-11-15T19:01:00Z');
+  await db.exec(`UPDATE ${table} SET price_eur=125,quoted_at=now(),refreshed_at=now()`);
+  await clock('2026-11-15T19:02:00Z');
+  await db.exec(`UPDATE ${table} SET price_eur=200,quoted_at=now(),refreshed_at=now()`);
+  equal(Number(await scalar('SELECT execution_price FROM kq_pending_market_orders WHERE order_id=$1',[order.orderId])),125,'first eligible price is immutable before settlement');
+  await scalar('SELECT rpc_kq_settle_market_queue()');
+  const result=await confirm(market,order.orderId);
+  equal(Number(result.trade.priceEur),125,'execution uses future price');
+  equal(Number(result.trade.quantity),0.8,'buy preserves budget, recomputes quantity');
+  equal(await scalar('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[owner]),cash-10000,'one debit');
+  equal((await confirm(market,order.orderId)).trade,result.trade,'replayed receipt stable');
+  equal((await command(market,'state')).queuedOrders[0].status,'executed','state exposes execution');
+  const sell=await preview(market,{side:'sell',quantity:'0.4'});
+  await confirm(market,sell.orderId);
+  await clock('2026-11-15T19:03:00Z');
+  await db.exec(`UPDATE ${table} SET price_eur=150,quoted_at=now(),refreshed_at=now()`);
+  const sold=await confirm(market,sell.orderId);
+  equal(sold.trade.amountCents,6000,'sell preserves units, recomputes proceeds');
+  equal(sold.trade.costBasisCents,5000,'cost basis preserved');
+  equal(sold.trade.realizedPnlCents,1000,'realized gain accounts for future sale price');
+  const noCash=await preview(market);
+  await confirm(market,noCash.orderId);
+  await db.query('UPDATE kq_equipment_wallets SET cash_cents=0 WHERE user_id=$1',[owner]);
+  await clock('2026-11-15T19:04:00Z');
+  await db.exec(`UPDATE ${table} SET quoted_at=now(),refreshed_at=now()`);
+  equal((await confirm(market,noCash.orderId)).queuedOrder.reason,market==='crypto'?'crypto_cash':'stocks_cash','spent funds reject without debit');
+  await db.query('UPDATE kq_equipment_wallets SET cash_cents=1000000 WHERE user_id=$1',[owner]);
+  const stale=await preview(market);
+  await confirm(market,stale.orderId);
+  await clock('2026-11-23T19:04:01Z');
+  equal((await confirm(market,stale.orderId)).queuedOrder.reason,'no_new_quote','no quote expires visibly');
+  // Reset quotes and clock for the next independent market.
+  await clock('2026-11-15T19:00:00Z');
+ }
+ await clock('2026-11-15T19:05:00Z');
+ await db.exec(`INSERT INTO kq_stock_instruments(id,symbol,name,kind,markets,currency) VALUES('USD','USD','US test','stock',ARRAY['sp500'],'USD');
+ INSERT INTO kq_stock_quotes(asset_id,price_native,price_eur,quoted_at,refreshed_at,market_state,fx_rate,fx_quoted_at) VALUES('USD',100,100,now(),now(),'open',1,now());`);
+ const fx=await preview('stocks',{assetId:'USD'});await confirm('stocks',fx.orderId);
+ await clock('2026-11-15T19:06:00Z');
+ await db.exec("UPDATE kq_stock_quotes SET price_eur=200,quoted_at=now(),refreshed_at=now(),market_state='closed',fx_quoted_at=now() WHERE asset_id='USD'");
+ equal(await scalar('SELECT execution_price FROM kq_pending_market_orders WHERE order_id=$1',[fx.orderId]),null,'closed-session publication never fills an order');
+ await db.exec("UPDATE kq_stock_quotes SET market_state='open',fx_quoted_at='2026-11-15T19:05:00Z' WHERE asset_id='USD'");
+ equal(await scalar('SELECT execution_price FROM kq_pending_market_orders WHERE order_id=$1',[fx.orderId]),null,'old FX never fills a new order');
+ await db.exec("UPDATE kq_stock_quotes SET fx_quoted_at=now() WHERE asset_id='USD'");
+ equal(Number((await confirm('stocks',fx.orderId)).trade.quantity),0.5,'new stock AND FX quotes permit execution');
+ const sellOne=await preview('stocks',{assetId:'USD',side:'sell',quantity:'0.5'});
+ const sellTwo=await preview('stocks',{assetId:'USD',side:'sell',quantity:'0.5'});
+ await confirm('stocks',sellOne.orderId);await confirm('stocks',sellTwo.orderId);
+ await clock('2026-11-15T19:07:00Z');
+ await db.exec("UPDATE kq_stock_quotes SET quoted_at=now(),refreshed_at=now(),fx_quoted_at=now() WHERE asset_id='USD'");
+ await scalar('SELECT rpc_kq_settle_market_queue()');
+ const sellResults=await db.query('SELECT status FROM kq_pending_market_orders WHERE order_id=ANY($1) ORDER BY status',[[sellOne.orderId,sellTwo.orderId]]);
+ equal(sellResults.rows.map(row=>row.status),['executed','rejected'],'competing sell instructions cannot oversell');
+ for(const role of ['anon','authenticated','service_role']) {
+  equal(await scalar("SELECT has_table_privilege($1,'kq_pending_market_orders','SELECT,INSERT,UPDATE,DELETE')",[role]),false,'queue private for '+role);
+  equal(await scalar("SELECT has_function_privilege($1,'kq_crypto_command_before_queue(uuid,text,jsonb,boolean)','EXECUTE')",[role]),false,'immediate execution inaccessible to '+role);
+ }
+ console.log(`Market queue SQL: ${checks} checks passed (real migrations/accounting, isolated clock; business settlement boundary stub).`);
+} catch(error) { console.error(error.message, error.where ?? ''); process.exitCode=1; } finally {await db.close();}

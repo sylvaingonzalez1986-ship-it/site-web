@@ -17,6 +17,15 @@ import { HISTORY_SOURCES } from './kanab-quest-school-history';
 import type { HempQuizEntry } from './kanab-quest-hemp-quiz-types';
 import reviewedQuiz from './kanab-quest-hemp-quiz-reviewed.json';
 import { CANNABIS_REVIEWED_SOURCES } from './kanab-quest-cannabis-revision';
+import additions from './kanab-quest-hemp-quiz-additions.json';
+import { HEMP_QUIZ_ADDITIONAL_SOURCES } from './kanab-quest-hemp-quiz-public-sources';
 const revisions = new Map((reviewedQuiz as (Partial<HempQuizEntry> & Pick<HempQuizEntry, 'id'>)[]).map(question => [question.id, question]));
-export const HEMP_QUIZ_BANK: readonly HempQuizEntry[] = [...HEMP_QUIZ_BIOLOGY, ...HEMP_QUIZ_USES, ...HEMP_QUIZ_HISTORY_CULTURE, ...HEMP_QUIZ_HISTORY_SCIENCE, ...HEMP_QUIZ_EXPANSION_NATURE].map(question => ({ ...question, ...revisions.get(question.id), id: question.id, level: question.level }));
-export const HEMP_QUIZ_SOURCES = new Map([...BOTANY_SOURCES, ...TERPENE_SOURCES, ...CANNABINOID_SOURCES, ...CULTIVATION_SOURCES, ...HEALTH_SOURCES, ...SOIL_SOURCES, ...PRODUCTS_SOURCES, ...HARVEST_SOURCES, ...HISTORY_SOURCES, ...HEMP_QUIZ_EXPANSION_SOURCES, ...CANNABIS_REVIEWED_SOURCES].map(source => [source.id, source]));
+const retired = new Set<string>(additions.retiredIds);
+const selectedIds = (additions as {activeIds?: string[]}).activeIds;
+const selected = selectedIds ? new Set(selectedIds) : null;
+const currentRevisions = new Map((additions.revisions as unknown as HempQuizEntry[]).map(question=>[question.id,question]));
+const legacy = [...HEMP_QUIZ_BIOLOGY, ...HEMP_QUIZ_USES, ...HEMP_QUIZ_HISTORY_CULTURE, ...HEMP_QUIZ_HISTORY_SCIENCE, ...HEMP_QUIZ_EXPANSION_NATURE]
+  .map(question => ({ ...question, ...revisions.get(question.id), id: question.id, level: question.level, ...currentRevisions.get(question.id) }));
+export const HEMP_QUIZ_BANK: readonly HempQuizEntry[] = [...legacy, ...additions.questions as unknown as HempQuizEntry[]]
+  .filter(question => !retired.has(question.id) && (!selected || selected.has(question.id)));
+export const HEMP_QUIZ_SOURCES = new Map([...BOTANY_SOURCES, ...TERPENE_SOURCES, ...CANNABINOID_SOURCES, ...CULTIVATION_SOURCES, ...HEALTH_SOURCES, ...SOIL_SOURCES, ...PRODUCTS_SOURCES, ...HARVEST_SOURCES, ...HISTORY_SOURCES, ...HEMP_QUIZ_EXPANSION_SOURCES, ...CANNABIS_REVIEWED_SOURCES, ...HEMP_QUIZ_ADDITIONAL_SOURCES].map(source => [source.id, source]));

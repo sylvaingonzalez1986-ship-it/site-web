@@ -13,7 +13,7 @@ import type { ArenaLessonProgress } from "./arena-playable-learning";
 export type ArenaDiscoveryLesson = "collection" | "specialties" | "missions" | "notebook";
 export const DISCOVERY_TIME = "2026-10-07T12:00:00.000Z";
 const DEMO_CARDS = KQ_BUDDIES.filter(card => card.rarity === "common").slice(0, 9);
-export const DISCOVERY_TICKET: LotteryTicket = { id: "tutorial-pack", userId: "tutorial", ticketNumber: "Pack prêté par Sylvain · 3 Buddies", orderAmount: 0, status: "available", createdAt: DISCOVERY_TIME };
+export const DISCOVERY_TICKET: LotteryTicket = { id: "tutorial-pack", userId: "tutorial", ticketNumber: "Pack prêté par Loïc · 3 Buddies", orderAmount: 0, status: "available", createdAt: DISCOVERY_TIME };
 export function createDiscoveryPack(): ScratchResult {
   const cards: LotteryCollectedCard[] = DEMO_CARDS.slice(0, 3).map(card => ({
     id: `tutorial-${card.code}`, collectionId: "tutorial-buddies", collectionCode: "buddies", collectionTitle: "Buddies d’essai",
@@ -67,7 +67,7 @@ export function createDiscoveryTransport(lesson: ArenaDiscoveryLesson, onProgres
     userSubmissions: [], completedCount: 0, canSubmit: true,
   };
   const progress = (): ArenaLessonProgress => lesson === "collection"
-    ? { complete: opened, instruction: opened ? "Tes trois Buddies sont dans la collection du quartier. Ouvre une carte pour retrouver son profil de culture." : "Ouvre le pack prêté par Sylvain et révèle ses trois Buddies, puis range-les dans ton album." }
+    ? { complete: opened, instruction: opened ? "Tes trois Buddies sont dans la collection du quartier. Ouvre une carte pour retrouver son profil de culture." : "Ouvre le pack prêté par Loïc et révèle ses trois Buddies, puis range-les dans ton album." }
     : lesson === "missions"
     ? { complete: claimed && opened, instruction: opened ? "Ton pack de mission a été ouvert. Les cartes montrées restent fictives." : claimed ? "Le pack est récupéré. Clique sur Ouvrir mon pack dans le reçu pour découvrir tes cartes ici." : "Dans cet essai, 15 Buddies ont déjà été récoltés et les quatre premiers défis sont accomplis. Récupère le pack du Jardin des connaisseurs dans le parcours Culture." }
     : lesson === "specialties" ? { complete: profileSaved, instruction: profileSaved ? "Ton personnage d’essai est prêt. Tu peux comparer une autre spécialité en recommençant ; ton vrai profil est inchangé." : "Crée un personnage d’essai : surnom, apparence, puis spécialité." }

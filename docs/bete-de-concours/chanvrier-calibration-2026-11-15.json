@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-15",
+  "status": "Corrections locales intégrées et vérifiées visuellement ; aucun déploiement.",
+  "scope": "Dessins et assemblage du personnage existant. Aucun changement de catalogue, identifiant, sauvegarde, spécialité ou API ; aucune nouvelle dépendance ni image aplatie.",
+  "technology": "Next.js / React, composition Canvas 2D de 41 images WebP RGBA existantes. Sources matricielles et scripts de préparation conservés.",
+  "entry": "Premier lancement du Quartier via QuarterCharacterGate ; modification via ChanvrierPlayerCard et ChanvrierProfileEditor.",
+  "diagnosis": [
+    {"origin":"Placement", "observed":"Mâchoire carrée vide et massive, pincements des visages longs et cœur.", "cause":"Déformation depuis une ellipse théorique, variation verticale du menton et étirement du trait près du contour.", "fix":"Mesure du contour alpha du maître sans cheveux ; déformation des joues et mâchoires avec traits et menton fixes, translation du trait à échelle constante."},
+    {"origin":"Assemblage / dessin source", "observed":"Encoche à droite du visage barbu sous l’œil.", "cause":"Le calque complet de barbe porte une joue légèrement différente ; sa pose rectangulaire recopie ce contour.", "fix":"Transfert limité à la pilosité et à son encre, peau et joue du maître conservées."},
+    {"origin":"Assemblage / empreinte du nez", "observed":"Petit fragment noir flottant à droite de la bouche Serein.", "cause":"Le nez est posé après la bouche et son rectangle recopiait un coin du grand sourire source.", "fix":"Empreinte du nez scindée autour de ce coin, sans raccourcir la base du nez ni écraser la pilosité. Revue complémentaire des 36 associations bouche/nez/pilosité."},
+    {"origin":"Recoloration", "observed":"Cheveux chauds grisâtres, peau claire des bras blanchie et manches du tablier touchées.", "cause":"Multiplication par une luminance unique et zones de peau trop larges.", "fix":"Rapports RGB mesurés par calque ; masque de peau suivant l’encre depuis des points intérieurs ; nuances chaudes conservées dans les cheveux, reflets neutres pour les palettes froides."},
+    {"origin":"Assemblage", "observed":"Foulard posé après toute la tête, donc susceptible de passer devant les mèches basses.", "fix":"Foulard avec le corps au-dessus du vêtement, puis tête et cheveux ; boucle d’oreille devant son lobe."},
+    {"origin":"Affichage asynchrone", "observed":"Ancien personnage encore visible pendant le chargement d’un nouveau choix ou après une erreur.", "fix":"Visibilité liée à la signature réellement rendue, erreur liée à la sélection, résultat abandonné ignoré."},
+    {"origin":"Export / vêtements", "observed":"Cadres transparents et joints des vêtements cohérents dans les sources et planches.", "fix":"Aucun déplacement ni recadrage des vêtements. Gants crème et bas sombres intentionnels conservés."}
+  ],
+  "template": {
+    "pose": "Pose cartoon existante, tête de trois quarts vers la droite, silhouette et orientation communes aux vêtements.",
+    "fullFrame": [768,1280],
+    "headMaster": [1254,1254],
+    "headExport": [768,768],
+    "headOffset": [0,-86],
+    "collarPivot": [384,480],
+    "femaleBodyScale": 0.96,
+    "portraitCrop": [64,40,592,592],
+    "layerOrder": ["jambes","chaussures","bas","haut","foulard","tête et cheveux","boucle d’oreille"],
+    "registry": [
+      "src/components/contest/chanvrier-composition.ts",
+      "src/components/contest/chanvrier-head-registration.ts",
+      "src/components/contest/chanvrier-body-registration.ts"
+    ]
+  },
+  "sharedRendering": "ChanvrierAvatar reste le seul assemblage : éditeur, carte du joueur, classements, école, Personnel, travail et scènes sociales. Le portrait recadre le même personnage complet.",
+  "persistence": "ChanvrierProfile et parseChanvrierProfile inchangés ; appearance reste facultatif pour les anciens profils. Tous les codes existants sont conservés.",
+  "extensionNote": [
+    "Conserver les sources éditables, leur transparence et les marges du cadre complet. Ne pas recadrer chaque pièce sur ses pixels visibles.",
+    "Mesurer les repères sur les dessins avant d’ajuster un visage ou une coiffure. Garder la ligne des yeux, la bouche, le menton et le raccord au col ; limiter la déformation aux joues et à la mâchoire.",
+    "Un calque de barbe ou de lunettes ne doit pas remplacer la peau ni le contour d’une autre tête. Inspecter son masque sur cheveux courts, longs et tresses.",
+    "Une tenue conserve les épaules, poignets, taille et chevilles du maître. Pour la peau visible, renseigner la couleur RGB de référence, un point intérieur et les limites de chaque zone dans chanvrier-body-registration.ts ; le masque suit ensuite l’encre.",
+    "Vérifier une pièce isolée, puis les mêmes combinaisons en pied et en portrait. Revoir chaque option active, les six peaux et les tailles réelles du jeu. Les différences de pixels ne prouvent pas la qualité du dessin."
+  ],
+  "evidence": {
+    "beforeSources": "output/chanvrier-calibration/baseline-source/",
+    "exactConfigurations": "output/chanvrier-calibration/combinations/after/profiles.json",
+    "comparison": "output/chanvrier-calibration/comparaison.html",
+    "comparisonImage": "output/chanvrier-calibration/comparaison.png",
+    "reports": ["output/chanvrier-calibration/heads/after/report.json","output/chanvrier-calibration/heads/after/mouth-report.json","output/chanvrier-calibration/outfits/after/report.json","output/chanvrier-calibration/editor/after/report.json","output/chanvrier-calibration/combinations/after/report.json"],
+    "commands": ["node scripts/audit-chanvrier-heads.mjs","node scripts/audit-chanvrier-outfits.mjs","node scripts/audit-chanvrier-customization.mjs","node scripts/audit-chanvrier-calibration.mjs"],
+    "baseline": "Les scripts heads/outfits/customization acceptent --before avant les changements. La galerie calibration --before utilise la copie des trois moteurs initiaux conservée dans baseline-source. Les données de catalogue n’ont pas changé entre les captures."
+  },
+  "validation": {
+    "status": "PASS",
+    "unitTests": 24,
+    "typeScript": "PASS",
+    "targetedEslint": "PASS",
+    "activeAssetsLoaded": 41,
+    "missingAssets": 0,
+    "hairFaceCombinations": 72,
+    "mouthNoseFacialHairCombinations": 36,
+    "bottomShoeCombinations": 16,
+    "tops": 6,
+    "silhouetteSkinCombinations": 12,
+    "difficultConfigurations": 12,
+    "editorWidths": [320,390,1440],
+    "portraitWidths": [48,180,384],
+    "editorScenarioGroups": 6,
+    "compositionScenarioGroups": 4,
+    "browserErrors": 0,
+    "roundTrip": "Ancien profil sans appearance chargé, modifié dans le vrai éditeur, sauvegardé une fois puis rechargé avec pixels identiques ; API locale fictive.",
+    "raceAndFailure": "Douze changements rapides, ressource échouée puis réessayée, ressource retardée abandonnée, plusieurs instances simultanées et égalité exacte du portrait avec le recadrage du personnage entier.",
+    "visualReview": "Sources isolées, avant/après, traits, cheveux, accessoires, six hauts, seize jonctions chevilles/chaussures, six teintes de peau et écrans mobile inspectés.",
+    "finalSequence": "Passe complète, puis correction de l’empreinte du nez : 36 associations bouche/nez/pilosité et les quatre groupes assemblage/sauvegarde repassés. TypeScript et ESLint repassés sur la version finale."
+  },
+  "limits": [
+    "Les vérifications navigateur exécutent les vrais composants et ressources dans les serveurs locaux Vite existants, avec réponses de profil fictives. Aucune session de production ni écriture en base distante vérifiée.",
+    "La couverture vise chaque ressource et les interactions sensibles ; ce n’est pas le produit cartésien de toutes les options.",
+    "Les cheveux couvrant la mâchoire atténuent naturellement les différences entre formes de visage. Aucun chapeau dans le catalogue actif.",
+    "Le défaut de débordement du premier script éditeur provenait du canvas brut de sa page de test, sans dimensions CSS ; la page de test a reçu une largeur responsive. Aucun changement du menu produit pour ce faux positif."
+  ],
+  "deployed": false
+}

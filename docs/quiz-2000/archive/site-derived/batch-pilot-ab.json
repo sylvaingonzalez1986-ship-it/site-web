@@ -1,0 +1,608 @@
+{
+  "batchId": "pilot-ab",
+  "author": "/root/a_cbd_inventory",
+  "role": "A/B — six CBD/buddies/producteurs et quatre THC/breeders/lignées",
+  "status": "draft-awaiting-independent-review",
+  "baselineCheck": {
+    "file": "docs/quiz-2000/audit-f-active-snapshot.json",
+    "entries": 360,
+    "method": "Recherche des sujets nommés dans prompts et explications ; aucun de ces dix sujets trouvé. Les parentés et le rôle producteur/breeder restent à contrôler lors de la relecture sémantique."
+  },
+  "questions": [
+    {
+      "id": "hemp-q2-ab-sweet-sour-widow-oignon",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel arôme CBD Crew attribue-t-il à sa Sweet and Sour Widow ?",
+      "options": [
+        "Le café torréfié",
+        "L'oignon acidulé",
+        "La poire mûre",
+        "La vanille douce"
+      ],
+      "answer": 1,
+      "explanation": "CBD Crew décrit une odeur d'oignon acidulé pour cette sélection. Il s'agit de sa description sensorielle, pas d'une mesure de terpènes dans chaque lot.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-ab-cbdcrew-widow"
+      ],
+      "editorial": {
+        "category": "buddies-cbd",
+        "subject": "Sweet and Sour Widow de CBD Crew",
+        "subjectKey": "cbdcrew-sweet-sour-widow",
+        "buddyCodes": [
+          "HH2026-018"
+        ],
+        "property": "description aromatique du sélectionneur",
+        "expectedAnswer": "L'oignon acidulé",
+        "learningObjective": "Découvrir un arôme inhabituel documenté dans une sélection riche en CBD.",
+        "factKey": "cbdcrew-sweet-sour-widow-aroma-sour-onion",
+        "form": "identification",
+        "difficultyRationale": "Connaître la description sensorielle publiée d'une sélection CBD précise ; aucune analyse chimique n'est déduite de cet arôme.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-cbdcrew-widow",
+            "locator": "Description et ligne Aroma",
+            "support": "CBD Crew attribue à la sélection un parfum d'oignon acidulé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-kanadea-pyrenees-botanic",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Sous quelle marque Pyrénées Botanic distribue-t-elle ses produits à base de chanvre ?",
+      "options": [
+        "Cannevyire",
+        "Iznofarm",
+        "Ty Kanna",
+        "Kanadea"
+      ],
+      "answer": 3,
+      "explanation": "Les mentions légales identifient Pyrénées Botanic comme l'entreprise agricole et Kanadea comme sa marque de distribution. Ces deux noms désignent donc des rôles différents.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-kanadea"
+      ],
+      "editorial": {
+        "category": "buddies-cbd",
+        "subject": "Kanadea et Pyrénées Botanic",
+        "subjectKey": "producer-kanadea",
+        "property": "marque de l'exploitation",
+        "expectedAnswer": "Kanadea",
+        "learningObjective": "Relier une marque de chanvre à l'entreprise agricole qui l'exploite.",
+        "factKey": "pyrenees-botanic-distribution-brand-kanadea",
+        "form": "identification",
+        "difficultyRationale": "Connaître l'identité de la marque exploitée par une entreprise agricole précise.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-kanadea",
+            "locator": "Qui sommes-nous, deux premiers paragraphes",
+            "support": "Pyrénées Botanic cultive et transforme le chanvre puis distribue ses produits sous la marque Kanadea."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-cannatonic-correction-2015",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle parenté Resin Seeds publie-t-il pour Cannatonic dans sa correction de novembre 2015 ?",
+      "options": [
+        "Reina Madre × NYCD",
+        "MK-Ultra × G13",
+        "Harlequin × Sour Tsunami",
+        "ACDC × Harle-Tsu"
+      ],
+      "answer": 0,
+      "explanation": "Resin Seeds remplace alors la parenté précédemment annoncée MK-Ultra × G13 par Reina Madre × NYCD. Cette correction historique concerne la déclaration de l'obtenteur.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-resin-cannatonic"
+      ],
+      "editorial": {
+        "category": "buddies-cbd",
+        "subject": "Cannatonic de Resin Seeds",
+        "subjectKey": "resinseeds-cannatonic",
+        "buddyCodes": [
+          "HH2026-003"
+        ],
+        "property": "parenté corrigée en novembre 2015",
+        "expectedAnswer": "Reina Madre × NYCD",
+        "learningObjective": "Connaître la correction publiée du pedigree d'une lignée CBD fondatrice.",
+        "factKey": "resinseeds-cannatonic-corrected-pedigree-2015",
+        "form": "identification",
+        "difficultyRationale": "Distinguer un pedigree corrigé de son ancienne attribution parmi des lignées CBD proches.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-resin-cannatonic",
+            "locator": "Article daté du 10 novembre 2015, paragraphe central",
+            "support": "L'obtenteur remplace MK-Ultra × G13 par Reina Madre × NYCD."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-hawaiian-haze-obtenteur",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À quel obtenteur GTR Seeds attribue-t-il la création de son Hawaiian Haze ?",
+      "options": [
+        "Resin Seeds",
+        "CBD Crew",
+        "Oregon CBD Seeds",
+        "Dinafem"
+      ],
+      "answer": 2,
+      "explanation": "La fiche Hawaiian Haze chez GTR porte l'attribution Oregon CBD Seeds. Ce nom désigne l'obtenteur de la sélection, même si d'autres fermes peuvent ensuite la cultiver.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-gtr-hawaiian"
+      ],
+      "editorial": {
+        "category": "buddies-cbd",
+        "subject": "Hawaiian Haze d'Oregon CBD Seeds",
+        "subjectKey": "oregoncbd-hawaiian-haze",
+        "buddyCodes": [
+          "HH2026-007"
+        ],
+        "property": "obtenteur déclaré",
+        "expectedAnswer": "Oregon CBD Seeds",
+        "learningObjective": "Identifier l'obtenteur d'une sélection CBD américaine connue.",
+        "factKey": "hawaiian-haze-bred-by-oregon-cbd-seeds",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître un obtenteur parmi quatre acteurs de la sélection CBD.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-gtr-hawaiian",
+            "locator": "Description, après Awards",
+            "support": "La fiche attribue explicitement la création à Oregon CBD Seeds."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-lifter-gtr-catalogue-2026",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle parenté GTR Seeds affiche-t-il pour Lifter dans son catalogue consulté en novembre 2026 ?",
+      "options": [
+        "SH50 × ERB",
+        "SH50 × KAP",
+        "ACDC × ERB",
+        "Suver #8 × ERB"
+      ],
+      "answer": 1,
+      "explanation": "GTR affiche SH50 × KAP dans son catalogue consulté en novembre 2026. Cette parenté est celle de la version décrite par cette fiche et ne s'applique pas à toutes les sélections portant le nom Lifter.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-gtr-lifter"
+      ],
+      "editorial": {
+        "category": "buddies-cbd",
+        "subject": "Lifter au catalogue GTR consulté en novembre 2026",
+        "subjectKey": "oregoncbd-lifter",
+        "property": "parenté du catalogue actuel",
+        "expectedAnswer": "SH50 × KAP",
+        "learningObjective": "Connaître le pedigree publié de la version actuelle de Lifter.",
+        "factKey": "gtr-lifter-catalogue-2026-sh50-kap",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître le pedigree d'une version datée parmi des couples aux sigles proches.",
+        "reviewAfter": "2027-05-16",
+        "localBuddyScope": "HH2026-008 décrit explicitement l'original 2018 ; pas de buddyCodes attaché à cette version actuelle.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-gtr-lifter",
+            "locator": "Description, ligne Lineage",
+            "support": "La page actuelle consultée le 16 novembre 2026 donne SH50 × KAP. Elle ne vérifie pas à elle seule la version 2018."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-berry-blossom-chardonnay",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le dossier AOSCA de Berry Blossom, quels parents composent Chardonnay, l'une de ses lignées parentales ?",
+      "options": [
+        "Cherry Kandahar S1 × ACDC",
+        "The Wife × Charlotte's Cherries",
+        "Special Sauce × Haze",
+        "Black Rose × Cherry Wine"
+      ],
+      "answer": 3,
+      "explanation": "Le dossier décrit Berry Blossom comme Cherry Kandahar S1 × Chardonnay. Il précise que Chardonnay provient de Black Rose et d'une sélection de Cherry Wine.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-aosca-berry"
+      ],
+      "editorial": {
+        "category": "buddies-cbd",
+        "subject": "Berry Blossom de High Grade Hemp Seed",
+        "subjectKey": "highgrade-berry-blossom",
+        "buddyCodes": [
+          "HH2026-039"
+        ],
+        "property": "ascendance du parent Chardonnay",
+        "expectedAnswer": "Black Rose × Cherry Wine",
+        "learningObjective": "Remonter d'une génération dans un pedigree CBD précisément documenté.",
+        "factKey": "berry-blossom-chardonnay-parent-black-rose-cherry-wine",
+        "form": "identification",
+        "difficultyRationale": "Connaître l'ascendance d'un parent dans un pedigree CBD à deux générations.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-aosca-berry",
+            "locator": "Page unique, premier paragraphe, description de Chardonnay",
+            "support": "Chardonnay est décrite comme un croisement F1 entre Black Rose et une sélection de Cherry Wine ; elle entre dans Berry Blossom."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-jack-herer-hommage",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "La Jack Herer de Sensi Seeds rend hommage à une personnalité connue pour quelle activité ?",
+      "options": [
+        "La comédie et le cinéma",
+        "La poésie et la musique",
+        "L'écriture et le militantisme",
+        "La botanique et l'enseignement"
+      ],
+      "answer": 2,
+      "explanation": "Sensi Seeds dédie cette variété à Jack Herer, auteur de The Emperor Wears No Clothes et militant du cannabis. Le nom est ici un hommage à une personne.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-ab-sensi-jack"
+      ],
+      "editorial": {
+        "category": "thc-lineages",
+        "subject": "Jack Herer de Sensi Seeds",
+        "subjectKey": "sensiseeds-jack-herer",
+        "property": "personnalité honorée",
+        "expectedAnswer": "L'écriture et le militantisme",
+        "learningObjective": "Découvrir la personne derrière le nom d'une variété historique.",
+        "factKey": "sensiseeds-jack-herer-named-for-author-activist",
+        "form": "anecdote",
+        "difficultyRationale": "Anecdote culturelle accessible, sans vocabulaire génétique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-sensi-jack",
+            "locator": "Introduction avant Cultivating Sensi Seeds' Jack Herer",
+            "support": "Sensi Seeds explique l'hommage à l'auteur du livre et à ses années de militantisme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-blueberry-dj-short",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel obtenteur Dutch Passion crédite-t-il pour la création originale de Blueberry ?",
+      "options": [
+        "DJ Short",
+        "Shantibaba",
+        "Neville Schoenmakers",
+        "Subcool"
+      ],
+      "answer": 0,
+      "explanation": "Dutch Passion attribue Blueberry et les autres membres de sa Blue Family à DJ Short, puis décrit leur adoption dans son catalogue lors d'une collaboration.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-dutchpassion-blueberry"
+      ],
+      "editorial": {
+        "category": "thc-lineages",
+        "subject": "Blueberry de DJ Short reprise par Dutch Passion",
+        "subjectKey": "djshort-blueberry",
+        "property": "obtenteur original crédité",
+        "expectedAnswer": "DJ Short",
+        "learningObjective": "Distinguer le créateur original d'une lignée de la marque qui la commercialise.",
+        "factKey": "blueberry-original-breeder-dj-short",
+        "form": "identification",
+        "difficultyRationale": "Associer une lignée historique à son créateur, en le distinguant du catalogue qui la reprend.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-dutchpassion-blueberry",
+            "locator": "Dutch Passion Blueberry: one of the most rewarding cannabis strains",
+            "support": "La page dit que les variétés de la Blue Family ont été créées par DJ Short et adoptées par Dutch Passion en coopération."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-pineapple-express-barneys",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement Barney's Farm déclare-t-il pour sa Pineapple Express féminisée ?",
+      "options": [
+        "Blueberry × Super Silver Haze",
+        "Hawaiian × Trainwreck",
+        "OG Kush × Durban Poison",
+        "Lemon Skunk × Super Silver Haze"
+      ],
+      "answer": 1,
+      "explanation": "Barney's Farm décrit une sativa locale hawaïenne croisée avec Trainwreck. Cette parenté concerne sa Pineapple Express, et n'identifie pas tous les produits CBD portant ce nom.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-barneys-pineapple"
+      ],
+      "editorial": {
+        "category": "thc-lineages",
+        "subject": "Pineapple Express féminisée de Barney's Farm",
+        "subjectKey": "barneys-pineapple-express",
+        "property": "pedigree déclaré",
+        "expectedAnswer": "Hawaiian × Trainwreck",
+        "learningObjective": "Connaître la parenté annoncée d'une Pineapple Express précisément attribuée.",
+        "factKey": "barneys-pineapple-express-hawaiian-trainwreck",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître un croisement nommé parmi quatre pedigrees de variétés connues.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-barneys-pineapple",
+            "locator": "Strain Profile, Genetics ; paragraphe décrivant les origines",
+            "support": "Le catalogue donne Hawaiian Landrace Sativa × Trainwreck pour cette version féminisée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-ab-trikoma-widow-bilbo-bcn",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle parenté Trikoma Seeds déclare-t-il pour sa White Widow dans sa fiche espagnole ?",
+      "options": [
+        "Widow Bilbo × NYCD",
+        "Widow BCN × Dancehall #654",
+        "Widow Bilbo × Widow BCN",
+        "Widow Bilbo × Skunk #1"
+      ],
+      "answer": 2,
+      "explanation": "La fiche espagnole de Trikoma donne Widow Bilbo × Widow BCN pour sa White Widow. Il s'agit du pedigree déclaré de cette version, sans généralisation aux autres White Widow ni à la version CBD.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-ab-trikoma-widow"
+      ],
+      "editorial": {
+        "category": "thc-lineages",
+        "subject": "White Widow de la fiche espagnole de Trikoma Seeds",
+        "subjectKey": "trikoma-white-widow",
+        "property": "pedigree déclaré de la version espagnole",
+        "expectedAnswer": "Widow Bilbo × Widow BCN",
+        "learningObjective": "Connaître le pedigree de la White Widow de Trikoma, précisément distinguée de ses homonymes.",
+        "factKey": "trikoma-white-widow-spanish-catalogue-bilbo-bcn",
+        "form": "identification",
+        "difficultyRationale": "Connaître le pedigree spécialisé de la version Trikoma parmi quatre couples incluant Widow, sans indice lexical réservé à la bonne réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ab-trikoma-widow",
+            "locator": "Características de un vistazo, Genética",
+            "support": "La fiche espagnole consultée donne directement Widow Bilbo × Widow BCN pour cette White Widow ; aucun lien de parentage vers la White Widow CBD n'est inféré."
+          }
+        ]
+      }
+    }
+  ],
+  "retiredQuestions": [
+    {
+      "id": "hemp-q2-ab-trikoma-widow-deux-generations",
+      "factKey": "trikoma-white-widow-cbd-widow-parent-bilbo-bcn",
+      "status": "retired-after-source-review",
+      "replacedBy": "hemp-q2-ab-trikoma-widow-bilbo-bcn",
+      "reason": "L'identité entre le parent White Widow de l'ancienne fiche CBD et la version actuelle Bilbo × BCN n'est pas explicitement établie. La nouvelle question porte uniquement sur le pedigree directement déclaré dans la fiche espagnole.",
+      "reviewFile": "docs/quiz-2000/reviews/pilot-ab.json"
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-ab-cbdcrew-widow",
+      "title": "CBD Sweet and Sour Widow",
+      "organization": "CBD Crew",
+      "url": "https://cbdcrew.org/varieties/cbd-sweet-and-sour-widow/",
+      "verifiedAt": "2026-11-16",
+      "author": "CBD Crew",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Description ; Aroma",
+      "access": "official-page",
+      "documentKind": "breeder product page",
+      "limitation": "Description sensorielle commerciale attribuée, sans confirmation de la paire de jeu entière ni analyse de chaque lot.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Description et Aroma",
+        "result": "opened; sour onion fragrance explicitement décrit"
+      }
+    },
+    {
+      "id": "q2-ab-kanadea",
+      "title": "Mentions légales et CGV — Qui sommes-nous",
+      "organization": "Kanadea / Pyrénées Botanic",
+      "url": "https://kanadea.fr/mentions-legales/",
+      "verifiedAt": "2026-11-16",
+      "author": "Pyrénées Botanic",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Qui sommes-nous",
+      "access": "official-page",
+      "documentKind": "producer identity page",
+      "limitation": "Déclaration de l'entreprise sur sa marque ; aucune propriété génétique ou certification sanitaire déduite.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Deux premiers paragraphes de Qui sommes-nous",
+        "result": "opened; entreprise et marque explicitement reliées"
+      }
+    },
+    {
+      "id": "q2-ab-resin-cannatonic",
+      "title": "New Cannatonic Information!",
+      "organization": "Resin Seeds",
+      "url": "https://resinseeds.net/new-cannatonic-information/",
+      "verifiedAt": "2026-11-16",
+      "author": "resinadmin / Resin Seeds",
+      "published": "2015-11-10",
+      "passage": "Correction officielle de la parenté",
+      "access": "official-page",
+      "documentKind": "breeder historical announcement",
+      "limitation": "Pedigree déclaré par l'obtenteur, distinct d'une analyse indépendante de parentage.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Article central et date de publication",
+        "result": "opened; Reina Madre × NYCD remplace MK-Ultra × G13"
+      }
+    },
+    {
+      "id": "q2-ab-gtr-hawaiian",
+      "title": "Hawaiian Haze",
+      "organization": "GTR Seeds / Oregon CBD Seeds",
+      "url": "https://gtrseeds.com/products/hawaiian-haze",
+      "verifiedAt": "2026-11-16",
+      "author": "GTR Seeds",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Description, attribution Bred by",
+      "access": "catalogue",
+      "documentKind": "breeder product page",
+      "limitation": "Attribution commerciale à Oregon CBD Seeds ; ne désigne pas tous les cultivateurs vendant Hawaiian Haze.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Description, attribution après les récompenses",
+        "result": "opened; Oregon CBD Seeds est crédité comme obtenteur"
+      }
+    },
+    {
+      "id": "q2-ab-gtr-lifter",
+      "title": "Lifter — Feminized High CBD Seeds",
+      "organization": "GTR Seeds / Oregon CBD Seeds",
+      "url": "https://gtrseeds.com/products/lifter-organic",
+      "verifiedAt": "2026-11-16",
+      "author": "GTR Seeds",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Description, Lineage",
+      "access": "catalogue",
+      "documentKind": "breeder current product page",
+      "limitation": "Version de catalogue consultée en novembre 2026 ; ne revérifie pas le pedigree de l'original 2018, dont le PDF n'a pas été accessible pendant l'audit.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Description, première ligne",
+        "result": "opened; SH50 × KAP explicitement affiché"
+      }
+    },
+    {
+      "id": "q2-ab-aosca-berry",
+      "title": "AOSCA 2022 Hemp Final Report — High Grade Hemp Seed, Berry Blossom",
+      "organization": "AOSCA",
+      "url": "https://aosca.org/wp-content/uploads/2024/12/2022-Hemp-High-Grade-Hemp-Seed-%E2%80%93-Berry-Blossom.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "AOSCA ; dossier High Grade Hemp Seed",
+      "published": "2022-11",
+      "passage": "Page 8 du rapport, page unique du fichier : création et pedigree",
+      "access": "full-text",
+      "documentKind": "variety certification dossier",
+      "limitation": "Description variétale consignée dans un dossier ; ne vaut pas contrôle génétique de chaque produit vendu sous le nom.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Page unique, premier paragraphe et lignes sur Chardonnay",
+        "result": "opened; Black Rose et sélection de Cherry Wine sont les parents décrits de Chardonnay"
+      }
+    },
+    {
+      "id": "q2-ab-sensi-jack",
+      "title": "Cannabis Strain Focus: Jack Herer from Sensi Seeds",
+      "organization": "Sensi Seeds",
+      "url": "https://sensiseeds.com/en/blog/cannabis-strain-focus-jack-herer-from-sensi-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "Sensi Seeds",
+      "published": "2020-07-23",
+      "passage": "Introduction avant Cultivating Sensi Seeds' Jack Herer",
+      "access": "official-page",
+      "documentKind": "breeder cultural history",
+      "limitation": "L'hommage est documenté par la marque ; superlatifs, promesses d'effets et conseils de culture de la page exclus.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Introduction, paragraphe nommé après l'auteur",
+        "result": "opened; référence au livre et au militantisme de Jack Herer"
+      }
+    },
+    {
+      "id": "q2-ab-dutchpassion-blueberry",
+      "title": "Blueberry — Product info",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/blueberry",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Dutch Passion Blueberry: one of the most rewarding cannabis strains",
+      "access": "catalogue",
+      "documentKind": "breeder product history",
+      "limitation": "Crédit historique donné par Dutch Passion ; aucune teneur, promesse d'effet ou universalité du nom retenue.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Paragraphe sur l'introduction en 1998 et la Blue Family",
+        "result": "opened; DJ Short crédité comme créateur original"
+      }
+    },
+    {
+      "id": "q2-ab-barneys-pineapple",
+      "title": "Pineapple Express — Feminised Cannabis Seeds",
+      "organization": "Barney's Farm",
+      "url": "https://www.barneysfarm.com/pineapple-express-609",
+      "verifiedAt": "2026-11-16",
+      "author": "Barney's Farm",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Strain Profile, Genetics ; description des origines",
+      "access": "catalogue",
+      "documentKind": "breeder product page",
+      "limitation": "Pedigree de la version féminisée de Barney's Farm ; pas de transfert à une fleur CBD homonyme ni de protocole de culture retenu.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Genetics et paragraphe sur Hawaiian landrace/Trainwreck",
+        "result": "opened; Hawaiian Landrace Sativa × Trainwreck"
+      }
+    },
+    {
+      "id": "q2-ab-trikoma-widow",
+      "title": "White Widow — Linaje genético",
+      "organization": "Trikoma Seeds",
+      "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+      "verifiedAt": "2026-11-16",
+      "author": "Trikoma Seeds",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Características de un vistazo, Genética",
+      "access": "catalogue",
+      "documentKind": "breeder product page",
+      "limitation": "Version de Trikoma uniquement ; ne résout pas l'histoire de toutes les White Widow.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Linaje genético puis tableau Genética",
+        "result": "opened; Widow Bilbo × Widow BCN"
+      }
+    },
+    {
+      "id": "q2-ab-trikoma-widow-cbd",
+      "title": "White Widow CBD — Features",
+      "organization": "Trikoma Seeds",
+      "url": "https://www.trikomaseeds.com/en/semillas/white-widow-cbd/",
+      "verifiedAt": "2026-11-16",
+      "author": "Trikoma Seeds",
+      "published": "Date de publication non indiquée sur la page consultée",
+      "passage": "Features of White Widow CBD, Genetics",
+      "access": "catalogue",
+      "documentKind": "breeder product page",
+      "limitation": "Lignée d'enrichissement CBD non nommée ; le quiz n'en invente pas l'identité. Promesses médicales et incohérences sur le THC exclues.",
+      "consultation": {
+        "reader": "/root/a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Features of White Widow CBD, première ligne",
+        "result": "opened; White Widow × CBD"
+      }
+    }
+  ]
+}

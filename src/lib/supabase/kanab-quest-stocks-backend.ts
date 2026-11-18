@@ -1,8 +1,10 @@
 import "server-only";
+import { isKqQueuedReceipt, type KqQueuedReceipt } from "../kanab-quest-market-queue";
 import { createSupabaseServiceClient } from "./admin";
 import { fetchKqStockQuotes } from "../stock-market-quotes";
 import { getKqStockInstrument, isKqStockOrder, isKqStockSnapshot, isKqStockTrade, isRecord, KqStockRequestError, KQ_STOCK_MAX_BATCH, KQ_STOCK_UUID, parseKqStockAction, parseKqStockAssetIds, type KqStockOrder, type KqStockSnapshot, type KqStockTrade } from "../kanab-quest-stocks";
 const errors: Record<string, string> = {
+ market_policy_required: "Actualise le comptoir : les ordres sont désormais exécutés au prochain cours publié.", market_queue_limit: "Vingt ordres sont déjà en attente.", market_expired: "Cette préparation a expiré. Prépare un nouvel ordre.", market_order_missing: "Ordre introuvable.", market_invalid: "Ordre invalide.",
  stocks_invalid: "Ordre boursier invalide.", stocks_retired: "Ce titre a quitté les indices suivis : seules les ventes restent possibles.", stocks_stale: "Ce cours ou son taux de change est trop ancien. Actualise le comptoir avant de préparer un ordre.",
  stocks_cash: "Trésorerie insuffisante.", stocks_quantity: "La quantité dépasse ta position disponible.", stocks_dust: "Ce montant est trop petit pour être échangé.",
  stocks_expired: "Cette offre a expiré. Prépare un nouvel ordre.", stocks_order_missing: "Cette offre est introuvable.",
@@ -31,6 +33,7 @@ export async function refreshKqStockQuotes(ids: string[]) {
  try {
   const quotes = await fetchKqStockQuotes(claim.assetIds as string[]);
   const published = await rpc("rpc_kq_stock_refresh_publish", { p_lease_id: claim.leaseId, p_assets: quotes });
+  if (published === true) await rpc("rpc_kq_settle_market_queue").catch(() => console.warn("[stocks:queue] settlement deferred"));
   if (published !== true && quotes.length) console.warn("[stocks:refresh] publication rejected");
   if (quotes.length < claim.assetIds.length) console.warn("[stocks:refresh] some quotes unavailable", { requested: claim.assetIds.length, received: quotes.length });
  } catch (error) {
@@ -44,17 +47,22 @@ export async function getKqStockSnapshot(userId: string, ids: string[] = ["^FCHI
  checkUser(userId);
  const requested = parseKqStockAssetIds(ids.join(","));
  await refreshKqStockQuotes(requested);
+ const pending = await rpc("rpc_kq_pending_stock_assets").catch(() => []);
+ const extras = Array.isArray(pending) ? pending.filter((id): id is string => typeof id === "string" && !!getKqStockInstrument(id) && !requested.includes(id)).slice(0, 6) : [];
+ if (extras.length) await refreshKqStockQuotes(extras);
  const data = await rpc("rpc_kq_stock_command", { p_user_id: userId, p_action: "state", p_payload: {}, p_asset_ids: requested });
  if (!isKqStockSnapshot(data)) throw new Error("[supabase:stocks] invalid snapshot");
  return data;
 }
-export async function handleKqStockAction(userId: string, value: unknown): Promise<KqStockOrder | { trade: KqStockTrade; replayed: boolean }> {
+export async function handleKqStockAction(userId: string, value: unknown): Promise<KqStockOrder | KqQueuedReceipt | { trade: KqStockTrade; replayed: boolean }> {
  checkUser(userId);
  const action = parseKqStockAction(value);
  if (action.action === "preview") await refreshKqStockQuotes([action.assetId]);
  const { action: name, ...payload } = action;
- const data = await rpc("rpc_kq_stock_command", { p_user_id: userId, p_action: name, p_payload: payload, p_asset_ids: [] });
+ const data = name === "confirm" ? await rpc("rpc_kq_market_order_submit", { p_market: "stocks", p_user_id: userId, p_payload: payload })
+  : await rpc("rpc_kq_stock_command", { p_user_id: userId, p_action: name, p_payload: payload, p_asset_ids: [] });
  if (name === "preview" && isKqStockOrder(data)) return data;
+ if (name === "confirm" && isKqQueuedReceipt(data)) return data;
  if (name === "confirm" && isRecord(data) && isKqStockTrade(data.trade) && typeof data.replayed === "boolean") return { trade: data.trade, replayed: data.replayed };
  throw new Error("[supabase:stocks] invalid receipt");
 }

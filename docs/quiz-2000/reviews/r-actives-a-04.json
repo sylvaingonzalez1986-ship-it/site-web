@@ -1,0 +1,1216 @@
+{
+  "batchId": "r-actives-a-04",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-ra04-fungal-contaminated-flower-immunocompromised-risk",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Contaminants fongiques des fleurs et prévention chez consommateurs vulnérables.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "01bb667289a1178fec4daf71f8b573771ddfe016443cde4cb13058d8e475ea52",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-cdc-fungi",
+          "url": "https://wwwnc.cdc.gov/eid/article/26/6/19-1570_article",
+          "locator": "Introduction et Conclusions",
+          "result": "CDC introduction et Conclusions effectivement lus : champignons du cannabis préoccupants pour patients immunodéprimés ; données administratives ne permettent pas source d’infection ni causalité individuelle.",
+          "sourceHash": "6b95c0e592fa0a02b1537b3b8096c36d38f655e1800adf305a7f7448936787b7"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-cbda-anti-nausea-5ht1a-animal-mechanism",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Mécanisme pharmacologique préclinique du CBDA.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "ca4d7b251a4deab2c315a99536b51878f5351fdc6f08251fcd17952e2b2e34f1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-bolognini",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3596650",
+          "locator": "Abstract Key Results et Conclusions",
+          "result": "Article original PMC Abstract et Results réellement lus : CBDA réduit gaping chez rats, effet bloqué par antagoniste5HT1A mais pas CB1 ; activation5HT1A renforcée in vitro. Pas preuve clinique humaine.",
+          "sourceHash": "1737176ffc37c6d46e47092d2e5098524184dcc858130856e558bd33024f8524"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-sterilized-cannabis-mycotoxins-can-remain",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Mycotoxines préexistantes dans produit cannabique.",
+      "comment": "La neutralisation magique par la résine est remplacée par une hypothèse de réapparition après repousse. Les choix comparent le devenir de toxines déjà formées et celui de leurs producteurs.",
+      "contentHash": "73fa7b66ae86ccce8e890477e8ad5f5dcba2ae593c813b5fd23fcf51253b1fc5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-gwinn",
+          "url": "https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2023.1278189/full",
+          "locator": "§6.3 Reducing mycotoxins in cannabis tissues",
+          "result": "HTML Frontiers intermittent ; même article original ouvert sur https://pmc.ncbi.nlm.nih.gov/articles/PMC10620813/ (DOI10.3389/fmicb.2023.1278189 vérifié). §6.3 réellement lu : produits stérilisés pouvant encore contenir mycotoxines déjà formées.",
+          "sourceHash": "b00fef606a97eb873f91145e720fc30c6d8add6f75b474e507505b36d0a93ab9"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-sterilized-cannabis-mycotoxins-can-remain",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Mycotoxines préexistantes dans produit cannabique.",
+          "comment": "Persistance des mycotoxines confirmée dans §6.3. Remplacer la neutralisation par la résine, distracteur chimique sans mécanisme plausible dans ce contexte. Garder quatre devenirs de contaminants formulés de façon comparable ; la distinction utile est organisme viable contre toxine déjà présente, pas une propriété protectrice magique de la résine.",
+          "contentHash": "37a613f9891ffad8758ef5dc49c1ef38c3e7261737cdde43903bf4b4dd135738",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-gwinn",
+              "url": "https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2023.1278189/full",
+              "locator": "§6.3 Reducing mycotoxins in cannabis tissues",
+              "result": "HTML Frontiers intermittent ; même article original ouvert sur https://pmc.ncbi.nlm.nih.gov/articles/PMC10620813/ (DOI10.3389/fmicb.2023.1278189 vérifié). §6.3 réellement lu : produits stérilisés pouvant encore contenir mycotoxines déjà formées.",
+              "sourceHash": "b00fef606a97eb873f91145e720fc30c6d8add6f75b474e507505b36d0a93ab9"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-sterilized-cannabis-mycotoxins-can-remain",
+          "topicId": "biodiversity",
+          "level": 1,
+          "prompt": "Après réduction des moisissures d’un produit cannabique, que peut-il advenir des mycotoxines déjà formées ?",
+          "options": [
+            "Elles sont éliminées avec les organismes producteurs",
+            "Elles peuvent subsister sans champignons encore viables",
+            "Elles deviennent inactives lorsque la croissance s’arrête",
+            "Elles sont neutralisées par la résine qui reste"
+          ],
+          "answer": 1,
+          "explanation": "Les mycotoxines sont des contaminants chimiques : celles déjà formées peuvent subsister après une réduction des champignons. La qualité microbienne et la présence de toxines sont donc deux aspects distincts à contrôler.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-ra04-gwinn"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Mycotoxines déjà formées pouvant persister après stérilisation",
+            "subjectKey": "cannabis-mycotoxins-after-decontamination",
+            "property": "Mycotoxines déjà formées pouvant persister après stérilisation",
+            "expectedAnswer": "Elles peuvent subsister sans champignons encore viables",
+            "learningObjective": "Distinguer réduction des champignons et élimination des toxines déjà présentes.",
+            "factKey": "sterilized-cannabis-mycotoxins-can-remain",
+            "form": "identification",
+            "difficultyRationale": "Connaissance concrète utile à la compréhension des effets ou de la qualité, formulée en vocabulaire courant.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-gwinn",
+                "locator": "§6.3 Reducing mycotoxins in cannabis tissues",
+                "support": "La synthèse indique que des produits stérilisés ou produits avec matériaux stérilisés peuvent encore contenir des mycotoxines."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-sterilized-cannabis-mycotoxins-can-remain",
+          "topicId": "biodiversity",
+          "level": 1,
+          "prompt": "Après réduction des moisissures d’un produit cannabique, que peut-il advenir des mycotoxines déjà formées ?",
+          "options": [
+            "Elles disparaissent avec les organismes qui les produisaient",
+            "Elles peuvent subsister sans champignons encore viables",
+            "Elles deviennent inactives lorsque la croissance s’arrête",
+            "Elles ne réapparaissent que si les champignons repoussent"
+          ],
+          "answer": 1,
+          "explanation": "Les mycotoxines sont des contaminants chimiques : celles déjà formées peuvent subsister après une réduction des champignons. La qualité microbienne et la présence de toxines sont donc deux aspects distincts à contrôler.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-ra04-gwinn"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Mycotoxines déjà formées pouvant persister après stérilisation",
+            "subjectKey": "cannabis-mycotoxins-after-decontamination",
+            "property": "Mycotoxines déjà formées pouvant persister après stérilisation",
+            "expectedAnswer": "Elles peuvent subsister sans champignons encore viables",
+            "learningObjective": "Distinguer réduction des champignons et élimination des toxines déjà présentes.",
+            "factKey": "sterilized-cannabis-mycotoxins-can-remain",
+            "form": "identification",
+            "difficultyRationale": "Connaissance concrète utile à la compréhension des effets ou de la qualité, formulée en vocabulaire courant.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-gwinn",
+                "locator": "§6.3 Reducing mycotoxins in cannabis tissues",
+                "support": "La synthèse indique que des produits stérilisés ou produits avec matériaux stérilisés peuvent encore contenir des mycotoxines."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra04-cannabis-extract-mycotoxins-can-concentrate",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Transfert de contaminants entre formes de cannabis actif.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "5c8feebf403ad38be4a8bd730c1fbdfeaa53a112c6c257f891f8101ede08d2b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-serafimovska",
+          "url": "https://www.frontiersin.org/journals/medicine/articles/10.3389/fmed.2021.759856/full",
+          "locator": "Abstract Results/Conclusion ; Discussion",
+          "result": "Article original Frontiers Methods/Results et Conclusion réellement lus : aflatoxines et OchA ajoutées aux fleurs, retrouvées dans extrait final à concentrations massiques plus élevées. Aucun paramètre de fabrication nécessaire dans le quiz.",
+          "sourceHash": "01fef6fdba76d27514e3b9738af05d7d3acacd1942d8301fb00260767495a605"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-flower-pesticide-residues-transfer-to-smoke",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Pesticides des fleurs dans fumée de cannabis.",
+      "comment": "Les quatre choix décrivent des résultats de détection comparables ; la réponse n’est plus la seule formulation partielle face à trois complètes. Le transfert observé reste borné aux résidus testés.",
+      "contentHash": "d42c8788f39e8133a23552e752edf9764a2ba90d6121390869a255f453ceeac9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-sullivan",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3666265/",
+          "locator": "§5 Conclusion",
+          "result": "Article original PMC Abstract et §5Conclusion réellement lus : résidus chimiques des fleurs transférés à fumée principale ; dépendance aux molécules/dispositifs, pas universalisation ni optimisation.",
+          "sourceHash": "f9cb8d90e6bd9aa3979f65ab904b0354a19ab8bb72dc95e7f3f74142e5ffc6ba"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-flower-pesticide-residues-transfer-to-smoke",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Pesticides des fleurs dans fumée de cannabis.",
+          "comment": "Transfert de résidus confirmé dans l’essai. Trois réponses invoquent une rétention/destruction/dissolution complète face à la seule réponse partielle ; cette opposition d’absolus donne le corrigé. Rééquilibrer quatre hypothèses de devenir comparables, sans triple « complète ». L’essai sur résidus testés, sa portée et le niveau1 sont recevables.",
+          "contentHash": "bc642ebed2bfe199c040d379aec135234108381a853b8f3cbb12d093a8c527e2",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-sullivan",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3666265/",
+              "locator": "§5 Conclusion",
+              "result": "Article original PMC Abstract et §5Conclusion réellement lus : résidus chimiques des fleurs transférés à fumée principale ; dépendance aux molécules/dispositifs, pas universalisation ni optimisation.",
+              "sourceHash": "f9cb8d90e6bd9aa3979f65ab904b0354a19ab8bb72dc95e7f3f74142e5ffc6ba"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-flower-pesticide-residues-transfer-to-smoke",
+          "topicId": "biodiversity",
+          "level": 1,
+          "prompt": "Quel devenir de résidus de pesticides sur des fleurs de cannabis a été démontré dans un essai de fumage ?",
+          "options": [
+            "Leur rétention complète dans les cendres",
+            "Le transfert d’une partie dans la fumée inhalée",
+            "Leur destruction complète avant formation de fumée",
+            "Leur dissolution complète dans l’eau, sans passage dans la fumée"
+          ],
+          "answer": 1,
+          "explanation": "Une partie des résidus testés est passée dans la fumée. La combustion n’a donc pas supprimé cette exposition ; le résultat ne signifie pas que tous les pesticides se comportent de façon identique.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-ra04-sullivan"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Transfert possible de résidus de pesticides vers fumée",
+            "subjectKey": "cannabis-flower-pesticide-transfer",
+            "property": "Transfert possible de résidus de pesticides vers fumée",
+            "expectedAnswer": "Le transfert d’une partie dans la fumée inhalée",
+            "learningObjective": "Comprendre que fumer une fleur contaminée ne détruit pas nécessairement ses résidus de pesticides.",
+            "factKey": "flower-pesticide-residues-transfer-to-smoke",
+            "form": "identification",
+            "difficultyRationale": "Connaissance concrète utile à la compréhension des effets ou de la qualité, formulée en vocabulaire courant.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-sullivan",
+                "locator": "§5 Conclusion",
+                "support": "L’étude expérimentale montre transfert de résidus chimiques du cannabis à la fumée principale, certains résistant à pyrolyse et se volatilisant."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-flower-pesticide-residues-transfer-to-smoke",
+          "topicId": "biodiversity",
+          "level": 1,
+          "prompt": "Quel devenir de résidus de pesticides sur des fleurs de cannabis a été démontré dans un essai de fumage ?",
+          "options": [
+            "Une absence de résidus détectables dans la fumée inhalée",
+            "Des résidus des fleurs détectés dans la fumée inhalée",
+            "Des résidus détectés dans l’eau, mais absents de la fumée",
+            "Des résidus détectés dans les cendres, mais absents de la fumée"
+          ],
+          "answer": 1,
+          "explanation": "Une partie des résidus testés est passée dans la fumée. La combustion n’a donc pas supprimé cette exposition ; le résultat ne signifie pas que tous les pesticides se comportent de façon identique.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-ra04-sullivan"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Transfert possible de résidus de pesticides vers fumée",
+            "subjectKey": "cannabis-flower-pesticide-transfer",
+            "property": "Transfert possible de résidus de pesticides vers fumée",
+            "expectedAnswer": "Des résidus des fleurs détectés dans la fumée inhalée",
+            "learningObjective": "Comprendre que fumer une fleur contaminée ne détruit pas nécessairement ses résidus de pesticides.",
+            "factKey": "flower-pesticide-residues-transfer-to-smoke",
+            "form": "identification",
+            "difficultyRationale": "Connaissance concrète utile à la compréhension des effets ou de la qualité, formulée en vocabulaire courant.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-sullivan",
+                "locator": "§5 Conclusion",
+                "support": "L’étude expérimentale montre transfert de résidus chimiques du cannabis à la fumée principale, certains résistant à pyrolyse et se volatilisant."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra04-cannabis-flower-four-common-toxic-metals",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Contrôle de contaminants métalliques des fleurs à actifs.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "7cbac7efbc0a1634242e2c6e439405f672577405fbaa712d7317594030496a9e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-hc-survey",
+          "url": "https://www.canada.ca/en/health-canada/services/publications/healthy-living/data-gathering-program-comparison-legal-illegal-dried-cannabis-products.html",
+          "locator": "Chemical contaminants, Metals",
+          "result": "Rapport Santé Canada Summary métaux réellement lu : arsenic, cadmium, plomb, mercure quatre éléments couramment contrôlés ; enquête limitée, pas garantie individuelle.",
+          "sourceHash": "04278d6707c784b41aa9f95b1aaf5d72f41e997e738ad6a363e441d249125a4e"
+        },
+        {
+          "sourceId": "q2-ra04-beigel",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13404096/",
+          "locator": "Résumé, Results et Discussion",
+          "result": "Article original PMC Discussion/Conclusions réellement lus : métaux accumulés dans inflorescences de cultivars à actifs ; CBD non diminué chez Dov malgré contamination élevée. Ce résultat soutient la distinction profil cannabinoïde/contaminants.",
+          "sourceHash": "483e37660f98a65685450928a2f309e68c76cf66da8a2ebe442b68918b0cece0"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-leipzig-lead-adulterated-marijuana",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Cas historique d’adultération de marijuana.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "331c38ac9d0ddd776f48af05cb0458dd667d771e0f54f792937e3a84c4947e04",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-busse",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2696942",
+          "locator": "Abstract ; Results ; discussion poids et profits",
+          "result": "Article original PMC Abstract et Discussion réellement lus : série Leipzig2007, plomb élémentaire dans échantillon, motivation poids/profit qualifiée d’hypothèse. Aucun taux actuel de marché inféré.",
+          "sourceHash": "04833f053b2eb2d0bbf4b28e017aafa8c19018e1f37044b618caad238ad73c68"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-madrid-illicit-resin-fecal-bacteria",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Contamination bactérienne de résines cannabiques.",
+      "comment": "Quatre bactéries compatibles avec un contexte de contamination alimentaire/environnementale remplacent les distracteurs respiratoire et tétanique. Le prompt cible l’association aux échantillons à odeur fécale explicitement rapportée dans le résumé.",
+      "contentHash": "3af836c146a26ffedb503b998bdf963d0aa319188b99bf2cda09670f48fed6a8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-madrid-resin",
+          "url": "https://agris.fao.org/search/en/providers/122535/records/65de47ab0f3e94b9e5ccde61",
+          "locator": "Résumé original, contamination microbiologique",
+          "result": "Résumé original intégral FAOAGRIS réellement lu :90résines, E.coli identifié et associé aux échantillons à odeur fécale. Accès abstract déclaré honnêtement, pas texte payant revendiqué.",
+          "sourceHash": "496a499fec39fd0cf2781cf103bd0a28f3bddeafc740513c1c65e231c8ecacc8"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-madrid-illicit-resin-fecal-bacteria",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Contamination bactérienne de résines cannabiques.",
+          "comment": "E.coli confirmé dans le résumé original FAOAGRIS. Remplacer au moins Bordetella pertussis : agent respiratoire transmis entre personnes, bien moins plausible ici que des bactéries de contamination alimentaire, environnementale ou fécale. Proposer quatre bactéries de contexte comparable, en vérifiant qu’aucune alternative n’est elle aussi rapportée comme résultat dans cette étude.",
+          "contentHash": "dc39f683e6ae9eb91a2be2471a419b531c3719a2a7840b14188957cff49e0a28",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-madrid-resin",
+              "url": "https://agris.fao.org/search/en/providers/122535/records/65de47ab0f3e94b9e5ccde61",
+              "locator": "Résumé original, contamination microbiologique",
+              "result": "Résumé original intégral FAOAGRIS réellement lu :90résines, E.coli identifié et associé aux échantillons à odeur fécale. Accès abstract déclaré honnêtement, pas texte payant revendiqué.",
+              "sourceHash": "496a499fec39fd0cf2781cf103bd0a28f3bddeafc740513c1c65e231c8ecacc8"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-madrid-illicit-resin-fecal-bacteria",
+          "topicId": "biodiversity",
+          "level": 2,
+          "prompt": "Quelle contamination bactérienne a été trouvée dans une étude de résines de cannabis achetées dans les rues de Madrid ?",
+          "options": [
+            "Vibrio cholerae",
+            "Bordetella pertussis",
+            "Clostridium tetani",
+            "Escherichia coli"
+          ],
+          "answer": 3,
+          "explanation": "L’étude a retrouvé E. coli, compatible avec une contamination fécale, dans une partie des résines. Elle ne permet ni de généraliser à toutes les résines ni d’en estimer la fréquence actuelle dans un autre marché.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-ra04-madrid-resin"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Contamination de résine de rue par E.coli",
+            "subjectKey": "madrid-illicit-resin-contamination",
+            "property": "Contamination de résine de rue par E.coli",
+            "expectedAnswer": "Escherichia coli",
+            "learningObjective": "Distinguer la résine cannabique et les contaminants qu’elle peut transporter.",
+            "factKey": "madrid-illicit-resin-fecal-bacteria",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-madrid-resin",
+                "locator": "Résumé original, contamination microbiologique",
+                "support": "Le résumé original rapporte E.coli dans une grande part des échantillons, surtout formeacorn, et lien avec odeur fécale."
+              }
+            ],
+            "jurisdiction": "Espagne ; échantillons de résines de rue étudiés à Madrid, publication 2019",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-madrid-illicit-resin-fecal-bacteria",
+          "topicId": "biodiversity",
+          "level": 2,
+          "prompt": "Quelle bactérie l’étude de 2019 à Madrid associe-t-elle aux résines de cannabis présentant une odeur fécale ?",
+          "options": [
+            "Salmonella enterica",
+            "Staphylococcus aureus",
+            "Listeria monocytogenes",
+            "Escherichia coli"
+          ],
+          "answer": 3,
+          "explanation": "L’étude a retrouvé E. coli, compatible avec une contamination fécale, dans une partie des résines. Elle ne permet ni de généraliser à toutes les résines ni d’en estimer la fréquence actuelle dans un autre marché.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-ra04-madrid-resin"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Contamination de résine de rue par E.coli",
+            "subjectKey": "madrid-illicit-resin-contamination",
+            "property": "Contamination de résine de rue par E.coli",
+            "expectedAnswer": "Escherichia coli",
+            "learningObjective": "Distinguer la résine cannabique et les contaminants qu’elle peut transporter.",
+            "factKey": "madrid-illicit-resin-fecal-bacteria",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-madrid-resin",
+                "locator": "Résumé original, contamination microbiologique",
+                "support": "Le résumé original rapporte E.coli dans une grande part des échantillons, surtout formeacorn, et lien avec odeur fécale."
+              }
+            ],
+            "jurisdiction": "Espagne ; échantillons de résines de rue étudiés à Madrid, publication 2019",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "coordinatorConsultation": {
+        "reader": "root",
+        "date": "2026-11-17",
+        "url": "https://agris.fao.org/search/en/providers/122535/records/65de47ab0f3e94b9e5ccde61",
+        "access": "abstract",
+        "locator": "Résumé original, paragraphes microbiological contamination et fecal odor",
+        "result": "Résumé intégral ouvert : E.coli est la bactérie nommée et associée aux échantillons à odeur fécale. Aspergillus est aussi cité comme champignon ; aucun des trois nouveaux distracteurs bactériens n’est cité dans le résumé. Aucun accès au texte payant revendiqué."
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra04-dronabinol-alzheimer-agitation-trial-signal",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Signal clinique du THC pharmaceutique sur agitation.",
+      "comment": "Les lésions sont remplacées par une manifestation clinique. La portée symptomatique et la distinction avec les indications américaines sont conservées.",
+      "contentHash": "b44e65bed36d88726dcba0fd0392c55b985741c8ca25e056595db37d5abdf96a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-alzheimer",
+          "url": "https://www.hopkinsmedicine.org/news/newsroom/news-releases/2024/10/clinical-trial-shows-synthetic-cannabis-reduces-agitation-in-alzheimers-disease",
+          "locator": "Résultats de l’essai clinique présentés dans le communiqué",
+          "result": "Communiqué original Johns Hopkins2octobre2024 réellement lu : résultats de congrès d’un essai dronabinol, réduction de l’agitation ; pas prétention de restauration de mémoire.",
+          "sourceHash": "1fd9788cdf756ae3f1bb1e5cf081c99d403c114a5225a967b673fbe8444386c4"
+        },
+        {
+          "sourceId": "q2-ra04-dronabinol",
+          "url": "https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=fd8c5d57-0173-4f62-8ff0-d8147986a976&type=display",
+          "locator": "Highlights, Indications and Usage",
+          "result": "Label officiel DailyMed consulté, Indications and Usage réellement lu : anorexie avec perte de poids liée au sida et CINV réfractaire ; Alzheimer ne figure pas parmi indications.",
+          "sourceHash": "9264380afbfa33d9a15e6acc20cd77f88a00596f74818b8ee6e4dea556ee16ec"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-dronabinol-alzheimer-agitation-trial-signal",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Signal clinique du THC pharmaceutique sur agitation.",
+          "comment": "Signal de réduction de l’agitation confirmé dans le communiqué original2024 ; indications américaines vérifiées séparément sur label2026. Le distracteur « lésions cérébrales » n’est pas un symptôme comme les trois autres réponses. Comparer quatre manifestations cliniques plausibles d’Alzheimer. Conserver la séparation entre signal symptomatique, progression de maladie et indication réglementaire.",
+          "contentHash": "f82807294c182bc31f2f02de69db4aeb8962c3afa1232b2aeca99c8eab8755f2",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-alzheimer",
+              "url": "https://www.hopkinsmedicine.org/news/newsroom/news-releases/2024/10/clinical-trial-shows-synthetic-cannabis-reduces-agitation-in-alzheimers-disease",
+              "locator": "Résultats de l’essai clinique présentés dans le communiqué",
+              "result": "Communiqué original Johns Hopkins2octobre2024 réellement lu : résultats de congrès d’un essai dronabinol, réduction de l’agitation ; pas prétention de restauration de mémoire.",
+              "sourceHash": "1fd9788cdf756ae3f1bb1e5cf081c99d403c114a5225a967b673fbe8444386c4"
+            },
+            {
+              "sourceId": "q2-ra04-dronabinol",
+              "url": "https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=fd8c5d57-0173-4f62-8ff0-d8147986a976&type=display",
+              "locator": "Highlights, Indications and Usage",
+              "result": "Label officiel DailyMed consulté, Indications and Usage réellement lu : anorexie avec perte de poids liée au sida et CINV réfractaire ; Alzheimer ne figure pas parmi indications.",
+              "sourceHash": "9264380afbfa33d9a15e6acc20cd77f88a00596f74818b8ee6e4dea556ee16ec"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-dronabinol-alzheimer-agitation-trial-signal",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Quel symptôme d’Alzheimer le dronabinol a-t-il réduit dans un essai présenté par Johns Hopkins en 2024 ?",
+          "options": [
+            "La perte de mémoire autobiographique",
+            "Les lésions cérébrales",
+            "L’agitation comportementale",
+            "Les difficultés de reconnaissance des visages"
+          ],
+          "answer": 2,
+          "explanation": "L’essai visait l’agitation et a observé une réduction de ce symptôme. Ce résultat ne démontre ni une restauration de la mémoire ni une action sur la progression de la maladie ; il ne constitue pas une indication autorisée.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra04-alzheimer",
+            "q2-ra04-dronabinol"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Réduction de l’agitation dans essaiAlzheimer",
+            "subjectKey": "dronabinol",
+            "property": "Réduction de l’agitation dans essaiAlzheimer",
+            "expectedAnswer": "L’agitation comportementale",
+            "learningObjective": "Distinguer un effet symptomatique étudié du THC médical d’un traitement de la neurodégénérescence.",
+            "factKey": "dronabinol-alzheimer-agitation-trial-signal",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-alzheimer",
+                "locator": "Résultats de l’essai clinique présentés dans le communiqué",
+                "support": "Le communiqué original décrit une diminution de l’agitation chez des patients Alzheimer recevant le dronabinol ; il n’établit pas de restauration de mémoire ni d’action sur la maladie."
+              },
+              {
+                "sourceId": "q2-ra04-dronabinol",
+                "locator": "Highlights, Indications and Usage",
+                "support": "Les indications américaines de cette étiquette sont l’anorexie avec perte de poids liée au sida et les nausées-vomissements de chimiothérapie après réponse insuffisante aux traitements usuels ; Alzheimer n’y figure pas."
+              }
+            ],
+            "jurisdiction": "États-Unis ; étiquette officielle consultée en novembre 2026 et essai clinique explicitement borné",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-dronabinol-alzheimer-agitation-trial-signal",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Quel symptôme d’Alzheimer le dronabinol a-t-il réduit dans un essai présenté par Johns Hopkins en 2024 ?",
+          "options": [
+            "La perte de mémoire autobiographique",
+            "Les troubles du langage",
+            "L’agitation comportementale",
+            "Les difficultés de reconnaissance des visages"
+          ],
+          "answer": 2,
+          "explanation": "L’essai visait l’agitation et a observé sa réduction, sans démontrer une restauration de la mémoire ou une action sur la progression de la maladie. Alzheimer ne figure pas dans les indications américaines de l’étiquette citée.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra04-alzheimer",
+            "q2-ra04-dronabinol"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Réduction de l’agitation dans essaiAlzheimer",
+            "subjectKey": "dronabinol",
+            "property": "Réduction de l’agitation dans essaiAlzheimer",
+            "expectedAnswer": "L’agitation comportementale",
+            "learningObjective": "Distinguer un effet symptomatique étudié du THC médical d’un traitement de la neurodégénérescence.",
+            "factKey": "dronabinol-alzheimer-agitation-trial-signal",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-alzheimer",
+                "locator": "Résultats de l’essai clinique présentés dans le communiqué",
+                "support": "Le communiqué original décrit une diminution de l’agitation chez des patients Alzheimer recevant le dronabinol ; il n’établit pas de restauration de mémoire ni d’action sur la maladie."
+              },
+              {
+                "sourceId": "q2-ra04-dronabinol",
+                "locator": "Highlights, Indications and Usage",
+                "support": "Les indications américaines de cette étiquette sont l’anorexie avec perte de poids liée au sida et les nausées-vomissements de chimiothérapie après réponse insuffisante aux traitements usuels ; Alzheimer n’y figure pas."
+              }
+            ],
+            "jurisdiction": "États-Unis ; étiquette officielle consultée en novembre 2026 et essai clinique explicitement borné",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra04-canada-survey-licensed-less-pesticides",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Comparaison réelle de qualité entre échantillons cannabiques.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "d9099d5588d4bf9cfc294b8e773d788c76e358e99207cb5110a65e4405e8655a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-hc-survey",
+          "url": "https://www.canada.ca/en/health-canada/services/publications/healthy-living/data-gathering-program-comparison-legal-illegal-dried-cannabis-products.html",
+          "locator": "Summary, Pesticides ; échantillonnage",
+          "result": "Rapport original Summary pesticides et échantillonnage réellement lus :50légaux/50illicites,2légaux avec traces,94%illicites avec plusieurs résidus. Comparaison située et absence de garantie de pureté correctement conservées.",
+          "sourceHash": "04278d6707c784b41aa9f95b1aaf5d72f41e997e738ad6a363e441d249125a4e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-thc-acute-heart-rate-increase",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Effet cardiovasculaire possible du THC.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "ec79e28cc863421220a22df11bd4ae5ce4d54c0438478b89fe0cb2c60f1a1983",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-hc-side",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+          "locator": "Side effects of cannabis, liste THC",
+          "result": "Page officielle Santé Canada réellement rouverte et liste THC lue : fast heartbeat parmi effets possibles.",
+          "sourceHash": "633fb072e56359c7bfdb6e60fa395cfe0013bfb151dc47661adaac5f8f90bb41"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-thc-red-eyes-possible-effect",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Effet oculaire possible du THC.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "cdcfdfdbb74a299d2aef1093b750ec5ed027cc14bf0e8b6365441695088f686b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-hc-side",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+          "locator": "Side effects of cannabis, liste THC",
+          "result": "Même liste THC effectivement lue : red, irritated, or dry eyes ; pas test diagnostique individuel.",
+          "sourceHash": "633fb072e56359c7bfdb6e60fa395cfe0013bfb151dc47661adaac5f8f90bb41"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-medical-cbd-diarrhea-common-adverse-effect",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Effet indésirable d’un médicament au CBD.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "574d909840e3a95d7ea8393208dc0f4edea767d91021f4615a6a729746408206",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-fda-cbd",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "Highlights Adverse Reactions ; §6.1",
+          "result": "PDF FDA révision05/2026 effectivement ouvert, Highlights Adverse Reactions lu : diarrhea dans effets fréquents des groupes LGS/Dravet et TSC ; données du médicament, pas de tous produitsCBD.",
+          "sourceHash": "c8fc7bad7b399ca06244045c1b5ac53e5d2bbbed9dc6766009ab27d5288b57c6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-dronabinol-aids-anorexia-indication",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Indication symptomatique réglementaire du THC pharmaceutique.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "acdd007cea0e2c17260369c6ecf1d51e85f2aa8871d05faf5d4c293425fde2f7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-dronabinol",
+          "url": "https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=fd8c5d57-0173-4f62-8ff0-d8147986a976&type=display",
+          "locator": "Indications and usage",
+          "result": "Label DailyMed2026 Indications and Usage effectivement lu : anorexia associated with weight loss in patients withAIDS, champ adulte ; pas traitement antiviral.",
+          "sourceHash": "9264380afbfa33d9a15e6acc20cd77f88a00596f74818b8ee6e4dea556ee16ec"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-dronabinol-chemotherapy-after-antiemetic-failure",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Place du dronabinol dans prise en charge des CINV.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "23a84169bb110ad20489ea4b6720ebef7866671fe22e6ddd42ba938bbc710264",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-dronabinol",
+          "url": "https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=fd8c5d57-0173-4f62-8ff0-d8147986a976&type=display",
+          "locator": "Indications and usage",
+          "result": "Même indication officielle réellement lue : CINV après réponse inadéquate aux traitements antiémétiques conventionnels. Fait distinct de l’objectif anti-nausée déjà testé dans en02.",
+          "sourceHash": "9264380afbfa33d9a15e6acc20cd77f88a00596f74818b8ee6e4dea556ee16ec"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-nabiximols-ms-spasticity-symptom-indication",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Cible symptomatique d’un médicament THC/CBD.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "9b99c938f1b3914d2bddd5ea69a09c9a2aced454865398b0a8613375997da691",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-sativex",
+          "url": "https://www.medicines.org.uk/emc/product/602/smpc",
+          "locator": "§4.1 Therapeutic indications",
+          "result": "SmPC officiel emc §4.1 et4.2 réellement lu : amélioration symptomatique spasticité modérée/sévère de SEP chez adultes insuffisamment soulagés par autres médicaments et répondant à essai initial, traitement en complément.",
+          "sourceHash": "a8b74f0a7dfc6713023a15ecb2bf4671d0a9dabcdf4621642e2eef64d1e4fcd0"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-adhd-thc-cbd-no-primary-cognitive-benefit",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite d’un essai THC/CBD chez adultesTDAH.",
+      "comment": "Le critère principal cognition/activité, l’année2017 et les quatre résultats possibles sont explicites. La mémoire ancienne hors critère a disparu ; absence de différence ne signifie pas preuve d’équivalence.",
+      "contentHash": "e4ef63bca68895864048e83b8508ba6b9b200a7e554bcf1f6328dbdf71ea10f1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-cooper",
+          "url": "https://www.bhcsmt.com/resources/ADHD/Cannabinoids%20in%20attention%20deficit%20hyperactivity.pdf",
+          "locator": "PDFp1 Abstract, critère principal",
+          "result": "PDF original14pages effectivement ouvert, Abstract p.1 lu :30adultes, critère principal QbTest cognition/activité sans différence significative enITT ; signaux secondaires non significatifs après ajustement multiple.",
+          "sourceHash": "3b4a7340070d39007c59668a2259f8dc9a3656058c8c99747dd68df2d80b9412"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-adhd-thc-cbd-no-primary-cognitive-benefit",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Limite d’un essai THC/CBD chez adultesTDAH.",
+          "comment": "Absence de bénéfice significatif du critère principal confirmée dans le PDF original EMA-C. Remplacer le distracteur « gain limité à la mémoire ancienne », peu plausible comme résultat principal d’un essai TDAH mesurant cognition/activité par QbTest. Les quatre choix doivent comparer des conclusions crédibles sur le critère annoncé, sans introduire une mémoire autobiographique non testée.",
+          "contentHash": "71c92eda68366fef064c6e9fbbe73432f0f6896b69ed98c9390703c0c9f1dbd0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-cooper",
+              "url": "https://www.bhcsmt.com/resources/ADHD/Cannabinoids%20in%20attention%20deficit%20hyperactivity.pdf",
+              "locator": "PDFp1 Abstract, critère principal",
+              "result": "PDF original14pages effectivement ouvert, Abstract p.1 lu :30adultes, critère principal QbTest cognition/activité sans différence significative enITT ; signaux secondaires non significatifs après ajustement multiple.",
+              "sourceHash": "3b4a7340070d39007c59668a2259f8dc9a3656058c8c99747dd68df2d80b9412"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-adhd-thc-cbd-no-primary-cognitive-benefit",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans un petit essai de THC/CBD chez des adultes avec TDAH, quel résultat principal a été obtenu sur les performances cognitives ?",
+          "options": [
+            "Une amélioration nette face au placebo",
+            "Une aggravation nette face au placebo",
+            "Un gain limité à la mémoire ancienne",
+            "Pas de gain significatif démontré face au placebo"
+          ],
+          "answer": 3,
+          "explanation": "L’essai pilote n’a pas établi d’amélioration du critère principal cognitif et d’activité face au placebo. Quelques signaux exploratoires ne suffisent pas à valider le cannabis comme traitement du TDAH.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra04-cooper"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Absence de bénéfice significatif sur critère principal cognitifTDAH",
+            "subjectKey": "nabiximols",
+            "property": "Absence de bénéfice significatif sur critère principal cognitifTDAH",
+            "expectedAnswer": "Pas de gain significatif démontré face au placebo",
+            "learningObjective": "Distinguer les témoignages d’automédication duTDAH du résultat contrôlé de cette préparationTHC/CBD.",
+            "factKey": "adhd-thc-cbd-no-primary-cognitive-benefit",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-cooper",
+                "locator": "PDFp1 Abstract, critère principal",
+                "support": "Essai EMA-C30 adultes : absence différence significative du critère principal cognitif/activité enITT ; résultatssecondaires exploratoires sansconfirmation aprèscorrection."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-adhd-thc-cbd-no-primary-cognitive-benefit",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai de 2017 sur le THC/CBD chez des adultes avec TDAH, quel résultat a donné le critère principal de cognition et d’activité ?",
+          "options": [
+            "Une amélioration significative face au placebo",
+            "Une dégradation significative face au placebo",
+            "Un critère principal non interprétable faute de mesures",
+            "Aucune différence significative face au placebo"
+          ],
+          "answer": 3,
+          "explanation": "L’essai pilote n’a pas trouvé de différence significative du critère principal cognitif et d’activité. Les résultats secondaires exploratoires n’ont pas été confirmés après correction des comparaisons multiples.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra04-cooper"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Absence de bénéfice significatif sur critère principal cognitifTDAH",
+            "subjectKey": "nabiximols",
+            "property": "Absence de bénéfice significatif sur critère principal cognitifTDAH",
+            "expectedAnswer": "Aucune différence significative face au placebo",
+            "learningObjective": "Distinguer les témoignages d’automédication duTDAH du résultat contrôlé de cette préparationTHC/CBD.",
+            "factKey": "adhd-thc-cbd-no-primary-cognitive-benefit",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-cooper",
+                "locator": "PDFp1 Abstract, critère principal",
+                "support": "Essai EMA-C30 adultes : absence différence significative du critère principal cognitif/activité enITT ; résultatssecondaires exploratoires sansconfirmation aprèscorrection."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra04-cbg-alpha2-adrenoceptor-agonism",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Cible réceptrice expérimentale du CBG.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "67a0f982ca7e83a835d76f8a86c6b22f686eca479e429b3e7cc11b3a5e729ca6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-cascio",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2823359/",
+          "locator": "Abstract Key Results et Conclusions",
+          "result": "Article original PMC Abstract Key results réellement lu : CBG agoniste alpha2 dans membranes cérébrales murines et inhibition compatible dans tissu isolé ; antagonisme5HT1A distingué.",
+          "sourceHash": "b92f9253eb76de4d5018c8362da0dd119c96cb924d0ba2182d570956caa869fa"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-cbd-trpv1-cellular-activation",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Cible cellulaire du CBD distincte de CB1/CB2.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "f50ebcb2507980eaffcab8522fe1fef0e07ae270ecdb472f230f0139113a9f44",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-bisogno",
+          "url": "https://bpspubs.onlinelibrary.wiley.com/doi/full/10.1038/sj.bjp.0704327",
+          "locator": "Abstract, activationVR1 et calcium",
+          "result": "Texte original éditeur Wiley réellement ouvert, Abstract et Results activationVR1 lus : CBD stimule VR1 humain exprimé en cellules, hausse calcium et blocage par capsazépine. In vitro, pas cible clinique exclusive.",
+          "sourceHash": "9e5e62d58d1dcd81d0401d72b4f0252ff9652b90e2a502e025facb409bb3b835"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-ptsd-smoked-cannabis-no-primary-placebo-advantage",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite du premier essai cannabis fumé contrePTSD.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "dccaf78a0651242ea58a994816b4de1978b05e9f1adf6d464cc136c4acb514c7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-bonn-miller",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0246990",
+          "locator": "Abstract Results et Conclusions ; Stage1",
+          "result": "Article PLOS original Abstract et Stage1 effectivement lus :80participants, aucune préparation active ne dépasse placebo pour variation de sévéritéPTSD au critère principal ; amélioration dans tous groupes et étude brève.",
+          "sourceHash": "1b3481ae9eab3764d5b7b3c5295578f20853b2779bdc0e67f80718c229887c67"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-cbd-social-anxiety-public-speaking-signal",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Signal expérimental humain du CBD et anxiété sociale.",
+      "comment": "Les quatre choix comparent l’anxiété lors du discours face au placebo, sans détour par sommeil/mémoire. L’essai2011 et sa population sont précisés.",
+      "contentHash": "e41eb177f3749dbe20f602d464d4a6059da3a20ff9d335b40d85ed22ef83a89c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-bergamaschi",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21307846/?dopt=Abstract",
+          "locator": "Abstract Results",
+          "result": "Résumé original PubMed intégral réellement lu :24patients anxiété sociale, CBD réduit anxiété/inconfort pendant discours simulé comparé au placebo ; pas extrapolation à tous troubles ou produits.",
+          "sourceHash": "aaaa09d223571ec21259ef3c4f8d39dc55882de9fbf93ffbeff7dd16667d4ae5"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-cbd-social-anxiety-public-speaking-signal",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Signal expérimental humain du CBD et anxiété sociale.",
+          "comment": "Réduction de l’anxiété pendant le discours confirmée dans l’essai de24 patients avec anxiété sociale. Les deux distracteurs « anxiété inchangée malgré meilleure mémoire/meilleur sommeil » déplacent la comparaison vers des bénéfices non pertinents pour cette tâche aiguë, particulièrement le sommeil. Comparer quatre évolutions plausibles de l’anxiété pendant la tâche, de façon parallèle.",
+          "contentHash": "5ce3ab5c2c76bec0cc13717920ed0e869644251814307ce96ea7ade500665e58",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-bergamaschi",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/21307846/?dopt=Abstract",
+              "locator": "Abstract Results",
+              "result": "Résumé original PubMed intégral réellement lu :24patients anxiété sociale, CBD réduit anxiété/inconfort pendant discours simulé comparé au placebo ; pas extrapolation à tous troubles ou produits.",
+              "sourceHash": "aaaa09d223571ec21259ef3c4f8d39dc55882de9fbf93ffbeff7dd16667d4ae5"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-cbd-social-anxiety-public-speaking-signal",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans un petit essai sur l’anxiété sociale, quel effet du CBD a été observé pendant une prise de parole simulée ?",
+          "options": [
+            "Une augmentation de l’anxiété ressentie",
+            "Une diminution de l’anxiété ressentie",
+            "Une anxiété inchangée malgré une meilleure mémoire",
+            "Une anxiété inchangée malgré un meilleur sommeil"
+          ],
+          "answer": 1,
+          "explanation": "L’essai a observé moins d’anxiété pendant le discours avec le CBD. Ce signal limité à une petite étude expérimentale ne valide pas tous les produits au CBD ni leur emploi pour tout trouble anxieux.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-ra04-bergamaschi"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Signal anxiolytique du CBD dans tâche de discours",
+            "subjectKey": "cbd-social-anxiety-speaking-trial",
+            "property": "Signal anxiolytique du CBD dans tâche de discours",
+            "expectedAnswer": "Une diminution de l’anxiété ressentie",
+            "learningObjective": "Connaître un signal humain du CBD tout en le distinguant d’une efficacité générale établie.",
+            "factKey": "cbd-social-anxiety-public-speaking-signal",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-bergamaschi",
+                "locator": "Abstract Results",
+                "support": "Essai24 patients avec anxiété sociale, réduction anxiété/cognitive impairment/discomfort lors du discours comparé au placebo."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-cbd-social-anxiety-public-speaking-signal",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai de 2011 chez des patients souffrant d’anxiété sociale, quel effet du CBD a été observé pendant un discours simulé ?",
+          "options": [
+            "Une anxiété plus forte que sous placebo pendant le discours",
+            "Une anxiété plus faible que sous placebo pendant le discours",
+            "Une anxiété semblable au placebo pendant le discours",
+            "Une anxiété plus forte que sous placebo, puis plus faible après"
+          ],
+          "answer": 1,
+          "explanation": "L’essai a observé moins d’anxiété pendant le discours avec le CBD. Ce signal limité à une petite étude expérimentale ne valide pas tous les produits au CBD ni leur emploi pour tout trouble anxieux.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-ra04-bergamaschi"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Signal anxiolytique du CBD dans tâche de discours",
+            "subjectKey": "cbd-social-anxiety-speaking-trial",
+            "property": "Signal anxiolytique du CBD dans tâche de discours",
+            "expectedAnswer": "Une anxiété plus faible que sous placebo pendant le discours",
+            "learningObjective": "Connaître un signal humain du CBD tout en le distinguant d’une efficacité générale établie.",
+            "factKey": "cbd-social-anxiety-public-speaking-signal",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-bergamaschi",
+                "locator": "Abstract Results",
+                "support": "Essai24 patients avec anxiété sociale, réduction anxiété/cognitive impairment/discomfort lors du discours comparé au placebo."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra04-tourette-thc-cbd-tics-cognitive-tradeoff",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Balance tics/effets cognitifs d’une formulation THC/CBD.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "96f4baffdfb22510d0b26cd19101669389d59fce73df6e885018e997bb1af93a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-mosley",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38320199/",
+          "locator": "Abstract Results et Conclusions",
+          "result": "Résumé original PubMed intégral effectivement lu :22participants Tourette sévère, baisse des tics sous formulation orale THC/CBD et difficultés cognitives chez8participants actifs, ralentissement/oublis/concentration cités.",
+          "sourceHash": "5b7a83cb2dd37299b7a736229774a3fc9160a9ba6fe55403ce41aad21f2fa61e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-chronic-pain-balanced-thc-cbd-small-short-term-benefit",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Amplitude d’un bénéfice moyen pour sprayTHC/CBD précis.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "ec0d205c46999ef5abd4bad48d9d6e603b3a704439a1a3c3719944745a99feeb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-ahrq",
+          "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK618040/",
+          "locator": "Main Points, comparableTHC/CBD ratio oral spray",
+          "result": "Executive Summary AHRQ2025 Main Points réellement lu : spray extrait THC/CBD comparable, petit bénéfice moyen douleur/fonction à court terme, surtout corpus neuropathique ; augmentation vertiges/sédation/nausées.",
+          "sourceHash": "3eb3599d6807bb2ce7baf6b5b3183c722b8e7a7713943e66e0a7a47d790bb545"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-thc-acute-false-memory-susceptibility",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Distorsion particulière de mémoire sousTHC.",
+      "comment": "Fait distinct et utile, corrigé, choix, niveau et portée recevables après lecture complète et contrôle du passage.",
+      "contentHash": "863fd107abb218a984e6d8d40f2807900463445c081e0332d34d6fbd3c82e22c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-false-memory",
+          "url": "https://www.maastrichtuniversity.nl/news/cannabis-increases-susceptibility-false-memory",
+          "locator": "Description des tâches ; Questioning",
+          "result": "Communication originale Maastricht des chercheurs réellement lue :64volontaires, mots non présentés faussement reconnus et scénariosVR/questions suggestives pendant intoxication ; différence non retrouvée une semaine après pour scénarios. Pas verdict individuel sur un témoignage.",
+          "sourceHash": "7659ee3cb4e2fcbc2b3b0393ee1f00a31b7cec95d49ac6da2417d223ed494f10"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra04-advanced-cancer-thc-cbd-limited-pain-toxicity-tradeoff",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Balance symptômes/effets psychiques d’huileTHC/CBD en soins palliatifs.",
+      "comment": "L’essai est daté2025. Les options comparent douleur et effets psychiques ; le corrigé précise que la douleur est un critère secondaire sans correction des comparaisons multiples, et que le critère global est négatif.",
+      "contentHash": "d5dacac41d412f0960ecdf75d45a21a2bb766116731603cd7c03ebd2bcdc5f80",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra04-hardy",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12289739",
+          "locator": "Abstract Results et Conclusions",
+          "result": "Article original PMC Abstract Results/Conclusions et méthodes stats réellement lus :144randomisés, TSDS principal non différent, douleur secondaire améliorée mais toxicité psychomimétique accrue ; pas ajustement comparaisons multiples.",
+          "sourceHash": "98ead6778421dc484f362d2c5da2738c95e4d1fb819420a55942111c79828b33"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra04-advanced-cancer-thc-cbd-limited-pain-toxicity-tradeoff",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Balance symptômes/effets psychiques d’huileTHC/CBD en soins palliatifs.",
+          "comment": "Bilan confirmé dans l’article original Hardy2025 : critère global TSDS négatif, petit signal douleur secondaire et davantage de toxicité psychomimétique. Remplacer « un essai récent » par un repère daté explicite, par exemple l’essai2025 d’huile orale équilibrée, pour ne pas rendre l’énoncé dépendant du moment du tirage. Dire aussi « critère secondaire » ou « signal » dans l’explication pour borner le bénéfice douleur ; la source précise absence d’ajustement des comparaisons multiples.",
+          "contentHash": "d57057aa8089d44288da2acfbb84406d0e30abf2956cd5069c9a2216a40437a0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra04-hardy",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12289739",
+              "locator": "Abstract Results et Conclusions",
+              "result": "Article original PMC Abstract Results/Conclusions et méthodes stats réellement lus :144randomisés, TSDS principal non différent, douleur secondaire améliorée mais toxicité psychomimétique accrue ; pas ajustement comparaisons multiples.",
+              "sourceHash": "98ead6778421dc484f362d2c5da2738c95e4d1fb819420a55942111c79828b33"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra04-advanced-cancer-thc-cbd-limited-pain-toxicity-tradeoff",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans un essai récent en cancer avancé, quel bilan a donné l’huile THC/CBD équilibrée ajoutée aux soins palliatifs ?",
+          "options": [
+            "Moins de détresse globale, sans changement de la douleur",
+            "Petit bénéfice sur la douleur, avec davantage d’effets psychiques",
+            "Moins de détresse globale, avec disparition des effets psychiques",
+            "Aucun effet sur la douleur, avec moins d’effets psychiques"
+          ],
+          "answer": 1,
+          "explanation": "L’essai n’a pas trouvé de bénéfice sur la détresse symptomatique totale. Un petit bénéfice antalgique s’accompagnait de davantage d’effets psychomimétiques ; cela ne prouve pas un effet contre la tumeur.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra04-hardy"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Petit bénéfice douleur accompagné de toxicité psychomimétique",
+            "subjectKey": "thc-cbd-advanced-cancer-palliative-trial",
+            "property": "Petit bénéfice douleur accompagné de toxicité psychomimétique",
+            "expectedAnswer": "Petit bénéfice sur la douleur, avec davantage d’effets psychiques",
+            "learningObjective": "Comprendre une balance bénéfice/effets indésirables propre à cet essaiTHC/CBD.",
+            "factKey": "advanced-cancer-thc-cbd-limited-pain-toxicity-tradeoff",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-hardy",
+                "locator": "Abstract Results et Conclusions",
+                "support": "Abstract144 randomisés : critère principalTSDS sansdifférence, amélioration secondaire douleur au prix toxicitépsychomimétique accrue."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra04-advanced-cancer-thc-cbd-limited-pain-toxicity-tradeoff",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai de Hardy de 2025 en cancer avancé, quel bilan a donné une huile orale équilibrée THC/CBD ajoutée aux soins palliatifs ?",
+          "options": [
+            "Signal de baisse de la douleur, sans hausse des effets psychiques",
+            "Signal de baisse de la douleur, avec plus d’effets psychiques",
+            "Pas de signal sur la douleur, avec plus d’effets psychiques",
+            "Pas de signal sur la douleur, avec moins d’effets psychiques"
+          ],
+          "answer": 1,
+          "explanation": "Le critère global de détresse symptomatique n’a pas été amélioré. Un signal de réduction de la douleur, critère secondaire sans correction des comparaisons multiples, s’accompagnait de plus d’effets psychiques.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra04-hardy"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Petit bénéfice douleur accompagné de toxicité psychomimétique",
+            "subjectKey": "thc-cbd-advanced-cancer-palliative-trial",
+            "property": "Petit bénéfice douleur accompagné de toxicité psychomimétique",
+            "expectedAnswer": "Signal de baisse de la douleur, avec plus d’effets psychiques",
+            "learningObjective": "Comprendre une balance bénéfice/effets indésirables propre à cet essaiTHC/CBD.",
+            "factKey": "advanced-cancer-thc-cbd-limited-pain-toxicity-tradeoff",
+            "form": "identification",
+            "difficultyRationale": "Distinction d’indication, de résultat clinique ou de contamination nécessitant de comprendre le contexte et ses limites.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra04-hardy",
+                "locator": "Abstract Results et Conclusions",
+                "support": "Abstract144 randomisés : critère principalTSDS sansdifférence, amélioration secondaire douleur au prix toxicitépsychomimétique accrue."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première lecture indépendante de B. Les23 objets sources sont inchangés. Une consultation supplémentaire du résumé FAO pour la question Madrid est décrite séparément ; aucune autre nouvelle lecture revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    }
+  ],
+  "summary": {
+    "reviewed": 25,
+    "approved": 18,
+    "changes_requested": 7,
+    "rejected": 0,
+    "sourceObjectsRead": 23,
+    "externalSourcesConsulted": 23,
+    "completeReading": "25objets complets, quatre choix, corrigés, explications et23sources lus. Tous passages soutenant réponses contrôlés, pas échantillonnage.",
+    "scope": "25actifs : qualité fleurs/résines, effets et pharmacologie/clinique des cannabinoïdes. Aucun food/materials ou biologie générale.",
+    "duplicateCheck": "Index interrogé sur contaminants, métaux, pesticides, mycotoxines, cibles réceptrices, indications, mémoire et maladies. Pas de doublon exact constaté. Objet en02 cannabinoid-supportive-care intégralement relu : objectif anti-nausée de dronabinol/nabilone distinct ici de la condition de réponse insuffisante aux traitements conventionnels. Accélération cardiaque distincte de baisse tensionnelle ra03 ; faux souvenirs distincts de simple altération de mémorisation/hippocampe ; TRPV1CBD et alpha2CBG distincts des cibles déjà testées.",
+    "sourceAccess": "Accès déclarés abstract respectés (Madrid, Bergamaschi, Mosley). Gwinn HTML intermittent : même article intégral effectivement ouvert sur PMC avec DOI identique, alternative explicitement inscrite dans sourceCheck. Tous autres documents ou passages originaux/institutionnels ouverts.",
+    "clinicalScope": "Résultats animaux/cellulaires maintenus comme tels. Alzheimer congrès2024 distingué des indications label2026. Résultats pilotes négatifs ne signifient pas preuve d’absence définitive d’effet ; demandes de date et critère secondaire pour Hardy2025.",
+    "constraints": "Longueurs, quatre options distinctes et alignement answer/expectedAnswer conformes. Demandes éditoriales ciblées sur distracteurs et bornage du dernier essai ; pas changement de fait nécessaire."
+  },
+  "coordinatorSummary": "25 questions approuvées :18 inchangées et7 corrections ciblées de distracteurs ou de portée des résultats.23 objets sources inchangés ; consultation supplémentaire limitée au résumé de Madrid tracée."
+}

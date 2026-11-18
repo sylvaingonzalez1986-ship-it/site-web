@@ -50,7 +50,7 @@ export function KqWorkshopMachineDialog({ open, busy, title, onClose, children }
   }, [open]);
 
   if (!open) return null;
-  return <dialog ref={dialog} className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} data-app-dialog data-workshop-machine-dialog
+  return <dialog ref={dialog} className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} data-app-dialog data-workshop-machine-dialog data-tutorial-observation="processing"
     onCancel={event => { event.preventDefault(); event.stopPropagation(); if (!busy) onClose(); }}
     onKeyDown={event => {
       if (event.key === "Escape") {
@@ -71,6 +71,6 @@ export function KqWorkshopMachineDialog({ open, busy, title, onClose, children }
       if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
     }}>
     <header className={styles.header}><strong id={titleId}>{title}</strong><button ref={closeButton} type="button" disabled={busy} onClick={onClose} aria-label="Fermer la fiche de la machine"><X size={19} aria-hidden="true"/><span>Fermer</span></button></header>
-    <div className={styles.body}>{children}</div>
+    <div className={styles.body}><div data-farm-guide-host />{children}</div>
   </dialog>;
 }

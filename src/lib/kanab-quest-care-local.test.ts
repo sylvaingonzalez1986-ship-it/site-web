@@ -4,6 +4,7 @@ import { advanceKqStage, resolveKqStage, startKqGame } from "./kanab-quest-game"
 import { createKqCareState, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS, type KqCareProblem } from "./kanab-quest-care";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 import { createLocalKqRepository } from "./kanab-quest-repository";
+import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 
 function memory() {
   const values = new Map<string, string>();
@@ -11,6 +12,36 @@ function memory() {
 }
 const problem = (code: string): KqCareProblem => ({ code, severity: 2, status: "confirmed", trend: "stable", appearedAt: 0, variant: 0 });
 describe("local care transactions", () => {
+  it.each(["CARE-APHIDIUS", "CARE-VERMICOMPOST", "CARE-ORGANIC-FEED", "CARE-COMPOST-TEA", "CARE-SEAWEED"])("keeps %s coverage per square metre, opens an old passage only when needed and replays on its original cell", code => {
+    const storage = memory();
+    const starter = createKqWarehouseStarter();
+    const plan = getKqWarehouseQuote({ ...starter, zones: [{ ...starter.zones[0], width: 3 }] }, starter).nextState;
+    const game = startKqGame(31, { warehouse: getKqWarehouseRunSnapshot(plan) });
+    const first = { zoneId: "starter", x: 0, y: 0 }, second = { ...first, x: 1 };
+    game.care!.problems = [{ ...problem("APHIDS"), plants: [first, second].map(target => ({ ...target, slot: 0, severity: 2 })) }];
+    storage.setItem("kanab-quest-care-simulation-v1", JSON.stringify({ cashCents: 8000, inventory: { [code]: 1 }, areaInventory: { [code]: 1 } }));
+    const row = () => getKqLocalCareSnapshot(storage, game).inventory.find(item => item.productCode === code);
+    expect(row()).toMatchObject({ quantity: 4, legacyQuantity: 1, areaQuantity: 1 });
+    expect(() => applyKqLocalCare(storage, game, code)).toThrow();
+    expect(() => applyKqLocalCare(storage, game, code, { ...first, x: 3 })).toThrow();
+    expect(row()?.quantity).toBe(4);
+    const interrupted = { ...storage, setItem(key: string, value: string) {
+      if (key === "kanab-quest-care-simulation-v1") throw new Error("disk full");
+      storage.setItem(key, value);
+    } };
+    expect(() => applyKqLocalCare(interrupted, game, code, first)).toThrow("disk full");
+    const afterFirst = applyKqLocalCare(storage, game, code, first);
+    expect(row()).toMatchObject({ quantity: 3, legacyQuantity: 1, areaQuantity: 0 });
+    expect(() => applyKqLocalCare(storage, game, code, second)).toThrow("suivi local a changé");
+    const afterSecond = applyKqLocalCare(storage, afterFirst, code, second);
+    expect(afterSecond.care?.applications.map(item => item.target)).toEqual([first, second]);
+    expect(row()).toMatchObject({ quantity: 2, legacyQuantity: 0, areaQuantity: 2 });
+    expect(applyKqLocalCare(storage, game, code, first)).toEqual(afterSecond);
+    expect(() => applyKqLocalCare(storage, afterSecond, code, second)).toThrow();
+    expect(parseKqGameSave(storage.getItem("kanab-quest-dice-prototype-v7"))).toEqual(afterSecond);
+    expect(loadKqLocalCare(storage).cashCents).toBe(8000);
+    expect(row()?.quantity).toBe(2);
+  });
   it("rejects using a small new reserve over a larger culture, while preserving old complete charges", () => {
     const storage = memory();
     const large = startKqGame(101, { productionUnits: 3, equipmentCodes: ["TENT-080-STARTER"] });

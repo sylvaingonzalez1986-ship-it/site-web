@@ -91,6 +91,22 @@ export function getKqWarehousePlanChanges(previousState: KqWarehouseState, draft
     });
   }
   const otherChanges: string[] = [];
+  const previousPartitions = previousState.partitions ?? [];
+  const draftPartitions = draftState.partitions ?? previousPartitions;
+  const previousPartitionsById = new Map(previousPartitions.map(partition => [partition.id, partition]));
+  const draftPartitionIds = new Set(draftPartitions.map(partition => partition.id));
+  const axisLabel = (axis: "x" | "y") => axis === "x" ? "horizontale" : "verticale";
+  draftPartitions.forEach((partition, index) => {
+    const previous = previousPartitionsById.get(partition.id);
+    const label = `Paroi ${index + 1}`;
+    if (!previous) { otherChanges.push(`${label} ajoutée : ${partition.length} m, ${axisLabel(partition.axis)}`); return; }
+    if (previous.length !== partition.length) otherChanges.push(`${label} : longueur ${previous.length} → ${partition.length} m`);
+    if (previous.axis !== partition.axis) otherChanges.push(`${label} tournée : ${axisLabel(previous.axis)} → ${axisLabel(partition.axis)}`);
+    if (previous.x !== partition.x || previous.y !== partition.y) otherChanges.push(`${label} déplacée`);
+  });
+  previousPartitions.forEach((partition, index) => {
+    if (!draftPartitionIds.has(partition.id)) otherChanges.push(`Paroi ${index + 1} retirée : ${partition.length} m`);
+  });
   if (previousState.storageClimateCode !== draftState.storageClimateCode) otherChanges.push(`Climatisation du stockage : ${deviceName(draftState.storageClimateCode)}`);
   if (previousState.serviceZones === undefined && draftState.serviceZones !== undefined) otherChanges.push("Le séchage et le stockage seront répartis dans les zones du plan.");
   if (inventoryKey(previousState.equipment) !== inventoryKey(draftState.equipment)) otherChanges.push("Inventaire des appareils modifié");

@@ -1,0 +1,901 @@
+{
+  "batchId": "c-new-01",
+  "reviewer": "e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture indépendante des 40 objets complets, de leurs quatre choix, des formes, niveaux, subjectKey, appuis et faits voisins. Seul ce fichier de revue est écrit.",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "factualResult": "Les quatre corrections sont approuvées : énoncé neutre pour la tige, distracteurs comparables pour le cambium et numéros exacts des figures de l’osmose et des plasmodesmes. Les 36 approbations antérieures sont conservées strictement à l’identique.",
+    "sourceResult": "16 références effectivement ouvertes et passages utiles lus le 16 novembre, dont les dix nouveaux documents. Lecture ciblée : aucune lecture intégrale de tous les ouvrages n’est déclarée.",
+    "levels": "Répartition proposée 1/2/3/4 : 18/16/6/0 acceptable. Les notions cellulaires scolaires et fonctions concrètes restent accessibles ; vocabulaire des tissus au niveau 2, mécanismes internes précis au niveau 3. Aucun niveau 4 artificiel.",
+    "forms": "38 identifications et deux déductions : élongation à nombre constant et spécialisation à ADN identique. Aucun quota de formes ajouté.",
+    "subjectKeys": "Les objets récurrents sont regroupés : xylème, phloème, stomates, chloroplaste, mésophylle, embryon, feuille. Aucun sujet n’a été décliné artificiellement par propriété dans ce lot.",
+    "advisory": [
+      "Définir ATP comme molécule porteuse d’énergie dans l’explication faciliterait l’accès de la question mitochondrie.",
+      "Le nouveau groupe photosynthese est cohérent pour ses trois faits. Le fait historique hemp-plant-photosynthese reste sous feuille-chanvre : une harmonisation éditoriale du registre serait utile pour rapprocher ce processus commun sans mélanger toute la morphologie foliaire."
+    ]
+  },
+  "sourceAudit": [
+    {
+      "sourceId": "q2-cn01-photosynthesis",
+      "url": "https://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+      "sourceHash": "ceb626a45a5c4cce8eb754c7a38747585589dfd9c203e8b29eab1c4646832ae1",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-cells",
+      "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+      "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-passive-transport",
+      "url": "https://openstax.org/books/biology-2e/pages/5-2-passive-transport",
+      "sourceHash": "891bd7ca136797f92f3a0d7d0a3abb6ff5922f143a515e8823413f9c9fd4307b",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "bf-leaves-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+      "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-thai-leaf-anatomy",
+      "url": "https://bdn-thp.dmsc.moph.go.th/ebook/qQEcAUtlpR9gC3q0GT5gMJq0qT5co3uw",
+      "sourceHash": "82e883e7dc34e78b3ccee204509c3f389d9746bd3fb3c282cef0ea8907d51205",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-roots",
+      "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+      "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "bf-stems-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+      "sourceHash": "bf40ae6f6ea081a597e49c1895eb136051ebcd9f13ae3a1219d959f495d36e8b",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "bf-body-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/30-1-the-plant-body",
+      "sourceHash": "dd556098afc6320c0b67bc9d5fc02fd05ada5dedd5f2233aba657e974a319e04",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "bf-fibres-2016",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.01733/full",
+      "sourceHash": "ef3b6076cd0585205338247fc49efdb359966fbd39e59cdcc62bb83c3091e447",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-ncsu-botany",
+      "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+      "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "bf-reproduction-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "revision-agro-water",
+      "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+      "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-cell-cycle",
+      "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+      "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-gene-expression",
+      "url": "https://openstax.org/books/biology-2e/pages/16-1-regulation-of-gene-expression",
+      "sourceHash": "21a98c88bd8a4d29563ba8a0e499056886d7880f79867e9845ce9a94a76780b0",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-light-reactions",
+      "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+      "sourceHash": "7c9576bdbf7c31797b047f9705e82b8c272ce1d8e0bbc37a45366767222c80a0",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    },
+    {
+      "sourceId": "q2-cn01-cell-junctions",
+      "url": "https://openstax.org/books/biology-2e/pages/4-6-connections-between-cells-and-cellular-activities",
+      "sourceHash": "a8075b1c25e018acb9a2486ff9f96571e8037d1be1de0ede14aea2d0e3511bc4",
+      "checkedAt": "2026-11-16",
+      "basis": "Page ouverte ; passages utiles effectivement lus pendant cette revue. Locators ciblés ci-dessous."
+    }
+  ],
+  "duplicateCheck": {
+    "method": "Comparaison sémantique de fact-index.jsonl et des faits voisins des lots C/D/B et pilotes ; contrôle complémentaire des factKey dans tous les lots, puis lecture du tableau énoncé/réponse/propriété de c-new-02.",
+    "result": "Aucun doublon de fait retenu. Aucun factKey identique trouvé dans les autres lots.",
+    "arbitrations": [
+      "Photosynthèse : nom du processus historique, organite, origine du carbone, gaz produit et origine atomique du gaz sont des savoirs distincts ; ces derniers ne sont pas une inversion question-réponse du premier.",
+      "Feuille : limbe et critère du bourgeon axillaire sont distincts du pétiole, des stipules et de l’identification des folioles déjà couverts.",
+      "Xylème : eau/minéraux transportés et état mort des éléments de vaisseaux sont distincts. Phloème : sucres transportés, organe puits et soutien par cellules compagnes sont distincts.",
+      "Racines : ancrage, surface des poils, coiffe et origine péricyclique ne répètent pas l’identification des racines absorbantes ou du système pivotant.",
+      "Mitose conservatrice et expression différente de gènes ne répètent ni le nombre chromosomique, ni la polyploïdie, ni les mutations clonales. c-new-02 traite d’autres propriétés, dont respiration jour/nuit, bicouche et ARN messager."
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-q2-cn01-chloroplast-photosynthesis-site",
+      "status": "approved",
+      "comment": "Le compartiment et les autres choix sont clairement distincts ; niveau 1 scolaire acceptable.",
+      "contentHash": "aa4da5b749b1ffc122852c00a8cf19eca67e3dfd162bf621c8cd599758534613",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-photosynthesis",
+          "url": "https://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+          "locator": "Basic Photosynthetic Structures",
+          "result": "Localisation chloroplastique confirmée.",
+          "sourceHash": "ceb626a45a5c4cce8eb754c7a38747585589dfd9c203e8b29eab1c4646832ae1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-mitochondria-respiration-atp-production",
+      "status": "approved",
+      "comment": "La respiration distingue la mitochondrie du chloroplaste. Niveau 1 acceptable ; définir ATP dans l’explication améliorerait l’accès.",
+      "contentHash": "8d0cc76b5db942e71f7eeeecad6496fd120728d10909938c735b20cbc136e6b4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "Mitochondria, premier paragraphe",
+          "result": "Production mitochondriale d’ATP par respiration confirmée.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-plant-cell-most-dna-in-nucleus",
+      "status": "approved",
+      "comment": "Le noyau est la seule réponse possible parmi ces compartiments ; l’explication évite de nier l’ADN organellaire.",
+      "contentHash": "4a334d55c86af016ab6ee071cc39ef9d4093ef2f94c74fd549bb346dbb924f6f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "The Nucleus ; Chromatin and Chromosomes ; Chloroplasts",
+          "result": "Chromosomes nucléaires et ADN des organites explicitement distingués.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-plant-cell-central-vacuole-water-compartment",
+      "status": "approved",
+      "comment": "La taille et le contenu identifient la vacuole ; la réserve « souvent » évite une généralisation à toute cellule.",
+      "contentHash": "1a14f182c5593440cf18a73676e56c83da2187f5295d65021203c360e2677d7e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "The Central Vacuole, premier paragraphe",
+          "result": "Grande vacuole et variation hydrique confirmées.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-plasma-membrane-selective-cell-exchanges",
+      "status": "approved",
+      "comment": "La membrane est distinguée de la paroi par sa fonction sélective ; réponse unique.",
+      "contentHash": "fefa100ae2ba243defa1b99914f6bb4b333fc6ce0bd1cff158a7bff30c28b792",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "The Plasma Membrane, premier paragraphe",
+          "result": "Contrôle des échanges confirmé.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn01-passive-transport",
+          "url": "https://openstax.org/books/biology-2e/pages/5-2-passive-transport",
+          "locator": "Introduction, perméabilité sélective",
+          "result": "Perméabilité sélective et transport protéique confirmés.",
+          "sourceHash": "891bd7ca136797f92f3a0d7d0a3abb6ff5922f143a515e8823413f9c9fd4307b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-leaf-epidermis-outer-cellular-tissue",
+      "status": "approved",
+      "comment": "Épiderme cellulaire et cuticule extracellulaire sont distingués ; anatomie du chanvre confirmée.",
+      "contentHash": "34530bb720d16e7e6554c3812515124e08bc8adaa0d2f4c8a3bc324ff8454dff",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-leaves-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "locator": "Leaf Structure and Function, premier paragraphe",
+          "result": "Épiderme foliaire externe confirmé.",
+          "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn01-thai-leaf-anatomy",
+          "url": "https://bdn-thp.dmsc.moph.go.th/ebook/qQEcAUtlpR9gC3q0GT5gMJq0qT5co3uw",
+          "locator": "Description, Microscopical, Upper epidermis et Lower epidermis",
+          "result": "Deux épidermes décrits chez Cannabis.",
+          "sourceHash": "82e883e7dc34e78b3ccee204509c3f389d9746bd3fb3c282cef0ea8907d51205",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-leaf-cuticle-reduces-water-loss",
+      "status": "approved",
+      "comment": "Fonction utile de barrière hydrique ; aucun caractère exclusif au chanvre n’est affirmé.",
+      "contentHash": "08bdb764af1aa11d04682e00d949c34044771468835e2666fb6d96640e95e649",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-leaves-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "locator": "Leaf Structure and Function, paragraphe de la cuticule",
+          "result": "Ralentissement des pertes hydriques confirmé.",
+          "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn01-thai-leaf-anatomy",
+          "url": "https://bdn-thp.dmsc.moph.go.th/ebook/qQEcAUtlpR9gC3q0GT5gMJq0qT5co3uw",
+          "locator": "Description, Microscopical",
+          "result": "Présence des cuticules foliaires confirmée.",
+          "sourceHash": "82e883e7dc34e78b3ccee204509c3f389d9746bd3fb3c282cef0ea8907d51205",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-ribosome-direct-protein-assembly",
+      "status": "approved",
+      "comment": "Le mot « directement » distingue les ribosomes des organites qui en contiennent ; fonction cellulaire scolaire.",
+      "contentHash": "29c81fc97eb6e7a3b1facdc8ed4895cf1d86d385f04d0eeab340a0cab16607c4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "Ribosomes, deux premiers paragraphes et Fig.4.13",
+          "result": "Assemblage protéique par les ribosomes confirmé.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-root-hairs-increase-absorbing-surface",
+      "status": "approved",
+      "comment": "Augmentation de surface distincte de l’origine des racines latérales ; niveau 1 adapté.",
+      "contentHash": "91a7e7828ab245d7bf9745f6b24e473e72e9766d03fff0fdee754a1038d7daed",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Root Growth and Anatomy, paragraphe de l’épiderme et des root hairs",
+          "result": "Extensions épidermiques augmentant la surface confirmées.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-root-cap-protects-growing-tip",
+      "status": "approved",
+      "comment": "Quatre fonctions racinaires proposées ; protection de la pointe unique et concrète.",
+      "contentHash": "2a2e216d04f9aa28510a4cebe8c5a37577aefd31357bf2f941e043aeb8eb6e5e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Root Growth and Anatomy, premier paragraphe",
+          "result": "Protection et renouvellement de la coiffe confirmés.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-leaflet-lamina-flat-expanded-part",
+      "status": "approved",
+      "comment": "Limbe, pétiole, stipule et bourgeon sont distingués sans répétition de la question existante sur les folioles.",
+      "contentHash": "8fe749b2881314d0d307f450f3a6b299adae82ea01654882a40bda5a9f0fac2d",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-leaves-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "locator": "Structure of a Typical Leaf, premier paragraphe ; Leaf Form",
+          "result": "Limbe étalé et division en folioles confirmés.",
+          "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-stem-supports-leaves-and-flowers",
+      "status": "approved",
+      "comment": "Énoncé désormais neutre ; fonction mécanique testée sans indice donnant la réponse. Niveau 1 confirmé.",
+      "contentHash": "93f35d2d62fdc869de10ca8225cd4d5e71dcd1ffddf8b12fdfaff38ccbf3c6ba",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-stems-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+          "locator": "Introduction, premier paragraphe",
+          "result": "Port des feuilles et fleurs confirmé.",
+          "sourceHash": "bf40ae6f6ea081a597e49c1895eb136051ebcd9f13ae3a1219d959f495d36e8b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre réutilisée : fait et objet source inchangés ; correction éditoriale ou de locator seulement."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-photosynthetic-biomass-carbon-from-air-co2",
+      "status": "approved",
+      "comment": "Origine du carbone distincte du nom du processus photosynthétique ; niveau 1 adapté au bilan de matière.",
+      "contentHash": "f6b62889f85b09866c22950c89d6053f12814fb22b9ab5341796a3314e8210a5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-photosynthesis",
+          "url": "https://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+          "locator": "Main Structures and Summary of Photosynthesis ; Fig.8.4 et 8.5",
+          "result": "Carbone des sucres issu du CO2 confirmé.",
+          "sourceHash": "ceb626a45a5c4cce8eb754c7a38747585589dfd9c203e8b29eab1c4646832ae1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-photosynthesis-releases-molecular-oxygen",
+      "status": "approved",
+      "comment": "Le gaz produit est distinct de son origine atomique, traitée dans une autre question ; niveau 1 adapté.",
+      "contentHash": "1fb036523fae4fb7d5f77d84b385f0641f7717b2ae95712dba1e0f249a1cfd2b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-photosynthesis",
+          "url": "https://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+          "locator": "Main Structures and Summary of Photosynthesis",
+          "result": "Production de dioxygène confirmée.",
+          "sourceHash": "ceb626a45a5c4cce8eb754c7a38747585589dfd9c203e8b29eab1c4646832ae1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-xylem-transports-water-mineral-ions",
+      "status": "approved",
+      "comment": "Le xylème est opposé au phloème par le contenu transporté ; terminologie de niveau 2.",
+      "contentHash": "70f06956b3d8baf5b847aa441a4eda2261142c7a51694c383b7629bdaf08038d",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-body-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-1-the-plant-body",
+          "locator": "Plant Tissues, paragraphe du xylème",
+          "result": "Transport hydrominéral par le xylème confirmé.",
+          "sourceHash": "dd556098afc6320c0b67bc9d5fc02fd05ada5dedd5f2233aba657e974a319e04",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn01-thai-leaf-anatomy",
+          "url": "https://bdn-thp.dmsc.moph.go.th/ebook/qQEcAUtlpR9gC3q0GT5gMJq0qT5co3uw",
+          "locator": "Description, Microscopical, Vascular tissue",
+          "result": "Xylème foliaire de Cannabis décrit.",
+          "sourceHash": "82e883e7dc34e78b3ccee204509c3f389d9746bd3fb3c282cef0ea8907d51205",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-phloem-transports-photosynthetic-sugars",
+      "status": "approved",
+      "comment": "Fonction du phloème distincte des propriétés de ses cellules et du rôle source-puits ; niveau 2 adapté.",
+      "contentHash": "e8461c99dd1e23c0f7fb152a700b3de578ff42a973e1033dfc89dd0ffedc6e37",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-body-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-1-the-plant-body",
+          "locator": "Plant Tissues, paragraphe du phloème",
+          "result": "Transport des produits photosynthétiques par le phloème confirmé.",
+          "sourceHash": "dd556098afc6320c0b67bc9d5fc02fd05ada5dedd5f2233aba657e974a319e04",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-roots-anchor-plant-in-soil",
+      "status": "approved",
+      "comment": "Ancrage mécanique distinct de l’absorption déjà couverte ; une fonction familière utile.",
+      "contentHash": "36df30e2b5f7708dc55d094709c6f200d28bbb27860a9025387cdc29d020c481",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Introduction, première phrase",
+          "result": "Fonction d’ancrage explicitement indiquée.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-stomata-co2-entry-for-photosynthesis",
+      "status": "approved",
+      "comment": "Entrée du CO2 distincte de la perte d’eau par transpiration ; la réponse ne dépend pas d’un nombre à mémoriser.",
+      "contentHash": "350dc4030b834d9e50eee80303398e62ed3ba415204c08bd1f8dfbc72ad05086",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-photosynthesis",
+          "url": "https://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+          "locator": "Basic Photosynthetic Structures, premier paragraphe",
+          "result": "Échanges gazeux par les stomates confirmés.",
+          "sourceHash": "ceb626a45a5c4cce8eb754c7a38747585589dfd9c203e8b29eab1c4646832ae1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-plant-cell-wall-shape-mechanical-support",
+      "status": "approved",
+      "comment": "Fonction mécanique de la paroi distincte de son constituant ou de l’effet du calcium ; réponse unique.",
+      "contentHash": "18d665d3c15fe84cc66e24b71967604fd3e43df47fd221bb10847996f12afae0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "The Cell Wall, premier paragraphe",
+          "result": "Soutien et forme liés à la paroi confirmés.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-palisade-mesophyll-packed-columnar-cells",
+      "status": "approved",
+      "comment": "La disposition palissadique est attestée pour Cannabis ; pas de nombre de couches présenté comme universel.",
+      "contentHash": "437a33ec57ac1a74c2e9bde3f11bb4eac32aa1b92e51ce09c81a0bf43e8ebd91",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-leaves-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "locator": "Leaf Structure and Function, paragraphe du palisade mesophyll",
+          "result": "Cellules palissadiques serrées confirmées.",
+          "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn01-thai-leaf-anatomy",
+          "url": "https://bdn-thp.dmsc.moph.go.th/ebook/qQEcAUtlpR9gC3q0GT5gMJq0qT5co3uw",
+          "locator": "Description, Microscopical, Mesophyll",
+          "result": "Couche palissadique cylindrique décrite chez Cannabis.",
+          "sourceHash": "82e883e7dc34e78b3ccee204509c3f389d9746bd3fb3c282cef0ea8907d51205",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-spongy-mesophyll-air-spaces-gas-exchange",
+      "status": "approved",
+      "comment": "Lien utile entre espaces internes et échanges gazeux ; distinct de l’identification des stomates.",
+      "contentHash": "b16693507788f8228abadb652537307ee59e959447055027edc02acf765fb56b",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-leaves-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "locator": "Leaf Structure and Function, spongy mesophyll",
+          "result": "Espaces aériens facilitant les échanges gazeux confirmés.",
+          "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-guard-cell-pair-controls-stomatal-aperture",
+      "status": "approved",
+      "comment": "Le type cellulaire contrôlant le pore est distinct du rôle du potassium déjà couvert ; niveau 2 honnête.",
+      "contentHash": "da43ada075986067d0ef32957c34b4dacfdf8f54cb55cec16c0e59a4782ac9fa",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-leaves-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "locator": "Leaf Structure and Function, epidermis and guard cells",
+          "result": "Paire de cellules de garde contrôlant le pore confirmée.",
+          "sourceHash": "cc29eba33f2a3f54f3d0c4a1776c7356aab434d534e2e9204105677f9b45c383",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-osmosis-net-water-selective-membrane",
+      "status": "approved",
+      "comment": "Locator corrigé vers la figure 5.11. Contenu, quatre choix et niveau 2 confirmés.",
+      "contentHash": "8609057e3d8e4737922292c23df2499422105ecf83c5453c081882f0b194af7b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-passive-transport",
+          "url": "https://openstax.org/books/biology-2e/pages/5-2-passive-transport",
+          "locator": "Osmosis, définition ; Mechanism, figure 5.11 (et non 5.8), lignes 81–91 de la page consultée",
+          "result": "Osmose confirmée ; figure exacte 5.11.",
+          "sourceHash": "891bd7ca136797f92f3a0d7d0a3abb6ff5922f143a515e8823413f9c9fd4307b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre réutilisée : fait et objet source inchangés ; correction éditoriale ou de locator seulement."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-hemp-vascular-cambium-secondary-thickening",
+      "status": "approved",
+      "comment": "Tissus et méristème d’une tige proposés ; mention des tissus secondaires distinguant sans ambiguïté le cambium du méristème apical. Niveau 2 confirmé.",
+      "contentHash": "8527148778cd5369a5c8d57188487447c5a06f18a8135417d85e13105889ef36",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-stems-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+          "locator": "Secondary Growth in Stems, vascular cambium",
+          "result": "Production des tissus secondaires confirmée.",
+          "sourceHash": "bf40ae6f6ea081a597e49c1895eb136051ebcd9f13ae3a1219d959f495d36e8b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre réutilisée : fait et objet source inchangés ; correction éditoriale ou de locator seulement."
+        },
+        {
+          "sourceId": "bf-fibres-2016",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.01733/full",
+          "locator": "Introduction, activité du cambium ; Results/Light Microscopy and Immunohistochemistry, divisions cambiales H9 et xylème secondaire H12",
+          "result": "Divisions cambiales et croissance secondaire du chanvre décrites.",
+          "sourceHash": "ef3b6076cd0585205338247fc49efdb359966fbd39e59cdcc62bb83c3091e447",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre réutilisée : fait et objet source inchangés ; correction éditoriale ou de locator seulement."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-lateral-roots-originate-in-pericycle",
+      "status": "approved",
+      "comment": "Origine interne des racines latérales, distincte des poils épidermiques ; niveau 3 justifié.",
+      "contentHash": "ddca8fc4b73d76221847e3d5aa46a64fbcfaf125a26ab7609fef2de0cdee7c3a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Root Anatomy, paragraphe pericycle",
+          "result": "Origine péricyclique des racines latérales confirmée.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-compound-leaf-axillary-bud-at-whole-leaf-base",
+      "status": "approved",
+      "comment": "Critère observable distinguant feuille entière et foliole ; distinct du pétiole et du nombre de folioles.",
+      "contentHash": "44ef15b1753011800581fc38ad0baa46cdf0f069649e58fdd991e2661514b8b5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-ncsu-botany",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+          "locator": "Leaves as a Means of Identifying Plants, paragraphes 1–2",
+          "result": "Bourgeon à la base de la feuille entière, absent de la foliole.",
+          "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-embryonic-radicle-develops-root-system",
+      "status": "approved",
+      "comment": "Radicule, plumule et cotylédons sont utilement distingués ; niveau 2 anatomique.",
+      "contentHash": "7a2aea7bb29f12740d84952f5385f20996689f75bbd5ec63a1a6b4bf6a024ae1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Types of Root Systems, radicle",
+          "result": "Radicule à l’origine du système racinaire confirmée.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-seedling-uses-seed-reserves-before-photosynthesis",
+      "status": "approved",
+      "comment": "Réserves de la graine avant autonomie photosynthétique : notion concrète de niveau 1 et réponse unique.",
+      "contentHash": "e283c2005f1487041824720501e21ce12b4af1a06e6b21de0ba8aaf01f09ed3c",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Seed and Fruit Formation, embryo and cotyledons",
+          "result": "Réserves jusqu’aux premières feuilles actives confirmées.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "revision-agro-water",
+          "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+          "locator": "Translocation, source and sink",
+          "result": "Organes de réserve alimentant la croissance confirmés.",
+          "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-mitotic-division-conserves-chromosome-information",
+      "status": "approved",
+      "comment": "Conservation lors d’une mitose distincte du nombre diploïde, de la polyploïdie et d’une mutation clonale.",
+      "contentHash": "a176cf70ed99c7a2221e1ec6e2b87f22af060faf0b233fd2b073ae25c01faf8b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-cycle",
+          "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+          "locator": "The Cell Cycle, mitotic phase and DNA replication",
+          "result": "Réplication et répartition conservatrice des chromosomes confirmées.",
+          "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-cell-elongation-length-increase-without-division",
+      "status": "approved",
+      "comment": "Déduction simple entre nombre et longueur des cellules ; elle applique deux modes de croissance distincts.",
+      "contentHash": "b34c073cf58dc8fd7269a9f27925523f7dc77b2859deeabe2ab10a7c71ca40af",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Root Growth and Anatomy, zones of division and elongation",
+          "result": "Zones de division et d’élongation distinguées.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-growing-tissue-imports-sugars-is-sink",
+      "status": "approved",
+      "comment": "Application correcte du vocabulaire source-puits à un organe importateur ; niveau 2 justifié.",
+      "contentHash": "8920c26db76d6a99db74c3249364ec17d1f0f776267b0ca971fe19f438c497f0",
+      "sourceChecks": [
+        {
+          "sourceId": "revision-agro-water",
+          "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+          "locator": "Translocation, Sources and Sinks",
+          "result": "Racines en croissance citées comme puits.",
+          "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-different-cell-functions-differential-gene-expression",
+      "status": "approved",
+      "comment": "La prémisse impose de distinguer séquence commune et expression différente ; déduction simple acceptable.",
+      "contentHash": "eaf3fb2a7b5108c60ec27a22fbea1520b80d250714055076e9025c69b504f576",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-gene-expression",
+          "url": "https://openstax.org/books/biology-2e/pages/16-1-regulation-of-gene-expression",
+          "locator": "Regulation of Gene Expression, introduction",
+          "result": "Expression d’une partie des gènes et contrôle fonctionnel confirmés.",
+          "sourceHash": "21a98c88bd8a4d29563ba8a0e499056886d7880f79867e9845ce9a94a76780b0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-chlorophyll-a-absorbs-blue-and-red-light",
+      "status": "approved",
+      "comment": "Absorption du pigment distinguée de l’utilisation du vert par la feuille entière ; niveau 2 adapté.",
+      "contentHash": "024ad36ae18d1e0b8d7aa511fdfe9b9e46db8ad9dd28a12eae2b5b97a92d3685",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-light-reactions",
+          "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+          "locator": "Absorption of Light, chlorophyll a and absorption spectra",
+          "result": "Absorption bleue et rouge de la chlorophylle a confirmée.",
+          "sourceHash": "7c9576bdbf7c31797b047f9705e82b8c272ce1d8e0bbc37a45366767222c80a0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-apical-meristems-dividing-cells-at-tips",
+      "status": "approved",
+      "comment": "Localisation des zones de croissance primaire distincte de l’élongation et du cambium latéral.",
+      "contentHash": "f434c57015fed1ef5f535d602a0b76ae5611238c10ac22c839e15ab976882782",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-body-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-1-the-plant-body",
+          "locator": "Plant Tissues, meristematic tissue and apical meristems",
+          "result": "Méristèmes apicaux aux extrémités confirmés.",
+          "sourceHash": "dd556098afc6320c0b67bc9d5fc02fd05ada5dedd5f2233aba657e974a319e04",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-mature-xylem-vessel-elements-dead-functional",
+      "status": "approved",
+      "comment": "État des éléments de vaisseaux distinct de leur fonction de transport ; fait utile, niveau 2 acceptable.",
+      "contentHash": "8a025d8590e32cd5c4ad6f132ed9452a5342d01b9f620313eb6795b8f6c5a570",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-stems-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+          "locator": "Vascular Tissue, xylem vessel elements and tracheids",
+          "result": "Éléments de vaisseaux morts à maturité confirmés.",
+          "sourceHash": "bf40ae6f6ea081a597e49c1895eb136051ebcd9f13ae3a1219d959f495d36e8b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-plasmodesmata-connect-plant-cell-cytoplasms",
+      "status": "approved",
+      "comment": "Locator corrigé vers la figure 4.28. Contenu, quatre choix et niveau 3 confirmés.",
+      "contentHash": "e30c0c23cbd7c01bb814b646fd396e902023cd53108496d34f19279f6c31e1f7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-junctions",
+          "url": "https://openstax.org/books/biology-2e/pages/4-6-connections-between-cells-and-cellular-activities",
+          "locator": "Plasmodesmata, définition et figure 4.28 (et non 4.27), lignes 42–46 de la page consultée",
+          "result": "Continuité cytoplasmique par plasmodesmes confirmée ; figure 4.28.",
+          "sourceHash": "a8075b1c25e018acb9a2486ff9f96571e8037d1be1de0ede14aea2d0e3511bc4",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre réutilisée : fait et objet source inchangés ; correction éditoriale ou de locator seulement."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-photosynthetic-oxygen-originates-from-water",
+      "status": "approved",
+      "comment": "Origine des atomes du dioxygène distincte de l’identification du gaz produit ; niveau 3 justifié.",
+      "contentHash": "25f76794d54850e6ab2c178e51f0820de34e72c6461413ee68b8ae19eaf87bbc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-light-reactions",
+          "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+          "locator": "Photosystem II, splitting water and oxygen release",
+          "result": "Dioxygène issu de la dissociation de l’eau confirmé.",
+          "sourceHash": "7c9576bdbf7c31797b047f9705e82b8c272ce1d8e0bbc37a45366767222c80a0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-light-dependent-photosystems-thylakoid-membrane",
+      "status": "approved",
+      "comment": "Les quatre localisations appartiennent au chloroplaste ; niveau 3 subcellulaire justifié.",
+      "contentHash": "0b19b4e478f3ff93a7d10f6a7ade15c0069d72257dec060c8288a202995a9e65",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-light-reactions",
+          "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+          "locator": "Light-Dependent Reactions, photosystems in thylakoid membranes",
+          "result": "Photosystèmes insérés dans la membrane thylakoïdienne confirmés.",
+          "sourceHash": "7c9576bdbf7c31797b047f9705e82b8c272ce1d8e0bbc37a45366767222c80a0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-casparian-strip-forces-membrane-crossing",
+      "status": "approved",
+      "comment": "Le blocage de la voie entre les parois est distingué du transport dans le xylème ; niveau 3 justifié.",
+      "contentHash": "98ab97ab597b02cf433b24e7317319f9aefa98c6989bb0feedf269ed4615ec69",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-roots",
+          "url": "https://openstax.org/books/biology-2e/pages/30-3-roots",
+          "locator": "Root Anatomy, endodermis and Casparian strip",
+          "result": "Bande obligeant le franchissement membranaire confirmée.",
+          "sourceHash": "ca734e933a6cf963f10f168a8619596d0465630b23e8b75d2a085ba4fe1c74b9",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn01-companion-cells-support-enucleate-sieve-elements",
+      "status": "approved",
+      "comment": "Soutien métabolique des éléments criblés sans noyau : spécialisation distincte du simple transport des sucres ; niveau 3 adapté.",
+      "contentHash": "019925087bcffde2628af30d5b4eec4606e611a5f8cac73c00f6fe47842082c3",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-stems-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+          "locator": "Vascular Tissue, sieve-tube elements and companion cells",
+          "result": "Soutien métabolique par les cellules compagnes confirmé.",
+          "sourceHash": "bf40ae6f6ea081a597e49c1895eb136051ebcd9f13ae3a1219d959f495d36e8b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "date": "2026-11-16",
+    "scope": "Quatre objets modifiés uniquement ; 36 objets déjà approuvés et toutes les sources inchangés.",
+    "modifiedIds": [
+      "hemp-q2-cn01-stem-supports-leaves-and-flowers",
+      "hemp-q2-cn01-osmosis-net-water-selective-membrane",
+      "hemp-q2-cn01-hemp-vascular-cambium-secondary-thickening",
+      "hemp-q2-cn01-plasmodesmata-connect-plant-cell-cytoplasms"
+    ],
+    "result": "40 questions approuvées, empreintes concordantes."
+  }
+}

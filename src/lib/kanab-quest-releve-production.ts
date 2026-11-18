@@ -3,6 +3,8 @@ import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle, type K
 import { getKqCampaignMemberState, getKqCampaignParticipants } from "./kanab-quest-campaign";
 import { getKqBuddieRotationRemaining, recordKqBuddieUse } from "./kanab-quest-buddie-rotation";
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
+import { consumeKqCareStock } from "./kanab-quest-care-reserve";
+import type { KqCareSector } from "./kanab-quest-care-spatial";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
 import { KQ_LAB_ANALYSIS_CENTS, KQ_SUPPLIER_PAYMENT_TERM_MS } from "./kanab-quest-business";
 import { getKqWarehouseEquipmentDemand, getKqWarehouseQuote, getKqWarehouseSummary, validateKqWarehouseState, type KqWarehouseState } from "./kanab-quest-warehouse";
@@ -16,12 +18,22 @@ export type KqReleveProductionLedgerEntry = {
   label: string; amountCents: number; status: "paid" | "due"; issuedAt: string; dueAt?: string;
   careProductCode?: string | null; careAreaM2?: number | null; careStageIndex?: number;
 };
-type Checkpoint = { game: KqGameState; cashCents: number; supportInventory: Record<string, number>; careInventory: Record<string, number>; careAreaInventory?: Record<string, number>; ledger: KqReleveProductionLedgerEntry[] };
+type CareReceipt = { key: string; signature: string; chargedCents: number };
+export function isKqReleveCareReserve(value: Record<string, unknown>) {
+  const { careAreaInventory: area, careReceipts: receipts } = value;
+  return (area === undefined || area !== null && typeof area === "object" && !Array.isArray(area)
+    && Object.entries(area).every(([code, units]) => !!getKqCareProduct(code) && Number.isSafeInteger(units) && units >= 0))
+    && (receipts === undefined || Array.isArray(receipts) && receipts.every(row =>
+      row && typeof row.key === "string" && typeof row.signature === "string" && Number.isSafeInteger(row.chargedCents) && row.chargedCents >= 0)
+      && new Set(receipts.map(row => row.key)).size === receipts.length);
+}
+type Checkpoint = { game: KqGameState; cashCents: number; supportInventory: Record<string, number>; careInventory: Record<string, number>; careAreaInventory?: Record<string, number>; careReceipts?: CareReceipt[]; ledger: KqReleveProductionLedgerEntry[] };
 export type KqReleveProductionState = {
   version: 1; warehouse: KqWarehouseState; draftWarehouse: KqWarehouseState; revision: number;
   cashCents: number; clock: number; ownedBuddies: string[]; recentBuddieCodes: string[];
   supportInventory: Record<string, number>; careInventory: Record<string, number>;
   careAreaInventory?: Record<string, number>;
+  careReceipts?: CareReceipt[];
   deckCodes: string[]; heritageCode: string | null; game: KqGameState | null;
   battles: Record<string, KqBattle>; revealedRounds: Record<string, number>;
   storageLots?: Record<string, KqStorageLot>;
@@ -141,7 +153,7 @@ export type KqReleveProductionAction =
   | { type: "mark"; milestone: "zone-inspected" | "quote-read" | "charges-read" | "profile-read" | "health-read" | "recap-read" }
   | { type: "launch" } | { type: "roll" } | { type: "resolve" } | { type: "advance" }
   | { type: "play"; code: string } | { type: "heritage" } | { type: "heritage-swap"; handIndex: number; reserveIndex: number } | { type: "redraw" }
-  | { type: "basic-care" } | { type: "buy-care"; code: string } | { type: "apply-care"; code: string }
+  | { type: "basic-care" } | { type: "buy-care"; code: string } | { type: "apply-care"; code: string; target?: KqCareSector }
   | { type: "assist" } | { type: "restore-stage" }
   | { type: "mature" } | { type: "storage-place"; flowerId: string; containerCode: string }
   | { type: "duel"; zoneId: string } | { type: "verdict"; zoneId: string } | { type: "round"; zoneId: string };
@@ -157,7 +169,7 @@ function record(state: KqReleveProductionState, row: Omit<KqReleveProductionLedg
   state.ledger.push({ ...row, issuedAt: new Date(state.clock).toISOString() });
 }
 function checkpoint(state: KqReleveProductionState) {
-  state.checkpoint = structuredClone({ game: state.game!, cashCents: state.cashCents, supportInventory: state.supportInventory, careInventory: state.careInventory, careAreaInventory: state.careAreaInventory, ledger: state.ledger });
+  state.checkpoint = structuredClone({ game: state.game!, cashCents: state.cashCents, supportInventory: state.supportInventory, careInventory: state.careInventory, careAreaInventory: state.careAreaInventory, careReceipts: state.careReceipts, ledger: state.ledger });
 }
 function harvestInvoices(state: KqReleveProductionState) {
   if (state.game?.phase !== "complete" || !state.game.campaign) return;
@@ -228,7 +240,7 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
     }
     case "restore-stage":
       requireAction(state.checkpoint, "Aucun point de contrôle de culture disponible.");
-      Object.assign(state, structuredClone(state.checkpoint)); state.careAreaInventory = { ...state.checkpoint.careAreaInventory }; state.battles = {}; state.revealedRounds = {}; state.storageLots = {}; mark(state, "stage-restored"); return state;
+      Object.assign(state, structuredClone(state.checkpoint)); state.careAreaInventory = { ...state.checkpoint.careAreaInventory }; state.careReceipts = [...(state.checkpoint.careReceipts ?? [])]; state.battles = {}; state.revealedRounds = {}; state.storageLots = {}; mark(state, "stage-restored"); return state;
     case "assist":
       requireAction(game?.care && game.phase !== "complete", "Reprends d’abord le point de contrôle de cette étape.");
       state.game = { ...game, care: { ...game.care, vitality: 100 }, effectNotices: [...(game.effectNotices ?? []), "Aide de l’essai demandée : vitalité rétablie à 100. Les dés, problèmes et pertes précédentes sont conservés."].slice(-12) };
@@ -259,7 +271,7 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
       const flower = createKqFlower(harvest.game, "La ferme d’essai");
       const prepared = applyKqStorageToJury(harvest.storage, Object.fromEntries(Object.entries(flower.stats).filter((entry): entry is [string, number] => typeof entry[1] === "number")), state.clock);
       state.storageLots = { ...Object.fromEntries(getKqReleveHarvests(state).map(row => [row.zoneId, row.storage])), [action.zoneId]: prepared.lot };
-      state.battles[action.zoneId] = lockKqBattle({ ...flower, stats: prepared.stats as typeof flower.stats }, createKqOpponent(seed, { rulesVersion: 3, ownerName: "Sylvain · entraînement" }), seed);
+      state.battles[action.zoneId] = lockKqBattle({ ...flower, stats: prepared.stats as typeof flower.stats }, createKqOpponent(seed, { rulesVersion: 3, ownerName: "Loïc · entraînement" }), seed);
       state.revealedRounds[action.zoneId] = 0; return state;
     }
     case "verdict": {
@@ -306,13 +318,12 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
       state.careAreaInventory = { ...state.careAreaInventory, [product.code]: (state.careAreaInventory?.[product.code] ?? 0) + pricing.pricingUnits }; break;
     }
     case "apply-care": {
-      const access = canApplyKqCareProduct(game, action.code); requireAction(access.allowed, access.reason);
-      const units = getKqCarePricing(game).pricingUnits;
-      const legacy = (state.careInventory[action.code] ?? 0) > 0;
-      requireAction(legacy || (state.careAreaInventory?.[action.code] ?? 0) >= units, "Achète un passage pour cette surface dans la réserve de soins.");
-      state.game = applyKqCareProduct(game, action.code);
-      if (legacy) state.careInventory[action.code]--;
-      else state.careAreaInventory = { ...state.careAreaInventory, [action.code]: (state.careAreaInventory?.[action.code] ?? 0) - units };
+      const access = canApplyKqCareProduct(game, action.code, action.target); requireAction(access.allowed, access.reason);
+      state.game = applyKqCareProduct(game, action.code, action.target);
+      requireAction(state.game !== game, "Choisis une case de culture pour appliquer ce produit.");
+      const stock = consumeKqCareStock(state.careInventory, state.careAreaInventory, action.code, getKqCarePricing(game).pricingUnits, !!action.target);
+      state.careInventory = stock.inventory;
+      state.careAreaInventory = stock.areaInventory;
       mark(state, "care-used"); break;
     }
   }

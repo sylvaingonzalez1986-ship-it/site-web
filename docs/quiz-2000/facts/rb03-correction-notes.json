@@ -1,0 +1,50 @@
+{
+  "batchId": "r-actives-b-03",
+  "author": "rebalance_classify_b",
+  "correctedAt": "2026-11-17",
+  "basis": "reviews/r-actives-b-03.json, première revue indépendante Sol ; aucune auto-approbation",
+  "removed": [
+    {
+      "id": "hemp-q2-rb03-cannabis-violet-anthocyanes",
+      "contentHash": "2f79b0a37969d7599f23bef29f4e3ecf9dca6df3fb05d037b2b064166817fa02",
+      "reason": "Rappel pigmentaire foliaire hors domaine actif."
+    },
+    {
+      "id": "hemp-q2-rb03-f2-segregation-profils",
+      "contentHash": "cea3a0e1b150cc37b5e08468228f904a3698b97c29a5fd768f564643efbfe620",
+      "reason": "Doublon de ségrégation F2 1:2:1 avec hemp-q2-ext-f2-rapport-mixte approuvé."
+    }
+  ],
+  "remainingPlan": "29+30+29+31+31+35=185 ; deux places de ce lot reportées à rb06, désormais35.",
+  "targetedChanges": [
+    {
+      "id": "hemp-q2-rb03-indica-sativa-profils-chimiques",
+      "contentHash": "dd6139c901332639cbe090d5e6c906c1341c8136e41bd873faafb4d8daa353b7"
+    },
+    {
+      "id": "hemp-q2-rb03-meme-nom-composition-variable",
+      "contentHash": "a20c91112a75f3cc4fedbc156fd4b050c66044f40b323e47c08d5a89a48597ab"
+    },
+    {
+      "id": "hemp-q2-rb03-position-fleurs-composition",
+      "contentHash": "4370cab7b3af124b4e6dc42df195cc7ab1183b435d5e440fc03487987df0c96e"
+    },
+    {
+      "id": "hemp-q2-rb03-norml-mission",
+      "contentHash": "ef817af3a1e3ea8d742d65d817367981296da7fb4853c46a5444d50fac6165d4"
+    }
+  ],
+  "sourceChange": {
+    "id": "q2-rb03-allen26",
+    "author": "Keith Allen, Anthony Torres et Reginald Gaudino",
+    "sourceHash": "58efbe286c025d6f496d54196caa2bda3d619ba684dbdd7bec40e266d38833d2"
+  },
+  "count": 29,
+  "sources": 23,
+  "levels": {
+    "1": 12,
+    "2": 15,
+    "3": 2,
+    "4": 0
+  }
+}

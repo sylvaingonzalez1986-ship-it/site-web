@@ -1,0 +1,74 @@
+{
+  "researcher": "rebalance_classify_b",
+  "researchedAt": "2026-11-17",
+  "purpose": "Aide de recherche bornée pour C après première revue rp04. Aucun batch/question écrit ; rédaction C et première revue indépendante A restent nécessaires.",
+  "items": [
+    {
+      "subject": "Walter Benjamin — On Hashish",
+      "status": "exclude-duplicate",
+      "existingId": "hemp-q2-rb03-benjamin-notes-haschisch",
+      "existingFile": "docs/quiz-2000/batches/r-actives-b-03.json",
+      "reason": "Objet complet existant relu : demande exactement la nature du recueil, notes d’expériences et textes sur le haschisch. Ne pas ajouter cette même connaissance ni une inversion auteur/titre."
+    },
+    {
+      "subject": "Dumas — Franz, Sinbad et haschisch",
+      "status": "exclude-duplicate",
+      "existingId": "hemp-q2-rb03-dumas-franz-haschisch",
+      "existingFile": "docs/quiz-2000/batches/r-actives-b-03.json",
+      "reason": "Objet complet existant relu : demande Le Comte de Monte-Cristo à partir de Franz et du souper au haschisch dans la grotte. Le texte original Gutenberg a été repéré mais cette scène ne constitue pas une nouveauté. Ne pas décliner ses personnages pour gonfler le lot."
+    },
+    {
+      "subject": "Rick James — Mary Jane",
+      "status": "candidate-excerpt-only",
+      "domain": "active",
+      "suggestedSubjectKey": "rick-james-mary-jane",
+      "fact": "La biographie officielle de Rick James décrit Mary Jane comme une ode au cannabis. Cela soutient l’identité de l’artiste et le sujet cannabique de ce titre, sans analyse des paroles.",
+      "sources": [
+        {
+          "url": "https://rickjames.com/pages/biography",
+          "organization": "Rick James — site officiel / boutique de la succession",
+          "title": "BIOGRAPHY",
+          "access": "excerpt",
+          "reader": "rebalance_classify_b",
+          "verifiedAt": "2026-11-17",
+          "locator": "Paragraphe commençant 1977 saw him assemble ; album Gordy1978 et Mary Jane",
+          "result": "Extrait primaire indexé réellement obtenu et lu : le passage sur le premier album nomme Mary Jane et le qualifie de pot paean. Le contexte attribue bien la chanson à Rick James.",
+          "limitation": "Trois ouvertures directes ont échoué (402/erreurs internes), donc aucune lecture intégrale revendiquée. Requête ciblée site:rickjames.com/pages/biography pot paean a livré le paragraphe original indexé. Date/auteur individuel non indiqués dans cet extrait. Ne pas reprendre comme établie l’étymologie du groupe Mary Jane Girls ni la graphie du titre d’album de cette biographie."
+        }
+      ],
+      "neighbours": "Index recherché Rick James/Mary Jane sans résultat. Les anciennes questions chanvre musical ont d’autres œuvres ; ne pas utiliser seulement une date ou un classement."
+    },
+    {
+      "subject": "Full melt — comportement du haschich",
+      "status": "candidate-primary-opened",
+      "domain": "active",
+      "suggestedSubjectKey": "hash-full-melt",
+      "fact": "Dans la description du fabricant710Labs, full melt renvoie à la fusion des têtes résineuses avec peu de matière végétale résiduelle/noircissante, plutôt qu’à un taux de THC universel, à un nombre de variétés ou à un arôme. Une seule question de qualité descriptive est recommandée, sans protocole.",
+      "sources": [
+        {
+          "url": "https://710labs.com/persy-water-hash",
+          "organization": "710 Labs",
+          "title": "Persy Water Hash",
+          "access": "official-page",
+          "reader": "rebalance_classify_b",
+          "verifiedAt": "2026-11-17",
+          "locator": "Unique paragraphe sous Persy Water Hash",
+          "result": "Page fabricant effectivement ouverte depuis Product Info de https://710labs.com/collection. Le fabricant décrit des glandes résineuses et explique full melt par leur comportement à la chaleur plutôt que par un noircissement. Attribution commerciale nécessaire.",
+          "limitation": "Ne pas transformer la revendication de pureté du fabricant en contrôle analytique indépendant ni en garantie sanitaire. Aucun réglage, appareil, méthode de consommation ou préparation à reprendre. Date non affichée."
+        },
+        {
+          "url": "https://www.maratek.com/hubfs/Whitepapers%20December%202021/Water%20Extraction%20Whitepaper.pdf?hsLang=en",
+          "organization": "Maratek — fabricant d’équipements",
+          "title": "Water Extraction Whitepaper",
+          "access": "full-text",
+          "reader": "rebalance_classify_b",
+          "verifiedAt": "2026-11-17",
+          "locator": "p2/index1, Introduction to Bubble Hash, paragraphes sur échelle1–6 et full melt",
+          "result": "PDF3pages réellement ouvert et passage ciblé lu : full melt décrit un produit laissant peu ou pas de matière végétale après fusion. L’échelle commerciale1–6 place6au sommet.",
+          "limitation": "Document commercial d’équipement, pas norme réglementaire. Les descriptions opératoires et promesses comparatives de santé sur cette page sont écartées. Ne pas dupliquer le même apprentissage par une seconde question six étoiles/full melt ; ni copier sa généralisation contestable sur tailles de tamis. Date2021 suggérée par chemin mais non validée comme date documentaire."
+        }
+      ],
+      "neighbours": "Index recherché full melt/six star/melt hash sans résultat. Les questions kief/hash/rosin et origines des solvants ne testent pas ce comportement de qualité. Le site dev-710-labs.squarespace.com/collection a aussi été réellement ouvert, mais utiliser la page canonique710labs ci-dessus ; ne pas utiliser710-labs.com, domaine différent non authentifié."
+    }
+  ]
+}

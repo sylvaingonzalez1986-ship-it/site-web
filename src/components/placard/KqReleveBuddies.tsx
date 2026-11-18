@@ -24,8 +24,8 @@ export function KqReleveBuddies({ state, onAction }: {
   const cards = KQ_BUDDIES.filter(buddie => state.ownedBuddies.includes(buddie.code));
 
   return <div className={styles.buddies}>
-    {!revealed ? <section className={styles.album} aria-label="L’album prêté par Sylvain">
-      <header><PackageOpen size={25} aria-hidden="true" /><h3>Les Buddies de Sylvain</h3><span>{state.ownedBuddies.length} / 3</span></header>
+    {!revealed ? <section className={styles.album} aria-label="L’album prêté par Loïc">
+      <header><PackageOpen size={25} aria-hidden="true" /><h3>Les Buddies de Loïc</h3><span>{state.ownedBuddies.length} / 3</span></header>
       <div className={styles.reveal}>{KQ_RELEVE_BUDDIES.map(code => {
         const buddie = KQ_BUDDIES.find(item => item.code === code)!;
         return <div key={code} data-revealed={state.ownedBuddies.includes(code)}><BuddieCard {...buddie} hidden={!state.ownedBuddies.includes(code)} sizes="(max-width: 600px) 25vw, 200px" /></div>;

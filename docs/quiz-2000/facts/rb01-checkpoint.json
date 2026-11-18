@@ -1,0 +1,89 @@
+{
+  "batchId": "r-actives-b-01",
+  "date": "2026-11-17",
+  "author": "rebalance_classify_b",
+  "status": "draft-awaiting-independent-review",
+  "readSources": [
+    {
+      "id": "q2-rb01-livingston20",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+      "access": "full-text",
+      "locator": "Discussion; Figure 8"
+    },
+    {
+      "id": "q2-rb01-spitzer19",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+      "access": "full-text",
+      "locator": "Results: Growth and Development; Figures 5–7"
+    },
+    {
+      "id": "q2-rb01-lipson21",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8602813/",
+      "access": "full-text",
+      "locator": "Discussion, trois premiers paragraphes"
+    },
+    {
+      "id": "q2-rb01-punja20",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.00718/full",
+      "access": "full-text",
+      "locator": "Abstract; Discussion, pollen germination; PCR and Sequence Analysis"
+    },
+    {
+      "id": "q2-rb01-punja23",
+      "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+      "access": "full-text",
+      "locator": "Abstract: Results et Conclusion; Results: resin exudation"
+    },
+    {
+      "id": "q2-rb01-hesami23",
+      "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+      "access": "full-text",
+      "locator": "Results: flower development, Figure 9"
+    },
+    {
+      "id": "q2-rb01-conneely21",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8016307/",
+      "access": "full-text",
+      "locator": "Abstract; Figure 1; Discussion"
+    },
+    {
+      "id": "q2-rb01-allen26",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+      "access": "full-text",
+      "locator": "Abstract; sections 1.5 et 2.1; Discussion 3.3"
+    },
+    {
+      "id": "q2-rb01-alberti25",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+      "access": "full-text",
+      "locator": "Abstract; Introduction, paragraphes trichome density et frosty appearance"
+    },
+    {
+      "id": "q2-rb01-salamone22",
+      "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+      "access": "full-text",
+      "locator": "Introduction, Table 1; Results and Discussion, premier paragraphe"
+    },
+    {
+      "id": "q2-rb01-steel23",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2023.1227898/full",
+      "access": "full-text",
+      "locator": "Florogenesis, Figure 4 et paragraphe précédent"
+    },
+    {
+      "id": "q2-rb01-livingston22",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35917819/",
+      "access": "excerpt",
+      "locator": "Abstract, extrait indexé PubMed consulté par recherche du titre exact"
+    },
+    {
+      "id": "q2-rb01-stack23",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10681003/",
+      "access": "full-text",
+      "locator": "Abstract, trois dernières phrases; Discussion"
+    }
+  ],
+  "deduplication": "fact-index.jsonl consulté sur fleurs, glandes, trichomes, profils et lignées avant rédaction ; pas de contenu du catalogue du site.",
+  "scope": "Fleurs, résine, développement glandulaire, chimotypes ; aucun conseil de culture ni protocole.",
+  "count": 30
+}

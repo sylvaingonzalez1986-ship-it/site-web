@@ -1,0 +1,1854 @@
+{
+  "batchId": "a-01",
+  "author": "a_cbd_inventory",
+  "role": "A/B",
+  "questions": [
+    {
+      "id": "hemp-q2-a01-joanne-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle parenté Royal Queen Seeds annonce-t-il pour Joanne's CBD ?",
+      "options": [
+        "Session × Medical CBD",
+        "Session × Red Angel",
+        "Session × Respect 13",
+        "Session × Juanita la Lagrimosa"
+      ],
+      "answer": 3,
+      "explanation": "RQS attribue Joanne's CBD à Session × Juanita la Lagrimosa. Cette filiation est la déclaration de l'obtenteur pour sa sélection.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-joanne"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Joanne's CBD de Royal Queen Seeds",
+        "subjectKey": "rqs-joannes-cbd",
+        "property": "parenté annoncée",
+        "expectedAnswer": "Session × Juanita la Lagrimosa",
+        "learningObjective": "Reconnaître une filiation CBD précisément attribuée.",
+        "factKey": "a01-joanne-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-joanne",
+            "locator": "Origines de Joanne's CBD et tableau Genetic Background",
+            "support": "RQS annonce Session × Juanita la Lagrimosa."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-joanne-session-architecture",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel caractère de Session Royal Queen Seeds souhaitait-il associer au profil CBD de Juanita pour créer Joanne's CBD ?",
+      "options": [
+        "Une résistance à l'oïdium",
+        "Un feuillage panaché",
+        "Une taille plus grande",
+        "Une maturation plus précoce"
+      ],
+      "answer": 2,
+      "explanation": "Le récit de RQS présente Session comme un grand hybride apportant de la taille. L'objectif réunissait architecture de plante et profil cannabinoïde.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-joanne"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Objectif de sélection de Joanne's CBD",
+        "subjectKey": "rqs-joannes-cbd",
+        "property": "caractère architectural apporté par Session",
+        "expectedAnswer": "Une taille plus grande",
+        "learningObjective": "Distinguer les caractères réunis dans un projet de sélection.",
+        "factKey": "a01-joanne-session-architecture",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-joanne",
+            "locator": "Récit d'hybridation, apport de Session",
+            "support": "RQS explique avoir associé la grande taille de Session au profil cannabinoïde de Juanita."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-tatanka-hommage",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À quelle personnalité Royal Queen Seeds dédie-t-il le nom Tatanka Pure CBD ?",
+      "options": [
+        "Geronimo",
+        "Red Cloud",
+        "Crazy Horse",
+        "Sitting Bull"
+      ],
+      "answer": 3,
+      "explanation": "RQS présente le nom comme un hommage à Tatanka Iyotake, également connu sous le nom Sitting Bull. Il s'agit ici d'une histoire de dénomination.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-tatanka"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Nom de Tatanka Pure CBD",
+        "subjectKey": "rqs-tatanka-pure-cbd",
+        "property": "personnalité honorée",
+        "expectedAnswer": "Sitting Bull",
+        "learningObjective": "Découvrir l'origine culturelle d'un nom de cultivar.",
+        "factKey": "a01-tatanka-hommage",
+        "form": "anecdote",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-tatanka",
+            "locator": "Premier paragraphe de présentation du nom",
+            "support": "La marque explique avoir nommé Tatanka Pure CBD en hommage à Sitting Bull."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-tatanka-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement Royal Queen Seeds revendique-t-il pour Tatanka Pure CBD ?",
+      "options": [
+        "Elixir Vitae × Respect 13",
+        "Elixir Vitae × Red Angel",
+        "Elixir Vitae × Medical CBD",
+        "Elixir Vitae × Session"
+      ],
+      "answer": 2,
+      "explanation": "La fiche officielle donne Elixir Vitae × Medical CBD. Le mot Pure dans le nom ne remplace pas une analyse chimique du lot.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-tatanka"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Tatanka Pure CBD de Royal Queen Seeds",
+        "subjectKey": "rqs-tatanka-pure-cbd",
+        "property": "parenté annoncée",
+        "expectedAnswer": "Elixir Vitae × Medical CBD",
+        "learningObjective": "Relier une sélection CBD à ses parents déclarés.",
+        "factKey": "a01-tatanka-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-tatanka",
+            "locator": "Récit de création et Genetic Background",
+            "support": "RQS donne Elixir Vitae × Medical CBD comme parents."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-solomatic-gingembre-pin",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Après ses notes sucrées et fruitées, quelles touches Royal Queen Seeds décrit-il dans l'arôme de Solomatic CBD ?",
+      "options": [
+        "Cacao et noisette",
+        "Gingembre et pin",
+        "Menthe et réglisse",
+        "Violette et lavande"
+      ],
+      "answer": 1,
+      "explanation": "Le texte officiel décrit des notes de gingembre et de pin après une ouverture fruitée. C'est un profil sensoriel attribué à cette sélection.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-a01-rqs-solomatic"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Description aromatique de Solomatic CBD",
+        "subjectKey": "rqs-solomatic-cbd",
+        "property": "notes secondaires décrites",
+        "expectedAnswer": "Gingembre et pin",
+        "learningObjective": "Découvrir un contraste sensoriel documenté dans une lignée CBD.",
+        "factKey": "a01-solomatic-gingembre-pin",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-solomatic",
+            "locator": "Paragraphe consacré à l'arôme et à la saveur",
+            "support": "Le récit aromatique de Solomatic mentionne gingembre et pin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-solomatic-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle parenté le tableau officiel de Royal Queen Seeds indique-t-il pour Solomatic CBD ?",
+      "options": [
+        "Diesel CBD × Medical CBD",
+        "Diesel CBD × Elixir Vitae",
+        "Diesel CBD × Session",
+        "Diesel CBD × Asia CBD Auto"
+      ],
+      "answer": 3,
+      "explanation": "La ligne Genetic Background donne Diesel CBD × Asia CBD Auto. Elle concerne cette version de Solomatic, sans authentifier d'autres produits homonymes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-solomatic"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Solomatic CBD de Royal Queen Seeds",
+        "subjectKey": "rqs-solomatic-cbd",
+        "property": "couple parental du tableau officiel",
+        "expectedAnswer": "Diesel CBD × Asia CBD Auto",
+        "learningObjective": "Retrouver une parenté dans une annonce d'obtenteur délimitée.",
+        "factKey": "a01-solomatic-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-solomatic",
+            "locator": "Tableau, Genetic Background",
+            "support": "Le tableau de Solomatic donne Diesel CBD × Asia CBD Auto."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-royal-highness-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel couple parental Royal Queen Seeds attribue-t-il à Royal Highness ?",
+      "options": [
+        "Respect 13 × Session",
+        "Medical CBD × Dancehall 24",
+        "Respect 13 × Dancehall 24",
+        "Elixir Vitae × Dancehall 24"
+      ],
+      "answer": 2,
+      "explanation": "RQS annonce Respect 13 × Dancehall 24. Les numéros font partie des noms des sélections citées, pas d'un nombre de générations.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-highness"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Royal Highness de Royal Queen Seeds",
+        "subjectKey": "rqs-royal-highness",
+        "property": "parenté annoncée",
+        "expectedAnswer": "Respect 13 × Dancehall 24",
+        "learningObjective": "Identifier les parents déclarés sans interpréter leurs noms comme des données génétiques.",
+        "factKey": "a01-royal-highness-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-highness",
+            "locator": "Présentation et Genetic Background",
+            "support": "Les parents annoncés sont Respect 13 et Dancehall 24."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-highness-joanne-profils",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel contraste CBD/THC entre Royal Highness et Joanne's CBD les descriptions de Royal Queen Seeds mettent-elles en évidence ?",
+      "options": [
+        "Highness : CBD dominant ; Joanne's : CBD dominant",
+        "Highness : équilibré ; Joanne's : équilibré",
+        "Highness : CBD dominant ; Joanne's : équilibré",
+        "Highness : équilibré ; Joanne's : CBD dominant"
+      ],
+      "answer": 3,
+      "explanation": "RQS décrit environ autant de CBD que de THC chez Royal Highness, mais beaucoup plus de CBD chez Joanne's. Une gamme CBD recouvre donc des profils différents.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-rqs-highness",
+        "q2-a01-rqs-joanne"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Contraste entre deux profils CBD de RQS",
+        "subjectKey": "rqs-highness-joanne-contrast",
+        "property": "équilibre CBD/THC et dominance CBD",
+        "expectedAnswer": "Highness : équilibré ; Joanne's : CBD dominant",
+        "learningObjective": "Comparer des sélections CBD sans supposer qu'elles ont toutes le même rapport cannabinoïde.",
+        "factKey": "a01-highness-joanne-profils",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-highness",
+            "locator": "Descriptions cannabinoïdes des deux fiches",
+            "support": "Royal Highness : la description annonce autant de CBD que de THC."
+          },
+          {
+            "sourceId": "q2-a01-rqs-joanne",
+            "locator": "Descriptions cannabinoïdes des deux fiches",
+            "support": "Joanne CBD : la fiche annonce davantage de CBD que de THC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-medical-mass-miel",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "À quelle douceur le récit aromatique de Royal Queen Seeds compare-t-il Medical Mass ?",
+      "options": [
+        "Au chocolat noir",
+        "Au sirop d'érable",
+        "À la réglisse",
+        "Au miel"
+      ],
+      "answer": 3,
+      "explanation": "La description parle d'une douceur riche évoquant le miel. Cette comparaison sensorielle n'établit pas la présence de miel ou d'un ingrédient ajouté.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-a01-rqs-medical-mass"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Description sensorielle de Medical Mass",
+        "subjectKey": "rqs-medical-mass",
+        "property": "note sucrée décrite",
+        "expectedAnswer": "Au miel",
+        "learningObjective": "Lire une analogie aromatique sans la confondre avec la composition d'un produit.",
+        "factKey": "a01-medical-mass-miel",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-rqs-medical-mass",
+            "locator": "Paragraphe Sugary Sweetness",
+            "support": "Le récit décrit une douceur presque miellée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-canna-cheese-profil-sale",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel duo de saveurs Mephisto emploie-t-il pour décrire Canna-Cheese 1:1 ?",
+      "options": [
+        "Bœuf rôti et vin rouge",
+        "Vanille et noix de coco",
+        "Menthe et chocolat",
+        "Pêche et citron vert"
+      ],
+      "answer": 0,
+      "explanation": "La fiche associe Canna-Cheese à du bœuf rôti et du vin rouge. Ce vocabulaire décrit un bouquet, pas des ingrédients dans la fleur.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-a01-mephisto-canna"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Profil sensoriel de Canna-Cheese 1:1",
+        "subjectKey": "mephisto-canna-cheese",
+        "property": "association aromatique inhabituelle",
+        "expectedAnswer": "Bœuf rôti et vin rouge",
+        "learningObjective": "Découvrir une description CBD qui dépasse les notes fruitées habituelles.",
+        "factKey": "a01-canna-cheese-profil-sale",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-canna",
+            "locator": "Aroma and Flavour",
+            "support": "La fiche indique des goûts de bœuf rôti et de vin rouge."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-canna-cheese-variation-tests",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle variation Mephisto rapporte-t-il parmi ses tests de Canna-Cheese 1:1 ?",
+      "options": [
+        "Une minorité avec un peu plus de THC",
+        "Une minorité dominée par le CBG",
+        "Un profil sans CBD dans la majorité des tests",
+        "Une absence de variation détectée du rapport"
+      ],
+      "answer": 0,
+      "explanation": "Mephisto rapporte 90 % de résultats conservant le rapport 1:1 et 10 % légèrement plus riches en THC. Un nom de sélection ne décrit pas chaque individu à l'identique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-canna"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Variation décrite dans les tests de Canna-Cheese",
+        "subjectKey": "mephisto-canna-cheese",
+        "property": "minorité de profils un peu plus riches en THC",
+        "expectedAnswer": "Une minorité avec un peu plus de THC",
+        "learningObjective": "Connaître une variation mesurée déclarée au cours d'un projet CBD.",
+        "factKey": "a01-canna-cheese-variation-tests",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-canna",
+            "locator": "Récit de sélection, résultats envoyés au laboratoire Canna",
+            "support": "L'obtenteur rapporte 90 % de profils 1:1 et 10 % avec THC légèrement supérieur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-jacky-selection-etapes",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel ordre Mephisto donne-t-il aux deux phases de sélection de Jacky CBD, parent d'Aunt Ginny's Elixir ?",
+      "options": [
+        "Autofécondation, puis pollinisation ouverte",
+        "Croisement entre lignées, puis autofécondation",
+        "Pollinisation ouverte, puis autofécondation",
+        "Pollinisation ouverte, puis croisement entre lignées"
+      ],
+      "answer": 0,
+      "explanation": "Le récit décrit d'abord trois générations d'autofécondation, puis trois de pollinisation ouverte sélectionnée. Il s'agit de l'histoire de cette lignée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-ginny"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Histoire de sélection de Jacky CBD, parent d'Aunt Ginny's Elixir",
+        "subjectKey": "mephisto-jacky-cbd",
+        "property": "ordre des deux phases de sélection",
+        "expectedAnswer": "Autofécondation, puis pollinisation ouverte",
+        "learningObjective": "Distinguer les étapes déclarées d'un projet de sélection.",
+        "factKey": "a01-jacky-selection-etapes",
+        "form": "chronologie",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-ginny",
+            "locator": "Paragraphe sur les six générations de Jacky CBD",
+            "support": "Trois générations d'autofécondation précèdent trois générations de pollinisation ouverte sélectionnée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-jacky-consanguinite",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel risque Mephisto voulait-il limiter lors de la phase de pollinisation ouverte de Jacky CBD ?",
+      "options": [
+        "La perte du caractère autoflorissant",
+        "La dépression de consanguinité",
+        "Une maturité florale trop tardive",
+        "Une hauteur de plante excessive"
+      ],
+      "answer": 1,
+      "explanation": "Mephisto cite l'évitement d'une dépression de consanguinité excessive, en parallèle de la sélection de l'architecture et des arômes. Fixer un profil n'est donc pas l'unique objectif du projet.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-mephisto-ginny"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Diversité du projet Jacky CBD chez Mephisto",
+        "subjectKey": "mephisto-jacky-cbd",
+        "property": "limitation de la dépression de consanguinité",
+        "expectedAnswer": "La dépression de consanguinité",
+        "learningObjective": "Reconnaître un compromis de sélection entre fixation d'un caractère et maintien de vigueur.",
+        "factKey": "a01-jacky-consanguinite",
+        "form": "identification",
+        "difficultyRationale": "La question porte sur un objectif de sélection expliqué par l'obtenteur, au-delà d'une filiation ou d'un nom rare.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-ginny",
+            "locator": "Récit de création de Jacky CBD, paragraphe sur les six générations",
+            "support": "Mephisto explique que les générations de pollinisation ouverte visaient aussi à éviter une dépression de consanguinité excessive."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-blue-auto-base-heterogene",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "De quelle population hétérogène Mephisto explique-t-il avoir sélectionné Blue Auto CBD ?",
+      "options": [
+        "Blue Genius",
+        "Blue Velvet",
+        "Blueberry",
+        "Blue Dream"
+      ],
+      "answer": 0,
+      "explanation": "Le récit cite Blue Genius comme population de départ très hétérogène. Blue Auto CBD est présentée comme le résultat d'un travail de sélection dans cette diversité.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-new-cbd"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Origine de Blue Auto CBD chez Mephisto",
+        "subjectKey": "mephisto-blue-auto-cbd",
+        "property": "population de départ déclarée",
+        "expectedAnswer": "Blue Genius",
+        "learningObjective": "Distinguer population de départ et lignée sélectionnée.",
+        "factKey": "a01-blue-auto-base-heterogene",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-new-cbd",
+            "locator": "New CBD Parents — Blue Auto CBD",
+            "support": "La lignée Blue Auto CBD est annoncée comme issue de Blue Genius."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-blue-auto-selection-architecture",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel changement d'architecture Mephisto recherchait-il chez Blue Auto CBD en conservant les arômes de Blue Genius ?",
+      "options": [
+        "Une structure florale plus dense",
+        "Des entre-nœuds plus longs",
+        "Des fleurs plus lâches",
+        "Un port moins ramifié"
+      ],
+      "answer": 0,
+      "explanation": "Le récit décrit des fleurs initialement lâches, puis une sélection visant des fleurs plus denses. Ce constat historique ne fournit pas une méthode de culture.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-new-cbd"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Objectif morphologique de Blue Auto CBD",
+        "subjectKey": "mephisto-blue-auto-cbd",
+        "property": "densité florale sélectionnée",
+        "expectedAnswer": "Une structure florale plus dense",
+        "learningObjective": "Identifier un caractère architectural distinct du profil chimique dans une sélection CBD.",
+        "factKey": "a01-blue-auto-selection-architecture",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-new-cbd",
+            "locator": "Blue Auto CBD — caractères conservés et densité",
+            "support": "L'obtenteur indique avoir conservé les arômes tout en sélectionnant une densité florale accrue."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-thumper-therapy-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel croisement Mephisto donne-t-il pour Thumper Therapy ?",
+      "options": [
+        "Blue Auto CBD × Ravenberry",
+        "Blue Auto CBD × Sundae Thumper",
+        "Canna-Cheese × Sundae Thumper",
+        "Jacky CBD × Sundae Thumper"
+      ],
+      "answer": 1,
+      "explanation": "Le pedigree annoncé est Blue Auto CBD × Sundae Thumper. La sélection combine une lignée CBD à un autre fond génétique nommé.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-thumper"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Thumper Therapy de Mephisto",
+        "subjectKey": "mephisto-thumper-therapy",
+        "property": "parenté annoncée",
+        "expectedAnswer": "Blue Auto CBD × Sundae Thumper",
+        "learningObjective": "Identifier une introduction CBD dans un croisement déclaré.",
+        "factKey": "a01-thumper-therapy-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-thumper",
+            "locator": "Genetic Heritage",
+            "support": "La parenté affichée est Blue Auto CBD × Sundae Thumper."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-thumper-profil-aromatique",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel ensemble décrit le bouquet annoncé par Mephisto pour Thumper Therapy ?",
+      "options": [
+        "Menthe, lavande, anis et camphre",
+        "Café, cacao, noisette et cuir",
+        "Glace, baies, raisin et carburant",
+        "Pomme, cannelle, miel et réglisse"
+      ],
+      "answer": 2,
+      "explanation": "La description associe crème glacée, baies, raisin et une touche de carburant. Ces analogies ne sont pas une analyse de terpènes ni une liste d'ingrédients.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-a01-mephisto-thumper"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Description sensorielle de Thumper Therapy",
+        "subjectKey": "mephisto-thumper-therapy",
+        "property": "profil gourmand et fruité décrit",
+        "expectedAnswer": "Glace, baies, raisin et carburant",
+        "learningObjective": "Reconnaître une description aromatique attribuée sans déduire des molécules précises.",
+        "factKey": "a01-thumper-profil-aromatique",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-thumper",
+            "locator": "Description finale du bouquet",
+            "support": "Le bouquet annoncé associe ice cream, berries, grape et fuel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-blue-c-birdie-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle parenté Mephisto attribue-t-il à Blue C-Birdie ?",
+      "options": [
+        "Canna-Cheese × Ravenberry",
+        "Blue Auto CBD × Ravenberry",
+        "Jacky CBD × Ravenberry",
+        "Blue Auto CBD × Walter White"
+      ],
+      "answer": 1,
+      "explanation": "La fiche donne Blue Auto CBD × Ravenberry. Ce pedigree concerne la création Blue C-Birdie décrite par Mephisto.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-birdie"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Blue C-Birdie de Mephisto",
+        "subjectKey": "mephisto-blue-c-birdie",
+        "property": "parenté annoncée",
+        "expectedAnswer": "Blue Auto CBD × Ravenberry",
+        "learningObjective": "Relier un cultivar CBD à son croisement précisément annoncé.",
+        "factKey": "a01-blue-c-birdie-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-birdie",
+            "locator": "Genetic Heritage",
+            "support": "La fiche indique Blue Auto CBD × Ravenberry."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-ravenberry-parcours-selection",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel parcours Mephisto retrace-t-il pour Ravenberry, parent de Blue C-Birdie : stock initial, F1–F3, puis F4 ?",
+      "options": [
+        "Canada → Espagne → Californie",
+        "Espagne → Californie → Colombie-Britannique",
+        "Californie → Canada → Espagne",
+        "Espagne → Colombie-Britannique → Californie"
+      ],
+      "answer": 3,
+      "explanation": "Le stock parental est annoncé en Espagne, les sélections F1 à F3 en Colombie-Britannique, puis F4 en Californie du Nord : un projet réparti entre équipes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-mephisto-birdie"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Parcours de Ravenberry, parent de Blue C-Birdie",
+        "subjectKey": "mephisto-ravenberry-history",
+        "property": "succession des lieux de sélection",
+        "expectedAnswer": "Espagne → Colombie-Britannique → Californie",
+        "learningObjective": "Découvrir la circulation internationale d'un matériel de sélection.",
+        "factKey": "a01-ravenberry-parcours-selection",
+        "form": "chronologie",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-mephisto-birdie",
+            "locator": "Récit du travail sur Ravenberry",
+            "support": "Le récit ordonne Espagne, Colombie-Britannique pour F1–F3, puis Californie du Nord pour F4."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-charlotte-angel-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle parenté Dutch Passion annonce-t-il pour CBD Charlotte's Angel ?",
+      "options": [
+        "Dutch Charlotte × Medical CBD",
+        "Red Angel × CBD Auto Compassion Lime",
+        "Dutch Charlotte × Session",
+        "Dutch Charlotte × Red Angel"
+      ],
+      "answer": 3,
+      "explanation": "La fiche officielle donne Dutch Charlotte × Red Angel. Ce nom désigne une sélection de Dutch Passion et ne doit pas être assimilé à un homonyme.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-dp-angel"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "CBD Charlotte's Angel de Dutch Passion",
+        "subjectKey": "dp-cbd-charlottes-angel",
+        "property": "parenté annoncée",
+        "expectedAnswer": "Dutch Charlotte × Red Angel",
+        "learningObjective": "Identifier une sélection par son obtenteur et sa filiation déclarée.",
+        "factKey": "a01-charlotte-angel-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-dp-angel",
+            "locator": "Titre, pedigree et description des origines",
+            "support": "Dutch Passion donne Dutch Charlotte × Red Angel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-charlotte-angel-aromes",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel bouquet Dutch Passion met-il en avant dans sa description de CBD Charlotte's Angel ?",
+      "options": [
+        "Herbacé, diesel, agrumes et pin",
+        "Pêche, banane, caramel et miel",
+        "Café, cacao, vanille et noix",
+        "Menthe, rose, lavande et anis"
+      ],
+      "answer": 0,
+      "explanation": "Dutch Passion décrit un fond herbacé, du diesel, des agrumes et du pin, avec des variations selon les phénotypes. C'est une description attribuée.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-a01-dp-angel"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Profil sensoriel de CBD Charlotte's Angel",
+        "subjectKey": "dp-cbd-charlottes-angel",
+        "property": "bouquet principal décrit",
+        "expectedAnswer": "Herbacé, diesel, agrumes et pin",
+        "learningObjective": "Connaître un bouquet CBD documenté sans le réduire à un seul parfum.",
+        "factKey": "a01-charlotte-angel-aromes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-dp-angel",
+            "locator": "Paragraphe consacré à l'arôme",
+            "support": "Le profil principal annoncé est herbacé avec diesel, agrumes et pin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-auto-angel-introgression",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle lignée Dutch Passion dit-il avoir croisée avec CBD Charlotte's Angel pour sa version autoflorissante ?",
+      "options": [
+        "Medical CBD",
+        "Blue Auto CBD",
+        "CBD Auto Compassion Lime",
+        "Asia CBD Auto"
+      ],
+      "answer": 2,
+      "explanation": "L'obtenteur cite CBD Auto Compassion Lime comme autre parent de CBD Auto Charlotte's Angel. Le récit décrit une création distincte de la version photopériodique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-dp-auto-angel"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "CBD Auto Charlotte's Angel de Dutch Passion",
+        "subjectKey": "dp-auto-charlottes-angel",
+        "property": "croisement de conversion annoncé",
+        "expectedAnswer": "CBD Auto Compassion Lime",
+        "learningObjective": "Distinguer deux versions apparentées d'une sélection.",
+        "factKey": "a01-auto-angel-introgression",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-dp-auto-angel",
+            "locator": "Récit de création de la version Auto",
+            "support": "La version Auto est donnée comme CBD Charlotte's Angel × CBD Auto Compassion Lime."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-auto-angel-parent-aromes",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Par rapport à CBD Auto Compassion Lime, comment Dutch Passion décrit-il le goût d'Auto Charlotte's Angel ?",
+      "options": [
+        "Plus mentholé, avec disparition des agrumes",
+        "Plus citronné et moins terreux",
+        "Identique sur toutes les notes",
+        "Moins citronné, plus terreux et résineux de pin"
+      ],
+      "answer": 3,
+      "explanation": "La marque décrit une parenté de saveurs, mais un résultat moins citronné et davantage terreux et piné. Une filiation ne signifie pas un bouquet identique.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-a01-dp-auto-angel"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Contraste aromatique entre Auto Charlotte's Angel et son parent",
+        "subjectKey": "dp-auto-charlottes-angel",
+        "property": "comparaison sensorielle annoncée avec Compassion Lime",
+        "expectedAnswer": "Moins citronné, plus terreux et résineux de pin",
+        "learningObjective": "Comparer les caractères d'un descendant à ceux de son parent déclaré.",
+        "factKey": "a01-auto-angel-parent-aromes",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-dp-auto-angel",
+            "locator": "Fin de la description aromatique comparative",
+            "support": "Le texte donne moins de citron et davantage de terre et de pin que Compassion Lime."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-auto-victory-deux-cannabinoides",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quels deux cannabinoïdes Dutch Passion dit-il avoir réunis à niveaux voisins dans Auto CBD-Victory ?",
+      "options": [
+        "CBD et THC",
+        "CBD et CBC",
+        "CBD et CBG",
+        "CBD et CBDV"
+      ],
+      "answer": 3,
+      "explanation": "La fiche annonce un rapport voisin de 1:1 entre CBD et CBDV. Ce rapport ne concerne pas le THC et ne constitue pas une mesure de chaque lot.",
+      "articleId": "ref-cannabinoides-mineurs",
+      "sourceIds": [
+        "q2-a01-dp-victory"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Auto CBD-Victory de Dutch Passion",
+        "subjectKey": "dp-auto-cbd-victory",
+        "property": "couple de cannabinoïdes ciblé",
+        "expectedAnswer": "CBD et CBDV",
+        "learningObjective": "Distinguer une sélection CBD/CBDV d'une sélection équilibrée CBD/THC.",
+        "factKey": "a01-auto-victory-deux-cannabinoides",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-dp-victory",
+            "locator": "Description du profil cannabinoïde CBD/CBDV",
+            "support": "Auto CBD-Victory est annoncée avec des niveaux voisins de CBD et CBDV."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-critical-cure-collaboration",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Avec quelle équipe Barney's Farm déclare-t-il avoir développé CBD Critical Cure ?",
+      "options": [
+        "Dutch Passion",
+        "Mephisto Genetics",
+        "Royal Queen Seeds",
+        "CBD Crew"
+      ],
+      "answer": 3,
+      "explanation": "La page présente CBD Critical Cure comme une collaboration Barney's Farm / CBD Crew. Une collaboration d'obtenteurs n'identifie pas le cultivateur d'un lot vendu.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-barneys-cure"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Création de CBD Critical Cure",
+        "subjectKey": "barneys-cbd-critical-cure",
+        "property": "collaboration d'obtenteurs annoncée",
+        "expectedAnswer": "CBD Crew",
+        "learningObjective": "Distinguer création variétale collective et production d'une récolte.",
+        "factKey": "a01-critical-cure-collaboration",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-barneys-cure",
+            "locator": "Premier paragraphe de présentation",
+            "support": "La création est présentée comme une collaboration avec CBD Crew."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-lemon-potion-rapport-annonce",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel équilibre CBD/THC le récit de Barney's Farm annonce-t-il pour CBD Lemon Potion Auto ?",
+      "options": [
+        "Trois fois plus de CBD que de THC",
+        "Deux fois plus de THC que de CBD",
+        "Deux fois plus de CBD que de THC",
+        "Des quantités égales de CBD et THC"
+      ],
+      "answer": 2,
+      "explanation": "Le récit annonce CBD/THC = 2:1. Le tableau comporte un autre libellé de teneur ambigu : on retient ici seulement le rapport explicite du récit, sans résultat de lot.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-barneys-potion"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Profil annoncé de CBD Lemon Potion Auto",
+        "subjectKey": "barneys-cbd-lemon-potion",
+        "property": "sens du rapport CBD/THC annoncé dans le récit",
+        "expectedAnswer": "Deux fois plus de CBD que de THC",
+        "learningObjective": "Lire un rapport cannabinoïde attribué sans le confondre avec une teneur absolue.",
+        "factKey": "a01-lemon-potion-rapport-annonce",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-barneys-potion",
+            "locator": "Paragraphe de collaboration donnant CBD/THC 2:1",
+            "support": "Le récit donne explicitement un rapport CBD/THC de 2:1."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-csp1-femelles-monoeciques",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Après correction des erreurs d'appel chez Toth (2020), que portaient certaines plantes retenues comme femelles génétiques ?",
+      "options": [
+        "Des fleurs mâles et femelles",
+        "Des fleurs mâles uniquement",
+        "Des fleurs stériles uniquement",
+        "Aucune fleur pendant tout leur cycle"
+      ],
+      "answer": 0,
+      "explanation": "Environ 1 % des femelles génétiques étaient monoïques. Deux autres plantes, à fleurs mâles seules, ont été retestées : leur premier classement femelle était une erreur d'appel.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-toth-markers"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Génotype et expression sexuelle dans Toth 2020",
+        "subjectKey": "toth-2020-sex-chemotype-markers",
+        "property": "présence de monoécie chez quelques individus classés femelles",
+        "expectedAnswer": "Des fleurs mâles et femelles",
+        "learningObjective": "Distinguer un résultat de marqueur génétique de l'organisation florale observée.",
+        "factKey": "a01-csp1-femelles-monoeciques",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-markers",
+            "locator": "Résultats 3.2 Sex assay validation : monoécie et deux appels initiaux corrigés",
+            "support": "Environ 1 % des plantes classées génétiquement femelles étaient monoïques. Deux plantes à fleurs mâles seules ont été retestées et reconnues comme initialement mal classées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-chimotype-rapport-versus-total",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans les modèles de Toth (2020), le groupe génétique de chimotype expliquait davantage quelle mesure ?",
+      "options": [
+        "Le rapport CBD/THC plutôt que le total cannabinoïde",
+        "Uniquement le total, sans expliquer le rapport CBD/THC",
+        "Autant le total cannabinoïde que le rapport CBD/THC",
+        "Le total cannabinoïde plutôt que le rapport CBD/THC"
+      ],
+      "answer": 0,
+      "explanation": "Le groupe génétique expliquait surtout la variation du rapport CBD/THC. Décrire les proportions n'équivaut pas à prévoir la concentration totale.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-toth-markers"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Prédictions du génotype de chimotype dans Toth 2020",
+        "subjectKey": "toth-2020-sex-chemotype-markers",
+        "property": "variabilité mieux expliquée pour le rapport que pour le total",
+        "expectedAnswer": "Le rapport CBD/THC plutôt que le total cannabinoïde",
+        "learningObjective": "Séparer détermination des proportions et accumulation totale de cannabinoïdes.",
+        "factKey": "a01-chimotype-rapport-versus-total",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-markers",
+            "locator": "Résultats, modèles de variance et tableau 3",
+            "support": "Le groupe génétique expliquait le plus de variance du rapport CBD:THC, mais pas du total cannabinoïde."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-ccp1-gene-interroge",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Quel gène de synthèse le test de chimotype CCP-1 examine-t-il directement, selon Toth et al. (2020) ?",
+      "options": [
+        "La synthase du CBCA (CBCAS)",
+        "L'olivétol synthase (OLS)",
+        "La synthase du THCA (THCAS)",
+        "La synthase du CBDA (CBDAS)"
+      ],
+      "answer": 3,
+      "explanation": "CCP-1 examine le gène de la synthase du CBDA, CBDAS. Sa prédiction du chimotype repose sur la liaison génétique ; il ne lit pas directement chaque gène de synthase.",
+      "articleId": "ref-biosynthese-cannabinoides",
+      "sourceIds": [
+        "q2-a01-toth-markers"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Cible moléculaire du marqueur CCP-1",
+        "subjectKey": "toth-2020-sex-chemotype-markers",
+        "property": "gène directement interrogé",
+        "expectedAnswer": "La synthase du CBDA (CBDAS)",
+        "learningObjective": "Distinguer cible d'un marqueur et caractère prédit par liaison génétique.",
+        "factKey": "a01-ccp1-gene-interroge",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécialisée de la cible moléculaire d'un test nommé ; nécessite de distinguer plusieurs gènes de biosynthèse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-markers",
+            "locator": "Discussion 4.2, limites du marqueur CCP-1",
+            "support": "Les auteurs précisent que CCP-1 examine seulement CBDAS."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-cornell-apex-biomasse",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel résultat sur le CBD le rapport Cornell retient-il en comparant apex et biomasse florale ?",
+      "options": [
+        "Un écart surtout lié au site, sans variation entre cultivars",
+        "Un écart lié au cultivar, avec des teneurs parfois proches",
+        "Un écart lié aux formes acides, absent pour le CBD total",
+        "Un écart sur masse fraîche, disparaissant sur masse sèche"
+      ],
+      "answer": 1,
+      "explanation": "Les teneurs des deux matrices sont proches chez certains cultivars et différentes chez d'autres. Un résultat obtenu sur un apex n'est donc pas interchangeable avec celui de l'ensemble des fleurs.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-a01-cornell-trial"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Matrices comparées dans le rapport Cornell sur 30 cultivars CBD",
+        "subjectKey": "cornell-2019-cbd-cultivar-trial",
+        "property": "rapport variable entre concentrations des apex et de la biomasse",
+        "expectedAnswer": "Un écart lié au cultivar, avec des teneurs parfois proches",
+        "learningObjective": "Relier un résultat chimique à sa matrice d'échantillonnage.",
+        "factKey": "a01-cornell-apex-biomasse",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance ciblée d'une annonce attribuée ou comparaison de deux caractères ; le nom du cultivar seul ne permet pas de trouver la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-cornell-trial",
+            "locator": "Page imprimée 16 : comparaison des concentrations des deux matrices, résultat qualitatif seulement",
+            "support": "La comparaison des concentrations en CBD des apex et de la biomasse florale varie selon le cultivar. Certains résultats sont proches, d'autres diffèrent nettement ; le sens du quotient chiffré du paragraphe est ambigu."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-baox-nom-apparentement",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle relation génétique Johnson et Wallace (2021) observent-ils entre les matériels commerciaux BaoxSP07 et Baox ?",
+      "options": [
+        "Deux ensembles proches séparés par quelques variants",
+        "Un groupe unique réunissant les deux matériels",
+        "Deux ensembles séparés malgré leur nom partagé",
+        "Un lot de graines englobant le groupe clonal"
+      ],
+      "answer": 2,
+      "explanation": "BaoxSP07 et Baox, de fournisseurs différents, ne se regroupaient pas sur l'arbre génétique. Le nom commercial partagé ne correspondait donc pas à un groupe génétique commun dans cet échantillon.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-johnson-diversity"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Deux matériels Baox dans Johnson et Wallace (2021)",
+        "subjectKey": "johnson-2021-baox-naming",
+        "property": "discordance entre nom partagé et regroupement génétique",
+        "expectedAnswer": "Deux ensembles séparés malgré leur nom partagé",
+        "learningObjective": "Distinguer dénomination commerciale et apparentement effectivement mesuré.",
+        "factKey": "a01-baox-nom-apparentement",
+        "form": "identification",
+        "difficultyRationale": "Le résultat génétique précis de deux matériels commerciaux doit être connu ; le nom partagé ne fournit pas la réponse.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-johnson-diversity",
+            "locator": "Résultats, figure 1B–C ; discussion Genetic Relationships",
+            "support": "BaoxSP07 et Baox, provenant de fournisseurs distincts, ne se regroupent pas sur l'arbre génétique malgré le nom Baox partagé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-rn17-trois-profils",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quels profils le rapport Cornell observe-t-il parmi les individus du cultivar RN17 vendu pour le CBD ?",
+      "options": [
+        "THC dominant, CBD/THC mixte et CBD dominant",
+        "CBD dominant, CBG dominant et sans cannabinoïdes",
+        "CBC dominant, THC dominant et sans cannabinoïdes",
+        "THC dominant, CBG dominant et CBC dominant"
+      ],
+      "answer": 0,
+      "explanation": "RN17 comportait des individus des chimotypes I, II et III. La destination commerciale CBD ne décrivait donc pas un profil unique dans cette population.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-cornell-trial"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Diversité chimique de RN17 dans l'essai Cornell",
+        "subjectKey": "cornell-2019-cbd-cultivar-trial",
+        "property": "coexistence des chimotypes I II III",
+        "expectedAnswer": "THC dominant, CBD/THC mixte et CBD dominant",
+        "learningObjective": "Reconnaître une diversité de chimotypes au sein d'une population nommée.",
+        "factKey": "a01-rn17-trois-profils",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-cornell-trial",
+            "locator": "Légende de la figure de chimotypes, page imprimée 13",
+            "support": "RN17 comprend les chimotypes I, II et III."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-autoflower1-recessif",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Comment Toth et al. (2022) décrivent-ils l'hérédité de l'insensibilité à la photopériode liée à Autoflower1 ?",
+      "options": [
+        "Comme un caractère mendélien récessif",
+        "Comme une transmission liée au chromosome Y",
+        "Comme une transmission chloroplastique uniquement",
+        "Comme un caractère mendélien dominant"
+      ],
+      "answer": 0,
+      "explanation": "Les ségrégations étudiées concordent avec un allèle récessif à un locus. Les auteurs nomment ce locus Autoflower1, sans en faire l'unique mécanisme possible.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-toth-flowering"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Hérédité d'Autoflower1 dans Toth 2022",
+        "subjectKey": "toth-2022-flowering-loci",
+        "property": "caractère mendélien récessif décrit",
+        "expectedAnswer": "Comme un caractère mendélien récessif",
+        "learningObjective": "Relier un modèle d'hérédité à des populations de chanvre étudiées.",
+        "factKey": "a01-autoflower1-recessif",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-flowering",
+            "locator": "Résultats, Autoflower1 photoperiod insensitivity",
+            "support": "Les résultats sont compatibles avec un caractère mendélien récessif à Autoflower1."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-early1-autoflower1-loci",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle relation génomique Toth et al. (2022) trouvent-ils entre Early1 et Autoflower1 ?",
+      "options": [
+        "Un même locus portant deux noms",
+        "Deux loci distincts sur le chromosome 1",
+        "Deux loci sur le chromosome Y",
+        "Deux loci sur des chromosomes différents"
+      ],
+      "answer": 1,
+      "explanation": "Les deux loci sont cartographiés à des endroits différents du chromosome 1. Précocité et insensibilité à la photopériode ne sont pas des noms interchangeables.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-toth-flowering"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Relations entre Early1 et Autoflower1",
+        "subjectKey": "toth-2022-flowering-loci",
+        "property": "deux localisations distinctes sur le même chromosome",
+        "expectedAnswer": "Deux loci distincts sur le chromosome 1",
+        "learningObjective": "Distinguer deux caractères de floraison et leurs régions génétiques.",
+        "factKey": "a01-early1-autoflower1-loci",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-flowering",
+            "locator": "Discussion, cartographie d'Early1 dans Umpqua",
+            "support": "Early1 et Autoflower1 sont cartographiés sur le chromosome 1 à des positions distinctes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-picolo-limite-marqueur",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Comment Toth (2022) explique-t-il que Picolo fleurisse en lumière continue sans être repéré par les marqueurs Autoflower1 ?",
+      "options": [
+        "Une pollinisation extérieure ou un mélange de semences",
+        "Une erreur de calendrier ou une variation de température",
+        "Des marqueurs inadaptés ou une autre base génétique",
+        "Une carence nutritive ou un vieillissement des plantes"
+      ],
+      "answer": 2,
+      "explanation": "Les auteurs envisagent des marqueurs non informatifs dans cette population ou une autre base génétique. Les résultats ne permettent pas d'identifier un autre gène responsable.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-a01-toth-flowering"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Picolo et limites d'un marqueur d'Autoflower1",
+        "subjectKey": "toth-2022-flowering-loci",
+        "property": "marqueur non universel malgré un phénotype observé",
+        "expectedAnswer": "Des marqueurs inadaptés ou une autre base génétique",
+        "learningObjective": "Interpréter une discordance entre marqueur et caractère sans inventer une cause certaine.",
+        "factKey": "a01-picolo-limite-marqueur",
+        "form": "identification",
+        "difficultyRationale": "Il faut reconnaître les hypothèses génétiques proposées pour cette discordance précise, sans leur attribuer la découverte d'un gène alternatif.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-flowering",
+            "locator": "Discussion sur Picolo et CFX-2",
+            "support": "Les auteurs proposent inefficacité du marqueur ou autre base génétique pour les populations insensibles non repérées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-cbd-feuilles-herbivorie",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "Chez Stack (2023), comment les chenilles de Trichoplusia ni réagissent-elles aux feuilles de génotypes CBD dominants plutôt que sans cannabinoïdes ?",
+      "options": [
+        "Plus de surface mangée et moindre croissance larvaire",
+        "Moins de surface mangée et plus forte croissance larvaire",
+        "Plus de surface mangée et plus forte croissance larvaire",
+        "Moins de surface mangée et moindre croissance larvaire"
+      ],
+      "answer": 3,
+      "explanation": "Sur les feuilles des génotypes CBD dominants, les chenilles consommaient moins et grossissaient moins. L'essai décrit une fonction écologique, sans conclure à une efficacité universelle contre les ravageurs.",
+      "articleId": "ref-ravageurs-auxiliaires",
+      "sourceIds": [
+        "q2-a01-stack-herbivores"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Lignées CBD et herbivorie dans Stack 2023",
+        "subjectKey": "stack-2023-cannabinoid-defence",
+        "property": "consommation foliaire moindre sur génotypes CBD dominants",
+        "expectedAnswer": "Moins de surface mangée et moindre croissance larvaire",
+        "learningObjective": "Découvrir une fonction écologique observée de la diversité chimique végétale.",
+        "factKey": "a01-cbd-feuilles-herbivorie",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-stack-herbivores",
+            "locator": "Résultats, essai sur feuilles détachées",
+            "support": "Sur les feuilles CBD dominantes, Trichoplusia ni consomme moins de surface et croît moins que sur les feuilles sans cannabinoïdes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-sans-cannabinoides-trichomes",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Quel aspect des trichomes glandulaires sessiles Stack (2023) observe-t-il chez les génotypes sans cannabinoïdes ?",
+      "options": [
+        "Des glandes rétractées et effondrées",
+        "Des glandes de forme inchangée",
+        "Des glandes intactes et plus gonflées",
+        "Une disparition totale des glandes"
+      ],
+      "answer": 0,
+      "explanation": "Les glandes paraissaient rétractées et effondrées par rapport aux génotypes CBD ou CBG dominants. Leur morphologie variait avec le profil chimique étudié.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-a01-stack-herbivores"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Trichomes des lignées sans cannabinoïdes dans Stack 2023",
+        "subjectKey": "stack-2023-cannabinoid-defence",
+        "property": "aspect effondré des glandes sessiles",
+        "expectedAnswer": "Des glandes rétractées et effondrées",
+        "learningObjective": "Relier une différence de profil chimique à une observation anatomique.",
+        "factKey": "a01-sans-cannabinoides-trichomes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-stack-herbivores",
+            "locator": "Résultats et discussion sur les trichomes effondrés",
+            "support": "Les glandes sessiles des individus sans cannabinoïdes apparaissent effondrées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-selection-fibre-cannabinoides-faibles",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "À quel objectif agricole Stack (2023) rattache-t-il la sélection ukrainienne ayant fixé des plantes très pauvres en cannabinoïdes ?",
+      "options": [
+        "La production de graines oléagineuses",
+        "La production de chènevotte pour la construction",
+        "La production de fibres",
+        "La production de biomasse pour l'énergie"
+      ],
+      "answer": 2,
+      "explanation": "L'article rattache ce matériel à un programme ukrainien de chanvre à fibres. La sélection du cannabis a donc aussi poursuivi des objectifs opposés à l'enrichissement en cannabinoïdes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-stack-herbivores"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Histoire des ressources sans cannabinoïdes citées par Stack 2023",
+        "subjectKey": "stack-2023-cannabinoid-defence",
+        "property": "destination du programme de sélection",
+        "expectedAnswer": "La production de fibres",
+        "learningObjective": "Comparer les destinations historiques de programmes de sélection.",
+        "factKey": "a01-selection-fibre-cannabinoides-faibles",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-stack-herbivores",
+            "locator": "Discussion, origine de la fixation du profil sans cannabinoïdes",
+            "support": "Le profil sans cannabinoïdes a été fixé par sélection intentionnelle dans un programme ukrainien de chanvre à fibres."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-stress-rapport-cbd-thc",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "À la fin de l'essai sur des cultivars CBD de Toth (2021), quel effet des stress est détecté sur le rapport CBD/THC ?",
+      "options": [
+        "Aucune différence significative entre traitements",
+        "Une hausse significative dans plusieurs traitements",
+        "Une baisse significative dans plusieurs traitements",
+        "Des hausses et baisses significatives selon le traitement"
+      ],
+      "answer": 0,
+      "explanation": "L'essai ne détecte pas de différence significative du rapport CBD/THC entre traitements à ce point d'observation. Cette conclusion reste bornée à l'expérience.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-a01-toth-stress"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Rapport CBD/THC dans les cultivars de Toth 2021",
+        "subjectKey": "toth-2021-stress-cannabinoid-profiles",
+        "property": "absence de différence significative du rapport entre traitements",
+        "expectedAnswer": "Aucune différence significative entre traitements",
+        "learningObjective": "Connaître un résultat expérimental sans transformer le stress en explication universelle du profil chimique.",
+        "factKey": "a01-stress-rapport-cbd-thc",
+        "form": "identification",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-stress",
+            "locator": "Résultats 3.6, profils cannabinoïdes finaux",
+            "support": "Au point final, pas de différence significative du rapport CBD:THC entre traitements de stress."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-a01-maturation-fraction-neutre",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Pendant le suivi des cultivars CBD de Toth (2021), que devient la part des cannabinoïdes neutres après le premier prélèvement ?",
+      "options": [
+        "Elle augmente nettement",
+        "Elle diminue nettement",
+        "Elle fluctue sans tendance nette détectée",
+        "Elle reste globalement stable"
+      ],
+      "answer": 1,
+      "explanation": "La proportion neutre/total diminue après le premier prélèvement. Une hausse de la quantité totale n'implique donc pas que la fraction des formes neutres augmente.",
+      "articleId": "ref-phytocannabinoides",
+      "sourceIds": [
+        "q2-a01-toth-stress"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Évolution des formes chimiques dans Toth 2021",
+        "subjectKey": "toth-2021-stress-cannabinoid-profiles",
+        "property": "baisse de la fraction neutre après le début du suivi",
+        "expectedAnswer": "Elle diminue nettement",
+        "learningObjective": "Distinguer quantité totale et répartition entre formes acides et neutres.",
+        "factKey": "a01-maturation-fraction-neutre",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance détaillée d'un résultat de sélection ou de recherche, avec distinction de générations, de profils ou de limites d'interprétation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-a01-toth-stress",
+            "locator": "Résultats 3.2 et figure 3d",
+            "support": "Le rapport neutres/total diminue nettement après la semaine initiale du suivi."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-a01-rqs-joanne",
+      "title": "Joanne's CBD",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/cbd-seeds/483-joanne-s-cbd.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Royal Queen Seeds",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La fiche attribue Session × Juanita la Lagrimosa à Joanne's CBD. Session apporte une grande taille. La plage annoncée est CBD 13–18 %, THC 0,25–0,75 %.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Origines et Genetic Background ; profil cannabinoïde",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-rqs-tatanka",
+      "title": "Tatanka Pure CBD",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/cbd-seeds/480-tatanka-pure-cbd.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Royal Queen Seeds",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Le nom est présenté comme un hommage à Tatanka Iyotake, Sitting Bull. Le tableau annonce Elixir Vitae × Medical CBD.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Présentation du nom et Genetic Background",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-rqs-solomatic",
+      "title": "Solomatic CBD",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/cbd-seeds/445-solomatic-cbd.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Royal Queen Seeds",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La description mentionne gingembre et pin. Le tableau Genetic Background porte Diesel CBD × Asia CBD Auto.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Le récit utilise Diesel CBD Auto là où le tableau porte Diesel CBD : la question de parenté vise explicitement le tableau. Arômes descriptifs, sans analyse de constituants.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Profil aromatique ; tableau Genetic Background",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-rqs-highness",
+      "title": "Royal Highness",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/cbd-seeds/147-royal-highness.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Royal Queen Seeds",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La filiation annoncée est Respect 13 × Dancehall 24. La description donne environ autant de CBD que de THC, autour de 14 % chacun.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Genetic Background et description du rapport CBD/THC",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-rqs-medical-mass",
+      "title": "Medical Mass",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/cbd-seeds/228-medical-mass.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Royal Queen Seeds",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Le registre gustatif annoncé inclut une douceur profonde assimilée au miel.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Analogie sensorielle commerciale. Les formulations de parenté de la page divergent : elles ne sont pas reprises. Aucune promesse médicale retenue.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Paragraphe de saveur : honey-like sweetness",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-mephisto-canna",
+      "title": "Canna-Cheese 1:1",
+      "organization": "Mephisto Genetics",
+      "url": "https://eu.mephistogenetics.com/products/canna-cheese-1-1",
+      "verifiedAt": "2026-11-16",
+      "author": "Mephisto Genetics",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La fiche décrit bœuf rôti et vin rouge. Le récit de sélection rapporte environ 90 % de testeurs au ratio 1:1 CBD/THC et une minorité légèrement plus riche en THC.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce de l'obtenteur sur ses testeurs, sans jeu analytique individuel fourni ; pas une garantie de ratio pour chaque graine. Descripteurs sensoriels, sans identification moléculaire.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Taste ; récit des analyses de générations",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-mephisto-ginny",
+      "title": "Aunt Ginny's Elixir",
+      "organization": "Mephisto Genetics",
+      "url": "https://ca.mephistogenetics.com/products/aunt-ginnys-elixir",
+      "verifiedAt": "2026-11-16",
+      "author": "Mephisto Genetics",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Jacky CBD est décrit sur six générations : trois par autofécondation, puis trois par pollinisation ouverte. Cette dernière phase vise aussi à éviter une dépression de consanguinité excessive.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Récit Jacky CBD, paragraphe sur les six générations",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-mephisto-new-cbd",
+      "title": "Next up: CBD crosses and Limited Editions",
+      "organization": "Mephisto Genetics",
+      "url": "https://ca.mephistogenetics.com/blogs/news/next-up-cbd-crosses-and-limited-editions",
+      "verifiedAt": "2026-11-16",
+      "author": "Brad",
+      "published": "2024-05-31",
+      "passage": "Blue Auto CBD provient d'une lignée Blue Genius décrite comme hétérogène. La sélection vise à conserver les arômes tout en améliorant la densité florale.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Récit de sélection commercial ; aucune filiation ou performance n'est certifiée indépendamment.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "New CBD Parents : Blue Auto CBD",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-mephisto-thumper",
+      "title": "Thumper Therapy",
+      "organization": "Mephisto Genetics",
+      "url": "https://mephistogenetics.com/products/thumper-therapy",
+      "verifiedAt": "2026-11-16",
+      "author": "Mephisto Genetics",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Le croisement annoncé est Blue Auto CBD × Sundae Thumper. Le bouquet décrit associe crème glacée, baies, raisin et carburant.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Genetic Heritage ; description du bouquet",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-mephisto-birdie",
+      "title": "Blue C-Birdie",
+      "organization": "Mephisto Genetics",
+      "url": "https://mephistogenetics.com/products/blue-c-birdie",
+      "verifiedAt": "2026-11-16",
+      "author": "Mephisto Genetics",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La fiche annonce Blue Auto CBD × Ravenberry. Elle retrace Ravenberry en Espagne pour le stock parental, en Colombie-Britannique pour F1–F3 et en Californie du Nord pour F4.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Genetic Heritage ; parcours de Ravenberry",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-dp-angel",
+      "title": "CBD Charlotte's Angel",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/cbd-charlottes-angel",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La filiation annoncée est Dutch Charlotte × Red Angel. Le bouquet est décrit comme herbacé, diesel, agrumes et pin, avec variation entre phénotypes.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Genetics ; profil aromatique",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-dp-auto-angel",
+      "title": "CBD Auto Charlotte's Angel",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.us/cannabis-seeds/cbd-auto-charlotte-s-angel",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Le parent autoflorissant annoncé est CBD Auto Compassion Lime, croisé avec CBD Charlotte's Angel. Le profil est décrit comme moins citronné et plus terreux/pin que celui de Compassion Lime.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Genetics et comparaison aromatique à CBD Auto Compassion Lime",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-dp-victory",
+      "title": "Auto CBD-Victory",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/auto-cbd-victory",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "La fiche annonce un profil proche de 1:1 entre CBD et CBDV, chacun autour de 4–6 %, avec peu de THC.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Profil commercial annoncé, non certificat de lot. Ne pas confondre le ratio CBD:CBDV avec CBD:THC. Aucun autre blog explicatif de la marque ne sert ici de preuve chimique.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Description du profil CBD/CBDV",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-barneys-cure",
+      "title": "CBD Critical Cure",
+      "organization": "Barney's Farm",
+      "url": "https://www.barneysfarm.com/cbd-critical-cure-17",
+      "verifiedAt": "2026-11-16",
+      "author": "Barney's Farm",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Le développement est attribué à une collaboration entre Barney's Farm et CBD Crew.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "Annonce attribuée à l'obtenteur sur sa fiche, sans validation indépendante de la parenté ni certificat analytique d'un lot. Aucun effet médical ou conseil de culture retenu.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Présentation de la collaboration",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-barneys-potion",
+      "title": "CBD Lemon Potion Auto",
+      "organization": "Barney's Farm",
+      "url": "https://www.barneysfarm.com/cbd-lemon-potion-auto-432",
+      "verifiedAt": "2026-11-16",
+      "author": "Barney's Farm",
+      "published": "Date de publication non indiquée sur la fiche consultée",
+      "passage": "Le texte descriptif annonce un ratio CBD:THC de 2:1.",
+      "access": "official-page",
+      "documentKind": "Fiche originale d'obtenteur ou annonce officielle",
+      "limitation": "La page présente une discordance de pourcentage entre en-tête et texte : aucun pourcentage n'est retenu. La question vise seulement le ratio 2:1 du paragraphe, annonce non garantie pour un lot.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Paragraphe de description du ratio",
+        "result": "Fiche officielle ouverte et passages nommés lus. Les seules affirmations retenues sont celles de l'obtenteur sur son propre produit."
+      }
+    },
+    {
+      "id": "q2-a01-toth-markers",
+      "title": "Development and validation of genetic markers for sex and cannabinoid chemotype in Cannabis sativa L.",
+      "organization": "Cornell University ; GCB Bioenergy",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/gcbb.12667",
+      "verifiedAt": "2026-11-16",
+      "author": "Jacob A. Toth et al.",
+      "published": "2020-01-10",
+      "passage": "Quelques plantes génétiquement femelles étaient monoïques. Le groupe génétique explique surtout le rapport CBD:THC, plutôt que le total. CCP-1 interroge directement CBDAS.",
+      "access": "full-text",
+      "documentKind": "Recherche scientifique primaire",
+      "limitation": "Validations dans les populations étudiées ; ne démontre pas une prédiction universelle. Le marqueur de chimotype repose aussi sur la liaison génétique.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Résultats 3.2 ; modèles de variance et tableau 3 ; discussion 4.2",
+        "result": "Texte de recherche ouvert ; résultats et passages indiqués lus, limites de population et d'expérience conservées."
+      }
+    },
+    {
+      "id": "q2-a01-cornell-trial",
+      "title": "Evaluation of 30 High-Cannabinoid Hemp (Cannabis sativa L.) Cultivars in New York State",
+      "organization": "Cornell University",
+      "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2021/05/2019CBDTrialPyxusResearchPaper_2020.05.08.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "George M. Stack et al.",
+      "published": "Date de publication non indiquée dans le document consulté",
+      "passage": "RN17 comprend les chimotypes I, II et III. Le rapport de concentration entre biomasse florale et apex varie selon le cultivar.",
+      "access": "full-text",
+      "documentKind": "Recherche scientifique primaire",
+      "limitation": "Rapport d'essai local ; maladies sous inoculum naturel. Le nom du fichier ne prouve pas une date de publication. Comparaison des matrices propre à cet essai.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Pages 13 et 16 : chimotypes ; comparaison des matrices",
+        "result": "Texte de recherche ouvert ; résultats et passages indiqués lus, limites de population et d'expérience conservées."
+      }
+    },
+    {
+      "id": "q2-a01-toth-flowering",
+      "title": "Identification and mapping of major-effect flowering time loci Autoflower1 and Early1 in Cannabis sativa L.",
+      "organization": "Cornell University ; Frontiers in Plant Science",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.991680/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Jacob A. Toth et al.",
+      "published": "2022-09-21",
+      "passage": "Autoflower1 concorde avec une hérédité récessive. Early1 est distinct sur le même chromosome 1. Picolo et CFX-2 motivent une limite du marqueur ou une autre base génétique.",
+      "access": "full-text",
+      "documentKind": "Recherche scientifique primaire",
+      "limitation": "Cartographie et marqueurs dans les populations étudiées. Une autre base génétique chez Picolo reste une hypothèse, pas un gène identifié.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Résultats Autoflower1 ; discussion Early1, Picolo et CFX-2",
+        "result": "Texte de recherche ouvert ; résultats et passages indiqués lus, limites de population et d'expérience conservées."
+      }
+    },
+    {
+      "id": "q2-a01-stack-herbivores",
+      "title": "Cannabinoids function in defense against chewing herbivores in Cannabis sativa L.",
+      "organization": "Cornell University ; Horticulture Research",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10681003/",
+      "verifiedAt": "2026-11-16",
+      "author": "George M. Stack et al.",
+      "published": "2023-10-13",
+      "passage": "Les larves consomment moins et grossissent moins sur feuilles CBD dominantes. Les glandes sessiles sans cannabinoïdes paraissent effondrées. La discussion rattache la fixation du profil sans cannabinoïdes à la sélection ukrainienne de chanvre à fibres.",
+      "access": "full-text",
+      "documentKind": "Recherche scientifique primaire",
+      "limitation": "Essais sur matériel défini ; pas une généralisation à tous les ravageurs. L'histoire ukrainienne est le contexte bibliographique donné par les auteurs, pas un dépouillement d'archives original.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Résultats feuilles détachées et trichomes ; discussion matériel sans cannabinoïdes",
+        "result": "Texte de recherche ouvert ; résultats et passages indiqués lus, limites de population et d'expérience conservées."
+      }
+    },
+    {
+      "id": "q2-a01-toth-stress",
+      "title": "Limited effect of environmental stress on cannabinoid profiles in high-cannabidiol hemp (Cannabis sativa L.)",
+      "organization": "Cornell University ; GCB Bioenergy",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/gcbb.12880",
+      "verifiedAt": "2026-11-16",
+      "author": "Jacob A. Toth et al.",
+      "published": "2021-07-28",
+      "passage": "Le rapport CBD:THC ne diffère pas significativement entre traitements au point final. La proportion de formes neutres dans le total décroît après le prélèvement initial.",
+      "access": "full-text",
+      "documentKind": "Recherche scientifique primaire",
+      "limitation": "Résultats bornés aux cultivars, traitements et observations de l'étude ; aucune recette de stress ni recommandation de conduite n'est reprise.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Résultats 3.2, figure 3d ; résultats 3.6",
+        "result": "Texte de recherche ouvert ; résultats et passages indiqués lus, limites de population et d'expérience conservées."
+      }
+    },
+    {
+      "id": "q2-a01-johnson-diversity",
+      "title": "Genomic and Chemical Diversity of Commercially Available High-CBD Industrial Hemp Accessions",
+      "organization": "University of Georgia ; Frontiers in Genetics",
+      "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2021.682475/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Matthew S. Johnson et Jason G. Wallace",
+      "published": "2021-07-07",
+      "passage": "Les matériels commerciaux BaoxSP07 (clonal) et Baox (graines), de fournisseurs différents, ne forment pas un même groupe sur l'arbre génétique.",
+      "access": "full-text",
+      "documentKind": "Recherche scientifique primaire",
+      "limitation": "Échantillons commerciaux de cette étude : ne démontre pas l'identité de tout produit ultérieur portant ces noms. Le fournisseur n'est pas nécessairement l'obtenteur original.",
+      "consultation": {
+        "reader": "a_cbd_inventory",
+        "date": "2026-11-16",
+        "locator": "Résultats, figure 1B–C ; discussion Genetic Relationships",
+        "result": "Texte de recherche ouvert ; résultats et passages indiqués lus, limites de population et d'expérience conservées."
+      }
+    }
+  ]
+}

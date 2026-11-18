@@ -9869,6 +9869,23 @@ footer .cartoon-border {
   background: var(--cream);
 }
 
+/* The game guides mark their current target across panels and portals. */
+[data-releve-guide-active] {
+  outline: 3px solid #008c7c !important;
+  outline-offset: 3px;
+  scroll-margin-block: 16px;
+}
+
+[data-farm-guide-target] {
+  outline: 3px dashed #087e70;
+  outline-offset: 4px;
+  scroll-margin-block: 130px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-farm-guide-target] { scroll-behavior: auto; }
+}
+
 @media (max-width: 768px) {
   .game-navbar.is-scrolled .retro-container {
     width: min(94vw, 680px);

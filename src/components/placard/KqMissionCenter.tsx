@@ -2,7 +2,7 @@
 
 import Link from "@/components/navigation/NavigationLink";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, Check, ChevronDown, Coins, FlaskConical, Gift, LockKeyhole, RefreshCw, Sparkles, Trophy, Users } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Coins, Gift, LockKeyhole, RefreshCw, Sparkles, Trophy, Users } from "lucide-react";
 import { KQ_MISSION_COPY, KQ_MISSION_DIFFICULTIES, KQ_MISSION_TRACKS, getKqMissionContinuation, getKqMissionRewardLabel, isKqMissionCode, type KqMission, type KqMissionClaim, type KqMissionCode, type KqMissionDestination, type KqMissionReward, type KqMissionSnapshot, type KqMissionTrack } from "@/lib/kanab-quest-missions";
 import { isKqMissionProgression, type KqLevelReward, type KqLevelRewardCode } from "@/lib/kanab-quest-mission-progression";
 import { CommunityMissionWelcome, CommunityMissionsBoard } from "@/components/missions/CommunityMissionsBoard";
@@ -11,7 +11,6 @@ import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
-import { KqCultureContract } from "./KqCultureContract";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqMissionFocusNotice, KqMissionPinButton } from "./KqPinnedMission";
 import { getKqMissionOverview, isKqMissionRewardUnavailable as isRewardUnavailable } from "@/lib/kanab-quest-mission-overview";
@@ -44,7 +43,7 @@ function missionReward(mission: { reward?: KqMissionReward; cardCount: number })
 
 export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrack = false }: { onOpen: (view: KqMissionDestination, missionCode?: KqMissionCode) => void; initialTrack?: KqMissionTrack | "all"; focusInitialTrack?: boolean }) {
   const api = useKqTutorialApi();
-  const [section, setSection] = useState<"community" | "challenges" | "contracts">("challenges");
+  const [section, setSection] = useState<"community" | "challenges">("challenges");
   const [selectedTrack, setSelectedTrack] = useState<KqMissionTrack | "all" | "ready">(initialTrack);
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
@@ -196,8 +195,8 @@ export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrac
 
   return <main className={styles.center}>
     <KqChapterHeading art="missions" title="Mes défis" level={1} compact />
-    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button>{!api.isTutorial ? <button type="button" aria-pressed={section === "contracts"} onClick={() => setSection("contracts")}><FlaskConical size={18} aria-hidden="true" />Contrats</button> : null}<button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
-    {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : section === "contracts" ? <KqCultureContract mode="missions" onOpenGame={() => onOpen("game")} /> : <>
+    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
+    {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>
     {progression ? <KqMissionProgression progression={progression} disabled={loading || busy !== null || opening || !!error}
       stale={!!error} busy={busy} onClaim={item => void claim(item)}
       onOpenPack={item => { if (item.entitlementId) void openPack({ entitlementId: item.entitlementId, cardCount: item.cardCount, code: item.code }); }} />
@@ -304,7 +303,7 @@ export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrac
       </footer>
     </> : null}
     </>}
-    {activePack ? <KqSupportPackOpening cards={packCards} cardCount={activePack.cardCount} busy={opening || loading && !packCards.length}
+    {activePack ? <KqSupportPackOpening confirmed={true} cards={packCards} cardCount={activePack.cardCount} busy={opening || loading && !packCards.length}
       busyLabel={opening ? "Ouverture de ton pack…" : "Vérification du statut de ce pack…"}
       error={packIsOpened(activePack.entitlementId) && !packCards.length ? "Ce pack a déjà été ouvert. Ses cartes sont dans ta collection." : packError}
       canRetry={!opening && !loading && !packIsOpened(activePack.entitlementId)}

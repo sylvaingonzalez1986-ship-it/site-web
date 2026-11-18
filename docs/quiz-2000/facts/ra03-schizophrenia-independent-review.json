@@ -1,0 +1,24 @@
+{
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "proposalFile": "docs/quiz-2000/facts/ra03-schizophrenia-correction.json",
+  "proposalHash": "0bb1869ab8556754ccdc0acb67f5e84518b13f00bd11f8f877f4a68f6ca686b4",
+  "questionId": "hemp-q2-ra03-cbd-schizophrenia-adjunct-positive-symptom-signal",
+  "status": "approved",
+  "originalContentHash": "c4f8c575163c0da9c6302a41f50c9264141aac4548040f1c513a04cbb710e9f8",
+  "proposedContentHash": "f6d3593e5c59881172a7eebbd54a881d32077999210f0171dd54895c2a482396",
+  "newSourceHash": "11f526112a98c0179dd2184487108aaaca4fc821374be1d786c048b8001b7834",
+  "proposedQuestionPatchHash": "dfe2fe68d3d46746ae4a2b82d699b7a4f0cbb71c7ded7600ff01fdec9479b6ef",
+  "comment": "Nouvelle source NHS ouverte indépendamment : section Positive and negative symptoms, lignes20–25, hallucinations et delusions explicitement classées positifs. Définition et traduction soutenues ; complément terminologique seulement, effet CBD toujours fondé sur le résumé McGuire déjà contre-lu. Explication révisée claire,227caractères et conforme à la limite240.",
+  "sourceChecks": [
+    {
+      "sourceId": "q2-ra03-nhs-schizophrenia-positive-symptoms",
+      "url": "https://www.nhs.uk/mental-health/conditions/schizophrenia/symptoms/",
+      "locator": "Positive and negative symptoms ; Hallucinations ; Delusions",
+      "result": "Page NHS effectivement ouverte, classification positive = hallucinations/delusions et contraste négatif retrait/émoussement lus. Dernière revue13avril2023, échéance13avril2026 affichées ; aucune mise à jour2026 inventée.",
+      "sourceHash": "11f526112a98c0179dd2184487108aaaca4fc821374be1d786c048b8001b7834"
+    }
+  ],
+  "proposedExplanationLength": 227,
+  "batchUntouched": true
+}

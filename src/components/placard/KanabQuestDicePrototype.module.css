@@ -785,8 +785,7 @@
 .page[data-playable-lesson] .burnConfirmBackdrop { padding-bottom: calc(var(--arena-lesson-coach-height, 0px) + 1rem); }
 .page[data-playable-lesson] .burnConfirm { max-height: calc(100dvh - var(--arena-lesson-coach-height, 0px) - 3rem); }
 @media (max-width: 760px) {
-  .page[data-playable-lesson][data-culture-play] .turnActions { bottom: calc(var(--arena-lesson-coach-height, 0px) + 8px); }
-  .page[data-playable-lesson][data-culture-play] { --culture-actionbar-space: calc(var(--arena-lesson-coach-height, 0px) + 7.5rem + env(safe-area-inset-bottom)); padding-bottom: calc(var(--culture-actionbar-space) + 1rem); }
+  .page[data-playable-lesson][data-culture-play] { padding-bottom: calc(var(--arena-lesson-coach-height, 0px) + var(--culture-actionbar-space)); }
 }
 .page[data-culture-play] .gameGrid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: start; gap: 1rem; }
 .page[data-culture-play] .situationCard, .page[data-culture-play] .diceBoard { min-width: 0; }
@@ -839,6 +838,7 @@
 .handDetails .cardRow:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .handScrollHint { margin: .65rem 0 0; color: #172923; font-size: .72rem; line-height: 1.5; }
 .handTurnLimit, .handFilterHint { margin: .45rem 0; color: #172923; font-size: .72rem; line-height: 1.5; }
+.playedCardReceipt { display: grid; gap: .2rem; margin: .5rem 0; padding: .45rem .7rem; border-left: 3px solid #076c61; font-size: .8rem; line-height: 1.45; overflow-wrap: anywhere; }
 .handFilterHint { color: #455748; font-size: .67rem; }
 .handFilters { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .65rem; }
 .handFilters button { display: flex; flex: 1; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; padding: .45rem .65rem; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: .8rem; font-weight: 750; cursor: pointer; box-shadow:none; --game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background:transparent; border-color:transparent; border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
@@ -929,8 +929,7 @@
 .turnActions > button:disabled { cursor: wait; opacity: .65; box-shadow: none; }
 .page[data-culture-play] .situationCard, .page[data-culture-play] .diceBoard, .page[data-culture-play] [data-culture-result] { scroll-margin-top: 5.5rem; }
 @media (max-width: 760px) {
-  .page[data-culture-play] { --culture-actionbar-space: calc(10.5rem + var(--placard-bottom-nav-height, 0px) + env(safe-area-inset-bottom)); padding-top: .65rem; padding-bottom: calc(var(--culture-actionbar-space) + 1rem); }
-  .page[data-culture-play]:has(.turnActionContext[data-warning]) { --culture-actionbar-space: calc(12rem + var(--placard-bottom-nav-height, 0px) + env(safe-area-inset-bottom)); }
+  .page[data-culture-play] { --culture-actionbar-space: calc(1rem + var(--placard-bottom-nav-height, 0px) + env(safe-area-inset-bottom)); padding-top: .65rem; padding-bottom: var(--culture-actionbar-space); }
   .page[data-culture-play] :is(button, summary, a, input, select) { scroll-margin-top: 5.5rem; scroll-margin-bottom: var(--culture-actionbar-space); }
   .page[data-culture-play] .gameGrid { grid-template-columns: minmax(0, 1fr); gap: .55rem; }
   .page[data-culture-play] .situationCard { display: grid; grid-template-columns: 84px minmax(0, 1fr); align-items: start; gap: .4rem .65rem; padding: .65rem; --game-panel-art:var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
@@ -991,7 +990,7 @@
   .page[data-culture-play] .stageRewardReceipt svg { width: 15px; }
   .page[data-culture-play] .stageRewardReceipt strong { font-size: .77rem; }
   .page[data-culture-play] .stageRewardReceipt small { font-size: .5rem; }
-  .page[data-culture-play] .turnActions { position: fixed; z-index: 50; right: 0; bottom: var(--placard-bottom-nav-height, 0px); left: 0; width: auto; margin: 0; gap: .35rem; padding: .35rem max(.75rem, env(safe-area-inset-right)) calc(.6rem + env(safe-area-inset-bottom)) max(.75rem, env(safe-area-inset-left)); border-top: 2px solid #f4c43d; background: #fff1d6; box-shadow: 0 -3px 0 #172923; border-color:#172923; }
+  .page[data-culture-play] .turnActions { position: static; margin: .5rem 0; gap: .35rem; padding: .3rem 0; }
   .page[data-culture-play] .turnActions[data-suspended] { visibility: hidden; pointer-events: none; }
   .page[data-culture-play] .turnActionContext { width: min(100%, 520px); max-width: none; font-size: .78rem; line-height: 1.35; }
   .page[data-culture-play] .turnActions > button { width: min(100%, 520px); min-height: 50px; padding: .7rem .8rem; font-size: .9rem; }
@@ -1076,20 +1075,8 @@
 .gameBrand > div { min-width: 0; }
 .gameBrand h1 { overflow-wrap: anywhere; }
 
-.cultureIntro { position: relative; width: min(100%, 720px); margin: 0 auto; overflow: hidden; --game-panel-art:var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.cultureIntro > img { display: block; width: 100%; height: auto; }
 .setupPanel .cultureIntroTitle { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.preparationIntro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, 48%); align-items: center; width: 100%; background: var(--game-surface-warm, #ffb05c); }
-.preparationIntro > div { min-width: 0; padding: 20px 24px; }
-.preparationIntro > div > span { font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.setupPanel .preparationIntro .cultureIntroTitle { position: static; width: auto; height: auto; margin: .35rem 0; padding: 0; overflow: visible; clip-path: none; white-space: normal; font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.1; text-align: left; }
-.preparationIntro p { margin: .5rem 0 0; font-size: .85rem; line-height: 1.5; }
-.preparationIntro > img { width: 100%; height: 225px; object-fit: cover; object-position: 62% center; }
-@media (max-width: 600px) {
-  .preparationIntro { grid-template-columns: minmax(0, 1fr); }
-  .preparationIntro > div { padding: 16px; }
-  .preparationIntro > img { height: 116px; object-position: center; }
-}
+.setupPanel .preparationTitle { margin: .35rem 0; font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.1; text-align: left; }
 .setupRules { margin: .7rem 0 1rem; color: #172923; }
 .setupRules > summary { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: .4rem; width: max-content; min-height: 44px; margin-left: auto; padding: .5rem .75rem; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; font-size: .78rem; font-weight: 750; list-style: none; cursor: pointer; }
 .setupRules > summary::-webkit-details-marker { display: none; }
@@ -1097,7 +1084,6 @@
 .setupRules > summary:hover, .setupRules[open] > summary { background: #efc451; }
 .setupRules[open] > summary > svg:last-child { transform: rotate(180deg); }
 .setupRules > p { margin: .65rem 0 0; padding: .8rem 1rem; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; color: #172923; font-size: .85rem; line-height: 1.6; }
-@media (max-width: 760px) { .cultureIntro {border:2px solid transparent;border-radius:0;background:transparent;box-shadow:none;border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; } }
 
 dialog.verdictDialog { width: min(480px, calc(100vw - 24px)); background: #fffaf0; }
 .verdictDialog .burnConfirm { width: 100%; max-height: none; min-height: 0; border: 0; border-radius: 0; box-shadow: none; }
@@ -1203,6 +1189,21 @@ dialog.verdictDialog { width: min(480px, calc(100vw - 24px)); background: #fffaf
 .cultureCards .heritageInPlay > div > p { display:block; overflow:visible; }
 .cultureWorkOverview { min-width:0; margin:.5rem 0; }
 .cultureWorkOverview:empty { display:none; }
+
+.page [data-culture-room] { margin: .55rem auto; min-width: 0; }
+.roomScope, .roomReceipt { margin: .3rem 0; font-size: .88rem; line-height: 1.35; }
+.roomScope { text-align: center; }
+.roomReceipt { color: #175b4e; font-weight: 750; text-align: center; }
+.roomReceipt:empty { display: none; }
+.page[data-choosing-pbi] > :not([data-culture-room]) { display: none; }
+.roomShortcuts { display: none; }
+.roomTreatment { display: flex; align-items: center; flex-wrap: wrap; gap: .35rem .75rem; margin-block: .5rem; scroll-margin-top: 5rem; }
+.roomTreatment span { flex: 1 1 13rem; }
+.roomTreatment button, .roomShortcuts button { min-height: 44px; padding: .35rem .85rem; background: transparent; border: 2px solid transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; box-shadow: none; color: #172923; font-weight: 750; }
+@media (max-width: 760px), (pointer: coarse) and (max-height: 500px) {
+  .roomShortcuts { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; margin: .4rem 0 .7rem; }
+  .page [data-grow-camera], .page [data-pbi-instructions] { scroll-margin-top: 4rem; }
+}
 .page[data-culture-play] .turnActions > .turnOptionsLink { display:block; min-height:44px; font-size:.8rem; }
 @media (max-width:760px) {
  .cultureSheet { padding:.45rem; }
@@ -1210,12 +1211,32 @@ dialog.verdictDialog { width: min(480px, calc(100vw - 24px)); background: #fffaf
  .cultureCards .handDetails > .deckPanel { padding:.55rem; }
 }
 @media (max-width:760px) {
- .page[data-culture-play] { --culture-actionbar-space:calc(7rem + var(--placard-bottom-nav-height,0px) + env(safe-area-inset-bottom)); }
- .page[data-culture-play]:has(.turnActionContext[data-warning]) { --culture-actionbar-space:calc(9rem + var(--placard-bottom-nav-height,0px) + env(safe-area-inset-bottom)); }
  .page[data-culture-play] .turnActions { grid-template-columns:minmax(0,.75fr) minmax(0,1.6fr); align-items:center; gap:.2rem .4rem; }
  .page[data-culture-play] .turnActions .turnActionContext { grid-column:1/-1; grid-row:1; }
  .page[data-culture-play] .turnActions > .turnOptionsLink { grid-column:1; grid-row:2; min-height:50px; padding:.4rem; }
  .page[data-culture-play] .turnActions > [data-culture-primary-action] { grid-column:2; grid-row:2; min-width:0; }
  .page[data-culture-play] .turnActions:not(:has(.turnOptionsLink)) > [data-culture-primary-action] { grid-column:1/-1; }
- .page[data-playable-lesson][data-culture-play] { --culture-actionbar-space:calc(var(--arena-lesson-coach-height,0px) + 7rem + env(safe-area-inset-bottom)); }
 }
+
+.page[data-culture-play] .diceTray {
+  --tray-play-top:3%; --tray-play-right:2%; --tray-play-bottom:3%; --tray-play-left:2%;
+  aspect-ratio:2.05 / 1;
+  background:
+    repeating-linear-gradient(115deg,transparent 0 2px,#f1faeb09 2px 3px,transparent 3px 6px),
+    radial-gradient(ellipse at 43% 28%,#419c84,#246957 68%,#19554b);
+  box-shadow:inset 0 0 0 3px #334e40,inset 0 0 0 6px #af895e,inset 0 0 0 8px #554832,inset 0 0 15px 8px #092f2855,0 3px 0 #172923;
+}
+.diceTray[data-physics][data-rolling]::before,.diceTray[data-physics][data-rolling]::after { display:none; }
+.diceReadout { display:flex; flex-wrap:wrap; gap:.2rem .5rem; align-items:baseline; justify-content:center; margin:.2rem 0; color:#20392f; font-size:.8rem; }
+.diceReadout strong { font-variant-numeric:tabular-nums; font-size:1rem; letter-spacing:.04em; }
+.diceReadout span { padding-inline-start:.5rem; border-inline-start:1px solid #68746a; }
+.dicePreferences { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.4rem; color:var(--kq-ink); font-weight:800; }
+.skipDice,.dicePreferences select {
+  min-height:44px; padding:.45rem .9rem; color:var(--kq-ink); font:inherit; cursor:pointer;
+  --game-control-art:var(--game-control-paper,url("/placard/ui/control-paper-v2.webp"));
+  background:transparent; box-shadow:none; border:2px solid transparent;
+  border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch;
+}
+.skipDice:hover,.dicePreferences select:hover { --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
+.skipDice:focus-visible,.dicePreferences select:focus-visible { outline:3px solid var(--kq-ink); outline-offset:2px; }
+.turnActions [data-culture-primary-action] { touch-action:manipulation; }

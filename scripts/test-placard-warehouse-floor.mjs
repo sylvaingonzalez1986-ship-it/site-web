@@ -31,6 +31,18 @@ async function floorChecks({ db, sql, scalar, equal, reject, player, plan, layou
   const financialBefore = await facts(owner);
   await db.exec("COMMIT");
   await db.exec(await sql("20261013000300_kq_warehouse_starter_floor.sql"));
+  await db.exec(await sql("20261117000100_kq_warehouse_room_observation.sql"));
+  await db.exec("BEGIN READ ONLY");
+  const observe = user => scalar("SELECT rpc_kq_observe_warehouse_room($1)", [user]);
+  const activeRoom = await observe(active);
+  equal(activeRoom.state, (await layout(active)).state, "observation uses the exact committed floor");
+  equal(activeRoom.activeRuns[0].zoneId, "zone-0", "observation identifies the occupied crop");
+  equal(await observe(active), activeRoom, "reading the room twice observes the same run and stock");
+  equal(await observe(randomUUID()), null, "opening a room cannot create an account or supply a starter plan");
+  equal(await scalar("SELECT jsonb_build_array(has_function_privilege('service_role','rpc_kq_observe_warehouse_room(uuid)','execute'),has_function_privilege('anon','rpc_kq_observe_warehouse_room(uuid)','execute'),has_function_privilege('authenticated','rpc_kq_observe_warehouse_room(uuid)','execute'))"), [true, false, false], "the room is private to the server");
+  equal((await observe(owner)).revision, before.revision, "viewing a historical floor preserves its revision");
+  equal(await facts(owner), financialBefore, "viewing the room cannot bill or change stock or receipts");
+  await db.exec("COMMIT");
   await db.exec("BEGIN");
   const adopt = (user, saved, next = compact(saved.state)) => scalar("SELECT rpc_kq_warehouse_compact($1,$2,$3,$4)", [user, saved.revision, saved.state, next]);
 
@@ -115,7 +127,7 @@ async function floorChecks({ db, sql, scalar, equal, reject, player, plan, layou
 
 const sourceUrl = new URL("./test-placard-shared-campaigns.mjs", import.meta.url);
 let source = (await readFile(sourceUrl, "utf8")).replaceAll("\r\n", "\n");
-const marker = '    console.log("Shared campaigns: profiles, replay, common cards/care/dice, atomic flowers, costs, capacity and grants passed.");';
+const marker = '    console.log("Shared campaigns: profiles, replay, common cards/care/dice, atomic flowers, costs, capacity, two-variety rotation and grants passed.");';
 assert(source.includes(marker), "campaign fixture end marker changed");
 source = source.replace(marker, marker + "\n    await floorChecks({ db, sql, scalar, equal, reject, player, plan, layout, start, row, buddieCodes, vite, build, launch });")
   .replace(/^import .*;\n/gm, "")

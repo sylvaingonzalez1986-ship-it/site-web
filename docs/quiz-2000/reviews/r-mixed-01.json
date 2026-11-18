@@ -1,0 +1,1373 @@
+{
+  "batchId": "r-mixed-01",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rm01-seed-essential-amino-acids-present",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Composition réelle des protéines de graines alimentaires.",
+      "comment": "La question compare la présence des neuf acides aminés à l’absence de trois acides nommés. Le fait présence, les limites sur les proportions et la digestibilité restent distincts d’une promesse de couverture alimentaire.",
+      "contentHash": "0157c101f6e5516e1d6616aefabc5c62d220312f6bff96462b679f39829c8dff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-galasso16",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+          "locator": "Introduction, protéines de graines",
+          "result": "Introduction Galasso effectivement lue : présence de tous les acides aminés essentiels, sans promesse de couverture individuelle des besoins.",
+          "sourceHash": "57644c1c4c20e0645f011acfff1a0ee40b259e8874e54c4d7568ebfa7faca27c"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-seed-essential-amino-acids-present",
+          "status": "changes_requested",
+          "domain": "food",
+          "domainComment": "Composition réelle des protéines de graines alimentaires.",
+          "comment": "Présence de tous les acides aminés essentiels confirmée. Revoir les distracteurs : aucun acide aminé essentiel dans des protéines de graines est très peu plausible, et six/trois/aucun face aux neuf donne une question de chiffres grossièrement écartés. Garder la distinction présence/proportions/digestibilité avec quatre affirmations alimentaires plausibles, sans transformer la présence des neuf en garantie de couvrir les besoins.",
+          "contentHash": "f23727e043a3b8d2e266c1d79063e938353f7fb6a2385e70ff1967cec53f2693",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-galasso16",
+              "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+              "locator": "Introduction, protéines de graines",
+              "result": "Introduction Galasso effectivement lue : présence de tous les acides aminés essentiels, sans promesse de couverture individuelle des besoins.",
+              "sourceHash": "57644c1c4c20e0645f011acfff1a0ee40b259e8874e54c4d7568ebfa7faca27c"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "f23727e043a3b8d2e266c1d79063e938353f7fb6a2385e70ff1967cec53f2693",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-seed-essential-amino-acids-present",
+          "topicId": "seeds",
+          "level": 1,
+          "prompt": "Quelle description correspond aux acides aminés essentiels des protéines de graines de chanvre ?",
+          "options": [
+            "Les neuf sont présents",
+            "La lysine est absente",
+            "Le tryptophane est absent",
+            "La méthionine est absente"
+          ],
+          "answer": 0,
+          "explanation": "Les neuf sont présents, mais leurs proportions et leur digestibilité comptent aussi. Cette présence ne signifie pas que les protéines de chanvre couvrent à elles seules tous les besoins.",
+          "articleId": "ref-proteines-chanvre",
+          "sourceIds": [
+            "q2-rm01-galasso16"
+          ],
+          "editorial": {
+            "domain": "food",
+            "category": "food",
+            "subject": "Acides aminés des graines",
+            "subjectKey": "hemp-seed-storage-proteins",
+            "property": "Présence des neuf acides aminés essentiels",
+            "expectedAnswer": "Les neuf sont présents",
+            "learningObjective": "Distinguer présence d’acides aminés et qualité nutritionnelle complète.",
+            "factKey": "seed-essential-amino-acids-present",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-galasso16",
+                "locator": "Introduction, protéines de graines",
+                "support": "L’article indique que les protéines de graines contiennent tous les acides aminés essentiels."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-seed-essential-amino-acids-present",
+          "topicId": "seeds",
+          "level": 1,
+          "prompt": "Quelle description correspond aux acides aminés essentiels des protéines de graines de chanvre ?",
+          "options": [
+            "Les neuf sont présents",
+            "La lysine est absente",
+            "Le tryptophane est absent",
+            "La méthionine est absente"
+          ],
+          "answer": 0,
+          "explanation": "Les neuf sont présents, mais leurs proportions et leur digestibilité comptent aussi. Cette présence ne signifie pas que les protéines de chanvre couvrent à elles seules tous les besoins.",
+          "articleId": "ref-proteines-chanvre",
+          "sourceIds": [
+            "q2-rm01-galasso16"
+          ],
+          "editorial": {
+            "domain": "food",
+            "category": "food",
+            "subject": "Acides aminés des graines",
+            "subjectKey": "hemp-seed-storage-proteins",
+            "property": "Présence des neuf acides aminés essentiels",
+            "expectedAnswer": "Les neuf sont présents",
+            "learningObjective": "Distinguer présence d’acides aminés et qualité nutritionnelle complète.",
+            "factKey": "seed-essential-amino-acids-present",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-galasso16",
+                "locator": "Introduction, protéines de graines",
+                "support": "L’article indique que les protéines de graines contiennent tous les acides aminés essentiels."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-main-protein-edestin",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Protéine majeure d’un ingrédient de graines.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "2c8235148be64d93e331d013af0fe36047bdabc69657d1f59622cfae7f4eb309",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-tang06",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/17090145/",
+          "locator": "Abstract, phrase Edestin... major protein component",
+          "result": "Résumé original PubMed Tang effectivement lu : edestin major protein component dans l’isolat ; accès abstract honnête.",
+          "sourceHash": "8f5535b3aeecfc6bb27549d849066256834f8298b39f4cd40b20e4a9d7bd2d9a"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-seed-oil-gla-omega6",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Autre acide gras alimentaire, distinct de l’ALA déjà testé.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "7f4226296d524984a7e33107efc9bd5b6781211afd7ac41894c58beeaee7d604",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-galasso16",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+          "locator": "Introduction et Table 4, colonne GLA",
+          "result": "Galasso introduction et profil d’huile effectivement lus : GLA18:3oméga6 distinct d’ALA18:3oméga3. Ancien objet complet hemp-seeds-omega-trois relu : teste ALA, pas GLA.",
+          "sourceHash": "57644c1c4c20e0645f011acfff1a0ee40b259e8874e54c4d7568ebfa7faca27c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-seed-meal-phytate-minerals",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Constituant réel du tourteau et disponibilité nutritionnelle.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "e0193846944e78bb8d6be60b998c999576df56fc7df6b5b5c3100390f14cc45c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-galasso16",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+          "locator": "Results Table2 et Discussion, phytate",
+          "result": "Galasso introduction et discussion effectivement lues : phytates mesurés dans tourteaux et effet possible sur biodisponibilité des macro/microéléments.",
+          "sourceHash": "57644c1c4c20e0645f011acfff1a0ee40b259e8874e54c4d7568ebfa7faca27c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-seed-food-anaphylaxis",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Allergie alimentaire aux graines.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "ff77ab9f0dc05488fca262603d758c082d7724dca5413a45f0be14cb78d734e9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-bhatia18",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5936671/",
+          "locator": "Observation clinique et Discussion",
+          "result": "Cas original PMC effectivement lu : anaphylaxie après yaourt aux graines, signes immédiats et tests ; possibilité documentée, pas fréquence populationnelle.",
+          "sourceHash": "c5fa932db417906715aa4acb63dd58c6db8074949c7d0434ee0a03dcc7b70f02"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-seed-hazelnut-cross-reactivity",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Allergologie expérimentale des protéines alimentaires.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "0b7dcb064e0512f252cf24ff458771bad5ccf4566cdd461827f6f195ac1c8c5d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-inrae-hazelnut",
+          "url": "https://www.inrae.fr/sites/default/files/pdf/rapport_fm_2024-eng.pdf",
+          "locator": "p.54, Results et Future outlook",
+          "result": "Rapport INRAE p.54 imprimée/PDFindex53 réellement lu : réaction croisée noisette/chanvre confirmée en ELISA compétitif, validation clinique future explicitement requise.",
+          "sourceHash": "3a8fcbd361b788d0fb96ce90be0d8a3b4628e56267508dd5c4306cea4d27da12"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-seed-cadmium-from-soil",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Contamination des graines destinées à l’alimentation.",
+      "comment": "Le prompt ne demande plus si une précaution est nécessaire. Les quatre conclusions concernent le devenir du cadmium et l’usage des graines ; le transfert vers les graines et la réserve alimentaire restent le résultat relu par B.",
+      "contentHash": "485835d291f86a1048d0f7aec176ca266c6f8a230998bdd2f67119fb32205a57",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-mihoc12",
+          "url": "https://link.springer.com/article/10.1186/1752-153X-6-122",
+          "locator": "Abstract, Conclusion",
+          "result": "Texte original Mihoc réellement lu : sol expérimental au-dessus du seuil Cd cité, Cd retrouvé dans graines ; limites alimentaires affirmées. Aucun rendement ni recette de fertilisation repris.",
+          "sourceHash": "f74bdad40235b75a0bfb2e4d156824e8f3668193ae49e74aa823d8e0617de0e1"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-seed-cadmium-from-soil",
+          "status": "changes_requested",
+          "domain": "food",
+          "domainComment": "Contamination des graines destinées à l’alimentation.",
+          "comment": "Cd dans graines de sols chargés confirmé, domaine alimentaire pertinent. Le prompt « épargne-t-il nécessairement » suivi d’un Non nuancé face à trois Oui limitant les métaux à un seul tissu donne la réponse par prudence. Comparer quatre distributions/conclusions formulées de façon parallèle, en conservant le résultat précis sur les graines. Niveau1 possible pour une formulation concrète sans mémorisation d’auteur.",
+          "contentHash": "d096e396ed49ccb0f2e4a1fb87488ecd1de09b5ff074e67d907629587b4f8d67",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-mihoc12",
+              "url": "https://link.springer.com/article/10.1186/1752-153X-6-122",
+              "locator": "Abstract, Conclusion",
+              "result": "Texte original Mihoc réellement lu : sol expérimental au-dessus du seuil Cd cité, Cd retrouvé dans graines ; limites alimentaires affirmées. Aucun rendement ni recette de fertilisation repris.",
+              "sourceHash": "f74bdad40235b75a0bfb2e4d156824e8f3668193ae49e74aa823d8e0617de0e1"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "d096e396ed49ccb0f2e4a1fb87488ecd1de09b5ff074e67d907629587b4f8d67",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-seed-cadmium-from-soil",
+          "topicId": "seeds",
+          "level": 1,
+          "prompt": "Quelle distribution du cadmium l’étude de Mihoc a-t-elle observée chez le chanvre cultivé sur les sols étudiés ?",
+          "options": [
+            "Il est resté limité aux tiges",
+            "Il est resté limité aux feuilles",
+            "Il a aussi été retrouvé dans les graines",
+            "Il est resté limité aux racines"
+          ],
+          "answer": 2,
+          "explanation": "L’étude a mesuré du cadmium dans les graines. Employer le chanvre pour capter des métaux du sol ne garantit donc pas que ses graines conviennent ensuite à un usage alimentaire.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-rm01-mihoc12"
+          ],
+          "editorial": {
+            "domain": "food",
+            "category": "food",
+            "subject": "Métaux dans les graines alimentaires",
+            "subjectKey": "hempseed-cadmium-food",
+            "property": "Transfert possible de cadmium vers les graines",
+            "expectedAnswer": "Il a aussi été retrouvé dans les graines",
+            "learningObjective": "Comprendre une limite alimentaire de la dépollution par le chanvre.",
+            "factKey": "seed-cadmium-from-soil",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-mihoc12",
+                "locator": "Abstract, Conclusion",
+                "support": "Cd mesuré dans graines et réserve explicite sur leur usage dans aliments."
+              }
+            ],
+            "jurisdiction": "Sécurité alimentaire ; étude roumaine2012",
+            "reviewAfter": "2027-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-seed-cadmium-from-soil",
+          "topicId": "seeds",
+          "level": 1,
+          "prompt": "Dans l’étude de Mihoc sur des sols chargés en métaux, quelle observation concerne les graines de chanvre alimentaires ?",
+          "options": [
+            "Le cadmium reste dans les racines, sans atteindre les graines",
+            "Le cadmium atteint les feuilles, mais reste absent des graines",
+            "Le cadmium atteint aussi les graines, posant un problème alimentaire",
+            "Le cadmium atteint les graines, où il devient un nutriment essentiel"
+          ],
+          "answer": 2,
+          "explanation": "L’étude a mesuré du cadmium dans les graines. Employer le chanvre pour capter des métaux du sol ne garantit donc pas que ses graines conviennent ensuite à un usage alimentaire.",
+          "articleId": "ref-contaminants",
+          "sourceIds": [
+            "q2-rm01-mihoc12"
+          ],
+          "editorial": {
+            "domain": "food",
+            "category": "food",
+            "subject": "Métaux dans les graines alimentaires",
+            "subjectKey": "hempseed-cadmium-food",
+            "property": "Transfert possible de cadmium vers les graines",
+            "expectedAnswer": "Le cadmium atteint aussi les graines, posant un problème alimentaire",
+            "learningObjective": "Comprendre une limite alimentaire de la dépollution par le chanvre.",
+            "factKey": "seed-cadmium-from-soil",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-mihoc12",
+                "locator": "Abstract, Conclusion",
+                "support": "Cd mesuré dans graines et réserve explicite sur leur usage dans aliments."
+              }
+            ],
+            "jurisdiction": "Sécurité alimentaire ; étude roumaine2012",
+            "reviewAfter": "2027-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-bama-seed-soup",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Tradition culinaire de graines.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "3f39f12da9dd49c3d2a5ff5708734d5e22266b27264effdc0964e26bf1402873",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-china-bama",
+          "url": "https://zhuanti.mct.gov.cn/xczgshsh2023/syxj/detail_shi/3817.html",
+          "locator": "Rubrique cinq, entrée 火麻",
+          "result": "Page officielle chinoise rubrique特色美食 entrée火麻 réellement lue : poudre utilisée pour soupe火麻汤 et tofu ; allégations de longévité non reprises.",
+          "sourceHash": "34c9fddf99473173a38a4f4858da043fec4756a90d87fbabf6319c22c8ba303c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-fda-gras-three-seed-ingredients",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Statut alimentaire d’ingrédients issus des graines.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "4093c115afef5fbaae5f5765cf71a1a008df3233d4f805fbca2c3b5f62f180ba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-fda-gras2018",
+          "url": "https://www.fda.gov/food/hfp-constituent-updates/fda-responds-three-gras-notices-hemp-seed-derived-ingredients-use-human-food",
+          "locator": "Premier paragraphe, GRN765/771/778",
+          "result": "Communiqué FDA20décembre2018 premier paragraphe réellement lu : GRN765 graines décortiquées,771 poudre protéique,778 huile, usages prévus ; cannabinoïdes ajoutés distincts.",
+          "sourceHash": "b9cc71960693e0482df855ac1ec4796f8cfb39359a5e1be34f8dc4cc8a321ed5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-australia-retail-seeds-nonviable",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Condition réglementaire de vente alimentaire des graines.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "bc891c1f37983d27e4fb1c44b485554504ab0bc88fdb23c412aec18d6a43f6e0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-queensland-seed-food",
+          "url": "https://www.qld.gov.au/health/staying-healthy/food-pantry/food-safety-for-consumers/food-warnings-and-advice/low-thc-hemp-foods",
+          "locator": "The plant, dernier paragraphe",
+          "result": "Page Queensland The plant réellement lue : graines alimentaires au détail décortiquées et incapables de germer ; graines entières viables possibles pour transformation.",
+          "sourceHash": "9e091bcbb01ced5f9cd399ab2c1a5da51a5eeedff28c0c0ed5c5e2281683c207"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-seed-albumin-water-solubility",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Propriété d’une fraction protéique alimentaire réelle, sans exiger son exclusivité au chanvre.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "5c6fe174e43bbd3b604e1c80f642058191156ca94c5886c9cf0b880299be90ed",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-beran20",
+          "url": "https://www.confer.cz/nanocon/2020/download/3724-extraction-and-micronization-of-edestin-from-hemp-seed.pdf",
+          "locator": "p.1, Abstract ; §2.2",
+          "result": "PDF original Beran p.1 réellement lu : fraction albumine hydrosoluble obtenue par eau, globuline éd estine soluble en saumure ; aucun protocole nécessaire dans la question.",
+          "sourceHash": "ec9427adaf118bcfb4ad6a57778391da078129ab60aed81fdb351d25d3b46aea"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-roasted-seed-oil-pyrazine-notes",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Arôme d’une huile alimentaire de graines.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "a653fcfcded6d132c5a82429eecaa9ecd827b71e871bae61b8c2f26fa83307d4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-bai25-seed-oil-flavour",
+          "url": "https://www.mdpi.com/2227-9717/13/2/530",
+          "locator": "Abstract, phrases odorants et toasty flavour",
+          "result": "Article Bai original réellement lu, Results odorants : trois pyrazines citées pour notes grillées ; pinènes/myrcène/ocimène pour autres notes.",
+          "sourceHash": "52b15548871b28f7c9f9265cb1359dec8ed0ba49d0c7d74597e7754c261f3f1c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-cottonization-purpose",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Préparation effective de fibres pour filature textile.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "b91d8c548071d8cdfead439e0a3d2fd8750c228f7049d87a9b841cdd005cb162",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-mijas25-cottonization",
+          "url": "https://link.springer.com/article/10.1007/s10570-025-06557-0",
+          "locator": "Introduction, paragraphe cottonization",
+          "result": "Article Mijas original introduction réellement lue : division fibres techniques en agrégats plus fins pour emploi as-cotton ; application textile effective.",
+          "sourceHash": "4ff8a9c381e57b363b96163f3680fc379521f8060f71eaafafd7cd3589f1e560"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-lignin-coarse-texture",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Lien composition/toucher d’une fibre textile réelle.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "067452abe8299b786e27850f99d62ba0a39d0878df7a33dae59ee8eae9b88a69",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-mijas25-cottonization",
+          "url": "https://link.springer.com/article/10.1007/s10570-025-06557-0",
+          "locator": "Introduction, paragraphe Lignin... coarse and abrasive texture",
+          "result": "Même introduction Mijas réellement lue : lignine associée à texture raide/abrasive et retrait lié à adoucissement ; autres constituants non déclarés absents.",
+          "sourceHash": "4ff8a9c381e57b363b96163f3680fc379521f8060f71eaafafd7cd3589f1e560"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-primary-bast-textile-length",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Fraction libérienne de qualité textile.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "a267ba28d03d7100ccc4410bc00ff3b116d22505c8786f1a16c2d7eb7dd06306",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-sankari00-bast",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/381.pdf",
+          "locator": "p.74, Introduction",
+          "result": "PDF original Sankari p.74 effectivement lu : fibres primaires longues et faisceaux recherchés pour textile, secondaires plus courtes et lignifiées.",
+          "sourceHash": "5a370656c9a21cc20a7b0d08b4f6f8443549b41add501b5846f06328448d4d1a"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-textile-cellulose-regeneration",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Recyclage effectif d’un tissu de chanvre.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "fde16c4eeb205724ff58633cefc74f7e06c143563381da7311ad714a3a9cb0bc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-rissanen23-recycling",
+          "url": "https://acris.aalto.fi/ws/portalfiles/portal/115488051/CHEM_Rissanen_et_al_Chemical_recycling_2023_Textile_Research_Journal.pdf",
+          "locator": "Abstract, p.2545",
+          "result": "PDF auteur Aalto p.2545 Abstract effectivement lu : tissu dissous, cellulose régénérée en fibres puis filée/tricotée ; démonstration expérimentale bornée.",
+          "sourceHash": "aa0d9505d182a14b29393308a3ba92261c6ea794c6d9cbdfb0f5d9a07aca11d0"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-vapour-compatible-finish",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Compatibilité d’une finition de mur en béton de chanvre.",
+      "comment": "La notice est correctement qualifiée de guide professionnel ; fait et question inchangés.",
+      "contentHash": "4efb90ee16505746137a72bf5c9eaecf8f4e0827375a5d2463c4dd7af267e93f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-cenc-finishes",
+          "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+          "locator": "p.64–65 et74–77 imprimées",
+          "result": "Guide CenC p.64–65 et74–77 imprimées effectivement lu : finition doit préserver perméabilité vapeur, influence perméabilité et tampon hydrique.",
+          "sourceHash": "480c033a178095632b72e4690f850f87575f10bcca4f3daa67285c26ec72e185",
+          "metadataAdjustment": {
+            "approvedAndAppliedBy": "root",
+            "date": "2026-11-17",
+            "previousSourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0",
+            "previousSource": {
+              "id": "q2-rm01-cenc-finishes",
+              "title": "Guide des bonnes pratiques — Tome 3, Béton et mortier de chanvre",
+              "organization": "Construire en Chanvre, programme PACTE",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "verifiedAt": "2026-11-17",
+              "author": "Quentin Pichon et Jean-Marc Naumovic",
+              "published": "Date non indiquée sur la page consultée",
+              "passage": "Une première couche protège de la pluie ; les finitions doivent tenir compte de la déformabilité et laisser migrer la vapeur ; le gypse affecte différemment absorption et réduction acoustiques.",
+              "access": "full-text",
+              "documentKind": "original-research",
+              "limitation": "Préconisations professionnelles attribuées, pas norme universelle ni garantie de performance. La préface contient des récits historiques non fiables qui sont expressément exclus, de même que les promesses sanitaires.",
+              "consultation": {
+                "reader": "rebalance_products_sol",
+                "date": "2026-11-17",
+                "locator": "p. 38–39 imprimées, gobetis ; p. 44–45, souplesse ; p. 64–65, gypse ; p. 74–77, finitions et vapeur",
+                "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+              }
+            },
+            "basis": "B a consulté le guide professionnel et expressément demandé de corriger original-research ; seul documentKind a changé."
+          }
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-hemp-wall-vapour-compatible-finish",
+          "status": "changes_requested",
+          "domain": "materials",
+          "domainComment": "Compatibilité d’une finition de mur en béton de chanvre.",
+          "comment": "Propriété des finitions et passage confirmés. Corriger la notice commune q2-rm01-cenc-finishes : documentKind original-research est inexact pour ce guide professionnel de bonnes pratiques ; employer institutional-document ou une description de guide professionnel. La consultation factuelle reste valable, mais tout changement de cette source exige de nouveaux sourceHash pour les quatre questions qui la citent.",
+          "contentHash": "4efb90ee16505746137a72bf5c9eaecf8f4e0827375a5d2463c4dd7af267e93f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-cenc-finishes",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "locator": "p.64–65 et74–77 imprimées",
+              "result": "Guide CenC p.64–65 et74–77 imprimées effectivement lu : finition doit préserver perméabilité vapeur, influence perméabilité et tampon hydrique.",
+              "sourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "4efb90ee16505746137a72bf5c9eaecf8f4e0827375a5d2463c4dd7af267e93f",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-hemp-wall-vapour-compatible-finish",
+          "topicId": "profiles",
+          "level": 2,
+          "prompt": "Quelle propriété d’une finition aide à préserver les échanges hydriques d’une paroi en béton de chanvre ?",
+          "options": [
+            "Sa faible effusivité thermique",
+            "Sa perméabilité à la vapeur d’eau",
+            "Sa résistance élevée à la compression",
+            "Sa conductivité thermique élevée"
+          ],
+          "answer": 1,
+          "explanation": "Le guide recommande de préserver la migration de vapeur dans le complexe de paroi. Une finition très fermée peut réduire cette fonction ; la protection contre la pluie relève d’un autre aspect du système.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Finition d’une paroi de chanvre",
+            "subjectKey": "hempcrete-wall-finishes",
+            "property": "Perméabilité de la finition",
+            "expectedAnswer": "Sa perméabilité à la vapeur d’eau",
+            "learningObjective": "Relier la finition aux propriétés hydriques de la paroi.",
+            "factKey": "hemp-wall-vapour-compatible-finish",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.64–65 et74–77 imprimées",
+                "support": "Finition choisie pour préserver perméabilité vapeur ; finitions influencent tampon hydrique et perméabilité."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-hemp-wall-vapour-compatible-finish",
+          "topicId": "profiles",
+          "level": 2,
+          "prompt": "Quelle propriété d’une finition aide à préserver les échanges hydriques d’une paroi en béton de chanvre ?",
+          "options": [
+            "Sa faible effusivité thermique",
+            "Sa perméabilité à la vapeur d’eau",
+            "Sa résistance élevée à la compression",
+            "Sa conductivité thermique élevée"
+          ],
+          "answer": 1,
+          "explanation": "Le guide recommande de préserver la migration de vapeur dans le complexe de paroi. Une finition très fermée peut réduire cette fonction ; la protection contre la pluie relève d’un autre aspect du système.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Finition d’une paroi de chanvre",
+            "subjectKey": "hempcrete-wall-finishes",
+            "property": "Perméabilité de la finition",
+            "expectedAnswer": "Sa perméabilité à la vapeur d’eau",
+            "learningObjective": "Relier la finition aux propriétés hydriques de la paroi.",
+            "factKey": "hemp-wall-vapour-compatible-finish",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.64–65 et74–77 imprimées",
+                "support": "Finition choisie pour préserver perméabilité vapeur ; finitions influencent tampon hydrique et perméabilité."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-flexible-plaster",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Compatibilité mécanique réelle du mur et de son enduit.",
+      "comment": "Niveau2 retenu conformément à B, pour une compatibilité mécanique expliquée sans résultat spécialisé à mémoriser. Notice guide professionnel corrigée.",
+      "contentHash": "6bfeccf9a7d1536d7bcff6d49678b8c4887783cddd48336c9ddc10e8666d8616",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-cenc-finishes",
+          "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+          "locator": "p.40–45 imprimées",
+          "result": "Guide CenC p.44–45 imprimées/PDFindex22 effectivement lu : forte déformabilité du béton de chanvre, enduits souples recommandés.",
+          "sourceHash": "480c033a178095632b72e4690f850f87575f10bcca4f3daa67285c26ec72e185",
+          "metadataAdjustment": {
+            "approvedAndAppliedBy": "root",
+            "date": "2026-11-17",
+            "previousSourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0",
+            "previousSource": {
+              "id": "q2-rm01-cenc-finishes",
+              "title": "Guide des bonnes pratiques — Tome 3, Béton et mortier de chanvre",
+              "organization": "Construire en Chanvre, programme PACTE",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "verifiedAt": "2026-11-17",
+              "author": "Quentin Pichon et Jean-Marc Naumovic",
+              "published": "Date non indiquée sur la page consultée",
+              "passage": "Une première couche protège de la pluie ; les finitions doivent tenir compte de la déformabilité et laisser migrer la vapeur ; le gypse affecte différemment absorption et réduction acoustiques.",
+              "access": "full-text",
+              "documentKind": "original-research",
+              "limitation": "Préconisations professionnelles attribuées, pas norme universelle ni garantie de performance. La préface contient des récits historiques non fiables qui sont expressément exclus, de même que les promesses sanitaires.",
+              "consultation": {
+                "reader": "rebalance_products_sol",
+                "date": "2026-11-17",
+                "locator": "p. 38–39 imprimées, gobetis ; p. 44–45, souplesse ; p. 64–65, gypse ; p. 74–77, finitions et vapeur",
+                "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+              }
+            },
+            "basis": "B a consulté le guide professionnel et expressément demandé de corriger original-research ; seul documentKind a changé."
+          }
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-hemp-wall-flexible-plaster",
+          "status": "changes_requested",
+          "domain": "materials",
+          "domainComment": "Compatibilité mécanique réelle du mur et de son enduit.",
+          "comment": "Souplesse du support et des enduits confirmée, application réelle au béton de chanvre recevable. Corriger documentKind de la notice commune CenC : il s’agit d’un guide professionnel, non d’une recherche originale. Le niveau2 paraît plus adapté que3 : le corrigé explique une compatibilité mécanique sans résultat spécialisé à rappeler ; ne pas conserver3 uniquement pour le vocabulaire de chantier.",
+          "contentHash": "a94202ccb1ae9b5a60a3d422341f0794b1d16a7018421708a97cb4a6a7d526a5",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-cenc-finishes",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "locator": "p.40–45 imprimées",
+              "result": "Guide CenC p.44–45 imprimées/PDFindex22 effectivement lu : forte déformabilité du béton de chanvre, enduits souples recommandés.",
+              "sourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "a94202ccb1ae9b5a60a3d422341f0794b1d16a7018421708a97cb4a6a7d526a5",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-hemp-wall-flexible-plaster",
+          "topicId": "profiles",
+          "level": 2,
+          "prompt": "Pourquoi le guide Construire en Chanvre privilégie-t-il des enduits souples sur un béton de chanvre ?",
+          "options": [
+            "Pour accroître la résistance à la diffusion de vapeur",
+            "Pour atténuer l’alcalinité du liant",
+            "Pour accompagner la déformabilité du support",
+            "Pour ralentir le séchage en profondeur"
+          ],
+          "answer": 2,
+          "explanation": "Le béton de chanvre reste relativement déformable. Un enduit compatible avec ce comportement aide à limiter les contraintes et le risque de fissuration du revêtement.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Compatibilité mécanique des enduits",
+            "subjectKey": "hempcrete-wall-finishes",
+            "property": "Souplesse du revêtement adaptée au support",
+            "expectedAnswer": "Pour accompagner la déformabilité du support",
+            "learningObjective": "Comprendre une contrainte réelle de finition du béton de chanvre.",
+            "factKey": "hemp-wall-flexible-plaster",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.40–45 imprimées",
+                "support": "Faibles caractéristiques mécaniques et déformabilité du support ; privilégier enduits souples."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-hemp-wall-flexible-plaster",
+          "topicId": "profiles",
+          "level": 2,
+          "prompt": "Pourquoi le guide Construire en Chanvre privilégie-t-il des enduits souples sur un béton de chanvre ?",
+          "options": [
+            "Pour accroître la résistance à la diffusion de vapeur",
+            "Pour atténuer l’alcalinité du liant",
+            "Pour accompagner la déformabilité du support",
+            "Pour ralentir le séchage en profondeur"
+          ],
+          "answer": 2,
+          "explanation": "Le béton de chanvre reste relativement déformable. Un enduit compatible avec ce comportement aide à limiter les contraintes et le risque de fissuration du revêtement.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Compatibilité mécanique des enduits",
+            "subjectKey": "hempcrete-wall-finishes",
+            "property": "Souplesse du revêtement adaptée au support",
+            "expectedAnswer": "Pour accompagner la déformabilité du support",
+            "learningObjective": "Comprendre une contrainte réelle de finition du béton de chanvre.",
+            "factKey": "hemp-wall-flexible-plaster",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.40–45 imprimées",
+                "support": "Faibles caractéristiques mécaniques et déformabilité du support ; privilégier enduits souples."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Propriété acoustique d’un système de paroi au chanvre.",
+      "comment": "Construire en Chanvre est nommé pour rendre le tirage isolé compréhensible. Notice guide professionnel corrigée.",
+      "contentHash": "fe04f9f1e4b5f88c5e4401d1aeefb575fd6abe8ce3ecbd9cfb1bff045280a684",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-cenc-finishes",
+          "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+          "locator": "p.64–65 imprimées, Finition avec parement en plaque de gypse",
+          "result": "Guide CenC p.64–65 imprimées/PDFindex32 réellement lu : avec plaques gypse, réduction acoustique bonne et absorption moins bonne.",
+          "sourceHash": "480c033a178095632b72e4690f850f87575f10bcca4f3daa67285c26ec72e185",
+          "metadataAdjustment": {
+            "approvedAndAppliedBy": "root",
+            "date": "2026-11-17",
+            "previousSourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0",
+            "previousSource": {
+              "id": "q2-rm01-cenc-finishes",
+              "title": "Guide des bonnes pratiques — Tome 3, Béton et mortier de chanvre",
+              "organization": "Construire en Chanvre, programme PACTE",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "verifiedAt": "2026-11-17",
+              "author": "Quentin Pichon et Jean-Marc Naumovic",
+              "published": "Date non indiquée sur la page consultée",
+              "passage": "Une première couche protège de la pluie ; les finitions doivent tenir compte de la déformabilité et laisser migrer la vapeur ; le gypse affecte différemment absorption et réduction acoustiques.",
+              "access": "full-text",
+              "documentKind": "original-research",
+              "limitation": "Préconisations professionnelles attribuées, pas norme universelle ni garantie de performance. La préface contient des récits historiques non fiables qui sont expressément exclus, de même que les promesses sanitaires.",
+              "consultation": {
+                "reader": "rebalance_products_sol",
+                "date": "2026-11-17",
+                "locator": "p. 38–39 imprimées, gobetis ; p. 44–45, souplesse ; p. 64–65, gypse ; p. 74–77, finitions et vapeur",
+                "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+              }
+            },
+            "basis": "B a consulté le guide professionnel et expressément demandé de corriger original-research ; seul documentKind a changé."
+          }
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+          "status": "changes_requested",
+          "domain": "materials",
+          "domainComment": "Propriété acoustique d’un système de paroi au chanvre.",
+          "comment": "Couple réduction bonne/absorption moins bonne explicitement confirmé p.64–65 imprimées. Nommer Construire en Chanvre dans le prompt au lieu de « Selon le guide », dont le référent manque pour un tirage isolé. Corriger aussi documentKind de la source commune, guide professionnel et non original-research.",
+          "contentHash": "f4d7dbce050f4e466ad35f129027d2ce2fd4f626208fd56e1a320821c5149719",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-cenc-finishes",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "locator": "p.64–65 imprimées, Finition avec parement en plaque de gypse",
+              "result": "Guide CenC p.64–65 imprimées/PDFindex32 réellement lu : avec plaques gypse, réduction acoustique bonne et absorption moins bonne.",
+              "sourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "f4d7dbce050f4e466ad35f129027d2ce2fd4f626208fd56e1a320821c5149719",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+          "topicId": "profiles",
+          "level": 3,
+          "prompt": "Selon Construire en Chanvre, quel couple décrit une paroi en béton de chanvre avec parement en plaque de gypse ?",
+          "options": [
+            "Faible réduction du son transmis, absorption favorable",
+            "Bonne réduction du son transmis, absorption favorable",
+            "Faible réduction du son transmis, absorption moins favorable",
+            "Bonne réduction du son transmis, absorption moins favorable"
+          ],
+          "answer": 3,
+          "explanation": "Le guide distingue une bonne réduction de transmission et une absorption moins favorable avec le gypse. La finition change donc la façon dont la paroi agit sur le son à l’intérieur de la pièce.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Parement gypse sur chanvre",
+            "subjectKey": "hempcrete-gypsum-acoustics",
+            "property": "Effets acoustiques distincts du parement",
+            "expectedAnswer": "Bonne réduction du son transmis, absorption moins favorable",
+            "learningObjective": "Distinguer deux fonctions concrètes de cette paroi finie.",
+            "factKey": "hemp-wall-gypsum-acoustic-difference",
+            "form": "identification",
+            "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.64–65 imprimées, Finition avec parement en plaque de gypse",
+                "support": "En combinaison avec béton de chanvre, réduction acoustique bonne, absorption moins bonne."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+          "topicId": "profiles",
+          "level": 3,
+          "prompt": "Selon Construire en Chanvre, quel couple décrit une paroi en béton de chanvre avec parement en plaque de gypse ?",
+          "options": [
+            "Faible réduction du son transmis, absorption favorable",
+            "Bonne réduction du son transmis, absorption favorable",
+            "Faible réduction du son transmis, absorption moins favorable",
+            "Bonne réduction du son transmis, absorption moins favorable"
+          ],
+          "answer": 3,
+          "explanation": "Le guide distingue une bonne réduction de transmission et une absorption moins favorable avec le gypse. La finition change donc la façon dont la paroi agit sur le son à l’intérieur de la pièce.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Parement gypse sur chanvre",
+            "subjectKey": "hempcrete-gypsum-acoustics",
+            "property": "Effets acoustiques distincts du parement",
+            "expectedAnswer": "Bonne réduction du son transmis, absorption moins favorable",
+            "learningObjective": "Distinguer deux fonctions concrètes de cette paroi finie.",
+            "factKey": "hemp-wall-gypsum-acoustic-difference",
+            "form": "identification",
+            "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.64–65 imprimées, Finition avec parement en plaque de gypse",
+                "support": "En combinaison avec béton de chanvre, réduction acoustique bonne, absorption moins bonne."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-first-rain-protection",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Protection contre pluie d’une paroi au chanvre.",
+      "comment": "Les alternatives décrivent des fonctions climatiques cohérentes. Le fait de protection contre l’eau liquide reste soutenu ; notice guide professionnel corrigée.",
+      "contentHash": "20cd9529964463008adb01ec283057fb020e4f069663f8e4fe04a004dc3aa5a0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-cenc-finishes",
+          "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+          "locator": "p.38–39 imprimées, Remarque gobetis",
+          "result": "Guide CenC p.38–39 imprimées/PDFindex19 réellement lu : gobetis première protection eau liquide/intempéries/projections, limitation reprise humidité.",
+          "sourceHash": "480c033a178095632b72e4690f850f87575f10bcca4f3daa67285c26ec72e185",
+          "metadataAdjustment": {
+            "approvedAndAppliedBy": "root",
+            "date": "2026-11-17",
+            "previousSourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0",
+            "previousSource": {
+              "id": "q2-rm01-cenc-finishes",
+              "title": "Guide des bonnes pratiques — Tome 3, Béton et mortier de chanvre",
+              "organization": "Construire en Chanvre, programme PACTE",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "verifiedAt": "2026-11-17",
+              "author": "Quentin Pichon et Jean-Marc Naumovic",
+              "published": "Date non indiquée sur la page consultée",
+              "passage": "Une première couche protège de la pluie ; les finitions doivent tenir compte de la déformabilité et laisser migrer la vapeur ; le gypse affecte différemment absorption et réduction acoustiques.",
+              "access": "full-text",
+              "documentKind": "original-research",
+              "limitation": "Préconisations professionnelles attribuées, pas norme universelle ni garantie de performance. La préface contient des récits historiques non fiables qui sont expressément exclus, de même que les promesses sanitaires.",
+              "consultation": {
+                "reader": "rebalance_products_sol",
+                "date": "2026-11-17",
+                "locator": "p. 38–39 imprimées, gobetis ; p. 44–45, souplesse ; p. 64–65, gypse ; p. 74–77, finitions et vapeur",
+                "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+              }
+            },
+            "basis": "B a consulté le guide professionnel et expressément demandé de corriger original-research ; seul documentKind a changé."
+          }
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-hemp-wall-first-rain-protection",
+          "status": "changes_requested",
+          "domain": "materials",
+          "domainComment": "Protection contre pluie d’une paroi au chanvre.",
+          "comment": "Protection à l’eau liquide confirmée p.38–39 imprimées. Corriger documentKind du guide CenC. Remplacer aussi « rayonnement solaire infrarouge intérieur », expression physiquement peu cohérente pour cette couche extérieure ; préférer des effets climatiques ou fonctions de revêtement comparables et plausibles. Le niveau1 et le fait de protection contre la pluie restent recevables.",
+          "contentHash": "05bb9964b225ab127824a1bcd0315cfc12223515d4a0268a63b798b4fe6fa29c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-cenc-finishes",
+              "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+              "locator": "p.38–39 imprimées, Remarque gobetis",
+              "result": "Guide CenC p.38–39 imprimées/PDFindex19 réellement lu : gobetis première protection eau liquide/intempéries/projections, limitation reprise humidité.",
+              "sourceHash": "188154cac7f9756c29e7e6c83e2fddb54a0f44bc06c1cc22bd7d51613c0e03a0"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "05bb9964b225ab127824a1bcd0315cfc12223515d4a0268a63b798b4fe6fa29c",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-hemp-wall-first-rain-protection",
+          "topicId": "profiles",
+          "level": 1,
+          "prompt": "Dans le guide du béton de chanvre, contre quoi une première couche extérieure de gobetis protège-t-elle surtout la paroi ?",
+          "options": [
+            "La pluie et les projections d’eau liquide",
+            "La diffusion normale de vapeur vers l’extérieur",
+            "L’échauffement de surface sous le soleil",
+            "Le refroidissement de la surface sous le vent"
+          ],
+          "answer": 0,
+          "explanation": "Cette première protection limite les reprises d’eau dues aux intempéries, qui prolongeraient le séchage. Elle doit être pensée avec les échanges de vapeur et les autres finitions du mur.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Protection de la paroi de chanvre",
+            "subjectKey": "hempcrete-exterior-rain-protection",
+            "property": "Protection contre eau liquide",
+            "expectedAnswer": "La pluie et les projections d’eau liquide",
+            "learningObjective": "Comprendre pourquoi une paroi perméante demande aussi une protection à la pluie.",
+            "factKey": "hemp-wall-first-rain-protection",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.38–39 imprimées, Remarque gobetis",
+                "support": "Gobetis première protection eau liquide, intempéries/projections, évitant reprise humidité."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-hemp-wall-first-rain-protection",
+          "topicId": "profiles",
+          "level": 1,
+          "prompt": "Dans le guide du béton de chanvre, contre quoi une première couche extérieure de gobetis protège-t-elle surtout la paroi ?",
+          "options": [
+            "La pluie et les projections d’eau liquide",
+            "La diffusion normale de vapeur vers l’extérieur",
+            "L’échauffement de surface sous le soleil",
+            "Le refroidissement de la surface sous le vent"
+          ],
+          "answer": 0,
+          "explanation": "Cette première protection limite les reprises d’eau dues aux intempéries, qui prolongeraient le séchage. Elle doit être pensée avec les échanges de vapeur et les autres finitions du mur.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cenc-finishes"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Protection de la paroi de chanvre",
+            "subjectKey": "hempcrete-exterior-rain-protection",
+            "property": "Protection contre eau liquide",
+            "expectedAnswer": "La pluie et les projections d’eau liquide",
+            "learningObjective": "Comprendre pourquoi une paroi perméante demande aussi une protection à la pluie.",
+            "factKey": "hemp-wall-first-rain-protection",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cenc-finishes",
+                "locator": "p.38–39 imprimées, Remarque gobetis",
+                "support": "Gobetis première protection eau liquide, intempéries/projections, évitant reprise humidité."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-earth-hemp-clay-binder",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Liant alternatif d’un isolant au chanvre.",
+      "comment": "Le nom terre-chanvre qui révélait la réponse a disparu du prompt. Quatre liants comparables remplacent les choix trop éloignés, sans changement du fait EcoTerra.",
+      "contentHash": "4c53368b233c7e9b4ea1351f313db5a9e25b7c6492e5ee74f01410aca38c162b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-cerema-earth-hemp",
+          "url": "https://www.cerema.fr/fr/actualites/ecoterra-projet-recherche-performances-betons-terre-chanvre",
+          "locator": "Favoriser l’utilisation des isolants terre-chanvre",
+          "result": "Page Cerema effectivement lue : bétons chanvre-terre crue, types d’argile et viscosité du liant examinés ; pas de chiffres environnementaux non bornés repris.",
+          "sourceHash": "8ece3853065c6278472b952f825ff99947e7b7f8812d9ec98384c7ff5e5d1882"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-earth-hemp-clay-binder",
+          "status": "changes_requested",
+          "domain": "materials",
+          "domainComment": "Liant alternatif d’un isolant au chanvre.",
+          "comment": "Liant terre crue argileuse soutenu. Mais « béton terre-chanvre » dans le prompt donne directement terre dans les réponses. Retirer le nom composé qui révèle le corrigé, puis comparer des liants plausibles dans le matériau étudié. Le fait utile est l’alternative à la chaux, à conserver sans cette tautologie.",
+          "contentHash": "8dc0e0bafd381688a10d244bbdea7dc56dc0289fc4f8d75200e5bea5d8623c30",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-cerema-earth-hemp",
+              "url": "https://www.cerema.fr/fr/actualites/ecoterra-projet-recherche-performances-betons-terre-chanvre",
+              "locator": "Favoriser l’utilisation des isolants terre-chanvre",
+              "result": "Page Cerema effectivement lue : bétons chanvre-terre crue, types d’argile et viscosité du liant examinés ; pas de chiffres environnementaux non bornés repris.",
+              "sourceHash": "8ece3853065c6278472b952f825ff99947e7b7f8812d9ec98384c7ff5e5d1882"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "8dc0e0bafd381688a10d244bbdea7dc56dc0289fc4f8d75200e5bea5d8623c30",
+        "authorCorrection": {
+          "id": "hemp-q2-rm01-earth-hemp-clay-binder",
+          "topicId": "profiles",
+          "level": 1,
+          "prompt": "Quel liant le projet EcoTerra étudie-t-il avec le chanvre comme alternative aux mélanges à base de chaux ?",
+          "options": [
+            "Un plâtre de gypse",
+            "Une terre argileuse crue",
+            "Un ciment Portland",
+            "Un ciment d’aluminates de calcium"
+          ],
+          "answer": 1,
+          "explanation": "EcoTerra étudie l’association du chanvre et de la terre crue argileuse pour des isolants. Les matériaux de construction au chanvre ne se limitent donc pas aux mélanges à base de chaux.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cerema-earth-hemp"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Liant terre-chanvre",
+            "subjectKey": "earth-hemp-building-material",
+            "property": "Terre argileuse comme liant",
+            "expectedAnswer": "Une terre argileuse crue",
+            "learningObjective": "Découvrir un matériau au chanvre distinct du chaux-chanvre.",
+            "factKey": "earth-hemp-clay-binder",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cerema-earth-hemp",
+                "locator": "Favoriser l’utilisation des isolants terre-chanvre",
+                "support": "Association chanvre avec terre crue comme liant dans les matériaux étudiés."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-earth-hemp-clay-binder",
+          "topicId": "profiles",
+          "level": 1,
+          "prompt": "Quel liant le projet EcoTerra étudie-t-il avec le chanvre comme alternative aux mélanges à base de chaux ?",
+          "options": [
+            "Un plâtre de gypse",
+            "Une terre argileuse crue",
+            "Un ciment Portland",
+            "Un ciment d’aluminates de calcium"
+          ],
+          "answer": 1,
+          "explanation": "EcoTerra étudie l’association du chanvre et de la terre crue argileuse pour des isolants. Les matériaux de construction au chanvre ne se limitent donc pas aux mélanges à base de chaux.",
+          "articleId": "ref-chenevotte-materiaux",
+          "sourceIds": [
+            "q2-rm01-cerema-earth-hemp"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Liant terre-chanvre",
+            "subjectKey": "earth-hemp-building-material",
+            "property": "Terre argileuse comme liant",
+            "expectedAnswer": "Une terre argileuse crue",
+            "learningObjective": "Découvrir un matériau au chanvre distinct du chaux-chanvre.",
+            "factKey": "earth-hemp-clay-binder",
+            "form": "identification",
+            "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-cerema-earth-hemp",
+                "locator": "Favoriser l’utilisation des isolants terre-chanvre",
+                "support": "Association chanvre avec terre crue comme liant dans les matériaux étudiés."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Correction ciblée après première revue B ; sources inchangées sauf la qualification documentaire du guide, vérifiée par B. Root ne revendique aucune nouvelle consultation.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-plumbing-tow-seals",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Usage bâtiment/plomberie des fibres.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "40156a667db651b89b55d87c9c9c3361d166944f07cbda6b2ebada41ff2f48a0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-dreal-fibre-excerpt",
+          "url": "https://www.centre-val-de-loire.developpement-durable.gouv.fr/IMG/pdf/recueil_technique_13-07-18_vf.pdf",
+          "locator": "p.7, extrait Filasse de chanvre, Fabrication",
+          "result": "URL DREAL effectivement ouverte en maintenance ; extrait primaire indexé indépendant obtenu par titre/nom exact PDF et rubrique Filasse : usage plomberie pour étanchéifier raccords. Aucune lecture intégrale revendiquée.",
+          "sourceHash": "977821c27eb2b794813e215fed4c45eb182220d66de9347c3f9fb044917c46de"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wool-polyester-binder",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Composition d’un isolant manufacturé au chanvre.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "9eb8e306beff2821e141aacfa0705d00bd45b5183450504080ed660ab2d73ffd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-dreal-fibre-excerpt",
+          "url": "https://www.centre-val-de-loire.developpement-durable.gouv.fr/IMG/pdf/recueil_technique_13-07-18_vf.pdf",
+          "locator": "p.7, extrait Laine de chanvre, Fabrication",
+          "result": "Même extrait DREAL obtenu indépendamment : fibres mélangées avec liant polyester pour former matelas ; description2018, pas généralisation à toutes laines actuelles.",
+          "sourceHash": "977821c27eb2b794813e215fed4c45eb182220d66de9347c3f9fb044917c46de"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-hempcrete-lca-binder-production",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Contribution du liant à l’énergie d’un mur chaux-chanvre.",
+      "comment": "Fait distinct, corrigé, portée, choix et niveau recevables après lecture complète et contrôle du passage.",
+      "contentHash": "3f315c767c852e5ed8a408efeb5dbe1becbbc25823474a4334d010529f03e52e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-pretot14-lca",
+          "url": "https://www.scribd.com/document/765592222/pretot2014",
+          "locator": "§4.2, Fig.5, répartition des impacts de production",
+          "result": "Manuscrit accepté Pretot effectivement lu sur miroir Scribd : titre/auteurs/DOI et §4.2 vérifiés, liant premier poste matériaux49%énergie primaire dans ce scénario ; miroir et limites honnêtement déclarés.",
+          "sourceHash": "5af93e7d74b10b3b37091bf9f95d2e5da65e7dc51ab0183310e1e0429e8e8a70"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Usage textile historique concret de fibres de chanvre dans un vêtement ; la ramie alternative est explicitement conservée.",
+      "comment": "Le fait textile et la source sont approuvés par A. Root retire seulement les descriptions de matière/saison des distracteurs, qui permettaient de les éliminer sans connaître les vêtements ; le corrigé expliqué reste inchangé.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-kyoto-katabira",
+          "url": "https://www.kyohaku.go.jp/old/eng/theme/floor1_4/past/sensyoku_20180719.html",
+          "locator": "Deuxième paragraphe, ligne 34 de la page consultée ; dates d’exposition ligne32",
+          "result": "Page institutionnelle originale effectivement ouverte ; unlined ramie or hemp et peak of midsummer heat lus. Aucune exclusivité du chanvre ou propriété sanitaire inférée.",
+          "sourceHash": "9851553f0356e03e485b4328010cb0464d6430a4f6d5688823ddd6a3b48363ff"
+        }
+      ],
+      "contentHash": "903be904fa37d2827cdbc55f318ee4870f982604fc69d9ee318ce7c7a360a1f3",
+      "initialReviewer": "rebalance_classify_a",
+      "initialReviewRecord": "docs/quiz-2000/facts/rm01-katabira-independent-review.json",
+      "initialReviewContentHash": "2b7a8cd778d0a5de0ab0aa0cef90f24b45199d53dd2517a295f7056c2d14e099",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+          "status": "approved",
+          "domain": "materials",
+          "domainComment": "Usage textile historique concret de fibres de chanvre dans un vêtement ; la ramie alternative est explicitement conservée.",
+          "comment": "Objet complet et quatre choix lus. La page originale Kyoto National Museum, deuxième paragraphe, décrit le katabira comme kimono non doublé de ramie ou chanvre porté au pic estival, et oppose le hitoe de soie au début/fin d’été. Date d’exposition 19 juillet–2 septembre 2018 confirmée. Niveau 2 cohérent pour les noms vestimentaires. Voisins retenus ouverts en entier : sandales japonaises du Met et motif asanoha ; ni même objet ni même propriété. Aucun doublon katabira/kimono dans l’index.",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm01-kyoto-katabira",
+              "url": "https://www.kyohaku.go.jp/old/eng/theme/floor1_4/past/sensyoku_20180719.html",
+              "locator": "Deuxième paragraphe, ligne 34 de la page consultée ; dates d’exposition ligne32",
+              "result": "Page institutionnelle originale effectivement ouverte ; unlined ramie or hemp et peak of midsummer heat lus. Aucune exclusivité du chanvre ou propriété sanitaire inférée.",
+              "sourceHash": "9851553f0356e03e485b4328010cb0464d6430a4f6d5688823ddd6a3b48363ff"
+            }
+          ],
+          "contentHash": "2b7a8cd778d0a5de0ab0aa0cef90f24b45199d53dd2517a295f7056c2d14e099"
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+          "topicId": "profiles",
+          "level": 2,
+          "prompt": "Quel vêtement le musée de Kyoto décrit-il comme étant en chanvre ou ramie pour la chaleur du plein été japonais ?",
+          "options": [
+            "Le katabira, un kimono non doublé",
+            "Le hitoe, un kimono de soie non doublé",
+            "Le kosode ouaté pour la saison froide",
+            "Le jinbaori, un manteau porté sur une armure"
+          ],
+          "answer": 0,
+          "explanation": "Le katabira pouvait être tissé en chanvre ou en ramie et se portait sans doublure au plus fort de l’été. Le musée le distingue du hitoe de soie, porté au début et à la fin de la saison.",
+          "articleId": "ref-fibres-chanvre",
+          "sourceIds": [
+            "q2-rm01-kyoto-katabira"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Katabira japonais en fibres libériennes",
+            "subjectKey": "japan-katabira",
+            "property": "Vêtement d’été non doublé en chanvre ou ramie",
+            "expectedAnswer": "Le katabira, un kimono non doublé",
+            "learningObjective": "Découvrir un usage textile du chanvre dans le vêtement japonais.",
+            "factKey": "katabira-hemp-summer-robe",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-kyoto-katabira",
+                "locator": "Deuxième paragraphe, hitoe et katabira",
+                "support": "Katabira : kimono non doublé en ramie ou chanvre porté au plus fort de la chaleur estivale."
+              }
+            ]
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+          "topicId": "profiles",
+          "level": 2,
+          "prompt": "Quel vêtement le musée de Kyoto décrit-il comme étant en chanvre ou ramie pour la chaleur du plein été japonais ?",
+          "options": [
+            "Le katabira",
+            "Le hitoe",
+            "Le kosode",
+            "Le jinbaori"
+          ],
+          "answer": 0,
+          "explanation": "Le katabira pouvait être tissé en chanvre ou en ramie et se portait sans doublure au plus fort de l’été. Le musée le distingue du hitoe de soie, porté au début et à la fin de la saison.",
+          "articleId": "ref-fibres-chanvre",
+          "sourceIds": [
+            "q2-rm01-kyoto-katabira"
+          ],
+          "editorial": {
+            "domain": "materials",
+            "category": "hemp-uses",
+            "subject": "Katabira japonais en fibres libériennes",
+            "subjectKey": "japan-katabira",
+            "property": "Vêtement d’été non doublé en chanvre ou ramie",
+            "expectedAnswer": "Le katabira",
+            "learningObjective": "Découvrir un usage textile du chanvre dans le vêtement japonais.",
+            "factKey": "katabira-hemp-summer-robe",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm01-kyoto-katabira",
+                "locator": "Deuxième paragraphe, hitoe et katabira",
+                "support": "Katabira : kimono non doublé en ramie ou chanvre porté au plus fort de la chaleur estivale."
+              }
+            ]
+          }
+        }
+      },
+      "coordinatorScope": "Nouvel objet rédigé par C et intégralement contre-lu par A, puis correction de jouabilité sans fait ni source supplémentaires. La première revue A est référencée explicitement, indépendamment du reviewer B du lot initial."
+    }
+  ],
+  "summary": {
+    "reviewed": 25,
+    "approved": 17,
+    "changes_requested": 8,
+    "rejected": 0,
+    "domains": {
+      "food": 12,
+      "materials": 12,
+      "offscope": 1
+    },
+    "sourceObjectsRead": 18,
+    "externalSourcesConsulted": 18,
+    "sourceAccess": "17 documents/pages/résumés ouverts et passages lus ; DREAL ouvert en maintenance, extrait primaire indexé obtenu et lu indépendamment. Tang abstract seulement ; Pretot manuscrit accepté sur miroir déclaré.",
+    "completeReading": "25 questions complètes, quatre choix, corrigés, explications et18 sources lus, sans échantillonnage.",
+    "duplicateCheck": "Index complet interrogé et voisins complets pertinents relus : ALA/GLA distincts ; identité éd estine différente de structure en six sous-unités ; solubilité albumine distincte de liste globulines/albumines ; finitions du mur distinctes de définition hygroscopie retirée ; pas de doublon exact constaté.",
+    "closePairGLA": "hemp-seeds-omega-trois teste ALA oméga3 ; rm01-seed-oil-gla-omega6 teste GLA oméga6 minoritaire. Molécules et famille différentes, pas inversion du même fait. subjectKey huile-chenevis partagé à juste titre.",
+    "scopeDisagreement": "rm01-hemp-pp-mapp-interface hors périmètre : simple fonction générale du compatibilisant plastique ; les autres propriétés portent effectivement sur graines alimentaires ou produits textile/bâtiment.",
+    "sharedSourceCorrection": "q2-rm01-cenc-finishes est un guide professionnel, non original-research ; correction de notice demandée sur ses quatre items, hashes actuels exacts conservés. Aucun objet auteur modifié."
+  },
+  "supersededItems": [
+    {
+      "id": "hemp-q2-rm01-hemp-pp-mapp-interface",
+      "status": "rejected",
+      "domain": "offscope",
+      "domainComment": "Définition générale d’un compatibilisant plastique, sans usage textile/bâtiment testé.",
+      "comment": "Fonction chimique soutenue, mais le fait testé reste la définition générale d’un compatibilisant pour un composite plastique. La source le présente d’abord pour toutes fibres naturelles, puis l’applique au chanvre ; la question ne teste ni résultat particulier ni usage textile/bâtiment. Dans la frontière retenue pour cette refonte, cette leçon de plastiques habillée de chanvre est hors périmètre. Remplacer par une propriété utile d’un produit textile ou bâtiment, avec preuve indépendante, ou retirer.",
+      "contentHash": "8d0c84515fb1c39e737a3d1e5608154e56ce0bb4ca2cc531f0a80c1b71f153f8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm01-silveira23-interface",
+          "url": "https://www.mdpi.com/2073-4360/15/15/3271",
+          "locator": "Introduction, compatibilization ; résultats FTIR",
+          "result": "Article Silveira introduction réellement lue : amélioration compatibilité/adhésion interface fibres naturelles-matrice hydrophobe ; fait soutenu mais définition générale hors périmètre éditorial ici.",
+          "sourceHash": "03774c8e1f26d856c36ab0dd43b1194fc15344022b23386fe8e0ae8e8f6174f2"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "replacementId": "hemp-q2-rm01-katabira-hemp-summer-robe",
+      "coordinatorScope": "Fonction générale d’un compatibilisant plastique exclue du périmètre textile/bâtiment avant activation. Nouveau fait textile rédigé par C et contre-lu par A."
+    }
+  ],
+  "coordinatorSummary": "25 questions approuvées :12 alimentaires et13 textiles/bâtiment. Sept demandes ciblées résolues, MAPP rejeté et remplacé par katabira contre-lu par A. Les quatre preuves du guide CenC corrigé ont été rescéllées avec leur historique ; aucune source nouvelle approuvée par son auteur."
+}

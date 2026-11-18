@@ -88,7 +88,7 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
     </> : null}
     {replacedVersion === condition.version ? <p role="status">Matériel remplacé. Actualisation de son état…</p> : null}
     {error ? <p role="alert" className={styles.error}>{error}<button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
-    <details className={styles.wearRules}><summary>Usure et dépannage</summary><KqHelpDashboard>
+    <details className={styles.wearRules} data-tutorial-observation="equipment-wear"><summary>Usure et dépannage</summary><KqHelpDashboard>
       <KqHelpGrid art="help-workshop" items={[
         { label: "Mode éco", value: "Usure ralentie", art: "help-rest" },
         { label: "Mode intensif", value: "Usure accélérée", detail: "Encore plus sous 30 % d’état." },

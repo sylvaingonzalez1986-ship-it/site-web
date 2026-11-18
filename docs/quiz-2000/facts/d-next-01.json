@@ -1,0 +1,1313 @@
+{
+  "registryId": "d-next-01",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "researchedAt": "2026-11-16",
+  "status": "first-batch-authored-awaiting-independent-revalidation",
+  "factCount": 47,
+  "scope": "Recherche externe indépendante : histoire des techniques et des cultures, alimentation par les graines, fibres et matériaux. Aucun sujet choisi à partir des variétés, producteurs ou fiches du site ; aucun fait du lot AB archivé réutilisé.",
+  "authoringGate": "La confirmation interne de Root a autorisé le lot d-01 après validation du pilote de 30. Le lot corrigé reste soumis à une revalidation indépendante ; ce registre ne constitue pas une approbation éditoriale.",
+  "deduplication": {
+    "comparedWith": [
+      "docs/quiz-2000/audit-f-active-snapshot.json#entries",
+      "docs/quiz-2000/batches/pilot-c.json",
+      "docs/quiz-2000/batches/pilot-d.json",
+      "docs/quiz-2000/batches/pilot-external.json"
+    ],
+    "method": "Lecture ciblée des 360 prompts/réponses histoire, usages, matériaux et graines ; recherches des concepts dans l'ensemble du snapshot ; lecture des factKeys et prompts des trois pilotes. Comparaison sémantique par propriété, pas seulement par identifiant.",
+    "sourceIdentityRule": "Tous les identifiants q2-dnext01 sont nouveaux. Aucune définition d'un ID déjà présent n'est remplacée ; le corrigendum de Badji est une consultation liée, distincte de la source originale.",
+    "nearExistingFacts": [
+      {
+        "existing": "hemp-hc-007 ; hemp-hc-025 ; hemp-profiles-filature",
+        "newFacts": [
+          "d-next-01-f01",
+          "d-next-01-f03"
+        ],
+        "distinction": "Marché du conditionnement du coton et déplacement du cordier ; ni fibre de Rochefort, ni nom de corderie, ni définition de filature."
+      },
+      {
+        "existing": "hemp-en-3-16 ; hemp-profiles-rouissage-organismes",
+        "newFacts": [
+          "d-next-01-f06",
+          "d-next-01-f07"
+        ],
+        "distinction": "Orientation comparée des fibrilles et limite de l'ADN ancien ; ni rôle mécanique des microfibrilles, ni agents biologiques du rouissage."
+      },
+      {
+        "existing": "hemp-q2-d-met-accessoire-pieds",
+        "newFacts": [
+          "d-next-01-f10"
+        ],
+        "distinction": "Âme de la bride des geta, sandales à semelle de bois ; pas identification de la paire en chanvre du Met."
+      },
+      {
+        "existing": "hemp-seeds-solubilite",
+        "newFacts": [
+          "d-next-01-f17",
+          "d-next-01-f20",
+          "d-next-01-f32"
+        ],
+        "distinction": "Résultats comparés d'isolats alimentaires et stabilité de corps lipidiques ; aucune nouvelle question sur le minimum au point isoélectrique."
+      },
+      {
+        "existing": "hemp-prevention-huile-rance ; hemp-seeds-pigment-huile ; hemp-prevention-hydroperoxydes",
+        "newFacts": [
+          "d-next-01-f36",
+          "d-next-01-f37",
+          "d-next-01-f38"
+        ],
+        "distinction": "Effet expérimental de filtration, photosensibilisation et distinction hydrolyse/oxydation ; pas nom de la réaction de rancissement, du pigment vert ou du premier produit d'oxydation."
+      },
+      {
+        "existing": "hemp-q2-d-pain-proteines-elasticite",
+        "newFacts": [
+          "d-next-01-f15",
+          "d-next-01-f16",
+          "d-next-01-f17",
+          "d-next-01-f18",
+          "d-next-01-f19",
+          "d-next-01-f20"
+        ],
+        "distinction": "Aucun fait de pain ou de gluten : rendement, couleur, dispersion, gélification et composition d'isolats de graines."
+      }
+    ],
+    "requiresIndependentReview": true
+  },
+  "formPlan": {
+    "minimumNonRecallShare": 0.5,
+    "proposedCounts": {
+      "identification": 6,
+      "comparaison": 19,
+      "situation": 15
+    },
+    "proposedNonRecallShare": 0.85,
+    "note": "Les taskDesign décrivent des tâches possibles, sans rédiger d'énoncés ni de choix. Les comparaisons et chronologies devront fournir les données ou repères nécessaires ; une simple restitution d'un résultat ne devra pas être rebaptisée comparaison.",
+    "avoid": [
+      "numéros d'inventaire à mémoriser",
+      "unités locales non définies",
+      "ordre chronologique artificiel",
+      "quatre questions issues d'une inversion du même fait",
+      "généralisation d'un essai à tous les produits"
+    ]
+  },
+  "facts": [
+    {
+      "id": "d-next-01-f01",
+      "factKey": "kentucky-hemp-bagging-linked-southern-cotton-market",
+      "subjectKey": "kentucky-hemp-patrick",
+      "category": "history",
+      "claim": "Au Kentucky antebellum, sacs et liens de chanvre accompagnaient la commercialisation du coton du Sud.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "situation",
+      "taskDesign": "Relier une hausse du transport du coton à son besoin d'emballage.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "locator": "p. 7–9, débouchés bagging/bale rope",
+          "support": "Sacs et cordages arrimaient le coton sur ses marchés."
+        }
+      ],
+      "boundary": "Histoire économique régionale ; ne pas attribuer toute la production mondiale de chanvre au coton."
+    },
+    {
+      "id": "d-next-01-f02",
+      "factKey": "kentucky-antebellum-hemp-chain-enslaved-labour",
+      "subjectKey": "kentucky-hemp-patrick",
+      "category": "history",
+      "claim": "La filière du chanvre du Kentucky reposait largement sur le travail de personnes réduites en esclavage.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "identification",
+      "taskDesign": "Identifier les travailleurs dont dépendait cette chaîne agricole et industrielle.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "locator": "p. 1–3 et p. 9, travail agricole et manufactures",
+          "support": "Les travailleurs asservis interviennent aux champs et en corderie."
+        }
+      ],
+      "boundary": "Ne pas reprendre comme neutres les appréciations de facilité émises par des propriétaires esclavagistes."
+    },
+    {
+      "id": "d-next-01-f03",
+      "factKey": "kentucky-ropewalk-spinner-walked-backwards-drawing-fibres",
+      "subjectKey": "kentucky-hemp-patrick",
+      "category": "hemp-uses",
+      "claim": "Dans la corderie manuelle décrite, le fileur reculait en laissant sortir les fibres de sa réserve.",
+      "articleId": "ref-fibres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Associer le recul du fileur au besoin d'une longue aire de travail.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "locator": "p. 9, description contemporaine du ropewalk",
+          "support": "Le fileur recule tandis que la torsion tire les fibres."
+        }
+      ],
+      "boundary": "Procédé historique décrit, sans prétendre qu'il définit toutes les corderies."
+    },
+    {
+      "id": "d-next-01-f04",
+      "factKey": "mansell-barnum-hemp-machine-advertising-not-lasting-adoption",
+      "subjectKey": "kentucky-hemp-patrick",
+      "category": "history",
+      "claim": "Les machines de Mansell puis Barnum furent vantées, mais Patrick ne constate pas leur implantation durable.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "situation",
+      "taskDesign": "Confronter une annonce d'invention à un bilan historique de son adoption.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "locator": "p. 5–6, annonces de Mansell et Barnum, bilan de l'auteur",
+          "support": "Capacités annoncées et impact historique sont explicitement distingués."
+        }
+      ],
+      "boundary": "Ne pas généraliser cet échec à toute mécanisation ultérieure ; aucune capacité publicitaire n'est traitée comme mesure indépendante."
+    },
+    {
+      "id": "d-next-01-f05",
+      "factKey": "skoglund-2013-hemp-present-fine-scandinavian-medieval-textiles",
+      "subjectKey": "skoglund-2013-scandinavian-textiles",
+      "category": "history",
+      "claim": "L'étude scandinave de 2013 identifie du chanvre dans des textiles fins, au-delà des seules toiles grossières.",
+      "articleId": "ref-fibres-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Découvrir que la finesse d'un textile n'exclut pas le chanvre.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "locator": "Abstract ; Results ; Discussion",
+          "support": "Les identifications étendent l'usage du chanvre aux étoffes fines."
+        }
+      ],
+      "boundary": "Corpus limité ; ni classement universel des fibres ni identification de toute étoffe médiévale."
+    },
+    {
+      "id": "d-next-01-f06",
+      "factKey": "herzog-hemp-z-flax-s-microfibrillar-orientation",
+      "subjectKey": "skoglund-2013-scandinavian-textiles",
+      "category": "hemp-uses",
+      "claim": "L'orientation fibrillaire distingue le chanvre en Z du lin en S dans l'analyse au microscope polarisant.",
+      "articleId": "ref-fibres-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Fournir les orientations de deux fibres et comparer leur attribution.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "locator": "Methods, Identification of bast fibres ; figure 5",
+          "support": "Herzog modifié mesure l'orientation ; chanvre Z, lin S."
+        }
+      ],
+      "boundary": "Orientation interne de la fibre, pas sens de torsion du fil. S n'identifie pas seul le lin : l'ortie peut aussi être S."
+    },
+    {
+      "id": "d-next-01-f07",
+      "factKey": "retting-water-can-damage-bast-fibre-dna-hydrolytically",
+      "subjectKey": "skoglund-2013-scandinavian-textiles",
+      "category": "history",
+      "claim": "L'exposition à l'eau pendant le rouissage peut altérer l'ADN conservé dans les fibres.",
+      "articleId": "ref-fibres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Expliquer pourquoi une fibre conservée peut fournir peu d'ADN exploitable.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "locator": "Methods, paragraphe DNA analysis et retting",
+          "support": "Le rouissage augmente le risque d'altération hydrolytique de l'ADN."
+        }
+      ],
+      "boundary": "Ne pas affirmer qu'une analyse ADN est toujours impossible avec les méthodes actuelles."
+    },
+    {
+      "id": "d-next-01-f08",
+      "factKey": "hemp-pollen-seeds-alone-not-proof-textile-production",
+      "subjectKey": "skoglund-2013-scandinavian-textiles",
+      "category": "history",
+      "claim": "Du pollen ou des graines de chanvre ne suffisent pas à prouver une fabrication textile sur un site.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "situation",
+      "taskDesign": "Choisir la conclusion permise par une fouille ne livrant que graines et pollen.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "locator": "Introduction, paragraphe finds of hemp and flax pollen and seeds",
+          "support": "Les graines peuvent aussi correspondre à l'alimentation ou à l'huile."
+        }
+      ],
+      "boundary": "Distinguer présence de la plante, culture et preuve directe d'une chaîne textile."
+    },
+    {
+      "id": "d-next-01-f09",
+      "factKey": "japan-hemp-household-cloth-in-climates-unsuited-cotton",
+      "subjectKey": "japan-hemp-cotton-climate",
+      "category": "history",
+      "claim": "Dans des régions japonaises peu adaptées au coton, le chanvre fournissait des vêtements domestiques avant-guerre.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer disponibilité locale des fibres et adaptation climatique, avec le contexte fourni.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-shinozaki-2014",
+          "locator": "Résumé anglais, paragraphe northeastern and central Japan",
+          "support": "Le résumé relie autoapprovisionnement en chanvre et climat défavorable au coton."
+        }
+      ],
+      "boundary": "Résumé indexé seulement ; retrouver un accès lisible avant rédaction définitive. Aucun conseil actuel de culture."
+    },
+    {
+      "id": "d-next-01-f10",
+      "factKey": "japanese-geta-straps-hemp-core-cord",
+      "subjectKey": "geta-strap-hemp-core",
+      "category": "hemp-uses",
+      "claim": "La fibre de chanvre servait à l'âme des brides de geta, les sandales japonaises en bois.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Localiser le composant végétal dans une chaussure dont la semelle est en bois.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-shinozaki-2014",
+          "locator": "Résumé anglais, phrase core cord for geta straps",
+          "support": "Le chanvre constituait le cordon interne des brides."
+        }
+      ],
+      "boundary": "Pas la paire du Met ; ne pas attribuer au chanvre la semelle de bois. Accès direct au texte à améliorer avant rédaction."
+    },
+    {
+      "id": "d-next-01-f11",
+      "factKey": "japanese-engagement-gifts-auspicious-hemp-string",
+      "subjectKey": "japan-hemp-engagement-gifts",
+      "category": "history",
+      "claim": "Des cordelettes de chanvre figuraient parmi les éléments de bon augure des cadeaux de fiançailles japonais.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "identification",
+      "taskDesign": "Identifier une fonction symbolique différente de la fonction mécanique d'un cordon.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-shinozaki-2014",
+          "locator": "Résumé anglais, gifts exchanged at traditional engagement ceremonies",
+          "support": "Le cordon est présenté comme élément de bon augure."
+        }
+      ],
+      "boundary": "Usage documenté dans l'étude, pas coutume uniforme de tous les Japonais ; résumé indexé seulement."
+    },
+    {
+      "id": "d-next-01-f12",
+      "factKey": "historical-japan-hemp-string-cut-newborn-umbilical-cord",
+      "subjectKey": "japan-birth-hemp-string-history",
+      "category": "history",
+      "claim": "L'étude rapporte un usage historique de ficelle de chanvre pour couper le cordon ombilical d'un nouveau-né.",
+      "articleId": "ref-histoire-culture",
+      "proposedForm": "identification",
+      "taskDesign": "Découvrir un usage matériel historique lié à la naissance.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-shinozaki-2014",
+          "locator": "Résumé anglais, sentence newborn baby's umbilical cord",
+          "support": "Le résumé décrit cet usage autour de la naissance."
+        }
+      ],
+      "boundary": "Fait ethnographique, jamais recommandation obstétricale ni mode opératoire ; accès direct à améliorer avant rédaction."
+    },
+    {
+      "id": "d-next-01-f13",
+      "factKey": "manila-hemp-abaca-musa-textilis-musaceae-not-cannabis",
+      "subjectKey": "abaca-musa-textilis",
+      "category": "hemp-uses",
+      "claim": "Le « chanvre de Manille » est l'abaca, Musa textilis, une Musacée et non Cannabis sativa.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer nom commercial de fibre et identité botanique dans deux étiquettes explicites.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-fao-abaca",
+          "locator": "Musa textilis, Family et Common names",
+          "support": "La fiche réunit abaca, Manila hemp et Musaceae."
+        }
+      ],
+      "boundary": "Ne pas sélectionner d'autres faux chanvres pour multiplier artificiellement cette seule leçon de nomenclature."
+    },
+    {
+      "id": "d-next-01-f14",
+      "factKey": "abaca-marine-cordage-durability-saltwater",
+      "subjectKey": "abaca-musa-textilis",
+      "category": "hemp-uses",
+      "claim": "La résistance à l'eau salée explique l'ancien usage maritime de l'abaca appelé chanvre de Manille.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Relier une contrainte d'eau salée au choix historique d'une fibre de cordage.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-fao-abaca",
+          "locator": "USES, phrase marine cordage",
+          "support": "La FAO relie cet emploi à la durabilité en eau salée."
+        }
+      ],
+      "boundary": "Propriété de l'abaca ; ne pas la transférer au chanvre botanique par son nom commercial."
+    },
+    {
+      "id": "d-next-01-f15",
+      "factKey": "hemp-protein-isolate-purity-distinct-extraction-yield",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "Pour un isolat de chanvre, pureté protéique et rendement d'extraction utilisent deux dénominateurs différents.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Fournir deux pourcentages et distinguer composition du produit et récupération de la matière initiale.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "Tableaux 1–2, définitions en notes",
+          "support": "Pureté : isolat final ; rendement : protéines de départ."
+        }
+      ],
+      "boundary": "Définir les dénominateurs dans le support ; ne pas faire mémoriser les pourcentages."
+    },
+    {
+      "id": "d-next-01-f16",
+      "factKey": "eckhardt-2024-salt-hemp-isolate-lighter-colour",
+      "subjectKey": "hemp-isolate-colour-extraction",
+      "category": "food",
+      "claim": "Chez Eckhardt, l'isolat obtenu par voie saline est plus clair que l'isolat obtenu par voie alcaline.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Fournir les valeurs L* et leur sens, puis comparer les deux produits.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.3 ; tableau 3, même matériel CFX-2 2016",
+          "support": "L* : voie saline 91,9 ; voie alcaline 82,8."
+        }
+      ],
+      "boundary": "Résultat du matériel et des méthodes étudiés, pas distinction visuelle universelle des isolats.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f41"
+      ]
+    },
+    {
+      "id": "d-next-01-f17",
+      "factKey": "eckhardt-2024-hemp-isolates-more-soluble-acid-than-neutral-water",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "Les isolats étudiés par Eckhardt se dispersent mieux à pH 3,2 qu'à pH 7 dans l'eau.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer deux mesures de solubilité fournies pour une application de boisson.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.5.1 ; tableau 5",
+          "support": "La solubilité mesurée est supérieure au pH acide testé."
+        }
+      ],
+      "boundary": "Solubilité de ces isolats, pas stabilité garantie de toute boisson ni règle « plus acide, toujours mieux »."
+    },
+    {
+      "id": "d-next-01-f18",
+      "factKey": "eckhardt-2024-salt-strengthens-hemp-gels-reduces-water-holding",
+      "subjectKey": "hemp-protein-gel-tradeoff",
+      "category": "food",
+      "claim": "Dans l'essai d'Eckhardt, le milieu salin renforce le gel pH-HPI mais réduit sa rétention d'eau ; le salt-HPI ne forme pas de gel dans l'eau testée.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Lire deux indicateurs fournis et repérer un compromis de texture.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.5.2 ; tableau 5, eau versus NaCl 0,5 M",
+          "support": "Le pH-HPI permet la comparaison eau/milieu salin : force du gel accrue et rétention d'eau réduite. Le salt-HPI sédimente sans former de gel dans l'eau aux concentrations testées."
+        }
+      ],
+      "boundary": "Conditions de l'essai uniquement ; force mécanique et rétention d'eau sont des mesures différentes.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f42"
+      ],
+      "attributionCorrection": "Les auteurs discutent rétention d'eau et synérèse des gels de protéines de chanvre. Le gel comparé en eau et milieu salin est pH-HPI ; salt-HPI ne gélifie pas dans l'eau testée."
+    },
+    {
+      "id": "d-next-01-f19",
+      "factKey": "eckhardt-2024-lysine-limiting-amino-acid-hemp-isolates",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "Dans les isolats d'Eckhardt, la lysine est l'acide aminé limitant utilisé pour le score protéique.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Comprendre qu'un acide aminé limitant n'est pas nécessairement absent.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.6 ; figure 4 et tableau 8",
+          "support": "La lysine détermine le calcul du score des échantillons."
+        }
+      ],
+      "boundary": "Résultats analytiques, sans conseil de santé ni promesse nutritionnelle ; ne pas extrapoler à tout produit commercial."
+    },
+    {
+      "id": "d-next-01-f20",
+      "factKey": "eckhardt-2024-hemp-emulsification-water-versus-saline-neutral",
+      "subjectKey": "hemp-isolate-emulsion-medium",
+      "category": "food",
+      "claim": "À pH 7, les isolats d'Eckhardt émulsionnent dans le milieu salin testé, mais pas dans l'eau pure.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer résultats fournis à protéine identique, en ne changeant que le milieu.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.5.3 ; tableau 6, 1 % protéines, NaCl 0,5 M",
+          "support": "Absence d'émulsion en eau ; émulsions dans le milieu salin."
+        }
+      ],
+      "boundary": "Ne pas confondre avec les corps lipidiques entiers de Lopez ni prescrire une formulation de boisson.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f43"
+      ]
+    },
+    {
+      "id": "d-next-01-f21",
+      "factKey": "collet-pretot-2014-hemp-concrete-density-increases-conductivity",
+      "subjectKey": "hemp-concretes-collet-pretot-2014",
+      "category": "hemp-uses",
+      "claim": "À formulation comparable, les bétons de chanvre plus denses conduisent davantage la chaleur dans l'étude de Collet et Prétot.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Comparer deux échantillons documentés et interpréter la conséquence sur l'isolation.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "locator": "§4.2 ; figure 8 ; conclusions",
+          "support": "La conductivité croît avec la masse volumique sèche."
+        }
+      ],
+      "boundary": "Maintenir formulation et état hydrique comparables ; pas de classement absolu de tous les bétons."
+    },
+    {
+      "id": "d-next-01-f22",
+      "factKey": "collet-pretot-2014-moisture-increases-hemp-concrete-conductivity",
+      "subjectKey": "hemp-concretes-collet-pretot-2014",
+      "category": "hemp-uses",
+      "claim": "Pour un même béton de chanvre, l'augmentation de la teneur en eau accroît sa conductivité thermique.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Interpréter des mesures d'un même échantillon à deux états hydriques fournis.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "locator": "§4.3–4.4 ; figures 10–11 ; tableau 3",
+          "support": "À masse volumique fixée, la conductivité augmente avec l'eau."
+        }
+      ],
+      "boundary": "Pas de conseil de conception de bâtiment ; distinguer teneur en eau et humidité relative de l'air."
+    },
+    {
+      "id": "d-next-01-f23",
+      "factKey": "hemp-concrete-porosity-intraparticle-interparticle-scales",
+      "subjectKey": "hemp-concretes-collet-pretot-2014",
+      "category": "hemp-uses",
+      "claim": "Le béton de chanvre contient des pores internes aux constituants et des vides entre les particules.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Associer deux images d'échelles différentes à leurs réseaux de pores respectifs.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "locator": "§2.2, Density and porosity",
+          "support": "Pores micrométriques internes et pores millimétriques d'assemblage sont décrits."
+        }
+      ],
+      "boundary": "Prévoir un véritable schéma ou support de données ; pas de photographie inventée ni porosité attribuée à un produit réel inconnu."
+    },
+    {
+      "id": "d-next-01-f24",
+      "factKey": "hemp-concrete-sprayed-moulded-precast-production-methods",
+      "subjectKey": "hemp-concretes-collet-pretot-2014",
+      "category": "hemp-uses",
+      "claim": "Collet et Prétot distinguent béton de chanvre projeté, moulé et préfabriqué en blocs.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Associer une description d'atelier ou de projection à son mode de fabrication.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "locator": "§2.1 ; figures 1–2 ; tableau 1",
+          "support": "Trois méthodes de production sont décrites séparément."
+        }
+      ],
+      "boundary": "Identifier une méthode industrielle sans fournir de recette, de dimensionnement ni de garantie de performance."
+    },
+    {
+      "id": "d-next-01-f25",
+      "factKey": "badji-2020-under-glass-weathering-models-car-interior",
+      "subjectKey": "hemp-pp-composites-badji-2020",
+      "category": "hemp-uses",
+      "claim": "Badji étudie les composites chanvre/polypropylène sous verre de pare-brise pour représenter un habitacle automobile.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Choisir l'environnement d'usage que représente le dispositif expérimental décrit.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "locator": "Weathering Conditions ; figure 1",
+          "support": "Le dispositif sous pare-brise simule un intérieur de voiture."
+        }
+      ],
+      "boundary": "Exposition naturelle d'un an, pas durée de vie garantie d'un équipement automobile."
+    },
+    {
+      "id": "d-next-01-f26",
+      "factKey": "badji-2020-passive-voc-sampling-measures-material-emissions",
+      "subjectKey": "hemp-pp-composites-badji-2020",
+      "category": "hemp-uses",
+      "claim": "L'échantillonnage passif de Badji recueille les composés émis par la surface du composite dans l'air.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Distinguer mesure d'émissions vers l'air et analyse de toute la matière solide.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "locator": "Sampling and Analytical Methodology",
+          "support": "Une cellule isole l'air au-dessus d'une partie de surface."
+        }
+      ],
+      "boundary": "Ne pas convertir une émission détectée en conclusion toxicologique ni en quantité totale contenue dans le matériau."
+    },
+    {
+      "id": "d-next-01-f27",
+      "factKey": "badji-2020-polypropylene-matrix-oxygenated-weathering-products",
+      "subjectKey": "hemp-pp-composites-badji-2020",
+      "category": "hemp-uses",
+      "claim": "Dans le composite étudié par Badji, la matrice polypropylène vieillit aussi et forme des produits oxygénés.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer témoin polymère et composite pour attribuer une partie des émissions à la matrice.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "locator": "Abstract, phrase polymer matrix was decomposed into oxygenated products ; Introduction, objectif comparatif",
+          "support": "Les auteurs séparent vieillissement de la matrice et des fibres."
+        }
+      ],
+      "boundary": "Ne pas assimiler fraction végétale et matériau intégralement biosourcé ou biodégradable."
+    },
+    {
+      "id": "d-next-01-f28",
+      "factKey": "badji-2020-weathering-shifts-furans-to-furanones-emissions",
+      "subjectKey": "hemp-pp-composites-badji-2020",
+      "category": "hemp-uses",
+      "claim": "Les profils de volatils de Badji privilégient des furannes avant vieillissement et certaines furanones après exposition.",
+      "articleId": "ref-matieres-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Fournir deux profils d'émissions et repérer le changement de famille dominant.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "locator": "Abstract ; Conclusion, premier et deuxième paragraphes",
+          "support": "Furannes substitués puis furanones sont associés aux deux états."
+        }
+      ],
+      "boundary": "Présenter les voies réactionnelles proposées comme hypothèses ; pas de diagnostic universel à partir d'une odeur."
+    },
+    {
+      "id": "d-next-01-f29",
+      "factKey": "hemp-seed-oil-bodies-natural-oil-in-water-emulsion",
+      "subjectKey": "hempseed-oil-bodies-lopez-2021",
+      "category": "food",
+      "claim": "Les corps lipidiques du chènevis permettent des dispersions naturelles de gouttelettes d'huile dans l'eau.",
+      "articleId": "ref-graines-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Identifier phase dispersée et phase continue sur un schéma de dispersion fourni.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "locator": "Abstract ; Keywords, Natural oil in water emulsion",
+          "support": "Les auteurs étudient les gouttelettes et leurs interfaces naturelles."
+        }
+      ],
+      "boundary": "Corps lipidiques entiers, pas isolat protéique seul ni huile essentielle ; aucune extraction psychoactive."
+    },
+    {
+      "id": "d-next-01-f30",
+      "factKey": "lopez-2021-homogenization-smaller-oil-bodies-not-protein-sedimentation",
+      "subjectKey": "hempseed-oil-bodies-lopez-2021",
+      "category": "food",
+      "claim": "Chez Lopez, l'homogénéisation réduit les gouttelettes sans supprimer la sédimentation des corps protéiques d'édestine.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer taille de gouttelettes et dépôt solide, deux critères de stabilité distincts.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "locator": "Abstract, phrase Homogenization of hemp seed extracts",
+          "support": "La diminution de taille ne supprime pas le dépôt protéique."
+        }
+      ],
+      "boundary": "Ne pas confondre corps lipidiques et corps protéiques ni promettre une boisson stable après traitement."
+    },
+    {
+      "id": "d-next-01-f31",
+      "factKey": "lopez-2021-calcium-coalescence-versus-sodium-oil-body-aggregation",
+      "subjectKey": "hemp-oil-body-mineral-response",
+      "category": "food",
+      "claim": "Chez Lopez, NaCl agrège les corps lipidiques ; CaCl₂ provoque aussi leur fusion par coalescence.",
+      "articleId": "ref-graines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Fournir les observations des deux sels et distinguer amas de gouttes et fusion.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "locator": "Abstract, dernière phrase de résultats",
+          "support": "Les auteurs distinguent agrégation et coalescence induite par le calcium."
+        }
+      ],
+      "boundary": "Résultats de cette dispersion ; l'implication des phospholipides est présentée comme probable, pas démontrée définitivement.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f44"
+      ]
+    },
+    {
+      "id": "d-next-01-f32",
+      "factKey": "lopez-2021-acidification-below-six-oil-body-aggregation",
+      "subjectKey": "hemp-oil-body-acid-stability",
+      "category": "food",
+      "claim": "Dans les dispersions de Lopez, des pH inférieurs à 6 favorisent l'agrégation des corps lipidiques.",
+      "articleId": "ref-graines-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Interpréter l'apparition d'amas lors de l'acidification d'une dispersion documentée.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "locator": "Abstract, pH values below 6",
+          "support": "L'acidification modifie les propriétés de surface et provoque l'agrégation."
+        }
+      ],
+      "boundary": "Pas la solubilité d'un isolat protéique d'Eckhardt ; aucune généralisation à tous les laits végétaux.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f45"
+      ]
+    },
+    {
+      "id": "d-next-01-f33",
+      "factKey": "mortas-2023-hempseed-beverage-spray-dried-powder",
+      "subjectKey": "hempseed-milk-powders-mortas-2023",
+      "category": "food",
+      "claim": "Mortaş obtient une poudre de boisson de chènevis par séchage par atomisation.",
+      "articleId": "ref-graines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Découvrir le passage d'une boisson végétale à un ingrédient alimentaire en poudre.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-mortas-2023",
+          "locator": "Abstract, premières phrases",
+          "support": "La boisson de graines est transformée par spray drying."
+        }
+      ],
+      "boundary": "Faisabilité expérimentale, pas validation de tous les produits en poudre ni consigne de fabrication."
+    },
+    {
+      "id": "d-next-01-f34",
+      "factKey": "mortas-2023-deoiled-feed-increases-spray-drying-recovery",
+      "subjectKey": "hempseed-press-cake-powder-recovery",
+      "category": "food",
+      "claim": "Dans l'essai de Mortaş, employer le tourteau déshuilé accroît la récupération de poudre sans agent porteur.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer les récupérations fournies, 31 % et 44 %, sans les apprendre par cœur.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-mortas-2023",
+          "locator": "Abstract, process efficiency increased from 31 to 44%",
+          "support": "Le coproduit déshuilé augmente l'efficacité du séchage dans cet essai."
+        }
+      ],
+      "boundary": "Valorisation d'un coproduit, pas définition du tourteau déjà dans les 360 ni optimisation psychoactive.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f46"
+      ]
+    },
+    {
+      "id": "d-next-01-f35",
+      "factKey": "mortas-2023-whole-deoiled-powders-foam-no-significant-difference",
+      "subjectKey": "hempseed-milk-powders-mortas-2023",
+      "category": "food",
+      "claim": "Mortaş ne détecte pas de différence significative de pouvoir moussant entre poudres issues de graines entières et déshuilées.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "comparaison",
+      "taskDesign": "Lire deux résultats et leur test statistique sans confondre non-significatif et strictement égal.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-mortas-2023",
+          "locator": "Abstract, liste des variables et p > 0,05",
+          "support": "Le pouvoir moussant figure parmi les différences non significatives."
+        }
+      ],
+      "boundary": "Absence de différence détectée dans cet essai ; ne pas généraliser à toutes les compositions ou propriétés."
+    },
+    {
+      "id": "d-next-01-f36",
+      "factKey": "loturco-2023-filtered-hemp-oil-better-storage-oxidative-status",
+      "subjectKey": "hempseed-oil-loturco-2023",
+      "category": "food",
+      "claim": "Chez Lo Turco, l'huile filtrée conserve un meilleur état oxydatif que l'huile non filtrée en bouteilles transparentes.",
+      "articleId": "ref-huile-graines",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer deux courbes expérimentales fournies, même lot et même stockage.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "locator": "Abstract ; §3.1, figure 1 ; Conclusion",
+          "support": "Le groupe filtré présente le meilleur bilan oxydatif de l'essai."
+        }
+      ],
+      "boundary": "Douze semaines et conditions définies ; pas garantie générale de conservation en verre transparent."
+    },
+    {
+      "id": "d-next-01-f37",
+      "factKey": "hemp-oil-chlorophyll-light-photosensitised-oxidation",
+      "subjectKey": "hempseed-oil-loturco-2023",
+      "category": "food",
+      "claim": "Dans l'huile de chènevis éclairée, les chlorophylles peuvent favoriser une oxydation photosensibilisée.",
+      "articleId": "ref-huile-graines",
+      "proposedForm": "situation",
+      "taskDesign": "Relier pigment et lumière à un risque oxydatif, sans déduire la qualité de la seule couleur.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "locator": "Introduction ; résultats sur les pigments, paragraphe photooxidation process by chlorophylls ; Conclusion",
+          "support": "Les chlorophylles sont étudiées comme facteurs de photooxydation."
+        }
+      ],
+      "boundary": "Rôle sous lumière ; pas une nouvelle identification du pigment vert et pas règle universelle « huile plus verte, moins bonne »."
+    },
+    {
+      "id": "d-next-01-f38",
+      "factKey": "hemp-oil-free-acidity-hydrolytic-status-versus-peroxide-oxidative-status",
+      "subjectKey": "hempseed-oil-loturco-2023",
+      "category": "food",
+      "claim": "Dans le suivi d'huile de chanvre, acidité libre et indice de peroxyde renseignent respectivement états hydrolytique et oxydatif.",
+      "articleId": "ref-huile-graines",
+      "proposedForm": "comparaison",
+      "taskDesign": "Associer deux mesures à deux transformations distinctes, sur résultats fournis.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "locator": "§3.1, figure 1 et paragraphes free acidity/PV",
+          "support": "L'étude suit séparément acidité libre et peroxydes."
+        }
+      ],
+      "boundary": "Ne pas réduire toute altération à l'oxydation ; ne pas réutiliser la seule question sur les hydroperoxydes primaires."
+    },
+    {
+      "id": "d-next-01-f39",
+      "factKey": "loturco-2023-filtration-lowers-initial-antioxidants-slows-loss",
+      "subjectKey": "hempseed-oil-loturco-2023",
+      "category": "food",
+      "claim": "L'huile filtrée de Lo Turco contient initialement moins de certains antioxydants, mais ceux-ci se dégradent moins vite.",
+      "articleId": "ref-huile-graines",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer valeur initiale et vitesse de perte, au lieu de classer sur un seul relevé.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "locator": "Abstract ; §3.2–3.4 ; Conclusion",
+          "support": "Tocophérols, caroténoïdes et phénols sont moins abondants mais mieux préservés."
+        }
+      ],
+      "boundary": "Compromis expérimental ; aucune promesse de bénéfice de santé ni classement commercial."
+    },
+    {
+      "id": "d-next-01-f40",
+      "factKey": "loturco-2023-hemp-oil-inorganic-profile-not-changed-by-filtration",
+      "subjectKey": "hemp-oil-inorganic-elements-filtration",
+      "category": "food",
+      "claim": "Lo Turco n'observe pas de modification significative du profil d'éléments inorganiques après la filtration étudiée.",
+      "articleId": "ref-huile-graines",
+      "proposedForm": "comparaison",
+      "taskDesign": "Comparer plusieurs familles de constituants et identifier celle qui demeure statistiquement inchangée.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "locator": "Abstract ; §3.6, Inorganic elements ; figure 6",
+          "support": "Le profil élémentaire demeure comparable entre huiles filtrées et non filtrées."
+        }
+      ],
+      "boundary": "Ne pas présenter la filtration comme élimination générale des métaux ni comme garantie sanitaire.",
+      "authoringStatus": "superseded-in-d-01",
+      "replacementFactIds": [
+        "d-next-01-f47"
+      ]
+    },
+    {
+      "id": "d-next-01-f41",
+      "factKey": "hemp-isolate-cielab-l-star-lightness-versus-chromatic-axes",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "La mesure CIELAB des isolats distingue L* (clarté) des coordonnées chromatiques a* et b*.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Identifier une propriété optique sans ordonner deux résultats déjà expliqués.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§2.5 Color measurement, PDF p. 3, lignes extraites 283–291",
+          "support": "L* mesure la clarté entre noir et blanc ; a* et b* distinguent respectivement vert-rouge et bleu-jaune."
+        }
+      ],
+      "boundary": "Pas de classement nutritionnel à partir de la couleur ; le résultat numérique salin/alcalin n'est plus le fait testé."
+    },
+    {
+      "id": "d-next-01-f42",
+      "factKey": "hemp-protein-gel-syneresis-contraction-liquid-expulsion",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "La synérèse désigne la contraction d'un réseau de gel accompagnée d'expulsion de liquide.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Reconnaître un phénomène physique concret de gel, sans recopier deux tendances fournies.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-d01-wu-syneresis-2023",
+          "locator": "Abstract ; Introduction, définition de la contraction avec fluid expulsion",
+          "support": "Le phénomène combine compaction du réseau et expulsion de la phase liquide."
+        },
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.5.2, PDF p. 10, lignes extraites 953–968 ; pour les gels en eau, 915–941",
+          "support": "Les auteurs discutent rétention d'eau et synérèse des gels de protéines de chanvre. Le gel comparé en eau et milieu salin est pH-HPI ; salt-HPI ne gélifie pas dans l'eau testée."
+        }
+      ],
+      "boundary": "Le cas décrit est une identification conceptuelle, pas un nouveau résultat quantitatif attribué à tous les isolats ; ne pas généraliser le comportement de pH-HPI à salt-HPI."
+    },
+    {
+      "id": "d-next-01-f43",
+      "factKey": "hemp-protein-emulsifier-dispersion-reaches-oil-water-interface",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "Les protéines dispersées peuvent atteindre l'interface huile-eau, au lieu de précipiter hors de la dispersion.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "situation",
+      "taskDesign": "Appliquer le rôle interfacial de l'émulsifiant à un échec de dispersion, sans retenir une recette de milieu.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§3.5.3 Emulsification properties, PDF p. 10, lignes extraites 969–979",
+          "support": "La meilleure dispersion permet aux protéines d'atteindre l'interface huile-eau plutôt que de sortir de la solution."
+        }
+      ],
+      "boundary": "Rôle fonctionnel de protéines émulsifiantes ; aucune recette ni garantie de stabilité de boisson commerciale."
+    },
+    {
+      "id": "d-next-01-f44",
+      "factKey": "hemp-oil-bodies-coalescence-fusion-versus-aggregation",
+      "subjectKey": "hempseed-oil-bodies-lopez-2021",
+      "category": "food",
+      "claim": "La coalescence des corps lipidiques implique une fusion des gouttelettes, à distinguer de leur agrégation.",
+      "articleId": "ref-graines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Identifier deux mécanismes physiques différents plutôt que réciter l'effet de CaCl2.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "locator": "Abstract PubMed, ligne extraite 245, membrane-fusion mediated coalescence",
+          "support": "Le résumé distingue l'agrégation de la coalescence médiée par la fusion des membranes."
+        }
+      ],
+      "boundary": "Pas de seuil de pH ni de dosage de sel ; ne pas confondre fusion des corps lipidiques et dépôt de corps protéiques."
+    },
+    {
+      "id": "d-next-01-f45",
+      "factKey": "hemp-oleosome-monolayer-phospholipids-oleosins-envelope",
+      "subjectKey": "hempseed-oil-bodies-lopez-2021",
+      "category": "food",
+      "claim": "Les oléosomes du chènevis sont entourés d'une monocouche de phospholipides associée à des oléosines.",
+      "articleId": "ref-graines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Identifier une organisation de surface utile à la compréhension de la stabilité, sans mémoriser pH6.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-d01-inrae-oleosomes-2022",
+          "locator": "Section Un intérêt croissant, paragraphe En particulier, ligne extraite 18",
+          "support": "Les microgouttelettes d'huile sont entourées d'une monocouche de phospholipides et d'oléosines."
+        }
+      ],
+      "boundary": "Structure de l'oléosome ; aucun effet de tous les pH ou sels n'est déduit de sa seule présence."
+    },
+    {
+      "id": "d-next-01-f46",
+      "factKey": "hemp-protein-dumas-total-nitrogen-conversion-estimate",
+      "subjectKey": "hemp-protein-isolates-eckhardt-2024",
+      "category": "food",
+      "claim": "La méthode de Dumas utilisée pour les protéines de chanvre estime leur teneur à partir de l'azote et d'un facteur de conversion.",
+      "articleId": "ref-proteines-chanvre",
+      "proposedForm": "identification",
+      "taskDesign": "Identifier ce qu'une analyse protéique mesure réellement, sans lire un rendement déjà donné.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "locator": "§2.2, PDF p. 3, lignes extraites 200–204 ; §2.3.2, lignes 240–242",
+          "support": "Le dosage de protéines repose sur Dumas, un analyseur d'azote et un facteur de conversion protéique."
+        }
+      ],
+      "boundary": "Méthode analytique et estimation, pas fonction de l'azote nutritif dans le sol ; ne pas mémoriser le facteur numérique."
+    },
+    {
+      "id": "d-next-01-f47",
+      "factKey": "hempseed-oil-inorganic-elements-measured-icp-ms",
+      "subjectKey": "hempseed-oil-loturco-2023",
+      "category": "food",
+      "claim": "Le profil d'éléments inorganiques des huiles de chanvre de Lo Turco est mesuré par ICP-MS.",
+      "articleId": "ref-huile-graines",
+      "proposedForm": "identification",
+      "taskDesign": "Distinguer analyse élémentaire et analyses moléculaires, sans donner un résultat à paraphraser.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "locator": "§2.9 Element Analysis, lignes extraites 260–265",
+          "support": "Les auteurs emploient un ICP-MS quadripolaire pour les analyses élémentaires des huiles."
+        }
+      ],
+      "boundary": "Aucun protocole de préparation ni conclusion sanitaire ; une huile plus claire ne prouve pas une baisse des éléments minéraux."
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-dnext01-patrick-kentucky",
+      "title": "‘Cotton Bagging and Bale Rope’: The Technology of Hemp Culture in Kentucky, 1792–1860",
+      "organization": "The Filson Historical Society, document de recherche hébergé",
+      "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Andrew Patrick",
+      "published": "Date non indiquée dans le PDF consulté",
+      "passage": "Travail asservi, débouchés cotonniers, mécanisation inégalement adoptée et organisation des corderies.",
+      "access": "full-text",
+      "documentKind": "Étude historique avec citations de journaux et écrits contemporains ; version de travail",
+      "limitation": "Discours des esclavagistes et performances publicitaires à distinguer du bilan de l'historien.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF p. 1–3, 5–6 et 7–9",
+        "result": "PDF ouvert et passages ciblés lus ; les annonces sont distinguées de l'adoption effective."
+      }
+    },
+    {
+      "id": "q2-dnext01-skoglund-2013",
+      "title": "Viking and Early Middle Ages Northern Scandinavian Textiles Proven to be made with Hemp",
+      "organization": "Universités de Bergen et Uppsala ; Scientific Reports ; dépôt PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+      "verifiedAt": "2026-11-16",
+      "author": "G. Skoglund, M. Nockert, B. Holst",
+      "published": "2013-10-18",
+      "passage": "Identification du chanvre dans un corpus textile ancien ; orientation fibrillaire et limites de l'inférence archéologique.",
+      "access": "full-text",
+      "documentKind": "Article primaire d'analyse de textiles patrimoniaux, DOI 10.1038/srep02686",
+      "limitation": "Petite série ; S peut correspondre au lin ou à l'ortie. Les difficultés de l'ADN sont décrites dans le contexte de 2013.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Introduction ; Results ; Methods, Identification of bast fibres",
+        "result": "Article ouvert et sections ciblées lues ; orientation interne distinguée de la torsion des fils."
+      }
+    },
+    {
+      "id": "q2-dnext01-shinozaki-2014",
+      "title": "Folkloric Study of Hemp Utilization: To Investigate the Usage of Hemp in the Jomon Period",
+      "organization": "National Museum of Japanese History",
+      "url": "https://rekihaku.repo.nii.ac.jp/record/314/files/kenkyuhokoku_187_17.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Shigeo Shinozaki",
+      "published": "2014-07",
+      "passage": "Le résumé anglais décrit usages domestiques et rituels au Japon : vêtements, brides de geta, fiançailles et naissance.",
+      "access": "excerpt",
+      "documentKind": "Article de recherche ethnographique, Bulletin of the National Museum of Japanese History 187, p. 405–424",
+      "limitation": "Résumé anglais indexé consulté ; ouvertures du PDF et du dépôt bloquées (429), CiNii derrière contrôle JavaScript. Aucune lecture intégrale revendiquée. Quatre faits restent à sécuriser par un accès direct avant rédaction.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Résumé anglais indexé, titre et quatre passages ciblés ; catalogue NDL pour la référence",
+        "result": "Extrait primaire lu dans les résultats de recherche ; tentatives d'ouverture documentées comme échecs, pas comme lecture du PDF."
+      }
+    },
+    {
+      "id": "q2-dnext01-fao-abaca",
+      "title": "EcoCrop: Musa textilis",
+      "organization": "Food and Agriculture Organization of the United Nations",
+      "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/cropView?id=1506",
+      "verifiedAt": "2026-11-16",
+      "author": "FAO EcoCrop, notice non signée",
+      "published": "Date de publication non indiquée",
+      "passage": "Abaca et Manila hemp sont associés à Musa textilis, Musaceae ; sa durabilité en eau salée explique un usage de cordage.",
+      "access": "official-page",
+      "documentKind": "Fiche institutionnelle de plante utile",
+      "limitation": "L'abaca n'est pas du cannabis. Aucune statistique commerciale, règle ou instruction culturale actuelle n'est reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Family ; Common names ; USES",
+        "result": "Fiche ouverte et identité botanique ainsi qu'usage maritime lus."
+      }
+    },
+    {
+      "id": "q2-dnext01-eckhardt-2024",
+      "title": "Hemp (Cannabis sativa L.) protein: Impact of extraction method and cultivar on structure, function, and nutritional quality",
+      "organization": "University of Minnesota ; Current Research in Food Science",
+      "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Laura Eckhardt, Fan Bu, Adam Franczyk, Tom Michaels, Baraem P. Ismail",
+      "published": "2024-04-19",
+      "passage": "L'étude distingue rendement et pureté, puis compare couleur, dispersion, gélification, émulsification et composition d'isolats.",
+      "access": "full-text",
+      "documentKind": "Article expérimental primaire, Current Research in Food Science 8:100746",
+      "limitation": "Produits et milieux expérimentaux précis ; pas de généralisation aux produits commerciaux ou de promesse médicale.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Tableaux 1–3, 5–6 et 8 ; §3.3, §3.5, §3.6 ; conclusion",
+        "result": "PDF universitaire ouvert ; définitions, comparaisons et limites des essais lus. Aucune sélection de sujet issue d'un catalogue du site."
+      }
+    },
+    {
+      "id": "q2-dnext01-collet-pretot-2014",
+      "title": "Thermal conductivity of hemp concretes: Variation with formulation, density and water content",
+      "organization": "Laboratoire de Génie Civil et Génie Mécanique, Rennes ; Construction and Building Materials ; dépôt arXiv",
+      "url": "https://arxiv.org/pdf/1406.3310",
+      "verifiedAt": "2026-11-16",
+      "author": "Florence Collet, Sylvie Prétot",
+      "published": "Prépublication déposée le 2014-06-11 ; article 65 (2014), p. 612–619",
+      "passage": "Propriétés thermiques, porosité à plusieurs échelles et procédés de production de bétons de chanvre.",
+      "access": "full-text",
+      "documentKind": "Article expérimental primaire et modélisation ; DOI 10.1016/j.conbuildmat.2014.05.039",
+      "limitation": "Séparer mesures et modèle ; l'état hydrique et la formulation doivent rester précisés.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§2.1–2.2, §4.2–4.4, tableaux 1–3, conclusion",
+        "result": "Résumé puis PDF ouverts ; sections de production, pores et conductivité lues."
+      }
+    },
+    {
+      "id": "q2-dnext01-badji-2020",
+      "title": "Under Glass Weathering of Hemp Fibers Reinforced Polypropylene Biocomposites: Degradation Mechanisms Based on Emitted Volatile Organic Compounds",
+      "organization": "IPREM/CNRS, IMT Mines Alès ; Frontiers in Materials",
+      "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Célia Badji et al.",
+      "published": "2020-06-18",
+      "passage": "Vieillissement sous pare-brise, prélèvement passif d'émissions et voies de dégradation de la matrice et des fibres.",
+      "access": "full-text",
+      "documentKind": "Article expérimental primaire, DOI 10.3389/fmats.2020.00162",
+      "limitation": "Plusieurs mécanismes sont proposés, non démontrés. Ne pas tirer de conclusion toxicologique des seules émissions.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Weathering Conditions ; Sampling and Analytical Methodology ; Conclusion",
+        "result": "Article ouvert et sections ciblées lues. Corrigendum du 2020-11-06 également ouvert : affiliations corrigées, conclusions scientifiques inchangées."
+      },
+      "relatedConsultations": [
+        {
+          "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00266/full",
+          "date": "2026-11-16",
+          "locator": "Paragraphes 283–288 de l'extraction : affiliations 2 et 3",
+          "result": "Correction d'affiliations uniquement ; aucune preuve de résultat substituée à la source principale."
+        }
+      ]
+    },
+    {
+      "id": "q2-dnext01-lopez-2021",
+      "title": "Deciphering the properties of hemp seed oil bodies for food applications: Lipid composition, microstructure, surface properties and physical stability",
+      "organization": "INRAE, AgroParisTech, Université Paris-Saclay ; Food Research International ; PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+      "verifiedAt": "2026-11-16",
+      "author": "Christelle Lopez, Bruno Novales, Hanitra Rabesona, Magalie Weber, Thierry Chardot, Marc Anton",
+      "published": "En ligne le 2021-10-17 ; numéro de décembre 2021",
+      "passage": "L'étude distingue corps lipidiques et protéiques et compare homogénéisation, pH et sels sur la stabilité physique.",
+      "access": "abstract",
+      "documentKind": "Résumé d'article expérimental primaire, DOI 10.1016/j.foodres.2021.110759",
+      "limitation": "Résumé consulté, pas texte intégral ; ne pas inventer de concentration ni de mécanisme au-delà de ce qu'il rapporte.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, trois paragraphes ; Keywords ; Affiliations",
+        "result": "Page PubMed ouverte ; résumé développé lu, effets de taille, dépôt, acidité et sels vérifiés."
+      }
+    },
+    {
+      "id": "q2-dnext01-mortas-2023",
+      "title": "Physicochemical Properties and Characterization of a New Product: Spray Dried Hempseed Milk",
+      "organization": "Ondokuz Mayıs University, Ohio State University ; Plant Foods for Human Nutrition",
+      "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+      "verifiedAt": "2026-11-16",
+      "author": "Mustafa Mortas, Aysegul Besir, Zehra Tok, Melike Keles, Fehmi Yazici",
+      "published": "2023-05-05",
+      "passage": "Poudres obtenues à partir de graines entières ou déshuilées ; récupération et différences de propriétés testées.",
+      "access": "abstract",
+      "documentKind": "Résumé éditeur d'une étude primaire, 78:358–365, DOI 10.1007/s11130-023-01053-x",
+      "limitation": "Résumé seulement ; une différence non significative ne démontre pas une équivalence générale.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, trois paragraphes",
+        "result": "Résumé éditeur ouvert et lu après réponse PubMed incomplète ; 31 %, 44 % et absence de différence de moussage vérifiés."
+      }
+    },
+    {
+      "id": "q2-dnext01-loturco-2023",
+      "title": "Effect of Filtration Process on Oxidative Stability and Minor Compounds of the Cold-Pressed Hempseed Oil during Storage",
+      "organization": "University of Messina ; Antioxidants",
+      "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+      "verifiedAt": "2026-11-16",
+      "author": "Vincenzo Lo Turco et al.",
+      "published": "2023-06-07",
+      "passage": "Comparaison d'huiles filtrées et non filtrées : dégradation, pigments, antioxydants et éléments inorganiques.",
+      "access": "full-text",
+      "documentKind": "Article expérimental primaire, DOI 10.3390/antiox12061231",
+      "limitation": "Même huile suivie pendant douze semaines en verre transparent ; pas de norme sanitaire ou de durée de conservation universelle déduite.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; §3.1–3.6 ; figures 1 et 6 ; Conclusion",
+        "result": "Article ouvert ; résultats ciblés et discussion des études contradictoires de filtration lus. Allégations médicales et seuils réglementaires exclus."
+      }
+    },
+    {
+      "id": "q2-d01-wu-syneresis-2023",
+      "title": "Spatially heterogenous dynamics in colloidal gels during syneresis",
+      "organization": "Wageningen University and Research ; Soft Matter ; dépôt PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10355138/",
+      "verifiedAt": "2026-11-16",
+      "author": "Qimeng Wu, Jesse Buijs, Sanne de Groot, Hanne M. van der Kooij, Jasper van der Gucht, Thomas E. Kodger",
+      "published": "2023-06-29",
+      "passage": "La synérèse correspond à une contraction du réseau accompagnée de l'expulsion de liquide ; le texte distingue ce processus d'une simple fluidification du gel.",
+      "access": "full-text",
+      "documentKind": "Article primaire de physique des gels, DOI 10.1039/d3sm00448a",
+      "limitation": "Systèmes colloïdaux modèles ; seule la définition du phénomène est transférée au vocabulaire des gels alimentaires, sans attribuer leurs résultats quantitatifs au chanvre.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Introduction, paragraphes sur compaction et fluid expulsion",
+        "result": "Article ouvert ; définition et distinction entre contraction-expulsion et transition solide-liquide lues."
+      }
+    },
+    {
+      "id": "q2-d01-inrae-oleosomes-2022",
+      "title": "Les corps lipidiques de la graine de chanvre : vers la valorisation d'une nouvelle source de lipides pour une alimentation saine et durable",
+      "organization": "INRAE, unité BIA et Institut Jean-Pierre Bourgin",
+      "url": "https://www.inrae.fr/actualites/corps-lipidiques-graine-chanvre-valorisation-dune-nouvelle-source-lipides-alimentation-saine-durable",
+      "verifiedAt": "2026-11-16",
+      "author": "INRAE ; contact scientifique Christelle Lopez",
+      "published": "2022-01-31",
+      "passage": "Les oléosomes sont des microgouttelettes d'huile entourées d'une monocouche de phospholipides et de protéines appelées oléosines.",
+      "access": "official-page",
+      "documentKind": "Présentation institutionnelle de l'étude primaire de Lopez et al. (2021)",
+      "limitation": "Seule l'organisation de l'oléosome est utilisée ; aucune promesse nutritionnelle ou médicale du texte de communication n'est reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Section Un intérêt croissant, paragraphe commençant En particulier ; publication associée",
+        "result": "Page ouverte ; enveloppe monocouche/protéines lue et lien avec l'article de Lopez vérifié."
+      }
+    }
+  ],
+  "researchExclusions": [
+    {
+      "subject": "Nara-sarashi",
+      "reason": "Le musée de Nara traduit par hemp, tandis que des notices et travaux parlent de ramie ou de combinaisons historiques. Quatre pistes ont été abandonnées ; aucune matière botanique déduite du seul mot asa.",
+      "consulted": "Page Nara Crafts and the Four Seasons ouverte ; divergences détectées dans les extraits de recherche d'autres institutions et publications.",
+      "url": "https://nara-kogeikan.city.nara.nara.jp/craftstory-en/"
+    },
+    {
+      "subject": "El-Sohaimy et al., isolat de protéines, 2022",
+      "reason": "Incohérences repérées entre texte/résumé et tableau 3 concernant maxima d'émulsification et minimum de moussage ; aucun fait retenu de cette étude.",
+      "consulted": "Texte intégral et tableau 3 ouverts.",
+      "url": "https://www.mdpi.com/2223-7747/11/21/2825"
+    },
+    {
+      "subject": "Uncovering the Lives of Kentucky's Enslaved People",
+      "reason": "PDF officiel bloqué à l'ouverture ; remplacé pour les faits retenus par l'étude de Patrick réellement accessible.",
+      "consulted": "Extraits lus ; PDF non lu intégralement.",
+      "url": "https://transportation.ky.gov/Archaeology/Documents/Uncovering%20the%20Lives%20of%20Kentucky%27s%20Enslaved%20People.pdf"
+    }
+  ],
+  "handoff": {
+    "factsWithDirectReadableEvidence": 43,
+    "factsWithIndexedPrimaryAbstractOnly": [
+      "d-next-01-f09",
+      "d-next-01-f10",
+      "d-next-01-f11",
+      "d-next-01-f12"
+    ],
+    "questionsAuthoredInD01": 36,
+    "supersededFactRecordsRetained": 7,
+    "nextBoundedTask": "Revalidation indépendante par F des vingt versions modifiées dans d-01 et des deux sources supplémentaires ; aucune nouvelle série avant la revue du lot.",
+    "noQuestionsWritten": false,
+    "noReviewOrActiveBankChanged": true
+  },
+  "authoringRevisions": {
+    "batchId": "d-01",
+    "date": "2026-11-16",
+    "replacements": [
+      {
+        "oldQuestionId": "hemp-q2-d01-isolats-clarte",
+        "newQuestionId": "hemp-q2-d01-colorimetrie-clarte",
+        "newFactId": "d-next-01-f41",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      },
+      {
+        "oldQuestionId": "hemp-q2-d01-gel-force-eau",
+        "newQuestionId": "hemp-q2-d01-gel-synerese",
+        "newFactId": "d-next-01-f42",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      },
+      {
+        "oldQuestionId": "hemp-q2-d01-isolats-emulsion-sel",
+        "newQuestionId": "hemp-q2-d01-proteines-interface-emulsion",
+        "newFactId": "d-next-01-f43",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      },
+      {
+        "oldQuestionId": "hemp-q2-d01-calcium-coalescence",
+        "newQuestionId": "hemp-q2-d01-gouttes-coalescence",
+        "newFactId": "d-next-01-f44",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      },
+      {
+        "oldQuestionId": "hemp-q2-d01-corps-lipidiques-acidite",
+        "newQuestionId": "hemp-q2-d01-oleosome-monocouche",
+        "newFactId": "d-next-01-f45",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      },
+      {
+        "oldQuestionId": "hemp-q2-d01-poudre-coproduit-recuperation",
+        "newQuestionId": "hemp-q2-d01-proteines-dosage-azote",
+        "newFactId": "d-next-01-f46",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      },
+      {
+        "oldQuestionId": "hemp-q2-d01-filtration-elements-pigments",
+        "newQuestionId": "hemp-q2-d01-huile-elements-icpms",
+        "newFactId": "d-next-01-f47",
+        "reason": "Conceptual rewrite after independent review; different tested property."
+      }
+    ],
+    "sourceIdentity": "Existing source objects preserved; new passages stored in fact-specific evidence."
+  },
+  "authoringOutcome": {
+    "batchId": "d-01",
+    "questionCount": 36,
+    "levels": {
+      "1": 5,
+      "2": 26,
+      "3": 5
+    },
+    "forms": {
+      "identification": 18,
+      "situation": 14,
+      "comparaison": 1,
+      "deduction": 3
+    },
+    "nonIdentificationShare": 0.5,
+    "independentRevalidationPending": true
+  }
+}

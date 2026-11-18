@@ -6,8 +6,14 @@ import {
   farmStepChapter,
   followFarmHarvest,
   getFarmStep,
+  getFarmStepState,
+  isFarmProgressComplete,
   observeFarmProgress,
   parseFarmProgress,
+  pauseFarmProgress,
+  replayFarmStep,
+  resumeFarmProgress,
+  selectFarmStep,
   type FarmEvidence,
   type FarmProgress,
   type FarmStepId,
@@ -17,7 +23,7 @@ const started = (overrides: Partial<FarmProgress> = {}): FarmProgress => ({
   ...emptyFarmProgress(), active: true, started: true, ...overrides,
 });
 const cultureSteps: FarmStepId[] = ["launch", "roll", "resolve", "harvest"];
-const actionSteps: FarmStepId[] = ["zone", "assign", ...cultureSteps, "store", "trim", "cure", "jury", "sale"];
+const actionSteps: FarmStepId[] = ["zone", "assign", ...cultureSteps, "store", "trim", "cure", "jury", "sale", "pack-open", "card-play", "school-answer"];
 const staffSteps = ["staff-candidate", "staff-planning", "staff-development", "staff-payroll"] as const;
 
 describe("trim before the jury", () => {
@@ -52,11 +58,11 @@ describe("trim before the jury", () => {
     expect(restored).toMatchObject({ active: false, collapsed: true, flowerId: "flower-1" });
     expect(restored.completed).toEqual(expect.arrayContaining([...saved.completed, "trim"]));
   });
-  it("persists a partial trim without credit and resets trim when following another lot", () => {
+  it("persists a partial trim without credit and keeps acquired learning when following another lot", () => {
     const progress = observeFarmProgress(waiting(), { trim: { id: "flower-1", state: "running" } });
     expect(getFarmStep(parseFarmProgress(JSON.stringify(progress))!)?.id).toBe("trim");
     const complete = observeFarmProgress(progress, { trim: { id: "flower-1", state: "complete" } });
-    expect(followFarmHarvest(complete, "flower-2").completed).not.toContain("trim");
+    expect(followFarmHarvest(complete, "flower-2").completed).toContain("trim");
   });
 });
 
@@ -85,7 +91,7 @@ describe("discovering the team", () => {
   });
 
   it("returns to the visible handbook after navigating the staff carousel", () => {
-    for (const id of ["staff-planning", "staff-development"]) {
+    for (const id of ["staff-planning", "staff-development", "staff-week"]) {
       const step = FARM_GUIDE_STEPS.find(item => item.id === id)!;
       expect(farmStepAdvice(step, { staffTab: "candidates" }, "staff").target).toBe("[data-staff-tab=overview]");
       expect(farmStepAdvice(step, { staffTab: "overview" }, "staff").target).toBe(step.target);
@@ -232,6 +238,14 @@ describe("evidence-driven objectives", () => {
     expect(observeFarmProgress(started(), evidence).completed).toEqual([]);
   });
 
+  it("requires the explicit successful pack/card/answer receipt and keeps errors pending", () => {
+    const evidence: FarmEvidence = { openedPack: true, cardPlayed: true, schoolAnswered: true };
+    const progress = started();
+    expect(observeFarmProgress(progress, { ...evidence, error: true })).toBe(progress);
+    expect(observeFarmProgress(progress, { openedPack: false, cardPlayed: false, schoolAnswered: false })).toBe(progress);
+    expect(observeFarmProgress(progress, evidence).completed).toEqual(expect.arrayContaining(["pack-open", "card-play", "school-answer"]));
+  });
+
   it("does not mutate saved progress and is stable on repeated observations", () => {
     const progress = started({ completed: ["welcome"] });
     Object.freeze(progress.completed);
@@ -285,13 +299,13 @@ describe("next objective and recovery advice", () => {
     const progress = started({ flowerId: "old-flower", completed: ["welcome", "launch", "harvest", "store", "cure", "jury", "sale"] });
     const next = followFarmHarvest(progress, "new-flower");
     expect(next.flowerId).toBe("new-flower");
-    expect(next.completed).toEqual(["welcome", "launch", "harvest"]);
+    expect(next.completed).toEqual(progress.completed);
     expect(followFarmHarvest(progress, "old-flower")).toBe(progress);
     expect(followFarmHarvest(progress, 'invalid"id')).toBe(progress);
   });
   it("finds the first unfinished objective and resolves every destination", () => {
     const progress = started({ completed: ["welcome", "zone", "cards"] });
-    expect(getFarmStep(progress)?.id).toBe("buddies");
+    expect(getFarmStep(progress)?.id).toBe("work-hours");
     for (const step of FARM_GUIDE_STEPS) expect(farmStepChapter(step).id).toBe(step.chapter);
     expect(getFarmStep(started({ completed: FARM_GUIDE_STEPS.map(step => step.id) }))).toBeUndefined();
   });
@@ -302,5 +316,82 @@ describe("next objective and recovery advice", () => {
     expect(farmStepAdvice(harvest, { cultureDead: true, harvested: true }, "culture").target)
       .toBe("[data-culture-recovery], [data-culture-rescue]");
     expect(farmStepAdvice(harvest, { harvested: true }, "culture").line).toContain("confirmation");
+  });
+});
+
+describe("independent modules and replays", () => {
+  it("lets the player select a module without validating or spending anything", () => {
+    const initial = started({ completed: ["welcome"] });
+    const selected = selectFarmStep(initial, "bank");
+    expect(selected.completed).toBe(initial.completed);
+    expect(getFarmStep(selected)?.id).toBe("bank");
+    expect(parseFarmProgress(JSON.stringify(selected))).toEqual(selected);
+    const locked = selectFarmStep(selected, "sale");
+    expect(getFarmStep(locked)?.id).toBe("sale");
+    expect(getFarmStepState(locked, "sale")).toMatchObject({ status: "locked", prerequisites: ["jury"] });
+  });
+
+  it("offers independent discoveries while culture prerequisites are incomplete", () => {
+    const progress = started({ completed: ["welcome", "zone", "buddies", "cards", "packs"] });
+    expect(getFarmStepState(progress, "launch")).toMatchObject({ status: "locked", prerequisites: ["assign"] });
+    expect(getFarmStepState(progress, "bank")).toMatchObject({ status: "available", prerequisites: [] });
+    expect(getFarmStepState(progress, "school-learn")).toMatchObject({ status: "available", prerequisites: [] });
+  });
+
+  it("continues the selected chapter after a confirmed action before returning to other goals", () => {
+    const selected = selectFarmStep(started({ completed: ["launch"] }), "roll");
+    const rolled = observeFarmProgress(selected, { cultureStarted: true, rolled: true });
+    expect(getFarmStep(rolled)?.id).toBe("resolve");
+    const resolved = observeFarmProgress(rolled, { cultureStarted: true, turnResolved: true });
+    expect(getFarmStep(resolved)?.id).toBe("harvest");
+    const chapterComplete = { ...resolved, completed: FARM_GUIDE_STEPS.filter(step => step.chapter === "culture").map(step => step.id) };
+    expect(getFarmStep(chapterComplete)?.id).toBe("welcome");
+  });
+
+  it("keeps a completed action as a reading replay without erasing acquisitions", () => {
+    const progress = started({ completed: FARM_GUIDE_STEPS.map(step => step.id), flowerId: "flower-1" });
+    const replay = replayFarmStep(progress, "sale");
+    expect(isFarmProgressComplete(replay)).toBe(true);
+    expect(getFarmStep(replay)?.id).toBe("sale");
+    expect(getFarmStepState(replay, "sale").status).toBe("completed");
+    expect(replay.completed).toBe(progress.completed);
+    const paused = pauseFarmProgress(replay);
+    expect(parseFarmProgress(JSON.stringify(paused))).toEqual(paused);
+    expect(resumeFarmProgress(paused).replayStepId).toBeUndefined();
+    expect(resumeFarmProgress(paused).completed).toBe(progress.completed);
+  });
+
+  it("never marks an unfinished action completed just because its replay was requested", () => {
+    const replay = replayFarmStep(started(), "sale");
+    expect(replay.completed).toEqual([]);
+    expect(observeFarmProgress(replay, {})).toBe(replay);
+    expect(getFarmStepState(replay, "sale").status).toBe("locked");
+  });
+
+  it("distinguishes waiting for server confirmation from unlocked action and missing prerequisites", () => {
+    const progress = started({ flowerId: "flower-1", completed: ["harvest"] });
+    expect(getFarmStepState(progress, "trim", { trim: { id: "flower-1", state: "running" } }).status).toBe("waiting");
+    expect(getFarmStepState(progress, "trim", { trim: { id: "other", state: "running" } }).status).toBe("available");
+    expect(getFarmStepState(progress, "cure", { lots: [{ id: "flower-1", protected: true, ready: false }] }).status).toBe("waiting");
+    expect(getFarmStepState(progress, "cure", { error: true }).status).toBe("waiting");
+    expect(getFarmStepState(progress, "harvest", { error: true }).status).toBe("completed");
+    expect(getFarmStepState(progress, "jury").status).toBe("locked");
+  });
+
+  it("rejects invalid selected/replay identifiers in saved data", () => {
+    expect(parseFarmProgress(JSON.stringify(started({ selectedStepId: "unknown" as FarmStepId })))).toBeNull();
+    expect(parseFarmProgress(JSON.stringify(started({ replayStepId: "unknown" as FarmStepId })))).toBeNull();
+  });
+
+  it("names the exact missing goals and prioritizes a confirmed unavailable state", () => {
+    const progress = started();
+    expect(getFarmStepState(progress, "jury").reason).toContain("Préparer les fleurs à l’Atelier");
+    expect(getFarmStepState(progress, "jury").reason).toContain("Laisser finir l’affinage");
+    expect(getFarmStepState(progress, "jury", { unavailable: { jury: "Ce lot attend son adversaire." } }))
+      .toEqual({ status: "waiting", prerequisites: [], reason: "Ce lot attend son adversaire." });
+    expect(getFarmStepState(progress, "jury", { error: true }).status).toBe("waiting");
+    const completed = started({ completed: ["pack-open"] });
+    expect(getFarmStepState(completed, "pack-open", { unavailable: { "pack-open": "Aucun pack disponible." } }).status).toBe("completed");
+    expect(observeFarmProgress(progress, { unavailable: { "pack-open": "Aucun pack disponible." } })).toBe(progress);
   });
 });

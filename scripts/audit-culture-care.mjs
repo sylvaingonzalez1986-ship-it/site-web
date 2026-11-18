@@ -109,7 +109,7 @@ function App(){
     ]}}));
   },[]);
   return <main className={gameStyles.page} data-player-mode style={{maxWidth:1100,margin:'auto',padding:12}}>
-    <KqCultureCarePanel state={state} request={request} storage={remoteMode?undefined:localStorage} runId={remoteMode?'audit-run':undefined} disabled={busy} onBusyChange={setBusy} onStateChange={setState}/>
+    <KqCultureCarePanel presentation={params.get('carousel')==='1'?'carousel':'disclosure'} state={state} request={request} storage={remoteMode?undefined:localStorage} runId={remoteMode?'audit-run':undefined} disabled={busy} onBusyChange={setBusy} onStateChange={setState}/>
     <button id="advance" disabled={busy} onClick={()=>setState(advanceKqStage(resolveKqStage({...state,phase:'rolled',dice:[4,4,4]})))}>Valider une opération</button>
     {fixture==='visual'?<div data-audit-actions><button id="resolve-only" disabled={busy} onClick={()=>setState(resolveKqStage({...state,phase:'rolled',dice:[6,6,6]}))}>Valider sans avancer</button><button id="advance-only" disabled={busy||state.phase!=='resolved'} onClick={()=>setState(advanceKqStage(state))}>Passer à la prochaine étape</button></div>:null}
   </main>;
@@ -185,7 +185,7 @@ try {
   assert.ok((await page.$eval('[data-care-alert]', node => node.innerText)).includes('Foyer de pucerons'));
   pass('active problem remains visible while collapsed');
   await imagesReady('[data-care-portrait]', 1);
-  assert.match(await page.$eval('[data-care-portrait]', node => node.alt), /Sylvain/);
+  assert.match(await page.$eval('[data-care-portrait]', node => node.alt), /Loïc/);
   pass('stage-specific Sylvain portrait loaded with descriptive alternative');
   for (const width of [320, 390, 768, 1280]) {
     await page.setViewport({ width, height: 900 });
@@ -247,6 +247,7 @@ try {
   assert.equal(await page.$$eval('[aria-label="Intrants et protection biologique"] a', nodes => nodes.length), 0);
   pass('PBI cards show no documentary or retailer links');
   const aphidius = await page.waitForFunction(() => [...document.querySelectorAll('article')].find(node => node.querySelector('h3')?.textContent === 'Aphidius colemani'));
+  assert.match(await aphidius.asElement().$eval('[data-care-product-effect]',node=>node.textContent),/Foyer de pucerons.*1er bilan.*2e bilan.*−2/);
   await aphidius.asElement().$$eval('button', buttons => buttons.find(node => node.textContent.includes('Acheter')).click());
   await page.waitForFunction(() => [...document.querySelectorAll('article')].some(node => node.querySelector('h3')?.textContent === 'Aphidius colemani' && node.textContent.includes('1 passage disponible')));
   await waitCash(33300);
@@ -254,6 +255,7 @@ try {
   pass('purchase adds one charge to reserve');
   await aphidius.asElement().$$eval('button', buttons => buttons.find(node => node.textContent.includes('Utiliser')).click());
   await page.waitForFunction(() => document.querySelector('main').textContent.includes('Installation en cours'));
+  assert.match(await aphidius.asElement().$eval('[data-care-product-feedback]',node=>node.textContent),/1 passage.*validation/);
   pass('use consumes charge and starts delayed PBI intervention');
   await page.locator('[data-cannabinoid-report] summary').click();
   assert.equal(await page.$$eval('[data-cannabinoid-report] tbody tr', rows => rows.length), 7);
@@ -544,7 +546,7 @@ try {
     assert.ok((await page.$eval('[data-care-stage]', node => node.textContent)).includes(stageNames[stage]));
     const before = await portrait();
     assert.ok(before.src.includes(stageSlugs[stage]), `Preparing ${stageNames[stage]} keeps its botanical stage`);
-    assert.match(before.alt, /Sylvain/);
+    assert.match(before.alt, /Loïc/);
     if (stage === 5) {
       assert.match(before.alt, /récolt|séchage|fleurs/i);
       assert.doesNotMatch(before.alt, /jeune pousse|plante en croissance|premières racines/i);
@@ -663,6 +665,16 @@ try {
     await panel.screenshot({ path: resolve(output, `care-preview-${name}.png`) });
   }
   pass('final desktop and mobile previews show only the expanded flowering panel with loaded artwork and site fonts');
+  await page.setViewport({width:320,height:650,isMobile:true,hasTouch:true});
+  await page.goto(`${origin}/?fixture=care-route&carousel=1`, { waitUntil: 'networkidle0' });
+  const beforeInspection = await page.evaluate(() => JSON.stringify(window.__careState));
+  await page.locator('[data-care-open-products]').click();
+  await page.waitForSelector('[data-care-product="CARE-APHIDIUS"]', {visible:true});
+  assert.equal(await page.$eval('[data-care-section="intervention"]',node=>node.getAttribute('aria-selected')), 'true');
+  assert.equal(await page.evaluate(()=>document.activeElement?.hasAttribute('data-care-reserve-toggle')),true);
+  assert.equal(await page.evaluate(() => JSON.stringify(window.__careState)),beforeInspection);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),true);
+  pass('320 px observed problem opens targeted products without an application or payment');
   assert.deepEqual(errors, []);
   assert.deepEqual(blockedRequests, []);
   pass('no browser errors');

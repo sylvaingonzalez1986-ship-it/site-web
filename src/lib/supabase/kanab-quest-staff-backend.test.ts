@@ -20,6 +20,36 @@ beforeEach(() => {
   mocks.rpc.mockImplementation(async (name, args) => name === "rpc_kq_staff_receipt" ? { data: null, error: null } : name === "rpc_kq_staff_commit" ? { data: { ...raw(), revision: 1, state: args.p_state }, error: null } : { data: raw(), error: null });
 });
 describe("staff server authority", () => {
+  it("waits for building debits to honour reservations before opening planning", async () => {
+    const partial = { ...raw(), context: { ...raw().context, dayPlanVersion: 1 } };
+    mocks.rpc.mockImplementation(async name => ({ data: name === "rpc_kq_staff_receipt" ? null : partial, error: null }));
+    expect((await getKqStaffSnapshot(user)).context.dayPlanVersion).toBeUndefined();
+    await expect(handleKqStaffAction(user, { requestKey: key, action: "save-day-plan", expectedDay: 1, expectedVersion: 0, day: 1,
+      assignment: { action: "player-assign", kind: "communication", hours: 1, expectedCostCents: 0 } })).rejects.toThrow(/mise à jour/);
+    expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_staff_commit")).toBe(false);
+    mocks.rpc.mockResolvedValue({ data: { ...partial, context: { ...partial.context, teamWork: [] } }, error: null });
+    expect((await getKqStaffSnapshot(user)).context.dayPlanVersion).toBe(1);
+  });
+  it("settles expired plans and finished work before answering a delayed planner receipt", async () => {
+    const first = { ...raw(), state: hired(), context: { ...raw().context, dayPlanVersion: 1 as const } };
+    const assignment = { action: "player-assign" as const, kind: "communication" as const, hours: 1, expectedCostCents: 0 };
+    const save = { action: "save-day-plan" as const, day: 1, assignment, expectedDay: 1, expectedVersion: 0 };
+    first.state = applyKqStaffCommand(first, save, "unstarted").state;
+    first.state = applyKqStaffCommand(first, { action: "start-team-task", assignment, expectedDay: 1, expectedVersion: 1 }, "started").state;
+    const second = { ...first, revision: 2, serverNow: new Date(Date.parse(now) + KQ_GAME_DAY_MS).toISOString() };
+    mocks.rpc.mockImplementation(async (name, args) => {
+      if (name === "rpc_kq_staff_receipt") return { data: { ...second, replayed: true }, error: null };
+      if (name === "rpc_kq_staff_snapshot") return { data: second, error: null };
+      expect(args.p_command).toEqual({ action: "settle" });
+      expect(args.p_request_key).not.toBe(key);
+      return { data: { ...second, state: args.p_state, revision: 3 }, error: null };
+    });
+    const result = await handleKqStaffAction(user, { ...save, requestKey: key });
+    expect(result.calendar.day).toBe(2);
+    expect(result.state.dayPlans).toEqual([]);
+    expect(result.state.tasks).toMatchObject([{ id: "started", status: "completed" }]);
+    expect(result.state.playerWorkDays["2"]).toBeUndefined();
+  });
   it.each([false, true])("settles authorized weekly departures before pausing, with no second debit under contention (%s)", async contended => {
     const employeeId = hired().employees[0].id;
     const days = [[], [{ kind: "training" as const, skill: "processing" as const, hours: 2 }], [], [], []];

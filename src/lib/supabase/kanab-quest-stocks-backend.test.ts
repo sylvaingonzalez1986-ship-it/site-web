@@ -22,14 +22,14 @@ describe("stock market server authority",()=>{
  });
  it("fetches only lease-winning requested symbols, then publishes the actual provider data",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,assetIds:["AAPL"]}}).mockResolvedValueOnce({error:null,data:true});
-  await refreshKqStockQuotes(["AAPL","MSFT"]);expect(quotes).toHaveBeenCalledExactlyOnceWith(["AAPL"]);expect(rpc).toHaveBeenLastCalledWith("rpc_kq_stock_refresh_publish",{p_lease_id:id,p_assets:[asset]});
+  await refreshKqStockQuotes(["AAPL","MSFT"]);expect(quotes).toHaveBeenCalledExactlyOnceWith(["AAPL"]);expect(rpc).toHaveBeenCalledWith("rpc_kq_stock_refresh_publish",{p_lease_id:id,p_assets:[asset]});
  });
  it("rejects a forged lease containing unrelated symbols",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,assetIds:["MSFT"]}});await expect(refreshKqStockQuotes(["AAPL"])).rejects.toThrow("invalid refresh lease");expect(quotes).not.toHaveBeenCalled();
  });
  it("replays confirmation without depending on a fresh provider price",async()=>{
   rpc.mockResolvedValue({error:null,data:{trade,replayed:true}});expect(await handleKqStockAction(owner,{action:"confirm",orderId:id,userId:"victim",priceEur:"1"})).toEqual({trade,replayed:true});
-  expect(quotes).not.toHaveBeenCalled();expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_stock_command",{p_user_id:owner,p_action:"confirm",p_payload:{orderId:id},p_asset_ids:[]});
+  expect(quotes).not.toHaveBeenCalled();expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_market_order_submit",{p_market:"stocks",p_user_id:owner,p_payload:{orderId:id}});
  });
  it("previews the owner order with server-authoritative price and FX",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:null}).mockResolvedValueOnce({error:null,data:order});await handleKqStockAction(owner,{action:"preview",side:"buy",assetId:"AAPL",amountCents:10000,userId:"victim",fxRate:"1"});
@@ -40,6 +40,13 @@ describe("stock market server authority",()=>{
   rpc.mockResolvedValue({error:{code:"42501",message:"private DB"},data:null});await expect(handleKqStockAction(owner,{action:"confirm",orderId:id})).rejects.toThrow("[supabase:stocks]");expect(JSON.stringify(vi.mocked(console.warn).mock.calls)).not.toContain("private DB");
  });
  it("fails closed on a malformed snapshot",async()=>{
-  rpc.mockResolvedValueOnce({error:null,data:null}).mockResolvedValueOnce({error:null,data:{...snapshot,cashCents:-1}});await expect(getKqStockSnapshot(owner,["AAPL"])).rejects.toThrow("invalid snapshot");
+  rpc.mockImplementation(async(name:string)=>({error:null,data:name==="rpc_kq_stock_refresh_claim"?null:name==="rpc_kq_pending_stock_assets"?[]:{...snapshot,cashCents:-1}}));await expect(getKqStockSnapshot(owner,["AAPL"])).rejects.toThrow("invalid snapshot");
  });
+});
+
+it("acknowledges a queued instruction without inventing an executed trade",async()=>{
+ const queuedOrder={orderId:id,market:"stocks",assetId:"1",side:"buy",budgetCents:10000,quantity:"1",submittedAt:date,deadlineAt:date,status:"pending",reason:null,executionAt:null};
+ rpc.mockResolvedValue({error:null,data:{queuedOrder,replayed:false}});
+ expect(await handleKqStockAction(owner,{action:"confirm",orderId:id,executionPolicy:"next-publication"})).toEqual({queuedOrder,replayed:false});
+ expect(rpc).toHaveBeenCalledWith("rpc_kq_market_order_submit",expect.objectContaining({p_market:"stocks",p_payload:{orderId:id,executionPolicy:"next-publication"}}));
 });

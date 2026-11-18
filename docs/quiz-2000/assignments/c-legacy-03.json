@@ -1,0 +1,349 @@
+{
+  "batchId": "c-legacy-03",
+  "status": "reserved-not-started",
+  "scope": "Local beta: rewrite or replace weak facts; no historical compatibility required. Source evidence and independent review required.",
+  "entries": [
+    {
+      "id": "hemp-uses-pores",
+      "topicId": "uses",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait institutionnel vérifié ; trois distracteurs « uniquement/seulement » décrivent des solides, réponse éliminatoire. Refaire choix de contenus plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-matiere-organique",
+      "topicId": "uses",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "PDF USDA indisponible après deux tentatives ; fait plausible mais ne pas valider sans passage effectivement accessible de la référence.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-vers-terre",
+      "topicId": "uses",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Fabrication de pollen/fleurs/graines par les vers rend l’item tautologique, même à L1.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-paillis",
+      "topicId": "uses",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Les emplacements proposés hors sol sont impossibles ; proposer des pratiques de couverture du sol crédibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-exsudats",
+      "topicId": "uses",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Pollen/fibres textiles/roche ne sont pas des sécrétions racinaires crédibles à L2.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-mycorhize",
+      "topicId": "uses",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Définition source vérifiée ; autres couples fleur/insecte,feuille/virus,graine/acarien rendent l’élimination facile au niveau2. Proposer associations biologiques comparables. La source générale ne documente pas le cas chanvre spécifiquement.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-mineralisation",
+      "topicId": "uses",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Graines germées/fibres neuves/feuilles sont des distracteurs sans rapport avec la minéralisation.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-echange-cations",
+      "topicId": "uses",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "CEC source vérifiée ; niveau4 surestimé pour définition de cation et trois choix absolus « seulement/uniquement ». Réestimer2 et refaire les distracteurs.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-immobilisation",
+      "topicId": "uses",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Azote transformé en potassium ou lumière : faux par catégorie ; remplacer par transformations azotées crédibles à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-uses-echange-mycorhize",
+      "topicId": "uses",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Grains de sable/spores/nodules inventés rendent la réponse L4 trop évidente.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-plein-champ",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "La source concerne hydroponie/CEA et n’établit pas ce contraste explicite dans le passage lu. Fait très trivial et choix répétitifs abrités ; demander situation utile et référence adaptée sans ajout artificiel.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-serre",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Source institutionnelle vérifiée ; opacité totale/solubilité/conductivité ne sont pas des propriétés optiques comparables. Choix à reprendre.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-sechage",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "PDF IFAS indisponible après deux tentatives ; fait plausible mais sans passage actuel récupéré.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-paille",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait guide2026 vérifié ; pollen seul/protéines dissoutes/huile ne sont pas des matières pressables plausibles. Choix à reprendre.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-nuages",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Argile et graines stockées n’ont pas de lien avec les nuages : faibles distracteurs, même pour L1.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-transpiration",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Source exacte vérifiée ; glace/huile/sève sucrée ne sont pas quatre états plausibles de l’eau. Réestimer niveau1 ou refaire le cadrage des choix.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-gel-plantule",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Un seul choix est un stade de plante vivante : aucune connaissance du gel nécessaire. Comparer vrais stades de développement.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-echauffement",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Gel spontané/carbonatation/rouissage rendent la réponse trop évidente ; chercher des altérations réelles de stockage.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-fanage",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Extraction d’huile, fil et protéines ne sont pas des opérations comparables au fanage L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-andain",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Comparer des formes de matière agricole plutôt que sacs de graines/tissu/cuve d’huile au niveau L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-battage",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Guide cite le battage mais le passage lu ne le définit pas ; ajouter définition agricole. Trois opérations d’autres fractions trop éliminatoires au niveau3, réestimer2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-hors-sol",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Verre solide/air sans eau/intérieur des feuilles ne sont pas des milieux racinaires plausibles à L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-huile-rance",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Germination des protéines est absurde ; proposer des réactions chimiques comparables à L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-point-rosee",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Préciser à pression et teneur en vapeur données ; vitesse du vent/heure/quantité par graine sont des distracteurs hors catégorie à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-humidite-relative",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Préciser comparaison à pression constante ou à volume constant dans l’énoncé pour lever toute lecture thermodynamique ambiguë.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-bris-graines",
+      "topicId": "prevention",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Amidon pur/fibres nouvelles/disparition des minéraux sont des distracteurs impossibles à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-hydroperoxydes",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait source vérifié ; deux distracteurs sucres/acides aminés ne sont pas des produits plausibles d’oxydation lipidique. Refaire choix avec fonctions issues des lipides sans changer le fait.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-prevention-maturite",
+      "topicId": "prevention",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Passage guide2026 précis vérifié ; niveau4 surestimé et deux choix absolus « toutes/uniquement ». Réestimer2–3 et proposer des zones comparables.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-2ag-study-assay",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait primaire vérifié ; niveau4 excessif pour distinguer des lipases/protéases/amylases. Réestimer niveau3 et préciser dans l’objectif le transfert d’un groupe prénylique.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-cbd-mn-vs-indian",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait primaire vérifié ; niveau4 excessif pour une affiliation documentaire sans raisonnement expert. Réestimer niveau2–3. Même contexte que la question pays : ne pas servir ensemble.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-1-05",
+      "topicId": "plant",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Disposition opposée basale confirmée ; trois distracteurs peu comparables (« toutes du même côté », rosette seulement, groupes de cinq) affaiblissent un item niveau2. Revoir les dispositions concurrentes.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-10",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Le β-phellandrène apparaît dans le tableau aromatique mais sa classe C10 n’y est pas démontrée. Ajouter le passage Booth2017 monoterpènes déjà consulté ou une notice chimique précise.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-12",
+      "topicId": "molecules",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Nommer étude ou année : l’attribution cinnamate d’éthyle est provisoire et la question reste attachée à cette étude.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-13",
+      "topicId": "molecules",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Nommer étude ou année et préserver « proposé » ; ne pas universaliser la note de champignon.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-15",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Le tableau confirme le méthional et son odeur, sans expliciter sa fonction aldéhyde. Ajouter une référence de structure/classification chimique ; quatre fonctions proposées restent plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-18",
+      "topicId": "molecules",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Tous les distracteurs sont acycliques ; privilégier des terpènes cycliques proches à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-19",
+      "topicId": "molecules",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Récepteurs/polysaccharides/protéines sont hors classe des précurseurs nommés : niveau L4 trop faible.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-2-20",
+      "topicId": "molecules",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Chlorophylle/lignine/anandamide sont sans rapport de précurseur de la voie MVA à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    }
+  ]
+}

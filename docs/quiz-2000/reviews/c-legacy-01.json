@@ -1,0 +1,573 @@
+{
+  "batchId": "c-legacy-01",
+  "reviewer": "E / e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Lecture complète des30questions, quatre choix, corrections et index éditoriaux ; appuis des21notices nouvelles et deLivingston relus. Bêta locale sans contrainte de conservation des anciennes identités/statistiques. Seul ce fichier de revue est créé.",
+  "summary": {
+    "approved": 30,
+    "changes_requested": 0,
+    "rejected": 0,
+    "requiredChanges": [],
+    "confirmedPoints": [
+      "Larve de chrysope reconnue par sa morphologie ; adultes deC.oculata également prédateurs.",
+      "Fonctionamide de l’anandamide confirmée par ChEBI.",
+      "GEVES : propositionsjanvier2025, publicationfévrier2025.",
+      "Le nouveau fait couplageG est distinct ; les autres questions du lot portent sur distributions, identité de séquence et cibles."
+    ],
+    "revalidation": "Deux corrections relues et approuvées ; toutes les empreintes des questions et des sources touchées sont actualisées. Les28autres avis restent inchangés."
+  },
+  "accessEvidence": {
+    "fullTextOrOfficial": "ACIA, NHGRI, ChEBI, Lynch, CSU, UMN, Bisogno, Ben-Shabat, Kew, GEVES, Booth, Kneubühl etLivingston : passages pertinents effectivement ouverts et lus.",
+    "abstract": "Howlett2002 : résuméPubMed accessible et relu, sans prétendre à une lecture intégrale du papier.",
+    "indexedExcerpts": "IUPAC E02167 etDevane1992 : ouvertures directes refusées ou techniquement vides ; définitions/résumé primaires indexés relus. Ces accès limités restent déclarés tels quels.",
+    "gaoni": "URLGreenEarth etéditeurACS inaccessibles dans mon contexte. Première page primaire relue sur l’image locale C:/Users/sylva/AppData/Local/Temp/q2-cfix-gaoni-1964.png, correspondant auPDF de même nom ; cartouche, titre et introduction examinés. Aucune lecture intégrale du papier prétendue.",
+    "tables": "TableauxGEVES etKneubühl et légendes lus dans le textePDF extrait ; captures web refusées Cachemiss, aucune inspection visuelle de ces captures prétendue."
+  },
+  "duplicateReview": {
+    "corpus": [
+      "Snapshot initial360entrées après surcharges",
+      "Tous les fichiers courants de docs/quiz-2000/batches, dont les pilotes et d-01"
+    ],
+    "method": "Exclusion de la version initiale de chaque ID corrigé, lecture des faits proches en anatomie/génétique/cannabinoïdes, recherche des couplages, protéinesG, GPCR et effecteurs ; contrôle des objectifs distincts.",
+    "gProteinFinding": "Le seul autre ID dont le nom contient gprotein, hemp-hs-sci-cb-receptor-gprotein, teste déjà leCBGA dans le snapshot effectif. Aucun autre prompt/correction courant ne teste le couplageCB1/CB2 aux protéinesG.",
+    "nearButDistinct": [
+      "CB1-neurones etCB2-cellules immunitaires sont deux distributions ; le contraste redondant a été retiré.",
+      "L’anandamide : tissu de découverte, identité chimique, partieéthanolamine et fonctionamide sont des propriétés différentes ; ne pas traiter ce lot comme une série à tirer ensemble.",
+      "Bractée-feuille modifiée et bractée enveloppant le fruit sont des propriétés différentes.",
+      "Trichome : fonction glandulaire, morphologie pédonculée, cavité et comptage cellulaire sont distincts.",
+      "Gaoni1964 : identité du composé versus portée des travaux partielle/totale ; aucun résultat de synthèse pratique repris."
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-plant-annuelle",
+      "status": "approved",
+      "comment": "Choix distincts et niveau1 cohérent. Le contexte permet d’identifier le cycle annuel sans piège de synonymes.",
+      "contentHash": "e0c9ce25d891307ca9d97d8b32749ac0d406f1c7f967bb0f6bc76f807ef3606c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "2.6 General description, première phrase.",
+          "result": "L’espèce est décrite comme annuelle ; la réponse attendue est soutenue.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-plant-monoecie",
+      "status": "approved",
+      "comment": "Définition précise, quatre organisations reproductrices comparables. Niveau2 défendable ; ne confond pas monoécie et fleur bisexuée.",
+      "contentHash": "32fd49e539c5b972d99a826d13c91e91f94c16ed5feed34a08c2d86ef67ba5a2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "2.6 General description ;4.1 Reproductive biology, cultivars monoïques.",
+          "result": "Les deux types de fleurs peuvent être portés par un même individu monoïque.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-allele",
+      "status": "approved",
+      "comment": "La distinction version/emplacement/expression est claire. Une seule réponse correcte parmi des notions génétiques réelles.",
+      "contentHash": "b1a1e60ea3273638d29455e2620156b41494121fb09b92fa3184e91789e6fa47",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-nhgri-allele",
+          "url": "https://www.genome.gov/genetics-glossary/Allele",
+          "locator": "Definition et Narration de la notice Allele.",
+          "result": "La définition institutionnelle décrit des versions de séquence d’ADN à un emplacement donné.",
+          "sourceHash": "ee0fe6f79ffcc96cafb9beb51344a561d422ea0468f796255d7ec122c4c41047",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-clones-milieu",
+      "status": "approved",
+      "comment": "Le génotype et l’âge étant fixés, la situation permet une inférence réelle. Aucun résultat de culture n’est inventé.",
+      "contentHash": "052b3f381c3ce99b75f5119905ed9b5e31b0699ff9a06b5a532510d0c0100c6b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-nhgri-phenotype",
+          "url": "https://www.genome.gov/genetics-glossary/Phenotype",
+          "locator": "Definition et Narration de Phenotype, influence des facteurs environnementaux.",
+          "result": "Le phénotype dépend de facteurs génétiques et environnementaux ; la situation est une application hypothétique annoncée.",
+          "sourceHash": "1ed2314c79e2258f51aa37657213a9c800824ce01e4bbb0b0929b687a9a46794",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-haplotype",
+      "status": "approved",
+      "comment": "Définition et choix validés. La métadonnée indique désormais la mise à jour affichée du15novembre ; consultation du16conservée. Nouvelle ouverture NHGRI concordante.",
+      "contentHash": "2ecb3e87d487ead4f62b6203a3d88b6276ad23a4f33de5029e447c33191b645d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-nhgri-haplotype",
+          "url": "https://www.genome.gov/genetics-glossary/haplotype",
+          "locator": "Haplotype, updated ; Definition ; Narration de Leslie G.Biesecker.",
+          "result": "Définition et narration relues : variants liés sur un même chromosome. La page affiche15novembre2026, conforme à published après correction.",
+          "sourceHash": "434bfd03377f94eb118a4a7a02dac2b165189541634ba3998896319d9b958413",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "revalidation": {
+        "previousStatus": "changes_requested",
+        "previousContentHash": "2ecb3e87d487ead4f62b6203a3d88b6276ad23a4f33de5029e447c33191b645d",
+        "reviewedAt": "2026-11-16"
+      }
+    },
+    {
+      "id": "hemp-genetics-synthases-chromosome",
+      "status": "approved",
+      "comment": "Résultat génomique précis, correctement daté et classé expert. La correction sépare localisation et teneur chimique.",
+      "contentHash": "f7f51dfb0813976b71f66078be277da9d79f331ff744ff47ee18ad8646debd11",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Domesticated cannabinoid pathway, paragraphe précédant la Figure4.",
+          "result": "Le passage situe les cassettes contenant THCAS, CBDAS et CBCAS sur le chromosome7 dans l’organisation décrite.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-ocimene-e",
+      "status": "approved",
+      "comment": "La restriction « ici » évite de généraliser E=trans à toutes les structures. Distracteurs géométriques et stéréochimiques comparables.",
+      "contentHash": "e5f3d355c9f9e8bea411919da3dfb61656a21855892092d7fe898fda941c2e58",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-chebi-ocimene",
+          "url": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:64280",
+          "locator": "ChEBI64280, Definition, IUPAC Name et Synonyms.",
+          "result": "La notice3E mentionne trans-β-ocimène parmi ses synonymes et précise la géométrie correspondante.",
+          "sourceHash": "e553600150c8453325d5f8cc51276318b76d6955ba706333cabe6829b8cd137f",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-hhc-epimeres",
+      "status": "approved",
+      "comment": "Les deux références convergent sur la stéréochimie ; niveau4 cohérent. Les quatre choix sont des relations d’isomérie réelles.",
+      "contentHash": "85ab878a5cc7e67bf22878c3fdae3c7cd0355f58f90e37f89e643ff8043336d8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-russo-hhc-2023",
+          "url": "https://iris.unimore.it/retrieve/eebf1b86-21c8-48b0-862f-3d70fa6d04e3/s41598-023-38188-5.pdf",
+          "locator": "PDFRusso p.3, attribution stéréochimiqueC9 ; Figure3.",
+          "result": "La caractérisation attribue9S et9R et discute leur différence au centreC9 ; aucune méthode de fabrication n’est reprise.",
+          "sourceHash": "9b574320e813965c937b4204e74ce4755a7464caf79576ebe445a3122b44c7f1",
+          "checkedAt": "2026-11-16"
+        },
+        {
+          "sourceId": "q2-cfix-iupac-epimers",
+          "url": "https://goldbook.iupac.org/terms/view/E02167/html",
+          "locator": "IUPAC E02167, définition de l’extrait indexé ; accès direct refusé403.",
+          "result": "L’extrait officiel indexé définit des épimères par un seul centre de configuration différente parmi plusieurs.",
+          "sourceHash": "bd8a4e0b6ca758a9db04ee76acb6580aef5f4b12e322d7925dba9ef9120178aa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-chrysope",
+      "status": "approved",
+      "comment": "La morphologie larvaire rend la réponse unique sans prétendre que les adultes ne sont jamais prédateurs. Niveau2 cohérent.",
+      "contentHash": "d3cfaca3ddfda46c9fd161fecdc6bc388cf9c338dbd10fd2ae61f4c306a1ef40",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-csu-lacewings",
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+          "locator": "PDFCSU, page unique, paragraphes1–2 et légendes larve/adulte.",
+          "result": "La fiche distingue les longues pièces buccales larvaires et indique la prédation des larves comme des adultes deC.oculata.",
+          "sourceHash": "7101d465d40405555c1cf2f7e253ff1ccf5db1a118fdeb0ec27f02e643c49317",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-sclerotes",
+      "status": "approved",
+      "comment": "Structures de persistance clairement distinguées des spores. Quatre propositions fongiques comparables, niveau3 recevable.",
+      "contentHash": "6e42497379f3197b264b8d5e0eb59ea43d9fa9d4dd80a38e59db33362ef2dcfc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-umn-sclerotinia",
+          "url": "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/yard-and-garden-problems/white-mold-in-the-garden",
+          "locator": "How does white mold survive and spread?, deux premières puces.",
+          "result": "La fiche nomme les sclérotes comme structures résistantes assurant la survie dans le sol et les débris.",
+          "sourceHash": "1e43dbe49efcf79e3f48c5cf465e3590d291455279f64fb54a4529a4d77a8021",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-thc-1964",
+      "status": "approved",
+      "comment": "Référence historique bornée, choix de cannabinoïdes plausibles. L’ancienne numérotation est signalée sans prétention thérapeutique.",
+      "contentHash": "fb683854c0dbdd8dde7bf8165e79976dc773926aad7f5ef5ca6d545fbbc18a9b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-gaoni-first-page-1964",
+          "url": "https://greenearthmedicinals.com/content/Documents/Science_of_CBD/3_Gaoni 1964.pdf",
+          "locator": "Première pageGaoni1964 : titre, cartoucheACS et introduction droite ; image locale q2-cfix-gaoni-1964.png examinée.",
+          "result": "Le titre, les auteurs et l’introduction du fac-similé identifient le constituant tétrahydrocannabinolique étudié en1964.",
+          "sourceHash": "4f71337274c26240d320a95ffe9011db1ac26c419ce4b59999a82a95997126cc",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-brain",
+      "status": "approved",
+      "comment": "Prédominance correctement attribuée à la classification, sans exclusivité. Les choix sont des catégories cellulaires réelles.",
+      "contentHash": "76a66c8b498f4801e47f5d894ceb14ed84b23739920d33dcd42f76848fa18feb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-howlett-classification-2002",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "locator": "Howlett2002, Abstract, distribution des récepteurs.",
+          "result": "Le résumé décrit CB1 principalement sur les neurones centraux et périphériques.",
+          "sourceHash": "7206bfeef8b256f40bdad58af747b45be60bdd63e8c8241d1318250ddd005ab4",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-not-thc",
+      "status": "approved",
+      "comment": "Remplacement substantiel autorisé en bêta. Le nouveau fait porte sur le substrat d’une enzyme ; quatre classes lipidiques plausibles.",
+      "contentHash": "835f98bb33c79092b00881a9d4d0dc749936ddae46b2e0fde7eb1e7d46b6b743",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-bisogno-dagl-2003",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+          "locator": "Bisogno2003, Introduction, premier paragraphe ; Abstract.",
+          "result": "L’introduction décrit l’hydrolyse d’un diacylglycérol par une lipase sn-1 pour former le2-arachidonoylglycérol.",
+          "sourceHash": "022d912c0fd1c70b59f44184e8272ee040e68c58a27c5748f3604c72e43ce17e",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb2-tissue",
+      "status": "approved",
+      "comment": "La prédominance immunitaire est précise et non exclusive. Fait distinct de la distribution deCB1.",
+      "contentHash": "cbfe65b8f8d4d8d35d839c0498a53772c0c02503901126f128a4be55b5e20da4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-howlett-classification-2002",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "locator": "Howlett2002, Abstract, passage surCB2.",
+          "result": "Le résumé situe CB2 principalement dans les cellules immunitaires, sans restreindre toute expression à ces cellules.",
+          "sourceHash": "7206bfeef8b256f40bdad58af747b45be60bdd63e8c8241d1318250ddd005ab4",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-cb2-sequence",
+      "status": "approved",
+      "comment": "Le pourcentage concerne bien les séquences protéiques et non une proportion d’effets. Niveau3 honnête pour ce repère spécialisé.",
+      "contentHash": "55e1d7689213e3b62ccfe2e1a14a0d05ca9ecf6e0a2df66dd8b637a62a3f86f8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-howlett-classification-2002",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "locator": "Howlett2002, Abstract, première partie.",
+          "result": "Le résumé indique environ48% d’identité de séquence d’acides aminés entre les deux récepteurs.",
+          "sourceHash": "7206bfeef8b256f40bdad58af747b45be60bdd63e8c8241d1318250ddd005ab4",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-tissue",
+      "status": "approved",
+      "comment": "Lieu de découverte correctement limité ; quatre tissus/espèces comparables. Les deux appuis convergent, avec une limitation d’accès explicite au premier.",
+      "contentHash": "93e087017160fba68663f7821f8b7fd88a9ed4d63c8ccead767d873c4bb4a6d4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-devane-anandamide-1992",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+          "locator": "Devane1992, première phrase du résumé indexé primaire ; ouverture directe techniquement vide.",
+          "result": "L’extrait PubMed indexé identifie l’arachidonyléthanolamide dans le cerveau porcin et date le papier du18décembre1992.",
+          "sourceHash": "1b450b9dce70ec4b0478b60443bbf94e8b72c33cd6fa55637c9c6970a29d3d34",
+          "checkedAt": "2026-11-16"
+        },
+        {
+          "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+          "url": "https://www.weizmann.ac.il/brain-sciences/labs/vogel/PDFs/98EJP353-23.pdf",
+          "locator": "Ben-Shabat1998, p.23, début de l’Introduction.",
+          "result": "L’introduction duPDF rappelle le cerveau porcin et cite Devane1992 pour l’anandamide.",
+          "sourceHash": "2f9aea01450a9df1086cb1b47fcc1274217a389046290320e12ff59bbb976787",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-thc-stereochemistry",
+      "status": "approved",
+      "comment": "Le titre primaire soutient exactement la portée demandée, notamment partielle versus totale. Fait distinct de l’identité du composé dans l’autre item1964.",
+      "contentHash": "f4365f8a3791e33de8dc6fb7c055be7b64f53f42616a534f0600c1aa7a8fc8a5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-gaoni-first-page-1964",
+          "url": "https://greenearthmedicinals.com/content/Documents/Science_of_CBD/3_Gaoni 1964.pdf",
+          "locator": "Première pageGaoni1964, titre et cartouche bibliographique ; image locale examinée.",
+          "result": "Le cartouche du fac-similé annonce isolement, structure et synthèse partielle ; aucune synthèse totale n’est revendiquée dans ce titre.",
+          "sourceHash": "4f71337274c26240d320a95ffe9011db1ac26c419ce4b59999a82a95997126cc",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-precursor",
+      "status": "approved",
+      "comment": "La réponse amide corrige la confusion entre nom de molécule et fonction. Quatre fonctions comparables, niveau3 cohérent.",
+      "contentHash": "b13c07ceec17e2018cdbb7ae2d065cb9ec948334cadd2e86e7033c1794ad6064",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-chebi-anandamide",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:2700",
+          "locator": "ChEBI2700, Definition, SMILES, IUPACName et synonymes amide.",
+          "result": "La définition décrit une N-acyléthanolamine ; la connectivité et le nom chimique montrent la liaisonamide entre les deux parties.",
+          "sourceHash": "556d893c4fb755c816f9bafdf7b8a20c88909f9409c4173c0d4aadf6270aa863",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptors-contrast",
+      "status": "approved",
+      "comment": "Le prompt vise maintenant le couplage direct à une famille de protéines. La réponseG correspond au résuméHowlett et n’est plus confondue avec l’ensemble des relais aval.",
+      "contentHash": "c68886c9b1ab05ce8d3991bfc4866626239ac09b293fe53157d20bd6ddd5388e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-howlett-classification-2002",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "locator": "Howlett2002, Abstract, phrase sur couplageG et effecteurs.",
+          "result": "Le résumé affirme explicitement le couplage des deux récepteurs à des protéinesG vers des effecteurs intracellulaires.",
+          "sourceHash": "7206bfeef8b256f40bdad58af747b45be60bdd63e8c8241d1318250ddd005ab4",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "revalidation": {
+        "previousStatus": "changes_requested",
+        "previousContentHash": "6a654440f4a4de7be4d59a07a8a3068f76e057264ef524ab87447de4b56c400f",
+        "reviewedAt": "2026-11-16"
+      }
+    },
+    {
+      "id": "hemp-hs-sci-2ag-cb1cb2",
+      "status": "approved",
+      "comment": "Deux cibles principales correctement identifiées parmi des récepteurs réels. Distinct de la classe chimique ou du nom développé du2-AG.",
+      "contentHash": "81e7b71f966d26e3bba7acf3b05ca598cfe77566db9de39ad96ea8f1cb2dffb2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+          "url": "https://www.weizmann.ac.il/brain-sciences/labs/vogel/PDFs/98EJP353-23.pdf",
+          "locator": "Ben-Shabat1998, p.23, Abstract et début de l’Introduction.",
+          "result": "La première phrase du résumé et l’introduction désignent le2-AG comme ligand des deux récepteursCB1 etCB2.",
+          "sourceHash": "2f9aea01450a9df1086cb1b47fcc1274217a389046290320e12ff59bbb976787",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-07",
+      "status": "approved",
+      "comment": "L’énoncé prudent « peuvent » respecte la variabilité anatomique. Les autres propositions relèvent de la structure de tige.",
+      "contentHash": "e955855fb12ba3203a3da98fcd59c287415bfdcc04c90e137c3d2a1c0f853faf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "ACIA2.6 General description, phrase sur les tiges.",
+          "result": "La description générale indique un intérieur parfois creux dans les entre-nœuds.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-10",
+      "status": "approved",
+      "comment": "Un ensemble cohérent de propriétés est demandé, distinct du simple rappel de la dispersion par le vent.",
+      "contentHash": "3aea2381f814d6c8b09319e008f8578d00cf57ee217616b1228e76924aed5013",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "ACIA4.1 Reproductive biology, pollen des fleurs mâles.",
+          "result": "Le pollen mâle est décrit comme petit, léger, sec et abondant.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-11",
+      "status": "approved",
+      "comment": "La correction distingue enveloppe externe, fruit et graine ; une seule structure reproductive concorde.",
+      "contentHash": "043cf9d02c63afce51627272c23a58675567ca522db3a6ce582e149318fb8f15",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "ACIA4.1 Reproductive biology, paragraphe sur les fleurs femelles.",
+          "result": "La bractée périgonale est décrite comme croissant autour du fruit issu de la fleur femelle.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-13",
+      "status": "approved",
+      "comment": "La forme tête/pied allongé est soutenue par les deux sources ; les quatre morphologies restent comparables.",
+      "contentHash": "cf64ad6e849860f97f2cbf4cc54b7a8862bc400e540782dec8e53d480fb3524b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "ACIA4.1, types glandulaires.",
+          "result": "La synthèse anatomique distingue les types glandulaires sessile et pédonculé.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        },
+        {
+          "sourceId": "q2-c-livingston-trichomes-2020",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+          "locator": "Livingston2020, Introduction et Figure1, têtes des glandes pédonculées.",
+          "result": "L’article décrit une tête globuleuse élevée au-dessus de l’épiderme par un pédoncule multicellulaire.",
+          "sourceHash": "e7b549a3d104578faa216660016f6e26d8305432be983eb6d055cb751b3a6b8a",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-17",
+      "status": "approved",
+      "comment": "Viabilité et conditions favorables rendent la distinction dormance/quiescence intelligible. Aucun traitement ou réglage de germination reproduit.",
+      "contentHash": "e031decec9798e1d98d6c3d1f36600e20fc5488ac5225ad2ad17c5b47ce3681c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-kew-dormancy-2022",
+          "url": "https://brahmsonline.kew.org/Content/Projects/msbp/resources/Training/13b-Germination-testing-dormancy.pdf",
+          "locator": "Kew13b, p.1, définition précédant Types of seed dormancy.",
+          "result": "La fiche définit la dormance par l’absence de germination dans des conditions favorables.",
+          "sourceHash": "81dd25804f7b5784e4cfb4cfaea558fce2e391ac594c4ce9d4aefafc525bf707",
+          "checkedAt": "2026-11-16"
+        },
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "ACIA4.1, fin du paragraphe sur les graines sauvages.",
+          "result": "La synthèse signale une dormance prolongée et une germination irrégulière des graines sauvages.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-19",
+      "status": "approved",
+      "comment": "Le classement est explicitement conditionnel, ce qui respecte les débats taxonomiques. Les cultivars ne sont pas confondus avec les espèces.",
+      "contentHash": "83f4a4cc316e1b5a5bdf86a30576d16c89a89bc7f6a63416c8f5b35a64a1f9dd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "ACIA2.5 Taxonomy and genetics, paragraphe sur le traitement monospecifique.",
+          "result": "Le document décrit un traitement monospecifique et mentionne aussi les classifications concurrentes.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-20",
+      "status": "approved",
+      "comment": "Propositions de janvier et publication de février sont correctement distinguées. SourceCTPS/GEVES et dépendance aux essais sont visibles, sans annoncer une inscription actuelle.",
+      "contentHash": "7cf9cc1061a095ae6b6d90cfd662e18c2b8bfe3a0f5c804ea201342ed51df7bf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-geves-propositions-2025",
+          "url": "https://www.geves.fr/wp-content/uploads/PLA_Chanvre_2025_Janvier.pdf",
+          "locator": "PDFGEVES : couverture ; p.2 avertissement ; p.4 imprimée, tableau des propositions.",
+          "result": "Le tableau des propositions de janvier2025 classe Vega très précoce ; couverture datée février2025 et avertissement expérimental vérifiés.",
+          "sourceHash": "bdb08d3f7d743e61e71a94d5c51cae94403a0025bc21a324f9e1754d0399a282",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-06",
+      "status": "approved",
+      "comment": "Le vocabulaire et le schéma mental sont accessibles. Ouverture de chaîne ne signifie pas absence de ramification ; la correction le précise.",
+      "contentHash": "2387d5325539441a1191758d8fc060344f80967328a2f381bf963a95733c8ab2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-chebi-myrcene",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:17221",
+          "locator": "ChEBI17221, Definition etSMILES.",
+          "result": "La définition et la connectivité de la notice décrivent une chaîne carbonée ouverte et ramifiée.",
+          "sourceHash": "5958eca7a17f9d16bc5cddd91d92350cc4ed87cb349911afc418fb202880cfba",
+          "checkedAt": "2026-11-16"
+        },
+        {
+          "sourceId": "q2-cfix-booth-terpene-synthases-2017",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "locator": "Booth2017, Abstract et Table1.",
+          "result": "Le résumé cite leβ-myrcène parmi les produits des synthases du chanvre étudié.",
+          "sourceHash": "d73872ca30ae783a4b18b46a5a2bdaa509201f23b2085d89d107329612e0befd",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-08",
+      "status": "approved",
+      "comment": "Les deux produits fournis permettent une vraie déduction sur le rôle de l’enzyme, distincte du simple nom terpène-synthase.",
+      "contentHash": "e1d355d74809030c46db30d8a4446814ddd20f5dc7bbfa11983e0c1f7b65b32a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-booth-terpene-synthases-2017",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "locator": "Booth2017, Functional characterization, CsTPS9FN ; Figure5a et Discussion.",
+          "result": "CsTPS9FN formeβ-caryophyllène etα-humulène à partir du même précurseur ; la discussion mentionne des synthases à plusieurs produits.",
+          "sourceHash": "d73872ca30ae783a4b18b46a5a2bdaa509201f23b2085d89d107329612e0befd",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-11",
+      "status": "approved",
+      "comment": "La proposition est correctement attribuée et reste provisoire. Quatre familles d’odorants comparables, sans transformer une ressemblance sensorielle en certitude.",
+      "contentHash": "74dfd43732d99c8c21b9156ac254ddbf7a05a00f23ee103044985d9e0f9ec61e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-kneubuhl-odorants-2021",
+          "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+          "locator": "Kneubühl2021, p.2, Tableau1 ligne18 et légendeb.",
+          "result": "Tableau1 ligne18 : méthoxypyrazine et note poivron ; la légendeb précise le caractère provisoire de l’identification.",
+          "sourceHash": "7b9967dcd6357e961c2f7471c23d6cde564ba046c95f82021b74fcca33c352a9",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    }
+  ]
+}

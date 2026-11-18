@@ -1,0 +1,1286 @@
+{
+  "batchId": "r-mixed-01",
+  "author": "rebalance_products_sol",
+  "role": "Graines alimentaires et matériaux de chanvre",
+  "questions": [
+    {
+      "id": "hemp-q2-rm01-seed-essential-amino-acids-present",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quelle description correspond aux acides aminés essentiels des protéines de graines de chanvre ?",
+      "options": [
+        "Les neuf sont présents",
+        "La lysine est absente",
+        "Le tryptophane est absent",
+        "La méthionine est absente"
+      ],
+      "answer": 0,
+      "explanation": "Les neuf sont présents, mais leurs proportions et leur digestibilité comptent aussi. Cette présence ne signifie pas que les protéines de chanvre couvrent à elles seules tous les besoins.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm01-galasso16"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Acides aminés des graines",
+        "subjectKey": "hemp-seed-storage-proteins",
+        "property": "Présence des neuf acides aminés essentiels",
+        "expectedAnswer": "Les neuf sont présents",
+        "learningObjective": "Distinguer présence d’acides aminés et qualité nutritionnelle complète.",
+        "factKey": "seed-essential-amino-acids-present",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-galasso16",
+            "locator": "Introduction, protéines de graines",
+            "support": "L’article indique que les protéines de graines contiennent tous les acides aminés essentiels."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-main-protein-edestin",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quelle protéine constitue une part majeure des protéines de réserve des graines de chanvre ?",
+      "options": [
+        "L’ovalbumine",
+        "L’édestine",
+        "La caséine",
+        "La gliadine"
+      ],
+      "answer": 1,
+      "explanation": "L’édestine est une globuline de réserve caractéristique du chènevis. Elle représente la fraction majeure décrite dans l’isolat étudié par Tang et ses collègues.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm01-tang06"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Protéine majeure du chènevis",
+        "subjectKey": "hemp-seed-storage-proteins",
+        "property": "Identité de la protéine majoritaire",
+        "expectedAnswer": "L’édestine",
+        "learningObjective": "Reconnaître l’édestine comme constituant alimentaire majeur.",
+        "factKey": "seed-main-protein-edestin",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-tang06",
+            "locator": "Abstract, phrase Edestin... major protein component",
+            "support": "L’édestine est le composant protéique majeur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-oil-gla-omega6",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "En plus de l’acide linoléique, quel autre oméga-6 trouve-t-on dans l’huile de graines de chanvre ?",
+      "options": [
+        "L’acide stéaridonique, ou SDA",
+        "L’acide eicosapentaénoïque, ou EPA",
+        "L’acide gamma-linolénique, ou GLA",
+        "L’acide alpha-linolénique, ou ALA"
+      ],
+      "answer": 2,
+      "explanation": "Le GLA est un oméga-6 présent en proportion plus faible que l’acide linoléique. Son nom proche de l’ALA ne doit pas les confondre : l’ALA appartient aux oméga-3.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-rm01-galasso16"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "GLA de l’huile alimentaire",
+        "subjectKey": "huile-chenevis",
+        "property": "Autre oméga-6 de l’huile de graines",
+        "expectedAnswer": "L’acide gamma-linolénique, ou GLA",
+        "learningObjective": "Distinguer GLA et ALA dans la composition alimentaire.",
+        "factKey": "seed-oil-gla-omega6",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-galasso16",
+            "locator": "Introduction et Table 4, colonne GLA",
+            "support": "GLA18:3 oméga-6 figure dans les profils d’huile mesurés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-meal-phytate-minerals",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel constituant mesuré dans les tourteaux de chanvre peut limiter la disponibilité de leurs minéraux ?",
+      "options": [
+        "Les tocophérols",
+        "Les phytostérols",
+        "Les caroténoïdes",
+        "Les phytates"
+      ],
+      "answer": 3,
+      "explanation": "Les tourteaux étudiés contiennent des phytates, capables de limiter la disponibilité de certains minéraux. Une teneur minérale élevée ne suffit donc pas à décrire ce qui sera absorbé.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm01-galasso16"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Phytates du tourteau",
+        "subjectKey": "hempseed-meal-antinutrients",
+        "property": "Présence et effet des phytates",
+        "expectedAnswer": "Les phytates",
+        "learningObjective": "Relier un constituant réel du tourteau à sa valeur nutritionnelle.",
+        "factKey": "seed-meal-phytate-minerals",
+        "form": "identification",
+        "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-galasso16",
+            "locator": "Results Table2 et Discussion, phytate",
+            "support": "Phytates mesurés dans les tourteaux, avec effet défavorable possible sur biodisponibilité macro/microéléments."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-food-anaphylaxis",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quelle manifestation allergique liée à l’ingestion de graines de chanvre le cas de Bhatia documente-t-il ?",
+      "options": [
+        "Une réaction immédiate avec anaphylaxie",
+        "Une entérocolite allergique retardée non IgE",
+        "Une œsophagite à éosinophiles",
+        "Une dermatite allergique de contact retardée"
+      ],
+      "answer": 0,
+      "explanation": "Un cas clinique décrit une anaphylaxie après consommation de graines de chanvre. Cela établit la possibilité d’une allergie alimentaire grave, sans en mesurer la fréquence.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm01-bhatia18"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Allergie alimentaire au chènevis",
+        "subjectKey": "hempseed-food-allergy",
+        "property": "Anaphylaxie documentée",
+        "expectedAnswer": "Une réaction immédiate avec anaphylaxie",
+        "learningObjective": "Savoir que des graines alimentaires peuvent être allergisantes.",
+        "factKey": "seed-food-anaphylaxis",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-bhatia18",
+            "locator": "Observation clinique et Discussion",
+            "support": "Patient ayant présenté anaphylaxie après yaourt avec graines, tests cutanés positifs aux graines."
+          }
+        ],
+        "jurisdiction": "Portée clinique générale ; cas original publié en2018",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-hazelnut-cross-reactivity",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Avec quel aliment l’équipe INRAE a-t-elle montré une réaction croisée IgE de protéines de graines de chanvre au laboratoire ?",
+      "options": [
+        "L’œuf de poule",
+        "La noisette",
+        "Le lait de vache",
+        "Le poisson"
+      ],
+      "answer": 1,
+      "explanation": "Les tests de laboratoire montrent une réaction croisée avec des protéines de noisette. Les auteurs demandent encore des évaluations cliniques : ce résultat ne prédit pas la réaction de chaque personne.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm01-inrae-hazelnut"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Réaction croisée chanvre/noisette",
+        "subjectKey": "hempseed-hazelnut-cross-reactivity",
+        "property": "Aliment concerné par la réaction croisée expérimentale",
+        "expectedAnswer": "La noisette",
+        "learningObjective": "Distinguer signal immunologique et allergie clinique prédite.",
+        "factKey": "seed-hazelnut-cross-reactivity",
+        "form": "identification",
+        "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-inrae-hazelnut",
+            "locator": "p.54, Results et Future outlook",
+            "support": "Réaction croisée avec protéines de noisette confirmée en ELISA compétitif, pertinence in vivo à déterminer."
+          }
+        ],
+        "jurisdiction": "Recherche allergologique ; compte rendu INRAE2024",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-cadmium-from-soil",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans l’étude de Mihoc sur des sols chargés en métaux, quelle observation concerne les graines de chanvre alimentaires ?",
+      "options": [
+        "Le cadmium reste dans les racines, sans atteindre les graines",
+        "Le cadmium atteint les feuilles, mais reste absent des graines",
+        "Le cadmium atteint aussi les graines, posant un problème alimentaire",
+        "Le cadmium atteint les graines, où il devient un nutriment essentiel"
+      ],
+      "answer": 2,
+      "explanation": "L’étude a mesuré du cadmium dans les graines. Employer le chanvre pour capter des métaux du sol ne garantit donc pas que ses graines conviennent ensuite à un usage alimentaire.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rm01-mihoc12"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Métaux dans les graines alimentaires",
+        "subjectKey": "hempseed-cadmium-food",
+        "property": "Transfert possible de cadmium vers les graines",
+        "expectedAnswer": "Le cadmium atteint aussi les graines, posant un problème alimentaire",
+        "learningObjective": "Comprendre une limite alimentaire de la dépollution par le chanvre.",
+        "factKey": "seed-cadmium-from-soil",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-mihoc12",
+            "locator": "Abstract, Conclusion",
+            "support": "Cd mesuré dans graines et réserve explicite sur leur usage dans aliments."
+          }
+        ],
+        "jurisdiction": "Sécurité alimentaire ; étude roumaine2012",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-bama-seed-soup",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Le huoma tang de Bama, dans le Guangxi chinois, correspond à quelle préparation culinaire de chanvre ?",
+      "options": [
+        "Une pâte de graines à tartiner",
+        "Une galette de farine de graines",
+        "Un condiment sec de graines écrasées",
+        "Une soupe à base de graines moulues"
+      ],
+      "answer": 3,
+      "explanation": "Le ministère chinois du Tourisme cite la soupe huoma parmi les spécialités de Bama. Il s’agit d’un usage culinaire des graines, sans reprendre les promesses de longévité de cette présentation touristique.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm01-china-bama"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Soupe huoma de Bama",
+        "subjectKey": "bama-huoma-food",
+        "property": "Usage des graines dans une soupe locale",
+        "expectedAnswer": "Une soupe à base de graines moulues",
+        "learningObjective": "Découvrir une tradition alimentaire de graines hors d’Europe.",
+        "factKey": "bama-seed-soup",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-china-bama",
+            "locator": "Rubrique cinq, entrée 火麻",
+            "support": "Graines moulues servant à soupe huoma et tofu huoma."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-fda-gras-three-seed-ingredients",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quels ingrédients de chanvre étaient concernés par les trois notifications GRAS examinées sans questions par la FDA en2018 ?",
+      "options": [
+        "Graines décortiquées, poudre protéique et huile de graines",
+        "Feuilles séchées, fleurs moulues et huile de graines",
+        "Résine, poudre de CBD et graines décortiquées",
+        "Huile essentielle, feuilles séchées et poudre protéique"
+      ],
+      "answer": 0,
+      "explanation": "Les trois dossiers concernaient des ingrédients issus des graines, sous les usages prévus. Cette réponse de la FDA ne portait pas sur l’ajout de CBD ou de THC aux aliments.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm01-fda-gras2018"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Ingrédients alimentaires FDA2018",
+        "subjectKey": "fda-gras-hempseed-2018",
+        "property": "Trois ingrédients de graines concernés",
+        "expectedAnswer": "Graines décortiquées, poudre protéique et huile de graines",
+        "learningObjective": "Distinguer ingrédients de graines et aliments enrichis en cannabinoïdes.",
+        "factKey": "fda-gras-three-seed-ingredients",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-fda-gras2018",
+            "locator": "Premier paragraphe, GRN765/771/778",
+            "support": "Hulled hemp seed, hemp seed protein powder, hemp seed oil."
+          }
+        ],
+        "jurisdiction": "États-Unis ; décisionFDA20décembre2018",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-australia-retail-seeds-nonviable",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "En Australie, quelles graines de chanvre peuvent être vendues au détail comme aliment selon la règle présentée par le Queensland ?",
+      "options": [
+        "Des graines germées conservant leur enveloppe",
+        "Des graines décortiquées et incapables de germer",
+        "Des graines entières et capables de germer",
+        "Des graines entières après simple séchage"
+      ],
+      "answer": 1,
+      "explanation": "Les graines vendues directement comme aliment doivent être décortiquées et non viables. La règle distingue cette vente des graines entières utilisées pour fabriquer de l’huile ou d’autres aliments.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-rm01-queensland-seed-food"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Vente australienne de graines alimentaires",
+        "subjectKey": "australia-hempseed-food-retail",
+        "property": "Décorticage et non-viabilité au détail",
+        "expectedAnswer": "Des graines décortiquées et incapables de germer",
+        "learningObjective": "Comprendre une condition propre à la commercialisation alimentaire des graines.",
+        "factKey": "australia-retail-seeds-nonviable",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-queensland-seed-food",
+            "locator": "The plant, dernier paragraphe",
+            "support": "Seeds for retail sale must be hulled and unable to germinate."
+          }
+        ],
+        "jurisdiction": "Australie ; règle consultée17novembre2026",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-seed-albumin-water-solubility",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans les protéines alimentaires du chènevis, quelle fraction est soluble dans l’eau, contrairement à l’édestine extraite en milieu salin ?",
+      "options": [
+        "La fraction caséine",
+        "La fraction gluténine",
+        "La fraction albumine",
+        "La fraction gliadine"
+      ],
+      "answer": 2,
+      "explanation": "L’albumine du chènevis est hydrosoluble, tandis que l’édestine appartient aux globulines solubles en milieu salin. Cette différence aide à comprendre les fractions des ingrédients protéiques.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-rm01-beran20"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Fractions protéiques du chènevis",
+        "subjectKey": "hemp-seed-storage-proteins",
+        "property": "Solubilité de la fraction albumine",
+        "expectedAnswer": "La fraction albumine",
+        "learningObjective": "Relier les protéines de chanvre à leurs propriétés en formulation.",
+        "factKey": "seed-albumin-water-solubility",
+        "form": "identification",
+        "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-beran20",
+            "locator": "p.1, Abstract ; §2.2",
+            "support": "Extraction aqueuse pour albumine puis saline pour globuline éd estine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-roasted-seed-oil-pyrazine-notes",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans l’huile de graines de chanvre torréfiées étudiée par Bai, quelle famille contribue aux notes grillées ?",
+      "options": [
+        "Les pinènes",
+        "Les alcools floraux",
+        "Les esters fruités",
+        "Les pyrazines"
+      ],
+      "answer": 3,
+      "explanation": "L’étude attribue des notes grillées à plusieurs pyrazines de l’huile. Les pinènes, le myrcène et l’ocimène sont plutôt associés à son caractère frais ou herbacé.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-rm01-bai25-seed-oil-flavour"
+      ],
+      "editorial": {
+        "domain": "food",
+        "category": "food",
+        "subject": "Arôme de l’huile de graines torréfiées",
+        "subjectKey": "hempseed-oil-roasting-aroma",
+        "property": "Famille contribuant aux notes grillées",
+        "expectedAnswer": "Les pyrazines",
+        "learningObjective": "Comprendre un changement aromatique d’un aliment de graines.",
+        "factKey": "roasted-seed-oil-pyrazine-notes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-bai25-seed-oil-flavour",
+            "locator": "Abstract, phrases odorants et toasty flavour",
+            "support": "Trois pyrazines identifiées contribuent aux notes grillées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-cottonization-purpose",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "À quoi sert la cotonisation des fibres de chanvre dans l’industrie textile ?",
+      "options": [
+        "Obtenir des fibres plus fines adaptées aux équipements coton",
+        "Former des fibres continues comparables aux filaments de soie",
+        "Conserver de longs faisceaux pour une filature de type lin",
+        "Transformer les fibres en pâte destinée au papier"
+      ],
+      "answer": 0,
+      "explanation": "La cotonisation divise les faisceaux techniques de chanvre en éléments plus fins adaptés à la filature courte. Le chanvre reste du chanvre : son nom décrit l’adaptation au travail textile du coton.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm01-mijas25-cottonization"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Cotonisation textile du chanvre",
+        "subjectKey": "hemp-textile-cottonization",
+        "property": "Objectif industriel de la cotonisation",
+        "expectedAnswer": "Obtenir des fibres plus fines adaptées aux équipements coton",
+        "learningObjective": "Reconnaître une préparation du chanvre pour les lignes de filature courte.",
+        "factKey": "hemp-cottonization-purpose",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-mijas25-cottonization",
+            "locator": "Introduction, paragraphe cottonization",
+            "support": "Séparation des fibres techniques en agrégats plus fins de fibres élémentaires pour utilisation as-cotton."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-lignin-coarse-texture",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel constituant contribue au toucher raide et rugueux de fibres de chanvre brutes, d’après l’étude de Mijas ?",
+      "options": [
+        "La pectine",
+        "La lignine",
+        "La cellulose",
+        "L’hémicellulose"
+      ],
+      "answer": 1,
+      "explanation": "L’étude relie une part de la raideur et de la rugosité à la lignine. Sa réduction peut adoucir les fibres ; le toucher du textile dépend aussi des autres étapes de préparation et de filature.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm01-mijas25-cottonization"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Lignine et toucher textile",
+        "subjectKey": "hemp-textile-lignin",
+        "property": "Contribution de la lignine à la rigidité",
+        "expectedAnswer": "La lignine",
+        "learningObjective": "Relier composition des fibres et préparation des textiles.",
+        "factKey": "hemp-lignin-coarse-texture",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-mijas25-cottonization",
+            "locator": "Introduction, paragraphe Lignin... coarse and abrasive texture",
+            "support": "La lignine contribue à la texture grossière et abrasive ; son retrait adoucit les fibres."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-primary-bast-textile-length",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Pour les textiles de chanvre à longues fibres, quelle fraction libérienne est particulièrement recherchée ?",
+      "options": [
+        "Les fibres primaires, plus courtes",
+        "Les fibres secondaires, plus courtes",
+        "Les fibres primaires, plus longues",
+        "Les fibres secondaires, plus longues"
+      ],
+      "answer": 2,
+      "explanation": "Les fibres libériennes primaires fournissent les faisceaux longs. Les secondaires sont plus courtes et davantage lignifiées ; elles n’offrent pas la même valeur pour cette filière textile.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm01-sankari00-bast"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Fibres libériennes destinées au textile",
+        "subjectKey": "hemp-primary-secondary-bast-textiles",
+        "property": "Fraction longue recherchée",
+        "expectedAnswer": "Les fibres primaires, plus longues",
+        "learningObjective": "Distinguer deux qualités de fibres à l’intérieur du liber.",
+        "factKey": "hemp-primary-bast-textile-length",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-sankari00-bast",
+            "locator": "p.74, Introduction",
+            "support": "Primary fibre bundles valuable long fibre ; secondary fibres shorter and more lignified."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-textile-cellulose-regeneration",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle voie a permis à Rissanen et ses collègues de recycler du tissu de chanvre en nouvelles fibres textiles ?",
+      "options": [
+        "Effilocher les fils sans dissoudre la cellulose",
+        "Fondre directement les fibres comme un thermoplastique",
+        "Carboniser les fibres avant de les filer",
+        "Dissoudre puis régénérer sa cellulose"
+      ],
+      "answer": 3,
+      "explanation": "L’équipe a démontré un recyclage chimique de la cellulose du tissu, suivie d’une régénération en fibres. Le nouveau matériau a ensuite été filé et tricoté, au lieu de simplement conserver les fibres effilochées.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm01-rissanen23-recycling"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Recyclage chimique textile de chanvre",
+        "subjectKey": "hemp-textile-chemical-recycling",
+        "property": "Régénération de la cellulose",
+        "expectedAnswer": "Dissoudre puis régénérer sa cellulose",
+        "learningObjective": "Identifier une voie de recyclage différente de l’effilochage.",
+        "factKey": "hemp-textile-cellulose-regeneration",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-rissanen23-recycling",
+            "locator": "Abstract, p.2545",
+            "support": "Fabric dissolved, cellulose regenerated by spinning, yarn knitted into fabric."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel vêtement le musée de Kyoto décrit-il comme étant en chanvre ou ramie pour la chaleur du plein été japonais ?",
+      "options": [
+        "Le katabira",
+        "Le hitoe",
+        "Le kosode",
+        "Le jinbaori"
+      ],
+      "answer": 0,
+      "explanation": "Le katabira pouvait être tissé en chanvre ou en ramie et se portait sans doublure au plus fort de l’été. Le musée le distingue du hitoe de soie, porté au début et à la fin de la saison.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-rm01-kyoto-katabira"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Katabira japonais en fibres libériennes",
+        "subjectKey": "japan-katabira",
+        "property": "Vêtement d’été non doublé en chanvre ou ramie",
+        "expectedAnswer": "Le katabira",
+        "learningObjective": "Découvrir un usage textile du chanvre dans le vêtement japonais.",
+        "factKey": "katabira-hemp-summer-robe",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-kyoto-katabira",
+            "locator": "Deuxième paragraphe, hitoe et katabira",
+            "support": "Katabira : kimono non doublé en ramie ou chanvre porté au plus fort de la chaleur estivale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-vapour-compatible-finish",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle propriété d’une finition aide à préserver les échanges hydriques d’une paroi en béton de chanvre ?",
+      "options": [
+        "Sa faible effusivité thermique",
+        "Sa perméabilité à la vapeur d’eau",
+        "Sa résistance élevée à la compression",
+        "Sa conductivité thermique élevée"
+      ],
+      "answer": 1,
+      "explanation": "Le guide recommande de préserver la migration de vapeur dans le complexe de paroi. Une finition très fermée peut réduire cette fonction ; la protection contre la pluie relève d’un autre aspect du système.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-cenc-finishes"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Finition d’une paroi de chanvre",
+        "subjectKey": "hempcrete-wall-finishes",
+        "property": "Perméabilité de la finition",
+        "expectedAnswer": "Sa perméabilité à la vapeur d’eau",
+        "learningObjective": "Relier la finition aux propriétés hydriques de la paroi.",
+        "factKey": "hemp-wall-vapour-compatible-finish",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-cenc-finishes",
+            "locator": "p.64–65 et74–77 imprimées",
+            "support": "Finition choisie pour préserver perméabilité vapeur ; finitions influencent tampon hydrique et perméabilité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-flexible-plaster",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Pourquoi le guide Construire en Chanvre privilégie-t-il des enduits souples sur un béton de chanvre ?",
+      "options": [
+        "Pour accroître la résistance à la diffusion de vapeur",
+        "Pour atténuer l’alcalinité du liant",
+        "Pour accompagner la déformabilité du support",
+        "Pour ralentir le séchage en profondeur"
+      ],
+      "answer": 2,
+      "explanation": "Le béton de chanvre reste relativement déformable. Un enduit compatible avec ce comportement aide à limiter les contraintes et le risque de fissuration du revêtement.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-cenc-finishes"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Compatibilité mécanique des enduits",
+        "subjectKey": "hempcrete-wall-finishes",
+        "property": "Souplesse du revêtement adaptée au support",
+        "expectedAnswer": "Pour accompagner la déformabilité du support",
+        "learningObjective": "Comprendre une contrainte réelle de finition du béton de chanvre.",
+        "factKey": "hemp-wall-flexible-plaster",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-cenc-finishes",
+            "locator": "p.40–45 imprimées",
+            "support": "Faibles caractéristiques mécaniques et déformabilité du support ; privilégier enduits souples."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Selon Construire en Chanvre, quel couple décrit une paroi en béton de chanvre avec parement en plaque de gypse ?",
+      "options": [
+        "Faible réduction du son transmis, absorption favorable",
+        "Bonne réduction du son transmis, absorption favorable",
+        "Faible réduction du son transmis, absorption moins favorable",
+        "Bonne réduction du son transmis, absorption moins favorable"
+      ],
+      "answer": 3,
+      "explanation": "Le guide distingue une bonne réduction de transmission et une absorption moins favorable avec le gypse. La finition change donc la façon dont la paroi agit sur le son à l’intérieur de la pièce.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-cenc-finishes"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Parement gypse sur chanvre",
+        "subjectKey": "hempcrete-gypsum-acoustics",
+        "property": "Effets acoustiques distincts du parement",
+        "expectedAnswer": "Bonne réduction du son transmis, absorption moins favorable",
+        "learningObjective": "Distinguer deux fonctions concrètes de cette paroi finie.",
+        "factKey": "hemp-wall-gypsum-acoustic-difference",
+        "form": "identification",
+        "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-cenc-finishes",
+            "locator": "p.64–65 imprimées, Finition avec parement en plaque de gypse",
+            "support": "En combinaison avec béton de chanvre, réduction acoustique bonne, absorption moins bonne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-first-rain-protection",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Dans le guide du béton de chanvre, contre quoi une première couche extérieure de gobetis protège-t-elle surtout la paroi ?",
+      "options": [
+        "La pluie et les projections d’eau liquide",
+        "La diffusion normale de vapeur vers l’extérieur",
+        "L’échauffement de surface sous le soleil",
+        "Le refroidissement de la surface sous le vent"
+      ],
+      "answer": 0,
+      "explanation": "Cette première protection limite les reprises d’eau dues aux intempéries, qui prolongeraient le séchage. Elle doit être pensée avec les échanges de vapeur et les autres finitions du mur.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-cenc-finishes"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Protection de la paroi de chanvre",
+        "subjectKey": "hempcrete-exterior-rain-protection",
+        "property": "Protection contre eau liquide",
+        "expectedAnswer": "La pluie et les projections d’eau liquide",
+        "learningObjective": "Comprendre pourquoi une paroi perméante demande aussi une protection à la pluie.",
+        "factKey": "hemp-wall-first-rain-protection",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-cenc-finishes",
+            "locator": "p.38–39 imprimées, Remarque gobetis",
+            "support": "Gobetis première protection eau liquide, intempéries/projections, évitant reprise humidité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-earth-hemp-clay-binder",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quel liant le projet EcoTerra étudie-t-il avec le chanvre comme alternative aux mélanges à base de chaux ?",
+      "options": [
+        "Un plâtre de gypse",
+        "Une terre argileuse crue",
+        "Un ciment Portland",
+        "Un ciment d’aluminates de calcium"
+      ],
+      "answer": 1,
+      "explanation": "EcoTerra étudie l’association du chanvre et de la terre crue argileuse pour des isolants. Les matériaux de construction au chanvre ne se limitent donc pas aux mélanges à base de chaux.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-cerema-earth-hemp"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Liant terre-chanvre",
+        "subjectKey": "earth-hemp-building-material",
+        "property": "Terre argileuse comme liant",
+        "expectedAnswer": "Une terre argileuse crue",
+        "learningObjective": "Découvrir un matériau au chanvre distinct du chaux-chanvre.",
+        "factKey": "earth-hemp-clay-binder",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-cerema-earth-hemp",
+            "locator": "Favoriser l’utilisation des isolants terre-chanvre",
+            "support": "Association chanvre avec terre crue comme liant dans les matériaux étudiés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-plumbing-tow-seals",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quel usage de la filasse de chanvre en plomberie le recueil de la DREAL décrit-il ?",
+      "options": [
+        "Détartrer les canalisations",
+        "Désinfecter l’eau stockée",
+        "Étanchéifier des raccords",
+        "Filtrer l’eau potable dans les tuyaux"
+      ],
+      "answer": 2,
+      "explanation": "Le recueil cite l’étanchéité des raccords comme un usage traditionnel de la filasse. Ces fibres ont donc aussi un débouché de plomberie, au-delà des toiles et des isolants.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "q2-rm01-dreal-fibre-excerpt"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Filasse en plomberie",
+        "subjectKey": "hemp-tow-plumbing",
+        "property": "Usage d’étanchéité",
+        "expectedAnswer": "Étanchéifier des raccords",
+        "learningObjective": "Reconnaître un débouché concret des fibres de chanvre.",
+        "factKey": "hemp-plumbing-tow-seals",
+        "form": "identification",
+        "difficultyRationale": "Usage ou propriété concrète compréhensible sans vocabulaire spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-dreal-fibre-excerpt",
+            "locator": "p.7, extrait Filasse de chanvre, Fabrication",
+            "support": "Utilisation en plomberie pour étanchéifier les raccords."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wool-polyester-binder",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans la laine de chanvre décrite par le recueil DREAL de2018, quel liant maintient les fibres ensemble ?",
+      "options": [
+        "De l’amidon",
+        "Des protéines de soja",
+        "Du latex naturel",
+        "Du polyester"
+      ],
+      "answer": 3,
+      "explanation": "Cette description emploie un liant polyester pour former un matelas isolant. Un produit appelé laine de chanvre peut donc associer fibres végétales et liant synthétique ; la composition varie selon le produit.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-dreal-fibre-excerpt"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Liant d’une laine isolante de chanvre",
+        "subjectKey": "hemp-wool-polyester-binder",
+        "property": "Présence de liant polyester",
+        "expectedAnswer": "Du polyester",
+        "learningObjective": "Comprendre la composition d’une laine végétale manufacturée.",
+        "factKey": "hemp-wool-polyester-binder",
+        "form": "identification",
+        "difficultyRationale": "Connaissance ciblée de la composition ou du comportement d’un produit de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-dreal-fibre-excerpt",
+            "locator": "p.7, extrait Laine de chanvre, Fabrication",
+            "support": "Fibres mélangées avec liant polyester pour maintenir ensemble avant formation du matelas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rm01-hempcrete-lca-binder-production",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Dans le mur chaux-chanvre étudié par Pretot, quel composant pèse le plus sur l’énergie de fabrication des matériaux ?",
+      "options": [
+        "Le liant à base de chaux",
+        "La chènevotte seule",
+        "L’ossature en bois",
+        "Les enduits sable-chaux seuls"
+      ],
+      "answer": 0,
+      "explanation": "Dans ce scénario, la production du liant constitue le premier poste d’énergie primaire des matériaux. Le bilan du béton de chanvre dépend donc aussi du liant et du système de mur retenus.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-rm01-pretot14-lca"
+      ],
+      "editorial": {
+        "domain": "materials",
+        "category": "hemp-uses",
+        "subject": "Impact du liant chaux-chanvre",
+        "subjectKey": "hempcrete-lca-binder",
+        "property": "Premier poste d’énergie de fabrication dans le mur étudié",
+        "expectedAnswer": "Le liant à base de chaux",
+        "learningObjective": "Relier l’impact d’un matériau biosourcé à ses autres constituants.",
+        "factKey": "hempcrete-lca-binder-production",
+        "form": "identification",
+        "difficultyRationale": "Interprétation de propriétés chimiques ou physiques spécialisée, avec contexte explicite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rm01-pretot14-lca",
+            "locator": "§4.2, Fig.5, répartition des impacts de production",
+            "support": "Liant49%énergie primaire, bois37%, chènevotte8%, enduits6% dans le scénario."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rm01-galasso16",
+      "title": "Variability in Seed Traits in a Collection of Cannabis sativa L. Genotypes",
+      "organization": "Frontiers in Plant Science",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+      "verifiedAt": "2026-11-17",
+      "author": "I. Galasso, R. Russo, S. Mapelli, E. Ponzoni, I. M. Brambilla, G. Battelli et R. Reggiani",
+      "published": "2016-05-20",
+      "passage": "Présence des acides aminés essentiels ; huile contenant du GLA oméga-6 ; phytates mesurés dans les tourteaux, limitant la disponibilité de minéraux.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Étude de vingt génotypes, une année. Pas de classement universel de cultivars, ratio idéal ou bénéfice clinique déduit de la composition.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Introduction ; Results, Table 4 ; Discussion, paragraphes phytic acid et TI",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-tang06",
+      "title": "Physicochemical and functional properties of hemp protein isolate",
+      "organization": "Journal of Agricultural and Food Chemistry / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17090145/",
+      "verifiedAt": "2026-11-17",
+      "author": "Chuan-He Tang, Zi Ten, Xian-Sheng Wang et Xiao-Quan Yang",
+      "published": "2006-11-15",
+      "passage": "L’édestine est le composant protéique majeur de l’isolat de graines étudié.",
+      "access": "abstract",
+      "documentKind": "original-research",
+      "limitation": "Résumé original intégral lu ; pas d’accès revendiqué au texte payant. Aucune promesse nutritionnelle relative aux enfants reprise.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Résumé, premières phrases",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-bhatia18",
+      "title": "Marijuana and Stoned Fruit",
+      "organization": "Annals of Allergy, Asthma & Immunology / UC San Diego",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5936671/",
+      "verifiedAt": "2026-11-17",
+      "author": "Prerana Bhatia, Meng Chen et Sandra Christiansen",
+      "published": "2018-02-02",
+      "passage": "Anaphylaxie documentée après ingestion de graines de chanvre ; tests cutanés positifs ; cas clinique ne mesurant pas la fréquence dans la population.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Cas individuel. Le rôle des réactions croisées est discuté comme possibilité ; aucune prévalence ni diagnostic individuel déduit.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Observation clinique, paragraphes 2–4 et Discussion",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-inrae-hazelnut",
+      "title": "Research and Innovation 2024 — TRANSFORM",
+      "organization": "INRAE",
+      "url": "https://www.inrae.fr/sites/default/files/pdf/rapport_fm_2024-eng.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "INRAE TRANSFORM, résultats de P. Beriziky et collaborateurs",
+      "published": "2024",
+      "passage": "L’équipe rapporte une réaction croisée IgE entre protéines de noisette et de graines de chanvre au laboratoire. Des évaluations cliniques restent nécessaires.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Compte rendu institutionnel de l’équipe de recherche ; ne démontre pas que toute personne allergique à la noisette réagit cliniquement au chanvre.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 54 imprimée, Results et Future outlook",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-mihoc12",
+      "title": "Nutritive quality of Romanian hemp varieties with special focus on oil and metal contents of seeds",
+      "organization": "Chemistry Central Journal",
+      "url": "https://link.springer.com/article/10.1186/1752-153X-6-122",
+      "verifiedAt": "2026-11-17",
+      "author": "Marcela Mihoc, Georgeta Pop, Ersilia Alexa et Isidora Radulov",
+      "published": "2012-10-23",
+      "passage": "Du cadmium a été mesuré dans les graines des plantes étudiées sur sols concernés ; les graines ne sont donc pas nécessairement épargnées par les contaminants du sol.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Résultats situés sur des sols étudiés, pas des concentrations représentatives des aliments du commerce. Conseils nutritionnels et affirmations de santé de l’introduction exclus.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Résumé, Conclusion ; Background, risque de métaux dans les graines",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-china-bama",
+      "title": "广西·休养天堂 栖游巴马 — Spécialités culinaires de Bama",
+      "organization": "Ministère de la Culture et du Tourisme de Chine",
+      "url": "https://zhuanti.mct.gov.cn/xczgshsh2023/syxj/detail_shi/3817.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Ministère de la Culture et du Tourisme de Chine",
+      "published": "2023-07-17",
+      "passage": "À Bama dans le Guangxi, la présentation officielle cite une soupe et un tofu préparés à partir de graines de chanvre moulues.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Source touristique officielle utilisée pour l’usage culinaire seulement ; allégations de longévité et de santé exclues.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Rubrique 五, 特色美食, entrée 火麻",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-fda-gras2018",
+      "title": "FDA Responds to Three GRAS Notices for Hemp Seed-Derived Ingredients for Use in Human Food",
+      "organization": "FDA",
+      "url": "https://www.fda.gov/food/hfp-constituent-updates/fda-responds-three-gras-notices-hemp-seed-derived-ingredients-use-human-food",
+      "verifiedAt": "2026-11-17",
+      "author": "FDA",
+      "published": "2018-12-20",
+      "passage": "Les trois notifications sans questions concernent les graines décortiquées, la poudre protéique de graines et l’huile de graines, sous leurs conditions d’usage prévues.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Décision datée de 2018 sur trois ingrédients de graines, pas autorisation générale du cannabis, de cannabinoïdes ajoutés ou de toute formulation.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Constituent Update, 20 décembre 2018, premier paragraphe",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-queensland-seed-food",
+      "title": "Low THC Hemp foods",
+      "organization": "Queensland Government",
+      "url": "https://www.qld.gov.au/health/staying-healthy/food-pantry/food-safety-for-consumers/food-warnings-and-advice/low-thc-hemp-foods",
+      "verifiedAt": "2026-11-17",
+      "author": "Queensland Government",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Les graines vendues au détail comme aliment doivent être décortiquées et non viables. Les graines entières viables peuvent servir à fabriquer certains aliments.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Règle australienne de vente au détail consultée en novembre 2026. Ne pas l’étendre à la vente de semences ni aux graines destinées à la transformation.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Legal hemp seed foods ; The plant, dernier paragraphe",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-beran20",
+      "title": "Extraction and Micronization of Edestin from Hemp Seed",
+      "organization": "Food Research Institute Prague / NANOCON 2020",
+      "url": "https://www.confer.cz/nanocon/2020/download/3724-extraction-and-micronization-of-edestin-from-hemp-seed.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Milos Beran, Ondrej Vltavsky et Josef Drahorad",
+      "published": "2020-10",
+      "passage": "La fraction albumine des protéines de graines est soluble dans l’eau ; l’édestine globuline est soluble dans une solution saline.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Recherche sur des protéines alimentaires de graines. Aucun paramètre de procédé ni avantage clinique de peptides repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 1, Abstract et Introduction ; p. 2, §2.2",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-bai25-seed-oil-flavour",
+      "title": "Characterization of Key Odorants in Hemp Seed Oil Extracted from the Hemp Seeds Roasted Under Various Conditions",
+      "organization": "Processes",
+      "url": "https://www.mdpi.com/2227-9717/13/2/530",
+      "verifiedAt": "2026-11-17",
+      "author": "Yuchen Bai, Ningke You, Hongyu Tian et Xuebing Zhao",
+      "published": "2025-02-13",
+      "passage": "Des pyrazines identifiées dans l’huile de graines torréfiées contribuent aux notes grillées ; les pinènes, myrcène et ocimène sont liés à des notes fraîches/herbacées.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Analyse et évaluations sensorielles sur les huiles étudiées. Pas de réglage culinaire conseillé ; affirmations promotionnelles nutritionnelles de l’introduction exclues.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract, paragraphes odorants et reconstitution aromatique ; Introduction",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-mijas25-cottonization",
+      "title": "Valorization of agricultural industrial hemp by-products for textile applications",
+      "organization": "Cellulose",
+      "url": "https://link.springer.com/article/10.1007/s10570-025-06557-0",
+      "verifiedAt": "2026-11-17",
+      "author": "Gabriela Mijas, Anke Golla, Remedios Prieto, Francesc Cano, Inés Algaba, Marta Riba-Moliner et Diana Cayuela",
+      "published": "2025-05-10",
+      "passage": "La cotonisation divise les fibres techniques en agrégats plus fins pour les équipements de type coton. La lignine contribue à la rigidité et à la rugosité des fibres de chanvre.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Propriétés et objectif textile du traitement ; allégations générales UV, antibactériennes et écologiques de l’introduction exclues.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Introduction, paragraphes lignin et cottonization ; Abstract",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-sankari00-bast",
+      "title": "Comparison of bast fibre yield and mechanical fibre properties of hemp cultivars",
+      "organization": "Industrial Crops and Products / MTT Finland",
+      "url": "https://www.votehemp.com/wp-content/uploads/2018/09/381.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Hannele S. Sankari",
+      "published": "2000",
+      "passage": "Les fibres libériennes primaires sont bien plus longues que les secondaires et fournissent les faisceaux longs recherchés pour les textiles.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "PDF de l’article original Elsevier, copie hébergée par Vote Hemp ; titre/auteur/pagination vérifiés. Pas de comparaison de rendement ni conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 74, Introduction, paragraphes primary and secondary fibres",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-rissanen23-recycling",
+      "title": "Chemical recycling of hemp waste textiles via ionic liquid based dry-jet-wet spinning",
+      "organization": "Textile Research Journal / Aalto University",
+      "url": "https://acris.aalto.fi/ws/portalfiles/portal/115488051/CHEM_Rissanen_et_al_Chemical_recycling_2023_Textile_Research_Journal.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Marja Rissanen, Inge Schlapp-Hackl, Daisuke Sawada, Susanna Raiskio, Krishna Ojha, Edward Smith et Herbert Sixta",
+      "published": "2023-06-01",
+      "passage": "Du tissu de chanvre a été dissous, puis sa cellulose régénérée en nouvelles fibres, filée et tricotée. Il s’agit de recyclage chimique, distinct du simple effilochage.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Démonstration expérimentale de faisabilité, pas description de la voie actuelle de tous vêtements de chanvre. Paramètres chimiques et mécaniques non repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 2545, Abstract ; p. 2546, Chemical recycling",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-kyoto-katabira",
+      "title": "Summer Kimono: Hitoe and Katabira",
+      "organization": "Kyoto National Museum",
+      "url": "https://www.kyohaku.go.jp/old/eng/theme/floor1_4/past/sensyoku_20180719.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Kyoto National Museum",
+      "published": "2018-07-19",
+      "passage": "Le musée décrit le katabira en chanvre ou ramie comme un kimono non doublé porté au plus fort de la chaleur estivale.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Usage textile historique présenté par le musée ; chanvre et ramie sont deux matériaux possibles, sans prétendre que tous les katabira sont en chanvre.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Présentation de l’exposition, deuxième paragraphe",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-cenc-finishes",
+      "title": "Guide des bonnes pratiques — Tome 3, Béton et mortier de chanvre",
+      "organization": "Construire en Chanvre, programme PACTE",
+      "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Quentin Pichon et Jean-Marc Naumovic",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Une première couche protège de la pluie ; les finitions doivent tenir compte de la déformabilité et laisser migrer la vapeur ; le gypse affecte différemment absorption et réduction acoustiques.",
+      "access": "full-text",
+      "documentKind": "professional-guide",
+      "limitation": "Préconisations professionnelles attribuées, pas norme universelle ni garantie de performance. La préface contient des récits historiques non fiables qui sont expressément exclus, de même que les promesses sanitaires.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 38–39 imprimées, gobetis ; p. 44–45, souplesse ; p. 64–65, gypse ; p. 74–77, finitions et vapeur",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-dreal-fibre-excerpt",
+      "title": "Recueil technique des matériaux biosourcés — Filasse et laine de chanvre",
+      "organization": "DREAL Centre-Val de Loire",
+      "url": "https://www.centre-val-de-loire.developpement-durable.gouv.fr/IMG/pdf/recueil_technique_13-07-18_vf.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "DREAL Centre-Val de Loire",
+      "published": "2018-07",
+      "passage": "L’extrait indique la filasse de chanvre pour étanchéifier les raccords en plomberie et un liant polyester pour maintenir les fibres d’une laine isolante.",
+      "access": "excerpt",
+      "documentKind": "institutional-document",
+      "limitation": "Ouverture directe : maintenance. Extrait institutionnel indexé effectivement lu par recherche ciblée du titre et du nom du PDF ; aucune lecture intégrale revendiquée. Description du document 2018, pas composition de tous produits actuels.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 7, Filasse de chanvre, Fabrication ; Laine de chanvre, Fabrication — extrait indexé",
+        "result": "URL originale ouverte mais en maintenance ; extrait indexé des deux rubriques effectivement lu, accès déclaré excerpt."
+      }
+    },
+    {
+      "id": "q2-rm01-cerema-earth-hemp",
+      "title": "EcoTerra : recherche sur les performances des bétons terre-chanvre",
+      "organization": "Cerema",
+      "url": "https://www.cerema.fr/fr/actualites/ecoterra-projet-recherche-performances-betons-terre-chanvre",
+      "verifiedAt": "2026-11-17",
+      "author": "Cerema",
+      "published": "2022-07-01",
+      "passage": "Le matériau étudié associe le chanvre à une terre argileuse crue, comme liant au lieu du système chaux-chanvre.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "La composition est retenue ; chiffres globaux carbone/coût, compostabilité et chronologie du projet contradictoire dans la page ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Favoriser l’utilisation des isolants terre-chanvre, premiers paragraphes",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    },
+    {
+      "id": "q2-rm01-pretot14-lca",
+      "title": "Life cycle assessment of a hemp concrete wall: impact of thickness and coating",
+      "organization": "Building and Environment / Université Européenne de Bretagne",
+      "url": "https://www.scribd.com/document/765592222/pretot2014",
+      "verifiedAt": "2026-11-17",
+      "author": "Sylvie Pretot, Florence Collet et Charles Garnier",
+      "published": "2014",
+      "passage": "Dans le mur chaux-chanvre modélisé, la fabrication du liant constitue le premier poste parmi les matériaux pour énergie primaire, consommation d’eau et pollution de l’air.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Manuscrit original accepté consulté sur un miroir Scribd, identifié par auteurs, titre et DOI10.1016/j.buildenv.2013.11.010. HAL original bloqué et éditeur inaccessible. Résultat situé au mur et au scénario étudiés, aucune neutralité carbone universelle.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Manuscrit accepté, Abstract ; §4.2, Fig. 5, contribution des matériaux",
+        "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+      }
+    }
+  ]
+}

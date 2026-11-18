@@ -155,7 +155,7 @@ export function createReleveCommerceBusiness(): KqReleveCommerceState {
   const trial = createKqWorkshop('market');
   const room = getKqWarehouseQuote({ version: 1, floor: { columns: 10, rows: 10 }, zones: [{ id: 'demo', name: 'Zone de démonstration', x: 1, y: 1, width: 1, height: 1, active: true, lightingCode: 'MH-TS1000', airCode: 'SIM-AIR-01' }],
     serviceZones: [{ id: 'drying', name: 'Séchage prêté', x: 1, y: 7, width: 1, height: 1, kind: 'drying', deviceCode: 'SJ-DRYIT90' }, { id: 'storage', name: 'Réserve prêtée', x: 4, y: 7, width: 1, height: 1, kind: 'storage', deviceCode: 'LP-SUPER-1L' }], equipment: [], preparedAreaM2: 0 }).nextState;
-  let state = createReleveCommerce({ cashCents: 500_000, clock: trial.clock, harvests: [{ zoneId: 'business-demo', game: { ...trial.game!, varietyName: 'Récolte prêtée par Sylvain', warehouse: getKqWarehouseRunSnapshot(room) }, battle: trial.battle }] });
+  let state = createReleveCommerce({ cashCents: 500_000, clock: trial.clock, harvests: [{ zoneId: 'business-demo', game: { ...trial.game!, varietyName: 'Récolte prêtée par Loïc', warehouse: getKqWarehouseRunSnapshot(room) }, battle: trial.battle }] });
   state = applyReleveCommerceRequest(state, { path: '/api/releve/commerce', method: 'POST', body: { action: 'mature' } }).state;
   mark(state, 'business-dossier');
   return state;
@@ -165,7 +165,7 @@ export function createReleveCommerceBusiness(): KqReleveCommerceState {
 export function createReleveCommerceSocial(): KqReleveCommerceState {
   let state = createReleveCommerceBusiness();
   state = applyReleveCommerceRequest(state, { path: '/api/releve/commerce', method: 'POST', body: { action: 'borrow-computer' } }).state;
-  state = applyReleveCommerceRequest(state, { path: COMMERCE, method: 'POST', body: { action: 'create-shop', name: 'Le fil de Sylvain · essai' } }).state;
+  state = applyReleveCommerceRequest(state, { path: COMMERCE, method: 'POST', body: { action: 'create-shop', name: 'Le fil de Loïc · essai' } }).state;
   mark(state, 'social-dossier');
   return state;
 }
@@ -349,8 +349,8 @@ function lendSample(state: KqReleveCommerceState) {
     capacity: { totalUnits: 300, allocations: [{ containerCode: 'GLASS-1L', quantity: 1, storedUnits: 300 }], automaticOverflowSale: false, overflowDeadlineAt: null },
     baseline: { ...source.storage.baseline, juryScore: 8 } });
   state.operations.storage.ownedContainers['GLASS-1L'] = (state.operations.storage.ownedContainers['GLASS-1L'] ?? 0) + 1;
-  state.lots.push({ ...structuredClone(source), id, name: 'Lot de démonstration de Sylvain · prêt de 30 g', storage, prepared: true, assistance: true });
-  const stock: KqCommerceStock = { id, flowerId: id, name: 'Lot de démonstration de Sylvain · prêt de 30 g', varietyCode: source.game.varietyCode, route: 'raw', batchRoute: 'raw', juryScore: 8,
+  state.lots.push({ ...structuredClone(source), id, name: 'Lot de démonstration de Loïc · prêt de 30 g', storage, prepared: true, assistance: true });
+  const stock: KqCommerceStock = { id, flowerId: id, name: 'Lot de démonstration de Loïc · prêt de 30 g', varietyCode: source.game.varietyCode, route: 'raw', batchRoute: 'raw', juryScore: 8,
     initialUnits: 300, remainingUnits: 300, equivalentUnits: 300, originalUnits: 300, baseUnitCents: 300, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, storage: projectKqStorageLot(storage, now) };
   state.operations.trial.commerce.stocks.push(stock); mark(state, 'sample-loaned');
 }
@@ -483,7 +483,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
     if (url.pathname === '/api/arena/placard/warehouse') return { state: current, payload: getReleveCommerceWarehouse(current) };
     if (url.pathname === '/api/arena/placard/flowers') return { state: current, payload: { flowers: [] } };
     if (url.pathname === '/api/arena/placard/collection') return { state: current, payload: { ownedBuddieCodes: [...new Set(current.lots.map(lot => lot.game.varietyCode))], buddieRotation: { requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: current.lots.map(lot => lot.game.varietyCode) } } };
-    throw new Error('Cet espace se visite dans une autre rencontre de Sylvain.');
+    throw new Error('Cet espace se visite dans une autre rencontre de Loïc.');
   }
   requireValue(method === 'POST' || (method === 'PATCH' && ['/api/arena/placard/equipment', '/api/arena/placard/warehouse'].includes(url.pathname)), 'Opération indisponible dans cette visite.');
   requireValue(!current.milestones.includes('social-dossier') || url.pathname !== COMMERCE, 'Retrouve les ventes, les campagnes et les produits dérivés dans leurs rencontres dédiées ; cet essai reste consacré aux réseaux.');
@@ -637,7 +637,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
       requireValue(!c.computerOwned, 'Ordinateur déjà disponible.'); spend(KQ_COMPUTER_PRICE_CENTS); c.computerOwned = true; account = 'equipment'; kind = 'equipment-purchase';
       payload = { action: 'buy-computer', cashAfterCents: c.cashCents };
     } else if (body.action === 'create-shop') {
-      requireValue(c.computerOwned, 'Emprunte d’abord l’ordinateur de Sylvain.'); requireValue(!c.business!.shop.createdAt, 'La boutique est déjà ouverte.');
+      requireValue(c.computerOwned, 'Emprunte d’abord l’ordinateur de Loïc.'); requireValue(!c.business!.shop.createdAt, 'La boutique est déjà ouverte.');
       const name = normalizeKqShopName(body.name);
       Object.assign(c.business!.shop, { name, createdAt: stamp(state), active: true, tier: 'basic', monthlyCents: 0, paidUntil: null, renew: false });
       Object.assign(c.online!.site, { createdAt: stamp(state), active: true, tier: 'basic', paidUntil: null, renew: false }); mark(state, 'site-opened');
@@ -710,7 +710,7 @@ export function getReleveCommerceProgress(state: KqReleveCommerceState, chapter:
   if (chapter === 'merch') return getReleveMerchProgress(state);
   const has = (key: string) => state.milestones.includes(key);
   if (chapter === 'delivery') return { complete: has('mature') && has('delivered') && has('receipt-read'), instruction: !has('mature') ? 'Laisse six heures fictives à ta récolte, puis ouvre le lot dans Vendre.' : !has('delivered') ? 'Prépare le lot entier, compare les offres disponibles et livre une petite quantité. Garde au moins 10 g pour la boutique.' : 'Ouvre le reçu : distingue le prix TTC, la TVA, le remboursement des factures et le net reçu.' };
-  if (chapter === 'shop' || chapter === 'business') return { complete: has('published') && has('online-time') && has('report-read') && (chapter !== 'business' || has('campaign')), instruction: !state.operations.trial.commerce.computerOwned ? 'Sylvain te prête son ordinateur. Ouvre gratuitement ta boutique de base et choisis son nom.' : !has('published') ? 'Achète quelques emballages, prépare des paquets avec ton stock puis publie-les. Une campagne reste facultative dans l’aventure.' : chapter === 'business' && !has('campaign') ? 'Dans ce dossier séparé, lance la campagne de présentation gratuite et compare son bilan après 24 heures fictives.' : 'Avance de 24 heures fictives et consulte le bilan. Une annonce épuisée reste une publication réussie.' };
+  if (chapter === 'shop' || chapter === 'business') return { complete: has('published') && has('online-time') && has('report-read') && (chapter !== 'business' || has('campaign')), instruction: !state.operations.trial.commerce.computerOwned ? 'Loïc te prête son ordinateur. Ouvre gratuitement ta boutique de base et choisis son nom.' : !has('published') ? 'Achète quelques emballages, prépare des paquets avec ton stock puis publie-les. Une campagne reste facultative dans l’aventure.' : chapter === 'business' && !has('campaign') ? 'Dans ce dossier séparé, lance la campagne de présentation gratuite et compare son bilan après 24 heures fictives.' : 'Avance de 24 heures fictives et consulte le bilan. Une annonce épuisée reste une publication réussie.' };
   return { complete: has('ledger-read') && has('first-harvest'), instruction: 'Rapproche les ventes des factures de ta campagne. La prime Première récolte ajoute 50 € fictifs, une seule fois.' };
 }
 

@@ -1,0 +1,96 @@
+{
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "method": "Amendement statique limité au delta demandé par root ; aucun code modifié ni test exécuté.",
+  "verdict": "root-source-projection-finding-fixed-and-independently-reviewed",
+  "findings": [
+    {
+      "id": "source-registry-extra-fields-in-public-question",
+      "discoveredBy": "root",
+      "correctedBy": "root",
+      "status": "fixed-static-review-approved",
+      "finding": "Le registre HEMP_QUIZ_SOURCES contient des passages et métadonnées factuelles ; retourner directement son objet les conservait à l’exécution, malgré le type KqSchoolSource.",
+      "priorReviewScope": "La première revue B avait explicitement supposé les objets du registre déjà adaptés au type public et exclu son contenu. Son verdict et ses empreintes sont conservés dans initialReview, sans lui attribuer le constat de root.",
+      "correction": "publicQuestion crée désormais un nouvel objet contenant seulement id, title, organization, url et verifiedAt pour chaque source.",
+      "independentReviewer": "rebalance_classify_b",
+      "independentResult": "Delta réellement relu : la projection ne peut copier passage, note, editorialAnswer ni les autres clés supplémentaires par simple présence dans le registre. Les objets source originaux ne sont pas modifiés.",
+      "regressionTestRead": "school-tournament-server.test.ts, lignes21–32 : registre enrichi de sentinelles dans passage/note/editorialAnswer, égalité exacte aux cinq champs attendus, absence de sentinelle dans JSON.stringify(question), puis vérification que le registre conserve son passage.",
+      "testsExecutedByReviewer": false
+    }
+  ],
+  "initialReview": {
+    "reviewer": "rebalance_classify_b",
+    "reviewedAt": "2026-11-17",
+    "method": "Lecture statique indépendante ; reviewer non auteur de ce code. Aucun code modifié et aucun test exécuté, conformément à la mission.",
+    "verdict": "no-concrete-defect-found-in-reviewed-scope",
+    "findings": [],
+    "scope": [
+      {
+        "file": "src/lib/kanab-quest-school-challenge-server.ts",
+        "reviewedSection": "Début du fichier : selectDomainQuestions, publicQuestion et branche classée de createKqSchoolQuestionPlan ; ancien algorithme sans domaines hors audit.",
+        "sha256": "a44e71b14340cf3e4218cfb96466a14f7497c22dca3f3a3f6201d8f0a8f6c99d"
+      },
+      {
+        "file": "src/lib/kanab-quest-school-challenge-server.test.ts",
+        "reviewedSection": "Deux tests complets sur tirage20, corrigés privés, projection et stabilité/mélange.",
+        "sha256": "4bb5bd3facddd651560cfb1fcae2d3aebfc8cda254548c1672174ee176d0c0d7"
+      },
+      {
+        "file": "src/lib/kanab-quest-school-tournament-server.test.ts",
+        "reviewedSection": "Fixtures et test banque réelle12, assertions privées, tests classés de rotation/quotas20/couplage rare/échecs explicites ; assertions de stabilité. Tests de sélection thématique legacy non réaudités.",
+        "sha256": "d72e8d4d02591cb3659b25fbcacdd56b925182024bdd55e506b55758da8d5c3a"
+      }
+    ],
+    "checks": [
+      {
+        "subject": "Quotas12/20 et niveaux",
+        "result": "20 :16active/2food/2materials, cinq questions par niveau.12 : trois classes de rotation donnent10/1/1, une9/2/1, une9/1/2 ; total théorique des cinq classes48/6/6. L’énumération impose au plus une secondaire par niveau ; pour20, quatre secondaires sur quatre niveaux imposent exactement4actives+1secondaire chacun.",
+        "testsRead": "tournament-server lignes140–181 ; challenge-server lignes5–28"
+      },
+      {
+        "subject": "Allocation conjointe et unicité",
+        "result": "Les capacités des12cellules niveau/domaine sont énumérées puis les emplacements sont appariés aux subjectKey par chemins augmentants. Un sujet occupé peut être réaffecté ; les réservations rares ne sont pas indépendantes. IDs uniques contrôlés en entrée ; une question appartient à une seule cellule. Aucun assouplissement silencieux si domaines/niveaux/sujets incompatibles.",
+        "testsRead": "tournament-server lignes183–212 : sujet secondaire rare aussi candidat actif, classification partielle et quotas/sujets impossibles"
+      },
+      {
+        "subject": "Graine et ordre",
+        "result": "SHA256(seed + séparateur + identifiant) mémorisé pilote rotation, allocation, questions et options. À banque et graine identiques, mêmes comparaisons et ordre. Tri final groupe par niveau et place les actives avant la secondaire, donc première question de chaque manche active.",
+        "testsRead": "challenge-server lignes30–35 ; tournament-server lignes135–150 et158–164"
+      },
+      {
+        "subject": "Mélange et corrigé",
+        "result": "Les identifiants a–d restent attachés aux textes d’origine lorsque leur ordre est mélangé. Le corrigé privé utilise l’identifiant d’origine : il retrouve donc le bon texte après tri. Les tests vérifient ce lien, pas seulement la présence d’un identifiant ; le test20 vérifie aussi plusieurs arrangements selon la graine.",
+        "testsRead": "challenge-server lignes17–21 et33–35 ; tournament-server lignes152–157"
+      },
+      {
+        "subject": "Projection privée et erreurs",
+        "result": "Construction explicite du DTO public sans étalement de l’objet auteur : answer, explanation, editorial, domain et subjectKey ne sont pas copiés. Corrigé et explication restent dans l’objet answer séparé du plan serveur. Sources manquantes/options incomplètes lèvent une erreur ; classification partielle, IDs dupliqués et thème inconnu également contrôlés. Les objets du registre de sources sont supposés déjà adaptés au type public KqSchoolSource.",
+        "testsRead": "challenge-server lignes23–24 ; tournament-server lignes34–37,57–58 et159–161"
+      }
+    ],
+    "limits": [
+      "Les assertions ont été lues, pas exécutées ; la réussite des tests finaux sur la banque1000 appartient au contrôle de root.",
+      "La moyenne80/10/10 du mode12 est une pondération des cinq classes de hash, pas une garantie de répartition exacte dans n’importe quel groupe de cinq graines arbitraires.",
+      "Ni transport HTTP du plan, ni contenu du registre public de sources, ni moteur legacy sans domaines, ni autres parcours applicatifs audités ici."
+    ]
+  },
+  "amendment": {
+    "requestedBy": "root",
+    "reviewedBy": "rebalance_classify_b",
+    "reviewedAt": "2026-11-17",
+    "scope": "Seulement publicQuestion/sourceIds.map, lignes75–85, et le nouveau test de projection, lignes21–32. Les contrôles quotas/niveaux/sujets/seed du premier état ne sont pas relancés ni réaudités.",
+    "currentFileHashes": [
+      {
+        "file": "src/lib/kanab-quest-school-challenge-server.ts",
+        "sha256": "8a1ee67c551a74b03f4a2446269c80aca1d9c6923055623f87e34c361d7139a1"
+      },
+      {
+        "file": "src/lib/kanab-quest-school-tournament-server.test.ts",
+        "sha256": "0dd5b06749acff5a90397a579d0aae6a934054f86bb56d3551a39bbee322fe7f"
+      }
+    ],
+    "testExecution": "Aucun test exécuté par B ; suite finale30 annoncée et prise en charge par root.",
+    "bibliographyPolicy": "L’accessibilité volontaire de la bibliographie publique de l’encyclopédie demeure hors de ce correctif et n’est pas considérée comme un défaut.",
+    "conclusion": "Correction de projection recevable après lecture indépendante ; aucune demande supplémentaire dans ce delta."
+  }
+}

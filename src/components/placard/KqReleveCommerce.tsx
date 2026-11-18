@@ -102,7 +102,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
     else if (url.searchParams.get('view') === 'market') {
       const next = url.searchParams.get('section');
       setPlace('market'); setSection(['overview', 'demands', 'sales', 'dashboard', 'management'].includes(next ?? '') ? next as KqMarketSection : 'overview');
-    } else setNotice('Sylvain a prévu cette rencontre plus loin dans la visite. Ta campagne fictive reste ici.');
+    } else setNotice('Loïc a prévu cette rencontre plus loin dans la visite. Ta campagne fictive reste ici.');
   }
   return <KqTutorialApiProvider api={api}><div ref={workspace} className={styles.visit} data-releve-commerce={chapter} data-releve-section={section} data-releve-destination={place} onClickCapture={localLink} onAuxClickCapture={localLink}>
     <div className={styles.toolbar} aria-label="Commandes de l’essai" data-releve-commerce-toolbar>
@@ -118,7 +118,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
         {place !== 'market' && chapter !== 'ledger' && chapter !== 'social' ? <button type="button" data-releve-guide="return-shop" onClick={() => setPlace('market')}><ArrowLeft size={17} aria-hidden="true" />Revenir à la boutique</button> : null}
         {chapter === 'social' && place !== 'social' ? <button type="button" data-releve-guide="return-social" onClick={() => setPlace('social')}>Revenir aux réseaux</button> : null}
       </div>
-      <button type="button" className={styles.help} aria-label="Comprendre les comptes et les règles de cette étape" title="Les conseils de Sylvain" aria-haspopup="dialog" onClick={() => setHelpOpen(true)}><CircleHelp size={20} aria-hidden="true" /></button>
+      <button type="button" className={styles.help} aria-label="Comprendre les comptes et les règles de cette étape" title="Les conseils de Loïc" aria-haspopup="dialog" onClick={() => setHelpOpen(true)}><CircleHelp size={20} aria-hidden="true" /></button>
     </div>
     {merchChapter ? <p className={styles.notice} data-releve-merch-loan>Dossier Produits dérivés prêté : 5 000 € fictifs au départ, un ordinateur, une boutique de niveau 2 avec sa première période payée, une identité de marque et 5 commandes d’exemple. Ces prérequis sont fournis pour l’essai ; tu paies ici l’atelier et la fabrication.</p> : null}
     {chapter === 'social' ? <ol className={styles.socialObjectives} aria-label="Objectifs de la rencontre Réseaux" data-releve-social-objectives>{socialLearning.platforms.map(platform => <li key={platform.platform} data-complete={platform.read}><strong>{platform.platform === 'instagram' ? 'Instagram' : 'X'}</strong><span>{platform.read ? 'Résultat lu ✓' : platform.published ? 'Résultat à lire' : 'À publier'}</span></li>)}<li data-complete={socialLearning.partnershipsRead}><strong>Partenariats</strong><span>{socialLearning.partnershipsRead ? 'Conditions lues ✓' : 'À découvrir'}</span></li></ol> : null}
@@ -130,7 +130,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
           onOpenHarvests={id => { setFlowerId(id); openHarvests(); }} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} />
           : place === 'storage' ? <KqHarvests section={harvestSection} initialFlowerId={flowerId} onSectionChange={(next, id) => { setHarvestSection(next); setFlowerId(id); }} onOpenWarehouse={openStorageEquipment} onOpenArena={() => setNotice('Les verdicts de cette campagne sont terminés. Tes lots sont prêts pour la conservation et la vente.')} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} onOpenGame={() => setNotice('Reviens au quartier pour retrouver le parcours de culture.')} />
             : <KqMarketDesk section={section} onSectionChange={setSection} initialFlowerId={flowerId} initialReceipt={chapter === 'delivery' ? commerce.receipts.at(-1) : undefined} onOpenShop={openEquipment} onOpenTreasury={() => setPlace('accounts')} onOpenStorage={id => { setFlowerId(id); openHarvests(); }} onOpenCulture={() => setNotice('Ta récolte vient de la campagne que tu viens de terminer.')} />}
-    {helpOpen ? createPortal(<AppDialog open onClose={() => setHelpOpen(false)} title="Les repères de Sylvain" className={styles.helpDialog} dialogProps={{ 'data-releve-commerce-help': true }}>
+    {helpOpen ? createPortal(<AppDialog open onClose={() => setHelpOpen(false)} title="Les repères de Loïc" className={styles.helpDialog} dialogProps={{ 'data-releve-commerce-help': true }}>
       <dl className={styles.helpBudget}><div><dt>Disponible fictif</dt><dd>{formatKqCash(getReleveCommerceCash(state))}</dd></div><div><dt>Factures restant à payer</dt><dd>{formatKqCash(due.totalCents)}</dd></div><div><dt>TVA réservée</dt><dd>{formatKqCash(commerce.business!.vat.reservedCents)}</dd></div></dl>
       {chapter === 'business' ? <p>Dossier d’entreprise séparé : une récolte déjà affinée, une réserve équipée et 5 000 € fictifs sont prêtés.</p> : null}
       {merchChapter ? <p>La papeterie et la fabrication sont payées séparément dans cet essai. Les articles ont leur propre stock. Compare ton prix, les frais et la cadence estimée avant la mise en vitrine ; les versements réels du rayon ne sont pas un bénéfice.</p> : null}

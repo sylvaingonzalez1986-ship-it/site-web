@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
-import { getKqWarehouseSnapshot, KqWarehouseError, saveKqWarehouseLayout, quoteKqWarehouseZoneRemoval, removeKqWarehouseCultureZone } from "@/lib/supabase/kanab-quest-warehouse-backend";
+import { getKqWarehouseSnapshot, observeKqWarehouseRoom, KqWarehouseError, saveKqWarehouseLayout, quoteKqWarehouseZoneRemoval, removeKqWarehouseCultureZone } from "@/lib/supabase/kanab-quest-warehouse-backend";
 
 export const runtime = "nodejs";
 const MAX_BODY_BYTES = 300_000;
@@ -39,11 +39,16 @@ async function readPayload(request: Request): Promise<Record<string, unknown>> {
   } finally { reader.releaseLock(); }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers: noStore });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers: noStore });
-  try { return NextResponse.json(await getKqWarehouseSnapshot(session.customerId), { headers: noStore }); }
+  try {
+    const layout = new URL(request.url).searchParams.get("layout");
+    if (layout === "observation") return NextResponse.json(await observeKqWarehouseRoom(session.customerId), { headers: noStore });
+    const preserveLayout = layout === "spatial";
+    return NextResponse.json(await getKqWarehouseSnapshot(session.customerId, preserveLayout ? { preserveLayout: true } : { cultureDetails: true }), { headers: noStore });
+  }
   catch (error) { return failure(error); }
 }
 

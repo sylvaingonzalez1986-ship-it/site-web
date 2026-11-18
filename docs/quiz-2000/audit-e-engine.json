@@ -1,0 +1,70 @@
+{
+  "role": "E — conception quiz, pédagogie et moteur",
+  "date": "2026-11-16",
+  "scope": "Audit local en lecture seule du moteur actif. Seul ce rapport est créé ; aucune modification active, migration, connexion distante ou publication.",
+  "instructionsRead": ["AGENTS.md", "docs/bete-de-concours/ux-progress.json (sections quiz ciblées)", "node_modules/next/dist/docs/01-app/03-api-reference/01-directives/use-client.md", "docs/quiz-2000/AUTHORING.md"],
+  "activeBank": {
+    "countMeasured": 360,
+    "uniqueIdsMeasured": 360,
+    "source": "src/lib/kanab-quest-hemp-quiz-bank.ts:22 — concaténation de cinq tableaux, puis surcharge par id de reviewed.json ; id et level originaux imposés après surcharge.",
+    "modules": {"biology": 80, "uses": 100, "history-culture": 60, "history-science": 60, "expansion-nature": 60},
+    "metadata": "src/lib/kanab-quest-hemp-quiz-meta.ts:2 — taille déclarée 360, dix thèmes et quatre niveaux. HEMP_QUIZ_BANK_REVISION est uniquement déclaré, sans consommateur trouvé ; ce n'est pas le contentVersion des sauvegardes.",
+    "schema": "src/lib/kanab-quest-hemp-quiz-types.ts:5 — id, topicId, level, prompt, quatre options, answer 0..3, explanation, articleId, sourceIds. Pas de subjectKey, factKey, catégorie éditoriale ni explications par distracteur dans le contrat moteur actuel.",
+    "identity": "src/lib/kanab-quest-hemp-quiz.test.ts:27 — id /^hemp-[a-z0-9-]{1,70}$/ ; backend accepte 80 caractères et sourceId 100 caractères (src/lib/supabase/kanab-quest-school-tournament-backend.ts:67). Préfixe hemp-q2- compatible. Préserver les id existants si conservation d'une question ; changement de sens nécessite nouvelle identité.",
+    "topicCounts": {"plant":40,"genetics":20,"molecules":40,"evidence":50,"seeds":20,"profiles":40,"uses":20,"biodiversity":20,"prevention":20,"history":90},
+    "levelCounts": {"1":90,"2":90,"3":90,"4":90},
+    "topicSemantics": "src/lib/kanab-quest-hemp-quiz-meta.ts:5 — ids historiques : evidence= cannabinoïdes, profiles= fibres/matériaux, uses= sol/racines, biodiversity= santé du chanvre, prevention= culture/récolte. Ne pas déduire leur signification de leur nom anglais. La catégorie éditoriale du contrat peut rester distincte."
+  },
+  "actualUserFlow": {
+    "mountedMode": "src/components/placard/KqSchool.tsx:13,66 — le seul jeu monté est KqSchoolTournament, chargé dynamiquement. KqSchoolQuiz et KqSchoolChallenge sont archivés ; leurs tests ne prouvent pas l'interface actuelle.",
+    "draw": "src/lib/kanab-quest-school-challenge-server.ts:10 — factory serveur privée. SHA-256(seed + saut de ligne + id), seed aléatoire UUID par défaut. 20 questions uniques, cinq par niveau croissant. Classement par nombre de thèmes déjà tirés, évitement du thème précédent, puis rang pseudoaléatoire.",
+    "tournament": "src/lib/kanab-quest-school-tournament-server.ts:8 — extrait les trois premières questions de chaque groupe de cinq : 12 questions, trois par niveau. Ce sous-échantillonnage ne conserve pas la garantie dix thèmes du plan20.",
+    "measuredCoverage": "Sur 1 000 seeds audit-e-0..999 : les 360 ids sont atteints par le tournoi ; diversité finale de 6 à 10 thèmes (6:6 parties, 7:123, 8:459, 9:354, 10:58). Le test actuel de couverture dix thèmes vise le plan20, pas le tournoi12.",
+    "options": "src/lib/kanab-quest-school-challenge-server.ts:35 — ids a/b/c/d attachés aux indices auteur, ordre affiché trié par hash questionId:optionId. Bonne réponse conserve son id après mélange. Même seed => même plan et même ordre ; nouveau seed => nouveau tirage.",
+    "antiRepetition": "Unicité id dans une partie seulement (used Set). Aucun historique utilisateur, cooldown de fait ou plafond subjectKey dans la factory. Les réponses persistées ne sont pas relues pour exclure les questions. La pondération privilégie la diversité des thèmes, pas une probabilité uniforme par question : petits thèmes davantage exposés individuellement.",
+    "difficulty": "Le niveau éditorial 1..4 pilote les groupes. Le champ public difficulty reste easy au niveau1, medium aux niveaux2..4 ; conserver level pour toute analyse. La cible éditoriale35/45/20 concerne la banque, tandis que le tournoi reste25/25/25/25 : aucune adaptation de règle implicite."
+  },
+  "scoresAndPersistence": {
+    "authority": "src/lib/supabase/kanab-quest-school-tournament-backend.ts:166 — plan généré au join puis RPC rpc_kq_school_tournament via service_role. L'état du salon et le plan privé sont en base ; GET reconstruit la reprise.",
+    "storage": "src/components/placard/KqSchoolTournament.tsx:18,36,45 — sessionStorage garde uniquement la commande en attente avec ownerId/version, pour retry idempotent. Le score et la progression ne dépendent pas de ce stockage. Aucun suivi de maîtrise ou historique pédagogique par fait dans le flux actif.",
+    "tables": "supabase/migrations/20261114000100_kq_school_tournament.sql:3,11,32,50,63,75,81 — joueurs, salons/plan JSONB12, participants, replays, réponses, requêtes, championnat ; révocations explicites104..110. Résultats hebdomadaires et éditions : 20261114000400_kq_school_tournament_weekly_champion.sql:4,15,27.",
+    "scoring": "supabase/migrations/20261114000400_kq_school_tournament_weekly_champion.sql:477 — temps serveur, bonne réponse100 + floor(50*(20000-elapsedMs)/20000), sinon0. Fermeture à20s. 450points maximum par manche,1800 pour12questions. Les bots/replays ne gagnent pas le titre ; comparaison hebdomadaire sur finale experte450pts. Aucun gain monétaire ajouté par la banque.",
+    "safetyOfContentUpdate": "Le plan complet est stocké dans le salon à la création ; une banque enrichie ne doit pas réécrire les parties en cours. Les contentVersion restent2026-11-14.champion1 pour tournoi et2026-11-13.hemp2 pour ancien challenge. Une simple révision éditoriale ne nécessite pas de migrer ou invalider les sauvegardes."
+  },
+  "encyclopediaAndPrivacy": {
+    "links": "src/lib/kanab-quest-school-challenge-server.ts:36 — lessonId=reference, sectionId=articleId. src/components/placard/KqSchoolTournament.tsx:303 — correction puis ouverture de la fiche ; avertissement explicite que le tournoi continue pendant la lecture.",
+    "catalog": "src/lib/kanab-quest-cannabis-reference.ts:25,57 — catalogue dynamique mis en cache et résolution directe des id d'articles. src/components/placard/KqCannabisReference.tsx:17 — chargement, erreur et retry. Aucun enregistrement de lecture/maîtrise dans ce composant actif.",
+    "tests": "src/lib/kanab-quest-hemp-quiz.test.ts:41 — chaque article existe, chaque source de question figure dans l'article. Ajouter des sources uniquement au quiz ne suffit donc pas : les liens d'articles doivent être enrichis ou une fiche proposée avant intégration.",
+    "publicVsPrivate": "Banque et réponses sont server-only ; la réponse publique reconstruit explicitement une question sans answer/explanation avant révélation (backend:61,89,119). Les sources sont des objets publics importables, les réponses restent privées. Les nouvelles sources doivent être placées dans un module public distinct de la banque privée ; ne pas importer un lot auteur contenant answer dans le client ou l'encyclopédie.",
+    "pedagogyGap": "Le schéma possède une explication globale, aucun motif par distracteur. La révélation actuelle affiche cette explication et la fiche ; elle ne rend pas les liens de sources pourtant présents dans la question. Pour lire une source précise, le joueur passe par l'encyclopédie."
+  },
+  "mobileAndScale": {
+    "observedCode": "KqSchoolTournament.module.css:7,11 — contrôles44px minimum et focus visible ; composant:208 — focus/scroll vers la question ; composant:300,303 — choix numérotés, formes et libellés explicites de correction. Vérifier les nouvelles formulations à320px malgré les longueurs contractuelles.",
+    "loading": "La banque reste serveur. Le navigateur reçoit une question courante et éventuellement une révélation, pas2000questions ; le plan privé reste12questions. Métadonnées publiques seules dans le lobby. Le coût à mesurer est surtout démarrage/import serveur et tirage (20 filtres/tris sur la banque), pas2000boutons DOM.",
+    "localMeasurement": {"serialized360BankBytes":187569,"1000TournamentPlansMs":3700,"meaning":"Mesure brute JSON et boucle chaude locale, sans compilation, réseau ou SQL. Ce n'est pas un benchmark2000 ni une preuve de performance mobile."},
+    "required2000Verification": "Après intégration, mesurer bundle client/absence réponses, import à froid et tirage2000 ; exécuter un vrai plan issu de la banque dans PGlite puis l'interface à320/390/1440px. Aucun problème de capacité SQL imposant une migration déduit de cet audit."
+  },
+  "existingHarnessesAndEvidence": {
+    "executed": {"command":"node node_modules/vitest/vitest.mjs run src/lib/kanab-quest-hemp-quiz.test.ts src/lib/kanab-quest-school-challenge-server.test.ts src/lib/kanab-quest-school-tournament-server.test.ts --reporter=dot","result":"3 fichiers,9 tests réussis ; banque360, liens sources/articles, confidentialité, tirage et options déterministes."},
+    "loaderUsed": "scripts/audit-school-scenarios.mjs:10..23 — authorModule et loadHempQuizFixtureBank chargent les vraies données en Node, sans exposer les réponses au navigateur. Utilisés pour comptage et1 000tirages ; aucune écriture distante.",
+    "sqlHarness": "scripts/school-tournament-fixture.mjs:7,15..28,77 — PGlite éphémère, migrations réelles jusqu'à hebdomadaire, RPC et vraie factory ; cron simulé uniquement à l'enregistrement. Harness recommandé pour le pilote.",
+    "sqlTestsAvailableNotRun": ["scripts/test-placard-school-tournament.mjs", "scripts/test-placard-school-tournament-bootstrap-bots.mjs", "scripts/test-placard-school-tournament-weekly.mjs", "scripts/test-placard-school-tournament-concurrency.mjs", "scripts/test-placard-school-tournament-weekly-concurrency.mjs"],
+    "uiHarness": "scripts/audit-placard-navigation.mjs:75,79,148 — transport tournoi local relié à la fixture SQL ; --preview --school-visual ouvre une prévisualisation locale. Les scénarios quiz10 et challenge20 archivés ne remplacent pas le contrôle du tournoi actuel.",
+    "notClaimed": "Aucun navigateur, build, DB distante ou test2000 exécuté dans cette mission d'audit."
+  },
+  "minimalAdaptations": [
+    {"required":true,"change":"Assembler exactement2000entrées validées côté serveur, enregistrer leurs sources publiques séparément, actualiser taille/révision déclarées et assertions historiques360/90 du test. Préserver les autres changements existants et les plans en cours."},
+    {"required":true,"change":"Conserver subjectKey dans les données privées de tirage (champ optionnel d'auteur ou index privé id→subjectKey) ; actuellement le mapping supprime cette information. Ne pas transférer editorial/sourceEvidence en bloc vers le DTO public."},
+    {"required":true,"change":"Appliquer le plafond de sujet et l'équilibrage au plan12 effectivement joué, avec3questions/niveau, plutôt qu'au plan20 dont les8questions supprimées peuvent porter la diversité. Pour les nouveaux sujets récurrents, viser au plus1question par subjectKey dans une partie quand le pool le permet ; définir un fallback explicite et mesurable si contrainte impossible. Conserver la factory20 archivée pour ses usages/tests distincts."},
+    {"required":true,"change":"Tester unicité id/factKey, couverture et plafonds de sujet sur de nombreuses seeds avec les quotas de niveaux réellement disponibles. Définir aussi les alias de subjectKey pour ne pas contourner le plafond par un nom commercial variant."},
+    {"required":false,"change":"L'anti-répétition entre parties exige historique/persistance ou un service d'exclusion par utilisateur ; un nouveau seed seul ne le garantit pas. Ce serait une extension distincte, pas une propriété de l'intégration2000."},
+    {"required":false,"change":"Afficher les références directement en révélation ou ajouter des explications par distracteur nécessiterait une évolution UI/DTO ciblée ; non indispensable à l'accueil de2000entrées."}
+  ],
+  "pilot30Plan": {
+    "isolation": "Garder batches/reviews hors des fichiers actifs. Valider schéma, réponses, faits, sources, articles et hash de revue sur ces fichiers. Décision coordinateur : tester temporairement les30questions ajoutées aux360existantes dans la fixture locale, sans remplacer la banque active. Le pool390 conserve les5questions/niveau déjà disponibles.",
+    "currentFactoryConstraint": "Une banque pilote30 seule doit posséder au moins5questions par niveau pour passer la factory20. Le ratio global35/45/20 appliqué au pilote (~11/13/3/3) ne satisfait pas ce prérequis. Soit échantillon pilote10/10/5/5 documenté, soit factory tournoi directe3/niveau testable par injection de pool privé. La cible globale peut rester35/45/20.",
+    "testSeam": "Adaptation locale minimale recommandée : helper privé tirant dans un pool fourni, wrapper production utilisant la banque réelle et sa validation de taille. La fixture PGlite reçoit un createPlan injectable pour le pilote ; rien ne change pour les appels production. Aucun endpoint de réponses ni override navigateur.",
+    "checks": ["30ids et30faits distincts, quatre choix plausibles, une seule bonne réponse soutenue ; revue indépendante de chaque item.","Tous les id du pilote atteignables sur seeds répétées ; exactitude du mapping réponse après mélange et absence réponse future dans JSON public.","Plan12 sans doublon ni sujet surreprésenté,3/niveau ; seed stable et nouveau seed variable.","RPC locale : rejoindre salon, bots/remplissage, bonne/mauvaise réponse, timeout, retry même requestKey, reprise rechargement et score serveur.","Interface320/390/1440, clavier, focus, lecture correction, fiche et sources accessibles ; aucune déformation/overflow ni masquage action/timer."],
+    "finishCondition": "30questions approuvées individuellement avec sources et relecture fraîches, validations structurelles et tirage/localSQL/UI du pilote documentés. L'audit seul n'approuve aucun contenu du pilote."
+  }
+}

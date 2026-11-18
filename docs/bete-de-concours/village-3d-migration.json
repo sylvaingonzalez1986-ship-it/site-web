@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-17",
+  "branch": "feat/village-interiors-3d",
+  "status": "Extérieur 3D animé et activités 2D conservés ; sélection historique de l’entrepôt rétablie le 17 novembre.",
+  "decision": "À la demande du joueur, les intérieurs explorables 3D restent abandonnés. Le menu de construction par case est retiré du parcours courant au profit du tracé et de la sélection des zones historiques.",
+  "entry": "/arene/placard?world=3d",
+  "warehouse": "/arene/placard?world=3d&view=workshop",
+  "exterior": {
+    "navigation": "Clic b?timent ? bulle d?activit?s ? ?cran 2D dans le monde partag?. Ferme : culture, Am?nager l?entrep?t, atelier, r?coltes. Courrier sur mod?le 3D et menu lat?ral partag?s.",
+    "motion": "Cam?ra interpol?e sur 450 ms pour s?lectionner, tourner, zoomer et recentrer. Angle manuel conserv?, glisser annule imm?diatement. Pause, onglet cach? et mouvement r?duit arr?tent l?interpolation sans reprise. Aucun nouveau cycle permanent. Bulle ancr?e au toit et arriv?e douce des panneaux papier.",
+    "decoration": "Enseignes, drapeau breton, papiers des missions, fleurs, fum?es, eau et mouette ; activit? r?elle de la ferme, du march? et du jury. Boucle plafonn?e ? 30 images/s et suspendue hors champ, en arri?re-plan et pendant les activit?s.",
+    "compatibility": "Anciennes URL room remplac?es par la vue m?tier correspondante, sans modifier world ni les param?tres view/section/zone/run explicites. Aucun chargement de composant int?rieur depuis VillagePrototype."
+  },
+  "warehouse2d": {
+    "controls": "Boutons Culture, Séchage et Stockage directement visibles, tracé de la surface sur le plan, sélection directe des zones et inspecteur historique. Aucun menu sur case vide, à la souris, au toucher ou avec Entrée. Outils de déplacement/redimensionnement conservés.",
+    "partitions": "Parois déjà enregistrées conservées, visibles et modifiables. Leur géométrie et les chevauchements restent validés ; la contrainte de circulation d’un mètre propre aux intérieurs 3D est retirée du parcours client/serveur.",
+    "persistence": "M?me snapshot, inventaire, devis, cr?dit de reprise et PATCH authentifi? avec r?vision et cl? idempotente. Annuler une op?ration restaure le brouillon pr?c?dent. R?ponse ambigu? : aper?u verrouill? et retry identique. Conflit409 : brouillon conserv?, rechargement serveur explicite ignorant les anciens brouillons.",
+    "files": [
+      "src/components/placard/KqWarehouse.tsx",
+      "src/components/placard/KqWarehouseCellMenu.tsx",
+      "src/components/placard/KqWarehousePlan.tsx"
+    ]
+  },
+  "shelvedInteriors": {
+    "status": "Hors parcours joueur ; code conserv? pour une ?ventuelle reprise, sans suppression de donn?es.",
+    "files": [
+      "src/components/placard/world/InteriorExperience.tsx",
+      "src/components/placard/world/InteriorCanvas.tsx",
+      "src/components/placard/world/interior-art.ts"
+    ],
+    "previousEvidence": "output/village-interiors ; r?sultats historiques uniquement. Ne pas relancer leur audit pour le parcours courant.",
+    "reusableModel": "Extension facultative partitions de KqWarehouseState r?utilis?e par le plan 2D. Les anciens clients qui omettent ce champ conservent les parois enregistr?es."
+  },
+  "validation": {
+    "exterior": "18 groupes navigateur r?ussis ; 43 images observ?es et 26 positions interm?diaires pour la cam?ra. Pause, glisser et mouvement r?duit v?rifi?s ; courrier, clavier, tactile, 4 liens ferme et repli WebGL. Z?ro erreur JavaScript ni appel externe.",
+    "sharedGame": "14 sc?narios1440/320 r?ussis : destinations2D, canvas ext?rieur persistant, historique, rechargement, anciennesURL, param?tres pr?cis, guide, profil et modes2D/3D. Destinations m?tier simul?es pour cet audit de navigation.",
+    "unit": "25 tests mode/entr?e r?ussis ; 182 tests mod?le/parois/API/backend r?ussis ? leur int?gration, inchang?e depuis.",
+    "warehouse2d": "Après retour à l’ancienne sélection : 143 tests ciblés réussis et 22 scénarios navigateur réussis, dont boutons de tracé directement visibles, case vide sans menu, dessin/déplacement souris et tactile 320 px, clavier, coûts, Buddies, suppression/revente et leçon. Captures 320/1440 px inspectées. Les rapports cells et cell-plan ci-dessous sont historiques et ne décrivent plus le parcours courant.",
+    "evidence": [
+      "output/village-3d/report.json",
+      "output/placard-navigation/world-3d-report.json",
+      "output/warehouse-zone-actions/report-cells.json",
+      "output/warehouse-cell-plan/report.json",
+      "output/warehouse-zone-actions/report.json"
+    ],
+    "plan": "Historique avant retour : 3 groupes isolés desktop, tactile 320 et ancien consommateur. Après retour : parcours de tracé et sélection des parois enregistrées vérifiés à la souris et au toucher ; cible de paroi conservée malgré l’arrondi du clic tactile sur une ligne de grille.",
+    "static": "Retour de sélection : ESLint ciblé et diff-check réussis. Premier TypeScript global réussi ; dernier contrôle bloqué par deux erreurs hors correctif dans village-breton.ts:212 et VillageAtmosphere.tsx:10 (module village-fisherman absent), modifiés pendant cette intervention.",
+    "existingWarehouse": "22 contr?les historiques r?ussis : menus, Buddies, suppression/revente, montants serveur, verrouillage en attente, retry idempotent, trac? souris/tactile et le?on. Les retours ligne dans les explications d?usure sont accept?s par l?assertion sans changer le texte m?tier."
+  },
+  "commands": {
+    "exterior": "npm.cmd run audit:village",
+    "sharedGame": "node scripts/audit-placard-navigation.mjs --world-3d (NAVIGATION_AUDIT_PORT=3621)",
+    "warehouse": "node scripts/audit-warehouse-zone-actions.mjs"
+  },
+  "remaining": [],
+  "limits": [
+    "Recette navigateur avec donn?es locales simul?es ; aucun achat ni modification de compte distant.",
+    "Aucune migration SQL ajout?e."
+  ],
+  "deployed": false,
+  "nextBoundedTask": "Retour à l’ancienne sélection terminé. Ne pas réactiver le menu par case ou les intérieurs 3D sans nouvelle demande."
+}

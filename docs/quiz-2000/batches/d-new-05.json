@@ -1,0 +1,2131 @@
+{
+  "batchId": "d-new-05",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "status": "awaiting-independent-review",
+  "sourceReuse": {
+    "registry": "docs/encyclopedia-revision/bibliography.json et sources des lots déjà produits",
+    "sourceIds": [
+      "q2-d04-acf-hemp-2021",
+      "q2-d04-oklahoma-hemp-oil-2020",
+      "q2-dnext01-loturco-2023",
+      "q2-d04-fda-ingredient-types",
+      "q2-dlegacy02-openstax-proteins",
+      "q2-d04-asb-staling"
+    ],
+    "rule": "Références communes utilisées sans redéfinition de leur objet ; consultations ciblées du 2026-11-16 précisées dans les questions."
+  },
+  "deduplication": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "baseline": "docs/quiz-2000/audit-f-active-snapshot.json#entries",
+    "adjacentBatches": [
+      "pilot-c",
+      "pilot-d",
+      "d-01",
+      "d-legacy-01",
+      "d-legacy-02",
+      "d-legacy-03",
+      "d-new-04"
+    ],
+    "checks": "Recherche ciblée des ingrédients, opérations, mécanismes et objectifs dans l'index compact, puis comparaison aux lots voisins. Pas de variante issue du catalogue du site ni du pilote AB archivé.",
+    "nearbyFacts": [
+      {
+        "facts": [
+          "rancid-hemp-seeds-discard",
+          "hempseed-oil-rancidity-lipid-oxidation"
+        ],
+        "reason": "Action culinaire face à des graines altérées, distincte de la réaction chimique qui fait rancir une huile. L'explication ne redonne pas le nom de la réaction."
+      },
+      {
+        "facts": [
+          "seed-cleaning-before-oil-extraction",
+          "hempseed-threshing-detaches-grain-from-plant",
+          "hempseed-dehulling"
+        ],
+        "reason": "Retrait des corps étrangers, détachement du fruit et retrait de son enveloppe sont trois opérations différentes. Pas de définition détaillée du décorticage dans l'explication nouvelle."
+      },
+      {
+        "facts": [
+          "hemp-pesto-parmesan-not-vegan",
+          "hemp-pesto-herbs-seeds-oil-sauce"
+        ],
+        "reason": "Composition d'un régime végétalien et reconnaissance d'une sauce sont deux objectifs distincts ; même subjectKey illinois-hemp-pesto pour cette recette récurrente."
+      },
+      {
+        "facts": [
+          "hemp-gnocchi-potato-base",
+          "hemp-gnocchi-rise-to-surface",
+          "hemp-pasta-cooking-endpoint-white-core"
+        ],
+        "reason": "La base du plat et son repère de cuisson sont distincts ; remontée des gnocchis et disparition du cœur blanc des pâtes sont des propriétés de deux préparations différentes, pas une durée d'étude à mémoriser."
+      },
+      {
+        "facts": [
+          "cold-pressed-hemp-oil-mechanical-no-added-heat",
+          "cold-pressed-oil-may-be-filtered",
+          "hempseed-oil-filtration"
+        ],
+        "reason": "Principe d'extraction, compatibilité d'une filtration et résultats expérimentaux de filtration sont distincts. Les deux faits nouveaux d'huile partagent huile-chenevis."
+      },
+      {
+        "facts": [
+          "protein-denaturation-shape-not-primary-sequence",
+          "protease-cuts-proteins-peptides",
+          "hempseed-protein-primary-structure"
+        ],
+        "reason": "Modification du repliement, coupure en peptides et organisation générale de la chaîne sont distinctes. L'explication de la dénaturation ne livre pas la réponse de la question sur la protéase."
+      },
+      {
+        "facts": [
+          "amylase-breaks-down-starch",
+          "hemp-bread-staling-starch-retrogradation",
+          "hemp-wheat-bread-gluten-gas-retention",
+          "bread-yeast-fermentation-carbon-dioxide"
+        ],
+        "reason": "Cible d'une enzyme, réorganisation de l'amidon, rétention du gaz et production du gaz sont quatre connaissances complémentaires, sans inversion d'un même résultat."
+      },
+      {
+        "facts": [
+          "ice-cream-whipping-incorporates-air",
+          "hemp-protein-oil-water-emulsion"
+        ],
+        "reason": "Dispersion gazeuse dans une glace, distincte d'une émulsion huile-dans-eau ; pas de réemploi de l'essai de moussage D01."
+      },
+      {
+        "facts": [
+          "food-texture-springiness-recovery",
+          "food-texture-chewiness-work-to-swallow",
+          "rusu-2021-hemp-bread-protein-rise-elasticity-decline"
+        ],
+        "reason": "Définition de deux propriétés de texture, distincte d'une tendance expérimentale d'enrichissement du pain. Même sujet Zahari pour les trois questions sur l'analogue extrudé."
+      },
+      {
+        "facts": [
+          "triacylglycerol-glycerol-three-fatty-acids",
+          "2ag-monoacylglycerol-lipid-class"
+        ],
+        "reason": "Structure des lipides alimentaires de stockage, distincte de la classe d'un endocannabinoïde."
+      },
+      {
+        "facts": [
+          "fat-higher-energy-per-gram-protein-carbohydrate",
+          "hemp-snack-equal-mass-larger-volume-lower-density"
+        ],
+        "reason": "Énergie par gramme de nutriment, distincte de la masse volumique d'un aliment expansé."
+      }
+    ],
+    "coordination": "E averti et réserve les sujets nouveaux sur graines rances, nettoyage, activité de l'eau, fonctions culinaires et énergie. Aucun fait de dates, lot, quantité nette, conformité d'étiquette ou méthode analytique n'est prévu dans ce lot.",
+    "correctionsAfterReview": {
+      "review": "docs/quiz-2000/reviews/d-new-05.json",
+      "replacements": [
+        {
+          "retiredId": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+          "retiredFactKey": "hemp-seed-mild-nutty-flavour",
+          "newId": "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+          "newFactKey": "caramel-coated-seeds-sugar-browning",
+          "reason": "Le profil de noix était déjà testé dans le pilote. Le remplacement porte sur la transformation d'un enrobage sucré, et non sur le goût propre des graines."
+        },
+        {
+          "retiredId": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+          "retiredFactKey": "oilseed-meaning-oil-extraction",
+          "newId": "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+          "newFactKey": "baking-powder-acid-bicarbonate-reaction",
+          "reason": "L'entrée reformulait l'origine de l'huile. Le remplacement teste une réaction de levée chimique, distincte de l'origine de l'huile et du simple rôle gonflant du bicarbonate."
+        }
+      ],
+      "nearbyNewFacts": [
+        {
+          "factKey": "caramel-coated-seeds-sugar-browning",
+          "nearby": "hemp-bread-maillard-reducing-sugar-amino",
+          "reason": "La transformation thermique d'un sucre d'enrobage est distincte de la réaction entre sucres réducteurs et groupes aminés testée dans D04."
+        },
+        {
+          "factKey": "baking-powder-acid-bicarbonate-reaction",
+          "nearby": [
+            "baking-soda-leavening-rise",
+            "bread-yeast-fermentation-carbon-dioxide"
+          ],
+          "reason": "Le couple réactif de la levée chimique est distinct du rôle technologique du bicarbonate et du gaz produit par la fermentation. La nouvelle question partage la clé des ingrédients fonctionnels avec celle du bicarbonate."
+        }
+      ],
+      "checks": "Recherche ciblée caramel/caramélisation, poudre à lever, réaction acide–bicarbonate et vitamines dans le dernier index ; aucune nouvelle entrée issue du catalogue du site.",
+      "preservation": "Les 33 objets approuvés restent inchangés ; les 17 objets sources du lot et toutes les sources communes sont conservés. Trois références nouvelles sont ajoutées."
+    }
+  },
+  "sources": [
+    {
+      "id": "q2-d05-merlino-gnocchi-2022",
+      "title": "Technological, Nutritional, and Sensory Characteristics of Gnocchi Enriched with Hemp Seed Flour",
+      "organization": "Università degli Studi di Messina ; San Raffaele Roma ; Università Mediterranea di Reggio Calabria",
+      "url": "https://www.mdpi.com/2304-8158/11/18/2783",
+      "verifiedAt": "2026-11-16",
+      "author": "Maria Merlino ; Gianluca Tripodi ; Fabrizio Cincotta ; Ottavia Prestia ; Anthea Miller ; Antonio Gattuso ; Antonella Verzera ; Concetta Condurso",
+      "published": "2022-09-09",
+      "passage": "Introduction : base de pomme de terre ; §2.5 : facteurs énergétiques ; §2.6 : cuisson jusqu'à la remontée des gnocchis.",
+      "access": "full-text",
+      "documentKind": "Étude expérimentale, Foods 11(18), 2783",
+      "limitation": "Repères et définitions tirés des méthodes ; pas de classement universel des recettes, de promesse nutritionnelle ni de résultat chiffré à mémoriser.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction et §2.5–2.6",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-illinois-kitchen-2014",
+      "title": "In the Kitchen with Hemp Seeds",
+      "organization": "University of Illinois Extension",
+      "url": "https://extension.illinois.edu/blogs/live-well-eat-well/2014-11-05-kitchen-hemp-seeds",
+      "verifiedAt": "2026-11-16",
+      "author": "Kristin Bogdonas",
+      "published": "2014-11-05",
+      "passage": "Paragraphe nutritionnel : magnésium minéral, vitamine E ; recette de pesto avec herbes, graines, huile et parmesan.",
+      "access": "full-text",
+      "documentKind": "Fiche culinaire universitaire",
+      "limitation": "Les passages historiques, juridiques et les promesses de santé de cette ancienne page sont exclus. Aucun ratio de nutriments dit optimal n'est repris.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphe nutritionnel et recette Hemp Pesto",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-fda-pasteurization",
+      "title": "Juice HACCP Regulator Training — Pasteurization",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/hazard-analysis-critical-control-point-haccp/juice-haccp-regulator-training",
+      "verifiedAt": "2026-11-16",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Sans date affichée dans le passage consulté",
+      "passage": "La pasteurisation thermique vise à réduire les micro-organismes pathogènes dans des produits liquides.",
+      "access": "official-page",
+      "documentKind": "Manuel institutionnel de formation, chapitre 7",
+      "limitation": "Principe thermique général seulement ; aucune exigence réglementaire, durée, température ni validation d'une formulation de chanvre n'est transposée des jus.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Chapitre 7, 5-Log Treatment Methods for Extracted Juices, Pasteurization",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-colic-icecream-2024",
+      "title": "Sustainable Utilization of Hemp Press Cake Flour in Ice Cream Production: Physicochemical, Rheological, Textural, and Sensorial Properties",
+      "organization": "Josip Juraj Strossmayer University of Osijek ; Technical University of Sofia",
+      "url": "https://mdpi-res.com/bookfiles/book/11891/Sustainability_in_the_Global_Dairy_Sector.pdf?v=1764256586",
+      "verifiedAt": "2026-11-16",
+      "author": "Mirela Lučan Čolić ; Marko Jukić ; Gjore Nakov ; Jasmina Lukinac ; Martina Antunović",
+      "published": "2024, Sustainability 16(19), 8354 ; réimpression 2025",
+      "passage": "Description multiphasique de la glace ; viscosité comme résistance à l'écoulement ; foisonnement associé à l'air incorporé.",
+      "access": "full-text",
+      "documentKind": "Étude expérimentale, réimpression officielle MDPI",
+      "limitation": "Le DOI de l'article est 10.3390/su16198354. La page de l'article a renvoyé 429 ; le texte intégral a été consulté dans la réimpression officielle, pages PDF 77–99, sans reprendre les résultats de dosage.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Article aux pages PDF 77–99 : introduction, §3.1.3 et §3.2.1",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-asb-potassium-sorbate",
+      "title": "Potassium Sorbate",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/potassium-sorbate/?topic=ingredient",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date de publication affichée",
+      "passage": "Le sorbate de potassium est employé contre le développement de moisissures et levures.",
+      "access": "full-text",
+      "documentKind": "Notice technique professionnelle, BAKERpedia/ASB",
+      "limitation": "Bannière d'adhésion visible, mais corps de la notice intégralement accessible dans la page consultée, lignes 376–414. Aucun dosage, pH d'emploi, statut légal ou bénéfice clinique repris.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is potassium sorbate? et Function",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-asb-fermentation",
+      "title": "Fermentation",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/fermentation/",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date de publication affichée",
+      "passage": "La fermentation boulangère transforme des sucres et produit notamment du dioxyde de carbone.",
+      "access": "full-text",
+      "documentKind": "Notice technique professionnelle, BAKERpedia/ASB",
+      "limitation": "Bannière d'adhésion visible, mais corps accessible lignes 376–460. Seul le rôle de la fermentation en boulangerie est utilisé, sans chronologie ancienne ni paramètres de production.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is fermentation? et How it works",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-kim-tofu-2026",
+      "title": "Toward sustainable plant-based foods: Physicochemical and nutritional evaluation of hemp seed tofu-like gel prepared with various coagulants",
+      "organization": "Kyungpook National University",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42967711/",
+      "verifiedAt": "2026-11-16",
+      "author": "Suh Hyuk Kim ; So Yeong Park ; Ju Hyun Min ; Hye Jee Kang ; Young Hoon Jung ; Dong Hyun Kim",
+      "published": "2026-09-25, publication électronique ; numéro daté du 2026-12-01",
+      "passage": "Des graines dégraissées donnent des gels de type tofu par coagulation thermique ; leur réseau est protéique.",
+      "access": "abstract",
+      "documentKind": "Résumé original d'étude, Food Research International, DOI 10.1016/j.foodres.2026.120885",
+      "limitation": "Seul le résumé accessible et les métadonnées sont consultés. Le numéro futur n'est pas présenté comme une publication déjà parue ; l'article est disponible en ligne. Pas d'extrapolation des tests in vitro à la santé.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Résumé, premiers paragraphes et description du réseau",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-park-protease-2024",
+      "title": "Hemp Seed Protein Hydrolysate Enriched with γ-Aminobutyric Acid and Peptides by Microbial Bioconversion",
+      "organization": "Keimyung University",
+      "url": "https://www.mdpi.com/2311-5637/10/9/483",
+      "verifiedAt": "2026-11-16",
+      "author": "Yun Ho Park ; Joo Hyeong Kim ; Dong Min Shin ; Sam Pin Lee",
+      "published": "2024-09-17",
+      "passage": "La protéase de Bacillus subtilis hydrolyse les protéines de chanvre en fragments de plus faible masse moléculaire.",
+      "access": "full-text",
+      "documentKind": "Étude expérimentale, Fermentation 10(9), 483",
+      "limitation": "Transformation des protéines seulement ; aucune optimisation de fermentation, promesse de santé, dose de GABA ou amélioration de l'absorption clinique reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§2.3 et §3.1, hydrolyse et suivi des bandes protéiques",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-hamidioglu-oleogels-2022",
+      "title": "Characterization of the Quality and Oxidative Stability of Hemp-Oil-Based Oleogels as an Animal Fat Substitute for Meat Patties",
+      "organization": "Kaunas University of Technology, Food Institute",
+      "url": "https://www.mdpi.com/2304-8158/11/24/4030",
+      "verifiedAt": "2026-11-16",
+      "author": "Irfan Hamidioglu ; Gitana Alenčikienė ; Miglė Dzedulionytė ; Aelita Zabulionė ; Aditya Bali ; Alvija Šalaševičienė",
+      "published": "2022-12-14",
+      "passage": "Les oléogélifiants créent un réseau solide qui immobilise l'huile liquide.",
+      "access": "full-text",
+      "documentKind": "Étude expérimentale, Foods 11(24), 4030",
+      "limitation": "Définition structurale seulement ; aucun effet sur la santé, dosage de cire ou résultat particulier d'oxydation n'est généralisé.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, paragraphe Oleogelation",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-nih-vitamin-e",
+      "title": "Vitamin E — Fact Sheet for Consumers",
+      "organization": "National Institutes of Health, Office of Dietary Supplements",
+      "url": "https://ods.od.nih.gov/factsheets/VitaminE-Consumer/",
+      "verifiedAt": "2026-11-16",
+      "author": "NIH Office of Dietary Supplements",
+      "published": "Mise à jour 2021-03-22",
+      "passage": "La vitamine E est un nutriment liposoluble.",
+      "access": "official-page",
+      "documentKind": "Fiche institutionnelle de nutrition",
+      "limitation": "Classification physicochimique seulement ; pas de recommandation de supplément, d'apport, de dose ou de bénéfice clinique.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is vitamin E and what does it do?, première phrase",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-asb-gelatinization",
+      "title": "Starch Gelatinization",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/starch-gelatinization/",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date de publication affichée",
+      "passage": "La gélatinisation requiert de l'eau et de la chaleur ; les granules d'amidon gonflent en absorbant l'eau.",
+      "access": "full-text",
+      "documentKind": "Notice technique professionnelle, BAKERpedia/ASB",
+      "limitation": "Bannière d'adhésion visible, mais texte accessible lignes 376–439. Aucune température universelle, recette ni description de transition vitreuse n'est reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is starch gelatinization? et Starch in hot water",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-umn-freeze-drying",
+      "title": "Preserving food at home: Freeze-drying",
+      "organization": "University of Minnesota Extension",
+      "url": "https://extension.umn.edu/food/preparing/cooking-at-home/food-preservation/freeze-drying",
+      "verifiedAt": "2026-11-16",
+      "author": "Amy Johnston",
+      "published": "Révision 2025, date initiale non affichée",
+      "passage": "Sublimation glace-vapeur sans phase liquide pendant le séchage primaire ; activité de l'eau distinguée de la quantité totale.",
+      "access": "full-text",
+      "documentKind": "Fiche universitaire de science alimentaire",
+      "limitation": "Définitions seulement ; pas de protocole domestique ni de durée de conservation. La présence de chauffage léger lors de la sublimation n'est pas niée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, Water activity, Three steps / Primary drying",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-osu-oil-refining",
+      "title": "Oil and Oilseed Processing III — Crude Oil Refining and Preparation for Biodiesel Production",
+      "organization": "Oklahoma State University Extension",
+      "url": "https://extension.okstate.edu/fact-sheets/oil-and-oilseed-processing-iii",
+      "verifiedAt": "2026-11-16",
+      "author": "Nurhan Dunford",
+      "published": "2016-07",
+      "passage": "Raffinage alimentaire : dégommage des phospholipides, adsorption de composés par les terres, désodorisation à la vapeur et retrait de fractions cristallisables au froid.",
+      "access": "full-text",
+      "documentKind": "Fiche technique universitaire FAPC-160",
+      "limitation": "Seules les opérations décrites pour huiles alimentaires sont utilisées ; aucun protocole de biodiesel, dosage, température, durée ni procédé psychoactif. Le chanvre est relié à cette filière par la fiche FAPC-235 déjà enregistrée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Degumming ; Bleaching ; Deodorization ; Winterization",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-zahari-extrusion-2020",
+      "title": "Development of High-Moisture Meat Analogues with Hemp and Soy Protein Using Extrusion Cooking",
+      "organization": "Lund University ; Linnaeus University",
+      "url": "https://www.mdpi.com/2304-8158/9/6/772",
+      "verifiedAt": "2026-11-16",
+      "author": "Izalin Zahari ; Ferawati Ferawati ; Amanda Helstad ; Cecilia Ahlström ; Karolina Östbring ; Marilyn Rayner ; Jeanette K. Purhagen",
+      "published": "2020-06-11",
+      "passage": "L'extrusion humide donne une structure fibreuse ; springiness décrit le retour de forme et chewiness le travail de mastication.",
+      "access": "full-text",
+      "documentKind": "Étude expérimentale, Foods 9(6), 772",
+      "limitation": "Définitions et objectif de structure seulement ; aucun taux optimal, réglage d'extrudeuse, comparaison chiffrée ou effet nutritionnel n'est généralisé.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "§2.4, filière refroidie ; §2.5 Texture Properties",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-osu-lipid-glossary",
+      "title": "Lipid Glossary",
+      "organization": "Oklahoma State University Extension",
+      "url": "https://extension.okstate.edu/fact-sheets/lipid-glossary",
+      "verifiedAt": "2026-11-16",
+      "author": "Nurhan Turgut Dunford",
+      "published": "2015-12",
+      "passage": "Un triacylglycérol associe un glycérol et trois acides gras.",
+      "access": "full-text",
+      "documentKind": "Glossaire technique universitaire FAPC-196",
+      "limitation": "Seule la définition structurale de TAG est utilisée ; pas de revendication clinique ni de préférence entre acides gras.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Entrée Triacylglyceride (TAG)",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-aktas-tempeh-2025",
+      "title": "Chemical and bioactive changes during fermentation and in vitro digestion of hemp pressed cake using Rhizopus oligosporus",
+      "organization": "LWT, revue scientifique publiée par Elsevier",
+      "url": "https://doi.org/10.1016/j.lwt.2024.117264",
+      "verifiedAt": "2026-11-16",
+      "author": "Havva Aktaş ; Marianna Raczyk ; Levent Yurdaer Aydemir ; Katarzyna Polanowska",
+      "published": "2025, LWT 215, 117264 ; DOI enregistré avec millésime 2024",
+      "passage": "Introduction éditeur : R. oligosporus est un champignon filamenteux et le tempeh indonésien provient principalement de soja cuit.",
+      "access": "excerpt",
+      "documentKind": "Étude originale, résumé et extraits d'introduction de l'éditeur",
+      "limitation": "Texte du résumé et paragraphes d'introduction réellement lus via les extraits indexés de l'éditeur. L'ouverture directe DOI puis ScienceDirect a échoué (500/403) ; aucune lecture intégrale revendiquée. Aucun résultat in vitro ou effet de santé utilisé.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Extrait éditeur de l'introduction, paragraphe In this study, we employed solid-state fermentation",
+        "result": "Passages ciblés réellement consultés ; appuis détaillés séparément dans les questions. Aucun résultat clinique ni protocole psychoactif repris."
+      }
+    },
+    {
+      "id": "q2-d05-codex-tempe",
+      "title": "Regional Standard for Tempe (Asia), CXS 313R-2013",
+      "organization": "FAO/WHO Codex Alimentarius Commission",
+      "url": "https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pt/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B313R-2013%252FCXS_313Re.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Codex Alimentarius Commission",
+      "published": "Adoptée 2013 ; amendée 2015, 2017 et 2026 ; version PDF 2026",
+      "passage": "§2 : tempe issu de soja décortiqué et bouilli ; §3.1 : moisissures Rhizopus, dont R. oligosporus.",
+      "access": "full-text",
+      "documentKind": "Norme alimentaire institutionnelle, définition de produit",
+      "limitation": "Uniquement description du produit et nature du ferment ; aucune règle d'étiquetage, valeur limite, plan d'échantillonnage ni autorisation d'ingrédient n'est testée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF p. 3, §2 Description et §3.1 Composition",
+        "result": "Définition du produit à base de soja et désignation de Rhizopus comme moisissure confirmées dans le PDF accessible."
+      }
+    },
+    {
+      "id": "q2-d05-asb-caramelization",
+      "title": "Caramelization",
+      "organization": "American Society of Baking",
+      "url": "https://asbe.org/article/caramelization/",
+      "verifiedAt": "2026-11-16",
+      "author": "American Society of Baking",
+      "published": "Sans date de publication affichée",
+      "passage": "La caramélisation est une transformation de sucres chauffés qui forme couleurs brunes et arômes.",
+      "access": "full-text",
+      "documentKind": "Notice technique professionnelle BAKERpedia/ASB",
+      "limitation": "Bannière d'adhésion présente, mais corps de la notice accessible lignes 376–417. Principe culinaire uniquement, sans température, durée, dosage ou classement nutritionnel.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What is caramelization?, premier paragraphe ; Application",
+        "result": "Passage ciblé réellement ouvert et lu pour la correction de D05 ; preuve détaillée dans l'objet question."
+      }
+    },
+    {
+      "id": "q2-d05-ifst-chemical-raising",
+      "title": "Raising agents: chemical",
+      "organization": "Institute of Food Science and Technology",
+      "url": "https://www.ifst.org/lovefoodlovescience/resources/raising-agents-chemical",
+      "verifiedAt": "2026-11-16",
+      "author": "Institute of Food Science and Technology",
+      "published": "Sans date de publication affichée",
+      "passage": "Une poudre à lever associe un bicarbonate et un acide, qui réagissent dans l'eau en libérant du dioxyde de carbone.",
+      "access": "official-page",
+      "documentKind": "Ressource pédagogique d'une institution professionnelle de science alimentaire",
+      "limitation": "Principe de la levée chimique uniquement ; aucune expérience chiffrée ni formule de préparation reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "What are chemical raising agents? et How do they work?, lignes 24–30",
+        "result": "Passage ciblé réellement ouvert et lu pour la correction de D05 ; preuve détaillée dans l'objet question."
+      }
+    },
+    {
+      "id": "q2-d05-medlineplus-vitamins",
+      "title": "Definitions of Health Terms: Vitamins",
+      "organization": "National Library of Medicine, NIH MedlinePlus",
+      "url": "https://medlineplus.gov/healthdefinitions/vitaminsdefinitions.html",
+      "verifiedAt": "2026-11-16",
+      "author": "National Library of Medicine ; définitions attribuées au NIDDK et à l'Office of Dietary Supplements",
+      "published": "Sans date de publication affichée",
+      "passage": "Les vitamines A, D, E et K sont liposolubles ; les vitamines B et C sont hydrosolubles.",
+      "access": "official-page",
+      "documentKind": "Glossaire nutritionnel institutionnel",
+      "limitation": "Classification de solubilité seulement ; aucun conseil de supplémentation ni bénéfice ou dose clinique. Les noms B1/thiamine et B9/folates relèvent de la liste des vitamines B.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Fat-Soluble Vitamins ; Water-Soluble Vitamins ; Vitamins",
+        "result": "Passage ciblé réellement ouvert et lu pour la correction de D05 ; preuve détaillée dans l'objet question."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "hemp-q2-d05-hemp-gnocchi-potato-base",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quel tubercule sert de base aux gnocchis étudiés avec de la farine de chanvre ?",
+      "options": [
+        "La pomme de terre",
+        "La patate douce",
+        "Le manioc",
+        "Le taro"
+      ],
+      "answer": 0,
+      "explanation": "Ces gnocchis associent une base de pomme de terre à des farines. Le chanvre enrichit la formulation sans remplacer le tubercule qui caractérise cette préparation.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-merlino-gnocchi-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "merlino-2022-hemp-gnocchi",
+        "subjectKey": "merlino-2022-hemp-gnocchi",
+        "property": "Reconnaître la base de pomme de terre des gnocchis",
+        "expectedAnswer": "La pomme de terre",
+        "learningObjective": "Reconnaître la base de pomme de terre des gnocchis.",
+        "factKey": "hemp-gnocchi-potato-base",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-merlino-gnocchi-2022",
+            "locator": "Introduction, paragraphe définissant les gnocchis",
+            "support": "Les gnocchis décrits ont principalement une base de pomme de terre, avec farine de blé, sel et parfois œufs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-pesto-parmesan-not-vegan",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Un pesto aux graines de chanvre contient du parmesan. Quel ingrédient empêche de le considérer comme végétalien ?",
+      "options": [
+        "Le jus de citron",
+        "Le parmesan",
+        "Le basilic",
+        "L'huile d'olive"
+      ],
+      "answer": 1,
+      "explanation": "Le parmesan est un fromage, donc un ingrédient d'origine animale. La présence de graines de chanvre ne rend pas, à elle seule, une recette végétalienne.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-illinois-kitchen-2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "illinois-hemp-pesto",
+        "subjectKey": "illinois-hemp-pesto",
+        "property": "Lire une recette végétale sans oublier un ingrédient laitier",
+        "expectedAnswer": "Le parmesan",
+        "learningObjective": "Lire une recette végétale sans oublier un ingrédient laitier.",
+        "factKey": "hemp-pesto-parmesan-not-vegan",
+        "form": "situation",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-illinois-kitchen-2014",
+            "locator": "Recette Hemp Pesto : ingrédients et dernière étape",
+            "support": "La recette associe graines de chanvre, herbes, huile, citron et parmesan, ajouté à la fin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-pesto-herbs-seeds-oil-sauce",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "On mixe des herbes fraîches, de l'ail, des graines de chanvre et de l'huile. À quelle sauce cette préparation correspond-elle ?",
+      "options": [
+        "Une béchamel",
+        "Un coulis de tomate",
+        "Un pesto",
+        "Une mayonnaise"
+      ],
+      "answer": 2,
+      "explanation": "Ces ingrédients forment une variante de pesto. Les graines de chanvre prennent place dans une sauce mêlant herbes, ail et huile, à utiliser notamment avec des pâtes.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-illinois-kitchen-2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "illinois-hemp-pesto",
+        "subjectKey": "illinois-hemp-pesto",
+        "property": "Reconnaître une variante de pesto dans une combinaison d'ingrédients",
+        "expectedAnswer": "Un pesto",
+        "learningObjective": "Reconnaître une sauce d'herbes, de graines et d'huile comme variante de pesto.",
+        "factKey": "hemp-pesto-herbs-seeds-oil-sauce",
+        "form": "situation",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-illinois-kitchen-2014",
+            "locator": "Recette Hemp Pesto, ingrédients et mélange au robot",
+            "support": "La recette mixe herbes, ail, graines et huile pour un pesto."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Pour un enrobage caramélisé de graines de chanvre, quel ingrédient subit la caramélisation sous l'effet de la chaleur ?",
+      "options": [
+        "L'amidon",
+        "La gélatine",
+        "Le bicarbonate de sodium",
+        "Le saccharose"
+      ],
+      "answer": 3,
+      "explanation": "La caramélisation est un brunissement des sucres sous l'effet de la chaleur. Un enrobage de sucre peut ainsi apporter aux graines une couleur brune et des arômes caractéristiques.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-asb-caramelization",
+        "q2-d04-oklahoma-hemp-oil-2020"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-caramel-coated-snacks",
+        "subjectKey": "hempseed-caramel-coated-snacks",
+        "property": "Identifier le sucre comme substrat de la caramélisation",
+        "expectedAnswer": "Le saccharose",
+        "learningObjective": "Reconnaître que l'enrobage sucré caramélise par transformation des sucres à la chaleur.",
+        "factKey": "caramel-coated-seeds-sugar-browning",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-asb-caramelization",
+            "locator": "What is caramelization?, premier paragraphe",
+            "support": "La caramélisation transforme les sucres chauffés et forme des couleurs brunes et des arômes."
+          },
+          {
+            "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+            "locator": "Seed and Oil Utilization, paragraphe sur roasted, salted and caramel coated hemp seeds",
+            "support": "La fiche cite les graines de chanvre enrobées de caramel parmi les aliments de grignotage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-rancid-hemp-seeds-discard",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Un paquet de graines de chanvre dégage une odeur rance. Quel geste conseille la fiche culinaire de l'ACF ?",
+      "options": [
+        "Écarter les graines et les jeter",
+        "Les parfumer pour masquer l'odeur",
+        "Les mélanger avec un paquet neuf",
+        "Les rincer pour retrouver leur fraîcheur"
+      ],
+      "answer": 0,
+      "explanation": "Une odeur rance signale une altération : la fiche recommande de jeter les graines. Un assaisonnement ou un mélange ne leur rend pas leur fraîcheur.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "hemp-food-seed",
+        "subjectKey": "hemp-food-seed",
+        "property": "Reconnaître une conduite adaptée face à des graines rances",
+        "expectedAnswer": "Écarter les graines et les jeter",
+        "learningObjective": "Reconnaître une conduite adaptée face à des graines rances.",
+        "factKey": "rancid-hemp-seeds-discard",
+        "form": "situation",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "p. 2, Storing hemp seeds, dernière puce",
+            "support": "La fiche recommande de jeter les graines si elles sentent le rance."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-essential-amino-acids-dietary-supply",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Chez l'humain, que signifie « essentiels » pour certains acides aminés présents dans les graines de chanvre ?",
+      "options": [
+        "Le foie les dégrade moins facilement que les autres",
+        "Le corps ne les synthétise pas en quantité suffisante",
+        "L'intestin les absorbe plus rapidement que les autres",
+        "Les muscles les incorporent en priorité aux protéines"
+      ],
+      "answer": 1,
+      "explanation": "Chez l'humain, les acides aminés essentiels doivent être apportés par l'alimentation car leur synthèse par le corps ne suffit pas. Le terme décrit un besoin d'apport, plutôt qu'une vitesse d'absorption.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-essential-amino-acids",
+        "subjectKey": "hempseed-essential-amino-acids",
+        "property": "Comprendre le sens nutritionnel du caractère essentiel chez l'humain",
+        "expectedAnswer": "Le corps ne les synthétise pas en quantité suffisante",
+        "learningObjective": "Relier le besoin alimentaire d'un acide aminé à l'insuffisance de sa synthèse par le corps humain.",
+        "factKey": "essential-amino-acids-dietary-supply",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "p. 1, paragraphe sur les protéines",
+            "support": "Chez l'humain, les neuf acides aminés essentiels doivent être obtenus par l'alimentation, le corps ne pouvant pas les produire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hempseed-magnesium-mineral-nutrient",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Le magnésium apporté par les graines de chanvre appartient à quelle catégorie de nutriments ?",
+      "options": [
+        "Les acides aminés",
+        "Les acides gras",
+        "Les minéraux",
+        "Les vitamines"
+      ],
+      "answer": 2,
+      "explanation": "Le magnésium est un élément minéral. Il se distingue des vitamines et des molécules qui composent les protéines ou les lipides.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-illinois-kitchen-2014"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-mineral-nutrients",
+        "subjectKey": "hempseed-mineral-nutrients",
+        "property": "Classer le magnésium parmi les nutriments minéraux",
+        "expectedAnswer": "Les minéraux",
+        "learningObjective": "Classer le magnésium parmi les nutriments minéraux.",
+        "factKey": "hempseed-magnesium-mineral-nutrient",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-illinois-kitchen-2014",
+            "locator": "Paragraphe nutritionnel, liste vitamine E et minéraux",
+            "support": "La fiche classe le magnésium avec le fer et le manganèse parmi les minéraux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans une poudre à lever chimique pour un gâteau au chanvre, quels ingrédients réagissent ensemble pour libérer du gaz ?",
+      "options": [
+        "Des levures et un sucre fermentescible",
+        "Une amylase et de l'amidon",
+        "Une protéine et un sucre réducteur",
+        "Un bicarbonate et un acide alimentaire"
+      ],
+      "answer": 3,
+      "explanation": "En présence d'eau, le bicarbonate et un acide de la poudre à lever réagissent en libérant du dioxyde de carbone. Ce mécanisme de levée ne repose pas sur une fermentation par des levures.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-ifst-chemical-raising"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-formulation-additives",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Identifier le couple réactif d'une poudre à lever chimique",
+        "expectedAnswer": "Un bicarbonate et un acide alimentaire",
+        "learningObjective": "Distinguer la réaction acide–bicarbonate d'une fermentation ou d'autres transformations alimentaires.",
+        "factKey": "baking-powder-acid-bicarbonate-reaction",
+        "form": "identification",
+        "difficultyRationale": "Compréhension des composants actifs d'une poudre à lever et de leur réaction, au-delà du simple effet gonflant : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-ifst-chemical-raising",
+            "locator": "What are chemical raising agents? et How do they work?, lignes 24–30",
+            "support": "La poudre contient bicarbonate et acide ; ils réagissent en présence d'eau et produisent du dioxyde de carbone."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quel repère de cuisson des gnocchis au chanvre Merlino et al. utilisent-ils dans l'eau bouillante ?",
+      "options": [
+        "Leur remontée à la surface",
+        "L'absence de cœur ferme à la coupe",
+        "La perte de l'aspect farineux en surface",
+        "Un gonflement stable de leur volume"
+      ],
+      "answer": 0,
+      "explanation": "Pour cette préparation, les auteurs retiennent la remontée en surface puis égouttent les gnocchis. Le repère testé est cette observation, sans imposer une durée de cuisson universelle.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-merlino-gnocchi-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "merlino-2022-hemp-gnocchi",
+        "subjectKey": "merlino-2022-hemp-gnocchi",
+        "property": "Reconnaître le repère visuel de cuisson des gnocchis dans l'eau",
+        "expectedAnswer": "Leur remontée à la surface",
+        "learningObjective": "Reconnaître la remontée des gnocchis comme repère de cuisson dans cette préparation.",
+        "factKey": "hemp-gnocchi-rise-to-surface",
+        "form": "identification",
+        "difficultyRationale": "Repère pratique courant de cuisson de gnocchis, sans durée chiffrée à mémoriser : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-merlino-gnocchi-2022",
+            "locator": "§2.6 Pasta Cooking Conditions",
+            "support": "Les gnocchis sont cuits dans l'eau bouillante jusqu'à leur remontée en surface, puis égouttés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-cold-pressed-hemp-oil-mechanical-no-added-heat",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Que signifie le principe du pressage à froid pour obtenir une huile de graines de chanvre ?",
+      "options": [
+        "Faire bouillir les graines puis décanter",
+        "Extraire mécaniquement sans apport de chaleur",
+        "Extraire à la vapeur puis refroidir l'huile",
+        "Extraire par solvant puis congeler l'huile"
+      ],
+      "answer": 1,
+      "explanation": "Le pressage à froid repose sur une extraction mécanique sans application de chaleur. Le mot « froid » ne désigne pas une congélation de l'huile.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-dnext01-loturco-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "huile-chenevis",
+        "subjectKey": "huile-chenevis",
+        "property": "Comprendre le principe d'extraction mécanique à froid",
+        "expectedAnswer": "Extraire mécaniquement sans apport de chaleur",
+        "learningObjective": "Comprendre le principe d'extraction mécanique à froid.",
+        "factKey": "cold-pressed-hemp-oil-mechanical-no-added-heat",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dnext01-loturco-2023",
+            "locator": "Introduction, paragraphe citant le Codex sur les huiles pressées à froid",
+            "support": "Le passage définit une obtention mécanique, par pression notamment, sans application de chaleur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-pasteurization-targets-pathogenic-microorganisms",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Une boisson alimentaire aux graines est pasteurisée avant conditionnement. Quel effet du chauffage recherche-t-on principalement ?",
+      "options": [
+        "Séparer les fibres insolubles",
+        "Augmenter la teneur en protéines",
+        "Réduire les micro-organismes pathogènes",
+        "Retirer les matières grasses"
+      ],
+      "answer": 2,
+      "explanation": "La pasteurisation utilise la chaleur contre les micro-organismes pathogènes. Elle ne correspond ni à une filtration ni à une concentration nutritionnelle.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-fda-pasteurization"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "food-pasteurization",
+        "subjectKey": "food-pasteurization",
+        "property": "Distinguer pasteurisation et séparation des constituants",
+        "expectedAnswer": "Réduire les micro-organismes pathogènes",
+        "learningObjective": "Distinguer pasteurisation et séparation des constituants.",
+        "factKey": "pasteurization-targets-pathogenic-microorganisms",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-fda-pasteurization",
+            "locator": "Chapitre 7, 5-Log Treatment Methods, Pasteurization",
+            "support": "La pasteurisation est décrite comme un chauffage visant les micro-organismes pathogènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-ice-cream-water-forms-ice-crystals",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans une crème glacée enrichie en farine de chanvre, quel constituant forme les cristaux de glace ?",
+      "options": [
+        "Les protéines",
+        "Les matières grasses",
+        "Les fibres",
+        "L'eau"
+      ],
+      "answer": 3,
+      "explanation": "Les cristaux de glace sont constitués d'eau gelée. La crème glacée contient aussi des bulles d'air et des gouttelettes de matière grasse : ce sont d'autres phases.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-colic-icecream-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-ice-cream-colic-2024",
+        "subjectKey": "hemp-ice-cream-colic-2024",
+        "property": "Distinguer la glace d'eau des autres phases d'une crème glacée",
+        "expectedAnswer": "L'eau",
+        "learningObjective": "Distinguer la glace d'eau des autres phases d'une crème glacée.",
+        "factKey": "ice-cream-water-forms-ice-crystals",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-colic-icecream-2024",
+            "locator": "Introduction, description de la structure de la crème glacée",
+            "support": "La structure comprend des cristaux de glace, des bulles d'air et des gouttelettes de graisse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-viscosity-resistance-to-flow",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Un mélange pour glace au chanvre oppose une forte résistance à l'écoulement. Quelle propriété décrit-on ?",
+      "options": [
+        "La viscosité",
+        "La solubilité",
+        "Le foisonnement",
+        "L'acidité"
+      ],
+      "answer": 0,
+      "explanation": "La viscosité décrit la résistance à l'écoulement. Elle ne mesure ni la quantité d'air incorporé ni l'acidité du mélange.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-colic-icecream-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-ice-cream-colic-2024",
+        "subjectKey": "hemp-ice-cream-colic-2024",
+        "property": "Interpréter la viscosité comme résistance à l'écoulement",
+        "expectedAnswer": "La viscosité",
+        "learningObjective": "Interpréter la viscosité comme résistance à l'écoulement.",
+        "factKey": "viscosity-resistance-to-flow",
+        "form": "situation",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-colic-icecream-2024",
+            "locator": "§3.1.3 Rheological Properties, première phrase",
+            "support": "La viscosité est définie comme la résistance d'un liquide à l'écoulement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-ice-cream-whipping-incorporates-air",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quand on foisonne un mélange pour crème glacée au chanvre, qu'y incorpore-t-on ?",
+      "options": [
+        "Du sucre sous forme de cristaux",
+        "De l'air sous forme de bulles",
+        "De l'eau sous forme de cristaux",
+        "De l'huile sous forme de gouttes"
+      ],
+      "answer": 1,
+      "explanation": "Le foisonnement correspond à l'incorporation d'air. Il se distingue de la formation des cristaux de glace pendant la congélation.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-colic-icecream-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-ice-cream-colic-2024",
+        "subjectKey": "hemp-ice-cream-colic-2024",
+        "property": "Distinguer le foisonnement de la congélation et de l'émulsification",
+        "expectedAnswer": "De l'air sous forme de bulles",
+        "learningObjective": "Distinguer le foisonnement de la congélation et de l'émulsification.",
+        "factKey": "ice-cream-whipping-incorporates-air",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-colic-icecream-2024",
+            "locator": "§3.2.1 Overrun",
+            "support": "Le foisonnement dépend de la quantité d'air incorporée au cours de la fabrication de la glace."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-xanthan-thickener-food-texture",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans une sauce au chanvre, lequel de ces ingrédients est principalement choisi pour sa fonction d'épaississant ?",
+      "options": [
+        "Le saccharose",
+        "Le chlorure de sodium",
+        "La gomme xanthane",
+        "Le bicarbonate de sodium"
+      ],
+      "answer": 2,
+      "explanation": "La gomme xanthane est classée parmi les épaississants et texturants. D'autres ingrédients peuvent aussi modifier la texture ; la question porte ici sur la fonction technologique principale.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-ingredient-types"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-formulation-additives",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Identifier un ingrédient dont la fonction technologique principale est d'épaissir",
+        "expectedAnswer": "La gomme xanthane",
+        "learningObjective": "Reconnaître la xanthane comme épaississant, sans confondre cette fonction principale avec tout effet possible sur la viscosité.",
+        "factKey": "xanthan-thickener-food-texture",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-ingredient-types",
+            "locator": "Tableau, Stabilizers and Thickeners, Binders, Texturizers",
+            "support": "La gomme xanthane figure parmi les ingrédients qui produisent une texture uniforme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-baking-soda-leavening-rise",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans une pâte à gâteau contenant du chanvre, à quoi sert principalement le bicarbonate de sodium ?",
+      "options": [
+        "À retenir l'humidité après cuisson",
+        "À apporter une couleur verte",
+        "À empêcher la poudre de s'agglomérer",
+        "À favoriser le gonflement de la pâte"
+      ],
+      "answer": 3,
+      "explanation": "Un agent levant aide la pâte à gonfler. Il ne remplit pas la même fonction qu'un humectant, un colorant ou un antiagglomérant.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-fda-ingredient-types"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-formulation-additives",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Identifier la fonction d'un agent levant en pâtisserie",
+        "expectedAnswer": "À favoriser le gonflement de la pâte",
+        "learningObjective": "Identifier la fonction d'un agent levant en pâtisserie.",
+        "factKey": "baking-soda-leavening-rise",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-fda-ingredient-types",
+            "locator": "Tableau, Leavening Agents",
+            "support": "Les agents levants favorisent la levée des produits cuits ; le bicarbonate en est un exemple."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-potassium-sorbate-antimicrobial-function",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans une formulation alimentaire au chanvre, quelle fonction peut remplir le sorbate de potassium ?",
+      "options": [
+        "Limiter le développement de moisissures et de levures",
+        "Maintenir l'huile dispersée dans une phase aqueuse",
+        "Produire du gaz qui fait gonfler une pâte",
+        "Apporter une saveur sucrée sans utiliser de saccharose"
+      ],
+      "answer": 0,
+      "explanation": "Le sorbate de potassium sert notamment à limiter le développement de moisissures et de levures. Sa fonction diffère de celles d'un émulsifiant, d'un agent levant ou d'un édulcorant.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-asb-potassium-sorbate"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-formulation-additives",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Distinguer le rôle du sorbate de celui d'autres ingrédients fonctionnels",
+        "expectedAnswer": "Limiter le développement de moisissures et de levures",
+        "learningObjective": "Identifier la fonction antimicrobienne du sorbate de potassium.",
+        "factKey": "potassium-sorbate-antimicrobial-function",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d'un additif courant par son nom chimique : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-asb-potassium-sorbate",
+            "locator": "What is potassium sorbate?, premier paragraphe",
+            "support": "Le sorbate de potassium est un conservateur utilisé contre moisissures et levures."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-bread-yeast-fermentation-carbon-dioxide",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans un pain blé-chanvre levé à la levure boulangère, quel gaz la fermentation des sucres produit-elle ?",
+      "options": [
+        "De l'hydrogène",
+        "Du dioxyde de carbone",
+        "Du dioxygène",
+        "Du diazote"
+      ],
+      "answer": 1,
+      "explanation": "La levure transforme des sucres et produit notamment du dioxyde de carbone. Ce dégagement gazeux participe à la levée de la pâte.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-asb-fermentation"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-bread-fermentation",
+        "subjectKey": "hemp-wheat-bread-fermentation",
+        "property": "Identifier le gaz produit par la fermentation boulangère",
+        "expectedAnswer": "Du dioxyde de carbone",
+        "learningObjective": "Relier la fermentation des sucres par la levure au dégagement de dioxyde de carbone.",
+        "factKey": "bread-yeast-fermentation-carbon-dioxide",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-asb-fermentation",
+            "locator": "What is fermentation?, application en boulangerie",
+            "support": "En boulangerie, la fermentation transforme les sucres et produit notamment du dioxyde de carbone."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-tofu-like-gel-protein-network",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans les gels de chanvre de type tofu étudiés par Kim et al. (2026), quelle famille de constituants forme le réseau coagulé ?",
+      "options": [
+        "Les cires",
+        "Les pectines",
+        "Les protéines",
+        "Les amidons"
+      ],
+      "answer": 2,
+      "explanation": "L'étude produit un gel à partir de protéines de graines dégraissées. Des interactions hydrophobes et des liaisons disulfure participent au réseau : il ne s'agit pas d'un gel d'amidon.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-kim-tofu-2026"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kim-2026-hemp-tofu",
+        "subjectKey": "kim-2026-hemp-tofu",
+        "property": "Identifier la nature protéique d'un gel de chanvre de type tofu",
+        "expectedAnswer": "Les protéines",
+        "learningObjective": "Identifier la nature protéique d'un gel de chanvre de type tofu.",
+        "factKey": "hemp-tofu-like-gel-protein-network",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-kim-tofu-2026",
+            "locator": "Résumé, formation des gels et réseau protéique",
+            "support": "Le gel est obtenu par coagulation thermique ; son réseau associe interactions hydrophobes et liaisons disulfure."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-protease-cuts-proteins-peptides",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Une préparation de protéines de chanvre est traitée par une protéase. Quelle transformation recherche-t-on ?",
+      "options": [
+        "Couper l'amidon en sucres plus petits",
+        "Couper les lipides en acides gras",
+        "Couper les pectines en fragments plus courts",
+        "Couper les protéines en peptides plus petits"
+      ],
+      "answer": 3,
+      "explanation": "Une protéase hydrolyse les protéines. Dans l'étude de Park et al., ce traitement donne des peptides de plus faible masse moléculaire.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-park-protease-2024"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "park-2024-hemp-protein-hydrolysate",
+        "subjectKey": "park-2024-hemp-protein-hydrolysate",
+        "property": "Distinguer la cible d'une protéase de celles d'autres enzymes alimentaires",
+        "expectedAnswer": "Couper les protéines en peptides plus petits",
+        "learningObjective": "Distinguer la cible d'une protéase de celles d'autres enzymes alimentaires.",
+        "factKey": "protease-cuts-proteins-peptides",
+        "form": "situation",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-park-protease-2024",
+            "locator": "§2.3 et §3.1, préparation et suivi de l'hydrolysat",
+            "support": "La protéase alcaline dégrade les protéines de chanvre en constituants de plus faible masse moléculaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-protein-denaturation-shape-not-primary-sequence",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Chauffer une boisson au chanvre peut dénaturer ses protéines. Quelle transformation décrit la dénaturation ?",
+      "options": [
+        "Modifier le repliement en conservant la chaîne protéique",
+        "Fragmenter les protéines en peptides plus courts",
+        "Relier des acides aminés en nouvelles chaînes",
+        "Remplacer des acides aminés dans la chaîne"
+      ],
+      "answer": 0,
+      "explanation": "La dénaturation modifie la forme tridimensionnelle d'une protéine en conservant sa séquence primaire. Repliement dans l'espace et ordre des acides aminés sont deux aspects différents.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-openstax-proteins"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-protein-denaturation",
+        "subjectKey": "hemp-protein-denaturation",
+        "property": "Distinguer dénaturation et coupure de la chaîne protéique",
+        "expectedAnswer": "Modifier le repliement en conservant la chaîne protéique",
+        "learningObjective": "Distinguer dénaturation et coupure de la chaîne protéique.",
+        "factKey": "protein-denaturation-shape-not-primary-sequence",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-openstax-proteins",
+            "locator": "§3.4, Denaturation and Protein Folding",
+            "support": "La dénaturation change la forme sans perte de la séquence primaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-amylase-breaks-down-starch",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour dégrader une partie de l'amidon d'un pain blé-chanvre en dextrines et en sucres, quelle enzyme peut-on utiliser ?",
+      "options": [
+        "Une pectinase",
+        "Une amylase",
+        "Une protéase",
+        "Une lipase"
+      ],
+      "answer": 1,
+      "explanation": "Une amylase agit sur l'amidon. Certaines amylases sont utilisées en boulangerie pour modifier sa réorganisation et ralentir le raffermissement de la mie.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-asb-staling"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-bread-enzymes",
+        "subjectKey": "hemp-wheat-bread-enzymes",
+        "property": "Choisir une enzyme qui agit sur l'amidon d'une pâte",
+        "expectedAnswer": "Une amylase",
+        "learningObjective": "Relier l'amylase à la dégradation de l'amidon, sans la confondre avec une enzyme des protéines, lipides ou pectines.",
+        "factKey": "amylase-breaks-down-starch",
+        "form": "situation",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-asb-staling",
+            "locator": "Interventions against staling, puce Amylases",
+            "support": "Les amylases peuvent dégrader l'amidon en dextrines et sucres."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-oleogel-liquid-oil-immobilized-network",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel modèle décrit un oléogel alimentaire fabriqué avec de l'huile de graines de chanvre ?",
+      "options": [
+        "Un réseau d'amidon gonflé dans une phase aqueuse",
+        "Un réseau de protéines coagulées dans une phase aqueuse",
+        "De l'huile liquide immobilisée dans un réseau structurant",
+        "Des gouttelettes d'huile dispersées dans une phase aqueuse"
+      ],
+      "answer": 2,
+      "explanation": "Un oléogel conserve une phase huileuse liquide, immobilisée dans un réseau. Des cires végétales peuvent jouer ce rôle structurant.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-hamidioglu-oleogels-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-oil-oleogels-hamidioglu-2022",
+        "subjectKey": "hemp-oil-oleogels-hamidioglu-2022",
+        "property": "Comprendre comment un réseau structure une huile liquide",
+        "expectedAnswer": "De l'huile liquide immobilisée dans un réseau structurant",
+        "learningObjective": "Comprendre comment un réseau structure une huile liquide.",
+        "factKey": "oleogel-liquid-oil-immobilized-network",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-hamidioglu-oleogels-2022",
+            "locator": "Introduction, définition de l'oléogélification",
+            "support": "Les agents structurants forment un réseau solide stable qui immobilise l'huile liquide."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-vitamin-e-fat-soluble",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Parmi ces vitamines, laquelle se dissout dans les graisses plutôt que dans l'eau ?",
+      "options": [
+        "La vitamine C",
+        "La vitamine B1",
+        "La vitamine B9",
+        "La vitamine E"
+      ],
+      "answer": 3,
+      "explanation": "La vitamine E est liposoluble et les graines de chanvre en contiennent. Les vitamines B et C appartiennent au groupe hydrosoluble.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-nih-vitamin-e",
+        "q2-d05-illinois-kitchen-2014",
+        "q2-d05-medlineplus-vitamins"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-vitamin-e",
+        "subjectKey": "hempseed-vitamin-e",
+        "property": "Identifier la vitamine E parmi des vitamines hydrosolubles",
+        "expectedAnswer": "La vitamine E",
+        "learningObjective": "Classer la vitamine E comme liposoluble, en la distinguant des vitamines B et C.",
+        "factKey": "vitamin-e-fat-soluble",
+        "form": "identification",
+        "difficultyRationale": "Il faut connaître la classe de solubilité de la vitamine E, sans que le mot liposoluble soit donné avec son nom : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-nih-vitamin-e",
+            "locator": "What is vitamin E and what does it do?",
+            "support": "La vitamine E est présentée comme un nutriment liposoluble."
+          },
+          {
+            "sourceId": "q2-d05-illinois-kitchen-2014",
+            "locator": "Paragraphe nutritionnel, vitamine E des graines",
+            "support": "La fiche cite la vitamine E parmi les constituants des graines de chanvre."
+          },
+          {
+            "sourceId": "q2-d05-medlineplus-vitamins",
+            "locator": "Fat-Soluble Vitamins et Water-Soluble Vitamins ; Vitamins pour les noms des vitamines B",
+            "support": "A, D, E et K sont liposolubles ; toutes les vitamines B et la vitamine C sont hydrosolubles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-starch-gelatinization-water-and-heat",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Lors de la cuisson d'une pâte blé-chanvre, quels facteurs permettent aux grains d'amidon de gonfler et de gélatiniser ?",
+      "options": [
+        "La présence d'eau et de chaleur",
+        "La présence d'huile sans eau",
+        "Le refroidissement à sec",
+        "La seule incorporation d'air"
+      ],
+      "answer": 0,
+      "explanation": "La gélatinisation exige de l'eau et de la chaleur : les granules d'amidon absorbent l'eau et perdent leur organisation initiale. Ce phénomène participe à la texture des aliments cuits.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-asb-gelatinization"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-wheat-starch-gelatinization",
+        "subjectKey": "hemp-wheat-starch-gelatinization",
+        "property": "Relier la gélatinisation de l'amidon à l'eau et à la chaleur",
+        "expectedAnswer": "La présence d'eau et de chaleur",
+        "learningObjective": "Relier la gélatinisation de l'amidon à l'eau et à la chaleur.",
+        "factKey": "starch-gelatinization-water-and-heat",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-asb-gelatinization",
+            "locator": "What is starch gelatinization? et Starch in hot water",
+            "support": "La gélatinisation requiert eau et chaleur ; les granules gonflent en absorbant l'eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-freeze-drying-ice-directly-to-vapour",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Lors de la lyophilisation d'un ingrédient alimentaire, quel trajet suit l'eau pendant le séchage primaire ?",
+      "options": [
+        "De l'eau liquide directement vers la glace",
+        "De la glace directement vers la vapeur",
+        "De la glace vers l'eau liquide puis la vapeur",
+        "De la vapeur vers l'eau liquide puis la glace"
+      ],
+      "answer": 1,
+      "explanation": "Le séchage primaire repose sur la sublimation : la glace passe directement à l'état de vapeur, sans fondre en eau liquide. Ce trajet se distingue de l'évaporation d'eau liquide.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-umn-freeze-drying"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "food-freeze-drying",
+        "subjectKey": "food-freeze-drying",
+        "property": "Distinguer sublimation et évaporation pendant la lyophilisation",
+        "expectedAnswer": "De la glace directement vers la vapeur",
+        "learningObjective": "Distinguer sublimation et évaporation pendant la lyophilisation.",
+        "factKey": "freeze-drying-ice-directly-to-vapour",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-umn-freeze-drying",
+            "locator": "Introduction et Three steps, Primary drying",
+            "support": "La sublimation fait passer l'eau de l'état solide à l'état gazeux sans phase liquide."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-deodorization-steam-stripping",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel mécanisme retire les composés volatils pendant la désodorisation d'une huile alimentaire ?",
+      "options": [
+        "Les faire cristalliser par refroidissement",
+        "Les dissoudre dans une phase aqueuse de lavage",
+        "Les entraîner avec un flux de vapeur",
+        "Les fixer à la surface d'une terre adsorbante"
+      ],
+      "answer": 2,
+      "explanation": "La désodorisation est une distillation avec entraînement à la vapeur. Elle cible des composés volatils, alors que d'autres étapes du raffinage retirent des fractions moins volatiles.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d05-osu-oil-refining"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-oil-refining",
+        "subjectKey": "hempseed-oil-refining",
+        "property": "Identifier l'entraînement à la vapeur comme mécanisme de désodorisation",
+        "expectedAnswer": "Les entraîner avec un flux de vapeur",
+        "learningObjective": "Distinguer l'entraînement des volatils à la vapeur des séparations par adsorption, cristallisation ou lavage.",
+        "factKey": "edible-oil-deodorization-steam-stripping",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-osu-oil-refining",
+            "locator": "Deodorization",
+            "support": "La désodorisation entraîne à la vapeur les composés volatils et odorants."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-degumming-phospholipids",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Lors du raffinage d'une huile de graines, quelle famille de composés le dégommage vise-t-il principalement ?",
+      "options": [
+        "Les triglycérides",
+        "Les phytostérols",
+        "Les tocophérols",
+        "Les phospholipides"
+      ],
+      "answer": 3,
+      "explanation": "Le dégommage retire surtout les phospholipides, appelés « gommes » dans ce contexte. Leur comportement dans l'huile et à l'interface avec l'eau motive cette séparation.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d05-osu-oil-refining"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-oil-refining",
+        "subjectKey": "hempseed-oil-refining",
+        "property": "Identifier la fraction visée par le dégommage",
+        "expectedAnswer": "Les phospholipides",
+        "learningObjective": "Identifier la fraction visée par le dégommage.",
+        "factKey": "edible-oil-degumming-phospholipids",
+        "form": "identification",
+        "difficultyRationale": "Distinction technique entre opérations ou constituants alimentaires : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-osu-oil-refining",
+            "locator": "Degumming",
+            "support": "Les phospholipides sont les gommes éliminées au cours du dégommage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-bleaching-adsorbent-clays",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans la décoloration d'une huile alimentaire, quel rôle jouent les terres décolorantes ?",
+      "options": [
+        "Fixer des composés à leur surface avant d'être séparées",
+        "Entraîner les composés volatils dans un courant de vapeur",
+        "Transférer les composés solubles dans une phase aqueuse",
+        "Cristalliser les fractions grasses à plus haut point de fusion"
+      ],
+      "answer": 0,
+      "explanation": "Des terres ou d'autres adsorbants fixent certains composés à leur surface, puis sont séparés de l'huile. Cette décoloration industrielle ne consiste pas à ajouter un colorant blanc.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d05-osu-oil-refining"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-oil-refining",
+        "subjectKey": "hempseed-oil-refining",
+        "property": "Comprendre le rôle d'un adsorbant dans la décoloration des huiles",
+        "expectedAnswer": "Fixer des composés à leur surface avant d'être séparées",
+        "learningObjective": "Comprendre le rôle d'un adsorbant dans la décoloration des huiles.",
+        "factKey": "edible-oil-bleaching-adsorbent-clays",
+        "form": "identification",
+        "difficultyRationale": "Distinction technique entre opérations ou constituants alimentaires : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-osu-oil-refining",
+            "locator": "Bleaching",
+            "support": "Les terres et autres adsorbants retirent pigments et impuretés ; l'huile est ensuite séparée de l'adsorbant."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-food-texture-springiness-recovery",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Une bouchée d'analogue végétal au chanvre reprend sa forme après une pression. Quelle propriété de texture observe-t-on ?",
+      "options": [
+        "Sa friabilité",
+        "Son élasticité",
+        "Son adhérence",
+        "Sa dureté"
+      ],
+      "answer": 1,
+      "explanation": "L'élasticité décrit la reprise de forme après déformation. Un aliment peut être élastique sans être particulièrement dur ou collant.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-d05-zahari-extrusion-2020"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "zahari-2020-hemp-soy-analogue",
+        "subjectKey": "zahari-2020-hemp-soy-analogue",
+        "property": "Reconnaître l'élasticité dans une observation de texture",
+        "expectedAnswer": "Son élasticité",
+        "learningObjective": "Reconnaître l'élasticité dans une observation de texture.",
+        "factKey": "food-texture-springiness-recovery",
+        "form": "situation",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-zahari-extrusion-2020",
+            "locator": "§2.5 Texture Properties, définition de springiness",
+            "support": "La springiness décrit la capacité du produit à retrouver sa structure après compression."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-food-texture-chewiness-work-to-swallow",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour un analogue végétal au chanvre, que décrit la mâchabilité dans une analyse de texture ?",
+      "options": [
+        "La vitesse à laquelle il reprend sa forme",
+        "La quantité de liquide qu'il relâche au repos",
+        "Le travail nécessaire pour le rendre prêt à avaler",
+        "La force nécessaire pour le décoller du palais"
+      ],
+      "answer": 2,
+      "explanation": "La mâchabilité se rapporte au travail de mastication nécessaire avant d'avaler. Elle se distingue de l'adhérence, de l'élasticité et du rejet de liquide.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-d05-zahari-extrusion-2020"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "zahari-2020-hemp-soy-analogue",
+        "subjectKey": "zahari-2020-hemp-soy-analogue",
+        "property": "Distinguer la mâchabilité des autres propriétés de texture",
+        "expectedAnswer": "Le travail nécessaire pour le rendre prêt à avaler",
+        "learningObjective": "Distinguer la mâchabilité des autres propriétés de texture.",
+        "factKey": "food-texture-chewiness-work-to-swallow",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-zahari-extrusion-2020",
+            "locator": "§2.5 Texture Properties, définition de chewiness",
+            "support": "La chewiness décrit le travail nécessaire pour mâcher jusqu'à une texture adaptée à l'ingestion."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-high-moisture-extrusion-fibrous-food-structure",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quel type de texture cherche-t-on avec l'extrusion humide de protéines de chanvre et de soja pour un substitut de viande ?",
+      "options": [
+        "Une mousse légère à bulles fines",
+        "Un gel lisse sans orientation",
+        "Une pâte granuleuse et friable",
+        "Une texture fibreuse et feuilletée"
+      ],
+      "answer": 3,
+      "explanation": "L'extrusion humide peut organiser les protéines en une structure fibreuse. Dans l'étude de Zahari et al., le passage par une filière refroidie participe à cette mise en forme.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-d05-zahari-extrusion-2020"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "zahari-2020-hemp-soy-analogue",
+        "subjectKey": "zahari-2020-hemp-soy-analogue",
+        "property": "Reconnaître l'objectif de texture d'un analogue de viande extrudé",
+        "expectedAnswer": "Une texture fibreuse et feuilletée",
+        "learningObjective": "Reconnaître l'objectif de texture d'un analogue de viande extrudé.",
+        "factKey": "high-moisture-extrusion-fibrous-food-structure",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-zahari-extrusion-2020",
+            "locator": "§2.4, passage dans la filière refroidie",
+            "support": "Le refroidissement augmente la viscosité et le cisaillement génère une structure en couches et fibreuse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-edible-oil-winterization-removes-cold-crystals",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Une huile alimentaire doit rester limpide au froid. Quelle opération retire les fractions grasses et cires qui cristalliseraient ?",
+      "options": [
+        "La winterisation",
+        "La désodorisation",
+        "La neutralisation",
+        "Le dégommage"
+      ],
+      "answer": 0,
+      "explanation": "La winterisation sépare des cires et des fractions grasses qui cristallisent au froid et peuvent troubler l'huile. Elle conserve une fraction liquide destinée notamment aux huiles de salade.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d05-osu-oil-refining"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-oil-refining",
+        "subjectKey": "hempseed-oil-refining",
+        "property": "Comprendre la séparation de fractions cristallisables au froid",
+        "expectedAnswer": "La winterisation",
+        "learningObjective": "Comprendre la séparation de fractions cristallisables au froid.",
+        "factKey": "edible-oil-winterization-removes-cold-crystals",
+        "form": "situation",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-osu-oil-refining",
+            "locator": "Winterization",
+            "support": "Les cires et acylglycérols à plus haut point de fusion sont cristallisés puis retirés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-triacylglycerol-glycerol-three-fatty-acids",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Les triglycérides majoritaires dans les huiles de graines sont construits avec quels éléments ?",
+      "options": [
+        "Un stérol lié à un seul acide gras",
+        "Un glycérol lié à trois acides gras",
+        "Un glycérol lié à deux acides gras et à un phosphate",
+        "Un acide gras lié à un alcool à longue chaîne"
+      ],
+      "answer": 1,
+      "explanation": "Un triglycéride, ou triacylglycérol, associe un glycérol à trois acides gras. C'est une forme majeure de stockage des lipides.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-d05-osu-lipid-glossary"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "huile-chenevis",
+        "subjectKey": "huile-chenevis",
+        "property": "Reconnaître la structure générale d'un triglycéride",
+        "expectedAnswer": "Un glycérol lié à trois acides gras",
+        "learningObjective": "Reconnaître la structure générale d'un triglycéride.",
+        "factKey": "triacylglycerol-glycerol-three-fatty-acids",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-osu-lipid-glossary",
+            "locator": "Entrée Triacylglyceride (TAG)",
+            "support": "Un TAG est un ester formé à partir d'un glycérol et de trois acides gras."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-hemp-cake-tempeh-filamentous-fungus",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "La fermentation de tourteau de chanvre étudiée par Aktaş utilise Rhizopus oligosporus. De quel type d'organisme s'agit-il ?",
+      "options": [
+        "Une levure bourgeonnante",
+        "Une microalgue unicellulaire",
+        "Un champignon filamenteux",
+        "Une bactérie lactique"
+      ],
+      "answer": 2,
+      "explanation": "Rhizopus oligosporus est un champignon filamenteux employé dans des fermentations de type tempeh. Les fermentations alimentaires ne reposent donc pas toutes sur des bactéries ou des levures.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-aktas-tempeh-2025",
+        "q2-d05-codex-tempe"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "aktas-2025-hemp-cake-tempeh",
+        "subjectKey": "aktas-2025-hemp-cake-tempeh",
+        "property": "Distinguer les groupes de micro-organismes employés en fermentation",
+        "expectedAnswer": "Un champignon filamenteux",
+        "learningObjective": "Distinguer les groupes de micro-organismes employés en fermentation.",
+        "factKey": "hemp-cake-tempeh-filamentous-fungus",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-aktas-tempeh-2025",
+            "locator": "Introduction, paragraphe In this study, we employed solid-state fermentation",
+            "support": "Le passage décrit R. oligosporus comme un champignon filamenteux comestible."
+          },
+          {
+            "sourceId": "q2-d05-codex-tempe",
+            "locator": "PDF p. 3, §3.1 b",
+            "support": "La norme classe R. oligosporus parmi les moisissures du genre Rhizopus employées comme ferment."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-seed-cleaning-before-oil-extraction",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Avant de presser des graines de chanvre alimentaires, quelle opération retire cailloux, morceaux de métal et débris végétaux ?",
+      "options": [
+        "Le décorticage des graines",
+        "Le broyage des amandes",
+        "La désodorisation de l'huile",
+        "Le nettoyage et le tri des graines"
+      ],
+      "answer": 3,
+      "explanation": "Le nettoyage retire les corps étrangers avant la transformation. Il prépare des graines utilisables pour l'extraction sans confondre ces déchets avec les constituants de la graine.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-oklahoma-hemp-oil-2020"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hempseed-food-processing",
+        "subjectKey": "hempseed-food-processing",
+        "property": "Distinguer retrait des corps étrangers et autres préparations des graines",
+        "expectedAnswer": "Le nettoyage et le tri des graines",
+        "learningObjective": "Reconnaître le nettoyage des graines avant leur pressage.",
+        "factKey": "seed-cleaning-before-oil-extraction",
+        "form": "situation",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+            "locator": "Seed Processing, premières phrases",
+            "support": "Les graines sont séparées de corps étrangers tels que pierres, métal et autres parties végétales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-cold-pressed-oil-may-be-filtered",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Une huile de chanvre porte la mention « pressée à froid ». Laquelle de ces étapes peut encore être compatible avec ce procédé ?",
+      "options": [
+        "Une filtration de l'huile",
+        "Une extraction de l'huile par hexane",
+        "Une désodorisation à haute température",
+        "Une extraction par vapeur des graines"
+      ],
+      "answer": 0,
+      "explanation": "Une huile pressée à froid peut être filtrée. Le procédé d'extraction ne garantit donc pas que l'huile soit non filtrée ou trouble.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "q2-dnext01-loturco-2023"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "huile-chenevis",
+        "subjectKey": "huile-chenevis",
+        "property": "Distinguer huile pressée à froid et huile non filtrée",
+        "expectedAnswer": "Une filtration de l'huile",
+        "learningObjective": "Distinguer huile pressée à froid et huile non filtrée.",
+        "factKey": "cold-pressed-oil-may-be-filtered",
+        "form": "situation",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dnext01-loturco-2023",
+            "locator": "Introduction, paragraphe citant le Codex",
+            "support": "Le passage autorise lavage à l'eau, décantation, filtration ou centrifugation après obtention mécanique sans apport de chaleur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-traditional-tempeh-soybean-base",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Le procédé de type tempeh est étudié sur du tourteau de chanvre. Quel ingrédient forme traditionnellement le tempeh indonésien ?",
+      "options": [
+        "Des pois chiches cuits",
+        "Des graines de soja cuites",
+        "Des grains de riz cuits",
+        "Des grains de maïs cuits"
+      ],
+      "answer": 1,
+      "explanation": "Le tempeh traditionnel est principalement obtenu par fermentation de graines de soja cuites. L'étude sur le chanvre transpose ce type de fermentation à un autre ingrédient.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-aktas-tempeh-2025",
+        "q2-d05-codex-tempe"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "aktas-2025-hemp-cake-tempeh",
+        "subjectKey": "aktas-2025-hemp-cake-tempeh",
+        "property": "Reconnaître l'ingrédient traditionnel du tempeh",
+        "expectedAnswer": "Des graines de soja cuites",
+        "learningObjective": "Reconnaître l'ingrédient traditionnel du tempeh.",
+        "factKey": "traditional-tempeh-soybean-base",
+        "form": "identification",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-aktas-tempeh-2025",
+            "locator": "Introduction, paragraphe sur la fermentation traditionnelle en Indonésie",
+            "support": "Le texte présente le tempeh indonésien comme un produit principalement dérivé de graines de soja cuites."
+          },
+          {
+            "sourceId": "q2-d05-codex-tempe",
+            "locator": "PDF p. 3, §2 Description",
+            "support": "La définition du tempe repose sur des graines de soja décortiquées et bouillies."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-water-activity-not-total-moisture",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour un aliment au chanvre, que distingue l'activité de l'eau de la simple teneur totale en eau ?",
+      "options": [
+        "La température à laquelle le mélange commence à geler",
+        "La vitesse d'évaporation du produit à l'air libre",
+        "L'eau disponible plutôt que sa seule quantité totale",
+        "Le rapport entre la masse d'eau et celle des protéines"
+      ],
+      "answer": 2,
+      "explanation": "La teneur en eau mesure une quantité. L'activité de l'eau renseigne sur son état disponible dans l'aliment, notamment pour les interactions et la croissance microbienne.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-umn-freeze-drying"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "food-water-activity",
+        "subjectKey": "food-water-activity",
+        "property": "Distinguer quantité d'eau et disponibilité de l'eau dans un aliment",
+        "expectedAnswer": "L'eau disponible plutôt que sa seule quantité totale",
+        "learningObjective": "Distinguer quantité d'eau et disponibilité de l'eau dans un aliment.",
+        "factKey": "water-activity-not-total-moisture",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d'un mécanisme ou d'un terme de technologie alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-umn-freeze-drying",
+            "locator": "Introduction, paragraphe water activity",
+            "support": "La page définit l'activité de l'eau par la disponibilité des molécules d'eau pour interagir avec les constituants et micro-organismes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d05-fat-higher-energy-per-gram-protein-carbohydrate",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "À masse égale, quel constituant apporte généralement le plus d'énergie dans un calcul nutritionnel d'aliment au chanvre ?",
+      "options": [
+        "Les protéines",
+        "L'amidon",
+        "Le saccharose",
+        "Les lipides"
+      ],
+      "answer": 3,
+      "explanation": "Les facteurs usuels attribuent 9 kcal par gramme aux lipides, contre 4 aux protéines et aux glucides assimilables. C'est une différence de densité énergétique, pas un jugement sur la qualité de l'aliment.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d05-merlino-gnocchi-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "food-macronutrient-energy",
+        "subjectKey": "food-macronutrient-energy",
+        "property": "Comparer l'énergie apportée par les grandes familles de nutriments",
+        "expectedAnswer": "Les lipides",
+        "learningObjective": "Comparer l'énergie apportée par les grandes familles de nutriments.",
+        "factKey": "fat-higher-energy-per-gram-protein-carbohydrate",
+        "form": "comparaison",
+        "difficultyRationale": "Notion culinaire ou nutritionnelle courante, utilisable sans connaître une étude particulière : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d05-merlino-gnocchi-2022",
+            "locator": "§2.5 Proximate Chemical Analysis of Gnocchi Samples",
+            "support": "Le calcul d'énergie emploie 4 kcal/g pour protéines et glucides, et 9 kcal/g pour lipides."
+          }
+        ]
+      }
+    }
+  ],
+  "consultations": [
+    {
+      "sourceId": "q2-d04-acf-hemp-2021",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "p. 1, description des graines ; p. 2, Storing hemp seeds, dernière puce ; p. 1, paragraphe sur les protéines",
+      "result": "Passages effectivement rouverts ou relus pour les faits de ce lot ; l'objet source commun est conservé sans redéfinition."
+    },
+    {
+      "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Seed Processing ; Seed Processing, premières phrases",
+      "result": "Passages effectivement rouverts ou relus pour les faits de ce lot ; l'objet source commun est conservé sans redéfinition."
+    },
+    {
+      "sourceId": "q2-dnext01-loturco-2023",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, paragraphe citant le Codex sur les huiles pressées à froid ; Introduction, paragraphe citant le Codex",
+      "result": "Passages effectivement rouverts ou relus pour les faits de ce lot ; l'objet source commun est conservé sans redéfinition."
+    },
+    {
+      "sourceId": "q2-d04-fda-ingredient-types",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Tableau, Stabilizers and Thickeners, Binders, Texturizers ; Tableau, Leavening Agents",
+      "result": "Passages effectivement rouverts ou relus pour les faits de ce lot ; l'objet source commun est conservé sans redéfinition."
+    },
+    {
+      "sourceId": "q2-dlegacy02-openstax-proteins",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "§3.4, Denaturation and Protein Folding",
+      "result": "Passages effectivement rouverts ou relus pour les faits de ce lot ; l'objet source commun est conservé sans redéfinition."
+    },
+    {
+      "sourceId": "q2-d04-asb-staling",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Interventions against staling, puce Amylases",
+      "result": "Passages effectivement rouverts ou relus pour les faits de ce lot ; l'objet source commun est conservé sans redéfinition."
+    },
+    {
+      "sourceId": "q2-d05-asb-caramelization",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "What is caramelization?, premier paragraphe ; Application",
+      "result": "Passage ciblé réellement ouvert et lu pour la correction de D05 ; preuve détaillée dans l'objet question."
+    },
+    {
+      "sourceId": "q2-d05-ifst-chemical-raising",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "What are chemical raising agents? et How do they work?, lignes 24–30",
+      "result": "Passage ciblé réellement ouvert et lu pour la correction de D05 ; preuve détaillée dans l'objet question."
+    },
+    {
+      "sourceId": "q2-d05-medlineplus-vitamins",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Fat-Soluble Vitamins ; Water-Soluble Vitamins ; Vitamins",
+      "result": "Passage ciblé réellement ouvert et lu pour la correction de D05 ; preuve détaillée dans l'objet question."
+    },
+    {
+      "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Seed and Oil Utilization, paragraphe sur les graines enrobées de caramel",
+      "result": "Usage alimentaire en graines caramélisées confirmé ; objet source commun inchangé."
+    }
+  ],
+  "authoringSummary": {
+    "count": 40,
+    "levels": {
+      "1": 21,
+      "2": 17,
+      "3": 2
+    },
+    "forms": {
+      "identification": 29,
+      "situation": 10,
+      "comparaison": 1
+    },
+    "scope": "Notions culinaires accessibles, ingrédients, textures et transformations alimentaires ; aucun protocole psychoactif ni promesse médicale.",
+    "reviewStatus": "Independent review required; no approval claimed"
+  },
+  "correctionNotes": {
+    "date": "2026-11-16",
+    "review": "docs/quiz-2000/reviews/d-new-05.json",
+    "changedQuestionIds": [
+      "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+      "hemp-q2-d05-essential-amino-acids-dietary-supply",
+      "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+      "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+      "hemp-q2-d05-xanthan-thickener-food-texture",
+      "hemp-q2-d05-vitamin-e-fat-soluble",
+      "hemp-q2-d05-edible-oil-deodorization-steam-stripping"
+    ],
+    "replacements": [
+      {
+        "retiredId": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+        "retiredFactKey": "hemp-seed-mild-nutty-flavour",
+        "newId": "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+        "newFactKey": "caramel-coated-seeds-sugar-browning",
+        "reason": "Le profil de noix était déjà testé dans le pilote. Le remplacement porte sur la transformation d'un enrobage sucré, et non sur le goût propre des graines."
+      },
+      {
+        "retiredId": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+        "retiredFactKey": "oilseed-meaning-oil-extraction",
+        "newId": "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+        "newFactKey": "baking-powder-acid-bicarbonate-reaction",
+        "reason": "L'entrée reformulait l'origine de l'huile. Le remplacement teste une réaction de levée chimique, distincte de l'origine de l'huile et du simple rôle gonflant du bicarbonate."
+      }
+    ],
+    "sourceIdsAdded": [
+      "q2-d05-asb-caramelization",
+      "q2-d05-ifst-chemical-raising",
+      "q2-d05-medlineplus-vitamins"
+    ],
+    "status": "Corrections auteur livrées pour revalidation indépendante, aucune approbation revendiquée."
+  }
+}

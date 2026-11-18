@@ -1,0 +1,1808 @@
+{
+  "batchId": "e-new-01",
+  "reviewer": "c_science_pilot",
+  "reviewedAt": "2026-11-16",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "documentsConsulted": 30
+  },
+  "scope": "Relecture indépendante de40 objets complets et28 documents. Aucun lot auteur ni source modifié ; aucune autoapprobation. Les40 faits devront rester distincts après correction.",
+  "nearFactChecks": [
+    {
+      "proposed": "hemp-q2-en01-dry-mass-result-excludes-water",
+      "existing": "hemp-prevention-sechage",
+      "decision": "Reprise du savoir testé demandée : base sèche/eau déjà explicitée dans l’existant."
+    },
+    {
+      "proposed": "hemp-q2-en01-chromatography-separates-mixture-components",
+      "existing": "hemp-hc-046",
+      "decision": "Faits principaux différents, mais réponse explicitement révélée dans l’explication voisine ; résolution demandée."
+    },
+    {
+      "proposed": "hemp-q2-en01-per-100g-nutrient-comparison",
+      "existing": "hemp-q2-d04-hemp-beverage-nutrition-panel-not-name",
+      "decision": "Distinct : base commune de comparaison vs choix du tableau nutritionnel."
+    },
+    {
+      "proposed": "hemp-q2-en01-inci-common-ingredient-names",
+      "existing": "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+      "decision": "Distinct : harmonisation des noms vs ordre massique ; reprise de formulation demandée pour indice interne."
+    },
+    {
+      "proposed": "hemp-q2-en01-opened-food-secondary-shelf-life",
+      "existing": "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+      "decision": "Distinct : date/consigne du produit ouvert vs rangement hermétique au froid ; reprise de tâche demandée."
+    },
+    {
+      "proposed": "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+      "existing": "hemp-q2-a01-cornell-apex-biomasse",
+      "decision": "Distinct : principe de représentativité vs résultat empirique dépendant du cultivar ; distracteurs à reprendre."
+    },
+    {
+      "proposed": "hemp-q2-en01-mass-analysis-ions-mass-to-charge",
+      "existing": "hemp-q2-d01-huile-elements-icpms",
+      "decision": "Distinct : grandeur physique de séparation vs technique employée pour un profil élémentaire."
+    },
+    {
+      "proposed": "hemp-q2-en01-freezing-not-sterilisation",
+      "existing": "hemp-q2-d05-pasteurization-targets-pathogenic-microorganisms",
+      "decision": "Distinct : survie au froid vs effet recherché d’un chauffage ; choix à reprendre."
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-en01-net-content-excludes-packaging",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "80bb0fd7e53fa4f75b5b0a4292dec5089ff005e26bc63b2ce018266cd907a4c2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-net",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/controle-des-quantites-vendues-payer-seulement-ce-que-lon-achete",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "eeb0d5cbd6124d47c1385fce70b2c0c083f278967e4f2f216d806e6ff34f85c3",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Quantité nette, ligne 61",
+          "result": "Quantité nette sans emballage et unités de volume explicitement décrites aux lignes52–61.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-lot-code-traces-manufacturing-batch",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "de7ed399bfa20b88990997b5dbf083305fc6e7a7ed76d605b2186d099905af8c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-lot",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/etiquetage-des-denrees-alimentaires-les-regles-connaitre",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "d360bdc40021e2c250871baddcb95efa0229987b13a54fd144c9f6a080981245",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Mentions obligatoires, numéro de lot, ligne 57",
+          "result": "Le numéro de lot sert à la traçabilité, ligne57 ; périmètre France/UE conservé.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-best-before-quality-date",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "a04d60f45a7045a738dafe0a87e787c3993616d400a1d02a457a7c5d9a11efb1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-dates",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/date-limite-de-consommation-et-date-de-durabilite-minimale-ce-que-vous-devez-savoir",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "39443240e58adce0fd410923ab3c8e49ae5e3a3e465e3ee0d7ddd1984da00d39",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Date de durabilité minimale, lignes 36 et 55–57",
+          "result": "DDM et qualités décrites ; les indications après ouverture deviennent pertinentes, notamment ligne54 et rubrique Attention.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-opened-food-secondary-shelf-life",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The task now contrasts the closed-product date with the shorter opened-product instruction. All four choices concern plausible interpretations of the two deadlines; the previously checked fact is unchanged.",
+      "contentHash": "af275955a08bbf07f12d4a538dafbe11a0fbd16498f726f41e12fb0952f3cb11",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-dates",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/date-limite-de-consommation-et-date-de-durabilite-minimale-ce-que-vous-devez-savoir",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "39443240e58adce0fd410923ab3c8e49ae5e3a3e465e3ee0d7ddd1984da00d39",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Attention, ligne 79",
+          "result": "DDM et qualités décrites ; les indications après ouverture deviennent pertinentes, notamment ligne54 et rubrique Attention.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_wording_cue",
+          "reason": "L’énoncé annonce que la boisson vient d’être ouverte ; la seule option reprenant cette situation est la consigne après ouverture. Les trois autres dates ne mettent pas réellement en concurrence la durée du produit fermé et celle du produit ouvert.",
+          "requestedChange": "Conserver le fait mais tester le statut de la date du produit fermé ou un conflit plausible entre indications, sans que le seul rapprochement ouverte/après ouverture livre la réponse."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-cosmetic-pao-open-jar-months",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "f580b1d3701f77096fe991bcd96145393dff13190ff9d2c80b49e12b0b1ebaf5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cosmetique",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/etiquetage-de-vos-produits-cosmetiques-comment-le-decrypter",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "d374e7851890800ff47bc5fe13d1d64f761756701730cb6b45d21ca4f5a93d34",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Période après ouverture, ligne 64",
+          "result": "Pot ouvert et durée après ouverture ligne64 ; noms harmonisés INCI ligne78.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-inci-common-ingredient-names",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The prompt no longer expands the naming function into the answer. Four comparable labeling functions require knowing harmonization; the attribution and level2 are appropriate.",
+      "contentHash": "7f0543988508f19748180a50bdafa3732fd0a6221b8d115d5ca9b51c12f02af3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cosmetique",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/etiquetage-de-vos-produits-cosmetiques-comment-le-decrypter",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "d374e7851890800ff47bc5fe13d1d64f761756701730cb6b45d21ca4f5a93d34",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Nomenclature INCI, ligne 78",
+          "result": "Pot ouvert et durée après ouverture ligne64 ; noms harmonisés INCI ligne78.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "definition_supplies_answer",
+          "reason": "La question demande le rôle des noms de la nomenclature des ingrédients ; nommer les ingrédients est déjà donné, et les trois autres choix concernent des garanties étrangères à la dénomination.",
+          "requestedChange": "Retirer les formulations noms de la liste et nomenclature des ingrédients qui préparent la réponse ; interroger réellement la fonction harmonisatrice de l’INCI avec des fonctions d’étiquetage comparables."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-millilitres-measure-product-volume",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "445b9db500bca11da1ddf09a927ae35a327c9ee8b98e065dbba3050847d40074",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-net",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/controle-des-quantites-vendues-payer-seulement-ce-que-lon-achete",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "eeb0d5cbd6124d47c1385fce70b2c0c083f278967e4f2f216d806e6ff34f85c3",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Unités de volume, ligne 54",
+          "result": "Quantité nette sans emballage et unités de volume explicitement décrites aux lignes52–61.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-emark-batch-average-quantity",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "3a45da3f9f1ed470262553d2495de5b3fd3b8176fa00092a04b51885a194004f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-emark",
+          "url": "https://europa.eu/youreurope/business/product-rules-compliance/general-product-compliance/emark/index_en.htm",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "cf1a31aff1051aa9f8cdad275355e48894ae710a946a4f85a3f208c8895a8cfd",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Quantity requirements, lignes 478–491",
+          "result": "Le signe concerne la mesure et le contrôle des quantités ; moyenne du lot et tolérances précisées lignes478–492.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-per-100g-nutrient-comparison",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "37e703c135292ec78599bbf7063735beb0b852c7360f05148b15871d8c641b7d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-nutrition",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/declaration-nutritionnelle-sur-les-denrees-alimentaires",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "6f609cbf2fbbede6f6bdb64196bd3caf6eb2b299a37a734c44f4d173df3f608e",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Base de comparaison, ligne 72",
+          "result": "Équivalent sel=sodium×2,5 ligne58 ; base commune100g/100ml ligne72.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-e-number-identifies-food-additive",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "80763e01ac0c4aa87564f7f11c891c7657bd6d28f207a2e9bb30b10aba5ece21",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-additifs",
+          "url": "https://www.health.belgium.be/fr/professionnels/entreprises/produits-consommation/alimentation/substances-specifiques-ajoutees/additifs-alimentaires/quest-ce-quun-additif",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "6d92b8464fc554faca3a996d2d6a6de0ccd2deb67a8fdd49f13f2cdcba25fa10",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Introduction, ligne 2 ; étiquetage, lignes 59–64",
+          "result": "L’additif peut être nommé par son nom officiel ou numéroE, lignes59–64.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-mass-percent-grams-per-hundred-grams",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "3119a898939ad7a6aa6ea16233b41bd4347a4ebfdcea83c2f0cf49298d9be37a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-pourcentage",
+          "url": "https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-7-rules-and-style-conventions-expressing-values",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "3cf885b48593b55d919ba5b15bb4280f1d3c1498b1e6cf3d8e68c46edc707174",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "§7.10.2, lignes 272–277 ; fraction massique, ligne 345",
+          "result": "Le symbole% vaut0,01 ; la fraction massique est le rapport masse du constituant/masse du mélange, lignes272–278 et345.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-label-salt-calculated-from-total-sodium",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "df1fb5764dab6232cde5f6df6992ef2c4583b53942e3524891a07a78c6e6b27d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-nutrition",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/declaration-nutritionnelle-sur-les-denrees-alimentaires",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "6f609cbf2fbbede6f6bdb64196bd3caf6eb2b299a37a734c44f4d173df3f608e",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Calcul du sel, ligne 58",
+          "result": "Équivalent sel=sodium×2,5 ligne58 ; base commune100g/100ml ligne72.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-bold-ingredient-highlights-allergen",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "a8e91d8cc5913bb7dbe8a3f16a9d3b9452673a7fde901087f6e1170ab9d1ded9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-allergenes",
+          "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F32192",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "5a656ccd611fd019aa56371a6e5e2012b6920017d19dce47ae312dcca11d6876",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Mise en évidence, lignes 149–151",
+          "result": "Mise en évidence typographique lignes149–151 ; contacts involontaires et traces éventuelles lignes173–183.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-may-contain-unintended-allergen-contact",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "0e5e3ce5271546c4f623827d4260f5c230eab09ebefbc4240c25c686b505dd99",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-allergenes",
+          "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F32192",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "5a656ccd611fd019aa56371a6e5e2012b6920017d19dce47ae312dcca11d6876",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Présence fortuite, lignes 173–183",
+          "result": "Mise en évidence typographique lignes149–151 ; contacts involontaires et traces éventuelles lignes173–183.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-unit-price-compares-package-sizes",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "a727cb9bd86a475f7993e6ddc6678f4e0be6fd22a0e4e16c466fbe80db6a40f8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-prix",
+          "url": "https://www.inc-conso.fr/content/linformation-sur-les-prix-pour-certains-biens-et-services",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "6780d4827e65dfb87af0fcccc964d9bd3d599dc6b7e071d06bf15bfb8facfa22",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Prix à l’unité de mesure, ligne 229",
+          "result": "Le prix au kilo ou au litre permet de comparer des produits similaires ; les grands formats ne garantissent pas une économie, ligne229.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-barcode-prefix-not-country-of-manufacture",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: Level2 now reflects knowledge of GS1 allocation. Fact, scope and four answers remain consistent with the independent source reading.",
+      "contentHash": "49c89b3a1af04072681e06c4f58356714f31640a355f8089f1d0b8aafc3e90f1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-gs1",
+          "url": "https://support.gs1.org/support/solutions/articles/43000734188",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "c4268362101fd0fcc3081478cec3a705d08594f439057ab2fb7f07e4f7712f35",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Réponse et explication, lignes 5–9",
+          "result": "Le préfixe identifie l’organisation GS1 attributrice et ne prouve pas le lieu de fabrication, lignes5–9.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "L’identification exacte de l’organisation GS1 attributrice est une connaissance technique spécifique ; ne pas avoir de préfixe numérique à retenir ne suffit pas à justifier le niveau1.",
+          "requestedChange": "Passer au niveau2 et justifier la connaissance du système d’attribution, ou proposer une tâche réellement accessible sans livrer le fait."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-nutriscore-nutrition-not-processing",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "551b6dfe5b3c21f7fdc1d41c866735c56ac89e2646f6d002e258005f798d2a20",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-nutriscore",
+          "url": "https://www.inrae.fr/actualites/nutri-score",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "aef244562db0a7f39169344289975179666766f7f256f7458ce4c076857cb7e8",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Le Nutri-Score est-il fiable ?, lignes 59–60",
+          "result": "Le score concerne la composition nutritionnelle ; transformation et présence d’additifs sont distinguées à la rubrique correspondante, ligne60.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-glass-fork-food-contact-not-universal-heat",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "82090adb0c0f8c9337b6fa4ba6b2cbeac530cf312c9b718ea070314107d07ec3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-contact",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/les-regles-respecter-pour-les-materiaux-emballages-ustensiles-et-contenants-au-contact-des-aliments",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "0bd06143551795be6e408acc3b515bcb3e432ec5f4dd26a48c6ac6b12490031b",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Pictogramme, lignes 44 et 65 ; conditions d’emploi, lignes 56 et 66",
+          "result": "Pictogramme verre-fourchette et conditions d’usage distingués, lignes44,56,65–66.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-biosourced-material-from-biomass",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "d97716718832fe9d7af0ac395f7c8b6700d3f8d6fc9c9f9a16be0187795b63ab",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-plastiques",
+          "url": "https://agirpourlatransition.ademe.fr/particuliers/reduire-dechets/bien-jeter/comprendre-symboles-tri",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "c30deecd2936e26a6f7fbd9cd659ff7b452f3fc1c2f0476d7b257e6d52c98832",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Biosourcé, lignes 107–113",
+          "result": "Origine dans le vivant distincte de biodégradation/AB ; compostage industriel et domestique non interchangeables, lignes107–123.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-industrial-compost-not-home-conditions",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: Four physical-condition comparisons replace universal guarantees. The thermal difference is explicitly covered by the original independent ADEME reading at lines107-123 and requested correction; no numeric protocol is added.",
+      "contentHash": "b6e217f7ee907db713cae689f123559295d5a55aac6991c9130628eecd313709",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-plastiques",
+          "url": "https://agirpourlatransition.ademe.fr/particuliers/reduire-dechets/bien-jeter/comprendre-symboles-tri",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "c30deecd2936e26a6f7fbd9cd659ff7b452f3fc1c2f0476d7b257e6d52c98832",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Compostage, ligne 122",
+          "result": "Origine dans le vivant distincte de biodégradation/AB ; compostage industriel et domestique non interchangeables, lignes107–123.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "prudence_gives_answer",
+          "reason": "Seule réponse prudente, face à trois garanties universelles ou hors sujet : toujours plus rapide, nécessairement bac jaune, identique dans tous les milieux. Le joueur peut répondre sans connaître le compostage.",
+          "requestedChange": "Tester une différence concrète de conditions entre compostage industriel et domestique avec quatre choix biologiques plausibles ; le passage ADEME décrit notamment des conditions thermiques distinctes, sans imposer un chiffre à mémoriser."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-plastic-resin-code-identifies-material",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "9f8feaef149d735acfe81eed6abba5f98a9b37149a5a8a985290d439b21dd9e3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-resine",
+          "url": "https://www.ecologie.gouv.fr/sites/default/files/documents/FAQ%20plastique%20juillet%202024.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "f5e742118d4e92ab926d6ab96a375b20f3ab248d138b93f203c3e062b8e04ea3",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Page 2, lignes 40–54",
+          "result": "Le code identifie la nature du plastique et ne garantit pas sa recyclabilité ; PET1 figure dans le tableau, page2.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-freezing-not-sterilisation",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The four options now compare bacterial growth and survival. Only slowing/stopping growth with possible survival is supported; no unique yes/no or universal-prudence cue remains.",
+      "contentHash": "1c29c4bcbb2dab2247d00663287fddec766978869ee10b52df7e1e25d68c7324",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-congelation",
+          "url": "https://agriculture.gouv.fr/pourquoi-ne-faut-il-pas-recongeler-un-produit-decongele",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "d30334cf6c5c6982c4a56a0a085f51de488c9c04851ab5acc8d495544f31fabb",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Effet de la congélation sur les bactéries, lignes 32–37",
+          "result": "Certaines bactéries résistent ; la croissance peut être arrêtée ou ralentie sans destruction totale, lignes32–37.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "prudence_gives_answer",
+          "reason": "Une seule réponse non/certaines face à trois réponses oui conditionnelles ou absolues. Cette construction permet de sélectionner la prudence sans connaître le devenir des bactéries au froid.",
+          "requestedChange": "Comparer quatre devenirs microbiologiques plausibles, par exemple les relations entre croissance, survie et destruction, pour tester effectivement que congélation ne vaut pas stérilisation."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-colony-forming-units-culturable-microorganisms",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The choices distinguish viable cultivable units, viable non-cultivable units, dead cells and all cells. Expanding UFC no longer reproduces the complete distinguishing answer.",
+      "contentHash": "07f60ba936b72c77ba457c0f20207c2ddb9ac655dac5f85f71f0901ad69ab2aa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-ufc",
+          "url": "https://www.fda.gov/files/food/published/Commodity-Specific-Food-Safety-Guidelines-for-the-Production--Harvest--Post-Harvest--and-Value-Added-Unit-Operations-of-Green-Onions.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "58a38c90ce6d3a9a14902bb21b8fce6dc3eddc677781b45addf29cbe4b53ee1f",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Glossaire, page 7 du PDF, lignes 283–287",
+          "result": "Glossaire page7 du PDF : unités microbiennes viables croissant dans les conditions du test et donnant des colonies dénombrables. Guide sur oignons, définition générale seulement.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "expanded_acronym_supplies_answer",
+          "reason": "Unités formant colonie dans l’énoncé est repris presque mot pour mot par unités capables de former des colonies dans le test. Les notions distinctives viabilité et capacité de croissance ne sont pas nécessaires pour choisir.",
+          "requestedChange": "Centrer la tâche sur la fraction réellement dénombrée et ses limites (unités viables cultivables, pas toutes les cellules), avec des populations microbiennes comparables ; éviter que le développement du sigle soit exactement la bonne réponse."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-mycotoxins-produced-by-fungi",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "dae040b089f34240952fd999375aa68f09dae15f8ec36dd6c8cd8352b6629fcf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-mycotoxines",
+          "url": "https://www.efsa.europa.eu/en/topics/topic/mycotoxins",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "76a6060c5647784170db70e27b5f985db21182cd4797ea2fd3e644631acd674c",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Introduction, ligne 151",
+          "result": "L’introduction définit les mycotoxines comme composés toxiques produits par des champignons, ligne151.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The concrete heterogeneous-lot task contrasts representative sampling with repeat measurement, reference material and interlaboratory repetition. These are different valid analytical activities but only one addresses the sampling scope.",
+      "contentHash": "ccf9362932ec32e3873a42db7b6f43ec3e83f33d5e37e3e9c6c9a0f1c77da59c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-echantillonnage",
+          "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "5c465531ce05013861ef0850ac9cf64d33d52c9a4083110c3cdc7dadca7da0ce",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§7.3, pages 12–13, lignes 418–437",
+          "result": "§7.3 décrit l’échantillon représentatif de la totalité et le lien entre prélèvement et portée du résultat, pages12–13.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_biased_distractors",
+          "reason": "Représenter le lot est la seule démarche neutre face à trois sélections manifestement biaisées, dont les graines les plus belles. Cette opposition ne teste pas un choix plausible de prélèvement.",
+          "requestedChange": "Proposer quatre plans ou objectifs analytiques plausibles à départager ; rendre la représentativité décisive dans une situation concrète. Si la version reste un simple principe de bon sens, revoir aussi le niveau2."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-below-quantification-not-zero",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "021456aea5e7275e988d82fd6fa7813fb781cb1b177ca6dad51d1fec69d2db7a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-validation",
+          "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "5895b5675d0143f253879cd149c907b1bfbc69ad4ff379fe4ec56bbbb098837b",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§5.3.1, page 31, lignes 2326–2329",
+          "result": "§5.1.1 définit la sélectivité en présence d’interférents ; §5.3.1 définit le plus faible niveau à performance acceptable pour l’application. Accès initial429, puis PDF effectivement ouvert et passages lus.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-method-blank-detects-procedure-contamination",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "d3f5573aad585b08a78323077ba7203fee112eb162d17f428a2072d9f669f0da",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-blancs",
+          "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_Guide_Blanks_supplement_2nd_ed_EN.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "e6245925f8c36a609f29b06cf82a77afe7a512be7e26dafe03673397b916eb87",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.3, page 4, lignes 195–206",
+          "result": "§2.3 définit un blanc sans matrice parcourant toute la procédure et détectant contamination/interférences ; page imprimée4.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-reference-material-checks-measurements",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "b0d15d1fd98487b4f2c1d97f6d926caf3d6feb0ad27a9a31edf3d3b28b68eb23",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-rm8210",
+          "url": "https://tsapps.nist.gov/srmext/certificates/8210.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "2dabbc0072870f53e6ed9b3779a1bf88471eb9c346c08f5a650b47f3a117143c",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Page 1, lignes 6–12",
+          "result": "Pages1–2 : valeurs non certifiées pour harmonisation/contrôle, base sèche et correction d’humidité explicitement indiquées.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-proficiency-test-compares-laboratories",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: Four credible interlaboratory purposes are compared. Participant-performance evaluation uniquely matches the previously checked proficiency-test definition; the arbitrary only-one-laboratory distractors are removed.",
+      "contentHash": "83b462209166d1b4fe3d4df3c5f5619c6bd17296fffd85512c2e0d588d37abf7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cofrac",
+          "url": "https://www.cofrac.fr/a-propos-du-cofrac/organisation/section-laboratoires",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "e165e79b6d24f38a81e454a3f48e679febaab9a18b59be4fd4afe67f00a9af28",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Organisateurs d’essais d’aptitude, ligne 87",
+          "result": "Compétence/impartialité sur opérations spécifiques ligne80 ; performance comparée à d’autres laboratoires ligne87.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "only_one_interlaboratory_objective",
+          "reason": "Le contexte fournit plusieurs laboratoires, puis les trois mauvaises options se limitent explicitement à un opérateur, à la conservation ou aux seuls lots. L’élimination des trois seulement suffit.",
+          "requestedChange": "Comparer des finalités interlaboratoires réellement plausibles (performance des participants, caractérisation d’un matériau, étude d’une méthode, reproductibilité), sans les trois restrictions qui excluent déjà les distracteurs."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-repeatability-same-measurement-conditions",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "f81b9d7774d2332f4580aa69b8709bc7e9393413be6b908f31237293c0629bb4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-vim",
+          "url": "https://www.bipm.org/documents/20126/2071204/JCGM_200_2012.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "ceb8bc4162d2ac84c3d6bb6f1efe4d5fdd6f143fa6d8525815d238b57fa60542",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.20–2.21, pages 23–24, lignes 2488–2510",
+          "result": "Définitions2.14–2.15 justesse/fidélité,2.20–2.21 répétabilité,2.39 étalonnage et4.31 courbe effectivement lues ; pas de confusion avec ajustage.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-precision-distinct-from-trueness",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "44a8530bf75fb9468353cf055dea933582fdc863f84be57bc4223aeb6d29abbc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-vim",
+          "url": "https://www.bipm.org/documents/20126/2071204/JCGM_200_2012.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "ceb8bc4162d2ac84c3d6bb6f1efe4d5fdd6f143fa6d8525815d238b57fa60542",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.14–2.15, pages 21–22, lignes 2316–2364",
+          "result": "Définitions2.14–2.15 justesse/fidélité,2.20–2.21 répétabilité,2.39 étalonnage et4.31 courbe effectivement lues ; pas de confusion avec ajustage.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+      "status": "approved",
+      "comment": "Question, quatre choix et explication relus entièrement. Une seule réponse décrit la double expression de la même énergie pour 100 g. Les autres choix correspondent à des confusions plausibles de nutriments, de préparation ou de base de quantité. Niveau 1, catégorie food, portée UE et date de réexamen adaptés ; fait distinct des questions nutritionnelles voisines.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-eu-nutrition-energy",
+          "url": "https://europa.eu/youreurope/business/product-rules-compliance/food/nutrition-declaration/index_fr.htm",
+          "locator": "Section Comment calculer la valeur énergétique et les quantités de nutriments ?, lignes 491–493 ; tableau ligne 511 ; date ligne 527",
+          "result": "Lecture directe de la page officielle : la même valeur énergétique est exprimée en kilojoules et kilocalories pour 100 g ou 100 ml. Le tableau place kJ/kcal sur l'unique ligne énergie. Dernière vérification affichée : 23 juin 2026. Le soutien couvre la bonne réponse et l'explication, sans déduire une teneur réelle de la barre fictive.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "official-page",
+            "passageRead": "Calcul de la valeur énergétique, présentation des unités et date de vérification."
+          },
+          "sourceHash": "b552af2ec1a5faf5df72882ac902264eab301c16693869fee3f1393b511e9735"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "4afad4ee80cead14ee549e2197fde38dd781f6cdd88297011f3dc011928879ca",
+      "finalReviewer": "a_cbd_inventory",
+      "finalReviewedAt": "2026-11-16",
+      "independentReplacementReview": "docs/quiz-2000/reviews/e-new-01-replacements-final.json"
+    },
+    {
+      "id": "hemp-q2-en01-chromatographic-retention-time-peak-maximum",
+      "status": "approved",
+      "comment": "Question, quatre intervalles et explication relus entièrement. Le manuel définit précisément le temps entre injection et maximum du pic, distingue l'écart entre maxima et la largeur à la base ; la durée totale d'analyse ne définit pas le temps du composé. Niveau 2 et catégorie quality cohérents. Fait distinct de la seule fonction de séparation chromatographique, sans protocole de préparation ni réglage instrumental.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-fda-retention-time",
+          "url": "https://www.fda.gov/media/74709/download",
+          "locator": "PAM I, chapitre 6, §602 C, page imprimée 602-5, page 29 du PDF (index 28) ; lignes 1131–1147, figure 602-a",
+          "result": "PDF original ouvert et texte du passage lu : le temps de rétention est défini de l'injection au maximum du pic. Le même passage distingue le temps entre maxima de deux pics et la largeur à la base. La table du chapitre et le pied de page confirment les dates 9/96 et 1/94 indiquées par la source. Seule la convention de lecture est transposée au contexte chanvre.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "Définitions du temps de rétention, du temps ajusté, de l'écart entre pics et de la largeur, dans §602 C."
+          },
+          "sourceHash": "9fe9f525dafdb874953b1593404c4f4efd2fe28fb1aa7dc8d28c462b82b688f0"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "3076cb450621eb5530cf4c29dd4e8b89ab71df7cd566ecb5d25dbd41b3b4232d",
+      "finalReviewer": "a_cbd_inventory",
+      "finalReviewedAt": "2026-11-16",
+      "independentReplacementReview": "docs/quiz-2000/reviews/e-new-01-replacements-final.json"
+    },
+    {
+      "id": "hemp-q2-en01-mass-analysis-ions-mass-to-charge",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "54dc06834a53bf5042724d26d35e606e08940d536f37846238f138064fbfd9ba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-spectrometrie",
+          "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication960-21.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "b000f1b7f5268371eb3cc3b07c4b514997fd4a8b1aa9df598c3915f99484af18",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.1, pages 4–5, lignes 201–215",
+          "result": "§2.1 distingue production, séparation et détection des ions ; grandeur masse/charge explicitement utilisée, pages4–5.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-calibration-relates-response-to-analyte",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "b6f78923cbcd89c19276dc5e6ad8e2db4b474d63b656ec3111e3fd609e8c53cd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-vim",
+          "url": "https://www.bipm.org/documents/20126/2071204/JCGM_200_2012.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "ceb8bc4162d2ac84c3d6bb6f1efe4d5fdd6f143fa6d8525815d238b57fa60542",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.39, page 28, lignes 2918–2933 ; §4.31, page 45, lignes 4365–4367",
+          "result": "Définitions2.14–2.15 justesse/fidélité,2.20–2.21 répétabilité,2.39 étalonnage et4.31 courbe effectivement lues ; pas de confusion avec ajustage.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-matrix-effect-other-sample-components",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "205026e2e5f91d327b282fb0f9bbca9a4ae91fcc3a19be23bbf12f3fbf33db6e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-eurl",
+          "url": "https://www.eurl-mp.eu/api/media/file/EURL-MP%20guidance%20document%20performance%20criteria%2004.03.2026.pdf?prefix=68fa250fb84b67298bd64929",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "122962cbe5ca245e48f7fed3182b5789b5fd20bfb6155b75fb23f55151cab206",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.3, page 7, lignes 134–158",
+          "result": "§2.3 définit suppression/amplification à concentration identique ; §2.5 donne récupération=x/xref×100 avec correction du fond si applicable.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-spike-recovery-analytical-check",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "00f72f79b749fdbcb319f8ca1993fa5dce9ebbc29ee7ed349aa9f8d6c65c431b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-eurl",
+          "url": "https://www.eurl-mp.eu/api/media/file/EURL-MP%20guidance%20document%20performance%20criteria%2004.03.2026.pdf?prefix=68fa250fb84b67298bd64929",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "122962cbe5ca245e48f7fed3182b5789b5fd20bfb6155b75fb23f55151cab206",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§2.5, pages 7–8, lignes 167–186",
+          "result": "§2.3 définit suppression/amplification à concentration identique ; §2.5 donne récupération=x/xref×100 avec correction du fond si applicable.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-analytical-selectivity-interfering-components",
+      "status": "approved",
+      "comment": "Question, quatre choix, réponse, explication, niveau et portée cohérents avec le passage consulté ; pas de doublon de sens bloquant repéré.",
+      "contentHash": "0dc0c221aab211718e47af665d28eb7f3bb4aa3bee7a17d2b3e7cde345e4a3e3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-validation",
+          "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "5895b5675d0143f253879cd149c907b1bfbc69ad4ff379fe4ec56bbbb098837b",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§5.1.1, page 23, lignes 1733–1737",
+          "result": "§5.1.1 définit la sélectivité en présence d’interférents ; §5.3.1 définit le plus faible niveau à performance acceptable pour l’application. Accès initial429, puis PDF effectivement ouvert et passages lus.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en01-accreditation-specific-scope-competence",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The four choices compare technical competence, product compliance, environmental labeling and generic management recognition. The scoped technical recognition remains uniquely correct without universal-guarantee distractors.",
+      "contentHash": "7af672039f2f002c1e9f5ce44a50ac177a93216b70be331939ab49cd37e08a3d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cofrac",
+          "url": "https://www.cofrac.fr/a-propos-du-cofrac/organisation/section-laboratoires",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "e165e79b6d24f38a81e454a3f48e679febaab9a18b59be4fd4afe67f00a9af28",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Laboratoires d’essais et d’étalonnages, ligne 80",
+          "result": "Compétence/impartialité sur opérations spécifiques ligne80 ; performance comparée à d’autres laboratoires ligne87.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "bounded_answer_against_universal_guarantees",
+          "reason": "Seule réponse limitée à un périmètre face à toute analyse, tous les lots et tout produit certifié. Le sens prudent donne la solution sans distinguer accréditation et autres reconnaissances.",
+          "requestedChange": "Comparer quatre reconnaissances plausibles et de portée parallèle, par exemple compétence technique sur une portée, système de management, conformité d’un produit ou autre certification, sans trois garanties universelles."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-en01-tamper-evident-seal-signals-opening",
+      "status": "approved",
+      "comment": "Root final arbitration after independent C review: The prompt no longer describes the rupture that disproved two alternatives. Four actual packaging functions are compared; evidence of interference with the original closure is the checked fact.",
+      "contentHash": "e144865870b84dfb9a663561eac8eba7cc616e9aa3362014e1dc1c9acc73e2ff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-ouverture",
+          "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title21-vol4/pdf/CFR-2025-title21-vol4-sec211-132.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "ed0beb6c55fb853c4dc38e4694f4ec0d7374a6371f771f4c9a4e6c15ff2de96a",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§211.132(b)(1), page 1, lignes 39–55",
+          "result": "§211.132(b)(1) : barrière ou indicateur rompu/absent apportant une preuve visible ; fonction mécanique seule reprise, pas d’obligation française déduite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "distractors_contradict_stem",
+          "reason": "L’énoncé précise que la bague se rompt, ce qui élimine littéralement ouvrir sans trace et maintenir la bague intacte. Il ne reste que deux fonctions plausibles.",
+          "requestedChange": "Employer quatre fonctions d’emballage comparables (trace d’ouverture, protection enfant, étanchéité, protection du contenu, par exemple) et un énoncé qui ne rende pas deux choix impossibles par sa description."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    }
+  ],
+  "beforeRootFinalArbitration": [
+    {
+      "id": "hemp-q2-en01-opened-food-secondary-shelf-life",
+      "status": "changes_requested",
+      "comment": "L’énoncé annonce que la boisson vient d’être ouverte ; la seule option reprenant cette situation est la consigne après ouverture. Les trois autres dates ne mettent pas réellement en concurrence la durée du produit fermé et celle du produit ouvert.",
+      "contentHash": "62784d76012f3f22e853d1004d76de03616910cd6f2f03a3e99bc42174d07a7c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-dates",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/date-limite-de-consommation-et-date-de-durabilite-minimale-ce-que-vous-devez-savoir",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "39443240e58adce0fd410923ab3c8e49ae5e3a3e465e3ee0d7ddd1984da00d39",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Attention, ligne 79",
+          "result": "DDM et qualités décrites ; les indications après ouverture deviennent pertinentes, notamment ligne54 et rubrique Attention.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_wording_cue",
+          "reason": "L’énoncé annonce que la boisson vient d’être ouverte ; la seule option reprenant cette situation est la consigne après ouverture. Les trois autres dates ne mettent pas réellement en concurrence la durée du produit fermé et celle du produit ouvert.",
+          "requestedChange": "Conserver le fait mais tester le statut de la date du produit fermé ou un conflit plausible entre indications, sans que le seul rapprochement ouverte/après ouverture livre la réponse."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-inci-common-ingredient-names",
+      "status": "changes_requested",
+      "comment": "La question demande le rôle des noms de la nomenclature des ingrédients ; nommer les ingrédients est déjà donné, et les trois autres choix concernent des garanties étrangères à la dénomination.",
+      "contentHash": "fd61e35dd1d45dac1e6a6495e19a0a3358a2357f0aaf81e971324c7242f46594",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cosmetique",
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/etiquetage-de-vos-produits-cosmetiques-comment-le-decrypter",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "d374e7851890800ff47bc5fe13d1d64f761756701730cb6b45d21ca4f5a93d34",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Nomenclature INCI, ligne 78",
+          "result": "Pot ouvert et durée après ouverture ligne64 ; noms harmonisés INCI ligne78.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "definition_supplies_answer",
+          "reason": "La question demande le rôle des noms de la nomenclature des ingrédients ; nommer les ingrédients est déjà donné, et les trois autres choix concernent des garanties étrangères à la dénomination.",
+          "requestedChange": "Retirer les formulations noms de la liste et nomenclature des ingrédients qui préparent la réponse ; interroger réellement la fonction harmonisatrice de l’INCI avec des fonctions d’étiquetage comparables."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-barcode-prefix-not-country-of-manufacture",
+      "status": "changes_requested",
+      "comment": "L’identification exacte de l’organisation GS1 attributrice est une connaissance technique spécifique ; ne pas avoir de préfixe numérique à retenir ne suffit pas à justifier le niveau1.",
+      "contentHash": "b5ce7fb6bb5fc9ddffd434149164caf67d778d915b670addac70b5209daf5902",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-gs1",
+          "url": "https://support.gs1.org/support/solutions/articles/43000734188",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "c4268362101fd0fcc3081478cec3a705d08594f439057ab2fb7f07e4f7712f35",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Réponse et explication, lignes 5–9",
+          "result": "Le préfixe identifie l’organisation GS1 attributrice et ne prouve pas le lieu de fabrication, lignes5–9.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "L’identification exacte de l’organisation GS1 attributrice est une connaissance technique spécifique ; ne pas avoir de préfixe numérique à retenir ne suffit pas à justifier le niveau1.",
+          "requestedChange": "Passer au niveau2 et justifier la connaissance du système d’attribution, ou proposer une tâche réellement accessible sans livrer le fait."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-industrial-compost-not-home-conditions",
+      "status": "changes_requested",
+      "comment": "Seule réponse prudente, face à trois garanties universelles ou hors sujet : toujours plus rapide, nécessairement bac jaune, identique dans tous les milieux. Le joueur peut répondre sans connaître le compostage.",
+      "contentHash": "8ff1151455e2576f3b8f78123f99bd22ace51f2bc5c0febc01ef2ec7f70c9bc1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-plastiques",
+          "url": "https://agirpourlatransition.ademe.fr/particuliers/reduire-dechets/bien-jeter/comprendre-symboles-tri",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "c30deecd2936e26a6f7fbd9cd659ff7b452f3fc1c2f0476d7b257e6d52c98832",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Compostage, ligne 122",
+          "result": "Origine dans le vivant distincte de biodégradation/AB ; compostage industriel et domestique non interchangeables, lignes107–123.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "prudence_gives_answer",
+          "reason": "Seule réponse prudente, face à trois garanties universelles ou hors sujet : toujours plus rapide, nécessairement bac jaune, identique dans tous les milieux. Le joueur peut répondre sans connaître le compostage.",
+          "requestedChange": "Tester une différence concrète de conditions entre compostage industriel et domestique avec quatre choix biologiques plausibles ; le passage ADEME décrit notamment des conditions thermiques distinctes, sans imposer un chiffre à mémoriser."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-freezing-not-sterilisation",
+      "status": "changes_requested",
+      "comment": "Une seule réponse non/certaines face à trois réponses oui conditionnelles ou absolues. Cette construction permet de sélectionner la prudence sans connaître le devenir des bactéries au froid.",
+      "contentHash": "3a4f3d08ecf5ee824ea3412c138dcb4b725291177f2913f9f1833ab03c17a4bc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-congelation",
+          "url": "https://agriculture.gouv.fr/pourquoi-ne-faut-il-pas-recongeler-un-produit-decongele",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "d30334cf6c5c6982c4a56a0a085f51de488c9c04851ab5acc8d495544f31fabb",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Effet de la congélation sur les bactéries, lignes 32–37",
+          "result": "Certaines bactéries résistent ; la croissance peut être arrêtée ou ralentie sans destruction totale, lignes32–37.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "prudence_gives_answer",
+          "reason": "Une seule réponse non/certaines face à trois réponses oui conditionnelles ou absolues. Cette construction permet de sélectionner la prudence sans connaître le devenir des bactéries au froid.",
+          "requestedChange": "Comparer quatre devenirs microbiologiques plausibles, par exemple les relations entre croissance, survie et destruction, pour tester effectivement que congélation ne vaut pas stérilisation."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-colony-forming-units-culturable-microorganisms",
+      "status": "changes_requested",
+      "comment": "Unités formant colonie dans l’énoncé est repris presque mot pour mot par unités capables de former des colonies dans le test. Les notions distinctives viabilité et capacité de croissance ne sont pas nécessaires pour choisir.",
+      "contentHash": "9641c420cb68122f31310d2e5a95b882e826c1a04bb93eff7b560a6fffe1d7db",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-ufc",
+          "url": "https://www.fda.gov/files/food/published/Commodity-Specific-Food-Safety-Guidelines-for-the-Production--Harvest--Post-Harvest--and-Value-Added-Unit-Operations-of-Green-Onions.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "58a38c90ce6d3a9a14902bb21b8fce6dc3eddc677781b45addf29cbe4b53ee1f",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Glossaire, page 7 du PDF, lignes 283–287",
+          "result": "Glossaire page7 du PDF : unités microbiennes viables croissant dans les conditions du test et donnant des colonies dénombrables. Guide sur oignons, définition générale seulement.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "expanded_acronym_supplies_answer",
+          "reason": "Unités formant colonie dans l’énoncé est repris presque mot pour mot par unités capables de former des colonies dans le test. Les notions distinctives viabilité et capacité de croissance ne sont pas nécessaires pour choisir.",
+          "requestedChange": "Centrer la tâche sur la fraction réellement dénombrée et ses limites (unités viables cultivables, pas toutes les cellules), avec des populations microbiennes comparables ; éviter que le développement du sigle soit exactement la bonne réponse."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+      "status": "changes_requested",
+      "comment": "Représenter le lot est la seule démarche neutre face à trois sélections manifestement biaisées, dont les graines les plus belles. Cette opposition ne teste pas un choix plausible de prélèvement.",
+      "contentHash": "d11f8c0c0e1d795d5c1560f0d9e39a2a52ea7b1a798489f9823fed7fa4b8655f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-echantillonnage",
+          "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "5c465531ce05013861ef0850ac9cf64d33d52c9a4083110c3cdc7dadca7da0ce",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§7.3, pages 12–13, lignes 418–437",
+          "result": "§7.3 décrit l’échantillon représentatif de la totalité et le lien entre prélèvement et portée du résultat, pages12–13.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_biased_distractors",
+          "reason": "Représenter le lot est la seule démarche neutre face à trois sélections manifestement biaisées, dont les graines les plus belles. Cette opposition ne teste pas un choix plausible de prélèvement.",
+          "requestedChange": "Proposer quatre plans ou objectifs analytiques plausibles à départager ; rendre la représentativité décisive dans une situation concrète. Si la version reste un simple principe de bon sens, revoir aussi le niveau2."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-proficiency-test-compares-laboratories",
+      "status": "changes_requested",
+      "comment": "Le contexte fournit plusieurs laboratoires, puis les trois mauvaises options se limitent explicitement à un opérateur, à la conservation ou aux seuls lots. L’élimination des trois seulement suffit.",
+      "contentHash": "b5f2a6631a48b5bc98bb0d27af7c3244793e9e2162c4bccf6c5b163cb55b2610",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cofrac",
+          "url": "https://www.cofrac.fr/a-propos-du-cofrac/organisation/section-laboratoires",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "e165e79b6d24f38a81e454a3f48e679febaab9a18b59be4fd4afe67f00a9af28",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Organisateurs d’essais d’aptitude, ligne 87",
+          "result": "Compétence/impartialité sur opérations spécifiques ligne80 ; performance comparée à d’autres laboratoires ligne87.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "only_one_interlaboratory_objective",
+          "reason": "Le contexte fournit plusieurs laboratoires, puis les trois mauvaises options se limitent explicitement à un opérateur, à la conservation ou aux seuls lots. L’élimination des trois seulement suffit.",
+          "requestedChange": "Comparer des finalités interlaboratoires réellement plausibles (performance des participants, caractérisation d’un matériau, étude d’une méthode, reproductibilité), sans les trois restrictions qui excluent déjà les distracteurs."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-accreditation-specific-scope-competence",
+      "status": "changes_requested",
+      "comment": "Seule réponse limitée à un périmètre face à toute analyse, tous les lots et tout produit certifié. Le sens prudent donne la solution sans distinguer accréditation et autres reconnaissances.",
+      "contentHash": "3bf283ca6781824ed5ecadde8ab6bea41b9aa52147b59b49d4686b5d4e8f4fd4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-cofrac",
+          "url": "https://www.cofrac.fr/a-propos-du-cofrac/organisation/section-laboratoires",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "e165e79b6d24f38a81e454a3f48e679febaab9a18b59be4fd4afe67f00a9af28",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Laboratoires d’essais et d’étalonnages, ligne 80",
+          "result": "Compétence/impartialité sur opérations spécifiques ligne80 ; performance comparée à d’autres laboratoires ligne87.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "bounded_answer_against_universal_guarantees",
+          "reason": "Seule réponse limitée à un périmètre face à toute analyse, tous les lots et tout produit certifié. Le sens prudent donne la solution sans distinguer accréditation et autres reconnaissances.",
+          "requestedChange": "Comparer quatre reconnaissances plausibles et de portée parallèle, par exemple compétence technique sur une portée, système de management, conformité d’un produit ou autre certification, sans trois garanties universelles."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-en01-tamper-evident-seal-signals-opening",
+      "status": "changes_requested",
+      "comment": "L’énoncé précise que la bague se rompt, ce qui élimine littéralement ouvrir sans trace et maintenir la bague intacte. Il ne reste que deux fonctions plausibles.",
+      "contentHash": "3a985e6815870aa5c7c0b7458e26a6d6bd83c4b54fa7c9e64d6973992d53839b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-ouverture",
+          "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title21-vol4/pdf/CFR-2025-title21-vol4-sec211-132.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+          "sourceHash": "ed0beb6c55fb853c4dc38e4694f4ec0d7374a6371f771f4c9a4e6c15ff2de96a",
+          "reader": "c_science_pilot",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "§211.132(b)(1), page 1, lignes 39–55",
+          "result": "§211.132(b)(1) : barrière ou indicateur rompu/absent apportant une preuve visible ; fonction mécanique seule reprise, pas d’obligation française déduite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "distractors_contradict_stem",
+          "reason": "L’énoncé précise que la bague se rompt, ce qui élimine littéralement ouvrir sans trace et maintenir la bague intacte. Il ne reste que deux fonctions plausibles.",
+          "requestedChange": "Employer quatre fonctions d’emballage comparables (trace d’ouverture, protection enfant, étanchéité, protection du contenu, par exemple) et un énoncé qui ne rende pas deux choix impossibles par sa description."
+        }
+      ]
+    }
+  ],
+  "rootFinalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "scope": "Full corrected objects read for these ten existing facts after independent C source review. Exact original source objects and the28 initial approved questions preserved. The two genuinely new replacement facts remain pending independent A review.",
+    "ids": [
+      "hemp-q2-en01-opened-food-secondary-shelf-life",
+      "hemp-q2-en01-inci-common-ingredient-names",
+      "hemp-q2-en01-barcode-prefix-not-country-of-manufacture",
+      "hemp-q2-en01-industrial-compost-not-home-conditions",
+      "hemp-q2-en01-freezing-not-sterilisation",
+      "hemp-q2-en01-colony-forming-units-culturable-microorganisms",
+      "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+      "hemp-q2-en01-proficiency-test-compares-laboratories",
+      "hemp-q2-en01-accreditation-specific-scope-competence",
+      "hemp-q2-en01-tamper-evident-seal-signals-opening"
+    ],
+    "sourceReadingAttribution": "Original sourceChecks remain attributed to c_science_pilot; root does not claim new browsing."
+  },
+  "replacedQuestionReviews": [
+    {
+      "replacedBy": "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+      "initialReview": {
+        "id": "hemp-q2-en01-dry-mass-result-excludes-water",
+        "status": "changes_requested",
+        "comment": "Le savoir effectivement testé reste matière sèche = masse sans eau. hemp-prevention-sechage demande déjà quelle matière est retirée et son explication distingue explicitement eau et matière sèche. Le nouveau contexte de dénominateur ne devient pas une opération ou relation différente dans cette question.",
+        "contentHash": "edc110fb8557b16f57aa84fa96712f7c773c820e7918bf0abd9989754db2aba3",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-en01-rm8210",
+            "url": "https://tsapps.nist.gov/srmext/certificates/8210.pdf",
+            "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+            "sourceHash": "2dabbc0072870f53e6ed9b3779a1bf88471eb9c346c08f5a650b47f3a117143c",
+            "reader": "c_science_pilot",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "full-text-targeted",
+            "locator": "Page 1, ligne 12 ; page 2, lignes 63–64",
+            "result": "Pages1–2 : valeurs non certifiées pour harmonisation/contrôle, base sèche et correction d’humidité explicitement indiquées.",
+            "supportStatus": "supported"
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        },
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "semantic_overlap_existing_fact",
+            "reason": "Le savoir effectivement testé reste matière sèche = masse sans eau. hemp-prevention-sechage demande déjà quelle matière est retirée et son explication distingue explicitement eau et matière sèche. Le nouveau contexte de dénominateur ne devient pas une opération ou relation différente dans cette question.",
+            "requestedChange": "Remplacer le savoir testé par une relation distincte sur les bases d’expression, par exemple une comparaison explicite de résultats sur masse brute et masse sèche avec données fournies, ou choisir un autre fait. Changer seulement l’explication, la clé ou le niveau ne suffit pas.",
+            "neighborIds": [
+              "hemp-prevention-sechage"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "replacedBy": "hemp-q2-en01-chromatographic-retention-time-peak-maximum",
+      "initialReview": {
+        "id": "hemp-q2-en01-chromatography-separates-mixture-components",
+        "status": "changes_requested",
+        "comment": "hemp-hc-046 teste la méthode de Jirzankal, fait distinct en principe, mais son explication dit déjà que la GC-MS sépare des composés. Elle fournit donc directement la réponse de cet item fonctionnel, sous la clé jirzankal au lieu de chromatographie.",
+        "contentHash": "73b9c4f8d3a2929f479f3860144646354065f1cb7a08f21ca08f2c96bd35dc49",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-en01-chromatographie",
+            "url": "https://www.cancer.gov/publications/dictionaries/cancer-terms/def/chromatography",
+            "sourceRegistry": "docs/quiz-2000/batches/e-new-01.json",
+            "sourceHash": "5496ae5bf6a0730e15b787080475e18c7bc33c84a7d052bea204cbbd8904477e",
+            "reader": "c_science_pilot",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "official-page-targeted",
+            "locator": "Définition, ligne 14",
+            "result": "La définition décrit la séparation des constituants selon leur migration ; pas d’inférence médicale.",
+            "supportStatus": "supported"
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        },
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "cross_question_answer_leak",
+            "reason": "hemp-hc-046 teste la méthode de Jirzankal, fait distinct en principe, mais son explication dit déjà que la GC-MS sépare des composés. Elle fournit donc directement la réponse de cet item fonctionnel, sous la clé jirzankal au lieu de chromatographie.",
+            "requestedChange": "Dans le seul périmètre E01, tester une autre propriété réellement sourcée de la chromatographie (p.ex. principe de migration plutôt que seule fonction de séparation), ou remplacer le fait. Sinon faire arbitrer explicitement par root la fuite de l’explication voisine ; ne pas changer sa clé sans résoudre le problème.",
+            "neighborIds": [
+              "hemp-hc-046"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "replacementFinalReview": {
+    "reviewer": "a_cbd_inventory",
+    "record": "docs/quiz-2000/reviews/e-new-01-replacements-final.json",
+    "integratedBy": "root",
+    "scope": "Two new facts independently read by A after C requested replacement of the original overlaps."
+  }
+}

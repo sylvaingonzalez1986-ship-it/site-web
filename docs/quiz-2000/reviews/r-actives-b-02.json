@@ -1,0 +1,1693 @@
+{
+  "batchId": "r-actives-b-02",
+  "reviewer": "rebalance_classify_a",
+  "reviewedAt": "2026-11-17",
+  "batchFile": "docs/quiz-2000/batches/r-actives-b-02.json",
+  "items": [
+    {
+      "id": "hemp-q2-rb02-reefer-alarmisme",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Discours alarmiste du film confirmé dans le préambule cité par AFI ; représentation culturelle distinguée d’un résultat scientifique. Fait initial distinct de sa réception ultérieure.",
+      "contentHash": "d3d672d0b3c82b2cb79fa8bb4b32bf84a1ec2ae62b4a7b6cc155738779d0771c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-afi",
+          "url": "https://catalog.afi.com/Film/7885-TELL-YOUR-CHILDREN?cxt=filmography",
+          "locator": "History, préambule du film ; dernier paragraphe sur le succès culte",
+          "result": "PageAFI effectivement ouverte : discours initial associant cannabis/violence, rééditions, succès culte àla télévision tardive et envidéo soutenus.",
+          "sourceHash": "4995d18b30f784341891c901b0d167abb42979cc2a40e47eed489212513b5be7"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-reefer-film-culte",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre modes de réception/diffusion remplacent les sujets médicaux ou botaniques sans rapport ; rééditions tardives et réception culte conservées.",
+      "contentHash": "378ccb0bfb6e72b54f2cd979ce96c7d0cc54e8fbfdd9ec1e9d2256aa99240278",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-afi",
+          "url": "https://catalog.afi.com/Film/7885-TELL-YOUR-CHILDREN?cxt=filmography",
+          "locator": "History, préambule du film ; dernier paragraphe sur le succès culte",
+          "result": "PageAFI effectivement ouverte : discours initial associant cannabis/violence, rééditions, succès culte àla télévision tardive et envidéo soutenus.",
+          "sourceHash": "4995d18b30f784341891c901b0d167abb42979cc2a40e47eed489212513b5be7"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "378ccb0bfb6e72b54f2cd979ce96c7d0cc54e8fbfdd9ec1e9d2256aa99240278"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-reefer-film-culte",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Fait soutenu, mais trois distracteurs sont trop éloignés de la réception réelle de ce film : manuel médical, formation des botanistes, documentaire cannabinoïdes. Garder le fait et le niveau2 ; proposer quatre modes de réception ou de diffusion culturellement plausibles.",
+          "contentHash": "018d3781e1c63d7149be48f53a77dd4be9487d87f3e302445b295306a4f78c70",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-afi",
+              "url": "https://catalog.afi.com/Film/7885-TELL-YOUR-CHILDREN?cxt=filmography",
+              "locator": "History, préambule du film ; dernier paragraphe sur le succès culte",
+              "result": "PageAFI effectivement ouverte : discours initial associant cannabis/violence, rééditions, succès culte àla télévision tardive et envidéo soutenus.",
+              "sourceHash": "4995d18b30f784341891c901b0d167abb42979cc2a40e47eed489212513b5be7"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "378ccb0bfb6e72b54f2cd979ce96c7d0cc54e8fbfdd9ec1e9d2256aa99240278"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-cheech-chong-duo",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Identité du duo et film1978 directement confirmés par le musée et la Recording Academy ; quatre duos d’interprètes plausibles. Domaine et niveau1 recevables.",
+      "contentHash": "1dfaa440646584b3b59067baaf18cfb32f8d765954ff2cf0e5704699f93bfafa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-grammy",
+          "url": "https://www.grammy.com/news/cheech-chong-set-celebrate-40-years-smoke-grammy-museum/",
+          "locator": "Présentation de l’exposition StillRollin’, paragraphes1–4",
+          "result": "PageRecordingAcademy/GRAMMYMuseum ouverte : CheechMarin/TommyChong, UpInSmoke1978, stonercomedy et antécédents de scène/enregistrements confirmés.",
+          "sourceHash": "5b507248783cf17e99bd515eb45de154934a867addb94ee971014c604a7d7544"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-stoner-comedy-genre",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre genres de cinéma liés au cannabis remplacent les leurres industriels ; la comédie reste la définition sourcée.",
+      "contentHash": "a986d927daf95c9c91237822f4784db94c220ec47362838199139feb46064fea",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-grammy",
+          "url": "https://www.grammy.com/news/cheech-chong-set-celebrate-40-years-smoke-grammy-museum/",
+          "locator": "Présentation de l’exposition StillRollin’, paragraphes1–4",
+          "result": "PageRecordingAcademy/GRAMMYMuseum ouverte : CheechMarin/TommyChong, UpInSmoke1978, stonercomedy et antécédents de scène/enregistrements confirmés.",
+          "sourceHash": "5b507248783cf17e99bd515eb45de154934a867addb94ee971014c604a7d7544"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "a986d927daf95c9c91237822f4784db94c220ec47362838199139feb46064fea"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-stoner-comedy-genre",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Registre soutenu. Refaire les trois genres concurrents : procès de brevet, botanique de terrain et fibres navales sont des leurres artificiels face à Cheech et Chong. Comparer quatre genres cinématographiques plausibles de même précision ; garder le fait cannabique.",
+          "contentHash": "5dbdc8990d7b56fcc0082a0bb9d75f10a50dc662ac894cb67ec9f1d9b1de32ad",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-grammy",
+              "url": "https://www.grammy.com/news/cheech-chong-set-celebrate-40-years-smoke-grammy-museum/",
+              "locator": "Présentation de l’exposition StillRollin’, paragraphes1–4",
+              "result": "PageRecordingAcademy/GRAMMYMuseum ouverte : CheechMarin/TommyChong, UpInSmoke1978, stonercomedy et antécédents de scène/enregistrements confirmés.",
+              "sourceHash": "5b507248783cf17e99bd515eb45de154934a867addb94ee971014c604a7d7544"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "a986d927daf95c9c91237822f4784db94c220ec47362838199139feb46064fea"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-legalize-it-artiste",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Attribution de LegalizeIt à PeterTosh confirmée par la biographie officielle ; quatre artistes reggae comparables. Conserver cet item et remplacer son voisin tautologique.",
+      "contentHash": "b33be721186ea055adf007e52957424c5f01f259edad0a18bacce48678c70555",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-tosh",
+          "url": "https://petertosh.com/history",
+          "locator": "History, SoloCareer, paragraphe1976",
+          "result": "Biographie officielle effectivement ouverte : PeterTosh, album/titreLegalizeIt et statut d’hymne de légalisation confirmés ; aucun effet médical des paroles n’est validé.",
+          "sourceHash": "3a5ef6146b815afa4d5e4ef8a2fe7e22526ca754bbfb72980df5c3b0adea24a2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-hippie-hill-ville",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Culture et mobilisation politique directement liées au cannabis à actifs.",
+      "comment": "Nouveau fait entièrement relu : ville identifiée sans indice dans le prompt, quatre villes plausibles. Le communiqué municipal du 18 avril 2022 situe Hippie Hill/Robin Williams Meadow dans le Golden Gate Park de San Francisco et décrit une célébration du cannabis. Aucune tenue future déduite.",
+      "contentHash": "3853522544b701404bdd14597ab2e9748997451cc69fa2669d7e24ecff759862",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-sf-hippie-hill",
+          "url": "https://sfrecpark.org/CivicAlerts.aspx?AID=701",
+          "locator": "Communiqué du 18 avril 2022, deux premiers paragraphes",
+          "result": "Page officielle effectivement ouverte (redirection mobile), date et deux premiers paragraphes lus : San Francisco, Hippie Hill et rassemblement 420 avec cannabis confirmés.",
+          "sourceHash": "ecdb0bd8b57f680ec49cccb6fe967c8c5c237f9f35cb3b70bdd5dcf87fbe9c3c"
+        }
+      ],
+      "revalidation": {
+        "reviewer": "rebalance_classify_a",
+        "reviewedAt": "2026-11-17",
+        "scope": "nouveau fait et objet complet, après première demande indépendante"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-420-heure-rendezvous",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Le témoignage des Waldos soutient l’origine horaire et le glissement vers un code cannabique ; attribution explicite évite de présenter la priorité comme incontestée.",
+      "contentHash": "5c0c396a99e3e796069d050fd9bcbb6e074e3aa4330d358692ee314479a72afa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-waldos",
+          "url": "https://www.420waldos.com/",
+          "locator": "Home, présentation et MeetTheWaldos",
+          "result": "Témoignage direct ouvert : cinq amis de SanRafaelHighSchool, Californie ; rendez-vous4:20pm, passage de420Louie à420 comme code cannabique.",
+          "sourceHash": "523fe34cfa5c03bdd3707ccab56de399f5e35fbb3af45a92216c5d634b9af86b"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-420-date-celebration",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "La date de célébration420 est un fait culturel actif ; la version actuelle doit cesser de tester une simple notation de calendrier.",
+      "comment": "La conversion de notation américaine a disparu ; le fait teste la date de la tradition culturelle 420.",
+      "contentHash": "a1f27a03612a1c9754539bea14390d5a76db51d437c20ceadf26099337a90583",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-illinois",
+          "url": "https://cannabis.illinois.gov/content/dam/soi/en/web/idfpr/forms/auc/spring23cannabisquarterly.pdf",
+          "locator": "Extrait indexé du PDF, pageimprimée8, AHistoryof420",
+          "result": "PDFdirect non chargé ; extrait institutionnel indexé réellement lu après recherche ciblée. Il mentionne explicitement une célébration420 le20avril. Aucune lecture intégrale du PDF revendiquée.",
+          "sourceHash": "38fdf83a6aab8d5d9f10e5bb6aa49bbe441b08b75831bd9733127d15bacec46a"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "a1f27a03612a1c9754539bea14390d5a76db51d437c20ceadf26099337a90583"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-420-date-celebration",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "La date de célébration420 est un fait culturel actif ; la version actuelle doit cesser de tester une simple notation de calendrier.",
+          "comment": "Le20avril est soutenu par l’extrait institutionnel effectivement lu. Retirer «4/20» et la précision «notation américaine» du prompt : ils transforment le test en conversion générique de calendrier. Demander à quelle date se tiennent les rassemblements420 ; adapter l’explication à la tradition culturelle.",
+          "contentHash": "0b6756a12f21c001f693e07f81d7d234abe957bd00ca0f9dc47a110a53a6c5c3",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-illinois",
+              "url": "https://cannabis.illinois.gov/content/dam/soi/en/web/idfpr/forms/auc/spring23cannabisquarterly.pdf",
+              "locator": "Extrait indexé du PDF, pageimprimée8, AHistoryof420",
+              "result": "PDFdirect non chargé ; extrait institutionnel indexé réellement lu après recherche ciblée. Il mentionne explicitement une célébration420 le20avril. Aucune lecture intégrale du PDF revendiquée.",
+              "sourceHash": "38fdf83a6aab8d5d9f10e5bb6aa49bbe441b08b75831bd9733127d15bacec46a"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "a1f27a03612a1c9754539bea14390d5a76db51d437c20ceadf26099337a90583"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-waldos-californie",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Origine lycéenne californienne directement présente dans le témoignage ; propriété distincte du rendez-vous horaire et pas de doublon dans les faits conservés.",
+      "contentHash": "4271b21bea41722c50902f884a9da19b6c94c85c2f53453609bc66619d3ca7d7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-waldos",
+          "url": "https://www.420waldos.com/",
+          "locator": "Home, présentation et MeetTheWaldos",
+          "result": "Témoignage direct ouvert : cinq amis de SanRafaelHighSchool, Californie ; rendez-vous4:20pm, passage de420Louie à420 comme code cannabique.",
+          "sourceHash": "523fe34cfa5c03bdd3707ccab56de399f5e35fbb3af45a92216c5d634b9af86b"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-rastafari-sacrement",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Indice herbe sacrée supprimé ; quatre rôles rituels comparables, avec réserve sur les pratiques situées.",
+      "contentHash": "7393f6fc1bea9b8c65683dd797dc5def3a94b949aea5639935dd0fbdbdff0ae8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-rasta",
+          "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+          "locator": "SectionB, PDFpages8–10, herbe sacramentelle et reasoning",
+          "result": "Mémoire effectivement ouvert aux passages : rôle religieux, communion et collectivevisionarydiscourse du reasoning confirmés. Il s’agit d’un argumentaire d’experts, pas d’une décision judiciaire ni d’une preuve clinique.",
+          "sourceHash": "f79fd065d8d25fd1abea7029fe241f4c66adf60385bcb59a44aa48ed04ab4e9c"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "7393f6fc1bea9b8c65683dd797dc5def3a94b949aea5639935dd0fbdbdff0ae8"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-rastafari-sacrement",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Retirer l’indice «herbe sacrée», qui donne sacrement. Demander le rôle du cannabis dans la pratique rastafari sans le qualifier d’avance ; comparer quatre rôles sociaux ou religieux plausibles, plutôt que textile/aliment sans rôle religieux. Le sens rituel est bien sourcé.",
+          "contentHash": "997a5d02abbcdff53d02d9e9f313308bbf87d52fd3ba127faa199e51409e3b8d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-rasta",
+              "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+              "locator": "SectionB, PDFpages8–10, herbe sacramentelle et reasoning",
+              "result": "Mémoire effectivement ouvert aux passages : rôle religieux, communion et collectivevisionarydiscourse du reasoning confirmés. Il s’agit d’un argumentaire d’experts, pas d’une décision judiciaire ni d’une preuve clinique.",
+              "sourceHash": "f79fd065d8d25fd1abea7029fe241f4c66adf60385bcb59a44aa48ed04ab4e9c"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "7393f6fc1bea9b8c65683dd797dc5def3a94b949aea5639935dd0fbdbdff0ae8"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-rastafari-reasoning",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre pratiques collectives plausibles remplacent les activités sur graines et poids ; la dimension spirituelle est le fait sourcé.",
+      "contentHash": "66bebbb64d39eaf7e67e1d3dfbea8e4956d1c7202675b26665aa1a2c6d2f24ab",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-rasta",
+          "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+          "locator": "SectionB, PDFpages8–10, herbe sacramentelle et reasoning",
+          "result": "Mémoire effectivement ouvert aux passages : rôle religieux, communion et collectivevisionarydiscourse du reasoning confirmés. Il s’agit d’un argumentaire d’experts, pas d’une décision judiciaire ni d’une preuve clinique.",
+          "sourceHash": "f79fd065d8d25fd1abea7029fe241f4c66adf60385bcb59a44aa48ed04ab4e9c"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "66bebbb64d39eaf7e67e1d3dfbea8e4956d1c7202675b26665aa1a2c6d2f24ab"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-rastafari-reasoning",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Fait soutenu, mais les trois distracteurs (dégustation entre boutiques, classification des graines, contrôle du poids) ne sont pas des alternatives plausibles au reasoning. Comparer des pratiques collectives de même nature : réunion spirituelle, délibération commerciale, pratique musicale, médiation sociale par exemple, avec une seule définition exacte.",
+          "contentHash": "1aacd504537c4b500c0d0e26e36eba6462e97e174218d21bdf48de9345a78541",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-rasta",
+              "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+              "locator": "SectionB, PDFpages8–10, herbe sacramentelle et reasoning",
+              "result": "Mémoire effectivement ouvert aux passages : rôle religieux, communion et collectivevisionarydiscourse du reasoning confirmés. Il s’agit d’un argumentaire d’experts, pas d’une décision judiciaire ni d’une preuve clinique.",
+              "sourceHash": "f79fd065d8d25fd1abea7029fe241f4c66adf60385bcb59a44aa48ed04ab4e9c"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "66bebbb64d39eaf7e67e1d3dfbea8e4956d1c7202675b26665aa1a2c6d2f24ab"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-jamaica-2015-rastafari",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre usages religieux comparables ; reconnaissance historique ciblée, sans déduction sur la vente générale.",
+      "contentHash": "1263dcb08c0759b3700b95ecdc62bbe0d04dbf047e3552c59eea3bf2a2c6b5f9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-jamaica",
+          "url": "https://cla.gov.jm/sites/default/files/laws-regulations/the-dangerous-drugs-amendment-act-2015.pdf",
+          "locator": "DangerousDrugs(Amendment)Act2015, PDFpages4–7, religiouspurposes",
+          "result": "Texte original ouvert : reconnaissance expresse de l’usage religieux comme sacrement de la foi rastafari et régimes d’autorisation. Portée historique2015 conservée.",
+          "sourceHash": "950ad3c9990d3d1cf080be938bd7e4b81e950e83285077bb4ffd30c8577d17cb"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "1263dcb08c0759b3700b95ecdc62bbe0d04dbf047e3552c59eea3bf2a2c6b5f9"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-jamaica-2015-rastafari",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Reconnaissance historique soutenue. Refaire les choix : usage obligatoire dans les écoles et exportation libre par toute association sont caricaturaux. Comparer quatre usages religieux ou régimes de reconnaissance plausibles, sans donner la bonne réponse uniquement par sa prudence.",
+          "contentHash": "ec2e59c0eef4e585819edb0f811cdb0f5c7d6cce5eef638305bb92e19c88b35f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-jamaica",
+              "url": "https://cla.gov.jm/sites/default/files/laws-regulations/the-dangerous-drugs-amendment-act-2015.pdf",
+              "locator": "DangerousDrugs(Amendment)Act2015, PDFpages4–7, religiouspurposes",
+              "result": "Texte original ouvert : reconnaissance expresse de l’usage religieux comme sacrement de la foi rastafari et régimes d’autorisation. Portée historique2015 conservée.",
+              "sourceHash": "950ad3c9990d3d1cf080be938bd7e4b81e950e83285077bb4ffd30c8577d17cb"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "1263dcb08c0759b3700b95ecdc62bbe0d04dbf047e3552c59eea3bf2a2c6b5f9"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-holi-cannabis-tradition",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Indice fête des couleurs supprimé ; association bhang/Holi testée parmi quatre fêtes. Localisation du tableau contrôlée par A dans sa reprise.",
+      "contentHash": "e0a3c34af25ddea1531b39593d241a929cfaeb26f29ea4c9ce399d60aaba76c9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-holi",
+          "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+          "locator": "Page PDF 76 (index 75), page imprimée 66, ligne Cannabis sativa (Bhang)",
+          "result": "Objet source final et passage textuel du PDF relus : locator corrigé vers PDF76/index75/imprimée66. Associations Shiva et Holi confirmées ; aucune nouvelle approbation de la formulation corrigée.",
+          "sourceHash": "1466ac653f6c64dd0908a122bcc501b7b26e89db5de3ef3b93efa6772bb6d449",
+          "previousSourceCheck": {
+            "sourceId": "q2-rb02-holi",
+            "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+            "locator": "PagePDF76 (index75), pageimprimée66, tableauCannabissativa(Bhang)",
+            "result": "Bulletin ouvert ; ligneCannabis lue : culte deShiva pendantShivratri/ParthivPuja et consommation deBhang pendantHoli. Le locator auteurpagePDF75 doit être corrigé ; pas de lecture visuelle revendiquée, capture ayant échoué.",
+            "sourceHash": "45142733a0cfd4ec25fceba5a8c1bb97933686da59d8ee2110d88466c1150185"
+          },
+          "metadataRevalidatedBy": "rebalance_classify_a"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "e0a3c34af25ddea1531b39593d241a929cfaeb26f29ea4c9ce399d60aaba76c9"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-holi-cannabis-tradition",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Association Holi/bhang soutenue. Retirer «fête des couleurs» pour tester effectivement l’association cannabique, plutôt que le surnom d’une fête. Corriger aussi le locator partagé q2-rb02-holi : ligneCannabis sur pagePDF76 (index75), pageimprimée66, pas pagePDF75. Garder le niveau1 seulement si la formulation finale reste réellement accessible.",
+          "contentHash": "6b4f6d0a3d485588f960a6859e15c4954be185d74cef0946a15844caf134a1de",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-holi",
+              "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+              "locator": "Page PDF 76 (index 75), page imprimée 66, ligne Cannabis sativa (Bhang)",
+              "result": "Objet source final et passage textuel du PDF relus : locator corrigé vers PDF76/index75/imprimée66. Associations Shiva et Holi confirmées ; aucune nouvelle approbation de la formulation corrigée.",
+              "sourceHash": "1466ac653f6c64dd0908a122bcc501b7b26e89db5de3ef3b93efa6772bb6d449",
+              "previousSourceCheck": {
+                "sourceId": "q2-rb02-holi",
+                "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+                "locator": "PagePDF76 (index75), pageimprimée66, tableauCannabissativa(Bhang)",
+                "result": "Bulletin ouvert ; ligneCannabis lue : culte deShiva pendantShivratri/ParthivPuja et consommation deBhang pendantHoli. Le locator auteurpagePDF75 doit être corrigé ; pas de lecture visuelle revendiquée, capture ayant échoué.",
+                "sourceHash": "45142733a0cfd4ec25fceba5a8c1bb97933686da59d8ee2110d88466c1150185"
+              },
+              "metadataRevalidatedBy": "rebalance_classify_a"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "e0a3c34af25ddea1531b39593d241a929cfaeb26f29ea4c9ce399d60aaba76c9"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-shiva-cannabis-tradition",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Indice Shivratri retiré du prompt ; lien culturel au cannabis maintenu, sans universalité. Localisation du tableau contrôlée par A.",
+      "contentHash": "203a317ae01201547f2799bbf72b17b1e29b962efc1b06005fcad84ba60763cb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-holi",
+          "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+          "locator": "Page PDF 76 (index 75), page imprimée 66, ligne Cannabis sativa (Bhang)",
+          "result": "Objet source final et passage textuel du PDF relus : locator corrigé vers PDF76/index75/imprimée66. Associations Shiva et Holi confirmées ; aucune nouvelle approbation de la formulation corrigée.",
+          "sourceHash": "1466ac653f6c64dd0908a122bcc501b7b26e89db5de3ef3b93efa6772bb6d449",
+          "previousSourceCheck": {
+            "sourceId": "q2-rb02-holi",
+            "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+            "locator": "PagePDF76 (index75), pageimprimée66, tableauCannabissativa(Bhang)",
+            "result": "Bulletin ouvert ; ligneCannabis lue : culte deShiva pendantShivratri/ParthivPuja et consommation deBhang pendantHoli. Le locator auteurpagePDF75 doit être corrigé ; pas de lecture visuelle revendiquée, capture ayant échoué.",
+            "sourceHash": "45142733a0cfd4ec25fceba5a8c1bb97933686da59d8ee2110d88466c1150185"
+          },
+          "metadataRevalidatedBy": "rebalance_classify_a"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "203a317ae01201547f2799bbf72b17b1e29b962efc1b06005fcad84ba60763cb"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-shiva-cannabis-tradition",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Shivratri donne Shiva dans l’énoncé : supprimer ce nom de fête du prompt et tester le lien cannabis/divinité avec les quatre choix actuels. Corriger le locator partagé holi vers pagePDF76 (index75), imprimée66. Le fait observé dans le tableau est soutenu, sans universalité pour l’hindouisme.",
+          "contentHash": "f42da0441a8c37bc8c1de4ac5a64fe9d885bf90500d5d388d7f7847a05e5a1d4",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-holi",
+              "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+              "locator": "Page PDF 76 (index 75), page imprimée 66, ligne Cannabis sativa (Bhang)",
+              "result": "Objet source final et passage textuel du PDF relus : locator corrigé vers PDF76/index75/imprimée66. Associations Shiva et Holi confirmées ; aucune nouvelle approbation de la formulation corrigée.",
+              "sourceHash": "1466ac653f6c64dd0908a122bcc501b7b26e89db5de3ef3b93efa6772bb6d449",
+              "previousSourceCheck": {
+                "sourceId": "q2-rb02-holi",
+                "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+                "locator": "PagePDF76 (index75), pageimprimée66, tableauCannabissativa(Bhang)",
+                "result": "Bulletin ouvert ; ligneCannabis lue : culte deShiva pendantShivratri/ParthivPuja et consommation deBhang pendantHoli. Le locator auteurpagePDF75 doit être corrigé ; pas de lecture visuelle revendiquée, capture ayant échoué.",
+                "sourceHash": "45142733a0cfd4ec25fceba5a8c1bb97933686da59d8ee2110d88466c1150185"
+              },
+              "metadataRevalidatedBy": "rebalance_classify_a"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "203a317ae01201547f2799bbf72b17b1e29b962efc1b06005fcad84ba60763cb"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-arad-contexte-cultuel",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Contexte du petit autel au sanctuaire d’Arad soutenu par les résidus de THC/CBD/CBN et la discussion archéologique. Histoire directement cannabique ; aucun effet vécu reconstruit.",
+      "contentHash": "a526cc43bc9af898c3a4ac3c4097a653bed3fa818f9f83c70ed1c9d4c6281339",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-arad",
+          "url": "https://motorcityseeds.org/wp-content/uploads/2023/08/cannabis-and-frankincense-at-judahite-shrine-of-arad.pdf",
+          "locator": "Abstract, pagePDF2 ; résultats et discussion desautels",
+          "result": "PDFdu papier original ouvert sur hébergement tiers : THC/CBD/CBN au petitautel, oliban au grand. Premier fait cannabique soutenu ; second écarté pour son périmètre, non pour une erreur factuelle. Aucune page de catalogue du tiers consultée.",
+          "sourceHash": "e1fe1590a78ca48987219372f3b5a53ba9597af46331dac3002ba5874fb8c553"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-jiayi-plantes-linceul",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Résumé original indexé par AGRIS : treize plantes presque entières placées en linceul sur le corps. Usage rituel du cannabis, sans assimilation à du textile ni déduction d’un high ; fait distinct des autres sites funéraires.",
+      "contentHash": "17ef37f44ba463fb87d627d494fa4a65efc5c30d40a9556d6753b7d4b9f1f891",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-jiayi",
+          "url": "https://agris.fao.org/search/en/providers/122535/records/65df1e754c5aef494fdff498",
+          "locator": "AGRIS, résumé de Jiangetcollègues2016",
+          "result": "Notice scientifique ouverte :13plantes presque entières arrangées sur le corps masculin comme burialshroud. Le résumé soutient la disposition rituelle, pas une teneur ni une expérience psychoactive précise.",
+          "sourceHash": "4e6a59dd66977d09fd3aa1f0bdf5f984f82ef1d9ba4f9c2add8d2c817bfabcfe"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-jirzankal-selection-thc",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Ren2019 propose un profil plus riche en THC que les populations sauvages usuelles d’après les résidus ; formulation hypothétique et absence de dosage exact respectées. Le fait testé est ce profil proposé, pas une preuve certaine de sélection intentionnelle.",
+      "contentHash": "66ec8d8fc9b62dc6bf48232b0ca3398832b362bea68470820c4d598adf89e305",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-jirzankal",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+          "locator": "Results, Cannabinoidresidues, paragraphes207–213 ; Discussion",
+          "result": "Texte originalPMC ouvert : dominanceCBN et absence de signalCBD conduisent àproposer un cannabis plus riche enTHC que les formes sauvages usuelles ; sélection/domestication/plasticité restent des interprétations possibles.",
+          "sourceHash": "ab5e0ab31f00d79ef7517976d518a6467ed3af46b1262760b0cb73fa3a4ad2d6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-armstrong-muggles-titre",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre sens argotiques ou musicaux plausibles remplacent brevets, taxonomie et tribunal anachroniques.",
+      "contentHash": "5ddf0c8c6855490753325d41722e93440c27d1b2b7e9f1092e2501a0ccb28f3d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-armstrong",
+          "url": "https://southernspaces.org/2018/mapping-muggleheads-new-orleans-and-marijuana-menace-1920-1930/",
+          "locator": "Introduction, lexique muggles ; passage/notes LouisArmstrong, Muggles1928",
+          "result": "Recherche historique ouverte : muggles est donné comme nom ancien de marijuana ; l’enregistrement de1928 et le contexte cannabique d’Armstrong sont présents. Pas de validation clinique.",
+          "sourceHash": "a7c52850cc8e5a20dddb1152321419ad5de4198316c377b435da9d13348f049b"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "5ddf0c8c6855490753325d41722e93440c27d1b2b7e9f1092e2501a0ccb28f3d"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-armstrong-muggles-titre",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Sens historique soutenu. Remplacer les distracteurs anachroniques ou fantaisistes (brevetCBD en1928, nomlatin des fleurs, tribunalspécialisé) par trois sens d’argot ou références musicales plausibles. Conserver l’œuvre, le fait et le niveau2.",
+          "contentHash": "c48489a261f22c46d8785bca963b78865d1b02d2d50e70047d89a39383e90bb3",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-armstrong",
+              "url": "https://southernspaces.org/2018/mapping-muggleheads-new-orleans-and-marijuana-menace-1920-1930/",
+              "locator": "Introduction, lexique muggles ; passage/notes LouisArmstrong, Muggles1928",
+              "result": "Recherche historique ouverte : muggles est donné comme nom ancien de marijuana ; l’enregistrement de1928 et le contexte cannabique d’Armstrong sont présents. Pas de validation clinique.",
+              "sourceHash": "a7c52850cc8e5a20dddb1152321419ad5de4198316c377b435da9d13348f049b"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "5ddf0c8c6855490753325d41722e93440c27d1b2b7e9f1092e2501a0ccb28f3d"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-brownie-mary-solidarite",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre causes militantes comparables ; contexte cannabis médical et solidarité maintenu. Métadonnée de la notice vérifiée par A.",
+      "contentHash": "ee4a04494f0fb563aff8cb97f9f0fbcdca62e7386df53127bb353092bfe28f11",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-mary",
+          "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+          "locator": "Biographical / historical ; About this collection guide",
+          "result": "Objet source final et finding aid relus : année de préparation 2019 et encodage 2019-02-16 confirmés. Contexte d’aide et Dennis Peron soutenus ; formulation corrigée de la question solidarité laissée à l’arbitrage.",
+          "sourceHash": "7ea6de420450a6aba105037309953a4226e9753da56d6463bceffee8956f387f",
+          "previousSourceCheck": {
+            "sourceId": "q2-rb02-mary",
+            "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+            "locator": "Summary ; Biographical/historical ; Aboutthiscollectionguide",
+            "result": "Findingaid ouvert : brownies pour des personnes atteintes du sida et gravesmaladies, ShantiProject/Ward86 ; DatePrepared2019 et DateEncoded2019-02-16 visibles. Registre auteur àcorriger surpublished.",
+            "sourceHash": "a56c40d8f0fa6652b0333a65063e4e05a3d60ee9e3c2771da5f80222664c0ef9"
+          },
+          "metadataRevalidatedBy": "rebalance_classify_a"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "ee4a04494f0fb563aff8cb97f9f0fbcdca62e7386df53127bb353092bfe28f11"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-brownie-mary-solidarite",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Contexte sida et soutien aux malades soutenu. Remplacer certification des voiles, sélection huile et fermeture des associations par des causes militantes plausibles de la même époque. Corriger q2-rb02-mary.published : la notice indique Date Prepared2019 et encodage2019-02-16 ; «s.d.» ne décrit pas cette information disponible.",
+          "contentHash": "552c6b7e638dbd6cfdeeeda464ebfcb958bb62cd40bd8de291069db8b7e1da51",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-mary",
+              "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+              "locator": "Biographical / historical ; About this collection guide",
+              "result": "Objet source final et finding aid relus : année de préparation 2019 et encodage 2019-02-16 confirmés. Contexte d’aide et Dennis Peron soutenus ; formulation corrigée de la question solidarité laissée à l’arbitrage.",
+              "sourceHash": "7ea6de420450a6aba105037309953a4226e9753da56d6463bceffee8956f387f",
+              "previousSourceCheck": {
+                "sourceId": "q2-rb02-mary",
+                "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+                "locator": "Summary ; Biographical/historical ; Aboutthiscollectionguide",
+                "result": "Findingaid ouvert : brownies pour des personnes atteintes du sida et gravesmaladies, ShantiProject/Ward86 ; DatePrepared2019 et DateEncoded2019-02-16 visibles. Registre auteur àcorriger surpublished.",
+                "sourceHash": "a56c40d8f0fa6652b0333a65063e4e05a3d60ee9e3c2771da5f80222664c0ef9"
+              },
+              "metadataRevalidatedBy": "rebalance_classify_a"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "ee4a04494f0fb563aff8cb97f9f0fbcdca62e7386df53127bb353092bfe28f11"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-peron-cannabis-buyers-club",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Culture et mobilisation politique directement liées au cannabis à actifs.",
+      "comment": "Nouveau fait entièrement relu : Dennis Peron est explicitement identifié comme fondateur du Cannabis Buyers Club ; la notice confirme aussi le livre cosigné avec Rathbun. Les quatre militants constituent des choix cohérents. Ce fait diffère du soutien de Brownie Mary aux malades.",
+      "contentHash": "5ec56c4eef2604cda7a26236ff9db1a9472f82912575c4cf33d7ece212f194b3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-mary",
+          "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+          "locator": "Biographical / historical, paragraphe Proposition P et livre cosigné ; About this collection guide",
+          "result": "Finding aid effectivement ouvert : Dennis Peron identifié fondateur du San Francisco Cannabis Buyers Club et coauteur du livre. Date Prepared 2019 et Date Encoded 2019-02-16 vérifiées.",
+          "sourceHash": "7ea6de420450a6aba105037309953a4226e9753da56d6463bceffee8956f387f"
+        }
+      ],
+      "revalidation": {
+        "reviewer": "rebalance_classify_a",
+        "reviewedAt": "2026-11-17",
+        "scope": "nouveau fait et objet complet, après première demande indépendante"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-sans-alcool",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Le prompt emploie désormais tolérance sous conditions ; quatre régimes de service d’alcool plausibles.",
+      "contentHash": "c590a55cb5fbfda2666ae1962521a988c9ee62fbe195cb75cca6d59b7e098b8a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-nl",
+          "url": "https://www.government.nl/themes/family-health-and-care/drugs/am-i-committing-a-criminal-offence-if-i-possess-produce-or-deal-in-drugs",
+          "locator": "The sale of softdrugs in coffeeshops",
+          "result": "Pageofficielle ouverte : coffeeshops sansalcool ; vente formellement pénale, non-poursuite pour petitesventes sousconditions. Précision «autorisé» àcorriger dans le prompt22.",
+          "sourceHash": "52a6dc4afa83370af10cf17ca3679a408da94bc0b46ad9d470bb48f0b704e703"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "c590a55cb5fbfda2666ae1962521a988c9ee62fbe195cb75cca6d59b7e098b8a"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-coffeeshop-sans-alcool",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Fond exact soutenu, mais remplacer «coffeeshop autorisé à vendre» par «coffeeshop où la vente est tolérée sous conditions», pour rester cohérent avec l’item tolérance et la source. Refaire le distracteur imposant cannabis et alcool ensemble ; garder quatre régimes de service plausibles.",
+          "contentHash": "5eec5da354f76a650f466c8f1fc17cefc6e12a3ed4fb5a166ac57baefbbda75b",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-nl",
+              "url": "https://www.government.nl/themes/family-health-and-care/drugs/am-i-committing-a-criminal-offence-if-i-possess-produce-or-deal-in-drugs",
+              "locator": "The sale of softdrugs in coffeeshops",
+              "result": "Pageofficielle ouverte : coffeeshops sansalcool ; vente formellement pénale, non-poursuite pour petitesventes sousconditions. Précision «autorisé» àcorriger dans le prompt22.",
+              "sourceHash": "52a6dc4afa83370af10cf17ca3679a408da94bc0b46ad9d470bb48f0b704e703"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "c590a55cb5fbfda2666ae1962521a988c9ee62fbe195cb75cca6d59b7e098b8a"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-tolerance",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Le gouvernement distingue infraction formelle et non-poursuite conditionnelle dans le régime classique. Distinction utile, bornée et sans prétendre décrire toutes les expérimentations locales.",
+      "contentHash": "f218dc2092152befcb2f278ea549d45fdec510377d72febde8dcaca7b203e901",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-nl",
+          "url": "https://www.government.nl/themes/family-health-and-care/drugs/am-i-committing-a-criminal-offence-if-i-possess-produce-or-deal-in-drugs",
+          "locator": "The sale of softdrugs in coffeeshops",
+          "result": "Pageofficielle ouverte : coffeeshops sansalcool ; vente formellement pénale, non-poursuite pour petitesventes sousconditions. Précision «autorisé» àcorriger dans le prompt22.",
+          "sourceHash": "52a6dc4afa83370af10cf17ca3679a408da94bc0b46ad9d470bb48f0b704e703"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-coffeeshop-mineurs",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Les critères officiels néerlandais interdisent à la fois entrée et vente aux moins de18ans ; les options comparent des régimes d’accès. Source précise effectivement lue.",
+      "contentHash": "52755d6caee7667a233682979baadcf3022eb2a11363b5348b0e1115bbc0fdb0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-nl-minors",
+          "url": "https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/drugs/gedoogbeleid-softdrugs-en-coffeeshops",
+          "locator": "Gedoogcriteria voor coffeeshops, lignes18–20",
+          "result": "Pageofficielle néerlandaise ouverte : pas devente auxmineurs ni d’entrée desmineurs, absence d’alcool ; conditionslocales supplémentaires possibles.",
+          "sourceHash": "0460d6c16cb8d93057a29fe7622123c736cef4ec863e35663deb528b62fdd138"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-colorado-vote-adultes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "La chronologie officielle de Denver confirme le marché adulte et sa réglementation dans Amendment64 en2012 ; distinction avec le marché médical antérieur soutenue.",
+      "contentHash": "886364bce616a2fcda0f64637aaa5f55416b33ed32621a324c683d3693d873c8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-colorado",
+          "url": "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Marijuana-information/Laws-rules-and-regulations",
+          "locator": "History of marijuana policy inDenver,2012–2014",
+          "result": "Chronologieofficielle ouverte : Amendment64 adulte2012 ; RetailMarijuanaCode et exigenceslicences2013 ; débutsdesventes1janvier2014. Pas de transposition àtoutledroitfédéral.",
+          "sourceHash": "901942f38a978890ae492639768fc3c1486080e2638d462656947ecff324f336"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-colorado-vote-avant-vente",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre étapes historiques réelles ou plausibles ; repère2013 limité à la chronologie de Denver, niveau2 cohérent.",
+      "contentHash": "07d125dbfb64c5ca9baafb1c68503accf8c26a1b3fd9deca10b5c8e495e26141",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-colorado",
+          "url": "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Marijuana-information/Laws-rules-and-regulations",
+          "locator": "History of marijuana policy inDenver,2012–2014",
+          "result": "Chronologieofficielle ouverte : Amendment64 adulte2012 ; RetailMarijuanaCode et exigenceslicences2013 ; débutsdesventes1janvier2014. Pas de transposition àtoutledroitfédéral.",
+          "sourceHash": "901942f38a978890ae492639768fc3c1486080e2638d462656947ecff324f336"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "07d125dbfb64c5ca9baafb1c68503accf8c26a1b3fd9deca10b5c8e495e26141"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-colorado-vote-avant-vente",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "La séquence historique est sourcée, mais l’état actuel des choix donne «création de règles» par élimination de scénarios caricaturaux (vente avant toute règle, retraitélectoral, remplacement par médical). Tester concrètement le code de vente et les licences de2013, avec quatre étapes crédibles ; niveau2 préférable si un repère historique précis est demandé.",
+          "contentHash": "2d2fcdcba1bf962bf2affeb481d23752c48d65ce5495b1767d415f0e16cfca7d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-colorado",
+              "url": "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Marijuana-information/Laws-rules-and-regulations",
+              "locator": "History of marijuana policy inDenver,2012–2014",
+              "result": "Chronologieofficielle ouverte : Amendment64 adulte2012 ; RetailMarijuanaCode et exigenceslicences2013 ; débutsdesventes1janvier2014. Pas de transposition àtoutledroitfédéral.",
+              "sourceHash": "901942f38a978890ae492639768fc3c1486080e2638d462656947ecff324f336"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "07d125dbfb64c5ca9baafb1c68503accf8c26a1b3fd9deca10b5c8e495e26141"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-south-africa-vie-privee",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Indice privé retiré ; quatre droits constitutionnels plausibles, avec portée historique de l’arrêt.",
+      "contentHash": "cbb7d83e49697fdab8171cebba578a22145cdf1bdbee5ce99b5d6e57db6134f2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-sa",
+          "url": "https://www.parliament.gov.za/storage/app/media/Docs/atc/128dc265-fa8d-453d-bc47-7cf06748ef2f.pdf",
+          "locator": "Rapportdaté1novembre2023, PDFpage53, rappelPrince2018",
+          "result": "Rapportparlementaire ouvert : limitationinconstitutionnelledudroitàlavieprivée dansPrince2018 et dispositifadulteprivé. Le projet2023 n’est pas traité comme droitactuelcomplet.",
+          "sourceHash": "a5d43d4164bdb0483f7f0d3d7be939b960d8fd8e1b50532251af85984c0b3cd0"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "cbb7d83e49697fdab8171cebba578a22145cdf1bdbee5ce99b5d6e57db6134f2"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-south-africa-vie-privee",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Le prompt «usage personnel…en privé» annonce «vie privée», et salaire/enseignement/vote sont trop éloignés du litige. Retirer l’indice et comparer quatre droits réellement plausibles dans une affaire de cannabis (vie privée, liberté religieuse, égalité, santé, par exemple). Le fondement de Prince2018 est bien vérifié.",
+          "contentHash": "e343040f8552864de0552659e875833b71693cb2c7f3074eb49beb385663faac",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-sa",
+              "url": "https://www.parliament.gov.za/storage/app/media/Docs/atc/128dc265-fa8d-453d-bc47-7cf06748ef2f.pdf",
+              "locator": "Rapportdaté1novembre2023, PDFpage53, rappelPrince2018",
+              "result": "Rapportparlementaire ouvert : limitationinconstitutionnelledudroitàlavieprivée dansPrince2018 et dispositifadulteprivé. Le projet2023 n’est pas traité comme droitactuelcomplet.",
+              "sourceHash": "a5d43d4164bdb0483f7f0d3d7be939b960d8fd8e1b50532251af85984c0b3cd0"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "cbb7d83e49697fdab8171cebba578a22145cdf1bdbee5ce99b5d6e57db6134f2"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-sinclair-rally-liberation",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Culture et mobilisation politique directement liées au cannabis à actifs.",
+      "comment": "Nouveau fait entièrement relu : la peine de dix ans pour deux joints déclenche la mobilisation ; les alternatives concernent des motifs politiques et culturels plausibles. L’explication attribue précisément le récit à la bibliothèque. Distinct de l’identification de Lennon/Ono dans le même rallye.",
+      "contentHash": "347c4818ff350440b47da7bef0e313e22793e8de25b987b0c70319d63e7ce4ef",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-michigan",
+          "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+          "locator": "Paragraphe Free John Now et John Sinclair Freedom Rally",
+          "result": "Page universitaire effectivement ouverte : condamnation de 1969 à dix ans après arrestation pour possession de deux joints, protestations puis rallye de 1971 avec Lennon, Ono et Stevie Wonder explicitement décrits.",
+          "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+        }
+      ],
+      "revalidation": {
+        "reviewer": "rebalance_classify_a",
+        "reviewedAt": "2026-11-17",
+        "scope": "nouveau fait et objet complet, après première demande indépendante"
+      }
+    },
+    {
+      "id": "hemp-q2-rb02-sinclair-lennon-ono",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Participation de JohnLennon et YokoOno au rassemblement confirmée par la bibliothèque universitaire ; quatre couples d’artistes de même nature, fait distinct du motif de mobilisation.",
+      "contentHash": "5f7cac0949060828d0b2fc2c33d325b0c7bb3069d60abb617b875ebc4f6e6843",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-michigan",
+          "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+          "locator": "Texte FreeJohnNow/JohnSinclairFreedomRally ; paragraphePotLuck",
+          "result": "PagebibliothèqueMichigan ouverte : affairedeuxjoints, mobilisation1971, Lennon/Ono/StevieWonder ; PotLuckjeu deplateau comparéauMonopoly. Pasderecettedeproduction réelle.",
+          "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-pot-luck-jeu-societe",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre mécanismes de jeux connus remplacent les objets sans rapport ; analogie Monopoly explicitement présente dans le passage déjà lu par A.",
+      "contentHash": "c075f2fed9457321da336ee4ae4170e1cae76c44bbc051d4ff1e0b8cd50253c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-michigan",
+          "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+          "locator": "Texte FreeJohnNow/JohnSinclairFreedomRally ; paragraphePotLuck",
+          "result": "PagebibliothèqueMichigan ouverte : affairedeuxjoints, mobilisation1971, Lennon/Ono/StevieWonder ; PotLuckjeu deplateau comparéauMonopoly. Pasderecettedeproduction réelle.",
+          "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "c075f2fed9457321da336ee4ae4170e1cae76c44bbc051d4ff1e0b8cd50253c6"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-pot-luck-jeu-societe",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Objet correctement identifié, mais instrument de contrôle, livret de prescription et filmmuet sont des distracteurs très éloignés de la culture ludique donnée par le titre. Comparer quatre objets culturels plausibles ou quatre types de jeux ; conserver le fait distinct de PotLuck.",
+          "contentHash": "45616ad9dc165a64ec8bfcec2fd135e0e471886c825ad5122a9a87f4f9e2cdf9",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-michigan",
+              "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+              "locator": "Texte FreeJohnNow/JohnSinclairFreedomRally ; paragraphePotLuck",
+              "result": "PagebibliothèqueMichigan ouverte : affairedeuxjoints, mobilisation1971, Lennon/Ono/StevieWonder ; PotLuckjeu deplateau comparéauMonopoly. Pasderecettedeproduction réelle.",
+              "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "c075f2fed9457321da336ee4ae4170e1cae76c44bbc051d4ff1e0b8cd50253c6"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    },
+    {
+      "id": "hemp-q2-rb02-hempfest-protestival",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Quatre finalités d’événements de culture cannabis remplacent les domaines secondaires ; mission politique revendiquée par l’organisateur.",
+      "contentHash": "1c65a71a49e0f3793985cd34649a25d1a7b59ec2f858de80020f448221839874",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-hempfest",
+          "url": "https://www.hempfest.org/about/faq-2/",
+          "locator": "FAQ, What is Hempfest about? ; politicalrally/concert/artsandcrafts",
+          "result": "Déclarationprimaire del’organisateur ouverte : rassemblementpolitique pourréformerlesloiscannabis, protestival au-delàdesconcerts. Mission attribuée, sansprévisiondedateévénement.",
+          "sourceHash": "7229a899ca8d14be0deefc789da93f6f7813985f57d2ea4996749a3abb72c4a1"
+        }
+      ],
+      "pendingCoordinatorArbitration": {
+        "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+        "currentAuthorContentHash": "1c65a71a49e0f3793985cd34649a25d1a7b59ec2f858de80020f448221839874"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb02-hempfest-protestival",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+          "comment": "Mission politique soutenue. Les trois mauvaises réponses concernent textile/bâtiment/graines et laissent seule la proposition cannabique. Comparer quatre finalités plausibles d’un événement de culture cannabis (militantisme, commerce, concours musical, collecte caritative par exemple), sans opposition artificielle aux domaines secondaires.",
+          "contentHash": "c38ce4037428a8917d46be80851ab68775ad3cc4b3977906ba5bd204a35afe8d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb02-hempfest",
+              "url": "https://www.hempfest.org/about/faq-2/",
+              "locator": "FAQ, What is Hempfest about? ; politicalrally/concert/artsandcrafts",
+              "result": "Déclarationprimaire del’organisateur ouverte : rassemblementpolitique pourréformerlesloiscannabis, protestival au-delàdesconcerts. Mission attribuée, sansprévisiondedateévénement.",
+              "sourceHash": "7229a899ca8d14be0deefc789da93f6f7813985f57d2ea4996749a3abb72c4a1"
+            }
+          ],
+          "pendingCoordinatorArbitration": {
+            "reason": "Les corrections de question restent en attente de l’arbitrage du coordinateur ; contentHash conserve la version initialement relue.",
+            "currentAuthorContentHash": "1c65a71a49e0f3793985cd34649a25d1a7b59ec2f858de80020f448221839874"
+          }
+        }
+      ],
+      "coordinatorScope": "Lecture complète des quinze QCM corrigés et des demandes de première revue. Preuves Sol préservées ; nouvelles preuves et métadonnées déjà reprises par A. Aucune consultation supplémentaire revendiquée par le coordinateur pour ces quinze décisions."
+    }
+  ],
+  "summary": {
+    "questions": 30,
+    "approved": 15,
+    "changesRequested": 15,
+    "sourcesChecked": 20,
+    "sourceConsultation": "18textes/pagesouverts et passagespertinents lus ;1extraitinstitutionnelIllinois explicitement borné, PDFnonchargé.",
+    "domains": {
+      "active": 30
+    },
+    "difficulty": "Niveaux relus ; demande ciblée surColoradochronologie si le fait devienthistoriqueprécis, etHoli si lecluedescouleurs estretiré. Aucun niveauabaissé pouratteindreunquota.",
+    "scopeArbitration": "Le coordinateur a confirmé l’exclusion du fait oliban surautelvoisin. Le candidatdoit être remplacéou retiré, pas recatégorisé.",
+    "pendingScope": "Autres corrections de questions réservées au coordinateur ; demandes initiales intégralement conservées dans initialReview."
+  },
+  "duplicateChecks": {
+    "indexFile": "docs/quiz-2000/fact-index.jsonl",
+    "method": "Lecture complète31objets et recherches ciblées suridentités, synonymes, œuvres, rites, sites et lois ; lecture despropriétés/réponses voisines ; aucune validation paréchantillon.",
+    "findings": [
+      "Pas de doublon factuel externe trouvé avec lesfaits conservés ; les anciens Jirzankal portent géographie, ancienneté et matériau desbraseros, distincts du profilTHC interprété ici.",
+      "LegalizeIt message et BrownieMary surnom ne doivent pasêtre sauvés par inversion desvoisins : remplacements demandés.",
+      "Aradcontexte est un fait cannabique recevable ; oliban àl’autelvoisin horschamp.",
+      "Les règles néerlandaisesalcool/mineurs/tolérance sontdistinctes desrègles Allemagne/Malte/Lux réservées àra02."
+    ]
+  },
+  "sourceMetadataChangesRequested": [
+    {
+      "sourceId": "q2-rb02-holi",
+      "field": "passage et consultation.locator",
+      "request": "PagePDF76 (index75), pageimprimée66 pour la ligneCannabis."
+    },
+    {
+      "sourceId": "q2-rb02-mary",
+      "field": "published",
+      "request": "2019 (DatePrepared), encodage2019-02-16 disponible ; remplacer s.d."
+    }
+  ],
+  "initialReview": {
+    "reviewedAt": "2026-11-17",
+    "items": [
+      {
+        "id": "hemp-q2-rb02-reefer-alarmisme",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Discours alarmiste du film confirmé dans le préambule cité par AFI ; représentation culturelle distinguée d’un résultat scientifique. Fait initial distinct de sa réception ultérieure.",
+        "contentHash": "d3d672d0b3c82b2cb79fa8bb4b32bf84a1ec2ae62b4a7b6cc155738779d0771c",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-afi",
+            "url": "https://catalog.afi.com/Film/7885-TELL-YOUR-CHILDREN?cxt=filmography",
+            "locator": "History, préambule du film ; dernier paragraphe sur le succès culte",
+            "result": "PageAFI effectivement ouverte : discours initial associant cannabis/violence, rééditions, succès culte àla télévision tardive et envidéo soutenus.",
+            "sourceHash": "4995d18b30f784341891c901b0d167abb42979cc2a40e47eed489212513b5be7"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-reefer-film-culte",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Fait soutenu, mais trois distracteurs sont trop éloignés de la réception réelle de ce film : manuel médical, formation des botanistes, documentaire cannabinoïdes. Garder le fait et le niveau2 ; proposer quatre modes de réception ou de diffusion culturellement plausibles.",
+        "contentHash": "018d3781e1c63d7149be48f53a77dd4be9487d87f3e302445b295306a4f78c70",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-afi",
+            "url": "https://catalog.afi.com/Film/7885-TELL-YOUR-CHILDREN?cxt=filmography",
+            "locator": "History, préambule du film ; dernier paragraphe sur le succès culte",
+            "result": "PageAFI effectivement ouverte : discours initial associant cannabis/violence, rééditions, succès culte àla télévision tardive et envidéo soutenus.",
+            "sourceHash": "4995d18b30f784341891c901b0d167abb42979cc2a40e47eed489212513b5be7"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-cheech-chong-duo",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Identité du duo et film1978 directement confirmés par le musée et la Recording Academy ; quatre duos d’interprètes plausibles. Domaine et niveau1 recevables.",
+        "contentHash": "1dfaa440646584b3b59067baaf18cfb32f8d765954ff2cf0e5704699f93bfafa",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-grammy",
+            "url": "https://www.grammy.com/news/cheech-chong-set-celebrate-40-years-smoke-grammy-museum/",
+            "locator": "Présentation de l’exposition StillRollin’, paragraphes1–4",
+            "result": "PageRecordingAcademy/GRAMMYMuseum ouverte : CheechMarin/TommyChong, UpInSmoke1978, stonercomedy et antécédents de scène/enregistrements confirmés.",
+            "sourceHash": "5b507248783cf17e99bd515eb45de154934a867addb94ee971014c604a7d7544"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-stoner-comedy-genre",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Registre soutenu. Refaire les trois genres concurrents : procès de brevet, botanique de terrain et fibres navales sont des leurres artificiels face à Cheech et Chong. Comparer quatre genres cinématographiques plausibles de même précision ; garder le fait cannabique.",
+        "contentHash": "5dbdc8990d7b56fcc0082a0bb9d75f10a50dc662ac894cb67ec9f1d9b1de32ad",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-grammy",
+            "url": "https://www.grammy.com/news/cheech-chong-set-celebrate-40-years-smoke-grammy-museum/",
+            "locator": "Présentation de l’exposition StillRollin’, paragraphes1–4",
+            "result": "PageRecordingAcademy/GRAMMYMuseum ouverte : CheechMarin/TommyChong, UpInSmoke1978, stonercomedy et antécédents de scène/enregistrements confirmés.",
+            "sourceHash": "5b507248783cf17e99bd515eb45de154934a867addb94ee971014c604a7d7544"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-legalize-it-artiste",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Attribution de LegalizeIt à PeterTosh confirmée par la biographie officielle ; quatre artistes reggae comparables. Conserver cet item et remplacer son voisin tautologique.",
+        "contentHash": "b33be721186ea055adf007e52957424c5f01f259edad0a18bacce48678c70555",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-tosh",
+            "url": "https://petertosh.com/history",
+            "locator": "History, SoloCareer, paragraphe1976",
+            "result": "Biographie officielle effectivement ouverte : PeterTosh, album/titreLegalizeIt et statut d’hymne de légalisation confirmés ; aucun effet médical des paroles n’est validé.",
+            "sourceHash": "3a5ef6146b815afa4d5e4ef8a2fe7e22526ca754bbfb72980df5c3b0adea24a2"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-legalize-it-message",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Remplacer le candidat : Legalize It donne directement « légalisation » par traduction. Avec la question voisine sur Peter Tosh, ce second item redécline la même œuvre sans apporter de fait distinct utile. Ne pas simplement cacher le titre ou inverser la question5 ; choisir un autre fait culturel sourcé.",
+        "contentHash": "46d13cfb27f415b465a56ab0d7ec11e866a3c428fcb3774a7e46ab27a3d91636",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-tosh",
+            "url": "https://petertosh.com/history",
+            "locator": "History, SoloCareer, paragraphe1976",
+            "result": "Biographie officielle effectivement ouverte : PeterTosh, album/titreLegalizeIt et statut d’hymne de légalisation confirmés ; aucun effet médical des paroles n’est validé.",
+            "sourceHash": "3a5ef6146b815afa4d5e4ef8a2fe7e22526ca754bbfb72980df5c3b0adea24a2"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-420-heure-rendezvous",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Le témoignage des Waldos soutient l’origine horaire et le glissement vers un code cannabique ; attribution explicite évite de présenter la priorité comme incontestée.",
+        "contentHash": "5c0c396a99e3e796069d050fd9bcbb6e074e3aa4330d358692ee314479a72afa",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-waldos",
+            "url": "https://www.420waldos.com/",
+            "locator": "Home, présentation et MeetTheWaldos",
+            "result": "Témoignage direct ouvert : cinq amis de SanRafaelHighSchool, Californie ; rendez-vous4:20pm, passage de420Louie à420 comme code cannabique.",
+            "sourceHash": "523fe34cfa5c03bdd3707ccab56de399f5e35fbb3af45a92216c5d634b9af86b"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-420-date-celebration",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "La date de célébration420 est un fait culturel actif ; la version actuelle doit cesser de tester une simple notation de calendrier.",
+        "comment": "Le20avril est soutenu par l’extrait institutionnel effectivement lu. Retirer «4/20» et la précision «notation américaine» du prompt : ils transforment le test en conversion générique de calendrier. Demander à quelle date se tiennent les rassemblements420 ; adapter l’explication à la tradition culturelle.",
+        "contentHash": "0b6756a12f21c001f693e07f81d7d234abe957bd00ca0f9dc47a110a53a6c5c3",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-illinois",
+            "url": "https://cannabis.illinois.gov/content/dam/soi/en/web/idfpr/forms/auc/spring23cannabisquarterly.pdf",
+            "locator": "Extrait indexé du PDF, pageimprimée8, AHistoryof420",
+            "result": "PDFdirect non chargé ; extrait institutionnel indexé réellement lu après recherche ciblée. Il mentionne explicitement une célébration420 le20avril. Aucune lecture intégrale du PDF revendiquée.",
+            "sourceHash": "38fdf83a6aab8d5d9f10e5bb6aa49bbe441b08b75831bd9733127d15bacec46a"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-waldos-californie",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Origine lycéenne californienne directement présente dans le témoignage ; propriété distincte du rendez-vous horaire et pas de doublon dans les faits conservés.",
+        "contentHash": "4271b21bea41722c50902f884a9da19b6c94c85c2f53453609bc66619d3ca7d7",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-waldos",
+            "url": "https://www.420waldos.com/",
+            "locator": "Home, présentation et MeetTheWaldos",
+            "result": "Témoignage direct ouvert : cinq amis de SanRafaelHighSchool, Californie ; rendez-vous4:20pm, passage de420Louie à420 comme code cannabique.",
+            "sourceHash": "523fe34cfa5c03bdd3707ccab56de399f5e35fbb3af45a92216c5d634b9af86b"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-rastafari-sacrement",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Retirer l’indice «herbe sacrée», qui donne sacrement. Demander le rôle du cannabis dans la pratique rastafari sans le qualifier d’avance ; comparer quatre rôles sociaux ou religieux plausibles, plutôt que textile/aliment sans rôle religieux. Le sens rituel est bien sourcé.",
+        "contentHash": "997a5d02abbcdff53d02d9e9f313308bbf87d52fd3ba127faa199e51409e3b8d",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-rasta",
+            "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+            "locator": "SectionB, PDFpages8–10, herbe sacramentelle et reasoning",
+            "result": "Mémoire effectivement ouvert aux passages : rôle religieux, communion et collectivevisionarydiscourse du reasoning confirmés. Il s’agit d’un argumentaire d’experts, pas d’une décision judiciaire ni d’une preuve clinique.",
+            "sourceHash": "f79fd065d8d25fd1abea7029fe241f4c66adf60385bcb59a44aa48ed04ab4e9c"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-rastafari-reasoning",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Fait soutenu, mais les trois distracteurs (dégustation entre boutiques, classification des graines, contrôle du poids) ne sont pas des alternatives plausibles au reasoning. Comparer des pratiques collectives de même nature : réunion spirituelle, délibération commerciale, pratique musicale, médiation sociale par exemple, avec une seule définition exacte.",
+        "contentHash": "1aacd504537c4b500c0d0e26e36eba6462e97e174218d21bdf48de9345a78541",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-rasta",
+            "url": "https://www.aclu.org/sites/default/files/FilesPDFs/guam-amicus2.pdf",
+            "locator": "SectionB, PDFpages8–10, herbe sacramentelle et reasoning",
+            "result": "Mémoire effectivement ouvert aux passages : rôle religieux, communion et collectivevisionarydiscourse du reasoning confirmés. Il s’agit d’un argumentaire d’experts, pas d’une décision judiciaire ni d’une preuve clinique.",
+            "sourceHash": "f79fd065d8d25fd1abea7029fe241f4c66adf60385bcb59a44aa48ed04ab4e9c"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-jamaica-2015-rastafari",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Reconnaissance historique soutenue. Refaire les choix : usage obligatoire dans les écoles et exportation libre par toute association sont caricaturaux. Comparer quatre usages religieux ou régimes de reconnaissance plausibles, sans donner la bonne réponse uniquement par sa prudence.",
+        "contentHash": "ec2e59c0eef4e585819edb0f811cdb0f5c7d6cce5eef638305bb92e19c88b35f",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-jamaica",
+            "url": "https://cla.gov.jm/sites/default/files/laws-regulations/the-dangerous-drugs-amendment-act-2015.pdf",
+            "locator": "DangerousDrugs(Amendment)Act2015, PDFpages4–7, religiouspurposes",
+            "result": "Texte original ouvert : reconnaissance expresse de l’usage religieux comme sacrement de la foi rastafari et régimes d’autorisation. Portée historique2015 conservée.",
+            "sourceHash": "950ad3c9990d3d1cf080be938bd7e4b81e950e83285077bb4ffd30c8577d17cb"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-holi-cannabis-tradition",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Association Holi/bhang soutenue. Retirer «fête des couleurs» pour tester effectivement l’association cannabique, plutôt que le surnom d’une fête. Corriger aussi le locator partagé q2-rb02-holi : ligneCannabis sur pagePDF76 (index75), pageimprimée66, pas pagePDF75. Garder le niveau1 seulement si la formulation finale reste réellement accessible.",
+        "contentHash": "6b4f6d0a3d485588f960a6859e15c4954be185d74cef0946a15844caf134a1de",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-holi",
+            "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+            "locator": "PagePDF76 (index75), pageimprimée66, tableauCannabissativa(Bhang)",
+            "result": "Bulletin ouvert ; ligneCannabis lue : culte deShiva pendantShivratri/ParthivPuja et consommation deBhang pendantHoli. Le locator auteurpagePDF75 doit être corrigé ; pas de lecture visuelle revendiquée, capture ayant échoué.",
+            "sourceHash": "45142733a0cfd4ec25fceba5a8c1bb97933686da59d8ee2110d88466c1150185"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-shiva-cannabis-tradition",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Shivratri donne Shiva dans l’énoncé : supprimer ce nom de fête du prompt et tester le lien cannabis/divinité avec les quatre choix actuels. Corriger le locator partagé holi vers pagePDF76 (index75), imprimée66. Le fait observé dans le tableau est soutenu, sans universalité pour l’hindouisme.",
+        "contentHash": "f42da0441a8c37bc8c1de4ac5a64fe9d885bf90500d5d388d7f7847a05e5a1d4",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-holi",
+            "url": "https://gbpihed.gov.in/PDF/Publication/Bulletin/Envis_Bulletin_Himalayan_Ecology_Vol_29_2021.pdf",
+            "locator": "PagePDF76 (index75), pageimprimée66, tableauCannabissativa(Bhang)",
+            "result": "Bulletin ouvert ; ligneCannabis lue : culte deShiva pendantShivratri/ParthivPuja et consommation deBhang pendantHoli. Le locator auteurpagePDF75 doit être corrigé ; pas de lecture visuelle revendiquée, capture ayant échoué.",
+            "sourceHash": "45142733a0cfd4ec25fceba5a8c1bb97933686da59d8ee2110d88466c1150185"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-arad-contexte-cultuel",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Contexte du petit autel au sanctuaire d’Arad soutenu par les résidus de THC/CBD/CBN et la discussion archéologique. Histoire directement cannabique ; aucun effet vécu reconstruit.",
+        "contentHash": "a526cc43bc9af898c3a4ac3c4097a653bed3fa818f9f83c70ed1c9d4c6281339",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-arad",
+            "url": "https://motorcityseeds.org/wp-content/uploads/2023/08/cannabis-and-frankincense-at-judahite-shrine-of-arad.pdf",
+            "locator": "Abstract, pagePDF2 ; résultats et discussion desautels",
+            "result": "PDFdu papier original ouvert sur hébergement tiers : THC/CBD/CBN au petitautel, oliban au grand. Premier fait cannabique soutenu ; second écarté pour son périmètre, non pour une erreur factuelle. Aucune page de catalogue du tiers consultée.",
+            "sourceHash": "e1fe1590a78ca48987219372f3b5a53ba9597af46331dac3002ba5874fb8c553"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-arad-encens-autre-autel",
+        "status": "changes_requested",
+        "domain": "offscope",
+        "domainComment": "Le corrigé teste l’oliban d’un autre autel ; sujet extérieur au cannabis à actifs, malgré la proximité du site. Arbitrage du coordinateur confirmé.",
+        "comment": "Hors périmètre confirmé par le coordinateur : le fait testé est l’oliban sur un autre autel, pas une connaissance cannabique. Remplacer par un fait réellement lié au cannabis, distinct d’Arad-contexte-cultuel et des autres faits archéologiques, ou retirer et reporter cette place. Ne pas seulement renommer le domaine.",
+        "contentHash": "cedbda8bfd0e6502a3132d76b99fc1c8e1f2a84d01d0e9a0ebd6b067fba49712",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-arad",
+            "url": "https://motorcityseeds.org/wp-content/uploads/2023/08/cannabis-and-frankincense-at-judahite-shrine-of-arad.pdf",
+            "locator": "Abstract, pagePDF2 ; résultats et discussion desautels",
+            "result": "PDFdu papier original ouvert sur hébergement tiers : THC/CBD/CBN au petitautel, oliban au grand. Premier fait cannabique soutenu ; second écarté pour son périmètre, non pour une erreur factuelle. Aucune page de catalogue du tiers consultée.",
+            "sourceHash": "e1fe1590a78ca48987219372f3b5a53ba9597af46331dac3002ba5874fb8c553"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-jiayi-plantes-linceul",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Résumé original indexé par AGRIS : treize plantes presque entières placées en linceul sur le corps. Usage rituel du cannabis, sans assimilation à du textile ni déduction d’un high ; fait distinct des autres sites funéraires.",
+        "contentHash": "17ef37f44ba463fb87d627d494fa4a65efc5c30d40a9556d6753b7d4b9f1f891",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-jiayi",
+            "url": "https://agris.fao.org/search/en/providers/122535/records/65df1e754c5aef494fdff498",
+            "locator": "AGRIS, résumé de Jiangetcollègues2016",
+            "result": "Notice scientifique ouverte :13plantes presque entières arrangées sur le corps masculin comme burialshroud. Le résumé soutient la disposition rituelle, pas une teneur ni une expérience psychoactive précise.",
+            "sourceHash": "4e6a59dd66977d09fd3aa1f0bdf5f984f82ef1d9ba4f9c2add8d2c817bfabcfe"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-jirzankal-selection-thc",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Ren2019 propose un profil plus riche en THC que les populations sauvages usuelles d’après les résidus ; formulation hypothétique et absence de dosage exact respectées. Le fait testé est ce profil proposé, pas une preuve certaine de sélection intentionnelle.",
+        "contentHash": "66ec8d8fc9b62dc6bf48232b0ca3398832b362bea68470820c4d598adf89e305",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-jirzankal",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+            "locator": "Results, Cannabinoidresidues, paragraphes207–213 ; Discussion",
+            "result": "Texte originalPMC ouvert : dominanceCBN et absence de signalCBD conduisent àproposer un cannabis plus riche enTHC que les formes sauvages usuelles ; sélection/domestication/plasticité restent des interprétations possibles.",
+            "sourceHash": "ab5e0ab31f00d79ef7517976d518a6467ed3af46b1262760b0cb73fa3a4ad2d6"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-armstrong-muggles-titre",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Sens historique soutenu. Remplacer les distracteurs anachroniques ou fantaisistes (brevetCBD en1928, nomlatin des fleurs, tribunalspécialisé) par trois sens d’argot ou références musicales plausibles. Conserver l’œuvre, le fait et le niveau2.",
+        "contentHash": "c48489a261f22c46d8785bca963b78865d1b02d2d50e70047d89a39383e90bb3",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-armstrong",
+            "url": "https://southernspaces.org/2018/mapping-muggleheads-new-orleans-and-marijuana-menace-1920-1930/",
+            "locator": "Introduction, lexique muggles ; passage/notes LouisArmstrong, Muggles1928",
+            "result": "Recherche historique ouverte : muggles est donné comme nom ancien de marijuana ; l’enregistrement de1928 et le contexte cannabique d’Armstrong sont présents. Pas de validation clinique.",
+            "sourceHash": "a7c52850cc8e5a20dddb1152321419ad5de4198316c377b435da9d13348f049b"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-brownie-mary-solidarite",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Contexte sida et soutien aux malades soutenu. Remplacer certification des voiles, sélection huile et fermeture des associations par des causes militantes plausibles de la même époque. Corriger q2-rb02-mary.published : la notice indique Date Prepared2019 et encodage2019-02-16 ; «s.d.» ne décrit pas cette information disponible.",
+        "contentHash": "552c6b7e638dbd6cfdeeeda464ebfcb958bb62cd40bd8de291069db8b7e1da51",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-mary",
+            "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+            "locator": "Summary ; Biographical/historical ; Aboutthiscollectionguide",
+            "result": "Findingaid ouvert : brownies pour des personnes atteintes du sida et gravesmaladies, ShantiProject/Ward86 ; DatePrepared2019 et DateEncoded2019-02-16 visibles. Registre auteur àcorriger surpublished.",
+            "sourceHash": "a56c40d8f0fa6652b0333a65063e4e05a3d60ee9e3c2771da5f80222664c0ef9"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-brownie-mary-surnom",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Remplacer le candidat : Brownie Mary→brownies/gâteaux au chocolat est une traduction du surnom, pas un fait distinct. Ne pas le reformuler en question inverse de l’item solidarité. Choisir un autre fait cannabique indépendant ; corriger aussi l’année2019 du finding aid partagé si la source reste utilisée.",
+        "contentHash": "450ea6b5cdb0ab2f045c48d09387203ffeedb9bec19c57fae77d3e180d786343",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-mary",
+            "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+            "locator": "Summary ; Biographical/historical ; Aboutthiscollectionguide",
+            "result": "Findingaid ouvert : brownies pour des personnes atteintes du sida et gravesmaladies, ShantiProject/Ward86 ; DatePrepared2019 et DateEncoded2019-02-16 visibles. Registre auteur àcorriger surpublished.",
+            "sourceHash": "a56c40d8f0fa6652b0333a65063e4e05a3d60ee9e3c2771da5f80222664c0ef9"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-coffeeshop-sans-alcool",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Fond exact soutenu, mais remplacer «coffeeshop autorisé à vendre» par «coffeeshop où la vente est tolérée sous conditions», pour rester cohérent avec l’item tolérance et la source. Refaire le distracteur imposant cannabis et alcool ensemble ; garder quatre régimes de service plausibles.",
+        "contentHash": "5eec5da354f76a650f466c8f1fc17cefc6e12a3ed4fb5a166ac57baefbbda75b",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-nl",
+            "url": "https://www.government.nl/themes/family-health-and-care/drugs/am-i-committing-a-criminal-offence-if-i-possess-produce-or-deal-in-drugs",
+            "locator": "The sale of softdrugs in coffeeshops",
+            "result": "Pageofficielle ouverte : coffeeshops sansalcool ; vente formellement pénale, non-poursuite pour petitesventes sousconditions. Précision «autorisé» àcorriger dans le prompt22.",
+            "sourceHash": "52a6dc4afa83370af10cf17ca3679a408da94bc0b46ad9d470bb48f0b704e703"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-coffeeshop-tolerance",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Le gouvernement distingue infraction formelle et non-poursuite conditionnelle dans le régime classique. Distinction utile, bornée et sans prétendre décrire toutes les expérimentations locales.",
+        "contentHash": "f218dc2092152befcb2f278ea549d45fdec510377d72febde8dcaca7b203e901",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-nl",
+            "url": "https://www.government.nl/themes/family-health-and-care/drugs/am-i-committing-a-criminal-offence-if-i-possess-produce-or-deal-in-drugs",
+            "locator": "The sale of softdrugs in coffeeshops",
+            "result": "Pageofficielle ouverte : coffeeshops sansalcool ; vente formellement pénale, non-poursuite pour petitesventes sousconditions. Précision «autorisé» àcorriger dans le prompt22.",
+            "sourceHash": "52a6dc4afa83370af10cf17ca3679a408da94bc0b46ad9d470bb48f0b704e703"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-coffeeshop-mineurs",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Les critères officiels néerlandais interdisent à la fois entrée et vente aux moins de18ans ; les options comparent des régimes d’accès. Source précise effectivement lue.",
+        "contentHash": "52755d6caee7667a233682979baadcf3022eb2a11363b5348b0e1115bbc0fdb0",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-nl-minors",
+            "url": "https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/drugs/gedoogbeleid-softdrugs-en-coffeeshops",
+            "locator": "Gedoogcriteria voor coffeeshops, lignes18–20",
+            "result": "Pageofficielle néerlandaise ouverte : pas devente auxmineurs ni d’entrée desmineurs, absence d’alcool ; conditionslocales supplémentaires possibles.",
+            "sourceHash": "0460d6c16cb8d93057a29fe7622123c736cef4ec863e35663deb528b62fdd138"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-colorado-vote-adultes",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "La chronologie officielle de Denver confirme le marché adulte et sa réglementation dans Amendment64 en2012 ; distinction avec le marché médical antérieur soutenue.",
+        "contentHash": "886364bce616a2fcda0f64637aaa5f55416b33ed32621a324c683d3693d873c8",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-colorado",
+            "url": "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Marijuana-information/Laws-rules-and-regulations",
+            "locator": "History of marijuana policy inDenver,2012–2014",
+            "result": "Chronologieofficielle ouverte : Amendment64 adulte2012 ; RetailMarijuanaCode et exigenceslicences2013 ; débutsdesventes1janvier2014. Pas de transposition àtoutledroitfédéral.",
+            "sourceHash": "901942f38a978890ae492639768fc3c1486080e2638d462656947ecff324f336"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-colorado-vote-avant-vente",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "La séquence historique est sourcée, mais l’état actuel des choix donne «création de règles» par élimination de scénarios caricaturaux (vente avant toute règle, retraitélectoral, remplacement par médical). Tester concrètement le code de vente et les licences de2013, avec quatre étapes crédibles ; niveau2 préférable si un repère historique précis est demandé.",
+        "contentHash": "2d2fcdcba1bf962bf2affeb481d23752c48d65ce5495b1767d415f0e16cfca7d",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-colorado",
+            "url": "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Marijuana-information/Laws-rules-and-regulations",
+            "locator": "History of marijuana policy inDenver,2012–2014",
+            "result": "Chronologieofficielle ouverte : Amendment64 adulte2012 ; RetailMarijuanaCode et exigenceslicences2013 ; débutsdesventes1janvier2014. Pas de transposition àtoutledroitfédéral.",
+            "sourceHash": "901942f38a978890ae492639768fc3c1486080e2638d462656947ecff324f336"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-south-africa-vie-privee",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Le prompt «usage personnel…en privé» annonce «vie privée», et salaire/enseignement/vote sont trop éloignés du litige. Retirer l’indice et comparer quatre droits réellement plausibles dans une affaire de cannabis (vie privée, liberté religieuse, égalité, santé, par exemple). Le fondement de Prince2018 est bien vérifié.",
+        "contentHash": "e343040f8552864de0552659e875833b71693cb2c7f3074eb49beb385663faac",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-sa",
+            "url": "https://www.parliament.gov.za/storage/app/media/Docs/atc/128dc265-fa8d-453d-bc47-7cf06748ef2f.pdf",
+            "locator": "Rapportdaté1novembre2023, PDFpage53, rappelPrince2018",
+            "result": "Rapportparlementaire ouvert : limitationinconstitutionnelledudroitàlavieprivée dansPrince2018 et dispositifadulteprivé. Le projet2023 n’est pas traité comme droitactuelcomplet.",
+            "sourceHash": "a5d43d4164bdb0483f7f0d3d7be939b960d8fd8e1b50532251af85984c0b3cd0"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-sinclair-rally-liberation",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Le nom Freedom Rally et les trois objets industriels/commerciaux rendent l’objectif de libération évident. Tester plutôt le motif cannabique de la mobilisation ou une autre propriété historique distincte de l’item Lennon/Ono, avec des choix de même nature. La source Michigan permet une correction ciblée, mais le fait final devra être revalidé.",
+        "contentHash": "1e5fc8d817285c2bc4693c07024c3f1c3d122d56e6dad7231261cc8dccbb78bd",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-michigan",
+            "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+            "locator": "Texte FreeJohnNow/JohnSinclairFreedomRally ; paragraphePotLuck",
+            "result": "PagebibliothèqueMichigan ouverte : affairedeuxjoints, mobilisation1971, Lennon/Ono/StevieWonder ; PotLuckjeu deplateau comparéauMonopoly. Pasderecettedeproduction réelle.",
+            "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-sinclair-lennon-ono",
+        "status": "approved",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Participation de JohnLennon et YokoOno au rassemblement confirmée par la bibliothèque universitaire ; quatre couples d’artistes de même nature, fait distinct du motif de mobilisation.",
+        "contentHash": "5f7cac0949060828d0b2fc2c33d325b0c7bb3069d60abb617b875ebc4f6e6843",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-michigan",
+            "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+            "locator": "Texte FreeJohnNow/JohnSinclairFreedomRally ; paragraphePotLuck",
+            "result": "PagebibliothèqueMichigan ouverte : affairedeuxjoints, mobilisation1971, Lennon/Ono/StevieWonder ; PotLuckjeu deplateau comparéauMonopoly. Pasderecettedeproduction réelle.",
+            "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-pot-luck-jeu-societe",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Objet correctement identifié, mais instrument de contrôle, livret de prescription et filmmuet sont des distracteurs très éloignés de la culture ludique donnée par le titre. Comparer quatre objets culturels plausibles ou quatre types de jeux ; conserver le fait distinct de PotLuck.",
+        "contentHash": "45616ad9dc165a64ec8bfcec2fd135e0e471886c825ad5122a9a87f4f9e2cdf9",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-michigan",
+            "url": "https://blogs.lib.umich.edu/beyond-reading-room/special-collections-after-hours-hash-bash",
+            "locator": "Texte FreeJohnNow/JohnSinclairFreedomRally ; paragraphePotLuck",
+            "result": "PagebibliothèqueMichigan ouverte : affairedeuxjoints, mobilisation1971, Lennon/Ono/StevieWonder ; PotLuckjeu deplateau comparéauMonopoly. Pasderecettedeproduction réelle.",
+            "sourceHash": "2b33f643e80b747362e220a469643d0c1c4b252bda73530f50533e5d8cc0002e"
+          }
+        ]
+      },
+      {
+        "id": "hemp-q2-rb02-hempfest-protestival",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+        "comment": "Mission politique soutenue. Les trois mauvaises réponses concernent textile/bâtiment/graines et laissent seule la proposition cannabique. Comparer quatre finalités plausibles d’un événement de culture cannabis (militantisme, commerce, concours musical, collecte caritative par exemple), sans opposition artificielle aux domaines secondaires.",
+        "contentHash": "c38ce4037428a8917d46be80851ab68775ad3cc4b3977906ba5bd204a35afe8d",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb02-hempfest",
+            "url": "https://www.hempfest.org/about/faq-2/",
+            "locator": "FAQ, What is Hempfest about? ; politicalrally/concert/artsandcrafts",
+            "result": "Déclarationprimaire del’organisateur ouverte : rassemblementpolitique pourréformerlesloiscannabis, protestival au-delàdesconcerts. Mission attribuée, sansprévisiondedateévénement.",
+            "sourceHash": "7229a899ca8d14be0deefc789da93f6f7813985f57d2ea4996749a3abb72c4a1"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "questions": 31,
+      "approved": 12,
+      "changesRequested": 19,
+      "sourcesChecked": 19,
+      "sourceConsultation": "18textes/pagesouverts et passagespertinents lus ;1extraitinstitutionnelIllinois explicitement borné, PDFnonchargé.",
+      "domains": {
+        "active": 30,
+        "offscope": 1
+      },
+      "difficulty": "Niveaux relus ; demande ciblée surColoradochronologie si le fait devienthistoriqueprécis, etHoli si lecluedescouleurs estretiré. Aucun niveauabaissé pouratteindreunquota.",
+      "scopeArbitration": "Le coordinateur a confirmé l’exclusion du fait oliban surautelvoisin. Le candidatdoit être remplacéou retiré, pas recatégorisé."
+    },
+    "sourceMetadataChangesRequested": [
+      {
+        "sourceId": "q2-rb02-holi",
+        "field": "passage et consultation.locator",
+        "request": "PagePDF76 (index75), pageimprimée66 pour la ligneCannabis."
+      },
+      {
+        "sourceId": "q2-rb02-mary",
+        "field": "published",
+        "request": "2019 (DatePrepared), encodage2019-02-16 disponible ; remplacer s.d."
+      }
+    ]
+  },
+  "removedCandidates": [
+    {
+      "id": "hemp-q2-rb02-legalize-it-message",
+      "status": "changes_requested",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Remplacer le candidat : Legalize It donne directement « légalisation » par traduction. Avec la question voisine sur Peter Tosh, ce second item redécline la même œuvre sans apporter de fait distinct utile. Ne pas simplement cacher le titre ou inverser la question5 ; choisir un autre fait culturel sourcé.",
+      "contentHash": "46d13cfb27f415b465a56ab0d7ec11e866a3c428fcb3774a7e46ab27a3d91636",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-tosh",
+          "url": "https://petertosh.com/history",
+          "locator": "History, SoloCareer, paragraphe1976",
+          "result": "Biographie officielle effectivement ouverte : PeterTosh, album/titreLegalizeIt et statut d’hymne de légalisation confirmés ; aucun effet médical des paroles n’est validé.",
+          "sourceHash": "3a5ef6146b815afa4d5e4ef8a2fe7e22526ca754bbfb72980df5c3b0adea24a2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-arad-encens-autre-autel",
+      "status": "changes_requested",
+      "domain": "offscope",
+      "domainComment": "Le corrigé teste l’oliban d’un autre autel ; sujet extérieur au cannabis à actifs, malgré la proximité du site. Arbitrage du coordinateur confirmé.",
+      "comment": "Hors périmètre confirmé par le coordinateur : le fait testé est l’oliban sur un autre autel, pas une connaissance cannabique. Remplacer par un fait réellement lié au cannabis, distinct d’Arad-contexte-cultuel et des autres faits archéologiques, ou retirer et reporter cette place. Ne pas seulement renommer le domaine.",
+      "contentHash": "cedbda8bfd0e6502a3132d76b99fc1c8e1f2a84d01d0e9a0ebd6b067fba49712",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-arad",
+          "url": "https://motorcityseeds.org/wp-content/uploads/2023/08/cannabis-and-frankincense-at-judahite-shrine-of-arad.pdf",
+          "locator": "Abstract, pagePDF2 ; résultats et discussion desautels",
+          "result": "PDFdu papier original ouvert sur hébergement tiers : THC/CBD/CBN au petitautel, oliban au grand. Premier fait cannabique soutenu ; second écarté pour son périmètre, non pour une erreur factuelle. Aucune page de catalogue du tiers consultée.",
+          "sourceHash": "e1fe1590a78ca48987219372f3b5a53ba9597af46331dac3002ba5874fb8c553"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb02-brownie-mary-surnom",
+      "status": "changes_requested",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement une œuvre, une pratique rituelle, un vestige ou une règle de l’histoire/culture du cannabis à actifs.",
+      "comment": "Remplacer le candidat : Brownie Mary→brownies/gâteaux au chocolat est une traduction du surnom, pas un fait distinct. Ne pas le reformuler en question inverse de l’item solidarité. Choisir un autre fait cannabique indépendant ; corriger aussi l’année2019 du finding aid partagé si la source reste utilisée.",
+      "contentHash": "450ea6b5cdb0ab2f045c48d09387203ffeedb9bec19c57fae77d3e180d786343",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb02-mary",
+          "url": "https://oac.cdlib.org/findaid/ark:/13030/c8r49v5q",
+          "locator": "Summary ; Biographical/historical ; Aboutthiscollectionguide",
+          "result": "Findingaid ouvert : brownies pour des personnes atteintes du sida et gravesmaladies, ShantiProject/Ward86 ; DatePrepared2019 et DateEncoded2019-02-16 visibles. Registre auteur àcorriger surpublished.",
+          "sourceHash": "a56c40d8f0fa6652b0333a65063e4e05a3d60ee9e3c2771da5f80222664c0ef9"
+        }
+      ]
+    }
+  ],
+  "targetedRevalidation": {
+    "reviewer": "rebalance_classify_a",
+    "reviewedAt": "2026-11-17",
+    "scope": "Trois nouveaux faits et deux seules corrections de métadonnées de sources, sur instruction du coordinateur.",
+    "newFactsApproved": [
+      "hemp-q2-rb02-hippie-hill-ville",
+      "hemp-q2-rb02-peron-cannabis-buyers-club",
+      "hemp-q2-rb02-sinclair-rally-liberation"
+    ],
+    "unchangedApprovalsPreserved": 12,
+    "sourceMetadataValidated": [
+      "q2-rb02-holi",
+      "q2-rb02-mary"
+    ],
+    "alreadyApprovedQuestionsAffectedByMetadata": 0,
+    "duplicateCheck": "Index relu pour Hippie Hill, Dennis Peron et la peine de Sinclair : aucun autre fait externe identique ; le voisin Lennon/Ono teste les participants, pas la condamnation."
+  }
+}

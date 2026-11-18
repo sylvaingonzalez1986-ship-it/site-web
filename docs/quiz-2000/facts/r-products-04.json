@@ -1,0 +1,365 @@
+{
+  "batchId": "r-products-04",
+  "author": "rebalance_products_sol",
+  "createdAt": "2026-11-17",
+  "status": "author-frozen-awaiting-independent-review",
+  "domain": "active",
+  "count": 27,
+  "levels": {
+    "1": 12,
+    "2": 10,
+    "3": 4,
+    "4": 1
+  },
+  "sourcesRead": [
+    {
+      "sourceId": "q2-rp04-hc-edible-composition",
+      "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+      "access": "official-page",
+      "locator": "Edible cannabis : Shelf-stable ; Supplemented foods ; Vitamins and minerals"
+    },
+    {
+      "sourceId": "q2-rp04-gazette-total-label",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors43-eng.html",
+      "access": "official-page",
+      "locator": "Packaging and labelling : paragraphes commençant Under the current requirements et With these amendments"
+    },
+    {
+      "sourceId": "q2-rp04-hc-rolling-papers",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "access": "official-page",
+      "locator": "Smoking accessories : Rolling papers"
+    },
+    {
+      "sourceId": "q2-rp04-unr-sugar-leaves",
+      "url": "https://extension.unr.edu/publication.aspx?PubID=4479",
+      "access": "official-page",
+      "locator": "Paragraphe Sugar leaves et comparaison avec fan leaves"
+    },
+    {
+      "sourceId": "q2-rp04-sanskriti-chillum",
+      "url": "https://artsandculture.google.com/asset/chillum/SgFoYeYzgjKoDQ",
+      "access": "catalogue",
+      "locator": "Notice de l’objet, comparaison avec hukkah"
+    },
+    {
+      "sourceId": "q2-rp04-volcano-classic",
+      "url": "https://www.storz-bickel.com/en/devices/volcanoclassic",
+      "access": "official-page",
+      "locator": "Description du système EASY VALVE et ballon détachable"
+    },
+    {
+      "sourceId": "q2-rp04-dynavap-battery-free",
+      "url": "https://www.dynavap.com/pages/try-dynavap",
+      "access": "official-page",
+      "locator": "Battery Free : How does it work?"
+    },
+    {
+      "sourceId": "q2-rp04-frenchy-cannoli",
+      "url": "https://frenchycannoli.com/about",
+      "access": "official-page",
+      "locator": "Premier paragraphe et récit de transmission du haschich traditionnel"
+    },
+    {
+      "sourceId": "q2-rp04-emerald-cup-2021",
+      "url": "https://leafly-cms-production.imgix.net/wp-content/uploads/2021/04/12102915/Press-Release_-All-the-winners-of-The-Emerald-Cup-2021_.pdf",
+      "access": "full-text",
+      "locator": "p.1 introduction ; p.9 About the Emerald Cup"
+    },
+    {
+      "sourceId": "q2-rp04-spannabis",
+      "url": "https://spannabis.es/",
+      "access": "official-page",
+      "locator": "Sobre Spannabis ; Qué encontrarás"
+    },
+    {
+      "sourceId": "q2-rp04-bogart-merriam",
+      "url": "https://www.merriam-webster.com/dictionary/bogart",
+      "access": "official-page",
+      "locator": "Verb sense2 ; Did you know?"
+    },
+    {
+      "sourceId": "q2-rp04-baek-curing",
+      "url": "https://www.mdpi.com/2223-7747/14/3/414",
+      "access": "full-text",
+      "locator": "Introduction, paragraphe Curing is another important subsequent postharvest process"
+    },
+    {
+      "sourceId": "q2-rp04-bfr-hhc-mixture",
+      "url": "https://www.bfr.bund.de/cm/349/hexahydrocannabinol-hhc-in-foodstuffs-indications-of-psychoactive-effects.pdf",
+      "access": "full-text",
+      "locator": "p.4 Figure1 et §3.2 Agent, paragraphe mixture of the epimers"
+    },
+    {
+      "sourceId": "q2-rp04-cornell-edible-co-toxins",
+      "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/Cannabis-THC-intoxication-in-dogs",
+      "access": "official-page",
+      "locator": "Introduction ; Diagnosis, paragraphe packaging"
+    },
+    {
+      "sourceId": "q2-rp04-gg4-trademark",
+      "url": "https://www.cannabisbusinesstimes.com/home/article/15703851/gorilla-glue-vs-gorilla-glue",
+      "access": "full-text",
+      "locator": "Paragraphes88–99 : entretiens Catherine Franklin et Ross Johnson, changement de noms"
+    },
+    {
+      "sourceId": "q2-rp04-weed-the-people",
+      "url": "https://www.weedthepeoplemovie.com/filmmakers",
+      "access": "official-page",
+      "locator": "Présentation du film au-dessus de The Filmmakers"
+    },
+    {
+      "sourceId": "q2-rp04-murder-mountain",
+      "url": "https://www.netflix.com/ms/title/80217475",
+      "access": "official-page",
+      "locator": "Synopsis ; Episodes1–2"
+    },
+    {
+      "sourceId": "q2-rp04-cooked-with-cannabis",
+      "url": "https://www.netflix.com/pr/title/81032347",
+      "access": "official-page",
+      "locator": "Synopsis et Genres"
+    },
+    {
+      "sourceId": "q2-rp04-budney-withdrawal",
+      "url": "https://pure.johnshopkins.edu/en/publications/the-time-course-and-significance-of-cannabis-withdrawal-3/",
+      "access": "abstract",
+      "locator": "Abstract complet, onset et peak effects"
+    },
+    {
+      "sourceId": "q2-rp04-vandrey-rem",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21296508/",
+      "access": "abstract",
+      "locator": "Abstract, Methods et Results : placebo-abstinence"
+    },
+    {
+      "sourceId": "q2-rp04-lpv-cbd-base",
+      "url": "https://www.lepetitvapoteur.com/fr/content/55-guide-eliquide-cbd",
+      "access": "official-page",
+      "locator": "Paragraphe La base est composée de propylène glycol"
+    },
+    {
+      "sourceId": "q2-rp04-bassolino-purple-flowers",
+      "url": "https://www.mdpi.com/2076-3921/12/7/1393",
+      "access": "full-text",
+      "locator": "§3.2 et Table3 : inflorescences S1750/S1759"
+    },
+    {
+      "sourceId": "q2-rp04-kosovic-cbd-matrix",
+      "url": "https://www.mdpi.com/1999-4923/13/3/412",
+      "access": "full-text",
+      "locator": "§5 Conclusions"
+    },
+    {
+      "sourceId": "q2-rp04-kaczor-delta8-delta9",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10774316/",
+      "access": "full-text",
+      "locator": "Results : Δ-9 THC and Other Cannabinoid Content Analysis ; Table2"
+    },
+    {
+      "sourceId": "q2-rp04-hc-dried-equivalence",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/online-calculator-limits-public-possession.html",
+      "access": "official-page",
+      "locator": "Introduction et paragraphe You can use this tool"
+    },
+    {
+      "sourceId": "q2-rp04-last-prisoner-project",
+      "url": "https://www.lastprisonerproject.org/mission-and-vision",
+      "access": "official-page",
+      "locator": "Vision ; Mission ; Values"
+    }
+  ],
+  "neighbourAudit": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "excludedCandidates": [
+      "THC versCBN au vieillissement : même apprentissage que hemp-evidence-cbn-oxydation, objet complet relu après alerteA.",
+      "Nicotine dans l’enveloppe de blunt : déjà explicite dans l’explication et la preuve de rp02, écartée après lecture de l’objet complet.",
+      "Stigmates comme filaments : déjà deux branches stigmatiques dans la banque.",
+      "Fleurs mâles non nulles en cannabinoïdes : trop proche de la comparaison glandulaire femelle/mâle rb03.",
+      "DisponibilitéCB1 et récupération : déjà ra02 et son explication.",
+      "CannabisCup : réservé à rb06.",
+      "Cola simple synonyme de regroupement floral : apport trop proche de l’inflorescence."
+    ],
+    "openedNeighbours": [
+      "hemp-evidence-cbn-oxydation",
+      "hemp-evidence-hhc-epimeres",
+      "hemp-q2-en02-withdrawal-sleep-irritability",
+      "hemp-q2-rb03-fleurs-femelles-richesse-glandulaire",
+      "hemp-q2-rp03-dog-thc-ataxia-incontinence",
+      "hemp-q2-rp02-traditional-blunt-tobacco-wrapper",
+      "hemp-q2-ra01-cbn-insomnia-primary-wake-result-2026"
+    ],
+    "distinctions": [
+      "Sugar leaves : petites feuilles résineuses de la tête, pas réception du pollen ou types de glandes.",
+      "Papier : contaminant du support, pas analyse des fleurs.",
+      "Chien : co-ingrédients toxiques distincts des symptômes et des tests urinaires.",
+      "Sevrage : chronologie et architectureREM, pas simple liste de symptômes.",
+      "HHC : composition commerciale variable9R/9S, pas définition des épimères ni comparaison de pharmacologie.",
+      "Pigment : mesure réellement florale et molécule identifiée, pas rappel général sur les feuilles violettes."
+    ]
+  },
+  "facts": [
+    {
+      "id": "hemp-q2-rp04-canada-edible-shelf-stable",
+      "factKey": "canada-edible-shelf-stable",
+      "subjectKey": "canada-cannabis-edible-stability",
+      "expectedAnswer": "Sans réfrigération nécessaire à leur sécurité"
+    },
+    {
+      "id": "hemp-q2-rp04-canada-supplemented-food-ingredients",
+      "factKey": "canada-supplemented-food-ingredients",
+      "subjectKey": "canada-cannabis-supplemented-food",
+      "expectedAnswer": "Les aliments supplémentés, comme certaines boissons vitaminées"
+    },
+    {
+      "id": "hemp-q2-rp04-canada-label-total-only-required",
+      "factKey": "canada-label-total-only-required",
+      "subjectKey": "canada-cannabinoid-label-total",
+      "expectedAnswer": "Le THC total et le CBD total"
+    },
+    {
+      "id": "hemp-q2-rp04-rolling-paper-contaminants",
+      "factKey": "rolling-paper-contaminants",
+      "subjectKey": "cannabis-rolling-paper",
+      "expectedAnswer": "Des métaux lourds et des pesticides"
+    },
+    {
+      "id": "hemp-q2-rp04-sugar-leaves-small-resinous",
+      "factKey": "sugar-leaves-small-resinous",
+      "subjectKey": "cannabis-sugar-leaves",
+      "expectedAnswer": "Les petites feuilles résineuses insérées dans les têtes"
+    },
+    {
+      "id": "hemp-q2-rp04-chillum-without-water",
+      "factKey": "chillum-without-water",
+      "subjectKey": "cannabis-chillum",
+      "expectedAnswer": "Il ne comporte pas de réservoir d’eau"
+    },
+    {
+      "id": "hemp-q2-rp04-volcano-classic-detachable-balloon",
+      "factKey": "volcano-classic-detachable-balloon",
+      "subjectKey": "volcano-classic",
+      "expectedAnswer": "Un ballon détachable"
+    },
+    {
+      "id": "hemp-q2-rp04-dynavap-no-integrated-battery",
+      "factKey": "dynavap-no-integrated-battery",
+      "subjectKey": "dynavap-vaporizer",
+      "expectedAnswer": "Par une source de chaleur externe"
+    },
+    {
+      "id": "hemp-q2-rp04-frenchy-cannoli-hash-artisan",
+      "factKey": "frenchy-cannoli-hash-artisan",
+      "subjectKey": "frenchy-cannoli",
+      "expectedAnswer": "L’artisanat et la transmission du haschich traditionnel"
+    },
+    {
+      "id": "hemp-q2-rp04-emerald-cup-sungrown-tradition",
+      "factKey": "emerald-cup-sungrown-tradition",
+      "subjectKey": "emerald-cup",
+      "expectedAnswer": "Les récoltes de plein air cultivées au soleil"
+    },
+    {
+      "id": "hemp-q2-rp04-spannabis-fair-nature",
+      "factKey": "spannabis-fair-nature",
+      "subjectKey": "spannabis",
+      "expectedAnswer": "Un salon réunissant exposants, produits et conférences"
+    },
+    {
+      "id": "hemp-q2-rp04-bogart-joint-monopolize",
+      "factKey": "bogart-joint-monopolize",
+      "subjectKey": "bogart-joint",
+      "expectedAnswer": "De l’accaparer sans le faire passer"
+    },
+    {
+      "id": "hemp-q2-rp04-curing-postdrying-maturation",
+      "factKey": "curing-postdrying-maturation",
+      "subjectKey": "cannabis-flower-curing",
+      "expectedAnswer": "Une maturation du produit après le séchage"
+    },
+    {
+      "id": "hemp-q2-rp04-commercial-hhc-epimer-mixture",
+      "factKey": "commercial-hhc-epimer-mixture",
+      "subjectKey": "commercial-hhc-epimer-mixture",
+      "expectedAnswer": "Un mélange de9R-HHC et de9S-HHC à proportions variables"
+    },
+    {
+      "id": "hemp-q2-rp04-cooked-with-cannabis-competition",
+      "factKey": "cooked-with-cannabis-competition",
+      "subjectKey": "cooked-with-cannabis-series",
+      "expectedAnswer": "Une compétition entre chefs autour de plats au cannabis"
+    },
+    {
+      "id": "hemp-q2-rp04-dog-edible-chocolate-xylitol",
+      "factKey": "dog-edible-chocolate-xylitol",
+      "subjectKey": "cannabis-edible-dog-co-toxins",
+      "expectedAnswer": "Le chocolat et le xylitol"
+    },
+    {
+      "id": "hemp-q2-rp04-gg4-trademark-renaming",
+      "factKey": "gg4-trademark-renaming",
+      "subjectKey": "gg4-trademark-renaming",
+      "expectedAnswer": "À la suite d’un litige de marque avec une société d’adhésifs"
+    },
+    {
+      "id": "hemp-q2-rp04-weed-the-people-families",
+      "factKey": "weed-the-people-families",
+      "subjectKey": "weed-the-people-film",
+      "expectedAnswer": "Des familles d’enfants atteints de cancers"
+    },
+    {
+      "id": "hemp-q2-rp04-murder-mountain-humboldt",
+      "factKey": "murder-mountain-humboldt",
+      "subjectKey": "murder-mountain-series",
+      "expectedAnswer": "Le comté de Humboldt, en Californie"
+    },
+    {
+      "id": "hemp-q2-rp04-withdrawal-early-days-peak",
+      "factKey": "withdrawal-early-days-peak",
+      "subjectKey": "cannabis-withdrawal-time-course",
+      "expectedAnswer": "Entre le deuxième et le sixième jour après l’arrêt"
+    },
+    {
+      "id": "hemp-q2-rp04-withdrawal-rem-rebound-trial",
+      "factKey": "withdrawal-rem-rebound-trial",
+      "subjectKey": "cannabis-withdrawal-rem",
+      "expectedAnswer": "Plus de sommeil paradoxal, mais moins de sommeil total"
+    },
+    {
+      "id": "hemp-q2-rp04-cbd-liquid-pg-vg-base",
+      "factKey": "cbd-liquid-pg-vg-base",
+      "subjectKey": "cbd-vape-liquid-base",
+      "expectedAnswer": "Propylène glycol et glycérine végétale"
+    },
+    {
+      "id": "hemp-q2-rp04-purple-flower-keracyanin",
+      "factKey": "purple-flower-keracyanin",
+      "subjectKey": "purple-cannabis-flower-keracyanin",
+      "expectedAnswer": "La cyanidine-3-rutinoside, ou kéracyanine"
+    },
+    {
+      "id": "hemp-q2-rp04-last-prisoner-project-mission",
+      "factKey": "last-prisoner-project-mission",
+      "subjectKey": "last-prisoner-project",
+      "expectedAnswer": "Last Prisoner Project"
+    },
+    {
+      "id": "hemp-q2-rp04-cbd-powder-oil-stability-comparison",
+      "factKey": "cbd-powder-oil-stability-comparison",
+      "subjectKey": "cbd-powder-oil-stability",
+      "expectedAnswer": "Une dégradation plus marquée dans la solution huileuse"
+    },
+    {
+      "id": "hemp-q2-rp04-delta8-products-also-delta9",
+      "factKey": "delta8-products-also-delta9",
+      "subjectKey": "commercial-delta8-delta9-mixture",
+      "expectedAnswer": "Le delta-9-THC"
+    },
+    {
+      "id": "hemp-q2-rp04-canada-dried-equivalence-purpose",
+      "factKey": "canada-dried-equivalence-purpose",
+      "subjectKey": "canada-dried-cannabis-equivalence",
+      "expectedAnswer": "À comptabiliser la possession publique légale"
+    }
+  ]
+}

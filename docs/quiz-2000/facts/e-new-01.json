@@ -1,0 +1,513 @@
+{
+  "batchId": "e-new-01",
+  "author": "e_engine_audit",
+  "preparedAt": "2026-11-16",
+  "status": "author-research-awaiting-independent-review",
+  "scope": "40 faits issus de sources externes sur les étiquettes, les emballages et la lecture d’analyses. Aucun catalogue du site ni ancienne fiche de producteur utilisé comme point de départ.",
+  "counts": {
+    "questions": 40,
+    "documents": 28,
+    "levels": {
+      "1": 20,
+      "2": 18,
+      "3": 2
+    },
+    "categories": {
+      "quality": 29,
+      "food": 4,
+      "prevention": 4,
+      "hemp-uses": 3
+    }
+  },
+  "sourcePolicy": "Les sources et passages réellement consultés sont dans le lot, avec date, lecteur, limites d’application et localisateurs. Une définition générale n’est pas présentée comme une spécificité du chanvre. Les guides spécialisés ne sont réutilisés que pour les principes explicitement décrits.",
+  "coordination": [
+    {
+      "agent": "d_history_food_pilot",
+      "decision": "D05 conserve eau disponible/activité de l’eau, rancissement et écart des graines rances, nettoyage des graines, rôles culinaires des ingrédients, macronutriments et énergie. E01 ne les reprend pas."
+    },
+    {
+      "agent": "d_history_food_pilot",
+      "decision": "La lyophilisation était dans la préparation E01, mais le dernier index montrait D05 freeze-drying-ice-directly-to-vapour. Le fait a été exclu d’E01 avant livraison et remplacé par le sens d’un dénombrement en UFC."
+    }
+  ],
+  "deduplication": {
+    "method": "Recherches ciblées dans fact-index.jsonl et lecture des objets voisins, complétées par la coordination D05. Pas d’approbation automatique par similarité de texte.",
+    "nearFacts": [
+      {
+        "existing": "hemp-q2-d04-hemp-beverage-nutrition-panel-not-name",
+        "proposed": "hemp-q2-en01-per-100g-nutrient-comparison",
+        "distinction": "D04 identifie le tableau pertinent ; E01 précise la base commune de comparaison lorsque les portions diffèrent."
+      },
+      {
+        "existing": "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+        "proposed": "hemp-q2-en01-inci-common-ingredient-names",
+        "distinction": "Le fait E01 porte sur la nomenclature cosmétique et non sur l’ordre massique des ingrédients."
+      },
+      {
+        "existing": "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+        "proposed": "hemp-q2-en01-opened-food-secondary-shelf-life",
+        "distinction": "D04 donne une consigne de rangement des graines ; E01 distingue les instructions du produit ouvert de la date du produit fermé, sans prescrire une durée."
+      },
+      {
+        "existing": "hemp-q2-a01-cornell-apex-biomasse",
+        "proposed": "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+        "distinction": "Cornell rapporte un écart observé entre parties de plantes ; E01 teste la représentativité comme objectif du plan de prélèvement."
+      },
+      {
+        "existing": "hemp-prevention-sechage",
+        "proposed": "hemp-q2-en01-dry-mass-result-excludes-water",
+        "distinction": "L’existant porte sur la matière retirée par séchage ; E01 porte sur le dénominateur d’un résultat analytique et la comparabilité de bases d’expression."
+      },
+      {
+        "existing": "hemp-hc-046",
+        "proposed": "hemp-q2-en01-chromatography-separates-mixture-components",
+        "distinction": "L’existant associe une méthode à un contexte archéologique ; E01 explique la fonction générale de séparation."
+      },
+      {
+        "existing": "hemp-q2-d01-huile-elements-icpms",
+        "proposed": "hemp-q2-en01-mass-analysis-ions-mass-to-charge",
+        "distinction": "L’étude de Lo Turco recherche des éléments minéraux dans une huile et identifie la technique ICP-MS ; E01 porte sur la grandeur physique qui sépare les ions, sans reprendre le résultat de cette étude."
+      }
+    ],
+    "withinBatch": [
+      {
+        "questions": [
+          "net-content-excludes-packaging",
+          "millilitres-measure-product-volume",
+          "emark-batch-average-quantity"
+        ],
+        "decision": "Trois propriétés différentes d’une quantité préemballée ; clé commune preemballage-quantite."
+      },
+      {
+        "questions": [
+          "best-before-quality-date",
+          "opened-food-secondary-shelf-life"
+        ],
+        "decision": "Sens de la DDM et changement de consigne après ouverture ; clé commune dates-alimentaires."
+      },
+      {
+        "questions": [
+          "cosmetic-pao-open-jar-months",
+          "inci-common-ingredient-names"
+        ],
+        "decision": "Période après ouverture et noms d’ingrédients ; clé commune etiquetage-cosmetique."
+      },
+      {
+        "questions": [
+          "bold-ingredient-highlights-allergen",
+          "may-contain-unintended-allergen-contact"
+        ],
+        "decision": "Mise en évidence d’un ingrédient déclaré et avertissement de présence fortuite ; clé commune allergenes-etiquetage."
+      },
+      {
+        "questions": [
+          "biosourced-material-from-biomass",
+          "industrial-compost-not-home-conditions",
+          "plastic-resin-code-identifies-material"
+        ],
+        "decision": "Origine de matière, condition de dégradation et identification de résine ; clé commune plastiques-emballage."
+      },
+      {
+        "questions": [
+          "repeatability-same-measurement-conditions",
+          "precision-distinct-from-trueness"
+        ],
+        "decision": "Conditions de répétition et distinction dispersion/référence ; clé commune fidelite-mesure."
+      },
+      {
+        "questions": [
+          "matrix-effect-other-sample-components",
+          "analytical-selectivity-interfering-components"
+        ],
+        "decision": "Le premier porte sur la modification de réponse à teneur constante ; le second sur la discrimination du composé parmi des interférents."
+      }
+    ]
+  },
+  "excludedCandidates": [
+    {
+      "fact": "Sublimation de la glace pendant la lyophilisation",
+      "reason": "Déjà traité dans D05."
+    },
+    {
+      "fact": "Sorption de vapeur d’eau par un matériau hygroscopique",
+      "reason": "Trop proche de hemp-profiles-hygroscopie."
+    },
+    {
+      "fact": "Dessiccant et vapeur d’eau",
+      "reason": "Écarté pour ne pas décliner le même principe de sorption."
+    },
+    {
+      "fact": "Sucres et énergie, fonctions culinaires, rancissement, activité de l’eau",
+      "reason": "Faits existants ou réservés à D05 ; pas de variante E01."
+    }
+  ],
+  "authorFacts": [
+    {
+      "id": "hemp-q2-en01-net-content-excludes-packaging",
+      "factKey": "net-content-excludes-packaging",
+      "subjectKey": "preemballage-quantite",
+      "sourceIds": [
+        "q2-en01-net"
+      ],
+      "learningObjective": "Lire une masse nette sans la confondre avec masse brute ou matière sèche."
+    },
+    {
+      "id": "hemp-q2-en01-lot-code-traces-manufacturing-batch",
+      "factKey": "lot-code-traces-manufacturing-batch",
+      "subjectKey": "lot-produit",
+      "sourceIds": [
+        "q2-en01-lot"
+      ],
+      "learningObjective": "Reconnaître la fonction du code de lot sur un produit."
+    },
+    {
+      "id": "hemp-q2-en01-best-before-quality-date",
+      "factKey": "best-before-quality-date",
+      "subjectKey": "dates-alimentaires",
+      "sourceIds": [
+        "q2-en01-dates"
+      ],
+      "learningObjective": "Comprendre ce que signifie une date « de préférence » sans la confondre avec la récolte ou la vente."
+    },
+    {
+      "id": "hemp-q2-en01-opened-food-secondary-shelf-life",
+      "factKey": "opened-food-secondary-shelf-life",
+      "subjectKey": "dates-alimentaires",
+      "sourceIds": [
+        "q2-en01-dates"
+      ],
+      "learningObjective": "Repérer l’information adaptée à un aliment déjà ouvert."
+    },
+    {
+      "id": "hemp-q2-en01-cosmetic-pao-open-jar-months",
+      "factKey": "cosmetic-pao-open-jar-months",
+      "subjectKey": "etiquetage-cosmetique",
+      "sourceIds": [
+        "q2-en01-cosmetique"
+      ],
+      "learningObjective": "Interpréter un pictogramme courant sur un cosmétique."
+    },
+    {
+      "id": "hemp-q2-en01-inci-common-ingredient-names",
+      "factKey": "inci-common-ingredient-names",
+      "subjectKey": "etiquetage-cosmetique",
+      "sourceIds": [
+        "q2-en01-cosmetique"
+      ],
+      "learningObjective": "Comprendre pourquoi une liste cosmétique emploie des noms normalisés."
+    },
+    {
+      "id": "hemp-q2-en01-millilitres-measure-product-volume",
+      "factKey": "millilitres-measure-product-volume",
+      "subjectKey": "preemballage-quantite",
+      "sourceIds": [
+        "q2-en01-net"
+      ],
+      "learningObjective": "Identifier la grandeur réellement indiquée par une unité."
+    },
+    {
+      "id": "hemp-q2-en01-emark-batch-average-quantity",
+      "factKey": "emark-batch-average-quantity",
+      "subjectKey": "preemballage-quantite",
+      "sourceIds": [
+        "q2-en01-emark"
+      ],
+      "learningObjective": "Distinguer contrôle quantitatif, origine et labels agricoles."
+    },
+    {
+      "id": "hemp-q2-en01-per-100g-nutrient-comparison",
+      "factKey": "per-100g-nutrient-comparison",
+      "subjectKey": "declaration-nutritionnelle",
+      "sourceIds": [
+        "q2-en01-nutrition"
+      ],
+      "learningObjective": "Comparer des produits sur une même quantité de référence."
+    },
+    {
+      "id": "hemp-q2-en01-e-number-identifies-food-additive",
+      "factKey": "e-number-identifies-food-additive",
+      "subjectKey": "hemp-food-formulation-additives",
+      "sourceIds": [
+        "q2-en01-additifs"
+      ],
+      "learningObjective": "Lire un code d’ingrédient sans le confondre avec une quantité ou un score."
+    },
+    {
+      "id": "hemp-q2-en01-mass-percent-grams-per-hundred-grams",
+      "factKey": "mass-percent-grams-per-hundred-grams",
+      "subjectKey": "fraction-massique",
+      "sourceIds": [
+        "q2-en01-pourcentage"
+      ],
+      "learningObjective": "Convertir un pourcentage simple en quantité pour 100 g."
+    },
+    {
+      "id": "hemp-q2-en01-label-salt-calculated-from-total-sodium",
+      "factKey": "label-salt-calculated-from-total-sodium",
+      "subjectKey": "declaration-nutritionnelle",
+      "sourceIds": [
+        "q2-en01-nutrition"
+      ],
+      "learningObjective": "Distinguer le sel déclaré d’une simple quantité de sel ajouté."
+    },
+    {
+      "id": "hemp-q2-en01-bold-ingredient-highlights-allergen",
+      "factKey": "bold-ingredient-highlights-allergen",
+      "subjectKey": "allergenes-etiquetage",
+      "sourceIds": [
+        "q2-en01-allergenes"
+      ],
+      "learningObjective": "Reconnaître une alerte d’allergène dans une liste d’ingrédients."
+    },
+    {
+      "id": "hemp-q2-en01-may-contain-unintended-allergen-contact",
+      "factKey": "may-contain-unintended-allergen-contact",
+      "subjectKey": "allergenes-etiquetage",
+      "sourceIds": [
+        "q2-en01-allergenes"
+      ],
+      "learningObjective": "Distinguer ingrédient volontaire et contamination possible."
+    },
+    {
+      "id": "hemp-q2-en01-unit-price-compares-package-sizes",
+      "factKey": "unit-price-compares-package-sizes",
+      "subjectKey": "prix-unite-mesure",
+      "sourceIds": [
+        "q2-en01-prix"
+      ],
+      "learningObjective": "Comparer le coût d’une même quantité de produit."
+    },
+    {
+      "id": "hemp-q2-en01-barcode-prefix-not-country-of-manufacture",
+      "factKey": "barcode-prefix-not-country-of-manufacture",
+      "subjectKey": "code-barres-gs1",
+      "sourceIds": [
+        "q2-en01-gs1"
+      ],
+      "learningObjective": "Éviter une fausse lecture de l’origine à partir d’un code-barres."
+    },
+    {
+      "id": "hemp-q2-en01-nutriscore-nutrition-not-processing",
+      "factKey": "nutriscore-nutrition-not-processing",
+      "subjectKey": "nutri-score",
+      "sourceIds": [
+        "q2-en01-nutriscore"
+      ],
+      "learningObjective": "Comprendre la portée d’un indicateur d’étiquetage."
+    },
+    {
+      "id": "hemp-q2-en01-glass-fork-food-contact-not-universal-heat",
+      "factKey": "glass-fork-food-contact-not-universal-heat",
+      "subjectKey": "contact-alimentaire",
+      "sourceIds": [
+        "q2-en01-contact"
+      ],
+      "learningObjective": "Distinguer aptitude au contact et compatibilité avec un mode d’utilisation."
+    },
+    {
+      "id": "hemp-q2-en01-biosourced-material-from-biomass",
+      "factKey": "biosourced-material-from-biomass",
+      "subjectKey": "plastiques-emballage",
+      "sourceIds": [
+        "q2-en01-plastiques"
+      ],
+      "learningObjective": "Distinguer une origine de matière d’une propriété de fin de vie."
+    },
+    {
+      "id": "hemp-q2-en01-industrial-compost-not-home-conditions",
+      "factKey": "industrial-compost-not-home-conditions",
+      "subjectKey": "plastiques-emballage",
+      "sourceIds": [
+        "q2-en01-plastiques"
+      ],
+      "learningObjective": "Ne pas généraliser une propriété de fin de vie à tous les milieux."
+    },
+    {
+      "id": "hemp-q2-en01-plastic-resin-code-identifies-material",
+      "factKey": "plastic-resin-code-identifies-material",
+      "subjectKey": "plastiques-emballage",
+      "sourceIds": [
+        "q2-en01-resine"
+      ],
+      "learningObjective": "Lire un marquage de matière sans le transformer en consigne de tri."
+    },
+    {
+      "id": "hemp-q2-en01-freezing-not-sterilisation",
+      "factKey": "freezing-not-sterilisation",
+      "subjectKey": "congelation-aliments",
+      "sourceIds": [
+        "q2-en01-congelation"
+      ],
+      "learningObjective": "Distinguer conservation au froid et stérilisation."
+    },
+    {
+      "id": "hemp-q2-en01-colony-forming-units-culturable-microorganisms",
+      "factKey": "colony-forming-units-culturable-microorganisms",
+      "subjectKey": "denombrement-ufc",
+      "sourceIds": [
+        "q2-en01-ufc"
+      ],
+      "learningObjective": "Comprendre la portée d’un dénombrement en UFC."
+    },
+    {
+      "id": "hemp-q2-en01-mycotoxins-produced-by-fungi",
+      "factKey": "mycotoxins-produced-by-fungi",
+      "subjectKey": "mycotoxines",
+      "sourceIds": [
+        "q2-en01-mycotoxines"
+      ],
+      "learningObjective": "Identifier la famille de contaminants recherchée par le laboratoire."
+    },
+    {
+      "id": "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+      "factKey": "representative-sampling-heterogeneous-lot",
+      "subjectKey": "echantillonnage-lot",
+      "sourceIds": [
+        "q2-en01-echantillonnage"
+      ],
+      "learningObjective": "Comprendre pourquoi la mesure seule ne suffit pas à décrire un lot."
+    },
+    {
+      "id": "hemp-q2-en01-below-quantification-not-zero",
+      "factKey": "below-quantification-not-zero",
+      "subjectKey": "limite-quantification",
+      "sourceIds": [
+        "q2-en01-validation"
+      ],
+      "learningObjective": "Ne pas transformer une limite de méthode en teneur nulle."
+    },
+    {
+      "id": "hemp-q2-en01-method-blank-detects-procedure-contamination",
+      "factKey": "method-blank-detects-procedure-contamination",
+      "subjectKey": "blanc-analyse",
+      "sourceIds": [
+        "q2-en01-blancs"
+      ],
+      "learningObjective": "Comprendre l’utilité d’un contrôle sans échantillon."
+    },
+    {
+      "id": "hemp-q2-en01-reference-material-checks-measurements",
+      "factKey": "reference-material-checks-measurements",
+      "subjectKey": "nist-hemp-rm8210",
+      "sourceIds": [
+        "q2-en01-rm8210"
+      ],
+      "learningObjective": "Comprendre un contrôle métrologique sans le confondre avec une certification de produit."
+    },
+    {
+      "id": "hemp-q2-en01-proficiency-test-compares-laboratories",
+      "factKey": "proficiency-test-compares-laboratories",
+      "subjectKey": "comparaisons-interlaboratoires",
+      "sourceIds": [
+        "q2-en01-cofrac"
+      ],
+      "learningObjective": "Distinguer contrôle interne et comparaison entre laboratoires."
+    },
+    {
+      "id": "hemp-q2-en01-repeatability-same-measurement-conditions",
+      "factKey": "repeatability-same-measurement-conditions",
+      "subjectKey": "fidelite-mesure",
+      "sourceIds": [
+        "q2-en01-vim"
+      ],
+      "learningObjective": "Choisir une comparaison qui isole la répétabilité."
+    },
+    {
+      "id": "hemp-q2-en01-precision-distinct-from-trueness",
+      "factKey": "precision-distinct-from-trueness",
+      "subjectKey": "fidelite-mesure",
+      "sourceIds": [
+        "q2-en01-vim"
+      ],
+      "learningObjective": "Comprendre qu’une faible dispersion ne supprime pas un décalage systématique."
+    },
+    {
+      "id": "hemp-q2-en01-dry-mass-result-excludes-water",
+      "factKey": "dry-mass-result-excludes-water",
+      "subjectKey": "base-masse-seche",
+      "sourceIds": [
+        "q2-en01-rm8210"
+      ],
+      "learningObjective": "Repérer pourquoi deux bases d’expression ne se comparent pas directement."
+    },
+    {
+      "id": "hemp-q2-en01-chromatography-separates-mixture-components",
+      "factKey": "chromatography-separates-mixture-components",
+      "subjectKey": "chromatographie",
+      "sourceIds": [
+        "q2-en01-chromatographie"
+      ],
+      "learningObjective": "Distinguer une séparation analytique d’un traitement de conservation."
+    },
+    {
+      "id": "hemp-q2-en01-mass-analysis-ions-mass-to-charge",
+      "factKey": "mass-analysis-ions-mass-to-charge",
+      "subjectKey": "spectrometrie-masse",
+      "sourceIds": [
+        "q2-en01-spectrometrie"
+      ],
+      "learningObjective": "Comprendre le rôle du rapport masse/charge dans une analyse."
+    },
+    {
+      "id": "hemp-q2-en01-calibration-relates-response-to-analyte",
+      "factKey": "calibration-relates-response-to-analyte",
+      "subjectKey": "etalonnage",
+      "sourceIds": [
+        "q2-en01-vim"
+      ],
+      "learningObjective": "Comprendre comment une réponse instrumentale est reliée à une quantité."
+    },
+    {
+      "id": "hemp-q2-en01-matrix-effect-other-sample-components",
+      "factKey": "matrix-effect-other-sample-components",
+      "subjectKey": "effet-matrice",
+      "sourceIds": [
+        "q2-en01-eurl"
+      ],
+      "learningObjective": "Distinguer une variation de réponse d’une variation réelle de teneur."
+    },
+    {
+      "id": "hemp-q2-en01-spike-recovery-analytical-check",
+      "factKey": "spike-recovery-analytical-check",
+      "subjectKey": "taux-recuperation",
+      "sourceIds": [
+        "q2-en01-eurl"
+      ],
+      "learningObjective": "Interpréter une récupération analytique en tenant compte du fond."
+    },
+    {
+      "id": "hemp-q2-en01-analytical-selectivity-interfering-components",
+      "factKey": "analytical-selectivity-interfering-components",
+      "subjectKey": "selectivite-analytique",
+      "sourceIds": [
+        "q2-en01-validation"
+      ],
+      "learningObjective": "Distinguer plusieurs performances d’une méthode."
+    },
+    {
+      "id": "hemp-q2-en01-accreditation-specific-scope-competence",
+      "factKey": "accreditation-specific-scope-competence",
+      "subjectKey": "accreditation-laboratoire",
+      "sourceIds": [
+        "q2-en01-cofrac"
+      ],
+      "learningObjective": "Distinguer statut du laboratoire et certification du produit."
+    },
+    {
+      "id": "hemp-q2-en01-tamper-evident-seal-signals-opening",
+      "factKey": "tamper-evident-seal-signals-opening",
+      "subjectKey": "temoin-ouverture",
+      "sourceIds": [
+        "q2-en01-ouverture"
+      ],
+      "learningObjective": "Reconnaître la fonction d’un dispositif d’emballage."
+    }
+  ],
+  "authorFormatChecks": {
+    "date": "2026-11-16",
+    "result": "40 objets complets ; longueurs, quatre choix distincts après normalisation, identifiants et factKeys, articles, références et champs éditoriaux contrôlés sans erreur. Aucun fichier global régénéré.",
+    "batchObjectSha256": "7dd8f2028ad41c327c6862baeed2e5eb94c8e2f637d4ab63f71b54dea5f8da1b",
+    "meaning": "Empreinte de JSON.stringify(lot) pour identifier la livraison de l’auteur ; ce n’est pas une approbation indépendante."
+  },
+  "nextStep": "Relecture indépendante complète des questions et des passages sources par un autre agent. Aucun statut approved ni sourceHash de reviewer produit par l’auteur."
+}

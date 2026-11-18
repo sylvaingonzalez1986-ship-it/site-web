@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-17",
+  "target": 1000,
+  "status": "complete-1000-local-delivery",
+  "initialActive": 360,
+  "newValidated": 647,
+  "validatedLegacy": 353,
+  "validatedActive": 1000,
+  "activeCount": 1000,
+  "legacyAwaitingValidation": 0,
+  "remainingValidatedToTarget": 0,
+  "model": {
+    "delegates": "gpt-6.1-sol",
+    "verification": "Identifier exposed by collaboration.spawn_agent; explicitly supplied on each initial creation.",
+    "coordinator": "Current session; Astra Ultra identity/configuration cannot be attested or changed by the delegation tool."
+  },
+  "roles": {
+    "A": "a_cbd_inventory: recherche externe indépendante ; catalogue du site exclu par correction utilisateur",
+    "B": "b_external_varieties: variétés et breeders externes, lignées, sensoriel, sans inspiration du site",
+    "C": "c_science_pilot: botanique, agronomie, sciences",
+    "D": "d_history_food_pilot: histoire, cultures, alimentation, usages",
+    "E": "e_engine_audit: moteur, conception et pédagogie",
+    "F": "f_existing_audit: audit factuel et doublons"
+  },
+  "remoteDatabaseWritten": false,
+  "deployed": false,
+  "evidence": {
+    "editorial": "1000 approved: 647 new, 148 retained and 205 corrected legacy questions; exact question/source hashes checked",
+    "browser": "Final bank1000:7 real UI/local SQL scenarios passed at320/390/1440px; keyboard, correct/wrong scores, reload, correction and source links, private-file403. Question320/1440 and correction320 captures inspected. Owned3266 preview stopped.",
+    "sql": "Final score verification: all 140 local tournament progression, secrecy, offline champion, lease recovery and permissions checks passed; output/quiz-2000/final-sql.txt.",
+    "engine": "Final1000-entry bank:25/25 bank, challenge, tournament and encyclopedia tests passed; native Vitest exit0 confirmed. All1000 questions reached after3159 deterministic seeds. Reachability horizon increased to4000 with strict1000/1000 assertion; engine and content unchanged. Reports final-tests.json and reachability-review.json.",
+    "editorialTooling": "Checker, integrator, benchmark, UI harness, helper and changed integration code pass ESLint. All1000 metadata entries have existing review paths and independent initial/final reviewers. Source/question hashes and current semantic resolutions pass strict release validation.",
+    "types": "Standalone TypeScript passed; final production build also type-checked the complete1000-entry bank successfully.",
+    "privacy": "All1000 active question IDs searched across207 production client JS chunks:0 matches. Separate local API/SQL secrecy tests passed in their declared scope.",
+    "capacity": "Actual1000-entry bank,100 local warm draws:median12.40ms,p9514.64ms; private12-question plan18473B, first public question1212B. Synthetic1000 capacity results are separately labelled and never active content. Fixture-loader time is not production import time.",
+    "currentTargetGate": "Final release check passed: exactly1000 active,1000 independently approved,0 pending,0 issues; two lexical pairs have current traced semantic resolutions.",
+    "build": "Production build passed, native exit0. Remote public Supabase cache reads were unavailable; no remote integration claim.",
+    "finalReport": "docs/quiz-2000/DELIVERY.md and output/quiz-2000/final-validation.json"
+  },
+  "scopeCorrection": "Ne pas s'inspirer des variétés ni des producteurs du site. Dix questions pilot-ab archivées et remplacées par dix questions issues de recherches externes indépendantes.",
+  "localBeta": "Utilisateur : bêta locale sans joueurs du quiz. Réécritures, remplacements et retraits libres ; aucune précaution de compatibilité historique nécessaire. Qualité, preuves et relecture conservées.",
+  "currentWork": {
+    "a_cbd_inventory": "Complete; no active task and no further batch authorized.",
+    "b_external_varieties": "Complete; no active task and no further batch authorized.",
+    "c_science_pilot": "Complete; no active task and no further batch authorized.",
+    "d_history_food_pilot": "Complete; no active task and no further batch authorized.",
+    "e_engine_audit": "Complete; no active task and no further batch authorized.",
+    "f_existing_audit": "Complete; no active task and no further batch authorized."
+  },
+  "next": "No required work remains for the1000-question delivery. Expansion to2000 is deferred until a new user request; do not resume the old production queue automatically.",
+  "retained": 148,
+  "corrected": 205,
+  "retired": 7,
+  "legacyAudit": {
+    "complete": true,
+    "initialCount": 360,
+    "retained": 148,
+    "correctedOrReplaced": 205,
+    "retired": 7,
+    "validatedSurvivors": 353,
+    "evidence": "All current legacy validation hashes approved; repair-queue is empty. Retained wording148, corrected or replaced205, retired duplicates7."
+  },
+  "previousTarget": 2000,
+  "scopeReduction": {
+    "date": "2026-11-16",
+    "requestedBy": "user",
+    "currentDelivery": 1000,
+    "futureExpansion": 2000,
+    "decision": "Exactly1000 validated active questions now; all other previously planned batches deferred."
+  }
+}

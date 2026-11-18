@@ -1,0 +1,250 @@
+{
+  "batchId": "d-legacy-03",
+  "status": "reserved-not-started",
+  "scope": "Local beta: rewrite or replace weak facts; no historical compatibility required. Source evidence and independent review required.",
+  "entries": [
+    {
+      "id": "hemp-hs-hist-psychotropic",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Prompt répète « substances psychotropes », identique à la bonne réponse ; une fausse convention sur chanvre complète les choix. Refaire formulation et distracteurs, sans changer le fait.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-1988-name",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Titre ONU vérifié ; commerce agricole/médicaments traditionnels/sécurité navires distracteurs trop éloignés. Proposer finalités voisines du contrôle international.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-act-schedule",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "La question historique est bien datée, mais supprimer la remarque actuelle « un projet ultérieur » si elle n’est pas actualisée : elle peut dater.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-hemp-archival-date",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Le bon choix répète Proposition 215 déjà dans l’énoncé : demander son nom sans répéter le numéro dans les réponses.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-un2020-schedule",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Corriger « toutes les tableaux internationales » et « l’tableau » ; unifier tableau français et schedule américain.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-canada-scope",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Cadrer explicitement la version de 2018 pour éviter de confondre portée historique et droit actuel ; distracteurs tous exclusifs caricaturaux.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-1937-date",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Date au bas du chapitre553 vérifiée ; trois dates d’autres textes éloignées de1937 ne testent pas vraiment le jour exact. Proposer quatre dates proches de1937.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-canada-federal",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Un seul choix concerne l’Inde ; une enquête coloniale L4 mérite quatre périmètres géographiques plausibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-policy",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Créer une taxe américaine et remplacer l’ONU sont hors contexte national : distracteurs L4 trop faibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-1988-adoption",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Dates ONU exactes ; prompt dit1988 et seule bonne réponse contient1988, les trois distracteurs datent1961/1971/2020. Fuite de réponse à corriger par dates proches de1988.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Les autres choix portent sur d’autres années/régimes et l’absence de date ; difficulté L4 fondée uniquement sur la précision.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-03",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Expérience avec mélange bois/chènevotte correctement limitée dans le corrigé ; rendre explicite le mélange dans la question pour éviter « 100 % chanvre ».",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-04",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Étude de valorisation primaire vérifiée ; les trois distracteurs de fractions sans tiges rendent la réponse trop éliminatoire. Revoir les descriptions de résidus proposées.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-05",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Article de pâte/feuilles réellement lu mais pas de définition explicite de suspension dans les passages ciblés ; ajouter une définition papetière primaire/institutionnelle et choix de même nature.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-06",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Composition primaire vérifiée ; gluten/kératine/glycogène ne sont pas des constituants pariétaux plausibles. Refaire distracteurs sans changer le fait.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-07",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Sans paroi cellulaire n’est pas une comparaison de longueur ; maintenir les trois autres distracteurs dans la même grandeur.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-08",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Pigment/graine/goutte d’huile ne sont pas des structures anatomiques comparables au lumen.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-09",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Métal et ajout de graines sont impossibles ; comparer propriétés de surface réalistes.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-10",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Couleur/huile/odeur ne sont pas des propriétés mécaniques ; comparer rigidité, résistance et allongement.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-11",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "« Groupe chlorure –Cl » impropre : distinguer substituant chloro et ion chlorure ; proposer fonctions chimiques plausibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-13",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Gazeux/sans molécules/sels sont des distracteurs impossibles à L3 ; comparer organisation et cristallinité.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-15",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Coloration/odeur/huile ne sont pas des mesures de résistance papetière à L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-16",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Ribosomes/chromosomes/lipides ne sont pas des éléments structurants de paroi comparables aux microfibrilles à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-17",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Une séparation fibre-matrice est une décohésion interfaciale ; délamination désigne séparation de couches. L’option étend trop le terme et le corrigé entretient la confusion.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-18",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Passage précis vérifié ; cuticule de graine/cambium entier ne sont pas des couches comparables de cellules fibreuses. Demander distracteurs anatomiques plausibles et niveau3.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-19",
+      "topicId": "profiles",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "La revue décrit leur présence/rôle mais pas explicitement la définition moléculaire ; ajouter source biochimique. Niveau4 excessif pour simple identification de famille.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-en-3-20",
+      "topicId": "profiles",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Graines/photosynthèse/pollen ne sont pas des propriétés papetières : quatre essais mécaniques plausibles requis à L4.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    }
+  ]
+}

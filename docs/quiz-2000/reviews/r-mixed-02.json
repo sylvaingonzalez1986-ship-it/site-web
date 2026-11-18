@@ -1,0 +1,888 @@
+{
+  "batchId": "r-mixed-02",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rm02-dab-rig-banger-component",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Objet directement utilisé avec concentrés actifs.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "79053a43b0d64842b5517563cdedbe13f58115d1d2439b73647a4b2bca4acc89",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-hc-pipe-dab-components",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "locator": "Dabbing accessories, Dab rigs",
+          "result": "Page Santé Canada effectivement ouverte et rubrique Dab rigs lue : quatre pièces distinctes, nail/banger = petit compartiment chauffant recevant l’extrait. Aucun réglage de chauffe repris.",
+          "sourceHash": "ab902b57142c3672381f6c4d163928dff13532a32a1b1b3a062ff64002c29bb5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-pipe-glass-ceramic",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Prévention propre à un accessoire de consommation de cannabis.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "45d9e8553f84eddbe88dfd33776ab502702fc6853dc8286f284102b72c417eca",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-hc-pipe-dab-components",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "locator": "Smoking accessories, Pipes",
+          "result": "Même page Smoking accessories/Pipes effectivement lue : glass or ceramic, substances nocives possibles des plastiques et autres matériaux chauffés.",
+          "sourceHash": "ab902b57142c3672381f6c4d163928dff13532a32a1b1b3a062ff64002c29bb5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-cannabis-tobacco-dual-dependence",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Dépendance liée au mélange cannabis/tabac.",
+      "comment": "Les quatre choix décrivent désormais des profils de dépendance comparables. La double dépendance et le rôle propre du tabac restent le fait explicitement contrôlé par B.",
+      "contentHash": "52ccd9fa402f0e2f8b7964a450d831a5e8fb93121020df58a4027171074ebddd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-alberta-cannabis-tobacco",
+          "url": "https://myhealth.alberta.ca/Alberta/Pages/Using-cannabis-and-tobacco-together.aspx",
+          "locator": "Risks of using",
+          "result": "Alberta Health Services page effectivement ouverte, Risks of using lu : increased dependence on both substances, troubles d’usage et difficulté d’arrêt.",
+          "sourceHash": "bffd6e16d2e7ae197d445e8425385fc7580d2527fd134996593e442501695fd0"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm02-cannabis-tobacco-dual-dependence",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Dépendance liée au mélange cannabis/tabac.",
+          "comment": "Risque de dépendance aux deux substances explicitement confirmé. Les trois distracteurs proposent une protection ou diminution de dépendance, très peu plausibles face au seul risque nuancé. Comparer quatre conséquences d’usage crédibles et parallèles, sans donner le corrigé par une opposition protection/risque.",
+          "contentHash": "cfa0d305fdc3390d20331d239bd303855fa96f81808a9e4079c6b041843dee8b",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm02-alberta-cannabis-tobacco",
+              "url": "https://myhealth.alberta.ca/Alberta/Pages/Using-cannabis-and-tobacco-together.aspx",
+              "locator": "Risks of using",
+              "result": "Alberta Health Services page effectivement ouverte, Risks of using lu : increased dependence on both substances, troubles d’usage et difficulté d’arrêt.",
+              "sourceHash": "bffd6e16d2e7ae197d445e8425385fc7580d2527fd134996593e442501695fd0"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "cfa0d305fdc3390d20331d239bd303855fa96f81808a9e4079c6b041843dee8b",
+        "authorCorrection": {
+          "id": "hemp-q2-rm02-cannabis-tobacco-dual-dependence",
+          "topicId": "prevention",
+          "level": 1,
+          "prompt": "Quel risque d’usage la co-consommation de cannabis et de tabac ajoute-t-elle, selon Alberta Health Services ?",
+          "options": [
+            "Une dépendance limitée au cannabis, même avec du tabac",
+            "Une dépendance limitée au tabac, même avec du cannabis",
+            "Une dépendance au cannabis comme au tabac",
+            "Une dépendance unique où les deux produits se substituent"
+          ],
+          "answer": 2,
+          "explanation": "Le mélange peut renforcer la dépendance au cannabis comme au tabac et compliquer l’arrêt. Le tabac du joint constitue une exposition à part entière, au-delà des effets recherchés du cannabis.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-rm02-alberta-cannabis-tobacco"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Co-consommation cannabis et tabac",
+            "subjectKey": "cannabis-tobacco-co-use",
+            "property": "Risque de double dépendance",
+            "expectedAnswer": "Une dépendance au cannabis comme au tabac",
+            "learningObjective": "Comprendre une conséquence propre au mélange, distincte de la définition d’un spliff.",
+            "factKey": "cannabis-tobacco-dual-dependence",
+            "form": "identification",
+            "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-alberta-cannabis-tobacco",
+                "locator": "Risks of using",
+                "support": "La co-consommation augmente les risques de dépendance et de troubles d’usage des deux substances."
+              }
+            ],
+            "jurisdiction": "Canada, conseil sanitaire Alberta2023",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm02-cannabis-tobacco-dual-dependence",
+          "topicId": "prevention",
+          "level": 1,
+          "prompt": "Quel risque d’usage la co-consommation de cannabis et de tabac ajoute-t-elle, selon Alberta Health Services ?",
+          "options": [
+            "Une dépendance limitée au cannabis, même avec du tabac",
+            "Une dépendance limitée au tabac, même avec du cannabis",
+            "Une dépendance au cannabis comme au tabac",
+            "Une dépendance unique où les deux produits se substituent"
+          ],
+          "answer": 2,
+          "explanation": "Le mélange peut renforcer la dépendance au cannabis comme au tabac et compliquer l’arrêt. Le tabac du joint constitue une exposition à part entière, au-delà des effets recherchés du cannabis.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-rm02-alberta-cannabis-tobacco"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Co-consommation cannabis et tabac",
+            "subjectKey": "cannabis-tobacco-co-use",
+            "property": "Risque de double dépendance",
+            "expectedAnswer": "Une dépendance au cannabis comme au tabac",
+            "learningObjective": "Comprendre une conséquence propre au mélange, distincte de la définition d’un spliff.",
+            "factKey": "cannabis-tobacco-dual-dependence",
+            "form": "identification",
+            "difficultyRationale": "Repère concret de produit ou de matériau, sans mécanisme technique spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-alberta-cannabis-tobacco",
+                "locator": "Risks of using",
+                "support": "La co-consommation augmente les risques de dépendance et de troubles d’usage des deux substances."
+              }
+            ],
+            "jurisdiction": "Canada, conseil sanitaire Alberta2023",
+            "reviewAfter": "2027-05-17"
+          }
+        }
+      },
+      "coordinatorScope": "Arbitrage des corrections ciblées de C après la lecture indépendante de B. Aucune nouvelle consultation de source revendiquée par root ; changement FDA purement documentaire vérifié sur son objet complet.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm02-synthetic-hot-pockets",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Répartition des actifs dans produits cannabinoïdes de synthèse.",
+      "comment": "Les quatre configurations matérielles évitent la reconnaissance du seul mot cannabinoïdes parmi caféine/nicotine. La définition de zones surconcentrées et le risque d’exposition inégale restent inchangés.",
+      "contentHash": "a8edcd98358db4b13c4d6d5697efddfad3dd219bc90fec71c77336a4832a6946",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-euda-synthetic-hot-pockets",
+          "url": "https://www.euda.europa.eu/publications/eu-drug-markets/new-psychoactive-substances/distribution-and-supply/synthetic-cannabinoids_en",
+          "locator": "Overview, dernier paragraphe",
+          "result": "Page originale EUDA/Europol effectivement ouverte, Overview paragraphe hot pockets lu : quantité variable et zones hautement concentrées entraînant risque d’intoxication.",
+          "sourceHash": "bdcf474d56fc6d7f766229145f245352c7e64fa190d1543ee854a0e795a69f98"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm02-synthetic-hot-pockets",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Répartition des actifs dans produits cannabinoïdes de synthèse.",
+          "comment": "Hot pockets = concentration locale élevée des cannabinoïdes de synthèse explicitement confirmé. Nicotine et caféine sont des distracteurs trop éloignés de ces mélanges Spice ; le joueur peut choisir les cannabinoïdes par le seul contexte. Tester plutôt la répartition du produit avec quatre configurations ou descriptions matérielles plausibles, en gardant le danger des zones surconcentrées.",
+          "contentHash": "83aab18bd17d5545bfc2edfdaf9e39585b688c7cf0b79b6eeed262a5d64be74a",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm02-euda-synthetic-hot-pockets",
+              "url": "https://www.euda.europa.eu/publications/eu-drug-markets/new-psychoactive-substances/distribution-and-supply/synthetic-cannabinoids_en",
+              "locator": "Overview, dernier paragraphe",
+              "result": "Page originale EUDA/Europol effectivement ouverte, Overview paragraphe hot pockets lu : quantité variable et zones hautement concentrées entraînant risque d’intoxication.",
+              "sourceHash": "bdcf474d56fc6d7f766229145f245352c7e64fa190d1543ee854a0e795a69f98"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "83aab18bd17d5545bfc2edfdaf9e39585b688c7cf0b79b6eeed262a5d64be74a",
+        "authorCorrection": {
+          "id": "hemp-q2-rm02-synthetic-hot-pockets",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Dans certains mélanges Spice, que désignent les « hot pockets » décrits par l’EUDA ?",
+          "options": [
+            "Des zones où les actifs sont répartis à concentration uniforme",
+            "Des amas de végétaux ne contenant aucun actif ajouté",
+            "Des couches d’actifs restant séparées du support végétal",
+            "Des zones surconcentrées en actifs au sein du mélange"
+          ],
+          "answer": 3,
+          "explanation": "Les actifs peuvent être répartis de manière inégale dans le produit. Des zones très concentrées en cannabinoïdes de synthèse rendent l’exposition imprévisible et augmentent le risque d’intoxication.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-rm02-euda-synthetic-hot-pockets"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Hétérogénéité des mélanges Spice",
+            "subjectKey": "synthetic-cannabinoid-spice-k2",
+            "property": "Concentration locale des actifs",
+            "expectedAnswer": "Des zones surconcentrées en actifs au sein du mélange",
+            "learningObjective": "Comprendre un risque lié à la répartition des actifs dans le produit.",
+            "factKey": "synthetic-hot-pockets",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-euda-synthetic-hot-pockets",
+                "locator": "Overview, dernier paragraphe",
+                "support": "Hot pockets : forte concentration locale de la substance dans un produit hétérogène."
+              }
+            ],
+            "jurisdiction": "Europe, description EUDA2024",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm02-synthetic-hot-pockets",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Dans certains mélanges Spice, que désignent les « hot pockets » décrits par l’EUDA ?",
+          "options": [
+            "Des zones où les actifs sont répartis à concentration uniforme",
+            "Des amas de végétaux ne contenant aucun actif ajouté",
+            "Des couches d’actifs restant séparées du support végétal",
+            "Des zones surconcentrées en actifs au sein du mélange"
+          ],
+          "answer": 3,
+          "explanation": "Les actifs peuvent être répartis de manière inégale dans le produit. Des zones très concentrées en cannabinoïdes de synthèse rendent l’exposition imprévisible et augmentent le risque d’intoxication.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-rm02-euda-synthetic-hot-pockets"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Hétérogénéité des mélanges Spice",
+            "subjectKey": "synthetic-cannabinoid-spice-k2",
+            "property": "Concentration locale des actifs",
+            "expectedAnswer": "Des zones surconcentrées en actifs au sein du mélange",
+            "learningObjective": "Comprendre un risque lié à la répartition des actifs dans le produit.",
+            "factKey": "synthetic-hot-pockets",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée d’un produit, de sa composition ou de son comportement.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-euda-synthetic-hot-pockets",
+                "locator": "Overview, dernier paragraphe",
+                "support": "Hot pockets : forte concentration locale de la substance dans un produit hétérogène."
+              }
+            ],
+            "jurisdiction": "Europe, description EUDA2024",
+            "reviewAfter": "2027-05-17"
+          }
+        }
+      },
+      "coordinatorScope": "Arbitrage des corrections ciblées de C après la lecture indépendante de B. Aucune nouvelle consultation de source revendiquée par root ; changement FDA purement documentaire vérifié sur son objet complet.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm02-spice-brodifacoum-bleeding",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Intoxication documentée de produits vendus comme cannabinoïdes de synthèse.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "da4be6112a8c3164de6ae468a58c1de9386087c201822700b99ae5ec24b47363",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-cdc-brodifacoum-2018",
+          "url": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6721a4.htm",
+          "locator": "Signes cliniques ; analyses des81 prélèvements",
+          "result": "MMWR original intégral ouvert, paragraphes cliniques et analyses lus : saignement chez tous les cas, INR élevés ;81 prélèvements positifs au brodifacoum. Intention d’ajout inconnue conservée.",
+          "sourceHash": "adf2d96bc3badda2ea2f65e32c0431545c90cc7027a51b87b1c8ece605b0d161"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-cbd-warfarin-inr-rise",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Interaction pratique du CBD avec anticoagulant.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "2720bb69d97db883547ee850db6472328ef074f29d0dfdeb327ef6e92a3375f5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-grayson-cbd-warfarin",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5789126/",
+          "locator": "§2 Case report ; §4 Conclusions",
+          "result": "Cas original Grayson effectivement ouvert, §2 et conclusions lus : INR augmenté non linéairement avec introduction/titration du CBD, ajustements médicaux, absence de complication hémorragique observée.",
+          "sourceHash": "31c1713f2e9b5ce035f60217cfded7159b0379300fe570b0edbe7c7387136a33"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-cbd-everolimus-exposure",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Interaction documentée du CBD pharmaceutique.",
+      "comment": "La notice FDA est correctement identifiée comme document réglementaire. Le texte conserve le résultat et la surveillance prévue, avec suppression d’une mise en garde générique sans ajout de fait.",
+      "contentHash": "8156b0823b17d111632576c344b5398b186a5ce39ecdc34af96406b2ac81d65f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-fda-cbd-everolimus",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§7.2 ; §12.3 Everolimus",
+          "result": "Notice FDAmai2026 originale ouverte, §7.2 Orally Administered P-gp Substrates et §12.3 Everolimus effectivement lus : exposition augmentée et surveillance des concentrations. Type documentaire à corriger.",
+          "sourceHash": "156d88f21e7fde87972fb9fcf113bb76bc3e3b76369b56c242a1bd6dbf00b027",
+          "metadataAdjustment": {
+            "approvedAndAppliedBy": "root",
+            "date": "2026-11-17",
+            "previousSourceHash": "b8cf941f951304f8a02d4cfd30a4adddd867aee1c85dab56f77dff0d353eb3bf",
+            "previousSource": {
+              "id": "q2-rm02-fda-cbd-everolimus",
+              "title": "Epidiolex prescribing information — revised May 2026",
+              "organization": "FDA",
+              "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+              "verifiedAt": "2026-11-17",
+              "author": "Jazz Pharmaceuticals, notice approuvée FDA",
+              "published": "2026-05",
+              "passage": "L’association du CBD pharmaceutique avec l’évérolimus oral a augmenté son exposition plasmatique dans l’étude décrite ; la notice demande un suivi des concentrations du médicament.",
+              "access": "full-text",
+              "documentKind": "original-research",
+              "limitation": "Passage nouvellement lu, distinct des interactions clobazam/valproate/alcool de rp03. Aucun ajustement de dose ni généralisation à toute préparation de CBD.",
+              "consultation": {
+                "reader": "rebalance_products_sol",
+                "date": "2026-11-17",
+                "locator": "§7.2 Orally Administered P-gp Substrates ; §12.3 Everolimus",
+                "result": "Document original ou institutionnel ouvert ; passage indiqué effectivement lu."
+              }
+            },
+            "basis": "B a ouvert la notice FDAmai2026 et explicitement demandé la qualification de document institutionnel/réglementaire. Seul documentKind est changé."
+          }
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm02-cbd-everolimus-exposure",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Interaction documentée du CBD pharmaceutique.",
+          "comment": "Hausse de l’exposition à l’évérolimus et suivi des concentrations confirmés dans §7.2 et §12.3. Corriger documentKind de q2-rm02-fda-cbd-everolimus : une notice réglementaire approuvée FDA est un document institutionnel/réglementaire, non une publication de recherche originale. Question et choix recevables ; changement de notice requiert nouveau sourceHash.",
+          "contentHash": "bb029bab7cafe68f3179b5f9aa7d2ff83527bfdc61e70dcb8e06e1df4ea26f5c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm02-fda-cbd-everolimus",
+              "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+              "locator": "§7.2 ; §12.3 Everolimus",
+              "result": "Notice FDAmai2026 originale ouverte, §7.2 Orally Administered P-gp Substrates et §12.3 Everolimus effectivement lus : exposition augmentée et surveillance des concentrations. Type documentaire à corriger.",
+              "sourceHash": "b8cf941f951304f8a02d4cfd30a4adddd867aee1c85dab56f77dff0d353eb3bf"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "bb029bab7cafe68f3179b5f9aa7d2ff83527bfdc61e70dcb8e06e1df4ea26f5c",
+        "authorCorrection": {
+          "id": "hemp-q2-rm02-cbd-everolimus-exposure",
+          "topicId": "prevention",
+          "level": 3,
+          "prompt": "Quel effet du CBD d’Epidiolex sur l’évérolimus oral sa notice décrit-elle dans l’étude d’interaction ?",
+          "options": [
+            "Une exposition plasmatique à l’évérolimus diminuée",
+            "Un pic retardé, sans changement de l’exposition totale",
+            "Une exposition plasmatique à l’évérolimus augmentée",
+            "Un pic plus précoce, sans changement de l’exposition totale"
+          ],
+          "answer": 2,
+          "explanation": "L’exposition à l’évérolimus a augmenté avec le CBD pharmaceutique. La notice prévoit une surveillance médicale de ses concentrations ; ce résultat ne justifie aucun ajustement autonome du traitement.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-rm02-fda-cbd-everolimus"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "CBD et évérolimus",
+            "subjectKey": "cbd-everolimus-interaction",
+            "property": "Hausse de l’exposition à un médicament associé",
+            "expectedAnswer": "Une exposition plasmatique à l’évérolimus augmentée",
+            "learningObjective": "Connaître une interaction documentée de formulation orale.",
+            "factKey": "cbd-everolimus-exposure",
+            "form": "identification",
+            "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-fda-cbd-everolimus",
+                "locator": "§7.2 ; §12.3 Everolimus",
+                "support": "Hausse de l’exposition à l’évérolimus lors de la coadministration étudiée."
+              }
+            ],
+            "jurisdiction": "États-Unis, noticeFDAmai2026",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm02-cbd-everolimus-exposure",
+          "topicId": "prevention",
+          "level": 3,
+          "prompt": "Quel effet du CBD d’Epidiolex sur l’évérolimus oral sa notice décrit-elle dans l’étude d’interaction ?",
+          "options": [
+            "Une exposition plasmatique à l’évérolimus diminuée",
+            "Un pic retardé, sans changement de l’exposition totale",
+            "Une exposition plasmatique à l’évérolimus augmentée",
+            "Un pic plus précoce, sans changement de l’exposition totale"
+          ],
+          "answer": 2,
+          "explanation": "L’exposition à l’évérolimus a augmenté avec le CBD pharmaceutique. La notice prévoit donc une surveillance des concentrations de l’évérolimus lors de cette association.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-rm02-fda-cbd-everolimus"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "CBD et évérolimus",
+            "subjectKey": "cbd-everolimus-interaction",
+            "property": "Hausse de l’exposition à un médicament associé",
+            "expectedAnswer": "Une exposition plasmatique à l’évérolimus augmentée",
+            "learningObjective": "Connaître une interaction documentée de formulation orale.",
+            "factKey": "cbd-everolimus-exposure",
+            "form": "identification",
+            "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-fda-cbd-everolimus",
+                "locator": "§7.2 ; §12.3 Everolimus",
+                "support": "Hausse de l’exposition à l’évérolimus lors de la coadministration étudiée."
+              }
+            ],
+            "jurisdiction": "États-Unis, noticeFDAmai2026",
+            "reviewAfter": "2027-05-17"
+          }
+        }
+      },
+      "coordinatorScope": "Arbitrage des corrections ciblées de C après la lecture indépendante de B. Aucune nouvelle consultation de source revendiquée par root ; changement FDA purement documentaire vérifié sur son objet complet.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm02-sierra-leone-kush-name",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Confusion entre nom de mélange synthétique et lignée cannabique, exception ciblée acceptée par root.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "63b64f80bbd4b7309d127d35c0f6db96e8b011399607c56c254bd813c6d4128e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-gi-kush-2025",
+          "url": "https://globalinitiative.net/wp-content/uploads/2025/02/Lucia-Bird-Ruiz-Benitez-de-Lugo-and-Dr-Kars-de-Bruijne-Kush-in-Sierra-Leone-%E2%80%93-West-Africas-growing-synthetic-drugs-challenge-GI-TOC-and-Clingendael-Institute-February-2025.final_.pdf",
+          "locator": "p.8–9 imprimées, Components of kush ; Fig.1",
+          "result": "Rapport original GI-TOC/Clingendael PDF60p ouvert, méthodes p5–6 imprimées et Components of kush p8–9/index11–12 lus : très grande majorité des échantillons avec nitazènes ou MDMB-en-4-PINACA, plutôt que les deux. Exception de périmètre sur confusion Kush explicitement accordée par root respectée.",
+          "sourceHash": "9d7425000a1e060507292e8ecde6b7a53012295aaa901246a463f88fc8f39624"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-thc-acetate-ketene-emission",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Dégradation toxique de cannabinoïdes acétates.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "99ef097d48efb574088ca3d28aa03e123cfac9a270b57993d443fa13086e875a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-munger-acetates-ketene",
+          "url": "https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/627401c36cae1c94a5fe8fe7/original/vaping-cannabinoid-acetates-leads-to-ketene-formation.pdf",
+          "locator": "Abstract ; Study limitations ; Conclusion",
+          "result": "Manuscrit original ChemRxiv PDF10p effectivement ouvert ; Abstract, résultats de cannabinoïdes acétates/produit commercial et Study limitations/Conclusion lus. Cétène détecté expérimentalement ; aucune extrapolation clinique ni paramètres de fabrication repris.",
+          "sourceHash": "6db3adac18c67508cafb01de0dcca4153fbf22a5534fe76ce344c0fa4fe389cc"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-canada-transparent-dried-fresh",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Règle spécifique de conditionnement de fleurs actives.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "852420326e85991e40aa703b49cb5009b84fbcd9be5fa4a605ce04846e9e99ad",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-canada-transparent-flower",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2018-144/section-108.html",
+          "locator": "Article108(1)(a) et108(2)",
+          "result": "Article108 canadien courant effectivement ouvert : §1a opaque ou translucide ; §2 exception explicite contenant immédiat transparent pour dried cannabis ou fresh cannabis.",
+          "sourceHash": "07ccf9bedfaa2b248013372b71580a40cc416531e97a99320f4b8510ac577fd6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-seed-trypsin-inhibitors",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Constituant antinutritionnel réel du tourteau alimentaire.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "93c91f5c32397ae8ed3542bbab58eafb30da1e80dd624186b9d38b7bb8899a2d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-galasso-trypsin",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+          "locator": "Introduction ; Results, TI et Table2",
+          "result": "Galasso original effectivement ouvert, introduction et Results/Table2 lus : inhibition de trypsine mesurée dans farines dégraissées. Distinct de phytates/minéraux déjà testés en mixed01.",
+          "sourceHash": "433419dae5e14975da30c452d15fb73eee4007524bc1395ae3cd17fe4d7514c5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-milk-protein-energy-profile",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Composition effective d’une boisson de graines.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "466316720c10ec8b6271c31913f89e505929d2d02427f2fb5419301883a66058",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-uf-hemp-milk-nutrition",
+          "url": "https://ask.ifas.ufl.edu/publication/FS420/pdf",
+          "locator": "p.1 comparaison ; p.4 Table1",
+          "result": "PDF institutionnel UF/IFAS4p effectivement ouvert et p1/Table1 p4 lus : boisson non sucrée60calories3g protéines contre83–150calories8g pour laits comparés, à volume égal.",
+          "sourceHash": "0d7e85975ddfaedba16fd4f6deff834988bc9ae7d17aa0c458bbb9a77bbfcaf8"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-milk-calcium-fortification",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Enrichissement effectif d’une boisson alimentaire de graines.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "564994eabdf50aa13c22f513a6c89211a1ac237e0bd119bc6a7a262c82af76bf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-uf-hemp-milk-nutrition",
+          "url": "https://ask.ifas.ufl.edu/publication/FS420/pdf",
+          "locator": "p.1, comparaison nutritionnelle, when fortified ; Table1",
+          "result": "Même document, comparaison p1 et Table1 effectivement lues : boisson explicitement enrichie en calcium, valeur non généralisée aux préparations maison.",
+          "sourceHash": "0d7e85975ddfaedba16fd4f6deff834988bc9ae7d17aa0c458bbb9a77bbfcaf8"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-isolate-soy-emulsifying",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Propriétés de formulation d’un isolat alimentaire réel.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "a8bab77142791ea6ec0d77c0d44c52f5b42493605b33beaff8c51dee59494b25",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-tang-emulsifying-comparison",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/17090145/",
+          "locator": "Abstract, indices activité émulsifiante et stabilité",
+          "result": "Résumé original PubMed Tang effectivement ouvert et intégralement lu : indices d’activité et stabilité émulsifiantes inférieurs à ceux de soja ; agrégation/disulfures évoqués. Pas de texte intégral ACS revendiqué.",
+          "sourceHash": "1f77ee2d39a472ba5c53f3b365eb66db9fd814ea387322e91f03b36ad556a617"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-seed-oil-beta-sitosterol",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Constituant minoritaire réel de l’huile alimentaire.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "27f374bc06a1a9530445baa0d3f6fd88e48837b63a292c1bd711d30abe544d66",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-montserrat-sterol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24422510/",
+          "locator": "Abstract, fraction insaponifiable",
+          "result": "Résumé original PubMed Montserrat-de la Paz effectivement ouvert et intégralement lu : bêta-sitostérol1905mg/kg supérieur au campestérol505,69 et cycloarténol90,55. Identité précise différente de famille phytostérols déjà testée.",
+          "sourceHash": "78576ecaafd41c413f3f69d34a97b8c155a8b7db420f5f1ccf4e031ed6f0c6de"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-dehulling-protein-digestibility",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Digestibilité des protéines de graines alimentaires.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "cad8154aa3474bcd23449d9bdab63b4e39391c40d05e5635722cccd4262b37a5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-house-dehulling-digestibility",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20977230/",
+          "locator": "Abstract, phrase Removal of the hull fraction",
+          "result": "Résumé original PubMed House effectivement ouvert et intégralement lu : bioessai chez le rat, retrait de coque améliorant digestibilité et PDCAAS. Distinct de concentration en protéines et définition du décorticage.",
+          "sourceHash": "e1ea63eca40e5b71772221db473e878159ea678d8b2d9421bd41307671deb50e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-eu-seed-oil-thc-food-maxima",
+      "status": "approved",
+      "domain": "food",
+      "domainComment": "Maximum de contaminant dans graines alimentaires/huile, domaine food malgré molécule THC.",
+      "comment": "Les quatre couples utilisent les mêmes unités et valeurs plausibles. La distinction graines/huile, les équivalents delta-9-THC et la portée alimentaire sont conservés ; l’accès à la source reste explicitement excerpt.",
+      "contentHash": "0ac77294761419081e5575a4472b743490dc97f4e1340da562e619555313959b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-eu-food-thc-limits",
+          "url": "https://eur-lex.europa.eu/eli/reg/2023/915/eng",
+          "locator": "AnnexeI, points2.6.1–2.6.3",
+          "result": "EUR-Lex effectivement ouvert avec protection JavaScript ; extrait primaire indexé obtenu indépendamment par recherches ciblées du tableau2.6 et version19août2026, lu : graines3,0 et huile7,5mg/kg. Accès excerpt honnêtement conservé.",
+          "sourceHash": "df0ebef79b4945d7534c81fc2fb0c73341b1f52b14f25dc879ccbec6ea7d0a55"
+        }
+      ],
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rm02-eu-seed-oil-thc-food-maxima",
+          "status": "changes_requested",
+          "domain": "food",
+          "domainComment": "Maximum de contaminant dans graines alimentaires/huile, domaine food malgré molécule THC.",
+          "comment": "Maxima 3 et7,5 mg/kg confirmés dans le tableau EUR-Lex consolidé2026 obtenu indépendamment. Les deux distracteurs multipliés grossièrement par10/100 rendent l’échelle facile à éliminer et la question devient surtout le sens du couple. Employer quatre couples réglementaires/unitaires plausibles, ou tester une distinction alimentaire concrète sans faire mémoriser des ordres de grandeur fantaisistes. Le domaine food et le fait sont recevables.",
+          "contentHash": "c9d8e01bb8dbbecb69fd01cf696fbe4ff8a48fd2d661ab7ce125d16045e57723",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rm02-eu-food-thc-limits",
+              "url": "https://eur-lex.europa.eu/eli/reg/2023/915/eng",
+              "locator": "AnnexeI, points2.6.1–2.6.3",
+              "result": "EUR-Lex effectivement ouvert avec protection JavaScript ; extrait primaire indexé obtenu indépendamment par recherches ciblées du tableau2.6 et version19août2026, lu : graines3,0 et huile7,5mg/kg. Accès excerpt honnêtement conservé.",
+              "sourceHash": "df0ebef79b4945d7534c81fc2fb0c73341b1f52b14f25dc879ccbec6ea7d0a55"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "c9d8e01bb8dbbecb69fd01cf696fbe4ff8a48fd2d661ab7ce125d16045e57723",
+        "authorCorrection": {
+          "id": "hemp-q2-rm02-eu-seed-oil-thc-food-maxima",
+          "topicId": "seeds",
+          "level": 3,
+          "prompt": "Quels maxima UE en équivalents delta-9-THC s’appliquent respectivement aux graines alimentaires de chanvre et à leur huile ?",
+          "options": [
+            "3 mg/kg et 7,5 mg/kg",
+            "7,5 mg/kg et 3 mg/kg",
+            "3 mg/kg et 3 mg/kg",
+            "7,5 mg/kg et 7,5 mg/kg"
+          ],
+          "answer": 0,
+          "explanation": "Le règlement distingue les graines et leur huile :3 puis 7,5 mg/kg d’équivalents delta-9-THC. Ces limites de contaminants alimentaires ne sont pas le seuil agricole exprimé en pourcentage de THC.",
+          "articleId": "ref-graines-chanvre",
+          "sourceIds": [
+            "q2-rm02-eu-food-thc-limits"
+          ],
+          "editorial": {
+            "domain": "food",
+            "category": "food",
+            "subject": "THC résiduel dans les aliments de graines",
+            "subjectKey": "eu-hempseed-food-thc-maxima",
+            "property": "Limites alimentaires distinctes pour graines et huile",
+            "expectedAnswer": "3 mg/kg et 7,5 mg/kg",
+            "learningObjective": "Ne pas appliquer aux aliments le seuil agricole de THC.",
+            "factKey": "eu-seed-oil-thc-food-maxima",
+            "form": "identification",
+            "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-eu-food-thc-limits",
+                "locator": "AnnexeI, points2.6.1–2.6.3",
+                "support": "Maxima3mg/kg graines et produits concernés ;7,5mg/kg huile de graines."
+              }
+            ],
+            "jurisdiction": "Union européenne, texte consolidé19août2026",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-rm02-eu-seed-oil-thc-food-maxima",
+          "topicId": "seeds",
+          "level": 3,
+          "prompt": "Quels maxima UE en équivalents delta-9-THC s’appliquent respectivement aux graines alimentaires de chanvre et à leur huile ?",
+          "options": [
+            "3 mg/kg et 7,5 mg/kg",
+            "7,5 mg/kg et 3 mg/kg",
+            "3 mg/kg et 3 mg/kg",
+            "7,5 mg/kg et 7,5 mg/kg"
+          ],
+          "answer": 0,
+          "explanation": "Le règlement distingue les graines et leur huile :3 puis 7,5 mg/kg d’équivalents delta-9-THC. Ces limites de contaminants alimentaires ne sont pas le seuil agricole exprimé en pourcentage de THC.",
+          "articleId": "ref-graines-chanvre",
+          "sourceIds": [
+            "q2-rm02-eu-food-thc-limits"
+          ],
+          "editorial": {
+            "domain": "food",
+            "category": "food",
+            "subject": "THC résiduel dans les aliments de graines",
+            "subjectKey": "eu-hempseed-food-thc-maxima",
+            "property": "Limites alimentaires distinctes pour graines et huile",
+            "expectedAnswer": "3 mg/kg et 7,5 mg/kg",
+            "learningObjective": "Ne pas appliquer aux aliments le seuil agricole de THC.",
+            "factKey": "eu-seed-oil-thc-food-maxima",
+            "form": "identification",
+            "difficultyRationale": "Connaissance technique ou interprétation située demandant un vocabulaire spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rm02-eu-food-thc-limits",
+                "locator": "AnnexeI, points2.6.1–2.6.3",
+                "support": "Maxima3mg/kg graines et produits concernés ;7,5mg/kg huile de graines."
+              }
+            ],
+            "jurisdiction": "Union européenne, texte consolidé19août2026",
+            "reviewAfter": "2027-05-17"
+          }
+        }
+      },
+      "coordinatorScope": "Arbitrage des corrections ciblées de C après la lecture indépendante de B. Aucune nouvelle consultation de source revendiquée par root ; changement FDA purement documentaire vérifié sur son objet complet.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rm02-green-decortication-no-retting",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Préparation effective de fibres textiles de chanvre.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "9796041d9e7b940cc96c431b9c6a4966d62400d8627af2014433d2d49d9724a0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-defra-green-decortication",
+          "url": "https://www.votehemp.com/wp-content/uploads/2018/09/file.pdf",
+          "locator": "p.1 Executive Summary",
+          "result": "Rapport original NF0616/NNFCC sur miroir VoteHemp PDF2p effectivement ouvert et p1 Executive Summary lu : fresh green stems, plutôt que dried or retted stem. Numéro de projet et contact Jacqueline Broadhead confirmés.",
+          "sourceHash": "332b6a64d593d823844b62b595c11757c03eeed0a53137785e1ec7b95b3bda97"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-geotextile-buried-tensile-loss",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Durabilité d’un textile technique de chanvre en infrastructure.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "9b749cffd8e7ec38d0ed3038f4c414f9afaa60de98d35f1dc216b85a2513e7e8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-dabiret-geotextile-ageing",
+          "url": "https://www.issmge.org/uploads/publications/1/141/694.pdf",
+          "locator": "§3.1 et Conclusions",
+          "result": "Article original ICSMGE2026 PDF4p effectivement ouvert ; Abstract, §3.1 et Conclusions lus : diminution de résistance de géotextile non traité en béton concassé aux essais laboratoire et plateforme. Résultat matériel réel, pas durée universelle.",
+          "sourceHash": "d864f2d97384e9055c0928d9dd95699041fd45ceb8b787381773004759556b9d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hempcrete-capillary-base",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Protection réelle d’un mur isolant de chanvre.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "f5a821a4be2ec56cde759c3af015ce55fed3c56c485e818b09bcab94dd827d8a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-dgmr-capillary-moisture",
+          "url": "https://dgmr.nl/wp-content/uploads/2023/02/Whitepaper-Hempcrete_feb2023_DGMR.pdf",
+          "locator": "p.5, Application et Fig.6",
+          "result": "Whitepaper DGMR/TUDelft effectivement ouvert, p5/index4 application et protection capillary moisture rise lues. Fonction du soubassement distincte de la perméabilité vapeur ou pluie par enduit.",
+          "sourceHash": "02364c1f1dfe758d20784a994eee9cdc2103c223992f79e2852da8b9deccd1f2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-shiv-solubles-delay-binder",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Compatibilité chimique d’une chènevotte et d’un liant de construction.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "9244f3a3ca25eed2bbf21aa2d8847ab2dd1b2f587f1bc30cc728bf196b2964a9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-walker-soluble-shiv",
+          "url": "https://www.academia.edu/64707331/Effect_of_Hemp_S_Soluble_Components_on_the_Physical_Properties_of_Hemp_Concrete",
+          "locator": "§3.1, p.15–16 imprimées",
+          "result": "Texte original Walker/Pavía effectivement ouvert sur dépôt Academia, Abstract et §3.1 p15–16 imprimées lus : solubles retardent réactions chaux-pouzzolanes ; séchage comparable ne soutient pas rétention d’eau seule. Pas généralisation à la chaux pure.",
+          "sourceHash": "dc8d9a7dbd849a29139f03af34a1b66d660bdb31bb704f49e878190eb0ca87e5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-over-retting-tensile-risk",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Qualité réelle de fibres textiles rouies.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "a12cfbf2082c170ef19d9e094bc6b66d562bd4e3a85307d0a26dbe715d65f657",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-mazian-over-retting",
+          "url": "https://www.mdpi.com/2079-6439/7/12/108",
+          "locator": "§4 Conclusions, propriétés en traction et over-retting",
+          "result": "Article original Mazian effectivement ouvert, §3.3 et §4 Conclusions lus : amélioration initiale puis baisse de traction sous rouissage prolongé, cohérence de structure dégradée. Aucune durée ni optimisation reprise dans la question.",
+          "sourceHash": "592f0217f30c941360ed8c368c8332a4a71862e249ef126994d541bfc2475e93"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-textile-softens-washing",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Propriété au lavage d’un textile de chanvre.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "15d3065c587dbf4028e590540f14dc3bc098e2c52cd406b4aa520c1cc5617836",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-refashion-hemp-textiles",
+          "url": "https://pro.refashion.fr/ressource/fiche-pratique/le-lin-et-le-chanvre",
+          "locator": "Propriétés distinctives, chanvre",
+          "result": "Fiche Refashion effectivement ouverte, mise à jour octobre2026, Propriétés distinctives lu : chanvre s’adoucit progressivement au fil des lavages, sans garantie universelle d’apprêt ou de vêtement.",
+          "sourceHash": "dbabca0962b34fd7ea903daf7b470a780ba80828afb6da7eb9fb0001027fc622"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-textile-sorting-cotton",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Difficulté de tri/recyclage du textile de chanvre.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "5905e5541128565ea80032dcffa32400e435fc44f730066fec518dd75037d77b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-refashion-hemp-textiles",
+          "url": "https://pro.refashion.fr/ressource/fiche-pratique/le-lin-et-le-chanvre",
+          "locator": "Recyclabilité ; Incorporation de matière recyclée",
+          "result": "Même fiche Refashion Recyclabilité et Incorporation effectivement lues : détection/tri difficiles des fibres cellulosiques proches du coton, matières pouvant être confondues ; pas tous systèmes futurs visés.",
+          "sourceHash": "dbabca0962b34fd7ea903daf7b470a780ba80828afb6da7eb9fb0001027fc622"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rm02-hemp-lime-directional-performance",
+      "status": "approved",
+      "domain": "materials",
+      "domainComment": "Performances thermomécaniques directionnelles d’un matériau chaux-chanvre réel.",
+      "comment": "Fait, corrigé, portée, choix et difficulté recevables après lecture complète et vérification du passage externe.",
+      "contentHash": "b6faf7faec49f1c4c95c32e4112fb8ca2a9edf3f6b2bf824a14fd225b43e9d17",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rm02-williams-directional-hemp-lime",
+          "url": "https://link.springer.com/article/10.1617/s11527-016-0976-4",
+          "locator": "§3.3 ; §4, Fig.7 et fonctions directionnelles",
+          "result": "Article original Williams effectivement ouvert en HTML et PDF Springer ; §3.2, §3.3, Discussion/Fig7 et fonctions directionnelles lus : conductivité supérieure dans sens perpendiculaire et fonction de rupture supérieure à densité comparable dans plage étudiée. Aucun simple rappel de définition mécanique générale.",
+          "sourceHash": "880a3cfeb1f65e62637827c9a17c865502041eb70c418e78f69204a4c804a5cc"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "reviewed": 25,
+    "approved": 21,
+    "changes_requested": 4,
+    "rejected": 0,
+    "domains": {
+      "active": 10,
+      "food": 7,
+      "materials": 8
+    },
+    "sourceObjectsRead": 22,
+    "externalSourcesConsulted": 22,
+    "sourceAccess": "21 documents/pages/résumés effectivement ouverts et passages ciblés lus ; EUR-Lex ouvert sous protection JavaScript et extrait primaire indexé obtenu indépendamment. Trois résumés PubMed seulement, ChemRxiv et dépôt auteur Walker/Pavía explicités. PDF Springer Williams également ouvert pour préciser fonctions et directions.",
+    "completeReading": "25 objets complets, quatre choix, corrigés, explications et22 notices sources lus sans échantillonnage. Aucun objet auteur modifié.",
+    "duplicateCheck": "Index interrogé pour les25 faits et voisins complets relus : phytostérols famille/identité beta-sitostérol distincts ; définition décorticage/composition/digestibilité distinctes ; phytates versus inhibiteurs trypsine distincts ; sédimentation/tailles de gouttes versus comparaison émulsifiante soja distincts ; pectines de rouissage versus solubles chènevotte-liant distincts ; eau bong versus matériaux pipe et pièce banger distincts ; adultération CBD versus hétérogénéité Spice distincts. Aucun doublon exact constaté.",
+    "scope": "Les15 secondaires concernent réellement des produits alimentaires ou textiles/bâtiment. Aucune leçon générique utilisée comme substitut. Kush Sierra Leone respecte l’exception de confusion d’appellation déjà autorisée par root.",
+    "changes": "Trois séries de distracteurs à renforcer (3,4,17) ; une nature documentaire FDA à corriger (7). Aucun changement de fait ni nouvelle preuve exigé."
+  },
+  "coordinatorSummary": "25 questions approuvées (10active/7food/8materials).21 inchangées, trois corrections de distracteurs, une notice FDA requalifiée avec historique d’empreinte et une explication raccourcie sans ajout factuel."
+}

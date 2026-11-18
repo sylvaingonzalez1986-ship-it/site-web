@@ -1,0 +1,1584 @@
+{
+  "batchId": "c-legacy-01",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-plant-annuelle",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Le chanvre accomplit généralement son cycle de vie en une saison : c’est une plante…",
+      "options": [
+        "Vivace herbacée",
+        "Annuelle",
+        "Bisannuelle",
+        "Vivace ligneuse"
+      ],
+      "answer": 1,
+      "explanation": "Une annuelle germe, grandit, se reproduit puis termine son cycle en une saison. Les organes d’un même plant ne vieillissent pas tous au même rythme.",
+      "articleId": "ref-cycle-vie",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cycle annuel du chanvre",
+        "subjectKey": "cannabis-annual-life-cycle",
+        "property": "Le caractère annuel du cycle",
+        "expectedAnswer": "Annuelle",
+        "learningObjective": "Comprendre le caractère annuel du cycle.",
+        "factKey": "cannabis-life-cycle-annual",
+        "form": "identification",
+        "difficultyRationale": "Repère botanique introductif décrit dans le contexte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "2.6 General description, première phrase",
+            "support": "Le chanvre est décrit comme une espèce annuelle."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même cycle annuel ; deux synonymes remplacés par des catégories distinctes de vivaces."
+      }
+    },
+    {
+      "id": "hemp-plant-monoecie",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Un chanvre monoïque porte…",
+      "options": [
+        "Des fleurs mâles sur un plant et femelles sur un autre",
+        "Des fleurs toutes bisexuées sur le même plant",
+        "Des fleurs mâles et femelles séparées sur le même plant",
+        "Des fleurs femelles sans fleurs mâles sur le même plant"
+      ],
+      "answer": 2,
+      "explanation": "La monoécie réunit des fleurs mâles et des fleurs femelles distinctes sur un même individu. Une fleur bisexuée porte les deux types d’organes dans une seule fleur.",
+      "articleId": "ref-reproduction",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Monoécie du chanvre",
+        "subjectKey": "cannabis-monoecy",
+        "property": "La disposition des fleurs mâles et femelles",
+        "expectedAnswer": "Des fleurs mâles et femelles séparées sur le même plant",
+        "learningObjective": "Comprendre la disposition des fleurs mâles et femelles.",
+        "factKey": "cannabis-monoecy-separate-sex-flowers-one-individual",
+        "form": "identification",
+        "difficultyRationale": "Il faut distinguer plusieurs organisations reproductrices.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "4.1 Reproductive biology, cultivars monoïques",
+            "support": "Des fleurs mâles et femelles sont décrites sur les plantes monoïques."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même organisation ; bon choix précise désormais sur un même plant."
+      }
+    },
+    {
+      "id": "hemp-genetics-allele",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans le génome du chanvre, un allèle est…",
+      "options": [
+        "Une version d’une séquence d’ADN à un locus",
+        "La position d’une séquence sur un chromosome",
+        "L’ensemble des chromosomes d’une cellule",
+        "L’ensemble des gènes exprimés dans un tissu"
+      ],
+      "answer": 0,
+      "explanation": "Un allèle est une version de séquence d’ADN ; le locus en désigne l’emplacement. Deux chromosomes homologues peuvent porter des versions différentes au même locus.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-nhgri-allele"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Allèle à un locus",
+        "subjectKey": "cannabis-allele",
+        "property": "La définition d’un allèle",
+        "expectedAnswer": "Une version d’une séquence d’ADN à un locus",
+        "learningObjective": "Comprendre la définition d’un allèle.",
+        "factKey": "allele-dna-sequence-version-at-locus",
+        "form": "identification",
+        "difficultyRationale": "Distinguer version, emplacement, constitution chromosomique et expression.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-nhgri-allele",
+            "locator": "Definition",
+            "support": "Une version de séquence d’ADN à un emplacement génomique donné est un allèle."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même définition ; ajout explicite ADN et distracteurs génétiques proches."
+      }
+    },
+    {
+      "id": "hemp-genetics-clones-milieu",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Deux clones de même âge et génotype ont des hauteurs différentes. Quelle explication reste compatible avec ces données ?",
+      "options": [
+        "Un éclairement reçu différent",
+        "Des allèles différents à de nombreux loci",
+        "Un nombre de chromosomes différent",
+        "Une appartenance à deux espèces distinctes"
+      ],
+      "answer": 0,
+      "explanation": "À âge et génotype identiques, le milieu peut encore modifier un caractère comme la hauteur. Une différence visible ne prouve donc pas à elle seule une différence d’ADN.",
+      "articleId": "ref-cultivars-clones",
+      "sourceIds": [
+        "q2-cfix-nhgri-phenotype"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Variation de hauteur entre clones",
+        "subjectKey": "cannabis-clonal-environment-response",
+        "property": "L’influence du milieu sur un phénotype",
+        "expectedAnswer": "Un éclairement reçu différent",
+        "learningObjective": "Comprendre l’influence du milieu sur un phénotype.",
+        "factKey": "clonal-same-genotype-environment-height-variation",
+        "form": "deduction",
+        "difficultyRationale": "Situation mobilisant génotype/phénotype ; niveau intermédiaire plutôt que difficile.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-nhgri-phenotype",
+            "locator": "Definition et Narration",
+            "support": "Le phénotype dépend du génotype et de facteurs environnementaux."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même effet du milieu sur des clones identiques ; âge fixé, ambiguïté des mutations supprimée. Situation hypothétique ; niveau 3 → 2."
+      }
+    },
+    {
+      "id": "hemp-genetics-haplotype",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le génome du chanvre, qu’est-ce qu’un haplotype ?",
+      "options": [
+        "L’ensemble des chromosomes d’un gamète",
+        "Un ensemble de variants liés sur un même chromosome",
+        "L’ensemble des protéines produites par une cellule",
+        "Un ensemble de variants sur tous les chromosomes"
+      ],
+      "answer": 1,
+      "explanation": "Un haplotype associe des variants proches sur une même copie de chromosome, souvent transmis ensemble. Il peut couvrir un gène ou une région plus étendue.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-nhgri-haplotype"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Haplotype chromosomique",
+        "subjectKey": "cannabis-haplotype",
+        "property": "La définition d’un haplotype",
+        "expectedAnswer": "Un ensemble de variants liés sur un même chromosome",
+        "learningObjective": "Comprendre la définition d’un haplotype.",
+        "factKey": "haplotype-linked-variants-single-chromosome",
+        "form": "identification",
+        "difficultyRationale": "Concept spécialisé ; la définition seule ne justifie pas expert.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-nhgri-haplotype",
+            "locator": "Definition ; Narration",
+            "support": "Un haplotype réunit des variants sur un seul chromosome, proches et souvent transmis ensemble."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même concept ; définition opaque remplacée, niveau 4 → 3."
+      }
+    },
+    {
+      "id": "hemp-genetics-synthases-chromosome",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Dans le pangénome de Lynch et al. (2025), quel chromosome porte les ensembles de gènes THCAS, CBDAS et CBCAS ?",
+      "options": [
+        "Le chromosome 7",
+        "Le chromosome 1",
+        "Le chromosome X",
+        "Le chromosome Y"
+      ],
+      "answer": 0,
+      "explanation": "Dans ce pangénome, les cassettes de synthases se trouvent sur le chromosome 7. Localiser ces gènes d’enzymes ne suffit pas à déterminer la teneur chimique d’une fleur.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Localisation des synthases dans Lynch 2025",
+        "subjectKey": "lynch-2025-cannabinoid-synthase-loci",
+        "property": "La localisation chromosomique des synthases",
+        "expectedAnswer": "Le chromosome 7",
+        "learningObjective": "Comprendre la localisation chromosomique des synthases.",
+        "factKey": "lynch-2025-thcas-cbdas-cbcas-chromosome-7",
+        "form": "identification",
+        "difficultyRationale": "Résultat génomique précis et daté, nécessitant une connaissance de cette publication.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Domesticated cannabinoid pathway, premier paragraphe ; Figure 4",
+            "support": "Les gènes complets THCAS, CBDAS et CBCAS sont disposés en cassettes sur le chromosome7."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même chromosome et trois gènes ; pangénome nommé/daté."
+      }
+    },
+    {
+      "id": "hemp-molecules-ocimene-e",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Dans le (E)-β-ocimène du chanvre, la lettre E correspond ici à quelle géométrie ?",
+      "options": [
+        "Cis autour de la double liaison repérée",
+        "Trans autour de la double liaison repérée",
+        "R autour d’un centre stéréogène repéré",
+        "S autour d’un centre stéréogène repéré"
+      ],
+      "answer": 1,
+      "explanation": "Pour la double liaison repérée du β-ocimène, E correspond ici à trans. E/Z décrit une géométrie de double liaison ; R/S décrit une configuration de centre stéréogène.",
+      "articleId": "record-terpene-e-beta-ocimene",
+      "sourceIds": [
+        "q2-cfix-chebi-ocimene"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Stéréodescripteur du (E)-β-ocimène",
+        "subjectKey": "e-beta-ocimene",
+        "property": "La correspondance E/trans propre au β-ocimène",
+        "expectedAnswer": "Trans autour de la double liaison repérée",
+        "learningObjective": "Comprendre la correspondance E/trans propre au β-ocimène.",
+        "factKey": "e-beta-ocimene-e-corresponds-trans-at-designated-double-bond",
+        "form": "identification",
+        "difficultyRationale": "Distinguer des systèmes de stéréodescripteurs, sans choix acide/hydrogénée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-chebi-ocimene",
+            "locator": "Definition et Synonyms",
+            "support": "La notice associe le composé 3E aux synonymes trans-3,7-diméthylocta-1,3,6-triène et trans-β-ocimène."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même correspondance E/trans et réserve ici ; choix stéréochimiques, niveau 4 → 3."
+      }
+    },
+    {
+      "id": "hemp-evidence-hhc-epimeres",
+      "topicId": "evidence",
+      "level": 4,
+      "prompt": "Les formes (9R)-HHC et (9S)-HHC sont…",
+      "options": [
+        "Deux énantiomères",
+        "Deux épimères",
+        "Deux conformères",
+        "Deux isomères de constitution"
+      ],
+      "answer": 1,
+      "explanation": "Ces deux formes diffèrent par la configuration du seul centre stéréogène C9 ; les autres restent identiques. Elles sont donc des épimères, un cas particulier de diastéréoisomérie.",
+      "articleId": "record-cannabinoid-hhc",
+      "sourceIds": [
+        "q2-cfix-russo-hhc-2023",
+        "q2-cfix-iupac-epimers"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Relation entre (9R)-HHC et (9S)-HHC",
+        "subjectKey": "hhc-9r-9s",
+        "property": "La relation d’épimérie des formes 9R et9S",
+        "expectedAnswer": "Deux épimères",
+        "learningObjective": "Comprendre la relation d’épimérie des formes 9R et9S.",
+        "factKey": "hhc-9r-9s-epimers-single-stereocenter-difference",
+        "form": "identification",
+        "difficultyRationale": "Quatre relations structurales proches nécessitent une compréhension avancée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-russo-hhc-2023",
+            "locator": "p.3, attribution de la stéréochimie C9 ; Figure 3",
+            "support": "Les formes 9S et9R sont des épimères dont la configuration varie au C9."
+          },
+          {
+            "sourceId": "q2-cfix-iupac-epimers",
+            "locator": "Definition de l’extrait indexé E02167",
+            "support": "Les épimères différent par un seul des centres stéréogènes présents."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même épimérie ; corrigé restreint à un seul centre, sans reprendre puissance ou fabrication."
+      }
+    },
+    {
+      "id": "hemp-biodiversity-chrysope",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Sur le chanvre, un prédateur sans ailes a de longues mandibules courbes. Quel auxiliaire correspond à la description de la CSU ?",
+      "options": [
+        "Un adulte de chrysope",
+        "Une larve de chrysope",
+        "Une larve de coccinelle",
+        "Un adulte de syrphe"
+      ],
+      "answer": 1,
+      "explanation": "La larve de chrysope saisit de petites proies, dont les pucerons, avec ses longues mandibules courbes. Chez Chrysopa oculata, les adultes peuvent aussi être prédateurs.",
+      "articleId": "record-health-lacewings",
+      "sourceIds": [
+        "q2-cfix-csu-lacewings"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Larve prédatrice des chrysopes du chanvre",
+        "subjectKey": "green-lacewing-predatory-larva",
+        "property": "La reconnaissance du stade larvaire prédateur de chrysope",
+        "expectedAnswer": "Une larve de chrysope",
+        "learningObjective": "Comprendre la reconnaissance du stade larvaire prédateur de chrysope.",
+        "factKey": "green-lacewing-larva-curved-mandibles-aphid-predator",
+        "form": "situation",
+        "difficultyRationale": "Quatre auxiliaires/stades plausibles ; les signes observables évitent de nier la prédation adulte.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-csu-lacewings",
+            "locator": "Paragraphes 1 et2, larve et adulte",
+            "support": "La larve porte de longues pièces buccales courbes et recherche des proies ; les adultes de C.oculata sont aussi prédateurs."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même larve prédatrice. Signes documentés fournis pour rendre le choix univoque ; ni œuf ni cocon vide proposés ; prédation adulte non niée."
+      }
+    },
+    {
+      "id": "hemp-biodiversity-sclerotes",
+      "topicId": "biodiversity",
+      "level": 3,
+      "prompt": "Quelles structures permettent à Sclerotinia sclerotiorum de persister entre deux cultures ?",
+      "options": [
+        "Des sclérotes",
+        "Des conidies",
+        "Des ascospores",
+        "Des zoospores"
+      ],
+      "answer": 0,
+      "explanation": "Les sclérotes sont des masses compactes et résistantes de filaments fongiques. Ils permettent au champignon de persister dans le sol et les débris en l’absence de nouvelle culture.",
+      "articleId": "record-health-sclerotinia-sclerotiorum",
+      "sourceIds": [
+        "q2-cfix-umn-sclerotinia"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Persistance de Sclerotinia sclerotiorum",
+        "subjectKey": "sclerotinia-sclerotiorum-survival",
+        "property": "La structure de persistance de Sclerotinia",
+        "expectedAnswer": "Des sclérotes",
+        "learningObjective": "Comprendre la structure de persistance de Sclerotinia.",
+        "factKey": "sclerotinia-sclerotiorum-survival-sclerotia",
+        "form": "identification",
+        "difficultyRationale": "Différencier des structures fongiques est spécialisé, sans artifices de niveau 4.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-umn-sclerotinia",
+            "locator": "How does white mold survive and spread?, deux premières puces",
+            "support": "Les sclérotes permettent au champignon de survivre dans le sol et les débris."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même structure ; choix fongiques remplacent pollen/œufs/akènes ; niveau 4 → 3."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-thc-1964",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel composé du haschisch Gaoni et Mechoulam ont-ils isolé et caractérisé dans leur publication de 1964 ?",
+      "options": [
+        "Le Δ9-THC",
+        "Le cannabidiol",
+        "Le cannabinol",
+        "Le cannabigérol"
+      ],
+      "answer": 0,
+      "explanation": "Le constituant étudié est aujourd’hui nommé Δ9-THC. La première page emploie l’ancienne numérotation Δ1 ; ce travail chimique de 1964 ne constitue pas un essai thérapeutique.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-gaoni-first-page-1964"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Constituant étudié par Gaoni et Mechoulam en 1964",
+        "subjectKey": "gaoni-mechoulam-1964-thc",
+        "property": "L’identité du constituant isolé en 1964",
+        "expectedAnswer": "Le Δ9-THC",
+        "learningObjective": "Comprendre l’identité du constituant isolé en 1964.",
+        "factKey": "gaoni-mechoulam-1964-isolated-active-thc",
+        "form": "identification",
+        "difficultyRationale": "Repère historique précis parmi quatre cannabinoïdes végétaux crédibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-gaoni-first-page-1964",
+            "locator": "Introduction, colonne droite de la première page, structureI",
+            "support": "Les auteurs annoncent le constituant tétrahydrocannabinolique isolé et sa structure selon l’ancienne numérotation."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même molécule et publication ; trois cannabinoïdes végétaux remplacent les distracteurs hors sujet, niveau 1 → 2."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cb1-brain",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Selon la classification de Howlett et al. (2002), sur quelles cellules CB1 est-il surtout présent ?",
+      "options": [
+        "Les neurones centraux et périphériques",
+        "Les cellules hépatiques",
+        "Les cellules du muscle squelettique",
+        "Les cellules du cartilage"
+      ],
+      "answer": 0,
+      "explanation": "La classification de 2002 décrit CB1 principalement sur les neurones du système nerveux central et périphérique. Cette prédominance n’exclut pas son expression dans d’autres cellules.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-howlett-classification-2002"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Distribution cellulaire historique de CB1",
+        "subjectKey": "cb1-historical-distribution",
+        "property": "La distribution prédominante de CB1 décrite en 2002",
+        "expectedAnswer": "Les neurones centraux et périphériques",
+        "learningObjective": "Comprendre la distribution prédominante de CB1 décrite en 2002.",
+        "factKey": "howlett-2002-cb1-primarily-central-peripheral-neurons",
+        "form": "identification",
+        "difficultyRationale": "Quatre populations de cellules animales ; il faut connaître la prédominance décrite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-howlett-classification-2002",
+            "locator": "Abstract, passage sur CB1",
+            "support": "CB1 est décrit surtout sur les neurones centraux et périphériques."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même distribution neuronale ; organismes hors sujet et absolus supprimés."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cbd-not-thc",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quel lipide sert de substrat aux lipases qui forment le 2-AG par hydrolyse ?",
+      "options": [
+        "Un diacylglycérol portant de l’arachidonate",
+        "Un triacylglycérol portant de l’arachidonate",
+        "Une phosphatidylcholine portant de l’arachidonate",
+        "Une éthanolamide portant de l’arachidonate"
+      ],
+      "answer": 0,
+      "explanation": "Les DAG lipases hydrolysent un diacylglycérol portant l’arachidonate pour former le 2-AG, un monoacylglycérol. L’enzyme retire ainsi l’une des deux chaînes acyles du substrat.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-bisogno-dagl-2003"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Substrat des DAG lipases formant le 2-AG",
+        "subjectKey": "dag-lipase-substrate",
+        "property": "La nature du précurseur lipidique du 2-AG",
+        "expectedAnswer": "Un diacylglycérol portant de l’arachidonate",
+        "learningObjective": "Comprendre la nature du précurseur lipidique du 2-AG.",
+        "factKey": "dag-lipase-arachidonoyl-diacylglycerol-to-2ag",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître le substrat parmi quatre lipides est plus exigeant sans le sigle DAG donné.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-bisogno-dagl-2003",
+            "locator": "Introduction, hydrolyse des DAG en 2-AG ; Abstract",
+            "support": "Les lipases sn-1 hydrolysent des DAG pour produire le 2-arachidonoylglycérol."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même substrat diacylglycérol malgré l’ID historique trompeur. Indice DAG retiré ; choix lipidiques comparables, niveau 2 → 3."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cb2-tissue",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Selon la classification de Howlett et al. (2002), quelles cellules expriment principalement CB2 ?",
+      "options": [
+        "Les cellules immunitaires",
+        "Les cellules musculaires",
+        "Les cellules du cartilage",
+        "Les cellules du tissu adipeux"
+      ],
+      "answer": 0,
+      "explanation": "CB2 est décrit principalement dans les cellules immunitaires dans cette classification. Cela n’en fait pas un récepteur strictement absent des autres tissus.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-howlett-classification-2002"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Distribution cellulaire historique de CB2",
+        "subjectKey": "cb2-historical-distribution",
+        "property": "La distribution prédominante de CB2 décrite en 2002",
+        "expectedAnswer": "Les cellules immunitaires",
+        "learningObjective": "Comprendre la distribution prédominante de CB2 décrite en 2002.",
+        "factKey": "howlett-2002-cb2-mainly-immune-cells",
+        "form": "identification",
+        "difficultyRationale": "Prédominance à connaître parmi quatre populations de cellules animales.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-howlett-classification-2002",
+            "locator": "Abstract, passage sur CB2",
+            "support": "CB2 est présent principalement sur les cellules immunitaires."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même prédominance immunitaire ; choix animaux crédibles sans exclusivité."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cb1-cb2-sequence",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Selon Howlett et al. (2002), quelle identité de séquence d’acides aminés partagent approximativement CB1 et CB2 ?",
+      "options": [
+        "28 %",
+        "48 %",
+        "68 %",
+        "88 %"
+      ],
+      "answer": 1,
+      "explanation": "Les deux protéines présentent environ 48 % d’identité de séquence d’acides aminés. Ce chiffre compare leurs séquences ; il ne mesure pas une proportion d’effets communs.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-howlett-classification-2002"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Identité de séquence des récepteurs CB1/CB2",
+        "subjectKey": "cb1-cb2-sequence-identity",
+        "property": "La proportion d’identité protéique CB1/CB2 rapportée en 2002",
+        "expectedAnswer": "48 %",
+        "learningObjective": "Comprendre la proportion d’identité protéique CB1/CB2 rapportée en 2002.",
+        "factKey": "howlett-2002-cb1-cb2-48-percent-amino-acid-identity",
+        "form": "identification",
+        "difficultyRationale": "Résultat numérique spécialisé parmi quatre ordres de grandeur crédibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-howlett-classification-2002",
+            "locator": "Abstract, première partie",
+            "support": "La classification indique48 % d’identité de séquence d’acides aminés entre CB1 et CB2."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même valeur48 % ; choix numériques resserrés, référence nommée/datée."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-tissue",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Dans quel tissu Devane et ses collègues ont-ils isolé l’anandamide en 1992 ?",
+      "options": [
+        "Le cerveau de porc",
+        "La rate de bovin",
+        "Le foie de rat",
+        "L’intestin de chien"
+      ],
+      "answer": 0,
+      "explanation": "L’anandamide a été identifiée dans le cerveau porcin. Ce tissu de découverte est un repère historique ; il ne signifie pas que la molécule n’existe que chez le porc ou dans le cerveau.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-devane-anandamide-1992",
+        "q2-cfix-ben-shabat-2ag-1998"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Tissu de découverte de l’anandamide",
+        "subjectKey": "devane-1992-anandamide-tissue",
+        "property": "Le tissu utilisé pour la découverte de l’anandamide",
+        "expectedAnswer": "Le cerveau de porc",
+        "learningObjective": "Comprendre le tissu utilisé pour la découverte de l’anandamide.",
+        "factKey": "devane-1992-anandamide-isolated-porcine-brain",
+        "form": "identification",
+        "difficultyRationale": "Repère précis d’histoire biochimique ; quatre tissus animaux plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-devane-anandamide-1992",
+            "locator": "Première phrase du résumé indexé",
+            "support": "L’arachidonyléthanolamide est identifiée dans le cerveau porcin."
+          },
+          {
+            "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+            "locator": "p.23, début de l’Introduction",
+            "support": "Les auteurs rappellent cette identification dans le cerveau porcin et citent Devane et al.,1992b."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même tissu ; graines et tiges remplacées par des tissus animaux, sans généralisation de distribution."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-thc-stereochemistry",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quel ensemble de travaux chimiques Gaoni et Mechoulam rapportent-ils sur le THC en 1964 ?",
+      "options": [
+        "Isolement, structure et synthèse partielle",
+        "Isolement, structure et synthèse totale",
+        "Synthèse totale, résolution et cristallographie",
+        "Purification, structure et synthèse totale"
+      ],
+      "answer": 0,
+      "explanation": "Leur publication réunit l’isolement du constituant, l’élucidation de sa structure et une synthèse partielle. Le titre ne revendique pas une synthèse totale.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-gaoni-first-page-1964"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Portée chimique de la publication de 1964",
+        "subjectKey": "gaoni-mechoulam-1964-work-scope",
+        "property": "Les trois volets du travail chimique de 1964",
+        "expectedAnswer": "Isolement, structure et synthèse partielle",
+        "learningObjective": "Comprendre les trois volets du travail chimique de 1964.",
+        "factKey": "gaoni-mechoulam-1964-isolation-structure-partial-synthesis",
+        "form": "identification",
+        "difficultyRationale": "Tous les choix relèvent de la chimie ; la distinction partielle/totale est historiquement précise.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-gaoni-first-page-1964",
+            "locator": "Titre de l’article, cartouche ACS et colonne droite",
+            "support": "Le titre annonce isolement, structure et synthèse partielle du constituant actif."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même triplet de travaux, pas un nouveau fait stéréochimique malgré l’ID. Quatre programmes chimiques remplacent des recherches biologiques hors sujet."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-precursor",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle fonction relie l’acide arachidonique à l’éthanolamine dans l’anandamide ?",
+      "options": [
+        "Une fonction amide",
+        "Une fonction ester",
+        "Une fonction éther",
+        "Une fonction amine"
+      ],
+      "answer": 0,
+      "explanation": "L’anandamide est une N-acyléthanolamine : l’acide gras et l’éthanolamine sont unis par une fonction amide. Le mot éthanolamide désigne cette structure, pas un groupe fonctionnel élémentaire distinct.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-chebi-anandamide"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Fonction amide de l’anandamide",
+        "subjectKey": "anandamide-amide-function",
+        "property": "La liaison amide de l’anandamide",
+        "expectedAnswer": "Une fonction amide",
+        "learningObjective": "Comprendre la liaison amide de l’anandamide.",
+        "factKey": "anandamide-arachidonoyl-ethanolamine-amide-linkage",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître la fonction dans une structure lipidique exige de la chimie organique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-chebi-anandamide",
+            "locator": "Definition ; SMILES ; IUPAC Name",
+            "support": "Carboxyle de l’acide arachidonique et groupe amino de l’éthanolamine sont unis dans cette N-acyléthanolamine."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même liaison à l’éthanolamine ; catégorie éthanolamide précisée en fonction amide, conformément à l’audit, niveau 4 → 3."
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptors-contrast",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Selon Howlett et al. (2002), à quelle famille de protéines les récepteurs CB1 et CB2 sont-ils directement couplés ?",
+      "options": [
+        "Des protéines G",
+        "Des protéines JAK",
+        "Des protéines SMAD",
+        "Des protéines STAT"
+      ],
+      "answer": 0,
+      "explanation": "CB1 et CB2 sont couplés à des protéines G. Ces relais intracellulaires transmettent le signal du récepteur à des effecteurs, dont l’adénylyl cyclase.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-howlett-classification-2002"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Couplage des récepteurs cannabinoïdes aux protéines G",
+        "subjectKey": "cb1-cb2-g-protein-coupling",
+        "property": "La famille de relais intracellulaires couplés à CB1 et CB2",
+        "expectedAnswer": "Des protéines G",
+        "learningObjective": "Identifier les protéines G comme relais intracellulaires des récepteurs CB1 et CB2.",
+        "factKey": "cb1-cb2-coupled-g-proteins-signaling",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme général de signalisation cellulaire parmi quatre familles de relais réels : niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-howlett-classification-2002",
+            "locator": "Abstract, phrase Both receptor types are coupled through G proteins",
+            "support": "Les deux types de récepteurs sont couplés par des protéines G à l’adénylyl cyclase et aux protéines kinases activées par les mitogènes."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Fait remplacé après autorisation bêta locale : le contraste neuronal/immunitaire, redondant avec deux items de ce lot, est abandonné. Le fait final distinct est le couplage de CB1 et CB2 aux protéines G.",
+        "legacyFactDisposition": "retired-duplicate",
+        "discardedLegacyFact": "Prédominance neuronale de CB1 et immunitaire de CB2",
+        "duplicateOf": [
+          "hemp-hs-sci-cb1-brain",
+          "hemp-hs-sci-cb2-tissue"
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-2ag-cb1cb2",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quels sont les deux principaux récepteurs cannabinoïdes auxquels le 2-AG se lie ?",
+      "options": [
+        "CB1 et CB2",
+        "CB1 et GPR55",
+        "CB2 et GPR18",
+        "GPR18 et GPR55"
+      ],
+      "answer": 0,
+      "explanation": "Le 2-AG est un ligand des récepteurs cannabinoïdes CB1 et CB2. Un même messager peut rencontrer plusieurs cibles sans que ces récepteurs aient des séquences ou des distributions identiques.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "q2-cfix-ben-shabat-2ag-1998"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Cibles cannabinoïdes du 2-AG",
+        "subjectKey": "2ag-cb1-cb2-binding",
+        "property": "Le couple CB1/CB2 reconnu par le 2-AG",
+        "expectedAnswer": "CB1 et CB2",
+        "learningObjective": "Comprendre le couple CB1/CB2 reconnu par le 2-AG.",
+        "factKey": "2ag-binds-cb1-and-cb2-receptors",
+        "form": "identification",
+        "difficultyRationale": "Comparer des couples de récepteurs réels exige une connaissance pharmacologique, sans indice jamais/aucun.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+            "locator": "p.23, Abstract première phrase ; Introduction",
+            "support": "Le 2-arachidonoylglycérol est un ligand endogène des deux récepteurs CB1 et CB2."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même couple de cibles ; couples plausibles remplacent jamais/aucun, niveau 4 → 3."
+      }
+    },
+    {
+      "id": "hemp-en-1-07",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle particularité anatomique l’ACIA décrit-elle pour les entre-nœuds du chanvre ?",
+      "options": [
+        "Ils peuvent présenter un centre creux",
+        "Ils portent un canal résinifère axial",
+        "Ils concentrent le phloème au centre",
+        "Ils possèdent une moelle faite de xylème"
+      ],
+      "answer": 0,
+      "explanation": "Un entre-nœud est la portion de tige située entre deux nœuds. Son intérieur peut être creux chez le chanvre : une tige fibreuse n’est donc pas forcément pleine en son centre.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Centre de l’entre-nœud du chanvre",
+        "subjectKey": "cannabis-internode-interior",
+        "property": "La possibilité d’un entre-nœud creux",
+        "expectedAnswer": "Ils peuvent présenter un centre creux",
+        "learningObjective": "Comprendre la possibilité d’un entre-nœud creux.",
+        "factKey": "cannabis-internodes-can-be-hollow",
+        "form": "identification",
+        "difficultyRationale": "Quatre descriptions de tissus de tige ; anatomie de niveau intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "2.6 General description, phrase sur les tiges",
+            "support": "L’intérieur de la tige peut être creux dans les entre-nœuds."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même creux interne possible ; organisations anatomiques remplacent graines, anthères et bulbe."
+      }
+    },
+    {
+      "id": "hemp-en-1-10",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel ensemble de propriétés décrit le pollen de chanvre dispersé par le vent ?",
+      "options": [
+        "Petit, léger et sec",
+        "Petit, lourd et visqueux",
+        "Gros, léger et collant",
+        "Gros, lourd et humide"
+      ],
+      "answer": 0,
+      "explanation": "Les fleurs mâles libèrent de nombreux grains de pollen petits, légers et secs. Ces propriétés correspondent à leur dispersion aérienne, même si des insectes viennent aussi les récolter.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Propriétés du pollen anémophile",
+        "subjectKey": "cannabis-windborne-pollen-properties",
+        "property": "Les propriétés du pollen de chanvre transporté par le vent",
+        "expectedAnswer": "Petit, léger et sec",
+        "learningObjective": "Comprendre les propriétés du pollen de chanvre transporté par le vent.",
+        "factKey": "cannabis-pollen-small-light-dry",
+        "form": "identification",
+        "difficultyRationale": "Propriétés physiques pertinentes pour la dispersion, sans coques ou grappes impossibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "4.1 Reproductive biology, pollen mâle",
+            "support": "Les grains sont petits, légers et secs, produits en grande quantité."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même triplet physique ; choix de taille, masse et texture plutôt que contenus fantaisistes."
+      }
+    },
+    {
+      "id": "hemp-en-1-11",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Autour de la fleur femelle, que finit par envelopper la bractée périgonale du chanvre ?",
+      "options": [
+        "Le fruit en développement",
+        "Une anthère arrivée à maturité",
+        "Un bourgeon de fleur mâle",
+        "Le sommet du filet d’une étamine"
+      ],
+      "answer": 0,
+      "explanation": "La bractée périgonale se développe autour du fruit issu de la fleur femelle. Elle reste une enveloppe externe : elle ne se transforme pas elle-même en graine.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Bractée périgonale entourant le fruit",
+        "subjectKey": "cannabis-perigonal-bract-fruit",
+        "property": "Le rôle enveloppant de la bractée périgonale",
+        "expectedAnswer": "Le fruit en développement",
+        "learningObjective": "Comprendre le rôle enveloppant de la bractée périgonale.",
+        "factKey": "cannabis-perigonal-bract-envelops-developing-fruit",
+        "form": "identification",
+        "difficultyRationale": "Structures reproductrices concurrentes ; précision botanique intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "4.1 Reproductive biology, description des fleurs femelles",
+            "support": "La bractée périgonale naît sous chaque fleur et croît pour envelopper le fruit."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même fruit enveloppé ; précision périgonale et choix floraux remplacent racine/tige, niveau 3 → 2."
+      }
+    },
+    {
+      "id": "hemp-en-1-13",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Qu’est-ce qui caractérise un trichome « capité pédonculé » du cannabis ?",
+      "options": [
+        "Une tête au bout d’un pied allongé",
+        "Une tête proche de l’épiderme, sur pied très court",
+        "Une petite glande bulbeuse peu saillante",
+        "Un poil pointu sans tête sécrétrice"
+      ],
+      "answer": 0,
+      "explanation": "Capité signifie qu’une tête est présente ; pédonculé indique son pied allongé. Ce nom décrit une forme de glande et ne permet pas de lire directement sa composition chimique.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021",
+        "q2-c-livingston-trichomes-2020"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Morphologie du trichome capité pédonculé",
+        "subjectKey": "cannabis-capitate-stalked-trichome",
+        "property": "La morphologie d’un trichome capité pédonculé",
+        "expectedAnswer": "Une tête au bout d’un pied allongé",
+        "learningObjective": "Comprendre la morphologie d’un trichome capité pédonculé.",
+        "factKey": "cannabis-stalked-capitate-trichome-head-long-stalk",
+        "form": "identification",
+        "difficultyRationale": "Aspects de trichomes réels ; le nom fournit un appui lexical, donc niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "4.1 Reproductive biology, types glandulaires",
+            "support": "Les types sessile et pédonculé ont une tête globuleuse ; les pédonculés sont plus grands."
+          },
+          {
+            "sourceId": "q2-c-livingston-trichomes-2020",
+            "locator": "Introduction, description des glandes sessiles et pédonculées",
+            "support": "Le pédoncule multicellulaire élève la tête des glandes pédonculées au-dessus de la surface."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même forme tête/pied ; morphologies concurrentes réelles et niveau 3 → 2."
+      }
+    },
+    {
+      "id": "hemp-en-1-17",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Une graine de chanvre viable ne germe pas malgré des conditions normalement favorables. Quel état la caractérise ?",
+      "options": [
+        "La dormance",
+        "La quiescence due au milieu",
+        "La sénescence",
+        "La germination"
+      ],
+      "answer": 0,
+      "explanation": "La dormance empêche une graine viable de germer malgré des conditions favorables. Elle se distingue d’un simple arrêt imposé par un milieu défavorable et de la mort de l’embryon.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-kew-dormancy-2022",
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Dormance d’une graine viable",
+        "subjectKey": "cannabis-seed-dormancy",
+        "property": "La dormance malgré des conditions favorables",
+        "expectedAnswer": "La dormance",
+        "learningObjective": "Comprendre la dormance malgré des conditions favorables.",
+        "factKey": "viable-seed-dormancy-despite-favourable-conditions",
+        "form": "situation",
+        "difficultyRationale": "Distinction technique avec la quiescence environnementale, de niveau difficile.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-kew-dormancy-2022",
+            "locator": "p.1, définition avant Types of seed dormancy",
+            "support": "Les graines ne germant pas dans des conditions favorables sont considérées dormantes."
+          },
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "4.1 Reproductive biology, fin du passage sur les graines sauvages",
+            "support": "Des graines sauvages de cannabis présentent une dormance prolongée et une germination irrégulière."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même dormance ; conditions favorables et viabilité explicitées pour exclure la quiescence, sans conseil de germination."
+      }
+    },
+    {
+      "id": "hemp-en-1-19",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans un classement où Cannabis est un genre monotypique, combien d’espèces ce genre comprend-il ?",
+      "options": [
+        "Une seule espèce reconnue",
+        "Deux espèces reconnues",
+        "Trois espèces reconnues",
+        "Quatre espèces reconnues"
+      ],
+      "answer": 0,
+      "explanation": "Monotypique signifie ici qu’un genre compte une seule espèce dans le classement considéré. Cette décision taxonomique n’efface ni les cultivars ni la diversité génétique de ses populations.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-cfia-botany-2021"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Interprétation monotypique de Cannabis",
+        "subjectKey": "cannabis-monotypic-genus",
+        "property": "Le sens d’un genre monotypique",
+        "expectedAnswer": "Une seule espèce reconnue",
+        "learningObjective": "Comprendre le sens d’un genre monotypique.",
+        "factKey": "cannabis-monotypic-genus-one-recognized-species",
+        "form": "identification",
+        "difficultyRationale": "Terme de classification intermédiaire, pas expert du seul fait du vocabulaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-cfia-botany-2021",
+            "locator": "2.5 Taxonomy and genetics, description monospecific",
+            "support": "Le traitement à une seule espèce avec des formes internes est décrit, avec rappel de classifications concurrentes."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même définition une espèce ; classement conditionnel, quatre nombres comparables, niveau 4 → 2."
+      }
+    },
+    {
+      "id": "hemp-en-1-20",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans les propositions GEVES de janvier 2025, quelle variété de chanvre est décrite comme « très précoce » ?",
+      "options": [
+        "Sylviçi 26",
+        "Vega",
+        "Anka",
+        "Fedora 17"
+      ],
+      "answer": 1,
+      "explanation": "Vega est classée « très précoce » dans les propositions de janvier 2025, publiées en février par le GEVES. Source CTPS/GEVES : ce résultat dépend des essais et n’est pas un calendrier universel.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-cfix-geves-propositions-2025"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Classement de précocité de Vega en 2025",
+        "subjectKey": "hemp-vega-geves-2025",
+        "property": "La précocité attribuée à Vega dans le document daté",
+        "expectedAnswer": "Vega",
+        "learningObjective": "Comprendre la précocité attribuée à Vega dans le document daté.",
+        "factKey": "geves-january-2025-vega-very-early",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un tableau variétal ; rareté du nom ne justifie pas expert.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-geves-propositions-2025",
+            "locator": "p.4 imprimée, tableau des propositions de janvier 2025",
+            "support": "Vega est très précoce ; Sylviçi 26 et Anka sont précoces."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même variété et caractère ; mois des propositions distinct de publication en février. Document externe, sans catalogue du site ; niveau 4 → 3."
+      }
+    },
+    {
+      "id": "hemp-en-2-06",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Le myrcène du cannabis est un terpène acyclique : quel schéma décrit son squelette carboné ?",
+      "options": [
+        "Une chaîne ouverte",
+        "Un cycle unique",
+        "Deux cycles fusionnés",
+        "Deux cycles pontés"
+      ],
+      "answer": 0,
+      "explanation": "Acyclique signifie sans cycle. Le squelette carboné du myrcène forme une chaîne ouverte et ramifiée ; d’autres terpènes peuvent comporter des anneaux.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-cfix-chebi-myrcene",
+        "q2-cfix-booth-terpene-synthases-2017"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Absence de cycle du myrcène",
+        "subjectKey": "beta-myrcene-acyclic-skeleton",
+        "property": "Le caractère acyclique du myrcène",
+        "expectedAnswer": "Une chaîne ouverte",
+        "learningObjective": "Comprendre le caractère acyclique du myrcène.",
+        "factKey": "myrcene-acyclic-open-carbon-chain",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire chimique introductif ; niveau 1 plutôt que2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-chebi-myrcene",
+            "locator": "Definition ; SMILES",
+            "support": "Le squelette carboné décrit ne comporte pas de fermeture de cycle."
+          },
+          {
+            "sourceId": "q2-cfix-booth-terpene-synthases-2017",
+            "locator": "Abstract ; Table1",
+            "support": "Le β-myrcène figure parmi les terpènes du chanvre étudié."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même absence d’anneau ; quatre architectures carbonées plausibles et niveau 2 → 1."
+      }
+    },
+    {
+      "id": "hemp-en-2-08",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Que montre le double produit β-caryophyllène/α-humulène de CsTPS9 du chanvre chez Booth et al. (2017) ?",
+      "options": [
+        "Une synthase peut former plusieurs terpènes",
+        "Chaque terpène exige une synthase différente",
+        "Les deux noms désignent la même molécule",
+        "La synthase transforme un terpène en l’autre"
+      ],
+      "answer": 0,
+      "explanation": "Une même terpène synthase peut avoir plusieurs produits. CsTPS9 du chanvre Finola forme du β-caryophyllène et de l’α-humulène, à partir d’un précurseur commun.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-cfix-booth-terpene-synthases-2017"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Pluralité des produits d’une terpène synthase",
+        "subjectKey": "cannabis-multiproduct-terpene-synthase",
+        "property": "La possibilité de plusieurs produits pour une même synthase",
+        "expectedAnswer": "Une synthase peut former plusieurs terpènes",
+        "learningObjective": "Comprendre la possibilité de plusieurs produits pour une même synthase.",
+        "factKey": "cannabis-one-terpene-synthase-multiple-terpene-products",
+        "form": "deduction",
+        "difficultyRationale": "Le résultat est fourni ; il faut choisir la conclusion enzymatique compatible.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-booth-terpene-synthases-2017",
+            "locator": "Résultats, CsTPS9FN ; Discussion",
+            "support": "CsTPS9FN produit deux sesquiterpènes ; la discussion distingue synthases à un et plusieurs produits."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même pluralité des produits. L’exemple déjà présent dans le corrigé est fourni pour interprétation, sans nouveau fait de catalogue."
+      }
+    },
+    {
+      "id": "hemp-en-2-11",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Dans Kneubühl et al. (2021), quelle famille est proposée pour une note de poivron dans des fleurs de chanvre ?",
+      "options": [
+        "Les méthoxypyrazines",
+        "Les composés soufrés volatils",
+        "Les aldéhydes aliphatiques",
+        "Les esters volatils"
+      ],
+      "answer": 0,
+      "explanation": "Le tableau propose une méthoxypyrazine pour la note de poivron observée. L’identification est provisoire : une ressemblance d’odeur ne suffit pas à établir la structure complète.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-cfix-kneubuhl-odorants-2021"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Odorant de note poivron proposé en 2021",
+        "subjectKey": "hemp-bell-pepper-methoxypyrazine",
+        "property": "L’attribution provisoire d’une note poivron aux méthoxypyrazines",
+        "expectedAnswer": "Les méthoxypyrazines",
+        "learningObjective": "Comprendre l’attribution provisoire d’une note poivron aux méthoxypyrazines.",
+        "factKey": "kneubuhl-2021-tentative-bell-pepper-methoxypyrazine",
+        "form": "identification",
+        "difficultyRationale": "Attribution précise/provisoire parmi quatre familles odorantes plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-kneubuhl-odorants-2021",
+            "locator": "p.2, Tableau 1 ligne 18 et légende b",
+            "support": "La 2-isobutyl-3-méthoxypyrazine est associée à une odeur poivron, avec identification provisoire."
+          }
+        ],
+        "legacyAction": "correct",
+        "identityImpact": "Même famille et statut provisoire ; référence nommée/datée et choix tous odorants."
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cfix-cfia-botany-2021",
+      "title": "The Biology of Cannabis sativa L.",
+      "organization": "Canadian Food Inspection Agency",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "verifiedAt": "2026-11-16",
+      "author": "CFIA, Plant and Biotechnology Risk Assessment Unit",
+      "published": "2021, document BIO 2020-02",
+      "passage": "Cycle annuel, monoécie, entre-nœuds creux, pollen petit/léger/sec, bractée enveloppant le fruit, dormance des graines sauvages.",
+      "access": "official-page",
+      "documentKind": "Synthèse botanique institutionnelle",
+      "limitation": "Nouvelle lecture ciblée de botanique ; seuils juridiques et pratiques de culture exclus.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Sections 2.5,2.6,4.1",
+        "result": "Page ouverte et passages lus : lignes extraites 109–110,141,144,177–178,183–185,188–191."
+      }
+    },
+    {
+      "id": "q2-cfix-nhgri-allele",
+      "title": "Allele",
+      "organization": "NHGRI",
+      "url": "https://www.genome.gov/genetics-glossary/Allele",
+      "verifiedAt": "2026-11-16",
+      "author": "National Human Genome Research Institute",
+      "published": "2026-11-16, mise à jour affichée",
+      "passage": "Un allèle est une version de séquence d’ADN à un emplacement génomique donné.",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Définition générale ; aucun pedigree déduit.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition",
+        "result": "Définition ouverte et lue, ligne 15."
+      }
+    },
+    {
+      "id": "q2-cfix-nhgri-phenotype",
+      "title": "Phenotype",
+      "organization": "NHGRI",
+      "url": "https://www.genome.gov/genetics-glossary/Phenotype",
+      "verifiedAt": "2026-11-16",
+      "author": "National Human Genome Research Institute",
+      "published": "2026-11-16, mise à jour affichée",
+      "passage": "Un caractère observable dépend du génotype et de facteurs environnementaux.",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Application hypothétique à des clones ; aucune mesure réelle inventée.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition et Narration",
+        "result": "Page ouverte, passages lus aux lignes 16 et21."
+      }
+    },
+    {
+      "id": "q2-cfix-nhgri-haplotype",
+      "title": "Haplotype",
+      "organization": "NHGRI",
+      "url": "https://www.genome.gov/genetics-glossary/haplotype",
+      "verifiedAt": "2026-11-16",
+      "author": "NHGRI ; Leslie G. Biesecker, narration",
+      "published": "2026-11-15, mise à jour affichée lors de la relecture indépendante",
+      "passage": "Un haplotype regroupe des variants proches sur un même chromosome, tendant à être transmis ensemble.",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Une région chromosomique, pas tous les variants d’un individu.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition et Narration",
+        "result": "Page ouverte et définition lue, lignes 16 et21."
+      }
+    },
+    {
+      "id": "q2-cfix-lynch-pangenome-2025",
+      "title": "Domesticated cannabinoid synthases amid a wild mosaic cannabis pangenome",
+      "organization": "Salk Institute et partenaires ; Nature ; PMC",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+      "verifiedAt": "2026-11-16",
+      "author": "Ryan C. Lynch, Lillian K. Padgitt-Cobb et al.",
+      "published": "2025-05-28",
+      "passage": "Les cassettes THCAS, CBDAS et CBCAS sont situées sur le chromosome7.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire",
+      "limitation": "Numérotation du pangénome de 2025 ; présence d’un gène ne mesure pas une teneur de fleur.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Domesticated cannabinoid pathway, premier paragraphe ; Figure 4",
+        "result": "Texte PMC ouvert, paragraphe lu à la ligne 394 ; accès Nature bloqué par cookies."
+      }
+    },
+    {
+      "id": "q2-cfix-chebi-ocimene",
+      "title": "(E)-beta-ocimene — CHEBI:64280",
+      "organization": "EMBL-EBI, ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:64280",
+      "verifiedAt": "2026-11-16",
+      "author": "ChEBI Team",
+      "published": "2015-10-23, modification affichée",
+      "passage": "La notice associe (3E)-β-ocimène et trans-β-ocimène.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Correspondance propre à cette structure ; E/trans ne sont pas synonymes universels.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, IUPAC Name, Synonyms",
+        "result": "Notice ouverte, lignes 56,88,93–94 lues."
+      }
+    },
+    {
+      "id": "q2-cfix-russo-hhc-2023",
+      "title": "Synthesis and pharmacological activity of the epimers of hexahydrocannabinol (HHC)",
+      "organization": "Université di Modena e Reggio Emilia et partenaires ; Scientific Reports",
+      "url": "https://iris.unimore.it/retrieve/eebf1b86-21c8-48b0-862f-3d70fa6d04e3/s41598-023-38188-5.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Fabiana Russo, Maria Angela Vandelli et al.",
+      "published": "2023-07-08",
+      "passage": "Les formes (9S)-HHC et (9R)-HHC différent par la stéréochimie au carbone 9.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire, copie institutionnelle",
+      "limitation": "Seule l’identité stéréochimique est utilisée ; protocoles de synthèse et résultats de puissance exclus.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "p.3, caractérisation C9 ; Figure 3",
+        "result": "PDF ouvert, passage de caractérisation stéréochimique lu. PMC/éditeur bloquaient la lecture directe."
+      }
+    },
+    {
+      "id": "q2-cfix-iupac-epimers",
+      "title": "Epimers — E02167",
+      "organization": "IUPAC",
+      "url": "https://goldbook.iupac.org/terms/view/E02167/html",
+      "verifiedAt": "2026-11-16",
+      "author": "IUPAC",
+      "published": "2025, édition 5 version 5.0.0 indexée",
+      "passage": "Les épimères différent par la configuration d’un seul centre stéréogène parmi plusieurs.",
+      "access": "excerpt",
+      "documentKind": "Définition institutionnelle",
+      "limitation": "Extrait indexé seul ; ouvertures HTML/PDF/plain refusées 403. Le PDF Russo accessible corrobore le cas des HHC.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, extrait indexé E02167",
+        "result": "Définition de l’extrait lue ; aucune lecture intégrale prétendue."
+      }
+    },
+    {
+      "id": "q2-cfix-csu-lacewings",
+      "title": "Green Lacewings — Natural Enemies of Insects",
+      "organization": "Colorado State University",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Colorado State University, auteur personnel non indiqué",
+      "published": "s.d.",
+      "passage": "Chrysopa oculata est observée sur chanvre ; larves et adultes sont prédateurs. Les larves possèdent de longues pièces buccales courbes.",
+      "access": "full-text",
+      "documentKind": "Fiche entomologique universitaire",
+      "limitation": "Observation régionale ; ne pas réserver la prédation aux larves.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Page unique, paragraphes 1 et2",
+        "result": "PDF ouvert et lu, lignes 11–22 ; morphologies larvaire/adulte distinguées."
+      }
+    },
+    {
+      "id": "q2-cfix-umn-sclerotinia",
+      "title": "White mold in the garden",
+      "organization": "University of Minnesota Extension",
+      "url": "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/yard-and-garden-problems/white-mold-in-the-garden",
+      "verifiedAt": "2026-11-16",
+      "author": "University of Minnesota Extension",
+      "published": "s.d.",
+      "passage": "Sclerotinia sclerotiorum persiste dans le sol et les débris grâce aux sclérotes noirs et durs.",
+      "access": "official-page",
+      "documentKind": "Fiche phytopathologique universitaire",
+      "limitation": "Mécanisme de persistance seulement ; aucun conseil de lutte ou durée garantie.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "How does white mold survive and spread?",
+        "result": "Page ouverte et deux premières puces lues, lignes 294–295."
+      }
+    },
+    {
+      "id": "q2-cfix-gaoni-first-page-1964",
+      "title": "Isolation, Structure, and Partial Synthesis of an Active Constituent of Hashish",
+      "organization": "Journal of the American Chemical Society ; copie de première page",
+      "url": "https://greenearthmedicinals.com/content/Documents/Science_of_CBD/3_Gaoni 1964.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Y. Gaoni, R. Mechoulam",
+      "published": "1964-04",
+      "passage": "La première page attribue une structure au constituant THC isolé ; le titre annonce isolement, structure et synthèse partielle.",
+      "access": "excerpt",
+      "documentKind": "Première page numérisée de recherche primaire",
+      "limitation": "Une page basse résolution seulement ; ancienne numérotation Δ1, aujourd’hui Δ9-THC. Aucun détail pratique repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Cartouche ACS, titre et introduction de la colonne droite",
+        "result": "PDF ouvert via web puis téléchargé ; image RGB embarquée extraite et examinée avec view_image le 16 novembre. Titre, auteurs, JACS86,1646–1647 et introduction lus."
+      }
+    },
+    {
+      "id": "q2-cfix-howlett-classification-2002",
+      "title": "International Union of Pharmacology. XXVII. Classification of cannabinoid receptors",
+      "organization": "IUPHAR ; Pharmacological Reviews ; PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+      "verifiedAt": "2026-11-16",
+      "author": "Allyn C. Howlett et al.",
+      "published": "2002-06",
+      "passage": "CB1 surtout neuronal central/périphérique, CB2 surtout immunitaire ; 48 % d’identité protéique ; les deux récepteurs transmettent leurs signaux par des protéines G.",
+      "access": "abstract",
+      "documentKind": "Classification pharmacologique institutionnelle",
+      "limitation": "Distribution historique non exclusive ; aucune indication clinique ou proportion d’effets déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, identité de séquence, couplage aux protéines G et distribution",
+        "result": "Résumé ouvert et passages lus, lignes extraites 242–244, dont la phrase Both receptor types are coupled through G proteins."
+      }
+    },
+    {
+      "id": "q2-cfix-bisogno-dagl-2003",
+      "title": "Cloning of the first sn1-DAG lipases points to the spatial and temporal regulation of endocannabinoid signaling in the brain",
+      "organization": "CNR ; King’s College London ; Journal of Cell Biology ; PMC",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+      "verifiedAt": "2026-11-16",
+      "author": "Tiziana Bisogno et al.",
+      "published": "2003-11-10",
+      "passage": "Les DAG lipases hydrolysent des diacylglycérols pour former le 2-arachidonoylglycérol.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire",
+      "limitation": "Mécanisme descriptif ; aucun bénéfice thérapeutique ni protocole déduit.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Introduction, premier paragraphe",
+        "result": "Texte ouvert, résumé et introduction lus, lignes 156 et161."
+      }
+    },
+    {
+      "id": "q2-cfix-devane-anandamide-1992",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "organization": "Hebrew University et partenaires ; Science ; PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "verifiedAt": "2026-11-16",
+      "author": "William A. Devane, Lumir Hanus et al.",
+      "published": "1992-12-18",
+      "passage": "Le résumé indexé décrit l’arachidonyléthanolamide dans le cerveau porcin.",
+      "access": "excerpt",
+      "documentKind": "Résumé indexé de recherche primaire",
+      "limitation": "Ouverture PubMed réduite à une page technique ; seul l’extrait indexé est lu. Ben-Shabat 1998 accessible corrobore le tissu et la référence.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Première phrase du résumé indexé",
+        "result": "Recherche ciblée lue ce jour ; pas de lecture intégrale de Science prétendue."
+      }
+    },
+    {
+      "id": "q2-cfix-ben-shabat-2ag-1998",
+      "title": "An entourage effect: inactive endogenous fatty acid glycerol esters enhance 2-arachidonoyl-glycerol cannabinoid activity",
+      "organization": "Hebrew University ; Weizmann Institute ; CNR ; European Journal of Pharmacology",
+      "url": "https://www.weizmann.ac.il/brain-sciences/labs/vogel/PDFs/98EJP353-23.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Shimon Ben-Shabat et al.",
+      "published": "1998",
+      "passage": "Le 2-AG est un ligand de CB1 et CB2. L’introduction rappelle l’anandamide dans le cerveau porcin en citant Devane 1992.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire, copie institutionnelle",
+      "limitation": "Historique et liaison seulement ; aucun entourage clinique déduit des essais.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "p.23, Abstract première phrase ; Introduction premier paragraphe",
+        "result": "PDF ouvert et passages lus, lignes 10–11 et 22–27."
+      }
+    },
+    {
+      "id": "q2-cfix-chebi-anandamide",
+      "title": "Anandamide — CHEBI:2700",
+      "organization": "EMBL-EBI, ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:2700",
+      "verifiedAt": "2026-11-16",
+      "author": "ChEBI Team",
+      "published": "2022-03-24, modification affichée",
+      "passage": "N-acyléthanolamine formée conceptuellement par le carboxyle de l’acide arachidonique et l’amine de l’éthanolamine.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Fonction chimique seulement ; aucun protocole ou effet pharmacologique affirmé.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; SMILES ; IUPAC Name",
+        "result": "Notice ouverte et passages lus, lignes 24,43,87."
+      }
+    },
+    {
+      "id": "q2-cfix-kew-dormancy-2022",
+      "title": "Germination testing: environmental factors and dormancy-breaking treatments — Sheet13b",
+      "organization": "Royal Botanic Gardens, Kew, Millennium Seed Bank",
+      "url": "https://brahmsonline.kew.org/Content/Projects/msbp/resources/Training/13b-Germination-testing-dormancy.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Board of Trustees of the Royal Botanic Gardens, Kew",
+      "published": "2022",
+      "passage": "Une graine qui ne germe pas dans des conditions favorables est considérée dormante.",
+      "access": "full-text",
+      "documentKind": "Fiche scientifique institutionnelle",
+      "limitation": "Définition seule ; aucun traitement ou réglage de germination reproduit.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "p.1, paragraphe Seeds that do not germinate",
+        "result": "PDF ouvert et définition lue, lignes 25–39."
+      }
+    },
+    {
+      "id": "q2-cfix-geves-propositions-2025",
+      "title": "Chanvre — Nouvelles variétés proposées à l’inscription sur la liste A du catalogue officiel français",
+      "organization": "CTPS / GEVES",
+      "url": "https://www.geves.fr/wp-content/uploads/PLA_Chanvre_2025_Janvier.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "GEVES",
+      "published": "2025-02, propositions de janvier 2025",
+      "passage": "Le tableau classe Vega très précoce ; Sylviçi 26 et Anka précoces.",
+      "access": "full-text",
+      "documentKind": "Résultats variétaux officiels datés",
+      "limitation": "Dépend des essais CTPS. Mois des propositions différent de publication ; aucune inscription actuelle ou calendrier universel affirmé.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "p.4 imprimée, tableau ; p.2 avertissement",
+        "result": "PDF ouvert et tableau lu, lignes 58–70. Source CTPS/GEVES et dépendance expérimentale vérifiées."
+      }
+    },
+    {
+      "id": "q2-cfix-chebi-myrcene",
+      "title": "Beta-myrcene — CHEBI:17221",
+      "organization": "EMBL-EBI, ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:17221",
+      "verifiedAt": "2026-11-16",
+      "author": "ChEBI Team",
+      "published": "2016-07-31, modification affichée",
+      "passage": "La définition et le SMILES décrivent une chaîne carbonée ouverte et ramifiée, sans cycle.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Pas de prédiction médicale ou aromatique à partir du squelette.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; SMILES",
+        "result": "Notice ouverte et lignes 25,44 lues."
+      }
+    },
+    {
+      "id": "q2-cfix-booth-terpene-synthases-2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "organization": "University of British Columbia ; PLOS ONE",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "verifiedAt": "2026-11-16",
+      "author": "Judith K. Booth, Jonathan E. Page, Jörg Bohlmann",
+      "published": "2017-03-29",
+      "passage": "Certaines synthases donnent plusieurs produits ; CsTPS9FN produit β-caryophyllène et α-humulène.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire",
+      "limitation": "Enzymes et matériels étudiés ; aucune recette ou optimisation de terpènes reproduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Functional characterization ; Fig.5 ; Discussion",
+        "result": "Texte ouvert, résultats lus aux lignes 302,323 ; présence du myrcène et ocimène confirmée dans Abstract."
+      }
+    },
+    {
+      "id": "q2-cfix-kneubuhl-odorants-2021",
+      "title": "Characterisation of the key-aroma compounds among the volatile constituents in different hemp strains (Cannabis sativa L.)",
+      "organization": "ZHAW ; Proceedings16th Weurman Flavour Research Symposium",
+      "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Markus Kneubühl, Amandine André, Irene Chetschik",
+      "published": "2021",
+      "passage": "Tableau 1 ligne 18 :2-isobutyl-3-méthoxypyrazine proposée pour une note poivron, marquée b pour identification provisoire.",
+      "access": "full-text",
+      "documentKind": "Communication de recherche primaire",
+      "limitation": "Trois cultivars industriels ; attribution provisoire, sans généralisation.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "p.2, Tableau 1 ligne 18 et légende b ; Conclusion",
+        "result": "PDF ouvert ; ligne 18, critères et limites lus."
+      }
+    }
+  ]
+}

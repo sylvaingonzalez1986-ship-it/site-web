@@ -22,7 +22,7 @@ function isStorageSnapshot(value: KqStorageSnapshot | null): value is KqStorageS
 }
 
 /** Shared stock manager, whether entered from a harvest or from the warehouse. */
-export function KqHarvestStorage({ initialFlowerId, onOpenMarket, onOpenArena, onOpenOverview, onOpenWarehouse, juryReturnView = "harvests", showOverviewLink = true, showWarehouseLink = true, disabled = false, onBusyChange, onStorageChange, onErrorChange }: {
+export function KqHarvestStorage({ initialFlowerId, onOpenMarket, onOpenArena, onOpenOverview, onOpenWarehouse, juryReturnView = "harvests", showOverviewLink = true, showWarehouseLink = true, disabled = false, onBusyChange, onStorageChange, onErrorChange, onStored }: {
   initialFlowerId?: string;
   onOpenMarket: (flowerId?: string, section?: KqHarvestMarketSection) => void;
   onOpenArena?: (flowerId?: string) => void;
@@ -35,6 +35,7 @@ export function KqHarvestStorage({ initialFlowerId, onOpenMarket, onOpenArena, o
   onBusyChange?: (busy: boolean) => void;
   onStorageChange?: (storage: KqStorageSnapshot) => void;
   onErrorChange?: (error: string) => void;
+  onStored?: (receiptId: string) => void;
 }) {
   const api = useKqTutorialApi();
   const root = useRef<HTMLDivElement>(null);
@@ -101,6 +102,7 @@ export function KqHarvestStorage({ initialFlowerId, onOpenMarket, onOpenArena, o
       if (!response.ok) throw new Error(body.error || "La modification du stockage est indisponible.");
       if (!isStorageSnapshot(body)) throw new Error("Le reçu est incomplet. Actualise le stockage avant de réessayer.");
       if (mounted.current) { accept(body); setNotice(action.action === "place" ? `${lot.varietyName} : rangement enregistré. Les autres lots restent dans leurs contenants.` : "Surplus vendu au grossiste. Le reste du lot est conservé."); }
+      if (mounted.current && request.current && action.action === "place") onStored?.(request.current.key);
       request.current = null;
       api.notify("kq:storage-updated"); api.notify("kq:equipment-updated");
       return true;

@@ -7,6 +7,7 @@ import {
   getKqWarehouseQuote,
   getKqWarehouseRunSnapshot as deriveWarehouseRunSnapshot,
   isKqWarehouseState,
+  validateKqWarehouseState,
   type KqWarehouseRunSnapshot,
   type KqWarehouseState,
 } from "@/lib/kanab-quest-warehouse";
@@ -18,6 +19,8 @@ import { getKqWorkshopMachineSpecification } from "../kanab-quest-workshop-machi
 import { isKqProductionReservation, withoutKqProductionEquipment, type KqProductionReservation } from "../kanab-quest-production-reservation";
 import { getKqStaffSnapshot } from "./kanab-quest-staff-backend";
 import { getKqProductionFacilities } from "../kanab-quest-staff-production";
+import { isKqCareState } from "../kanab-quest-care";
+import { getKqRoomCare } from "../kanab-quest-care-presentation";
 import { initializeKqWarehouseCondition, isKqWarehouseCondition, reconcileKqWarehouseCondition, getKqWarehouseRemovalQuote, removeKqWarehouseZone,
   type KqWarehouseCondition, type KqWarehouseRemovalQuote } from "../kanab-quest-warehouse-condition";
 
@@ -40,6 +43,8 @@ export type KqWarehouseReceipt = {
 export type KqWarehouseActiveRun = {
   runId: string; zoneId: string | null; buddieCode: string; stageIndex: number; phase: string; startedAt: string;
   campaignId?: string; leaderRunId?: string;
+  roomCare?: ReturnType<typeof getKqRoomCare>;
+  powerOutage?: boolean;
 };
 export type KqWarehouseCompletedRun = {
   runId: string; zoneId: string; buddieCode: string; flowerId: string | null; completedAt: string;
@@ -151,16 +156,22 @@ function cleanState(value: unknown): KqWarehouseState {
   if (!isKqWarehouseState(value)) throw new KqWarehouseError("Le plan contient des zones ou des appareils invalides.");
   return {
     version: 1,
+    ...(value.spatial ? { spatial: { version: 1 } as const } : {}),
+    ...(value.partitions !== undefined ? { partitions: value.partitions.map(partition => ({
+      id: partition.id, x: partition.x, y: partition.y, axis: partition.axis, length: partition.length,
+    })) } : {}),
     ...(value.floor ? { floor: { ...value.floor } } : {}),
     zones: value.zones.map(zone => ({
       id: zone.id, name: zone.name, x: zone.x, y: zone.y, width: zone.width, height: zone.height,
       active: zone.active, lightingCode: zone.lightingCode, airCode: zone.airCode,
+      ...(zone.rotation !== undefined ? { rotation: zone.rotation } : {}),
       ...(zone.buddieCode !== undefined ? { buddieCode: zone.buddieCode } : {}),
       ...(zone.optionCodes !== undefined ? { optionCodes: [...zone.optionCodes].sort() } : {}),
     })),
     ...(value.serviceZones !== undefined ? { serviceZones: value.serviceZones.map(zone => ({
       id: zone.id, name: zone.name, x: zone.x, y: zone.y, width: zone.width, height: zone.height,
       kind: zone.kind, deviceCode: zone.deviceCode,
+      ...(zone.rotation !== undefined ? { rotation: zone.rotation } : {}),
     })) } : {}),
     ...(value.storageClimateCode !== undefined ? { storageClimateCode: value.storageClimateCode } : {}),
     equipment: value.equipment.map(item => ({ code: item.code, quantity: item.quantity })),
@@ -224,8 +235,40 @@ async function compactIdleWarehouse(userId: string, current: StoredSnapshot): Pr
   return storedSnapshot(result);
 }
 
+/** One narrow read per overview, including one row per shared campaign. If a
+ * stage changes between reads, retain only its original navigational summary. */
+async function withRoomObservations<T extends { activeRuns?: KqWarehouseActiveRun[] }>(userId: string, snapshot: T): Promise<T> {
+  if (!snapshot.activeRuns?.length) return snapshot;
+  const ids = [...new Set(snapshot.activeRuns.map(run => run.leaderRunId ?? run.runId))];
+  try {
+    const { data, error } = await createSupabaseServiceClient().from("kq_runs")
+      .select("id,stage:state->stageIndex,phase:state->>phase,care:state->care,outage:state->powerOutage")
+      .eq("user_id", userId).eq("status", "active").in("id", ids);
+    if (error || !data) return snapshot;
+    const rows = new Map(data.map(row => [row.id, row]));
+    return { ...snapshot, activeRuns: snapshot.activeRuns.map(run => {
+      const row = rows.get(run.leaderRunId ?? run.runId);
+      if (!row || row.stage !== run.stageIndex || row.phase !== run.phase) return run;
+      return { ...run, ...(isKqCareState(row.care) ? { roomCare: getKqRoomCare(run.stageIndex, row.care, run.zoneId) } : {}),
+        ...(typeof row.outage === "boolean" ? { powerOutage: row.outage } : {}) };
+    }) };
+  } catch { return snapshot; }
+}
+
+export async function observeKqWarehouseRoom(userId: string) {
+  assertUuid(userId);
+  const response = await createSupabaseServiceClient().rpc("rpc_kq_observe_warehouse_room", { p_user_id: userId });
+  if (response.error) databaseError(response.error.message);
+  const view = response.data;
+  if (!view) return { state: null };
+  if (!isKqWarehouseState(view.state) || !Number.isSafeInteger(view.revision) || !Array.isArray(view.activeRuns)) throw new KqWarehouseError("Plan de culture indisponible.", 503);
+  return withRoomObservations(userId, { state: view.state, revision: view.revision, activeRuns: view.activeRuns as KqWarehouseActiveRun[],
+    stockGrams: typeof view.stockGrams === "number" && view.stockGrams >= 0 ? view.stockGrams : null,
+    productionReservation: isKqProductionReservation(view.productionReservation) ? view.productionReservation : null });
+}
+
 /** Conversion is free, archived and postponed while a historical culture is active. */
-export async function getKqWarehouseSnapshot(userId: string): Promise<KqWarehouseSnapshot> {
+export async function getKqWarehouseSnapshot(userId: string, options?: { preserveLayout?: boolean; cultureDetails?: boolean }): Promise<KqWarehouseSnapshot> {
   assertUuid(userId);
   let initial = await readStoredSnapshot(userId);
   if (!initial.state && !initial.activeRun) {
@@ -236,11 +279,12 @@ export async function getKqWarehouseSnapshot(userId: string): Promise<KqWarehous
     }));
     initial = await ensureCondition(userId, initial, true);
   }
-  await compactIdleWarehouse(userId, initial);
+  if (!options?.preserveLayout) await compactIdleWarehouse(userId, initial);
   const forecast = await salesForecast(userId);
   // Commerce may settle pending proceeds, even before an optional forecast fails.
   // Always return the wallet after that settlement and any conversion.
-  return withSales(publicSnapshot(await ensureCondition(userId, await readStoredSnapshot(userId))), forecast);
+  const result = withSales(publicSnapshot(await ensureCondition(userId, await readStoredSnapshot(userId))), forecast);
+  return options?.cultureDetails ? withRoomObservations(userId, result) : result;
 }
 
 export async function saveKqWarehouseLayout(input: {
@@ -280,6 +324,10 @@ export async function saveKqWarehouseLayout(input: {
     databaseError("warehouse_revision_changed");
   }
   if (!!current.state.floor !== !!candidate.floor) databaseError("warehouse_floor_changed");
+  // Older plans may omit saved walls; validate their effective 2D geometry too.
+  const geometryErrors = validateKqWarehouseState(candidate.partitions === undefined && current.state.partitions !== undefined
+    ? { ...candidate, partitions: current.state.partitions } : candidate);
+  if (geometryErrors.length) throw new KqWarehouseError(geometryErrors.join(" "));
   if (current.legacyActiveRun || (current.activeRun && !current.activeRuns?.length)) databaseError("warehouse_active_run");
   if (current.productionReservation) {
     const zoneId = current.productionReservation.zoneId;

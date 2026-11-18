@@ -1,0 +1,2096 @@
+{
+  "batchId": "d-new-04",
+  "reviewer": "f_existing_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16T21:20:11.445Z",
+  "scope": "Relecture indépendante des40objets complets : énoncé, quatre choix, réponse, explication, niveau, forme, intérêt, attribution et preuves. Quatorze nouvelles références et quatre références réutilisées réellement ouvertes sur les passages nécessaires. Comparaison ciblée de fact-index.jsonl, des pilotes et des lots voisins, sans réaudit global. Aucun lot auteur ni fichier actif modifié.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière), et de JSON.stringify(objet source complet dans son registre originel).",
+  "sourceTiming": "ConsultationsF du16novembre2026 pour cette revue. Les références historiques réutilisées ont ici des passages nouveaux ou ciblés effectivement rouverts ; aucune lecture intégrale des documents n’est revendiquée. Les limites des notices anciennes ne sont pas interprétées comme preuve d’une lectureF antérieure de ces nouveaux faits. L’heure de chaque ouverture n’est pas reconstituée ; reviewedAt date la consignation.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-d04-acf-hemp-2021",
+      "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "pdf-targeted",
+      "locator": "PDFp.2, lignes63–65,70–72,78–91",
+      "result": "Finition plutôt que friture ; graines ouvertes au froid hermétique ; usage en enrobage.",
+      "limitation": "Conseils culinaires seulement ; ni seuil juridique, ni promesse de santé, ni durée de conservation universelle reprise.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d-natencyclopedia-hemp-spread",
+      "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+      "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+      "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55",
+      "result": "Mortier, analogie tartinable, substitution du beurre, provision rurale et image sociale confirmés.",
+      "limitation": "Paraphrase du letton ; étymologies spéculatives, taxonomie simplifiée et droit actuel de la fin de page exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d-polish-ministry-siemieniotka",
+      "url": "https://www.gov.pl/web/rolnictwo/siemieniotka",
+      "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+      "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Barwa ligne130 ; Tradycja lignes143–144",
+      "result": "Fragments de chanvre visibles ; liquide tamisé ; millet moulu dans la recette citée.",
+      "limitation": "Notice patrimoniale citant une recette historique ; récit religieux non traité comme événement historique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-ekgt-samogitia",
+      "url": "https://ekgt.lt/etnografiniai-regionai/zemaitija/kulinarinis-paveldas.html",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "30e43bad622b6e3e3b4ee454cec0bc8f87e53f3a8da1d8943e885b14adf6ae62",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Žemaitija/Kulinarinis paveldas, ligne103",
+      "result": "Patrimoine samogitien : taboka et rasalas ; rasalas avec chanvre, hareng et oignons.",
+      "limitation": "Description régionale en lituanien ; ni origine exclusive ni usage universel revendiqués.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-kretinga-cuisine",
+      "url": "https://kretinga.lt/zemaitiski-patiekalai-nasrenuose",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "dd0d56060de44c2f6f5363510f816c5f280ddc2423aa0321efa89d338d59db7b",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Paragraphe d’ouverture ligne109 ; Spirgynę ligne115 ; communauté/musée ligne117",
+      "result": "Pommes de terre avec peau ; jeûne excluant produits laitiers ; variante au lin.",
+      "limitation": "Tradition localisée à Nasrėnai ; le « jeûne sec » traduit le contexte alimentaire décrit, sans conseil de restriction hydrique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.789360/full",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "19aec4afcdaf2f349c70eaca951e28599feac54867ea2b5293bc9828c8caf0d1",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Table6, rubriqueG, lignes784–789, entrées70/71/74/75",
+      "result": "Bhang/chanvre et bhangeera/périlla ; courge du kaddu ; curd du nimbu.",
+      "limitation": "Inventaire de terrain de recettes, sans validation des usages médicinaux éventuellement rapportés.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d-usda-japan-hemp-seed",
+      "url": "https://www.usdajapan.org/download/7266/",
+      "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+      "sourceHash": "3ab958db1db996b1dfbae9f18333a11d1e6d03a8d0a9d5158df70501aec0dfde",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "pdf-targeted",
+      "locator": "PDFp.7/pageimprimée6, lignes150–153",
+      "result": "Le rapport2021 décrit des graines en coque dans le shichimi traditionnel.",
+      "limitation": "Constat historique attribué au rapport ; ses généralisations commerciales contemporaines de2021 ne sont pas actualisées ni universalisées.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-axentii-pasta-2023",
+      "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373",
+      "result": "Cuisson/cœur blanc, solides perdus, appréciation hédonique, gluten dilué et amylose liés aux pâtes étudiées.",
+      "limitation": "Méthodes et principes descriptifs ; pas de bénéfice clinique, ni formule universelle, ni seuil d’incorporation transposé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-marinopoulou-bread-2024",
+      "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "7a89bccda73cc93a1f0bc84013eb92686346226dfe7229fc32893cf231df756a",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§3.1 ligne260 ; §3.3.1 ligne304 ; §3.3.4 lignes330–335",
+      "result": "Amidon endommagé et eau ; réseau de gluten/gaz ; Maillard et changements de mie au stockage.",
+      "limitation": "Mécanismes discutés par les auteurs ; pas de causalité unique du durcissement ou du brunissement affirmée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-asb-staling",
+      "url": "https://asbe.org/article/staling/?topic=recipes-and-formulation",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "ef90a4207f8785eedd2d409fce05b6716f3733ec39535cddeaff2697a4abd321",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Origin/How staling works, lignes398–401",
+      "result": "Rassissement associé à réorganisation/recristallisation de l’amidon, même sans perte d’eau de la mie.",
+      "limitation": "Texte accessible malgré bannière ; seuls ces paragraphes, pas les conseils absolus de la page, sont retenus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-asb-maillard",
+      "url": "https://asbe.org/article/maillard-reaction/",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "d62ec048446827a0aac24b782f292fa66411c27a4a13f6ea7bfdb2417f618199",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "What is the Maillard reaction?/Origin/How it works, lignes385–400",
+      "result": "Réactions entre sucres réducteurs et groupes aminés produisant couleur et arômes.",
+      "limitation": "Définition moléculaire seulement ; formulations simplistes de pH, optimisations et allégations sanitaires exclues.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-merenkova-fermentation-2022",
+      "url": "https://www.mdpi.com/2311-5637/8/8/384",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "3235326937bf8dc6916ac73bc5a2ba2ad5143fc915a8945f2fb415d39e8fa3fb",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction lignes180–181 ; résultats/conclusion lignes263,307",
+      "result": "Cultures de départ identifiées/sélectionnées ; accumulation d’acides et baisse du pH observées.",
+      "limitation": "Boissons alimentaires de graines ; aucune activité in vitro transformée en effet clinique, aucun protocole pratique requis.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-fda-plant-milk",
+      "url": "https://www.fda.gov/consumers/consumer-updates/milk-and-plant-based-milk-alternatives-know-nutrient-difference",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "a40aed74b421b28e49a273ab70594c57f8e1bebdcb81507151df6ee831fc785d",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Introduction/Plant-Based Milk Alternatives/Using the Nutrition Facts Label, lignes76–89,96–100",
+      "result": "Variabilité de composition, chanvre explicitement nommé ; tableau permettant comparer les nutriments.",
+      "limitation": "Lecture de quantités, sans conseil pédiatrique, régime personnel ni équivalence générale au lait animal.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-fda-ingredient-types",
+      "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Premier paragraphe ligne57 ; tableau lignes77–78",
+      "result": "Ordre décroissant en poids ; humectants/glycérine et antiagglomérants/silice identifiés.",
+      "limitation": "Cadre américain pour la règle d’étiquetage ; ordre non croissant ne prouve pas une inégalité stricte entre deux masses éventuellement égales.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-fda-added-sugars",
+      "url": "https://www.fda.gov/food/nutrition-facts-label/added-sugars-nutrition-facts-label",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "4214f45c777d4b51eec7bd528b6615dcc6f4a6782005fbd2540a52622d18646f",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Added Sugars/How Are Added Sugars Listed, lignes89,100–110",
+      "result": "Sucres du miel incorporé inclus dans ajoutés et totaux ; cas du miel seul distingué.",
+      "limitation": "Barre composée et règle américaine ; pas de recommandation d’apport ou d’allégation médicale.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-jozinovic-extrusion-2017",
+      "url": "https://cjfs.agriculturejournals.cz/pdfs/cjf/2017/06/06.pdf",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "2dfc2d825cec40c60957efe6c2e6a7e23d7c9b5ffcd3e24baf475c88f16893bc",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "pdf-targeted",
+      "locator": "PDFp.3/page509, lignes176–186, équations2/3",
+      "result": "Expansion diamètreextrudat/diamètrefilière ; masse volumique du cylindre calculée par masse/volume.",
+      "limitation": "Définitions géométriques, sans réglages de fabrication ni valeur optimale reproduite.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+      "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+      "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+      "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Properties of Hemp Seed Oil, ligne137",
+      "result": "La fiche OSU relie la fraction insaponifiable de l’huile commercialement raffinée notamment aux phytostérols.",
+      "limitation": "Qualification huile raffinée indispensable au constat comparatif de la fiche ; autres récits historiques, droit2020 et bénéfices cliniques exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-dehulling-2026",
+      "url": "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2026.1825902/full",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "sourceHash": "6b4dd53131f1110bafa2f94ab16b250f0b4dd49a821093abd34e7e8e69764179",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§3.1 Chemical compositions and energy value, lignes413–437, Table1 lignes420–424",
+      "result": "Graines décortiquées : proportion protéique accrue, composants fibreux diminués dans l’essai.",
+      "limitation": "Nouvelle lecture des résultats/Table1, au-delà de l’ancienne lecture de définition du décorticage. Base matière sèche de l’étude, sans augmentation de masse absolue de protéines inventée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-d04-hemp-oil-finishing-rather-than-frying",
+      "status": "approved",
+      "comment": "Application culinaire concrète, cadrée sur l’huile non raffinée ; choix de gestes distincts.",
+      "contentHash": "7da5204facb9659659806af33abfc34fdd87e796ad9ae0279e54e715f573f835",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-acf-hemp-2021",
+          "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+          "locator": "PDFp.2, lignes63–65,70–72,78–91 ; appuiquestion : Hemp Seed Culinary Uses, PDF p. 2",
+          "result": "Usages de finition et d’assaisonnement confirmés pour l’huile alimentaire.",
+          "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+      "status": "approved",
+      "comment": "Conseil attribué et borne sur l’emballage propres au produit conservée ; aucune durée universelle.",
+      "contentHash": "fe5da5c7926923762dc2055c75ac91da4343fb4cd03c821072c44079c95680a9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-acf-hemp-2021",
+          "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+          "locator": "PDFp.2, lignes63–65,70–72,78–91 ; appuiquestion : Storing Hemp Seeds, PDF p. 2, premier point",
+          "result": "Froid et récipient hermétique après ouverture explicitement recommandés.",
+          "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-traditional-mortar-pestle",
+      "status": "approved",
+      "comment": "Outils plausibles ; pâte pilée distinguée de l’extraction d’huile.",
+      "contentHash": "7f15026c490c1b33d3fadd327e8c3eac65cb207ab72cc419abab69198b7b3555",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Vēsturiskās un ģeogrāfiskās atšķirības ēdiena pagatavošanā",
+          "result": "Graines torréfiées puis pilées au mortier décrites.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-seed-coating-instead-wheat-breadcrumbs",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four culinary uses now compete, rather than one hemp-containing option; the attributed coating use is unchanged.",
+      "contentHash": "7f3dcd3cbd5d162e4b049a22712bc8b0bd167998d317a21dde48a37fe11bb2c5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-acf-hemp-2021",
+          "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+          "locator": "PDFp.2, lignes63–65,70–72,78–91 ; appuiquestion : Hemp Seed Culinary Uses, PDF p. 2",
+          "result": "Usage des graines en enrobage à la place de chapelure confirmé.",
+          "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "context_gives_answer",
+          "reason": "La seule réponse chanvre parmi trois céréales est suggérée par le contexte du quiz et ne fait pas reconnaître l’usage d’enrobage.",
+          "requestedChange": "Reformuler la tâche pour distinguer quatre usages ou ingrédients culinaires réellement concurrents, sans simple choix de l’ingrédient chanvre. Conserver le fait d’enrobage si une tâche utile le teste."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four comparable sensory/use analogies replace distractors excluded simply by the seed-paste framing. The verified spreadability/name relation is retained.",
+      "contentHash": "5853e15bae449cccfaf1b54abf5292bad40b2e16e1e11a08028b4a2ca7952467",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Nosaukuma izcelsme, paragraphe sur sviests",
+          "result": "Analogie de consistance tartinable et d’emploi confirmée.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_distractors",
+          "reason": "L’énoncé annonce une pâte de graines ; trois distracteurs sont des procédés de fabrication laitière plutôt que des raisons culinaires concurrentes du nom.",
+          "requestedChange": "Comparer des analogies culinaires crédibles (consistance, goût, aspect, emploi), sans donner l’analogie tartinable dans l’énoncé. Le nom beurre peut se discuter sans inventer une composition exclusivement végétale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-historical-butter-substitute",
+      "status": "approved",
+      "comment": "Rôle de substitution lié à la disponibilité du beurre, distinct du pays d’origine déjà testé.",
+      "contentHash": "25fdbf7c3ed7796bd61582429c529d5d0d2b7c4bd9a5708cf3159579173438ba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Ēdiena loma kultūrā, premier paragraphe",
+          "result": "Pâte préparée pour compléter/remplacer le beurre manquant confirmée.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-interwar-poverty-association",
+      "status": "approved",
+      "comment": "Fait d’histoire sociale distinct de la seule fonction substitutive ; attribution explicite.",
+      "contentHash": "8725b4150f55f42d050e34f59e2f6e77614183a970a7ed78cd8a7a9da1be9fe6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Ēdiena loma kultūrā, paragraphe sur le XXe siècle et l'entre-deux-guerres",
+          "result": "Délaissement associé à l’image de pauvreté et à l’aisance accrue confirmé.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The prompt asks a documented rural context without supplying portability. The original travelling/forest/herding passage supports the uniquely attributed option.",
+      "contentHash": "99036f4ec4a272b54d3d28943b26d07f2b3b2d26b6ed4e2a873d9fadcdd02bc9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Ēdiena loma kultūrā, passage sur ceļā, meža darbos un ganos",
+          "result": "Provision emportée au chemin, en forêt et au troupeau confirmée.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "tautological_task",
+          "reason": "« En-cas à emporter » désigne déjà la seule réponse transportable ; banquets, offrande et dessert n’exigent aucune connaissance du document.",
+          "requestedChange": "Retirer l’indice portable de la question et proposer quatre contextes ruraux/historiques plausibles, ou choisir une propriété plus instructive de cet usage."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-thickened-ground-millet",
+      "status": "approved",
+      "comment": "Ingrédient précis réellement documenté ; niveau3 justifié par la connaissance de cette variante.",
+      "contentHash": "52cd17be89c5efed7b78d1a7b78ae52a31b300e965c83898a0c6d9f64d1ed193",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-polish-ministry-siemieniotka",
+          "url": "https://www.gov.pl/web/rolnictwo/siemieniotka",
+          "locator": "Barwa ligne130 ; Tradycja lignes143–144 ; appuiquestion : Tradycja, citation de Wera Sztabowa, derniers paragraphes",
+          "result": "Millet finement moulu ajouté au bouillon confirmé dans la recette citée.",
+          "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-sieve-keeps-hemp-liquid",
+      "status": "approved",
+      "comment": "Séparation culinaire liquide/résidus utile, sans protocole quantifié ; une seule bonne fraction.",
+      "contentHash": "d4c236e26bef06304ea4cc8aec9e27f379fd5b0450a5b82a01ec66f857383c8b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-polish-ministry-siemieniotka",
+          "url": "https://www.gov.pl/web/rolnictwo/siemieniotka",
+          "locator": "Barwa ligne130 ; Tradycja lignes143–144 ; appuiquestion : Tradycja, recette citée de Krupnioki i moczka",
+          "result": "Liquide blanchâtre passé au tamis et recueilli confirmé.",
+          "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-grey-dark-seed-flecks",
+      "status": "approved",
+      "comment": "Description patrimoniale fidèle ; quatre ingrédients ou résidus culinaires crédibles.",
+      "contentHash": "960f88350f6fd48b0a5200b695bacf08b9614b6dd8391527bed8967986b035e9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-polish-ministry-siemieniotka",
+          "url": "https://www.gov.pl/web/rolnictwo/siemieniotka",
+          "locator": "Barwa ligne130 ; Tradycja lignes143–144 ; appuiquestion : Barwa",
+          "result": "Points foncés identifiés comme restes de chanvre moulu.",
+          "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Level3 appropriately reflects regional culinary recall. Explanation no longer leaks the other two recipes. Author also shortened the correct choice to Samogitia alone, keeping the Lithuanian alias in the explanation to avoid a length/precision cue.",
+      "contentHash": "90bf4af6dd4e0e2d89a78682d3dcfdd8e97a39ed417ad6faf0fd25507620943f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-ekgt-samogitia",
+          "url": "https://ekgt.lt/etnografiniai-regionai/zemaitija/kulinarinis-paveldas.html",
+          "locator": "Žemaitija/Kulinarinis paveldas, ligne103 ; appuiquestion : Žemaitija, Kulinarinis paveldas, paragraphe sur kanapės",
+          "result": "Taboka et rasalas rattachés à la Samogitie par la page régionale.",
+          "sourceHash": "30e43bad622b6e3e3b4ee454cec0bc8f87e53f3a8da1d8943e885b14adf6ae62",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_leak",
+          "reason": "L’explication révèle hareng et pommes de terre, réponses respectives aux items14et13, alors que les clés de sujets diffèrent.",
+          "requestedChange": "Retirer ces ingrédients hors du fait régional ou définir un regroupement réellement commun des objets, sans rendre artificiellement tous les plats équivalents."
+        },
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Identifier une région parmi quatre noms lituaniens peu connus ne devient pas niveau2 parce que les choix sont des régions.",
+          "requestedChange": "Justifier la connaissance attendue et réévaluer le niveau, ou construire une tâche d’inférence utile sans fournir la région. Ne pas ajouter une cible de ratio pour conserver niveau2."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-served-with-skin-on-potatoes",
+      "status": "approved",
+      "comment": "Accompagnement décrit localement ; quatre aliments plausibles, sans généralisation nationale.",
+      "contentHash": "e4524606bb92d677a4062c22b796e2e1437db4d6355909788c82744b890b63c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-kretinga-cuisine",
+          "url": "https://kretinga.lt/zemaitiski-patiekalai-nasrenuose",
+          "locator": "Paragraphe d’ouverture ligne109 ; Spirgynę ligne115 ; communauté/musée ligne117 ; appuiquestion : Paragraphe d'ouverture et paragraphe Spirgynę",
+          "result": "Pommes de terre chaudes avec leur peau trempées dans la spirgynė.",
+          "sourceHash": "dd0d56060de44c2f6f5363510f816c5f280ddc2423aa0321efa89d338d59db7b",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanapiu-rasalas-hemp-milk-herring-onion",
+      "status": "approved",
+      "comment": "Association chanvre/poisson exacte ; ingrédients animaux concurrents comparables.",
+      "contentHash": "7a7f55287bd72411f2acaf8ba6d61ee56e68de396c219ac150d1217978f33f97",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-ekgt-samogitia",
+          "url": "https://ekgt.lt/etnografiniai-regionai/zemaitija/kulinarinis-paveldas.html",
+          "locator": "Žemaitija/Kulinarinis paveldas, ligne103 ; appuiquestion : Kulinarinis paveldas, phrase Kanapių rasalas",
+          "result": "Hareng écrasé et oignons ajoutés à la base de chanvre.",
+          "sourceHash": "30e43bad622b6e3e3b4ee454cec0bc8f87e53f3a8da1d8943e885b14adf6ae62",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-dry-fast-excluded-dairy",
+      "status": "approved",
+      "comment": "Contexte alimentaire historique clairement localisé ; aucun conseil de jeûne donné.",
+      "contentHash": "dab05c023b822a2d3a42e06149af053fbed00f87d8f89a7c0ee45d38588c1fe2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-kretinga-cuisine",
+          "url": "https://kretinga.lt/zemaitiski-patiekalai-nasrenuose",
+          "locator": "Paragraphe d’ouverture ligne109 ; Spirgynę ligne115 ; communauté/musée ligne117 ; appuiquestion : Paragraphe Spirgynę, première phrase",
+          "result": "Le contexte historique exclut viande et produits laitiers.",
+          "sourceHash": "dd0d56060de44c2f6f5363510f816c5f280ddc2423aa0321efa89d338d59db7b",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-linseed-alternative-to-hempseed",
+      "status": "approved",
+      "comment": "Autre graine réellement citée ; choix de graines comparables et niveau spécialisé.",
+      "contentHash": "25a70c891cf90a46b782a6c71fdf784a13b90c5467230ce8c49309584c36871c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-kretinga-cuisine",
+          "url": "https://kretinga.lt/zemaitiski-patiekalai-nasrenuose",
+          "locator": "Paragraphe d’ouverture ligne109 ; Spirgynę ligne115 ; communauté/musée ligne117 ; appuiquestion : Paragraphe Spirgynę, phrase Vietoj kanapių galima naudoti ir linų sėmenis",
+          "result": "Variante remplaçant le chanvre par des graines de lin explicitement citée.",
+          "sourceHash": "dd0d56060de44c2f6f5363510f816c5f280ddc2423aa0321efa89d338d59db7b",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-himalayan-bhang-bhangeera-distinct-seeds",
+      "status": "approved",
+      "comment": "Distinction de noms proches utile ; constat culinaire, sans transfert des croyances médicinales.",
+      "contentHash": "938134fb50106cb165ab9a86eaf4f9433cff9723835c0b2f80c96b0f33aa41c1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+          "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.789360/full",
+          "locator": "Table6, rubriqueG, lignes784–789, entrées70/71/74/75 ; appuiquestion : Table 6, rubrique G, recettes 70 et 71",
+          "result": "Table6 distingue graines de chanvre et de périlla dans les deux chutneys.",
+          "sourceHash": "19aec4afcdaf2f349c70eaca951e28599feac54867ea2b5293bc9828c8caf0d1",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kaddu-meethi-hemp-pumpkin-chutney",
+      "status": "approved",
+      "comment": "Association courge/chanvre explicitement attribuée au relevé de terrain.",
+      "contentHash": "6ad66c2de3aa8f2313fa61e82470048d49b5e7046aeff3dcf8aefa45576b1559",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+          "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.789360/full",
+          "locator": "Table6, rubriqueG, lignes784–789, entrées70/71/74/75 ; appuiquestion : Table 6, rubrique G, recette 74",
+          "result": "Pumpkin figure parmi les ingrédients de l’entrée74.",
+          "sourceHash": "19aec4afcdaf2f349c70eaca951e28599feac54867ea2b5293bc9828c8caf0d1",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-nimbu-saani-hemp-curd-ingredient",
+      "status": "approved",
+      "comment": "Ingrédients laitiers comparables ; curd correctement rendu ici par lait caillé.",
+      "contentHash": "d6d125f7abf7417992385746add6104b2a8f3500d2bf8e93b016150e7d228604",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+          "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.789360/full",
+          "locator": "Table6, rubriqueG, lignes784–789, entrées70/71/74/75 ; appuiquestion : Table 6, rubrique G, recette 75",
+          "result": "Curd figure parmi les ingrédients de l’entrée75.",
+          "sourceHash": "19aec4afcdaf2f349c70eaca951e28599feac54867ea2b5293bc9828c8caf0d1",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-traditional-shichimi-whole-unhulled-hempseed",
+      "status": "approved",
+      "comment": "Forme en coque distincte du nom du condiment déjà testé ; exception de composition non niée.",
+      "contentHash": "b41b8817b50008ecc42e329146c24308e99f724fadde60c52b06ca6c7942527c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-usda-japan-hemp-seed",
+          "url": "https://www.usdajapan.org/download/7266/",
+          "locator": "PDFp.7/pageimprimée6, lignes150–153 ; appuiquestion : Hemp Seed Market, page imprimée 6, PDF p. 7",
+          "result": "Graines en coque explicitement décrites pour le shichimi traditionnel.",
+          "sourceHash": "3ab958db1db996b1dfbae9f18333a11d1e6d03a8d0a9d5158df70501aec0dfde",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-cooking-loss-dry-solids",
+      "status": "approved",
+      "comment": "Solides perdus distingués de l’eau absorbée ; définition utile de qualité des pâtes.",
+      "contentHash": "3933486950a15244b7cb7e7f756c0717481263a05b72dd814d231b5cec9f2088",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : §2.5.3 Cooking Loss",
+          "result": "Pertes mesurées comme solides récupérés dans l’eau de cuisson.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-cooking-endpoint-white-core",
+      "status": "approved",
+      "comment": "Repère interne de cuisson, distinct d’une durée arbitraire ; méthode et attribution exactes.",
+      "contentHash": "90de6fee807f81283f2dae6d29d817f7c94a61664259b3f76879e8520ee9340b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : §2.5.1 Optimal Cooking Time",
+          "result": "Disparition des particules blanches d’amidon entre plaques utilisée comme repère.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Choices distinguish gluten dilution, protein content and gluten origin. Partial wheat replacement preserves wheat gluten; the verified fact is unchanged.",
+      "contentHash": "b6d1a190b1f37b383e0e33fa203d61038f32d1963a8bba09f10f9b201694a3c0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : Discussion, paragraphes sur gluten dilution et HSM non-gluten ingredient",
+          "result": "Farine de chanvre sans gluten diluant la farine de blé, non suppression du gluten.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_distractors",
+          "reason": "Transformer le gluten en huile est fantaisiste ; protéines totales garantissant son absence et mélange automatiquement sans gluten donnent peu de concurrence au blé restant.",
+          "requestedChange": "Construire quatre interprétations crédibles de la composition d’un mélange, par exemple présence/dilution et propriété des protéines. Aucune allégation médicale ni seuil légal n’est requis pour ce fait culinaire."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-stickiness-amylose-leaching",
+      "status": "approved",
+      "comment": "Polysaccharides concurrents ; amylose correctement reliée au caractère collant dans l’étude.",
+      "contentHash": "300c54bf5e202dbc9d0ee0ca92c697c8e1ec7620cb706f6a808d0afd88604bad",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : Discussion, paragraphe sur adhesiveness and stickiness",
+          "result": "Caractère collant relié à l’amylose libérée lors de la gélatinisation.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-hedonic-test-consumer-liking",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The prompt no longer supplies liking/appreciation. Four sensory measurement aims are comparable; the scale of dislike to like uniquely supports pleasure/displeasure.",
+      "contentHash": "ed750d2c4d22e409dde730c6eba3e2fbc346228a1e1ccb34d8498f0107f8bb8c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : §2.10 Sensory Analysis",
+          "result": "Échelle sensorielle de déplaisir/plaisir utilisée dans le panel.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_in_stem",
+          "reason": "« Un panel note son appréciation » donne directement le résultat « plaisir/déplaisir des dégustateurs » ; les autres réponses sont toutes des mesures instrumentales.",
+          "requestedChange": "Faire tester ce que distingue une échelle hédonique sans nommer déjà l’appréciation dans l’énoncé ; comparer des objectifs sensoriels réels, ou une autre dimension utile de l’essai."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention",
+      "status": "approved",
+      "comment": "Rétention du gaz distinguée de sa production et du brunissement ; principe utile.",
+      "contentHash": "13192996860e4139473bf73575c9af553369adf12e60c1606cc80307237e683f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-marinopoulou-bread-2024",
+          "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+          "locator": "§3.1 ligne260 ; §3.3.1 ligne304 ; §3.3.4 lignes330–335 ; appuiquestion : §3.3.4 Texture Profile Analysis, discussion du volume spécifique et du réseau de gluten",
+          "result": "Affaiblissement du réseau de gluten associé à une rétention du gaz réduite.",
+          "sourceHash": "7a89bccda73cc93a1f0bc84013eb92686346226dfe7229fc32893cf231df756a",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-wheat-hemp-dough-damaged-starch-water-binding",
+      "status": "approved",
+      "comment": "État de l’amidon, eau et formulation liés avec portée générale mesurée ; niveau spécialisé défendable.",
+      "contentHash": "c2298afb468418c0cbea76ba9f62d139a7bd8db851df22df1ef1ce68c39e8134",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-marinopoulou-bread-2024",
+          "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+          "locator": "§3.1 ligne260 ; §3.3.1 ligne304 ; §3.3.4 lignes330–335 ; appuiquestion : §3.1, discussion de la Water Holding Capacity",
+          "result": "Amidon endommagé associé à une absorption d’eau plus forte.",
+          "sourceHash": "7a89bccda73cc93a1f0bc84013eb92686346226dfe7229fc32893cf231df756a",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-bread-staling-starch-retrogradation",
+      "status": "approved",
+      "comment": "Mécanisme correctement nuancé : peut contribuer, sans réduire tout rassissement à un seul facteur.",
+      "contentHash": "0331d4d1fee477e2426bd5dfc7bc4dbcd955a8f1c489f323339248c0613468de",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-asb-staling",
+          "url": "https://asbe.org/article/staling/?topic=recipes-and-formulation",
+          "locator": "Origin/How staling works, lignes398–401 ; appuiquestion : Origin et How staling works",
+          "result": "Réorganisation/recristallisation de l’amidon au refroidissement et stockage confirmée.",
+          "sourceHash": "ef90a4207f8785eedd2d409fce05b6716f3733ec39535cddeaff2697a4abd321",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        },
+        {
+          "sourceId": "q2-d04-marinopoulou-bread-2024",
+          "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+          "locator": "§3.1 ligne260 ; §3.3.1 ligne304 ; §3.3.4 lignes330–335 ; appuiquestion : §3.3.3 et §3.3.4, stockage et changements de la mie",
+          "result": "Rétrogradation/réorganisation de l’amidon contribuant au rassissement, parmi plusieurs facteurs.",
+          "sourceHash": "7a89bccda73cc93a1f0bc84013eb92686346226dfe7229fc32893cf231df756a",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-bread-maillard-reducing-sugar-amino",
+      "status": "approved",
+      "comment": "Couples moléculaires comparables ; définition exacte de Maillard, sans risque clinique extrapolé.",
+      "contentHash": "c879e84e07c4e1b7ba1d9c37ae7607aa4d0eb9afcf95f79c366e5fa7de716460",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-asb-maillard",
+          "url": "https://asbe.org/article/maillard-reaction/",
+          "locator": "What is the Maillard reaction?/Origin/How it works, lignes385–400 ; appuiquestion : What is the Maillard reaction? et How it works",
+          "result": "Sucres réducteurs et groupes aminés requis par les réactions de Maillard confirmés.",
+          "sourceHash": "d62ec048446827a0aac24b782f292fa66411c27a4a13f6ea7bfdb2417f618199",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        },
+        {
+          "sourceId": "q2-d04-marinopoulou-bread-2024",
+          "url": "https://www.mdpi.com/2076-3417/14/24/11633",
+          "locator": "§3.1 ligne260 ; §3.3.1 ligne304 ; §3.3.4 lignes330–335 ; appuiquestion : §3.3.1, discussion de la couleur, paragraphe sur les groupes aminés",
+          "result": "§3.3.1 : brunissement de la mie attribué à la couleur de la poudre et aux réactions de Maillard liées à ses groupes aminés ; la définition des réactifs est étayée séparément par ASB.",
+          "sourceHash": "7a89bccda73cc93a1f0bc84013eb92686346226dfe7229fc32893cf231df756a",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-controlled-fermentation-starter",
+      "status": "approved",
+      "comment": "Culture de départ définie par des microorganismes sélectionnés ; enzymes, sels et arômes distingués.",
+      "contentHash": "e7828e07ab27845f18e7c6d27808534416e6af3e6fe007c33840d89678746f95",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-merenkova-fermentation-2022",
+          "url": "https://www.mdpi.com/2311-5637/8/8/384",
+          "locator": "Introduction lignes180–181 ; résultats/conclusion lignes263,307 ; appuiquestion : Introduction, controlled fermentation et starter cultures",
+          "result": "Cultures microbiennes sélectionnées utilisées pour maîtriser la fermentation.",
+          "sourceHash": "3235326937bf8dc6916ac73bc5a2ba2ad5143fc915a8945f2fb415d39e8fa3fb",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-fermentation-acids-lower-ph",
+      "status": "approved",
+      "comment": "Déduction chimique réelle : connaître le sens de l’échelle de pH est nécessaire.",
+      "contentHash": "f429acc4dd820a5b1167844a203a7e4838fb3d80494cce68bebc1b9bc8705eb2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-merenkova-fermentation-2022",
+          "url": "https://www.mdpi.com/2311-5637/8/8/384",
+          "locator": "Introduction lignes180–181 ; résultats/conclusion lignes263,307 ; appuiquestion : §3.1, pH et accumulation d'acide lactique ; conclusion",
+          "result": "Acides accumulés et déplacement du pH vers l’acidité observés.",
+          "sourceHash": "3235326937bf8dc6916ac73bc5a2ba2ad5143fc915a8945f2fb415d39e8fa3fb",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-beverage-nutrition-panel-not-name",
+      "status": "approved",
+      "comment": "Information quantitative plutôt que listes qualitatives ; aucun produit supposé équivalent au lait.",
+      "contentHash": "1f8b81af08bcd31838036e5068549af1afcb56b527f5a921f41bae4ca232837d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-plant-milk",
+          "url": "https://www.fda.gov/consumers/consumer-updates/milk-and-plant-based-milk-alternatives-know-nutrient-difference",
+          "locator": "Introduction/Plant-Based Milk Alternatives/Using the Nutrition Facts Label, lignes76–89,96–100 ; appuiquestion : Introduction ; Using the Nutrition Facts Label",
+          "result": "Variabilité nutritionnelle et comparaison au moyen du tableau confirmées.",
+          "sourceHash": "a40aed74b421b28e49a273ab70594c57f8e1bebdcb81507151df6ee831fc785d",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Clearly fictional masses total100g and are all distinct. Descending70/15/10/5g gives the correct order without inferring a strict inequality from an unspecified real label. The previously verified FDA rule and US scope are retained.",
+      "contentHash": "feedd85200559c1bfe5df7badf286d942b9c90f86cdd90bf5681ead5f661ec3c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-ingredient-types",
+          "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+          "locator": "Premier paragraphe ligne57 ; tableau lignes77–78 ; appuiquestion : Premier paragraphe, ordre des ingrédients",
+          "result": "Ordre décroissant en masse confirmé ; supériorité stricte de deux masses non établie par leur ordre seul.",
+          "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "qualified_support_scope_correction_requested"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "unsupported_strict_inequality",
+          "reason": "Un ordre décroissant de masse n’établit pas à lui seul une différence strictement positive si deux ingrédients ont la même masse.",
+          "requestedChange": "Énoncer ce que garantit l’ordre sans exclure les égalités, ou demander la règle de classement plutôt qu’une quantité strictement plus élevée."
+        },
+        {
+          "severity": "blocking",
+          "code": "implausible_distractors",
+          "reason": "Calories et protéines provenant de l’eau sont pratiquement écartées sans lire l’ordre d’une liste ; seule la masse devient plausible.",
+          "requestedChange": "Utiliser un cas et quatre grandeurs/interprétations crédibles qui nécessitent connaître la convention de liste. Si le cas est chiffré fictif, le dire explicitement."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-hemp-food-glycerol-humectant-moisture",
+      "status": "approved",
+      "comment": "Fonction d’humectant distinguée d’autres rôles d’ingrédients ; aucune recette réelle inventée.",
+      "contentHash": "cf53fe0a372481482eb1e2f257a5fa694b89c95cc6a2248dd2f112ff262c3e69",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-ingredient-types",
+          "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+          "locator": "Premier paragraphe ligne57 ; tableau lignes77–78 ; appuiquestion : Tableau Types of Ingredients, Humectants",
+          "result": "Humectants retenant l’humidité ; glycérine citée.",
+          "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-food-powder-silica-anticaking",
+      "status": "approved",
+      "comment": "Fonction antiagglomérante distinguée de conservation lipidique et d’autres phénomènes alimentaires.",
+      "contentHash": "4b40f0a83a7d1a721bc3bdca327f410457734466bac207227d646906ddfddfba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-ingredient-types",
+          "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+          "locator": "Premier paragraphe ligne57 ; tableau lignes77–78 ; appuiquestion : Tableau Types of Ingredients, Anti-caking agents",
+          "result": "Antiagglomérants maintenant les poudres fluides ; dioxyde de silicium cité.",
+          "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-us-hemp-bar-honey-counts-added-sugars",
+      "status": "approved",
+      "comment": "Cas américain correctement daté en métadonnées ; miel incorporé distingué du miel seul.",
+      "contentHash": "096e09185f0e19cfca8a9f5113706e2096304216ad3531be0d838632e87beba1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-added-sugars",
+          "url": "https://www.fda.gov/food/nutrition-facts-label/added-sugars-nutrition-facts-label",
+          "locator": "Added Sugars/How Are Added Sugars Listed, lignes89,100–110 ; appuiquestion : Added Sugars et How Are Added Sugars Listed",
+          "result": "Miel incorporé : sucres ajoutés inclus dans sucres totaux confirmés.",
+          "sourceHash": "4214f45c777d4b51eec7bd528b6615dcc6f4a6782005fbd2540a52622d18646f",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-corn-extrudate-expansion-diameter-ratio",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: All four alternatives are comparable geometric ratios. The attributed equation uses the diameter ratio; no content/yield distractors or new experimental quantities introduced.",
+      "contentHash": "bcf58c9e57692b21e5db26c40dee7e0181623da481ff9eca302348272887c06a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-jozinovic-extrusion-2017",
+          "url": "https://cjfs.agriculturejournals.cz/pdfs/cjf/2017/06/06.pdf",
+          "locator": "PDFp.3/page509, lignes176–186, équations2/3 ; appuiquestion : Expansion ratio, équation 2, PDF p. 3 (p. 509)",
+          "result": "ER défini par diamètre extrudat divisé par diamètre de filière.",
+          "sourceHash": "2dfc2d825cec40c60957efe6c2e6a7e23d7c9b5ffcd3e24baf475c88f16893bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "noncomparable_ratios",
+          "reason": "Le seul rapport de diamètres est le seul géométrique, opposé à trois rapports massiques de composition/absorption. Le sens d’expansion suffit à l’isoler.",
+          "requestedChange": "Comparer des définitions géométriques crédibles d’expansion ou faire interpréter réellement l’indice transversal, sans simple équation arbitraire à mémoriser."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-hemp-snack-equal-mass-larger-volume-lower-density",
+      "status": "approved",
+      "comment": "Déduction physique utile ; pas de valeur réelle inventée, calcul masse/volume distinct du taux de chanvre.",
+      "contentHash": "f865c81aec8391f1d9bf761cc61ada1a02ff067789be174a45368ee41639faad",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-jozinovic-extrusion-2017",
+          "url": "https://cjfs.agriculturejournals.cz/pdfs/cjf/2017/06/06.pdf",
+          "locator": "PDFp.3/page509, lignes176–186, équations2/3 ; appuiquestion : Bulk density, équation 3, PDF p. 3 (p. 509)",
+          "result": "Masse volumique calculée comme masse divisée par volume du cylindre.",
+          "sourceHash": "2dfc2d825cec40c60957efe6c2e6a7e23d7c9b5ffcd3e24baf475c88f16893bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The question and explanation now name Oklahoma State University and commercially refined oil, matching the previously verified source scope. No extrapolation to all hemp oils.",
+      "contentHash": "a836ba5eb99fb02be95690634a4cddbf15a3db395f15773490df55beb2ca5e1d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+          "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+          "locator": "Properties of Hemp Seed Oil, ligne137 ; appuiquestion : Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content",
+          "result": "Phytostérols liés à l’insaponifiable élevé de l’huile commercialement raffinée ; qualifier la portée de l’énoncé.",
+          "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "qualified_support_scope_correction_requested"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "scope_and_attribution",
+          "reason": "Le passage vise explicitement l’huile commercialement raffinée. « Université d’Oklahoma » peut aussi désigner une institution différente d’Oklahoma State University.",
+          "requestedChange": "Cadrer le constat sur l’huile raffinée décrit par la fiche et attribuer à Oklahoma State University/Université d’État de l’Oklahoma. Pas de bénéfice clinique à ajouter."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-d04-hemp-dehulling-fibre-down-protein-concentrated",
+      "status": "approved",
+      "comment": "Comparaison réelle sur matière sèche ; concentration relative, pas création de protéines, correctement exprimée.",
+      "contentHash": "ff7aabb5b4e6b1ac64f445dfb69ab388c1f13ffe371d4f5d84c5b86b00f125e6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-dehulling-2026",
+          "url": "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2026.1825902/full",
+          "locator": "§3.1 Chemical compositions and energy value, lignes413–437, Table1 lignes420–424 ; appuiquestion : §3.1 Chemical compositions and energy value, Table 1",
+          "result": "Table1 : fibres diminuées, proportion protéique accrue après décorticage.",
+          "sourceHash": "6b4dd53131f1110bafa2f94ab16b250f0b4dd49a821093abd34e7e8e69764179",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "deduplication": [
+    {
+      "ids": [
+        "hemp-q2-d04-hemp-oil-finishing-rather-than-frying",
+        "hemp-prevention-huile-rance",
+        "hemp-q2-d01-chlorophylles-lumiere"
+      ],
+      "decision": "distinct",
+      "reason": "Choix d’emploi culinaire versus identité de réaction oxydative et rôle des pigments ; aucun même fait simplement inversé."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+        "hemp-prevention-echauffement"
+      ],
+      "decision": "distinct",
+      "reason": "Paquet alimentaire ouvert et conditions de rangement versus phénomène thermique d’un lot récolté humide."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-kanepju-sviests-traditional-mortar-pestle",
+        "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+        "hemp-q2-d04-kanepju-sviests-historical-butter-substitute",
+        "hemp-q2-d04-kanepju-sviests-interwar-poverty-association",
+        "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+        "hemp-q2-d-kanepju-sviests-lettonie"
+      ],
+      "decision": "distinct_properties_editorial_corrections_required",
+      "reason": "Outil, analogie du nom, pénurie du beurre, image sociale, provision rurale et rattachement culturel diffèrent ; clé commune déjà présente. Certains énoncés restent trop inducteurs malgré cette distinction."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-siemieniotka-thickened-ground-millet",
+        "hemp-q2-d04-siemieniotka-sieve-keeps-hemp-liquid",
+        "hemp-q2-d04-siemieniotka-grey-dark-seed-flecks",
+        "hemp-q2-d-siemieniotka-reveillon"
+      ],
+      "decision": "distinct",
+      "reason": "Épaississant, fraction recueillie, résidus visibles et occasion festive sont des propriétés distinctes ; clé siemieniotka commune."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+        "hemp-q2-d04-kanapiu-rasalas-hemp-milk-herring-onion",
+        "hemp-q2-d04-spirgyne-served-with-skin-on-potatoes"
+      ],
+      "decision": "distinct_with_answer_leak",
+      "reason": "Région, ingrédient animal et accompagnement distincts ; l’explication du premier livre néanmoins les deux autres réponses avec des clés différentes. Correction demandée au premier."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-traditional-shichimi-whole-unhulled-hempseed",
+        "hemp-q2-d-shichimi-condiment",
+        "hemp-seeds-decorticage"
+      ],
+      "decision": "distinct",
+      "reason": "Forme de la graine dans le condiment versus identification du condiment et définition de l’opération ; clé shichimi commune pour les deux faits culinaires."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+        "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention",
+        "hemp-q2-d-pain-proteines-elasticite"
+      ],
+      "decision": "distinct",
+      "reason": "Présence du blé/gluten, rôle de rétention du gaz et tendance observée protéines/élasticité ne testent pas la même propriété. Les deux premiers partagent hemp-wheat-gluten."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-hemp-beverage-fermentation-acids-lower-ph",
+        "hemp-q2-d01-isolats-milieu-acide",
+        "hemp-seeds-solubilite"
+      ],
+      "decision": "distinct",
+      "reason": "Sens de l’échellepH pendant acidification versus effet du milieu sur la solubilité protéique ; pas de seuil arbitraire de recherche mémorisé."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-hemp-snack-equal-mass-larger-volume-lower-density",
+        "hemp-q2-d01-beton-densite-chaleur",
+        "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw"
+      ],
+      "decision": "distinct",
+      "reason": "Relation physique masse/volume versus corrélation densité/conductivité et dénominateurs volume/nombre de graines ; objets et conclusions différents."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction",
+        "hemp-seeds-tocopherol",
+        "hemp-seeds-insaturation"
+      ],
+      "decision": "distinct",
+      "reason": "Phytostérols/insaponifiable versus tocophérol dominant et acides gras majoritaires ; même objet huile-chenevis correctement regroupé."
+    },
+    {
+      "ids": [
+        "hemp-q2-d04-hemp-dehulling-fibre-down-protein-concentrated",
+        "hemp-seeds-decorticage",
+        "hemp-seeds-tourteau-fractions"
+      ],
+      "decision": "distinct",
+      "reason": "Conséquence comparative du décorticage sur la composition versus partie retirée et composition d’un résidu de pressage ; clé hempseed-dehulling commune pour les deux premiers."
+    }
+  ],
+  "editorialAssessment": {
+    "interest": "Les recettes et récits alimentaires apportent un patrimoine situé, les transformations expliquent des concepts de cuisine ou de mesure. Les noms d’études ne constituent pas une difficulté utile en eux-mêmes ; les questions expérimentales retenues testent des principes ou méthodes identifiables, sans chiffres arbitraires.",
+    "difficulty": "Pas de quota imposé. Les notions simples d’usage, de stockage et d’ingrédient peuvent être accessibles ; ratios géométriques, fraction insaponifiable et recettes précisément nommées sont spécialisés. Niveau de l’attribution régionalelituanienne à reprendre : la brièveté des choix ne rend pas les noms familiers.",
+    "forms": "Les anecdotes historiques sont de véritables contextes culturels. Les deux déductions pH et masse/volume exigent une relation conceptuelle non donnée dans l’énoncé, contrairement aux tâches de simple paraphrase demandées en correction.",
+    "sourceLimits": "Corpus culinaire, institutionnel et recherches primaires, sans source du site. Aucun effet médical ne découle des articles, des fermentations ou des phytostérols. Règles d’étiquetage américaine datées par consultation et reviewAfter dans les deux objets concernés. La comparaison générale de tableaux nutritionnels n’est pas transformée en régime ou règle mondiale sur leurs champs obligatoires.",
+    "recurrentSubjects": "Même plat, étude ou huile regroupés dans les clés existantes ; seule fuite transversale de réponses confirmée sur les explications du fait régionalsamogitien. Aucun nouveau factKey ne sert à masquer un doublon.",
+    "optionalPolish": [
+      {
+        "id": "hemp-q2-d04-hemp-beverage-nutrition-panel-not-name",
+        "suggestion": "Pour une portée maximale, préciser que les valeurs à comparer doivent être effectivement indiquées ; un calcium absent du tableau ne doit jamais être traité comme zéro."
+      }
+    ]
+  },
+  "summary": {
+    "total": 40,
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourceObjects": 18,
+    "sourceChecks": 42,
+    "finalLevels": {
+      "1": 9,
+      "2": 20,
+      "3": 11,
+      "4": 0
+    },
+    "decision": "All40 final versions approved after nine author corrections and root arbitration on the original independent F source evidence.",
+    "sourceReadingScope": "Distinct source IDs and checks in the final approved items. Actual readers, targeted passages, earlier readings and supplemental consultations remain recorded in the individual proof objects; these counts do not claim full-book reading or a fresh opening of every source."
+  },
+  "beforeRootFinalArbitration": [
+    {
+      "id": "hemp-q2-d04-hemp-seed-coating-instead-wheat-breadcrumbs",
+      "status": "changes_requested",
+      "comment": "Fait étayé, mais seul choix chanvre suggéré par le contexte du quiz.",
+      "contentHash": "b36a6eaf94a3e0fb0e1b8cd850d17930804c81191886cc601ec99fc0cff4a80e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-acf-hemp-2021",
+          "url": "https://www.acfchefs.org/Downloads/IOTM/202104.pdf",
+          "locator": "PDFp.2, lignes63–65,70–72,78–91 ; appuiquestion : Hemp Seed Culinary Uses, PDF p. 2",
+          "result": "Usage des graines en enrobage à la place de chapelure confirmé.",
+          "sourceHash": "9c5e4e58dd9218ed2737a4866672943056ed6bc8be7056b66ed226ae13fb23bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "context_gives_answer",
+          "reason": "La seule réponse chanvre parmi trois céréales est suggérée par le contexte du quiz et ne fait pas reconnaître l’usage d’enrobage.",
+          "requestedChange": "Reformuler la tâche pour distinguer quatre usages ou ingrédients culinaires réellement concurrents, sans simple choix de l’ingrédient chanvre. Conserver le fait d’enrobage si une tâche utile le teste."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+      "status": "changes_requested",
+      "comment": "Analogie étayée ; trois distracteurs laitiers écartés par le cadrage en pâte de graines.",
+      "contentHash": "4d9b6a30f2ff784ba48fffb97ee9d0bc668201d3ef16cd7528ccbec1608cbc56",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Nosaukuma izcelsme, paragraphe sur sviests",
+          "result": "Analogie de consistance tartinable et d’emploi confirmée.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_distractors",
+          "reason": "L’énoncé annonce une pâte de graines ; trois distracteurs sont des procédés de fabrication laitière plutôt que des raisons culinaires concurrentes du nom.",
+          "requestedChange": "Comparer des analogies culinaires crédibles (consistance, goût, aspect, emploi), sans donner l’analogie tartinable dans l’énoncé. Le nom beurre peut se discuter sans inventer une composition exclusivement végétale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+      "status": "changes_requested",
+      "comment": "Fait étayé ; portabilité donnée par l’expression en-cas à emporter.",
+      "contentHash": "7fa871c9c06fc73126d2be9252b358e5fc0b7f5f3c3b60952d89057ee6ddba86",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Nosaukuma izcelsme ligne44 ; préparation lignes50–51 ; rôle culturel lignes53–55 ; appuiquestion : Ēdiena loma kultūrā, passage sur ceļā, meža darbos un ganos",
+          "result": "Provision emportée au chemin, en forêt et au troupeau confirmée.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-d.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "tautological_task",
+          "reason": "« En-cas à emporter » désigne déjà la seule réponse transportable ; banquets, offrande et dessert n’exigent aucune connaissance du document.",
+          "requestedChange": "Retirer l’indice portable de la question et proposer quatre contextes ruraux/historiques plausibles, ou choisir une propriété plus instructive de cet usage."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+      "status": "changes_requested",
+      "comment": "Attribution régionale exacte ; explication et niveau demandent une reprise.",
+      "contentHash": "aa4b8eeb5908f49ac887c14e2572d457cb47437797829ec95ebc04e56efb150d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-ekgt-samogitia",
+          "url": "https://ekgt.lt/etnografiniai-regionai/zemaitija/kulinarinis-paveldas.html",
+          "locator": "Žemaitija/Kulinarinis paveldas, ligne103 ; appuiquestion : Žemaitija, Kulinarinis paveldas, paragraphe sur kanapės",
+          "result": "Taboka et rasalas rattachés à la Samogitie par la page régionale.",
+          "sourceHash": "30e43bad622b6e3e3b4ee454cec0bc8f87e53f3a8da1d8943e885b14adf6ae62",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_leak",
+          "reason": "L’explication révèle hareng et pommes de terre, réponses respectives aux items14et13, alors que les clés de sujets diffèrent.",
+          "requestedChange": "Retirer ces ingrédients hors du fait régional ou définir un regroupement réellement commun des objets, sans rendre artificiellement tous les plats équivalents."
+        },
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Identifier une région parmi quatre noms lituaniens peu connus ne devient pas niveau2 parce que les choix sont des régions.",
+          "requestedChange": "Justifier la connaissance attendue et réévaluer le niveau, ou construire une tâche d’inférence utile sans fournir la région. Ne pas ajouter une cible de ratio pour conserver niveau2."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+      "status": "changes_requested",
+      "comment": "Fond exact, mais options fantaisistes ou garanties absolues à remplacer.",
+      "contentHash": "604be3bab462b14edb13cd244268f39175248cebc5f3583425ff915621642b14",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : Discussion, paragraphes sur gluten dilution et HSM non-gluten ingredient",
+          "result": "Farine de chanvre sans gluten diluant la farine de blé, non suppression du gluten.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_distractors",
+          "reason": "Transformer le gluten en huile est fantaisiste ; protéines totales garantissant son absence et mélange automatiquement sans gluten donnent peu de concurrence au blé restant.",
+          "requestedChange": "Construire quatre interprétations crédibles de la composition d’un mélange, par exemple présence/dilution et propriété des protéines. Aucune allégation médicale ni seuil légal n’est requis pour ce fait culinaire."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-pasta-hedonic-test-consumer-liking",
+      "status": "changes_requested",
+      "comment": "Le résultat du test est déjà donné par le mot appréciation de l’énoncé.",
+      "contentHash": "55bf3bb5b4cc8587be7df5337b53ed49df079d63b9a637618c7a4a3ca06fdd19",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-axentii-pasta-2023",
+          "url": "https://www.mdpi.com/2304-8158/12/9/1774",
+          "locator": "§2.5.1/2.5.3 lignes217–230 ; §2.10 ligne262 ; discussion lignes369–373 ; appuiquestion : §2.10 Sensory Analysis",
+          "result": "Échelle sensorielle de déplaisir/plaisir utilisée dans le panel.",
+          "sourceHash": "979b200c5906d349e5baf0e234aeb6e16cbe065016d8c2b2a8eff3fe2646aa19",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_in_stem",
+          "reason": "« Un panel note son appréciation » donne directement le résultat « plaisir/déplaisir des dégustateurs » ; les autres réponses sont toutes des mesures instrumentales.",
+          "requestedChange": "Faire tester ce que distingue une échelle hédonique sans nommer déjà l’appréciation dans l’énoncé ; comparer des objectifs sensoriels réels, ou une autre dimension utile de l’essai."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+      "status": "changes_requested",
+      "comment": "Règle américaine étayée, mais inférence strictement supérieure et distracteurs de l’eau à reprendre.",
+      "contentHash": "2b6441a7a5b3acccea7e981abaf665492a3bea27dc8c5a6a69b30ec688af1c32",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-fda-ingredient-types",
+          "url": "https://www.fda.gov/food/food-additives-and-gras-ingredients-information-consumers/types-food-ingredients",
+          "locator": "Premier paragraphe ligne57 ; tableau lignes77–78 ; appuiquestion : Premier paragraphe, ordre des ingrédients",
+          "result": "Ordre décroissant en masse confirmé ; supériorité stricte de deux masses non établie par leur ordre seul.",
+          "sourceHash": "265af1240b20e0bbd7ebd054d14f3957d1e72bf33f3037d0cea02801026b90e5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "qualified_support_scope_correction_requested"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "unsupported_strict_inequality",
+          "reason": "Un ordre décroissant de masse n’établit pas à lui seul une différence strictement positive si deux ingrédients ont la même masse.",
+          "requestedChange": "Énoncer ce que garantit l’ordre sans exclure les égalités, ou demander la règle de classement plutôt qu’une quantité strictement plus élevée."
+        },
+        {
+          "severity": "blocking",
+          "code": "implausible_distractors",
+          "reason": "Calories et protéines provenant de l’eau sont pratiquement écartées sans lire l’ordre d’une liste ; seule la masse devient plausible.",
+          "requestedChange": "Utiliser un cas et quatre grandeurs/interprétations crédibles qui nécessitent connaître la convention de liste. Si le cas est chiffré fictif, le dire explicitement."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-corn-extrudate-expansion-diameter-ratio",
+      "status": "changes_requested",
+      "comment": "Définition étayée ; quatre rapports insuffisamment comparables pour tester l’expansion.",
+      "contentHash": "7f9520e1ce40d406f47866c77d6c854cb52fe5824de80d60d6a4f292c14f3a6b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-jozinovic-extrusion-2017",
+          "url": "https://cjfs.agriculturejournals.cz/pdfs/cjf/2017/06/06.pdf",
+          "locator": "PDFp.3/page509, lignes176–186, équations2/3 ; appuiquestion : Expansion ratio, équation 2, PDF p. 3 (p. 509)",
+          "result": "ER défini par diamètre extrudat divisé par diamètre de filière.",
+          "sourceHash": "2dfc2d825cec40c60957efe6c2e6a7e23d7c9b5ffcd3e24baf475c88f16893bc",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "pdf-targeted",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "noncomparable_ratios",
+          "reason": "Le seul rapport de diamètres est le seul géométrique, opposé à trois rapports massiques de composition/absorption. Le sens d’expansion suffit à l’isoler.",
+          "requestedChange": "Comparer des définitions géométriques crédibles d’expansion ou faire interpréter réellement l’indice transversal, sans simple équation arbitraire à mémoriser."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction",
+      "status": "changes_requested",
+      "comment": "Fond sur les phytostérols étayé avec qualification huile raffinée et institution à préciser.",
+      "contentHash": "035c8a71abf421b4ea1666cb3b82e1c7e96118f3ed8d3c7bd3e02c695449ae89",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d04-oklahoma-hemp-oil-2020",
+          "url": "https://extension.okstate.edu/fact-sheets/hemp-seed-oil-properties",
+          "locator": "Properties of Hemp Seed Oil, ligne137 ; appuiquestion : Properties of Hemp Seed Oil, paragraphe sur unsaponifiable content",
+          "result": "Phytostérols liés à l’insaponifiable élevé de l’huile commercialement raffinée ; qualifier la portée de l’énoncé.",
+          "sourceHash": "8a538c0d648aeb84043ed47ec2c27f2764fc5b36ccb1e4b1f22bd7770b28e122",
+          "sourceRegistry": "docs/quiz-2000/batches/d-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "supportStatus": "qualified_support_scope_correction_requested"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "scope_and_attribution",
+          "reason": "Le passage vise explicitement l’huile commercialement raffinée. « Université d’Oklahoma » peut aussi désigner une institution différente d’Oklahoma State University.",
+          "requestedChange": "Cadrer le constat sur l’huile raffinée décrit par la fiche et attribuer à Oklahoma State University/Université d’État de l’Oklahoma. Pas de bénéfice clinique à ajouter."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelAndForm": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "rootFinalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "ids": [
+      "hemp-q2-d04-hemp-seed-coating-instead-wheat-breadcrumbs",
+      "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+      "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+      "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+      "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+      "hemp-q2-d04-hemp-pasta-hedonic-test-consumer-liking",
+      "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+      "hemp-q2-d04-hemp-corn-extrudate-expansion-diameter-ratio",
+      "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction"
+    ],
+    "scope": "All nine corrected full question objects read. Previously verified facts/source objects retained; no new source reading claimed.31 prior approvals unchanged. One final author edit shortens the Samogitia choice while retaining its alias in the explanation."
+  },
+  "summaryBeforeDeliveryNormalization": {
+    "historicalContext": true,
+    "record": {
+      "total": 40,
+      "approved": 40,
+      "changes_requested": 0,
+      "rejected": 0,
+      "sourceObjects": 18,
+      "newSourceObjects": 14,
+      "reusedSourceObjects": 4,
+      "sourceChecks": 42,
+      "sourceAccessBlocked": 0,
+      "unverifiedSourceObjects": 0,
+      "exactDuplicateConfirmed": 0,
+      "declaredLevels": {
+        "1": 9,
+        "2": 21,
+        "3": 10
+      },
+      "declaredForms": {
+        "situation": 8,
+        "identification": 22,
+        "anecdote": 6,
+        "comparaison": 2,
+        "deduction": 2
+      },
+      "blockingFactualScope": 2,
+      "decision": "Neuf corrections ciblées : contexte/tautologie/distracteurs, niveau régional, fuite d’explications et deux qualifications de portée. Les autres31versions peuvent être intégrées avec leurs empreintes ; aucune autoapprobation.",
+      "finalNote": "All40 approved after nine author corrections and final root arbitration; prior F source readings remain attributed to F."
+    }
+  }
+}

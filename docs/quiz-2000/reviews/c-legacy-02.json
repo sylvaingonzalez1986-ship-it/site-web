@@ -1,0 +1,1145 @@
+{
+  "batchId": "c-legacy-02",
+  "reviewer": "e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture indépendante des40 objets complets et de leurs quatre choix ; sources précises, unicité sémantique, niveaux et formes. Bêta locale : aucune contrainte de compatibilité historique.",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "factualResult": "Les huit corrections sont approuvées : sept formes requalifiées en identification et indice « endogène » retiré de l’énoncé sur l’anandamide. Les faits, les 32 autres questions et les sources restent inchangés.",
+    "sourceResult": "37 sources référencées :36 ouvertes sur leurs passages utiles ; introduction Ben-Shabat 1998 réutilisée de ma lecture C-legacy-01 du16 novembre, sans prétendre à une nouvelle consultation.",
+    "levels": "Répartition1/20/19/0 acceptable comme estimation provisoire. Aucun niveau4 imposé pour un quota. Les termes techniques ne suffisent ni à rendre un rappel expert, ni à transformer une identification en déduction.",
+    "expertRecalibrationCandidates": [
+      {
+        "id": "hemp-evidence-delta9",
+        "reason": "Convention dibenzopyrane et positions atomiques proches : rappel de nomenclature très spécialisé, candidat à comparer aux futurs items de niveau4."
+      },
+      {
+        "id": "hemp-biodiversity-predateurs",
+        "reason": "Famille d’un acarien précis parmi quatre familles : rappel taxonomique spécialisé, à calibrer avec les joueurs avant éventuel passage3→4."
+      }
+    ],
+    "advisory": [
+      "Dans la réponse FAAH, développer le nom de l’enzyme rendrait le sigle plus accessible ; conserver les quatre enzymes du métabolisme lipidique.",
+      "Le niveau3 de l’isomérie constitutionnelle repose sur la classification chimique, les prémisses structurales étant déjà données. Il ne constitue pas un raisonnement expert."
+    ]
+  },
+  "sourceAudit": [
+    {
+      "sourceId": "q2-c02-openstax-reproduction",
+      "url": "https://openstax.org/books/biology-2e/pages/32-1-reproductive-development-and-structure",
+      "sourceHash": "43f0af66ed9c01a70ea7d58d5e411d608c54f2981527ba98adf611c4dd63025a",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "bf-kew-1975",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+      "sourceHash": "6136c0aeb1ab6d3e87fa226229cfc0a9f2c50fdf57589d15608f12f86390c7a8",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-purdue-bract",
+      "url": "https://www.arboretum.purdue.edu/explorer/definitions/bract/",
+      "sourceHash": "d94f5e44c46c6abc529f142c081f5e1f472ec371df00cb6e40ad98a3fee2cac8",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "bf-florogenesis-2019",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+      "sourceHash": "44c82932b18af162a1cbb641ab502098d34f312269c54bb9752aaed44145f9fc",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-aina-feral-2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12215616/",
+      "sourceHash": "f07ed174c33bd4cc7a255ea2d4c74807fde69b52075544fa4de3d4822be29642",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-landrace-definition-2005",
+      "url": "https://research.wur.nl/en/publications/defining-and-identifying-crop-landraces/",
+      "sourceHash": "c2dea83cca134eed13725a40b2c2e379b3c179e1dd50b976485980aa099780f8",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-nhgri-crossing-over",
+      "url": "https://www.genome.gov/genetics-glossary/Crossing-Over",
+      "sourceHash": "15ca7755487229eb6db0dc98c7171f9e0f424cc7b50de11ceee876bcf3222988",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-cfix-lynch-pangenome-2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+      "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-eucalyptol-scf-2002",
+      "url": "https://food.ec.europa.eu/system/files/2020-12/sci-com_scf_out126_en.pdf",
+      "sourceHash": "427d78aa66060d83cbfc99ab6ff7d121ccb253489a30a39eb5a77fdbee494578",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "tp-ovidi2022",
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "sourceHash": "49c40558dca714c96016ef744e3c410997316a7266c7202c9e2926943b61ece0",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-linalool",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:17580",
+      "sourceHash": "b999647a2c93a304a4b89bab6b7a227cd20e5d3721eabcbdccd84de9a7339725",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-humulene",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:5768",
+      "sourceHash": "24bde6c6d8cb44c59df75d4385511073a54858d749a3959a1f71d298fd995c8c",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-alpha-pinene",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:36740",
+      "sourceHash": "0777cab7127cccea1d9316aea2715ac9ecb9c61eaa28de060cdb05785874f7c8",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-beta-pinene",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:50025",
+      "sourceHash": "066be95b4ba114a3ef35347ac0e5d3587243c82a881c16d55665bf61a69c83d8",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "revision-iupac-stereochemistry",
+      "url": "https://iupac.qmul.ac.uk/BlueBook/P9.html",
+      "sourceHash": "f426dee3bd3f8a35e6987ab4ff756a16fb9a8747a1b5e0ab21f3621a65e5688a",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-caryophyllene-oxide",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:67818",
+      "sourceHash": "101e375935288c371056cfc015a05f5b987e70591c3798263612f4f9125acceb",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-guaiol",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:5552",
+      "sourceHash": "844a6fc41cce94febbf7daea6a6ba907cac1a0114f14d7c7d24121adbfff60ec",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-cfix-chebi-anandamide",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:2700",
+      "sourceHash": "556d893c4fb755c816f9bafdf7b8a20c88909f9409c4173c0d4aadf6270aa863",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+      "url": "https://www.weizmann.ac.il/brain-sciences/labs/vogel/PDFs/98EJP353-23.pdf",
+      "sourceHash": "2f9aea01450a9df1086cb1b47fcc1274217a389046290320e12ff59bbb976787",
+      "checkedAt": "2026-11-16",
+      "consultation": "Lecture antérieure du16 novembre réutilisée : introduction p.23, revue C-legacy-01."
+    },
+    {
+      "sourceId": "q2-c02-kim-figure1-2022",
+      "url": "https://www.mdpi.com/2223-7747/11/22/3088",
+      "sourceHash": "69539663e2c1e8f50b6c7410da37e31eb7361332ce6d50e5b4420bc728f8e0e1",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-euda-thc-chemistry",
+      "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+      "sourceHash": "86c1f7146753a5dcb593dcc3efef2d30eb1880f28e82961597152ed9d1d7b8b6",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-cbd",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:69478",
+      "sourceHash": "33d92363c8e25335bf15740db67d9bc06b300d96556efad3f8d05603c9879f45",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-chebi-2ag",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:52392",
+      "sourceHash": "67e077f6428748749ae9a24ada42fb36ba27065370f84de024ca165485b3b657",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-cfix-cfia-botany-2021",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-gagne-polyketide-2012",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3411943/",
+      "sourceHash": "8892c620b3b398c2bcb6252afa877d767d12a420ba437fca071903aeb2547139",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "health-atlas-beneficial-purdue",
+      "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+      "sourceHash": "6bb92d11b817a7569c4a93576cc908e8f7a365795bb23b9d0613f2d90394fb4d",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "health-atlas-aphids",
+      "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+      "sourceHash": "066f310dc37fc28f464702ec46e4150f9711ef092e9e89df0e91fb279ad78db1",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "health-atlas-thrips-unh",
+      "url": "https://extension.unh.edu/resource/hemp-pests-new-hampshire",
+      "sourceHash": "72d16540b344451111137285b75548f57ecd27a29d076bdb86d38561c27bd3dc",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-eppo-altise",
+      "url": "https://gd.eppo.int/taxon/PSYIAT",
+      "sourceHash": "9b7a6e468f656687c317386c848cc36a98b7467943fc6a0bcc83817d795eb4ef",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-cornell-phytoseiulus",
+      "url": "https://biocontrol.entomology.cornell.edu/predators/Phytoseiulus.php",
+      "sourceHash": "1aa445c811505121b334045c3b09b7130e0acca717379d639a6868aede4602aa",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "health-lesson-oomycetes",
+      "url": "https://www.apsnet.org/edcenter/Pages/OomycetesLab.aspx",
+      "sourceHash": "d538cc52181bb5ff8bde3c9406d4d03c43b873f0b0d0380510325022167fd772",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-pnw-pythium-hemp",
+      "url": "https://pnwhandbooks.org/node/12931/print",
+      "sourceHash": "e97abb63d3e2010de6717ede396bde1c2134226aac0b1719897de67a8ae66515",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-osu-hlvd-2024",
+      "url": "https://extension.oregonstate.edu/catalog/em-9570-hop-latent-viroid-hemp",
+      "sourceHash": "1a3b4425acd8e51230d9f6cf110474018ffdf90040f058939f9ab88303489b4c",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "health-atlas-powdery-2024",
+      "url": "https://doi.org/10.1111/jph.13348",
+      "sourceHash": "646acfb84ba456cfa39e2451ce229a5419f4cd55755f9cb921dc1067a2403a3e",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "qh-sci-oshaughnessy",
+      "url": "https://www.gutenberg.org/files/67959/67959-h/67959-h.htm",
+      "sourceHash": "693fd80a7c7f41c12cc0d94cae5f3de2f7408bff4c9743983de357fc1955875a",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "q2-c02-iubmb-faah",
+      "url": "https://iubmb.qmul.ac.uk/enzyme/EC3/5/1/99.html",
+      "sourceHash": "32456511ee7c7b442118eb48716c4c43bbefad414a43e1ca71a952321971bf51",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    },
+    {
+      "sourceId": "qh-sci-cbd-structure",
+      "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+      "sourceHash": "3d4026b785f82ca4953309a4a0bd5d0244e3fae772743ed24d7ff7181f9d8146",
+      "checkedAt": "2026-11-16",
+      "consultation": "Passages utiles effectivement ouverts ; pas d’affirmation de lecture intégrale de chaque document."
+    }
+  ],
+  "duplicateCheck": {
+    "method": "Recherches ciblées dans fact-index.jsonl sur tous les concepts du lot et lecture des questions voisines du pilote/C-legacy-01 ; comparaison des propriétés et objectifs, sans se limiter aux identifiants.",
+    "result": "Aucun doublon actif non résolu identifié ; faits proches arbitrés ci-dessous. Les anciennes questions retirées ne sont pas comptées comme de nouveaux ajouts.",
+    "arbitrations": [
+      {
+        "ids": [
+          "hemp-evidence-branches",
+          "hemp-hs-sci-cb-receptor-gprotein",
+          "hemp-evidence-cbga-carrefour"
+        ],
+        "decision": "L’origine en deux familles biosynthétiques n’est ni le nom du précurseur commun, ni le couple de substrats chimiques formant le CBGA. Acide olivétolique→origine polycétidique et GPP→origine terpénique ajoutent une propriété de voie, pas un simple synonyme de CBGA."
+      },
+      {
+        "ids": [
+          "hemp-evidence-thca-a-b",
+          "hemp-evidence-cbda",
+          "hemp-evidence-decarboxylation"
+        ],
+        "decision": "Prédominance dans la plante fraîche, appariement CBDA/CBD et molécule perdue lors de la transformation sont trois propriétés distinctes ; le détailA/B du THCA est abandonné."
+      },
+      {
+        "ids": [
+          "hemp-hs-sci-cbd-1940",
+          "hemp-evidence-cbd-thc-isomeres"
+        ],
+        "decision": "Disposition locale des hydroxyles du CBD distincte de la relation de connectivité CBD/THC ; aucune anecdote historique recyclée."
+      },
+      {
+        "ids": [
+          "hemp-hs-sci-anandamide-molecule",
+          "hemp-hs-sci-anandamide-name",
+          "hemp-hs-sci-anandamide-precursor",
+          "hemp-hs-sci-receptors-type"
+        ],
+        "decision": "Membrane de FAAH, constituant éthanolamine, liaison amide et enzyme de dégradation sont des propriétés distinctes. La composition de l’anandamide n’est plus répétée sous l’ID remplacé."
+      },
+      {
+        "ids": [
+          "hemp-evidence-2ag",
+          "hemp-hs-sci-2ag",
+          "hemp-hs-sci-cbd-not-thc",
+          "hemp-hs-sci-2ag-cb1cb2"
+        ],
+        "decision": "Classe monoacylglycérol, développement du nom, précurseur diacylglycérol et récepteurs visés sont distincts ; ne pas remplacer l’un par une paraphrase de l’autre."
+      },
+      {
+        "ids": [
+          "hemp-evidence-2ag",
+          "hemp-hs-sci-2ag-lipid",
+          "hemp-hs-sci-receptors-type",
+          "hemp-hs-sci-2ag-early-study-limit"
+        ],
+        "decision": "Les deux dernières entrées concurrentes restent retirées dans l’index. Le présent lot corrige des entrées existantes ; il ne crée pas deux ajouts pour ces mêmes faits."
+      },
+      {
+        "ids": [
+          "hemp-hs-sci-anandamide",
+          "hemp-hs-sci-anandamide-tissue",
+          "hemp-evidence-anandamide"
+        ],
+        "decision": "Nom de la découverte de 1992, tissu d’isolement et origine endogène sont distincts ; le prompt corrigé de la troisième ne fournit plus la réponse."
+      },
+      {
+        "ids": [
+          "hemp-plant-bractee",
+          "hemp-en-1-11"
+        ],
+        "decision": "Nature foliaire d’un organe distincte du fruit que la bractée périgonale finit par envelopper."
+      },
+      {
+        "ids": [
+          "hemp-biodiversity-podosphaera",
+          "hemp-biodiversity-oidium"
+        ],
+        "decision": "Identité d’un agent distincte du signe poudreux de la maladie ; pluralité des agents conservée."
+      },
+      {
+        "ids": [
+          "hemp-genetics-recombinaison",
+          "hemp-q2-ext-y-par-sdr-recombinaison"
+        ],
+        "decision": "Conséquence générale d’un crossing-over distincte de sa distribution particulière PAR/SDR."
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-plant-antheres",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "aa2f5dc82798087416bcd936aaab4cfe41c1ffbe32c29ee58b1da42469071d02",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-openstax-reproduction",
+          "url": "https://openstax.org/books/biology-2e/pages/32-1-reproductive-development-and-structure",
+          "locator": "Male Gametophyte, premier paragraphe et figure 32.6",
+          "result": "Anthères contenant les sacs polliniques décrites.",
+          "sourceHash": "43f0af66ed9c01a70ea7d58d5e411d608c54f2981527ba98adf611c4dd63025a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "bf-kew-1975",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+          "locator": "Morphology, Reproductive morphology, Flowers et sex Male",
+          "result": "Anthères et filets des fleurs mâles décrits.",
+          "sourceHash": "6136c0aeb1ab6d3e87fa226229cfc0a9f2c50fdf57589d15608f12f86390c7a8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-plant-bractee",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "631aeb1f5475648f57555cb2b87e9c021db6ab1af6dd9a70ce3b32350c41e38a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-purdue-bract",
+          "url": "https://www.arboretum.purdue.edu/explorer/definitions/bract/",
+          "locator": "Définition Bract",
+          "result": "Bractée définie comme feuille modifiée.",
+          "sourceHash": "d94f5e44c46c6abc529f142c081f5e1f472ec371df00cb6e40ad98a3fee2cac8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "bf-kew-1975",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+          "locator": "Morphology, Reproductive morphology, Inflorescences",
+          "result": "Bractées des inflorescences décrites.",
+          "sourceHash": "6136c0aeb1ab6d3e87fa226229cfc0a9f2c50fdf57589d15608f12f86390c7a8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-plant-inflorescence",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "dc7fe20cd8b522d22a522408a5b34f45b5392b2eee05b4da297d2ceef1e9bf7e",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-florogenesis-2019",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "locator": "Discussion, The Inflorescence of Cannabis Is a Highly Branched Compound Raceme",
+          "result": "Rameaux condensés portant des fleurs décrits.",
+          "sourceHash": "44c82932b18af162a1cbb641ab502098d34f312269c54bb9752aaed44145f9fc",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-feral",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "6e74b3ea98dd22f1d7b9e4bb5ae0a1d730f935c5b893258662aac4eb07521bd8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-aina-feral-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12215616/",
+          "locator": "Introduction, Despite the cessation of cultivation",
+          "result": "Échappement de culture et reproduction spontanée documentés.",
+          "sourceHash": "f07ed174c33bd4cc7a255ea2d4c74807fde69b52075544fa4de3d4822be29642",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-landrace",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "99127ba1ab3ed87224b0bb28d6a4f4bd361dd0394cd28a6cb2cbd4309adbbf9f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-landrace-definition-2005",
+          "url": "https://research.wur.nl/en/publications/defining-and-identifying-crop-landraces/",
+          "locator": "Abstract, définition de travail finale",
+          "result": "Définition de travail : population cultivée traditionnelle.",
+          "sourceHash": "c2dea83cca134eed13725a40b2c2e379b3c179e1dd50b976485980aa099780f8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-recombinaison",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "58d4535230d284fa17308a854f7caf90bcc7b6b11660bde3b8e00d30066c8151",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-nhgri-crossing-over",
+          "url": "https://www.genome.gov/genetics-glossary/Crossing-Over",
+          "locator": "Definition et Narration",
+          "result": "Méiose et nouvelles associations d’allèles explicitement reliées.",
+          "sourceHash": "15ca7755487229eb6db0dc98c7171f9e0f424cc7b50de11ceee876bcf3222988",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-genetics-pangenome",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "e208bc7917b799790112fc4478b654aa60d5e0d86973b1411886f5fb18322549",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Fig.1c–e ; The pangenome reveals five populations, classement des gènes",
+          "result": "Gènes communs et variables comparés dans le pangénome.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-cineole",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "b4fe400d2bfb6f048dfe9b640e373f22166d6dbf7f3ea068d61ab83231a220b6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-eucalyptol-scf-2002",
+          "url": "https://food.ec.europa.eu/system/files/2020-12/sci-com_scf_out126_en.pdf",
+          "locator": "Chemical characterisation, Name",
+          "result": "Eucalyptol et1,8-cinéole désignent la même substance.",
+          "sourceHash": "427d78aa66060d83cbfc99ab6ff7d121ccb253489a30a39eb5a77fdbee494578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "tp-ovidi2022",
+          "url": "https://www.mdpi.com/1424-8247/15/8/976",
+          "locator": "Table 2, ligne 12, colonne Hemp Hy",
+          "result": "Tableau2 : composé détecté dans HempHy.",
+          "sourceHash": "49c40558dca714c96016ef744e3c410997316a7266c7202c9e2926943b61ece0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-linalol-fonction",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "6deb0f42ad3d1fc7e6ed8be1e36fd262dc20567fe2b9bee4ff23dbbeba64667a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-linalool",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:17580",
+          "locator": "Definition ; ChEBI Ontology, tertiary alcohol",
+          "result": "Classe alcool tertiaire et hydroxyle explicités.",
+          "sourceHash": "b999647a2c93a304a4b89bab6b7a227cd20e5d3721eabcbdccd84de9a7339725",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-humulene",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "cd347a18b543a5b73c0cfbf0e132cdd76b6fbf98f36cde690abce097fcc93246",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-humulene",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:5768",
+          "locator": "Synonyms, lignes α-caryophyllene et α-humulene",
+          "result": "Synonymes alpha-caryophyllène et alpha-humulène confirmés.",
+          "sourceHash": "24bde6c6d8cb44c59df75d4385511073a54858d749a3959a1f71d298fd995c8c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-pinenes-isomeres",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "44043e692a82d69b00e725e10470caf0096a662fc37ef74dd410fef74e266a6b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-alpha-pinene",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:36740",
+          "locator": "Definition ; Formula ; IUPAC Names, pin-2-ene",
+          "result": "Formule et double liaison endocyclique confirmées.",
+          "sourceHash": "0777cab7127cccea1d9316aea2715ac9ecb9c61eaa28de060cdb05785874f7c8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c02-chebi-beta-pinene",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:50025",
+          "locator": "Definition ; Formula ; IUPAC Names, pin-2(10)-ene",
+          "result": "Formule identique et double liaison exocyclique confirmées.",
+          "sourceHash": "066be95b4ba114a3ef35347ac0e5d3587243c82a881c16d55665bf61a69c83d8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-cineole-fonction",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "60ee037bbe7bab3a59f428848a75fa22ea81586e8a5c1b39ffc436f3106b0f67",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-eucalyptol-scf-2002",
+          "url": "https://food.ec.europa.eu/system/files/2020-12/sci-com_scf_out126_en.pdf",
+          "locator": "Chemical characterisation, première phrase et structure",
+          "result": "Pont éther décrit entre carbones1 et8.",
+          "sourceHash": "427d78aa66060d83cbfc99ab6ff7d121ccb253489a30a39eb5a77fdbee494578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-enantiomeres",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "a139523fe500f1f81c90a6264824281273e7eafa6cc9756b638c500042f155d8",
+      "sourceChecks": [
+        {
+          "sourceId": "revision-iupac-stereochemistry",
+          "url": "https://iupac.qmul.ac.uk/BlueBook/P9.html",
+          "locator": "P-92.1.1, définition de la chiralité ; P-92.1.2.1.1",
+          "result": "Non-superposabilité à l’image miroir et désignateursR/S définis.",
+          "sourceHash": "f426dee3bd3f8a35e6987ab4ff756a16fb9a8747a1b5e0ab21f3621a65e5688a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c02-chebi-linalool",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:17580",
+          "locator": "ChEBI Ontology, relations entrantes R-linalool et S-linalool",
+          "result": "Les deux configurations du linalol sont enregistrées.",
+          "sourceHash": "b999647a2c93a304a4b89bab6b7a227cd20e5d3721eabcbdccd84de9a7339725",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-caryophyllene-oxyde",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "cd82243f369bcf51a04a6a81b2391d7691319234d15f8b1342467e37c63589c8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-caryophyllene-oxide",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:67818",
+          "locator": "ChEBI Ontology, is a epoxide ; structure et SMILES",
+          "result": "Classe époxyde confirmée par l’ontologie.",
+          "sourceHash": "101e375935288c371056cfc015a05f5b987e70591c3798263612f4f9125acceb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-molecules-guaiol",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "7b8f4021839157826a0286726e0b1a7c7e0bd6bbeb44d205a143e95978fa3af5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-guaiol",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:5552",
+          "locator": "Formula ; ChEBI Ontology ; IUPAC Name",
+          "result": "Classe sesquiterpénoïde et fonction alcool confirmées.",
+          "sourceHash": "844a6fc41cce94febbf7daea6a6ba907cac1a0114f14d7c7d24121adbfff60ec",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-anandamide",
+      "status": "approved",
+      "comment": "Énoncé corrigé : il demande l’origine biologique sans annoncer « endogène ». Réponse unique et niveau 2 cohérents ; faits et sources inchangés.",
+      "contentHash": "1a0914a2d7d53465607f56e3987aee0a3c1fbbef83a001824fd049925152515c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-chebi-anandamide",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:2700",
+          "locator": "Roles Classification ; Species of Metabolite ; ChEBI Ontology",
+          "result": "Classe endocannabinoïde et métabolite humain confirmés.",
+          "sourceHash": "556d893c4fb755c816f9bafdf7b8a20c88909f9409c4173c0d4aadf6270aa863",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+          "url": "https://www.weizmann.ac.il/brain-sciences/labs/vogel/PDFs/98EJP353-23.pdf",
+          "locator": "p.23, Introduction, premier paragraphe",
+          "result": "Introduction : découverte dans le cerveau porcin rappelée.",
+          "sourceHash": "2f9aea01450a9df1086cb1b47fcc1274217a389046290320e12ff59bbb976787",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Introduction p.23 déjà lue pour C-legacy-01 le 2026-11-16 ; passage et source inchangés, lecture réutilisée sans nouvelle ouverture."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-cbn-oxydation",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "033ef62e9763e45e726e6cad2de3e750b3270e62b98bfbf0900a676caf0a0e1b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-kim-figure1-2022",
+          "url": "https://www.mdpi.com/2223-7747/11/22/3088",
+          "locator": "Figure 1, dernière phrase de la légende ; paragraphe suivant",
+          "result": "Légende figure1 : oxydation du THC en CBN.",
+          "sourceHash": "69539663e2c1e8f50b6c7410da37e31eb7361332ce6d50e5b4420bc728f8e0e1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-delta9",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "47a11ab8a75f82f16c3c49ab3d915e228b3debd36be67c12077d1f436d323229",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-euda-thc-chemistry",
+          "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+          "locator": "Chemistry, premier et deuxième paragraphes",
+          "result": "Convention et positionsC9–C10 explicitement données.",
+          "sourceHash": "86c1f7146753a5dcb593dcc3efef2d30eb1880f28e82961597152ed9d1d7b8b6",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-decarboxylation",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "2368d367e1476acea77f7546f1b3ddb44a898bf84a06653473a66c90e8129b13",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-kim-figure1-2022",
+          "url": "https://www.mdpi.com/2223-7747/11/22/3088",
+          "locator": "Figure 1, légende, passage decarboxylate (-CO2)",
+          "result": "Figure1 : perte de CO2 indiquée.",
+          "sourceHash": "69539663e2c1e8f50b6c7410da37e31eb7361332ce6d50e5b4420bc728f8e0e1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-cbd-thc-isomeres",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "d5dde387bcd171ead8a20858ee27a73952d2a755a6a7c45e4543a6af63fb53a1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-cbd",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:69478",
+          "locator": "Formula ; Definition et SMILES",
+          "result": "Formule et connectivité du CBD enregistrées.",
+          "sourceHash": "33d92363c8e25335bf15740db67d9bc06b300d96556efad3f8d05603c9879f45",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c02-euda-thc-chemistry",
+          "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+          "locator": "Chemistry, nom systématique ; Molecular structure et formule",
+          "result": "Formule identique et structure du THC distincte.",
+          "sourceHash": "86c1f7146753a5dcb593dcc3efef2d30eb1880f28e82961597152ed9d1d7b8b6",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-2ag",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "a548ed5ef9bfb61acb77221a848e44bc15c85b6f597939ed6be0f22b81deba46",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-2ag",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:52392",
+          "locator": "Definition ; ChEBI Ontology, is a 2-acylglycerol 20:4",
+          "result": "Ester de glycérol à une chaîne acyle décrit.",
+          "sourceHash": "67e077f6428748749ae9a24ada42fb36ba27065370f84de024ca165485b3b657",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-thca-a-b",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "3326e465d2f73fb0a36b0c723b51a482d6d55a1fa736c5cc4a8886b70c6b2d09",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-cfia-botany-2021",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "Section 4.2.1 Cannabinoids, premier paragraphe sur les formes fraîches",
+          "result": "Prédominance carboxylique dans les tissus frais explicitée.",
+          "sourceHash": "3cf59b6c85c3661c29c2e0810711802a7ed34bc1f3e8665c6fa9c759738dd2fa",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-evidence-branches",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "da1ef96b013c044b046b8b1447bb96a66cf18194498bbb27d6e8086f30768462",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-gagne-polyketide-2012",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3411943/",
+          "locator": "Introduction, The biosynthesis of cannabinoids ; Abstract",
+          "result": "Origine polycétidique prénylée explicitement décrite.",
+          "sourceHash": "8892c620b3b398c2bcb6252afa877d767d12a420ba437fca071903aeb2547139",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-coccinelle",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "cebbaac1978bdbf82c91c20a39d5bf6924dc4af6be7c457226f5c6820654d768",
+      "sourceChecks": [
+        {
+          "sourceId": "health-atlas-beneficial-purdue",
+          "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+          "locator": "Lady Beetles, premier paragraphe",
+          "result": "Pucerons donnés comme proies principales.",
+          "sourceHash": "6bb92d11b817a7569c4a93576cc908e8f7a365795bb23b9d0613f2d90394fb4d",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-puceron",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "895b07f864641b2d181ebcb63ab33fdd4cd1b3534a40cfb99c8cfe3fe2341fd3",
+      "sourceChecks": [
+        {
+          "sourceId": "health-atlas-aphids",
+          "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+          "locator": "Biology, premier paragraphe, dernière phrase",
+          "result": "Prélèvement phloémien explicitement indiqué.",
+          "sourceHash": "066f310dc37fc28f464702ec46e4150f9711ef092e9e89df0e91fb279ad78db1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-thrips",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "f1f33e73c455eb0f07a6a878c00d607414d90977886c5928254eb03630686485",
+      "sourceChecks": [
+        {
+          "sourceId": "health-atlas-thrips-unh",
+          "url": "https://extension.unh.edu/resource/hemp-pests-new-hampshire",
+          "locator": "Thrips, paragraphe Feeding damage",
+          "result": "Cicatrices et ponctuations blanches décrites.",
+          "sourceHash": "72d16540b344451111137285b75548f57ecd27a29d076bdb86d38561c27bd3dc",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-parasitoide",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "e5c558e88b83c4a686006bc7de00d48138724696a8a3184feda06d327fa86365",
+      "sourceChecks": [
+        {
+          "sourceId": "health-atlas-beneficial-purdue",
+          "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+          "locator": "Predators AND Parasitoids (Wasps and Flies), deux premiers paragraphes",
+          "result": "Développement larvaire létal dans un hôte décrit.",
+          "sourceHash": "6bb92d11b817a7569c4a93576cc908e8f7a365795bb23b9d0613f2d90394fb4d",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-altise",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "616c5ead3a6d784ef89272d1f86873790b0cef0f8dbeacd4105d6e2a6ea03d9c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-eppo-altise",
+          "url": "https://gd.eppo.int/taxon/PSYIAT",
+          "locator": "Common names ; Taxonomy",
+          "result": "Ordre Coleoptera confirmé.",
+          "sourceHash": "9b7a6e468f656687c317386c848cc36a98b7467943fc6a0bcc83817d795eb4ef",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-miellat",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "fa95c12ec5138a8b51bfcae8c1fc162a1193990be6bb225a70079b475939b6f7",
+      "sourceChecks": [
+        {
+          "sourceId": "health-atlas-aphids",
+          "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+          "locator": "Damage in Industrial Hemp, premier paragraphe",
+          "result": "Excrétion sucrée collante nommée honeydew.",
+          "sourceHash": "066f310dc37fc28f464702ec46e4150f9711ef092e9e89df0e91fb279ad78db1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-predateurs",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "b045419092dd35aeef9f1eef62dfe90dedc19962f14782559f9082f4f927d8e0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-cornell-phytoseiulus",
+          "url": "https://biocontrol.entomology.cornell.edu/predators/Phytoseiulus.php",
+          "locator": "En-tête Acarina: Phytoseiidae ; Pests Attacked (Host Range)",
+          "result": "FamillePhytoseiidae et spécialisation trophique confirmées.",
+          "sourceHash": "1aa445c811505121b334045c3b09b7130e0acca717379d639a6868aede4602aa",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-oomycetes",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "5020359191d274d1a53fbb58abe6a0c824013e0521b1fdb3a58e86f06b17f0c3",
+      "sourceChecks": [
+        {
+          "sourceId": "health-lesson-oomycetes",
+          "url": "https://www.apsnet.org/edcenter/Pages/OomycetesLab.aspx",
+          "locator": "Introduction, premiers paragraphes et paragraphe Pythiaceae",
+          "result": "Pythium situé dans les oomycètes.",
+          "sourceHash": "d538cc52181bb5ff8bde3c9406d4d03c43b873f0b0d0380510325022167fd772",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c02-pnw-pythium-hemp",
+          "url": "https://pnwhandbooks.org/node/12931/print",
+          "locator": "Cause ; légende de la photographie",
+          "result": "AgentsPythium nommés pour le chanvre.",
+          "sourceHash": "e97abb63d3e2010de6717ede396bde1c2134226aac0b1719897de67a8ae66515",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-hlvd",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "122618070dc22c4827f569f4b2a74a2083c1bcad4d8e8682094cad70e3d73340",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-osu-hlvd-2024",
+          "url": "https://extension.oregonstate.edu/catalog/em-9570-hop-latent-viroid-hemp",
+          "locator": "Trois premiers paragraphes",
+          "result": "ARN circulaire simple brin sans coque protéique décrit.",
+          "sourceHash": "1a3b4425acd8e51230d9f6cf110474018ffdf90040f058939f9ab88303489b4c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-podosphaera",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "d5c247522c5a6c7da710d3474255263efb2e20399fbc7b7c011674c47977011b",
+      "sourceChecks": [
+        {
+          "sourceId": "health-atlas-powdery-2024",
+          "url": "https://doi.org/10.1111/jph.13348",
+          "locator": "Abstract ; Results, Molecular analysis ; Discussion",
+          "result": "Deux agents identifiés, y compris en infection mixte.",
+          "sourceHash": "646acfb84ba456cfa39e2451ce229a5419f4cd55755f9cb921dc1067a2403a3e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-osaughnessy",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "4a27229ca3f75088a77930cfd6d1cc81a1eac1f497733be467d964e93079a2a4",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-sci-oshaughnessy",
+          "url": "https://www.gutenberg.org/files/67959/67959-h/67959-h.htm",
+          "locator": "Page de titre ; note de réimpression des périodiques de 1838 et 1843",
+          "result": "Signature et note de réimpression concordantes.",
+          "sourceHash": "693fd80a7c7f41c12cc0d94cae5f3de2f7408bff4c9743983de357fc1955875a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-1940",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "cfa81ebfe1aa6313fc812dc92ab730b578cfde5ac2111419af516ee57840bf4f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-cbd",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:69478",
+          "locator": "Definition ; ChEBI Ontology, resorcinols ; IUPAC Name",
+          "result": "Deux hydroxyles du même cycle aromatique confirmés.",
+          "sourceHash": "33d92363c8e25335bf15740db67d9bc06b300d96556efad3f8d05603c9879f45",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "2b5490e5128797d9c1503bac3de08cd569d5a8ae20b62b95124fcee76629113e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-ben-shabat-2ag-1998",
+          "url": "https://www.weizmann.ac.il/brain-sciences/labs/vogel/PDFs/98EJP353-23.pdf",
+          "locator": "p.23, Introduction, premier paragraphe",
+          "result": "Devane 1992 cité pour l’anandamide.",
+          "sourceHash": "2f9aea01450a9df1086cb1b47fcc1274217a389046290320e12ff59bbb976787",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Introduction p.23 déjà lue pour C-legacy-01 le 2026-11-16 ; passage et source inchangés, lecture réutilisée sans nouvelle ouverture."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "fd2a34d4087b949a7fe297db52fa665bc5d9110ccce91288b71df7bf7b23cb96",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-chebi-2ag",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:52392",
+          "locator": "ChEBI Name ; Synonyms, 2-AG ; IUPAC Name",
+          "result": "Nom2-arachidonoylglycérol et abréviation2-AG enregistrés.",
+          "sourceHash": "67e077f6428748749ae9a24ada42fb36ba27065370f84de024ca165485b3b657",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-receptors-type",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "b48b042071d0b52779f790a27c847f3182a9cb92b98c018ba6712234de89d459",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-iubmb-faah",
+          "url": "https://iubmb.qmul.ac.uk/enzyme/EC3/5/1/99.html",
+          "locator": "Accepted name ; Reaction (1) ; Other names",
+          "result": "Réaction d’hydrolyse de l’anandamide attribuée àFAAH.",
+          "sourceHash": "32456511ee7c7b442118eb48716c4c43bbefad414a43e1ca71a952321971bf51",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-molecule",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; quatre choix cohérents et niveau acceptable pour le savoir testé.",
+      "contentHash": "3751c6cb2444bb14743ddd321c231bef98bea3b405b425ce76323860a29a2abd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-iubmb-faah",
+          "url": "https://iubmb.qmul.ac.uk/enzyme/EC3/5/1/99.html",
+          "locator": "Comments, première phrase",
+          "result": "Commentaire : protéine intégrale de membrane.",
+          "sourceHash": "32456511ee7c7b442118eb48716c4c43bbefad414a43e1ca71a952321971bf51",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-structure-date",
+      "status": "approved",
+      "comment": "Forme corrigée en identification, conforme à la tâche affichée. Contenu factuel, choix et niveau inchangés.",
+      "contentHash": "8f0f0b772bbdc6409855d6266e9b968b8b654acee9262786e10d1397d248cfc3",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-sci-cbd-structure",
+          "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+          "locator": "p.2073, titre, auteurs, en-tête Tetrahedron 1963 et Abstract",
+          "result": "Auteurs, année, titre et structure annoncée concordants.",
+          "sourceHash": "3d4026b785f82ca4953309a4a0bd5d0244e3fae772743ed24d7ff7181f9d8146",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage pertinent effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "date": "2026-11-16",
+    "correctedApprovals": 8,
+    "unchangedApprovals": 32,
+    "unchangedSources": 37,
+    "scope": "Relecture des huit versions corrigées uniquement ; empreintes de toutes les questions et références contrôlées. Aucune nouvelle recherche déclarée pour les passages inchangés.",
+    "previousQuestionHashes": {
+      "hemp-plant-inflorescence": "7e74487c9c5ff5e1727d30b853f9ce18754d9b5e4e79339da0fd8b2e307017b3",
+      "hemp-genetics-landrace": "9a9122e95549dd4ad4529efc6e25871f4f7329a34f8c3aab556ca5a77e8823d0",
+      "hemp-genetics-recombinaison": "2f9b081247550c397d675e72b8d73812884d4917f9705d3d99abaf49501d32f5",
+      "hemp-genetics-pangenome": "600bd229b92f00d4e900fea73bc840534a45c8606c6bea30b0e496472c076d20",
+      "hemp-evidence-anandamide": "af798062ea2f55a617d534e4892a0aa31ffa95368451603b092ce0ef8e104eff",
+      "hemp-biodiversity-oomycetes": "a72f79fcf070da24163e00487a0407f69f2c6cb3f6ad3a03f2c381fb9f9920d5",
+      "hemp-hs-sci-anandamide": "657b9212147f1e1ecb78f6f0e9a5be2e0e2c64f387605f2b665827e71458c676",
+      "hemp-hs-sci-cbd-structure-date": "82ca99e09c05bbb0ac9c478015e268ac747d0d0636666330638883d90435863d"
+    }
+  }
+}

@@ -44,6 +44,7 @@ export function KqPlayerWorkDesk({ snapshot, disabled, prepare, fixedKind }: Pro
   const [cityId, setCityId] = useState(KQ_STAFF_CITIES[0].id);
   const [department, setDepartment] = useState<string>("35");
   const workday = getKqPlayerWorkday(snapshot);
+  const committedHours = workday.dailyHours - workday.remainingHours;
   const skills = getKqPlayerSkills(snapshot.state);
   const rural = kind === "countryside";
   const hours = rural ? KQ_PLAYER_DAILY_HOURS : Number(hourInput);
@@ -77,15 +78,15 @@ export function KqPlayerWorkDesk({ snapshot, disabled, prepare, fixedKind }: Pro
   }
 
   if (fixedKind === "processing" && snapshot.context.processingWorkVersion === 1) return <div className={styles.form} data-player-processing-entry>
-    <KqProgressMeter label="Tes heures réservées aujourd’hui" value={workday.usedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(workday.usedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles.`} />
+    <KqProgressMeter label="Tes heures utilisées ou réservées aujourd’hui" value={committedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(committedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles.`} />
     <p>Le devis dans Commerce indique les heures nécessaires. Un salarié utilise ses propres heures de transformation.</p>
     <Link href="/arene/placard?view=market&section=sales" prefetch={false} className={styles.primary}>Choisir un lot à transformer</Link>
   </div>;
 
   return <div className={styles.form} data-player-work-desk>
-    <KqProgressMeter label="Tes heures réservées aujourd’hui" value={workday.usedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(workday.usedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles, partagées avec ton trim et tes autres gestes dans la ferme.`} />
+    <KqProgressMeter label="Tes heures utilisées ou réservées aujourd’hui" value={committedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(committedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles, partagées avec ton trim et tes autres gestes dans la ferme.`} />
     <p className={styles.muted}>Aucun salaire personnel. Prochaine journée : <time dateTime={workday.nextDayAt}>{dateTime(workday.nextDayAt)}</time> (heure réelle).</p>
-    <form className={styles.form} data-player-work-form onSubmit={submit}>
+    <form className={styles.form} data-player-work-form data-player-work-kind={kind} data-tutorial-observation={!disabled ? "personal-work" : undefined} onSubmit={submit}>
       <fieldset className={styles.form} disabled={disabled}>
         {fixedKind === "sales" ? <div className={styles.actions} role="group" aria-label="Type de prospection"><button type="button" data-player-prospecting-mode="city" aria-pressed={!rural} onClick={() => setProspectingMode("city")}>En ville</button><button type="button" data-player-prospecting-mode="countryside" aria-pressed={rural} onClick={() => setProspectingMode("countryside")}>Sillonner les campagnes</button></div> : null}
         <dl className={`${styles.numbers} ${styles.workQuote}`}><div><dt>{kind === "sales" || rural ? "Trajet à payer au départ" : "Paiement immédiat"}</dt><dd>{formatKqCash(debitCents)}</dd></div>{validHours ? <div><dt>Fin estimée · heure réelle</dt><dd>{dateTime(estimatedEnd)}</dd></div> : null}</dl>

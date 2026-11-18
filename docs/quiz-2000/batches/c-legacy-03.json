@@ -1,0 +1,1707 @@
+{
+  "batchId": "c-legacy-03",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-uses-pores",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quand l’eau remplit les pores d’un sol de chanvrière après une forte pluie, que remplace-t-elle principalement ?",
+      "options": [
+        "De l’air",
+        "Des grains de quartz",
+        "Des particules d’argile",
+        "Des fragments d’humus"
+      ],
+      "answer": 0,
+      "explanation": "Les pores sont les vides entre les particules du sol. Ils peuvent contenir de l’air ou de l’eau : quand l’eau occupe plus de place, la part d’air diminue.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Air et eau dans les pores du sol",
+        "subjectKey": "soil-pore-air-water",
+        "property": "Remplacement de l’air par l’eau",
+        "expectedAnswer": "De l’air",
+        "learningObjective": "Comprendre que la saturation en eau réduit la place disponible pour l’air.",
+        "factKey": "soil-pore-water-filling-displaces-air",
+        "form": "identification",
+        "difficultyRationale": "Situation concrète accessible ; les quatre choix sont des constituants réels du sol.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-physical",
+            "locator": "Introduction, What Is Soil ; figures 1-1a à 1-1c",
+            "support": "Le manuel distingue les solides des pores remplis d’air et d’eau ; le sol mal drainé contient davantage d’eau et moins d’air dans ces vides."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-matiere-organique",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quel constituant d’un sol de chanvrière appartient à la matière organique ?",
+      "options": [
+        "Une particule d’argile",
+        "Un fragment de racine morte",
+        "Un cristal de quartz",
+        "Un grain de calcaire"
+      ],
+      "answer": 1,
+      "explanation": "La matière organique comprend des restes d’êtres vivants, dont les racines mortes. Quartz, calcaire et argiles appartiennent à la fraction minérale du sol.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Matière organique du sol",
+        "subjectKey": "soil-organic-matter",
+        "property": "Nature organique d’un résidu de racine",
+        "expectedAnswer": "Un fragment de racine morte",
+        "learningObjective": "Distinguer les restes végétaux des constituants minéraux du sol.",
+        "factKey": "dead-root-fragment-soil-organic-matter",
+        "form": "identification",
+        "difficultyRationale": "Distinction concrète entre un reste végétal et trois matériaux minéraux familiers.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-physical",
+            "locator": "Introduction, What Is Soil ; Organic Matter, première phrase",
+            "support": "La fraction organique comprend des résidus végétaux et animaux ; la fraction minérale provient de roches altérées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-vers-terre",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Quel changement physique du sol peut résulter de l’activité des vers de terre dans une chanvrière ?",
+      "options": [
+        "La formation d’une semelle compacte sous le labour",
+        "La formation de fentes de retrait dans l’argile",
+        "La formation de galeries reliant des pores",
+        "La formation d’une croûte de battance en surface"
+      ],
+      "answer": 2,
+      "explanation": "Les vers de terre creusent et déplacent de la matière. Leurs galeries créent des passages pouvant faciliter les mouvements d’air et d’eau dans le sol.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Galeries de vers de terre",
+        "subjectKey": "earthworm-soil-galleries",
+        "property": "Modification physique du sol",
+        "expectedAnswer": "La formation de galeries reliant des pores",
+        "learningObjective": "Reconnaître l’action physique des vers de terre parmi d’autres formes de structure du sol.",
+        "factKey": "earthworm-burrowing-soil-channels",
+        "form": "identification",
+        "difficultyRationale": "Distinction de quatre structures pédologiques réelles ; nécessite un vocabulaire intermédiaire.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-physical",
+            "locator": "The Biology of Soil, premier paragraphe et passage Soil-dwellers move through the soil",
+            "support": "Les vers de terre sont cités parmi les animaux fouisseurs ; les déplacements des organismes créent des canaux améliorant aération et drainage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-paillis",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quel exemple correspond à un paillis organique autour de plants de chanvre agricole ?",
+      "options": [
+        "Un couvert de plantes vivantes enracinées entre les plants",
+        "Des résidus végétaux enfouis dans la terre",
+        "Un tas de résidus placé à part pour fabriquer du compost",
+        "Une couche de résidus végétaux posée sur le sol"
+      ],
+      "answer": 3,
+      "explanation": "Un paillis couvre la surface du sol. Il se distingue d’un couvert végétal vivant et d’un apport enfoui, même si ces trois pratiques peuvent employer de la matière végétale.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Paillis organique",
+        "subjectKey": "organic-mulch",
+        "property": "Position et forme d’une couverture morte",
+        "expectedAnswer": "Une couche de résidus végétaux posée sur le sol",
+        "learningObjective": "Distinguer un paillis d’un couvert vivant et de résidus enfouis.",
+        "factKey": "organic-mulch-plant-residue-soil-surface",
+        "form": "situation",
+        "difficultyRationale": "Exemples concrets de quatre usages plausibles de résidus ou de plantes.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-physical",
+            "locator": "Organic Matter, passage organic mulch or compost to the soil surface ; figure 1-17",
+            "support": "Le manuel décrit un paillis organique déposé sur la surface du sol, distinct des apports incorporés et du couvert vivant."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-exsudats",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Quel flux correspond à une exsudation racinaire dans le sol d’une chanvrière ?",
+      "options": [
+        "Des composés organiques passent de la racine vers le sol",
+        "Des ions minéraux passent du sol vers la racine",
+        "L’eau monte des racines vers les feuilles",
+        "Des sucres circulent des feuilles vers les racines"
+      ],
+      "answer": 0,
+      "explanation": "Les exsudats sont des substances organiques libérées par les racines dans leur voisinage. Ils peuvent nourrir des micro-organismes de la rhizosphère.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Exsudats racinaires",
+        "subjectKey": "root-exudates",
+        "property": "Sens et nature du flux d’exsudation",
+        "expectedAnswer": "Des composés organiques passent de la racine vers le sol",
+        "learningObjective": "Distinguer une libération racinaire d’une absorption ou d’un transport interne.",
+        "factKey": "root-exudation-organic-compounds-root-to-soil",
+        "form": "identification",
+        "difficultyRationale": "Quatre flux végétaux réels, différant par leur trajet et leur nature.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-rhizosphere",
+            "locator": "Rhizosphère, deux premiers paragraphes",
+            "support": "Le WSL décrit l’excrétion de substances organiques dans la rhizosphère et leur influence sur l’activité microbienne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-mycorhize",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Quels partenaires forment une mycorhize, association observée notamment chez le chanvre ?",
+      "options": [
+        "Une racine et une larve d’insecte phytophage",
+        "Une racine et un champignon",
+        "Une racine et une bactérie fixatrice d’azote",
+        "Une racine et un nématode parasite"
+      ],
+      "answer": 1,
+      "explanation": "Une mycorhize associe un champignon à une racine. Des observations microscopiques sur le chanvre montrent notamment hyphes, arbuscules et vésicules fongiques dans les racines.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-living",
+        "q2-c03-mycorrhiza-hemp-2022"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Mycorhizes du chanvre",
+        "subjectKey": "cannabis-mycorrhiza",
+        "property": "Partenaires de l’association",
+        "expectedAnswer": "Une racine et un champignon",
+        "learningObjective": "Identifier les partenaires d’une mycorhize et savoir que cette association existe chez Cannabis.",
+        "factKey": "cannabis-mycorrhiza-root-fungus-association",
+        "form": "identification",
+        "difficultyRationale": "Les quatre couples impliquent réellement des organismes associés aux racines.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-living",
+            "locator": "Directly Beneficial Soil Organisms, définition des mycorhizes",
+            "support": "Le texte définit la mycorhize comme relation symbiotique entre certains champignons et les racines."
+          },
+          {
+            "sourceId": "q2-c03-mycorrhiza-hemp-2022",
+            "locator": "Results, Root traits and mycorrhizal colonization ; micrographies",
+            "support": "Les auteurs ont observé des structures fongiques mycorhiziennes dans les racines de Cannabis sativa KKU05."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-mineralisation",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Que devient l’azote organique de résidus de chanvre lorsqu’il est minéralisé dans le sol ?",
+      "options": [
+        "Il est fixé sur des surfaces d’argile sans changer de forme",
+        "Il est entraîné hors de la parcelle sous forme de débris",
+        "Il est libéré sous forme d’ions minéraux",
+        "Il est incorporé à la biomasse microbienne"
+      ],
+      "answer": 2,
+      "explanation": "La minéralisation convertit l’azote organique en formes minérales, notamment l’ammonium. Elle se distingue d’un simple déplacement de résidus.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Minéralisation de l’azote des résidus",
+        "subjectKey": "soil-nitrogen-mineralization",
+        "property": "Passage de l’azote organique à des ions minéraux",
+        "expectedAnswer": "Il est libéré sous forme d’ions minéraux",
+        "learningObjective": "Comprendre la transformation chimique qui libère de l’azote minéral.",
+        "factKey": "soil-organic-nitrogen-mineralization-inorganic-ions",
+        "form": "identification",
+        "difficultyRationale": "Processus du cycle de l’azote distingué d’une assimilation, d’une rétention et d’un transport.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-nitrogen",
+            "locator": "Mineralization, paragraphe de définition",
+            "support": "Le texte définit la conversion de l’azote organique en ions inorganiques et cite les résidus végétaux et animaux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-echange-cations",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Dans un sol de chanvrière, des surfaces sont chargées négativement. Quel couple d’ions peuvent-elles attirer ?",
+      "options": [
+        "NO3− et Cl−",
+        "SO4²− et HCO3−",
+        "NO2− et PO4³−",
+        "K+ et Ca2+"
+      ],
+      "answer": 3,
+      "explanation": "Les charges opposées s’attirent. Le potassium K+ et le calcium Ca2+ sont des cations ; les surfaces négatives du sol peuvent les retenir puis les échanger.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Échange de cations du sol",
+        "subjectKey": "soil-cation-exchange",
+        "property": "Attraction de cations par des surfaces négatives",
+        "expectedAnswer": "K+ et Ca2+",
+        "learningObjective": "Appliquer l’attraction électrostatique à la rétention de nutriments du sol.",
+        "factKey": "soil-negative-exchange-sites-retain-positive-cations",
+        "form": "deduction",
+        "difficultyRationale": "La charge des surfaces et les signes des ions sont fournis ; le joueur en déduit le couple attiré.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-physical",
+            "locator": "Cation Exchange Capacity, deux premiers paragraphes",
+            "support": "Le manuel explique que les surfaces négatives retiennent des ions de charge positive, échangeables avec d’autres cations."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-uses-immobilisation",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Dans le sol d’une chanvrière, quel processus peut convertir des nitrates en gaz azotés lorsque l’oxygène manque ?",
+      "options": [
+        "La dénitrification",
+        "La nitrification",
+        "La minéralisation",
+        "L’immobilisation microbienne"
+      ],
+      "answer": 0,
+      "explanation": "La dénitrification réduit les nitrates et peut libérer des gaz azotés, dont le N2O et le diazote N2. Ce processus diffère d’une conversion de matière organique en ammonium.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Dénitrification du sol",
+        "subjectKey": "soil-denitrification",
+        "property": "Transformation de nitrates en formes gazeuses",
+        "expectedAnswer": "La dénitrification",
+        "learningObjective": "Distinguer la dénitrification des autres transformations de l’azote.",
+        "factKey": "soil-denitrification-nitrate-reduction-gaseous-nitrogen-low-oxygen",
+        "form": "identification",
+        "difficultyRationale": "Transformation microbienne spécialisée avec quatre processus réels du même cycle.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-nitrogen",
+            "locator": "Denitrification, paragraphe de définition",
+            "support": "En absence d’oxygène, les nitrates peuvent être réduits par des micro-organismes avec production de N2 et d’intermédiaires dont N2O."
+          }
+        ],
+        "identityImpact": "Remplace l’immobilisation microbienne, trop proche de la minéralisation déjà testée dans ce lot, par la dénitrification et ses formes gazeuses ; l’ancien fait n’est pas réutilisé."
+      }
+    },
+    {
+      "id": "hemp-uses-echange-mycorhize",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Dans une mycorhize de chanvre, quelle ressource la plante fournit-elle au champignon ?",
+      "options": [
+        "Des ions potassium extraits par les hyphes",
+        "Des composés carbonés issus de la photosynthèse",
+        "Du phosphore libéré des minéraux du sol",
+        "Des ions nitrate prélevés dans le sol"
+      ],
+      "answer": 1,
+      "explanation": "La plante apporte au champignon des composés carbonés. Le partenaire fongique peut contribuer en retour à l’accès aux nutriments : les deux flux ne sont pas de même nature.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-living",
+        "q2-c03-mycorrhiza-hemp-2022"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Échanges d’une mycorhize",
+        "subjectKey": "cannabis-mycorrhiza",
+        "property": "Ressource fournie par le partenaire végétal",
+        "expectedAnswer": "Des composés carbonés issus de la photosynthèse",
+        "learningObjective": "Distinguer le rôle nourricier carboné de la plante de l’accès aux nutriments assuré par le champignon.",
+        "factKey": "mycorrhiza-plant-supplies-carbon-to-fungus",
+        "form": "identification",
+        "difficultyRationale": "Échange biologique intermédiaire ; choix entre ressources circulant dans des symbioses végétales.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "soil-lesson-living",
+            "locator": "Directly Beneficial Soil Organisms, In exchange, the fungus receives",
+            "support": "Le champignon reçoit des sucres et d’autres composés des racines pour sa croissance."
+          },
+          {
+            "sourceId": "q2-c03-mycorrhiza-hemp-2022",
+            "locator": "Introduction, définition des AMF ; Results, colonisation racinaire",
+            "support": "L’étude documente une association mycorhizienne chez Cannabis ; elle n’est pas utilisée pour fixer une performance de production."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-plein-champ",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Après une pluie sur une chanvrière, de l’eau s’écoule à la surface sans pénétrer dans le sol. Comment nomme-t-on ce mouvement ?",
+      "options": [
+        "La percolation",
+        "La transpiration",
+        "Le ruissellement",
+        "L’infiltration"
+      ],
+      "answer": 2,
+      "explanation": "Le ruissellement désigne l’écoulement à la surface du terrain. Il se distingue de l’infiltration, par laquelle l’eau pénètre dans le sol.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "q2-c03-usgs-runoff"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Eau de pluie dans une chanvrière",
+        "subjectKey": "surface-runoff",
+        "property": "Écoulement de surface",
+        "expectedAnswer": "Le ruissellement",
+        "learningObjective": "Distinguer l’eau qui ruisselle de celle qui entre dans le sol.",
+        "factKey": "rainfall-surface-runoff-versus-infiltration",
+        "form": "situation",
+        "difficultyRationale": "Description concrète d’un phénomène courant ; choix entre quatre mouvements d’eau réels.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-usgs-runoff",
+            "locator": "Surface runoff is precipitation that runs off the landscape, premiers paragraphes",
+            "support": "L’USGS définit le ruissellement comme des précipitations s’écoulant sur le terrain et le distingue de l’infiltration."
+          }
+        ],
+        "identityImpact": "Remplace la reconnaissance triviale du plein champ par la distinction entre ruissellement et infiltration ; le simple contraste extérieur/abri est abandonné."
+      }
+    },
+    {
+      "id": "hemp-prevention-serre",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel phénomène optique permet à la lumière solaire de traverser une couverture de serre et d’atteindre les plantes ?",
+      "options": [
+        "La réflexion",
+        "L’absorption",
+        "L’émission",
+        "La transmission"
+      ],
+      "answer": 3,
+      "explanation": "Une partie du rayonnement traverse la couverture : c’est la transmission. Une autre peut être réfléchie ou absorbée ; une serre ne laisse donc pas passer toute la lumière incidente.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-coverings"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Lumière traversant une serre",
+        "subjectKey": "greenhouse-cover-optics",
+        "property": "Transmission du rayonnement",
+        "expectedAnswer": "La transmission",
+        "learningObjective": "Distinguer transmission, réflexion, absorption et émission de lumière.",
+        "factKey": "greenhouse-cover-solar-light-transmission",
+        "form": "identification",
+        "difficultyRationale": "Quatre phénomènes optiques comparables ; vocabulaire accessible à partir d’une situation quotidienne.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "cultivation-lesson-coverings",
+            "locator": "Introduction ; Glass, caractéristiques de transmission du PAR",
+            "support": "La fiche décrit la lumière transmise par les couvertures et précise qu’elles réduisent toutes la lumière dans une certaine mesure."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-sechage",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle matière quitte principalement le chènevis pendant son séchage ?",
+      "options": [
+        "L’eau",
+        "Les lipides",
+        "Les protéines",
+        "Les minéraux"
+      ],
+      "answer": 0,
+      "explanation": "Le séchage retire surtout de l’eau. La baisse de masse d’un lot ne correspond donc pas à une perte équivalente de sa matière sèche.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "q2-c03-fao-grain-drying",
+        "harvest-lesson-hemp"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Séchage du chènevis",
+        "subjectKey": "hempseed-drying",
+        "property": "Matière retirée lors du séchage",
+        "expectedAnswer": "L’eau",
+        "learningObjective": "Distinguer perte d’eau et perte de matière sèche dans un lot de graines.",
+        "factKey": "hempseed-drying-removes-water-not-dry-matter",
+        "form": "identification",
+        "difficultyRationale": "Quatre constituants réels d’une graine ; principe de conservation simple.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-fao-grain-drying",
+            "locator": "Grain Drying ; Moisture Content, définition et bilan eau–matière sèche",
+            "support": "Le chapitre définit la teneur en eau et distingue la masse d’eau de la masse sèche lors du séchage."
+          },
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.23, Conservation du chènevis",
+            "support": "Le guide décrit le séchage du chènevis comme une réduction de sa teneur en eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-paille",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle partie du chanvre constitue la paille conditionnée en balles après la fauche ?",
+      "options": [
+        "Les enveloppes retirées du chènevis",
+        "Les tiges",
+        "Les racines arrachées",
+        "Les feuilles séparées des tiges"
+      ],
+      "answer": 1,
+      "explanation": "La paille de chanvre correspond aux tiges récoltées. Son conditionnement en balles concerne cette matière fibreuse, distincte du chènevis.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Paille de chanvre",
+        "subjectKey": "hemp-straw",
+        "property": "Partie végétale conditionnée en balles",
+        "expectedAnswer": "Les tiges",
+        "learningObjective": "Relier la paille à la tige et la distinguer des autres fractions végétales.",
+        "factKey": "hemp-straw-baled-stems",
+        "form": "identification",
+        "difficultyRationale": "Identification accessible entre quatre fractions réelles de la plante.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.22, Récolte en mode non battu roui ; p.23, Fanage, andainage et pressage",
+            "support": "Le guide associe la récolte de paille aux tiges puis décrit leur pressage en balles rondes ou carrées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-nuages",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel effet a généralement un épais couvert nuageux sur la durée astronomique du jour et le rayonnement reçu dans une chanvrière ?",
+      "options": [
+        "Durée raccourcie et rayonnement plus faible",
+        "Durée inchangée et rayonnement plus élevé",
+        "Durée inchangée et rayonnement plus faible",
+        "Durée raccourcie et rayonnement plus élevé"
+      ],
+      "answer": 2,
+      "explanation": "Les nuages peuvent diminuer la lumière reçue sans modifier la durée astronomique du jour. Deux journées aussi longues ne fournissent donc pas nécessairement la même quantité de lumière.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-light"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Nébulosité et lumière du champ",
+        "subjectKey": "cloud-cover-light",
+        "property": "Réduction du rayonnement reçu",
+        "expectedAnswer": "Durée inchangée et rayonnement plus faible",
+        "learningObjective": "Distinguer durée du jour et quantité de lumière reçue.",
+        "factKey": "cloud-cover-reduces-received-light-not-astronomical-daylength",
+        "form": "identification",
+        "difficultyRationale": "Distinguer la durée astronomique du jour de la lumière reçue dans une situation météo familière.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "cultivation-lesson-light",
+            "locator": "Measuring Light ; paragraphe des cartes de DLI et Fig.1",
+            "support": "La publication distingue la photopériode du rayonnement quotidien et cite la couverture nuageuse parmi les facteurs qui modifient la quantité reçue."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-transpiration",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel trajet de l’eau correspond à la transpiration des feuilles de chanvre ?",
+      "options": [
+        "L’eau liquide sort de la feuille par des hydathodes",
+        "La vapeur de l’air forme des gouttes sur une feuille froide",
+        "La sève liquide s’écoule d’une tige coupée",
+        "L’eau s’évapore dans la feuille puis diffuse par les stomates"
+      ],
+      "answer": 3,
+      "explanation": "La transpiration est une perte d’eau sous forme de vapeur, notamment par les stomates. Elle se distingue de la guttation, qui émet des gouttes liquides.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "revision-agro-water"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Transpiration foliaire du chanvre",
+        "subjectKey": "plant-leaf-transpiration",
+        "property": "Sortie de vapeur par les stomates",
+        "expectedAnswer": "L’eau s’évapore dans la feuille puis diffuse par les stomates",
+        "learningObjective": "Distinguer transpiration, guttation, condensation et écoulement de sève.",
+        "factKey": "leaf-transpiration-evaporation-stomatal-water-vapour-loss",
+        "form": "identification",
+        "difficultyRationale": "Distinction de quatre mouvements d’eau plausibles dans ou autour d’une plante.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "revision-agro-water",
+            "locator": "Water and Solute Transportation, évaporation du mésophylle ; définition de Transpiration avant Control of Transpiration",
+            "support": "L’eau s’évapore dans les espaces de la feuille, puis la vapeur est perdue vers l’atmosphère à travers les stomates."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-gel-plantule",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "D’après le guide Terres Inovia 2026, à quel stade le chanvre agricole est-il le plus fragile face au gel ?",
+      "options": [
+        "À la levée, quand les cotylédons se déploient",
+        "Au stade de six feuilles étalées",
+        "Au stade de dix feuilles étalées",
+        "Au début de la floraison"
+      ],
+      "answer": 0,
+      "explanation": "Le guide décrit la sortie de terre et le déploiement des cotylédons comme le stade le plus fragile. La résistance s’améliore ensuite avec le développement de la jeune plante.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-hemp2026"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Gel et développement du chanvre agricole",
+        "subjectKey": "hemp-frost-seedling-stage",
+        "property": "Stade de fragilité au gel",
+        "expectedAnswer": "À la levée, quand les cotylédons se déploient",
+        "learningObjective": "Relier la sensibilité au gel au stade d’une plante vivante.",
+        "factKey": "industrial-hemp-frost-fragility-emergence-cotyledons",
+        "form": "identification",
+        "difficultyRationale": "Quatre stades de développement comparables ; repère agronomique sans seuil ni calendrier à appliquer.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "cultivation-lesson-hemp2026",
+            "locator": "p.14, Sensibilité au gel",
+            "support": "Le texte identifie la sortie de terre et le développement des cotylédons comme le stade le plus fragile, puis décrit une amélioration de la résistance."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-echauffement",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel risque de conservation le guide Terres Inovia 2026 signale-t-il pour du chènevis humide entassé ?",
+      "options": [
+        "La rétrogradation de l’amidon",
+        "L’échauffement du lot",
+        "La cristallisation des matières grasses",
+        "La gélification des protéines"
+      ],
+      "answer": 1,
+      "explanation": "Du chènevis humide peut s’échauffer et perdre en qualité. La respiration du grain et des micro-organismes peut produire de la chaleur dans un lot stocké.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp",
+        "q2-c03-fao-grain-drying"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Échauffement du chènevis",
+        "subjectKey": "hempseed-storage-heating",
+        "property": "Risque thermique du grain humide",
+        "expectedAnswer": "L’échauffement du lot",
+        "learningObjective": "Relier humidité du grain et échauffement biologique pendant le stockage.",
+        "factKey": "damp-hempseed-storage-self-heating-quality-risk",
+        "form": "identification",
+        "difficultyRationale": "Quatre transformations réelles de matières alimentaires ; la question porte sur le risque explicitement signalé pour le chènevis.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.23, Conservation du chènevis, premier paragraphe",
+            "support": "Le guide signale qu’un échauffement peut altérer la qualité du chènevis récolté humide."
+          },
+          {
+            "sourceId": "q2-c03-fao-grain-drying",
+            "locator": "Grain Drying, paragraphes sur la respiration et les hot spots",
+            "support": "La respiration du grain et des micro-organismes stockés libère de la chaleur et peut entretenir des points chauds."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-fanage",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Que fait le fanage à la paille de chanvre fauchée ?",
+      "options": [
+        "Il la compacte en balles liées",
+        "Il aligne les tiges en nappes parallèles",
+        "Il l’étale et l’aère",
+        "Il la rassemble en lignes resserrées"
+      ],
+      "answer": 2,
+      "explanation": "Le fanage étale et aère la paille. L’andainage la rassemble en lignes, tandis que le pressage la compacte en balles : ce sont des opérations distinctes.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Fanage de paille de chanvre",
+        "subjectKey": "hemp-straw-field-operations",
+        "property": "Action du fanage",
+        "expectedAnswer": "Il l’étale et l’aère",
+        "learningObjective": "Distinguer le fanage des autres opérations de manipulation des tiges.",
+        "factKey": "hemp-straw-tedding-spreading-aeration",
+        "form": "identification",
+        "difficultyRationale": "Terminologie agricole intermédiaire ; quatre actions mécaniques plausibles sur la paille.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.23, Fanage, andainage et pressage, trois puces",
+            "support": "Le guide définit le fanage par l’étalement et l’aération de la paille, distincts du rassemblement et du pressage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-andain",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Après la fauche du chanvre, quelle forme de paille appelle-t-on un andain ?",
+      "options": [
+        "Une nappe de paille étalée sur toute la largeur",
+        "Une balle de paille comprimée et liée",
+        "Un faisceau de tiges dressé verticalement",
+        "Une ligne de paille rassemblée au sol"
+      ],
+      "answer": 3,
+      "explanation": "Un andain est une ligne de matière fauchée rassemblée au sol. Ce mot décrit une disposition de la paille, sans signifier qu’elle est déjà pressée en balle.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Andain de chanvre",
+        "subjectKey": "hemp-straw-field-operations",
+        "property": "Disposition en ligne de matière fauchée",
+        "expectedAnswer": "Une ligne de paille rassemblée au sol",
+        "learningObjective": "Reconnaître un andain parmi différentes dispositions de tiges récoltées.",
+        "factKey": "hemp-straw-windrow-line-on-ground",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire agricole intermédiaire : reconnaître une disposition de paille désignée par un terme spécialisé.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.23, Fanage, andainage et pressage, puce Andainer",
+            "support": "Le guide décrit l’andainage comme l’action de rassembler la paille en lignes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-battage",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Lors de la récolte du chanvre à graines, que fait le battage ?",
+      "options": [
+        "Il détache le chènevis des parties qui le portent",
+        "Il retire la coque pour mettre l’amande à nu",
+        "Il trie des graines déjà détachées parmi les impuretés",
+        "Il sépare l’huile des autres constituants de la graine"
+      ],
+      "answer": 0,
+      "explanation": "Le battage sépare les fruits des parties de plante qui les portent. Il se distingue du nettoyage, du décorticage et du pressage de l’huile.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "q2-c03-fao-threshing",
+        "harvest-lesson-hemp"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Battage du chanvre à graines",
+        "subjectKey": "hempseed-threshing",
+        "property": "Séparation du fruit de son support végétal",
+        "expectedAnswer": "Il détache le chènevis des parties qui le portent",
+        "learningObjective": "Distinguer battage, tri, décorticage et extraction de l’huile.",
+        "factKey": "hempseed-threshing-detaches-grain-from-plant",
+        "form": "identification",
+        "difficultyRationale": "Quatre opérations réelles concernant la même récolte de graines.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-fao-threshing",
+            "locator": "Definition, première phrase",
+            "support": "La définition du battage est la séparation du grain de la partie de plante qui le porte."
+          },
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.22, Récolte en mode battu",
+            "support": "Le guide du chanvre décrit une récolte associant la graine et la paille et cite le battage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-hors-sol",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Un chanvre est étudié dans un pot rempli de fibres de coco. Quel milieu racinaire est décrit ?",
+      "options": [
+        "Le sol agricole en place",
+        "Un substrat solide hors-sol",
+        "Une solution liquide sans support solide",
+        "Un dispositif à racines nues dans l’air"
+      ],
+      "answer": 1,
+      "explanation": "La fibre de coco constitue un substrat : les racines disposent d’un support solide distinct du sol en place. « Sous serre » décrit plutôt l’environnement aérien.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "q2-c03-okstate-soilless-media"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Milieu racinaire en fibres de coco",
+        "subjectKey": "soilless-root-medium",
+        "property": "Classification d’un substrat en conteneur",
+        "expectedAnswer": "Un substrat solide hors-sol",
+        "learningObjective": "Distinguer un substrat hors-sol des racines immergées, exposées à l’air ou en pleine terre.",
+        "factKey": "coir-container-solid-soilless-substrate",
+        "form": "situation",
+        "difficultyRationale": "La situation donne un support concret ; quatre milieux racinaires plausibles sont proposés.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-okstate-soilless-media",
+            "locator": "Introduction ; Characteristics of Growing Mediums ; Coconut Coir",
+            "support": "La fiche classe la fibre de coco parmi les milieux hors-sol organiques et la décrit comme support des racines."
+          }
+        ],
+        "identityImpact": "Précise le fait de culture hors-sol par une situation sur substrat ; aucune observation expérimentale sur le chanvre ni recommandation de culture n’est prétendue."
+      }
+    },
+    {
+      "id": "hemp-prevention-huile-rance",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quelle réaction contribue au rancissement de l’huile de graines de chanvre ?",
+      "options": [
+        "La transestérification des triglycérides",
+        "La saponification des triglycérides",
+        "L’oxydation des acides gras",
+        "L’hydrogénation des doubles liaisons"
+      ],
+      "answer": 2,
+      "explanation": "L’oxydation des lipides forme différents produits, dont certains altèrent l’odeur et la saveur de l’huile. C’est l’un des mécanismes du rancissement.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-oil"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Rancissement de l’huile de chènevis",
+        "subjectKey": "hempseed-oil-oxidation",
+        "property": "Réaction de dégradation des lipides",
+        "expectedAnswer": "L’oxydation des acides gras",
+        "learningObjective": "Identifier une réaction responsable de l’altération d’une huile alimentaire.",
+        "factKey": "hempseed-oil-rancidity-lipid-oxidation",
+        "form": "identification",
+        "difficultyRationale": "Le rancissement est une notion courante ; les quatre choix sont de vraies transformations de matières grasses.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-oil",
+            "locator": "Introduction, paragraphes sur oxidative and photo-oxidative degradation ; §2.2",
+            "support": "L’article décrit une détérioration oxydative des qualités sensorielles de l’huile de chanvre et la formation de produits primaires et secondaires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-point-rosee",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "À pression et teneur en vapeur constantes, que désigne le point de rosée de l’air autour du chanvre ?",
+      "options": [
+        "La température à laquelle l’eau liquide commence à bouillir",
+        "La température à laquelle toute la vapeur est devenue liquide",
+        "La température de la surface la plus froide à proximité",
+        "La température de refroidissement qui sature cet air"
+      ],
+      "answer": 3,
+      "explanation": "Le point de rosée est la température à laquelle un air refroidi atteint la saturation. Il dépend de sa teneur en vapeur ; ce n’est pas simplement la température d’une paroi froide.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-c03-noaa-dewpoint"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Point de rosée",
+        "subjectKey": "dew-point",
+        "property": "Température de saturation à pression et humidité fixées",
+        "expectedAnswer": "La température de refroidissement qui sature cet air",
+        "learningObjective": "Comprendre la définition du point de rosée avec ses conditions physiques.",
+        "factKey": "dew-point-cooling-temperature-saturation-constant-pressure-moisture",
+        "form": "identification",
+        "difficultyRationale": "Définition météorologique intermédiaire ; les quatre choix sont des températures.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-noaa-dewpoint",
+            "locator": "Dew Point, première définition",
+            "support": "Le NWS définit la température de refroidissement nécessaire pour atteindre la saturation, à pression et teneur en vapeur constantes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-humidite-relative",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "L’air autour du chanvre se réchauffe à pression constante, sans ajout ni retrait de vapeur. Son humidité relative…",
+      "options": [
+        "Diminue",
+        "Augmente",
+        "Reste identique",
+        "Atteint la saturation"
+      ],
+      "answer": 0,
+      "explanation": "À teneur en vapeur inchangée, l’air réchauffé est plus éloigné de la saturation. Son humidité relative diminue, sans qu’une baisse de ce pourcentage prouve une perte d’eau.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "q2-c03-noaa-relative-humidity"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Humidité relative et réchauffement",
+        "subjectKey": "relative-humidity-temperature",
+        "property": "Effet de la température à pression et teneur en vapeur fixées",
+        "expectedAnswer": "Diminue",
+        "learningObjective": "Distinguer humidité relative et quantité de vapeur présente.",
+        "factKey": "warming-constant-pressure-moisture-lowers-relative-humidity",
+        "form": "deduction",
+        "difficultyRationale": "Les conditions thermodynamiques sont fixées ; il faut relier réchauffement et saturation.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-noaa-relative-humidity",
+            "locator": "Relative Humidity, deux paragraphes",
+            "support": "À même quantité de vapeur, le texte décrit une humidité relative plus faible dans l’air plus chaud."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-bris-graines",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Une huile de chènevis vieillie a moins de peroxydes mais plus de produits secondaires d’oxydation. Quelle évolution explique ce résultat ?",
+      "options": [
+        "Les triglycérides sont hydrolysés en glycérol et acides gras",
+        "Les hydroperoxydes se décomposent en produits secondaires",
+        "Les acides gras libres sont réestérifiés en triglycérides",
+        "Les acides gras insaturés sont hydrogénés en acides gras saturés"
+      ],
+      "answer": 1,
+      "explanation": "Les hydroperoxydes peuvent se décomposer au cours du vieillissement. Un indice de peroxyde faible ne garantit donc pas, à lui seul, qu’une huile est peu oxydée.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "harvest-lesson-oil"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Évolution des peroxydes d’une huile vieillie",
+        "subjectKey": "hempseed-oil-oxidation",
+        "property": "Décomposition des produits primaires en produits secondaires",
+        "expectedAnswer": "Les hydroperoxydes se décomposent en produits secondaires",
+        "learningObjective": "Comprendre pourquoi la baisse d’un marqueur primaire peut accompagner une oxydation avancée.",
+        "factKey": "aged-hemp-oil-peroxide-decline-secondary-oxidation-products",
+        "form": "deduction",
+        "difficultyRationale": "Deux tendances analytiques sont données ; il faut identifier le mécanisme chimique compatible.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-oil",
+            "locator": "§2.2, paragraphes sur PV et développement de produits secondaires",
+            "support": "L’article précise que l’indice de peroxyde peut diminuer quand apparaissent des produits secondaires et rester bas dans une huile rance."
+          }
+        ],
+        "identityImpact": "Remplace le risque d’oxydation après casse du chènevis par la décomposition des produits primaires pendant le vieillissement de l’huile ; l’ancien fait de manutention n’est pas recyclé."
+      }
+    },
+    {
+      "id": "hemp-prevention-hydroperoxydes",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Quels composés sont des produits primaires de l’oxydation de l’huile de chènevis ?",
+      "options": [
+        "Les cétones volatiles",
+        "Les alcools issus de la décomposition lipidique",
+        "Les hydroperoxydes lipidiques",
+        "Les aldéhydes volatils"
+      ],
+      "answer": 2,
+      "explanation": "Les hydroperoxydes sont de premiers produits d’oxydation des lipides. Leur décomposition peut ensuite contribuer à former d’autres molécules, notamment des composés volatils.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "harvest-lesson-oil"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Produits primaires d’oxydation",
+        "subjectKey": "hempseed-oil-oxidation",
+        "property": "Famille chimique formée au début de l’oxydation",
+        "expectedAnswer": "Les hydroperoxydes lipidiques",
+        "learningObjective": "Distinguer produits primaires et composés formés plus tard dans l’oxydation des lipides.",
+        "factKey": "hemp-oil-primary-oxidation-products-lipid-hydroperoxides",
+        "form": "identification",
+        "difficultyRationale": "Séquence chimique spécialisée avec quatre familles associées à l’altération lipidique.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-oil",
+            "locator": "Introduction, Peroxides and hydroperoxides are primary reaction products ; §2.2",
+            "support": "L’article identifie peroxydes et hydroperoxydes comme produits primaires, avant la formation de produits secondaires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-prevention-maturite",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans une inflorescence de chanvre à graines, quelle zone mûrit généralement la première ?",
+      "options": [
+        "La partie supérieure",
+        "La face orientée au nord",
+        "La face orientée au sud",
+        "La partie inférieure"
+      ],
+      "answer": 3,
+      "explanation": "La maturation peut être étagée : les fruits inférieurs sont déjà mûrs alors que les supérieurs restent moins avancés. L’inflorescence ne mûrit pas d’un seul coup.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Maturation du chènevis dans l’inflorescence",
+        "subjectKey": "hempseed-inflorescence-maturation",
+        "property": "Ordre spatial de maturation",
+        "expectedAnswer": "La partie inférieure",
+        "learningObjective": "Reconnaître le décalage de maturité entre fruits du bas et du haut.",
+        "factKey": "hempseed-inflorescence-lower-fruits-mature-before-upper",
+        "form": "identification",
+        "difficultyRationale": "Repère botanique intermédiaire ; comparaison de zones de la même inflorescence sans choix absolu.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "harvest-lesson-hemp",
+            "locator": "p.22, Récolte en mode battu, description des fruits inférieurs et supérieurs",
+            "support": "Le guide décrit des fruits du bas mûrs tandis que ceux du haut sont encore pâteux ou verts."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-2ag-study-assay",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "La GOT végétale, qui participe à la formation du CBGA, appartient à quelle famille fonctionnelle d’enzymes ?",
+      "options": [
+        "Les prényltransférases",
+        "Les acyltransférases",
+        "Les glycosyltransférases",
+        "Les méthyltransférases"
+      ],
+      "answer": 0,
+      "explanation": "La GOT transfère un groupe géranyle depuis un diphosphate donneur vers l’olivétolate. C’est une prényltransférase, et non une enzyme qui transfère un sucre ou un groupe méthyle.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbga"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "GOT végétale",
+        "subjectKey": "cannabis-got-prenyltransferase",
+        "property": "Nature du groupe transféré",
+        "expectedAnswer": "Les prényltransférases",
+        "learningObjective": "Identifier le transfert d’un groupe prénylique dans la biosynthèse descriptive du CBGA.",
+        "factKey": "cannabis-got-geranyl-prenyltransferase-class",
+        "form": "identification",
+        "difficultyRationale": "Quatre familles réelles de transférases ; il faut connaître la nature du groupe géranyle.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-sci-cbga",
+            "locator": "Abstract, nom complet de GOT et cosubstrat GPP ; titre de l’article",
+            "support": "Le résumé nomme une géranylpyrophosphate:olivétolate géranyltransférase et décrit l’emploi de GPP comme cosubstrat."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-hs-sci-cbd-mn-vs-indian",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel institut est indiqué dans l’affiliation de Mechoulam et Shvo pour leur article de 1963 sur la structure du CBD ?",
+      "options": [
+        "L’Institut Max-Planck de chimie",
+        "L’Institut Weizmann",
+        "L’Institut Pasteur",
+        "L’Institut Karolinska"
+      ],
+      "answer": 1,
+      "explanation": "L’en-tête de l’article indique le Daniel Sieff Research Institute, The Weizmann Institute of Science, à Rehovot. Il s’agit de l’affiliation de cette publication précise.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Affiliation du travail sur le CBD en 1963",
+        "subjectKey": "mechoulam-shvo-1963",
+        "property": "Institut de l’affiliation publiée",
+        "expectedAnswer": "L’Institut Weizmann",
+        "learningObjective": "Situer l’affiliation du travail d’élucidation du CBD sans en déduire d’autres priorités.",
+        "factKey": "mechoulam-shvo-1963-affiliation-weizmann-institute",
+        "form": "identification",
+        "difficultyRationale": "Repère documentaire spécialisé, sans raisonnement expert ; quatre instituts de recherche comparables.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-sci-cbd-structure",
+            "locator": "p.2073, en-tête sous les auteurs",
+            "support": "L’affiliation associe Daniel Sieff Research Institute et The Weizmann Institute of Science, Rehovoth, Israel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-1-05",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Sur la partie basse d’une tige de chanvre, comment les feuilles sont-elles habituellement disposées ?",
+      "options": [
+        "Par verticilles de trois au même niveau",
+        "En rosette concentrée à la base de la tige",
+        "Par paires opposées au même niveau",
+        "Une par une en alternance le long de la tige"
+      ],
+      "answer": 2,
+      "explanation": "Les feuilles basales sont généralement opposées : deux feuilles s’insèrent au même niveau, l’une face à l’autre. Vers le sommet, la disposition devient habituellement alterne.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Disposition des feuilles du chanvre",
+        "subjectKey": "cannabis-leaf-arrangement",
+        "property": "Phyllotaxie de la partie basse",
+        "expectedAnswer": "Par paires opposées au même niveau",
+        "learningObjective": "Reconnaître une disposition opposée parmi quatre phyllotaxies réelles.",
+        "factKey": "cannabis-basal-leaves-opposite-pairs",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire botanique intermédiaire, avec des dispositions concurrentes comparables.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-canada",
+            "locator": "§2.6 General description, paragraphe des feuilles et pétioles",
+            "support": "La CFIA décrit les pétioles opposés sur le bas de la tige et alternes vers le sommet."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-10",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "À quelle famille terpénique appartient le β-phellandrène détecté dans le chanvre ?",
+      "options": [
+        "Les sesquiterpènes",
+        "Les diterpènes",
+        "Les triterpènes",
+        "Les monoterpènes"
+      ],
+      "answer": 3,
+      "explanation": "Le β-phellandrène est un monoterpène cyclique de formule C10H16. La notice chimique établit sa classe ; l’étude de Booth documente sa présence parmi les terpènes du cannabis.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-c03-chebi-phellandrene",
+        "terpenes-lesson-booth2017"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Bêta-phellandrène",
+        "subjectKey": "beta-phellandrene",
+        "property": "Classe monoterpénique",
+        "expectedAnswer": "Les monoterpènes",
+        "learningObjective": "Classer le β-phellandrène dans une famille terpénique précise.",
+        "factKey": "beta-phellandrene-cyclic-monoterpene-class",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance de famille chimique, sans interpréter une odeur comme une analyse.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-chebi-phellandrene",
+            "locator": "Definition ; Formula",
+            "support": "La notice définit explicitement un monoterpène cyclique et donne C10H16."
+          },
+          {
+            "sourceId": "terpenes-lesson-booth2017",
+            "locator": "Fig.4, pic l ; Functional characterization of CsTPSFN TPS-b subfamily members",
+            "support": "Le β-phellandrène est répertorié parmi les produits monoterpéniques et dans le profil floral présenté."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-12",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Chez Kneubühl et al. (2021), quelle odeur est attribuée provisoirement au 3-phényl-(E)-2-propénoate d’éthyle du chanvre ?",
+      "options": [
+        "La cannelle",
+        "L’eucalyptus",
+        "Le fromage",
+        "La pomme de terre cuite"
+      ],
+      "answer": 0,
+      "explanation": "L’étude propose une note de cannelle pour cet ester. Le tableau marque son identification comme provisoire ; cette attribution ne vaut pas pour tous les lots de chanvre.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Ester aromatique provisoire de l’étude de 2021",
+        "subjectKey": "kneubuhl-2021-ethyl-phenylpropenoate",
+        "property": "Note aromatique attribuée dans l’étude",
+        "expectedAnswer": "La cannelle",
+        "learningObjective": "Relier une attribution aromatique à une étude définie et à son degré de confirmation.",
+        "factKey": "kneubuhl-2021-tentative-ethyl-phenylpropenoate-cinnamon",
+        "form": "identification",
+        "difficultyRationale": "Association spécialisée à retenir avec sa réserve documentaire ; quatre odeurs comparables.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-aroma-key-compounds",
+            "locator": "Table 1, ligne 30 ; note b sous le tableau",
+            "support": "L’ethyl 3-phenyl-(E)-2-propenoate est associé à cinnamon-like et porte le code b d’identification provisoire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-13",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Dans l’étude de Kneubühl et al. (2021), quel composé est proposé pour une note de champignon dans des fleurs de chanvre ?",
+      "options": [
+        "Le (E,E)-2,4-nonadiénal",
+        "La 1-octen-3-one",
+        "Le méthional",
+        "Le (Z)-3-hexénal"
+      ],
+      "answer": 1,
+      "explanation": "La 1-octen-3-one est associée à une odeur de champignon dans le tableau de l’étude. Son identification y reste provisoire : la réserve porte sur le composé proposé.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "1-octen-3-one proposée dans l’étude de 2021",
+        "subjectKey": "kneubuhl-2021-octenone",
+        "property": "Molécule proposée pour la note de champignon",
+        "expectedAnswer": "La 1-octen-3-one",
+        "learningObjective": "Reconnaître une attribution aromatique sans transformer une proposition en identification certaine.",
+        "factKey": "kneubuhl-2021-tentative-1-octen-3-one-mushroom",
+        "form": "identification",
+        "difficultyRationale": "Quatre composés carbonylés réellement présents dans le tableau ; association sensorielle spécialisée.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-aroma-key-compounds",
+            "locator": "Table 1, ligne 8 et note b ; lignes 3,15,24 pour les alternatives",
+            "support": "La 1-octen-3-one est associée à mushroom-like et marquée b, contrairement aux autres associations aromatiques proposées ici."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-15",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quelle fonction carbonylée porte le méthional détecté dans le chanvre ?",
+      "options": [
+        "Une fonction ester",
+        "Une fonction acide carboxylique",
+        "Une fonction aldéhyde",
+        "Une fonction cétone"
+      ],
+      "answer": 2,
+      "explanation": "Le méthional porte un groupe terminal –CHO : c’est un aldéhyde. Il contient aussi du soufre dans sa chaîne, une caractéristique distincte de sa fonction carbonylée.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-c03-chebi-methional",
+        "qh-nature-aroma-key-compounds"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Structure du méthional",
+        "subjectKey": "methional",
+        "property": "Fonction aldéhyde terminale",
+        "expectedAnswer": "Une fonction aldéhyde",
+        "learningObjective": "Distinguer la fonction carbonylée du méthional de la présence de soufre.",
+        "factKey": "methional-terminal-aldehyde-functional-group",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance structurale spécialisée parmi quatre fonctions carbonylées.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-chebi-methional",
+            "locator": "SMILES ; InChI ; IUPAC Name et synonymes",
+            "support": "La notice relie méthional au 3-(méthylsulfanyl)propanal ; la structure porte un carbonyle terminal avec un hydrogène."
+          },
+          {
+            "sourceId": "qh-nature-aroma-key-compounds",
+            "locator": "Table 1, ligne 15",
+            "support": "Le méthional figure parmi les composés détectés dans les fleurs fraîches étudiées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-18",
+      "topicId": "molecules",
+      "level": 4,
+      "prompt": "Quel sesquiterpène du cannabis possède deux cycles fusionnés, l’un à quatre carbones et l’autre à neuf ?",
+      "options": [
+        "L’α-humulène",
+        "Le germacrène D",
+        "Le β-bisabolène",
+        "Le β-caryophyllène"
+      ],
+      "answer": 3,
+      "explanation": "Le β-caryophyllène possède un squelette bicyclique associant un cycle à neuf carbones et un cyclobutane à quatre carbones. C’est une particularité de son architecture moléculaire.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "q2-c03-chebi-caryophyllene",
+        "terpenes-lesson-booth2017"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Squelette du bêta-caryophyllène",
+        "subjectKey": "beta-caryophyllene",
+        "property": "Cycles fusionnés de quatre et neuf atomes",
+        "expectedAnswer": "Le β-caryophyllène",
+        "learningObjective": "Reconnaître une architecture cyclique caractéristique parmi des sesquiterpènes proches.",
+        "factKey": "beta-caryophyllene-fused-four-nine-membered-rings",
+        "form": "identification",
+        "difficultyRationale": "Connaissance fine des squelettes de quatre sesquiterpènes cycliques, sans élimination par composés acycliques.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c03-chebi-caryophyllene",
+            "locator": "Definition, première phrase ; structure et IUPAC Name",
+            "support": "La notice décrit explicitement les cycles fusionnés à neuf et quatre atomes du β-caryophyllène."
+          },
+          {
+            "sourceId": "terpenes-lesson-booth2017",
+            "locator": "Introduction ; profil floral, Table 1 et caractérisation des synthases",
+            "support": "L’étude documente le β-caryophyllène dans les profils terpéniques du cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-19",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quelle relation unit l’isopentényl diphosphate et le diméthylallyl diphosphate, précurseurs des terpènes du cannabis ?",
+      "options": [
+        "Deux isomères de constitution à cinq carbones",
+        "Deux énantiomères à cinq carbones",
+        "Deux homologues contenant cinq et dix carbones",
+        "Deux formes E et Z d’une même double liaison"
+      ],
+      "answer": 0,
+      "explanation": "IPP et DMAPP sont deux unités à cinq carbones organisées différemment. Une IPP isomérase peut convertir l’IPP en DMAPP : leurs molécules ne sont pas deux images miroir.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017",
+        "q2-c03-chebi-ipp",
+        "q2-c03-chebi-dmapp"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "IPP et DMAPP",
+        "subjectKey": "ipp-dmapp",
+        "property": "Relation d’isomérie des unités C5",
+        "expectedAnswer": "Deux isomères de constitution à cinq carbones",
+        "learningObjective": "Distinguer des précurseurs isomères d’homologues et de stéréoisomères.",
+        "factKey": "ipp-dmapp-five-carbon-constitutional-isomers",
+        "form": "identification",
+        "difficultyRationale": "Relation structurale spécialisée entre précurseurs diphosphates.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "terpenes-lesson-booth2017",
+            "locator": "Introduction, paragraphes des voies MEP et MEV",
+            "support": "Le texte définit des précurseurs isoprénoïdes à cinq carbones et indique que l’IPP est isomérisé en DMAPP par l’IPP isomérase."
+          },
+          {
+            "sourceId": "q2-c03-chebi-ipp",
+            "locator": "Formula ; SMILES ; IUPAC Name",
+            "support": "L’IPP trianion a cinq carbones et une double liaison en position 3 du groupe 3-méthylbutényle."
+          },
+          {
+            "sourceId": "q2-c03-chebi-dmapp",
+            "locator": "Formula ; SMILES ; IUPAC Name ; synonymes",
+            "support": "Le DMAPP trianion a la même formule et une double liaison en position 2 ; les deux structures diffèrent par la position de cette liaison."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-en-2-20",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quel métabolite alimente le début de la voie du mévalonate impliquée dans les terpènes du cannabis ?",
+      "options": [
+        "L’oxaloacétate",
+        "L’acétyl-CoA",
+        "Le pyruvate",
+        "Le glycéraldéhyde-3-phosphate"
+      ],
+      "answer": 1,
+      "explanation": "La voie du mévalonate part d’unités d’acétyl-CoA. La voie MEP utilise d’autres matières de départ, dont le pyruvate et le glycéraldéhyde-3-phosphate.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Début de la voie du mévalonate",
+        "subjectKey": "voie-mevalonate",
+        "property": "Métabolite de départ",
+        "expectedAnswer": "L’acétyl-CoA",
+        "learningObjective": "Distinguer les matières de départ de deux voies de biosynthèse terpénique.",
+        "factKey": "mevalonate-pathway-starts-from-acetyl-coa",
+        "form": "identification",
+        "difficultyRationale": "Métabolisme spécialisé ; quatre métabolites centraux plausibles, dont deux de l’autre voie terpénique.",
+        "legacyAction": "correct",
+        "sourceEvidence": [
+          {
+            "sourceId": "terpenes-lesson-booth2017",
+            "locator": "Introduction, paragraphes MEP et MEV ; Fig.2A",
+            "support": "La voie MEV transforme trois unités d’acétyl-CoA en IPP ; la voie MEP démarre de pyruvate et de glycéraldéhyde-3-phosphate."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-c03-mycorrhiza-hemp-2022",
+      "title": "Enhancement of growth and Cannabinoids content of hemp (Cannabis sativa) using arbuscular mycorrhizal fungi",
+      "organization": "Khon Kaen University et partenaires / Frontiers in Plant Science",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.845794/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Wasan Seemakram, Jakkapat Paluka, Thanapat Suebrasri, Chanon Lapjit, Somdej Kanokmedhakul, Thomas W. Kuyper, Jindarat Ekprasert et Sophon Boonlue",
+      "published": "2022-07-26",
+      "passage": "L’étude observe des hyphes, arbuscules et vésicules de champignons mycorhiziens dans les racines de Cannabis sativa KKU05.",
+      "access": "full-text",
+      "documentKind": "Recherche primaire",
+      "limitation": "Seule l’existence de l’association racine–champignon est utilisée. Aucun protocole d’inoculation, dose, rendement ni optimisation de cannabinoïdes repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, définition AMF ; Results, Root traits and mycorrhizal colonization ; légende des micrographies",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-usgs-runoff",
+      "title": "Surface Runoff and the Water Cycle",
+      "organization": "United States Geological Survey / Water Science School",
+      "url": "https://www.usgs.gov/water-science-school/science/surface-runoff-and-water-cycle?qt-science_center_objects=0",
+      "verifiedAt": "2026-11-16",
+      "author": "USGS Water Science School",
+      "published": "2026-09-17, date affichée",
+      "passage": "Le ruissellement de surface correspond aux précipitations qui s’écoulent sur le terrain ; il se distingue de l’infiltration.",
+      "access": "official-page",
+      "documentKind": "Ressource scientifique institutionnelle",
+      "limitation": "Définition hydrologique générale appliquée à une situation de champ ; aucun coefficient universel ni conseil d’aménagement.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Surface runoff is precipitation that runs off the landscape, paragraphes 1–3",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-noaa-dewpoint",
+      "title": "Dew Point — National Weather Service Glossary",
+      "organization": "NOAA / National Weather Service",
+      "url": "https://forecast.weather.gov/glossary.php?word=DEW+POINT",
+      "verifiedAt": "2026-11-16",
+      "author": "NOAA / National Weather Service",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Le point de rosée est la température de refroidissement à laquelle l’air atteint la saturation, à pression et teneur en vapeur constantes.",
+      "access": "official-page",
+      "documentKind": "Glossaire météorologique institutionnel",
+      "limitation": "Définition physique seulement ; aucune consigne de conduite de serre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Dew Point, première définition",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-noaa-relative-humidity",
+      "title": "A Discussion of Water Vapor, Humidity, and Dewpoint, and Relationship to Precipitation",
+      "organization": "NOAA / National Weather Service Louisville",
+      "url": "https://www.weather.gov/lmk/humidity",
+      "verifiedAt": "2026-11-16",
+      "author": "National Weather Service Louisville",
+      "published": "s.d., page institutionnelle",
+      "passage": "La section Relative Humidity explique que, à teneur en vapeur inchangée, un air plus chaud a une humidité relative plus faible.",
+      "access": "official-page",
+      "documentKind": "Ressource météorologique institutionnelle",
+      "limitation": "Relation physique descriptive ; les plages de confort et prévisions présentes sur la page ne sont pas utilisées.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Relative Humidity, deux paragraphes",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-fao-grain-drying",
+      "title": "Farm Structures in Tropical Climates — Crop Handling, Conditioning and Storage",
+      "organization": "Food and Agriculture Organization of the United Nations",
+      "url": "https://www.fao.org/4/s1250e/S1250E0u.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "FAO",
+      "published": "s.d. dans le chapitre consulté",
+      "passage": "Le grain stocké reste biologiquement actif ; la respiration produit de la chaleur. La teneur en eau et la matière sèche sont distinguées dans Moisture Content.",
+      "access": "full-text",
+      "documentKind": "Manuel technique institutionnel",
+      "limitation": "Principes de conservation des graines uniquement ; pas de seuil, température ou durée transposés au chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Grain Drying, paragraphes sur humidité, respiration et points chauds ; Moisture Content",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-fao-threshing",
+      "title": "Agricultural Engineering in Development — Threshing and Shelling",
+      "organization": "Food and Agriculture Organization of the United Nations",
+      "url": "https://www.fao.org/4/t0522e/t0522e07.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "FAO",
+      "published": "s.d. dans le chapitre consulté",
+      "passage": "Le battage est défini comme la séparation du grain de la partie de plante qui le porte.",
+      "access": "full-text",
+      "documentKind": "Manuel agricole institutionnel",
+      "limitation": "Définition générale complétée par le guide du chanvre ; réglages et opérations pratiques détaillées exclus.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, première phrase",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-okstate-soilless-media",
+      "title": "Soilless Growing Mediums — HLA-6728",
+      "organization": "Oklahoma State University Extension",
+      "url": "https://extension.okstate.edu/fact-sheets/soilless-growing-mediums",
+      "verifiedAt": "2026-11-16",
+      "author": "Dharti Thakulla, Bruce Dunn et Bizhen Hu",
+      "published": "2021-09",
+      "passage": "La fibre de coco est décrite comme un substrat organique, utilisable seul ou en mélange dans des cultures hors-sol.",
+      "access": "official-page",
+      "documentKind": "Fiche universitaire",
+      "limitation": "Sert à classer une situation hypothétique par milieu racinaire ; aucune recette, dose ou recommandation de culture du cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Characteristics of Growing Mediums ; Coconut Coir",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-chebi-methional",
+      "title": "3-Methylthiopropanal (methional) (CHEBI:49017)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:49017",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Le méthional est le 3-(méthylsulfanyl)propanal ; la structure et le SMILES portent un groupe terminal –CHO et un soufre entre carbones.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; pas de propriété clinique ou de teneur universelle déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Formula ; SMILES CSCCC=O ; IUPAC Name ; Synonyms, methional",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-chebi-caryophyllene",
+      "title": "Beta-caryophyllene (CHEBI:63191)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:63191",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "La définition décrit un squelette bicyclique de deux cycles fusionnés à neuf et quatre atomes ; classement sesquiterpène.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; pas de propriété clinique ou de teneur universelle déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; ChEBI Ontology ; IUPAC Name",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-chebi-phellandrene",
+      "title": "Beta-phellandrene (CHEBI:48741)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:48741",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "La définition identifie un monoterpène cyclique ; la formule est C10H16.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Identité et structure chimiques ; pas de propriété clinique ou de teneur universelle déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Formula",
+        "result": "Page ouverte ; passages indiqués effectivement lus et paraphrasés dans les questions."
+      }
+    },
+    {
+      "id": "q2-c03-chebi-ipp",
+      "title": "Isopentenyl diphosphate(3−) (CHEBI:128769)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:128769",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Formule C5H9O7P2 ; nom 3-methylbut-3-en-1-yl diphosphate et structure à double liaison terminale.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Structures comparées dans le même état de protonation trianionique ; aucune donnée de production ou propriété clinique déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Formula ; SMILES ; IUPAC Name",
+        "result": "Notice ouverte ; formule, nom et SMILES effectivement lus."
+      }
+    },
+    {
+      "id": "q2-c03-chebi-dmapp",
+      "title": "Prenyl diphosphate(3−), dimethylallyl diphosphate (CHEBI:57623)",
+      "organization": "EMBL-EBI / ChEBI",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:57623",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe de curation ChEBI",
+      "published": "s.d., notice évolutive",
+      "passage": "Formule C5H9O7P2 ; nom 3-methylbut-2-en-1-yl diphosphate, synonyme DMAPP et position différente de la double liaison.",
+      "access": "catalogue",
+      "documentKind": "Notice chimique institutionnelle",
+      "limitation": "Structures comparées dans le même état de protonation trianionique ; aucune donnée de production ou propriété clinique déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Formula ; SMILES ; IUPAC Name ; Synonyms et UniProt Name",
+        "result": "Notice ouverte ; formule, nom et SMILES effectivement lus."
+      }
+    }
+  ]
+}

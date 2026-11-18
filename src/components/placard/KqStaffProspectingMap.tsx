@@ -54,7 +54,7 @@ export function KqStaffProspectingMap({ cityId, onCityChange, disabled = false, 
   function selectCity(id: string) { if (!disabled && id !== cityId) onCityChange(id); }
   return <section className={styles.prospecting} data-staff-prospecting-map aria-labelledby={titleId}>
     <header className={styles.heading}><h4 id={titleId}>Choisir une ville en Bretagne</h4></header>
-    <div className={styles.content} data-prospecting-city-details={city?.id ?? "none"}>
+    <div className={styles.content} data-prospecting-city-details={city?.id ?? "none"} data-tutorial-observation={city && department && !disabled ? "staff-prospecting" : undefined}>
       {city && department ? <>
         <div className={styles.selection}><header className={styles.cityHeading}><MapPin size={22} aria-hidden="true" /><div><h5>{city.name}</h5><p>{city.department} · {department.name}</p></div></header><dl className={styles.numbers}><div><dt>Frais de déplacement</dt><dd>{formatKqCash(city.travelCents)}</dd></div></dl></div>
         <dl className={styles.network}><div><dt>Partenariats signés ici</dt><dd>{(prospecting[city.id] ?? 0).toLocaleString("fr-FR")}</dd></div><div><dt>Réseau actuel de la ferme</dt><dd>{networkPartners.toLocaleString("fr-FR")} boutique{networkPartners > 1 ? "s" : ""}</dd></div></dl>

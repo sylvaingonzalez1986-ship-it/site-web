@@ -118,6 +118,11 @@ try {
   const packBefore = (await db.query("SELECT * FROM kq_support_booster_entitlements ORDER BY id")).rows;
   const metricsBefore = await scalar("SELECT prosrc FROM pg_proc WHERE oid='public.kq_mission_metrics(uuid)'::regprocedure");
   await db.exec(await sql("20261109000200_kq_mission_progression.sql"));
+  // Use the later production exclusion before the productive-task fix.
+  const productionSource = await sql("20261110000100_kq_staff_production.sql");
+  const productionPatch = productionSource.slice(productionSource.indexOf("DO $$ DECLARE body TEXT; anchor TEXT; BEGIN", productionSource.indexOf("-- New kinds are excluded")));
+  await db.exec(productionPatch.slice(0, productionPatch.indexOf("END $$;") + 7));
+  await db.exec(await sql("20261115000100_kq_mission_productive_tasks.sql"));
   equal((await db.query("SELECT id,user_id,mission_code,reward,result,claimed_at FROM kq_mission_reward_receipts ORDER BY id")).rows, receiptBefore, "Migration preserves exact historical reward receipts");
   equal((await db.query("SELECT * FROM kq_support_booster_entitlements ORDER BY id")).rows, packBefore, "Migration neither reopens nor replaces existing packs");
   equal(await scalar("SELECT prosrc FROM pg_proc WHERE oid='public.kq_mission_metrics_before_progression(uuid)'::regprocedure"), metricsBefore, "Existing quality, commerce and curing rules survive unchanged");
@@ -153,6 +158,24 @@ try {
   equal([(await mission(fresh, "staff-first-task")).progress, (await mission(fresh, "prospecting-one")).progress], [0, 1], "Staff excludes the player; completed player prospecting counts");
   await db.query("INSERT INTO kq_staff_archive VALUES($1,'task','employee','employee',$2)", [fresh, { status: "completed", kind: "training" }]);
   equal((await mission(fresh, "staff-first-task")).progress, 1, "Archived completed employee tasks count after live-state compaction");
+  const productiveOwner = await owner();
+  const task = async (id, payload) => db.query("INSERT INTO kq_staff_archive VALUES($1,'task',$2,'employee',$3)", [productiveOwner, id, { status: "completed", ...payload }]);
+  for (const kind of ["culture", "processing"]) {
+    for (const hours of [undefined, null, 0, -1, "0.5", "invalid"]) {
+      await task(`${kind}-${String(hours)}`, { kind, [`${kind}Shift`]: true, [`${kind}UsedHours`]: hours });
+    }
+  }
+  await task("autonomous", { kind: "production", productionWorkedHours: 12 });
+  equal((await mission(productiveOwner, "staff-first-task")).progress, 0, "Empty, malformed and autonomous reservations do not advance employee missions");
+  await reject(() => claim(productiveOwner, "staff-first-task"), "mission_not_ready");
+  await task("positive", { kind: "culture", cultureShift: true, cultureUsedHours: 0.5 });
+  equal((await mission(productiveOwner, "staff-first-task")).progress, 1, "Actual work advances employee missions");
+  const productiveReward = await claim(productiveOwner, "staff-first-task");
+  equal((await claim(productiveOwner, "staff-first-task")).entitlementId, productiveReward.entitlementId, "Rechecking productive evidence never awards a second pack");
+  const metrics = async () => scalar("SELECT kq_mission_metrics($1)", [productiveOwner]);
+  await task("processing-positive", { kind: "processing", processingShift: true, processingUsedHours: 0.5 });
+  await task("legacy-culture", { kind: "culture" });
+  equal((await metrics()).employee_tasks, 3, "Positive processing and legacy completed non-reservation tasks still count");
   const request = randomUUID();
   await db.query("INSERT INTO kq_social_requests VALUES($1,$2,$3)", [fresh, request, { action: "choose" }]);
   await db.query("INSERT INTO kq_social_v2_receipts VALUES($1,$2,$3),($1,$4,$5),($6,$7,$3)", [fresh, request, { action: "choose" }, randomUUID(), { action: "recover" }, other, randomUUID()]);

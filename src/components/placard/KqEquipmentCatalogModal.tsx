@@ -619,7 +619,7 @@ function LegacyKqEquipmentCatalogModal({
 
           {category === "commerce" ? <KqCommerceComputer /> : null}
 
-          {pending === "load" ? <div className={styles.loadingState}>Sylvain ouvre les cartons…</div> : null}
+          {pending === "load" ? <div className={styles.loadingState}>Loïc ouvre les cartons…</div> : null}
           {pending !== "load" && category !== "commerce" && filteredCatalog.length === 0 ? <div className={styles.emptyState}>Aucun équipement ne correspond à ces filtres.</div> : null}
           <div className={styles.productGrid}>
             {filteredCatalog.map((equipment) => {
@@ -813,7 +813,7 @@ function LegacyKqEquipmentCatalogModal({
       {purchaseResult ? <div className={styles.purchaseOverlay}><section role="dialog" aria-modal="true" aria-labelledby="equipment-purchase-title">
         <span className={styles.purchaseIcon}><Package aria-hidden="true" /></span>
         <small>Commande validée</small><h3 id="equipment-purchase-title">Le matériel est à toi.</h3>
-        <p>« Ça rentrait pas dans le coffre, mais j’ai signé quand même. » — Sylvain</p>
+        <p>« Ça rentrait pas dans le coffre, mais j’ai signé quand même. » — Loïc</p>
         <p className={styles.installHint}><Settings aria-hidden="true" /> Acheté ne veut pas dire installé : active chaque pièce pour appliquer ses bonus. Un équipement remplace l’ancien dans le même emplacement.</p>
         <div className={styles.purchaseEquipmentList}>{purchaseResult.equipmentCodes.map((code) => {
           const equipment = getKqEquipmentDefinition(code);

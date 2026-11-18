@@ -1,0 +1,802 @@
+{
+  "batchId": "r-actives-a-06",
+  "author": "rebalance_classify_a",
+  "preparedAt": "2026-11-17",
+  "status": "frozen-for-independent-review",
+  "questionCount": 34,
+  "domainCounts": {
+    "active": 34,
+    "food": 0,
+    "materials": 0
+  },
+  "levels": {
+    "1": 8,
+    "2": 22,
+    "3": 3,
+    "4": 1
+  },
+  "sourceCount": 36,
+  "selection": "Recherches externes indépendantes, sans catalogue du site. 16 faits sur des lignées classiques, huit distinctions légales et dix connaissances intrinsèques/clinique. Aucune auto-approbation.",
+  "sourceAccess": {
+    "official-page": 20,
+    "full-text": 13,
+    "catalogue": 1,
+    "excerpt": 2
+  },
+  "accessLimits": [
+    "NIDA gateway : extrait primaire indexé ; ouverture directe limitée par JavaScript.",
+    "Communiqué EMA2008 : extrait primaire indexé ; PDF direct429. Chronologie et mécanisme contrôlés par deux documents EPAR accessibles.",
+    "THCP : premières tentatives infructueuses, puis passage du PDF primaire réellement rendu par find, liaisonCB1/Figure3 lus.",
+    "ASRA : PDF original primaire identifié par DOI et pagination, lu sur miroir après403éditeur.",
+    "Essai dentaire CBD : original et corrigendum18juin2024 effectivement lus ; aucune valeur corrigée ni dose testée."
+  ],
+  "discardedBeforeFreeze": [
+    {
+      "candidate": "Alias GG4 / Original Glue",
+      "reason": "Déjà contenu dans le renommage commercial rp04 ; remplacé par Green Crack HSO."
+    },
+    {
+      "candidate": "Ascendances AK-47",
+      "reason": "Doublon exact hemp-q2-b01-ak47-claimed-colombian-mexican-thai-afghan ; remplacé par G13 Haze."
+    },
+    {
+      "candidate": "Parents White Russian",
+      "reason": "Doublon exact hemp-q2-b01-whiterussian-serious-ak47-whitewidow ; remplacé par S.A.D. S1."
+    },
+    {
+      "candidate": "Graines et exception d’envoi Allemagne",
+      "reason": "Proche du mail-order ra02 dont explication distingue déjà les semences ; remplacé par exception légale CBD à l’interdiction d’extraction."
+    },
+    {
+      "candidate": "Sour Diesel #2 HSO",
+      "reason": "Ascendances contradictoires entre tableau et description ; autre version RQS retenue explicitement."
+    }
+  ],
+  "closePairs": [
+    {
+      "id": "hemp-q2-ra06-gsc-cookies-san-francisco",
+      "neighbors": [
+        "hemp-q2-rb05-gelato-parentage-annonce"
+      ],
+      "decision": "Origine géographique du récit de Cookies ; voisin teste seulement les parents de Gelato."
+    },
+    {
+      "id": "hemp-q2-ra06-lemon-skunk-dna-parental-places",
+      "neighbors": [
+        "hemp-q2-rb06-super-lemon-haze-parentage"
+      ],
+      "decision": "Deux lieux des sélections Lemon Skunk ; voisin teste cette lignée comme parent de Super Lemon Haze."
+    },
+    {
+      "id": "hemp-q2-ra06-pineapple-express-barneys-pedigree",
+      "neighbors": [
+        "hemp-q2-rb03-pineapple-consommateur-dealer"
+      ],
+      "decision": "Cultivar commercial et parenté, distincts de l’intrigue du film homonyme."
+    },
+    {
+      "id": "hemp-q2-ra06-chemdog-greg-krzanowski",
+      "neighbors": [
+        "C rp05 Chemdog concert1991"
+      ],
+      "decision": "Identité civile, distincte du concert1991 réservé à C ; clé commune chemdog-chem91-history."
+    },
+    {
+      "id": "hemp-q2-ra06-thcp-33-fold-binding-not-human-high",
+      "neighbors": [
+        "hemp-evidence-thcp"
+      ],
+      "decision": "Interprétation de l’affinité in vitro ; voisin teste uniquement les sept carbones de chaîne latérale. Clé commune thcp."
+    },
+    {
+      "id": "hemp-q2-ra06-hhc-9r-9s-potency-efficacy",
+      "neighbors": [
+        "hemp-evidence-hhc-epimeres",
+        "hemp-q2-rp04-commercial-hhc-epimer-mixture"
+      ],
+      "decision": "Puissance et maximum d’activationCB1, distincts de l’épimérie structurale et du mélange commercial ; clé commune hhc-9r-9s."
+    },
+    {
+      "id": "hemp-q2-ra06-cdc-cannabis-use-disorder-estimate",
+      "neighbors": [
+        "hemp-q2-en02-loss-control-seek-help"
+      ],
+      "decision": "Ordre de grandeur CDC, distinct des signes de perte de contrôle ; clé commune."
+    },
+    {
+      "id": "hemp-q2-ra06-thc-intoxication-supportive-care",
+      "neighbors": [
+        "hemp-q2-ra01-cbd-negative-cb1-modulation-in-cells",
+        "hemp-q2-ra03-oral-cbd-thc-metabolic-clearance-inhibition"
+      ],
+      "decision": "Principe clinique de soins symptomatiques sans antidote spécifique ; voisins portent sur cellules et interaction pharmacocinétique expérimentale."
+    },
+    {
+      "id": "hemp-q2-ra06-chronic-thc-postoperative-pain-risk",
+      "neighbors": [
+        "hemp-q2-ra05-ahrq-opioid-sparing-not-established",
+        "C rp05 propofol endoscopie"
+      ],
+      "decision": "Douleur postopératoire chez usagers chroniques, distincte de l’épargne opioïde comme traitement et des besoins anesthésiques en endoscopie."
+    }
+  ],
+  "facts": [
+    {
+      "id": "hemp-q2-ra06-green-crack-hso-pedigree",
+      "contentHash": "2880f186a84be4025cec28d3c894b54c476f8569ed0171c822f2f47971fe82a3",
+      "factKey": "green-crack-hso-pedigree",
+      "domain": "active",
+      "subjectKey": "green-crack-hso",
+      "expectedAnswer": "Skunk #1 SSSC 1989 × sélection afghane",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-green-crack-hso",
+          "locator": "Cross et Reliable origins",
+          "support": "HSO annonce 1989 SSSC Skunk #1 × Isolated Afghani Cut pour sa version de Green Crack."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-g13-haze-hawaiian-parent",
+      "contentHash": "5d86dc50141d7ce87996dd9775cc019034efbaf470efb902e90326d1e33f555f",
+      "factKey": "g13-haze-hawaiian-parent",
+      "domain": "active",
+      "subjectKey": "g13-haze-barneys",
+      "expectedAnswer": "Une sativa hawaïenne",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-g13-haze",
+          "locator": "Genetics et présentation détaillée",
+          "support": "La fiche précise G13 × Hawaiian Sativa dans le tableau Genetics et dans sa présentation détaillée. L’introduction abrège le second parent en Haze."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-granddaddy-purple-ken-estes",
+      "contentHash": "86cb4fee55693dd6529db22e2ae591a171df5ffe699df86133875dedf54468b3",
+      "factKey": "granddaddy-purple-ken-estes",
+      "domain": "active",
+      "subjectKey": "granddaddy-purple-history",
+      "expectedAnswer": "Ken Estes",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-granddaddy-purple-interview",
+          "locator": "Introduction et entretien avec Ken Estes",
+          "support": "L’entretien présente Ken Estes comme la personne ayant popularisé Granddaddy Purple à partir de 2003. Il restitue son propre récit, sans résoudre les pedigrees disputés."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-bubba-kush-hso-pedigree",
+      "contentHash": "cac59631c1d8ca9da8eda21274104e6a637a8f17913154f0740dd680884d441c",
+      "factKey": "bubba-kush-hso-pedigree",
+      "domain": "active",
+      "subjectKey": "bubba-kush-hso",
+      "expectedAnswer": "OG Kush × Afghan",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-bubba-kush",
+          "locator": "Cross et description",
+          "support": "HSO annonce OG Kush × Afghan pour sa version de Bubba Kush."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-sour-diesel-rqs-pedigree",
+      "contentHash": "ac4255bbef6e9b9a9e10858dec8853c0301bc96212d5620ddec7824a068bbf9c",
+      "factKey": "sour-diesel-rqs-pedigree",
+      "domain": "active",
+      "subjectKey": "sour-diesel-rqs",
+      "expectedAnswer": "Northern Light, Shiva et Hawaiian",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-sour-diesel-rqs",
+          "locator": "Genetic Background et présentation",
+          "support": "La fiche donne Original Diesel × (Northern Light × Shiva × Hawaiian), concordant avec les quatre lignées citées dans le texte."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-bruce-banner-darkhorse-pedigree",
+      "contentHash": "7443fc90410b2465454dbc4a9690d92bf59f751d0a401db620aa859b124c67d2",
+      "factKey": "bruce-banner-darkhorse-pedigree",
+      "domain": "active",
+      "subjectKey": "bruce-banner-darkhorse",
+      "expectedAnswer": "OG Kush × Strawberry Diesel",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-bruce-banner",
+          "locator": "Original Bruce Banner #3",
+          "support": "DarkHorse attribue Original Bruce Banner #3 au croisement OG Kush × Strawberry Diesel."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-sunset-sherbert-mario-guzman",
+      "contentHash": "b55a2992dd88bad8e3cf08a8299dd9d104c0beebc60743eac01b80ad0d26bac4",
+      "factKey": "sunset-sherbert-mario-guzman",
+      "domain": "active",
+      "subjectKey": "sunset-sherbert-history",
+      "expectedAnswer": "Mario Guzman",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-sherbinski-interview",
+          "locator": "Introduction et entretien Sherbinski",
+          "support": "L’entretien présente Mario Guzman, connu comme Sherbinski, et son association à Sunset Sherbert."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-pineapple-express-barneys-pedigree",
+      "contentHash": "9ed40c30b28a58f4f70e94f47efa15f114e6a49a6583ba9f2307a97f30358117",
+      "factKey": "pineapple-express-barneys-pedigree",
+      "domain": "active",
+      "subjectKey": "pineapple-express-barneys",
+      "expectedAnswer": "Trainwreck",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-pineapple-express",
+          "locator": "Genetics",
+          "support": "Barney’s Farm annonce Hawaiian Landrace Sativa × Trainwreck pour sa Pineapple Express."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-cinderella99-mr-soul-history",
+      "contentHash": "0bfa6d119047e11f42666eb976f94a500a3d648ecd4e5d30f57858b135d459f9",
+      "factKey": "cinderella99-mr-soul-history",
+      "domain": "active",
+      "subjectKey": "cinderella99-history",
+      "expectedAnswer": "Mr Soul",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-cinderella99-history",
+          "locator": "Signature Mr Soul et récit Origins",
+          "support": "Le récit officiel est signé Mr Soul et retrace son travail ayant donné Cinderella 99, à partir de la sélection fondatrice Princess."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-sad-s1-black-domina-origin",
+      "contentHash": "0717a8ac8d012e47b5b16f5dea3b5fbe5cb3eef03b7dca49fd0ae5da4d582bad",
+      "factKey": "sad-s1-black-domina-origin",
+      "domain": "active",
+      "subjectKey": "sad-s1-sweet-seeds",
+      "expectedAnswer": "Black Domina’98",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-sad-s1",
+          "locator": "PDF p.24, section SWS02",
+          "support": "La notice SWS02 attribue S.A.D. S1 à une Black Domina sélectionnée en 1998, appelée Black Domina’98."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-black-domina-sensi-four-lines",
+      "contentHash": "e9bc4e27a06248c85ae079e849124a9d6c5f072319774dab5f0f1156f9e8870b",
+      "factKey": "black-domina-sensi-four-lines",
+      "domain": "active",
+      "subjectKey": "black-domina-sensi",
+      "expectedAnswer": "Northern Lights, Ortega, Hash Plant et Afghani SA",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-black-domina",
+          "locator": "Présentation des quatre lignées fondatrices",
+          "support": "Sensi donne Northern Lights, Ortega, Hash Plant et Afghani SA comme les quatre composantes de Black Domina."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-lemon-skunk-dna-parental-places",
+      "contentHash": "6f923965dbba610584326a951d5e6ca867ec83e2b8582f45a7b7245813024316",
+      "factKey": "lemon-skunk-dna-parental-places",
+      "domain": "active",
+      "subjectKey": "lemon-skunk-dna",
+      "expectedAnswer": "Las Vegas et les Pays-Bas",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-lemon-skunk-dna",
+          "locator": "Breeding Brilliance",
+          "support": "DNA situe les deux sélections Skunk réunies dans Lemon Skunk à Las Vegas et aux Pays-Bas."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-strawberry-banana-dna-bubblegum",
+      "contentHash": "560afef66e10d1401a16d4719f4337e4fbe355672cb4fb5e8fbbc5b543d819dd",
+      "factKey": "strawberry-banana-dna-bubblegum",
+      "domain": "active",
+      "subjectKey": "strawberry-banana-dna",
+      "expectedAnswer": "Un phénotype Strawberry de Bubble Gum",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-strawberry-banana",
+          "locator": "Genetic Background",
+          "support": "DNA annonce Banana Kush de Crockett croisée avec un phénotype Strawberry de Bubble Gum."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-lsd-barneys-pedigree",
+      "contentHash": "6a1ff6ea98461749e0fb60e31b66db0e0ef173df5437a64d977a9ce31b3ca2df",
+      "factKey": "lsd-barneys-pedigree",
+      "domain": "active",
+      "subjectKey": "lsd-barneys",
+      "expectedAnswer": "Original Skunk #1 × Afghan Indica",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-lsd-barneys",
+          "locator": "Genetics",
+          "support": "La fiche annonce Original Skunk #1 × Afghan Indica et précise Mazar-i-Sharif dans sa description."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-gsc-cookies-san-francisco",
+      "contentHash": "f0ab2c720168eb408f181832398f38367a6d20473b54dbfe0b83d0476d6328a3",
+      "factKey": "gsc-cookies-san-francisco",
+      "domain": "active",
+      "subjectKey": "gsc-cookies-history",
+      "expectedAnswer": "San Francisco",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-cookies-history",
+          "locator": "Cookies History",
+          "support": "L’histoire officielle situe les débuts de Cookies, avec Jai et Berner et sa lignée phare GSC, dans un garage à San Francisco."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-chemdog-greg-krzanowski",
+      "contentHash": "83def6aff0454fa9f15cec1928c7b9bb543929b90c875166031c26105f17ffed",
+      "factKey": "chemdog-greg-krzanowski",
+      "domain": "active",
+      "subjectKey": "chemdog-chem91-history",
+      "expectedAnswer": "Greg Krzanowski",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-chemdog-identity",
+          "locator": "Présentation de Greg « Chemdog » Krzanowski",
+          "support": "La page de son employeur présente Greg Krzanowski, surnommé Chemdog, et reprend son témoignage original sur l’histoire de la lignée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-france-hhc-narcotic-classification",
+      "contentHash": "56438feb62ab0dfaab2604d34261642003ddf019ee2fba428c4003eae8abe57b",
+      "factKey": "france-hhc-narcotic-classification",
+      "domain": "active",
+      "subjectKey": "france-hhc-legal-status",
+      "expectedAnswer": "Les stupéfiants",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-france-hhc-2023",
+          "locator": "Premier paragraphe",
+          "support": "L’ANSM inscrit HHC, HHCO et HHCP sur la liste des stupéfiants, avec effet au 13 juin 2023 ; leur production, vente et usage sont notamment interdits."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-germany-club-foods-excluded",
+      "contentHash": "50cb4d9cb776b67d19477eb9cdec82cd8c4377eccf44857507d9b709dbc91ee4",
+      "factKey": "germany-club-foods-excluded",
+      "domain": "active",
+      "subjectKey": "germany-cannabis-distribution",
+      "expectedAnswer": "Du haschisch pur",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-germany-club-pure-forms",
+          "locator": "How is the cannabis cooperatively cultivated in cultivation associations passed on?",
+          "support": "Les associations ne peuvent remettre que marijuana ou haschisch purs ; les mélanges avec tabac, nicotine ou aliments, dont les biscuits au haschisch, sont interdits."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-germany-cbd-extraction-exception",
+      "contentHash": "19628a0f5b2ec040dedabfb83c33bf666a4f109441ac427c5c12e08af036acd0",
+      "factKey": "germany-cbd-extraction-exception",
+      "domain": "active",
+      "subjectKey": "germany-cannabinoid-extraction-law",
+      "expectedAnswer": "Le CBD",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-germany-kcang",
+          "locator": "§2, alinéa 2",
+          "support": "Le KCanG interdit l’extraction de cannabinoïdes de la plante, mais prévoit expressément une exception pour l’extraction de CBD et une autre pour certaines analyses réglementaires."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-germany-public-transport-vaporizing",
+      "contentHash": "b6096019aad9b26852414363e87f9a277f71e705b2df21cac64aa32a2aa2458a",
+      "factKey": "germany-public-transport-vaporizing",
+      "domain": "active",
+      "subjectKey": "germany-cannabis-public-transport",
+      "expectedAnswer": "Elle l’interdit comme le fait de fumer",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-germany-public-transport",
+          "locator": "Gesundheits- und Konsumierendenschutz, dernier point ; lignes194–197",
+          "support": "La FAQ indique l’interdiction de fumer et de vaporiser du cannabis dans les installations publiques fédérales et les transports publics, par extension de la protection contre le tabagisme."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-netherlands-coffeeshop-tobacco-joint",
+      "contentHash": "cc8ebae94b6a9f55a33df8f51f7aa5d07449dd863b90e608170677c7756522e1",
+      "factKey": "netherlands-coffeeshop-tobacco-joint",
+      "domain": "active",
+      "subjectKey": "netherlands-coffeeshop-policy",
+      "expectedAnswer": "Il est couvert par l’interdiction de fumer",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-netherlands-tobacco-joint",
+          "locator": "Waar geldt het rookverbod? et Welke producten vallen onder het rookverbod?",
+          "support": "La NVWA inclut les établissements horeca et les coffeeshops dans les lieux intérieurs soumis à interdiction ; les produits contenant du tabac, dont un joint avec tabac, sont expressément couverts."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-canada-medical-access-not-drug-approval",
+      "contentHash": "3b38a13ca274df7698cbd1d1169f60d38a8b2753c05b2d77a2abe30c6400702b",
+      "factKey": "canada-medical-access-not-drug-approval",
+      "domain": "active",
+      "subjectKey": "canada-medical-cannabis-approval",
+      "expectedAnswer": "Un DIN et un avis de conformité du produit",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-canada-medical-approval",
+          "locator": "Introduction, avertissement avant le sommaire",
+          "support": "Le guide distingue le cannabis accessible médicalement d’un produit thérapeutique approuvé : le produit particulier doit avoir un DIN et un avis de conformité (NOC)."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-thailand-flower-online-sales-ban",
+      "contentHash": "efb58f2bd348aee4fb995b6c4306fd9c697a07e60de53d4e19bfaffe8ffc28d6",
+      "factKey": "thailand-flower-online-sales-ban",
+      "domain": "active",
+      "subjectKey": "thailand-cannabis-flower-regulation",
+      "expectedAnswer": "Elle est interdite",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-thailand-online-2025",
+          "locator": "Paragraphes sur les fleurs et interdictions de vente",
+          "support": "La notice officielle du 27 juin 2025 concernant le nouveau régime des fleurs indique l’interdiction de vente en ligne et par distributeur automatique, ainsi que de publicité."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-spain-club-association-not-general-license",
+      "contentHash": "259c1292fb2164e3ffc3dee5353e647954a3f2f1ad1c76a2c8800bae8c785d6f",
+      "factKey": "spain-club-association-not-general-license",
+      "domain": "active",
+      "subjectKey": "spain-cannabis-social-clubs",
+      "expectedAnswer": "Un trafic de stupéfiants",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-spain-clubs-euda",
+          "locator": "Cannabis social clubs, paragraphes Espagne et jurisprudence2015",
+          "support": "L’EUDA rapporte que trois arrêts espagnols de 2015 qualifient de trafic la culture et distribution organisées, institutionnalisées et persistantes dans une association ouverte à de nouveaux membres."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-thcp-33-fold-binding-not-human-high",
+      "contentHash": "84e594b0eb99ac42dc7b1fa3e638a39af747b5a5f41c633d9b0703e489f63e60",
+      "factKey": "thcp-33-fold-binding-not-human-high",
+      "domain": "active",
+      "subjectKey": "thcp",
+      "expectedAnswer": "À l’affinité de liaison à CB1 mesurée in vitro",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-thcp-affinity",
+          "locator": "Binding affinity at human CB1 and CB2 receptors ; Figure3",
+          "support": "Le rapport d’environ33 entre THCP et THC compare leurs affinités pour CB1 dans un essai de liaison in vitro, avec Ki1,2 et40nM. Ce n’est pas une mesure de puissance psychoactive humaine."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-hhc-9r-9s-potency-efficacy",
+      "contentHash": "fd0492b1a4d87e8a56029aa6a55911cdd71751c04279f7e20416b2a81a20044f",
+      "factKey": "hhc-9r-9s-potency-efficacy",
+      "domain": "active",
+      "subjectKey": "hhc-9r-9s",
+      "expectedAnswer": "9R plus puissant ; effet maximal similaire",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-hhc-activity",
+          "locator": "Abstract, Results ; comparaison puissance/efficacité des épimères",
+          "support": "Dans les cellules CHO-K1 exprimant CB1 humain,9R-HHC est plus puissant que9S-HHC ; les deux épimères ont une efficacité maximale similaire dans ce modèle.9R est agoniste partiel."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-cdc-cannabis-use-disorder-estimate",
+      "contentHash": "2f289f23c91f31916c9f789507bab16ee3b89fdb226a84c1ed644400c4999b69",
+      "factKey": "cdc-cannabis-use-disorder-estimate",
+      "domain": "active",
+      "subjectKey": "cdc-cannabis-use-disorder",
+      "expectedAnswer": "Environ trois personnes sur dix",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-cdc-cud",
+          "locator": "Fast Statistics",
+          "support": "La page CDC donne comme estimation environ3personnes sur10 parmi celles utilisant du cannabis ayant un trouble de l’usage du cannabis."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-nida-gateway-not-inevitable",
+      "contentHash": "28358c7c6ecf115fd095452b552e32b1522af3250c194024277b2c563fbcacde",
+      "factKey": "nida-gateway-not-inevitable",
+      "domain": "active",
+      "subjectKey": "cannabis-gateway-nida",
+      "expectedAnswer": "La majorité des usagers de cannabis ne le font pas",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-nida-gateway",
+          "locator": "Chapitre gateway drug, extrait indexé du PDF, p.21",
+          "support": "Le rapport NIDA précise que la majorité des personnes utilisant du cannabis ne poursuivent pas vers d’autres substances dites plus dures ; il décrit aussi des associations et des facteurs de vulnérabilité communs."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-dronabinol-psychiatric-exacerbation",
+      "contentHash": "72a53010ac6f7d83f0cc8d28f2df0d188fccfd059857eb5b5ea72e54aa709680",
+      "factKey": "dronabinol-psychiatric-exacerbation",
+      "domain": "active",
+      "subjectKey": "dronabinol",
+      "expectedAnswer": "Manie, dépression ou schizophrénie",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-dronabinol-label",
+          "locator": "§5.1 Psychiatric Adverse Reactions ; §8.6 Effect of CYP2C9 Polymorphism",
+          "support": "La notice rapporte une aggravation possible de manie, dépression ou schizophrénie avec le dronabinol. Elle signale aussi une clairance réduite et des concentrations accrues chez certains porteurs de variants diminuant CYP2C9."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-dronabinol-cyp2c9-genetic-variability",
+      "contentHash": "da250e0bf1c6a182abb033abb58e8e9cbbe5998e3767109390ad9f684978d7b8",
+      "factKey": "dronabinol-cyp2c9-genetic-variability",
+      "domain": "active",
+      "subjectKey": "dronabinol",
+      "expectedAnswer": "CYP2C9",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-dronabinol-label",
+          "locator": "§5.1 Psychiatric Adverse Reactions ; §8.6 Effect of CYP2C9 Polymorphism",
+          "support": "La notice rapporte une aggravation possible de manie, dépression ou schizophrénie avec le dronabinol. Elle signale aussi une clairance réduite et des concentrations accrues chez certains porteurs de variants diminuant CYP2C9."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-thc-intoxication-supportive-care",
+      "contentHash": "b07f0c207f5e9813e5a233f2a171bdd60264b01dbd9698b602f6e6ba7d3b50d5",
+      "factKey": "thc-intoxication-supportive-care",
+      "domain": "active",
+      "subjectKey": "cannabis-intoxication-treatment",
+      "expectedAnswer": "Des soins symptomatiques et de soutien",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-poison-center-treatment",
+          "locator": "Treatment",
+          "support": "Le centre antipoison précise qu’il n’existe pas d’antidote spécifique à la toxicité des cannabinoïdes et que le traitement est symptomatique et de soutien."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-rimonabant-suspension-psychiatric-risk",
+      "contentHash": "8b19211f6c6326761c3b8cbe04400b306ba4ee799342ca77ed9f9b1f2c2faf9a",
+      "factKey": "rimonabant-suspension-psychiatric-risk",
+      "domain": "active",
+      "subjectKey": "rimonabant-acomplia",
+      "expectedAnswer": "Des troubles psychiatriques, dont la dépression",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-acomplia-suspension",
+          "locator": "Communiqué EMEA/CHMP/537777/2008",
+          "support": "L’EMA recommande la suspension de l’AMM de rimonabant en2008, les bénéfices ne compensant plus les risques ; les effets psychiatriques, particulièrement la dépression, motivent les préoccupations."
+        },
+        {
+          "sourceId": "q2-ra06-acomplia-epar",
+          "locator": "Overview",
+          "support": "La page confirme une suspension de commercialisation le13novembre2008, puis un retrait de l’AMM le16janvier2009."
+        },
+        {
+          "sourceId": "q2-ra06-acomplia-mechanism",
+          "locator": "PDF p.1, How does ACOMPLIA work?",
+          "support": "Le résumé présente le rimonabant comme antagoniste des récepteurs cannabinoïdes CB1. Le document porte le marquage médicament non autorisé."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-cbd-acute-dental-pain-trial-signal",
+      "contentHash": "a27af40fd840d5eafc819c2f2d21d6ef2d7076ce696101518a59126b75900869",
+      "factKey": "cbd-acute-dental-pain-trial-signal",
+      "domain": "active",
+      "subjectKey": "cbd-acute-dental-pain",
+      "expectedAnswer": "Une diminution de la douleur rapportée",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-cbd-dental-trial",
+          "locator": "Abstract et Results, douleur mesurée VAS",
+          "support": "L’essai randomisé de61adultes souffrant de douleurs dentaires aiguës observe une réduction de la douleur rapportée dans les groupes CBD oral purifié comparés au placebo pendant le bref suivi."
+        },
+        {
+          "sourceId": "q2-ra06-cbd-dental-corrigendum",
+          "locator": "Panels1A–1D et figure corrigée",
+          "support": "Les auteurs corrigent des données descriptives et des conversions de force de morsure, en précisant que l’analyse et l’interprétation de réduction de douleur ne changent pas."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra06-chronic-thc-postoperative-pain-risk",
+      "contentHash": "e26bfdffd4bf9567d4a7061420c026454e7aa80ed3a593fb4c64c42aa1107180",
+      "factKey": "chronic-thc-postoperative-pain-risk",
+      "domain": "active",
+      "subjectKey": "cannabis-postoperative-pain",
+      "expectedAnswer": "Une douleur accrue et davantage de besoins antalgiques",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-ra06-asra-postoperative",
+          "locator": "PDF p.9, Question3, Statement1 ; imprimée p.105",
+          "support": "Le consensus indique que l’usage chronique de THC peut aggraver la douleur postopératoire et augmenter les besoins d’opioïdes ; certitude modérée. Il ne préconise pas un ajustement uniforme."
+        }
+      ]
+    }
+  ],
+  "sourceHashes": [
+    {
+      "id": "q2-ra06-green-crack-hso",
+      "sourceHash": "2293801f0e0cf3d3398db75c2c115b877b413b869dde5a6b61ee3f274d8930a5"
+    },
+    {
+      "id": "q2-ra06-g13-haze",
+      "sourceHash": "75d57d1a79d8574d37e32c8c2af5e997e98db75e60940ed983b1a56fef8c5c9b"
+    },
+    {
+      "id": "q2-ra06-granddaddy-purple-interview",
+      "sourceHash": "70221201dfab71810d544c65f4a619c7d4b53b2fa5b04c91b1bfb52f7491644b"
+    },
+    {
+      "id": "q2-ra06-bubba-kush",
+      "sourceHash": "6594b3d6dd515568326ea766413379f148f45fa602fd87b21b249e85a16fea66"
+    },
+    {
+      "id": "q2-ra06-sour-diesel-rqs",
+      "sourceHash": "30908f8c65cce0b0a317384cb7715cf5a7bcae4236d7b64b3d00537542661145"
+    },
+    {
+      "id": "q2-ra06-bruce-banner",
+      "sourceHash": "6b6071943f383de82845f9a7ca152980e8220c989e182ea331d821dc642fcb90"
+    },
+    {
+      "id": "q2-ra06-sherbinski-interview",
+      "sourceHash": "ace0e8a71eedbf61add89aaeeff351becb51f34f9758bc94fa623f235acdbef6"
+    },
+    {
+      "id": "q2-ra06-pineapple-express",
+      "sourceHash": "4cadc2ffb18ec224e92fe6ad4980d057bdcf9104b281578649f27451f18d5389"
+    },
+    {
+      "id": "q2-ra06-cinderella99-history",
+      "sourceHash": "377309ab8ee7a195b3c10651f41675c6f1fcff29432a4b3fca0472879691c639"
+    },
+    {
+      "id": "q2-ra06-sad-s1",
+      "sourceHash": "7db1cac3cb93f8bd866bed2a86cbb32a6e88707cd62b364b61fc88bdc18b1055"
+    },
+    {
+      "id": "q2-ra06-black-domina",
+      "sourceHash": "36332c0609f4b5aa7a5bcc029879dfa7c9e6179e84aaa9151e737d963b8ab6e9"
+    },
+    {
+      "id": "q2-ra06-lemon-skunk-dna",
+      "sourceHash": "157b0946ef3925af2cda16e6e9315f803111427c7dc79945f8697a7a529171ca"
+    },
+    {
+      "id": "q2-ra06-strawberry-banana",
+      "sourceHash": "901145c2f07137a5690d81b2030823ba3a68621b340dbaebb804797b32577650"
+    },
+    {
+      "id": "q2-ra06-lsd-barneys",
+      "sourceHash": "3c1a55d69311c023b473d34eefa47b5f9da9999d48085a68405fbe0ad57031a1"
+    },
+    {
+      "id": "q2-ra06-cookies-history",
+      "sourceHash": "8bd35662879be4b71e843c86f6cd37a0739c7f13c2d4bb001e3cc050349e8c81"
+    },
+    {
+      "id": "q2-ra06-chemdog-identity",
+      "sourceHash": "b01d0e97f1dfeabe0399c7fe192d67fc26a65a447fba55c93b42c80031df04d2"
+    },
+    {
+      "id": "q2-ra06-france-hhc-2023",
+      "sourceHash": "b7809d664c884fa628424b53ff0470447f7eaa5c67a112cb1897d4525953be03"
+    },
+    {
+      "id": "q2-ra06-germany-club-pure-forms",
+      "sourceHash": "3aa565892375dfb1e997b71b7c3234f6e8640e9101cbb7c71399198277ecea99"
+    },
+    {
+      "id": "q2-ra06-germany-kcang",
+      "sourceHash": "83bbe999f2f7919be3fe76161aea6e3205f7b2aa83d611c705f0a81bd967a7cb"
+    },
+    {
+      "id": "q2-ra06-germany-public-transport",
+      "sourceHash": "24cb4a655a4da290c789f51c31e2c9e5fb596c38cb40d26ba4fdbe958aec0904"
+    },
+    {
+      "id": "q2-ra06-netherlands-tobacco-joint",
+      "sourceHash": "8ea9842dcfd4c631dcce690f3e4daaf7671704673bcb57ada78de95abc6c13f4"
+    },
+    {
+      "id": "q2-ra06-canada-medical-approval",
+      "sourceHash": "5105617f0819d4719622cdf2c1f0903b105aedb27486fe85644b9cbf18df12c9"
+    },
+    {
+      "id": "q2-ra06-thailand-online-2025",
+      "sourceHash": "5d5fc5a2156062be67142a75e3620e6c7c29318c63e6827528fc3d156c2f0eee"
+    },
+    {
+      "id": "q2-ra06-spain-clubs-euda",
+      "sourceHash": "32893cf035975cb092094fe273e00e271e0011cd00b7833285924bbf276b642a"
+    },
+    {
+      "id": "q2-ra06-thcp-affinity",
+      "sourceHash": "54cc4107ad29c3c6bd26e8ad8b4a27132d3509bce188052a6b6e8608c13d9e32"
+    },
+    {
+      "id": "q2-ra06-hhc-activity",
+      "sourceHash": "c46d88d675b8747719def9cd39f03c4e3e1c8fac26db7a0750f0eb41293c1c12"
+    },
+    {
+      "id": "q2-ra06-cdc-cud",
+      "sourceHash": "cee57558822e7f6f435267e07031f14fb0a92860bd9b0842d31e6d5f9ea21a3a"
+    },
+    {
+      "id": "q2-ra06-nida-gateway",
+      "sourceHash": "13bff7b640cb53d9e083b4829f9490c9821a72a93b2bdff9a8996b8873162c67"
+    },
+    {
+      "id": "q2-ra06-dronabinol-label",
+      "sourceHash": "2fbdb3fc516d6c237d10d2c0d787cb28ecf8e84e8912a67a7a279341037552cf"
+    },
+    {
+      "id": "q2-ra06-poison-center-treatment",
+      "sourceHash": "e2b69c566fae053ac714552a6ee7c1cd73c57ac38f3d58623bf5f5cae335c927"
+    },
+    {
+      "id": "q2-ra06-acomplia-suspension",
+      "sourceHash": "4f932930b9f0268ef79f8aae1722b03e76f16293208bb537ed99170314a2735b"
+    },
+    {
+      "id": "q2-ra06-acomplia-epar",
+      "sourceHash": "e46b67cb7c02a3467aeaadf7cfe0b3f99508b9f8d78637ebaa3521d86eed775d"
+    },
+    {
+      "id": "q2-ra06-acomplia-mechanism",
+      "sourceHash": "976bc13fb85e2552a625190614445156cd3594c3f6ae6d3a4b62be4ee3b44811"
+    },
+    {
+      "id": "q2-ra06-cbd-dental-trial",
+      "sourceHash": "e801a49097d9e2a61753517a0172511032edfbe471f8804b99a3959da112965a"
+    },
+    {
+      "id": "q2-ra06-cbd-dental-corrigendum",
+      "sourceHash": "68f904378d8f42a4768746ed6be6cf2b523a7bd0e54586a7caa0c5e08dad133e"
+    },
+    {
+      "id": "q2-ra06-asra-postoperative",
+      "sourceHash": "237058de7cee6e19e43653ae211443089e669a8d157e5185bcca219cb8b49fa2"
+    }
+  ],
+  "checks": {
+    "schemaAndLengths": "passed",
+    "answerSourceCoupling": "34objets et quatre options relus avant gel",
+    "duplicateIdentityCheck": "IDs et factKeys absents de l’index au gel ; voisins sémantiques contrôlés",
+    "independentReview": "required; not author-approved"
+  }
+}

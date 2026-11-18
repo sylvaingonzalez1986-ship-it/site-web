@@ -14,9 +14,10 @@ modules['next/link'] += 'export const useLinkStatus=()=>({pending:false});';
 modules['warehouse-v4-entry'] = modules['warehouse-v4-entry'].replace('createKqWarehouseStarter,getKqWarehouseQuote}', 'createKqWarehouseStarter,getKqWarehouseQuote,getKqWarehouseZoneQuote}');
 modules['warehouse-v4-entry'] = "import {initializeKqWarehouseCondition,reconcileKqWarehouseCondition,removeKqWarehouseZone,getKqWarehouseRemovalQuote} from '/src/lib/kanab-quest-warehouse-condition';\n" + modules['warehouse-v4-entry'];
 modules['warehouse-v4-entry'] = "import {KqReleveNativeWarehouse} from '/src/components/placard/KqReleveNativeWarehouse';import {createKqReleveExpansion} from '/src/lib/kanab-quest-releve-production';\n" + modules['warehouse-v4-entry'];
-modules['warehouse-v4-entry'] = modules['warehouse-v4-entry'].replace("createRoot(document.getElementById('root')).render(<Fixture/>);", "window.__lessonCalls=[];function NativeFixture(){const [lesson,setLesson]=React.useState(createKqReleveExpansion);window.__lesson=lesson;return <KqReleveNativeWarehouse chapter='plan' state={lesson} onChange={setLesson}/>;}createRoot(document.getElementById('root')).render(query.has('nativeLesson')?<NativeFixture/>:<Fixture/>);");
+modules['warehouse-v4-entry'] = "import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';\n" + modules['warehouse-v4-entry'];
+modules['warehouse-v4-entry'] = modules['warehouse-v4-entry'].replace("createRoot(document.getElementById('root')).render(<Fixture/>);", "window.__lessonCalls=[];function NativeFixture(){const [lesson,setLesson]=React.useState(createKqReleveExpansion);window.__lesson=lesson;return <KqReleveNativeWarehouse chapter='plan' state={lesson} onChange={setLesson}/>;}const content=query.has('nativeLesson')?<NativeFixture/>:query.has('buddieDock')?<KqTutorialApiProvider api={createKqTutorialApi(window.fetch.bind(window))}><Fixture/></KqTutorialApiProvider>:<Fixture/>;createRoot(document.getElementById('root')).render(content);");
 modules['warehouse-v4-entry'] = modules['warehouse-v4-entry'].replace('const fetchOriginal=window.fetch.bind(window);', ${JSON.stringify(String.raw`
-    if (query.has('zoneActions')) {
+    if (query.has('zoneActions') && !(persistenceKey && sessionStorage.getItem(persistenceKey))) {
       const original = window.__snapshot.state;
       const first = { ...original.zones[0], x: 1, y: 1, width: 2, height: 2, name: 'Petite chambre' };
       const second = { ...first, id: 'second', x: 5, y: 1, width: 4, height: 2, name: 'Grande chambre' };
@@ -26,6 +27,8 @@ modules['warehouse-v4-entry'] = modules['warehouse-v4-entry'].replace('const fet
       const condition=initializeKqWarehouseCondition(next);
       window.__snapshot.cultureEquipment={...condition,assets:condition.assets.map(asset=>({...asset,wearPercent:50,purchaseUnitCents:next.zones.find(zone=>zone.id===asset.zoneId)?.lightingCode===asset.code?Math.floor(10000/asset.quantity):null}))};
     }
+    if(query.has('savedWall') && !window.__snapshot.state.partitions?.length)window.__snapshot.state={...window.__snapshot.state,partitions:[{id:'saved-wall',x:1,y:7,axis:'x',length:2}]};
+    if(query.has('cells')&&!window.__snapshot.cultureEquipment)window.__snapshot.cultureEquipment=initializeKqWarehouseCondition(window.__snapshot.state);
     window.__removalQuotes=[]; window.__removals=[]; window.__removalApplied=0;
     window.__freshZonePotential=(zoneId,lightingCode)=>{const zone=window.__snapshot.state.zones.find(item=>item.id===zoneId);return getKqWarehouseZoneQuote({...zone,lightingCode}).estimatedHarvestGrams/(zone.width*zone.height);};
     window.__zoneRemovalQuote=zoneId=>getKqWarehouseRemovalQuote(window.__snapshot.state,window.__snapshot.cultureEquipment,zoneId,window.__snapshot.revision);
@@ -63,7 +66,10 @@ modules['warehouse-v4-entry'] = modules['warehouse-v4-entry'].replace('window.__
 `;
 source = source.replace('const server = await createServer', fixture + '\nconst server = await createServer');
 source = source.replace('async load(id){', String.raw`transform(code,id){if(id.split('?')[0].replaceAll('\\','/').endsWith('/src/lib/kanab-quest-releve-warehouse.ts'))return code.replace('return async (input, init) => {', 'return async (input, init) => { globalThis.__lessonCalls?.push({url:String(input),method:init?.method??"GET",body:init?.body?JSON.parse(String(init.body)):null});');},async load(id){`);
-source += String.raw`
+source += process.argv.includes('--cells') ? String.raw`
+import {auditWarehouseCells} from '../../scripts/audit-warehouse-cell-scenarios.mjs';
+await auditWarehouseCells({origin,output,server,puppeteer,Launcher});
+` : String.raw`
 const only=process.argv.find(argument=>argument.startsWith('--only='))?.slice(7);
 const matches=name=>!only||only.split(',').some(pattern=>pattern.endsWith('*')?name.startsWith(pattern.slice(0,-1)):name===pattern);
 const previous=only?JSON.parse(await readFile(resolve(output,'report.json'),'utf8').catch(()=>'{}')):{};
@@ -71,18 +77,42 @@ const checks=only?(previous.checks??[]).filter(check=>!matches(check.name)):[],e
 let browser,page,cdp;
 const report=()=>writeFile(resolve(output,'report.json'),JSON.stringify({passed:checks.every(item=>item.passed)&&errors.length===0&&blocked.length===0,checks,errors,blocked,mode:'Real KqWarehouse / plan / shop / carousel / removal dialogs; in-memory synthetic server responses; no external traffic or actual transactions.'},null,2));
 try {
- browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,protocolTimeout:30000,args:['--no-sandbox','--disable-gpu']});
+ browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,protocolTimeout:30000,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  page=await browser.newPage();cdp=await page.createCDPSession();page.setDefaultTimeout(12000);page.setDefaultNavigationTimeout(60000);
+ await page.evaluateOnNewDocument(()=>{
+  if(!new URLSearchParams(location.search).has('noWebGL'))return;
+  const original=HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext=function(type,...args){
+   return /webgl/i.test(type)?null:original.call(this,type,...args);
+  };
+ });
  page.on('pageerror',error=>errors.push(error.message));
  page.on('dialog',dialog=>void dialog.accept());
  await page.setRequestInterception(true);page.on('request',request=>{const url=new URL(request.url());if(url.protocol==='data:'||url.origin===origin&&!url.pathname.startsWith('/api/'))void request.continue();else{blocked.push(request.url());void request.abort();}});
  const menu='dialog[data-warehouse-zone-menu][open]',shop='dialog[data-warehouse-shop][open]',removal='[data-warehouse-removal]';
  const settle=()=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
- const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
- const frame=async()=>{await page.$eval('[data-warehouse-map-viewport]',node=>node.scrollIntoView({block:'center',behavior:'instant'}));await settle();};
- const visit=async(extra='')=>{await page.goto(origin+'/?compact&zoneActions&'+extra,{waitUntil:'networkidle0'});await page.waitForSelector('[data-warehouse-map] [data-zone-id="starter"]');await frame();};
- const point=(x,y)=>page.$eval('[data-warehouse-map]',(map,{x,y})=>{const p=new DOMPoint(Number(map.dataset.gridOriginX)+(x+.5)*Number(map.dataset.gridCellSize),Number(map.dataset.gridOriginY)+(y+.5)*Number(map.dataset.gridCellSize)).matrixTransform(map.getScreenCTM());return {x:p.x,y:p.y};},{x,y});
- const zonePoint=id=>page.$eval('[data-warehouse-map] [data-zone-id="'+id+'"]',node=>{const rect=[...node.children].find(child=>child.tagName==='rect'),r=rect.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};});
+ const camera='[data-grow-camera]';
+ const footprint=id=>'[data-grow-footprint="'+id+'"]';
+ const frame=async()=>{await page.$eval(camera,node=>node.scrollIntoView({block:'center',behavior:'instant'}));await settle();};
+ const visit=async(extra='')=>{
+  await page.goto(origin+'/?compact&zoneActions&'+extra,{waitUntil:'domcontentloaded'});
+  await page.waitForSelector(footprint('starter'),{timeout:60000});await frame();
+  assert.equal((await page.$$(camera)).length,1,'Exactly one isometric viewport');
+  assert.equal(await page.$('svg[data-warehouse-map]'),null,'The top-down viewport is gone');
+  assert.equal((await page.$$('[data-grow-posts]')).length,1,'Exactly one keyboard station list');
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'No horizontal page overflow');
+ };
+ const point=(x,y)=>page.$eval(footprint('starter'),(node,{x,y})=>{
+  const [origin,east,,south]=Array.from(node.points);
+  const a=(x-1+.5)/Number(node.dataset.width),b=(y-1+.5)/Number(node.dataset.depth);
+  const point=new DOMPoint(origin.x+a*(east.x-origin.x)+b*(south.x-origin.x),origin.y+a*(east.y-origin.y)+b*(south.y-origin.y)).matrixTransform(node.getScreenCTM());
+  return {x:point.x,y:point.y};
+ },{x,y});
+ const zonePoint=id=>page.$eval(footprint(id),node=>{
+  const [a,,b]=Array.from(node.points);
+  const p=new DOMPoint((a.x+b.x)/2,(a.y+b.y)/2).matrixTransform(node.getScreenCTM());
+  return {x:p.x,y:p.y};
+ });
  const start=async(p,touch)=>{if(touch)await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...p,id:1}]});else{await page.mouse.move(p.x,p.y);await page.mouse.down();}};
  const move=async(p,touch)=>{if(touch)await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{...p,id:1}]});else await page.mouse.move(p.x,p.y);await settle();};
  const lift=async touch=>{if(touch)await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});else await page.mouse.up();await settle();};
@@ -102,12 +132,12 @@ try {
   const touch=width<1000;await page.setViewport({width,height,isMobile:touch,hasTouch:touch});await visit();await openMenu('starter',touch);
   for(const value of ['furnish','buddies','remove'])assert(await page.$(action(value)),'Action '+value+' is available');
   const condition=await page.$eval('[data-warehouse-zone-condition]',node=>node.innerText);assert.match(condition,/50\s*%/,'Actual material wear is visible');assert.match(condition,/75\s*%/,'Yield effect is visible');
-  const wear=await page.evaluateHandle(selector=>[...document.querySelectorAll(selector+' details > summary')].find(node=>node.textContent==='Usure et rendement'),menu);assert(wear.asElement(),'Wear explanation is available');assert.equal(await wear.evaluate(node=>node.parentElement.open),false,'Wear formulas start collapsed');await wear.asElement().click();await settle();const explanation=await wear.evaluate(node=>({open:node.parentElement.open,text:node.parentElement.innerText}));assert(explanation.open);assert.match(explanation.text,/5 points/);assert.match(explanation.text,/50\s*%.*75\s*%/);await capture('menu-wear-'+width);await wear.asElement().click();await wear.dispose();await page.$eval(menu+' [data-app-dialog-body]',node=>node.scrollTop=0);await settle();
+  const wear=await page.evaluateHandle(selector=>[...document.querySelectorAll(selector+' details > summary')].find(node=>node.textContent==='Usure et rendement'),menu);assert(wear.asElement(),'Wear explanation is available');assert.equal(await wear.evaluate(node=>node.parentElement.open),false,'Wear formulas start collapsed');await wear.asElement().click();await settle();const explanation=await wear.evaluate(node=>({open:node.parentElement.open,text:node.parentElement.innerText}));assert(explanation.open);assert.match(explanation.text,/5 points/);assert.match(explanation.text,/50\s*%[\s\S]*75\s*%/);await capture('menu-wear-'+width);await wear.asElement().click();await wear.dispose();await page.$eval(menu+' [data-app-dialog-body]',node=>node.scrollTop=0);await settle();
   const layout=await assertLayout(menu);await noMutation();await capture('menu-'+width);await close();await noMutation();return {width,height,touch,layout};
  });
  await page.setViewport({width:1440,height:900,isMobile:false,hasTouch:false});
  await run('keyboard-zone-menu',async()=>{
-  await visit();const selector='[data-warehouse-zone-chip="starter"]';await page.focus(selector);await page.keyboard.press('Enter');await page.waitForSelector(menu);assert(await page.$(action('furnish')));await close();assert.equal(await page.$eval(selector,node=>document.activeElement===node),true,'Escape restores triggering zone control');await page.keyboard.press('Space');await page.waitForSelector(menu);await noMutation();return {keys:['Enter','Escape','Space']};
+  await visit();const selector='[data-grow-pick="starter"]';await page.focus(selector);await page.keyboard.press('Enter');await page.waitForSelector(menu);assert(await page.$(action('furnish')));await close();assert.equal(await page.$eval(selector,node=>document.activeElement===node),true,'Escape restores triggering zone control');await page.keyboard.press('Space');await page.waitForSelector(menu);await noMutation();return {keys:['Enter','Escape','Space']};
  });
  for(const [width,height]of [[320,568],[1440,900]])await run('shop-area-prices-'+width,async()=>{
   await page.setViewport({width,height,isMobile:width<1000,hasTouch:width<1000});await visit();const prices=[];
@@ -131,8 +161,8 @@ try {
   await visit();await openMenu('second',true);await page.click(action('buddies'));await page.waitForSelector('[data-warehouse-zone-buddies] [data-buddie-select]');
   assert.equal(await page.$eval('[data-warehouse-zone-buddies] [data-buddie-select="HH2026-002"]',node=>node.disabled),true,'Rotation stays locked');
   const available='[data-warehouse-zone-buddies] [data-buddie-select="HH2026-003"]';await page.$eval(available,node=>node.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));await page.click(available);await settle();
-  assert(await page.$('[data-warehouse-map] [data-zone-id="second"] [data-zone-buddie="HH2026-003"]'),'Chosen Buddie assigned to the requested zone');assert.equal(await page.$('[data-warehouse-map] [data-zone-id="starter"] [data-zone-buddie]'),null);await noMutation();await capture('buddies-390');
-  const save='[data-warehouse-zone-save-buddie]';await page.waitForSelector(save);await page.click(save);await page.waitForFunction(()=>window.__snapshot.revision===2);const requests=await page.evaluate(()=>window.__requests);assert.equal(requests.length,1);assert.equal(requests[0].state.zones.find(zone=>zone.id==='second').buddieCode,'HH2026-003');return {zoneId:'second',buddieCode:'HH2026-003',requests:1};
+  assert(await page.$(footprint('second')+'[data-selected="true"]'),'The requested zone remains selected while the assignment is reviewed');await noMutation();await capture('buddies-390');
+  const save='[data-warehouse-zone-save-buddie]';await page.waitForSelector(save);await page.click(save);await page.waitForFunction(()=>window.__snapshot.revision===2);const requests=await page.evaluate(()=>window.__requests);assert.equal(requests.length,1);assert.equal(requests[0].state.zones.find(zone=>zone.id==='second').buddieCode,'HH2026-003');assert.equal(requests[0].state.zones.find(zone=>zone.id==='starter').buddieCode,undefined);return {zoneId:'second',buddieCode:'HH2026-003',requests:1};
  });
  await run('active-zone-actions-locked',async()=>{
   await visit('occupied');await openMenu('starter',true);for(const value of ['furnish','buddies','remove'])assert.equal(await page.$eval(action(value),node=>node.disabled),true,'Active zone locks '+value);assert.match(await page.$eval(menu,node=>node.innerText),/culture/i);await noMutation();await close();await openMenu('second',true);assert.equal(await page.$eval(action('furnish'),node=>node.disabled),false,'Other zones remain editable');await noMutation();return {lockedZone:'starter',freeZone:'second'};
@@ -163,14 +193,131 @@ try {
  await run('remove-quote-failure-keeps-zone',async()=>{
   await visit();await page.evaluate(()=>window.__quoteFailure=true);await openMenu('starter',true);await page.click(action('remove'));await page.waitForFunction(()=>document.querySelector('dialog[open]')?.innerText.includes('momentanément indisponible'));await noMutation();assert.equal(await page.evaluate(()=>window.__snapshot.state.zones.length),2);const destructive=await page.$$eval('dialog[open] button',nodes=>nodes.filter(node=>node.textContent.includes('Supprimer')&&!node.disabled).length);assert.equal(destructive,0,'No deletion without authoritative quote');return {zonePreserved:true};
  });
- for(const touch of [false,true])await run('draw-move-scroll-no-menu-'+(touch?'touch':'mouse'),async()=>{
-  await page.setViewport({width:touch?390:1440,height:touch?844:900,isMobile:touch,hasTouch:touch});await visit();
-  await page.$$eval('[aria-label="Mode du plan"] button',nodes=>nodes.find(node=>node.textContent.trim()==='Aménager')?.click());await page.waitForSelector('[data-warehouse-action="draw"]');await page.click('[data-warehouse-action="draw"]');await frame();const a=await point(5,5),b=await point(6,6);await start(a,touch);for(let index=1;index<=8;index++)await move({x:a.x+(b.x-a.x)*index/8,y:a.y+(b.y-a.y)*index/8},touch);await lift(touch);await settle();assert.equal(await page.$('dialog[open]'),null,'Drawing never opens a menu');const id=await page.$eval('[data-warehouse-map] [data-zone-id][data-selected="true"]',node=>node.dataset.zoneId);assert(!['starter','second'].includes(id),'New drawn zone');
-  await page.click('[data-warehouse-tool="move"]');await frame();const originPoint=await zonePoint(id),cell=await page.$eval('[data-warehouse-map]',node=>Number(node.dataset.gridCellSize)*node.getScreenCTM().a);await start(originPoint,touch);for(let index=1;index<=8;index++)await move({x:originPoint.x+cell*index/8,y:originPoint.y},touch);await lift(touch);await settle();assert.equal(await page.$('dialog[open]'),null,'Moving never opens a menu');
-  await page.click('[data-warehouse-tool="inspect"]');await frame();const p=await zonePoint(id);await start(p,touch);for(let index=1;index<=8;index++)await move({x:p.x,y:p.y-80*index/8},touch);await lift(touch);await wait(350);assert.equal(await page.$('dialog[open]'),null,'Scrolling or dragging cannot produce a menu');await noMutation();return {touch,drawn:id};
+ const drag=async(a,b,touch)=>{
+  await start(a,touch);
+  for(let step=1;step<=6;step++)await move({x:a.x+(b.x-a.x)*step/6,y:a.y+(b.y-a.y)*step/6},touch);
+  await lift(touch);
+ };
+ const draw=async(kind,cells,touch)=>{
+  await page.click('[data-warehouse-draw-kind="'+kind+'"]');await frame();
+  await drag(await point(...cells[0]),await point(...cells[1]),touch);
+  assert.equal(await page.$('dialog[open]'),null,'Drawing never opens a menu');
+  return page.$eval('[data-grow-footprint][data-selected="true"][data-kind="'+kind+'"]',node=>node.dataset.growFootprint);
+ };
+ const size=id=>page.$eval(footprint(id),node=>[+node.dataset.worldX,+node.dataset.worldZ,+node.dataset.width,+node.dataset.depth]);
+ const savePlan=async()=>page.click('[data-warehouse-action="save"]:not(:disabled)');
+ await run('isometric-wall-occupied-cell',async()=>{
+  await page.setViewport({width:1440,height:900,isMobile:false,hasTouch:false});
+  await visit('savedWall');
+  const origin=await size('saved-wall'),wallMenu='dialog[data-warehouse-cell-menu][open]';
+  await tap(await zonePoint('saved-wall'),false);await page.waitForSelector(wallMenu);
+  await clickButton(wallMenu,'Déplacer sur le plan');await page.waitForSelector(wallMenu,{hidden:true});
+  await frame();await tap(await point(1,1),false);await page.waitForSelector(wallMenu);
+  assert.match(await page.$eval(wallMenu,node=>node.innerText),/Colonne 2, ligne 2/);
+  assert.equal(await page.$eval('[data-warehouse-cell-save]',node=>node.disabled),true);
+  await close();assert.deepEqual(await size('saved-wall'),origin);
+  await noMutation();return {rejectedPosition:[1,1]};
+ });
+ for(const touch of [false,true])await run('isometric-edit-'+(touch?'320':'1440'),async()=>{
+  await page.setViewport({width:touch?320:1440,height:touch?568:900,isMobile:touch,hasTouch:touch});
+  await visit('savedWall&persist=iso-'+touch+'-'+Date.now()+(touch?'&noWebGL':''));
+  if(touch)await page.waitForSelector('[data-grow-fallback-plan]');
+  await tap(await zonePoint('saved-wall'),touch);await page.waitForSelector('dialog[data-warehouse-cell-menu][open]');await close();
+  await frame();await tap(await point(5,5),touch);
+  assert.equal(await page.$('dialog[open]'),null,'A free cell never opens a menu');
+  assert.equal(await page.$('[data-grow-footprint][data-selected="true"]'),null,'A free cell clears the selection');
+  await page.click('[data-grow-zoom-in]');assert(await page.$eval(camera,node=>+node.dataset.zoom>1));await page.click('[data-grow-reset]');
+  const culture=await draw('culture',[[4,5],[5,6]],touch);
+  const origin=await size(culture);
+  await page.click('[data-warehouse-tool="move"]');await frame();
+  const a=await point(4,5),b=await point(5,5);await drag(a,b,touch);
+  const moved=await size(culture);assert.deepEqual(moved,[origin[0]+1,...origin.slice(1)]);
+  await page.click('[data-warehouse-tool="resize"]');await frame();
+  await page.focus(camera);await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');await settle();
+  assert.deepEqual((await size(culture)).slice(2),[3,2],'Keyboard resizes the selected culture');
+  await page.click('[data-warehouse-action="reset"]');await page.waitForSelector(footprint(culture),{hidden:true});await noMutation();
+  const created=[
+   await draw('culture',[[4,5],[5,6]],touch),
+   await draw('drying',[[7,5],[8,5]],touch),
+   await draw('storage',[[7,8],[8,8]],touch),
+  ];
+  const payable=await page.$eval('[data-warehouse-plan-payable-cents]',node=>Number(node.dataset.warehousePlanPayableCents));
+  assert(payable>0);await noMutation();
+  await frame();await capture('isometric-draft-'+(touch?'320':'1440'));
+  const before=await page.evaluate(()=>({cash:window.__snapshot.cashCents,revision:window.__snapshot.revision}));
+  await page.evaluate(()=>window.__hold=true);await savePlan();
+  await page.waitForFunction(()=>typeof window.__release==='function');
+  assert.equal(await page.$eval('[data-warehouse-action="save"]',node=>node.disabled),true);
+  assert.equal(await page.$eval('[data-warehouse-draw-kind="culture"]',node=>node.disabled),true);
+  await page.$eval('[data-warehouse-action="save"]',node=>node.click());
+  assert.equal(await page.evaluate(()=>window.__requests.length),1,'The pending save cannot be submitted again');
+  await page.evaluate(()=>window.__release());
+  await page.waitForFunction(revision=>window.__snapshot.revision===revision+1,{},before.revision);
+  const saved=await page.evaluate(()=>({snapshot:window.__snapshot,request:window.__requests[0]}));
+  assert.equal(saved.request.expectedCostCents,payable);assert.equal(saved.snapshot.cashCents,before.cash-payable);
+  await page.reload({waitUntil:'networkidle0'});
+  for(const id of created)await page.waitForSelector(footprint(id));
+  assert.deepEqual(await page.evaluate(()=>window.__snapshot.state),saved.snapshot.state);
+  await frame();await capture('isometric-saved-'+(touch?'320':'1440'));
+  return {touch,fallback:touch,created,payable};
+ });
+ await run('isometric-save-conflict-and-retry',async()=>{
+  await page.setViewport({width:1440,height:900,isMobile:false,hasTouch:false});
+  await visit();
+  const id=await draw('culture',[[4,5],[5,6]],false);
+  await page.evaluate(()=>window.__snapshot.revision++);
+  await savePlan();await page.waitForSelector('[data-warehouse-reconcile]');
+  assert(await page.$(footprint(id)),'Revision conflict retains the local geometry');
+  assert.equal(await page.evaluate(id=>window.__snapshot.state.zones.some(zone=>zone.id===id),id),false);
+  await page.click('[data-warehouse-reconcile]');await page.click('[data-warehouse-reconcile-confirm]');
+  await page.waitForSelector('[data-warehouse-reconcile]',{hidden:true});
+  await visit();
+  const retryId=await draw('culture',[[4,5],[5,6]],false);
+  await page.evaluate(()=>window.__loseResponseOnce=true);
+  await savePlan();
+  await page.waitForFunction(()=>document.querySelector('[data-warehouse-action="save"]')?.textContent.includes('réessayer'));
+  assert(await page.$(footprint(retryId)),'Uncertain confirmation retains the displayed geometry');
+  await savePlan();
+  await page.waitForFunction(()=>window.__requests.length===2);
+  const result=await page.evaluate(()=>({requests:window.__requests,snapshot:window.__snapshot}));
+  assert.deepEqual(result.requests[0],result.requests[1],'Retry preserves accepted price and idempotency key');
+  assert.equal(result.snapshot.revision,2);assert.equal(result.snapshot.cashCents,1500000-result.requests[0].expectedCostCents);
+  return {conflict:true,identicalRetry:true};
+ });
+ for(const input of ['mouse','keyboard','drag'])await run('isometric-buddie-'+input,async()=>{
+  await page.setViewport({width:1440,height:1080,isMobile:false,hasTouch:false});
+  await visit('buddieDock');
+  if(!await page.$('[data-warehouse-buddie-toggle]'))await clickButton('[aria-label="Mode du plan"]','Cultures');
+  await page.click('[data-warehouse-buddie-toggle]');
+  const card='[data-warehouse-buddie-card="HH2026-003"]';
+  await page.waitForSelector(card,{visible:true});
+  if(input==='drag'){
+   const origin=await page.$eval(card,node=>{
+    node.scrollIntoView({block:'center',inline:'center',behavior:'instant'});
+    const rect=node.getBoundingClientRect();
+    return {x:rect.x+rect.width/2,y:rect.y+rect.height/2};
+   });
+   await drag(origin,await zonePoint('second'),false);
+  }else{
+   await page.click(card);
+   await clickButton('[data-buddie-variety-popover]','Placer ce Buddie');
+   if(input==='keyboard'){
+    await page.focus('[data-grow-pick="second"]');await page.keyboard.press('Enter');await settle();
+   }else{
+    await frame();await tap(await zonePoint('second'),false);
+   }
+  }
+  assert(await page.$(footprint('second')+'[data-selected="true"]'));
+  assert.equal(await page.$(menu),null,'Buddie placement does not open zone actions');
+  await noMutation();await savePlan();
+  await page.waitForFunction(()=>window.__snapshot.revision===2);
+  const zones=await page.evaluate(()=>window.__snapshot.state.zones);
+  assert.equal(zones.find(zone=>zone.id==='second').buddieCode,'HH2026-003');
+  assert.equal(zones.find(zone=>zone.id==='starter').buddieCode,undefined);
+  return {zoneId:'second',input};
  });
  for(const [width,height]of [[320,568],[1440,900]])await run('tutorial-progression-and-draft-removal-'+width,async()=>{
-  const touch=width<1000;await page.setViewport({width,height,isMobile:touch,hasTouch:touch});await page.goto(origin+'/?compact&nativeLesson',{waitUntil:'networkidle0'});await page.waitForSelector('[data-releve-native="warehouse"] [data-zone-id="culture-1"]');await frame();
+  const touch=width<1000;await page.setViewport({width,height,isMobile:touch,hasTouch:touch});await page.goto(origin+'/?compact&nativeLesson',{waitUntil:'networkidle0'});await page.waitForSelector('[data-releve-native="warehouse"] '+footprint('culture-1'));await frame();
   const before=await page.evaluate(()=>({cash:window.__lesson.cashCents,revision:window.__lesson.revision,equipment:structuredClone(window.__lesson.warehouse.equipment)}));
   await openMenu('culture-1',touch);await page.click(action('furnish'));await page.waitForSelector(shop);await page.waitForFunction(()=>window.__lesson.milestones.includes('zone-inspected'));
   const details=shop+' [data-warehouse-quote-details] > summary';await page.$eval(details,node=>node.scrollIntoView({block:'center',behavior:'instant'}));await page.click(details);await page.waitForFunction(()=>window.__lesson.milestones.includes('quote-read'));await close();

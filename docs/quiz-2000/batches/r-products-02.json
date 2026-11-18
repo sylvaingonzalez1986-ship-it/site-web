@@ -1,0 +1,1459 @@
+{
+  "batchId": "r-products-02",
+  "author": "rebalance_products_sol",
+  "role": "Formes, composition et commercialisation des produits à actifs",
+  "questions": [
+    {
+      "id": "hemp-q2-rp02-sinsemilla-seedless-flower",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Que signifie « sinsemilla » lorsqu’on décrit des fleurs de cannabis ?",
+      "options": [
+        "Sans graines",
+        "Sans résine",
+        "Sans parfum",
+        "Sans THC"
+      ],
+      "answer": 0,
+      "explanation": "Sinsemilla signifie littéralement « sans graine ». Le terme décrit des fleurs dépourvues de graines ; il ne signifie ni absence de résine ni absence de THC.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-ofdt-glossaire"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Sinsemilla",
+        "subjectKey": "cannabis-sinsemilla",
+        "property": "Sens de l’appellation",
+        "expectedAnswer": "Sans graines",
+        "learningObjective": "Lire un terme de présentation des fleurs sans en déduire un profil cannabinoïde.",
+        "factKey": "sinsemilla-seedless-flower",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-ofdt-glossaire",
+            "locator": "Glossaire, entrée SINSEMILLA",
+            "support": "Le terme espagnol signifie sans graine et s’applique aux sommités florales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-charas-resin-name",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans le vocabulaire des produits du cannabis, à quelle famille appartient le charas ?",
+      "options": [
+        "Aux huiles de graines de chanvre",
+        "Aux résines de cannabis",
+        "Aux boissons contenant du cannabis",
+        "Aux fleurs séchées entières"
+      ],
+      "answer": 1,
+      "explanation": "Charas est un nom de résine de cannabis, cité avec hashish par l’EMCDDA. Il ne désigne pas une variété précise ni une huile de graines.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-euda-charas"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Charas",
+        "subjectKey": "cannabis-charas",
+        "property": "Famille de produit désignée",
+        "expectedAnswer": "Aux résines de cannabis",
+        "learningObjective": "Reconnaître un nom de résine rencontré dans la culture du cannabis.",
+        "factKey": "charas-resin-name",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-euda-charas",
+            "locator": "1. Analysis, premier paragraphe",
+            "support": "La résine de cannabis est aussi connue sous les noms hashish et charas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-moonrocks-flower-concentrate-kief",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quelle composition caractérise les « moonrocks » de cannabis décrites par l’agence du Michigan ?",
+      "options": [
+        "Kief seul sous forme de bloc compact",
+        "Cristaux d’un seul cannabinoïde purifié",
+        "Fleur, concentré et couche de kief",
+        "Fleur séchée sans ajout d’extrait"
+      ],
+      "answer": 2,
+      "explanation": "Dans cette définition, les moonrocks sont des produits composites : la fleur s’associe à un concentré et à du kief. Le nom ne désigne donc pas une fleur simplement très résineuse.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-michigan-moonrocks"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Moonrocks",
+        "subjectKey": "cannabis-moonrocks",
+        "property": "Composition composite du produit",
+        "expectedAnswer": "Fleur, concentré et couche de kief",
+        "learningObjective": "Distinguer une fleur enrichie d’une fleur sans extrait ajouté.",
+        "factKey": "moonrocks-flower-concentrate-kief",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-michigan-moonrocks",
+            "locator": "p. 1, Moon rocks",
+            "support": "Le produit fini combine une fleur, un concentré et du kief."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-spliff-cannabis-tobacco",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans le vocabulaire anglophone décrit par l’ATS, que contient un spliff ?",
+      "options": [
+        "Du cannabis mélangé à du kief uniquement",
+        "Du haschich sans fleur ni tabac",
+        "Des fleurs de cannabis sans aucun ajout",
+        "Du cannabis mélangé à du tabac"
+      ],
+      "answer": 3,
+      "explanation": "Le spliff associe cannabis et tabac dans du papier à rouler. Les usages du mot « joint » varient davantage selon les pays : il ne permet pas toujours la même distinction.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-ats-terminology"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Spliff",
+        "subjectKey": "cannabis-spliff",
+        "property": "Présence de tabac dans une forme roulée",
+        "expectedAnswer": "Du cannabis mélangé à du tabac",
+        "learningObjective": "Reconnaître un terme signalant une association avec le tabac.",
+        "factKey": "spliff-cannabis-tobacco",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-ats-terminology",
+            "locator": "Tableau 1, Inhaled co-use methods, Spliff",
+            "support": "Spliff désigne cannabis et tabac en feuilles roulés ensemble."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-traditional-blunt-tobacco-wrapper",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans sa définition traditionnelle, qu’est-ce qui distingue le blunt d’un joint au papier ordinaire ?",
+      "options": [
+        "Une enveloppe de cigare faite de tabac",
+        "Une enveloppe en feuilles de chanvre",
+        "Un papier à rouler en fibres de lin",
+        "Une enveloppe en feuilles de bananier"
+      ],
+      "answer": 0,
+      "explanation": "Le blunt traditionnel utilise une enveloppe de cigare, donc du tabac et de la nicotine. Des produits modernes appelés blunts emploient toutefois des enveloppes sans tabac.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-ats-terminology"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Blunt traditionnel",
+        "subjectKey": "cannabis-blunt",
+        "property": "Nature de l’enveloppe traditionnelle",
+        "expectedAnswer": "Une enveloppe de cigare faite de tabac",
+        "learningObjective": "Identifier une source de tabac distincte du contenu de cannabis.",
+        "factKey": "traditional-blunt-tobacco-wrapper",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-ats-terminology",
+            "locator": "Tableau 1, Blunt",
+            "support": "Le blunt utilise une enveloppe de cigare faite de tabac ; cette enveloppe contient de la nicotine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-dry-herb-vaporizer-flower",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel produit un vaporisateur dit « à herbes sèches » est-il conçu pour chauffer ?",
+      "options": [
+        "Une résine concentrée de type shatter",
+        "Des fleurs de cannabis séchées",
+        "Un liquide de vapotage de cartouche",
+        "Une pâte concentrée de type wax"
+      ],
+      "answer": 1,
+      "explanation": "Le vaporisateur à herbes sèches chauffe les fleurs sans les brûler. Il se distingue d’un appareil destiné aux liquides ; certains modèles acceptent aussi des accessoires pour extraits.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-ats-terminology"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Vaporisateur de fleurs",
+        "subjectKey": "cannabis-dry-herb-vaporizer",
+        "property": "Matière destinée à un appareil à herbes sèches",
+        "expectedAnswer": "Des fleurs de cannabis séchées",
+        "learningObjective": "Distinguer vaporisateur de fleurs et appareil à liquide.",
+        "factKey": "dry-herb-vaporizer-flower",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-ats-terminology",
+            "locator": "Tableau 1, Dry-herb vaporizer",
+            "support": "Les fleurs sont chauffées sans combustion afin de produire un aérosol des composés actifs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-bong-water-cools-smoke",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans un bong, quel élément est spécialement lié au refroidissement de la fumée décrit par Santé Canada ?",
+      "options": [
+        "Le foyer contenant les fleurs",
+        "L’embout par lequel on inhale",
+        "L’eau traversée par la fumée",
+        "La tige reliant le foyer à la chambre"
+      ],
+      "answer": 2,
+      "explanation": "L’eau peut abaisser la température de la fumée et retenir certaines substances. Elle ne rend pas la fumée inoffensive et ne supprime pas la combustion du cannabis.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-hc-accessories"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Pipe à eau",
+        "subjectKey": "cannabis-water-pipe",
+        "property": "Refroidissement de la fumée par l’eau",
+        "expectedAnswer": "L’eau traversée par la fumée",
+        "learningObjective": "Comprendre une fonction du bong sans la confondre avec une absence de risque.",
+        "factKey": "bong-water-cools-smoke",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-accessories",
+            "locator": "Smoking accessories, Pipes",
+            "support": "L’eau peut refroidir la fumée et filtrer certaines substances, sans rendre ce mode sûr."
+          }
+        ],
+        "jurisdiction": "Portée générale ; source Santé Canada",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-cannabis-vaping-aerosol",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Que produit un appareil lorsqu’il vapote un extrait de cannabis ?",
+      "options": [
+        "Une fumée formée par la combustion de l’extrait",
+        "Un brouillard d’extrait nébulisé par ultrasons",
+        "Un aérosol expulsé à l’aide d’un gaz propulseur",
+        "Un aérosol formé par le chauffage de l’extrait"
+      ],
+      "answer": 3,
+      "explanation": "Le vapotage forme un aérosol, qui peut contenir cannabinoïdes et autres substances. Le mot « vapeur » ne signifie donc pas que l’on inhale seulement de l’eau.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-hc-accessories"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Aérosol de cannabis",
+        "subjectKey": "cannabis-vaping-aerosol",
+        "property": "Nature de ce qui est inhalé",
+        "expectedAnswer": "Un aérosol formé par le chauffage de l’extrait",
+        "learningObjective": "Distinguer aérosol de vapotage, vapeur d’eau et fumée.",
+        "factKey": "cannabis-vaping-aerosol",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-accessories",
+            "locator": "Vaping, premier et deuxième paragraphes",
+            "support": "Le vapotage est l’inhalation d’un aérosol produit par chauffage d’un extrait liquide ou solide."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-cartridge-metals-device-source",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Santé Canada mentionne quel type de contamination pouvant migrer du matériel vers le liquide d’une cartouche de cannabis ?",
+      "options": [
+        "Une contamination par des métaux",
+        "Une contamination par des mycotoxines",
+        "Une contamination par des résidus de pesticides",
+        "Une contamination par des bactéries intestinales"
+      ],
+      "answer": 0,
+      "explanation": "Des métaux peuvent migrer depuis le dispositif vers l’extrait, puis être inhalés dans l’aérosol. La composition de la fleur ne décrit donc pas à elle seule celle d’une cartouche.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rp02-hc-accessories"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Métaux des cartouches",
+        "subjectKey": "cannabis-vape-cartridge-metals",
+        "property": "Contribution du matériel à la contamination",
+        "expectedAnswer": "Une contamination par des métaux",
+        "learningObjective": "Distinguer contaminants de la plante et contaminants provenant du dispositif.",
+        "factKey": "cartridge-metals-device-source",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-accessories",
+            "locator": "Vaping, deuxième paragraphe et notes 3–4",
+            "support": "Des métaux peuvent migrer dans l’extrait et être inhalés dans l’aérosol."
+          }
+        ],
+        "jurisdiction": "Portée générale ; source Santé Canada",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-vape-heating-new-byproducts",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel phénomène peut former des composés absents du liquide initial dans l’aérosol d’une vapoteuse de cannabis ?",
+      "options": [
+        "Le transfert inchangé du liquide dans l’air",
+        "La dégradation thermique de certains ingrédients",
+        "La simple dilution de l’aérosol dans l’air",
+        "La condensation de molécules inchangées en gouttelettes"
+      ],
+      "answer": 1,
+      "explanation": "Des travaux de Santé Canada ont observé des sous-produits lors du chauffage de certains ingrédients. Leur méthode de laboratoire ne reproduisait pas parfaitement un usage réel.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rp02-hc-vape-byproducts"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Transformation du liquide de vapotage",
+        "subjectKey": "cannabis-vaping-byproducts",
+        "property": "Formation de composés absents de la formulation initiale",
+        "expectedAnswer": "La dégradation thermique de certains ingrédients",
+        "learningObjective": "Comprendre pourquoi liquide initial et aérosol peuvent différer.",
+        "factKey": "vape-heating-new-byproducts",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-vape-byproducts",
+            "locator": "Investigation of degradation by-products..., résultats et limite méthodologique",
+            "support": "Certains ingrédients testés ont produit des sous-produits oxydatifs ou de dégradation."
+          }
+        ],
+        "jurisdiction": "Portée générale ; recherche Santé Canada",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-evali-vitamin-e-acetate-2019",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel additif de certains liquides au THC a été associé à l’épidémie américaine de lésions pulmonaires EVALI en 2019 ?",
+      "options": [
+        "L’huile de triglycérides à chaîne moyenne",
+        "Le propylène glycol",
+        "L’acétate de vitamine E",
+        "Les terpènes utilisés comme diluants"
+      ],
+      "answer": 2,
+      "explanation": "Le CDC a retrouvé cet épaississant dans les prélèvements pulmonaires étudiés. Ce résultat historique ne signifie pas que toutes les cartouches en contiennent ni qu’il explique chaque cas.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rp02-cdc-evali"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "EVALI et additif de vape",
+        "subjectKey": "evali-2019-vitamin-e-acetate",
+        "property": "Additif impliqué dans un épisode de toxicité",
+        "expectedAnswer": "L’acétate de vitamine E",
+        "learningObjective": "Associer une alerte sur des produits au THC à la substance identifiée.",
+        "factKey": "evali-vitamin-e-acetate-2019",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-cdc-evali",
+            "locator": "p. 1040–1041, résultats des lavages et discussion",
+            "support": "L’acétate de vitamine E a été identifié au site des lésions chez les patients de l’étude."
+          }
+        ],
+        "jurisdiction": "États-Unis, épidémie de 2019",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-spice-k2-synthetic-cannabinoid-products",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Que désignent notamment les noms Spice et K2 sur le marché des substances psychoactives ?",
+      "options": [
+        "Deux catégories de fleurs de CBD naturelles",
+        "Des résines traditionnelles sans autre substance",
+        "Des huiles alimentaires de graines de chanvre",
+        "Des produits à cannabinoïdes de synthèse"
+      ],
+      "answer": 3,
+      "explanation": "Spice et K2 sont des noms de produits destinés à imiter le THC avec des cannabinoïdes de synthèse. Une présentation « végétale » ou « encens » ne décrit pas leur substance active.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-dea-spice"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Spice et K2",
+        "subjectKey": "synthetic-cannabinoid-spice-k2",
+        "property": "Nature des substances actives",
+        "expectedAnswer": "Des produits à cannabinoïdes de synthèse",
+        "learningObjective": "Distinguer un produit de synthèse d’une fleur ou d’une résine traditionnelle.",
+        "factKey": "spice-k2-synthetic-cannabinoid-products",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-dea-spice",
+            "locator": "What is Spice/K2, Synthetic Marijuana?",
+            "support": "Spice et K2 sont des noms commerciaux de drogues de synthèse de la classe des cannabinoïdes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-thca-flower-heating-thc",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Lorsqu’une fleur riche en THCA est fumée, quelle conversion peut contribuer à ses effets intoxicants ?",
+      "options": [
+        "Du THCA en THC",
+        "Du THCA en CBD",
+        "Du CBD en CBDA",
+        "Du THC en THCA"
+      ],
+      "answer": 0,
+      "explanation": "La chaleur peut convertir le THCA de la fleur en THC. Une faible quantité de THC mesurée avant chauffage ne suffit donc pas à décrire ce produit lorsqu’il est fumé.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rp02-euda-flower-thca-heating"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Fleur riche en THCA",
+        "subjectKey": "cannabis-thca-flower",
+        "property": "Transformation du profil à la consommation avec chauffage",
+        "expectedAnswer": "Du THCA en THC",
+        "learningObjective": "Relier le THCA d’un produit floral à son potentiel après chauffage.",
+        "factKey": "thca-flower-heating-thc",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-euda-flower-thca-heating",
+            "locator": "Biosynthesis of cannabinoids in cannabis, paragraphe When natural cannabis products are smoked",
+            "support": "Lors du fumage, le THCA présent dans la plante est converti en THC."
+          }
+        ],
+        "jurisdiction": "Portée générale ; source EUDA",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-canada-excise-stamp-license-holder",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Au Canada, que signale le timbre d’accise sur un emballage de cannabis ?",
+      "options": [
+        "Une autorisation de prescrire ce produit comme médicament",
+        "Une provenance auprès d’un titulaire de licence de Santé Canada",
+        "Une absence de THC et de tout autre cannabinoïde",
+        "Une origine exclusivement biologique de la culture"
+      ],
+      "answer": 1,
+      "explanation": "Le timbre indique cette provenance réglementée. Certains produits à très faible THC et les médicaments sur ordonnance en sont exemptés ; le timbre n’est pas une promesse d’innocuité.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-hc-label"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Timbre d’accise canadien",
+        "subjectKey": "canada-cannabis-excise-stamp",
+        "property": "Sens du timbre sur le produit",
+        "expectedAnswer": "Une provenance auprès d’un titulaire de licence de Santé Canada",
+        "learningObjective": "Reconnaître un repère de provenance du marché réglementé.",
+        "factKey": "canada-excise-stamp-license-holder",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-label",
+            "locator": "3. Excise stamp",
+            "support": "Le timbre indique une provenance auprès d’un titulaire de licence, avec certaines exemptions."
+          }
+        ],
+        "jurisdiction": "Canada, règles consultées en novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-canada-standard-symbol-thc",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Au Canada, quelle substance le symbole standardisé du cannabis signale-t-il sur un emballage ?",
+      "options": [
+        "Le CBD seul",
+        "La nicotine",
+        "Le THC",
+        "L’alcool éthylique"
+      ],
+      "answer": 2,
+      "explanation": "Le symbole est requis lorsque le produit dépasse le seuil canadien de THC indiqué par Santé Canada. Il ne constitue pas un logo de qualité, une marque ou un symbole propre au CBD.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-hc-label"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Symbole canadien du cannabis",
+        "subjectKey": "canada-standard-cannabis-symbol",
+        "property": "Substance signalée par le symbole",
+        "expectedAnswer": "Le THC",
+        "learningObjective": "Comprendre un repère spécifique d’étiquetage du cannabis.",
+        "factKey": "canada-standard-symbol-thc",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-label",
+            "locator": "1. Standardized cannabis symbol",
+            "support": "Le symbole est exigé au-delà de 10 microgrammes de THC par gramme."
+          }
+        ],
+        "jurisdiction": "Canada, règles consultées en novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-france-cbd-foods-not-authorised-2026",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En France en novembre 2026, quel est le statut des bonbons auxquels du CBD a été ajouté comme ingrédient ?",
+      "options": [
+        "Ils sont autorisés dès qu’ils ont moins de 0,3 % de THC",
+        "Ils sont autorisés sous la seule condition d’être réservés aux adultes",
+        "Ils sont autorisés s’ils sont vendus comme compléments alimentaires",
+        "Ils ne sont pas autorisés comme denrées alimentaires"
+      ],
+      "answer": 3,
+      "explanation": "Le communiqué français rappelle l’absence d’autorisation du CBD comme nouvel aliment. Une mention « naturel » ne remplace pas cette autorisation, y compris pour les compléments alimentaires.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-maasa-cbd-foods-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Aliments à CBD ajouté en France",
+        "subjectKey": "france-cbd-foods-novel-food",
+        "property": "Statut des denrées enrichies en CBD",
+        "expectedAnswer": "Ils ne sont pas autorisés comme denrées alimentaires",
+        "learningObjective": "Distinguer un ingrédient commercialisé d’un ingrédient alimentaire autorisé.",
+        "factKey": "france-cbd-foods-not-authorised-2026",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-maasa-cbd-foods-2026",
+            "locator": "Communiqué, paragraphes 1 et 3",
+            "support": "Les denrées incluant du CBD parmi leurs ingrédients ne sont pas autorisées au titre des nouveaux aliments."
+          }
+        ],
+        "jurisdiction": "France et Union européenne, novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-france-leaf-water-infusion-exception",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France en 2026, quel produit de feuilles de chanvre est distingué des aliments enrichis en CBD dans le communiqué officiel ?",
+      "options": [
+        "Des feuilles pour infusion aqueuse, sans enrichissement",
+        "Des feuilles additionnées d’isolat de CBD",
+        "Des bonbons enrichis d’extrait de feuilles",
+        "Des boissons enrichies de cannabinoïdes de synthèse"
+      ],
+      "answer": 0,
+      "explanation": "Les feuilles exclusivement destinées à une infusion aqueuse ne sont pas classées comme nouvel aliment. Cette exception exige notamment l’absence d’enrichissement et le respect des limites de THC.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-maasa-cbd-foods-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Feuilles pour infusion aqueuse",
+        "subjectKey": "france-hemp-leaf-water-infusion",
+        "property": "Exception sans enrichissement dans le régime alimentaire",
+        "expectedAnswer": "Des feuilles pour infusion aqueuse, sans enrichissement",
+        "learningObjective": "Ne pas confondre feuilles pour infusion et aliment enrichi en CBD.",
+        "factKey": "france-leaf-water-infusion-exception",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-maasa-cbd-foods-2026",
+            "locator": "Communiqué, paragraphes Seules les graines... et Elles peuvent donc...",
+            "support": "Les feuilles pour infusion aqueuse ne sont pas nouveaux aliments ; l’enrichissement en extraits de cannabinoïdes est exclu."
+          }
+        ],
+        "jurisdiction": "France et Union européenne, novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-france-pure-cbd-cosmetic-ingredient",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Selon la Mildeca en 2026, dans quelle catégorie le CBD pur peut-il être autorisé comme ingrédient en France ?",
+      "options": [
+        "Les bonbons alimentaires enrichis en CBD",
+        "Les produits cosmétiques",
+        "Les aliments pour animaux enrichis en CBD",
+        "Les compléments alimentaires au CBD sans autorisation"
+      ],
+      "answer": 1,
+      "explanation": "Le flyer distingue l’emploi de CBD pur en cosmétique de son ajout aux aliments. Il rappelle aussi une limite de THC : l’autorisation d’un ingrédient ne vaut pas pour toute formulation.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-mildeca-product-categories-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "CBD actif en cosmétique",
+        "subjectKey": "france-cbd-cosmetic-ingredient",
+        "property": "Destination cosmétique autorisée du CBD pur",
+        "expectedAnswer": "Les produits cosmétiques",
+        "learningObjective": "Distinguer les règles du CBD actif selon la destination du produit.",
+        "factKey": "france-pure-cbd-cosmetic-ingredient",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-mildeca-product-categories-2026",
+            "locator": "p. 2, Produits cosmétiques",
+            "support": "Le CBD pur est autorisé comme ingrédient cosmétique ; la teneur en THC ne doit pas dépasser 0,3 %."
+          }
+        ],
+        "jurisdiction": "France, octobre–novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-eu-cbd-animal-feed-unauthorised-additive",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En 2026, quel statut la Mildeca indique-t-elle pour le CBD ajouté aux aliments pour animaux dans l’Union européenne ?",
+      "options": [
+        "Un additif réservé à la prescription vétérinaire",
+        "Un additif autorisé pour les chiens et chats",
+        "Un additif non autorisé",
+        "Un additif interdit car classé comme stupéfiant"
+      ],
+      "answer": 2,
+      "explanation": "Le CBD est décrit comme additif non autorisé dans l’alimentation animale. Ce statut ne se déduit pas de celui des graines de chanvre : un actif ajouté et une matière première diffèrent.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-mildeca-product-categories-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "CBD dans les aliments pour animaux",
+        "subjectKey": "eu-cbd-animal-feed",
+        "property": "Absence d’autorisation comme additif alimentaire animal",
+        "expectedAnswer": "Un additif non autorisé",
+        "learningObjective": "Distinguer chanvre alimentaire et ajout de CBD destiné à l’animal.",
+        "factKey": "eu-cbd-animal-feed-unauthorised-additive",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-mildeca-product-categories-2026",
+            "locator": "p. 2, Produits alimentaires et vétérinaires",
+            "support": "Le CBD est un additif non autorisé par la réglementation européenne des aliments pour animaux."
+          }
+        ],
+        "jurisdiction": "Union européenne, octobre–novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-france-vape-cbd-chemical-or-extracted",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quelles origines du CBD la Mildeca mentionne-t-elle explicitement pour les liquides de vapotage autorisés en France en 2026 ?",
+      "options": [
+        "Fermentation ou extraction du chanvre",
+        "Transformation du THC ou fermentation",
+        "Synthèse chimique ou transformation du THC",
+        "Extraction du chanvre ou synthèse chimique"
+      ],
+      "answer": 3,
+      "explanation": "Le flyer mentionne les deux origines. La conformité du liquide reste soumise aux obligations applicables, notamment REACH et la limite de THC : l’origine du CBD n’est pas le seul critère.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-mildeca-product-categories-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Origine du CBD de vapotage",
+        "subjectKey": "france-cbd-vape-origin",
+        "property": "Deux origines possibles du CBD d’un liquide",
+        "expectedAnswer": "Extraction du chanvre ou synthèse chimique",
+        "learningObjective": "Ne pas assimiler conformité et origine exclusivement végétale.",
+        "factKey": "france-vape-cbd-chemical-or-extracted",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-mildeca-product-categories-2026",
+            "locator": "p. 2, Produits de vapotage",
+            "support": "Le CBD d’origine chimique ou extrait du chanvre est admis sous réserve des obligations REACH et de la limite de THC."
+          }
+        ],
+        "jurisdiction": "France, octobre–novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-france-smoking-hemp-anses-declaration",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En France en 2026, à quel organisme les fabricants déclarent-ils les produits à fumer au chanvre sans tabac ?",
+      "options": [
+        "À l’Anses",
+        "À l’Agence nationale de sécurité du médicament",
+        "À l’Autorité européenne de sécurité des aliments",
+        "À l’Agence européenne des produits chimiques"
+      ],
+      "answer": 0,
+      "explanation": "La Mildeca rappelle la déclaration à l’Anses des produits à fumer à base de plantes autres que le tabac. Cette démarche de déclaration n’est pas une autorisation de médicament.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-mildeca-product-categories-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Déclaration des produits à fumer",
+        "subjectKey": "france-herbal-smoking-products",
+        "property": "Organisme de déclaration d’un produit à fumer au chanvre",
+        "expectedAnswer": "À l’Anses",
+        "learningObjective": "Identifier le cadre de déclaration de cette catégorie de produits.",
+        "factKey": "france-smoking-hemp-anses-declaration",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-mildeca-product-categories-2026",
+            "locator": "p. 2, Produits de vapotage, phrase sur les produits à fumer",
+            "support": "Les fabricants et distributeurs doivent déclarer à l’Anses les produits à fumer à base de plantes hors tabac."
+          }
+        ],
+        "jurisdiction": "France, octobre–novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-quebec-nonedible-thc-cap-30-percent",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Au Québec, quelle concentration maximale de THC le règlement fixe-t-il au cannabis hors produits comestibles vendus par la SQDC ?",
+      "options": [
+        "3 % en masse",
+        "30 % en masse",
+        "60 % en masse",
+        "90 % en masse"
+      ],
+      "answer": 1,
+      "explanation": "L’article 3 fixe ce plafond à 30 % poids par poids. Il explique pourquoi les concentrés très riches en THC proposés ailleurs ne correspondent pas tous à l’offre réglementaire québécoise.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-quebec-products-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Plafond québécois de THC",
+        "subjectKey": "quebec-cannabis-thc-concentration-cap",
+        "property": "Limite de concentration hors comestibles",
+        "expectedAnswer": "30 % en masse",
+        "learningObjective": "Comprendre une différence concrète entre marchés réglementés.",
+        "factKey": "quebec-nonedible-thc-cap-30-percent",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-quebec-products-2026",
+            "locator": "Article 3",
+            "support": "La concentration de THC du cannabis hors comestibles ne doit pas dépasser 30 % p/p."
+          }
+        ],
+        "jurisdiction": "Québec, texte à jour au 1er juillet 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-quebec-edible-chocolate-ban",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Au Québec en 2026, quelle catégorie de comestibles au cannabis le règlement exclut-il explicitement de la vente par la SQDC ?",
+      "options": [
+        "Les boissons au cannabis",
+        "Les huiles alimentaires au cannabis",
+        "Les chocolats et les confiseries",
+        "Les bouchées salées au cannabis"
+      ],
+      "answer": 2,
+      "explanation": "Le règlement exclut explicitement chocolat, friandises, confiseries et desserts. La catégorie des comestibles existe au Québec, mais son offre autorisée ne se confond pas avec celle d’autres provinces.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-quebec-products-2026"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Formats comestibles au Québec",
+        "subjectKey": "quebec-cannabis-edible-formats",
+        "property": "Exclusion explicite du chocolat",
+        "expectedAnswer": "Les chocolats et les confiseries",
+        "learningObjective": "Reconnaître une différence de formes autorisées entre marchés.",
+        "factKey": "quebec-edible-chocolate-ban",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-quebec-products-2026",
+            "locator": "Article 4",
+            "support": "Le produit comestible ne peut être notamment une friandise, une confiserie, un dessert ou du chocolat."
+          }
+        ],
+        "jurisdiction": "Québec, texte à jour au 1er juillet 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-canada-edible-thc-container-limit",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Au Canada, quel plafond fédéral de THC total s’applique au contenant immédiat d’un produit comestible au cannabis ?",
+      "options": [
+        "100 mg",
+        "500 mg",
+        "1 000 mg",
+        "10 mg"
+      ],
+      "answer": 3,
+      "explanation": "La limite s’applique au total du contenant immédiat, même s’il comprend plusieurs morceaux. C’est une règle de conditionnement du marché légal, pas une quantité conseillée à consommer.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-hc-composition"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Contenant de comestibles canadien",
+        "subjectKey": "canada-edible-thc-immediate-container",
+        "property": "Plafond réglementaire du conditionnement",
+        "expectedAnswer": "10 mg",
+        "learningObjective": "Distinguer limite de produit et recommandation de consommation.",
+        "factKey": "canada-edible-thc-container-limit",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-composition",
+            "locator": "Edible cannabis, Maximum quantities",
+            "support": "Le comestible est limité à 10 mg de THC total par contenant immédiat, sous les tolérances réglementaires."
+          }
+        ],
+        "jurisdiction": "Canada, règles consultées en novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-canada-extract-no-nicotine",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Au Canada, quelle substance est expressément interdite dans les extraits de cannabis ?",
+      "options": [
+        "La nicotine",
+        "Le CBD",
+        "Les terpènes du cannabis",
+        "Une huile de support conforme"
+      ],
+      "answer": 0,
+      "explanation": "Santé Canada exclut la nicotine des extraits de cannabis. Une cartouche de cannabis et un liquide nicotiné ne relèvent donc pas d’une même formule réglementaire interchangeable.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-hc-composition"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Nicotine dans les extraits",
+        "subjectKey": "canada-cannabis-extract-nicotine",
+        "property": "Ingrédient explicitement exclu",
+        "expectedAnswer": "La nicotine",
+        "learningObjective": "Distinguer produits au cannabis et produits nicotinés dans le cadre canadien.",
+        "factKey": "canada-extract-no-nicotine",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-composition",
+            "locator": "Cannabis extracts, Prohibited ingredients, Note that nicotine...",
+            "support": "La nicotine n’est pas permise dans les extraits de cannabis."
+          }
+        ],
+        "jurisdiction": "Canada, règles consultées en novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-canada-edible-caffeine-natural-ingredients",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Au Canada, comment un comestible au cannabis peut-il légalement contenir de la caféine ?",
+      "options": [
+        "Par ajout de caféine purifiée, sous le même plafond",
+        "Par des ingrédients naturellement caféinés, sous plafond",
+        "Par ajout de caféine, si le produit est une boisson",
+        "Par ajout de caféine, si le produit est à dominante CBD"
+      ],
+      "answer": 1,
+      "explanation": "La caféine peut venir, par exemple, du chocolat ou du thé. Le guide impose une limite par contenant et interdit l’emploi de caféine ou de citrate de caféine comme additif.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-rp02-hc-composition"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Caféine des comestibles",
+        "subjectKey": "canada-edible-caffeine",
+        "property": "Origine admise de la caféine",
+        "expectedAnswer": "Par des ingrédients naturellement caféinés, sous plafond",
+        "learningObjective": "Comprendre une exception de composition des comestibles.",
+        "factKey": "canada-edible-caffeine-natural-ingredients",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-hc-composition",
+            "locator": "Edible cannabis, Caffeine",
+            "support": "La caféine doit être naturellement apportée par les ingrédients et rester sous le plafond ; l’ajout de caféine ou de citrate est interdit."
+          }
+        ],
+        "jurisdiction": "Canada, règles consultées en novembre 2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-nabilone-synthetic-not-native",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Comment la FDA décrit-elle l’origine du nabilone, actif du médicament Cesamet ?",
+      "options": [
+        "Du delta-9-THC directement isolé des fleurs",
+        "Du CBD purifié provenant des fleurs",
+        "Un cannabinoïde de synthèse non naturellement présent dans la plante",
+        "Du CBN naturellement présent dans une résine vieillie"
+      ],
+      "answer": 2,
+      "explanation": "Le nabilone est un composé synthétique apparenté au THC. « Médicament lié au cannabis » n’implique donc pas que son actif provienne directement d’une extraction de la plante.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp02-fda-drug-identities"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Nabilone / Cesamet",
+        "subjectKey": "nabilone-drug-identity",
+        "property": "Origine synthétique distincte d’un extrait",
+        "expectedAnswer": "Un cannabinoïde de synthèse non naturellement présent dans la plante",
+        "learningObjective": "Distinguer médicament apparenté au cannabis et extrait végétal.",
+        "factKey": "nabilone-synthetic-not-native",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-fda-drug-identities",
+            "locator": "Cannabis-related compounds, Examples ; Another FDA-approved drug",
+            "support": "La FDA décrit le nabilone comme synthétique et non naturellement présent dans la plante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-epidiolex-purified-cbd",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel actif caractérise la formulation du médicament Epidiolex décrite par la FDA ?",
+      "options": [
+        "De la résine complète non standardisée",
+        "Du nabilone de synthèse",
+        "Un mélange équilibré de THC et de CBD",
+        "Du cannabidiol purifié"
+      ],
+      "answer": 3,
+      "explanation": "Epidiolex contient une forme purifiée de CBD. Cette formulation de médicament se distingue d’une huile commerciale de composition variable et d’un produit associant THC et CBD.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-rp02-fda-drug-identities"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Epidiolex",
+        "subjectKey": "epidiolex-purified-cbd",
+        "property": "Identité de l’actif de la formulation",
+        "expectedAnswer": "Du cannabidiol purifié",
+        "learningObjective": "Reconnaître une formulation de médicament au CBD sans généraliser son autorisation aux autres huiles.",
+        "factKey": "epidiolex-purified-cbd",
+        "form": "identification",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-fda-drug-identities",
+            "locator": "Paragraphe FDA has approved Epidiolex",
+            "support": "Epidiolex contient une forme purifiée de cannabidiol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-shake-flower-fragments-versus-trim-leaves",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans le lexique des produits anglophones, quelle différence sépare « shake » et « trim » ?",
+      "options": [
+        "Shake : fragments de fleurs ; trim : feuilles retirées autour",
+        "Shake : feuilles retirées ; trim : fragments de fleurs",
+        "Shake : fleurs entières ; trim : fleurs broyées",
+        "Shake : fleurs matures ; trim : fleurs immatures"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport UNODC distingue les petits fragments détachés des fleurs des feuilles retirées autour de celles-ci. Ces mots décrivent la matière végétale, pas une variété ou un taux de THC.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-unodc-shake-trim"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Shake et trim",
+        "subjectKey": "cannabis-shake-trim",
+        "property": "Distinction entre fragments floraux et feuilles",
+        "expectedAnswer": "Shake : fragments de fleurs ; trim : feuilles retirées autour",
+        "learningObjective": "Lire des descriptions de matière première végétale.",
+        "factKey": "shake-flower-fragments-versus-trim-leaves",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance spécifique du vocabulaire, d’une composition ou d’une règle de commercialisation du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-unodc-shake-trim",
+            "locator": "p. 31, encadré Understanding cannabis products",
+            "support": "Shake correspond à de petits morceaux de fleurs détachés ; trim aux feuilles retirées de la fleur."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp02-spacecake-cannabis-cake",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans la culture des produits du cannabis, que désigne un « space-cake » ?",
+      "options": [
+        "Un bloc de haschich moulé en gâteau",
+        "Un gâteau contenant du cannabis",
+        "Un mélange de fleurs vendu pour être fumé",
+        "Un comprimé de cannabinoïde de synthèse"
+      ],
+      "answer": 1,
+      "explanation": "Space-cake désigne un gâteau intégrant du cannabis. Le nom décrit un produit à ingérer ; il ne précise ni sa composition cannabinoïde ni la quantité de THC qu’il contient.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp02-ofdt-glossaire"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Space-cake",
+        "subjectKey": "cannabis-space-cake",
+        "property": "Forme alimentaire désignée",
+        "expectedAnswer": "Un gâteau contenant du cannabis",
+        "learningObjective": "Reconnaître un terme de culture des produits sans y lire une composition garantie.",
+        "factKey": "spacecake-cannabis-cake",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’une forme concrète ou d’un repère de produit, sans détail chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp02-ofdt-glossaire",
+            "locator": "Glossaire, entrée SPACE-CAKE",
+            "support": "Le space-cake est un gâteau intégrant du cannabis dans sa préparation."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rp02-ofdt-glossaire",
+      "title": "Cannabis, données essentielles — Annexes : glossaire",
+      "organization": "OFDT",
+      "url": "https://www.ofdt.fr/sites/ofdt/files/2023-08/field_media_document-480-cdeannex.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "OFDT",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Sinsemilla signifie sans graine ; space-cake désigne un gâteau contenant du cannabis.",
+      "access": "full-text",
+      "documentKind": "institutional-document",
+      "limitation": "Document ancien : seules deux définitions de vocabulaire sont retenues. Ni les règles juridiques historiques ni les conseils de culture du glossaire ne sont repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Glossaire, PDF p. 19, entrées SINSEMILLA et SPACE-CAKE",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-euda-charas",
+      "title": "Changes in Europe’s cannabis resin market",
+      "organization": "EMCDDA, hébergé par EUDA",
+      "url": "https://www.euda.europa.eu/changes-europe%E2%80%99s-cannabis-resin-market_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EMCDDA, hébergé par EUDA",
+      "published": "2017-06-06",
+      "passage": "Le premier paragraphe de l’analyse donne hashish et charas comme noms de résine de cannabis.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Seuls les passages descriptifs indiqués sont repris ; aucune méthode de fabrication ou recommandation de consommation.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "1. Analysis: the European market for cannabis resin, premier paragraphe",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-michigan-moonrocks",
+      "title": "Compliant Creation and Testing of Inhalable Compound Concentrate Products and Pre-Rolls",
+      "organization": "Michigan Cannabis Regulatory Agency",
+      "url": "https://www.michigan.gov/cra/-/media/Project/Websites/cra/bulletin/5Technical/Marihuana_Sampling_and_Testing_-Combination_Products_732964_7.pdf?hash=192A8E7AECDEB28EB165011852DAFAE1&rev=ebed2017f31e40b5b44285c6863fca4b",
+      "verifiedAt": "2026-11-17",
+      "author": "Michigan Cannabis Regulatory Agency",
+      "published": "2022-09-19",
+      "passage": "Les moon rocks réunissent fleur, concentré et kief dans un même produit fini.",
+      "access": "full-text",
+      "documentKind": "institutional-document",
+      "limitation": "Seuls les passages descriptifs indiqués sont repris ; aucune méthode de fabrication ou recommandation de consommation.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 1, Inhalable Compound Concentrate Products, Moon rocks",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-ats-terminology",
+      "title": "Effects of Inhaled Tobacco and Cannabis Co-Use on Respiratory Health and Tobacco Cessation: An Official ATS Research Statement",
+      "organization": "American Thoracic Society",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+      "verifiedAt": "2026-11-17",
+      "author": "Erin A. McClure et al.",
+      "published": "2025-08-22",
+      "passage": "Le tableau 1 distingue blunt, spliff et vaporisateur de fleurs sèches.",
+      "access": "full-text",
+      "documentKind": "institutional-document",
+      "limitation": "Terminologie située dans un rapport anglophone ; les noms de joints peuvent changer selon les pays. Aucun effet clinique du mélange n’est extrapolé.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Tableau 1, Devices and methods of use ; Inhaled co-use methods",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-hc-accessories",
+      "title": "Cannabis accessories for inhalation: Minimizing your risk when smoking, vaping and dabbing",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "L’eau d’une pipe peut refroidir la fumée sans la rendre sans danger ; le vapotage produit un aérosol et des métaux peuvent contaminer le liquide puis cet aérosol.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Seuls les passages descriptifs indiqués sont repris ; aucune méthode de fabrication ou recommandation de consommation.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Smoking accessories, Pipes ; Vaping, deux premiers paragraphes",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-hc-vape-byproducts",
+      "title": "Health Canada: Compilation of research abstracts 2021-2022",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/publications/science-research-data/compilation-research-abstracts-2021-2022.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Jiping Zhu et Hanan Abramovici (responsables du projet cités)",
+      "published": "2023-08",
+      "passage": "Des sous-produits oxydatifs ou de dégradation peuvent se former lorsque certains ingrédients de liquides de vapotage du cannabis sont chauffés.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Résumé d’un travail préliminaire : méthode de laboratoire ne reproduisant pas parfaitement la consommation. Aucune fréquence ni toxicité précise n’est inférée.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Investigation of degradation by-products from cannabis vaping liquid ingredients via thermal desorption – New",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-cdc-evali",
+      "title": "Evaluation of Bronchoalveolar Lavage Fluid from Patients in an Outbreak of EVALI — 10 States, August–October 2019",
+      "organization": "Centers for Disease Control and Prevention",
+      "url": "https://www.cdc.gov/mmwr/volumes/68/wr/mm6845e2.htm",
+      "verifiedAt": "2026-11-17",
+      "author": "Benjamin C. Blount et al.",
+      "published": "2019-11-15",
+      "passage": "L’acétate de vitamine E, épaississant possible des liquides au THC, a été retrouvé dans les prélèvements pulmonaires étudiés pendant l’épidémie EVALI.",
+      "access": "full-text",
+      "documentKind": "institutional-document",
+      "limitation": "Étude historique sur un échantillon de convenance ; ce rapport ne prouve pas à lui seul une causalité ni une présence dans toutes les cartouches. Erratum du 31 janvier 2020 lu : ajout de noms de contributeurs, sans correction de ces résultats.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "MMWR 68(45), p. 1040–1041, paragraphes sur les additifs et les résultats des lavages",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-dea-spice",
+      "title": "Spice/K2, Synthetic Marijuana",
+      "organization": "U.S. Drug Enforcement Administration",
+      "url": "https://www.dea.gov/factsheets/spice-k2-synthetic-marijuana",
+      "verifiedAt": "2026-11-17",
+      "author": "U.S. Drug Enforcement Administration",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Spice et K2 sont des noms commerciaux de produits à cannabinoïdes de synthèse visant à imiter le THC, parfois présentés comme encens végétaux.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Identification d’une famille de produits, sans reprendre les généralisations sur la puissance ni les listes d’effets.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "What is Spice/K2, Synthetic Marijuana? ; How is it abused?",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-hc-label",
+      "title": "How to read and understand a cannabis product label",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le symbole standardisé signale la présence de THC au-delà du seuil indiqué ; le timbre d’accise indique une provenance auprès d’un titulaire de licence de Santé Canada.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Règles canadiennes consultées le 17 novembre 2026 ; certaines catégories de produits sont exemptées du timbre. Aucun marquage n’est présenté comme garantie d’innocuité.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Information on a cannabis product label, 1. Standardized cannabis symbol ; 3. Excise stamp",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-maasa-cbd-foods-2026",
+      "title": "Denrées alimentaires contenant du cannabidiol (CBD) : des produits illégaux qui doivent être retirés du marché",
+      "organization": "Ministère de l’Agriculture, de l’Agro-alimentaire et de la Souveraineté alimentaire",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "verifiedAt": "2026-11-17",
+      "author": "Ministère de l’Agriculture, de l’Agro-alimentaire et de la Souveraineté alimentaire",
+      "published": "2026-05-20",
+      "passage": "Les denrées incluant du CBD comme ingrédient ne sont pas autorisées ; les feuilles exclusivement destinées à une infusion aqueuse, sans enrichissement, sont distinguées des nouveaux aliments.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "État juridique annoncé en mai 2026 et revérifié en novembre ; l’exception sur les feuilles reste soumise aux limites de THC et aux autres conditions du communiqué.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Communiqué du 20 mai 2026, paragraphes 1 et 3–6",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-quebec-products-2026",
+      "title": "Règlement déterminant d’autres catégories de cannabis et certaines normes de composition et caractéristiques — C-5.3, r. 0.1",
+      "organization": "Légis Québec",
+      "url": "https://www.legisquebec.gouv.qc.ca/fr/document/rc/C-5.3,%20r.%200.1",
+      "verifiedAt": "2026-11-17",
+      "author": "Légis Québec",
+      "published": "2026-07-01",
+      "passage": "L’article 3 fixe 30 % p/p de THC hors comestibles ; l’article 4 exclut notamment confiseries, desserts et chocolat des comestibles vendus par la SQDC.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Règlement québécois, pas limite mondiale ni règle fédérale générale. Les quantités juridiques ne sont pas des recommandations de dose.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Articles 3 et 4 ; texte officiel à jour au 1er juillet 2026",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-hc-composition",
+      "title": "Guide on composition requirements for cannabis products",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "La nicotine est interdite dans les extraits. Les comestibles ont une limite de THC par contenant ; leur caféine doit provenir d’ingrédients qui en contiennent naturellement et respecter une limite.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Règles canadiennes consultées le 17 novembre 2026. Les limites de conditionnement et d’ingrédients ne sont pas des doses conseillées.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Cannabis extracts, Prohibited ingredients ; Edible cannabis, Caffeine et Maximum quantities",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-fda-drug-identities",
+      "title": "FDA and Cannabis: Research and Drug Approval Process",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/news-events/public-health-focus/fda-and-cannabis-research-and-drug-approval-process",
+      "verifiedAt": "2026-11-17",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "La FDA distingue le nabilone synthétique non naturellement présent dans la plante et Epidiolex, médicament contenant du CBD purifié.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Seules l’identité et l’origine des substances sont retenues. La page contient une ancienne limite d’âge d’indication d’Epidiolex, non reprise ici.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Cannabis-related compounds, Examples ; paragraphes FDA has approved Epidiolex et Another FDA-approved drug",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-unodc-shake-trim",
+      "title": "World Drug Report 2019, Booklet 5: Cannabis and hallucinogens",
+      "organization": "United Nations Office on Drugs and Crime",
+      "url": "https://www.minjusticia.gov.co/programas-co/ODC/Publicaciones/Publicaciones/WDR19_Booklet_5_CANNABIS_HALLUCINOGENS.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "United Nations Office on Drugs and Crime",
+      "published": "2019-06",
+      "passage": "Shake correspond à des fragments détachés des fleurs ; trim aux feuilles retirées autour des fleurs.",
+      "access": "full-text",
+      "documentKind": "institutional-document",
+      "limitation": "Rapport original UNODC hébergé par le ministère colombien de la Justice. Seule la distinction de matière végétale est reprise, sans données de consommation ni extraction.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 31 (PDF p. 32), encadré Understanding cannabis products",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-mildeca-product-categories-2026",
+      "title": "L’indispensable sur le cannabidiol — catégories de produits",
+      "organization": "Mildeca",
+      "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Mildeca",
+      "published": "2026-10",
+      "passage": "La page 2 distingue CBD cosmétique, alimentation animale, liquides de vapotage et déclaration des produits à fumer sans tabac.",
+      "access": "full-text",
+      "documentKind": "institutional-document",
+      "limitation": "Notice distincte de q2-en02-mildeca-2026 pour des passages supplémentaires effectivement relus. Les affirmations sur les fleurs/feuilles et sur l’autorité autorisant un nouvel aliment ne sont pas reprises.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 2, Produits alimentaires et vétérinaires ; Produits cosmétiques ; Produits de vapotage",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp02-euda-flower-thca-heating",
+      "title": "EU Drug Market: Cannabis — Production, transformation du THCA au fumage",
+      "organization": "EMCDDA and Europol, hébergé par EUDA",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EMCDDA and Europol, hébergé par EUDA",
+      "published": "2023-11-16",
+      "passage": "Lors du fumage des produits naturels, le THCA de la plante contribue au THC par sa conversion avec la chaleur.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Nouvelle notice pour un passage distinct de q2-rp01-euda-products-2023. Aucun paramètre ni méthode de transformation n’est repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Biosynthesis of cannabinoids in cannabis, paragraphe When natural cannabis products are smoked",
+        "result": "Passages originaux indiqués effectivement ouverts et lus ; soutien paraphrasé."
+      }
+    }
+  ]
+}

@@ -1,0 +1,3577 @@
+{
+  "reviewer": "rebalance_classify_a",
+  "range": {
+    "start": 0,
+    "end": 499
+  },
+  "items": [
+    {
+      "id": "hemp-biodiversity-aculops",
+      "domain": "offscope",
+      "focus": "Morphologie des acariens",
+      "reason": "Comptage de pattes sans lien avec fleurs ou actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-altise",
+      "domain": "offscope",
+      "focus": "Taxonomie des ravageurs",
+      "reason": "Ordre d’un coléoptère, sans spécificité du cannabis à actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-botrytis",
+      "domain": "offscope",
+      "focus": "Phytopathologie générale",
+      "reason": "Association Botrytis–pourriture grise sans enjeu floral explicite.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-chenille",
+      "domain": "offscope",
+      "focus": "Cycle des insectes",
+      "reason": "Définition générale de la chenille, cannabis décoratif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-chrysope",
+      "domain": "offscope",
+      "focus": "Auxiliaires agricoles",
+      "reason": "Identification d’une larve prédatrice commune aux cultures.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-coccinelle",
+      "domain": "offscope",
+      "focus": "Régime des coccinelles",
+      "reason": "Relation coccinelle–puceron généraliste.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-hlvd",
+      "domain": "offscope",
+      "focus": "Biologie des viroïdes",
+      "reason": "Limite : HLVd concerne le cannabis, mais le fait testé est l’organisation générique d’un viroïde.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-larve-tetranyque",
+      "domain": "offscope",
+      "focus": "Développement des acariens",
+      "reason": "Nombre de pattes larvaires sans lien avec les actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-miellat",
+      "domain": "offscope",
+      "focus": "Excrétion des pucerons",
+      "reason": "Définition du miellat commune aux plantes hôtes.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-oidium",
+      "domain": "offscope",
+      "focus": "Symptômes fongiques",
+      "reason": "Reconnaissance générique d’un oïdium sans lien floral.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-oomycetes",
+      "domain": "offscope",
+      "focus": "Taxonomie microbienne",
+      "reason": "Classement des oomycètes, sans enjeu spécifique aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-parasitoide",
+      "domain": "offscope",
+      "focus": "Écologie des parasitoïdes",
+      "reason": "Définition générale de la parasitoïdie.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-podosphaera",
+      "domain": "offscope",
+      "focus": "Phytopathologie du chanvre",
+      "reason": "Nom d’agent d’oïdium industriel, sans lien utile explicite aux fleurs actives.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-predateurs",
+      "domain": "offscope",
+      "focus": "Taxonomie des auxiliaires",
+      "reason": "Famille d’un acarien prédateur agricole.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-puceron",
+      "domain": "offscope",
+      "focus": "Nutrition des pucerons",
+      "reason": "Prélèvement du phloème, leçon générale d’entomologie.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-pyrale",
+      "domain": "offscope",
+      "focus": "Ravageurs des tiges",
+      "reason": "Galeries de pyrale dans la tige, sans enjeu d’actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-sclerotes",
+      "domain": "offscope",
+      "focus": "Persistance fongique",
+      "reason": "Définition des sclérotes de cultures multiples.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-tetranyque",
+      "domain": "offscope",
+      "focus": "Taxonomie des acariens",
+      "reason": "Classement général du tétranyque.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-thrips",
+      "domain": "offscope",
+      "focus": "Dégâts d’insectes",
+      "reason": "Symptômes foliaires des thrips non spécifiques aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-biodiversity-tordeuse",
+      "domain": "offscope",
+      "focus": "Taxonomie des papillons",
+      "reason": "Famille de la tordeuse, sans question sur résine ou fleurs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-01",
+      "domain": "offscope",
+      "focus": "Parenté botanique",
+      "reason": "Famille commune avec le houblon sans lien aux actifs.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-1-02",
+      "domain": "offscope",
+      "focus": "Système racinaire",
+      "reason": "Morphologie du pivot, sans lien direct aux fleurs ou actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-03",
+      "domain": "offscope",
+      "focus": "Morphologie foliaire",
+      "reason": "Bord denté des folioles sans lien direct aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-04",
+      "domain": "offscope",
+      "focus": "Pigments végétaux",
+      "reason": "Limite : violet du cannabis, mais le fait testé porte sur les pigments foliaires génériques.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-05",
+      "domain": "offscope",
+      "focus": "Phyllotaxie",
+      "reason": "Disposition des feuilles basales sans lien floral ou résineux.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-06",
+      "domain": "offscope",
+      "focus": "Port de la plante",
+      "reason": "Définition du port herbacé sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-07",
+      "domain": "offscope",
+      "focus": "Anatomie des tiges",
+      "reason": "Entre-nœud creux sans usage matériel ni actifs explicitement testés.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-08",
+      "domain": "food",
+      "focus": "Botanique du chènevis",
+      "reason": "Nature d’akène du chènevis entier, fondement de l’aliment graine.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-1-09",
+      "domain": "active",
+      "focus": "Sexes et floraison",
+      "reason": "Fin du cycle des mâles après émission du pollen, botanique directement florale.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-1-10",
+      "domain": "active",
+      "focus": "Pollen du cannabis",
+      "reason": "Propriétés du pollen des fleurs mâles, botanique florale directe.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-1-11",
+      "domain": "active",
+      "focus": "Anatomie florale femelle",
+      "reason": "Rôle de la bractée périgonale autour du fruit, organe floral direct.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-1-12",
+      "domain": "active",
+      "focus": "Trichomes glandulaires",
+      "reason": "Identification du plus petit type de glande du cannabis.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-1-13",
+      "domain": "active",
+      "focus": "Trichomes glandulaires",
+      "reason": "Morphologie de la glande pédonculée liée à la résine.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-1-14",
+      "domain": "offscope",
+      "focus": "Poils non glandulaires",
+      "reason": "Minéral d’un poil explicitement dépourvu de résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-15",
+      "domain": "offscope",
+      "focus": "Morphologie des fruits sauvages",
+      "reason": "Marbrures du périanthe sans intérêt alimentaire ni actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-16",
+      "domain": "offscope",
+      "focus": "Dissémination des fruits",
+      "reason": "Abscission de fruits sauvages sans usage alimentaire ou résineux.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-17",
+      "domain": "offscope",
+      "focus": "Physiologie des graines",
+      "reason": "Définition générale de la dormance, sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-18",
+      "domain": "offscope",
+      "focus": "Taxonomie botanique",
+      "reason": "Ordre des Rosales sans lien direct aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-19",
+      "domain": "offscope",
+      "focus": "Notion taxonomique",
+      "reason": "Définition générique de monotypique appliquée à Cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-1-20",
+      "domain": "offscope",
+      "focus": "Variété industrielle",
+      "reason": "Précocité GEVES de Vega sans profil d’actifs ni usage alimentaire ou textile testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-01",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Association cinéole–eucalyptus dans des fleurs de chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-2-02",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Note florale d’un odorant réellement détecté dans la fleur.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-2-03",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Contribution fromagère d’un odorant de bouquet floral.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-2-04",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Note du méthional dans les fleurs, distincte de skunk.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-2-06",
+      "domain": "active",
+      "focus": "Structure des terpènes",
+      "reason": "Squelette acyclique du myrcène, terpène caractéristique du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-2-07",
+      "domain": "active",
+      "focus": "Biosynthèse des terpènes",
+      "reason": "Rôle direct des terpène synthases du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-2-08",
+      "domain": "active",
+      "focus": "Biosynthèse des terpènes",
+      "reason": "Limite Finola : le fait porte sur deux terpènes floraux produits, pas sur huile, graine ou fibre.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-09",
+      "domain": "active",
+      "focus": "Composés soufrés odorants",
+      "reason": "Signification de VSC dans les travaux sur l’odeur du cannabis.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-2-10",
+      "domain": "active",
+      "focus": "Familles de terpènes",
+      "reason": "Classe du bêta-phellandrène détecté dans le cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-2-11",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Attribution provisoire d’une note poivron à des méthoxypyrazines.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-12",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Attribution provisoire et spécialisée d’une note cannelle.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-13",
+      "domain": "active",
+      "focus": "Arômes des fleurs",
+      "reason": "Molécule provisoire proposée pour la note champignon.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-14",
+      "domain": "active",
+      "focus": "Odeur skunk",
+      "reason": "Thiol spécifique relié à une odeur caractéristique du cannabis.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-2-15",
+      "domain": "offscope",
+      "focus": "Chimie organique générale",
+      "reason": "Reconnaissance de la fonction aldéhyde, sans propriété utile du cannabis testée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-16",
+      "domain": "offscope",
+      "focus": "Compartimentation métabolique",
+      "reason": "Limite : voie terpénique, mais rappel générique des plastes végétaux.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-17",
+      "domain": "offscope",
+      "focus": "Compartimentation métabolique",
+      "reason": "Limite : localisation cytosolique d’une voie végétale générale.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-18",
+      "domain": "active",
+      "focus": "Structure des terpènes",
+      "reason": "Architecture propre au bêta-caryophyllène, terpène du cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-19",
+      "domain": "offscope",
+      "focus": "Biochimie générale",
+      "reason": "Isomérie d’unités C5 universelles, cannabis seulement mentionné.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-2-20",
+      "domain": "offscope",
+      "focus": "Biochimie générale",
+      "reason": "Métabolite initial d’une voie végétale générale.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-3-01",
+      "domain": "materials",
+      "focus": "Béton chanvre-chaux",
+      "reason": "Eau constitutive du matériau de construction.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-3-02",
+      "domain": "materials",
+      "focus": "Composition des fibres",
+      "reason": "Cellulose majoritaire et fonction structurale des fibres de chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-3-03",
+      "domain": "materials",
+      "focus": "Papier absorbant",
+      "reason": "Application papetière concrète d’un mélange bois-chènevotte.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-04",
+      "domain": "materials",
+      "focus": "Pâte à papier",
+      "reason": "Fraction de chaume d’une étude précise, rappel documentaire étroit.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-3-05",
+      "domain": "materials",
+      "focus": "Fabrication du papier",
+      "reason": "Suspension aqueuse de fibres avant formation de feuille.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-3-06",
+      "domain": "materials",
+      "focus": "Composition des fibres",
+      "reason": "Lignine des parois fibreuses, détail de chimie structurale.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-07",
+      "domain": "materials",
+      "focus": "Fibres longues et courtes",
+      "reason": "Distinction utile entre fractions textiles et papetières.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-3-08",
+      "domain": "materials",
+      "focus": "Anatomie des fibres",
+      "reason": "Définition technique du lumen des fibres.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-3-09",
+      "domain": "materials",
+      "focus": "Traitement de surface",
+      "reason": "Lien entre hydrophobie et comportement des composites de chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-10",
+      "domain": "materials",
+      "focus": "Propriétés mécaniques",
+      "reason": "Rigidité élastique des fibres, notion technique de matériaux.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-11",
+      "domain": "materials",
+      "focus": "Fibres et humidité",
+      "reason": "Groupes de cellulose expliquant l’affinité des fibres pour l’eau.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-13",
+      "domain": "materials",
+      "focus": "Cristallinité des fibres",
+      "reason": "Ordre moléculaire de la cellulose, détail technique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-3-14",
+      "domain": "materials",
+      "focus": "Composites plastiques",
+      "reason": "Identification du polypropylène dans un composite chanvre/PP.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-en-3-15",
+      "domain": "materials",
+      "focus": "Essais papetiers",
+      "reason": "Rappel d’un essai ball burst d’une étude précise, très spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-3-16",
+      "domain": "materials",
+      "focus": "Structure des fibres",
+      "reason": "Organisation microfibrillaire déterminant les propriétés des fibres.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-17",
+      "domain": "materials",
+      "focus": "Dommages des composites",
+      "reason": "Définition de délamination appliquée au stratifié de chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-18",
+      "domain": "materials",
+      "focus": "Séparation des fibres",
+      "reason": "Cohésion pectique des faisceaux, liée à leur transformation.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-en-3-19",
+      "domain": "materials",
+      "focus": "Composition des fibres",
+      "reason": "Famille chimique des hémicelluloses pariétales.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-en-3-20",
+      "domain": "materials",
+      "focus": "Résistance du papier",
+      "reason": "Essai de traction à sec ou mouillé, usage papetier direct.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-2ag",
+      "domain": "active",
+      "focus": "Endocannabinoïdes",
+      "reason": "Famille lipidique du 2-AG, acteur du système endocannabinoïde.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-anandamide",
+      "domain": "active",
+      "focus": "Endocannabinoïdes",
+      "reason": "Origine endogène de l’anandamide et distinction avec la plante.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-branches",
+      "domain": "active",
+      "focus": "Biosynthèse cannabinoïde",
+      "reason": "Origine hybride propre aux phytocannabinoïdes.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-cannabinoide",
+      "domain": "active",
+      "focus": "Familles de molécules",
+      "reason": "Reconnaissance du CBG parmi les cannabinoïdes.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-cb1-cb2",
+      "domain": "active",
+      "focus": "Système endocannabinoïde",
+      "reason": "Nature réceptrice de CB1 et CB2.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-cbd-nom",
+      "domain": "active",
+      "focus": "Cannabidiol",
+      "reason": "Développement du sigle CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-cbd-thc-isomeres",
+      "domain": "active",
+      "focus": "Structure des cannabinoïdes",
+      "reason": "Relation structurale entre CBD et THC, objets actifs centraux.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-cbda",
+      "domain": "active",
+      "focus": "Formes acides",
+      "reason": "Correspondance CBDA–CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-cbdas-reaction",
+      "domain": "active",
+      "focus": "Biosynthèse cannabinoïde",
+      "reason": "Transformation du CBGA par la CBDA synthase.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-cbga-carrefour",
+      "domain": "active",
+      "focus": "Biosynthèse cannabinoïde",
+      "reason": "CBGA carrefour direct des principaux cannabinoïdes acides.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-cbgva",
+      "domain": "active",
+      "focus": "Cannabinoïdes variniques",
+      "reason": "Structure du précurseur varinique CBGVA.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-cbn-oxydation",
+      "domain": "active",
+      "focus": "Évolution des cannabinoïdes",
+      "reason": "Formation de CBN par oxydation du THC.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-decarboxylation",
+      "domain": "active",
+      "focus": "Décarboxylation",
+      "reason": "Perte de CO2 lors du passage THCA–THC, sans protocole.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-delta9",
+      "domain": "active",
+      "focus": "Structure du THC",
+      "reason": "Sens de delta-9 dans le nom du THC.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-hhc-epimeres",
+      "domain": "active",
+      "focus": "HHC",
+      "reason": "épimérie des deux formes 9R et 9S du cannabinoïde.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-pparg",
+      "domain": "active",
+      "focus": "Cibles des cannabinoïdes",
+      "reason": "Nature de PPARγ étudié comme cible du THCA.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-evidence-thc-nom",
+      "domain": "active",
+      "focus": "Tétrahydrocannabinol",
+      "reason": "Développement du sigle THC.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-thca-a-b",
+      "domain": "active",
+      "focus": "Cannabinoïdes de la fleur",
+      "reason": "Prédominance des formes acides dans la plante fraîche.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-thcp",
+      "domain": "active",
+      "focus": "THCP",
+      "reason": "Longueur de chaîne distinguant le THCP du THC.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-evidence-variniques",
+      "domain": "active",
+      "focus": "Cannabinoïdes variniques",
+      "reason": "Chaîne propyle caractéristique des variniques.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-genetics-allele",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Définition générique d’allèle, sans trait lié aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-chromosomes-diploides",
+      "domain": "offscope",
+      "focus": "Cytogénétique botanique",
+      "reason": "Nombre de chromosomes sans lien direct aux actifs ou fleurs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-clone",
+      "domain": "offscope",
+      "focus": "Multiplication végétative",
+      "reason": "Définition générale du clone, sans lignée à résine ni profil chimique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-clones-milieu",
+      "domain": "offscope",
+      "focus": "Génotype et milieu",
+      "reason": "Variation de hauteur de clones, leçon générale de phénotype.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-cultivar",
+      "domain": "offscope",
+      "focus": "Vocabulaire horticole",
+      "reason": "Définition de cultivar sans variété à actifs concrète.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-f1",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Définition de F1 sans lignée à résine ni trait actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-famille",
+      "domain": "offscope",
+      "focus": "Taxonomie botanique",
+      "reason": "Nom de famille botanique sans lien direct aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-feral",
+      "domain": "offscope",
+      "focus": "Féralisation",
+      "reason": "Définition d’échappement des cultures industrielles, sans cannabis à actifs testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-genotype",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Définition du génotype sans trait actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-haplotype",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Définition universelle d’haplotype.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-homozygote",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Définition d’homozygotie sans application aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-introgression",
+      "domain": "offscope",
+      "focus": "Génétique des populations",
+      "reason": "Définition d’introgression sans lignée ou teneur active.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-landrace",
+      "domain": "offscope",
+      "focus": "Populations traditionnelles",
+      "reason": "Limite : landrace utile au vocabulaire cannabis, mais ici définition générale sans lignée à résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-mutation-clonale",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Mutation dans les clones, sans trait cannabinoïde ou lignée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-nom-botanique",
+      "domain": "offscope",
+      "focus": "Nomenclature botanique",
+      "reason": "Nom latin sans lien direct aux fleurs ou actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-pangenome",
+      "domain": "offscope",
+      "focus": "Génomique générale",
+      "reason": "Définition du pangénome sans résultat sur actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-phenotype",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Définition du phénotype par hauteur et feuilles.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-recombinaison",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Mécanisme générique du crossing-over.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-genetics-synthases-chromosome",
+      "domain": "active",
+      "focus": "Gènes de cannabinoïdes",
+      "reason": "Localisation chromosomique de THCAS, CBDAS et CBCAS, lien direct aux actifs.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-genetics-xy",
+      "domain": "active",
+      "focus": "Sexe floral",
+      "reason": "Association XY–fleurs mâles, botanique directement florale.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-001",
+      "domain": "active",
+      "focus": "Histoire du haschisch",
+      "reason": "Auteur du récit des expériences parisiennes au haschisch.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-002",
+      "domain": "active",
+      "focus": "Histoire du haschisch",
+      "reason": "Lieu des expériences racontées par Gautier.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-003",
+      "domain": "materials",
+      "focus": "Histoire du papier",
+      "reason": "Recyclage de chiffons de chanvre en supports manuscrits.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-004",
+      "domain": "active",
+      "focus": "Histoire du haschisch",
+      "reason": "Moreau de Tours et étude historique des perceptions sous haschisch.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-005",
+      "domain": "active",
+      "focus": "Histoire médicale du cannabis",
+      "reason": "Titre du traité historique consacré au hachisch et à la pensée.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-006",
+      "domain": "active",
+      "focus": "Culture du haschisch",
+      "reason": "Produit actif à l’origine du nom Club des Hachichins.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-007",
+      "domain": "materials",
+      "focus": "Cordages historiques",
+      "reason": "Chanvre utilisé pour les cordes de Rochefort.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-008",
+      "domain": "materials",
+      "focus": "Histoire textile",
+      "reason": "Foire des chanvriers et tisserands, histoire matérielle locale.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-009",
+      "domain": "materials",
+      "focus": "Réemploi des résidus",
+      "reason": "Usage domestique de résidus du teillage breton.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-010",
+      "domain": "active",
+      "focus": "Archéologie du cannabis",
+      "reason": "Limite : vestige de cannabis à usage actif, mais détail de contamination moderne très périphérique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-011",
+      "domain": "active",
+      "focus": "Archéologie du cannabis",
+      "reason": "Localisation de braseros contenant des traces d’usage du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-012",
+      "domain": "active",
+      "focus": "Histoire du mot marijuana",
+      "reason": "Origine linguistique d’un nom du cannabis récréatif.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-013",
+      "domain": "materials",
+      "focus": "Histoire des usages textiles",
+      "reason": "Chanvre de Washington destiné aux cordages, sacs, toiles et filets.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-014",
+      "domain": "active",
+      "focus": "Histoire du haschisch",
+      "reason": "Hôte peintre des réunions au haschisch de Pimodan.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-015",
+      "domain": "active",
+      "focus": "Littérature du haschisch",
+      "reason": "Revue ayant publié le récit de Gautier.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-016",
+      "domain": "materials",
+      "focus": "Textile artistique",
+      "reason": "Support de peinture religieuse en toile de chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-017",
+      "domain": "active",
+      "focus": "Littérature du haschisch",
+      "reason": "Date précise du récit de Gautier, rappel historique étroit.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-018",
+      "domain": "materials",
+      "focus": "Mythe du papier de chanvre",
+      "reason": "Correction d’une attribution matérielle célèbre et erronée.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-019",
+      "domain": "active",
+      "focus": "Histoire du haschisch",
+      "reason": "Distinction entre réunions attestées et mythe de société secrète.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-020",
+      "domain": "active",
+      "focus": "Littérature du haschisch",
+      "reason": "Baudelaire auteur des Paradis artificiels.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-021",
+      "domain": "materials",
+      "focus": "Histoire textile bretonne",
+      "reason": "Nom des toiles de chanvre de Locronan.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-022",
+      "domain": "materials",
+      "focus": "Histoire textile bretonne",
+      "reason": "Commune de production des Noyales, rappel local.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-023",
+      "domain": "materials",
+      "focus": "Vocabulaire textile",
+      "reason": "étymologie de canevas reliée au chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-024",
+      "domain": "materials",
+      "focus": "Usages navals",
+      "reason": "Étoupe de chanvre utilisée au calfatage.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-025",
+      "domain": "materials",
+      "focus": "Cordages historiques",
+      "reason": "Identification et date de la Corderie royale de Rochefort.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-026",
+      "domain": "offscope",
+      "focus": "Histoire du lin",
+      "reason": "Le fait testé porte sur les crées en lin, pas sur le chanvre.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-027",
+      "domain": "offscope",
+      "focus": "Histoire du lin",
+      "reason": "Localisation des bretagnes en lin, digression textile.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-028",
+      "domain": "offscope",
+      "focus": "Mécanisation industrielle",
+      "reason": "Transfert de compétences textile sans lien explicite au chanvre.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-029",
+      "domain": "active",
+      "focus": "Archéologie du cannabis",
+      "reason": "Identification du dépôt de cannabis de Yanghai, usage actif envisagé avec réserve.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-030",
+      "domain": "offscope",
+      "focus": "Mobilier funéraire",
+      "reason": "Limite Yanghai : instrument voisin du cannabis, mais aucun fait sur le cannabis lui-même.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-031",
+      "domain": "active",
+      "focus": "Littérature du haschisch",
+      "reason": "Auteur du témoignage américain The Hasheesh Eater.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-032",
+      "domain": "materials",
+      "focus": "Histoire des cordages",
+      "reason": "Transition des cordages végétaux vers le nylon.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-033",
+      "domain": "materials",
+      "focus": "Assemblage des cordages",
+      "reason": "Alternance des torsions des composants de cordes historiques.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-034",
+      "domain": "materials",
+      "focus": "Cordages industriels",
+      "reason": "Fonction de traction d’une corde de chanvre ferroviaire.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-035",
+      "domain": "materials",
+      "focus": "Équipement historique",
+      "reason": "Semelles en chanvre d’une ascension documentée.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-036",
+      "domain": "materials",
+      "focus": "Histoire textile navale",
+      "reason": "Règne associé à un approvisionnement local en toile.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-037",
+      "domain": "materials",
+      "focus": "Filets historiques",
+      "reason": "Sennes réparées avec du chanvre à Mount Vernon.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-038",
+      "domain": "materials",
+      "focus": "Teillage traditionnel",
+      "reason": "Fonction de la pesselle dans la préparation textile.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-039",
+      "domain": "materials",
+      "focus": "Teillage traditionnel",
+      "reason": "Braie utilisée pour briser la partie ligneuse des tiges.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-040",
+      "domain": "materials",
+      "focus": "Préparation textile",
+      "reason": "Peigne séparant les fibres et retirant le bois résiduel.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-041",
+      "domain": "offscope",
+      "focus": "Taphonomie des graines",
+      "reason": "Déplacement de graines dans un naufrage sans usage alimentaire établi.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-042",
+      "domain": "active",
+      "focus": "Histoire du mot marijuana",
+      "reason": "Statut incertain de l’étymologie populaire María–Juana.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-043",
+      "domain": "active",
+      "focus": "Archéologie du cannabis",
+      "reason": "Localisation du dépôt de cannabis de Yanghai.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-044",
+      "domain": "active",
+      "focus": "Archéologie du cannabis",
+      "reason": "Alias du site de Jirzankal, détail documentaire étroit.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-045",
+      "domain": "active",
+      "focus": "Histoire des usages actifs",
+      "reason": "Datation des braseros de cannabis de Jirzankal.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-046",
+      "domain": "active",
+      "focus": "Preuves archéochimiques",
+      "reason": "GC-MS employée pour caractériser les résidus de cannabis des braseros.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-047",
+      "domain": "offscope",
+      "focus": "Conservation archéologique",
+      "reason": "Limite Yanghai : conditions du sol conservant tout vestige, pas fait sur les usages actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-048",
+      "domain": "active",
+      "focus": "Limites des indices archéologiques",
+      "reason": "La taille des graines ne permet pas d’attribuer un usage psychoactif ni une teneur THC.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-049",
+      "domain": "offscope",
+      "focus": "Inventaire archéologique",
+      "reason": "Nombre de graines découvertes sans usage alimentaire ou actif établi.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-050",
+      "domain": "food",
+      "focus": "Histoire alimentaire",
+      "reason": "Hypothèse contextualisée de stock de graines alimentaires à Haimenkou.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-051",
+      "domain": "active",
+      "focus": "Littérature du haschisch",
+      "reason": "Critique de la volonté par Baudelaire, culture spécifique du haschisch.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-052",
+      "domain": "active",
+      "focus": "Culture du haschisch",
+      "reason": "Refus du dawamesk par Balzac rapporté par Baudelaire.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-053",
+      "domain": "active",
+      "focus": "Histoire du haschisch",
+      "reason": "Hôte d’une expérience parisienne de 1840, anecdote spécialisée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-054",
+      "domain": "active",
+      "focus": "Histoire antique du cannabis",
+      "reason": "Hérodote et témoignage sur des pratiques scythes du chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hc-055",
+      "domain": "materials",
+      "focus": "Protection des cordages",
+      "reason": "Goudronnage historique des cordes de chanvre contre l’eau.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-056",
+      "domain": "materials",
+      "focus": "Histoire du chanvre textile",
+      "reason": "Toponyme Canebière relié à une chanvrière ; lien textile historique indirect.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-058",
+      "domain": "active",
+      "focus": "Archéologie des usages actifs",
+      "reason": "Braseros en bois contenant des résidus de cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hc-059",
+      "domain": "offscope",
+      "focus": "Huile technique",
+      "reason": "Limite : peintures, vernis et savons d’huile de graines, hors alimentation et hors fibres/textile/papier/bâtiment explicite.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hc-060",
+      "domain": "active",
+      "focus": "Histoire du mot marijuana",
+      "reason": "Passage du mot par l’anglais américain avant le français.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-1937-date",
+      "domain": "active",
+      "focus": "Histoire du droit du cannabis",
+      "reason": "Formulaire imposé aux transferts de marihuana en 1937.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-1937-exemptions",
+      "domain": "active",
+      "focus": "Périmètre du droit du cannabis",
+      "reason": "Exclusion des tiges et fibres de la définition légale de marihuana.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-1937-law",
+      "domain": "active",
+      "focus": "Histoire du droit du cannabis",
+      "reason": "Identification du Marihuana Tax Act et de son dispositif.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-1971-subject",
+      "domain": "active",
+      "focus": "Histoire politique du cannabis",
+      "reason": "Titre du rapport Shafer consacré à la marijuana.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-1988-adoption",
+      "domain": "offscope",
+      "focus": "Droit international général",
+      "reason": "Secret bancaire et entraide judiciaire, sans règle propre au cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-1988-name",
+      "domain": "offscope",
+      "focus": "Droit financier antidrogue",
+      "reason": "Blanchiment des profits du trafic, règle générale non spécifique au cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-act-schedule",
+      "domain": "active",
+      "focus": "Histoire du droit du cannabis",
+      "reason": "Classement fédéral initial du cannabis en 1970.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-canada-date",
+      "domain": "active",
+      "focus": "Évaluation de la légalisation",
+      "reason": "Examen législatif prévu dans le cadre canadien du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-canada-federal",
+      "domain": "active",
+      "focus": "Histoire coloniale du cannabis",
+      "reason": "Périmètre géographique de l’Indian Hemp Drugs Commission.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-canada-scope",
+      "domain": "active",
+      "focus": "Légalisation canadienne",
+      "reason": "Modèle de légalisation réglementée du cannabis adulte en 2018.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-csa-5schedules",
+      "domain": "active",
+      "focus": "Histoire des études cannabis",
+      "reason": "Organisme supervisant le volet sociologique du rapport LaGuardia, détail étroit.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-csa-name",
+      "domain": "offscope",
+      "focus": "Droit général des substances",
+      "reason": "Identification du CSA et des schedules sans règle cannabis propre testée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-csa-vs-tax",
+      "domain": "offscope",
+      "focus": "Histoire des traités antidrogue",
+      "reason": "Date et titre de la Convention de l’opium sans disposition cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-film-use",
+      "domain": "offscope",
+      "focus": "Histoire administrative antidrogue",
+      "reason": "Premier commissaire du FBN sans action spécifique sur le cannabis testée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-hemp-archival-date",
+      "domain": "active",
+      "focus": "Cannabis médical historique",
+      "reason": "Nom de la Proposition 215 californienne.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-hempfilm",
+      "domain": "materials",
+      "focus": "Propagande du chanvre textile",
+      "reason": "Film Hemp for Victory consacré aux fibres et tissus militaires.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-psychotropic",
+      "domain": "offscope",
+      "focus": "Droit international général",
+      "reason": "Régime scientifique du tableau I sans substance cannabis nommée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-single",
+      "domain": "offscope",
+      "focus": "Histoire générale des traités",
+      "reason": "Identification de la Convention unique sans contenu spécifique cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-single-1972",
+      "domain": "offscope",
+      "focus": "Histoire générale des traités",
+      "reason": "Date du protocole d’amendement sans disposition cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-un-psychotropics-city",
+      "domain": "offscope",
+      "focus": "Histoire générale des traités",
+      "reason": "Ville d’adoption d’un traité sur les psychotropes.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-un-venue",
+      "domain": "offscope",
+      "focus": "Histoire générale des traités",
+      "reason": "Ville d’adoption d’un traité sur les stupéfiants.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-un1961-into-force",
+      "domain": "offscope",
+      "focus": "Histoire générale des traités",
+      "reason": "Date d’entrée en vigueur sans règle cannabis spécifique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-hist-un2020-schedule",
+      "domain": "active",
+      "focus": "Classement international du cannabis",
+      "reason": "Portée réelle du retrait du cannabis et de la résine du tableau IV.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-control",
+      "domain": "active",
+      "focus": "Régulation uruguayenne",
+      "reason": "Institution propre au contrôle du cannabis légal.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-law",
+      "domain": "active",
+      "focus": "Légalisation uruguayenne",
+      "reason": "Pays ayant adopté la loi de régulation du cannabis de 2013.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-policy",
+      "domain": "active",
+      "focus": "Politique du cannabis",
+      "reason": "Finalité de réduction des risques du cadre uruguayen.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "domain": "active",
+      "focus": "Registres du cannabis",
+      "reason": "Protection spécifique des identités inscrites auprès de l’IRCCA.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-vote",
+      "domain": "active",
+      "focus": "Classement international du cannabis",
+      "reason": "Organe ayant voté sur le cannabis en 2020.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-hist-vote-numbers",
+      "domain": "active",
+      "focus": "Histoire du droit du cannabis",
+      "reason": "Décompte exact du vote de 2020, rappel historique spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-sci-2ag",
+      "domain": "active",
+      "focus": "Endocannabinoïdes",
+      "reason": "Développement du nom du 2-AG.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-2ag-1995",
+      "domain": "active",
+      "focus": "Histoire scientifique",
+      "reason": "Année de publication initiale sur le 2-AG.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-2ag-cb1cb2",
+      "domain": "active",
+      "focus": "Système endocannabinoïde",
+      "reason": "Récepteurs CB1 et CB2 ciblés par le 2-AG.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-2ag-study-assay",
+      "domain": "active",
+      "focus": "Biosynthèse cannabinoïde",
+      "reason": "Fonction prényltransférase de GOT dans la formation du CBGA.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-anandamide",
+      "domain": "active",
+      "focus": "Découverte des endocannabinoïdes",
+      "reason": "Identification de l’anandamide dans les travaux de 1992.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-molecule",
+      "domain": "active",
+      "focus": "Métabolisme endocannabinoïde",
+      "reason": "Limite : organisation membranaire de FAAH, détail périphérique d’une enzyme du système endocannabinoïde.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-name",
+      "domain": "active",
+      "focus": "Structure de l’anandamide",
+      "reason": "Constituant éthanolamine d’un endocannabinoïde précis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-precursor",
+      "domain": "active",
+      "focus": "Structure de l’anandamide",
+      "reason": "Liaison amide caractérisant cet endocannabinoïde.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-tissue",
+      "domain": "active",
+      "focus": "Histoire scientifique",
+      "reason": "Tissu utilisé lors de la découverte de l’anandamide.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptor-gprotein",
+      "domain": "active",
+      "focus": "Biosynthèse cannabinoïde",
+      "reason": "Formation du CBGA à partir de deux précurseurs.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptors-contrast",
+      "domain": "active",
+      "focus": "Signalisation cannabinoïde",
+      "reason": "Couplage direct de CB1 et CB2 aux protéines G.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-cb1",
+      "domain": "active",
+      "focus": "Découverte des récepteurs",
+      "reason": "CB1 premier récepteur cannabinoïde cloné.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cb1-brain",
+      "domain": "active",
+      "focus": "Système endocannabinoïde",
+      "reason": "Distribution neuronale prédominante de CB1.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-cb1-cb2-sequence",
+      "domain": "active",
+      "focus": "Récepteurs cannabinoïdes",
+      "reason": "Pourcentage d’identité de séquence CB1/CB2, détail d’article spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-sci-cb1-clone",
+      "domain": "active",
+      "focus": "Histoire scientifique",
+      "reason": "Équipe ayant cloné CB1.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cb2",
+      "domain": "active",
+      "focus": "Découverte des récepteurs",
+      "reason": "CB2 cloné après CB1 en 1993.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cb2-tissue",
+      "domain": "active",
+      "focus": "Système endocannabinoïde",
+      "reason": "Expression principalement immunitaire de CB2.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-cbd-1940",
+      "domain": "active",
+      "focus": "Structure du CBD",
+      "reason": "Position des hydroxyles du cannabidiol.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cbd-mn-vs-indian",
+      "domain": "active",
+      "focus": "Histoire scientifique du CBD",
+      "reason": "Affiliation institutionnelle d’une publication historique, rappel étroit.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-hs-sci-cbd-not-thc",
+      "domain": "active",
+      "focus": "Biosynthèse des endocannabinoïdes",
+      "reason": "Substrat lipidique formant directement le 2-AG.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-cbd-structure-date",
+      "domain": "active",
+      "focus": "Histoire scientifique du CBD",
+      "reason": "Élucidation de la structure du cannabidiol en 1963.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-cbd-workers",
+      "domain": "active",
+      "focus": "Métabolisme endocannabinoïde",
+      "reason": "Enzyme MAGL participant à l’inactivation du 2-AG.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-mechoulam-country",
+      "domain": "active",
+      "focus": "Histoire scientifique du CBD",
+      "reason": "Pays de l’institut du travail sur la structure du CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-osaughnessy",
+      "domain": "active",
+      "focus": "Histoire médicale du cannabis",
+      "reason": "Mémoire historique d’O’Shaughnessy sur le chanvre indien.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-receptors-type",
+      "domain": "active",
+      "focus": "Métabolisme endocannabinoïde",
+      "reason": "FAAH hydrolysant l’anandamide.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-hs-sci-thc-1964",
+      "domain": "active",
+      "focus": "Découverte du THC",
+      "reason": "Identification du delta-9-THC dans les travaux de 1964.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-hs-sci-thc-stereochemistry",
+      "domain": "active",
+      "focus": "Histoire chimique du THC",
+      "reason": "Portée de la publication historique, sans protocole de synthèse.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-caryophyllene-arome",
+      "domain": "active",
+      "focus": "Arôme du caryophyllène",
+      "reason": "Notes boisées et épicées du terpène.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-caryophyllene-oxyde",
+      "domain": "active",
+      "focus": "Structure des terpénoïdes",
+      "reason": "Motif époxyde de l’oxyde de caryophyllène.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-cineole",
+      "domain": "active",
+      "focus": "Identité des terpènes",
+      "reason": "Équivalence entre cinéole et eucalyptol.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-cineole-fonction",
+      "domain": "active",
+      "focus": "Structure des terpènes",
+      "reason": "Fonction éther du cinéole, terpène précis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-enantiomeres",
+      "domain": "active",
+      "focus": "Stéréochimie des terpènes",
+      "reason": "Relation spatiale des deux formes du linalol.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-ester",
+      "domain": "active",
+      "focus": "Diversité des odorants",
+      "reason": "Ester présent dans des extraits de cannabis, au-delà des terpènes.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-fpp",
+      "domain": "active",
+      "focus": "Biosynthèse des terpènes",
+      "reason": "Précurseur direct des sesquiterpènes du chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-gpp",
+      "domain": "active",
+      "focus": "Biosynthèse des terpènes",
+      "reason": "Précurseur direct des monoterpènes du chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-guaiol",
+      "domain": "active",
+      "focus": "Familles de terpénoïdes",
+      "reason": "Nature d’alcool sesquiterpénique du guaiol.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-humulene",
+      "domain": "active",
+      "focus": "Identité des terpènes",
+      "reason": "Synonyme de l’humulène et distinction du bêta-caryophyllène.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-limonene",
+      "domain": "active",
+      "focus": "Arôme du limonène",
+      "reason": "Repère agrumes sans promesse d’effet.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-linalol-arome",
+      "domain": "active",
+      "focus": "Arôme du linalol",
+      "reason": "Repère floral et lavandé du terpène.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-linalol-fonction",
+      "domain": "active",
+      "focus": "Structure des terpènes",
+      "reason": "Fonction alcool du linalol.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-monoterpene",
+      "domain": "active",
+      "focus": "Familles de terpènes",
+      "reason": "Nombre de carbones des monoterpènes et exemples du chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-myrcene",
+      "domain": "active",
+      "focus": "Identité des terpènes",
+      "reason": "Identité bêta-myrcène dans les profils de cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-ocimene-e",
+      "domain": "active",
+      "focus": "Stéréochimie des terpènes",
+      "reason": "Géométrie E du bêta-ocimène, détail moléculaire spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-molecules-pinene-arome",
+      "domain": "active",
+      "focus": "Arôme du pinène",
+      "reason": "Repère pin et térébenthine de l’alpha-pinène.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-pinenes-isomeres",
+      "domain": "active",
+      "focus": "Structure des terpènes",
+      "reason": "Différence entre alpha-pinène et bêta-pinène.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-molecules-sesquiterpene",
+      "domain": "active",
+      "focus": "Familles de terpènes",
+      "reason": "Carbones des sesquiterpènes et exemples du chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-molecules-skunk-thiol",
+      "domain": "active",
+      "focus": "Odeur skunk",
+      "reason": "Contribution des thiols prénylés dans certains cannabis.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-plant-annuelle",
+      "domain": "offscope",
+      "focus": "Cycle végétal",
+      "reason": "Définition générale d’annuelle sans lien direct floral ou actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-antheres",
+      "domain": "active",
+      "focus": "Fleurs mâles",
+      "reason": "Formation du pollen dans les anthères du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-plant-autofloraison",
+      "domain": "active",
+      "focus": "Autofloraison",
+      "reason": "Dépendance réduite à la photopériode, caractère floral direct.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-plant-bractee",
+      "domain": "active",
+      "focus": "Anatomie des inflorescences",
+      "reason": "Nature de la bractée directement associée aux fleurs.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-plant-cotyledons",
+      "domain": "offscope",
+      "focus": "Embryologie végétale",
+      "reason": "Nombre de cotylédons sans lien aux actifs ou alimentation.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-dioecie",
+      "domain": "active",
+      "focus": "Sexes floraux",
+      "reason": "Dioécie et répartition des fleurs mâles/femelles.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-plant-feuille-palmee",
+      "domain": "offscope",
+      "focus": "Morphologie foliaire",
+      "reason": "Définition des folioles sans lien aux fleurs ou actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-filaments-femelles",
+      "domain": "active",
+      "focus": "Fleurs femelles",
+      "reason": "Identification des branches stigmatiques visibles.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-plant-inflorescence",
+      "domain": "active",
+      "focus": "Inflorescences femelles",
+      "reason": "Organisation de la tête en nombreuses fleurs et bractées.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-plant-monoecie",
+      "domain": "active",
+      "focus": "Sexes floraux",
+      "reason": "Monoécie et répartition des fleurs sur un individu.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-plant-noeud",
+      "domain": "offscope",
+      "focus": "Morphologie végétale",
+      "reason": "Définition du nœud d’insertion foliaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-perianthe",
+      "domain": "active",
+      "focus": "Anatomie florale",
+      "reason": "Périanthe réduit de la fleur femelle du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-plant-petiole",
+      "domain": "offscope",
+      "focus": "Morphologie foliaire",
+      "reason": "Définition générale du pétiole.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-photoperiode",
+      "domain": "offscope",
+      "focus": "Physiologie végétale",
+      "reason": "Définition générale de photopériode sans floraison testée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-photosynthese",
+      "domain": "offscope",
+      "focus": "Biologie générale",
+      "reason": "Définition de photosynthèse avec cannabis comme exemple interchangeable.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-racines",
+      "domain": "offscope",
+      "focus": "Biologie générale",
+      "reason": "Fonction absorbante des racines commune aux plantes.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-stigmate",
+      "domain": "active",
+      "focus": "Pollinisation des fleurs",
+      "reason": "Réception du pollen par le stigmate femelle.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-plant-stipules",
+      "domain": "offscope",
+      "focus": "Morphologie foliaire",
+      "reason": "Localisation des stipules sans lien direct aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-plant-transport-pollen",
+      "domain": "active",
+      "focus": "Pollinisation du cannabis",
+      "reason": "Dispersion majoritaire du pollen par le vent.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-plant-trichome",
+      "domain": "active",
+      "focus": "Glandes à résine",
+      "reason": "Production et accumulation de cannabinoïdes et terpènes dans les trichomes.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-prevention-andain",
+      "domain": "materials",
+      "focus": "Récolte de paille",
+      "reason": "Andain de paille de chanvre, étape de filière fibre ; vocabulaire technique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-battage",
+      "domain": "food",
+      "focus": "Récolte du chènevis",
+      "reason": "Battage des graines distinct du décorticage et pressage.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-bris-graines",
+      "domain": "food",
+      "focus": "Oxydation de l’huile",
+      "reason": "Limite du seul indice de peroxyde pour juger une huile vieillie.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-condensation",
+      "domain": "offscope",
+      "focus": "Physique générale",
+      "reason": "Condensation d’eau sur une paroi, sans spécificité cannabis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-echauffement",
+      "domain": "food",
+      "focus": "Conservation des graines",
+      "reason": "échauffement d’un lot de chènevis humide.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-fanage",
+      "domain": "materials",
+      "focus": "Préparation de paille",
+      "reason": "Fanage de la paille avant usages fibreux ; lien matériel indirect.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-gel-plantule",
+      "domain": "offscope",
+      "focus": "Agronomie généraliste",
+      "reason": "Stade de fragilité au gel du chanvre agricole, sans enjeu actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-hors-sol",
+      "domain": "offscope",
+      "focus": "Substrats horticoles",
+      "reason": "Classification générique d’un substrat coco sans lien floral ou actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-huile-rance",
+      "domain": "food",
+      "focus": "Rancissement de l’huile",
+      "reason": "Oxydation dégradant odeur et saveur de l’huile alimentaire.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-prevention-humidite-relative",
+      "domain": "offscope",
+      "focus": "Physique de l’air",
+      "reason": "Variation d’humidité relative, cannabis interchangeable.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-hydroperoxydes",
+      "domain": "food",
+      "focus": "Oxydation de l’huile",
+      "reason": "Hydroperoxydes produits au début de l’oxydation du chènevis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-maturite",
+      "domain": "food",
+      "focus": "Maturation du chènevis",
+      "reason": "Ordre de maturité des fruits destinés à la récolte de graines.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-nuages",
+      "domain": "offscope",
+      "focus": "Météorologie générale",
+      "reason": "Nuages et rayonnement, sans spécificité cannabis à actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-paille",
+      "domain": "materials",
+      "focus": "Matière première fibreuse",
+      "reason": "Identification des tiges constituant la paille de chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-prevention-plein-champ",
+      "domain": "offscope",
+      "focus": "Hydrologie générale",
+      "reason": "Définition de ruissellement sans enjeu cannabis spécifique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-point-rosee",
+      "domain": "offscope",
+      "focus": "Physique générale",
+      "reason": "Définition du point de rosée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-sechage",
+      "domain": "food",
+      "focus": "Conservation du chènevis",
+      "reason": "Eau retirée au séchage des graines alimentaires.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-prevention-serre",
+      "domain": "offscope",
+      "focus": "Optique générale",
+      "reason": "Transmission lumineuse par une serre, sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-transpiration",
+      "domain": "offscope",
+      "focus": "Physiologie végétale",
+      "reason": "Définition de transpiration commune aux plantes.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-prevention-turgescence",
+      "domain": "offscope",
+      "focus": "Physiologie végétale",
+      "reason": "Définition de turgescence sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-profiles-beton",
+      "domain": "materials",
+      "focus": "Béton de chanvre",
+      "reason": "Constituants principaux chènevotte et liant de chaux.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-carbonatation",
+      "domain": "materials",
+      "focus": "Chaux de construction",
+      "reason": "CO2 réagissant lors de la carbonatation du béton de chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-profiles-chenevotte",
+      "domain": "materials",
+      "focus": "Fractions de tige",
+      "reason": "Chènevotte distincte des fibres périphériques.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-etoupes",
+      "domain": "materials",
+      "focus": "Fibres textiles",
+      "reason": "Définition des étoupes courtes.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-filature",
+      "domain": "materials",
+      "focus": "Filature",
+      "reason": "Production de fil à partir de fibres préparées.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-fines",
+      "domain": "materials",
+      "focus": "Défibrage industriel",
+      "reason": "Fines et poussières séparées lors du traitement des tiges.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-profiles-hygroscopie",
+      "domain": "materials",
+      "focus": "Humidité des matériaux",
+      "reason": "Échanges de vapeur d’eau des matériaux hygroscopiques.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-isolation",
+      "domain": "materials",
+      "focus": "Isolation du bâtiment",
+      "reason": "Fonction thermique de la laine de chanvre dans une paroi.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-litiere",
+      "domain": "offscope",
+      "focus": "Litière animale",
+      "reason": "Limite : absorption de chènevotte pour litière, hors fibres/textile/papier/bâtiment demandé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-profiles-matrice",
+      "domain": "materials",
+      "focus": "Composites fibreux",
+      "reason": "Rôle de la matrice autour des fibres de chanvre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-profiles-ourdissage",
+      "domain": "materials",
+      "focus": "Tissage",
+      "reason": "Ourdissage préparant les fils de chaîne.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-profiles-papier",
+      "domain": "materials",
+      "focus": "Papier de chanvre",
+      "reason": "Réseau de fibres distinct de la construction tissée.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-pectines",
+      "domain": "materials",
+      "focus": "Rouissage",
+      "reason": "Dégradation des pectines facilitant la séparation des fibres.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-peignage",
+      "domain": "materials",
+      "focus": "Préparation textile",
+      "reason": "Parallélisation des fibres par peignage.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-profiles-position-fibres",
+      "domain": "materials",
+      "focus": "Anatomie textile",
+      "reason": "Localisation périphérique des fibres dans le liber.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-remplissage",
+      "domain": "materials",
+      "focus": "Construction chanvre",
+      "reason": "Rôle de remplissage isolant du béton de chanvre dans une ossature.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-renfort",
+      "domain": "materials",
+      "focus": "Composites fibreux",
+      "reason": "Fibres de chanvre comme renfort mécanique.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-rouissage-organismes",
+      "domain": "materials",
+      "focus": "Rouissage biologique",
+      "reason": "Groupes microbiens participant à la transformation des tiges.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-profiles-teillage",
+      "domain": "materials",
+      "focus": "Teillage",
+      "reason": "Séparation mécanique des fibres et de la chènevotte.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-profiles-tissage",
+      "domain": "materials",
+      "focus": "Tissage",
+      "reason": "Entrecroisement chaîne–trame dans une étoffe de chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-auto-angel-introgression",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Parent annoncé de la version autoflorissante de Charlotte’s Angel.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-auto-angel-parent-aromes",
+      "domain": "active",
+      "focus": "Arômes de variétés CBD",
+      "reason": "Comparaison sensorielle attribuée entre deux lignées CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-auto-victory-deux-cannabinoides",
+      "domain": "active",
+      "focus": "Profils CBD et CBDV",
+      "reason": "Association ciblée de deux cannabinoïdes dans Auto CBD-Victory.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-autoflower1-recessif",
+      "domain": "active",
+      "focus": "Génétique de floraison",
+      "reason": "Hérédité spécifique d’un locus d’autofloraison cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-baox-nom-apparentement",
+      "domain": "active",
+      "focus": "Identité de variétés CBD",
+      "reason": "Discordance génétique des matériels Baox de fournisseurs différents.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-blue-auto-base-heterogene",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Population fondatrice annoncée de Blue Auto CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-blue-auto-selection-architecture",
+      "domain": "active",
+      "focus": "Sélection de fleurs CBD",
+      "reason": "Objectif de densité florale de Blue Auto CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-blue-c-birdie-pedigree",
+      "domain": "active",
+      "focus": "Lignées externes",
+      "reason": "Pedigree annoncé de Blue C-Birdie.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-canna-cheese-profil-sale",
+      "domain": "active",
+      "focus": "Arômes de variétés",
+      "reason": "Bouquet inhabituel attribué à Canna-Cheese 1:1.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-canna-cheese-variation-tests",
+      "domain": "active",
+      "focus": "Variabilité CBD/THC",
+      "reason": "Tests montrant des variations de profil dans une sélection nommée 1:1.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-cbd-feuilles-herbivorie",
+      "domain": "active",
+      "focus": "Rôle écologique du CBD",
+      "reason": "Herbivorie différente selon présence et dominance du cannabinoïde.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-ccp1-gene-interroge",
+      "domain": "active",
+      "focus": "Gènes de cannabinoïdes",
+      "reason": "Gène CBDAS directement interrogé par un test de chimotype.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-charlotte-angel-aromes",
+      "domain": "active",
+      "focus": "Arômes de variétés CBD",
+      "reason": "Bouquet annoncé de Charlotte’s Angel.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-charlotte-angel-pedigree",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Pedigree annoncé de Charlotte’s Angel.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-chimotype-rapport-versus-total",
+      "domain": "active",
+      "focus": "Génétique des chimotypes",
+      "reason": "Distinction entre rapport CBD/THC et teneur totale.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-cornell-apex-biomasse",
+      "domain": "active",
+      "focus": "Analyse de fleurs CBD",
+      "reason": "Apex et biomasse florale non interchangeables selon cultivar.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-critical-cure-collaboration",
+      "domain": "active",
+      "focus": "Breeders externes",
+      "reason": "Collaboration annoncée pour la création de CBD Critical Cure.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-csp1-femelles-monoeciques",
+      "domain": "active",
+      "focus": "Expression sexuelle florale",
+      "reason": "Femelles génétiques portant aussi des fleurs mâles.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-early1-autoflower1-loci",
+      "domain": "active",
+      "focus": "Génétique de floraison",
+      "reason": "Distinction génomique entre précocité et autofloraison.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-highness-joanne-profils",
+      "domain": "active",
+      "focus": "Profils de variétés CBD",
+      "reason": "équilibre CBD/THC distinct d’une dominance CBD dans une gamme.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-jacky-consanguinite",
+      "domain": "active",
+      "focus": "Sélection de lignées CBD",
+      "reason": "Risque de consanguinité dans l’histoire concrète de Jacky CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-jacky-selection-etapes",
+      "domain": "active",
+      "focus": "Histoire d’une lignée CBD",
+      "reason": "Ordre des phases de sélection de Jacky CBD, sans conseil de culture.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-joanne-pedigree",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Pedigree déclaré de Joanne’s CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-joanne-session-architecture",
+      "domain": "active",
+      "focus": "Objectif de sélection CBD",
+      "reason": "Architecture recherchée dans la création précise de Joanne’s CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-lemon-potion-rapport-annonce",
+      "domain": "active",
+      "focus": "Profils de variétés CBD",
+      "reason": "Interprétation d’un rapport CBD/THC commercial explicitement annoncé.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-maturation-fraction-neutre",
+      "domain": "active",
+      "focus": "Maturation des cannabinoïdes",
+      "reason": "Évolution de la fraction neutre dans les fleurs de cultivars CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-medical-mass-miel",
+      "domain": "active",
+      "focus": "Arômes de variétés CBD",
+      "reason": "Comparaison au miel du bouquet de Medical Mass.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-picolo-limite-marqueur",
+      "domain": "active",
+      "focus": "Génétique de floraison",
+      "reason": "Limites d’un marqueur d’autofloraison chez Picolo, caractère floral direct.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-ravenberry-parcours-selection",
+      "domain": "active",
+      "focus": "Histoire de lignées externes",
+      "reason": "Lieux successifs du projet Ravenberry, anecdote de breeder.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-a01-rn17-trois-profils",
+      "domain": "active",
+      "focus": "Variabilité des chimotypes",
+      "reason": "Trois profils cannabinoïdes observés dans RN17 commercialisé pour CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-royal-highness-pedigree",
+      "domain": "active",
+      "focus": "Lignées externes",
+      "reason": "Pedigree annoncé de Royal Highness.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-sans-cannabinoides-trichomes",
+      "domain": "active",
+      "focus": "Trichomes et cannabinoïdes",
+      "reason": "Morphologie glandulaire comparée selon présence d’actifs.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-selection-fibre-cannabinoides-faibles",
+      "domain": "materials",
+      "focus": "Sélection du chanvre textile",
+      "reason": "Limite : fait demandé = objectif fibres du programme ukrainien, malgré mention de cannabinoïdes faibles.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-solomatic-gingembre-pin",
+      "domain": "active",
+      "focus": "Arômes de variétés CBD",
+      "reason": "Notes de gingembre et pin attribuées à Solomatic CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-solomatic-pedigree",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Pedigree officiel annoncé de Solomatic CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-stress-rapport-cbd-thc",
+      "domain": "active",
+      "focus": "Profils de cannabinoïdes",
+      "reason": "Rapport CBD/THC mesuré sous stress dans un essai, sans optimisation de culture.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-tatanka-hommage",
+      "domain": "active",
+      "focus": "Culture des variétés CBD",
+      "reason": "Personnalité honorée par le nom Tatanka Pure CBD.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-tatanka-pedigree",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Croisement annoncé de Tatanka Pure CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-a01-thumper-profil-aromatique",
+      "domain": "active",
+      "focus": "Arômes de variétés CBD",
+      "reason": "Bouquet annoncé de Thumper Therapy sans assimilation aux ingrédients.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-a01-thumper-therapy-pedigree",
+      "domain": "active",
+      "focus": "Lignées CBD externes",
+      "reason": "Croisement annoncé de Thumper Therapy.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-afina-shared-bedrocan-forte-products",
+      "domain": "active",
+      "focus": "Chemovars de fleurs actives",
+      "reason": "Chemovar Afina commun à deux références THC.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-ak47-claimed-colombian-mexican-thai-afghan",
+      "domain": "active",
+      "focus": "Ascendances de cannabis récréatif",
+      "reason": "Ensemble d’ascendances revendiquées pour AK-47.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-ak47-claimed-creator-serious-seeds",
+      "domain": "active",
+      "focus": "Breeders externes",
+      "reason": "Créateur revendiqué de la version Serious Seeds d’AK-47.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-autoduck-frisianduck-auto-whitewidow",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Croisement annoncé d’Auto Duck.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-autoduck-webbed-leaf-mutation",
+      "domain": "active",
+      "focus": "Identité d’une variété à résine",
+      "reason": "Limite : morphologie foliaire, mais caractère distinctif d’une lignée récréative nommée.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-bediol-bedrocan-balanced-profile",
+      "domain": "active",
+      "focus": "Profils THC/CBD",
+      "reason": "Référence Bediol à proportions voisines de cannabinoïdes.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-bediol-brand-elida-chemovar",
+      "domain": "active",
+      "focus": "Chemovars de fleurs actives",
+      "reason": "Distinction marque Bediol et chemovar Elida.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-average-versus-batch-coa",
+      "domain": "active",
+      "focus": "Qualité des produits actifs",
+      "reason": "Certificat d’analyse d’un lot distinct de moyennes commerciales.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-chemovar-chemical-variant",
+      "domain": "active",
+      "focus": "Chimovars",
+      "reason": "Définition par profil cannabinoïde et terpénique.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-cutflos-reduced-not-powder",
+      "domain": "active",
+      "focus": "Formes de fleurs actives",
+      "reason": "Cut flos réduit en taille sans être une poudre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-flos-whole-dried-flower",
+      "domain": "active",
+      "focus": "Formes de fleurs actives",
+      "reason": "Flos comme fleur entière séchée.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-bedrolite-bedrocan-cbd-dominant-profile",
+      "domain": "active",
+      "focus": "Profils CBD",
+      "reason": "Bedrolite comme référence à dominante CBD.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-bialobrzeskie-monoecious-fibre-variety",
+      "domain": "materials",
+      "focus": "Variété textile industrielle",
+      "reason": "Limite : monoécie de Białobrzeskie décrite comme variété à fibres ; pas une lignée à résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-bubblegum-serious-history-indiana",
+      "domain": "active",
+      "focus": "Histoire de lignées externes",
+      "reason": "Origine Indiana du matériel Bubble Gum selon Serious Seeds.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-bubblegum-serious-ibl-not-f1",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Statut IBL de la version Bubble Gum de Serious Seeds.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-coboru-bialobrzeskie-earliest-entry-compared",
+      "domain": "offscope",
+      "focus": "Registres du chanvre industriel",
+      "reason": "Comparaison de dates d’inscription sans usage food ou matériau précis testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-finola-canada-list-before-europe-2018-account",
+      "domain": "offscope",
+      "focus": "Registres du chanvre industriel",
+      "reason": "Ordre des admissions de FINOLA sans propriété alimentaire ni actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-finola-cultivar-versus-food-trademark",
+      "domain": "food",
+      "focus": "Identité de produits alimentaires",
+      "reason": "Distinction de FINOLA cultivar et Finola marque alimentaire.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-finola-developed-finland",
+      "domain": "food",
+      "focus": "Variété oléagineuse",
+      "reason": "Pays d’origine de la variété alimentaire FINOLA, rappel de provenance peu prioritaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-finola-first-oilseed-registration-claim",
+      "domain": "food",
+      "focus": "Histoire d’une variété oléagineuse",
+      "reason": "Destination huile de graines de l’inscription revendiquée de FINOLA.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-finola-former-breeder-code-fin314",
+      "domain": "offscope",
+      "focus": "Identifiants de sélection industrielle",
+      "reason": "Ancien code FIN-314 sans propriété alimentaire ou active testée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-finola2-seeds-larger-than-finola",
+      "domain": "food",
+      "focus": "Variété à graines alimentaires",
+      "reason": "Taille des graines FINOLA2 comparée à FINOLA.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-finola2-slightly-taller-than-finola",
+      "domain": "offscope",
+      "focus": "Architecture de chanvre industriel",
+      "reason": "Hauteur de FINOLA2 sans lien aux actifs ou qualité alimentaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-frisianduck-frisiandew-ducksfoot",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Parents déclarés de Frisian Duck.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-frisianduck-upper-leaves-can-revert-common-shape",
+      "domain": "active",
+      "focus": "Identité d’une variété à résine",
+      "reason": "Limite : variation foliaire propre à Frisian Duck pendant la floraison.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-guawi-ace-bouquet-not-terpene-analysis",
+      "domain": "active",
+      "focus": "Arômes et analyses",
+      "reason": "Bouquet sensoriel de Guawi distinct d’un profil terpénique mesuré.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-guawi-ace-oldmalawikiller-tikal-f5",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Croisement déclaré de Guawi féminisée recréée.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-henola-grain-oil-destination",
+      "domain": "food",
+      "focus": "Variété oléagineuse",
+      "reason": "Henola sélectionnée pour grain et huile.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-henola-shorter-cycle-than-bialobrzeskie",
+      "domain": "offscope",
+      "focus": "Agronomie de chanvre industriel",
+      "reason": "Comparaison de durée de cycle de deux variétés industrielles sans propriété alimentaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-reddish-pinkish-pistils",
+      "domain": "active",
+      "focus": "Fleurs de variétés à résine",
+      "reason": "Pistils roses ou rouges décrits chez Panama.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-terpinolene-nearly-half-profile",
+      "domain": "active",
+      "focus": "Profil terpénique de variété",
+      "reason": "Terpinolène dominant du profil de Panama et dénominateur correct.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-three-panamanian-lines",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Trois lignées panaméennes déclarées pour Panama.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-polish-four-varieties-institute-breeder",
+      "domain": "offscope",
+      "focus": "Obtenteur industriel",
+      "reason": "Organisme commun à plusieurs variétés industrielles sans usage précis testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-rajan-maturity-context-polish-conditions",
+      "domain": "offscope",
+      "focus": "Agronomie de chanvre industriel",
+      "reason": "Contexte géographique de maturité de Rajan sans actifs ni qualité food.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b01-tygra-fibre-technical-uses",
+      "domain": "materials",
+      "focus": "Variété à fibres",
+      "reason": "Débouchés techniques explicitement visés pour la fibre de Tygra.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-whiterussian-serious-ak47-whitewidow",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Pedigree déclaré de White Russian.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-zamal-ace-reunion-island",
+      "domain": "active",
+      "focus": "Origine de lignées à résine",
+      "reason": "Zamal de La Réunion dans l’histoire de Zamaldelica.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-ace-leading-monoterpenes",
+      "domain": "active",
+      "focus": "Profil terpénique de variété",
+      "reason": "Deux monoterpènes principaux publiés pour Zamaldelica.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-feminized-f3-semistabilized",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Stade F3 annoncé pour une version précise de Zamaldelica.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-zamal-mother-goldentiger-pollen",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Rôles parentaux déclarés de Zamal et Golden Tiger.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b02-accession-means-can-hide-internal-diversity",
+      "domain": "offscope",
+      "focus": "Statistiques générales",
+      "reason": "Moyenne et dispersion sur exemple fictif sans trait actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-grin-seed-aspect-ratio-elongation",
+      "domain": "offscope",
+      "focus": "Morphométrie des graines",
+      "reason": "Rapport longueur/largeur de semences en collection sans usage alimentaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-grin-seed-circularity-hundred-circle",
+      "domain": "offscope",
+      "focus": "Morphométrie des graines",
+      "reason": "Échelle de circularité sans usage alimentaire ou actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw",
+      "domain": "offscope",
+      "focus": "Métrologie des semences",
+      "reason": "Limite : masse de graines, mais distinction volume/effectif de descripteurs sans usage alimentaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-ipk-gbis-quarterly-passport-snapshots-doi",
+      "domain": "offscope",
+      "focus": "Documentation scientifique",
+      "reason": "Fonction d’un DOI de jeu de données, sans contenu cannabis spécifique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-ipk-genebank-not-commercial-seed-supplier",
+      "domain": "offscope",
+      "focus": "Fonctionnement d’une banque de gènes",
+      "reason": "Cadre institutionnel des Échanges de semences IPK.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-seed-lot-purity-versus-germination",
+      "domain": "offscope",
+      "focus": "Qualité des semences agricoles",
+      "reason": "Pureté et germination, sans usage alimentaire ni variété à actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-finola-height-less-variable-observed",
+      "domain": "offscope",
+      "focus": "Agronomie de Finola",
+      "reason": "Dispersion de hauteur industrielle dans un essai précis.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-greenhouse-position-randomization-bias",
+      "domain": "offscope",
+      "focus": "Méthodologie expérimentale",
+      "reason": "Randomisation spatiale en serre, notion générale sans actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-kompolti-two-ipk-accessions",
+      "domain": "offscope",
+      "focus": "Ressources industrielles",
+      "reason": "Distinction de deux accessions Kompolti sans actifs ni usage concret.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-korea-stem-area-greater-finola",
+      "domain": "offscope",
+      "focus": "Morphométrie de tiges",
+      "reason": "Section de Korea et Finola dans une étude, sans usage matériel testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-nonflowering-recorded-missing-not-zero",
+      "domain": "offscope",
+      "focus": "Gestion des données",
+      "reason": "Limite : floraison mentionnée, mais le fait testé est valeur manquante versus zéro.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-same-cultivar-genetic-cluster-not-identical",
+      "domain": "offscope",
+      "focus": "Génétique générale",
+      "reason": "Regroupement variétal sans identité clonale, sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-accession-single-species-time-place-sample",
+      "domain": "offscope",
+      "focus": "Banques de ressources",
+      "reason": "Définition institutionnelle d’une accession.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-botanical-var-not-breeder-cultivar",
+      "domain": "offscope",
+      "focus": "Nomenclature botanique",
+      "reason": "Rang var. distinct du cultivar sans lignée à résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-canopy-width-versus-vertical-position",
+      "domain": "offscope",
+      "focus": "Morphométrie végétale",
+      "reason": "Mesure de silhouette sans lien aux fleurs/résine/actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-characterization-public-grin-global",
+      "domain": "offscope",
+      "focus": "Documentation scientifique",
+      "reason": "Nom de base diffusant des données de caractérisation.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-coordinate-uncertainty-radius",
+      "domain": "offscope",
+      "focus": "Métrologie géographique",
+      "reason": "Incertitude et décimales de coordonnées, exemple générique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-cultivar-samples-separate-inventories",
+      "domain": "offscope",
+      "focus": "Gestion des collections",
+      "reason": "Conservation séparée d’inventaires de semences.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-hemp-backups-national-preservation-lab",
+      "domain": "offscope",
+      "focus": "Gestion des collections",
+      "reason": "Sauvegarde biologique d’une banque de ressources.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-hemp-repository-geneva-newyork",
+      "domain": "offscope",
+      "focus": "Géographie institutionnelle",
+      "reason": "Localisation de la collection USDA sans contenu actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-multistate-trials-genetic-environment-interaction",
+      "domain": "offscope",
+      "focus": "Agronomie expérimentale",
+      "reason": "Interaction accession–milieu sans caractère actif testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-nonlatin-name-original-and-transliteration",
+      "domain": "offscope",
+      "focus": "Documentation des ressources",
+      "reason": "Règle de translittération de noms de collections.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-passport-source-collector-developer-distinct",
+      "domain": "offscope",
+      "focus": "Documentation des ressources",
+      "reason": "Champ developer d’un passeport, sans breeder à résine concret.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-pgru-maintains-distributes-evaluates-germplasm",
+      "domain": "offscope",
+      "focus": "Gestion des collections",
+      "reason": "Mission générique d’une banque de ressources génétiques.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-puid-unambiguous-global-accession",
+      "domain": "offscope",
+      "focus": "Identifiants scientifiques",
+      "reason": "Fonction du PUID d’une accession.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-seq-project-male-female-y-diversity",
+      "domain": "offscope",
+      "focus": "Génomique générale",
+      "reason": "Limite : échantillonnage mâle/femelle, mais objectif de séquençage industriel sans résultat floral ou actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-source-date-collection-not-breeding",
+      "domain": "offscope",
+      "focus": "Documentation des ressources",
+      "reason": "Signification du champ source_date.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-trunk-length-ground-first-branch",
+      "domain": "offscope",
+      "focus": "Morphométrie végétale",
+      "reason": "Définition de longueur de tronc sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b02-usda-viability-and-pathogen-testing-distinct",
+      "domain": "offscope",
+      "focus": "Gestion des semences",
+      "reason": "Tests de viabilité et de pathogènes, sans cannabis à actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-carmagnola-long-petiole-example",
+      "domain": "offscope",
+      "focus": "Descripteurs industriels",
+      "reason": "Longueur de pétiole de Carmagnola, sans propriété de fibre ou actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-dioica88-strong-seed-marbling-example",
+      "domain": "offscope",
+      "focus": "Descripteurs industriels",
+      "reason": "Marbrures de graines Dioica 88, sans usage alimentaire ni actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-divina-leaf-variegation-example",
+      "domain": "offscope",
+      "focus": "Descripteurs industriels",
+      "reason": "Panachure de Divina dans un référentiel sans actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-dus-three-criteria",
+      "domain": "offscope",
+      "focus": "Évaluation variétale générale",
+      "reason": "Développement du sigle DHS sans trait du cannabis à actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-known-reference-varieties-comparison",
+      "domain": "offscope",
+      "focus": "Évaluation variétale générale",
+      "reason": "Principe de comparaison aux variétés connues.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-leaflet-number-predominant-centre-plant",
+      "domain": "offscope",
+      "focus": "Morphométrie foliaire",
+      "reason": "Règle de comptage des folioles d’un protocole industriel.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-limited-male-flowers-not-auto-monoecious",
+      "domain": "active",
+      "focus": "Expression sexuelle florale",
+      "reason": "Limite : protocole agricole, mais distinction utile entre fleurs mâles rares et monoécie.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-male-flowering-half-male-bearing-plants",
+      "domain": "offscope",
+      "focus": "Phénologie de protocole industriel",
+      "reason": "Limite : fleurs mentionnées, mais règle de dénominateur d’un seuil OCVV agricole.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-orion33-central-leaflet-verylong-verybroad",
+      "domain": "offscope",
+      "focus": "Descripteurs industriels",
+      "reason": "Dimensions de la foliole d’Orion 33, sans actifs ou usage matériel.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-renewed-reference-seed-side-by-side-identity",
+      "domain": "offscope",
+      "focus": "Contrôle des semences agricoles",
+      "reason": "Méthode de comparaison de stocks industriels, sans actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-cpvo-stability-new-stock-same-characteristics",
+      "domain": "offscope",
+      "focus": "Évaluation variétale générale",
+      "reason": "Contrôle générique de stabilité sur un nouveau stock.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-asso-carmagnola-kompolti-cross",
+      "domain": "offscope",
+      "focus": "Lignées industrielles",
+      "reason": "Parents d’Asso sans profil actif ni usage alimentaire ou textile testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-asso-di-candilo-attribution",
+      "domain": "offscope",
+      "focus": "Obtenteur industriel",
+      "reason": "Nom de l’obtenteur d’Asso sans fait sur actifs ou usages ciblés.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmagnola-selected-piedmont",
+      "domain": "offscope",
+      "focus": "Provenance industrielle",
+      "reason": "Région de sélection de Carmagnola sans usage concret testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-carmono-kompolti-sargaszaru",
+      "domain": "offscope",
+      "focus": "Lignées industrielles",
+      "reason": "Parents de Carmaleonte sans fait sur actifs ou matériaux.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-codimono-grassi-attribution",
+      "domain": "offscope",
+      "focus": "Obtenteur industriel",
+      "reason": "Obtenteur commun de variétés industrielles, hors lignées à résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-carmaleonte-stem-yellow-senescence",
+      "domain": "offscope",
+      "focus": "Sénescence du chanvre industriel",
+      "reason": "Jaunissement de tige sans propriété de matériau ou d’actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-codimono-fibre-seed-dual-purpose",
+      "domain": "materials",
+      "focus": "Variété à double usage",
+      "reason": "Limite food/materials : double destination explicitement fibre et graine ; classée matériaux pour sa composante fibre.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b03-crea-codimono-monoecious",
+      "domain": "materials",
+      "focus": "Variété industrielle mixte",
+      "reason": "Limite : monoécie de Codimono à destination fibre/graine, sans lignée à résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-cs-cycle-later-carmagnola",
+      "domain": "offscope",
+      "focus": "Phénologie industrielle",
+      "reason": "Comparaison de durée de cycle sans actif ou qualité alimentaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-cs-genealogical-selection-carmagnola",
+      "domain": "offscope",
+      "focus": "Sélection industrielle",
+      "reason": "Origine généalogique de CS sans trait d’usage ciblé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-eletta-campana-late-female-low-preflower",
+      "domain": "offscope",
+      "focus": "Phénologie industrielle",
+      "reason": "Limite : calendrier floral d’Eletta Campana agricole sans lien aux actifs ni résine.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-eletta-campana-selected-caserta",
+      "domain": "offscope",
+      "focus": "Provenance industrielle",
+      "reason": "Province de sélection d’Eletta Campana, rappel de dossier industriel.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibranova-bark-hurd-ratio-interpretation",
+      "domain": "materials",
+      "focus": "Fractions de tige",
+      "reason": "Interprétation du rapport écorce/chènevotte utile à la matière fibreuse.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibranova-bredemann-eletta-carmagnola",
+      "domain": "offscope",
+      "focus": "Lignées industrielles",
+      "reason": "Parents de Fibranova sans fait sur les propriétés ou usages des fibres.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-fibrante-induced-mutant-from-fibranova",
+      "domain": "offscope",
+      "focus": "Sélection industrielle",
+      "reason": "Mutant Fibrante issu de Fibranova sans caractère actif ou matériel testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-molecular-passport-varietal-dna-identity",
+      "domain": "offscope",
+      "focus": "Identification variétale générale",
+      "reason": "Finalité d’un passeport moléculaire industriel sans chimotype.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-snp-discrimination-studied-corpus-scope",
+      "domain": "offscope",
+      "focus": "Validation de marqueurs",
+      "reason": "Portée d’un panel SNP, principe méthodologique général.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-varieties-purity-maintainer-bologna",
+      "domain": "offscope",
+      "focus": "Administration des variétés",
+      "reason": "Organisme de maintien en pureté sans usage ciblé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-crea-wgs-discovery-before-snp-panel",
+      "domain": "offscope",
+      "focus": "Méthodologie génomique",
+      "reason": "Ordre séquençage entier–choix SNP sans caractéristique active.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-fibre-bundle-strength-pressley-tester",
+      "domain": "materials",
+      "focus": "Essais mécaniques des fibres",
+      "reason": "Appareil Pressley cité dans un compte rendu, rappel instrumental spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-fibre-diameter-scanning-electron-microscope",
+      "domain": "materials",
+      "focus": "Mesure des fibres",
+      "reason": "Instrument de mesure des diamètres, détail expérimental spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-high-fibre-diameter-cv-within-sample",
+      "domain": "materials",
+      "focus": "Variabilité des fibres",
+      "reason": "Dispersion interne des diamètres, fait matériau réel mais statistique technique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-santhica70-finer-average-than-futura83",
+      "domain": "materials",
+      "focus": "Finesse des fibres",
+      "reason": "Comparaison mesurée de deux cultivars dans un essai spécifique.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-rutgers-tex-mass-per-fibre-length",
+      "domain": "materials",
+      "focus": "Unités textiles",
+      "reason": "Tex comme masse linéique normalisant la résistance des fibres.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b03-tamang-csdrrp2-candidate-function-unvalidated",
+      "domain": "offscope",
+      "focus": "Génétique des semences",
+      "reason": "Fonction inconnue d’un gène candidat d’égrenage, hors actifs et qualité alimentaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-tamang-germination-significant-field-emergence-not",
+      "domain": "offscope",
+      "focus": "Agronomie expérimentale",
+      "reason": "Contraste statistique germination/levée sans actifs ou aliment.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-tamang-grain-type-little-height-after-flowering",
+      "domain": "offscope",
+      "focus": "Croissance industrielle",
+      "reason": "Croissance en hauteur des types grain/fibre après floraison, sans qualité d’usage.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-tamang-jinma-fibre-check-variety",
+      "domain": "materials",
+      "focus": "étude de fibres",
+      "reason": "Jinma témoin fibre d’un essai, rappel documentaire peu prioritaire.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b03-tamang-lhv17-feral-missouri-material",
+      "domain": "offscope",
+      "focus": "Ressources industrielles",
+      "reason": "Origine ferale de LHV-17 sans fait sur les actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-cbg-force-frosty-less-sticky",
+      "domain": "active",
+      "focus": "Aspect des fleurs CBG",
+      "reason": "Aspect givré et toucher de CBG-Force, variété à cannabinoïde explicite.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-mutant-oleic-majority",
+      "domain": "food",
+      "focus": "Huile expérimentale",
+      "reason": "Acide gras majoritaire d’un mutant oléagineux, résultat d’étude très spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-csfad2a-oleic-to-linoleic",
+      "domain": "food",
+      "focus": "Biosynthèse des lipides de graine",
+      "reason": "Fonction de désaturase liée au profil de l’huile, détail enzymatique d’étude.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-csfad3a-leaf-tissue-specificity",
+      "domain": "offscope",
+      "focus": "Lipides des feuilles",
+      "reason": "Effet d’un mutant sur des lipides foliaires, ni alimentation ni actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-csfad3a-seed-omega3-depletion",
+      "domain": "food",
+      "focus": "Profil lipidique des graines",
+      "reason": "Déplétion d’oméga-3 dans des graines mutantes, résultat expérimental spécialisé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-desfran-alberto-introduction-role",
+      "domain": "active",
+      "focus": "Histoire de lignées externes",
+      "reason": "Rôle d’Alberto dans l’introduction de Desfrán chez Dutch Passion.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-desfran-destroyer-by-destroyer",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Pedigree déclaré Destroyer à Destroyer de Desfrán.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-balanced-most-common-chemotypes",
+      "domain": "active",
+      "focus": "Variabilité THC/CBD",
+      "reason": "Répartition de chimotypes déclarée dans ErdPurt.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-colourful-fruity-bouquet",
+      "domain": "active",
+      "focus": "Arômes de variétés à résine",
+      "reason": "Bouquets fruités associés aux phénotypes colorés d’ErdPurt.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-columnar-little-branching",
+      "domain": "active",
+      "focus": "Identité de variété à résine",
+      "reason": "Port caractéristique déclaré d’ErdPurt, variété active précise.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-erdpurt-erdbeer-ticinensis-cross",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Parents déclarés d’ErdPurt.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-maturity-colour",
+      "domain": "offscope",
+      "focus": "Couleur de cultivars industriels",
+      "reason": "Jaunissement à maturité sans caractéristique de fibre ou actif.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-futura-similar-phenology",
+      "domain": "offscope",
+      "focus": "Phénologie industrielle",
+      "reason": "Stades de Fibror/Futura dans des environnements sans lien aux actifs.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-higher-bast-fraction",
+      "domain": "materials",
+      "focus": "Composition des tiges fibreuses",
+      "reason": "Part de fibres libériennes comparée entre Fibror et Futura.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-lower-leaf-par-absorbance",
+      "domain": "offscope",
+      "focus": "Physiologie foliaire industrielle",
+      "reason": "Absorbance lumineuse de cultivars à fibres, sans propriété matérielle testée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-fibror-nitrogen-uptake-hypothesis-not-supported",
+      "domain": "offscope",
+      "focus": "Nutrition minérale industrielle",
+      "reason": "Efficience d’azote de Fibror/Futura sans actif ni caractéristique matérielle.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-hemp-desaturase-functional-test-yeast",
+      "domain": "offscope",
+      "focus": "Modèle de laboratoire",
+      "reason": "Organisme utilisé pour tester des désaturases, rappel de méthode sans aliment testé.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-line-derived-finola",
+      "domain": "food",
+      "focus": "Huile expérimentale",
+      "reason": "Origine Finola d’une lignée à huile modifiée, rappel d’article étroit.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-lower-volatile-aldehydes",
+      "domain": "food",
+      "focus": "Qualité d’huile expérimentale",
+      "reason": "Aldéhydes volatils d’une huile modifiée comparée à Finola.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-main-tag-triolein",
+      "domain": "food",
+      "focus": "Composition d’huile expérimentale",
+      "reason": "Trioléine dominante d’une lignée à huile modifiée.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-stability-extrapolation",
+      "domain": "food",
+      "focus": "Stabilité d’huile expérimentale",
+      "reason": "Estimation accélérée Rancimat distincte de conservation observée.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-high-oleic-tocopherol-increase",
+      "domain": "food",
+      "focus": "Composition d’huile expérimentale",
+      "reason": "Tocophérols d’une huile modifiée, rappel spécialisé d’essai.",
+      "retainPriority": "low"
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-habit-environment-description",
+      "domain": "active",
+      "focus": "Identité de variété à résine",
+      "reason": "Variation descriptive du port de Kali China selon environnement.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-kali-china-repeated-yunnan-parent",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Pedigree répété China Yunnan de Kali China.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-main-monoterpenes",
+      "domain": "active",
+      "focus": "Profil terpénique de variété",
+      "reason": "Monoterpènes principaux annoncés d’Orient Express.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-nerolidol-sesquiterpenes",
+      "domain": "active",
+      "focus": "Profil terpénique de variété",
+      "reason": "Nérolidol principal sesquiterpène annoncé d’Orient Express.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-short-branching",
+      "domain": "active",
+      "focus": "Identité de variété à résine",
+      "reason": "Port décrit d’Orient Express, lignée récréative précise.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-orient-express-vietnam-yunnan-cross",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Croisement Vietnam Black à China Yunnan d’Orient Express.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-seriotica-leaves-flowers-colour",
+      "domain": "active",
+      "focus": "Fleurs de variété à résine",
+      "reason": "Coloration possible des fleurs et feuilles de Seriotica.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-b04-seriotica-serious-mimosa-cookies-cross",
+      "domain": "active",
+      "focus": "Lignées de cannabis récréatif",
+      "reason": "Parents déclarés de Seriotica.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-b04-thc-victory-thcv-thc-near-equal",
+      "domain": "active",
+      "focus": "Profil THC/THCV",
+      "reason": "Rapport proche de 1:1 annoncé de THC-Victory.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-c-abeilles-ressource-pollen",
+      "domain": "active",
+      "focus": "Botanique des fleurs mâles",
+      "reason": "Pollen comme ressource florale du cannabis pour les abeilles.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-c-cannflavines-flavonoides",
+      "domain": "active",
+      "focus": "Constituants spécifiques du cannabis",
+      "reason": "Limite : cannflavines distinctes des cannabinoïdes, composés spécifiques du cannabis sans promesse d’effet.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-c-chanvre-divergence-genome",
+      "domain": "active",
+      "focus": "Diversité du cannabis à actifs",
+      "reason": "Différenciation génomique des populations de type drogue et du chanvre.",
+      "retainPriority": "high"
+    },
+    {
+      "id": "hemp-q2-c-chenevis-une-graine",
+      "domain": "food",
+      "focus": "Botanique du chènevis",
+      "reason": "Fruit alimentaire contenant normalement une seule graine.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-c-fleur-male-cinq-etamines",
+      "domain": "active",
+      "focus": "Anatomie des fleurs mâles",
+      "reason": "Nombre normal d’étamines d’une fleur mâle du cannabis.",
+      "retainPriority": "medium"
+    },
+    {
+      "id": "hemp-q2-c-graines-thc-contamination",
+      "domain": "food",
+      "focus": "Sécurité alimentaire du chènevis",
+      "reason": "Limite active/food : présence de THC testée dans des graines alimentaires par contamination de contact.",
+      "retainPriority": "high"
+    }
+  ],
+  "summary": {
+    "reviewedCount": 500,
+    "counts": {
+      "offscope": 169,
+      "food": 24,
+      "active": 229,
+      "materials": 78
+    },
+    "prioritiesByDomain": {
+      "offscope": {
+        "low": 168,
+        "medium": 1
+      },
+      "food": {
+        "medium": 12,
+        "high": 3,
+        "low": 9
+      },
+      "active": {
+        "medium": 113,
+        "high": 100,
+        "low": 16
+      },
+      "materials": {
+        "high": 25,
+        "medium": 37,
+        "low": 16
+      }
+    },
+    "borderlineIds": [
+      "hemp-biodiversity-hlvd",
+      "hemp-en-1-04",
+      "hemp-en-2-08",
+      "hemp-en-2-16",
+      "hemp-en-2-17",
+      "hemp-genetics-landrace",
+      "hemp-hc-010",
+      "hemp-hc-030",
+      "hemp-hc-047",
+      "hemp-hc-059",
+      "hemp-hs-sci-anandamide-molecule",
+      "hemp-prevention-bris-graines",
+      "hemp-profiles-litiere",
+      "hemp-q2-a01-picolo-limite-marqueur",
+      "hemp-q2-a01-selection-fibre-cannabinoides-faibles",
+      "hemp-q2-b01-autoduck-webbed-leaf-mutation",
+      "hemp-q2-b01-bialobrzeskie-monoecious-fibre-variety",
+      "hemp-q2-b01-frisianduck-upper-leaves-can-revert-common-shape",
+      "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw",
+      "hemp-q2-b02-trubanova-nonflowering-recorded-missing-not-zero",
+      "hemp-q2-b02-usda-seq-project-male-female-y-diversity",
+      "hemp-q2-b03-cpvo-limited-male-flowers-not-auto-monoecious",
+      "hemp-q2-b03-cpvo-male-flowering-half-male-bearing-plants",
+      "hemp-q2-b03-crea-codimono-fibre-seed-dual-purpose",
+      "hemp-q2-b03-crea-codimono-monoecious",
+      "hemp-q2-b03-crea-eletta-campana-late-female-low-preflower",
+      "hemp-q2-c-cannflavines-flavonoides",
+      "hemp-q2-c-graines-thc-contamination"
+    ],
+    "scopeNotes": [
+      "Lecture question par question, choix et explications inclus ; classement fondé sur le fait effectivement testé.",
+      "Taxonomie, biologie, statistiques, catalogage de ressources et agronomie industrielle sans lien direct aux actifs sont hors périmètre.",
+      "Les histoires de traités antidrogue généraux ne deviennent pas des questions cannabis sans disposition propre au cannabis.",
+      "FINOLA et les lignées oléagineuses ne sont jamais classées active pour leur simple appartenance à Cannabis.",
+      "Les résultats étroits d’un article d’huile ou de fibres sont généralement low pour éviter la surreprésentation d’une étude.",
+      "Les double-usages fibre/graine sont arbitrés au cas par cas ; food/materials et morphologie de variétés à résine sont signalés dans les raisons."
+    ]
+  }
+}

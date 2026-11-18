@@ -1,0 +1,703 @@
+{
+  "batchId": "b-01",
+  "reviewer": "E / e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Lecture indépendante des40questions, quatre choix, explications, index éditoriaux et17sources primaires externes effectivement ouvertes. Vérification des doublons sur le corpus courant ; aucun fichier auteur ni actif modifié.",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "facts": "Réponses étayées par les sources primaires consultées. Les déclarations commerciales restent attribuées ; profils publiés, moyennes de gamme et certificats de lot restent distincts.",
+    "levels": "Les rappels de catalogue sont désormais classés selon leur spécialisation ; la chronologie COBORU fournit ses données et reste accessible."
+  },
+  "sourceAudit": {
+    "sourcesOpened": 17,
+    "method": "PDFFinola2018, pages officielles des sélectionneurs et de l’institut, tableauBedrocan et registreCOBORU ouverts ; passages précis lus. Les données restent attribuées aux versions et dates consultées.",
+    "confirmedDistinctions": [
+      "Guawi : bouquet décrit, profil non analysé ; aucune teneur moléculaire inventée.",
+      "Bedrocan : marques/chemovars séparés, tableau moyen distinct d’un certificat de lot.",
+      "FINOLA : chronologie bornée auPDF2018 ; aucune assertion sur le droit actuel."
+    ],
+    "limits": "Les affirmations commerciales de rendement, effet ou protocoles visibles dans les sources n’étayent aucune question approuvée. Leurs pages ne sont pas des analyses indépendantes de tous les produits homonymes."
+  },
+  "duplicateCheck": {
+    "result": "Le candidat de définition de la dioécie a été remplacé par une affirmation historique attribuée ; aucun doublon non résolu relevé dans ce lot.",
+    "retiredIds": [
+      "hemp-q2-b01-finola-dioecious-separate-male-female-plants"
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-q2-b01-finola-developed-finland",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "66a2d03f62db96c3c77a3ffe679e0d7bd5b2cc59398edafb5453668542db0a99",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2018",
+          "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+          "locator": "PDF2018 p.1, General information.",
+          "result": "LePDF situe le développement enFinlande.",
+          "sourceHash": "17627a18f9d46cdd516a6b6de1a8c98e28c68a57f8e2db2a5dc3326dd98ad8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-finola-former-breeder-code-fin314",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "9bd8749b24d1c1b258ffced696d8718c19554d36075551858a05d9d1c53b6bf2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2018",
+          "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+          "locator": "PDF2018 p.1, General information, début.",
+          "result": "FIN-314 est le code de sélection mentionné avantFINOLA.",
+          "sourceHash": "17627a18f9d46cdd516a6b6de1a8c98e28c68a57f8e2db2a5dc3326dd98ad8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-finola-first-oilseed-registration-claim",
+      "status": "approved",
+      "comment": "Revalidation indépendante : l’affirmation historique est explicitement attribuée au document de l’obtenteur de 2018 ; les choix distinguent clairement les usages.",
+      "contentHash": "85c93b9c4dd1f4c92ece966d692a8caa7c37b598495419c9f9505178948fad60",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2018",
+          "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+          "locator": "PDF p. 1, General information, lignes 8–9.",
+          "result": "Le document affirme que FINOLA fut le premier chanvre industriel enregistré comme culture oléagineuse ; attribution bornée à ce document.",
+          "sourceHash": "17627a18f9d46cdd516a6b6de1a8c98e28c68a57f8e2db2a5dc3326dd98ad8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-finola-cultivar-versus-food-trademark",
+      "status": "approved",
+      "comment": "Distinction de rôles correctement attribuée ; le domaine spécialisé rend3 défendable.",
+      "contentHash": "92052a7de1db0d31d5dc9cab06efbe92f06cd5eaca9c7261257ab57c260d6912",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2018",
+          "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+          "locator": "PDF2018 p.2, FinolaOy etFinola®.",
+          "result": "FINOLA désigne la variété ; Finola® la marque alimentaire.",
+          "sourceHash": "17627a18f9d46cdd516a6b6de1a8c98e28c68a57f8e2db2a5dc3326dd98ad8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-finola2-seeds-larger-than-finola",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "a1153ef3d953a0558fcb293b3d9193874115dcb31dc86bd23c7d3497dd688295",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2",
+          "url": "https://finola.fi/news-info/",
+          "locator": "Some history on the FINOLA varieties, paragrapheFINOLA2.",
+          "result": "L’obtenteur présente les grainesFINOLA2 comme plus grosses.",
+          "sourceHash": "7e0b912f72de76d7d4194e3d02d9c6ecec58ec746ca4a320e0dae7fb79843446",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-finola2-slightly-taller-than-finola",
+      "status": "approved",
+      "comment": "Comparaison clairement attribuée ; niveau2 cohérent et aucune universalité de lot déduite.",
+      "contentHash": "3c2b54de1fadd107cb2fc569dcb10a99fb62318b03e27fde98b3de11268bd34c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2",
+          "url": "https://finola.fi/news-info/",
+          "locator": "Some history on the FINOLA varieties, premier paragrapheFINOLA2.",
+          "result": "La page décritFINOLA2 légèrement plus haute.",
+          "sourceHash": "7e0b912f72de76d7d4194e3d02d9c6ecec58ec746ca4a320e0dae7fb79843446",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-autoduck-webbed-leaf-mutation",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "c17def4c9647eca476fb274ce6442b982ab4e69930000c57c41db6b8a9958196",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-autoduck",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/auto-duck",
+          "locator": "Auto Duck is a very robust cannabis strain, premier paragraphe.",
+          "result": "La fiche décrit une mutation stabilisée et une formewebbed.",
+          "sourceHash": "a87e72e9756305bb4ade466ecad4fd8bd930b84c8bcbc9023d8bbe25c294e93d",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-autoduck-frisianduck-auto-whitewidow",
+      "status": "approved",
+      "comment": "Croisement attribué à la version précise, sans preuve déduite du nom ; niveau2 recevable.",
+      "contentHash": "a7736a29aa33f5c2f1e01219b1bfba9dcd7d0f9b06766f672a33a8363be450fd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-autoduck",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/auto-duck",
+          "locator": "En-tête ; What kind of genetics does Auto Duck contain?",
+          "result": "Le croisement affiché associe FrisianDuck et AutoWhiteWidow.",
+          "sourceHash": "a87e72e9756305bb4ade466ecad4fd8bd930b84c8bcbc9023d8bbe25c294e93d",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-frisianduck-frisiandew-ducksfoot",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "558200215b2334372052f24c2c6748d5fdb43125f71b30813ddf222ba3bf0ecb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-frisianduck",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/frisian-duck",
+          "locator": "En-tête et description génétique deFrisianDuck.",
+          "result": "Le croisement affiché est FrisianDew×DucksFoot.",
+          "sourceHash": "19c89689731dc073226348de9de8ef119ef83029d8c9131ee8bab41879015447",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-frisianduck-upper-leaves-can-revert-common-shape",
+      "status": "approved",
+      "comment": "Variation de forme prudemment rapportée ; niveau2 cohérent.",
+      "optionalPolish": "La forme éditoriale identification serait plus exacte qu’une mise en situation : aucun cas à interpréter n’est fourni.",
+      "contentHash": "5e614826727c5df48b888466e02197b6786ec70c4ccdb9ad4c1536a2fe8e5647",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-frisianduck",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/frisian-duck",
+          "locator": "A top-choice for the outdoor urban home grower, premier paragraphe.",
+          "result": "La page indique un possible retour de forme sur certaines feuilles supérieures.",
+          "sourceHash": "19c89689731dc073226348de9de8ef119ef83029d8c9131ee8bab41879015447",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-ak47-claimed-creator-serious-seeds",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "55c3e4f7eeae54d7de7a23c5a9d6fc554de55dce380791286aee9738b1eb0671",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-ak47",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/ak-47",
+          "locator": "Titre de la ficheAK-47.",
+          "result": "Le titre attribue cette version d’AK-47 àSeriousSeeds.",
+          "sourceHash": "cdeca727a063ae44787549ad2ec71dd1416f9c9ba29565364750fd76bd3920fc",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-ak47-claimed-colombian-mexican-thai-afghan",
+      "status": "approved",
+      "comment": "Ascendances revendiquées correctement attribuées ; quatre groupes géographiques comparables, niveau3 cohérent.",
+      "contentHash": "35622dde67152ce6d66593bdafdde2021f8fd857e8c20a0387db353333c5fcd7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-ak47",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/ak-47",
+          "locator": "Strain Description > Genetics.",
+          "result": "La rubrique génétique cite les quatre ascendances de la réponse.",
+          "sourceHash": "cdeca727a063ae44787549ad2ec71dd1416f9c9ba29565364750fd76bd3920fc",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bubblegum-serious-history-indiana",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "332510a35b456b0c994a00de2cba8b389aa74a04d9c629804c411ec82f84601c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bubblegum",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/bubble-gum",
+          "locator": "Genetics ; A bit of history, premiers paragraphes.",
+          "result": "Indiana est indiqué ; la page décrit aussi des versions divergentes.",
+          "sourceHash": "b3e2075283e3d3394dfc88d4036cfeaff386fed5ecac891c4540750f0430bdea",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bubblegum-serious-ibl-not-f1",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "8bdb84021b87089347583aa546e029fe218d7700debca0df81a338ed995f93b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bubblegum",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/bubble-gum",
+          "locator": "Sous-titre ; Genetics et mention not an F1 hybrid.",
+          "result": "L’en-tête indiqueIBL et le texte exclutF1.",
+          "sourceHash": "b3e2075283e3d3394dfc88d4036cfeaff386fed5ecac891c4540750f0430bdea",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-whiterussian-serious-ak47-whitewidow",
+      "status": "approved",
+      "comment": "Deux parents précisément revendiqués, choix plausibles et niveau2 recevable.",
+      "contentHash": "59d30020f6d5b638342741eab4b87d93055787f039b4373bd9fcddd7c7c55121",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-whiterussian",
+          "url": "https://www.seriousseeds.com/cannabis-seeds/white-russian",
+          "locator": "Présentation ; Strain Description > Genetics.",
+          "result": "SeriousSeeds associe sonAK-47 au cloneWhiteWidow.",
+          "sourceHash": "d221eaea6c727e101a196203773c69726cd5e5283667877dead6de500e332c0c",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-zamal-ace-reunion-island",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "134ddc05e57f81926f80f3ec6f82614a7dfebc650c3ce3e108573a03225db4dd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-zamaldelica",
+          "url": "https://www.aceseeds.org/en/seeds/zamaldelica-feminized-seeds/",
+          "locator": "Description, premier paragraphe.",
+          "result": "La description situe leZamal présenté àLaRéunion.",
+          "sourceHash": "e4529ec80c8bec476033a1ef03cbc869263b6bd89df1ac660dcd28478e863063",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-zamal-mother-goldentiger-pollen",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "7688aebe3b687127cab6a2161f8de8c49a0d7cbc1e13e3c646c4ee7cb526fbca",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-zamaldelica",
+          "url": "https://www.aceseeds.org/en/seeds/zamaldelica-feminized-seeds/",
+          "locator": "Description, second paragraphe.",
+          "result": "Le récit décrit une mèreZamal pollinisée parGoldenTiger.",
+          "sourceHash": "e4529ec80c8bec476033a1ef03cbc869263b6bd89df1ac660dcd28478e863063",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-feminized-f3-semistabilized",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "cfe6d0bc479584739ba0e63657c7ab374dfc94e044de9ec196293dfe0118fba1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-zamaldelica",
+          "url": "https://www.aceseeds.org/en/seeds/zamaldelica-feminized-seeds/",
+          "locator": "Additional information > Type.",
+          "result": "La rubriqueType indiqueF3 semi-stabilisé.",
+          "sourceHash": "e4529ec80c8bec476033a1ef03cbc869263b6bd89df1ac660dcd28478e863063",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-three-panamanian-lines",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "a9145a5ea2465f29eb59d450ce57369796344fd6b08c3345bc4f4c9a2d065bb0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-panama",
+          "url": "https://www.aceseeds.org/en/seeds/panama-feminized-seeds/",
+          "locator": "Description ; Additional information > Genetics.",
+          "result": "Le texte attribue la version à trois lignées panaméennes.",
+          "sourceHash": "6e8844afc6db3222033bc7ffdecbbb49760292bbd18aca41df7ef84dd56a0621",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-reddish-pinkish-pistils",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "53511e07a46bf87f1fabbc307fdfd0c3b5c9266d6b10b4da0688477654c2fbc5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-panama",
+          "url": "https://www.aceseeds.org/en/seeds/panama-feminized-seeds/",
+          "locator": "Description, deuxième paragraphe.",
+          "result": "La description mentionne des pistils souvent rouges ou roses.",
+          "sourceHash": "6e8844afc6db3222033bc7ffdecbbb49760292bbd18aca41df7ef84dd56a0621",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-guawi-ace-oldmalawikiller-tikal-f5",
+      "status": "approved",
+      "comment": "Parenté de version bornée et claire ; aucune généralisation aux homonymes, niveau2 recevable.",
+      "contentHash": "8c865b005b7cd07c493d48eec2985023d7f17248e94005a99bc83a05f9fb1dbd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-guawi",
+          "url": "https://www.aceseeds.org/en/seeds/guawi-feminized-seeds/",
+          "locator": "Description ; Additional information > Genetics.",
+          "result": "La fiche indiqueOldMalawiKiller×TikalF5.",
+          "sourceHash": "72aa6d52ab3ba3813f3088cf0420d240f91304527e9918ee70abfa5993d33731",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-guawi-ace-bouquet-not-terpene-analysis",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "579877616bb270d2003344b256eb9a412a64fe2cc45e423449b6c13638d50fcc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-guawi",
+          "url": "https://www.aceseeds.org/en/seeds/guawi-feminized-seeds/",
+          "locator": "Additional information > Bouquet et Terpene profile.",
+          "result": "Bouquet est descriptif ; le profil terpénique est déclaré non analysé.",
+          "sourceHash": "72aa6d52ab3ba3813f3088cf0420d240f91304527e9918ee70abfa5993d33731",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bediol-brand-elida-chemovar",
+      "status": "approved",
+      "comment": "Association spécifique correctement attribuée ; niveau2 recevable.",
+      "contentHash": "c22f2139181238c784aa7545015fff9a2c6bd793fb6e17c6d0d9fa14479570da",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Cannabis flowers, ligneBediol.",
+          "result": "Le tableau associeBediol àElida.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-chemovar-chemical-variant",
+      "status": "approved",
+      "comment": "Définition claire parmi quatre catégories ; niveau2 cohérent.",
+      "contentHash": "fae6fd17ab6f587c05eff8aeaa2ec4173410ab1cb35615c11e21dfd6550d35bf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Why chemovar?",
+          "result": "La notice définit le variant par son profil chimique.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bedrolite-bedrocan-cbd-dominant-profile",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "ae58c913242473a28dd0d51f3b56c2927a366fadaff80dadbfb088c775a122da",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Cannabis flowers, ligneBedrolite et légende.",
+          "result": "Bedrolite est classéeCBDdominant.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bediol-bedrocan-balanced-profile",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "326a8f78e4f6b0ada54ab6496635937ddf3522251672e9311e415a57a22c50fb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Cannabis flowers, ligneBediol et légende.",
+          "result": "Bediol est classéeBalanced ; les valeurs sont voisines, pas égales.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-afina-shared-bedrocan-forte-products",
+      "status": "approved",
+      "comment": "Rapprochement de références précis ; niveau2 cohérent.",
+      "contentHash": "5788b8f02ba7d2f9776bf2e22f92497db7e14726dad35fa58402fa2e8a2b5f0e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Cannabis flowers, lignesBedrocan etforte.",
+          "result": "Les deux lignes indiquentAfina.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-average-versus-batch-coa",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "d53f34cb4ce30388125d549aeafee0187079b547eee5dee201d7d4518c9eb7ac",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Note sousCannabis flowers.",
+          "result": "La note renvoie aux certificats pour les lots.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-flos-whole-dried-flower",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "83f3aaaf2a53cfdf9a3d7513baaeee5e6be54c078b9f422997a5cad13644b938",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Supplied product forms > Flos.",
+          "result": "Flos désigne la fleur entière séchée.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-cutflos-reduced-not-powder",
+      "status": "approved",
+      "comment": "Distinction de forme claire, sans extension aux procédés.",
+      "contentHash": "bef3dbfd50e1f115481f7f1fce25e35fc7e4fe7b09e39080b9e9e4372f443244",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bedrocan",
+          "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+          "locator": "Supplied product forms > Cut flos.",
+          "result": "Cutflos désigne une réduction de taille sans poudre.",
+          "sourceHash": "2f01d6b041985bc3fcab8b7f9e18409fe00f20cd277dcc5035d6b6ac84ad7d78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-polish-four-varieties-institute-breeder",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "3e829d1a8473809ed2fdff913d65a4c4eabc3fee71647cddcdb259f19aeb1c93",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-polishinstitute",
+          "url": "https://www.polishhempprogram.com/",
+          "locator": "Hemp varieties ; coordonnées de l’Institut.",
+          "result": "Le programme attribue les quatre variétés à cet institut.",
+          "sourceHash": "46dca6933a058da38681ba68233c15df3d0133107f3a2f82a74748eef042eb78",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-bialobrzeskie-monoecious-fibre-variety",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "e32e59dadf59c56586f1166bf59d51e940df8f1b8790ca1dbb7dabecb2213b77",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-bialobrzeskie",
+          "url": "https://www.polishhempprogram.com/polish-hemp-program---bialobrzeskie.html",
+          "locator": "Paragraphe introductifBiałobrzeskie.",
+          "result": "La fiche décrit cette variété comme monoïque.",
+          "sourceHash": "bb59e69d3b300e4a3406690edaad1b86f5f9c57cd829d67f8dcdef76213a7875",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-henola-grain-oil-destination",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "950bc597751426fc33cc349bed8d04ae3eb2f5503161913cf0ecce4d3736988d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-henola",
+          "url": "https://www.polishhempprogram.com/polish-hemp-program---henola.html",
+          "locator": "Paragraphe introductifHenola.",
+          "result": "La fiche présenteHenola comme variété grain/huile.",
+          "sourceHash": "631c268b4b2ca26a5ca9afb644ca52d4c61cc24660b54d7c7850b174014871cf",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-henola-shorter-cycle-than-bialobrzeskie",
+      "status": "approved",
+      "comment": "Comparaison annoncée correctement bornée ; niveau2 cohérent.",
+      "contentHash": "cd8af9bd553a6465f198026d98d846126ee2d4cab6f3a9affcb4da65e045d241",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-henola",
+          "url": "https://www.polishhempprogram.com/polish-hemp-program---henola.html",
+          "locator": "Paragraphe introductifHenola.",
+          "result": "La fiche annonce un cycle plus court queBiałobrzeskie.",
+          "sourceHash": "631c268b4b2ca26a5ca9afb644ca52d4c61cc24660b54d7c7850b174014871cf",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-tygra-fibre-technical-uses",
+      "status": "approved",
+      "comment": "Usage principal attribué et non exclusif ; choix de débouchés plausibles.",
+      "contentHash": "5b588ed6b5caee1768699fefa71a8d84203e3388d4858d3b361bc5407aa6d70b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-tygra",
+          "url": "https://www.polishhempprogram.com/polish-hemp-program---tygra.html",
+          "locator": "Paragraphe descriptifTygra.",
+          "result": "La fiche met particulièrement en avant les usages techniques.",
+          "sourceHash": "e4216f36fab31090b1b1a16532ca9e35d5909bae190a83a3fb638b600aab8ff2",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-rajan-maturity-context-polish-conditions",
+      "status": "approved",
+      "comment": "Le contexte géographique limite correctement la portée de la date ; niveau2 recevable.",
+      "optionalPolish": "Identification est une forme plus précise que situation pour ce rappel de contexte.",
+      "contentHash": "2063cdb66be48930eb18a5832a64e66b57a78b6daf2e990ed6fccda11bbff03c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-rajan",
+          "url": "https://www.polishhempprogram.com/polish-hemp-program---rajan.html",
+          "locator": "Paragraphe introductifRajan.",
+          "result": "La maturité décrite est explicitement rattachée aux conditions polonaises.",
+          "sourceHash": "1535c8c7c976e4e93faf807ce007bf1de5132633a80a37689fcce4e7eab45c8c",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-coboru-bialobrzeskie-earliest-entry-compared",
+      "status": "approved",
+      "comment": "Correction relue : formulation, choix et niveau désormais cohérents avec le fait documenté. L’attribution et les limites de la source restent explicites.",
+      "contentHash": "b6c8a4eeea3159a4b04a700c9cddcd6cc59434ed889c8c66f001f6906c555ea2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-coboru",
+          "url": "https://www.coboru.gov.pl/en/nli/nli_varieties?kodgatunku=KOP",
+          "locator": "TableauHemp, Entry date : Białobrzeskie, Tygra, Wielkopolskie, Henola.",
+          "result": "Les dates lues confirmentBiałobrzeskie avant les trois autres.",
+          "sourceHash": "d202678572a2eeb8ecd0f150f4c2cdfdbf403ef5ad2b5d56900f9616de8811be",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-ace-leading-monoterpenes",
+      "status": "approved",
+      "comment": "Classement chimique précisément attribué à un profil publié ; niveau3 cohérent.",
+      "contentHash": "19ac53ced9f4cacd1ebef75be60a4d151015b16110a64a43455d93638bc3ebdb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-zamaldelica",
+          "url": "https://www.aceseeds.org/en/seeds/zamaldelica-feminized-seeds/",
+          "locator": "Additional information > Terpene profile.",
+          "result": "Le profil place terpinolène etβ-myrcène en tête des monoterpènes.",
+          "sourceHash": "e4529ec80c8bec476033a1ef03cbc869263b6bd89df1ac660dcd28478e863063",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-terpinolene-nearly-half-profile",
+      "status": "approved",
+      "comment": "Le dénominateur est correctement limité au profil terpénique ; niveau3 cohérent.",
+      "contentHash": "7bc228d61ce6edd466443f2dcf8e7faa854f2fe0209ee8ba3b5464ca8d783f51",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-panama",
+          "url": "https://www.aceseeds.org/en/seeds/panama-feminized-seeds/",
+          "locator": "Additional information > Terpene profile.",
+          "result": "La fiche annonce presque50% de terpinolène dans ce profil.",
+          "sourceHash": "6e8844afc6db3222033bc7ffdecbbb49760292bbd18aca41df7ef84dd56a0621",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-b01-finola-canada-list-before-europe-2018-account",
+      "status": "approved",
+      "comment": "Chronologie mémorisée et datée ; niveau3 cohérent, sans extrapolation juridique actuelle.",
+      "contentHash": "00cd34c7a61ea0c2eaf87ca13e54041df47ad505c7e207581030ff509b0e0595",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b01-finola2018",
+          "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+          "locator": "PDF2018 p.1, General information.",
+          "result": "LePDF placeCanada1998 avantUE2003.",
+          "sourceHash": "17627a18f9d46cdd516a6b6de1a8c98e28c68a57f8e2db2a5dc3326dd98ad8d6",
+          "checkedAt": "2026-11-16"
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "date": "2026-11-16",
+    "unchangedApprovals": 17,
+    "correctedApprovals": 23,
+    "unchangedSources": 17,
+    "newFactVerification": "Document FINOLA 2018 rouvert : p. 1, lignes 8–9.",
+    "retiredReviews": [
+      {
+        "id": "hemp-q2-b01-finola-dioecious-separate-male-female-plants",
+        "status": "changes_requested",
+        "comment": "Le fait testé est la définition de dioïque, déjà approuvée ; FINOLA ne crée pas un fait distinct.",
+        "duplicateOf": [
+          "hemp-plant-dioecie"
+        ],
+        "requestedChanges": [
+          "Remplacer par un fait propre àFINOLA réellement nouveau. Ne pas conserver la même définition en inversant question et réponse."
+        ],
+        "contentHash": "4618d51b340fbc75063410643c2e1c9906ac70bf61ee58fb27e586f58e90ffb0",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-b01-finola2018",
+            "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+            "locator": "PDF2018, Crop Description ; p.2, Uses for the fiber.",
+            "result": "LePDF décrit bien des plantes mâles et femelles distinctes.",
+            "sourceHash": "17627a18f9d46cdd516a6b6de1a8c98e28c68a57f8e2db2a5dc3326dd98ad8d6",
+            "checkedAt": "2026-11-16"
+          }
+        ]
+      }
+    ]
+  }
+}

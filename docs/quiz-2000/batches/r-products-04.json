@@ -1,0 +1,1533 @@
+{
+  "batchId": "r-products-04",
+  "author": "rebalance_products_sol",
+  "role": "Produits, objets, culture des usages et propriétés de fleurs résineuses",
+  "questions": [
+    {
+      "id": "hemp-q2-rp04-canada-edible-shelf-stable",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Avant ouverture, quelle conservation les comestibles au cannabis autorisés au Canada doivent-ils supporter ?",
+      "options": [
+        "Sans réfrigération nécessaire à leur sécurité",
+        "Au réfrigérateur pour prévenir toute contamination",
+        "Au congélateur jusqu’au moment de la vente",
+        "Dans une chaîne du froid comparable au lait frais"
+      ],
+      "answer": 0,
+      "explanation": "Le règlement exige des produits stables avant ouverture. Cela ne dispense ni du respect des indications de conservation, ni des règles d’hygiène une fois l’emballage ouvert.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-hc-edible-composition"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Conservation des comestibles canadiens",
+        "subjectKey": "canada-cannabis-edible-stability",
+        "property": "Stabilité avant ouverture",
+        "expectedAnswer": "Sans réfrigération nécessaire à leur sécurité",
+        "learningObjective": "Reconnaître une différence entre comestible commercial autorisé et aliment périssable.",
+        "factKey": "canada-edible-shelf-stable",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-hc-edible-composition",
+            "locator": "Edible cannabis : Shelf-stable ; Supplemented foods ; Vitamins and minerals",
+            "support": "Les comestibles doivent être stables avant ouverture, sans réfrigération nécessaire pour prévenir la contamination. Les aliments supplémentés ne sont pas des ingrédients autorisés, avec des exceptions distinctes pour certaines vitamines déjà présentes dans des aliments."
+          }
+        ],
+        "jurisdiction": "Canada, guide octobre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-canada-supplemented-food-ingredients",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quelle catégorie est exclue comme ingrédient d’un comestible au cannabis par le guide canadien de2026 ?",
+      "options": [
+        "Les aliments contenant naturellement des vitamines",
+        "Les aliments supplémentés, comme certaines boissons vitaminées",
+        "Les farines enrichies conformément au droit alimentaire",
+        "Les aliments contenant des additifs alimentaires autorisés"
+      ],
+      "answer": 1,
+      "explanation": "Les aliments supplémentés sont exclus. Le guide distingue ce cas des vitamines naturellement présentes, de certains additifs autorisés et d’aliments légalement enrichis, tels que certaines farines.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-hc-edible-composition"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Ingrédients des comestibles canadiens",
+        "subjectKey": "canada-cannabis-supplemented-food",
+        "property": "Aliments supplémentés exclus",
+        "expectedAnswer": "Les aliments supplémentés, comme certaines boissons vitaminées",
+        "learningObjective": "Distinguer une catégorie réglementaire des vitamines présentes dans un aliment.",
+        "factKey": "canada-supplemented-food-ingredients",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-hc-edible-composition",
+            "locator": "Edible cannabis : Shelf-stable ; Supplemented foods ; Vitamins and minerals",
+            "support": "Les comestibles doivent être stables avant ouverture, sans réfrigération nécessaire pour prévenir la contamination. Les aliments supplémentés ne sont pas des ingrédients autorisés, avec des exceptions distinctes pour certaines vitamines déjà présentes dans des aliments."
+          }
+        ],
+        "jurisdiction": "Canada, guide octobre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-canada-label-total-only-required",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Depuis la réforme canadienne de2025, quelles valeurs THC/CBD restent obligatoires sur l’étiquette d’un produit ?",
+      "options": [
+        "Le THC et le CBD déjà neutres uniquement",
+        "Le THCA et le CBDA uniquement",
+        "Le THC total et le CBD total",
+        "Le CBD total et les terpènes totaux uniquement"
+      ],
+      "answer": 2,
+      "explanation": "Les valeurs totales restent exigées. Les valeurs séparées des formes neutres ou acides deviennent facultatives ; des produits portant l’ancien double affichage peuvent encore être écoulés.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-gazette-total-label"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Étiquetage cannabinoïde canadien",
+        "subjectKey": "canada-cannabinoid-label-total",
+        "property": "Totaux requis après réforme",
+        "expectedAnswer": "Le THC total et le CBD total",
+        "learningObjective": "Comprendre pourquoi une étiquette récente peut comporter moins de valeurs THC/CBD.",
+        "factKey": "canada-label-total-only-required",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-gazette-total-label",
+            "locator": "Packaging and labelling : paragraphes commençant Under the current requirements et With these amendments",
+            "support": "La réforme exige les valeurs total THC et total CBD, et rend facultatives les valeurs des formes déjà neutres ou acides. Des dispositions transitoires autorisent l’écoulement des anciens étiquetages."
+          }
+        ],
+        "jurisdiction": "Canada, réforme2025 consultée novembre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-rolling-paper-contaminants",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel couple de contaminants Santé Canada cite-t-il pour le papier d’un joint, indépendamment des fleurs ?",
+      "options": [
+        "Des mycotoxines et des alcaloïdes de l’ergot",
+        "De la nicotine et des nitrosamines du tabac",
+        "Des résidus de butane et de propane",
+        "Des métaux lourds et des pesticides"
+      ],
+      "answer": 3,
+      "explanation": "Santé Canada mentionne notamment le plomb et des pesticides possibles dans les papiers à rouler. Le support de combustion constitue donc une source d’exposition distincte de la composition des fleurs.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rp04-hc-rolling-papers"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Papier à rouler du cannabis",
+        "subjectKey": "cannabis-rolling-paper",
+        "property": "Contaminants possibles du support",
+        "expectedAnswer": "Des métaux lourds et des pesticides",
+        "learningObjective": "Identifier le papier comme composant du produit fumé.",
+        "factKey": "rolling-paper-contaminants",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-hc-rolling-papers",
+            "locator": "Smoking accessories : Rolling papers",
+            "support": "Santé Canada signale que les papiers à rouler ne sont pas réglementés et peuvent contenir des métaux lourds, notamment du plomb, ainsi que des pesticides."
+          }
+        ],
+        "jurisdiction": "Canada, conseil sanitaire2024",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-sugar-leaves-small-resinous",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans la description d’une tête de cannabis, quelles feuilles sont appelées « sugar leaves » ?",
+      "options": [
+        "Les petites feuilles résineuses insérées dans les têtes",
+        "Les grandes feuilles en éventail éloignées des têtes",
+        "Les premières feuilles arrondies de la plantule",
+        "Les feuilles jaunies déjà tombées au sol"
+      ],
+      "answer": 0,
+      "explanation": "Ces petites feuilles portent des trichomes donnant un aspect givré. Elles se distinguent des grandes fan leaves ; le nom ne signifie pas qu’un sucre a été ajouté au produit.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rp04-unr-sugar-leaves"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Petites feuilles des têtes florales",
+        "subjectKey": "cannabis-sugar-leaves",
+        "property": "Feuilles florales résineuses",
+        "expectedAnswer": "Les petites feuilles résineuses insérées dans les têtes",
+        "learningObjective": "Reconnaître un élément concret des fleurs commercialisées.",
+        "factKey": "sugar-leaves-small-resinous",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-unr-sugar-leaves",
+            "locator": "Paragraphe Sugar leaves et comparaison avec fan leaves",
+            "support": "Les sugar leaves sont de petites feuilles présentes dans les têtes florales ; les trichomes leur donnent un aspect givré. Les fan leaves sont de grandes feuilles saillantes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-chillum-without-water",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle description du chillum traditionnel correspond à la notice des Sanskriti Museums ?",
+      "options": [
+        "Une pipe à main avec réservoir d’eau",
+        "Une pipe à main sans réservoir d’eau",
+        "Une pipe à tuyau avec réservoir d’eau",
+        "Une pipe à tuyau sans réservoir d’eau"
+      ],
+      "answer": 1,
+      "explanation": "Le chillum est une pipe à main avec foyer et embout, sans réservoir d’eau. La notice le décrit parmi les objets utilisés traditionnellement pour fumer du cannabis ou du haschich.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-sanskriti-chillum"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Pipe chillum",
+        "subjectKey": "cannabis-chillum",
+        "property": "Absence de réservoir d’eau",
+        "expectedAnswer": "Une pipe à main sans réservoir d’eau",
+        "learningObjective": "Distinguer deux familles d’objets de consommation.",
+        "factKey": "chillum-without-water",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-sanskriti-chillum",
+            "locator": "Notice de l’objet, comparaison avec hukkah",
+            "support": "Le chillum est une pipe à main composée d’un foyer et d’un embout, sans réservoir d’eau contrairement au hukkah."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-volcano-classic-detachable-balloon",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quel élément recueille l’aérosol sur le vaporisateur de table VOLCANO CLASSIC décrit par son fabricant ?",
+      "options": [
+        "Un réservoir d’eau intégré",
+        "Un tube plongeant dans une huile",
+        "Un ballon détachable",
+        "Une cartouche de liquide jetable"
+      ],
+      "answer": 2,
+      "explanation": "Le système EASY VALVE utilise un ballon détachable. C’est une caractéristique du modèle, qui le distingue des dispositifs à cartouche et ne constitue pas une garantie d’innocuité.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-volcano-classic"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Vaporisateur VOLCANO CLASSIC",
+        "subjectKey": "volcano-classic",
+        "property": "Ballon détachable",
+        "expectedAnswer": "Un ballon détachable",
+        "learningObjective": "Reconnaître un modèle courant de vaporisateur de fleurs.",
+        "factKey": "volcano-classic-detachable-balloon",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-volcano-classic",
+            "locator": "Description du système EASY VALVE et ballon détachable",
+            "support": "Le modèle de table VOLCANO CLASSIC collecte l’aérosol dans un ballon EASY VALVE détachable."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-dynavap-no-integrated-battery",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Comment DynaVap décrit-il l’alimentation en chaleur de ses vaporisateurs ?",
+      "options": [
+        "Par une batterie rechargeable intégrée",
+        "Par une résistance branchée sur secteur",
+        "Par une résistance branchée sur un port USB",
+        "Par une source de chaleur externe"
+      ],
+      "answer": 3,
+      "explanation": "Le fabricant décrit une conception reposant sur une chaleur externe, sans batterie ni électronique intégrées au vaporisateur.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-dynavap-battery-free"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Vaporisateurs DynaVap",
+        "subjectKey": "dynavap-vaporizer",
+        "property": "Chaleur externe sans batterie",
+        "expectedAnswer": "Par une source de chaleur externe",
+        "learningObjective": "Distinguer la conception d’un dispositif de celle d’un vaporisateur électrique.",
+        "factKey": "dynavap-no-integrated-battery",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-dynavap-battery-free",
+            "locator": "Battery Free : How does it work?",
+            "support": "Le fabricant présente ses dispositifs comme dépourvus de batterie et d’électronique, utilisant une source de chaleur externe."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-frenchy-cannoli-hash-artisan",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la culture cannabique, à quelle activité Frenchy Cannoli est-il particulièrement associé ?",
+      "options": [
+        "L’artisanat et la transmission du haschich traditionnel",
+        "La création de lignées de cannabis riches en CBD",
+        "Le soufflage d’objets en verre pour la culture cannabique",
+        "Le journalisme dans la presse spécialisée sur le cannabis"
+      ],
+      "answer": 0,
+      "explanation": "Sa succession le présente comme un artisan et un enseignant du haschich traditionnel installé en Californie. Sa notoriété tient à cette culture des résines, au-delà d’un simple nom de produit.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-frenchy-cannoli"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Frenchy Cannoli",
+        "subjectKey": "frenchy-cannoli",
+        "property": "Artisan et transmetteur du haschich",
+        "expectedAnswer": "L’artisanat et la transmission du haschich traditionnel",
+        "learningObjective": "Identifier une figure de la culture des concentrés.",
+        "factKey": "frenchy-cannoli-hash-artisan",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-frenchy-cannoli",
+            "locator": "Premier paragraphe et récit de transmission du haschich traditionnel",
+            "support": "Frenchy Cannoli était un artisan, enseignant et défenseur californien des concentrés traditionnels du cannabis, particulièrement du haschich."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-emerald-cup-sungrown-tradition",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle tradition de cannabis l’Emerald Cup met-elle particulièrement à l’honneur dans son communiqué de 2021 ?",
+      "options": [
+        "Les fleurs produites sous lampes en intérieur",
+        "Les récoltes de plein air cultivées au soleil",
+        "Les nouvelles variétés issues de la sélection néerlandaise",
+        "Les résines traditionnelles importées d’Asie centrale"
+      ],
+      "answer": 1,
+      "explanation": "L’événement revendique la tradition des récoltes sun-grown et des producteurs de plein air. Il comporte aussi des catégories d’extraits et de produits transformés : toute la compétition ne se réduit pas aux fleurs.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-emerald-cup-2021"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Concours Emerald Cup",
+        "subjectKey": "emerald-cup",
+        "property": "Tradition des récoltes au soleil",
+        "expectedAnswer": "Les récoltes de plein air cultivées au soleil",
+        "learningObjective": "Situer un concours dans la culture des produits californiens.",
+        "factKey": "emerald-cup-sungrown-tradition",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-emerald-cup-2021",
+            "locator": "p.1 introduction ; p.9 About the Emerald Cup",
+            "support": "Le communiqué décrit un concours et une célébration des récoltes de cannabis cultivées au soleil, dans la tradition des producteurs californiens."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-spannabis-fair-nature",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Qu’est-ce que Spannabis dans le secteur du cannabis ?",
+      "options": [
+        "Un festival de cinéma consacré à la culture cannabique",
+        "Un congrès réservé aux essais cliniques sur les cannabinoïdes",
+        "Un salon réunissant exposants, produits et conférences",
+        "Un circuit de compétitions entre clubs cannabiques"
+      ],
+      "answer": 2,
+      "explanation": "Spannabis réunit des exposants et des produits du secteur cannabique. Les World Cannabis Conferences complètent le salon par des rencontres et des conférences.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-spannabis"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Salon Spannabis",
+        "subjectKey": "spannabis",
+        "property": "Salon cannabique",
+        "expectedAnswer": "Un salon réunissant exposants, produits et conférences",
+        "learningObjective": "Reconnaître un événement professionnel et culturel.",
+        "factKey": "spannabis-fair-nature",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-spannabis",
+            "locator": "Sobre Spannabis ; Qué encontrarás",
+            "support": "Spannabis est un salon du secteur cannabique associant expositions de produits, conférences et culture du cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-bogart-joint-monopolize",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans l’argot anglophone, que reproche-t-on à quelqu’un qui « bogart » un joint partagé ?",
+      "options": [
+        "De l’éteindre avant la première bouffée",
+        "De mélanger deux variétés dans le joint",
+        "De remplacer le papier par une feuille de cigare",
+        "De l’accaparer sans le faire passer"
+      ],
+      "answer": 3,
+      "explanation": "Merriam-Webster définit ce verbe comme consommer sans partager et rappelle son usage autour du joint. Le sens s’est ensuite étendu au fait d’accaparer d’autres choses.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-bogart-merriam"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Argot du partage de joint",
+        "subjectKey": "bogart-joint",
+        "property": "Accaparement du joint",
+        "expectedAnswer": "De l’accaparer sans le faire passer",
+        "learningObjective": "Comprendre un terme culturel sans confondre partage et technique de préparation.",
+        "factKey": "bogart-joint-monopolize",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-bogart-merriam",
+            "locator": "Verb sense2 ; Did you know?",
+            "support": "Bogart signifie consommer sans partager ; le dictionnaire rappelle l’emploi historique dans l’expression Don’t bogart that joint."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-curing-postdrying-maturation",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Pour des fleurs de cannabis, à quelle étape descriptive correspond le « curing » ou affinage ?",
+      "options": [
+        "Une maturation du produit après le séchage",
+        "Le séchage initial des fleurs encore fraîches",
+        "La séparation des petites feuilles des têtes florales",
+        "Le tri des fleurs séchées selon leur calibre"
+      ],
+      "answer": 0,
+      "explanation": "L’affinage désigne une maturation postérieure au séchage, durant laquelle les caractères du produit peuvent évoluer. Ce terme ne désigne ni une extraction ni une garantie d’augmentation du THC.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-baek-curing"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Affinage des fleurs",
+        "subjectKey": "cannabis-flower-curing",
+        "property": "Maturation après séchage",
+        "expectedAnswer": "Une maturation du produit après le séchage",
+        "learningObjective": "Distinguer une étape descriptive du produit fini d’une extraction.",
+        "factKey": "curing-postdrying-maturation",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-baek-curing",
+            "locator": "Introduction, paragraphe Curing is another important subsequent postharvest process",
+            "support": "L’affinage ou curing est une maturation postérieure au séchage des inflorescences, associée à l’évolution de leurs caractères aromatiques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-commercial-hhc-epimer-mixture",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle composition le BfR décrit-il comme typique du HHC semi-synthétique commercial ?",
+      "options": [
+        "Du 9R-HHC purifié, avec quelques traces de 9S-HHC",
+        "Un mélange de 9R-HHC et de 9S-HHC à proportions variables",
+        "Du 9S-HHC purifié, avec quelques traces de 9R-HHC",
+        "Un mélange à parts égales de 9R-HHC et de 9S-HHC"
+      ],
+      "answer": 1,
+      "explanation": "L’appellation HHC peut recouvrir un mélange des deux épimères, sans proportion universelle. Connaître le nom du cannabinoïde ne suffit donc pas à connaître la composition exacte du produit.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp04-bfr-hhc-mixture"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Composition du HHC commercial",
+        "subjectKey": "hhc-9r-9s",
+        "property": "Mélange variable9R/9S",
+        "expectedAnswer": "Un mélange de 9R-HHC et de 9S-HHC à proportions variables",
+        "learningObjective": "Appliquer la distinction d’épimères à des produits réels.",
+        "factKey": "commercial-hhc-epimer-mixture",
+        "form": "identification",
+        "difficultyRationale": "Lecture d’un résultat analytique ou clinique circonscrit et comparaison de formes chimiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-bfr-hhc-mixture",
+            "locator": "p.4 Figure1 et §3.2 Agent, paragraphe mixture of the epimers",
+            "support": "Le HHC de production semi-synthétique est typiquement un mélange de9R-HHC et9S-HHC, dont les proportions peuvent varier."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-cooked-with-cannabis-competition",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel format propose l’émission « Cooked with Cannabis » de 2020 ?",
+      "options": [
+        "Une série d’entretiens avec des restaurateurs cannabiques",
+        "Un voyage à la découverte des traditions culinaires cannabiques",
+        "Une compétition entre chefs autour de plats au cannabis",
+        "Des cours de cuisine cannabique présentés par un chef unique"
+      ],
+      "answer": 2,
+      "explanation": "Netflix présente une compétition de chefs autour de plats au cannabis. Le THC et le CBD font partie des ingrédients cités dans le synopsis officiel de cette émission.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-cooked-with-cannabis"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Émission Cooked with Cannabis",
+        "subjectKey": "cooked-with-cannabis-series",
+        "property": "Concours culinaire cannabique",
+        "expectedAnswer": "Une compétition entre chefs autour de plats au cannabis",
+        "learningObjective": "Identifier un format médiatique consacré aux comestibles à actifs.",
+        "factKey": "cooked-with-cannabis-competition",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-cooked-with-cannabis",
+            "locator": "Synopsis et Genres",
+            "support": "L’émission2020 présente une compétition entre chefs autour de plats utilisant du cannabis, des infusionsTHC et des saucesCBD."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-gg4-trademark-renaming",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Pourquoi GG Strains a-t-il remplacé le nom « Gorilla Glue #4 » par « GG4 » ou « Original Glue » en 2017 ?",
+      "options": [
+        "À la suite d’un litige de marque avec une société d’adhésifs",
+        "Pour distinguer une nouvelle lignée de l’ancienne",
+        "À la suite d’un changement de propriétaire de la marque",
+        "Pour unifier ses noms sur les marchés internationaux"
+      ],
+      "answer": 0,
+      "explanation": "Dans l’entretien publié en2017, les dirigeants expliquent le changement de nom après un accord avec Gorilla Glue. Un changement commercial de nom n’implique pas à lui seul un nouveau génotype.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rp04-gg4-trademark"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Renommage de Gorilla Glue#4",
+        "subjectKey": "gg4",
+        "property": "Litige de marque",
+        "expectedAnswer": "À la suite d’un litige de marque avec une société d’adhésifs",
+        "learningObjective": "Distinguer histoire d’un nom commercial et changement de variété.",
+        "factKey": "gg4-trademark-renaming",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-gg4-trademark",
+            "locator": "Paragraphes88–99 : entretiens Catherine Franklin et Ross Johnson, changement de noms",
+            "support": "Dans l’entretien de2017, GG Strains explique le remplacement de Gorilla Glue#4 par GG4 ou Original Glue après un accord dans le litige de marque avec la société d’adhésifs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-weed-the-people-families",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelles personnes le documentaire « Weed the People » suit-il autour des huiles de cannabis ?",
+      "options": [
+        "Des jurés d’une compétition de haschich",
+        "Des familles d’enfants atteints de cancers",
+        "Des collectionneurs de pipes anciennes",
+        "Des policiers enquêtant sur un dispensaire clandestin"
+      ],
+      "answer": 1,
+      "explanation": "Le film suit ces familles et leurs recherches d’accès aux huiles de cannabis. Son récit militant est un objet culturel ; les trajectoires racontées ne démontrent pas une efficacité anticancéreuse.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-weed-the-people"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Documentaire Weed the People",
+        "subjectKey": "weed-the-people-film",
+        "property": "Familles et cannabis médical",
+        "expectedAnswer": "Des familles d’enfants atteints de cancers",
+        "learningObjective": "Identifier le sujet d’un documentaire en distinguant récit et preuve clinique.",
+        "factKey": "weed-the-people-families",
+        "form": "identification",
+        "difficultyRationale": "Repère concret de produit, d’objet ou de culture des usages, sans mécanisme spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-weed-the-people",
+            "locator": "Présentation du film au-dessus de The Filmmakers",
+            "support": "Le documentaire suit des familles d’enfants atteints de cancers qui se tournent vers des huiles de cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-murder-mountain-humboldt",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quelle région cannabique se déroule la série documentaire « Murder Mountain » de2018 ?",
+      "options": [
+        "Le Rif, au Maroc",
+        "La vallée de la Bekaa, au Liban",
+        "Le comté de Humboldt, en Californie",
+        "La vallée de Parvati, en Inde"
+      ],
+      "answer": 2,
+      "explanation": "La série situe son récit dans le comté de Humboldt, autour de l’industrie du cannabis et de disparitions. Ce cadre narratif ne permet pas de généraliser ses événements à tous les producteurs de la région.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-murder-mountain"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Série Murder Mountain",
+        "subjectKey": "murder-mountain-series",
+        "property": "Cadre de Humboldt",
+        "expectedAnswer": "Le comté de Humboldt, en Californie",
+        "learningObjective": "Situer une œuvre dans une région de culture cannabique.",
+        "factKey": "murder-mountain-humboldt",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-murder-mountain",
+            "locator": "Synopsis ; Episodes1–2",
+            "support": "La série documentaire2018 se situe dans le comté californien de Humboldt, autour de l’industrie cannabique et de disparitions."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-withdrawal-early-days-peak",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Dans le suivi de Budney (2003), quand le sevrage après un usage important de cannabis atteignait-il typiquement son maximum ?",
+      "options": [
+        "Dans les deux premières heures après l’arrêt",
+        "Entre la quatrième et la sixième semaine après l’arrêt",
+        "Entre le deuxième et le troisième mois après l’arrêt",
+        "Entre le deuxième et le sixième jour après l’arrêt"
+      ],
+      "answer": 3,
+      "explanation": "Le début se situait généralement dans les premiers jours, avec un maximum entre les jours2et6. Les délais varient : une absence de gêne immédiate ne signifie pas que l’arrêt sera sans symptômes.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rp04-budney-withdrawal"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Chronologie du sevrage du cannabis",
+        "subjectKey": "cannabis-withdrawal-time-course",
+        "property": "Maximum typique dans les premiers jours",
+        "expectedAnswer": "Entre le deuxième et le sixième jour après l’arrêt",
+        "learningObjective": "Distinguer disparition de l’ivresse et évolution du sevrage.",
+        "factKey": "withdrawal-early-days-peak",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-budney-withdrawal",
+            "locator": "Abstract complet, onset et peak effects",
+            "support": "Le suivi d’adultes usagers importants décrit un début de sevrage dans les premiers jours et un maximum typique entre les jours2et6."
+          }
+        ],
+        "jurisdiction": "États-Unis, étude d’adultes2003",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-withdrawal-rem-rebound-trial",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Dans l’essai de Vandrey (2011), quel changement du sommeil observe-t-on pendant l’abstinence de cannabis sous placebo ?",
+      "options": [
+        "Part de sommeil paradoxal accrue et durée totale réduite",
+        "Part de sommeil paradoxal réduite et durée totale accrue",
+        "Part de sommeil paradoxal réduite et durée totale réduite",
+        "Part de sommeil paradoxal accrue et durée totale accrue"
+      ],
+      "answer": 0,
+      "explanation": "Dans ce petit essai, le sommeil paradoxal occupait une plus grande part du sommeil, alors que la durée totale de sommeil diminuait. Une proportion accrue ne prouve pas une augmentation de la durée absolue de cette phase.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-rp04-vandrey-rem"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Sommeil paradoxal et abstinence",
+        "subjectKey": "cannabis-withdrawal-rem",
+        "property": "Proportion accrue de sommeil paradoxal et durée totale réduite",
+        "expectedAnswer": "Part de sommeil paradoxal accrue et durée totale réduite",
+        "learningObjective": "Distinguer architecture du sommeil et impression globale de mieux dormir.",
+        "factKey": "withdrawal-rem-rebound-trial",
+        "form": "identification",
+        "difficultyRationale": "Lecture d’un résultat analytique ou clinique circonscrit et comparaison de formes chimiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-vandrey-rem",
+            "locator": "Manuscrit primaire UPenn : §2.4 p.5, §3.1 p.6 et tableau2 p.15 (PDF indice14)",
+            "support": "Pendant l’abstinence sous placebo, la proportion de sommeil paradoxal augmente et la durée totale de sommeil diminue. La variable REM est un pourcentage, pas une durée absolue."
+          }
+        ],
+        "jurisdiction": "États-Unis, petit essai2011",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-cbd-liquid-pg-vg-base",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quelle base Le Petit Vapoteur décrit-il dans son guide des e-liquides CBD ?",
+      "options": [
+        "Huile d’olive et huile de graines de chanvre",
+        "Propylène glycol et glycérine végétale",
+        "Éthanol et huile de coco",
+        "Eau et huile de tournesol"
+      ],
+      "answer": 1,
+      "explanation": "Le guide décrit une base PG/VG portant le CBD et les arômes. Cette présentation commerciale d’un liquide à vapoter diffère de celle d’une huile orale et ne vaut pas pour toutes les formulations.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-rp04-lpv-cbd-base"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Base des e-liquides CBD",
+        "subjectKey": "cbd-vape-liquid-base",
+        "property": "BasePG/VG décrite par un vendeur",
+        "expectedAnswer": "Propylène glycol et glycérine végétale",
+        "learningObjective": "Distinguer la composition d’un liquide à vapoter de celle d’une huile orale.",
+        "factKey": "cbd-liquid-pg-vg-base",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-lpv-cbd-base",
+            "locator": "Paragraphe La base est composée de propylène glycol",
+            "support": "Le guide commercial décrit une base d’e-liquide CBD associant propylène glycol et glycérine végétale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-purple-flower-keracyanin",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "Quel pigment domine les anthocyanes des inflorescences violettes S1750/S1759 analysées par Bassolino (2023) ?",
+      "options": [
+        "La cyanidine-3-glucoside",
+        "La péonidine-3-glucoside",
+        "La cyanidine-3-rutinoside",
+        "La péonidine-3-rutinoside"
+      ],
+      "answer": 2,
+      "explanation": "La cyanidine-3-rutinoside, ou kéracyanine, est majoritaire dans ces inflorescences analysées. Ce résultat décrit leur pigmentation ; il ne mesure ni leur teneur en THC ni leur puissance.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rp04-bassolino-purple-flowers"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Pigment mesuré dans des inflorescences violettes",
+        "subjectKey": "purple-cannabis-flower-keracyanin",
+        "property": "Kéracyanine majoritaire dans les fleurs étudiées",
+        "expectedAnswer": "La cyanidine-3-rutinoside",
+        "learningObjective": "Connaître un pigment floral identifié sans confondre couleur et cannabinoïdes.",
+        "factKey": "purple-flower-keracyanin",
+        "form": "identification",
+        "difficultyRationale": "Identification spécialisée d’un pigment floral par son nom moléculaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-bassolino-purple-flowers",
+            "locator": "§3.2 et Table3 : inflorescences S1750/S1759",
+            "support": "La cyanidine-3-rutinoside, appelée kéracyanine, est le pigment anthocyanique majoritaire dans les inflorescences violettes analysées, notamment S1750 etS1759."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-last-prisoner-project-mission",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle organisation fondée en2019 se consacre à libérer et accompagner les personnes incarcérées pour des faits liés au cannabis ?",
+      "options": [
+        "Marijuana Policy Project",
+        "NORML",
+        "Drug Policy Alliance",
+        "Last Prisoner Project"
+      ],
+      "answer": 3,
+      "explanation": "Last Prisoner Project place la justice pénale et les personnes touchées par la criminalisation au centre de sa mission. Son action inclut la libération et la reconstruction des parcours après l’incarcération.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rp04-last-prisoner-project"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Organisation Last Prisoner Project",
+        "subjectKey": "last-prisoner-project",
+        "property": "Mission de justice pénale cannabique",
+        "expectedAnswer": "Last Prisoner Project",
+        "learningObjective": "Reconnaître un acteur contemporain de la culture et de la réforme du cannabis.",
+        "factKey": "last-prisoner-project-mission",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-last-prisoner-project",
+            "locator": "Vision ; Mission ; Values",
+            "support": "L’organisation, fondée en2019, se consacre à la justice pénale liée au cannabis, à la libération et à la reconstruction de la vie des personnes affectées par sa criminalisation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-cbd-powder-oil-stability-comparison",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Dans l’étude de Kosović (2021), quelle comparaison de stabilité du CBD solide et dissous dans l’huile de tournesol est observée ?",
+      "options": [
+        "Une dégradation plus marquée dans la solution huileuse",
+        "Une dégradation plus marquée dans la poudre solide",
+        "Une dégradation comparable dans les deux formes étudiées",
+        "Une absence de dégradation détectable dans les deux formes"
+      ],
+      "answer": 0,
+      "explanation": "Dans ces essais, le CBD solide était plus stable que la solution huileuse étudiée. La forme et le véhicule comptent : cette comparaison ne fixe pas une durée de conservation de toutes les huilesCBD.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-rp04-kosovic-cbd-matrix"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Stabilité du CBD selon la forme",
+        "subjectKey": "cbd-powder-oil-stability",
+        "property": "Solution huileuse plus sensible dans les essais",
+        "expectedAnswer": "Une dégradation plus marquée dans la solution huileuse",
+        "learningObjective": "Reconnaître une influence documentée de la formulation sur la stabilité.",
+        "factKey": "cbd-powder-oil-stability-comparison",
+        "form": "identification",
+        "difficultyRationale": "Lecture d’un résultat analytique ou clinique circonscrit et comparaison de formes chimiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-kosovic-cbd-matrix",
+            "locator": "§5 Conclusions",
+            "support": "Dans les conditions étudiées, le CBD solide s’est mieux maintenu que le CBD dissous dans l’huile de tournesol, beaucoup plus sensible aux conditions environnementales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-delta8-products-also-delta9",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quel autre cannabinoïde l’équipe de Kaczor a-t-elle détecté dans sept produits commercialisés comme delta-8-THC ?",
+      "options": [
+        "Le delta-10-THC",
+        "Le delta-9-THC",
+        "Le THCP",
+        "Le HHC"
+      ],
+      "answer": 1,
+      "explanation": "L’analyse a retrouvé du delta-9-THC dans sept des vingt produits achetés à Pittsburgh. Le résultat concerne cet échantillon : il ne donne pas la composition de tous les produits vendus sous le nom delta-8.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-kaczor-delta8-delta9"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Composition de produits delta-8 du commerce",
+        "subjectKey": "commercial-delta8-delta9-mixture",
+        "property": "Présence concomitante de delta9 dans un échantillon",
+        "expectedAnswer": "Le delta-9-THC",
+        "learningObjective": "Distinguer l’actif mis en avant et l’ensemble des cannabinoïdes effectivement présents.",
+        "factKey": "delta8-products-also-delta9",
+        "form": "identification",
+        "difficultyRationale": "Lecture d’un résultat analytique ou clinique circonscrit et comparaison de formes chimiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-kaczor-delta8-delta9",
+            "locator": "Results : Δ-9 THC and Other Cannabinoid Content Analysis ; Table2",
+            "support": "Du delta-9-THC a été détecté dans sept des vingt produits achetés à Pittsburgh et vendus comme produits delta-8."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-canada-dried-equivalence-purpose",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "À quoi sert l’équivalence en grammes de cannabis séché utilisée pour différents produits au Canada ?",
+      "options": [
+        "À prédire une même intensité d’ivresse",
+        "À garantir une même quantité de THC absorbée",
+        "À comptabiliser la possession publique légale",
+        "À fixer une durée identique des effets"
+      ],
+      "answer": 2,
+      "explanation": "Il s’agit d’une conversion réglementaire pour additionner des catégories de produits dans une limite de possession. Ce n’est pas une équivalence pharmacologique entre une boisson, une fleur et un extrait.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp04-hc-dried-equivalence"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Équivalences réglementaires de produits",
+        "subjectKey": "canada-dried-cannabis-equivalence",
+        "property": "Calcul de possession et non d’effet",
+        "expectedAnswer": "À comptabiliser la possession publique légale",
+        "learningObjective": "Lire une équivalence légale sans en faire une équivalence d’intoxication.",
+        "factKey": "canada-dried-equivalence-purpose",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d’un terme d’usage, d’une composition ou d’une règle applicable aux produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-hc-dried-equivalence",
+            "locator": "Introduction et paragraphe You can use this tool",
+            "support": "Les équivalences en cannabis séché servent à compter ensemble diverses catégories de produits dans la limite de possession publique non médicale."
+          }
+        ],
+        "jurisdiction": "Canada, information octobre2026",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp04-mellow-yellow-coffeeshop",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans l’histoire du commerce de cannabis à Amsterdam, qu’était « Mellow Yellow » ?",
+      "options": [
+        "Un coffeeshop pionnier de la vente de haschich",
+        "Un concours de dégustation de fleurs de cannabis",
+        "Un laboratoire public d’analyse des cannabinoïdes",
+        "Une coopérative de sélection de graines de cannabis"
+      ],
+      "answer": 0,
+      "explanation": "Le musée décrit Mellow Yellow comme un coffeeshop installé dans une ancienne boulangerie occupée. On pouvait y commander un café et acheter du haschich : un repère de l’histoire du commerce cannabique d’Amsterdam.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rp04-museum-mellow-yellow"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "Établissement historique Mellow Yellow",
+        "subjectKey": "mellow-yellow-coffeeshop",
+        "property": "Nature de coffeeshop pionnier du commerce de haschich",
+        "expectedAnswer": "Un coffeeshop pionnier de la vente de haschich",
+        "learningObjective": "Reconnaître un lieu historique du commerce récréatif de cannabis.",
+        "factKey": "mellow-yellow-amsterdam-pioneer-coffeeshop",
+        "form": "identification",
+        "difficultyRationale": "Repère historique demandant de connaître le rôle d’un établissement nommé, au-delà du sens actuel du mot coffeeshop.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp04-museum-mellow-yellow",
+            "locator": "Notice Mellow Yellow, paragraphes55–56 du texte ouvert",
+            "support": "La notice identifie Mellow Yellow comme coffeeshop amstellodamois où les clients commandaient un café et achetaient du haschich."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rp04-hc-edible-composition",
+      "title": "Guide on composition requirements for cannabis products",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Santé Canada",
+      "published": "2026-10-14",
+      "passage": "Les comestibles doivent être stables avant ouverture, sans réfrigération nécessaire pour prévenir la contamination. Les aliments supplémentés ne sont pas des ingrédients autorisés, avec des exceptions distinctes pour certaines vitamines déjà présentes dans des aliments.",
+      "access": "official-page",
+      "documentKind": "institutional-guide",
+      "limitation": "Seuls les passages indiqués soutiennent le fait ; aucune recette, dose, méthode de fabrication ou optimisation de culture reprise.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Edible cannabis : Shelf-stable ; Supplemented foods ; Vitamins and minerals",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-gazette-total-label",
+      "title": "Regulations Amending Certain Regulations Concerning Cannabis (Streamlining of Requirements): SOR/2025-43",
+      "organization": "Gouvernement du Canada / Gazette du Canada",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors43-eng.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Gouvernement du Canada / Gazette du Canada",
+      "published": "2025-03-12",
+      "passage": "La réforme exige les valeurs total THC et total CBD, et rend facultatives les valeurs des formes déjà neutres ou acides. Des dispositions transitoires autorisent l’écoulement des anciens étiquetages.",
+      "access": "official-page",
+      "documentKind": "regulatory-document",
+      "limitation": "Seuls les passages indiqués soutiennent le fait ; aucune recette, dose, méthode de fabrication ou optimisation de culture reprise.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Packaging and labelling : paragraphes commençant Under the current requirements et With these amendments",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-hc-rolling-papers",
+      "title": "Cannabis accessories for inhalation: Minimizing your risk when smoking, vaping and dabbing",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Santé Canada",
+      "published": "2024-09-20",
+      "passage": "Santé Canada signale que les papiers à rouler ne sont pas réglementés et peuvent contenir des métaux lourds, notamment du plomb, ainsi que des pesticides.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Nouveau passage sur le papier, distinct des matériaux des pipes, du rôle de l’eau et des contaminants des fleurs.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Smoking accessories : Rolling papers",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-unr-sugar-leaves",
+      "title": "Hemp Basics: Anatomy of a Female Hemp Plant",
+      "organization": "University of Nevada, Reno Extension",
+      "url": "https://extension.unr.edu/publication.aspx?PubID=4479",
+      "verifiedAt": "2026-11-17",
+      "author": "L. McGue, M. Morawska, M. L. Robinson et A. O. O’Callaghan",
+      "published": "2021",
+      "passage": "Les sugar leaves sont de petites feuilles présentes dans les têtes florales ; les trichomes leur donnent un aspect givré. Les fan leaves sont de grandes feuilles saillantes.",
+      "access": "official-page",
+      "documentKind": "institutional-document",
+      "limitation": "Description des petites feuilles résineuses uniquement ; les recommandations de défoliation, récolte et les formulations imprécises sur la couleur des stigmates sont exclues.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Paragraphe Sugar leaves et comparaison avec fan leaves",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-sanskriti-chillum",
+      "title": "Chillum — Sanskriti Museums",
+      "organization": "Sanskriti Museums / Google Arts & Culture",
+      "url": "https://artsandculture.google.com/asset/chillum/SgFoYeYzgjKoDQ",
+      "verifiedAt": "2026-11-17",
+      "author": "Jyotindra Jain",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le chillum est une pipe à main composée d’un foyer et d’un embout, sans réservoir d’eau contrairement au hukkah.",
+      "access": "catalogue",
+      "documentKind": "museum-catalogue",
+      "limitation": "Notice de typologie de l’objet et usage cannabis/haschich ; chronologie contestable du tabac non reprise. Les dates de l’objet ne sont pas une date de publication.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Notice de l’objet, comparaison avec hukkah",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-volcano-classic",
+      "title": "VOLCANO CLASSIC",
+      "organization": "Storz & Bickel",
+      "url": "https://www.storz-bickel.com/en/devices/volcanoclassic",
+      "verifiedAt": "2026-11-17",
+      "author": "Storz & Bickel",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le modèle de table VOLCANO CLASSIC collecte l’aérosol dans un ballon EASY VALVE détachable.",
+      "access": "official-page",
+      "documentKind": "manufacturer-product-description",
+      "limitation": "Caractéristique matérielle attribuée au modèle ; aucune allégation de pureté, santé ou supériorité et aucun réglage de chauffe repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Description du système EASY VALVE et ballon détachable",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-dynavap-battery-free",
+      "title": "Try DynaVap — Battery Free",
+      "organization": "DynaVap",
+      "url": "https://www.dynavap.com/pages/try-dynavap",
+      "verifiedAt": "2026-11-17",
+      "author": "DynaVap",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le fabricant présente ses dispositifs comme dépourvus de batterie et d’électronique, utilisant une source de chaleur externe.",
+      "access": "official-page",
+      "documentKind": "manufacturer-product-description",
+      "limitation": "Description matérielle attribuée, pas garantie de sécurité. Aucun geste de chauffe, temps, température ni quantité repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Battery Free : How does it work?",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-frenchy-cannoli",
+      "title": "About Frenchy Cannoli",
+      "organization": "Frenchy Cannoli Brand / succession Frenchy Cannoli",
+      "url": "https://frenchycannoli.com/about",
+      "verifiedAt": "2026-11-17",
+      "author": "Frenchy Cannoli Brand / succession Frenchy Cannoli",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Frenchy Cannoli était un artisan, enseignant et défenseur californien des concentrés traditionnels du cannabis, particulièrement du haschich.",
+      "access": "official-page",
+      "documentKind": "first-party-biographical-account",
+      "limitation": "Présentation par sa succession ; seules son activité et sa place dans la culture du haschich sont reprises, pas les méthodes de fabrication.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Premier paragraphe et récit de transmission du haschich traditionnel",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-emerald-cup-2021",
+      "title": "All the winners of The Emerald Cup 2021",
+      "organization": "The Emerald Cup / communiqué original",
+      "url": "https://leafly-cms-production.imgix.net/wp-content/uploads/2021/04/12102915/Press-Release_-All-the-winners-of-The-Emerald-Cup-2021_.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "The Emerald Cup / communiqué original",
+      "published": "2021-04-12",
+      "passage": "Le communiqué décrit un concours et une célébration des récoltes de cannabis cultivées au soleil, dans la tradition des producteurs californiens.",
+      "access": "full-text",
+      "documentKind": "organizer-press-release",
+      "limitation": "Communiqué original hébergé en copie par Leafly ; site organisateur directement tenté mais bloqué403. Les superlatifs publicitaires et l’idée que toutes les catégories seraient exclusivement outdoor sont exclus.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.1 introduction ; p.9 About the Emerald Cup",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-spannabis",
+      "title": "Spannabis Bilbao 2027 — XXIV Feria del Cáñamo",
+      "organization": "Feria del Cáñamo S.L.",
+      "url": "https://spannabis.es/",
+      "verifiedAt": "2026-11-17",
+      "author": "Feria del Cáñamo S.L.",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Spannabis est un salon du secteur cannabique associant expositions de produits, conférences et culture du cannabis.",
+      "access": "official-page",
+      "documentKind": "organizer-event-description",
+      "limitation": "Page d’annonce de l’organisateur effectivement ouverte après redirection de spannabis.com ; le fait porte sur la nature du salon, sans garantir dates, taille ou classement.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Sobre Spannabis ; Qué encontrarás",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-bogart-merriam",
+      "title": "Bogart — Definition and meaning",
+      "organization": "Merriam-Webster",
+      "url": "https://www.merriam-webster.com/dictionary/bogart",
+      "verifiedAt": "2026-11-17",
+      "author": "Merriam-Webster",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Bogart signifie consommer sans partager ; le dictionnaire rappelle l’emploi historique dans l’expression Don’t bogart that joint.",
+      "access": "official-page",
+      "documentKind": "dictionary-entry",
+      "limitation": "Sens dans l’argot des usages ; étymologie présentée comme probable et non testée. Aucune parole de chanson reproduite.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Verb sense2 ; Did you know?",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-baek-curing",
+      "title": "Postharvest Drying and Curing Affect Cannabinoid Contents and Microbial Levels in Industrial Hemp",
+      "organization": "Cornell University / Plants",
+      "url": "https://www.mdpi.com/2223-7747/14/3/414",
+      "verifiedAt": "2026-11-17",
+      "author": "Yousoon Baek, Heather Grab et Chang Chen",
+      "published": "2025-01-31",
+      "passage": "L’affinage ou curing est une maturation postérieure au séchage des inflorescences, associée à l’évolution de leurs caractères aromatiques.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Définition descriptive du produit floral uniquement ; aucun contenant, réglage, durée, rendement, protocole ni promesse d’augmentation du THC repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Introduction, paragraphe Curing is another important subsequent postharvest process",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-bfr-hhc-mixture",
+      "title": "Hexahydrocannabinol (HHC) in foodstuffs: Indications of psychoactive effects — Opinion044/2023",
+      "organization": "BfR",
+      "url": "https://www.bfr.bund.de/cm/349/hexahydrocannabinol-hhc-in-foodstuffs-indications-of-psychoactive-effects.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "BfR",
+      "published": "2023-10-05",
+      "passage": "Le HHC de production semi-synthétique est typiquement un mélange de9R-HHC et9S-HHC, dont les proportions peuvent varier.",
+      "access": "full-text",
+      "documentKind": "institutional-risk-assessment",
+      "limitation": "Passage de composition uniquement ; statut juridique ancien, étapes chimiques, doses et pharmacologie comparative non repris. Distinct de la simple définition d’épimères déjà couverte.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p.4 Figure1 et §3.2 Agent, paragraphe mixture of the epimers",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-gg4-trademark",
+      "title": "Gorilla Glue vs. Gorilla Glue",
+      "organization": "Cannabis Business Times",
+      "url": "https://www.cannabisbusinesstimes.com/home/article/15703851/gorilla-glue-vs-gorilla-glue",
+      "verifiedAt": "2026-11-17",
+      "author": "Melissa Schiller",
+      "published": "2017-11-01",
+      "passage": "Dans l’entretien de2017, GG Strains explique le remplacement de Gorilla Glue#4 par GG4 ou Original Glue après un accord dans le litige de marque avec la société d’adhésifs.",
+      "access": "full-text",
+      "documentKind": "original-interview",
+      "limitation": "Reportage avec entretiens directs des dirigeants ; le récit commercial est attribué. Aucune ascendance, teneur, authenticité ou promesse de cultivar n’en est déduite.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Paragraphes88–99 : entretiens Catherine Franklin et Ross Johnson, changement de noms",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-weed-the-people",
+      "title": "Weed the People — Filmmakers",
+      "organization": "BOBB Films / équipe du film",
+      "url": "https://www.weedthepeoplemovie.com/filmmakers",
+      "verifiedAt": "2026-11-17",
+      "author": "BOBB Films / équipe du film",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le documentaire suit des familles d’enfants atteints de cancers qui se tournent vers des huiles de cannabis.",
+      "access": "official-page",
+      "documentKind": "film-official-synopsis",
+      "limitation": "Synopsis original sur le sujet du film seulement ; ses affirmations militantes de guérison ne sont pas adoptées comme preuves médicales.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Présentation du film au-dessus de The Filmmakers",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-murder-mountain",
+      "title": "Murder Mountain",
+      "organization": "Netflix",
+      "url": "https://www.netflix.com/ms/title/80217475",
+      "verifiedAt": "2026-11-17",
+      "author": "Netflix",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "La série documentaire2018 se situe dans le comté californien de Humboldt, autour de l’industrie cannabique et de disparitions.",
+      "access": "official-page",
+      "documentKind": "film-official-synopsis",
+      "limitation": "Identification du cadre de la série, pas preuve d’un taux de criminalité ni portrait universel des producteurs de Humboldt.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Synopsis ; Episodes1–2",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-cooked-with-cannabis",
+      "title": "Cooked with Cannabis",
+      "organization": "Netflix",
+      "url": "https://www.netflix.com/pr/title/81032347",
+      "verifiedAt": "2026-11-17",
+      "author": "Netflix",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "L’émission2020 présente une compétition entre chefs autour de plats utilisant du cannabis, des infusionsTHC et des saucesCBD.",
+      "access": "official-page",
+      "documentKind": "film-official-synopsis",
+      "limitation": "Identification d’un format télévisuel de culture cannabique uniquement ; aucune recette, dose ou préparation psychoactive reprise.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Synopsis et Genres",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-budney-withdrawal",
+      "title": "The time course and significance of cannabis withdrawal",
+      "organization": "Johns Hopkins University / Journal of Abnormal Psychology",
+      "url": "https://pure.johnshopkins.edu/en/publications/the-time-course-and-significance-of-cannabis-withdrawal-3/",
+      "verifiedAt": "2026-11-17",
+      "author": "Alan J. Budney, Brent A. Moore, Ryan G. Vandrey et John R. Hughes",
+      "published": "2003-08",
+      "passage": "Le suivi d’adultes usagers importants décrit un début de sevrage dans les premiers jours et un maximum typique entre les jours2et6.",
+      "access": "abstract",
+      "documentKind": "original-research",
+      "limitation": "Résumé original lu ; chronologie typique variable entre personnes, distincte de la liste irritabilité/anxiété/sommeil de E02. Aucun protocole de prise ou d’arrêt médical.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract complet, onset et peak effects",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-vandrey-rem",
+      "title": "Sleep disturbance and the effects of extended-release zolpidem during cannabis withdrawal",
+      "organization": "Johns Hopkins University / Drug and Alcohol Dependence",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21296508/",
+      "verifiedAt": "2026-11-17",
+      "author": "Ryan Vandrey, Michael T. Smith, Una D. McCann, Alan J. Budney et Erin M. Curran",
+      "published": "2011-02-05 ; numéro2011-08-01",
+      "passage": "Pendant l’abstinence sous placebo, la proportion de sommeil paradoxal augmente et la durée totale de sommeil diminue. La variable REM est un pourcentage, pas une durée absolue.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Résultat polysomnographique d’un petit essai, sans généralisation à tous les usages ni recommandation de somnifère. Le bras médicamenteux n’est pas testé.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Abstract, Methods et Results : placebo-abstinence",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      },
+      "fullTextUrl": "https://www.med.upenn.edu/cbti/assets/user-content/documents/nihms273324.pdf",
+      "supplementaryConsultations": [
+        {
+          "reader": "rebalance_classify_b",
+          "date": "2026-11-17",
+          "url": "https://www.med.upenn.edu/cbti/assets/user-content/documents/nihms273324.pdf",
+          "locator": "Manuscrit primaire UPenn : §2.4 p.5, §3.1 p.6 et tableau2 p.15 (PDF indice14)",
+          "result": "Première revue indépendante : %REM identifié dans méthodes, résultats et tableau2 ; demande de précision consignée dans reviews/r-products-04.json."
+        },
+        {
+          "reader": "root",
+          "date": "2026-11-17",
+          "url": "https://www.med.upenn.edu/cbti/assets/user-content/documents/nihms273324.pdf",
+          "locator": "Manuscrit primaire UPenn : §2.4 p.5, §3.1 p.6 et tableau2 p.15 (PDF indice14)",
+          "result": "Manuscrit ouvert : variable %REM et temps total séparés, tableau2 lu. Aucune durée REM recalculée à partir de moyennes."
+        }
+      ]
+    },
+    {
+      "id": "q2-rp04-lpv-cbd-base",
+      "title": "Comment choisir son e-liquide CBD ?",
+      "organization": "Le Petit Vapoteur",
+      "url": "https://www.lepetitvapoteur.com/fr/content/55-guide-eliquide-cbd",
+      "verifiedAt": "2026-11-17",
+      "author": "Le Petit Vapoteur",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le guide commercial décrit une base d’e-liquide CBD associant propylène glycol et glycérine végétale.",
+      "access": "official-page",
+      "documentKind": "retailer-product-guide",
+      "limitation": "Composition attribuée à ce guide, non norme universelle de tous les produits CBD. Ses promesses, statut légal général, proportions et doses sont exclus.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Paragraphe La base est composée de propylène glycol",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-bassolino-purple-flowers",
+      "title": "When Cannabis sativa L. Turns Purple: Biosynthesis and Accumulation of Anthocyanins",
+      "organization": "CREA / University of Bologna / Antioxidants",
+      "url": "https://www.mdpi.com/2076-3921/12/7/1393",
+      "verifiedAt": "2026-11-17",
+      "author": "Laura Bassolino, Flavia Fulvio et collaborateurs",
+      "published": "2023-07-06",
+      "passage": "La cyanidine-3-rutinoside, appelée kéracyanine, est le pigment anthocyanique majoritaire dans les inflorescences violettes analysées, notamment S1750 etS1759.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Preuve portant effectivement sur les fleurs analysées, pas transposition de résultats foliaires ; aucun lien de puissance THC ou caractère universel des fleurs violettes.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§3.2 et Table3 : inflorescences S1750/S1759",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-kosovic-cbd-matrix",
+      "title": "Stability Study of Cannabidiol in the Form of Solid Powder and Sunflower Oil Solution",
+      "organization": "Czech Academy of Sciences / UCT Prague / Pharmaceutics",
+      "url": "https://www.mdpi.com/1999-4923/13/3/412",
+      "verifiedAt": "2026-11-17",
+      "author": "Ema Kosović, David Sýkora et Martin Kuchař",
+      "published": "2021-03-19",
+      "passage": "Dans les conditions étudiées, le CBD solide s’est mieux maintenu que le CBD dissous dans l’huile de tournesol, beaucoup plus sensible aux conditions environnementales.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Comparaison de deux formes précises ; pas durée de conservation universelle ni extension à toutes les huiles. Aucun paramètre de formulation ou d’optimisation repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§5 Conclusions",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-kaczor-delta8-delta9",
+      "title": "Commercial Delta-8 THC Products: an Analysis of Content and Labeling",
+      "organization": "American College of Medical Toxicology / Journal of Medical Toxicology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10774316/",
+      "verifiedAt": "2026-11-17",
+      "author": "Eric E. Kaczor, Kevin Greene, Kavita M. Babu, Erin C. Berthold, Abhisheak Sharma et Stephanie P. Carreiro",
+      "published": "2023-11-02",
+      "passage": "Du delta-9-THC a été détecté dans sept des vingt produits achetés à Pittsburgh et vendus comme produits delta-8.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Échantillon de commodité situé, pas fréquence mondiale ni preuve de composition de tout produit delta-8. Statut légal ancien et doses non repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Results : Δ-9 THC and Other Cannabinoid Content Analysis ; Table2",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-hc-dried-equivalence",
+      "title": "Online calculator: Limits for public possession of cannabis",
+      "organization": "Santé Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/online-calculator-limits-public-possession.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Santé Canada",
+      "published": "2026-10-22",
+      "passage": "Les équivalences en cannabis séché servent à compter ensemble diverses catégories de produits dans la limite de possession publique non médicale.",
+      "access": "official-page",
+      "documentKind": "institutional-legal-information",
+      "limitation": "Finalité de la conversion légale seulement ; aucune dose, recette, équivalence d’intensité ni limite de patient médical déduite.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Introduction et paragraphe You can use this tool",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-last-prisoner-project",
+      "title": "Mission and Vision",
+      "organization": "Last Prisoner Project",
+      "url": "https://www.lastprisonerproject.org/mission-and-vision",
+      "verifiedAt": "2026-11-17",
+      "author": "Last Prisoner Project",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "L’organisation, fondée en2019, se consacre à la justice pénale liée au cannabis, à la libération et à la reconstruction de la vie des personnes affectées par sa criminalisation.",
+      "access": "official-page",
+      "documentKind": "organization-mission-statement",
+      "limitation": "Mission déclarée de l’organisation, sans chiffre de personnes détenues, résultat juridique garanti ni appel à agir.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Vision ; Mission ; Values",
+        "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp04-museum-mellow-yellow",
+      "title": "Mellow Yellow",
+      "organization": "Hash Marihuana & Hemp Museum",
+      "url": "https://hashmuseum.com/en/collection/history-of-smoking/mellow-yellow/",
+      "verifiedAt": "2026-11-17",
+      "author": "Hash Marihuana & Hemp Museum",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Notice historique d’un coffeeshop à Amsterdam, installé dans une boulangerie occupée, associant café et vente de haschich.",
+      "access": "catalogue",
+      "documentKind": "museum-historical-notice",
+      "limitation": "La question ne teste ni la date exacte ni une priorité absolue : la notice donne1972, alors que d’autres récits donnent1973. Les prix anciens et l’anecdote d’adultération ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Deux paragraphes de la notice, lignes55–56 du texte ouvert",
+        "result": "Page originale du musée effectivement ouverte et corps de la notice lu : cafés et haschich vendus chez Mellow Yellow, ancienne boulangerie occupée. Aucun catalogue du site utilisé."
+      }
+    }
+  ]
+}

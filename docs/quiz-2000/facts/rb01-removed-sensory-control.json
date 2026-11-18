@@ -1,0 +1,84 @@
+{
+  "question": {
+    "id": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+    "topicId": "evidence",
+    "level": 1,
+    "prompt": "Quel profil sensoriel rend un cannabis pauvre en cannabinoïdes utile comme témoin pour préserver l’aveugle ?",
+    "options": [
+      "Un aspect et une odeur proches du cannabis testé",
+      "Un aspect proche mais une odeur facilement reconnaissable",
+      "Une odeur proche mais un aspect visiblement différent",
+      "Un aspect et une odeur délibérément distincts"
+    ],
+    "answer": 0,
+    "explanation": "Des plantes pauvres en cannabinoïdes peuvent imiter des propriétés sensorielles du cannabis. Elles aident à préserver l’aveugle, sans prouver que toutes leurs autres molécules sont inactives.",
+    "articleId": "ref-trichomes",
+    "sourceIds": [
+      "q2-rb01-salamone22"
+    ],
+    "subjectKey": "cannabis-low-cannabinoid-sensory-control",
+    "domain": "active",
+    "editorial": {
+      "domain": "active",
+      "category": "constituents",
+      "subject": "Utilité sensorielle de plantes pauvres en cannabinoïdes pour les témoins",
+      "subjectKey": "cannabis-low-cannabinoid-sensory-control",
+      "property": "Utilité sensorielle de plantes pauvres en cannabinoïdes pour les témoins",
+      "expectedAnswer": "Un aspect et une odeur proches du cannabis testé",
+      "learningObjective": "Comprendre : utilité sensorielle de plantes pauvres en cannabinoïdes pour les témoins.",
+      "factKey": "cannabis-low-cannabinoid-sensory-control",
+      "form": "identification",
+      "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-rb01-salamone22",
+          "locator": "Introduction, paragraphe cannabinoid-free strains are necessary for controlled studies",
+          "support": "Des plantes sans cannabinoïdes sont utiles pour imiter les propriétés sensorielles et préserver l’aveugle dans des études contrôlées."
+        }
+      ]
+    }
+  },
+  "previousDecision": {
+    "id": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+    "status": "changes_requested",
+    "domain": "active",
+    "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+    "comment": "Les trois distracteurs conservent le même profil cannabinoïde malgré le cannabis pauvre en cannabinoïdes annoncé. Refaire les alternatives sans contradiction immédiate avec le prompt ; conserver un fait propre aux produits/constituants du cannabis.",
+    "contentHash": "0d316eadc56b6f199dfed03eac1a866a494f0a27a3ed74e78ce41a43d8b1a2f4",
+    "sourceChecks": [
+      {
+        "sourceId": "q2-rb01-salamone22",
+        "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+        "locator": "Introduction, paragraphes chimotypes et témoins ; tableau 1 ; Results and Discussion, premier paragraphe",
+        "result": "Texte original MDPI ouvert. Type IV à dominante CBG, type V largement dépourvu de cannabinoïdes mais traces mesurées ; intérêt sensoriel de témoins pauvres en cannabinoïdes.",
+        "sourceHash": "7981cbbac8d687ca952ebd33d1540b3aef3b6620ff948ba17bbb8ae9f12ba513"
+      }
+    ],
+    "finalReviewer": "root",
+    "finalReviewedAt": "2026-11-17",
+    "coordinatorHistory": [
+      {
+        "id": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+        "status": "changes_requested",
+        "domain": "active",
+        "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+        "comment": "Le fait des témoins sensoriels de cannabis est recevable. Refaire les distracteurs : remplacer la randomisation, supprimer l’analyse et garantir seul la sécurité sont trois objectifs méthodologiques manifestement incorrects. Comparer quatre rôles plausibles d’une préparation témoin ou quatre propriétés sensorielles/chimiques comparables.",
+        "contentHash": "600bbe1d23f9f03b40487c2a60519f99c4486a6c48d3bc3bf09454e39488114d",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rb01-salamone22",
+            "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+            "locator": "Introduction, paragraphes chimotypes et témoins ; tableau 1 ; Results and Discussion, premier paragraphe",
+            "result": "Texte original MDPI ouvert. Type IV à dominante CBG, type V largement dépourvu de cannabinoïdes mais traces mesurées ; intérêt sensoriel de témoins pauvres en cannabinoïdes.",
+            "sourceHash": "7981cbbac8d687ca952ebd33d1540b3aef3b6620ff948ba17bbb8ae9f12ba513"
+          }
+        ]
+      }
+    ],
+    "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+  },
+  "status": "excluded-before-activation",
+  "decidedBy": "root",
+  "date": "2026-11-17",
+  "reason": "La dernière version teste une propriété générale de l’aveugle expérimental. Le cannabis reste décoratif pour résoudre le QCM. Retrait sans remplissage ; une question distincte sera ajoutée au lot rb06 (32 au lieu de31)."
+}

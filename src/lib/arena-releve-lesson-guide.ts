@@ -2,10 +2,10 @@ import type { ArenaLessonProgress, ArenaPlayableLessonId } from "./arena-playabl
 import type { ReleveGuideStep } from "./arena-releve-guide";
 import { getNotebookLessonGuide } from "./arena-notebook-lesson-guide";
 
-/** Contextual pointers for the real screens opened from Sylvain's meetings. */
+/** Contextual pointers for the real screens opened from Loïc's meetings. */
 export function getReleveLessonGuide(lesson: ArenaPlayableLessonId, progress: ArenaLessonProgress, acknowledged: readonly string[] = []): ReleveGuideStep[] {
   if (!["bank", "investments", "specialties", "missions", "notebook", "collection"].includes(lesson)) return [];
-  if (progress.complete) return [{ id: `${lesson}:complete`, title: "Cette découverte est réussie", instruction: lesson === "notebook" ? "Ta fiche d’entraînement est terminée. Retrouve ton Carnet pour noter tes propres dégustations." : "Tu as essayé les commandes de cet espace. Clique pour retrouver Sylvain et la suite de l'histoire.", selector: "[data-releve-finish-lesson]", kind: "button" }];
+  if (progress.complete) return [{ id: `${lesson}:complete`, title: "Cette découverte est réussie", instruction: lesson === "notebook" ? "Ta fiche d’entraînement est terminée. Retrouve ton Carnet pour noter tes propres dégustations." : "Tu as essayé les commandes de cet espace. Clique pour retrouver Loïc et la suite de l'histoire.", selector: "[data-releve-finish-lesson]", kind: "button" }];
   if (lesson === "notebook") return getNotebookLessonGuide(acknowledged);
 
   const steps: ReleveGuideStep[] = [];
@@ -71,7 +71,7 @@ export function getReleveLessonGuide(lesson: ArenaPlayableLessonId, progress: Ar
     add("loot", "Regarde ce que tu as découvert", "Les trois cartes sont révélées. Clique pour les voir ensemble avant de les ranger.", { text: "Voir mon butin", scope });
     add("reveal", "Retourne cette carte", "Clique sur la carte pour découvrir le Buddie et sa rareté. Nous allons ouvrir les trois cartes du pack.", { selector: 'button[data-card-revealed="false"]', scope });
     add("next", "Une autre carte t'attend", "Passe à la carte suivante, puis retourne-la pour poursuivre l'ouverture.", { text: "Carte suivante", scope });
-    add("pack", "Ouvre ton premier pack", "Clique pour ouvrir le pack préparé par Sylvain. L'animation te laissera ensuite révéler chaque carte toi-même.", { text: "Ouvrir le pack", scope });
+    add("pack", "Ouvre ton premier pack", "Clique pour ouvrir le pack préparé par Loïc. L'animation te laissera ensuite révéler chaque carte toi-même.", { text: "Ouvrir le pack", scope });
     add("pack-tab", "Retrouve le pack prêté", "Reviens à Mon pack pour ouvrir ses trois cartes avant de les ranger dans ton album.", { text: "Mon pack", selector: 'button[aria-pressed="false"]', scope });
     return steps;
   }

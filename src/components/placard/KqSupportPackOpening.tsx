@@ -7,6 +7,7 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
 import { getKqCardGuide, getKqCardRarityLabel } from "@/lib/kanab-quest-card-guide";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqSupportPackOpening.module.css";
 
 export type KqOpenedSupportCard = { code: string; name: string; rarity: string; imageUrl?: string };
@@ -53,10 +54,11 @@ export function KqSupportPackReveal({ cards, onClose, onContinue = onClose, cont
   </div>;
 }
 
-export function KqSupportPackOpening({ cards, cardCount, busy, error, canRetry, onRetry, onClose, onContinue, continueLabel, returnLabel = "Retour aux missions", retryLabel = "Réessayer l’ouverture", busyLabel = "Ouverture de ton pack…" }: {
-  cards: readonly KqOpenedSupportCard[]; cardCount: number; busy: boolean; error: string; canRetry: boolean;
+export function KqSupportPackOpening({ confirmed = false, cards, cardCount, busy, error, canRetry, onRetry, onClose, onContinue, continueLabel, returnLabel = "Retour aux missions", retryLabel = "Réessayer l’ouverture", busyLabel = "Ouverture de ton pack…" }: {
+  confirmed?: boolean; cards: readonly KqOpenedSupportCard[]; cardCount: number; busy: boolean; error: string; canRetry: boolean;
   onRetry: () => void; onClose: () => void; onContinue: () => void; continueLabel: string; returnLabel?: string; retryLabel?: string; busyLabel?: string;
 }) {
+  const api = useKqTutorialApi();
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   useBodyScrollLock(true);
@@ -75,7 +77,8 @@ export function KqSupportPackOpening({ cards, cardCount, busy, error, canRetry, 
     if (cards.length) dialog.current?.querySelector<HTMLButtonElement>('[aria-label="Fermer le pack ouvert"]')?.focus({ preventScroll: true });
   }, [cards.length]);
   return <dialog ref={dialog} className={styles.dialog} aria-labelledby={titleId} data-mission-pack-opening onCancel={event => { event.preventDefault(); if (!busy || cards.length) onClose(); }}>
-    <div className={styles.content}>
+    <div className={styles.content} data-guide-pack-opened={confirmed && !api.isTutorial && !error && !busy && cards.length > 0 || undefined}>
+      <div data-farm-guide-host />
       {cards.length ? <KqSupportPackReveal cards={cards} titleId={titleId} onClose={onClose} onContinue={onContinue} continueLabel={continueLabel} /> : <div className={styles.status}>
         <Gift size={42} aria-hidden="true" /><h2 id={titleId}>Ton pack de {cardCount} cartes</h2>
         {busy ? <p role="status">{busyLabel}</p> : <>

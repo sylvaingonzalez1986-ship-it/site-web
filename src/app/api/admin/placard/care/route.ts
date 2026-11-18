@@ -8,13 +8,13 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 
-export async function GET(request?: Request) {
+export async function GET(request: Request) {
   const admin = await getValidatedAdminContext();
   if (!admin) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
     const userId = await findKqUserIdByEmail(admin.email);
     if (!userId) throw new Error("Compte collection admin introuvable.");
-    return NextResponse.json(await getKqCareShopSnapshot(userId, request ? new URL(request.url).searchParams.get("runId") ?? undefined : undefined), { headers });
+    return NextResponse.json(await getKqCareShopSnapshot(userId, new URL(request.url).searchParams.get("runId") ?? undefined), { headers });
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Suivi indisponible." }, { status: 400 }); }
 }
 

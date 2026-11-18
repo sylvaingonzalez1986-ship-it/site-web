@@ -1,6 +1,6 @@
 import { ARENA_RELEVE_MEETINGS, type ArenaReleveMeetingId } from './arena-releve';
 import type { ArenaPlayableLessonId } from './arena-playable-learning';
-import { createKqReleveExpansion, getKqRelevePlanReview, getKqReleveProductionProgress, type KqReleveProductionState } from './kanab-quest-releve-production';
+import { createKqReleveExpansion, getKqRelevePlanReview, getKqReleveProductionProgress, isKqReleveCareReserve, type KqReleveProductionState } from './kanab-quest-releve-production';
 import { createReleveCommerceBusiness, createReleveCommerceSocial, createReleveCommerceMerch, getReleveCommerceCash, getReleveCommerceProgress, getReleveCommerceSnapshot, getReleveCommerceTreasury, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
 import { isKqWarehouseState } from './kanab-quest-warehouse';
 import { encodeKqSave, parseKqBattleSave, parseKqGameSave } from './kanab-quest-persistence';
@@ -45,7 +45,7 @@ function validProduction(value: unknown): value is KqReleveProductionState {
     || !Number.isFinite(value.clock) || !Number.isSafeInteger(value.revision) || Number(value.revision) < 0
     || !isKqWarehouseState(value.warehouse) || !validDraft(value.draftWarehouse)
     || !strings(value.ownedBuddies) || !strings(value.recentBuddieCodes) || !strings(value.deckCodes) || !strings(value.milestones)
-    || !quantities(value.supportInventory) || !quantities(value.careInventory) || !quantities(value.revealedRounds)
+    || !quantities(value.supportInventory) || !quantities(value.careInventory) || !isKqReleveCareReserve(value) || !quantities(value.revealedRounds)
     || !record(value.battles) || !validLedger(value.ledger)
     || !(value.heritageCode === null || typeof value.heritageCode === 'string')) return false;
   if (value.game !== null && !parseKqGameSave(encodeKqSave(value.game))) return false;
@@ -53,7 +53,7 @@ function validProduction(value: unknown): value is KqReleveProductionState {
   if (value.checkpoint !== null) {
     const point = value.checkpoint;
     if (!record(point) || !parseKqGameSave(encodeKqSave(point.game)) || !Number.isSafeInteger(point.cashCents)
-      || Number(point.cashCents) < 0 || !quantities(point.supportInventory) || !quantities(point.careInventory) || !validLedger(point.ledger)) return false;
+      || Number(point.cashCents) < 0 || !quantities(point.supportInventory) || !quantities(point.careInventory) || !isKqReleveCareReserve(point) || !validLedger(point.ledger)) return false;
   }
   return true;
 }
@@ -97,7 +97,7 @@ export function createReleveMeetingSession(meeting: ArenaReleveMeetingId, backin
       const saved = storage?.getItem(key);
       if (saved) {
         const state = restore(meeting, saved);
-        snapshot = state ? { state, storageWarning: '' } : { ...snapshot, storageWarning: 'Ce dossier enregistré était incomplet ou incompatible. Sylvain a préparé un nouvel essai pour cette rencontre.' };
+        snapshot = state ? { state, storageWarning: '' } : { ...snapshot, storageWarning: 'Ce dossier enregistré était incomplet ou incompatible. Loïc a préparé un nouvel essai pour cette rencontre.' };
       }
     } catch { snapshot = { ...snapshot, storageWarning: 'La sauvegarde de cette rencontre est indisponible. Garde cette fenêtre ouverte pour conserver ton essai.' }; }
   }

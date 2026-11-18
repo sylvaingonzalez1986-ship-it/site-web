@@ -9,10 +9,12 @@ import puppeteer from 'puppeteer-core';
 import { createServer, transformWithOxc } from 'vite';
 
 const root = process.cwd();
-const output = resolve(root, 'output/chanvrier-head-audit');
+const phase = process.argv.includes('--before') ? 'before' : 'after';
+const output = resolve(root, 'output/chanvrier-calibration/heads', phase);
 const port = 3218;
 const origin = `http://127.0.0.1:${port}`;
 const errors = [];
+const loadedAssets = new Set();
 const mobileWidth = 180;
 // Report this diagnostic threshold; it is not a calibrated human-perception score.
 const differenceThreshold = 16;
@@ -38,7 +40,7 @@ const base = {
   gender: 'male', clothing: 'ochre', skin,
   appearance: {
     ...defaults, face, hair, hairColor: 'chestnut',
-    eyes: 'almond', eyebrows: 'natural', nose: 'small', mouth: 'smile',
+    eyes: 'almond', eyebrows: 'natural', nose: query.get('nose') || 'small', mouth: 'smile',
     facialHair: query.get('facialHair') || 'none', accessory: query.get('accessory') || 'none',
   },
 };
@@ -56,7 +58,7 @@ function App() {
         if (micro === 'skin') profile.skin = choice.code;
         else if (micro === 'gender') profile.gender = choice.code;
         else profile.appearance[micro || 'hair'] = choice.code;
-        return <figure key={choice.code} data-choice={choice.code}>
+        return <figure key={choice.code} data-choice={choice.code} data-profile={JSON.stringify(profile)}>
           <ChanvrierAvatar profile={profile} view={full ? 'full' : 'portrait'} className="portrait" />
           <figcaption><strong>{choice.name}</strong><span>{choice.code}</span></figcaption>
         </figure>;
@@ -123,6 +125,7 @@ try {
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => {
     if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);
+    if (response.ok() && /\/contest\/avatars\/.+\.webp$/.test(response.url())) loadedAssets.add(new URL(response.url()).pathname);
   });
   page.on('requestfailed', request => {
     if (request.url().startsWith(origin)) {
@@ -158,6 +161,7 @@ try {
       };
       return {
         choice: figure.dataset.choice,
+        profile: JSON.parse(figure.dataset.profile),
         state: canvas.dataset.avatarState,
         occupiedPixels: opaque,
         width: canvas.width,
@@ -227,9 +231,27 @@ try {
     assert.deepEqual(errors, [], `${name}: browser and asset errors`);
     const screenshot = resolve(output, `${name}.png`);
     await page.screenshot({ path: screenshot, fullPage: true });
-    return { screenshot, portraits, mobilePairs };
+    return { screenshot, query, portraits, mobilePairs };
   }
 
+  if (process.argv.includes('--mouth-only')) {
+    const mouths = {};
+    for (const nose of ['small', 'round', 'wide']) for (const facialHair of ['none', 'stubble', 'beard', 'moustache']) {
+      mouths[`${nose}-${facialHair}`] = await capture(`micro=mouth&hair=crop&nose=${nose}&facialHair=${facialHair}`, facialHair === 'none' && nose === 'small' ? 'choices-mouth' : `mouths-${nose}-${facialHair}`, 3);
+    }
+    await writeFile(resolve(output,'mouth-report.json'),JSON.stringify({mouths,errors},null,2)+'\n');
+    const previous = await readFile(resolve(output,'report.json'),'utf8').catch(error => {
+      if (error.code === 'ENOENT') return null;
+      throw error;
+    });
+    if (previous) {
+      const report = JSON.parse(previous);
+      report.microchoices.mouth = mouths['small-none'];
+      report.followup = { report: 'mouth-report.json', combinations: 36, note: 'Targeted mouth/nose correction after the full catalogue pass.' };
+      await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2)+'\n');
+    }
+    console.log(`PASS: 36 mouth/nose/facial-hair combinations. Review ${output}`);
+  } else {
   const faces = {};
   faces.oval = await capture('face=oval', 'face-oval', 12);
   const catalog = await page.evaluate(() => window.avatarAuditCatalog);
@@ -301,12 +323,14 @@ try {
     generatedAt: new Date().toISOString(),
     note: 'Loading, distinct-choice and mobile downsampling checks. RGB deltas are diagnostics, not a calibrated perception or anatomy score; review the side-by-side screenshots.',
     avatarCssWidth: 384,
+    phase,
     mobileCssWidth: mobileWidth,
     differenceThreshold,
     combinationCount: catalog.faces.length * catalog.hairs.length,
-    faces, mobileComparisons, baselineComparison, noseOverlays, microchoices, bodychoices, errors,
+    faces, mobileComparisons, baselineComparison, noseOverlays, microchoices, bodychoices, loadedAssets: [...loadedAssets].sort(), errors,
   }, null, 2) + '\n');
   console.log(`PASS: ${catalog.faces.length * catalog.hairs.length} hair/face combinations, ${Object.keys(mobileComparisons).length} side-by-side mobile grids, ${Object.keys(noseOverlays).length} nose/overlay grids, ${Object.keys(microchoices).length} facial-choice grids and ${Object.keys(bodychoices).length} full-body grids; all assets loaded without browser errors. Mobile RGB differences are diagnostics, not a visual-quality assertion. Review screenshots: ${output}`);
+  }
 } finally {
   await browser?.close();
   await server.close();

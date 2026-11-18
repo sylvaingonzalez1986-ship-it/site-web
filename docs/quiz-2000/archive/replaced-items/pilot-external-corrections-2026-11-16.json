@@ -1,0 +1,64 @@
+{
+  "batchId": "pilot-external",
+  "archivedAt": "2026-11-16",
+  "reviewer": "E / e_engine_audit",
+  "reason": "Historique des deux avis ayant demandé correction. L’ancien exercice mandarine est retiré du lot courant et remplacé par un nouvel objectif ; le premier avis PAR/SDR reste une trace de sa version antérieure.",
+  "retiredItem": {
+    "id": "hemp-q2-ext-mandarine-correlation-donnees",
+    "status": "archived-not-approved-for-integration",
+    "replacedBy": "hemp-q2-ext-mercaptohexanol-notes-correlation",
+    "retirementDeclaration": {
+      "id": "hemp-q2-ext-mandarine-correlation-donnees",
+      "factKey": "paryani-2024-tangerine-3mh-highest-r-four-tcsc",
+      "status": "retired-after-editorial-review",
+      "replacedBy": "hemp-q2-ext-mercaptohexanol-notes-correlation",
+      "reason": "Le maximum parmi quatre sigles est remplacé par l'interprétation de deux associations documentées du même odorant avec mandarine et agrumes ; l'objectif et le fait testés changent.",
+      "reviewFile": "docs/quiz-2000/reviews/pilot-external.json"
+    },
+    "originalReview": {
+      "id": "hemp-q2-ext-mandarine-correlation-donnees",
+      "status": "changes_requested",
+      "comment": "Les quatre valeurs sont exactes. Mais chercher0,96 parmi quatre sigles non définis reste un exercice de maximum arbitraire : le prompt n’enseigne ni l’identité des composés ni le sens de r. La réserve causalité n’apparaît qu’après la réponse.",
+      "contentHash": "e727000eb478873f3e8b06347d1a35cf8b9db20a1f9f1c89530ff559f0064ff4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ext-paryani-aroma-2024",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11223244/",
+          "locator": "Results — TCSC Analysis, paragraphe « Citrus-related sensory descriptors » ; début Results pour les cinq phénotypes.",
+          "result": "TCSC Analysis donne bien3MH0,96 ;3MHA0,91 ;3MHB0,81 ;3MHH0,95 pour mandarine. L’étude porte sur cinq phénotypes. Ces valeurs ne quantifient ni concentration ni écart significatif entre coefficients.",
+          "sourceHash": "fca6372513039b81d85adbfc548d83ce10a16b682cb32fc08e1e7feb93ab07e6",
+          "checkedAt": "2026-11-16"
+        }
+      ],
+      "duplicateCheck": "Pas de doublon factuel identifié ; demande éditoriale sur l’apprentissage, indépendante de l’exactitude des chiffres.",
+      "requestedChanges": [
+        "Remanier la tâche pour faire comprendre ce que signifie l’association observée dans cinq phénotypes, plutôt que désigner le plus grand des quatre nombres.",
+        "Définir r comme coefficient de corrélation et développer tout nom abrégé indispensable à la réponse ; éviter une liste de quatre sigles proches.",
+        "Ne pas suggérer que0,96est significativement supérieur à0,95 sans analyse d’incertitude correspondante. Si le fait testé change, mettre à jour factKey, objectif et revue."
+      ],
+      "possibleDirection": "Présenter le3-mercaptohexanol et une corrélation positive avec la note mandarine, puis faire distinguer association observée, quantité absolue et preuve causale. Cette piste exige une nouvelle version relue ; elle n’est pas approuvée en l’état."
+    }
+  },
+  "previousParReview": {
+    "id": "hemp-q2-ext-y-par-sdr-recombinaison",
+    "status": "changes_requested",
+    "comment": "La différence biologique est étayée et le niveau3 est cohérent. Cependant PAR et SDR sont indispensables pour répondre, répétés dans tous les choix et définis seulement après validation : l’énoncé actuel reste opaque.",
+    "contentHash": "8c35f128b002df40baafe68e7b72ce726548635c23f146858f5e5a14513aff5c",
+    "sourceChecks": [
+      {
+        "sourceId": "q2-ext-lynch-pangenome-2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+        "locator": "Main — paragraphe débutant « Unlike most angiosperms » ; description préalable des régions du Y.",
+        "result": "Le paragraphe sur les chromosomes sexuels oppose la recombinaison dans la PAR à sa suppression dans la SDR du Y. Les deux noms développés figurent aussi dans le texte.",
+        "sourceHash": "45deec6e3ea6e3a76c5319d868f66176c3b183f35899aab77a028ac9b9cbcbcc",
+        "checkedAt": "2026-11-16"
+      }
+    ],
+    "duplicateCheck": "Distinct de hemp-genetics-recombinaison et hemp-genetics-xy : localisation différentielle sur le Y, plutôt que définition générale ou association XY/mâle.",
+    "requestedChanges": [
+      "Définir les deux sigles avant les choix, dans le prompt ou un contexte HTML accessible : PAR=région pseudoautosomique ; SDR=région déterminant le sexe.",
+      "Conserver l’objet du test, sa bonne réponse et le niveau3 ; ne pas ajouter de quota de forme artificiel."
+    ],
+    "suggestedPrompt": "Sur le Y du cannabis, comment recombinent la PAR (région pseudoautosomique) et la SDR (région déterminant le sexe) ?"
+  }
+}

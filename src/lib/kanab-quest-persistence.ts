@@ -8,6 +8,7 @@ import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest
 import { areKqBuildingServicesConsistent, summarizeKqTentEquipment } from "./kanab-quest-production";
 import { isKqStageDecision } from "./kanab-quest-culture-analysis";
 import { isKqCareState, isKqCareReplacedCard } from "./kanab-quest-care";
+import { isKqRunSector } from "./kanab-quest-care-spatial";
 import { isKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { isKqWarehouseEnergyQuote } from "./kanab-quest-warehouse-run";
 import { applyKqBuddieYield, isKqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
@@ -203,6 +204,9 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.usedCards.filter(code => KQ_CARDS.find(card => card.code === code)?.rarity === "epic").length > 1) return null;
     if (!healthRules && cultureDead && unrescuedZeroStages < 2) return null;
     if (healthRules && isKqCareState(state.care)) {
+      const runLayout = { warehouse, campaign: isKqCampaign(state.campaign) ? state.campaign : undefined };
+      if (state.care.problems.some(problem => problem.plants?.some(plant => !isKqRunSector(runLayout, plant)))
+        || state.care.applications.some(item => item.target && !isKqRunSector(runLayout, item.target))) return null;
       if (cultureDead !== (state.care.vitality === 0)) return null;
       const latestAllowed = Number(state.stageIndex) + Number(state.phase === "resolved");
       if (state.care.applications.some(item => item.stageIndex > latestAllowed)

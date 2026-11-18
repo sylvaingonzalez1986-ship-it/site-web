@@ -120,7 +120,7 @@ const LEGACY_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = [
     slot: "tent",
     priceCents: 0,
     purchasable: false,
-    shortDescription: "Le premier placard de Sylvain : compact, rafistolé, mais fonctionnel.",
+    shortDescription: "Le premier placard de Loïc : compact, rafistolé, mais fonctionnel.",
     benefit: "Capacité de départ et installation discrète.",
     tradeoff: "La quantité est plafonnée et les gros équipements y sont à l'étroit.",
     specification: "90 × 90 × 180 cm",

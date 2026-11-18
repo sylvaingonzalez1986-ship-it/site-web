@@ -1,0 +1,52 @@
+{
+  "review": "technical-review.json",
+  "resolvedBy": "root",
+  "date": "2026-11-16",
+  "items": [
+    {
+      "id": "E-TECH-01",
+      "resolution": "Every source used by an approved question requires a matching URL and SHA-256 of the complete source object. Conflicting definitions of an ID are refused. F sealed all current pilot sources after checking the exact objects."
+    },
+    {
+      "id": "E-TECH-02",
+      "resolution": "--active compares each legacy runtime entry to either its frozen initial contents or its independently approved candidate. --release additionally requires current legacy validation hashes."
+    },
+    {
+      "id": "E-TECH-03",
+      "resolution": "Semantic resolutions require contentHashes for both current questions. Changed versions invalidate the pair decision."
+    },
+    {
+      "id": "E-TECH-04",
+      "resolution": "Retirement requires approved status, different proposer/reviewer, exact original contentHash and an explicit editorial reason. Historical statistics impact is no longer required after the user clarified that this is a local beta without quiz players."
+    },
+    {
+      "id": "E-TECH-05",
+      "resolution": "Only HTTPS sources are accepted, matching the server DTO contract."
+    },
+    {
+      "id": "E-TECH-06",
+      "resolution": "Subject selection checks the feasibility of all remaining level quotas using the 15 subsets of four levels. A globally feasible set of distinct subjects is preserved. Scarce-subject tests pass."
+    },
+    {
+      "id": "ROOT-THEME-RESERVATION-649",
+      "resolution": "The full legacy-validation milestone exposed missing theme coverage in12-question draws for some seeds. Add15 level-subset capacity checks to reserve unseen themes, alongside existing distinct-subject reservations. Prefer distinct subjects if combined constraints cannot coexist; test this fallback explicitly.14 relevant tests and ESLint passed; local649-entry median9.44ms,p9512.68ms."
+    },
+    {
+      "id": "independent-theme-subject-feasibility-can-discard-a-feasible-theme",
+      "status": "accepted-heuristic-limit",
+      "review": "theme-reservation-review.json",
+      "decidedBy": "root",
+      "reason": "The user requires subject diversity and no abnormal repetition, not all ten themes in every twelve-question game. Keep the distinct-subject guarantee and fixed level quotas; explicitly document theme coverage as a greedy preference that can lose a globally better combination after an earlier choice. Avoid an additional combinatorial solver for this scope.",
+      "validation": "Independent17-entry counterexample retained. Added regression protects12 distinct subjects and level quotas without freezing nine themes;8 tournament tests passed at678 active entries in output/quiz-2000/theme-fallback-tests.json."
+    },
+    {
+      "id": "ROOT-REACHABILITY-1000",
+      "status": "resolved-test-horizon",
+      "date": "2026-11-17",
+      "independentReviewer": "e_engine_audit",
+      "resolution": "The initial3000-seed horizon reached999/1000. Independent real-plan witness hemp-review-3158 reaches the final rare item with20 distinct subjects. Extend the test horizon to4*bank size, keep strict full coverage and report missing IDs, allow90s for the observed66s synchronous test. No engine or question change. Final25 tests and native exit0 confirmed.",
+      "evidence": "output/quiz-2000/reachability-review.json"
+    }
+  ],
+  "limits": "The automated controls check consistency and review freshness. They do not establish that a fact is true or that a semantic duplicate is absent; independent reading remains mandatory. No production publication."
+}

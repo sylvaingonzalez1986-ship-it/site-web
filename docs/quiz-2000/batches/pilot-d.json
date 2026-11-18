@@ -1,0 +1,559 @@
+{
+  "batchId": "pilot-d",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "questions": [
+    {
+      "id": "hemp-q2-d-chenevis-saveur-noix",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quelle saveur légère caractérise des graines de chanvre de bonne qualité alimentaire ?",
+      "options": [
+        "Une saveur de réglisse",
+        "Une saveur de noix",
+        "Une saveur de menthe",
+        "Une saveur de clou de girofle"
+      ],
+      "answer": 1,
+      "explanation": "Le guide agricole de l'Alberta décrit une légère saveur et odeur de noix. Ce caractère alimentaire des graines ne se confond pas avec les arômes des fleurs de cannabis.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-alberta-food-seed"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Graines de chanvre alimentaires",
+        "subjectKey": "hemp-food-seed",
+        "property": "profil gustatif usuel",
+        "expectedAnswer": "Une saveur de noix",
+        "learningObjective": "Reconnaître un caractère sensoriel alimentaire du chènevis.",
+        "factKey": "hemp-food-seed-mild-nutty-flavour",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire courant et expérience alimentaire accessible ; aucun terme technique nécessaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-alberta-food-seed",
+            "locator": "p. 2, Hemp Seed Food Grade Requirements – Physical Properties, Flavour and Odour",
+            "support": "Les exigences physiques comprennent une légère saveur et odeur de noix."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-shichimi-condiment",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel condiment japonais contient traditionnellement des graines de chanvre dans certaines de ses recettes ?",
+      "options": [
+        "Le miso",
+        "Le ponzu",
+        "Le wasabi",
+        "Le shichimi"
+      ],
+      "answer": 3,
+      "explanation": "Le shichimi est un mélange japonais de sept épices dont certaines recettes contiennent du chènevis. La composition varie : les graines de chanvre ne figurent pas dans toutes les versions.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-usda-japan-hemp-seed"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Shichimi",
+        "subjectKey": "shichimi",
+        "property": "présence traditionnelle de graines de chanvre",
+        "expectedAnswer": "Le shichimi",
+        "learningObjective": "Découvrir un usage du chènevis dans un condiment japonais.",
+        "factKey": "shichimi-traditional-hemp-seed-ingredient",
+        "form": "identification",
+        "difficultyRationale": "Connaître un ingrédient traditionnel parfois présent dans un mélange d'épices japonais ; la simplicité de l'énoncé ne rend pas cette connaissance courante.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-usda-japan-hemp-seed",
+            "locator": "p. 5, §3.1 Hemp Seed Products and Trends",
+            "support": "Le rapport décrit des graines entières traditionnellement présentes dans le shichimi, tout en signalant une marque qui les omet."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-met-accessoire-pieds",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans la notice du Met citée en source, quel accessoire japonais en chanvre est daté d'environ 1615–1868 ?",
+      "options": [
+        "Des sandales",
+        "Des gants",
+        "Une ceinture",
+        "Un chapeau"
+      ],
+      "answer": 0,
+      "explanation": "Le catalogue du Met décrit une paire de sandales japonaises dont la matière est le chanvre. La fibre servait donc aussi à des accessoires portés aux pieds.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "q2-d-met-hemp-sandals"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Sandales japonaises du Metropolitan Museum",
+        "subjectKey": "met-hemp-sandals-36-25-3021",
+        "property": "type d'objet en chanvre",
+        "expectedAnswer": "Des sandales",
+        "learningObjective": "Associer les fibres de chanvre à un objet vestimentaire historique concret.",
+        "factKey": "met-36-25-3021-japanese-hemp-sandals",
+        "form": "anecdote",
+        "difficultyRationale": "Connaître un objet patrimonial précis à partir de sa notice ; sans photographie, il s'agit d'un rappel culturel plutôt que d'une reconnaissance visuelle.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-met-hemp-sandals",
+            "locator": "Artwork Details, Title, Date, Culture, Medium et Object Number",
+            "support": "L'objet 36.25.3021 est une paire de sandales japonaises, vers 1615–1868, de matière Hemp."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-kanepju-sviests-lettonie",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "De quelle cuisine traditionnelle le kaņepju sviests, une pâte à tartiner de graines de chanvre, fait-il partie ?",
+      "options": [
+        "La cuisine finlandaise",
+        "La cuisine suédoise",
+        "La cuisine lettone",
+        "La cuisine danoise"
+      ],
+      "answer": 2,
+      "explanation": "Le kaņepju sviests appartient au patrimoine alimentaire letton. Cette pâte de graines grillées et broyées accompagnait notamment le pain ou les pommes de terre et pouvait remplacer le beurre.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Kaņepju sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "appartenance au patrimoine culinaire letton",
+        "expectedAnswer": "La cuisine lettone",
+        "learningObjective": "Situer une préparation alimentaire traditionnelle à base de chènevis.",
+        "factKey": "kanepju-sviests-latvian-food-tradition",
+        "form": "identification",
+        "difficultyRationale": "Un nom régional à rattacher à sa culture ; les quatre choix sont des cuisines d'Europe du Nord.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Vēsturiskās un ģeogrāfiskās atšķirības ēdiena pagatavošanā ; Ēdiena loma kultūrā",
+            "support": "L'article situe cette pâte dans l'alimentation paysanne lettone, servie avec pain ou pommes de terre et employée en remplacement du beurre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-siemieniotka-reveillon",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "En Silésie, à quel repas de fête sert-on traditionnellement la siemieniotka, une soupe aux graines de chanvre ?",
+      "options": [
+        "Au repas de Pâques",
+        "Au réveillon de Noël",
+        "Au repas de la Pentecôte",
+        "Au repas de la Toussaint"
+      ],
+      "answer": 1,
+      "explanation": "La siemieniotka est une soupe silésienne de graines de chanvre liée au repas du 24 décembre. La fiche patrimoniale du ministère polonais décrit sa transmission de génération en génération.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "place dans le calendrier festif silésien",
+        "expectedAnswer": "Au réveillon de Noël",
+        "learningObjective": "Découvrir la place des graines de chanvre dans un patrimoine alimentaire de Noël.",
+        "factKey": "siemieniotka-silesian-christmas-eve-soup",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une tradition régionale ; quatre fêtes chrétiennes plausibles sans indice grammatical.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Tradycja, passage « podczas wieczerzy wigilijnej » ; Barwa",
+            "support": "Le ministère indique que la soupe est encore servie au repas de la veille de Noël dans les foyers silésiens ; la description mentionne les graines de chanvre moulues."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-asanoha-voeu-enfant",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Au Japon, quel souhait exprimait le motif de feuille de chanvre asanoha sur les vêtements de bébé ?",
+      "options": [
+        "Un sommeil paisible",
+        "Une vie prospère",
+        "Une bonne croissance",
+        "Une mémoire vive"
+      ],
+      "answer": 2,
+      "explanation": "Le Musée du jouet de Tokyo relie ce motif à la pousse rapide et droite du chanvre : on souhaitait que l'enfant grandisse bien. Il s'agit d'une symbolique culturelle, pas d'un effet du tissu sur la santé.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-d-tokyo-toy-museum-asanoha"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Asanoha",
+        "subjectKey": "asanoha-pattern",
+        "property": "symbolique du motif sur les vêtements des bébés",
+        "expectedAnswer": "Une bonne croissance",
+        "learningObjective": "Comprendre comment une caractéristique du chanvre devient un symbole dans les arts décoratifs.",
+        "factKey": "asanoha-baby-clothes-healthy-growth-wish",
+        "form": "anecdote",
+        "difficultyRationale": "Il faut connaître la symbolique d'un motif japonais ; les choix proposent quatre souhaits liés à l'avenir d'un enfant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-tokyo-toy-museum-asanoha",
+            "locator": "Chapter 1: The Wishes of Our Ancestors Embedded in the Hemp Leaf",
+            "support": "Le directeur explique que la croissance rapide et droite du chanvre motive le souhait de bonne croissance associé au motif sur les habits de bébé depuis Edo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-hmong-cire-reserve",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Sur une jupe hmong en chanvre du musée d'Auckland, quelle matière protège les motifs blancs pendant la teinture à l'indigo ?",
+      "options": [
+        "De la craie",
+        "Du charbon",
+        "De l'argile",
+        "De la cire"
+      ],
+      "answer": 3,
+      "explanation": "La cire empêche l'indigo d'atteindre les zones qui doivent rester blanches. Le musée décrit cette réserve sur une jupe hmong du Vietnam, datée des années 1970–1980.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-d-auckland-hmong-skirt"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Jupe hmong du musée d'Auckland",
+        "subjectKey": "auckland-hmong-skirt-2007-68-2",
+        "property": "matière de réserve des motifs avant teinture à l'indigo",
+        "expectedAnswer": "De la cire",
+        "learningObjective": "Comprendre un usage du tissu de chanvre comme support de teinture à réserve.",
+        "factKey": "auckland-2007-68-2-hemp-skirt-wax-resist",
+        "form": "situation",
+        "difficultyRationale": "Reconnaître le principe d'une teinture à réserve à partir d'un objet patrimonial ; quatre matières appliquées sur une surface.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-auckland-hmong-skirt",
+            "locator": "Public Access Text ; Date ; Media/Materials Notes",
+            "support": "L'artisane a appliqué une cire résistante à la teinture avant l'immersion dans l'indigo ; le catalogue identifie une jupe hmong en chanvre, vers 1970–1980."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-sambe-rites-deuil",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "En Corée, à quel événement le port rituel de vêtements en chanvre sambe est-il associé ?",
+      "options": [
+        "Un deuil familial",
+        "Une fête de mariage",
+        "Une fête de moisson",
+        "Une fête de naissance"
+      ],
+      "answer": 0,
+      "explanation": "Le sambe a notamment servi d'habit de deuil en Corée. Min-Sun Hwang décrit ce vêtement comme un acte symbolique des proches du défunt.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-d-hwang-hemp-korea"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Sambe dans les rites coréens",
+        "subjectKey": "sambe-mourning-dress",
+        "property": "usage rituel comme vêtement de deuil",
+        "expectedAnswer": "Un deuil familial",
+        "learningObjective": "Découvrir un rôle symbolique des vêtements de chanvre dans les rites funéraires coréens.",
+        "factKey": "korean-sambe-hemp-cloth-mourning-dress",
+        "form": "identification",
+        "difficultyRationale": "Connaissance culturelle spécialisée ; les quatre choix sont des événements familiaux ou communautaires ritualisés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-hwang-hemp-korea",
+            "locator": "Abstract, paragraphes sur funeral wear et mourning dress",
+            "support": "Le résumé décrit le choix du chanvre pour le vêtement funéraire et le port du tissu de deuil comme acte symbolique des proches."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-rabelais-tiers-livre",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans quel livre Rabelais consacre-t-il ses derniers chapitres à la plante textile appelée Pantagruélion ?",
+      "options": [
+        "Gargantua",
+        "Le Quart Livre",
+        "Pantagruel",
+        "Le Tiers Livre"
+      ],
+      "answer": 3,
+      "explanation": "Les chapitres XLIX à LII du Tiers Livre sont consacrés au Pantagruélion. Le texte décrit ses fibres, leur préparation et leurs nombreux usages, à l'occasion des préparatifs d'un voyage en mer.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-d-rabelais-athena-tiers-livre"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Pantagruélion de Rabelais",
+        "subjectKey": "rabelais-pantagruelion",
+        "property": "œuvre contenant l'épisode de la plante textile",
+        "expectedAnswer": "Le Tiers Livre",
+        "learningObjective": "Identifier un épisode littéraire de la Renaissance consacré à une plante textile et à ses usages.",
+        "factKey": "rabelais-pantagruelion-tiers-livre-chapters-49-52",
+        "form": "identification",
+        "difficultyRationale": "Il faut distinguer quatre œuvres du même auteur et localiser un épisode précis de son cycle romanesque.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-rabelais-athena-tiers-livre",
+            "locator": "Table des matières ; chapitres XLIX à LII, en particulier début de XLIX",
+            "support": "Le Tiers Livre se termine par quatre chapitres consacrés au Pantagruélion ; XLIX associe la plante, ses fibres et le chargement des navires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d-pain-proteines-elasticite",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans l'étude de Rusu et al. (2021), quelle tendance associe protéines et élasticité des pains enrichis en farine de chanvre ?",
+      "options": [
+        "Moins de protéines, plus d'élasticité",
+        "Plus de protéines, moins d'élasticité",
+        "Plus de protéines, plus d'élasticité",
+        "Moins de protéines, moins d'élasticité"
+      ],
+      "answer": 1,
+      "explanation": "Les pains étudiés gagnent en protéines mais tendent à perdre en élasticité. La farine de chanvre ne fournit pas le gluten du blé : davantage de protéines ne garantit donc pas une mie plus élastique.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-d-rusu-hemp-wheat-bread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Pains de blé enrichis en farine de chanvre étudiés par Rusu et al.",
+        "subjectKey": "rusu-2021-hemp-wheat-bread",
+        "property": "évolution distincte de la teneur protéique et de l'élasticité",
+        "expectedAnswer": "Plus de protéines, moins d'élasticité",
+        "learningObjective": "Distinguer enrichissement en protéines et propriétés boulangères liées au gluten.",
+        "factKey": "rusu-2021-hemp-bread-protein-rise-elasticity-decline",
+        "form": "identification",
+        "difficultyRationale": "Reconnaître deux tendances expérimentales distinctes ; les quatre combinaisons de hausse et baisse sont plausibles. Le lien avec le gluten explique le résultat sans demander de retenir des chiffres.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-rusu-hemp-wheat-bread",
+            "locator": "Abstract ; §2.1 et tableau 1 (Crude Protein) ; §2.2 et tableau 3 (Elasticity)",
+            "support": "Les pains enrichis présentent davantage de protéines que le témoin. L'élasticité tend à diminuer avec l'ajout, sans baisse significative à chaque dose ; les auteurs relient la tendance à l'absence de gluten dans la farine de chanvre."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-d-alberta-food-seed",
+      "title": "Industrial Hemp Harvest and Storage: Best Management Practices",
+      "organization": "Alberta Agriculture and Rural Development",
+      "url": "https://www1.agric.gov.ab.ca/$department/deptdocs.nsf/all/crop15539/$file/HempHarvestStorage.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Auteur individuel non indiqué dans le passage consulté",
+      "published": "Non daté dans le document consulté ; références de 2014–2015",
+      "passage": "La rubrique des propriétés physiques des graines alimentaires mentionne une légère saveur et odeur de noix.",
+      "access": "full-text",
+      "documentKind": "Guide technique agricole institutionnel",
+      "limitation": "Seule la description sensorielle des graines alimentaires est utilisée ; ni seuil réglementaire ni consigne culturale repris.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF p. 2, Flavour and Odour ; p. 30 pour l'organisme",
+        "result": "PDF ouvert ; rubrique sensorielle lue et soutien vérifié."
+      }
+    },
+    {
+      "id": "q2-d-usda-japan-hemp-seed",
+      "title": "The Japanese Market for Hemp Seed and Hemp Seed Oil Products",
+      "organization": "USDA Foreign Agricultural Service / Office of Agricultural Affairs, U.S. Embassy Tokyo",
+      "url": "https://www.usdajapan.org/download/7266/",
+      "verifiedAt": "2026-11-16",
+      "author": "Meros Consulting",
+      "published": "2021-11-29",
+      "passage": "La section 3.1 décrit le chènevis entier traditionnellement utilisé dans le shichimi et mentionne une version commerciale qui n'en contient pas.",
+      "access": "full-text",
+      "documentKind": "Rapport de recherche commandé par une institution publique, fondé sur documentation et entretiens de marché",
+      "limitation": "Le constat culturel est utilisé, sans extrapoler les données commerciales ou les règles de 2021 à la situation actuelle.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF p. 5, §3.1 ; page de titre et introduction pour auteur et méthode",
+        "result": "PDF ouvert ; passage sur le shichimi et exception de composition lus."
+      }
+    },
+    {
+      "id": "q2-d-met-hemp-sandals",
+      "title": "Pair of Straw Hemp Sandals",
+      "organization": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/24603",
+      "verifiedAt": "2026-11-16",
+      "author": "The Metropolitan Museum of Art, notice de collection non signée",
+      "published": "Date de publication non indiquée",
+      "passage": "Objet japonais 36.25.3021 : paire de sandales, vers 1615–1868, matière indiquée Hemp.",
+      "access": "catalogue",
+      "documentKind": "Notice muséale de l'objet conservé",
+      "limitation": "La notice décrit cette paire précise ; elle ne permet pas d'affirmer que toutes les sandales japonaises étaient en chanvre.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Artwork Details, lignes Title à Object Number",
+        "result": "Notice ouverte ; type, matière, datation et numéro concordants."
+      }
+    },
+    {
+      "id": "q2-d-natencyclopedia-hemp-spread",
+      "title": "kaņepju sviests",
+      "organization": "Nacionālā enciklopēdija, Bibliothèque nationale de Lettonie",
+      "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+      "verifiedAt": "2026-11-16",
+      "author": "Astra Spalvēna",
+      "published": "Mise à jour indiquée : 2026-08-03",
+      "passage": "L'article décrit une pâte de graines grillées et broyées, consommée en Lettonie avec pain ou pommes de terre et comme remplacement du beurre.",
+      "access": "full-text",
+      "documentKind": "Article signé d'encyclopédie nationale sur le patrimoine alimentaire",
+      "limitation": "Texte letton ; paraphrase française des sections culinaires. Aucune hypothèse étymologique ou promesse nutritionnelle reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Définition ; Vēsturiskās un ģeogrāfiskās atšķirības ; Ēdiena loma kultūrā",
+        "result": "Article ouvert ; composition et contexte letton vérifiés dans les sections correspondantes."
+      }
+    },
+    {
+      "id": "q2-d-polish-ministry-siemieniotka",
+      "title": "Siemieniotka",
+      "organization": "Ministerstwo Rolnictwa i Rozwoju Wsi, Pologne",
+      "url": "https://www.gov.pl/web/rolnictwo/siemieniotka",
+      "verifiedAt": "2026-11-16",
+      "author": "Ministère polonais de l'Agriculture et du Développement rural, notice non signée",
+      "published": "2018-06-03 ; inscription patrimoniale indiquée le 2007-05-14",
+      "passage": "La description mentionne le chanvre moulu ; la section Tradycja rattache explicitement la soupe au repas de la veille de Noël dans les foyers silésiens.",
+      "access": "official-page",
+      "documentKind": "Notice du registre officiel des produits traditionnels",
+      "limitation": "Le récit religieux cité comme tradition n'est pas présenté comme événement historique ; aucune recette pratique n'est reprise.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Barwa ; Tradycja, passage sur wieczerza wigilijna",
+        "result": "Notice ouverte ; ingrédient chanvre et association au réveillon de Noël vérifiés."
+      }
+    },
+    {
+      "id": "q2-d-tokyo-toy-museum-asanoha",
+      "title": "Hemp Leaf Patterns and Children's Culture: Wishes Transformed into Play",
+      "organization": "Tokyo Toy Museum, compte officiel sur note",
+      "url": "https://toy-museum.note.jp/n/nb494d9173f0c?hl=en",
+      "verifiedAt": "2026-11-16",
+      "author": "Shin Yamada, directeur du Tokyo Toy Museum",
+      "published": "2026-04-27",
+      "passage": "Le premier chapitre explique le motif asanoha sur les habits de bébé par le souhait d'une croissance droite et saine, à l'image du chanvre.",
+      "access": "full-text",
+      "documentKind": "Article du directeur sur le canal officiel du musée",
+      "limitation": "Une interprétation de symbolique culturelle ; aucune efficacité sanitaire ou protectrice n'est affirmée.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Chapter 1: The Wishes of Our Ancestors Embedded in the Hemp Leaf",
+        "result": "Article ouvert ; auteur, date et explication de la symbolique lus."
+      }
+    },
+    {
+      "id": "q2-d-auckland-hmong-skirt",
+      "title": "skirt, accession 2007.68.2",
+      "organization": "Auckland War Memorial Museum Tāmaki Paenga Hira",
+      "url": "https://www.aucklandmuseum.com/discover/collections/record/662199",
+      "verifiedAt": "2026-11-16",
+      "author": "Auckland Museum, notice de collection non signée",
+      "published": "Mise à jour indiquée : 2026-09-29",
+      "passage": "Le texte public explique la cire de réserve avant l'indigo. La notice attribue la jupe aux Hmong du nord du Vietnam et au chanvre, vers 1970–1980.",
+      "access": "catalogue",
+      "documentKind": "Notice muséale avec informations de conservation",
+      "limitation": "L'analyse initiale confirme une fibre libérienne ; l'identification chanvre est précisée ensuite par un chercheur invité. Question limitée à cet objet.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Public Access Text ; Date ; Media/Materials Notes",
+        "result": "Notice ouverte ; procédé de réserve, datation et nuances de l'identification de la fibre lus."
+      }
+    },
+    {
+      "id": "q2-d-hwang-hemp-korea",
+      "title": "Contemporary Hemp Weaving in Korea",
+      "organization": "Textile Society of America ; dépôt institutionnel University of Nebraska–Lincoln",
+      "url": "https://digitalcommons.unl.edu/tsaconf/347/",
+      "verifiedAt": "2026-11-16",
+      "author": "Min-Sun Hwang, The Metropolitan Museum of Art",
+      "published": "2006",
+      "passage": "Le résumé explique que le tissu de chanvre sambe a été utilisé en Corée pour des vêtements de deuil, avec une fonction symbolique pour les proches du défunt.",
+      "access": "abstract",
+      "documentKind": "Communication de recherche d'une conservatrice textile du Met, actes du symposium de la Textile Society of America",
+      "limitation": "Résumé développé accessible ; PDF intégral bloqué à l'ouverture. Ni légende d'origine ni durée rituelle utilisés comme faits généraux.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, paragraphes funeral wear, mourning dress et funeral rite",
+        "result": "Page et résumé ouverts et lus ; le PDF lié a renvoyé une erreur 403, aucune lecture intégrale du PDF revendiquée."
+      }
+    },
+    {
+      "id": "q2-d-rusu-hemp-wheat-bread",
+      "title": "Hemp (Cannabis sativa L.) Flour-Based Wheat Bread as Fortified Bakery Product",
+      "organization": "Université des sciences agricoles et de médecine vétérinaire de Cluj-Napoca et collaborateurs ; Plants ; dépôt PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8398023/",
+      "verifiedAt": "2026-11-16",
+      "author": "Iulian Eugen Rusu et al.",
+      "published": "2021-07-29",
+      "passage": "Le tableau 1 rapporte des teneurs protéiques supérieures au témoin. La section 2.2 décrit une tendance à la baisse de l'élasticité, reliée à l'absence de gluten de la farine de chanvre.",
+      "access": "full-text",
+      "documentKind": "Article de recherche expérimentale primaire, Plants 10(8):1558, DOI 10.3390/plants10081558",
+      "limitation": "Deux variétés et formulations étudiées ; aucune baisse universelle à toute dose n'est affirmée. Les bénéfices sanitaires avancés dans l'introduction ne sont pas repris.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; §2.1, tableau 1 ; §2.2, tableau 3 et interprétation du gluten",
+        "result": "Texte intégral ouvert ; résumé, teneurs protéiques, élasticité et réserves de signification statistique lus. Aucun protocole de recette ni conseil de santé repris."
+      }
+    },
+    {
+      "id": "q2-d-rabelais-athena-tiers-livre",
+      "title": "Le Tiers-Livre, édition Fezandat de 1552, transcription ATHENA",
+      "organization": "Université de Genève, bibliothèque numérique ATHENA",
+      "url": "https://athena.unige.ch/athena/rabelais/rabelais-le-tiers-livre.html",
+      "verifiedAt": "2026-11-16",
+      "author": "François Rabelais ; numérisation François Bon ; version HTML Pierre Perroud",
+      "published": "Texte de l'édition de 1552 ; date de mise en ligne non indiquée",
+      "passage": "La table des matières et les chapitres XLIX à LII situent le développement sur le Pantagruélion à la fin du Tiers Livre ; XLIX décrit les fibres et les préparatifs maritimes.",
+      "access": "full-text",
+      "documentKind": "Texte littéraire primaire transcrit sur une bibliothèque universitaire",
+      "limitation": "Source sur l'épisode et sa localisation ; la question ne présente pas la plante fictionnelle comme une description botanique exacte et ne reprend pas les allégations médicales anciennes.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "En-tête éditorial ; table des matières ; XLIX–LII",
+        "result": "Transcription ouverte ; référence d'édition et localisation de l'épisode vérifiées, passage XLIX lu."
+      }
+    }
+  ]
+}

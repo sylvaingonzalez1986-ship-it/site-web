@@ -1,0 +1,408 @@
+{
+  "batchId": "r-products-05",
+  "author": "rebalance_products_sol",
+  "createdAt": "2026-11-17",
+  "status": "author-frozen-awaiting-independent-review",
+  "count": 27,
+  "domain": "active",
+  "levels": {
+    "3": 4,
+    "2": 13,
+    "1": 10
+  },
+  "contributions": [
+    {
+      "researcher": "rebalance_classify_b",
+      "scope": "Sources Rick James et full melt ; rédaction des questions par Sol, relecture indépendante A requise.",
+      "record": "docs/quiz-2000/facts/rp05-cultural-research-b.json"
+    }
+  ],
+  "sourcesRead": [
+    {
+      "sourceId": "q2-rp05-thai-caffeine",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8596598/",
+      "access": "full-text",
+      "reader": "rebalance_products_sol",
+      "locator": "Abstract ; Results ; Discussion, exposition à la caféine"
+    },
+    {
+      "sourceId": "q2-rp05-fda-epidiolex-rifampin",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "access": "full-text",
+      "reader": "rebalance_products_sol",
+      "locator": "§7.1 p10 et §12.3 p17 : rifampin"
+    },
+    {
+      "sourceId": "q2-rp05-museum-sebsi",
+      "url": "https://hashmuseum.com/en/collection/history-of-smoking/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Rubrique Sebsi"
+    },
+    {
+      "sourceId": "q2-rp05-pib-malana",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1711213&lang=2&reg=48",
+      "access": "excerpt",
+      "reader": "rebalance_products_sol",
+      "locator": "Paragraphe sur Malana, vallée de Parvati, district de Kullu"
+    },
+    {
+      "sourceId": "q2-rp05-chemdog-concert",
+      "url": "https://cannaprovisions.com/blog/30-years-of-chemdog-spotlighted-in-northeast-leaf-2021-harvest-issue/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Récit de l’achat au concert de 1991, paragraphes précédant l’histoire des graines"
+    },
+    {
+      "sourceId": "q2-rp05-serious-chronic",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/chronic",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Genetics : AK-47, Northern Light et Northern Light/Skunk"
+    },
+    {
+      "sourceId": "q2-rp05-serious-kali-mist",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/kali-mist",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Titre et présentation de la variété"
+    },
+    {
+      "sourceId": "q2-rp05-sweet-cream-caramel",
+      "url": "https://sweetseeds.es/upload/catalogos/2024/es.pdf",
+      "access": "excerpt",
+      "reader": "rebalance_products_sol",
+      "locator": "Catalogue édition2024 p47 ; extrait indexé Cream Caramel"
+    },
+    {
+      "sourceId": "q2-rp05-meier-periodontal",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27249330/",
+      "access": "abstract",
+      "reader": "rebalance_products_sol",
+      "locator": "Abstract complet : Results et Conclusions"
+    },
+    {
+      "sourceId": "q2-rp05-imasogie-propofol",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0248062",
+      "access": "full-text",
+      "reader": "rebalance_products_sol",
+      "locator": "Abstract Results/Conclusion ; Discussion et limites"
+    },
+    {
+      "sourceId": "q2-rp05-redcross-blood",
+      "url": "https://www.redcrossblood.org/local-homepage/news/article/can-you-donate-blood-if-you-use-cannabis-.html",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Key Points ; What You Should Know"
+    },
+    {
+      "sourceId": "q2-rp05-uruguay-residence",
+      "url": "https://www.gub.uy/junta-nacional-drogas/sites/junta-nacional-drogas/files/documentos/publicaciones/Regulacion_mar2026_0.pdf",
+      "access": "full-text",
+      "reader": "rebalance_products_sol",
+      "locator": "§4.3.1 : inscription des acquéreurs en pharmacie, PDF p48"
+    },
+    {
+      "sourceId": "q2-rp05-robertson-quinones",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39535063/",
+      "access": "abstract",
+      "reader": "rebalance_products_sol",
+      "locator": "Abstract complet : produits de transformation des cannabinoïdes"
+    },
+    {
+      "sourceId": "q2-rp05-ocs-vape-guide",
+      "url": "https://learn.ocswholesale.ca/vape-education-and-troubleshooting/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Compatibility ; Crystallization"
+    },
+    {
+      "sourceId": "q2-rp05-puffco-carb-cap",
+      "url": "https://www.puffco.com/blogs/cannabis-knowledge-base/carb-cap-guide",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "What is a Carb Cap? ; Improved Airflow Control"
+    },
+    {
+      "sourceId": "q2-rp05-museum-picasso",
+      "url": "https://hashmuseum.com/en/collection/history-of-smoking/picasso-paris-and-hashish/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Paragraphe sur Picasso et Fernande Olivier à Paris pendant la période rose"
+    },
+    {
+      "sourceId": "q2-rp05-bnf-dawamesk",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb47598038s",
+      "access": "catalogue",
+      "reader": "rebalance_products_sol",
+      "locator": "Résumé de l’éditeur, description du dawamesk"
+    },
+    {
+      "sourceId": "q2-rp05-nps-federal-parks",
+      "url": "https://www.nps.gov/shen/planyourvisit/alcoholpolicy.htm",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Marijuana"
+    },
+    {
+      "sourceId": "q2-rp05-ryot-dugout",
+      "url": "https://ryot.com/ryots-guide-to-using-a-one-hitter/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "What exactly is a one hitter? : dugout stash box"
+    },
+    {
+      "sourceId": "q2-rp05-euda-portugal-cultivation",
+      "url": "https://www.euda.europa.eu/publications/faqs/cannabis-laws-in-europe-faq/how-do-eu-countries-respond-illegal-use-and-supply-cannabis_en",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Example: Penalties and limits to cultivation for personal use, paragraphe Portugal/Croatia"
+    },
+    {
+      "sourceId": "q2-rp05-rick-james-biography",
+      "url": "https://rickjames.com/pages/biography",
+      "access": "excerpt",
+      "reader": "rebalance_classify_b",
+      "locator": "Paragraphe commençant1977 saw him assemble ; Mary Jane dans le premier album"
+    },
+    {
+      "sourceId": "q2-rp05-710-full-melt",
+      "url": "https://710labs.com/persy-water-hash",
+      "access": "official-page",
+      "reader": "rebalance_classify_b",
+      "locator": "Unique paragraphe sous Persy Water Hash"
+    },
+    {
+      "sourceId": "q2-rp05-maratek-full-melt",
+      "url": "https://www.maratek.com/hubfs/Whitepapers%20December%202021/Water%20Extraction%20Whitepaper.pdf?hsLang=en",
+      "access": "full-text",
+      "reader": "rebalance_classify_b",
+      "locator": "p2/index1 : Introduction to Bubble Hash, full melt"
+    },
+    {
+      "sourceId": "q2-rp05-muddy-waters-licensed",
+      "url": "https://www.youtube.com/watch?v=rea4Stp0SeE",
+      "access": "excerpt",
+      "reader": "rebalance_products_sol",
+      "locator": "Métadonnées originales Provided to YouTube by Epic/Legacy : artiste et album"
+    },
+    {
+      "sourceId": "q2-rp05-merriam-reefer",
+      "url": "https://www.merriam-webster.com/dictionary/reefer",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Noun3 : marijuana / marijuana cigarette"
+    },
+    {
+      "sourceId": "q2-rp05-weedcraft-publisher",
+      "url": "https://store.steampowered.com/app/622720/Weedcraft_Inc/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Description de l’éditeur ; genres officiels ; date de sortie"
+    },
+    {
+      "sourceId": "q2-rp05-soho-thcnyc",
+      "url": "https://sohobroadway.org/welcome-to-soho-broadway-house-of-cannabis/",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "About ; Date Opened : April2023"
+    },
+    {
+      "sourceId": "q2-rp05-weedmaps-corporate",
+      "url": "https://weedmaps.com/corporate",
+      "access": "official-page",
+      "reader": "rebalance_products_sol",
+      "locator": "Présentation du service ; connecting consumers and businesses"
+    }
+  ],
+  "neighbourAudit": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "excludedCandidates": [
+      "Dr Grinspoon fleurs en perles : rb05 exact.",
+      "Hempfest ville et mission politique : rb02 et explication Hash Bash.",
+      "Benjamin On Hashish et Dumas Franz : rb03 exacts.",
+      "Lennon/John Sinclair : rb02.",
+      "CBN par oxydation : fait historique conservé."
+    ],
+    "openedNeighbours": [
+      "hemp-hc-052",
+      "hemp-q2-ra03-portugal-personal-cannabis-possession-administrative",
+      "hemp-q2-rb05-grinspoon-fleurs-perles",
+      "hemp-q2-rb05-kif-melange-marocain",
+      "hemp-q2-rb03-benjamin-notes-haschisch",
+      "hemp-q2-rb03-dumas-franz-haschisch"
+    ],
+    "distinctions": [
+      "Portugal : pénalisation de la culture personnelle, absent de la question possession/vente ra03.",
+      "Dawamesk : forme de préparation, absent de l’explication Balzac examinant puis refusant.",
+      "Sebsi : matériaux bois/argile, absent de rb05 qui ne décrit qu’une pipe.",
+      "Chemdog : concert Grateful Dead distinct de l’identité de Krzanowski ra06 ; clé commune.",
+      "OCS : cristallisation du CBD et sens de la connexion510 sont deux propriétés distinctes.",
+      "Full melt : une seule question, pas de variante six étoiles."
+    ]
+  },
+  "facts": [
+    {
+      "id": "hemp-q2-rp05-cbd-increases-caffeine-exposure",
+      "factKey": "cbd-increases-caffeine-exposure",
+      "subjectKey": "cbd-caffeine-interaction",
+      "expectedAnswer": "Il augmentait l’exposition et ralentissait son élimination"
+    },
+    {
+      "id": "hemp-q2-rp05-rifampin-decreases-cbd-exposure",
+      "factKey": "rifampin-decreases-cbd-exposure",
+      "subjectKey": "cbd-rifampin-interaction",
+      "expectedAnswer": "Elle diminue les deux"
+    },
+    {
+      "id": "hemp-q2-rp05-sebsi-wood-clay-materials",
+      "factKey": "sebsi-wood-clay-materials",
+      "subjectKey": "sebsi-pipe",
+      "expectedAnswer": "Une tige en bois et un foyer en argile"
+    },
+    {
+      "id": "hemp-q2-rp05-malana-cream-himachal-origin",
+      "factKey": "malana-cream-himachal-origin",
+      "subjectKey": "malana-cream",
+      "expectedAnswer": "L’Himachal Pradesh, autour de Malana et Kullu"
+    },
+    {
+      "id": "hemp-q2-rp05-chemdog-grateful-dead-concert",
+      "factKey": "chemdog-grateful-dead-concert",
+      "subjectKey": "chemdog-chem91-history",
+      "expectedAnswer": "Grateful Dead"
+    },
+    {
+      "id": "hemp-q2-rp05-chronic-ak47-pedigree",
+      "factKey": "chronic-ak47-pedigree",
+      "subjectKey": "chronic",
+      "expectedAnswer": "AK-47"
+    },
+    {
+      "id": "hemp-q2-rp05-kali-mist-serious-seeds",
+      "factKey": "kali-mist-serious-seeds",
+      "subjectKey": "kali-mist",
+      "expectedAnswer": "Serious Seeds"
+    },
+    {
+      "id": "hemp-q2-rp05-cream-caramel-three-parents",
+      "factKey": "cream-caramel-three-parents",
+      "subjectKey": "cream-caramel",
+      "expectedAnswer": "BlueBlack, Maple Leaf Indica et White Rhino"
+    },
+    {
+      "id": "hemp-q2-rp05-cannabis-periodontal-association",
+      "factKey": "cannabis-periodontal-association",
+      "subjectKey": "cannabis-periodontal-health",
+      "expectedAnswer": "Une dégradation des tissus de soutien des dents"
+    },
+    {
+      "id": "hemp-q2-rp05-cannabis-propofol-endoscopy",
+      "factKey": "cannabis-propofol-endoscopy",
+      "subjectKey": "cannabis-propofol-endoscopy",
+      "expectedAnswer": "Des besoins de propofol plus élevés chez les usagers"
+    },
+    {
+      "id": "hemp-q2-rp05-redcross-cannabis-donor-eligibility",
+      "factKey": "redcross-cannabis-donor-eligibility",
+      "subjectKey": "cannabis-blood-donation-red-cross",
+      "expectedAnswer": "Non ; une altération de compréhension ou de mémoire empêche le don"
+    },
+    {
+      "id": "hemp-q2-rp05-uruguay-pharmacy-residency",
+      "factKey": "uruguay-pharmacy-residency",
+      "subjectKey": "uruguay-pharmacy-residency",
+      "expectedAnswer": "Être citoyen uruguayen ou résident permanent"
+    },
+    {
+      "id": "hemp-q2-rp05-cbd-vape-transformation-hydroxyquinones",
+      "factKey": "cbd-vape-transformation-hydroxyquinones",
+      "subjectKey": "cbd-vaping-transformation",
+      "expectedAnswer": "Des hydroxyquinones du CBD"
+    },
+    {
+      "id": "hemp-q2-rp05-cbd-cartridge-crystallization",
+      "factKey": "cbd-cartridge-crystallization",
+      "subjectKey": "cbd-cartridge-crystallization",
+      "expectedAnswer": "Du CBD cristallisé, sans défaut nécessaire du produit"
+    },
+    {
+      "id": "hemp-q2-rp05-weedmaps-dispensary-directory",
+      "factKey": "weedmaps-dispensary-directory",
+      "subjectKey": "weedmaps-service",
+      "expectedAnswer": "À trouver des dispensaires, livraisons et marques"
+    },
+    {
+      "id": "hemp-q2-rp05-vape-510-connection",
+      "factKey": "vape-510-connection",
+      "subjectKey": "cannabis-vape-510",
+      "expectedAnswer": "Un type de connexion vissée à la batterie"
+    },
+    {
+      "id": "hemp-q2-rp05-carb-cap-airflow-role",
+      "factKey": "carb-cap-airflow-role",
+      "subjectKey": "cannabis-carb-cap",
+      "expectedAnswer": "Réguler le passage de l’air dans le compartiment chauffé"
+    },
+    {
+      "id": "hemp-q2-rp05-picasso-paris-hashish-account",
+      "factKey": "picasso-paris-hashish-account",
+      "subjectKey": "picasso-paris-hashish",
+      "expectedAnswer": "Pablo Picasso"
+    },
+    {
+      "id": "hemp-q2-rp05-dawamesk-resin-paste-form",
+      "factKey": "dawamesk-resin-paste-form",
+      "subjectKey": "dawamesk-preparation",
+      "expectedAnswer": "Une confiture verte contenant de la résine de cannabis"
+    },
+    {
+      "id": "hemp-q2-rp05-us-national-parks-recreational-ban",
+      "factKey": "us-national-parks-recreational-ban",
+      "subjectKey": "us-national-park-cannabis",
+      "expectedAnswer": "La possession et l’usage récréatif y restent interdits"
+    },
+    {
+      "id": "hemp-q2-rp05-dugout-pipe-flower-storage",
+      "factKey": "dugout-pipe-flower-storage",
+      "subjectKey": "cannabis-dugout",
+      "expectedAnswer": "Une boîte avec logements pour fleurs et petite pipe"
+    },
+    {
+      "id": "hemp-q2-rp05-portugal-personal-cultivation-criminal",
+      "factKey": "portugal-personal-cultivation-criminal",
+      "subjectKey": "portugal-personal-cultivation",
+      "expectedAnswer": "Non : la culture personnelle reste une infraction pénale"
+    },
+    {
+      "id": "hemp-q2-rp05-mary-jane-rick-james",
+      "factKey": "mary-jane-rick-james",
+      "subjectKey": "rick-james-mary-jane",
+      "expectedAnswer": "Rick James"
+    },
+    {
+      "id": "hemp-q2-rp05-full-melt-low-plant-residue",
+      "factKey": "full-melt-low-plant-residue",
+      "subjectKey": "hash-full-melt",
+      "expectedAnswer": "Une fusion presque totale avec très peu de résidu végétal"
+    },
+    {
+      "id": "hemp-q2-rp05-muddy-waters-champagne-reefer",
+      "factKey": "muddy-waters-champagne-reefer",
+      "subjectKey": "muddy-waters-champagne-reefer",
+      "expectedAnswer": "Muddy Waters"
+    },
+    {
+      "id": "hemp-q2-rp05-weedcraft-economic-management-game",
+      "factKey": "weedcraft-economic-management-game",
+      "subjectKey": "weedcraft-inc-game",
+      "expectedAnswer": "Un jeu de gestion économique et de stratégie"
+    },
+    {
+      "id": "hemp-q2-rp05-thcnyc-opening-museum",
+      "factKey": "thcnyc-opening-museum",
+      "subjectKey": "thcnyc-museum",
+      "expectedAnswer": "Un musée interactif consacré à la culture du cannabis"
+    }
+  ]
+}

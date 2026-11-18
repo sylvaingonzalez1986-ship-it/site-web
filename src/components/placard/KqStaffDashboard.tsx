@@ -17,7 +17,7 @@ export function KqStaffDashboard({ snapshot, disabled, stale, onOpenTeam, onRecr
 }) {
   const player = getKqPlayerWorkday(snapshot);
   const team = snapshot.state.employees.filter(employee => employee.status === "active");
-  const capacities = team.map(employee => getKqStaffCapacity(employee, snapshot.calendar));
+  const capacities = team.map(employee => getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans));
   const total = capacities.reduce((sum, capacity) => sum + capacity.baseHours + capacity.extraHours, 0);
   const remaining = capacities.reduce((sum, capacity) => sum + capacity.remainingHours, 0);
   const available = capacities.filter(capacity => capacity.remainingHours > 0).length;
@@ -45,7 +45,7 @@ export function KqStaffDashboard({ snapshot, disabled, stale, onOpenTeam, onRecr
       <div className={styles.metric} data-staff-metric="player">
         <dt><Clock3 size={18} aria-hidden="true" />Ton temps</dt>
         <dd className={styles.metricBody}><div className={styles.value}><strong data-staff-metric-value>{hours(player.remainingHours)}</strong><span> / {hours(player.dailyHours)}</span></div>
-        <div className={styles.meter}><KqProgressMeter label="Ta réserve personnelle" value={player.remainingHours} max={player.dailyHours} valueLabel={`${hours(player.usedHours)} réservées ou utilisées`} /></div>
+        <div className={styles.meter}><KqProgressMeter label="Ta réserve personnelle" value={player.remainingHours} max={player.dailyHours} valueLabel={`${hours(player.dailyHours - player.remainingHours)} réservées ou utilisées`} /></div>
         <small>{player.remainingHours > 0 ? "Disponibles pour tes gestes et missions" : "Ta journée est entièrement réservée"}</small></dd>
       </div>
       <div className={styles.metric} data-staff-metric="team">

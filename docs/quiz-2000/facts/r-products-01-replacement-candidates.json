@@ -1,0 +1,71 @@
+{
+  "batchId": "r-products-01",
+  "author": "rebalance_products_sol",
+  "status": "proposals_only_waiting_for_frozen_independent_review",
+  "date": "2026-11-17",
+  "sourceReadings": [
+    {
+      "url": "https://www.bccannabisstores.com/blogs/learn/the-bccs-guide-to-infused-pre-rolls",
+      "organization": "BC Cannabis Stores (British Columbia Liquor Distribution Branch)",
+      "locator": "Types of Concentrates Used: THCA Diamonds; Bubble Hash (Ice Water Hash); Terp Sauce",
+      "reader": "rebalance_products_sol",
+      "result": "Page originale effectivement ouverte ; définitions lues. Terminologie commerciale explicitement attribuable au détaillant public. Aucune promesse ni méthode pratique à reprendre."
+    }
+  ],
+  "candidates": [
+    {
+      "factKey": "thca-diamonds-crystalline-cannabinoid",
+      "prompt": "Dans le guide de BC Cannabis Stores, les « diamants de THCA » correspondent à quoi ?",
+      "options": ["Des cristaux d’un cannabinoïde acide", "Des gouttelettes de terpènes sans cannabinoïdes", "Des trichomes entiers agglomérés", "Des fleurs séchées enrobées de résine"],
+      "expectedAnswer": "Des cristaux d’un cannabinoïde acide",
+      "explanation": "Le guide décrit des cristaux de THCA, distincts du THC neutre. Le nom « diamant » décrit ici une présentation cristalline, pas une variété botanique.",
+      "level": 1,
+      "support": "Rubrique THCA Diamonds : cristaux solides de THCA."
+    },
+    {
+      "factKey": "terp-sauce-terpene-focused-concentrate",
+      "prompt": "Dans le guide de BC Cannabis Stores, quelle composante est mise en avant par l’appellation « terp sauce » ?",
+      "options": ["Les terpènes", "Les cannabinoïdes acides uniquement", "Les cires végétales", "Les protéines de la fleur"],
+      "expectedAnswer": "Les terpènes",
+      "explanation": "Terp sauce désigne dans ce guide un concentré privilégiant la teneur en terpènes. Il peut accompagner des cristaux de cannabinoïdes : la sauce et les cristaux sont des fractions distinctes.",
+      "level": 1,
+      "support": "Rubrique Terp Sauce : concentré mettant l’accent sur la teneur en terpènes."
+    },
+    {
+      "factKey": "bubble-hash-water-separated-trichome-material",
+      "prompt": "Parmi ces produits, lequel est aussi appelé « ice water hash » dans le guide de BC Cannabis Stores ?",
+      "options": ["Le bubble hash", "Le distillat", "Le shatter", "La teinture"],
+      "expectedAnswer": "Le bubble hash",
+      "explanation": "Bubble hash et ice water hash désignent ici une forme de résine séparée avec de l’eau, classée parmi les concentrés sans solvant organique ajouté.",
+      "level": 2,
+      "support": "Rubrique Bubble Hash (Ice Water Hash) : famille des extraits solventless avec eau."
+    }
+  ],
+  "additionalCandidates": [
+    {
+      "factKey": "nabiximols-thc-cbd-oromucosal-extract",
+      "prompt": "Quels deux cannabinoïdes entrent dans la formulation de nabiximols, l’extrait proposé en spray buccal ?",
+      "options": ["THC et CBD", "CBD et CBG", "THC et CBN", "CBG et CBC"],
+      "expectedAnswer": "THC et CBD",
+      "explanation": "Nabiximols est un extrait végétal standardisé associant notamment THC et CBD. Sa formulation ne correspond pas à du CBD isolé ni à du THC seul.",
+      "level": 2,
+      "sourceUrl": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/nabiximols",
+      "sourceOrganization": "National Cancer Institute",
+      "locator": "Définition, premier paragraphe",
+      "consultation": "2026-11-17, rebalance_products_sol : page originale ouverte et définition lue."
+    },
+    {
+      "factKey": "dronabinol-delta9-thc-identity",
+      "prompt": "Quel cannabinoïde est désigné par le nom pharmaceutique « dronabinol » ?",
+      "options": ["Le delta-9-THC", "Le cannabidiol", "Le cannabinol", "Le cannabigérol"],
+      "expectedAnswer": "Le delta-9-THC",
+      "explanation": "Dronabinol est un nom du delta-9-THC employé en pharmacie. Ce nom ne désigne pas un mélange de cannabinoïdes comme un extrait végétal complet.",
+      "level": 2,
+      "sourceUrl": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/dronabinol",
+      "sourceOrganization": "National Cancer Institute",
+      "locator": "Définition et synonymes",
+      "consultation": "2026-11-17, rebalance_products_sol : page originale ouverte et définition lue."
+    }
+  ],
+  "notes": ["Réservés pour rp01 jusqu’à décision du reviewer ; ne pas les dupliquer dans rp02.", "Ne pas modifier le lot figé avant réception du rapport demandé par le coordinateur.", "A laisse les identités/formulations nabiximols, dronabinol et nabilone ; les deux premières peuvent remplacer les lectures trop générales par unité/par activation."]
+}

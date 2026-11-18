@@ -1,9 +1,11 @@
 import "server-only";
+import { isKqQueuedReceipt, type KqQueuedReceipt } from "../kanab-quest-market-queue";
 import { createSupabaseServiceClient } from "./admin";
 import { CoinMarketCapRequestError, fetchCoinMarketCapQuotes, fetchCoinMarketCapTop100 } from "../coinmarketcap";
 import { isKqCryptoOrder, isKqCryptoRefreshStatus, isKqCryptoSnapshot, isKqCryptoTrade, isRecord, KqCryptoRequestError, KQ_CRYPTO_UUID, parseKqCryptoAction, type KqCryptoOrder, type KqCryptoSnapshot, type KqCryptoTrade } from "../kanab-quest-crypto";
 
 const errors: Record<string, string> = {
+ market_policy_required: "Actualise le comptoir : les ordres sont désormais exécutés au prochain cours publié.", market_queue_limit: "Vingt ordres sont déjà en attente.", market_expired: "Cette préparation a expiré. Prépare un nouvel ordre.", market_order_missing: "Ordre introuvable.", market_invalid: "Ordre invalide.",
  crypto_invalid: "Ordre crypto invalide.", crypto_closed: "Le comptoir crypto est fermé pour le moment.",
  crypto_stale: "Le cours est trop ancien. Actualise le marché avant de préparer un ordre.", crypto_not_top100: "Cette crypto a quitté le top 100 : seules les ventes restent possibles.",
  crypto_cash: "Trésorerie insuffisante.", crypto_quantity: "La quantité dépasse ta position disponible.", crypto_dust: "Ce montant est trop petit pour être échangé.",
@@ -45,6 +47,7 @@ async function refreshQuotes(): Promise<KqCryptoRefreshResult> {
   const published = await rpc("rpc_kq_crypto_refresh_publish", { p_lease_id: claim.leaseId, p_assets: [...top100, ...held],
    ...(retryAfterSeconds === null ? {} : { p_retry_after_seconds: retryAfterSeconds }) });
   if (published !== true) console.warn("[crypto:refresh] publication lease expired");
+  if (published === true) await rpc("rpc_kq_settle_market_queue").catch(() => console.warn("[crypto:queue] settlement deferred"));
   return published === true ? "updated" : "failed";
  } catch (error) {
   console.warn("[crypto:refresh] retaining last quotes", { reason: refreshReason(error) });
@@ -77,14 +80,16 @@ export async function getKqCryptoSnapshot(userId: string): Promise<KqCryptoSnaps
  } };
  return data;
 }
-export async function handleKqCryptoAction(userId: string, value: unknown): Promise<KqCryptoOrder | { trade: KqCryptoTrade; replayed: boolean }> {
+export async function handleKqCryptoAction(userId: string, value: unknown): Promise<KqCryptoOrder | KqQueuedReceipt | { trade: KqCryptoTrade; replayed: boolean }> {
  checkUser(userId);
  const action = parseKqCryptoAction(value);
- // Confirm uses its persisted quote or receipt, never a new external price.
+ // Confirmation queues an immutable instruction; publication captures its future execution price.
  if (action.action === "preview") await refreshKqCryptoQuotes();
  const { action: name, ...payload } = action;
- const data = await rpc("rpc_kq_crypto_command", { p_user_id: userId, p_action: name, p_payload: payload, p_market_enabled: true });
+ const data = name === "confirm" ? await rpc("rpc_kq_market_order_submit", { p_market: "crypto", p_user_id: userId, p_payload: payload })
+  : await rpc("rpc_kq_crypto_command", { p_user_id: userId, p_action: name, p_payload: payload, p_market_enabled: true });
  if (name === "preview" && isKqCryptoOrder(data)) return data;
+ if (name === "confirm" && isKqQueuedReceipt(data)) return data;
  if (name === "confirm" && isRecord(data) && isKqCryptoTrade(data.trade) && typeof data.replayed === "boolean") return { trade: data.trade, replayed: data.replayed };
  throw new Error("[supabase:crypto] invalid receipt");
 }

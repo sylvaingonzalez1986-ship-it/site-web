@@ -1,50 +1,32 @@
 import { FARM_GUIDE_CHAPTERS, parseFarmGuide, type FarmGuideChapterId, type FarmGuideFacts } from "./kanab-quest-farm-guide";
 
-/** Learning goals, not a slideshow. Only observed game state can complete a goal. */
-export const FARM_GUIDE_STEPS = [
-  { id: "welcome", chapter: "arrival", group: "La ferme", title: "Découvrir le quartier", line: "Grand-père t’a laissé les clés. Regarde la carte : chaque bâtiment ouvre une activité de ta ferme.", target: "[data-placard-next-action]" },
-  { id: "zone", chapter: "warehouse", group: "La ferme", title: "Enregistrer une zone de culture", line: "Commençons par une zone. Dessine-la sur le plan, puis vérifie le devis avant de l’enregistrer.", target: "[data-warehouse-plan-review], [data-warehouse-map]" },
-  { id: "buddies", chapter: "collection", group: "La ferme", title: "Ouvrir l’album Buddies", line: "Voici les variétés de ta future ferme. Ouvre l’album Buddies pour découvrir celles que tu possèdes.", target: "[data-collection-tab=buddies]" },
-  { id: "cards", chapter: "collection", group: "La ferme", title: "Découvrir les cartes de soutien", line: "Ouvre Botte du Chanvrier. Ces cartes aident tes cultures ; seuls les exemplaires joués sont consommés.", target: "[data-collection-tab=botte]" },
-  { id: "packs", chapter: "packs", group: "La ferme", title: "Repérer tes packs disponibles", line: "Regardons les packs déjà disponibles. Ouvre-les si tu en as besoin ; aucun achat n’est imposé par le guide.", target: "[data-arena-tour-surface=shop]" },
-  { id: "assign", chapter: "warehouse", group: "La ferme", title: "Installer un Buddie dans une zone", line: "Touche ta zone, puis Buddies. Choisis une variété et enregistre le plan pour qu’elle soit prête à cultiver.", target: "[data-warehouse-plan-review], [data-warehouse-map]" },
-  { id: "launch", chapter: "culture", group: "La première culture", title: "Lancer une culture", line: "Prépare tes Buddies et tes cartes. Vérifie les coûts, puis confirme le lancement quand tu es prêt.", target: "[data-culture-start-review], [data-culture-selection], [data-culture-buddies]" },
-  { id: "roll", chapter: "culture", group: "La première culture", title: "Lancer les premiers dés", line: "Lis la situation et les effets possibles, puis lance les dés avec le bouton du jeu.", target: "[data-culture-primary-action], [data-culture-situation]" },
-  { id: "resolve", chapter: "culture", group: "La première culture", title: "Valider ton premier tour", line: "Les dés ont parlé. Compare tes possibilités et le résultat prévu avant de valider ta décision.", target: "[data-culture-primary-action], [data-culture-decision]" },
-  { id: "harvest", chapter: "culture", group: "La première culture", title: "Aller jusqu’à la récolte", line: "Accompagne les étapes de culture. Je reste avec toi jusqu’à ce que la récolte soit enregistrée.", target: "[data-culture-primary-action], [data-harvest-moment], [data-culture-selection]" },
-  { id: "store", chapter: "storage", group: "De la récolte à la vente", title: "Ranger ta récolte", line: "Retrouvons le lot récolté. Choisis ses contenants : le rangement sera validé quand tout le lot sera protégé.", target: "[data-storage-inventory]" },
-  { id: "trim", chapter: "warehouse", group: "De la récolte à la vente", title: "Préparer les fleurs à l’Atelier", line: "Rejoins le trim à la main ou à la machine, avec ton équipe. Choisis une personne et ses heures : l’atelier prépare automatiquement les récoltes. Le guide suit toujours ce lot ; le jury attend la fin de son trim et de son affinage.", target: "[data-guide-trim-flower-id]" },
-  { id: "cure", chapter: "storage", group: "De la récolte à la vente", title: "Laisser finir l’affinage", line: "Le trim est vérifié. La date du lot fait foi pour l’affinage ; profitons de l’attente pour découvrir les comptes.", target: "[data-storage-inventory]" },
-  { id: "jury", chapter: "jury", group: "De la récolte à la vente", title: "Obtenir un verdict du jury", line: "Présente cette Fleur au jury. Lis la confirmation : le duel consomme la Fleur d’Arène, pas le stock récolté.", target: "[data-culture-ranked-flower], [data-culture-training-flower], [data-culture-open-storage]" },
-  { id: "sale", chapter: "sale", group: "De la récolte à la vente", title: "Réaliser une première vente", line: "Prépare le produit et compare le montant net. L’objectif sera rempli au reçu de vente, pas à la mise en annonce.", target: "[data-screen]" },
-  { id: "accounts", chapter: "accounts", group: "Faire grandir la ferme", title: "Consulter tes factures", line: "Ouvre les factures de la ferme. Repère ce qui reste à payer et les échéances avant d’investir davantage.", target: "[data-guide-invoices-tab], [data-guide-finances-ready=true], [data-pay-all-invoices]" },
-  { id: "listings", chapter: "listings", group: "Faire grandir la ferme", title: "Retrouver ton stock en vente", line: "Voici le suivi des annonces et commandes. Un produit proposé n’est pas encore une recette encaissée.", target: "[data-online-listings-heading]" },
-  { id: "bank", chapter: "bank", group: "Faire grandir la ferme", title: "Découvrir la banque", line: "Découvrons les financements et leurs échéances. Aucun emprunt n’est nécessaire pour continuer le guide.", target: "[id^=bank-panel-]" },
-  { id: "staff-candidate", chapter: "staff", group: "L’équipe", title: "Comparer un profil et son contrat", line: "Dans Recruter, choisis un profil pour examiner ses compétences, son trait, ses contrats et le coût selon les heures. Consulter suffit : tu décideras toi-même d’embaucher.", target: "[data-staff-tab=candidates]" },
-  { id: "staff-planning", chapter: "staff", group: "L’équipe", title: "Répartir le travail", line: "Ouvre Répartir le travail. Une personne peut aider à plusieurs métiers, mais toutes ses missions utilisent les mêmes heures. Le trim se confie depuis l’Atelier.", target: "[data-staff-guide=planning] > summary" },
-  { id: "staff-development", chapter: "staff", group: "L’équipe", title: "Prévoir les formations et les congés", line: "Ouvre Formations et congés. Le travail terminé apporte de l’expérience ; se former coûte du temps et de l’argent. Prévois les repos et les absences avant de remplir le planning.", target: "[data-staff-guide=development] > summary" },
-  { id: "staff-payroll", chapter: "staff", group: "L’équipe", title: "Prévoir la paie de l’équipe", line: "Ouvre Paie & contrats pour distinguer le budget mensuel estimé des salaires réellement échus. Le paiement se confirme ici ; Finances enregistre les charges et les dettes.", target: "[data-staff-tab=payroll]" },
-  { id: "site", chapter: "business", group: "Faire grandir la ferme", title: "Découvrir le site de la ferme", line: "Dans Développer, ouvre Site internet. Regarde son état et ses coûts avant de décider de l’améliorer.", target: "[data-shop-view=site]" },
-  { id: "studio", chapter: "business", group: "Faire grandir la ferme", title: "Entrer au Studio", line: "Ouvre le Studio : c’est ici que tu construis l’identité de ta ferme. Tu peux simplement regarder.", target: "[data-shop-view=brand]" },
-  { id: "merch", chapter: "business", group: "Faire grandir la ferme", title: "Découvrir les produits dérivés", line: "Ouvre Produits dérivés. Compare les coûts et les stocks nécessaires avant d’envisager une fabrication.", target: "[data-shop-view=merch]" },
-  { id: "promotion", chapter: "business", group: "Faire grandir la ferme", title: "Découvrir la promotion", line: "Ouvre Promouvoir. Une campagne dépense un budget ; ses prévisions ne garantissent pas des ventes.", target: "[data-shop-view=marketing]" },
-  { id: "adventure", chapter: "networks", group: "Faire grandir la ferme", title: "Rencontrer les voisins", line: "Dans Réseaux, ouvre L’aventure. Les habitants du Quartier ont des histoires et des choix à te proposer.", target: "[data-social-view=story]" },
-  { id: "partners", chapter: "networks", group: "Faire grandir la ferme", title: "Découvrir les partenariats", line: "Ouvre Partenariats. Lis les honoraires et les engagements ; découvrir une offre ne t’oblige pas à signer.", target: "[data-social-view=sponsors]" },
-  { id: "missions", chapter: "missions", group: "Faire grandir la ferme", title: "Choisir ta prochaine direction", line: "Découvre les missions du Quartier. Tu connais les bases : à toi de décider comment faire grandir la ferme.", target: "[data-mission-center]" },
-] as const;
+import { FARM_GUIDE_STEPS } from "./kanab-quest-tutorial-content";
+export { FARM_GUIDE_STEPS } from "./kanab-quest-tutorial-content";
+
 export type FarmStep = typeof FARM_GUIDE_STEPS[number];
 export type FarmStepId = FarmStep["id"];
-const VISIT_STEPS = ["welcome", "buddies", "cards", "packs", "accounts", "listings", "bank", "staff-candidate", "staff-planning", "staff-development", "staff-payroll", "site", "studio", "merch", "promotion", "adventure", "partners", "missions"] as const;
-export type FarmVisitId = typeof VISIT_STEPS[number];
-export type FarmProgress = { version: 2; active: boolean; started: boolean; collapsed: boolean; completed: FarmStepId[]; flowerId?: string };
+export type FarmVisitId = Extract<FarmStep, { objectiveKind: "visit" }>["id"];
+const VISIT_STEPS: readonly FarmVisitId[] = FARM_GUIDE_STEPS.filter(step => step.objectiveKind === "visit").map(step => step.id);
+export type FarmProgress = {
+  version: 2; active: boolean; started: boolean; collapsed: boolean; completed: FarmStepId[]; flowerId?: string;
+  /** Choosing or rereading an objective never changes its completion evidence. */
+  selectedStepId?: FarmStepId; replayStepId?: FarmStepId;
+};
 export type FarmEvidence = {
   error?: boolean; visits?: FarmVisitId[]; savedZones?: number; assignedZones?: number;
+  /** Current server/UI prerequisites only; never an alternative completion signal. */
+  unavailable?: Partial<Record<FarmStepId, string>>;
   cultureStarted?: boolean; rolled?: boolean; turnResolved?: boolean; harvestId?: string;
+  openedPack?: boolean; cardPlayed?: boolean; schoolAnswered?: boolean;
+  /** Previously recorded official harvests, linked to a server culture run. */
+  pastHarvestIds?: string[];
   lots?: { id: string; protected: boolean; ready: boolean }[]; juryIds?: string[]; saleId?: string;
   trim?: { id: string; state: "required" | "running" | "queued" | "complete" | "not-required" };
+  trims?: NonNullable<FarmEvidence["trim"]>[];
 };
 export const emptyFarmProgress = (): FarmProgress => ({ version: 2, active: false, started: false, collapsed: false, completed: [] });
 const validId = (id: unknown): id is string => typeof id === "string" && /^[a-zA-Z0-9_-]{1,128}$/.test(id);
+const validStepId = (id: unknown): id is FarmStepId => FARM_GUIDE_STEPS.some(step => step.id === id);
 export function parseFarmProgress(raw: string | null): FarmProgress | null {
   if (raw === null) return emptyFarmProgress();
   try {
@@ -56,26 +38,74 @@ export function parseFarmProgress(raw: string | null): FarmProgress | null {
     }
     if (row?.version !== 2 || typeof row.active !== "boolean" || typeof row.started !== "boolean" || typeof row.collapsed !== "boolean"
       || !Array.isArray(row.completed) || row.completed.some((id: unknown) => !FARM_GUIDE_STEPS.some(step => step.id === id))
-      || (row.flowerId !== undefined && !validId(row.flowerId))) return null;
+      || (row.flowerId !== undefined && !validId(row.flowerId))
+      || (row.selectedStepId !== undefined && !validStepId(row.selectedStepId))
+      || (row.replayStepId !== undefined && !validStepId(row.replayStepId))) return null;
     const completed = new Set<FarmStepId>(row.completed);
     // A saved verdict or sale already passed the server prerequisites, including legacy exemptions.
     if (completed.has("jury") || completed.has("sale")) completed.add("trim");
-    return { version: 2, active: row.active, started: row.started || row.active, collapsed: row.collapsed, completed: [...completed], ...(row.flowerId ? { flowerId: row.flowerId } : {}) };
+    return { version: 2, active: row.active, started: row.started || row.active, collapsed: row.collapsed, completed: [...completed],
+      ...(row.flowerId ? { flowerId: row.flowerId } : {}),
+      ...(row.selectedStepId ? { selectedStepId: row.selectedStepId } : {}),
+      ...(row.replayStepId ? { replayStepId: row.replayStepId } : {}) };
   } catch { return null; }
 }
-export const getFarmStep = (state: FarmProgress) => FARM_GUIDE_STEPS.find(step => !state.completed.includes(step.id));
+export const isFarmProgressComplete = (state: FarmProgress) => FARM_GUIDE_STEPS.every(step => state.completed.includes(step.id));
+export function getFarmStep(state: FarmProgress, evidence?: FarmEvidence): FarmStep | undefined {
+  if (state.replayStepId) return FARM_GUIDE_STEPS.find(step => step.id === state.replayStepId);
+  const selected = FARM_GUIDE_STEPS.find(step => step.id === state.selectedStepId);
+  if (selected && !state.completed.includes(selected.id)) return selected;
+  const nextInChapter = selected && FARM_GUIDE_STEPS.find(step => step.chapter === selected.chapter && getFarmStepState(state, step.id, evidence).status === "available");
+  return nextInChapter ?? FARM_GUIDE_STEPS.find(step => getFarmStepState(state, step.id, evidence).status === "available")
+    ?? FARM_GUIDE_STEPS.find(step => !state.completed.includes(step.id));
+}
+export function selectFarmStep(state: FarmProgress, id: FarmStepId): FarmProgress {
+  if (!validStepId(id)) return state;
+  const progress = { ...state };
+  delete progress.replayStepId;
+  return { ...progress, active: true, started: true, collapsed: false, selectedStepId: id,
+    ...(state.completed.includes(id) ? { replayStepId: id } : {}) };
+}
+export function replayFarmStep(state: FarmProgress, id: FarmStepId): FarmProgress {
+  return validStepId(id) ? { ...state, active: true, started: true, collapsed: false, replayStepId: id } : state;
+}
+export function resumeFarmProgress(state: FarmProgress): FarmProgress {
+  const progress = { ...state };
+  delete progress.replayStepId;
+  return { ...progress, active: true, started: true, collapsed: false };
+}
+export const pauseFarmProgress = (state: FarmProgress): FarmProgress => ({ ...state, active: false, collapsed: true });
+export type FarmStepState = { status: "completed" | "available" | "locked" | "waiting"; prerequisites: FarmStepId[]; reason?: string };
+export function getFarmStepState(state: FarmProgress, id: FarmStepId, evidence?: FarmEvidence): FarmStepState {
+  if (state.completed.includes(id)) return { status: "completed", prerequisites: [] };
+  const unavailable = evidence?.unavailable?.[id];
+  if (typeof unavailable === "string" && unavailable.trim()) return { status: "waiting", prerequisites: [], reason: unavailable };
+  if (evidence?.error) return { status: "waiting", prerequisites: [], reason: "La confirmation du jeu est indisponible. La progression reste conservée." };
+  const prerequisites = (FARM_GUIDE_STEPS.find(step => step.id === id)?.prerequisites ?? []).filter(required => !state.completed.includes(required));
+  if (prerequisites.length) return { status: "locked", prerequisites,
+    reason: `À accomplir : ${prerequisites.map(required => `« ${FARM_GUIDE_STEPS.find(step => step.id === required)!.title} »`).join(" et ")}. Tu peux déjà consulter cette étape.` };
+  const trim = evidence?.trim?.id === state.flowerId ? evidence?.trim : evidence?.trims?.find(item => item.id === state.flowerId);
+  if (id === "trim" && trim && ["running", "queued"].includes(trim.state)) return { status: "waiting", prerequisites: [], reason: "Le trim du lot suivi est encore en cours ou en attente." };
+  const lot = evidence?.lots?.find(item => item.id === state.flowerId);
+  if (id === "cure" && lot && !lot.ready) return { status: "waiting", prerequisites: [], reason: "L’affinage continue. Sa fin sera confirmée par le jeu." };
+  return { status: "available", prerequisites: [] };
+}
 export const farmStepChapter = (step: FarmStep) => {
   const chapter = FARM_GUIDE_CHAPTERS.find(chapter => chapter.id === step.chapter)!;
   return step.id === "trim" ? { ...chapter, tab: "Atelier · Trim", section: "processing" } : chapter;
 };
 export function followFarmHarvest(state: FarmProgress, flowerId: string): FarmProgress {
   if (!validId(flowerId) || state.flowerId === flowerId) return state;
-  return { ...state, flowerId, completed: state.completed.filter(id => !["store", "trim", "cure", "jury", "sale"].includes(id)) };
+  // Following another lot changes context, not the player's already learned skills.
+  return { ...state, flowerId };
 }
 export function observeFarmProgress(state: FarmProgress, evidence: FarmEvidence): FarmProgress {
   if (!state.started || evidence.error) return state;
   const done = new Set(state.completed);
   evidence.visits?.forEach(id => { if (VISIT_STEPS.includes(id)) done.add(id); });
+  if (evidence.openedPack === true) done.add("pack-open");
+  if (evidence.cardPlayed === true) done.add("card-play");
+  if (evidence.schoolAnswered === true) done.add("school-answer");
   if (Number.isSafeInteger(evidence.savedZones) && evidence.savedZones! > 0) done.add("zone");
   if (Number.isSafeInteger(evidence.assignedZones) && evidence.assignedZones! > 0) { done.add("zone"); done.add("assign"); }
   if (evidence.cultureStarted) done.add("launch");
@@ -86,6 +116,11 @@ export function observeFarmProgress(state: FarmProgress, evidence: FarmEvidence)
     flowerId ??= evidence.harvestId;
     ["launch", "roll", "resolve", "harvest"].forEach(id => done.add(id as FarmStepId));
   }
+  const pastHarvestIds = evidence.pastHarvestIds?.filter(validId) ?? [];
+  if (pastHarvestIds.length) {
+    flowerId ??= pastHarvestIds[0];
+    ["launch", "roll", "resolve", "harvest"].forEach(id => done.add(id as FarmStepId));
+  }
   // A recorded stock lot can resume an earlier harvest, but never proves that dice were played.
   if (!flowerId) flowerId = evidence.lots?.find(lot => validId(lot.id))?.id;
   const lot = evidence.lots?.find(item => item.id === flowerId);
@@ -94,7 +129,8 @@ export function observeFarmProgress(state: FarmProgress, evidence: FarmEvidence)
     if (lot.protected) done.add("store");
     if (lot.ready) done.add("cure");
   }
-  if (flowerId && evidence.trim?.id === flowerId && ["complete", "not-required"].includes(evidence.trim.state)) done.add("trim");
+  const trim = evidence.trim?.id === flowerId ? evidence.trim : evidence.trims?.find(item => item.id === flowerId);
+  if (flowerId && trim && ["complete", "not-required"].includes(trim.state)) done.add("trim");
   if (flowerId && evidence.juryIds?.includes(flowerId)) { done.add("trim"); done.add("jury"); }
   if (flowerId && evidence.saleId === flowerId) { done.add("trim"); done.add("sale"); }
   const completed = FARM_GUIDE_STEPS.filter(step => done.has(step.id)).map(step => step.id);
@@ -110,7 +146,7 @@ export function farmStepAdvice(step: FarmStep, facts: FarmGuideFacts, currentCha
   if (step.id === "staff-candidate" && currentChapter === "staff" && facts.staffTab === "candidates") {
     return { line: step.line, target: "[data-staff-profile], [data-staff-candidates-empty=true]" };
   }
-  if ((step.id === "staff-planning" || step.id === "staff-development") && currentChapter === "staff" && facts.staffTab !== "overview") {
+  if ((step.id === "staff-planning" || step.id === "staff-development" || step.id === "staff-week") && currentChapter === "staff" && facts.staffTab !== "overview") {
     return { line: "Ouvre Bilan pour retrouver les aides de l’équipe. " + step.line, target: "[data-staff-tab=overview]" };
   }
   if (step.chapter === "culture" && currentChapter === "culture") {

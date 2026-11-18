@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-17",
+  "status": "Intégré et validé localement ; entièrement généré par code, sans nouvel asset image ni dépendance",
+  "scope": "Animaux, mer et pêche décorative, sonneur de biniou ; moteur Three existant, données métier conservées.",
+  "art": "Référence inspectée : placard-world-quizzshow-v9.webp ; crème, turquoise, ardoise, bois miel, silhouettes cartoon et contours sombres. Hôtes existants de interior-art.ts : taille environ 1,7 m, grosse tête et mains simples.",
+  "contracts": "village-life-types.ts : object/update(frame)/dispose ; temps commun en secondes, y vertical, x/z au sol, coordonnées paintingToGround. Aucun timer, réseau ou audio indépendant. Décoration non interceptante. Qualité low/high, visibilité et mouvements réduits transmis par le coordinateur.",
+  "owners": { "root": "contrats, terrain praticable, intégration, recette et mesures", "animals": "village-animals.ts et tests", "marine": "village-marine.ts et tests", "breton": "village-breton.ts et tests" },
+  "team": {
+    "configured": { "animals": "gpt-6.1-sol, medium", "marine": "gpt-6.1-sol, high", "breton": "gpt-6.1-sol, medium" },
+    "verification": "Paramètres explicites transmis à spawn_agent ; trois agents, sans délégation récursive. L’outil ne renvoie pas l’identifiant du modèle exécuté et le modèle du coordinateur n’est pas exposé : aucune attestation indépendante du routage Astra/Sol. Aucun chiffre de tokens inventé."
+  },
+  "observe": {
+    "entry": "/arene/placard?world=3d → Observer (près du montant du jeu)",
+    "animals": "Loup au croisement du marché, renard entre courrier et jury, belette devant la Maison des cartes. Promenade, observation, flairage, pauses ; pattes liées à la vitesse, trajectoires validées contre le vrai terrain et les bâtiments.",
+    "musician": "Sonneur au bord du chemin entre courrier et jury : biniou kozh à un bourdon, souffle, compression de poche, doigts et appuis. Animation visuelle sans audio ajouté.",
+    "fishing": "Bateau au nord, d’abord en approche. Descente du casier après 10 s, pêche à 15 s, prise visible vers 31,5 s, rangement puis départ à 40 s. Tour complet de 376 s avec quatre postes ; toutes les étapes visibles via Observer → Le bateau de pêche.",
+    "camera": "Observer suit le sujet ; glisser reprend le contrôle, zoom et rotation conservés, Recentrer revient au village. Commandes sur deux colonnes en paysage court."
+  },
+  "quality": "Mer opaque sans passe de reflet ni texture, houle CPU/GLSL partagée avec bateau et bouées, rivage/écume dérivés du contour existant. 24 traits de sillage maximum (12 en qualité basse). 21 meshes pour les animaux, 14 pour le sonneur, 12 appels maximum pour le milieu marin. Détails fins et cadence réduits sous 600 px de hauteur ou largeur ; articulations hors champ suspendues. Ombres statiques mises en cache, horloge demand corrigée et télémétrie bornée à 4 Hz.",
+  "validation": [
+    "15 tests Vitest passent : terrain réel parcouru pendant 120 s, visibilité des animaux 60 s, obstacles, 1 601 points de trajet maritime, phases/continuité, flottabilité et libération des ressources.",
+    "18 groupes navigateur existants passent : bâtiments, courrier, clavier/tactile à 320 px, menus, interactions, données manquantes, pause et repli WebGL.",
+    "Recette dédiée passée : capture effective de toutes les phases de pêche et du poisson, quatre portraits, paysage 568×320 sans débordement ni bouton masqué, pause/mouvement réduit/arrière-plan, trois remontages StrictMode.",
+    "Trois remontages : 247 géométries et 4 textures à chaque mesure. Aucun appel distant ni erreur JavaScript pendant les recettes ; API métier remplacées localement par des fixtures GET.",
+    "TypeScript global et ESLint ciblé passent. Comparatifs, portraits et planches temporelles inspectés ; deux vidéos WebM enregistrées."
+  ],
+  "performance": {
+    "conditions": "HeadlessChrome157, Windows, Intel Iris Xe Direct3D11, DPR1, mesures de 5 s par format ; dernière mesure sans tests en parallèle. Cadence des images réellement rendues, soumission CPU et compteurs WebGL ; pas de temps GPU mesuré.",
+    "desktop1440x1000": { "fpsBefore": 20.7, "fpsAfter": 59.9, "frameP95BeforeMs": 51, "frameP95AfterMs": 17.3, "cpuMedianBeforeMs": 7.8, "cpuMedianAfterMs": 2.4, "drawCallsBefore": 415, "drawCallsAfter": 269, "trianglesBefore": 813944, "trianglesAfter": 457602 },
+    "landscape844x390": { "fpsBefore": 20.3, "fpsAfter": 30, "frameP95AfterMs": 34.4, "cpuMedianAfterMs": 2.6 },
+    "landscape568x320": { "fpsBefore": 20.2, "fpsAfter": 30, "frameP95AfterMs": 33.9, "cpuMedianAfterMs": 2.5 },
+    "memoryAndLoading": "Heap JS observé avant 108–115 Mo, après 108–118 Mo selon format/GC ; pas de mesure de mémoire GPU en octets. Aperçu Vite prêt en 10,8 s avant, 3,2 s sur la dernière visite après, avec caches différents : ces chargements ne démontrent pas un gain de production."
+  },
+  "evidence": { "comparison": "output/village-life/comparison.html", "baseline": "output/village-life/before.json", "validation": "output/village-life/after.json", "finalMetrics": "output/village-life/after-metrics.json", "existingFlows": "output/village-3d/report.json", "fishing": "output/village-life/fishing-cycle.webm", "characters": "output/village-life/island-characters.webm" },
+  "commands": ["PowerShell : $env:VILLAGE_PREVIEW_PORT='3625'; node scripts/audit-village-3d.mjs --life", "PowerShell : $env:VILLAGE_PREVIEW_PORT='3625'; node scripts/audit-village-3d.mjs --life --metrics-only", "node scripts/audit-village-3d.mjs", "npx.cmd vitest run src/components/placard/world/village-animals.test.ts src/components/placard/world/village-breton.test.ts src/components/placard/world/village-marine.test.ts src/components/placard/world/village-life.test.ts"],
+  "limits": ["Les formats mobiles ont été testés sur GPU de bureau ; objectif de 30 images/s sur téléphone physique encore à mesurer.", "Pêche et animaux décoratifs, sans modification de progression ni son ajouté. Les ombres du décor sont statiques ; eau et flottabilité sont une approximation visuelle légère."],
+  "deployed": false,
+  "next": "Faire la recette sur téléphone physique ; demande terminée localement, sans nouveau chantier ni déploiement implicite."
+}

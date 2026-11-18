@@ -41,6 +41,62 @@ function hired(hours = 35, code = "anna", contract: KqStaffContractKind = "cdi",
 }
 
 function employee(hours = 35): KqStaffEmployee { return hired(hours).employees[0]; }
+
+describe("one-off team reservations on the shared workday", () => {
+  const assignment = { action: "assign", employeeId: "employee-1", hours: 4, kind: "communication" } as const;
+  const plan = { action: "save-day-plan", day: 1, assignment, expectedDay: 1, expectedVersion: 0 } as const;
+  function team(state: KqStaffState, day = 1) {
+    const raw = snapshot(state, dayAt(day));
+    raw.context.dayPlanVersion = 1;
+    return raw;
+  }
+  it("protects reserved hours across the personnel desk, verifies stale edits and releases only unused reservations", () => {
+    const raw = team(hired());
+    const first = applyKqStaffCommand(raw, plan, "draft").state;
+    expect(getKqStaffCapacity(first.employees[0], calendar(1), first.dayPlans)).toMatchObject({ usedHours: 0, plannedHours: 4, remainingHours: 3 });
+    raw.state = first;
+    expect(() => applyKqStaffCommand(raw, assignment, "overbook")).toThrow(/heures disponibles/);
+    expect(() => applyKqStaffCommand(raw, { ...plan, planId: "draft" }, "stale")).toThrow(/journée a changé/);
+    raw.state = applyKqStaffCommand(raw, { ...assignment, hours: 1 }, "working").state;
+    expect(() => applyKqStaffCommand(raw, { action: "remove-day-plan", planId: "working", expectedDay: 1, expectedVersion: 1 }, "cancel")).toThrow(/retirée/);
+    raw.state = applyKqStaffCommand(raw, { action: "remove-day-plan", planId: "draft", expectedDay: 1, expectedVersion: 1 }, "cancel").state;
+    expect(getKqStaffCapacity(raw.state.employees[0], calendar(1), raw.state.dayPlans)).toMatchObject({ usedHours: 1, plannedHours: 0, remainingHours: 6 });
+    expect(raw.state.tasks.map(task => task.id)).toEqual(["working"]);
+  });
+  it("postpones into a working day and expires an unlaunched reservation without effects or charges", () => {
+    const raw = team(hired());
+    raw.state = applyKqStaffCommand(raw, plan, "draft").state;
+    const edit = { ...plan, planId: "draft", expectedVersion: 1 };
+    expect(() => applyKqStaffCommand(raw, { ...edit, day: 6 }, "weekend")).toThrow(/Repos/);
+    raw.state = applyKqStaffCommand(raw, { ...edit, day: 2 }, "postpone").state;
+    expect(getKqStaffCapacity(raw.state.employees[0], calendar(1), raw.state.dayPlans).remainingHours).toBe(7);
+    const tomorrow = advanceKqStaff(team(JSON.parse(JSON.stringify(raw.state)), 2));
+    expect(tomorrow.state.dayPlans?.[0]).toMatchObject({ day: 2, id: "draft" });
+    expect(getKqStaffCapacity(tomorrow.state.employees[0], calendar(2), tomorrow.state.dayPlans).remainingHours).toBe(3);
+    expect(advanceKqStaff(team(tomorrow.state, 3))).toMatchObject({ state: { dayPlans: [], tasks: [], employees: [{ workDays: {} }] }, effects: [], debitCents: 0 });
+  });
+  it("checks weekly reservations and requires an available production or cultivation target", () => {
+    const raw = team(hired());
+    raw.context.weeklyPlanVersion = 1;
+    raw.state = applyKqStaffCommand(raw, { action: "set-weekly-plan", enabled: true, employeeId: assignment.employeeId,
+      days: [[], [{ kind: "communication", hours: 5 }], [], [], []], expectedWeeklyCostCents: 0 }, "weekly").state;
+    expect(() => applyKqStaffCommand(raw, { ...plan, day: 2 }, "draft")).toThrow(/semaine type/);
+    expect(() => applyKqStaffCommand(raw, { ...plan, assignment: { ...assignment, kind: "culture", targetId: "missing" } }, "draft")).toThrow(/culture active/);
+  });
+  it("accepts only existing assignment commands in a plan", () => {
+    expect(parseKqStaffCommand({ ...plan, assignment: { ...assignment, state: { tasks: [] } } })).toEqual(plan);
+    expect(() => parseKqStaffCommand({ ...plan, assignment: plan })).toThrow(/activité du personnel/);
+  });
+  it("does not reserve a lot just finished by another worker within the same settlement", () => {
+    const raw = team(hired());
+    raw.context.trimQueueVersion = 2;
+    raw.context.trimLots = [{ flowerId: "last-lot", name: "Récolte", totalGrams: 1, completedGrams: 0, requiredWork: 1, completedWork: 0, mode: null, completedAt: null }];
+    const trim = { action: "trim", mode: "manual", employeeId: null, hours: 1, expectedCostCents: 0 } as const;
+    raw.state = applyKqStaffCommand(raw, trim, "first-worker").state;
+    raw.serverNow = dayAt(1, 2);
+    expect(() => applyKqStaffCommand(raw, { ...plan, assignment: { ...trim, employeeId: "employee-1" } }, "redundant")).toThrow(/Aucune récolte disponible/);
+  });
+});
 function calendar(day: number) { return getKqStaffCalendar(dayAt(1), dayAt(day)); }
 function assign(state: KqStaffState, kind: "culture" | "processing" | "communication", hours: number, id: string) {
   return applyKqStaffCommand(snapshot(state), {

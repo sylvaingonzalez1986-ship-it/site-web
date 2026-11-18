@@ -1,0 +1,715 @@
+{
+  "batchId": "r-actives-a-01",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-ra01-thc-main-intoxicating-constituent",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "4d59497e010866406876a9e93fd74ee462e4ea9e47338fc5e2a52deec5f579f0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-about",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about.html",
+          "locator": "THC ; CBD ; Terpenes, paragraphes de présentation",
+          "result": "Page Health Canada réellement ouverte : THC intoxicant, CBD sans high, rôle olfactif des terpènes soutenus. Le prolongement soufré de l’item 6 demande une preuve supplémentaire ou son retrait.",
+          "sourceHash": "ad7994a3acd92eb2cb4c6aeddc12e8d6bd91059de799ab44201eb481f6abbfc7"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cbd-no-high-brain-effects-distinct",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "82fc68609679fe17081d0bfaf4993b0c04f0882865754381e71452642b8f3363",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-about",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about.html",
+          "locator": "THC ; CBD ; Terpenes, paragraphes de présentation",
+          "result": "Page Health Canada réellement ouverte : THC intoxicant, CBD sans high, rôle olfactif des terpènes soutenus. Le prolongement soufré de l’item 6 demande une preuve supplémentaire ou son retrait.",
+          "sourceHash": "ad7994a3acd92eb2cb4c6aeddc12e8d6bd91059de799ab44201eb481f6abbfc7"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cbd-poor-aqueous-solubility",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "f4100c92349fc6bc2bd24629786626243c48654024e306f55e4b53805554dcfc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-who-cbd",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/whocbdreportmay2018-2.pdf",
+          "locator": "§4.B Pharmacokinetics, p.11–12 ; §4.C Pharmacodynamics, p.12–13",
+          "result": "Rapport original ouvert : faible solubilité aqueuse et faible affinité classique du CBD pour les récepteurs cannabinoïdes. Aucun statut médical actuel déduit de 2018.",
+          "sourceHash": "150d91bf1797c102ffb459177cb43d26c2e5dfc5ba198cf46862e2b38a9366bd"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-thc-itself-odorless",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "dba002fe50425a7a371f3fd3a500026b8c2953eaad204c4d5f024ad3080af471",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-gilbert",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0192247",
+          "locator": "Discussion, paragraphes suivant le lexique olfactif, puissance perçue et THC",
+          "result": "Article PLOS original ouvert : aucune relation entre impressions de puissance et teneurs mesurées dans le corpus ; THC décrit comme non volatil et inodore.",
+          "sourceHash": "a5a103daeda167075e4acc004bc4424dea0a6f65d9c57a0f7606feb3ea9599b6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-odor-potency-impression-not-thc-content",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "11fd33365f5c740729a1a329eb3b0f60fc40b6b4f881cba280428c01c3222d49",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-gilbert",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0192247",
+          "locator": "Discussion, paragraphes suivant le lexique olfactif, puissance perçue et THC",
+          "result": "Article PLOS original ouvert : aucune relation entre impressions de puissance et teneurs mesurées dans le corpus ; THC décrit comme non volatil et inodore.",
+          "sourceHash": "a5a103daeda167075e4acc004bc4424dea0a6f65d9c57a0f7606feb3ea9599b6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-terpenes-contribute-cannabis-smell",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Complément soufré non soutenu retiré ; la famille terpénique et la distinction avec la teneur cannabinoïde restent celles de la preuve citée.",
+      "contentHash": "9396fa9c1a929f4a07af04d5ce4f500337a575e7291db4195367454d6b6a91ff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-about",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about.html",
+          "locator": "THC ; CBD ; Terpenes, paragraphes de présentation",
+          "result": "Page Health Canada réellement ouverte : THC intoxicant, CBD sans high, rôle olfactif des terpènes soutenus. Le prolongement soufré de l’item 6 demande une preuve supplémentaire ou son retrait.",
+          "sourceHash": "ad7994a3acd92eb2cb4c6aeddc12e8d6bd91059de799ab44201eb481f6abbfc7"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-terpenes-contribute-cannabis-smell",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Corrigé principal soutenu. L’explication ajoute le rôle des composés soufrés et d’autres odorants, absent de l’unique source Health Canada citée. Ajouter une preuve ciblée effectivement consultée pour ce complément, ou retirer ce complément ; ne pas présenter Health Canada comme son soutien.",
+          "contentHash": "c4da6fb8c8dde6f8aefcff6e6a1bd7e87d6f23a20c57a4caedd303ea0c8ce5e2",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-about",
+              "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about.html",
+              "locator": "THC ; CBD ; Terpenes, paragraphes de présentation",
+              "result": "Page Health Canada réellement ouverte : THC intoxicant, CBD sans high, rôle olfactif des terpènes soutenus. Le prolongement soufré de l’item 6 demande une preuve supplémentaire ou son retrait.",
+              "sourceHash": "ad7994a3acd92eb2cb4c6aeddc12e8d6bd91059de799ab44201eb481f6abbfc7"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-cannabis-terpenes-not-species-exclusive",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "2e0032f7515dc8c31b2943646c0338ec81a9471d6ef078db75211569b0c57c65",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-who-extracts",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section 1, §3.2.4.3 Essential oil, page imprimée 23 / PDF 26",
+          "result": "Rapport original ouvert : les terpènes recensés dans le cannabis ne sont pas uniques à cette espèce.",
+          "sourceHash": "32f4b1998527bac10e2b5a81679b83877f9418423f212bc9c643c190e7b5bc0d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-harvest-aroma-monoterpene-evaporation",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Quatre évolutions chimiques remplacent les distracteurs absolus ou éloignés ; niveau 2 cohérent avec la volatilité différentielle.",
+      "contentHash": "3b285202d6006d3090cea4f9be9460ade0067299d06d4def5bf7cbefb71bb312",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-who-resin",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/cannabis-and-cannabis-resin.pdf?download=true",
+          "locator": "Section 1, §1.6.1.1 Smell, page PDF 8",
+          "result": "Rapport original ouvert : évaporation relativement plus rapide des monoterpènes ; bouquet récolté susceptible de différer du frais.",
+          "sourceHash": "b8560be6fff5d3ea405510d92a8454520e48f03ce920ff979a5b6e5a04834bd9"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-harvest-aroma-monoterpene-evaporation",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Fait soutenu mais choix à refaire : « tous » rend le premier distracteur absolu, et protéines libérant les notes volatiles est trop éloigné des constituants odorants. Proposer quatre évolutions chimiques plausibles. Niveau 2 préférable pour la perte différentielle des familles de terpènes ; un vocabulaire court ne suffit pas à rendre ce mécanisme accessible.",
+          "contentHash": "df0a0c070421f6b99383f2354f1e85547c0bf2af9ed84a823e33d37fd2068bee",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-who-resin",
+              "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/cannabis-and-cannabis-resin.pdf?download=true",
+              "locator": "Section 1, §1.6.1.1 Smell, page PDF 8",
+              "result": "Rapport original ouvert : évaporation relativement plus rapide des monoterpènes ; bouquet récolté susceptible de différer du frais.",
+              "sourceHash": "b8560be6fff5d3ea405510d92a8454520e48f03ce920ff979a5b6e5a04834bd9"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-entourage-hypothesis-compound-interaction",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "06bfe8a43f9cae6de079ccac9d66195a2e222f4503b80fdc1687e3fc4edbea96",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-santiago",
+          "url": "https://diverdi.colostate.edu/C442/references/pharmacology/cann_and_cann_res_2019_v4_p165.pdf",
+          "locator": "Abstract p.1 ; Introduction",
+          "result": "PDF original sur serveur universitaire ouvert : hypothèse d’interactions entre constituants ; six terpènes n’activent pas CB1/CB2 ni ne modifient la réponse THC dans la mesure des canaux potassiques. Réserve sur les autres voies lue.",
+          "sourceHash": "57e18971d6e879e999584f49761182a39c10cede69305d6cbd90923a72740f76"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-oral-cbd-no-detected-thc-bioconversion",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Quatre profils de détection sanguine comparables remplacent Oui/Non ; étude et portée humaine délimitées ; niveau 2.",
+      "contentHash": "38463826b2d8064cedf38cd0257722d81df214e8645e4ca3e12c8ca07bec7cdc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-crippa",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32322680/",
+          "locator": "Abstract PubMed, Results et Conclusions",
+          "result": "Résumé original réellement ouvert : THC non détecté dans le plasma après CBD oral, groupes à jeun et nourris ; interprétation limitée à cette formulation et ces conditions.",
+          "sourceHash": "b5b11ac50ce90a1c8c666506e39eb2128de56e54edac89ea11bb5658668a4805"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-oral-cbd-no-detected-thc-bioconversion",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Résultat soutenu et bien borné dans l’explication. Refaire prompt/choix : automatiquement et trois Oui contre un long Non nuancé donnent la réponse par prudence. Comparer quatre résultats plausibles de l’étude, sans universalité. Niveau 2 préférable si le fait reste le résultat précis de Crippa ; une formulation de base peut rester accessible si elle teste réellement la distinction utile.",
+          "contentHash": "5ed624e466a111098f7d0caf7b07c57eebe7d085e242053d8e0c5d9962c5bac1",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-crippa",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/32322680/",
+              "locator": "Abstract PubMed, Results et Conclusions",
+              "result": "Résumé original réellement ouvert : THC non détecté dans le plasma après CBD oral, groupes à jeun et nourris ; interprétation limitée à cette formulation et ces conditions.",
+              "sourceHash": "b5b11ac50ce90a1c8c666506e39eb2128de56e54edac89ea11bb5658668a4805"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-11-hydroxy-thc-active-metabolite",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "cfcae9faf8d06aae937a5d1d3fe5d1a320c9f50d934bfefe2921697f89ffaf9e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-thc-cooh-nonpsychoactive-metabolite",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Énoncé harmonisé avec les quatre profils d’activité ; réponse et preuve inchangées.",
+      "contentHash": "003cd96d584326967aca42fe0ef3290fdb9f00909892f9e3783095bc121f0e91",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-thc-cooh-nonpsychoactive-metabolite",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Fait soutenu, mais l’énoncé demande « produit-il le high ? » alors que les choix sont des groupes nominaux (activité/profil). Reformuler en « Quel profil d’activité… ? » ou harmoniser les quatre réponses avec la question ; conserver le fait et son niveau.",
+          "contentHash": "1d502238ebc948b4f7d2cad75573a741b953d39fc792ecae34735e65841aa5eb",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-hc-pharmacology",
+              "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+              "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+              "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+              "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-liver-main-cannabinoid-metabolism-site",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "fa708f40ddcedd21b87c9cd85fde75af5baab3d1367ad5b301dc3ae1400e4333",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-oral-thc-more-11-hydroxy-than-inhaled",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "e46349233273b080b465cf461b27a77e1d35eec2907365beeda1222fcbdc717d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-plant-thca-distinct-human-thc-cooh",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "062dc838b62e508ddc20bc57f35fb25af7df5d42967f79f24a3db7e695954b86",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-thca",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28861508/",
+          "locator": "Abstract PubMed, Introduction, Results et Discussion",
+          "result": "Résumé original ouvert : origine végétale du THCA-A, liaison CB1 bien plus faible que celle du THC ; traces de THC du standard et réserve interprétative explicitement lues.",
+          "sourceHash": "aea617ec1a272fbbb2f75d1b97d8fccb6f5d23872a0ffc06f6d9baa4775462bb"
+        },
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cannabis-memory-hippocampus",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "fccd22e94d17a12ae15bc72e4c8787ee52be35dff6ed05e9762f37b70c8709cb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-brain",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/resources/cannabis-brain-know-facts.html",
+          "locator": "Movement and coordination ; Thinking, planning and decision-making",
+          "result": "Document Health Canada ouvert : cervelet lié à coordination et pertes d’équilibre ; hippocampe lié à mémoire et apprentissage perturbés par le cannabis.",
+          "sourceHash": "5590d53acda985443a87ef36d23bdc6051799d606f6fbf0522805a29d1265c4c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cannabis-coordination-cerebellum",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "019fe4064354656b1c2a5b6ae1e90b7e7cf5036101a4aa283a1dda34fa45e5ec",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-brain",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/resources/cannabis-brain-know-facts.html",
+          "locator": "Movement and coordination ; Thinking, planning and decision-making",
+          "result": "Document Health Canada ouvert : cervelet lié à coordination et pertes d’équilibre ; hippocampe lié à mémoire et apprentissage perturbés par le cannabis.",
+          "sourceHash": "5590d53acda985443a87ef36d23bdc6051799d606f6fbf0522805a29d1265c4c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cb1-blockade-reduces-human-high",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "8f7bc79c406f2d3e50fb539cdd41e28d9f4193bcbfe221e7d54492b17158b2f8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-huestis",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/11296091/",
+          "locator": "Abstract PubMed, Results et Conclusions",
+          "result": "Résumé original ouvert : antagoniste sélectif CB1 réduisant les évaluations subjectives d’intoxication du cannabis dans cet essai humain.",
+          "sourceHash": "12ed00ba2ee2108509a9ecb8e8589aca893b3ebddf8585839117cb0525c0de53"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-thc-partial-cannabinoid-receptor-agonist",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "7536b25b6bed8e972cbcc607e8f559f823958db6c45d408c2813885c3066e4f5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cb1-activation-limits-neurotransmitter-release",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Quatre actions sur les neurotransmetteurs sont comparées avec une précision similaire ; libération, synthèse, dégradation et recapture ne sont plus distinguées par des absolus.",
+      "contentHash": "69d32efaa462b5c12f3e1a3ba6ffb40a1afbc55c5c65b10dcbc582bd14274a32",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-cb1-activation-limits-neurotransmitter-release",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Mécanisme soutenu. Refaire les distracteurs : trois propositions d’augmentation, dont « tous », s’opposent à la seule réponse nuancée « certains ». Comparer quatre actions présynaptiques plausibles de même précision (libération, recapture, dégradation, synthèse), sans donner le sens de la réponse par sa prudence.",
+          "contentHash": "fd6e5bf9850a2d6f6a27ca99a5df478730ecded41a4555c903c3e409856d7e13",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-hc-pharmacology",
+              "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+              "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+              "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+              "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-endocannabinoid-retrograde-synaptic-feedback",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "c8207ff585b1ba3baa5a0c2b688afe04c109b9640137fa37eb02b0aed28c52de",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cbd-low-orthosteric-cb1-affinity",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "dd179dded7ab43e487f7fea4959335cbbfd68a0bf40eda873b23012e02b9c6bc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-who-cbd",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/whocbdreportmay2018-2.pdf",
+          "locator": "§4.B Pharmacokinetics, p.11–12 ; §4.C Pharmacodynamics, p.12–13",
+          "result": "Rapport original ouvert : faible solubilité aqueuse et faible affinité classique du CBD pour les récepteurs cannabinoïdes. Aucun statut médical actuel déduit de 2018.",
+          "sourceHash": "150d91bf1797c102ffb459177cb43d26c2e5dfc5ba198cf46862e2b38a9366bd"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cbd-negative-cb1-modulation-in-cells",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Quatre directions de réponse comparables ; réserve entre observation cellulaire et intoxication humaine maintenue.",
+      "contentHash": "7d4959314bf69ef928c9632ca43a5e910ff0dec4f2e1fee341d9acd155ea6fde",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-laprairie",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4621983/",
+          "locator": "Abstract, Key Results et Conclusions ; Introduction",
+          "result": "Texte original PMC ouvert : réduction de certaines réponses au THC par modulation allostérique négative de CB1 dans les cellules étudiées ; pas de garantie clinique déduite.",
+          "sourceHash": "757204f0e3f0248e55e9f9f640e455e3372ee42e4849bec7bbbc8c729e87a6d7"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-cbd-negative-cb1-modulation-in-cells",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Résultat soutenu et réserve clinique correcte. Rééquilibrer les choix : le corrigé est le seul à nommer un mécanisme précis et nettement plus long ; l’option « au maximum même sans THC » est absolue. Si la propriété testée est la direction de la réponse au THC, garder quatre descriptions comparables ; réserver l’explication à la modulation allostérique.",
+          "contentHash": "195225d43eb0e8fc7072e3a53da4468dcb4d4ef933f95c7f881e246dcd4e747d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-laprairie",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4621983/",
+              "locator": "Abstract, Key Results et Conclusions ; Introduction",
+              "result": "Texte original PMC ouvert : réduction de certaines réponses au THC par modulation allostérique négative de CB1 dans les cellules étudiées ; pas de garantie clinique déduite.",
+              "sourceHash": "757204f0e3f0248e55e9f9f640e455e3372ee42e4849bec7bbbc8c729e87a6d7"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-thca-weaker-cb1-affinity-than-thc",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "d9bd5e9bf14cf58602cd7a75f5404946d51bfc72aa11b4d88d4a4675c398238e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-thca",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28861508/",
+          "locator": "Abstract PubMed, Introduction, Results et Discussion",
+          "result": "Résumé original ouvert : origine végétale du THCA-A, liaison CB1 bien plus faible que celle du THC ; traces de THC du standard et réserve interprétative explicitement lues.",
+          "sourceHash": "aea617ec1a272fbbb2f75d1b97d8fccb6f5d23872a0ffc06f6d9baa4775462bb"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-beta-caryophyllene-cb2-selective-binding",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "8bf39db00d49aa407024d5ae391a202a1e3a56a7f406814065d550bb3bb83a72",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-gertsch",
+          "url": "https://www.for926.uni-bonn.de/kunden/for926/content/e229/e709/e1294/2008-Gertsch-PNAS.pdf",
+          "locator": "Abstract de l’article original PNAS, PDF p.1 ; essais de liaison",
+          "result": "PDF universitaire du papier original ouvert : bêta-caryophyllène se liant sélectivement à CB2 ; résultat de pharmacologie préclinique, distinct de l’essai de canaux de Santiago.",
+          "sourceHash": "47753ca381142a35ae22f7f4e70a1f64a74c7e4c490e3b3a033be4b4ff993ed9"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-common-terpenes-no-direct-cb-activation-assay",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "ebf5ac77a1c1c69a79f003e4693aa1f0e37f283eb957b79940045669dbc9d40f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-santiago",
+          "url": "https://diverdi.colostate.edu/C442/references/pharmacology/cann_and_cann_res_2019_v4_p165.pdf",
+          "locator": "Abstract p.1 ; Introduction",
+          "result": "PDF original sur serveur universitaire ouvert : hypothèse d’interactions entre constituants ; six terpènes n’activent pas CB1/CB2 ni ne modifient la réponse THC dans la mesure des canaux potassiques. Réserve sur les autres voies lue.",
+          "sourceHash": "57e18971d6e879e999584f49761182a39c10cede69305d6cbd90923a72740f76"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-d-limonene-human-thc-anxiety-trial",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "02b63be07bfb25b3c4ecc143594cb419628dddd29812933d7bd1232e41fb9c5b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-spindle",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11031290/",
+          "locator": "Abstract Results et Conclusions ; Results §3.2 ; Discussion limites",
+          "result": "Texte original PMC ouvert : certaines conditions réduisent les ressentis anxieux et paranoïaques, autres effets inchangés ; petite condition supplémentaire non randomisée, pas de transposition aux agrumes ou aux produits commerciaux.",
+          "sourceHash": "0175532152e33dd939fde853676aa1417e857065c4de2cbe57f22e49db9e1d6e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-cbn-insomnia-primary-wake-result-2026",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Quatre conclusions du critère clinique remplacent la disparition absolue des réveils ; distinction principal/secondaire et limite de l’essai conservées.",
+      "contentHash": "e7ebfc37e579c154563e3f692e9912363d1d81545d43ade4f57acd41eb0977c3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-lavender",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41698831/",
+          "locator": "Abstract PubMed, critère principal WASO et résultats secondaires",
+          "result": "Résumé original ouvert : vingt adultes, conditions aiguës ; pas de différence significative de WASO, quelques critères secondaires modifiés. Aucune efficacité durable démontrée.",
+          "sourceHash": "5c23427f84000a0cef2700cb601a12b124a18a741c4aea28b9a13184b5499b25"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-cbn-insomnia-primary-wake-result-2026",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Critère principal et explication soutenus. Remplacer le distracteur « disparition des réveils chez tous les participants », manifestement absolu et hors de la mesure statistique demandée. Comparer quatre conclusions de même nature sur WASO ; conserver le niveau 3 et la distinction primaire/secondaire.",
+          "contentHash": "b853c4ea471b0df48c38b77371cf13c102e5831c5356879c7e5d8edfc7e378e0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-lavender",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/41698831/",
+              "locator": "Abstract PubMed, critère principal WASO et résultats secondaires",
+              "result": "Résumé original ouvert : vingt adultes, conditions aiguës ; pas de différence significative de WASO, quelques critères secondaires modifiés. Aucune efficacité durable démontrée.",
+              "sourceHash": "5c23427f84000a0cef2700cb601a12b124a18a741c4aea28b9a13184b5499b25"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-ra01-endocannabinoids-made-on-demand",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Fait distinct, correctement soutenu et délimité ; quatre choix lus et explication cohérente. Recherche dans l’index et comparaison avec les lots voisins sans doublon de fait retenu.",
+      "contentHash": "aca92f36d2e0018df3186f207e0a12b6ee4e29735b2e7b3002e5e8c9c8455b1f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-hc-pharmacology",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§1.1.1 synthèse et signalisation ; Figure 1 ; §2.1 ; §2.2.3–2.2.4",
+          "result": "Page institutionnelle ouverte aux passages pertinents : agonisme partiel du THC, frein présynaptique CB1, retour endocannabinoïde, synthèse à la demande, foie, 11-OH-THC actif, THC-COOH inactif et formation accrue de 11-OH après ingestion.",
+          "sourceHash": "27dabf4505d09f84360f237e64b7c05adb8322ca238fa049815ce13618038168"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra01-oral-cbd-not-guaranteed-thc-high-reduction",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+      "comment": "Quatre profils d’ivresse remplacent les promesses universelles ; niveau 2. Le coordinateur harmonise uniquement la grammaire du prompt avec ces résultats nominaux.",
+      "contentHash": "b3e9838803b154f3718efeda8d32cd1d5c6138460ee7defd121ddb472ef7f6a2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra01-haney",
+          "url": "https://ww2.uthscsa.edu/artt/AddictionJC/2018-07-10-Haney.pdf",
+          "locator": "Abstract ; Results Mood Scale, PDF p.4 ; Discussion, PDF p.6",
+          "result": "PDF original sur serveur universitaire ouvert : le CBD oral préalable ne réduit pas les évaluations High et Good Drug Effect du cannabis fumé dans cet essai.",
+          "sourceHash": "a2e45bd62d62abce8518d747f9dfd77c11ddf4de3aea90155aebb06884861e1d"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra01-oral-cbd-not-guaranteed-thc-high-reduction",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait teste directement un cannabinoïde, un arôme du cannabis ou une fonction du système ciblé par ses actifs.",
+          "comment": "Résultat soutenu, sans promesse d’antidote. Refaire les choix qui répètent « dans toutes les conditions » pour deux réponses absolues face au résultat négatif prudent. Niveau 2 préférable pour mémoriser le résultat précis d’un essai nommé ; ne pas classer niveau 1 au seul motif que cela soutient un message général de prévention.",
+          "contentHash": "34409b5beec4aadca2cb1cd68e95c995665f8224ae59048cb2c5b8446ad7b86f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra01-haney",
+              "url": "https://ww2.uthscsa.edu/artt/AddictionJC/2018-07-10-Haney.pdf",
+              "locator": "Abstract ; Results Mood Scale, PDF p.4 ; Discussion, PDF p.6",
+              "result": "PDF original sur serveur universitaire ouvert : le CBD oral préalable ne réduit pas les évaluations High et Good Drug Effect du cannabis fumé dans cet essai.",
+              "sourceHash": "a2e45bd62d62abce8518d747f9dfd77c11ddf4de3aea90155aebb06884861e1d"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Passages et objets sources inchangés, déjà vérifiés par le relecteur Sol ; aucune nouvelle consultation revendiquée.",
+      "coordinatorChange": {
+        "field": "prompt",
+        "before": "Dans l’essai de Haney (2016), prendre du CBD oral avant du cannabis fumé a-t-il réduit l’ivresse ressentie ?",
+        "after": "Quel résultat décrit l’essai de Haney (2016) sur du CBD oral pris avant du cannabis fumé ?"
+      }
+    }
+  ],
+  "summary": {
+    "reviewed": 30,
+    "approved": 22,
+    "changes_requested": 8,
+    "rejected": 0,
+    "sourcesConsulted": 16,
+    "scope": "30 objets complets lus, quatre choix/corrigé/explication/métadonnées ; passages des 16 sources réellement rouverts.",
+    "duplicates": "Index des faits et lots voisins vérifiés. Absence d’odeur du THC distincte de perception de puissance ; 11-OH actif distinct de sa formation accrue par voie orale ; synthèse à la demande distincte de signal rétrograde. Aucun doublon imposant un retrait trouvé.",
+    "format": "Longueurs, quatre choix distincts, corrigé concordant et références locales contrôlés sans erreur."
+  }
+}

@@ -1,0 +1,1253 @@
+{
+  "batchId": "b-02",
+  "author": "b_external_varieties",
+  "role": "B — collections de chanvre, identité des ressources et caractères comparés",
+  "questions": [
+    {
+      "id": "hemp-q2-b02-usda-hemp-repository-geneva-newyork",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Où se situe la collection de chanvre de la PGRU décrite par l'USDA en 2024 ?",
+      "options": [
+        "À Geneva, dans l'État de New York",
+        "À Genève, en Suisse",
+        "À Gatersleben, en Allemagne",
+        "À Wageningen, aux Pays-Bas"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport situe la PGRU à Geneva, dans l'État de New York, aux États-Unis.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-report2024"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Collection de chanvre de la PGRU",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Localisation institutionnelle",
+        "expectedAnswer": "À Geneva, dans l'État de New York",
+        "learningObjective": "Situer une collection publique de chanvre.",
+        "factKey": "usda-hemp-repository-geneva-newyork",
+        "form": "identification",
+        "difficultyRationale": "Localisation d'une unité précise de conservation : rappel institutionnel spécialisé, sans indice géographique fourni.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-report2024",
+            "locator": "En-tête Plant Genetic Resources Unit (PGRU): Geneva, NY ; Approach",
+            "support": "La conservation des ressources est localisée à Geneva, New York."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-pgru-maintains-distributes-evaluates-germplasm",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Quelle mission la PGRU donne-t-elle à sa collection de chanvre dans le document de 2022 ?",
+      "options": [
+        "Créer des hybrides commerciaux et vendre leurs semences",
+        "Conserver, distribuer et évaluer des ressources génétiques diverses",
+        "Certifier l'identité des lots de semences mis sur le marché",
+        "Établir les critères DHS et instruire les droits d'obtenteur"
+      ],
+      "answer": 1,
+      "explanation": "La collection maintient, distribue et évalue des ressources génétiques diverses pour les chercheurs et les sélectionneurs.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-trial2022"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Mission de la collection de chanvre PGRU",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Fonction de la banque de ressources",
+        "expectedAnswer": "Conserver, distribuer et évaluer des ressources génétiques diverses",
+        "learningObjective": "Distinguer conservation de ressources et activité de vente ou réglementation.",
+        "factKey": "usda-pgru-maintains-distributes-evaluates-germplasm",
+        "form": "identification",
+        "difficultyRationale": "Distinguer les fonctions d'une collection de ressources de celles d'un obtenteur, d'un service de certification et d'un office variétal.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trial2022",
+            "locator": "p. 1, paragraphe introductif",
+            "support": "La PGRU est présentée comme un dépôt de semences qui conserve, distribue et évalue du germoplasme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-accession-means-can-hide-internal-diversity",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Exemple fictif : une accession a des plantes de 1 m ; une autre autant de 0,5 m que de 1,5 m. Quelle comparaison est juste ?",
+      "options": [
+        "Moyennes égales, dispersion plus forte dans la première",
+        "Moyenne plus forte dans la seconde, dispersions égales",
+        "Moyenne plus forte dans la première, dispersions égales",
+        "Moyennes égales, dispersion plus forte dans la seconde"
+      ],
+      "answer": 3,
+      "explanation": "Dans cet exemple, les deux moyennes sont de 1 m, mais seule la seconde accession varie entre individus. Une moyenne peut donc masquer la diversité interne.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-trial2022",
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Moyenne et diversité interne des accessions de chanvre",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Des moyennes semblables peuvent masquer des dispersions différentes",
+        "expectedAnswer": "Moyennes égales, dispersion plus forte dans la seconde",
+        "learningObjective": "Distinguer ressemblance des moyennes et diversité entre individus d'une accession.",
+        "factKey": "hemp-accession-equal-means-not-equal-internal-variation",
+        "form": "situation",
+        "difficultyRationale": "Interpréter deux niveaux d'observation dans un cas hypothétique, sans confondre moyenne et dispersion.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trial2022",
+            "locator": "p. 1, Evaluation : Diversity within and between accessions",
+            "support": "L'essai évalue la diversité dans les accessions et entre elles."
+          },
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Results > Hemp cultivars exhibit high variability in biomass- and fibre-related traits, paragraphes sur hauteur et variation interne",
+            "support": "L'étude décrit séparément moyennes de hauteur et grande variabilité entre individus d'un même cultivar ; ces deux dimensions ne se confondent pas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-multistate-trials-genetic-environment-interaction",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Pourquoi le projet USDA compare-t-il les accessions de chanvre dans plusieurs États ?",
+      "options": [
+        "Cartographier des loci dans une descendance de deux parents",
+        "Mesurer l'interaction entre accession et milieu d'évaluation",
+        "Mesurer la perte de viabilité pendant le stockage des graines",
+        "Contrôler l'identité d'un stock après sa multiplication"
+      ],
+      "answer": 1,
+      "explanation": "Le programme vise les interactions génétiques et environnementales : une comparaison locale ne résume pas tous les milieux.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-report2024"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Réseau multilocal d'évaluation USDA",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Objectif des essais dans plusieurs milieux",
+        "expectedAnswer": "Mesurer l'interaction entre accession et milieu d'évaluation",
+        "learningObjective": "Relier un réseau d'essais aux interactions entre matériel végétal et environnement.",
+        "factKey": "usda-multistate-trials-genetic-environment-interaction",
+        "form": "deduction",
+        "difficultyRationale": "Reconnaître l'objectif d'un réseau multilocal parmi plusieurs objectifs scientifiques possibles concernant les ressources végétales.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-report2024",
+            "locator": "Approach, phrase sur field trials in at least six states",
+            "support": "Le projet indique que ces essais servent à quantifier les interactions génétiques et environnementales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-hemp-backups-national-preservation-lab",
+      "topicId": "biodiversity",
+      "level": 1,
+      "prompt": "Quelle mesure USDA protège particulièrement les ressources de chanvre contre une perte au site principal ?",
+      "options": [
+        "Régénérer plus souvent l'unique stock du site principal",
+        "Multiplier les tests de germination au site principal",
+        "Conserver une copie biologique dans un autre centre",
+        "Approfondir la description génétique du stock principal"
+      ],
+      "answer": 2,
+      "explanation": "Les sauvegardes biologiques dans un autre centre complètent le suivi du stock principal : une description ou un test ne remplace pas cette copie.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-report2024"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sauvegardes de la collection de chanvre USDA",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Sécurité de conservation",
+        "expectedAnswer": "Conserver une copie biologique dans un autre centre",
+        "learningObjective": "Distinguer sauvegarde indépendante, régénération, suivi de viabilité et caractérisation.",
+        "factKey": "usda-hemp-backups-national-preservation-lab",
+        "form": "situation",
+        "difficultyRationale": "Reconnaître la fonction propre d'une copie conservée ailleurs parmi des stratégies toutes utiles à une collection.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-report2024",
+            "locator": "Objectives, Sub-objective 2.C ; Approach",
+            "support": "Des sauvegardes au laboratoire national de préservation sont prévues."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-viability-and-pathogen-testing-distinct",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans le programme USDA, que distinguent tests de viabilité et tests de pathogènes des ressources de chanvre ?",
+      "options": [
+        "Identité génétique et proportion d'impuretés",
+        "État de dormance et composition en acides gras",
+        "Pureté variétale et teneur en eau",
+        "Capacité à rester vivant et présence de pathogènes"
+      ],
+      "answer": 3,
+      "explanation": "Le programme mentionne les deux contrôles : un matériel vivant n'est pas pour autant démontré exempt de pathogènes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-report2024"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Contrôles de conservation USDA",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Distinction viabilité et santé du matériel",
+        "expectedAnswer": "Capacité à rester vivant et présence de pathogènes",
+        "learningObjective": "Distinguer deux dimensions complémentaires de conservation.",
+        "factKey": "usda-viability-and-pathogen-testing-distinct",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-report2024",
+            "locator": "Sub-objective 2.C ; Approach : pathogen and viability testing",
+            "support": "Le programme énumère séparément les tests de pathogènes et de viabilité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-characterization-public-grin-global",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans quelle base le rapport USDA de 2024 dit-il partager les données de caractérisation du chanvre ?",
+      "options": [
+        "GRIN-Global",
+        "Genesys",
+        "GBIS",
+        "EURISCO"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport décrit l'ajout des informations d'essais et de caractérisation à GRIN-Global.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-report2024"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Diffusion des données de caractérisation USDA",
+        "subjectKey": "usda-hemp-germplasm-collection",
+        "property": "Base des ressources et phénotypes",
+        "expectedAnswer": "GRIN-Global",
+        "learningObjective": "Associer les données de collection à leur base publique.",
+        "factKey": "usda-characterization-public-grin-global",
+        "form": "identification",
+        "difficultyRationale": "Nom d'une base institutionnelle précise à distinguer d'autres portails de ressources phytogénétiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-report2024",
+            "locator": "Objective 1 ; Progress Report, ajout des données de terrain à GRIN-Global",
+            "support": "GRIN-Global reçoit les données de caractérisation et d'essais."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-seq-project-male-female-y-diversity",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Pourquoi le projet de séquençage USDA prévoit-il un mâle et une femelle par accession ?",
+      "options": [
+        "Comparer deux générations successives d'une même accession",
+        "Comparer les systèmes sexuels et la diversité du chromosome Y",
+        "Séparer les ascendances maternelles et paternelles des plantes",
+        "Séquencer deux répétitions techniques d'un même génotype"
+      ],
+      "answer": 1,
+      "explanation": "Le projet cite la détermination sexuelle et la diversité du chromosome Y parmi ses objectifs ; les deux sexes sont échantillonnés.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b02-seqproject"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Projet USDA de séquençage du chanvre",
+        "subjectKey": "usda-hemp-sequencing-445646",
+        "property": "Lien entre échantillonnage des sexes et objectif",
+        "expectedAnswer": "Comparer les systèmes sexuels et la diversité du chromosome Y",
+        "learningObjective": "Relier le choix des individus à la diversité sexuelle étudiée.",
+        "factKey": "usda-seq-project-male-female-y-diversity",
+        "form": "deduction",
+        "difficultyRationale": "Distinguer l'échantillonnage de deux sexes d'un échantillonnage de générations, de lignées parentales ou de répétitions techniques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-seqproject",
+            "locator": "Objective ; Specific outcomes",
+            "support": "Le projet prévoit mâle et femelle par accession et vise notamment la diversité du chromosome Y."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-accession-single-species-time-place-sample",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Selon le manuel USDA du chanvre, qu'est-ce qu'une accession ?",
+      "options": [
+        "Une plante individuelle repérée dans un essai",
+        "Un lot produit par une multiplication particulière",
+        "Une dénomination regroupant différents échantillons cultivés",
+        "Un échantillon biologique conservé avec une identité de collecte"
+      ],
+      "answer": 3,
+      "explanation": "Le manuel définit l'accession comme un échantillon de graines ou de matériel végétal d'une espèce, collecté à un lieu et moment donnés.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Accession dans le manuel USDA V4",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Définition de l'accession",
+        "expectedAnswer": "Un échantillon biologique conservé avec une identité de collecte",
+        "learningObjective": "Distinguer unité de conservation et cultivar ou espèce entière.",
+        "factKey": "usda-accession-single-species-time-place-sample",
+        "form": "identification",
+        "difficultyRationale": "Terme spécialisé de conservation à distinguer de l'individu, du lot de multiplication et du nom de cultivar.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2 Passport, p. 10, premier paragraphe",
+            "support": "L'accession représente un échantillon d'une espèce collecté en un lieu et moment donnés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-cultivar-samples-separate-inventories",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Le manuel USDA reçoit plusieurs échantillons supposés du même cultivar. Comment prévoit-il de les conserver ?",
+      "options": [
+        "Comme inventaires distincts rattachés à l'accession",
+        "En les mélangeant dès que les noms sont identiques",
+        "En remplaçant leurs passeports par le nom commercial",
+        "En gardant seulement le plus gros échantillon"
+      ],
+      "answer": 0,
+      "explanation": "Le manuel prévoit des inventaires distincts au sein de l'accession. Un même nom ne suffit pas à confondre les échantillons reçus.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Inventaires de ressources du même cultivar",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Séparation d'inventaires au sein d'une accession",
+        "expectedAnswer": "Comme inventaires distincts rattachés à l'accession",
+        "learningObjective": "Conserver la traçabilité d'échantillons réputés apparentés.",
+        "factKey": "usda-cultivar-samples-separate-inventories",
+        "form": "situation",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2 Passport, p. 10, dernière phrase introductive",
+            "support": "Les différents échantillons d'un cultivar ou d'une population présumés sont conservés comme inventaires distincts."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-botanical-var-not-breeder-cultivar",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans le passeport USDA du chanvre, quel sens a « var. » lorsqu'il figure après le nom botanique ?",
+      "options": [
+        "Une dénomination de cultivar choisie par un obtenteur",
+        "Un rang botanique distinct d'une dénomination de cultivar",
+        "Une génération de croisement issue de deux parents",
+        "Une unité de conservation correspondant à une accession"
+      ],
+      "answer": 1,
+      "explanation": "Le manuel distingue « var. », rang taxonomique botanique, de la variété nommée issue du travail d'un obtenteur.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Variété botanique et cultivar",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Sens taxonomique de l'abréviation var.",
+        "expectedAnswer": "Un rang botanique distinct d'une dénomination de cultivar",
+        "learningObjective": "Distinguer rang botanique, cultivar, génération et accession.",
+        "factKey": "usda-botanical-var-not-breeder-cultivar",
+        "form": "identification",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2.1 Accession, p. 10, taxonomy_species_id",
+            "support": "Le manuel différencie explicitement var. botanique et variété du breeder ou cultivar."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-puid-unambiguous-global-accession",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Quel objet le PUID, identifiant unique et persistant du passeport USDA, permet-il de référencer sans ambiguïté ?",
+      "options": [
+        "Tout matériel portant le même nom de cultivar",
+        "Un lot de multiplication particulier uniquement",
+        "Une accession à l'échelle mondiale",
+        "Une version datée du fichier de passeports"
+      ],
+      "answer": 2,
+      "explanation": "Le PUID est un identifiant unique et persistant destiné au référencement mondial d'une accession et à l'agrégation de ses informations.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "PUID d'une accession",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Fonction d'un identifiant persistant",
+        "expectedAnswer": "Une accession à l'échelle mondiale",
+        "learningObjective": "Distinguer identifiant de ressource et nom d'affichage.",
+        "factKey": "usda-puid-unambiguous-global-accession",
+        "form": "identification",
+        "difficultyRationale": "Distinguer le niveau d'identification d'une accession de celui d'un nom, d'un lot ou d'un jeu de données.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2.1 Accession, p. 10, PUID",
+            "support": "Le PUID permet une référence mondiale non ambiguë à une accession."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-passport-source-collector-developer-distinct",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Le passeport USDA sépare fournisseur, collecteur et développeur. Que désigne ce dernier ?",
+      "options": [
+        "La personne qui a transporté le colis au dépôt",
+        "L'organisme qui a reçu les semences pour analyse",
+        "Le laboratoire ayant créé la fiche informatique",
+        "La personne ou l'organisme ayant sélectionné le matériel"
+      ],
+      "answer": 3,
+      "explanation": "Le champ developer désigne l'organisation ou la personne qui a obtenu le matériel, distincte de son fournisseur ou de son collecteur.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Acteurs du passeport d'une ressource",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Définition du développeur du matériel",
+        "expectedAnswer": "La personne ou l'organisme ayant sélectionné le matériel",
+        "learningObjective": "Séparer obtenteur, collecteur et source d'une accession.",
+        "factKey": "usda-passport-source-collector-developer-distinct",
+        "form": "identification",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2.2 Germplasm source, p. 11–12, developer",
+            "support": "Developer demande le nom de l'organisation ou personne ayant sélectionné le matériel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-nonlatin-name-original-and-transliteration",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Que demande le manuel USDA si le nom d'une ressource est écrit dans un alphabet non latin ?",
+      "options": [
+        "L'orthographe originale seule, sans équivalent en alphabet latin",
+        "L'orthographe originale accompagnée d'une translittération latine",
+        "La translittération latine seule, sans l'orthographe originale",
+        "La traduction du sens du nom à la place de ses graphies"
+      ],
+      "answer": 1,
+      "explanation": "Le manuel prévoit l'orthographe originale accompagnée d'une translittération dans l'alphabet latin, dans les remarques.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Nom d'une accession non latin",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Conservation de l'orthographe d'origine",
+        "expectedAnswer": "L'orthographe originale accompagnée d'une translittération latine",
+        "learningObjective": "Reconnaître une règle de documentation qui préserve les noms sources.",
+        "factKey": "usda-nonlatin-name-original-and-transliteration",
+        "form": "situation",
+        "difficultyRationale": "Comparaison de quatre politiques linguistiques plausibles dans un passeport de ressources végétales.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2.1 Accession, p. 11, plant_name",
+            "support": "Une graphie originale non latine doit accompagner sa translittération latine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-coordinate-uncertainty-radius",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Un passeport fictif affiche huit décimales, mais une incertitude de 1 km. Quelle information borne la précision de la localisation ?",
+      "options": [
+        "Le nombre de décimales enregistrées",
+        "La précision numérique du format des coordonnées",
+        "Le rayon d'incertitude déclaré",
+        "L'échelle du logiciel affichant le point"
+      ],
+      "answer": 2,
+      "explanation": "Le manuel prévoit un rayon maximal d'incertitude. Ajouter des décimales à un point ne réduit pas cette incertitude de localisation.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Incertitude des coordonnées d'une accession",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Incertitude de localisation distincte de la précision d'affichage",
+        "expectedAnswer": "Le rayon d'incertitude déclaré",
+        "learningObjective": "Distinguer chiffres affichés et incertitude de la localisation collectée.",
+        "factKey": "usda-coordinate-uncertainty-radius",
+        "form": "situation",
+        "difficultyRationale": "Interpréter des métadonnées géographiques dans un cas concret ; la précision numérique ne prouve pas l'exactitude du site.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2.3 Sampling & location, p. 12, uncertainty",
+            "support": "Le champ est défini comme rayon maximal d'incertitude des coordonnées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-source-date-collection-not-breeding",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Que date le champ « source_date » du passeport USDA d'une ressource de chanvre ?",
+      "options": [
+        "La collecte du matériel à sa source",
+        "La création supposée du cultivar",
+        "La dernière analyse de protéines",
+        "La première vente d'un produit portant son nom"
+      ],
+      "answer": 0,
+      "explanation": "Source_date correspond à la date de collecte du matériel source, pas à la naissance historique d'un cultivar.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Date source du passeport",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Événement daté par source_date",
+        "expectedAnswer": "La collecte du matériel à sa source",
+        "learningObjective": "Éviter de transformer une date de collecte en date de création variétale.",
+        "factKey": "usda-source-date-collection-not-breeding",
+        "form": "identification",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§2.3 Sampling & location, p. 12, source_date",
+            "support": "Source_date est la date de collecte du matériel à partir de sa source."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-trunk-length-ground-first-branch",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans le manuel USDA, jusqu'où va la mesure de longueur du tronc, distincte de la hauteur totale ?",
+      "options": [
+        "Du sol au sommet de la plante",
+        "Du sol à la première branche",
+        "De la première branche au sommet",
+        "Entre les deux branches les plus éloignées"
+      ],
+      "answer": 1,
+      "explanation": "La longueur du tronc est la distance du sol à la première branche ; la hauteur va jusqu'à l'inflorescence apicale.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Longueur du tronc et hauteur",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Point final de la mesure trkl",
+        "expectedAnswer": "Du sol à la première branche",
+        "learningObjective": "Distinguer hauteur totale et portion basale non ramifiée.",
+        "factKey": "usda-trunk-length-ground-first-branch",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§3.1 Morphology, p. 13–14, ht et trkl",
+            "support": "Trkl est la distance du sol à la première branche."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-canopy-width-versus-vertical-position",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Deux chanvres ont même hauteur et largeur maximale. L'un s'élargit près du sol, l'autre près du sommet. Quel relevé les distingue ?",
+      "options": [
+        "La distance du sol au sommet de leur tige",
+        "La largeur entre leurs branches les plus écartées",
+        "La distance du sol au niveau de leur plus grande largeur",
+        "Le rapport entre leur hauteur et leur largeur maximale"
+      ],
+      "answer": 2,
+      "explanation": "Le manuel distingue largeur maximale et hauteur de ce niveau. Deux plantes de même hauteur et largeur peuvent donc avoir des silhouettes différentes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Largeur et position du couvert chez le chanvre",
+        "subjectKey": "usda-hemp-handbook-v4",
+        "property": "Position verticale de la largeur indépendante de la largeur et hauteur totales",
+        "expectedAnswer": "La distance du sol au niveau de leur plus grande largeur",
+        "learningObjective": "Comparer des architectures que les seules dimensions maximales ne distinguent pas.",
+        "factKey": "hemp-canopy-width-and-vertical-position-distinct",
+        "form": "situation",
+        "difficultyRationale": "Choisir entre des mesures architecturales concurrentes à partir de silhouettes décrites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§3.1 Morphology, p. 14, mcd et mcdh",
+            "support": "Le manuel définit séparément la largeur maximale du couvert et la hauteur depuis le sol à laquelle elle se situe."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-grin-seed-aspect-ratio-elongation",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Quel descripteur GRIN du chanvre renseigne directement l'allongement d'une graine ?",
+      "options": [
+        "Le rapport longueur/largeur",
+        "L'aire de la graine",
+        "La circularité de son contour",
+        "La largeur de la graine"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport longueur/largeur est une mesure sans unité de la forme allongée, distincte de la masse ou de la couleur.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-grindescriptors"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Descripteurs de forme des graines GRIN",
+        "subjectKey": "usda-hemp-descriptors",
+        "property": "Rapport de dimensions pour l'allongement",
+        "expectedAnswer": "Le rapport longueur/largeur",
+        "learningObjective": "Choisir le descripteur adapté à une comparaison de forme.",
+        "factKey": "grin-seed-aspect-ratio-elongation",
+        "form": "deduction",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-grindescriptors",
+            "locator": "GENSTOCK, SEED_LEN_WIDTH_RATIO",
+            "support": "Le descripteur est le rapport longueur sur largeur de la graine, sans unité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Pourquoi la masse à l'hectolitre d'un lot de chanvre ne remplace-t-elle pas sa masse de mille graines ?",
+      "options": [
+        "La première fixe un nombre ; la seconde fixe un volume",
+        "Elles fixent deux nombres de graines différents",
+        "La première fixe un volume ; la seconde fixe un nombre",
+        "Elles fixent deux volumes de graines différents"
+      ],
+      "answer": 2,
+      "explanation": "La masse à l'hectolitre rapporte la masse à un volume ; celle de mille graines fixe un effectif. Elles renseignent deux propriétés distinctes du lot.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-grindescriptors"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Masse de mille graines et masse à l'hectolitre",
+        "subjectKey": "usda-hemp-descriptors",
+        "property": "Normalisations par volume et par nombre de graines",
+        "expectedAnswer": "La première fixe un volume ; la seconde fixe un nombre",
+        "learningObjective": "Distinguer deux mesures de masse selon leur dénominateur.",
+        "factKey": "grin-test-weight-kg-hectoliter-not-tsw",
+        "form": "comparaison",
+        "difficultyRationale": "Comparer des normalisations plausibles de mesures de graines ; toutes les réponses restent dans le même domaine de mesure.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-grindescriptors",
+            "locator": "GENSTOCK, TSW ; PRODUCTION, TEST_WEIGHT",
+            "support": "TSW est en grammes pour mille graines ; TEST_WEIGHT est mesuré en kg par hectolitre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-grin-seed-circularity-hundred-circle",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans le descripteur de circularité des graines GRIN chanvre, que représente la valeur 100 ?",
+      "options": [
+        "Un contour allongé à bouts arrondis",
+        "Un contour anguleux marqué de creux",
+        "Un contour presque rond mais irrégulier",
+        "Un contour parfaitement circulaire"
+      ],
+      "answer": 3,
+      "explanation": "La circularité est sans unité dans ce référentiel ; sa valeur 100 correspond au cercle parfait.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-grindescriptors"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Circularité des graines",
+        "subjectKey": "usda-hemp-descriptors",
+        "property": "Point de référence de l'échelle de forme",
+        "expectedAnswer": "Un contour parfaitement circulaire",
+        "learningObjective": "Ne pas lire une mesure de forme comme longueur, effectif ou germination.",
+        "factKey": "grin-seed-circularity-hundred-circle",
+        "form": "identification",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-grindescriptors",
+            "locator": "GENSTOCK, SEED_CIRCULARITY",
+            "support": "L'échelle sans unité va de 0 à 100, avec 100 proche du cercle parfait."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-seed-lot-purity-versus-germination",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Deux lots de chanvre contiennent la même part de débris, mais l'un germe moins bien. Quel bilan distingue leurs qualités ?",
+      "options": [
+        "Pureté matérielle comparable, germination différente",
+        "Pureté matérielle différente, germination comparable",
+        "Pureté matérielle et germination comparables",
+        "Pureté matérielle et germination différentes"
+      ],
+      "answer": 0,
+      "explanation": "La part de débris décrit la pureté matérielle, tandis que le test de germination suit les graines qui germent normalement. Une mesure ne remplace pas l'autre.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-grindescriptors",
+        "q2-b02-handbook"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Pureté et germination de lots de graines de chanvre",
+        "subjectKey": "hemp-seed-lot-quality-dimensions",
+        "property": "Pureté matérielle distincte du résultat de germination",
+        "expectedAnswer": "Pureté matérielle comparable, germination différente",
+        "learningObjective": "Distinguer composition matérielle et aptitude germinative d'un lot.",
+        "factKey": "hemp-seed-lot-material-purity-distinct-germination",
+        "form": "situation",
+        "difficultyRationale": "Associer deux observations concrètes à deux dimensions de qualité différentes.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-grindescriptors",
+            "locator": "GENSTOCK, NON_SEED",
+            "support": "La proportion de matière autre que des graines est une mesure propre de l'échantillon."
+          },
+          {
+            "sourceId": "q2-b02-handbook",
+            "locator": "§6.4 Germination & Viability, p. 30–31, percent_germ",
+            "support": "Le test comptabilise les graines vivantes, normalement germées, distinctement de la composition matérielle de l'échantillon."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-nonflowering-recorded-missing-not-zero",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans l'étude de Trubanová publiée en 2026, comment est notée la floraison d'une plante qui n'a pas fleuri pendant l'essai ?",
+      "options": [
+        "Comme une floraison au jour zéro",
+        "Comme une valeur manquante",
+        "Comme une floraison à la dernière date d'observation",
+        "Comme la moyenne des autres plantes du cultivar"
+      ],
+      "answer": 1,
+      "explanation": "L'étude enregistre une valeur manquante. L'absence d'événement observé ne donne pas une date de floraison égale à zéro.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Floraison non observée dans l'étude Trubanová",
+        "subjectKey": "trubanova-2026-hemp-variability",
+        "property": "Traitement des données sans événement observé",
+        "expectedAnswer": "Comme une valeur manquante",
+        "learningObjective": "Lire correctement une absence de mesure phénologique.",
+        "factKey": "trubanova-nonflowering-recorded-missing-not-zero",
+        "form": "situation",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Materials and methods > Phenotypic measurements and records",
+            "support": "Pour les plantes sans floraison dans l'essai, date de floraison et densité d'inflorescence sont manquantes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-kompolti-two-ipk-accessions",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Que représentent Kompolti CAN 56 et CAN 70 dans l'étude de Trubanová publiée en 2026 ?",
+      "options": [
+        "Deux stocks successifs d'une seule accession Kompolti",
+        "Deux répétitions clonales du même individu Kompolti",
+        "Deux accessions distinctes du cultivar Kompolti",
+        "Deux codes successifs attribués au même échantillon"
+      ],
+      "answer": 2,
+      "explanation": "Les deux accessions Kompolti proviennent d'IPK Gatersleben et restent distinguées dans l'étude malgré leur nom de cultivar commun.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Kompolti CAN 56 et CAN 70",
+        "subjectKey": "trubanova-2026-hemp-variability",
+        "property": "Distinction d'accessions homonymes de cultivar",
+        "expectedAnswer": "Deux accessions distinctes du cultivar Kompolti",
+        "learningObjective": "Distinguer un nom de cultivar et les échantillons étudiés sous ce nom.",
+        "factKey": "trubanova-kompolti-two-ipk-accessions",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Materials and methods > Plant growth and sampling strategy",
+            "support": "Deux accessions de Kompolti, CAN 56 et CAN 70, sont obtenues d'IPK."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-finola-height-less-variable-observed",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans l'essai de Trubanová publié en 2026, comment la hauteur de Finola est-elle décrite ?",
+      "options": [
+        "Plus de trois fois plus grande entre les deux extrêmes",
+        "Identique entre tous les cultivars de l'essai",
+        "Non mesurée pour ce cultivar",
+        "Relativement constante entre les individus étudiés"
+      ],
+      "answer": 3,
+      "explanation": "Dans cet essai, les Finola mesurés vont de 110 à 132 cm et sont décrits comme plus constants en hauteur que plusieurs autres cultivars.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Hauteur des Finola dans l'essai Trubanová",
+        "subjectKey": "trubanova-2026-hemp-variability",
+        "property": "Dispersion de hauteur observée",
+        "expectedAnswer": "Relativement constante entre les individus étudiés",
+        "learningObjective": "Lire une variabilité constatée sans en faire une propriété absolue du cultivar.",
+        "factKey": "trubanova-finola-height-less-variable-observed",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Results > Hemp cultivars exhibit high variability in biomass- and fibre-related traits",
+            "support": "Finola est décrite comme plus constante en hauteur, avec un minimum de 110 cm et un maximum de 132 cm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-korea-stem-area-greater-finola",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans l'essai de Trubanová publié en 2026, quelle comparaison de section de tige est rapportée entre Korea et Finola ?",
+      "options": [
+        "La moyenne de Korea est supérieure à celle de Finola",
+        "La moyenne de Korea est inférieure à celle de Finola",
+        "Les deux moyennes sont déclarées identiques",
+        "Aucune section de tige n'est mesurée"
+      ],
+      "answer": 0,
+      "explanation": "La section moyenne de tige rapportée pour Korea dépasse celle de Finola. La comparaison reste limitée aux conditions et plantes étudiées.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Section de tige de Korea et Finola",
+        "subjectKey": "trubanova-2026-hemp-variability",
+        "property": "Comparaison mesurée d'aire de section",
+        "expectedAnswer": "La moyenne de Korea est supérieure à celle de Finola",
+        "learningObjective": "Associer une comparaison variétale à sa mesure et à son essai.",
+        "factKey": "trubanova-korea-stem-area-greater-finola",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Results, paragraphe Stem area",
+            "support": "La section moyenne est de 2,24 cm² pour Korea contre 0,81 cm² pour Finola."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-same-cultivar-genetic-cluster-not-identical",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "L'étude de Trubanová regroupe génétiquement les individus par cultivar. Quelle interprétation est étayée ?",
+      "options": [
+        "Une multiplication clonale démontrée par le regroupement",
+        "Une même origine géographique démontrée pour tous les individus",
+        "Des profils apparentés qui conservent une variation individuelle",
+        "Une première génération hybride démontrée dans chaque groupe"
+      ],
+      "answer": 2,
+      "explanation": "Les auteurs observent des regroupements par cultivar et une variation génétique interne importante : ressemblance et identité clonale sont distinctes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Regroupements génétiques et variation interne",
+        "subjectKey": "trubanova-2026-hemp-variability",
+        "property": "Interprétation des groupes génétiques de cultivars",
+        "expectedAnswer": "Des profils apparentés qui conservent une variation individuelle",
+        "learningObjective": "Distinguer similarité génétique et identité clonale.",
+        "factKey": "trubanova-same-cultivar-genetic-cluster-not-identical",
+        "form": "deduction",
+        "difficultyRationale": "Interpréter un regroupement génétique sans lui faire prouver un mode de multiplication, une origine ou une génération de croisement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Abstract ; Results > Individuals from the same hemp cultivar differ considerably genetically",
+            "support": "Les plantes tendent à se regrouper par cultivar mais restent génétiquement variables."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-greenhouse-position-randomization-bias",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quelle source de biais la randomisation des positions vise-t-elle à limiter dans la serre de l'étude Trubanová ?",
+      "options": [
+        "Les différences de date de collecte entre sources de semences",
+        "Les différences de vigueur initiale propres aux variétés",
+        "Les erreurs de laboratoire lors du génotypage",
+        "Les gradients de milieu selon la position dans la serre"
+      ],
+      "answer": 3,
+      "explanation": "Les auteurs randomisent puis réarrangent les plantes afin de limiter les différences de milieu liées aux positions dans la serre.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-trubanova2026"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Randomisation spatiale dans l'essai Trubanová",
+        "subjectKey": "trubanova-2026-hemp-variability",
+        "property": "Réduction du biais de position",
+        "expectedAnswer": "Les gradients de milieu selon la position dans la serre",
+        "learningObjective": "Relier une précaution expérimentale à la comparaison de matériels végétaux.",
+        "factKey": "trubanova-greenhouse-position-randomization-bias",
+        "form": "deduction",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-trubanova2026",
+            "locator": "Materials and methods > Plant growth and sampling strategy, dernier paragraphe",
+            "support": "La randomisation est explicitement destinée à éviter le biais de position dans la serre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-ipk-gbis-quarterly-passport-snapshots-doi",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Que désigne le DOI associé à un instantané trimestriel des passeports GBIS ?",
+      "options": [
+        "La dernière version courante, modifiée en continu",
+        "Une version identifiable du jeu de données",
+        "Un échantillon physique unique de la collection",
+        "Une autorisation personnelle de téléchargement"
+      ],
+      "answer": 1,
+      "explanation": "GBIS publie ses instantanés de passeports sous une forme citable avec DOI : on peut ainsi désigner une version de données.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-gbis"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Instantanés de passeports GBIS",
+        "subjectKey": "ipk-gbis",
+        "property": "Fonction du DOI d'un jeu de données",
+        "expectedAnswer": "Une version identifiable du jeu de données",
+        "learningObjective": "Distinguer citation des données et qualification biologique des ressources.",
+        "factKey": "ipk-gbis-quarterly-passport-snapshots-doi",
+        "form": "deduction",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-gbis",
+            "locator": "Welcome, deuxième paragraphe",
+            "support": "Un instantané complet trimestriel des passeports est rendu citable avec DOI."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b02-ipk-genebank-not-commercial-seed-supplier",
+      "topicId": "biodiversity",
+      "level": 2,
+      "prompt": "Dans quel cadre l'IPK présente-t-il la fourniture de petits échantillons de semences ?",
+      "options": [
+        "Des ventes au détail destinées aux jardins familiaux",
+        "Des contrats de multiplication destinés aux distributeurs",
+        "Des lots de production destinés aux exploitations commerciales",
+        "Des échanges entre banques de gènes et jardins botaniques"
+      ],
+      "answer": 3,
+      "explanation": "L'IPK décrit les échanges habituels entre banques de gènes et jardins botaniques et précise qu'il n'est pas un fournisseur commercial.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b02-ipk"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Statut de la banque de gènes IPK",
+        "subjectKey": "ipk-gbis",
+        "property": "Cadre des échanges de petits échantillons",
+        "expectedAnswer": "Des échanges entre banques de gènes et jardins botaniques",
+        "learningObjective": "Distinguer les échanges de conservation et le commerce de détail.",
+        "factKey": "ipk-genebank-not-commercial-seed-supplier",
+        "form": "comparaison",
+        "difficultyRationale": "Interprétation d'une donnée de collection ou d'une mesure comparative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b02-ipk",
+            "locator": "Gene Bank, paragraphe Small quantities of seed and planting material",
+            "support": "La banque indique qu'elle n'est pas un fournisseur commercial de semences ou de plantes."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-b02-handbook",
+      "title": "USDA Hemp Phenotyping and Protocol Handbook, Version 4",
+      "organization": "USDA Agricultural Research Service",
+      "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Zachary Stansell, Anthony Barraco, Anya Osatuke et autres éditeurs V4",
+      "published": "2025-12-16",
+      "passage": "L'accession est un échantillon d'une espèce collecté à un lieu et moment donnés. Les inventaires d'un cultivar sont conservés séparément au sein d'une accession. Le passeport distingue nom, identifiant, développeur, fournisseur, collecteur, date et incertitude géographique. Les mesures architecturales séparent hauteur, largeur maximale, hauteur à cette largeur et distance à la première branche. La masse de mille graines est mesurée en grammes.",
+      "access": "full-text",
+      "documentKind": "Manuel institutionnel de descripteurs",
+      "limitation": "Version 4 datée du 16 décembre 2025 dans le PDF malgré le nom de fichier 20251215. Déclarations de protocole descriptif, pas résultats de comparaisons variétales. Aucune instruction d'induction florale, de culture ou d'extraction utilisée.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "§2 Passport, p. 10–12 ; §3 Architecture, p. 13–14 ; §6.1 Seed, p. 27",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-grindescriptors",
+      "title": "HEMP — Descriptors",
+      "organization": "USDA GRIN-Global",
+      "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+      "verifiedAt": "2026-11-16",
+      "author": "USDA GRIN-Global",
+      "published": "Dernière mise à jour affichée : 2025-02-24",
+      "passage": "Le catalogue distingue masse de mille graines en grammes et masse à l'hectolitre en kg/hL. Il définit un rapport longueur/largeur sans unité et une circularité où 100 correspond au cercle parfait. NON_SEED est le pourcentage de matière autre que des graines dans l'échantillon.",
+      "access": "official-page",
+      "documentKind": "Dictionnaire institutionnel",
+      "limitation": "Dictionnaire de variables : il ne fournit pas lui-même de valeurs pour un cultivar. Ne pas généraliser les protocoles encore notés provisoires.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Category GENSTOCK : NON_SEED, SEED_CIRCULARITY, SEED_LEN_WIDTH_RATIO, TSW ; Category PRODUCTION : TEST_WEIGHT",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-trial2022",
+      "title": "2022 USDA Hemp Diversity Field Trial",
+      "organization": "USDA-ARS Plant Genetic Resources Unit / Cornell",
+      "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Zach Stansell, Tyler Gordon, Tony Barraco, Zaria Smith, Ashya Reid",
+      "published": "2022",
+      "passage": "La PGRU conserve, diffuse et évalue des ressources génétiques. Sa collection comporte du matériel feral, fibre, grain et métabolites secondaires. L'essai examine la diversité dans et entre les accessions, les traits de plante, la qualité des graines et fibres et les métabolites.",
+      "access": "full-text",
+      "documentKind": "Présentation originale d'un essai",
+      "limitation": "Document de présentation d'un essai 2022 ; les effectifs sont historiques et aucune lecture de valeurs précises du graphique n'est nécessaire.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "p. 1, paragraphes introductif, Evaluation et Genetic Studies",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-report2024",
+      "title": "Conservation, Characterization, Evaluation, and Utilization of Hemp Genetic Resources — 2024 Annual Report",
+      "organization": "USDA Agricultural Research Service",
+      "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+      "verifiedAt": "2026-11-16",
+      "author": "USDA Agricultural Research Service",
+      "published": "2024",
+      "passage": "La collection est à Geneva dans l'État de New York. Le projet prévoit des essais multilocaux pour étudier les interactions génétiques et environnementales, des tests sanitaires et de viabilité, et des sauvegardes au laboratoire national de préservation. Le rapport indique la diffusion d'informations de caractérisation via GRIN-Global.",
+      "access": "official-page",
+      "documentKind": "Rapport institutionnel annuel",
+      "limitation": "Distinguer objectifs du projet et résultats rapportés en 2024. Le rapport comporte une coquille Prevention pour le nom NLGRP ; la question reprend la fonction de préservation explicitée ailleurs dans le document.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Location ; Objectives 1–2 ; Approach ; Progress Report",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-seqproject",
+      "title": "Whole Genome Sequencing and Sex Determination of the National Plant Germplasm Hemp Collection — Project 445646",
+      "organization": "USDA Agricultural Research Service",
+      "url": "https://www.ars.usda.gov/research/project/?accnNo=445646",
+      "verifiedAt": "2026-11-16",
+      "author": "USDA Agricultural Research Service",
+      "published": "Projet démarré le 2024-01-01",
+      "passage": "Le projet lancé en 2024 prévoit d'échantillonner un individu mâle et un individu femelle par accession pour étudier notamment la détermination sexuelle et la diversité du chromosome Y. Les formulations décrivent des objectifs de séquençage, pas un bilan attestant leur achèvement.",
+      "access": "official-page",
+      "documentKind": "Présentation institutionnelle de projet",
+      "limitation": "Programme prospectif 2024–2026 ; ne pas convertir les objectifs chiffrés en résultats accomplis.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Objective et Specific outcomes ; dates du projet",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-trubanova2026",
+      "title": "Exploring phenotypic and genetic variability in hemp (Cannabis sativa)",
+      "organization": "University College Dublin / Genetic Resources and Crop Evolution",
+      "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+      "verifiedAt": "2026-11-16",
+      "author": "Nina Trubanová, Grace Pender, Paul Francis McCabe, Rainer Melzer, Susanne Schilling",
+      "published": "2026-01-07",
+      "passage": "L'étude en serre de 2019, publiée en 2026, sépare deux accessions Kompolti provenant d'IPK. Les positions sont randomisées. Les plantes sans floraison observée ont une valeur manquante, et non zéro. Finola a une hauteur assez homogène dans cet essai ; Korea a une aire de section de tige moyenne supérieure à celle de Finola. Felina 32 a le plus grand écart de longueur des branches latérales. Des plantes d'un même cultivar restent génétiquement variables.",
+      "access": "full-text",
+      "documentKind": "Article de recherche original",
+      "limitation": "Petite étude pilote en serre avec effectifs limités ; comparaisons bornées aux plantes étudiées. Aucune supériorité générale ni conseil de rendement. Article sous licence CC BY 4.0, notice disponible en fin de page.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Materials and methods ; Results > traits de hauteur, tige, branches ; Individuals from the same hemp cultivar differ considerably genetically",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-ipk",
+      "title": "Genebank",
+      "organization": "Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)",
+      "url": "https://www.ipk-gatersleben.de/en/services/genbank",
+      "verifiedAt": "2026-11-16",
+      "author": "Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)",
+      "published": "Sans date de publication affichée ; consulté en 2026",
+      "passage": "L'IPK présente GBIS comme l'accès à sa collection fédérale ex situ. Il indique que sa banque de gènes n'est pas un fournisseur commercial de semences et plantes.",
+      "access": "official-page",
+      "documentKind": "Document institutionnel",
+      "limitation": "Présentation institutionnelle générale ; pas une preuve d'un état de disponibilité de chaque accession de chanvre.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Gene Bank, paragraphes sur GBIS et échanges",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    },
+    {
+      "id": "q2-b02-gbis",
+      "title": "Genebank Information System — Public search and ordering portal",
+      "organization": "IPK Gatersleben",
+      "url": "https://gbis.ipk-gatersleben.de/apex/f?p=GBIS2I_ORDERING_PORTAL:1",
+      "verifiedAt": "2026-11-16",
+      "author": "IPK Gatersleben",
+      "published": "Sans date de publication affichée ; consulté en 2026",
+      "passage": "Le portail permet la consultation des passeports et données phénotypiques sans connexion. Les résultats peuvent être téléchargés ; des instantanés trimestriels des passeports de la collection sont publiés avec DOI.",
+      "access": "official-page",
+      "documentKind": "Document institutionnel",
+      "limitation": "Description du fonctionnement du portail consulté en 2026 ; aucune disponibilité ni commande de matériel n'est inférée.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Welcome, premier et deuxième paragraphes",
+        "result": "Source ouverte ; sections indiquées lues. Les passages de culture, induction florale et extraction ne servent pas aux questions."
+      }
+    }
+  ]
+}

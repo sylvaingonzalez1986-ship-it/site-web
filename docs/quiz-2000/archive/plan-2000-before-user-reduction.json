@@ -1,0 +1,304 @@
+{
+  "archivedOn": "2026-11-16",
+  "reason": "User reduced the current delivery to1000 questions and deferred2000 until later.",
+  "coverage": {
+    "target": 2000,
+    "status": "provisional-until-source-inventory-and-deduplication",
+    "scope": "External independent research. No inspiration from the site's varieties or producers, per the user's correction during this session.",
+    "categories": {
+      "varieties": 350,
+      "genetics": 250,
+      "botany": 250,
+      "constituents": 250,
+      "history": 250,
+      "agronomy": 150,
+      "quality": 100,
+      "food": 150,
+      "hemp-uses": 150,
+      "prevention": 100
+    },
+    "difficulty": {
+      "accessible": 700,
+      "intermediate": 900,
+      "difficultAndExpert": 400
+    },
+    "productionPriorities": "At760 validated entries,146 are level1. Prefer genuinely accessible, useful new facts and concrete situations, especially in food, quality, prevention and uses. About22 accessible items per40 can guide suitable batches; specialized cultivar/history/genetics batches may be lower. Never manufacture variants or downgrade a specialized fact to meet a quota. Actual grading and distinctiveness govern.",
+    "reason": "The initial 250 site/buddy/producer slots are redistributed to genetics, botany, constituents, history and food. This is a coverage plan, not a claim that these quantities are already sourced or validated."
+  },
+  "queue": {
+    "target": 2000,
+    "status": "provisional-slots-not-validated-content",
+    "legacyActiveAssumption": 353,
+    "newQuestionsNeeded": 1647,
+    "alreadyApprovedOrReservedBeforeThisQueue": 296,
+    "reservationsBeforeQueue": {
+      "pilot": 30,
+      "b01": 40,
+      "b02": 30,
+      "b03": 40,
+      "d01": 36,
+      "a01": 40,
+      "cNew01": 40,
+      "cNew02": 40
+    },
+    "remainingPlannedNewSlots": 1351,
+    "assumptions": "All353 non-retired originals are repaired or retained. Current A-01 and C-new-01/02 keep their planned counts. Recompute after any cuts or further retirements. Categories are provisional; actual facts govern classification.",
+    "difficultyGuidance": "At760 validated entries,146 are level1. Prefer genuinely accessible, useful new facts and concrete situations, especially in food, quality, prevention and uses. About22 accessible items per40 can guide suitable batches; specialized cultivar/history/genetics batches may be lower. Never manufacture variants or downgrade a specialized fact to meet a quota. Actual grading and distinctiveness govern.",
+    "batches": [
+      {
+        "batchId": "a-02",
+        "category": "varieties",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "a-03",
+        "category": "varieties",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "b-04",
+        "category": "varieties",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "b-05",
+        "category": "varieties",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "b-06",
+        "category": "varieties",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "b-07",
+        "category": "varieties",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-03",
+        "category": "genetics",
+        "count": 40,
+        "status": "approved",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "c_science_pilot",
+        "reviewer": "f_existing_audit",
+        "authoredCount": 40,
+        "approvedCount": 40
+      },
+      {
+        "batchId": "c-new-04",
+        "category": "genetics",
+        "count": 40,
+        "status": "approved",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "c_science_pilot",
+        "reviewer": "e_engine_audit",
+        "authoredCount": 40,
+        "approvedCount": 40
+      },
+      {
+        "batchId": "c-new-05",
+        "category": "genetics",
+        "count": 40,
+        "status": "assigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "c_science_pilot"
+      },
+      {
+        "batchId": "c-new-06",
+        "category": "genetics",
+        "count": 40,
+        "status": "assigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "c_science_pilot"
+      },
+      {
+        "batchId": "c-new-07",
+        "category": "genetics",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-08",
+        "category": "botany",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-09",
+        "category": "botany",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-10",
+        "category": "botany",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-11",
+        "category": "constituents",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-12",
+        "category": "constituents",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-13",
+        "category": "constituents",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-14",
+        "category": "constituents",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-15",
+        "category": "agronomy",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "c-new-16",
+        "category": "agronomy",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-01",
+        "category": "history",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-02",
+        "category": "history",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-03",
+        "category": "history",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-04",
+        "category": "food",
+        "count": 40,
+        "status": "approved",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "d_history_food_pilot",
+        "authoredCount": 40,
+        "reviewer": "f_existing_audit",
+        "approvedCount": 40
+      },
+      {
+        "batchId": "d-new-05",
+        "category": "food",
+        "count": 40,
+        "status": "assigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "d_history_food_pilot"
+      },
+      {
+        "batchId": "d-new-06",
+        "category": "food",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-07",
+        "category": "hemp-uses",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-08",
+        "category": "hemp-uses",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "d-new-09",
+        "category": "hemp-uses",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "e-new-01",
+        "category": "quality",
+        "count": 40,
+        "status": "assigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+        "author": "e_engine_audit"
+      },
+      {
+        "batchId": "e-new-02",
+        "category": "prevention",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "e-new-03",
+        "category": "prevention",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "e-new-04",
+        "category": "prevention",
+        "count": 40,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      },
+      {
+        "batchId": "final-mixed-01",
+        "category": "coverage-gaps",
+        "count": 31,
+        "status": "unassigned",
+        "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+      }
+    ]
+  }
+}

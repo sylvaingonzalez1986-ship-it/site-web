@@ -1,0 +1,2054 @@
+{
+  "batchId": "d-legacy-03",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16T20:41:42Z",
+  "reviewScope": "Lecture indépendante des27questions complètes, options, réponses, explications, niveaux, motifs et déduplication. Quinze objets sources nécessaires contrôlés ; comparaison de l’index actualisé, des autres lots et du registre de retraits. Aucun auteur autoapprouvé, lot auteur ni fichier actif modifié. Dernière revalidationF : seul nouveau fait de hemp-en-3-06 relu, avec deux nouveaux passages. Les26autres approbations et ajustements root sont préservés exactement.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière) ; sourceHash de JSON.stringify(objet source complet dans son registre originel.",
+  "sourceTiming": "Consultations le16novembre2026 ;14objets sources ouverts sur passages nécessaires et16URLs distinctes de documents/articles/notice de métadonnées. Une lectureF antérieure inchangée de la décisionCND63/17 est réutilisée sans réouverture après identité de sourceHash. Heure de chaque ouverture non reconstituée ; reviewedAt date la consignation.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-dlegacy03-un-report-2021",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=A%2F76%2F121&t=pdf",
+      "sourceHash": "3688d347efcfe96a636965b47f9024d186bbdc5985290ebf216764f8cec11bee",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "A/76/121, couverture ; §12, lignes135–141",
+      "result": "Le rapport2021 confirme retraitIV et maintienI pour cannabis/résine.",
+      "limitation": "Compte rendu historique, pas statut d’une réforme postérieure.",
+      "accessedUrlsForThisReview": [
+        "https://documents.un.org/api/symbol/access?l=en&s=A%2F76%2F121&t=pdf"
+      ],
+      "earlierReadingReused": false,
+      "readingForThisReview": "new-source-targeted-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy03-faa-delamination",
+      "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_20-107B_with_change_1.pdf",
+      "sourceHash": "065347d2fd89b1de4d29af03c6739f5a1ed5090547f5b3c52fd26bf0f83b4103",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "AC20-107B, Appendix2, définition11, lignes1452–1454 ; couvertureChange1",
+      "result": "Délamination définie comme séparation entre couches d’un stratifié.",
+      "limitation": "Définition générale ; ni expérimentation chanvre ni réglementation actuelle revendiquée.",
+      "accessedUrlsForThisReview": [
+        "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_20-107B_with_change_1.pdf"
+      ],
+      "earlierReadingReused": false,
+      "readingForThisReview": "new-source-targeted-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+      "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+      "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Chapitre3, p.35–38, lignes99–119,158–176 ; noticeUSDA42245",
+      "result": "Hydroxyles et sorption ; empilement cristallin dense ; hémicelluloses polysaccharidiques.",
+      "limitation": "Chapitre sur bois, concepts moléculaires généraux seulement ; notice porteYear2012 et citation bibliographique2013, comme précisé par le lot.",
+      "accessedUrlsForThisReview": [
+        "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+        "https://research.fs.usda.gov/treesearch/42245"
+      ],
+      "earlierReadingReused": false,
+      "readingForThisReview": "new-source-targeted-reading",
+      "timePrecision": "day",
+      "additionalReadingForLigninReplacement": {
+        "reader": "f_existing_audit",
+        "consultedOn": "2026-11-16",
+        "locator": "§3.2Lignin,p.41,PDFp.9,lignes279–282",
+        "result": "Le chapitre décrit les lignines comme des polymères complexes principalement aromatiques d’unités phénylpropane.",
+        "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5"
+      }
+    },
+    {
+      "sourceId": "qh-hist-un-treaties",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+      "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "1971art7(a–c), lignes1557–1562 ;1988art3(1b),2203–2225 ;art7(5,15),2512–2513,2561–2571",
+      "result": "Accès scientifique autorisé et supervisé ; blanchiment à incriminer ; secret bancaire ne justifiant pas refus d’entraide.",
+      "limitation": "Dispositions conventionnelles historiques et conditions du texte, pas conseil de droit national actuel.",
+      "accessedUrlsForThisReview": [
+        "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-csa",
+      "url": "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf",
+      "sourceHash": "d796193cdf8e1be4ee8675033ffd6c5dcfd2c528ad3e75984ef710a0cfa20ef4",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "DEAproposition2024, Backgroundp.10, lignes239–241",
+      "result": "Rappel explicite du classement initial marijuanaScheduleI par le Congrès en1970.",
+      "limitation": "Seul rappel historique utilisé ; proposition2024 non traitée comme décision appliquée.",
+      "accessedUrlsForThisReview": [
+        "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf"
+      ],
+      "earlierReadingReused": false,
+      "readingForThisReview": "newly-read-existing-reference",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-prop215",
+      "url": "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm",
+      "sourceHash": "1f4ba7d8de3484e0666ee82ae00e9f258261514c09028da56df99d3ed53e4722",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Texte officielCalifornie,11362.5(a), lignes10–12",
+      "result": "TitreCompassionate Use Act of1996 directement donné.",
+      "limitation": "Texte historique ; aucun droit ou effet médical actuel inféré.",
+      "accessedUrlsForThisReview": [
+        "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm"
+      ],
+      "earlierReadingReused": false,
+      "readingForThisReview": "newly-read-existing-reference",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-un-2020",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=e%2F2020%2F28%2Fadd.1&t=pdf",
+      "sourceHash": "b15d14daf10427ed8eb4f14f64e07f0b283ef4c2cb8c1ed319a9597bcc24dbe7",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "LectureFantérieure Decision63/17, p.13 PDF, lignes365–372",
+      "result": "Décision2020 retirant cannabis/résine du tableauIV.",
+      "limitation": "Hashsource identique à ma lecture déjà consignée ; source2021distincte corrobore le maintienI.",
+      "accessedUrlsForThisReview": [],
+      "earlierReadingReused": true,
+      "readingForThisReview": "unchanged-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-canada",
+      "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+      "sourceHash": "57f9b168b84205e714eae6cef5343b9909829da736199fa7efb86d5db736c4bc",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "IntroductionSantéCanada, lignes47–48",
+      "result": "Réforme2018 légalisant et encadrant offre/possession adultes admissibles.",
+      "limitation": "Modèle historique2018, distinct de la clause d’évaluation D02.",
+      "accessedUrlsForThisReview": [
+        "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-statutes",
+      "url": "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf",
+      "sourceHash": "5f1ecc0bd1fa93d4ab078a917ca038f4865d5aa5ffde72df77b9f90d23dab668",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Texte1937, §6(a–b), p.553, lignes178–193 ; §1définitions déjà lu",
+      "result": "Ordre écrit du destinataire sur formulaire du secrétaire auTrésor, avec exceptions.",
+      "limitation": "Dispositif historique, pas document actuel de vente ni règle universelle sans exceptions.",
+      "accessedUrlsForThisReview": [
+        "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-hemp-commission",
+      "url": "https://deriv.nls.uk/dcn9/7496/74964631.9.htm",
+      "sourceHash": "05328117eec9e7db74e9cf4bf83d86ea87320d21700603f2a6441d12b4ff5230",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résolution21mars1895, lignes28–40,46–58",
+      "result": "Enquête dépassantBengale vers touteInde ; restrictions aux séances dansNativeStates.",
+      "limitation": "Territoire colonial historique ; pas affirmation d’auditions partout.",
+      "accessedUrlsForThisReview": [
+        "https://deriv.nls.uk/dcn9/7496/74964631.9.htm"
+      ],
+      "earlierReadingReused": false,
+      "readingForThisReview": "newly-read-existing-reference",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-uruguay-impo",
+      "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+      "sourceHash": "591cb095cb9296b4cc80f33777e242e104c7d1c726510b2941bffad0a282aa54",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "IMPOloi19172, articles1et8, lignes39–42 et47–50",
+      "result": "Protection santé par réduction risques/dommages ; certaines identités de registres qualifiées sensibles.",
+      "limitation": "Portée des pointsE/F respectée, pas toutes donnéesIRCCA ; consultation des articles particuliers.",
+      "accessedUrlsForThisReview": [
+        "https://www.impo.com.uy/bases/leyes/19172-2013/1",
+        "https://www.impo.com.uy/bases/leyes/19172-2013/8"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-nature-hurd-tissue-paper",
+      "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+      "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résumé/préparationfeuilles déjà lus ; freeness317–318 ; MechanicalStrength367–378 etfig6–7",
+      "result": "Papiers absorbants en mélanges ; suspensionaqueuse ; essais tractionsec/humide et pénétrationbille.",
+      "limitation": "Essais expérimentaux, pas produit commercial ni protocole reproduit.",
+      "accessedUrlsForThisReview": [
+        "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-nature-hemp-stubble-paper",
+      "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+      "sourceHash": "9c5a55a20ba02afe86f17a4a80a00f4c30d65eb9797d2b8ffcb9a7cbb9cc07b6",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Materials84 ; Introduction78–81 ; Conclusion ; composition146–152 déjà lue",
+      "result": "Chaume incluant racines ; liberlong contre cœur/racinescourts ; lignine caractérisée.",
+      "limitation": "Échantillons de l’étude ; pas tout résidu de toute récolte.",
+      "accessedUrlsForThisReview": [
+        "https://link.springer.com/article/10.1007/s10570-026-06935-2"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day",
+      "additionalReadingForLigninReplacement": {
+        "reader": "f_existing_audit",
+        "consultedOn": "2026-11-16",
+        "locator": "RésultatsFTIR,ligne160,avantFigure2/Table3",
+        "result": "Bande1598cm⁻¹ attribuée aux vibrations aromatiques de lignine, nette dans les pâtes de cœur et de chaume/racines de chanvre.",
+        "sourceHash": "9c5a55a20ba02afe86f17a4a80a00f4c30d65eb9797d2b8ffcb9a7cbb9cc07b6"
+      }
+    },
+    {
+      "sourceId": "qh-nature-composite-review",
+      "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+      "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+      "result": "Lignineetcellulose contribuent à rigidité ; lumen, lamelle, microfibrilles ; hydroxyles, ordrecristallin et famillespariétales.",
+      "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine.",
+      "accessedUrlsForThisReview": [
+        "https://www.mdpi.com/2075-5309/15/23/4238"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-acma-composites",
+      "url": "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf",
+      "sourceHash": "f0167e851045401f985c3277c14ec43340d1b42cbc18b9cb8f3d52f0f1273141",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "GlossaireModulus ofElasticity, lignes1795–1798 ; §3.2.4",
+      "result": "Module décrit par pente contrainte–déformation et réponseélastique.",
+      "limitation": "Guide général de composites ; pas norme de dimensionnement contemporaine.",
+      "accessedUrlsForThisReview": [
+        "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf"
+      ],
+      "earlierReadingReused": true,
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "timePrecision": "day"
+    }
+  ],
+  "duplicateReview": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "retirements": "docs/quiz-2000/retirements.json",
+    "scope": "Index actualisé après intégration C-new-02 ; propriétés, prompts, réponses et statuts des voisins relus. Anciens retraits distingués de candidats en attente.",
+    "pairs": [
+      {
+        "ids": [
+          "hemp-hs-hist-un2020-schedule",
+          "hemp-hs-hist-two-treaties"
+        ],
+        "decision": "surviving-legacy-question-retired-duplicate-remains-excluded",
+        "reason": "Retirements.json confirme que le doublon D04 two-treaties a été retiré précisément au profit de un2020-schedule. Le présent lot corrige ce survivant et ne réintroduit pas l’ID retiré ; le fait n’est pas compté comme ajout.",
+        "retirementFile": "docs/quiz-2000/retirements.json"
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-un2020-schedule",
+          "hemp-hs-hist-vote",
+          "hemp-hs-hist-vote-numbers"
+        ],
+        "decision": "distinct-with-partial-answer-leakage",
+        "reason": "Portée des tableaux, organe votant et voix sont distincts ; le prompt sur les voix donne déjà le retraitIV, mais pas le maintienI. Clé vote-cannabis2020 commune."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-psychotropic",
+          "hemp-hs-hist-un-psychotropics-city"
+        ],
+        "decision": "distinct",
+        "reason": "Accès scientifique autorisé versus ville de conférence ; même convention1971, clé partagée."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-1988-name",
+          "hemp-hs-hist-1988-adoption"
+        ],
+        "decision": "distinct",
+        "reason": "Incrimination des profits blanchis versus limitation du secret bancaire comme refus d’entraide ; articles et propriétés distincts, clé convention1988 partagée."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-act-schedule",
+          "hemp-hs-hist-csa-name"
+        ],
+        "decision": "distinct-subject-key-harmonization-proposed",
+        "reason": "Classement initial du cannabis versus identification de la loi créant cinq catégories ; même loi, clés actuelles différentes.",
+        "metadataProposal": {
+          "proposedSubjectKey": "controlled-substances-act",
+          "newCandidateIds": [
+            "hemp-hs-hist-act-schedule"
+          ],
+          "existingApprovedIds": [
+            "hemp-hs-hist-csa-name"
+          ],
+          "newCandidateCurrentKey": "controlled-substances-act-1970",
+          "scope": "Raccord transverse confié au coordinateur avec trace de métadonnées ; aucune édition du lot ou de la validation ancienne par F."
+        }
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-canada-scope",
+          "hemp-hs-hist-canada-date"
+        ],
+        "decision": "distinct",
+        "reason": "Modèle offre légale réglementée versus clause d’évaluation de la loi ; clé cannabis-act-canada commune. Correction D02 des distracteurs suivie séparément."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-1937-date",
+          "hemp-hs-hist-1937-law",
+          "hemp-hs-hist-1937-exemptions"
+        ],
+        "decision": "distinct",
+        "reason": "Formulaire de transfert prévu à§6, identification fiscale de la loi et exclusions de définition distincts ; clé marihuana-tax-act commune."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-uruguay-policy",
+          "hemp-hs-hist-uruguay-promulgation-publication",
+          "hemp-hs-hist-uruguay-law",
+          "hemp-hs-hist-uruguay-control"
+        ],
+        "decision": "distinct",
+        "reason": "Finalité de santé publique, catégorie juridique de données, pays et créationIRCCA sont quatre propriétés différentes ; clé loi19172 commune."
+      },
+      {
+        "ids": [
+          "hemp-en-3-03",
+          "hemp-en-3-05",
+          "hemp-en-3-15",
+          "hemp-en-3-20",
+          "hemp-profiles-papier"
+        ],
+        "decision": "distinct-same-papermaking-corpus",
+        "reason": "Application absorbante, état de suspension, pénétrationbille, tractionsec/humide et réseau de feuille sont distincts. Les trois cas Naithani partagent leur clé d’étude ; suspension/organisation partagent hemp-papermaking."
+      },
+      {
+        "ids": [
+          "hemp-en-3-04",
+          "hemp-en-3-07",
+          "hemp-profiles-chenevotte",
+          "hemp-profiles-etoupes"
+        ],
+        "decision": "distinct",
+        "reason": "Résidu au champ incluant racines, longueurs de fibres anatomiques, cœur ligneux et fraction textile courte après traitement ne sont pas des synonymes ni mêmes fractions."
+      },
+      {
+        "ids": [
+          "hemp-en-3-10",
+          "hemp-en-3-11",
+          "hemp-en-3-13",
+          "hemp-en-3-16",
+          "hemp-en-3-18",
+          "hemp-en-3-19",
+          "hemp-en-3-02",
+          "hemp-q2-d01-fibrilles-z-s",
+          "hemp-profiles-hygroscopie"
+        ],
+        "decision": "distinct-structural-properties",
+        "reason": "Module, groupes hydroxyle, ordre cristallin, microfibrilles, zone intercellulaire et famille hémicellulosique sont distincts de polymère majoritaire, orientationHerzog et substance échangée avec l’air. Les concepts généraux de constitution partagent fibres-chanvre ; défauts de choix conservés dans les items concernés."
+      },
+      {
+        "ids": [
+          "hemp-en-3-09",
+          "hemp-en-3-17",
+          "hemp-profiles-renfort",
+          "hemp-profiles-matrice",
+          "hemp-q2-d01-composite-temoin-matrice"
+        ],
+        "decision": "distinct",
+        "reason": "Objectif de surface hydrophobe, séparation interplis, rôle de fibre, phase continue et attribution d’une émission via témoin sont distincts. Délamination est limitée aux plis et partage hemp-fibre-composite."
+      },
+      {
+        "ids": [
+          "hemp-en-3-18",
+          "hemp-profiles-pectines"
+        ],
+        "decision": "distinct-with-conceptual-answer-leakage",
+        "reason": "Localisation intercellulaire versus substrat du rouissage ; le qualificatif riche en pectines peut aider l’autre item. Ne pas réduire les deux questions à « pectines=ciment ». Les contextes anatomique/processus restent différents."
+      }
+    ],
+    "activeExactDuplicateEstablished": false,
+    "historicalRetiredExactDuplicateFound": "hemp-hs-hist-two-treaties, doublon déjà retiré du survivant corrigé un2020-schedule."
+  },
+  "focusedChecks": {
+    "law": "Passages institutionnels et textes historiques effectivement lus ; dates/juridictions et reviewAfter présents. Aucun reclassement futur ou droit actuel déduit d’un projet.",
+    "materials": "Définitions générales FAA/USDA correctement distinguées des observations propres au chanvre. La source USDA mentionne Year2012 mais donne sa citation2013 ; le qualificatif du lot est fidèle.",
+    "multipleAnswerRisk": "Cellulose et lignine sont toutes deux décrites comme rigidifiantes par la même source ; la question6 doit isoler une propriété distinctive.",
+    "access": "Aucun échec d’accès ; aucune synthèse inaccessible présentée comme lue."
+  },
+  "items": [
+    {
+      "id": "hemp-hs-hist-psychotropic",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "d67923823d96765c69aa20a6afe7512f8833aee3b9dc539f8322bf9fdd02d804",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-un-treaties",
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+          "locator": "Part Two, article 7(a)-(c), PDF p. 66 (page imprimée 60)",
+          "reviewerPassageLocator": "1971art7(a–c), lignes1557–1562 ;1988art3(1b),2203–2225 ;art7(5,15),2512–2513,2561–2571",
+          "result": "Les usages scientifiques sont admis pour des personnes et établissements autorisés ; licence spéciale ou autorisation préalable et supervision étroite sont prévues.",
+          "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf"
+          ],
+          "limitation": "Dispositions conventionnelles historiques et conditions du texte, pas conseil de droit national actuel."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1988-name",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "5e19b3154c3da4379c40cb40c925ad2f9ffc926079c35fbc4907020b0fcc3b9a",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-un-treaties",
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+          "locator": "Part Three, article 3, paragraphe 1(b), PDF p. 94 (page imprimée 88)",
+          "reviewerPassageLocator": "1971art7(a–c), lignes1557–1562 ;1988art3(1b),2203–2225 ;art7(5,15),2512–2513,2561–2571",
+          "result": "La convention prévoit l'incrimination de la conversion, du transfert ou de la dissimulation de biens issus des infractions de trafic, dans les conditions exposées.",
+          "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf"
+          ],
+          "limitation": "Dispositions conventionnelles historiques et conditions du texte, pas conseil de droit national actuel."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-act-schedule",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "a93e0161a58d6cd2eb64fda1cc95c11788b7ad823c5bb4c5826467358fb73a21",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-csa",
+          "url": "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf",
+          "locator": "PDF p. 10, II. Background, première phrase du paragraphe commençant « When Congress enacted »",
+          "reviewerPassageLocator": "DEAproposition2024, Backgroundp.10, lignes239–241",
+          "result": "La DEA rappelle explicitement qu'en adoptant le CSA en 1970, le Congrès a placé marijuana en Schedule I.",
+          "sourceHash": "d796193cdf8e1be4ee8675033ffd6c5dcfd2c528ad3e75984ef710a0cfa20ef4",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "newly-read-existing-reference",
+          "accessedUrlsForThisReview": [
+            "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf"
+          ],
+          "limitation": "Seul rappel historique utilisé ; proposition2024 non traitée comme décision appliquée."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "metadataAdjustment": {
+        "id": "hemp-hs-hist-act-schedule",
+        "from": "controlled-substances-act-1970",
+        "to": "controlled-substances-act",
+        "beforeHash": "c787d8ed715534c2b51adaceac2644e44a7c61bb4076dbd8dff2ce931eeed04e",
+        "proposedBy": "f_existing_audit",
+        "approvedAndAppliedBy": "root",
+        "basedOn": "reviews/d-legacy-03.json#duplicateReview.pairs",
+        "reason": "Same recurring1970 law as approved csa-name; classification and law identification are distinct but prompts can disclose each other.",
+        "scope": "Subject grouping only; question wording, choices, answer, explanation and source evidence unchanged.",
+        "afterHash": "a93e0161a58d6cd2eb64fda1cc95c11788b7ad823c5bb4c5826467358fb73a21"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-hemp-archival-date",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "2c91091d9a9c874542712f26e1d0c50cfde3a66da87addd50f6d1c7d60df83d0",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-prop215",
+          "url": "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm",
+          "locator": "Section 1, nouvel article 11362.5(a)",
+          "reviewerPassageLocator": "Texte officielCalifornie,11362.5(a), lignes10–12",
+          "result": "Le texte proposé nomme cette section Compassionate Use Act of 1996.",
+          "sourceHash": "1f4ba7d8de3484e0666ee82ae00e9f258261514c09028da56df99d3ed53e4722",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "newly-read-existing-reference",
+          "accessedUrlsForThisReview": [
+            "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm"
+          ],
+          "limitation": "Texte historique ; aucun droit ou effet médical actuel inféré."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-un2020-schedule",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "8815e66eda120a42833edfdb603222e721d3db8da3cf778d26ec75e5017f550a",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-un-2020",
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=e%2F2020%2F28%2Fadd.1&t=pdf",
+          "locator": "Décision 63/17, PDF p. 13 ; §45, PDF p. 24",
+          "reviewerPassageLocator": "LectureFantérieure Decision63/17, p.13 PDF, lignes365–372",
+          "result": "La commission décide de supprimer cannabis et résine du tableau IV.",
+          "sourceHash": "b15d14daf10427ed8eb4f14f64e07f0b283ef4c2cb8c1ed319a9597bcc24dbe7",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-prior-reading",
+          "accessedUrlsForThisReview": [],
+          "limitation": "Hashsource identique à ma lecture déjà consignée ; source2021distincte corrobore le maintienI."
+        },
+        {
+          "sourceId": "q2-dlegacy03-un-report-2021",
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=A%2F76%2F121&t=pdf",
+          "locator": "A/76/121, §12, PDF p. 4",
+          "reviewerPassageLocator": "A/76/121, couverture ; §12, lignes135–141",
+          "result": "Le rapport précise qu'ils demeurent au tableau I et soumis aux contrôles prévus.",
+          "sourceHash": "3688d347efcfe96a636965b47f9024d186bbdc5985290ebf216764f8cec11bee",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "accessedUrlsForThisReview": [
+            "https://documents.un.org/api/symbol/access?l=en&s=A%2F76%2F121&t=pdf"
+          ],
+          "limitation": "Compte rendu historique, pas statut d’une réforme postérieure."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-canada-scope",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "70909fc97fdd77629856defdbdd8268cc5181649880d8f31bfec88f7bebb3866",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-canada",
+          "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+          "locator": "Introduction, deux premières phrases",
+          "reviewerPassageLocator": "IntroductionSantéCanada, lignes47–48",
+          "result": "Le document décrit la légalisation et la réglementation stricte de la production, distribution, vente, import-export et possession pour les adultes.",
+          "sourceHash": "57f9b168b84205e714eae6cef5343b9909829da736199fa7efb86d5db736c4bc",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html"
+          ],
+          "limitation": "Modèle historique2018, distinct de la clause d’évaluation D02."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1937-date",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "49779e85685922a3b57865dbc66d6a8fb282bb0454f8c89a0fac89cc5e5dd70c",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-statutes",
+          "url": "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf",
+          "locator": "50 Stat. 553, chapitre 553, §6(a)-(b), PDF p. 3",
+          "reviewerPassageLocator": "Texte1937, §6(a–b), p.553, lignes178–193 ; §1définitions déjà lu",
+          "result": "Les transferts doivent suivre un ordre écrit du destinataire sur un formulaire émis par le Secretary, défini comme le secrétaire au Trésor ; le paragraphe b prévoit des exceptions.",
+          "sourceHash": "5f1ecc0bd1fa93d4ab078a917ca038f4865d5aa5ffde72df77b9f90d23dab668",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf"
+          ],
+          "limitation": "Dispositif historique, pas document actuel de vente ni règle universelle sans exceptions."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-canada-federal",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "790089c248ba77bf9ccac0e3bed576af1d2cf4923748c8a4aa311dd89405acdb",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-hemp-commission",
+          "url": "https://deriv.nls.uk/dcn9/7496/74964631.9.htm",
+          "locator": "Résolution du 21 mars 1895, §1 et §2",
+          "reviewerPassageLocator": "Résolution21mars1895, lignes28–40,46–58",
+          "result": "Le secrétaire d'État estime que l'enquête ne peut se limiter au Bengale et doit s'étendre à toute l'Inde ; le texte distingue les modalités d'enquête dans les Native States.",
+          "sourceHash": "05328117eec9e7db74e9cf4bf83d86ea87320d21700603f2a6441d12b4ff5230",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "newly-read-existing-reference",
+          "accessedUrlsForThisReview": [
+            "https://deriv.nls.uk/dcn9/7496/74964631.9.htm"
+          ],
+          "limitation": "Territoire colonial historique ; pas affirmation d’auditions partout."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-policy",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "078b41b1c96356c8ee96d99cab3646cd0e612a061eee9b00727b9b6e2a5ca4bb",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-uruguay-impo",
+          "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+          "locator": "Article 1, texte consulté à https://www.impo.com.uy/bases/leyes/19172-2013/1",
+          "reviewerPassageLocator": "IMPOloi19172, articles1et8, lignes39–42 et47–50",
+          "result": "L'article déclare d'intérêt public la protection et l'amélioration de la santé par une politique de minimisation des risques et réduction des dommages.",
+          "sourceHash": "591cb095cb9296b4cc80f33777e242e104c7d1c726510b2941bffad0a282aa54",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.impo.com.uy/bases/leyes/19172-2013/1",
+            "https://www.impo.com.uy/bases/leyes/19172-2013/8"
+          ],
+          "limitation": "Portée des pointsE/F respectée, pas toutes donnéesIRCCA ; consultation des articles particuliers."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-1988-adoption",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "774bb4dbc88767ed4108f395e71d60a863f24dc771ce0738186cfea159c4d932",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-un-treaties",
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+          "locator": "Part Three, article 7, paragraphes 5 et 15, PDF p. 104 et 106",
+          "reviewerPassageLocator": "1971art7(a–c), lignes1557–1562 ;1988art3(1b),2203–2225 ;art7(5,15),2512–2513,2561–2571",
+          "result": "Le §5 interdit de refuser l'entraide au motif du secret bancaire ; le §15 énumère d'autres motifs de refus possibles.",
+          "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf"
+          ],
+          "limitation": "Dispositions conventionnelles historiques et conditions du texte, pas conseil de droit national actuel."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "status": "approved",
+      "comment": "Root final review: four comparable data-status choices now test the already verified sensitive-data protection. Scope remains limited to the identities specified by article8, without claiming all registry data share that status.",
+      "contentHash": "7d188b01783e3ae709c12b225ebc558d2bce98fe2a0240136d95f3dbe16079cb",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-uruguay-impo",
+          "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+          "locator": "Article 8, alinéa relatif à l'identité ; https://www.impo.com.uy/bases/leyes/19172-2013/8",
+          "reviewerPassageLocator": "IMPOloi19172, articles1et8, lignes39–42 et47–50",
+          "result": "L'identité des titulaires des actes d'inscription visés pour les points E et F est qualifiée de donnée sensible conformément à la loi 18.331.",
+          "sourceHash": "591cb095cb9296b4cc80f33777e242e104c7d1c726510b2941bffad0a282aa54",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.impo.com.uy/bases/leyes/19172-2013/1",
+            "https://www.impo.com.uy/bases/leyes/19172-2013/8"
+          ],
+          "limitation": "Portée des pointsE/F respectée, pas toutes donnéesIRCCA ; consultation des articles particuliers."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "changes_requested",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "changes_requested",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-en-3-03",
+      "status": "approved",
+      "comment": "Root final review: level2 and rationale now match the named experimental paper application, as requested by F. Previously verified fact, four paper-product choices, scope and sources remain unchanged.",
+      "contentHash": "2bab4c7d7f9be2e82de2ea222e3d97ec21db14531defbdcce25c910dd282349d",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Titre, abstract et Experimental, Tissue handsheet preparation",
+          "reviewerPassageLocator": "Résumé/préparationfeuilles déjà lus ; freeness317–318 ; MechanicalStrength367–378 etfig6–7",
+          "result": "L'étude présente des fibres de chènevotte pour tissue et towel papers et fabrique des feuilles de mélanges de pâte de bois feuillu et de chanvre.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf"
+          ],
+          "limitation": "Essais expérimentaux, pas produit commercial ni protocole reproduit."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-en-3-04",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "0fd0aa2bb2b50d1eee66017bd6af3d05d3131f62aebbb41468aacb4be09bccdb",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hemp-stubble-paper",
+          "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+          "locator": "Abstract ; Introduction, dernier paragraphe ; Materials, stubble including roots",
+          "reviewerPassageLocator": "Materials84 ; Introduction78–81 ; Conclusion ; composition146–152 déjà lue",
+          "result": "L'étude s'intéresse aux résidus laissés au champ et définit son échantillon Hsr comme chaume incluant les racines.",
+          "sourceHash": "9c5a55a20ba02afe86f17a4a80a00f4c30d65eb9797d2b8ffcb9a7cbb9cc07b6",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://link.springer.com/article/10.1007/s10570-026-06935-2"
+          ],
+          "limitation": "Échantillons de l’étude ; pas tout résidu de toute récolte."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-05",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "250da6aa2262e4b666a9407a2321120dd03bf6d41af490fd61f5b871abd5224d",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Water Absorption, PDF p. 8 (p. 713), définition de freeness ; Experimental, Tissue handsheet preparation",
+          "reviewerPassageLocator": "Résumé/préparationfeuilles déjà lus ; freeness317–318 ; MechanicalStrength367–378 etfig6–7",
+          "result": "Le texte définit l'égouttage comme l'écoulement d'une suspension diluée de pâte et décrit la préparation des feuilles à partir des pâtes fibreuses.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf"
+          ],
+          "limitation": "Essais expérimentaux, pas produit commercial ni protocole reproduit."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-06",
+      "status": "approved",
+      "comment": "Nouvelle propriété chimique relue indépendamment : lignine principalement aromatique, distincte des trois polysaccharides proposés. Une seule réponse ; niveau3 cohérent. Les rôles structuraux partagés ne sont plus le critère. Définition USDA et observationFTIR du chanvre soutiennent séparément la nature chimique et son contexte végétal.",
+      "contentHash": "8927758f371739b58b02e2d65400f2c03d68f4273286c847eabb3b7e4a3ea584",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+          "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+          "locator": "§3.2 Lignin, p. 41, PDF p. 9, premier paragraphe ; nouveau passage consulté le 2026-11-16",
+          "reviewerPassageLocator": "§3.2Lignin,p.41,PDFp.9,lignes279–282",
+          "result": "Le chapitre décrit les lignines comme des polymères complexes principalement aromatiques d’unités phénylpropane.",
+          "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-passage-for-replacement-fact",
+          "limitation": "Nature chimique générale ; le mot aromatique décrit des cycles chimiques, pas une odeur. La présence dans le chanvre est corroborée séparément."
+        },
+        {
+          "sourceId": "qh-nature-hemp-stubble-paper",
+          "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+          "locator": "Results and discussion, analyse FTIR, paragraphe précédant Figure 2 et Table 3, bande à 1598 cm⁻¹",
+          "reviewerPassageLocator": "RésultatsFTIR,ligne160,avantFigure2/Table3",
+          "result": "Bande1598cm⁻¹ attribuée aux vibrations aromatiques de lignine, nette dans les pâtes de cœur et de chaume/racines de chanvre.",
+          "sourceHash": "9c5a55a20ba02afe86f17a4a80a00f4c30d65eb9797d2b8ffcb9a7cbb9cc07b6",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-passage-for-replacement-fact",
+          "limitation": "FTIR des échantillons de l’étude, pas proportion universelle de lignine ni classement fondé sur une odeur."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "reviewer": "f_existing_audit",
+        "reviewedAt": "2026-11-16T20:41:42Z",
+        "newFactKey": "hemp-cell-wall--lignin-mainly-aromatic-polymer",
+        "previousContentHash": "898e24c0df2cb453705683d11058ab14713689fa6bbd7a5f76fe648291b86cb8",
+        "previousStatus": "changes_requested",
+        "firstIndependentReviewOfReplacementFact": true,
+        "newPassagesActuallyRead": 2
+      }
+    },
+    {
+      "id": "hemp-en-3-07",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "da2e01c326e1edaf6bc031964360d3d0bef949358e5fe1ccdcc426d2fe2c2731",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hemp-stubble-paper",
+          "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+          "locator": "Introduction, objectif : hurd and root fibers are typically short ; Conclusion, rôle des long bast fibers",
+          "reviewerPassageLocator": "Materials84 ; Introduction78–81 ; Conclusion ; composition146–152 déjà lue",
+          "result": "L'étude distingue les fibres courtes du cœur et des racines des fibres longues du liber.",
+          "sourceHash": "9c5a55a20ba02afe86f17a4a80a00f4c30d65eb9797d2b8ffcb9a7cbb9cc07b6",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://link.springer.com/article/10.1007/s10570-026-06935-2"
+          ],
+          "limitation": "Échantillons de l’étude ; pas tout résidu de toute récolte."
+        },
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, phrase précédant la Figure 3",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Liber long et cœur ligneux à fibres courtes explicitement distingués.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-08",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "43b13c203b0f34552e7c1f382416b47cc3f2e383061281674c28e33a103a6184",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, structure de la fibre, Figure 3 et paragraphe surrounding a central lumen",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Couches pariétales autour du lumen central.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-09",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "ba168bacd08fe9846718729e7142f926cc05d719649c67e994e77ed091afb13e",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "Introduction, application of hydrophobic coatings to reduce water affinity",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Revêtement hydrophobe visant une affinité moindre pour l’eau.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-10",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "d29c0e0236d024e504daf1f4d4f829c9c71f9eb182372e18dcc0ff70fba76ac8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-acma-composites",
+          "url": "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf",
+          "locator": "Glossaire, Modulus of Elasticity, PDF p. 60 (page imprimée 46) ; §3.2.4",
+          "reviewerPassageLocator": "GlossaireModulus ofElasticity, lignes1795–1798 ; §3.2.4",
+          "result": "Le module est la pente de la courbe contrainte-déformation, utile pour la déformation attendue sous charge.",
+          "sourceHash": "f0167e851045401f985c3277c14ec43340d1b42cbc18b9cb8f3d52f0f1273141",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf"
+          ],
+          "limitation": "Guide général de composites ; pas norme de dimensionnement contemporaine."
+        },
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2.3 et tableau 4",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Module de Young, résistance et allongement distingués.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-11",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "57e812b8f42cb3eefac138ac8a122d738498782b012b4b3f647286c26fcc3469",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, abondance des groupes hydroxyle et hygroscopicité, paragraphe après Figure 3",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Hydroxyles de cellulose associés à l’affinité pour l’eau.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        },
+        {
+          "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+          "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+          "locator": "§3.1.1, p. 35 ; riches en groupes hydroxyle",
+          "reviewerPassageLocator": "Chapitre3, p.35–38, lignes99–119,158–176 ; noticeUSDA42245",
+          "result": "Le chapitre explique la sorption d'humidité par les groupes hydroxyle et leurs liaisons hydrogène.",
+          "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "accessedUrlsForThisReview": [
+            "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+            "https://research.fs.usda.gov/treesearch/42245"
+          ],
+          "limitation": "Chapitre sur bois, concepts moléculaires généraux seulement ; notice porteYear2012 et citation bibliographique2013, comme précisé par le lot."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-13",
+      "status": "approved",
+      "comment": "Root final review: all four choices now combine order and packing on the same two dimensions. The verified crystalline/amorphous comparison gives one correct pair; explanation retains coexistence of both regions.",
+      "contentHash": "c3865c71e0b3a57a987d05bd558a30578fe540c1ac9e0ec7beb671047b3624e5",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§3, régions cristallines et amorphes, paragraphe Crystalline regions are more compact and ordered",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Régions cristallines plus compactes et ordonnées.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        },
+        {
+          "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+          "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+          "locator": "§3.1.2, p. 36, formation des régions cristallines",
+          "reviewerPassageLocator": "Chapitre3, p.35–38, lignes99–119,158–176 ; noticeUSDA42245",
+          "result": "Le chapitre distingue l'empilement plus dense des régions cristallines de la portion amorphe.",
+          "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "accessedUrlsForThisReview": [
+            "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+            "https://research.fs.usda.gov/treesearch/42245"
+          ],
+          "limitation": "Chapitre sur bois, concepts moléculaires généraux seulement ; notice porteYear2012 et citation bibliographique2013, comme précisé par le lot."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "changes_requested",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "changes_requested",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-en-3-15",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "997ce6a28f87ae76ef6a300eaf8b2f955c5de5c1099122336d736cf4958c285d",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Mechanical Strength, PDF p. 9 (p. 714), phrase Resistance to mechanical penetration ; Figure 7",
+          "reviewerPassageLocator": "Résumé/préparationfeuilles déjà lus ; freeness317–318 ; MechanicalStrength367–378 etfig6–7",
+          "result": "Les auteurs définissent le ball burst comme la résistance à une pénétration mécanique de la feuille.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf"
+          ],
+          "limitation": "Essais expérimentaux, pas produit commercial ni protocole reproduit."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-16",
+      "status": "approved",
+      "comment": "Root final review: four comparable supramolecular organizations replace out-of-context storage granules/droplets. Microfibril network is uniquely supported by the previously checked source; level3 retained.",
+      "contentHash": "2d3398ede6e9c67114abf43cc5d96a88c06c5464b1ea29318a961f91377ed2c3",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, paragraphe primary fibrils organised into microfibrils forming the structural network ; §2.3",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Microfibrilles comme éléments du réseau pariétal.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "changes_requested",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "changes_requested",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-en-3-17",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "50e43fe59a59b5c04c479ade4219d8b669ba6d83b44e29dbddb5086a217a70e0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy03-faa-delamination",
+          "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_20-107B_with_change_1.pdf",
+          "locator": "AC 20-107B, Appendix 2, définition 11, PDF p. 32 (A2-1)",
+          "reviewerPassageLocator": "AC20-107B, Appendix2, définition11, lignes1452–1454 ; couvertureChange1",
+          "result": "La FAA définit la délamination comme une séparation entre les couches de matériau d'un stratifié.",
+          "sourceHash": "065347d2fd89b1de4d29af03c6739f5a1ed5090547f5b3c52fd26bf0f83b4103",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_20-107B_with_change_1.pdf"
+          ],
+          "limitation": "Définition générale ; ni expérimentation chanvre ni réglementation actuelle revendiquée."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-18",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "7a6a4685d1896e3fa29532e89594e25d9955890aa5447fdeaf289df5f451a50e",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, structure de la fibre, phrase The middle lamella rich in pectin and lignin binds bast fibres",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Lamelle moyenne pectique liant les fibres en faisceaux.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-19",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "c21b63c84a2bdf434e485d22414be3242f7b6d634bc2c2424faf20ca89aa21b8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+          "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+          "locator": "§3.1.3 Hemicelluloses, p. 37, première phrase et p. 38",
+          "reviewerPassageLocator": "Chapitre3, p.35–38, lignes99–119,158–176 ; noticeUSDA42245",
+          "result": "Le chapitre définit la fraction hémicellulosique comme un ensemble de polymères polysaccharidiques de différentes unités de sucres.",
+          "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "accessedUrlsForThisReview": [
+            "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+            "https://research.fs.usda.gov/treesearch/42245"
+          ],
+          "limitation": "Chapitre sur bois, concepts moléculaires généraux seulement ; notice porteYear2012 et citation bibliographique2013, comme précisé par le lot."
+        },
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, structure et composition de la fibre, tableau 3",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Hémicelluloses parmi les constituants pariétaux.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-20",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et fait distinct contrôlés. Portée limitée aux textes historiques ou aux propriétés matérielles indiquées, sans extrapolation de règle actuelle ou de performance universelle.",
+      "contentHash": "ada02b40b135f22ccb72b4374639521b64bd6babab93b482db4e50dfb37625fd",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Mechanical Strength, PDF p. 9 ; Figure 6, PDF p. 10 ; références TAPPI T494 et T456",
+          "reviewerPassageLocator": "Résumé/préparationfeuilles déjà lus ; freeness317–318 ; MechanicalStrength367–378 etfig6–7",
+          "result": "Les auteurs évaluent les résistances en traction à sec et à l'état humide et présentent les deux séries de mesures.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf"
+          ],
+          "limitation": "Essais expérimentaux, pas produit commercial ni protocole reproduit."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    }
+  ],
+  "summary": {
+    "total": 27,
+    "approved": 27,
+    "changes_requested": 0,
+    "rejected": 0,
+    "metadataOnlyRequests": 0,
+    "substantiveRequests": 0,
+    "sourceObjectsChecked": 15,
+    "newSourceObjectsInBatch": 3,
+    "newSourcesToThisReviewer": 6,
+    "sourceObjectsOpenedForThisReview": 14,
+    "actualUrlsOpenedForThisReview": 16,
+    "priorOnlySourceObjectsReused": 1,
+    "previouslyReadSourcesExtended": 8,
+    "unavailableSources": 0,
+    "establishedFactualContradictions": 0,
+    "singleAnswerAmbiguities": 0,
+    "submittedLevels": {
+      "1": 3,
+      "2": 18,
+      "3": 6,
+      "4": 0
+    },
+    "approvedLevels": {
+      "1": 3,
+      "2": 18,
+      "3": 6,
+      "4": 0
+    },
+    "forms": {
+      "identification": 23,
+      "comparaison": 3,
+      "situation": 1
+    },
+    "note": "27versions finales approuvées :26décisions/ajustements préexistants du coordinateur préservés, nouveau fait lignine aromatique relu indépendamment parF sur USDA§3.2et FTIRParlak. Aucun fait de rigidité exclusive réintroduit."
+  },
+  "initialRequestsBeforeRootArbitration": [
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "status": "changes_requested",
+      "comment": "Fait principal soutenu ; les corrections précises de choix ou d’unicité sont nécessaires avant approbation.",
+      "contentHash": "231e0ffb53bbf0e4f3db8ac3d3ef01c3446b461396db1389d4d62629132fd6ef",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-uruguay-impo",
+          "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+          "locator": "Article 8, alinéa relatif à l'identité ; https://www.impo.com.uy/bases/leyes/19172-2013/8",
+          "reviewerPassageLocator": "IMPOloi19172, articles1et8, lignes39–42 et47–50",
+          "result": "L'identité des titulaires des actes d'inscription visés pour les points E et F est qualifiée de donnée sensible conformément à la loi 18.331.",
+          "sourceHash": "591cb095cb9296b4cc80f33777e242e104c7d1c726510b2941bffad0a282aa54",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.impo.com.uy/bases/leyes/19172-2013/1",
+            "https://www.impo.com.uy/bases/leyes/19172-2013/8"
+          ],
+          "limitation": "Portée des pointsE/F respectée, pas toutes donnéesIRCCA ; consultation des articles particuliers."
+        }
+      ],
+      "blockingIssues": [
+        {
+          "code": "weak_data_status_distractors",
+          "field": "options",
+          "kind": "substantive",
+          "reason": "Une donnée d’identité n’est pas une statistique anonyme dès son enregistrement ; la cession commerciale aux distributeurs est peu crédible pour le statut légal précis recherché. L’opposition cache la nuance essentielle données personnelles ordinaires/données sensibles.",
+          "requestedChange": "Comparer quatre statuts ou traitements de données réellement plausibles. Conserver la protection spéciale prévue à l’article8 pour les inscriptions visées, pas toutes les données IRCCA sans distinction."
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "changes_requested",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "changes_requested",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-03",
+      "status": "changes_requested",
+      "comment": "Fait et quatre choix soutenus ; difficulté à recalibrer pour cette connaissance d’étude particulière.",
+      "contentHash": "5dbfeec06b4b66cfe933465d58c0c3e379d8bf9b5e8ffd1b60d9f9307c9441e6",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Titre, abstract et Experimental, Tissue handsheet preparation",
+          "reviewerPassageLocator": "Résumé/préparationfeuilles déjà lus ; freeness317–318 ; MechanicalStrength367–378 etfig6–7",
+          "result": "L'étude présente des fibres de chènevotte pour tissue et towel papers et fabrique des feuilles de mélanges de pâte de bois feuillu et de chanvre.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf"
+          ],
+          "limitation": "Essais expérimentaux, pas produit commercial ni protocole reproduit."
+        }
+      ],
+      "blockingIssues": [
+        {
+          "code": "difficulty_based_on_familiar_vocabulary",
+          "field": "level/editorial.difficultyRationale",
+          "kind": "metadata",
+          "reason": "Le produit exact fabriqué dans une étude nommée n’est pas déductible du prompt et les quatre produits papetiers sont plausibles. Le caractère familier d’un essuie-tout ne rend pas ce résultat d’étude accessible sans connaissance.",
+          "requestedChange": "Classer au moins niveau2 et justifier la connaissance particulière de l’application expérimentale ; ou reconstruire une situation accessible qui teste un concept utile sans simplement livrer le résultat."
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "changes_requested",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-13",
+      "status": "changes_requested",
+      "comment": "Fait principal soutenu ; les corrections précises de choix ou d’unicité sont nécessaires avant approbation.",
+      "contentHash": "caa67c95cdc5d1dddc6dc0f2b2dedbfa25a36a05ecc41610b662b22c557e73a2",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§3, régions cristallines et amorphes, paragraphe Crystalline regions are more compact and ordered",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Régions cristallines plus compactes et ordonnées.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        },
+        {
+          "sourceId": "q2-dlegacy03-usda-cell-wall-chemistry",
+          "url": "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+          "locator": "§3.1.2, p. 36, formation des régions cristallines",
+          "reviewerPassageLocator": "Chapitre3, p.35–38, lignes99–119,158–176 ; noticeUSDA42245",
+          "result": "Le chapitre distingue l'empilement plus dense des régions cristallines de la portion amorphe.",
+          "sourceHash": "c05de0156af3d90375ae1c18cd614e9678e27f3dd392ec9a253ad36d0a4e19a5",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-03.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "accessedUrlsForThisReview": [
+            "https://research.fs.usda.gov/download/treesearch/42245.pdf",
+            "https://research.fs.usda.gov/treesearch/42245"
+          ],
+          "limitation": "Chapitre sur bois, concepts moléculaires généraux seulement ; notice porteYear2012 et citation bibliographique2013, comme précisé par le lot."
+        }
+      ],
+      "blockingIssues": [
+        {
+          "code": "noncomparable_cellulose_arrangements",
+          "field": "options",
+          "kind": "substantive",
+          "reason": "Deux propositions quittent la comparaison cristallin/amorphe : chaînes sans contacts dans la fibre et chaînes fortement ramifiées ne sont pas des organisations comparables et plausibles de cette même cellulose linéaire.",
+          "requestedChange": "Comparer quatre organisations ou degrés d’ordre/empilement réellement plausibles de chaînes de cellulose, sans changer sa chimie ni proposer un état sans contacts comme distracteur de facilité."
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "changes_requested",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "changes_requested",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-en-3-16",
+      "status": "changes_requested",
+      "comment": "Fait principal soutenu ; les corrections précises de choix ou d’unicité sont nécessaires avant approbation.",
+      "contentHash": "d1290b4ab1206397a754aaed8f1cdc3684a5138be048056cee46487e694e557c",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, paragraphe primary fibrils organised into microfibrils forming the structural network ; §2.3",
+          "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+          "result": "Microfibrilles comme éléments du réseau pariétal.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "accessedUrlsForThisReview": [
+            "https://www.mdpi.com/2075-5309/15/23/4238"
+          ],
+          "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+        }
+      ],
+      "blockingIssues": [
+        {
+          "code": "storage_vs_wall_domain_cue",
+          "field": "options",
+          "kind": "substantive",
+          "reason": "Granules de réserve et gouttelettes dans une phase aqueuse appartiennent à d’autres systèmes de stockage/dispersion ; le prompt réseau structural de paroi les élimine. Le seul vocabulaire fibrillaire spécialisé ressort face à ces architectures hors contexte.",
+          "requestedChange": "Proposer quatre organisations supramoléculaires plausibles dans une paroi végétale, de précision lexicale comparable ; conserver la réponse microfibrilles sans choisir trois autres classes de matières ou de stockage."
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "changes_requested",
+        "singleCorrectAnswer": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "changes_requested",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    }
+  ],
+  "initialSummaryBeforeRootArbitration": {
+    "total": 27,
+    "approved": 22,
+    "changes_requested": 5,
+    "rejected": 0,
+    "metadataOnlyRequests": 1,
+    "substantiveRequests": 4,
+    "sourceObjectsChecked": 15,
+    "newSourceObjectsInBatch": 3,
+    "newSourcesToThisReviewer": 6,
+    "sourceObjectsOpenedForThisReview": 14,
+    "actualUrlsOpenedForThisReview": 16,
+    "priorOnlySourceObjectsReused": 1,
+    "previouslyReadSourcesExtended": 8,
+    "unavailableSources": 0,
+    "establishedFactualContradictions": 0,
+    "singleAnswerAmbiguities": 1,
+    "submittedLevels": {
+      "1": 4,
+      "2": 18,
+      "3": 5,
+      "4": 0
+    },
+    "approvedLevels": {
+      "1": 3,
+      "2": 15,
+      "3": 4,
+      "4": 0
+    },
+    "forms": {
+      "identification": 23,
+      "comparaison": 3,
+      "situation": 1
+    },
+    "note": "Cinq reprises demandées : quatre pour choix/unicité, une pour niveau d’un résultat d’étude peu accessible. Les bases matérielles accessibles sont maintenues lorsqu’elles distinguent un concept réel. Le raccord de clé CSA est laissé au coordinateur, pas traité comme un fait faux."
+  },
+  "rootArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "ids": [
+      "hemp-hs-hist-uruguay-promulgation-publication",
+      "hemp-en-3-03",
+      "hemp-en-3-13",
+      "hemp-en-3-16"
+    ],
+    "scope": "Final review of four targeted author corrections after independent F first review. Existing factual support unchanged and remains attributed to F. Newly replaced lignin fact remains pending independent Sol review.",
+    "metadataAdjustment": {
+      "id": "hemp-hs-hist-act-schedule",
+      "from": "controlled-substances-act-1970",
+      "to": "controlled-substances-act",
+      "beforeHash": "c787d8ed715534c2b51adaceac2644e44a7c61bb4076dbd8dff2ce931eeed04e",
+      "proposedBy": "f_existing_audit",
+      "approvedAndAppliedBy": "root",
+      "basedOn": "reviews/d-legacy-03.json#duplicateReview.pairs",
+      "reason": "Same recurring1970 law as approved csa-name; classification and law identification are distinct but prompts can disclose each other.",
+      "scope": "Subject grouping only; question wording, choices, answer, explanation and source evidence unchanged.",
+      "afterHash": "a93e0161a58d6cd2eb64fda1cc95c11788b7ad823c5bb4c5826467358fb73a21"
+    }
+  },
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-11-16T20:34:17Z",
+      "scope": "État avant revalidationF ciblée du seul fait remplacé lignine ;26autres décisions du coordinateur préservées.",
+      "items": [
+        {
+          "id": "hemp-en-3-06",
+          "status": "changes_requested",
+          "comment": "Fait principal soutenu ; les corrections précises de choix ou d’unicité sont nécessaires avant approbation.",
+          "contentHash": "898e24c0df2cb453705683d11058ab14713689fa6bbd7a5f76fe648291b86cb8",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-nature-composite-review",
+              "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+              "locator": "§2, structure du réseau et rôle de la lignine, paragraphes précédant la Figure 3",
+              "reviewerPassageLocator": "§2 lignes231–255 ; §3 lignes285–286 ; introduction186",
+              "result": "Lignine rigidifiante ; cellulose également décrite comme structurale et rigidifiante.",
+              "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "accessedUrlsForThisReview": [
+                "https://www.mdpi.com/2075-5309/15/23/4238"
+              ],
+              "limitation": "Revue matérielle, définitions et propriétésqualitatives seulement ; rigidité n’est pas propre à la seulelignine."
+            },
+            {
+              "sourceId": "qh-nature-hemp-stubble-paper",
+              "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+              "locator": "Chemical composition analysis ; FTIR, bandes aromatiques de lignine des pâtes de cœur",
+              "reviewerPassageLocator": "Materials84 ; Introduction78–81 ; Conclusion ; composition146–152 déjà lue",
+              "result": "L'étude caractérise la lignine dans les fractions de chènevotte et la composition des parties ligneuses.",
+              "sourceHash": "9c5a55a20ba02afe86f17a4a80a00f4c30d65eb9797d2b8ffcb9a7cbb9cc07b6",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "accessedUrlsForThisReview": [
+                "https://link.springer.com/article/10.1007/s10570-026-06935-2"
+              ],
+              "limitation": "Échantillons de l’étude ; pas tout résidu de toute récolte."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "more_than_one_contributor_to_stiffness",
+              "field": "prompt/options",
+              "kind": "substantive",
+              "reason": "La lignine augmente bien la rigidité, mais la source MDPI attribue aussi explicitement rigidité et stabilité structurale à la cellulose (lignes244et248), autre choix proposé. « Contribue au caractère ligneux et à la rigidité » n’isole pas suffisamment la propriété qui rendrait un seul polymère correct.",
+              "requestedChange": "Préciser la propriété distinctive de la lignine que l’on veut identifier et donner quatre choix compatibles avec une réponse unique. Ne pas présenter les autres constituants comme dépourvus de rôle structural."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "singleCorrectAnswer": "needs-distinctive-property",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        }
+      ],
+      "summary": {
+        "total": 27,
+        "approved": 26,
+        "changes_requested": 1,
+        "rejected": 0,
+        "metadataOnlyRequests": 1,
+        "substantiveRequests": 4,
+        "sourceObjectsChecked": 15,
+        "newSourceObjectsInBatch": 3,
+        "newSourcesToThisReviewer": 6,
+        "sourceObjectsOpenedForThisReview": 14,
+        "actualUrlsOpenedForThisReview": 16,
+        "priorOnlySourceObjectsReused": 1,
+        "previouslyReadSourcesExtended": 8,
+        "unavailableSources": 0,
+        "establishedFactualContradictions": 0,
+        "singleAnswerAmbiguities": 1,
+        "submittedLevels": {
+          "1": 4,
+          "2": 18,
+          "3": 5,
+          "4": 0
+        },
+        "approvedLevels": {
+          "1": 3,
+          "2": 18,
+          "3": 5
+        },
+        "forms": {
+          "identification": 23,
+          "comparaison": 3,
+          "situation": 1
+        },
+        "note": "Four targeted corrections finally approved by root after initial independent F review. Lignin replacement fact still awaits F. CSA subject key harmonized by root with trace; factual/source content unchanged."
+      }
+    }
+  ],
+  "finalTargetedRevalidation": {
+    "reviewer": "f_existing_audit",
+    "questionId": "hemp-en-3-06",
+    "reviewedAt": "2026-11-16T20:41:42Z",
+    "otherApprovalRecordsPreserved": 26,
+    "sourceObjectsUnchanged": 2
+  }
+}

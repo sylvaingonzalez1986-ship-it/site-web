@@ -1,5 +1,6 @@
 import { KqStockRequestError, parseKqStockAssetIds } from "@/lib/kanab-quest-stocks";
 import { NextResponse } from "next/server";
+import { financeOwnerProblem } from "@/lib/kanab-quest-finance-recovery";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
@@ -45,6 +46,8 @@ export async function POST(request: Request) {
   }
   const text = Buffer.concat(chunks).toString("utf8");
   let body: unknown; try { body = JSON.parse(text); } catch { throw new KqStockRequestError("Ordre boursier invalide."); }
+  const ownerProblem = financeOwnerProblem(body, session.customerId);
+  if (ownerProblem) return NextResponse.json({ code: "finance_owner_changed", error: "Reconnecte-toi au compte de cette confirmation." }, { status: ownerProblem === "invalid" ? 400 : 409, headers });
   return NextResponse.json(await handleKqStockAction(session.customerId, body), { headers });
  } catch (error) { return failure(error); }
 }

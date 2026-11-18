@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+const base='docs/quiz-2000/',path=base+'batches/r-actives-b-03.json';
+const b=JSON.parse(fs.readFileSync(path,'utf8'));
+const h=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+const original=JSON.parse(fs.readFileSync(base+'facts/rb03-before-corrections.json','utf8'));
+const before=new Map(original.questions.map(q=>[q.id,h(q)]));
+function choices(slug,list){const q=b.questions.find(q=>q.id==='hemp-q2-rb03-'+slug);q.options=list.map((_,j)=>list[(j-q.answer+4)%4]);q.editorial.expectedAnswer=list[0];}
+choices('indica-sativa-profils-chimiques',['Une forte superposition des profils entre les trois catégories','Une séparation surtout fondée sur le rapport entre THC et CBD','Une séparation surtout fondée sur les familles de terpènes dominants','Un gradient de THC croissant d’Indica vers Sativa']);
+choices('meme-nom-composition-variable',['Souvent plus cohérents que le hasard, mais variables selon le nom','Aussi dispersés qu’un classement aléatoire, quel que soit le nom','Chimiquement identiques pour les produits partageant un nom','Moins semblables sous un même nom que sous des noms différents']);
+const sameName=b.questions.find(q=>q.id==='hemp-q2-rb03-meme-nom-composition-variable');
+sameName.level=2;sameName.editorial.difficultyRationale='Comparaison du profil des noms commerciaux avec une attribution aléatoire dans une analyse de fleurs.';
+const position=b.questions.find(q=>q.id==='hemp-q2-rb03-position-fleurs-composition');
+position.prompt='Dans l’étude de Namdar (2018), comment les teneurs florales en cannabinoïdes et terpénoïdes variaient-elles le long de la tige ?';
+choices('norml-mission',['La réforme des lois sur l’usage adulte du cannabis','Le financement d’essais cliniques sur les cannabinoïdes','L’aide au sevrage des consommateurs dépendants au cannabis','La défense des producteurs agricoles de chanvre industriel']);
+const allen=b.sources.find(s=>s.id==='q2-rb03-allen26');allen.author='Keith Allen, Anthony Torres et Reginald Gaudino';
+const removed=original.questions.filter(q=>['hemp-q2-rb03-cannabis-violet-anthocyanes','hemp-q2-rb03-f2-segregation-profils'].includes(q.id));
+b.questions=b.questions.filter(q=>!removed.some(x=>x.id===q.id));
+b.sources=b.sources.filter(s=>b.questions.some(q=>q.sourceIds.includes(s.id)));
+const issues=[];for(const q of b.questions)if(q.prompt.length>150||q.options.some(x=>x.length>75)||q.explanation.length>240||q.id.length>75||new Set(q.options).size!==4||q.options[q.answer]!==q.editorial.expectedAnswer)issues.push(q.id);
+if(b.questions.length!==29||issues.length)throw Error(JSON.stringify(issues));
+fs.writeFileSync(path,JSON.stringify(b,null,2)+'\n','utf8');
+const note={batchId:b.batchId,author:'rebalance_classify_b',correctedAt:'2026-11-17',basis:'reviews/r-actives-b-03.json, première revue indépendante Sol ; aucune auto-approbation',removed:removed.map(q=>({id:q.id,contentHash:h(q),reason:q.id.includes('anthocyanes')?'Rappel pigmentaire foliaire hors domaine actif.':'Doublon de ségrégation F2 1:2:1 avec hemp-q2-ext-f2-rapport-mixte approuvé.'})),remainingPlan:'29+30+29+31+31+35=185 ; deux places de ce lot reportées à rb06, désormais35.',targetedChanges:b.questions.filter(q=>h(q)!==before.get(q.id)).map(q=>({id:q.id,contentHash:h(q)})),sourceChange:{id:allen.id,author:allen.author,sourceHash:h(allen)},count:b.questions.length,sources:b.sources.length,levels:Object.fromEntries([1,2,3,4].map(l=>[l,b.questions.filter(q=>q.level===l).length]))};
+fs.writeFileSync(base+'facts/rb03-correction-notes.json',JSON.stringify(note,null,2)+'\n','utf8');
+console.log(JSON.stringify(note));

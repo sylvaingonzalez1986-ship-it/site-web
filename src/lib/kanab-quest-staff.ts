@@ -1,4 +1,5 @@
 import { KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS } from "./kanab-quest-business";
+import { getKqWorkerProcessingEnd } from "./kanab-quest-team-work";
 import { getKqStaffSharedTrimQuote, getKqStaffTrimQuote, KQ_STAFF_TRIMMER_COST_CENTS } from "./kanab-quest-staff-trim";
 import { advanceKqSharedTrim, getKqSharedTrimLots } from "./kanab-quest-staff-trim-queue";
 import { advanceKqStaffProduction, configureKqStaffProduction, getKqProductionCashDelta, isKqStaffProductionState } from "./kanab-quest-staff-production";
@@ -11,6 +12,8 @@ export { getKqStaffRecruitment, KQ_STAFF_CANDIDATES, KQ_STAFF_RECRUITMENT_DAYS }
 import { KQ_PROSPECTING_DEPARTMENTS, KQ_STAFF_CITIES } from "./kanab-quest-prospecting";
 import { getKqPlayerSkills, KQ_PLAYER_COUNTRYSIDE_COST_CENTS, KQ_PLAYER_DAILY_HOURS } from "./kanab-quest-player-work";
 import { getKqStaffContractOptions, getKqStaffPersonId, getKqStaffRehireBlock, getKqStaffRoleContractBlock, isKqStaffContractHistory } from "./kanab-quest-staff-contracts";
+import type { KqTeamDayPlan, KqTeamPlanCommand } from "./kanab-quest-staff-types";
+import { editKqTeamDayPlans, getKqTeamReservedHours, isKqTeamPlanCommand, parseKqTeamPlanCommand, validateKqTeamDayState } from "./kanab-quest-team-day";
 export { KQ_STAFF_CITIES } from "./kanab-quest-prospecting";
 
 /** French agricultural references verified 2026-11-07. Employer costs and bonuses are game estimates. */
@@ -54,12 +57,13 @@ export function getKqStaffCalendar(startedAt: string, now: string): KqStaffSnaps
   const day = Math.floor(elapsed / KQ_GAME_DAY_MS) + 1, weekday = (day - 1) % 7;
   return { day, weekday, week: Math.floor((day - 1) / 7), label: `${WEEKDAYS[weekday]} · jour ${day}`, weekend: weekday >= 5, nextDayAt: new Date(at(startedAt) + day * KQ_GAME_DAY_MS).toISOString() };
 }
-export function getKqStaffCapacity(employee: KqStaffEmployee, calendar: KqStaffSnapshot["calendar"]) {
+export function getKqStaffCapacity(employee: KqStaffEmployee, calendar: KqStaffSnapshot["calendar"], plans?: KqTeamDayPlan[]) {
   const absence = employee.leave.some(item => calendar.day >= item.startDay && calendar.day <= item.endDay);
   const baseHours = employee.status === "active" && !absence && calendar.weekday < employee.weeklyHours / 7 && !calendar.weekend ? 7 : 0;
   const record = employee.workDays[String(calendar.day)];
   const extraHours = baseHours ? record?.extraHours ?? 0 : 0, usedHours = record?.usedHours ?? 0;
-  return { baseHours, extraHours, usedHours, remainingHours: Math.max(0, baseHours + extraHours - usedHours) };
+  const plannedHours = getKqTeamReservedHours(plans, employee.id, calendar.day);
+  return { baseHours, extraHours, usedHours, plannedHours, remainingHours: Math.max(0, baseHours + extraHours - usedHours - plannedHours) };
 }
 export function getKqStaffLeave(employee: KqStaffEmployee, serverNow: string) {
   const until = Math.min(at(serverNow), employee.endsAt ? at(employee.endsAt) : Infinity);
@@ -128,6 +132,7 @@ export function isKqStaffState(value: unknown): value is KqStaffState {
   if (!value || typeof value !== "object") return false;
   const state = value as KqStaffState;
   return state.version === 1 && Array.isArray(state.employees) && Array.isArray(state.tasks) && Array.isArray(state.payroll)
+    && validateKqTeamDayState(state)
     && typeof state.lastSettledAt === "string" && Number.isFinite(at(state.lastSettledAt))
     && typeof state.supplierDiscountPercent === "number"
     && (state.production === undefined || isKqStaffProductionState(state.production))
@@ -178,6 +183,7 @@ export function parseKqStaffCommand(raw: unknown): KqStaffCommand {
     return value;
   }
   switch (body.action) {
+    case "save-day-plan": case "remove-day-plan": case "start-day-plan": case "start-team-task": return parseKqTeamPlanCommand(body, parseKqStaffCommand);
     case "set-production-rules": {
       assert(typeof body.enabled === "boolean" && (body.zoneId === null || typeof body.zoneId === "string" && body.zoneId.length > 0 && body.zoneId.length <= 100), "Choisis une zone de production.");
       assert(body.route === "flower" || body.route === "dry-sift", "Choisis la vente de fleurs ou le hash tamisé.");
@@ -410,7 +416,9 @@ function advanceKqStaffBase(raw: KqStaffRawSnapshot) {
     }
   }
   if (state.supplierDiscountUntil && at(state.supplierDiscountUntil) <= now) { state.supplierDiscountUntil = null; state.supplierDiscountPercent = 0; }
-  const currentWeek = getKqStaffCalendar(raw.context.businessStartedAt, raw.serverNow).week;
+  const { week: currentWeek, day: currentDay } = getKqStaffCalendar(raw.context.businessStartedAt, raw.serverNow);
+  if (state.dayPlans) state.dayPlans = state.dayPlans.filter(plan => plan.day >= currentDay
+    && (plan.assigneeId === "player" || state.employees.some(employee => employee.id === plan.assigneeId && employee.status === "active")));
   state.playerWorkDays = Object.fromEntries(Object.entries(state.playerWorkDays).filter(([day]) => Math.floor((Number(day) - 1) / 7) >= currentWeek - 1));
   for (const employee of state.employees) {
     employee.workDays = Object.fromEntries(Object.entries(employee.workDays).filter(([day]) => Math.floor((Number(day) - 1) / 7) >= currentWeek - 11));
@@ -460,7 +468,13 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const payrollAdministration = raw.context.staffBenefitsVersion === 1 && command.action === "assign"
       && canKqStaffAssignWithOutstandingPayroll(state, employee.id, command.kind);
     assert(unpaid() === 0 || payrollAdministration, "Règle les salaires échus avant de programmer de nouvelles tâches.");
-    const capacity = getKqStaffCapacity(employee, calendar);
+    const capacity = getKqStaffCapacity(employee, calendar, state.dayPlans);
+    const plans = (state.dayPlans ?? []).filter(plan => plan.day === calendar.day && plan.assigneeId === employee.id);
+    if (command.action === "assign" && (command.kind === "culture" || command.kind === "processing")) {
+      assert(!plans.some(plan => plan.assignment.action === "assign-production"), "Une production autonome est déjà prévue pour cette personne.");
+    } else if (command.action === "assign-production") {
+      assert(!plans.some(plan => plan.assignment.action === "assign" && (plan.assignment.kind === "culture" || plan.assignment.kind === "processing")), "Un accompagnement est déjà prévu pour cette personne.");
+    }
     assert(capacity.remainingHours >= hours, calendar.weekend ? "Repos le samedi et le dimanche." : "Pas assez d’heures disponibles : vérifie le planning et les congés.");
     const record = employee.workDays[String(calendar.day)] ?? { usedHours: 0, extraHours: 0 };
     record.usedHours += hours; employee.workDays[String(calendar.day)] = record;
@@ -468,7 +482,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
   function consumePlayer(hours: number) {
     number(hours, 0.5, KQ_PLAYER_DAILY_HOURS, 0.5);
     const today = state.playerWorkDays[String(calendar.day)] ?? { usedHours: 0 };
-    assert(today.usedHours + hours <= KQ_PLAYER_DAILY_HOURS, "Tes 12 h de travail personnel sont partagées entre toutes les activités. Reprends au prochain jour du jeu.");
+    assert(today.usedHours + getKqTeamReservedHours(state.dayPlans, "player", calendar.day) + hours <= KQ_PLAYER_DAILY_HOURS, "Tes 12 h de travail personnel sont partagées entre toutes les activités. Vérifie les heures déjà réservées.");
     state.playerWorkDays[String(calendar.day)] = { ...today, usedHours: today.usedHours + hours };
   }
   if (command.action === "set-production-rules") {
@@ -479,7 +493,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     number(command.hours, 0.5, 7, 0.5);
     assert(!state.tasks.some(task => task.employeeId === employee.id && task.day === calendar.day && (task.cultureShift || task.processingShift)), "Ce salarié accompagne déjà les cultures jouées aujourd’hui. Prévois la production autonome un autre jour.");
     consume(command.hours);
-    const queuedUntil = Math.max(slotStartAt(raw.serverNow), ...state.tasks.filter(task => task.employeeId === employee.id && task.status === "running").map(task => slotStartAt(task.completesAt)));
+    const queuedUntil = Math.max(slotStartAt(raw.serverNow), getKqWorkerProcessingEnd(raw.context, employee.id), ...state.tasks.filter(task => task.employeeId === employee.id && task.status === "running").map(task => slotStartAt(task.completesAt)));
     const completesAt = new Date(queuedUntil + command.hours * HOUR_MS).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt) && (!employee.endsAt || at(completesAt) <= at(employee.endsAt)), "Le créneau dépasserait la journée ou la fin du contrat.");
     const productionSalaryCents = Math.round(getKqStaffMonthlyCost(employee, employee.weeklyHours).totalCents * 7 / (30 * employee.weeklyHours) * command.hours);
@@ -506,6 +520,13 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const cost = getKqStaffWeeklyCost(days);
     assert(Number.isSafeInteger(command.expectedWeeklyCostCents) && command.expectedWeeklyCostCents === cost, "Le budget de la semaine a changé. Relis le planning.");
     assert(!command.enabled || days.some(day => day.length), "Ajoute au moins une activité avant d’activer la semaine type.");
+    if (command.enabled) for (const plan of state.dayPlans ?? []) {
+      if (plan.assigneeId !== employee.id || plan.day <= calendar.day) continue;
+      const slots = days[(plan.day - 1) % 7] ?? [];
+      assert(slots.reduce((sum, slot) => sum + slot.hours, 0) + getKqTeamReservedHours(state.dayPlans, employee.id, plan.day) <= 7,
+        `Des heures sont déjà réservées au jour ${plan.day}. Modifie d’abord sa journée.`);
+      assert(!slots.some(slot => incompatiblePlannedKinds(slot.kind, plan.assignment)), `Deux affectations sont incompatibles au jour ${plan.day}.`);
+    }
     employee.weeklyPlan = { enabled: command.enabled, days: days.map(day => day.map(task => ({ ...task, costCents: getKqStaffPlannedTaskCost(task) }))), nextDay: calendar.day + 1, updatedAt: raw.serverNow, weeklyCostCents: cost, history: employee.weeklyPlan?.history ?? [] };
   } else if (command.action === "buy-trimmer") {
     assert(!state.trimmerOwned, "La ferme possède déjà une machine de trim.");
@@ -521,7 +542,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const level = employee ? effectiveLevel(employee, "processing") : getKqStaffLevel(getKqPlayerSkills(state).processing);
     const quote = getKqStaffSharedTrimQuote({ mode: command.mode, hours: command.hours, level, trait: employee?.trait });
     const workerId = employee?.id ?? "player";
-    const queuedUntil = Math.max(at(raw.serverNow), ...state.tasks.filter(task => task.employeeId === workerId && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
+    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, workerId), ...state.tasks.filter(task => task.employeeId === workerId && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
     const startedAt = new Date(queuedUntil).toISOString(), completesAt = new Date(queuedUntil + quote.durationMs).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps aujourd’hui pour cette préparation.");
     if (employee) { assert(!employee.endsAt || at(completesAt) <= at(employee.endsAt), "Le trim dépasserait la fin du contrat."); consume(command.hours); }
@@ -544,7 +565,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const level = employee ? effectiveLevel(employee, "processing") : getKqStaffLevel(state.playerProcessingXp);
     const quote = getKqStaffTrimQuote({ lot: { ...lot, completedWork, mode: lockedMode }, mode: command.mode, hours: command.hours, level, trait: employee?.trait });
     const workerId = employee?.id ?? "player";
-    const queuedUntil = Math.max(at(raw.serverNow), ...state.tasks.filter(task => task.employeeId === workerId && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
+    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, workerId), ...state.tasks.filter(task => task.employeeId === workerId && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
     const completesAt = new Date(queuedUntil + quote.durationMs).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps aujourd’hui pour cette préparation.");
     if (employee) { assert(!employee.endsAt || at(completesAt) <= at(employee.endsAt), "Le trim dépasserait la fin du contrat."); consume(command.hours); }
@@ -557,7 +578,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     consumePlayer(command.hours);
     const skill = kind === "countryside" ? "sales" : kind;
     const level = getKqStaffLevel(getKqPlayerSkills(state)[skill]);
-    const queuedUntil = Math.max(at(raw.serverNow), ...state.tasks.filter(task => task.employeeId === "player" && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
+    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, "player"), ...state.tasks.filter(task => task.employeeId === "player" && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
     const completesAt = new Date(queuedUntil + command.hours * HOUR_MS).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps dans ce jour du jeu. Réduis la mission ou reviens à la prochaine journée.");
     const task: KqStaffTask = { id, employeeId: "player", kind, skill, skillLevel: level, hours: command.hours, day: calendar.day,
@@ -646,7 +667,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const cultureShift = kind === "culture" && raw.context.cultureWorkVersion === 1;
     const processingShift = kind === "processing" && raw.context.processingWorkVersion === 1;
     const reservation = cultureShift || processingShift;
-    const queuedUntil = reservation ? at(raw.serverNow) : Math.max(at(raw.serverNow), ...state.tasks.filter(row => row.employeeId === employee.id && row.status === "running" && !row.cultureShift && !row.processingShift).map(row => at(row.completesAt)));
+    const queuedUntil = reservation ? at(raw.serverNow) : Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, employee.id), ...state.tasks.filter(row => row.employeeId === employee.id && row.status === "running" && !row.cultureShift && !row.processingShift).map(row => at(row.completesAt)));
     const speed = kind === "training" ? 1 : (1 + (level - 1) * 0.025) * (employee.trait === "quick" ? 1.15 : employee.trait === "meticulous" ? 1 / 1.10 : 1);
     const completesAt = reservation ? calendar.nextDayAt : new Date(queuedUntil + command.hours * HOUR_MS / speed).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps aujourd’hui. Réduis la mission ou reprends au prochain jour travaillé.");
@@ -689,6 +710,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     assert(days > 0, "Un week-end de repos ne consomme aucun congé.");
     assert(days <= getKqStaffLeave(employee, raw.serverNow).availableDays, "Le solde de congés acquis est insuffisant.");
     assert(!employee.leave.some(row => row.startDay <= period.endDay && row.endDay >= command.startDay), "Ces dates recouvrent un congé déjà prévu.");
+    assert(!state.dayPlans?.some(plan => plan.assigneeId === employee.id && plan.day >= command.startDay && plan.day <= period.endDay), "Retire ou reporte les tâches prévues pendant ce congé.");
     assert(!employee.endsAt || at(raw.context.businessStartedAt) + period.endDay * KQ_GAME_DAY_MS <= at(employee.endsAt), "Le congé dépasse la fin du contrat.");
     employee.leave.push({ id, startDay: command.startDay, endDay: period.endDay, days });
   } else if (command.action === "cancel-leave") {
@@ -721,10 +743,14 @@ export function hasDueKqStaffWeeklyWork(raw: KqStaffRawSnapshot) {
 
 function weeklyContext(raw: KqStaffRawSnapshot, effects: KqStaffEffect[], through: string): KqStaffRawSnapshot["context"] {
   const time = at(through);
+  const throughDay = getKqStaffCalendar(raw.context.businessStartedAt, through).day;
   const communication = effects.filter(effect => effect.kind === "communication");
   const sales = effects.filter(effect => effect.kind === "sales");
   return {
     ...raw.context,
+    // A workshop segment reserved today cannot occupy any earlier game day
+    // when several authorized weekly departures settle in a single request.
+    teamWork: raw.context.teamWork?.filter(entry => getKqStaffCalendar(raw.context.businessStartedAt, entry.startedAt).day === throughDay),
     // A culture created after an occurrence cannot be assigned retroactively.
     activeRuns: raw.context.activeRuns.filter(run => run.startedAt && at(run.startedAt) <= time),
     processingJobs: raw.context.processingJobs?.filter(job => at(job.createdAt) <= time),
@@ -851,5 +877,73 @@ export function advanceKqStaff(raw: KqStaffRawSnapshot): { state: KqStaffState; 
 
 /** Explicit commands never combine their payment with a recurring departure. */
 export function applyKqStaffCommand(raw: KqStaffRawSnapshot, command: KqStaffCommand, id: string) {
+  if (isKqTeamPlanCommand(command)) return applyKqTeamPlan(raw, command, id);
   return command.action === "settle" ? advanceKqStaff(raw) : applyKqStaffManualCommand(raw, command, id);
+}
+
+function incompatiblePlannedKinds(kind: string, assignment: KqTeamDayPlan["assignment"]) {
+  return kind === "production" && assignment.action === "assign" && (assignment.kind === "culture" || assignment.kind === "processing")
+    || (kind === "culture" || kind === "processing") && assignment.action === "assign-production";
+}
+
+/** Price and target facts normally updated by the pending SQL commit. */
+function projectTeamQuote(raw: KqStaffRawSnapshot, state: KqStaffState, effects: KqStaffEffect[], debitCents: number): KqStaffRawSnapshot {
+  if (!effects.length) return { ...raw, state, cashCents: raw.cashCents - debitCents };
+  const processingBatches = raw.context.processingBatches.map(batch => {
+    const saved = effects.reduce((seconds, effect) => seconds + (effect.kind === "processing" && effect.flowerId === batch.flowerId ? effect.secondsSaved : 0), 0);
+    return saved ? { ...batch, readyAt: new Date(at(batch.readyAt) - saved * 1000).toISOString() } : batch;
+  });
+  const trimLots = raw.context.trimQueueVersion === 2 ? getKqSharedTrimLots(raw, effects) : raw.context.trimLots?.map(lot => {
+    const pending = effects.filter((effect): effect is Extract<KqStaffEffect, { kind: "trim-work" }> => effect.kind === "trim-work" && effect.flowerId === lot.flowerId);
+    return { ...lot, completedWork: Math.min(lot.requiredWork, lot.completedWork + pending.reduce((sum, effect) => sum + effect.work, 0)), mode: lot.mode ?? pending[0]?.mode ?? null };
+  });
+  return { ...raw, state, cashCents: raw.cashCents - debitCents + getKqProductionCashDelta(effects), context: { ...raw.context, trimLots, processingBatches } };
+}
+
+function applyKqTeamPlan(raw: KqStaffRawSnapshot, command: KqTeamPlanCommand, id: string): ReturnType<typeof applyKqStaffManualCommand> {
+  assert(raw.context.dayPlanVersion === 1, "Le planning de l’équipe nécessite la mise à jour du Quartier.");
+  const today = getKqStaffCalendar(raw.context.businessStartedAt, raw.serverNow).day;
+  assert(command.expectedDay === today && command.expectedVersion === (raw.state?.dayPlanVersion ?? 0), "La journée a changé. Relis le planning avant de confirmer.");
+  const advanced = advanceKqStaffBase(raw);
+  const { state } = advanced;
+  const plans = state.dayPlans ?? [];
+  const original = "planId" in command && command.planId ? plans.find(item => item.id === command.planId) : undefined;
+  if ("planId" in command && command.planId) assert(original, "Cette réservation a déjà été modifiée ou retirée.");
+  state.dayPlanVersion = command.expectedVersion + 1;
+  if (command.action === "save-day-plan") {
+    assert(command.day >= today && command.day <= today + 7, "Choisis un jour dans les sept prochains jours du jeu.");
+    const next = editKqTeamDayPlans(plans, command, id);
+    const entry = next.find(item => item.id === (original?.id ?? id))!;
+    // Run each reserved assignment through its real pricing, target, contract,
+    // budget and queue rules on a disposable snapshot. Quotes never grant effects.
+    const own = next.filter(item => item.day === entry.day && item.assigneeId === entry.assigneeId);
+    const serverNow = entry.day === today ? raw.serverNow : new Date(slotStartAt(raw.context.businessStartedAt) + (entry.day - 1) * KQ_GAME_DAY_MS).toISOString();
+    const member = state.employees.find(employee => employee.id === entry.assigneeId);
+    if (member?.weeklyPlan?.enabled && member.weeklyPlan.nextDay <= entry.day) {
+      const weekly = member.weeklyPlan.days[(entry.day - 1) % 7] ?? [];
+      assert(weekly.reduce((sum, task) => sum + task.hours, 0) + getKqTeamReservedHours(own, member.id, entry.day) <= 7, "La semaine type réserve déjà ces heures.");
+      assert(!weekly.some(slot => own.some(plan => incompatiblePlannedKinds(slot.kind, plan.assignment))), "Ce poste est déjà réservé par la semaine type.");
+    }
+    let quote = projectTeamQuote({ ...raw, serverNow }, { ...state, dayPlans: next.filter(item => !own.includes(item)) }, advanced.effects, 0);
+    for (const planned of own) {
+      const check = applyKqStaffManualCommand(quote, planned.assignment, planned.id);
+      quote = projectTeamQuote(quote, check.state, check.effects, check.debitCents);
+    }
+    state.dayPlans = next;
+  } else {
+    state.dayPlans = plans.filter(plan => plan !== original);
+    if (command.action !== "remove-day-plan") {
+      if (original) {
+        assert(original.day === today, "Cette tâche est prévue pour un autre jour.");
+        assert(plans.find(item => item.day === today && item.assigneeId === original.assigneeId) === original, "Lance la première tâche prévue ou change leur ordre.");
+      }
+      const assignment = command.action === "start-team-task" ? command.assignment : original!.assignment;
+      // Start from the original clock/state so settlement effects run exactly once.
+      const result = applyKqStaffManualCommand({ ...raw, state: { ...(raw.state ?? state), dayPlans: state.dayPlans, dayPlanVersion: state.dayPlanVersion } }, assignment, original?.id ?? id);
+      const created = result.state.tasks.find(task => task.id === (original?.id ?? id));
+      assert(created && at(created.startedAt) <= slotStartAt(raw.serverNow), "Cette personne travaille déjà. Planifie cette tâche pour la lancer plus tard.");
+      return result;
+    }
+  }
+  return { ...advanced, debitCents: 0 };
 }

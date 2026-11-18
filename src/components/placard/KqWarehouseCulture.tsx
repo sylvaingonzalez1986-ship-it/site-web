@@ -15,7 +15,8 @@ import styles from "./KqWarehouse.module.css";
 import { KqPrintedArt } from "./KqPrintedArt";
 import type { KqProductionReservation } from "@/lib/kanab-quest-production-reservation";
 
-export type KqWarehouseCultureSummary = { runId: string; zoneId: string | null; buddieCode: string; stageIndex: number; phase: string; startedAt: string; campaignId?: string; leaderRunId?: string };
+export type { KqWarehouseActiveRun as KqWarehouseCultureSummary } from "@/lib/supabase/kanab-quest-warehouse-backend";
+import type { KqWarehouseActiveRun as KqWarehouseCultureSummary } from "@/lib/supabase/kanab-quest-warehouse-backend";
 export type KqWarehouseBuddies = { ownedBuddieCodes: string[]; buddieRotation?: KqBuddieRotation };
 export const warehouseCultureHref = (zoneId: string, runId?: string) => `/arene/placard?view=game&zone=${encodeURIComponent(zoneId)}${runId ? `&run=${encodeURIComponent(runId)}` : "&campaign=1"}`;
 export const warehouseCampaignHref = (runId?: string) => `/arene/placard?view=game&campaign=1${runId ? `&run=${encodeURIComponent(runId)}` : ""}`;

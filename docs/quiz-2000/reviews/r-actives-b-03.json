@@ -1,0 +1,751 @@
+{
+  "batchId": "r-actives-b-03",
+  "reviewer": "rebalance_products_sol",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rb03-types-i-ii-iii-comparaison",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Classification I/II/III soutenue et distincte des types IV/V déjà présents ; proportions cannabinoïdes, pas concentration fixe.",
+      "contentHash": "6446efa20c7ff13cdb129d8da72e15e81b6720f257f88a01b2d93ae427628a01",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-smith22",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+          "locator": "Résultats THC-dominant and high-CBD Cannabis ; Commercial labels ; Discussion",
+          "result": "Article PLOS original ouvert. Types I/II/III explicités ; plusieurs profils terpèniques chez les THC dominants ; faible séparation Indica/Hybrid/Sativa ; variabilité des produits partageant un nom.",
+          "sourceHash": "6ae414099e19bba1cf7f71dc18bdc157533afa82c2c15d44a9051bea49b472fa"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-fleurs-femelles-richesse-glandulaire",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Comparaison glandulaire femelles/mâles soutenue ; distincte du simple lieu de sécrétion ou de l’aspect givré des fleurs.",
+      "contentHash": "352458bf9dcf8e1549a31aeb7a27082e2b06423feeca1a18bbba3d28dd15c3bb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-livingston20",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+          "locator": "Introduction, premier paragraphe",
+          "result": "Original Wiley ouvert : abondance glandulaire sur fleurs femelles et rareté sur fleurs mâles, explicitement liées à leurs usages.",
+          "sourceHash": "c8629deaa1c7b1b1f32069ddbb9e04379052fa230e57a50bd32cd58ae7a6f38a"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-indica-sativa-profils-chimiques",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Quatre interprétations de la classification commerciale ; superposition des profils explicitement vérifiée par le coordinateur dans Smith2022, Results/Fig6.",
+      "contentHash": "dd6139c901332639cbe090d5e6c906c1341c8136e41bd873faafb4d8daa353b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-smith22",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+          "locator": "Résultats THC-dominant and high-CBD Cannabis ; Commercial labels ; Discussion",
+          "result": "Article PLOS original ouvert. Types I/II/III explicités ; plusieurs profils terpèniques chez les THC dominants ; faible séparation Indica/Hybrid/Sativa ; variabilité des produits partageant un nom.",
+          "sourceHash": "6ae414099e19bba1cf7f71dc18bdc157533afa82c2c15d44a9051bea49b472fa"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb03-indica-sativa-profils-chimiques",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+          "comment": "Fait soutenu ; reprendre les distracteurs. Trois réponses attribuent une classification chimique exacte ou fixe, face à la seule réponse nuancée. Proposer des interprétations commerciales/chimiques concurrentes réellement plausibles, sans trois affirmations absolues.",
+          "contentHash": "081f38fab0af8261a902fe288036d3e41bac577d8e31010fc0e3bc707e4a6862",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb03-smith22",
+              "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+              "locator": "Résultats THC-dominant and high-CBD Cannabis ; Commercial labels ; Discussion",
+              "result": "Article PLOS original ouvert. Types I/II/III explicités ; plusieurs profils terpèniques chez les THC dominants ; faible séparation Indica/Hybrid/Sativa ; variabilité des produits partageant un nom.",
+              "sourceHash": "6ae414099e19bba1cf7f71dc18bdc157533afa82c2c15d44a9051bea49b472fa"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Quatre choix, réponse et explication relus ; premières preuves Sol conservées. Source Smith2022 également rouverte par le coordinateur pour lever une ambiguïté ; métadonnée Allen corrigée sur demande explicite de C.",
+      "coordinatorConsultation": {
+        "reader": "root",
+        "date": "2026-11-17",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+        "locator": "Results, commercial labels et commercial strain names ; Figures6,8 et9",
+        "result": "Superposition des catégories commerciales confirmée. Certains noms ont une association réelle à des clusters ; la cohérence reste variable et, pour la majorité, supérieure au mélange aléatoire. Lecture ciblée des passages, pas revendication de lecture de tout le papier."
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-meme-nom-composition-variable",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Le distracteur sur les clusters terpéniques était partiellement vrai. Reprise ciblée de C, correction de B et lecture du coordinateur de Results/Fig8–9 : quatre états de cohérence désormais distincts (supérieure au hasard mais variable, aléatoire, identité parfaite, association inverse), niveau2.",
+      "contentHash": "7adedaf512a65d0fde35626fa0ccb325aa6ebc8f8c0dd2779743cc0d4e98f2c2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-smith22",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+          "locator": "Résultats THC-dominant and high-CBD Cannabis ; Commercial labels ; Discussion",
+          "result": "Article PLOS original ouvert. Types I/II/III explicités ; plusieurs profils terpèniques chez les THC dominants ; faible séparation Indica/Hybrid/Sativa ; variabilité des produits partageant un nom.",
+          "sourceHash": "6ae414099e19bba1cf7f71dc18bdc157533afa82c2c15d44a9051bea49b472fa"
+        }
+      ],
+      "coordinatorChange": {
+        "promptBefore": "Que montre la comparaison de fleurs vendues sous un même nom de variété dans plusieurs marchés américains ?",
+        "explanationBefore": "Certains noms regroupent des produits assez cohérents, d’autres beaucoup moins. Même les noms les plus cohérents du corpus n’imposent pas une composition identique à chaque fleur.",
+        "promptAfter": "Dans l’étude de Smith (2022), comment les profils des fleurs vendues sous un même nom se comparent-ils ?",
+        "explanationAfter": "Les profils de même nom sont souvent plus proches qu’après mélange aléatoire des noms, mais leur cohérence varie. Un nom commercial ne garantit donc pas une composition identique."
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb03-meme-nom-composition-variable",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+          "comment": "Fait soutenu ; reprendre les distracteurs. Invariant, concentration imposée et toujours distinct sont trois garanties absolues face à la seule réponse prudente. Garder la variabilité des produits de même nom, avec des propositions de portée comparable.",
+          "contentHash": "8432c1d3871ddb91e657672ec6549a43d21d4d926dec42e973375cdf4975219f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb03-smith22",
+              "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+              "locator": "Résultats THC-dominant and high-CBD Cannabis ; Commercial labels ; Discussion",
+              "result": "Article PLOS original ouvert. Types I/II/III explicités ; plusieurs profils terpèniques chez les THC dominants ; faible séparation Indica/Hybrid/Sativa ; variabilité des produits partageant un nom.",
+              "sourceHash": "6ae414099e19bba1cf7f71dc18bdc157533afa82c2c15d44a9051bea49b472fa"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Quatre choix, réponse et explication relus ; premières preuves Sol conservées. Source Smith2022 également rouverte par le coordinateur pour lever une ambiguïté ; métadonnée Allen corrigée sur demande explicite de C.",
+      "coordinatorConsultation": {
+        "reader": "root",
+        "date": "2026-11-17",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+        "locator": "Results, commercial labels et commercial strain names ; Figures6,8 et9",
+        "result": "Superposition des catégories commerciales confirmée. Certains noms ont une association réelle à des clusters ; la cohérence reste variable et, pour la majorité, supérieure au mélange aléatoire. Lecture ciblée des passages, pas revendication de lecture de tout le papier."
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-dominante-thc-diversite-terpenes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Diversité terpénique au sein du groupe THC dominant soutenue ; distincte de l’identité des types THC/CBD et de la validité des noms commerciaux.",
+      "contentHash": "cb7067268d04a173860de9d3c89e043a5683dfeb327a4de49f24f82645f391ec",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-smith22",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+          "locator": "Résultats THC-dominant and high-CBD Cannabis ; Commercial labels ; Discussion",
+          "result": "Article PLOS original ouvert. Types I/II/III explicités ; plusieurs profils terpèniques chez les THC dominants ; faible séparation Indica/Hybrid/Sativa ; variabilité des produits partageant un nom.",
+          "sourceHash": "6ae414099e19bba1cf7f71dc18bdc157533afa82c2c15d44a9051bea49b472fa"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-croisement-cbd-thc-f1-mixte",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Profil mixte des F1 soutenu et situé dans l’étude ; aucun protocole de croisement ni modèle moléculaire historique présenté comme actuel.",
+      "contentHash": "e0ac5887790c2d733dc2e91febb40ba8c8955d06ced86efadbaf8a8922c60526",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-demeijer03",
+          "url": "https://3402974.fs1.hubspotusercontent-na1.net/hubfs/3402974/MGC%20Website%20PDFs/The-inheritence-of-Phenotype-in.pdf",
+          "locator": "Résumé p. 335 ; modèle de ségrégation des chimotypes",
+          "result": "Copie du papier Genetics original ouverte. F1 toutes mixtes CBD-THC et ségrégation F2 compatible avec 1:2:1 explicitement rapportées. Modèle moléculaire historique non universalisé.",
+          "sourceHash": "213031c92e080339473f3857079a113b0a2f365c56d2c6e17868e335a9f33e03"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-cbdas-pseudogenes-thc",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Question inchangée ; seul le prénom Reginald remplace Ryan dans l’auteur de la source, conformément à la vérification primaire et à la demande explicite de C.",
+      "contentHash": "965505a23353e040d08c9c9e6d6e76ce712e36672ee273484d7f9b6b0cf609f1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-allen26",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+          "locator": "§2.13 Clade B2 Pseudogenes ; métadonnées des auteurs",
+          "result": "Original PMC ouvert. Copies proches de CBDAS dans des cultivars THC avec décalages et arrêts, sans cadre de lecture intact. Métadonnées : Reginald Gaudino, et non Ryan Gaudino.",
+          "sourceHash": "58efbe286c025d6f496d54196caa2bda3d619ba684dbdd7bec40e266d38833d2",
+          "metadataAdjustment": {
+            "previousSourceHash": "8379be48fb5f72b8771d589b31c5cdc14be33de378e874bdffa78a9288c13475",
+            "approvedAndAppliedBy": "root",
+            "field": "author",
+            "before": "Keith Allen, Anthony Torres et Ryan Gaudino",
+            "after": "Keith Allen, Anthony Torres et Reginald Gaudino",
+            "basis": "Correction explicitement demandée par le premier relecteur Sol après lecture de l’original ; aucun changement du passage factuel."
+          }
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb03-cbdas-pseudogenes-thc",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+          "comment": "Fait sur les pseudogènes soutenu. Corriger l’auteur de la source q2-rb03-allen26 : l’original porte Reginald Gaudino, pas Ryan Gaudino. Nouvelle empreinte de source requise après correction.",
+          "contentHash": "965505a23353e040d08c9c9e6d6e76ce712e36672ee273484d7f9b6b0cf609f1",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb03-allen26",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+              "locator": "§2.13 Clade B2 Pseudogenes ; métadonnées des auteurs",
+              "result": "Original PMC ouvert. Copies proches de CBDAS dans des cultivars THC avec décalages et arrêts, sans cadre de lecture intact. Métadonnées : Reginald Gaudino, et non Ryan Gaudino.",
+              "sourceHash": "8379be48fb5f72b8771d589b31c5cdc14be33de378e874bdffa78a9288c13475"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Quatre choix, réponse et explication relus ; premières preuves Sol conservées. Source Smith2022 également rouverte par le coordinateur pour lever une ambiguïté ; métadonnée Allen corrigée sur demande explicite de C."
+    },
+    {
+      "id": "hemp-q2-rb03-position-fleurs-composition",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Cannabinoïdes et terpénoïdes sont désormais nommés dans le prompt ; résultat borné aux plantes de l’étude.",
+      "contentHash": "4370cab7b3af124b4e6dc42df195cc7ab1183b435d5e440fc03487987df0c96e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-namdar18",
+          "url": "https://diverdi.colostate.edu/C442/references/analysis/profiling/indust_crops_prods_2018_v113_p376.pdf",
+          "locator": "Résumé p. 376 ; résultats sur la position des inflorescences",
+          "result": "PDF original hébergé par Colorado State University ouvert. Les quantités de cannabinoïdes et terpénoïdes diminuent globalement des inflorescences hautes vers les basses dans les plantes étudiées.",
+          "sourceHash": "01abfc8905a0a49210778fc9673c4694902b06a9aab7a2bbc8c90146c2a92ac3"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb03-position-fleurs-composition",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+          "comment": "Résultat soutenu, mais préciser dans l’énoncé ce que sont les teneurs : cannabinoïdes et terpénoïdes. La question actuelle ne nomme aucune substance mesurée ; conserver la portée aux plantes de Namdar.",
+          "contentHash": "3e501ff87e57a7ad147f1f6da871f3a3a779dd68ce17657ff7685b30709ba3fd",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb03-namdar18",
+              "url": "https://diverdi.colostate.edu/C442/references/analysis/profiling/indust_crops_prods_2018_v113_p376.pdf",
+              "locator": "Résumé p. 376 ; résultats sur la position des inflorescences",
+              "result": "PDF original hébergé par Colorado State University ouvert. Les quantités de cannabinoïdes et terpénoïdes diminuent globalement des inflorescences hautes vers les basses dans les plantes étudiées.",
+              "sourceHash": "01abfc8905a0a49210778fc9673c4694902b06a9aab7a2bbc8c90146c2a92ac3"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Quatre choix, réponse et explication relus ; premières preuves Sol conservées. Source Smith2022 également rouverte par le coordinateur pour lever une ambiguïté ; métadonnée Allen corrigée sur demande explicite de C."
+    },
+    {
+      "id": "hemp-q2-rb03-toklas-livre-recettes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Le guide décrit explicitement le livre comme souvenirs/cuisine. Repère d’histoire du cannabis, sans recette ni fabrication.",
+      "contentHash": "4532229b43fe1516fc395e1ea613f099e52bc1cd155e86fa3e5a7f3358de364b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-gysin",
+          "url": "https://i-ac.eu/downloads/gv_gysin_en_print.pdf",
+          "locator": "Room 3, PDF p. 8, passage Toklas et Kif Notes",
+          "result": "Guide original de l’exposition IAC ouvert. Livre hybride souvenirs/cuisine de Toklas, et contribution au haschisch attribuée à Gysin. Aucun contenu de recette repris.",
+          "sourceHash": "868a80e24b5a6b8a4bde483e10801f6824cc1b9dc5e713fd27ee004d8b238b4f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-gysin-contribution-toklas",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Attribution à Gysin soutenue ; fait distinct de la nature du livre de Toklas, même récit commun à limiter au tirage.",
+      "contentHash": "afdd93f2d5e10eeb90abb26feba6c175cf68a716de7b14f09d2a3df7f5ff0e4d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-gysin",
+          "url": "https://i-ac.eu/downloads/gv_gysin_en_print.pdf",
+          "locator": "Room 3, PDF p. 8, passage Toklas et Kif Notes",
+          "result": "Guide original de l’exposition IAC ouvert. Livre hybride souvenirs/cuisine de Toklas, et contribution au haschisch attribuée à Gysin. Aucun contenu de recette repris.",
+          "sourceHash": "868a80e24b5a6b8a4bde483e10801f6824cc1b9dc5e713fd27ee004d8b238b4f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-beatles-annonce-reforme",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Objet politique de l’annonce attesté par la notice d’archives ; pas de règle actuelle déduite de la mobilisation de 1967.",
+      "contentHash": "944c454b92bb77b003c40e0cdfd848390b4bee70a04f2a67411014629d812c9d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-times",
+          "url": "https://wellcomecollection.org/works/mkxnu96j",
+          "locator": "Ownership note, deux paragraphes",
+          "result": "Notice Wellcome ouverte. L’annonce du Times du 24 juillet 1967 appelle à la réforme et à l’usage privé ; financement attribué à Paul McCartney et signatures des autres Beatles.",
+          "sourceHash": "4d3f05f71d47132c67c567f9d967ed025d212960ab128907d8edaf19bef8ef45"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-mccartney-financement-annonce",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Financement attribué à McCartney attesté ; distinct de l’objet de l’annonce et non déduit de la simple liste des signatures.",
+      "contentHash": "706a690751b1bb47467ad5d35e864cfa4a37fd806df416370a22ba2efa73b8ac",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-times",
+          "url": "https://wellcomecollection.org/works/mkxnu96j",
+          "locator": "Ownership note, deux paragraphes",
+          "result": "Notice Wellcome ouverte. L’annonce du Times du 24 juillet 1967 appelle à la réforme et à l’usage privé ; financement attribué à Paul McCartney et signatures des autres Beatles.",
+          "sourceHash": "4d3f05f71d47132c67c567f9d967ed025d212960ab128907d8edaf19bef8ef45"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-weeds-nancy-commerce",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Point de départ narratif soutenu par l’extrait officiel Lionsgate ; accès incomplet honnêtement déclaré et vérifié.",
+      "contentHash": "5eae1bde423089553c3af1efa2fc54cf3bb69311f73f365a144dea08ef6123cc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-weeds",
+          "url": "https://www.lionsgate.com/shows/weeds/weeds-season-2",
+          "locator": "Extrait indexé du synopsis officiel Lionsgate, About Weeds Season 2",
+          "result": "Ouverture directe sans texte ; extrait officiel ciblé effectivement lu : Nancy Botwin apprend à vendre de la marijuana après la mort de son mari. Accès excerpt exact ; aucune lecture intégrale ou visionnage revendiqué.",
+          "sourceHash": "71bdf31292b462d59db85abb97ed78a194febe3aa67ad1cf725244e9ec7f68fd"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-disjointed-dispensaire",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Cadre du dispensaire attesté dans le synopsis officiel ; choix de lieux comparables, aucune pratique réelle inférée de la fiction.",
+      "contentHash": "7e35b8e5e75b7fb12a31573bbb2c86df514312285ba402d044222cbb873523c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-disjointed",
+          "url": "https://media.netflix.com/en/only-on-netflix/80117694",
+          "locator": "Synopsis du Netflix Media Center",
+          "result": "Synopsis original Netflix ouvert. Kathy Bates incarne une militante devenue propriétaire d’un dispensaire dans la région de Los Angeles.",
+          "sourceHash": "7aaa56a8f3d3bdda16d13787f2762e634a8df90f93bd089bcf99f66b7c7f3e81"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-high-maintenance-livreur",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Rôle de livreur et fonction narrative soutenus par l’extrait HBO ; la lecture ne revendique pas de visionnage.",
+      "contentHash": "6a4dd1baf47b9cf995f19854513cc1cb99442b872b72d0d07048504fce0f0407",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-maintenance",
+          "url": "https://press.wbd.com/na/property/high-maintenance",
+          "locator": "Extrait indexé About High Maintenance, synopsis HBO",
+          "result": "Ouverture directe refusée 403 ; extrait officiel de cette URL effectivement retrouvé et lu. The Guy est un livreur de cannabis reliant les histoires de New-Yorkais. Accès excerpt exact.",
+          "sourceHash": "9f0f39fe44f94a2f9ba68cf8497d316b2c37f118f2e7192ffd7fc34d9d8fdbde"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-cannabis-arte-trafic",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Entretien et portraits officiels soutiennent le point de vue sur les personnages du trafic ; fait de fiction correctement distingué d’un constat sociologique.",
+      "contentHash": "7ad1609249d67444b900d43f7a20f361420db4096258e50ef097b3f73939ca10",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-arte",
+          "url": "https://artefrance-webmag.arte.tv/webmag/magazine/49-2016.pdf",
+          "locator": "Entretien PDF p. 4 ; portraits PDF p. 5 ; présentation PDF p. 23",
+          "result": "Magazine ARTE original ouvert. Borleteau souligne l’absence de point de vue policier ; portraits et synopsis centrés sur les personnages et leur entourage pris dans le trafic, France/Espagne.",
+          "sourceHash": "1b0bcd706b1f758d2224f4a400de61d4ab4731feb4c791d2c52841888d24959f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-friday-smokey-dette",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Origine de la dette de Smokey explicitement décrite ; quatre explications narratives comparables.",
+      "contentHash": "b7489f8423870f00f5043fe130ded1e162aea65cf940d7a553dc5ae98147b1a5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-friday",
+          "url": "https://www.americanhumane.org/production/friday/",
+          "locator": "Synopsis Friday (1995), paragraphes 1–3",
+          "result": "Compte rendu original du suivi de production American Humane ouvert. Smokey a consommé plus de marijuana qu’il n’en a vendu et Big Worm réclame son argent.",
+          "sourceHash": "aa5d3d7797cce924a44959c2f991efbd535e226b4c76a6867802d4d48eb1954f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-pineapple-consommateur-dealer",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Relation consommateur/dealer soutenue dans le synopsis du distributeur ; pas d’affirmation sur une variété commerciale nommée Pineapple Express.",
+      "contentHash": "6ef144df777669bab1ebef8fdb0124a77c93e47ee39471df91111e6d53d0b121",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-pineapple",
+          "url": "https://www.sonypictures.com/movies/pineappleexpress",
+          "locator": "ABOUT",
+          "result": "Synopsis original Sony ouvert. Seth Rogen est décrit comme consommateur, James Franco comme son dealer, dans cette comédie d’action.",
+          "sourceHash": "fd8789d82ff585d14104808131c9d4ca00a06d550bb190d736db9a4babd77730"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-mr-nice-howard-marks",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Identité de Howard Marks et adaptation autobiographique soutenues ; quatre noms de figures du cannabis plausibles.",
+      "contentHash": "635520d0808ba4c232b537c3d25cfecf37a3b50fdc746a86b131fdaf7c4e9ec8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-nice",
+          "url": "https://www.ufo-distribution.com/UFO2018/downloads/mr-nice/dossier%20de%20presse/mn_dp.pdf",
+          "locator": "Synopsis PDF p. 5 ; entretien Bernard Rose PDF p. 6",
+          "result": "Dossier de presse original du distributeur ouvert. Howard Marks est la figure racontée et Bernard Rose explique l’adaptation de son autobiographie.",
+          "sourceHash": "dc2c7f413abbf2fd72ce519ac9f558d884868f916fefdf34bc68b99a65e89426"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-norml-mission",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Quatre causes associatives comparables remplacent des missions de police ou d’autorité de licence ; mission officielle conservée.",
+      "contentHash": "ef817af3a1e3ea8d742d65d817367981296da7fb4853c46a5444d50fac6165d4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-norml",
+          "url": "https://norml.org/about-norml/",
+          "locator": "Mission statement ; A Voice for Responsible Marijuana Consumers",
+          "result": "Page originale de l’association ouverte. Mission déclarée : légalisation de l’usage adulte responsable et défense des consommateurs. Ce discours est identifié comme position militante.",
+          "sourceHash": "f1516e17d9b1a15baf22e4d685b1ff7269fc0a4f831aab850a5dccf9818265ce"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb03-norml-mission",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+          "comment": "Mission soutenue ; rééquilibrer les choix en quatre causes associatives plausibles. L’attribution des licences fédérales et la coordination policière ne sont pas des missions plausibles pour l’association annoncée dans l’énoncé.",
+          "contentHash": "17d9bd98c1a719e97145e403fdbfba0a3607ea0371b219aedb0d82d974ce8ad6",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb03-norml",
+              "url": "https://norml.org/about-norml/",
+              "locator": "Mission statement ; A Voice for Responsible Marijuana Consumers",
+              "result": "Page originale de l’association ouverte. Mission déclarée : légalisation de l’usage adulte responsable et défense des consommateurs. Ce discours est identifié comme position militante.",
+              "sourceHash": "f1516e17d9b1a15baf22e4d685b1ff7269fc0a4f831aab850a5dccf9818265ce"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Quatre choix, réponse et explication relus ; premières preuves Sol conservées. Source Smith2022 également rouverte par le coordinateur pour lever une ambiguïté ; métadonnée Allen corrigée sur demande explicite de C."
+    },
+    {
+      "id": "hemp-q2-rb03-high-times-magazine",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Rôle médiatique du magazine soutenu par un témoignage identifié ; quatre types de publication distinguables, sans validation scientifique des opinions du témoin.",
+      "contentHash": "d21d3265545026cd7755132fe936c98fe0030b1ec55ad01106ee28f1fa2fe534",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-hightimes",
+          "url": "https://norml.org/blog/2020/05/29/a-founder-looks-at-50-high-times/",
+          "locator": "Passages High Times, pro-pot magazine ; Starting High Times Magazine",
+          "result": "Témoignage original de Keith Stroup ouvert. Magazine pro-cannabis, couverture du travail de NORML et place dans le mouvement de légalisation effectivement décrites.",
+          "sourceHash": "84e71df30e1d7276b28d97a0738e8bf248bc27a7450238cb360714a7c9440b40"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-ginsberg-marijuana-hoax",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Auteur et titre soutenus par la notice d’archives ; les quatre choix appartiennent à la Beat Generation.",
+      "contentHash": "fb09cd7bedcae3c85fe52c99689eb35d9814d2ac9b773fad9b20dfb3ef9c0766",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-ginsberg",
+          "url": "https://findingaids.nlm.nih.gov/repositories/4/archival_objects/230709",
+          "locator": "Titre de dossier et Cite Item, Box 44 Folder 101",
+          "result": "Notice institutionnelle NLM ouverte. Titre The great marijuana hoax explicitement associé à Ginsberg, Allen. Aucun argument médical du texte n’est validé par cette simple notice.",
+          "sourceHash": "4b0ad89779a3c0ebf0bcb6eaefaf68f8cca05a6d39a456d3a86451ab606e9bea"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-shafer-usage-personnel",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Orientation historique soutenue et distincte d’une légalisation commerciale ; recommandation non confondue avec loi adoptée.",
+      "contentHash": "b7ca87befa960d147094b82c48517c0e6758b1b47a07f0e92bcddf5a97195479",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-shafer",
+          "url": "https://sencanada.ca/en/content/sen/committee/371/ille/library/dolin2-e",
+          "locator": "Key Reports and Studies, C. The Shafer Commission – 1972",
+          "result": "Analyse parlementaire originale ouverte au passage ciblé. Dépénalisation de l’usage personnel privé recommandée ; légalisation alors rejetée ; possession publique restant saisissable.",
+          "sourceHash": "47d575594101f7ab1d2aa0b52f69cd7872a65d6416ca30894a7d1fd910d11495"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-laguardia-criminalite-rapport",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Conclusion historique précisément soutenue au point 10, sans généralisation aux risques actuels ni prétention de causalité universelle.",
+      "contentHash": "6dbe620ce34d4747ff8842be7367c8c24ff0d5a0d697dfec20a4e0cc7b87e1b5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-laguardia",
+          "url": "https://www.mediwietsite.nl/wp-content/uploads/2018/11/La-Guardia-report-1944.pdf",
+          "locator": "Sociological study, tea-pad PDF p. 11 ; Conclusions, point 10, PDF p. 22",
+          "result": "Copie intégrale du rapport historique ouverte. Tea-pad défini comme pièce/appartement pour fumer ensemble ; conclusion 10 : cannabis non déterminant dans les crimes graves. Constats historiques situés, pas conclusion actuelle générale.",
+          "sourceHash": "6e6cbfa56b01f50b613b19a627598aefee937962d5446faf12f1a86e2bffce30"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-tea-pads-lieux-sociaux",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Définition du lieu social soutenue dans le rapport original ; pas de détail pratique de commerce reproduit.",
+      "contentHash": "04fd2a861af9484af8817dc3b2f06c0a7bcfe908f83eaae522473eff23ec457c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-laguardia",
+          "url": "https://www.mediwietsite.nl/wp-content/uploads/2018/11/La-Guardia-report-1944.pdf",
+          "locator": "Sociological study, tea-pad PDF p. 11 ; Conclusions, point 10, PDF p. 22",
+          "result": "Copie intégrale du rapport historique ouverte. Tea-pad défini comme pièce/appartement pour fumer ensemble ; conclusion 10 : cannabis non déterminant dans les crimes graves. Constats historiques situés, pas conclusion actuelle générale.",
+          "sourceHash": "6e6cbfa56b01f50b613b19a627598aefee937962d5446faf12f1a86e2bffce30"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-ludlow-recit-personnel",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Nature personnelle du récit soutenue par la notice éditoriale universitaire ; ne transforme pas les visions racontées en observation clinique.",
+      "contentHash": "dd75aaf891715e2d5faa99241bf977327b6d0bac9143968caec0636113be126f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-ludlow",
+          "url": "https://www.rutgersuniversitypress.org/the-hasheesh-eater/9780813541143",
+          "locator": "Description de l’édition critique",
+          "result": "Notice originale Rutgers ouverte. Ludlow rapporte ses propres visions, expériences et réflexions liées au haschisch ; ouvrage situé dans la littérature des drogues, pas étude clinique.",
+          "sourceHash": "65338eb21d9a7a88e4610ad079c00a2bb048b5740515eb67661b1e205f54f796"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-dumas-franz-haschisch",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Le passage original confirme roman, personnages, souper et hachisch. Les quatre romans sont bien des œuvres de Dumas.",
+      "contentHash": "0354966059b08de484eacf1eff9985c7f30eda551d7c7219d7ac2121d36bcf94",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-dumas",
+          "url": "https://www.dumaspere.com/pages/bibliotheque/chapitre.php?cid=38&lid=r14",
+          "locator": "Chapitre XXXVIII, paragraphes Et alors Franz raconta... et Il s’appesantit...",
+          "result": "Texte littéraire original ouvert : Franz raconte à Albert la grotte, le souper et le hachisch. La graphie du texte est hachisch, ce qui explique l’absence de résultat à la recherche haschisch.",
+          "sourceHash": "7908643c746507ee0f2ec043ecc64aa82626e40044da8eb389279a14197ef247"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-benjamin-notes-haschisch",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Composition du recueil soutenue par la recension universitaire ; genre intellectuel distinct d’une enquête statistique ou d’un roman.",
+      "contentHash": "3c932859228803cec96c0360ace9ab9b6e01f5b6aabe51eca9ad47c951856590",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-benjamin",
+          "url": "https://rmtrain.h-net.org/reviews/showrev.php?id=14786",
+          "locator": "Premier paragraphe et deux suivants",
+          "result": "Compte rendu universitaire original H-Net ouvert. Douze protocoles d’expériences, deux textes publiés et fragments réunis dans On Hashish ; description de la composition du livre soutenue.",
+          "sourceHash": "67e909df9a3de3f5cb5a6c1c0c846e4db8567d25db3ad1caf0f49714c29472ae"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb03-freak-brothers-bd",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Repère culturel, littéraire, associatif ou historique directement lié aux usages et représentations du cannabis psychoactif.",
+      "comment": "Repère de BD cannabique soutenu par l’extrait du site officiel. L’objet testé est l’œuvre, sans propriété réelle du cannabis déduite de ses aventures.",
+      "contentHash": "00a8b357ae9b42ee23d87a72377bfd6d113af6965d00737d5cb23b6da69a3d36",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-freak",
+          "url": "https://thefreakbrothers.com/pages/the-show-old",
+          "locator": "Extrait indexé du site officiel, The Show Old",
+          "result": "Accès direct refusé 402 ; extrait officiel effectivement lu : BD de Gilbert Shelton, satire de contre-culture et place centrale de la marijuana. Accès excerpt exact.",
+          "sourceHash": "aa45078d123100088a79604c0573ad42e181c8d9c6b56207e3f1ae85e644d2d5"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "questions": 31,
+    "approved": 24,
+    "changes_requested": 7,
+    "sourcesRead": 24
+  },
+  "neighbourAudit": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "searched": [
+      "chimotype",
+      "I II III",
+      "indica/sativa",
+      "même nom",
+      "terpènes",
+      "femelles/mâles",
+      "anthocyanes",
+      "violet",
+      "pseudogènes",
+      "F2",
+      "Toklas",
+      "Gysin",
+      "Beatles",
+      "Times",
+      "McCartney",
+      "Weeds",
+      "Disjointed",
+      "High Maintenance",
+      "Friday",
+      "Pineapple Express",
+      "Howard Marks",
+      "NORML",
+      "High Times",
+      "Ginsberg",
+      "Shafer",
+      "LaGuardia",
+      "tea-pad",
+      "Ludlow",
+      "Monte-Cristo",
+      "Benjamin",
+      "Freak Brothers"
+    ],
+    "openedNeighbours": [
+      "hemp-q2-ext-f2-rapport-mixte",
+      "hemp-q2-b04-seriotica-leaves-flowers-colour",
+      "hemp-q2-rb01-stigmates-brun-rouge"
+    ],
+    "exactDuplicate": {
+      "candidate": "hemp-q2-rb03-f2-segregation-profils",
+      "existing": "hemp-q2-ext-f2-rapport-mixte",
+      "reason": "Même ségrégation F2 1:2:1, autre lecture de sa part mixte."
+    }
+  },
+  "sourceAccessNotes": [
+    "Les trois notices excerpt (Lionsgate, HBO, Freak Brothers) ont été recherchées et effectivement lues comme extraits officiels ; pas comme textes intégraux.",
+    "Gagalova : URL PMC soumise à contrôle navigateur lors de la revue ; même article primaire intégral lu chez Wiley et URL de lecture alternative consignée dans sourceChecks."
+  ],
+  "safeguards": [
+    "Chaque question, ses quatre choix et son explication ont été lus.",
+    "Empreintes calculées sur JSON.stringify des objets complets, sans réécriture du lot auteur.",
+    "Aucune question du reviewer approuvée par cette revue."
+  ],
+  "supersededItems": [
+    {
+      "id": "hemp-q2-rb03-cannabis-violet-anthocyanes",
+      "status": "rejected",
+      "domain": null,
+      "domainComment": "Hors périmètre : identification générale d’une famille de pigments foliaires ; aucune propriété propre des fleurs ou produits à actifs n’est testée.",
+      "comment": "Pigmentation foliaire générale hors périmètre actif ; candidat retiré avant activation.",
+      "contentHash": "2f79b0a37969d7599f23bef29f4e3ecf9dca6df3fb05d037b2b064166817fa02",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-gagalova24",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11588432/",
+          "locator": "Abstract ; Introduction, paragraphes pigmentation et drug-type ; Results",
+          "result": "Accès PMC limité par un contrôle navigateur ; même article original intégral effectivement ouvert chez Wiley, DOI 10.1002/pld3.70016. Anthocyanes et pigmentation rouge/pourpre soutenues ; étude de cannabis à actifs.",
+          "sourceHash": "ba1e198f88453335f4c0114af0dd8f6cf5c1c46bb3b7a6ff4fc59f90aa0e5290",
+          "actualReadUrl": "https://onlinelibrary.wiley.com/doi/full/10.1002/pld3.70016"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rb03-f2-segregation-profils",
+      "status": "rejected",
+      "domain": "active",
+      "domainComment": "Le fait porte sur profils cannabinoïdes, glandes ou caractères des cannabis à actifs ; les généralités non liées à ces objets ne sont pas testées.",
+      "comment": "Doublon du fait F2 déjà actif ; candidat retiré avant activation.",
+      "contentHash": "cea3a0e1b150cc37b5e08468228f904a3698b97c29a5fd768f564643efbfe620",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb03-demeijer03",
+          "url": "https://3402974.fs1.hubspotusercontent-na1.net/hubfs/3402974/MGC%20Website%20PDFs/The-inheritence-of-Phenotype-in.pdf",
+          "locator": "Résumé p. 335 ; modèle de ségrégation des chimotypes",
+          "result": "Copie du papier Genetics original ouverte. F1 toutes mixtes CBD-THC et ségrégation F2 compatible avec 1:2:1 explicitement rapportées. Modèle moléculaire historique non universalisé.",
+          "sourceHash": "213031c92e080339473f3857079a113b0a2f365c56d2c6e17868e335a9f33e03"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    }
+  ],
+  "revisionHistory": [
+    {
+      "date": "2026-11-17",
+      "reviewer": "root",
+      "removedIds": [
+        "hemp-q2-rb03-cannabis-violet-anthocyanes",
+        "hemp-q2-rb03-f2-segregation-profils"
+      ],
+      "replacementSlots": "rb06 grows to35; B total stays185"
+    }
+  ]
+}

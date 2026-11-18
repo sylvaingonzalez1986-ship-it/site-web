@@ -1,0 +1,367 @@
+{
+  "batchId": "c-legacy-02",
+  "status": "reserved-not-started",
+  "scope": "Local beta: rewriting or replacing the fact is allowed. Preserve factual quality and independent review.",
+  "entries": [
+    {
+      "id": "hemp-plant-antheres",
+      "topicId": "plant",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait classique cohérent, mais étude citée de florogenèse femelle ne démontre pas production de pollen mâle. Ajouter une source directement sur anthères/pollen ou la référence générale déjà consultée ; ne pas présenter l’étude femelle comme preuve.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-plant-bractee",
+      "topicId": "plant",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Les passages cités décrivent une bractéole, sans définir explicitement bractée comme feuille modifiée. Ajouter une définition botanique adaptée ; les distracteurs racine/écaille/glande sont aussi faibles pour le niveau3.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-plant-inflorescence",
+      "topicId": "plant",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait structural confirmé, mais item niveau4 rendu trivial par trois choix relevant d’autres catégories (fleur géante, fruit charnu, feuille). Demander une correction de distracteurs/difficulté sans changer le fait.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-genetics-feral",
+      "topicId": "genetics",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Les populations échappées sont décrites, mais le passage cité ne définit pas explicitement féral. Ajouter une définition ou un passage institutionnel explicite avant validation.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-genetics-landrace",
+      "topicId": "genetics",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "CFIA mentionne les landraces sans définition suffisante de population locale cultivée ; citation trop indirecte pour approuver. Une référence scientifique sur la notion doit être ajoutée.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-genetics-recombinaison",
+      "topicId": "genetics",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait général cohérent mais trois distracteurs exclusifs/copies parentales sont faibles ; JAX documente surtout ségrégation F2, sans détailler les échanges chromosomiques du corrigé. Corriger choix et référence précise.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-genetics-pangenome",
+      "topicId": "genetics",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Pangénome confirmé ; trois distracteurs commencent par « les seuls/seules » et opposent tous un sous-ensemble à la réponse englobante. Corriger choix/niveau expert, sans changer le fait.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-cineole",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Le noyau factuel ne peut être entièrement vérifié dans les références actuelles : accès chimique bloqué ou structure/fonction non montrée dans les passages. Pas de validation par mémoire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-linalol-fonction",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Le noyau factuel ne peut être entièrement vérifié dans les références actuelles : accès chimique bloqué ou structure/fonction non montrée dans les passages. Pas de validation par mémoire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-humulene",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Le noyau factuel ne peut être entièrement vérifié dans les références actuelles : accès chimique bloqué ou structure/fonction non montrée dans les passages. Pas de validation par mémoire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-pinenes-isomeres",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Les deux pinènes sont mesurés, mais le texte cité ne démontre pas leur différence de position de double liaison. Ajouter structures référencées/notice chimique précise avant approbation.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-cineole-fonction",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Le noyau factuel ne peut être entièrement vérifié dans les références actuelles : accès chimique bloqué ou structure/fonction non montrée dans les passages. Pas de validation par mémoire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-enantiomeres",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Définition de chiralité confirmée par IUPAC et formesR/S du linalol indiquées par Flavornet. Remplacer/rétablir la référence PubChem actuellement inaccessible pour pouvoir sceller toutes les preuves publiées.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-caryophyllene-oxyde",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Le tableau confirme l’oxyde, mais pas la formule dans le passage consulté. À niveau4, le mot oxyde donne aussi immédiatement oxygène : meilleure référence chimique et recalibrage/distracteurs requis.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-molecules-guaiol",
+      "topicId": "molecules",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Le noyau factuel ne peut être entièrement vérifié dans les références actuelles : accès chimique bloqué ou structure/fonction non montrée dans les passages. Pas de validation par mémoire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-anandamide",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Deux distracteurs absolus « seulement » permettent une élimination facile ; proposer quatre origines comparables sans absolus. Fait étayé par le résumé primaire indexé.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-cbn-oxydation",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Le résumé de la seule référence attachée établit dégradation et formation du CBN, sans mécanisme oxydatif explicite ; ajouter Kim2022 ou Wang2016 déjà lus. Texte actuel factuellement cohérent, preuve à compléter.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-delta9",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Les passages des deux références ne donnent pas explicitement la convention de numérotation delta-9 ; ajouter référence nomenclature ou schéma numéroté effectivement vérifié.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-decarboxylation",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Ajouter la légende Figure1 de Kim2022 explicitant -CO2, réellement lue ; le texte Wang2016 lu ne suffit pas seul à prouver ce détail. Aucun changement de fait ni protocole.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-cbd-thc-isomeres",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Les passages lus ne donnent pas explicitement la formule brute commune des deux molécules. DailyMed démontre seulement celle du THC ; ajouter une preuve chimique CBD et la distinction constitutionnelle.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-2ag",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Deux références attachées : une page vide et une notice indexée sans détail structural suffisant. Une autre source MAGL lue le qualifie de monoglycéride mais n’est pas attachée ; compléter références avant validation.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-thca-a-b",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "unverified",
+      "reason": "Notice structurale accessible sans résumé ; le détail A/B n’a pas pu être vérifié dans le texte primaire. Ne pas valider à partir du titre.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-evidence-branches",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Même connaissance centrale que hemp-evidence-cbga-carrefour, simplement inversée avec trois séquences incorrectes ; demander retrait séparé ou véritable autre fait avec nouvel ID. Niveau4 excessif pour ce raisonnement.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-coccinelle",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait Purdue vérifié ; pigeon distracteur fantaisiste et trois proies de taille très différente. Remplacer par petits arthropodes plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-puceron",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Source confirme fluides végétaux mais pas phloème explicitement ; grains de sable/larves de coccinelles distracteurs peu plausibles au niveau2. Compléter preuve phloème et refaire choix.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-thrips",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Source attachée décrit ponctuations blanches, cicatrices et fèces sombres, sans établir explicitement « argentées » ni mécanisme de réflexion. Ajouter source exacte pour cette explication ou corriger sans changer le fait central.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-parasitoide",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Mort de l’hôte source vérifiée ; la momie de puceron n’est pas documentée par le passage Purdue (parasitoïdes génériques). Ajouter preuve de ce détail.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-altise",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Guide nomme espèce mais ne documente pas ordre ni détails élytres/pattes dans le texte ciblé ; ajouter source entomologique taxonomique. Choix mollusques/nématodes peu plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-miellat",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait NC State complet vérifié ; chènevotte/cire d’abeille/latex sont des distracteurs trop éloignés. Niveau3 surestimé ; réestimer2 avec choix biologiques plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-predateurs",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Purdue prouve spécialisation de P.persimilis mais ne nomme pas Phytoseiidae. Ajouter référence taxonomique liant espèce et famille.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-oomycetes",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Classification générale APS vérifiée mais cas chanvre non couvert ; ajouter source spécifique. Proposer vrais champignons parmi distracteurs, pertinents pour le concept expliqué.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-hlvd",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "ICTV définit parfaitement les viroïdes mais cette page ne rattache pas HLVd à ce groupe ni au cannabis. Ajouter fiche HLVd/données primaires spécifiques ; ne déduire que de l’acronyme ne suffit pas.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-biodiversity-podosphaera",
+      "topicId": "biodiversity",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Étude primaire vérifiée ; trois arthropodes contre un champignon rendent niveau4 artificiel. Remplacer par agents fongiques plausibles et réestimer3.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-osaughnessy",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait primaire vérifié ; niveau1 trop optimiste pour auteur et année spécialisés. Réestimer niveau2 ; remplacer Nobel par un médecin ou chimiste de même contexte. Pas de promesse médicale dans l’explication.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-cbd-1940",
+      "topicId": "evidence",
+      "initialAction": "remplacer",
+      "currentDecision": "not-reviewed",
+      "reason": "Question L1 dépendant d’une première page bibliographique isolée, alors que l’ID conserve cbd-1940 : sens profondément changé ; remplacer le concept.",
+      "identityImpact": "Nouveau fait ou nouvel objectif : nouvel ID hemp-q2-* obligatoire ; archiver l’ancien.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-anandamide",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Résumé primaire soutient fait et cerveau porcin ; connaissance historique spécialisée mérite niveau2, pas accessible par simple vocabulaire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-2ag",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Trois distracteurs inventés ou de nature différente, dont « Deux récepteurs associés » ; conserver fait et ID après remplacement par noms biochimiques plausibles.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-receptors-type",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Résumé FAAH établit l’acide arachidonique mais ne nomme pas le second produit éthanolamine ; ajouter passage réactionnel précis avant approbation de l’explication complète. ID historique trompeur mais ne justifie pas seul un renommage.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-molecule",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Doublon du fait testé par hemp-hs-sci-anandamide-name : arachidonoyle associé à éthanolamine. Demander retrait séparé de cette inversion ; ne pas masquer avec une clé différente.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-sci-cbd-structure-date",
+      "topicId": "evidence",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Le prompt annonce le travail « sur le CBD » et la date tandis que les trois distracteurs portent sur récepteurs ou anandamide. Trop éliminatoire pour niveau3 ; demander distracteurs de même nature.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    }
+  ]
+}

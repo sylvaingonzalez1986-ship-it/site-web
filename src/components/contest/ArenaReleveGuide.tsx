@@ -176,9 +176,9 @@ export function ArenaReleveGuide({ steps, instruction, complete = false, childre
   const active = enabled && !free ? target : null;
   return <>
     <aside ref={anchor} className={`${styles.coach}${compact ? ` ${styles.compact}` : ''}${paced ? ` ${styles.paced}` : ''}`} data-releve-guide-card data-releve-coach data-guide-step={active?.step.id ?? (complete ? 'complete' : 'waiting')} data-complete={complete || undefined} data-free={free || undefined}>
-      <div className={styles.portrait}><Image src="/sylvain.png" alt="Sylvain, ton guide" width={96} height={96} sizes={compact ? '48px' : '80px'} /></div>
+      <div className={styles.portrait}><Image src="/sylvain.png" alt="Loïc, ton guide" width={96} height={96} sizes={compact ? '48px' : '80px'} /></div>
       <div className={styles.message}>
-        {compact ? <><strong>{paced && active ? active.step.title : 'Sylvain'}</strong>{paced && active?.step.progressLabel ? <span className={styles.lessonProgress}>{active.step.progressLabel}</span> : null}</> : <strong>{active?.step.title ?? (complete ? 'Cette étape est réussie' : 'À toi de jouer')}</strong>}
+        {compact ? <><strong>{paced && active ? active.step.title : 'Loïc'}</strong>{paced && active?.step.progressLabel ? <span className={styles.lessonProgress}>{active.step.progressLabel}</span> : null}</> : <strong>{active?.step.title ?? (complete ? 'Cette étape est réussie' : 'À toi de jouer')}</strong>}
         <p role="status" aria-live="polite">{free ? compact ? 'Explore à ton rythme. Je reste là pour te guider.' : 'Explore librement. Je garde ta progression ; reprends le guidage quand tu veux.' : active?.step.instruction ?? instruction}</p>
       </div>
       <div className={styles.actions}>

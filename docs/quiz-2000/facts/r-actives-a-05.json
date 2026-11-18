@@ -1,0 +1,1515 @@
+{
+  "batchId": "r-actives-a-05",
+  "author": "rebalance_classify_a",
+  "status": "frozen-awaiting-independent-review",
+  "targetCount": 34,
+  "sources": [
+    {
+      "id": "q2-ra05-blue-dream",
+      "title": "Blue Dream",
+      "organization": "Humboldt Seed Organization",
+      "url": "https://www.humboldtseeds.net/en/blue-dream/",
+      "verifiedAt": "2026-11-17",
+      "author": "Humboldt Seed Organization",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche annonce Blueberry × Super Silver Haze.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cross",
+        "result": "Passage original effectivement consulté. La fiche annonce Blueberry × Super Silver Haze."
+      }
+    },
+    {
+      "id": "q2-ra05-trainwreck",
+      "title": "Train Wreck (Feminised)",
+      "organization": "Green House Seed Company",
+      "url": "https://shop.greenhouseseeds.nl/medicinal-seeds/high-thc-seeds/train-wreck/",
+      "verifiedAt": "2026-11-17",
+      "author": "Green House Seed Company",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche rattache la lignée clonale à Arcata, en Californie.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Genetics et Description",
+        "result": "Passage original effectivement consulté. La fiche rattache la lignée clonale à Arcata, en Californie."
+      }
+    },
+    {
+      "id": "q2-ra05-tangie",
+      "title": "Wholesale Program — Tangie",
+      "organization": "DNA Genetics",
+      "url": "https://dnagenetics.com/wholesale-program/",
+      "verifiedAt": "2026-11-17",
+      "author": "DNA Genetics",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche indique Cali-O × Skunk Hybrid from Crockett’s Selection.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Top strains to stock, Tangie, Genetics",
+        "result": "Passage original effectivement consulté. La fiche indique Cali-O × Skunk Hybrid from Crockett’s Selection."
+      }
+    },
+    {
+      "id": "q2-ra05-super-skunk",
+      "title": "Skunk Weed: A Beginner’s Guide to Skunk",
+      "organization": "Sensi Seeds",
+      "url": "https://sensiseeds.com/en/blog/what-is-skunk-weed-a-beginners-guide-to-skunk/",
+      "verifiedAt": "2026-11-17",
+      "author": "Sensi Seeds",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "Sensi indique Skunk #1 croisée avec une lignée afghane à résine.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Sensi Seeds Skunk strains, Super Skunk",
+        "result": "Passage original effectivement consulté. Sensi indique Skunk #1 croisée avec une lignée afghane à résine."
+      }
+    },
+    {
+      "id": "q2-ra05-dosidos",
+      "title": "Do-Si-Dos",
+      "organization": "Archive Seed Bank",
+      "url": "https://archiveseedbank.com/us/en/products/do-si-dos",
+      "verifiedAt": "2026-11-17",
+      "author": "Archive Seed Bank",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche officielle affiche OGKB femelle × Face Off OG BX1 mâle.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Lineage, mère et père",
+        "result": "Passage original effectivement consulté. La fiche officielle affiche OGKB femelle × Face Off OG BX1 mâle."
+      }
+    },
+    {
+      "id": "q2-ra05-runtz",
+      "title": "Runtz Strain",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/us/runtz-weed-strain-631",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La version consultée affiche Original Z × Gelato.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Strain Info, Genetics",
+        "result": "Passage original effectivement consulté. La version consultée affiche Original Z × Gelato."
+      }
+    },
+    {
+      "id": "q2-ra05-la-confidential",
+      "title": "LA Confidential Cannabis Strain — Origin and Background",
+      "organization": "DNA Genetics",
+      "url": "https://dnagenetics.com/la-confidential-cannabis-strain/",
+      "verifiedAt": "2026-11-17",
+      "author": "DNA Genetics",
+      "published": "2025-11-02",
+      "passage": "DNA annonce OG LA Affie et Afghani comme parents.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Origin and Background",
+        "result": "Passage original effectivement consulté. DNA annonce OG LA Affie et Afghani comme parents."
+      }
+    },
+    {
+      "id": "q2-ra05-wedding-cake",
+      "title": "Everything About Wedding Cake Strain",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/us/blog/about-wedding-cake-strain",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "2026-05-21",
+      "passage": "La page donne Pink Cookies comme autre nom de Wedding Cake.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Histoire, alias canadien et Barney’s Farm Wedding Cake Genetics",
+        "result": "Passage original effectivement consulté. La page donne Pink Cookies comme autre nom de Wedding Cake."
+      }
+    },
+    {
+      "id": "q2-ra05-maui-waui",
+      "title": "Hawaii Maui Waui Regular",
+      "organization": "Nirvana Seeds",
+      "url": "https://usa.nirvanashop.com/products/hawaii-maui-waui-regular",
+      "verifiedAt": "2026-11-17",
+      "author": "Nirvana Seeds",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La description aromatique cite notamment ananas et mangue.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Aroma and flavor",
+        "result": "Passage original effectivement consulté. La description aromatique cite notamment ananas et mangue."
+      }
+    },
+    {
+      "id": "q2-ra05-acapulco",
+      "title": "Acapulco Gold",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/us/acapulco-gold-weed-strain-26",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche indique une origine génétique Central American.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Strain Info, Genetics",
+        "result": "Passage original effectivement consulté. La fiche indique une origine génétique Central American."
+      }
+    },
+    {
+      "id": "q2-ra05-og-kush",
+      "title": "OG Kush",
+      "organization": "Humboldt Seed Organization",
+      "url": "https://www.humboldtseeds.net/en/og-kush/",
+      "verifiedAt": "2026-11-17",
+      "author": "Humboldt Seed Organization",
+      "published": "Date non indiquée dans la fiche consultée",
+      "passage": "La fiche indique Lemon Thai/Pakistan × Chemdawg.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Déclaration commerciale attribuée à cette maison et à cette version. Ni pedigree génomique indépendant, ni promesse médicale, rendement, recette ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cross et Elite genetics",
+        "result": "Passage original effectivement consulté. La fiche indique Lemon Thai/Pakistan × Chemdawg."
+      }
+    },
+    {
+      "id": "q2-ra05-strawberry",
+      "title": "Kyle Kushman on Strawberry Cough",
+      "organization": "Senior Savvy Cannabis",
+      "url": "https://seniorsavvycannabis.substack.com/p/kyle-kushman-on-strawberry-cough",
+      "verifiedAt": "2026-11-17",
+      "author": "Catherine Goldberg, entretien avec Kyle Kushman",
+      "published": "2026-09-29",
+      "passage": "L’entretien raconte l’obtention du clone par Kyle Kushman et sa diffusion de New York vers la Californie.",
+      "access": "full-text",
+      "documentKind": "Entretien original",
+      "limitation": "Témoignage primaire rétrospectif ; diffusion du clone, sans affirmer que Kushman est le créateur du croisement. Conseils de culture et récits de guérison exclus.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "The Strawberry Cough Story",
+        "result": "Passage original effectivement consulté. L’entretien raconte l’obtention du clone par Kyle Kushman et sa diffusion de New York vers la Californie."
+      }
+    },
+    {
+      "id": "q2-ra05-uk-hemp",
+      "title": "Government response to ACMD advice on reform to hemp licensing fees",
+      "organization": "Home Office",
+      "url": "https://www.gov.uk/government/publications/government-response-to-acmd-advice-on-reform-to-hemp-licensing-fees/government-response-to-acmd-advice-on-reform-to-hemp-licensing-fees-accessible",
+      "verifiedAt": "2026-11-17",
+      "author": "Home Office",
+      "published": "2025-02-11",
+      "passage": "Les feuilles et fleurs restent contrôlées au Royaume-Uni quel que soit leur pourcentage de THC.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Seul le maintien du contrôle sur fleurs/feuilles est repris ; aucun seuil de culture proposé n’est présenté comme règle actuelle.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "ACMD recommendation 2, Government response",
+        "result": "Passage original effectivement consulté. Les feuilles et fleurs restent contrôlées au Royaume-Uni quel que soit leur pourcentage de THC."
+      }
+    },
+    {
+      "id": "q2-ra05-uk-factsheet",
+      "title": "Drug licensing factsheet: cannabis, CBD and other cannabinoids",
+      "organization": "Home Office",
+      "url": "https://www.gov.uk/government/publications/cannabis-cbd-and-other-cannabinoids-drug-licensing-factsheet/drug-licensing-factsheet-cannabis-cbd-and-other-cannabinoids",
+      "verifiedAt": "2026-11-17",
+      "author": "Home Office",
+      "published": "2024-10-03",
+      "passage": "Le cannabinol est classé comme substance contrôlée Class B ; le CBD pur isolé ne l’est pas au titre de cette loi.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Droit britannique uniquement ; ne pas confondre CBD pur et tous les produits contenant du CBD. Aucune règle alimentaire ou promesse médicale inférée.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "General legislative position, paragraphes 4–5",
+        "result": "Passage original effectivement consulté. Le cannabinol est classé comme substance contrôlée Class B ; le CBD pur isolé ne l’est pas au titre de cette loi."
+      }
+    },
+    {
+      "id": "q2-ra05-nhs-medical",
+      "title": "Medical cannabis (and cannabis oils)",
+      "organization": "NHS",
+      "url": "https://www.nhs.uk/medicines/medical-cannabis/",
+      "verifiedAt": "2026-11-17",
+      "author": "NHS",
+      "published": "2022-05-27 (dernière révision affichée)",
+      "passage": "La prescription NHS est réservée à un médecin hospitalier spécialiste ou à sa supervision.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Page encore publiée, dernière révision affichée mai2022 et échéance mai2025 ; contexte NHS en Angleterre, pas accès universel ni cadre de toute prescription privée.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "How do I get a prescription?",
+        "result": "Passage original effectivement consulté. La prescription NHS est réservée à un médecin hospitalier spécialiste ou à sa supervision."
+      }
+    },
+    {
+      "id": "q2-ra05-uruguay",
+      "title": "Decreto 120/014 — artículo 38",
+      "organization": "IMPO, Uruguay",
+      "url": "https://www.impo.com.uy/bases/decretos/120-2014",
+      "verifiedAt": "2026-11-17",
+      "author": "Pouvoir exécutif de l’Uruguay",
+      "published": "2014-05-19 (publication ; texte actualisé consulté)",
+      "passage": "L’usager choisit une origine enregistrée ; le cumul culture domestique, club et pharmacie est interdit.",
+      "access": "full-text",
+      "documentKind": "Texte réglementaire officiel",
+      "limitation": "Texte officiel actualisé effectivement ouvert. Les pages IRCCA ont échoué à l’ouverture ; aucune lecture directe de ces pages n’est revendiquée. Aucun seuil ni protocole de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Article 38 ; articles 37 et 32 pour les voies",
+        "result": "Passage original effectivement consulté. L’usager choisit une origine enregistrée ; le cumul culture domestique, club et pharmacie est interdit."
+      }
+    },
+    {
+      "id": "q2-ra05-germany-medical",
+      "title": "Fragen und Antworten zum Cannabisgesetz",
+      "organization": "Bundesministerium für Gesundheit",
+      "url": "https://www.bundesgesundheitsministerium.de/themen/cannabis/faq-cannabisgesetz",
+      "verifiedAt": "2026-11-17",
+      "author": "Bundesministerium für Gesundheit",
+      "published": "Mise à jour de la page non précisée ; paragraphes en vigueur en 2026 consultés",
+      "passage": "Le cannabis médical reste sur prescription sans ordonnance spéciale de stupéfiants ; la page distingue la prise en charge des fleurs et des extraits depuis le 29 juillet 2026.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Droit allemand et assurance maladie légale seulement. Deux faits distincts ; aucun projet de restrictions téléconsultation n’est présenté comme loi en vigueur.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Medizinalcannabis, prescription et Erstattungsfähigkeit",
+        "result": "Passage original effectivement consulté. Le cannabis médical reste sur prescription sans ordonnance spéciale de stupéfiants ; la page distingue la prise en charge des fleurs et des extraits depuis le 29 juillet 2026."
+      }
+    },
+    {
+      "id": "q2-ra05-canada-pesticides",
+      "title": "Pest Control Products for use on cannabis",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/pest-control-products.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "2019-05-22",
+      "passage": "Les titulaires de licence ne peuvent employer que des produits antiparasitaires enregistrés ou autrement autorisés pour le cannabis.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Règle de qualité du cannabis autorisé ; aucune liste de produit, méthode, dose ou conduite de culture pratique donnée.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Introduction et obligations, CR §81",
+        "result": "Passage original effectivement consulté. Les titulaires de licence ne peuvent employer que des produits antiparasitaires enregistrés ou autrement autorisés pour le cannabis."
+      }
+    },
+    {
+      "id": "q2-ra05-thailand",
+      "title": "Thailand Tightens Cannabis Regulations Nationwide",
+      "organization": "Thailand.go.th",
+      "url": "https://thailand.go.th/public/useful-information-detail/thailand-tightens-cannabis-regulations-nationwide",
+      "verifiedAt": "2026-11-17",
+      "author": "Portail officiel du gouvernement thaïlandais",
+      "published": "2026-11-09",
+      "passage": "La mise à jour officielle décrit le contrôle des ventes sans prescription et avertit les touristes que la présence d’une boutique ne signifie pas usage récréatif autorisé.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "Portée datée du9novembre2026. Aucune généralisation au statut de toutes les parties de plante ni détail de quantité ou sanction.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Objectif médical et What this means for foreign visitors",
+        "result": "Passage original effectivement consulté. La mise à jour officielle décrit le contrôle des ventes sans prescription et avertit les touristes que la présence d’une boutique ne signifie pas usage récréatif autorisé."
+      }
+    },
+    {
+      "id": "q2-ra05-australia",
+      "title": "Medicinal cannabis: access pathways and usage data",
+      "organization": "Therapeutic Goods Administration",
+      "url": "https://www.tga.gov.au/resources/explore-topic/medicinal-cannabis-hub/medicinal-cannabis-access-pathways-and-usage-data",
+      "verifiedAt": "2026-11-17",
+      "author": "Therapeutic Goods Administration",
+      "published": "Date de version non précisée sur le passage consulté",
+      "passage": "La catégorie Schedule3 permettrait des préparations CBD enregistrées, mais aucun produit ARTG satisfaisant cette catégorie n’est déclaré disponible dans cette page.",
+      "access": "official-page",
+      "documentKind": "Page officielle",
+      "limitation": "État décrit par le régulateur australien à la consultation ; ne pas transformer une catégorie réglementaire en disponibilité commerciale. Réexamen rapproché nécessaire.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Scheduling of medicinal cannabis products, Cannabidiol",
+        "result": "Passage original effectivement consulté. La catégorie Schedule3 permettrait des préparations CBD enregistrées, mais aucun produit ARTG satisfaisant cette catégorie n’est déclaré disponible dans cette page."
+      }
+    },
+    {
+      "id": "q2-ra05-france-announcement",
+      "title": "Notification des textes encadrant l’usage du cannabis médical à la Commission européenne",
+      "organization": "Ministère français chargé de la Santé",
+      "url": "https://sante.gouv.fr/actualites-presse/presse/communiques-de-presse/article/notification-des-textes-encadrant-l-usage-du-cannabis-medical-a-la-commission",
+      "verifiedAt": "2026-11-17",
+      "author": "Ministère chargé de la Santé",
+      "published": "2025-03-20",
+      "passage": "Le communiqué décrit l’accès projeté en dernière ligne et sur prescription hospitalière initiale.",
+      "access": "excerpt",
+      "documentKind": "Communiqué institutionnel original",
+      "limitation": "URL originale ouverte mais contrôle JavaScript ; texte primaire indexé réellement consulté. Annonce de mars2025 exclusivement, pas état de l’accès effectif ou du remboursement en novembre2026.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Passage Comme lors de l’expérimentation, dernière ligne et prescription hospitalière initiale",
+        "result": "Ouverture directe tentée : contrôle JavaScript. Texte primaire indexé de ce communiqué effectivement lu, notamment dernière ligne de traitement et prescription hospitalière initiale ; aucune lecture intégrale directe revendiquée."
+      }
+    },
+    {
+      "id": "q2-ra05-allergy",
+      "title": "Cannabis-related allergies: An international overview and consensus recommendations",
+      "organization": "Allergy / International Cannabis Allergy Collaboration",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/all.15237",
+      "verifiedAt": "2026-11-17",
+      "author": "Isabel J. Skypala, Samira Jeimy, Hannelore Brucker et collaborateurs",
+      "published": "2022-01-31 (première publication éditeur ; numéro juillet2022)",
+      "passage": "Des protéines allergènes sont identifiées ; contact avec feuilles/fleurs peut provoquer des réactions ; Can s3 peut croiser avec des protéines de pêche et d’autres végétaux.",
+      "access": "full-text",
+      "documentKind": "Consensus professionnel publié",
+      "limitation": "Consensus de spécialistes et cas cliniques ; sensibilisation et réaction ne sont pas universelles. Ne pas confondre allergie aux protéines et effet pharmacologique du THC.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Cannabis allergens, Cross-reactivity et Clinical manifestations",
+        "result": "Passage original effectivement consulté. Des protéines allergènes sont identifiées ; contact avec feuilles/fleurs peut provoquer des réactions ; Can s3 peut croiser avec des protéines de pêche et d’autres végétaux."
+      }
+    },
+    {
+      "id": "q2-ra05-chs",
+      "title": "European Guideline on Chronic Nausea and Vomiting — UEG and ESNM Consensus",
+      "organization": "United European Gastroenterology Journal",
+      "url": "https://ddd.uab.cat/pub/artpub/2025/309922/309922.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Carolina Malagelada, Jutta Keller, Daniel Sifrim et collaborateurs",
+      "published": "2025",
+      "passage": "L’arrêt du cannabis est le traitement le plus efficace du CHS ; les bains chauds sont aussi rapportés dans d’autres vomissements cycliques.",
+      "access": "full-text",
+      "documentKind": "Recommandation professionnelle originale",
+      "limitation": "Recommandations à preuve faible ; pas de diagnostic personnel, de médicament symptomatique, de protocole d’arrêt ni de quantité à prendre.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Section4.3, p.447 imprimée/PDFindice21, Statement57 et bains chauds",
+        "result": "Passage original effectivement consulté. L’arrêt du cannabis est le traitement le plus efficace du CHS ; les bains chauds sont aussi rapportés dans d’autres vomissements cycliques."
+      }
+    },
+    {
+      "id": "q2-ra05-aasm",
+      "title": "Health Advisory: Marijuana and Obstructive Sleep Apnea",
+      "organization": "American Academy of Sleep Medicine",
+      "url": "https://aasm.org/wp-content/uploads/2018/04/marijuana-sleep-apnea-health-advisory.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "AASM Board of Directors",
+      "published": "2018-01-20 (adoption)",
+      "passage": "L’AASM déconseille le cannabis et les cannabinoïdes médicaux pour traiter l’apnée obstructive faute de preuves suffisantes de sécurité et d’efficacité.",
+      "access": "full-text",
+      "documentKind": "Avis institutionnel professionnel",
+      "limitation": "Position de2018 explicitement datée ; ne préjuge pas d’un essai ultérieur ni d’une recommandation nouvelle en2026.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Conclusion du document d’une page",
+        "result": "Passage original effectivement consulté. L’AASM déconseille le cannabis et les cannabinoïdes médicaux pour traiter l’apnée obstructive faute de preuves suffisantes de sécurité et d’efficacité."
+      }
+    },
+    {
+      "id": "q2-ra05-ahrq",
+      "title": "Living Systematic Review on Cannabis and Other Plant-Based Treatments for Chronic Pain:2025 Update — Executive Summary",
+      "organization": "Agency for Healthcare Research and Quality / NCBI Bookshelf",
+      "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK618040/",
+      "verifiedAt": "2026-11-17",
+      "author": "Roger Chou, Ahmed Y Ahmed, Tracy Dana et collègues",
+      "published": "2025-07",
+      "passage": "La synthèse souligne que les données sur l’effet sur l’utilisation d’opioïdes sont insuffisamment rapportées.",
+      "access": "official-page",
+      "documentKind": "Synthèse originale institutionnelle de preuves",
+      "limitation": "Forte dépendance au produit et à la durée ; pas extrapolation aux fleurs fumées ni tous produitsCBD/THC ou douleur aiguë.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Executive Summary, Key limitations et Implications for Clinical Practice",
+        "result": "Passage original effectivement rouvert et lu : La synthèse souligne que les données sur l’effet sur l’utilisation d’opioïdes sont insuffisamment rapportées."
+      }
+    },
+    {
+      "id": "q2-ra05-fda-cbd",
+      "title": "EPIDIOLEX (cannabidiol) oral solution: Prescribing Information, revised05/2026",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Jazz Pharmaceuticals ; notice approuvée FDA",
+      "published": "2026-05",
+      "passage": "L’arrêt brutal d’un antiépileptique peut augmenter la fréquence des crises ; cette prudence est distincte d’un syndrome de sevrage du CBD.",
+      "access": "full-text",
+      "documentKind": "Notice réglementaire de médicament",
+      "limitation": "Notice d’un médicament défini ; données métaboliques animales explicitement séparées de leur pertinence humaine ; pas de conseil de dose.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§5.5 Withdrawal of Antiepileptic Drugs",
+        "result": "Passage original effectivement rouvert et lu : L’arrêt brutal d’un antiépileptique peut augmenter la fréquence des crises ; cette prudence est distincte d’un syndrome de sevrage du CBD."
+      }
+    },
+    {
+      "id": "q2-ra05-thcv",
+      "title": "Evidence that the plant cannabinoid delta9-tetrahydrocannabivarin is a cannabinoidCB1 andCB2 receptor antagonist",
+      "organization": "British Journal of Pharmacology / Wiley",
+      "url": "https://bpspubs.onlinelibrary.wiley.com/doi/10.1038/sj.bjp.0706414",
+      "verifiedAt": "2026-11-17",
+      "author": "Adèle Thomas, Lesley A Stevenson, Kerrie N Wease, Martin R Price, Gemma Baillie, Ruth A Ross, Roger G Pertwee",
+      "published": "2005, volume146 pp917–926",
+      "passage": "Le THCV se comporte comme antagoniste compétitif CB1/CB2 dans ces préparations expérimentales ; l’effet dépend des tissus et agonistes.",
+      "access": "full-text",
+      "documentKind": "Article de recherche original",
+      "limitation": "Profil expérimental sous conditions précises ; ne pas déclarer antagonisme universel à toute concentration ni promesse d’amaigrissement ou antidote humain.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Résumé et Conclusions",
+        "result": "Passage original effectivement rouvert et lu : Le THCV se comporte comme antagoniste compétitif CB1/CB2 dans ces préparations expérimentales ; l’effet dépend des tissus et agonistes."
+      }
+    },
+    {
+      "id": "q2-ra05-cbd-iop",
+      "title": "Effect of sublingual application of cannabinoids on intraocular pressure: a pilot study",
+      "organization": "Journal of Glaucoma / University of Aberdeen",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16988594/",
+      "verifiedAt": "2026-11-17",
+      "author": "Ileana Tomida, Augusto Azuara-Blanco, Heather House, Maggie Flint, Roger G. Pertwee, Philip J. Robson",
+      "published": "2006-10",
+      "passage": "Chez six patients, le CBD n’a pas abaissé la pression oculaire ; la dose la plus élevée a provoqué une hausse transitoire.",
+      "access": "abstract",
+      "documentKind": "Essai clinique original",
+      "limitation": "Résumé original seul effectivement consulté ; pilote très petit. Aucun conseil de traitement ou dosage reproduit.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Résumé original, Results et Conclusions",
+        "result": "Passage original effectivement consulté. Chez six patients, le CBD n’a pas abaissé la pression oculaire ; la dose la plus élevée a provoqué une hausse transitoire."
+      }
+    },
+    {
+      "id": "q2-ra05-cbd-withdrawal",
+      "title": "Abrupt withdrawal of cannabidiol (CBD): A randomized trial",
+      "organization": "Epilepsy & Behavior",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32036242/",
+      "verifiedAt": "2026-11-17",
+      "author": "Lesley Taylor, Julie Crockett, Bola Tayo, Daniel Checketts, Kenneth Sommerville",
+      "published": "2020-02-07 (en ligne ; numéro mars2020)",
+      "passage": "Aucun syndrome de sevrage mis en évidence chez volontaires sains après arrêt du traitement bref au CBD purifié.",
+      "access": "abstract",
+      "documentKind": "Essai randomisé original",
+      "limitation": "Résumé seul ; étude de petite taille avec abandons pour effets indésirables, et auteurs liés au fabricant. Ne s’applique pas à l’arrêt d’un traitement antiépileptique chez un patient.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Résumé original, Methods, Results et Conclusion",
+        "result": "Passage original effectivement consulté. Aucun syndrome de sevrage mis en évidence chez volontaires sains après arrêt du traitement bref au CBD purifié."
+      }
+    },
+    {
+      "id": "q2-ra05-jwh018",
+      "title": "Phase I Hydroxylated Metabolites of the K2 Synthetic Cannabinoid JWH-018 Retain In Vitro and In Vivo Cannabinoid1 Receptor Affinity and Activity",
+      "organization": "PLOS ONE",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0021917",
+      "verifiedAt": "2026-11-17",
+      "author": "Lisa K. Brents et collaborateurs",
+      "published": "2011-07-06",
+      "passage": "JWH018 produit un niveau d’activation de plein agoniste CB1 dans les préparations, contrairement au THC agoniste partiel.",
+      "access": "full-text",
+      "documentKind": "Recherche pharmacologique originale",
+      "limitation": "Données expérimentales, pas prévision chiffrée des effets humains ni généralisation à tout cannabinoïde de synthèse.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract et Intrinsic activity of JWH018 metabolites",
+        "result": "Passage original effectivement consulté. JWH018 produit un niveau d’activation de plein agoniste CB1 dans les préparations, contrairement au THC agoniste partiel."
+      }
+    },
+    {
+      "id": "q2-ra05-cb1-signaling",
+      "title": "Cannabinoid Receptors in the Central Nervous System: Their Signaling and Roles in Disease",
+      "organization": "Frontiers in Cellular Neuroscience",
+      "url": "https://www.frontiersin.org/journals/cellular-neuroscience/articles/10.3389/fncel.2016.00294/full",
+      "verifiedAt": "2026-11-17",
+      "author": "Debra A. Kendall et Guillermo A. Yudowski",
+      "published": "2017-01-04 (volume2016)",
+      "passage": "La signalisation classique CB1 couplée à Gi/o inhibe l’adénylate cyclase et réduit l’AMP cyclique.",
+      "access": "full-text",
+      "documentKind": "Synthèse pharmacologique",
+      "limitation": "Voie canonique, pas règle absolue : couplages alternatifs et contexte cellulaire sont discutés par les auteurs.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "CB1 receptor signaling, Gi/o et adénylate cyclase",
+        "result": "Passage original effectivement consulté. La signalisation classique CB1 couplée à Gi/o inhibe l’adénylate cyclase et réduit l’AMP cyclique."
+      }
+    },
+    {
+      "id": "q2-ra05-howlett-gi",
+      "title": "Involvement of Gi in the inhibition of adenylate cyclase by cannabimimetic drugs",
+      "organization": "Molecular Pharmacology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2869405/",
+      "verifiedAt": "2026-11-17",
+      "author": "Allyn C. Howlett, J. M. Qualy, L. L. Khachatrian",
+      "published": "1986-03",
+      "passage": "Les expériences lient l’inhibition de l’adénylate cyclase par des cannabimimétiques à une protéine Gi.",
+      "access": "abstract",
+      "documentKind": "Recherche mécanistique originale",
+      "limitation": "Résumé original effectivement ouvert ; étude antérieure au clonage de CB1, identité moderne complétée par Kendall/Yudowski.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Résumé original",
+        "result": "Passage original effectivement consulté. Les expériences lient l’inhibition de l’adénylate cyclase par des cannabimimétiques à une protéine Gi."
+      }
+    }
+  ],
+  "draftRows": [
+    {
+      "key": "blue-dream-hso-pedigree",
+      "level": 2,
+      "prompt": "Quel pedigree Humboldt Seed Organization annonce-t-il pour sa Blue Dream ?",
+      "options": [
+        "Blueberry × Super Silver Haze",
+        "White Widow × Northern Lights",
+        "Skunk #1 × Durban Poison",
+        "Chemdawg × Girl Scout Cookies"
+      ],
+      "answer": 0,
+      "explanation": "La fiche de cette maison donne Blueberry × Super Silver Haze. Cette parenté annoncée concerne sa version de Blue Dream et ne certifie pas tous les produits portant ce nom.",
+      "subjectKey": "blue-dream-hso",
+      "property": "Parenté annoncée de la version HSO",
+      "sources": [
+        "blue-dream"
+      ],
+      "learningObjective": "Connaître une lignée récréative externe et attribuer sa parenté à sa source.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "trainwreck-arcata-california",
+      "level": 1,
+      "prompt": "À quelle région Green House rattache-t-il la Train Wreck clonale décrite dans sa fiche ?",
+      "options": [
+        "Au Rif marocain",
+        "À la Californie, autour d’Arcata",
+        "Au nord de la Thaïlande",
+        "À la vallée de la Bekaa"
+      ],
+      "answer": 1,
+      "explanation": "Green House présente Train Wreck comme une lignée clonale d’Arcata, en Californie. Cette provenance fait partie de son récit variétal, sans garantir l’identité de chaque produit homonyme.",
+      "subjectKey": "trainwreck-ghsc",
+      "property": "Origine californienne annoncée du clone",
+      "sources": [
+        "trainwreck"
+      ],
+      "learningObjective": "Situer une lignée classique dans l’histoire du cannabis californien.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "tangie-dna-cali-o-skunk",
+      "level": 2,
+      "prompt": "Quelle association DNA Genetics indique-t-il pour la Tangie de sa sélection Crockett ?",
+      "options": [
+        "Blueberry × Haze",
+        "OG LA Affie × Afghani",
+        "Cali-O × un hybride Skunk",
+        "Original Z × Gelato"
+      ],
+      "answer": 2,
+      "explanation": "La présentation DNA indique Cali-O × Skunk Hybrid, issu de la sélection Crockett. Le nom commercial ne constitue pas à lui seul une certification génétique des autres Tangie.",
+      "subjectKey": "tangie-dna-crockett",
+      "property": "Parenté de la Tangie présentée par DNA",
+      "sources": [
+        "tangie"
+      ],
+      "learningObjective": "Identifier une parenté revendiquée de lignée récréative.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "super-skunk-afghani-addition",
+      "level": 2,
+      "prompt": "Quelle lignée Sensi Seeds dit-il avoir associée à Skunk #1 pour créer Super Skunk ?",
+      "options": [
+        "Une Haze thaïlandaise",
+        "Une Blueberry américaine",
+        "Une Durban sud-africaine",
+        "Une lignée afghane à résine"
+      ],
+      "answer": 3,
+      "explanation": "Sensi décrit Super Skunk comme un croisement de Skunk #1 avec une Afghani à résine. Cette annonce porte sur sa lignée ; elle ne permet pas de prédire un effet individuel à partir du nom.",
+      "subjectKey": "super-skunk-sensi",
+      "property": "Apport afghan revendiqué à Super Skunk",
+      "sources": [
+        "super-skunk"
+      ],
+      "learningObjective": "Distinguer une lignée dérivée de Skunk #1 et son apport parental.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "dosidos-archive-ogkb-faceoff",
+      "level": 2,
+      "prompt": "Quel couple parental Archive affiche-t-il pour son Do-Si-Dos ?",
+      "options": [
+        "OGKB × Face Off OG BX1",
+        "Gelato × Original Z",
+        "Blueberry × Super Silver Haze",
+        "Cali-O × Skunk"
+      ],
+      "answer": 0,
+      "explanation": "La fiche Archive associe la mère OGKB au père Face Off OG BX1. Le nom Do-Si-Dos recouvre ici cette lignée annoncée, sans preuve d’identité pour les versions d’autres vendeurs.",
+      "subjectKey": "dosidos-archive",
+      "property": "Couple parental revendiqué par Archive",
+      "sources": [
+        "dosidos"
+      ],
+      "learningObjective": "Attribuer le pedigree d’une lignée récréative à la maison qui le publie.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "runtz-barneys-original-z-gelato",
+      "level": 2,
+      "prompt": "Quelle parenté la fiche actuelle de Barney’s Farm attribue-t-elle à sa Runtz ?",
+      "options": [
+        "Cherry Pie × OG Kush",
+        "Original Z × Gelato",
+        "Haze × Northern Lights",
+        "Skunk #1 × Afghani"
+      ],
+      "answer": 1,
+      "explanation": "La version consultée indique Original Z × Gelato. C’est une parenté revendiquée par cette maison, pas une garantie de profil chimique ni d’effet pour tout produit étiqueté Runtz.",
+      "subjectKey": "runtz-barneys",
+      "property": "Parenté annoncée dans la version consultée",
+      "sources": [
+        "runtz"
+      ],
+      "learningObjective": "Reconnaître la famille annoncée d’une lignée récréative contemporaine.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "la-confidential-dna-parentage",
+      "level": 2,
+      "prompt": "Quels parents DNA Genetics attribue-t-il à sa LA Confidential ?",
+      "options": [
+        "Blueberry et Haze",
+        "Gelato et Original Z",
+        "OG LA Affie et Afghani",
+        "Cali-O et Skunk"
+      ],
+      "answer": 2,
+      "explanation": "DNA annonce OG LA Affie × Afghani pour LA Confidential. La connaissance du pedigree ne prouve pas une efficacité contre la douleur ou l’insomnie, malgré les promesses du texte commercial.",
+      "subjectKey": "la-confidential-dna",
+      "property": "Parenté annoncée par DNA Genetics",
+      "sources": [
+        "la-confidential"
+      ],
+      "learningObjective": "Séparer un pedigree attribué des promesses médicales commerciales.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "wedding-cake-pink-cookies-alias",
+      "level": 2,
+      "prompt": "Quel autre nom de Wedding Cake la présentation de Barney’s Farm cite-t-elle notamment au Canada ?",
+      "options": [
+        "Blue Cookies",
+        "Animal Cookies",
+        "Purple Cookies",
+        "Pink Cookies"
+      ],
+      "answer": 3,
+      "explanation": "La présentation cite Pink Cookies comme autre nom de Wedding Cake. Ces noms appartiennent au récit d’une lignée ; ils ne désignent pas ici une recette de gâteau ou de biscuit au cannabis.",
+      "subjectKey": "wedding-cake-barneys",
+      "property": "Autre appellation de la lignée",
+      "sources": [
+        "wedding-cake"
+      ],
+      "learningObjective": "Distinguer nom de cultivar et nom d’un produit alimentaire.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "maui-waui-nirvana-tropical-aroma",
+      "level": 2,
+      "prompt": "Quels fruits Nirvana cite-t-il notamment dans les notes aromatiques de Hawaii Maui Waui ?",
+      "options": [
+        "L’ananas et la mangue",
+        "La poire et la pomme",
+        "Le raisin et la prune",
+        "La framboise et la cerise"
+      ],
+      "answer": 0,
+      "explanation": "Nirvana décrit notamment des notes d’ananas et de mangue. Ce vocabulaire sensoriel n’indique ni l’ajout de fruits aux fleurs ni la présence démontrée d’un terpène unique.",
+      "subjectKey": "maui-waui-nirvana",
+      "property": "Notes fruitées annoncées de la lignée",
+      "sources": [
+        "maui-waui"
+      ],
+      "learningObjective": "Comprendre une description aromatique attribuée sans la confondre avec des ingrédients.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "acapulco-gold-central-american-origin",
+      "level": 1,
+      "prompt": "Quelle origine génétique la fiche de Barney’s Farm indique-t-elle pour son Acapulco Gold ?",
+      "options": [
+        "Une origine himalayenne",
+        "Une origine centraméricaine",
+        "Une origine sud-africaine",
+        "Une origine nord-européenne"
+      ],
+      "answer": 1,
+      "explanation": "La fiche renseigne Central American dans sa rubrique Genetics. Il s’agit de l’origine revendiquée par la maison pour cette version, sans pedigree génomique détaillé.",
+      "subjectKey": "acapulco-gold-barneys",
+      "property": "Origine régionale annoncée",
+      "sources": [
+        "acapulco"
+      ],
+      "learningObjective": "Situer la provenance annoncée d’une lignée classique sans inventer ses parents.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "strawberry-cough-kushman-diffusion",
+      "level": 2,
+      "prompt": "Quel acteur de la scène cannabique raconte avoir diffusé le clone Strawberry Cough de New York à la Californie ?",
+      "options": [
+        "DJ Short",
+        "Sam the Skunkman",
+        "Kyle Kushman",
+        "Neville Schoenmakers"
+      ],
+      "answer": 2,
+      "explanation": "Dans l’entretien de Catherine Goldberg, Kyle Kushman raconte cette diffusion du clone. Ce rôle ne signifie pas qu’il serait le créateur génétique de Strawberry Cough.",
+      "subjectKey": "strawberry-cough-kushman",
+      "property": "Diffusion du clone par Kyle Kushman",
+      "sources": [
+        "strawberry"
+      ],
+      "learningObjective": "Distinguer diffuseur d’un clone et créateur d’un croisement.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "og-kush-hso-parentage",
+      "level": 2,
+      "prompt": "Quelle parenté Humboldt Seed Organization annonce-t-il pour sa version d’OG Kush ?",
+      "options": [
+        "Blueberry × Super Silver Haze",
+        "Original Z × Gelato",
+        "Cali-O × Skunk",
+        "Lemon Thai/Pakistan × Chemdawg"
+      ],
+      "answer": 3,
+      "explanation": "La fiche HSO indique Lemon Thai/Pakistan × Chemdawg. Cette attribution porte sur sa version commerciale et ne tranche pas toutes les origines discutées du nom OG Kush.",
+      "subjectKey": "og-kush-hso",
+      "property": "Parenté revendiquée de la version HSO",
+      "sources": [
+        "og-kush"
+      ],
+      "learningObjective": "Attribuer précisément une parenté commerciale dans une famille aux récits d’origine multiples.",
+      "category": "varieties",
+      "articleId": "ref-noms-lignees",
+      "topicId": "genetics",
+      "jurisdiction": null
+    },
+    {
+      "key": "uk-cbd-flowers-still-controlled",
+      "level": 1,
+      "prompt": "Quel statut s’applique aux fleurs présentées comme « CBD » au Royaume-Uni ?",
+      "options": [
+        "Contrôlées indépendamment de leur pourcentage de THC",
+        "Contrôlées seulement au-delà du seuil de culture du chanvre",
+        "Non contrôlées si le producteur a une licence de chanvre",
+        "Non contrôlées lorsqu’elles sont importées de l’Union européenne"
+      ],
+      "answer": 0,
+      "explanation": "Le Home Office distingue le CBD pur des fleurs et feuilles, qui restent contrôlées quel que soit leur pourcentage de THC. Une présentation « CBD » ne transforme donc pas la fleur en substance isolée.",
+      "subjectKey": "uk-cannabis-controlled-parts",
+      "property": "Fleur CBD distincte du CBD pur dans le droit britannique",
+      "sources": [
+        "uk-hemp",
+        "uk-factsheet"
+      ],
+      "learningObjective": "Distinguer substance isolée et partie de plante contrôlée au Royaume-Uni.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Royaume-Uni ; réponses officielles de 2024–2025 consultées en novembre 2026"
+    },
+    {
+      "key": "uk-cbn-class-b-controlled",
+      "level": 2,
+      "prompt": "Quel statut le Home Office donne-t-il au cannabinol, ou CBN, dans la législation britannique citée ?",
+      "options": [
+        "Non contrôlé lorsqu’il est isolé",
+        "Substance contrôlée de classe B",
+        "Contrôlé uniquement en présence de THC",
+        "Non contrôlé dans un extrait végétal"
+      ],
+      "answer": 1,
+      "explanation": "Le cannabinol figure parmi les substances contrôlées de classe B. La règle ne se déduit donc pas simplement d’une comparaison de ses effets avec ceux du THC ou du statut du CBD pur.",
+      "subjectKey": "uk-cbn-control",
+      "property": "Contrôle du cannabinol au Royaume-Uni",
+      "sources": [
+        "uk-factsheet"
+      ],
+      "learningObjective": "Comprendre que le statut légal d’un cannabinoïde ne découle pas automatiquement de son nom ou du CBD.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Royaume-Uni ; factsheet Home Office du3octobre 2024 consulté en novembre 2026"
+    },
+    {
+      "key": "england-nhs-cannabis-specialist",
+      "level": 1,
+      "prompt": "En Angleterre, qui doit prescrire ou superviser le cannabis médical dans le cadre du NHS ?",
+      "options": [
+        "Un généraliste agissant sans supervision spécialisée",
+        "Un pharmacien agissant sans prescription médicale",
+        "Un médecin hospitalier spécialiste",
+        "Un professionnel d’une boutique de CBD"
+      ],
+      "answer": 2,
+      "explanation": "Le NHS réserve cette prescription à un spécialiste hospitalier ou à sa supervision. Il s’agit d’un accès médical encadré, distinct de l’achat de produits présentés comme CBD en boutique.",
+      "subjectKey": "england-nhs-medical-cannabis",
+      "property": "Encadrement spécialisé de la prescription NHS",
+      "sources": [
+        "nhs-medical"
+      ],
+      "learningObjective": "Distinguer accès médical spécialisé et vente au détail de produits au CBD.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Angleterre, cadre NHS ; page publiée et consultée en novembre 2026, révision affichée 2022"
+    },
+    {
+      "key": "uruguay-one-access-route",
+      "level": 2,
+      "prompt": "En Uruguay, quel principe encadre le recours aux voies enregistrées de culture domestique, club et pharmacie ?",
+      "options": [
+        "Elles peuvent être cumulées à chaque achat",
+        "Le club autorise automatiquement les achats en pharmacie",
+        "Leur cumul dépend seulement de l’accord du pharmacien",
+        "L’usager doit choisir une seule voie d’accès"
+      ],
+      "answer": 3,
+      "explanation": "Le décret impose une origine unique et interdit le cumul de ces voies. Une inscription peut être changée dans le cadre prévu, mais ce changement n’autorise pas à cumuler les approvisionnements.",
+      "subjectKey": "uruguay-cannabis-access-routes",
+      "property": "Voies d’accès enregistrées mutuellement exclusives",
+      "sources": [
+        "uruguay"
+      ],
+      "learningObjective": "Comprendre le modèle uruguayen des voies d’accès plutôt qu’un marché général sans inscription.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Uruguay ; décret120/014 actualisé, article38, consulté en novembre 2026"
+    },
+    {
+      "key": "germany-medical-ordinary-prescription",
+      "level": 2,
+      "prompt": "Selon le ministère allemand, quel document permet de prescrire le cannabis médical depuis la réforme de 2024 ?",
+      "options": [
+        "Une ordonnance médicale sans formulaire spécial de stupéfiants",
+        "Une ordonnance spéciale de stupéfiants dans tous les cas",
+        "Une carte de membre d’une association de culture",
+        "Une autorisation de consommation du ministère fédéral"
+      ],
+      "answer": 0,
+      "explanation": "Le cannabis médical reste soumis à prescription, mais l’ordonnance spéciale de stupéfiants n’est plus requise. Sa sortie de ce régime ne le transforme donc pas en produit médical en vente libre.",
+      "subjectKey": "germany-medical-cannabis",
+      "property": "Prescription médicale conservée sans ordonnance spéciale BtM",
+      "sources": [
+        "germany-medical"
+      ],
+      "learningObjective": "Distinguer retrait du régime spécial des stupéfiants et suppression de l’obligation d’ordonnance.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Allemagne ; FAQ ministérielle actualisée consultée le17novembre 2026"
+    },
+    {
+      "key": "germany-2026-insurance-standardized-extracts",
+      "level": 2,
+      "prompt": "Depuis juillet 2026, quelle forme de cannabis reste éligible au remboursement légal allemand selon la FAQ ministérielle ?",
+      "options": [
+        "Les fleurs non transformées",
+        "Les fleurs vendues par un club",
+        "Les extraits de qualité standardisée",
+        "Les fleurs incorporées dans une préparation"
+      ],
+      "answer": 2,
+      "explanation": "La FAQ exclut désormais les fleurs, même en préparation, de ce remboursement. Elle maintient les extraits standardisés et certains médicaments cannabinoïdes, sous les conditions de l’assurance maladie légale.",
+      "subjectKey": "germany-medical-cannabis",
+      "property": "Distinction fleurs/extraits dans le remboursement depuis juillet2026",
+      "sources": [
+        "germany-medical"
+      ],
+      "learningObjective": "Distinguer autorisation de prescription et prise en charge par l’assurance maladie.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Allemagne ; règle du29juillet 2026 citée par le ministère, consultée le17novembre 2026"
+    },
+    {
+      "key": "canada-cannabis-approved-pesticides-only",
+      "level": 2,
+      "prompt": "Au Canada, quelle autorisation un pesticide doit-il avoir pour être utilisé sur du cannabis destiné au marché autorisé ?",
+      "options": [
+        "Une autorisation pour les céréales alimentaires",
+        "Une autorisation pour les plantes ornementales",
+        "Une autorisation pour les cultures biologiques en général",
+        "Une autorisation visant spécifiquement le cannabis"
+      ],
+      "answer": 3,
+      "explanation": "L’homologation doit viser le cannabis, ou l’usage doit être autrement autorisé par la loi applicable. Une homologation pour une autre culture ne suffit pas ; aucun produit ni mode d’emploi n’est conseillé ici.",
+      "subjectKey": "canada-cannabis-pesticide-authorization",
+      "property": "Autorisation spécifique à la culture cannabique",
+      "sources": [
+        "canada-pesticides"
+      ],
+      "learningObjective": "Comprendre un contrôle de qualité du cannabis distinct d’une autorisation agricole générale.",
+      "category": "quality",
+      "articleId": "ref-contaminants",
+      "topicId": "evidence",
+      "jurisdiction": "Canada ; exigences CR §81 et loi sur les produits antiparasitaires, consultées en novembre 2026"
+    },
+    {
+      "key": "thailand-2026-prescription-not-shop-presence",
+      "level": 1,
+      "prompt": "Quel cadre l’avis thaïlandais de novembre 2026 rappelle-t-il pour les ventes de cannabis ?",
+      "options": [
+        "Un accès contrôlé à visée strictement médicale",
+        "Un marché récréatif ouvert dans les dispensaires",
+        "Un accès récréatif réservé aux membres de clubs",
+        "Un monopole de vente non médicale en pharmacie"
+      ],
+      "answer": 0,
+      "explanation": "L’avis officiel souligne l’objectif médical et les contrôles des ventes sans prescription. Une boutique visible ne suffit donc pas à établir qu’un achat récréatif est autorisé.",
+      "subjectKey": "thailand-medical-cannabis-access",
+      "property": "Commerce visible distinct d’un accès récréatif autorisé",
+      "sources": [
+        "thailand"
+      ],
+      "learningObjective": "Comprendre la portée des contrôles thaïlandais sans extrapoler l’apparence commerciale.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Thaïlande ; avis officiel du9novembre 2026, consulté le17novembre 2026"
+    },
+    {
+      "key": "australia-schedule3-cbd-no-registered-product",
+      "level": 2,
+      "prompt": "Selon la TGA consultée en novembre 2026, quel est l’état de la catégorie australienne Schedule3 pour le CBD ?",
+      "options": [
+        "Catégorie ouverte avec plusieurs médicaments enregistrés",
+        "Catégorie ouverte sans produit correspondant enregistré",
+        "Catégorie supprimée après une expérimentation initiale",
+        "Catégorie réservée aux produits principalement riches en THC"
+      ],
+      "answer": 1,
+      "explanation": "La catégorie permettrait des préparations au CBD enregistrées, mais la TGA n’en signale aucune à l’ARTG répondant à ce classement. Ce cadre ne vaut donc pas disponibilité automatique sans ordonnance.",
+      "subjectKey": "australia-cbd-schedule3",
+      "property": "Classement possible distinct d’un produit effectivement enregistré",
+      "sources": [
+        "australia"
+      ],
+      "learningObjective": "Distinguer ouverture d’une catégorie de CBD et disponibilité effective de médicaments.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "Australie ; état déclaré par TGA à la consultation du17novembre 2026"
+    },
+    {
+      "key": "france-2025-medical-last-line-announcement",
+      "level": 2,
+      "prompt": "Dans l’annonce française de mars 2025, à quel moment du parcours de soins l’accès au cannabis médical était-il prévu ?",
+      "options": [
+        "Dès l’apparition de tout symptôme douloureux",
+        "Avant d’évaluer les traitements habituels",
+        "En dernière ligne de traitement",
+        "Uniquement avant une intervention chirurgicale"
+      ],
+      "answer": 2,
+      "explanation": "Le ministère annonçait un accès en dernière ligne, sur prescription hospitalière initiale. Ce communiqué historique ne prouve ni une ouverture générale de la prescription ni l’accès effectif en novembre 2026.",
+      "subjectKey": "france-medical-cannabis-announcement-2025",
+      "property": "Accès projeté en dernière ligne dans l’annonce de2025",
+      "sources": [
+        "france-announcement"
+      ],
+      "learningObjective": "Lire précisément une annonce médicale datée sans la transformer en autorisation générale actuelle.",
+      "category": "prevention",
+      "articleId": "ref-histoire-politiques",
+      "topicId": "prevention",
+      "jurisdiction": "France ; communiqué historique du20mars 2025 uniquement, sans projection sur l’accès effectif 2026"
+    },
+    {
+      "key": "cannabis-allergy-protein-allergens",
+      "level": 2,
+      "prompt": "À quelle famille appartiennent les allergènes du cannabis identifiés dans le consensus international de 2022 ?",
+      "options": [
+        "Aux cannabinoïdes",
+        "Aux terpènes",
+        "Aux flavonoïdes",
+        "Aux protéines"
+      ],
+      "answer": 3,
+      "explanation": "Des protéines comme Can s 3 figurent parmi les allergènes identifiés du cannabis. Une réaction allergique n’est donc pas simplement un effet du THC ni une preuve de forte teneur en cannabinoïdes.",
+      "subjectKey": "cannabis-allergy",
+      "property": "Nature protéique des allergènes identifiés",
+      "sources": [
+        "allergy"
+      ],
+      "learningObjective": "Distinguer allergie au cannabis et effets pharmacologiques des cannabinoïdes.",
+      "category": "prevention",
+      "articleId": "ref-contaminants",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "cannabis-skin-contact-allergy",
+      "level": 1,
+      "prompt": "Quel type de réaction le contact cutané avec des feuilles ou fleurs de cannabis peut-il provoquer ?",
+      "options": [
+        "Une urticaire de contact",
+        "Une perte progressive de pigmentation",
+        "Une acné bactérienne",
+        "Des verrues localisées"
+      ],
+      "answer": 0,
+      "explanation": "Le consensus rapporte des réactions cutanées après contact avec feuilles ou fleurs, dont des urticaires de contact. Elles ne nécessitent donc pas une consommation ; une irritation ne prouve pas à elle seule une allergie.",
+      "subjectKey": "cannabis-allergy",
+      "property": "Réaction cutanée possible au contact de la plante",
+      "sources": [
+        "allergy"
+      ],
+      "learningObjective": "Connaître une voie d’exposition allergique distincte de l’ingestion et de l’inhalation.",
+      "category": "prevention",
+      "articleId": "ref-contaminants",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "cannabis-peach-cross-reactive-allergy",
+      "level": 2,
+      "prompt": "Une sensibilisation à Can s 3 du cannabis peut croiser avec des allergènes de quel groupe d’aliments ?",
+      "options": [
+        "Le lait et les produits laitiers",
+        "La pêche et certains autres végétaux",
+        "Les poissons et les crustacés",
+        "Les viandes de mammifères"
+      ],
+      "answer": 1,
+      "explanation": "Can s 3 est une protéine de transfert lipidique. Une réactivité croisée avec des protéines proches de la pêche et d’autres végétaux est décrite ; elle n’est pas automatique chez toute personne allergique au cannabis.",
+      "subjectKey": "cannabis-allergy",
+      "property": "Réactivité croisée cannabis–aliments végétaux",
+      "sources": [
+        "allergy"
+      ],
+      "learningObjective": "Comprendre une réactivité croisée documentée sans en déduire un diagnostic personnel.",
+      "category": "prevention",
+      "articleId": "ref-contaminants",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "chs-cannabis-cessation-effective-management",
+      "level": 1,
+      "prompt": "Quelle mesure la recommandation européenne de 2025 considère-t-elle comme la plus efficace contre l’hyperémèse cannabique ?",
+      "options": [
+        "Une simple diminution de la quantité consommée",
+        "Le remplacement du THC par des fleurs au CBD",
+        "L’arrêt du cannabis dans la prise en charge",
+        "L’espacement des consommations sans arrêt complet"
+      ],
+      "answer": 2,
+      "explanation": "La recommandation place l’arrêt du cannabis au cœur du traitement. Il vise la cause de ce syndrome, au-delà d’un soulagement momentané des vomissements ; l’accompagnement médical reste nécessaire.",
+      "subjectKey": "cannabinoid-hyperemesis",
+      "property": "Arrêt du cannabis comme mesure centrale du CHS",
+      "sources": [
+        "chs"
+      ],
+      "learningObjective": "Distinguer prise en charge de la cause et soulagement passager des symptômes.",
+      "category": "prevention",
+      "articleId": "ref-thc",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "chs-hot-baths-not-specific",
+      "level": 2,
+      "prompt": "Que permet de conclure le soulagement par les bains chauds chez un consommateur de cannabis souffrant de vomissements cycliques ?",
+      "options": [
+        "Il prouve à lui seul une hyperémèse cannabique",
+        "Il exclut une hyperémèse liée au cannabis",
+        "Il prouve une allergie aux protéines du cannabis",
+        "Il ne suffit pas, car d’autres vomissements cycliques y répondent"
+      ],
+      "answer": 3,
+      "explanation": "Les bains chauds sont rapportés dans l’hyperémèse cannabique, mais aussi dans d’autres syndromes de vomissements cycliques. Ce signe isolé ne remplace pas l’évaluation médicale ni l’histoire de consommation.",
+      "subjectKey": "cannabinoid-hyperemesis",
+      "property": "Bains chauds non spécifiques du CHS",
+      "sources": [
+        "chs"
+      ],
+      "learningObjective": "Éviter un diagnostic de CHS fondé sur un seul signe clinique.",
+      "category": "prevention",
+      "articleId": "ref-thc",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "aasm-2018-cannabis-not-osa-treatment",
+      "level": 2,
+      "prompt": "Dans son avis de 2018, quelle position l’AASM adopte-t-elle sur le cannabis contre l’apnée obstructive du sommeil ?",
+      "options": [
+        "Usage déconseillé faute de preuves suffisantes",
+        "Usage recommandé avant la pression positive",
+        "Usage recommandé en remplacement chez tout adulte",
+        "Usage réservé aux apnées sans somnolence diurne"
+      ],
+      "answer": 0,
+      "explanation": "L’AASM déconseillait cet usage faute de preuves suffisantes de sécurité et d’efficacité. La somnolence diurne possible constitue aussi une préoccupation ; cette position est celle du document de 2018.",
+      "subjectKey": "cannabis-obstructive-sleep-apnea",
+      "property": "Limite de recommandation dans l’apnée obstructive",
+      "sources": [
+        "aasm"
+      ],
+      "learningObjective": "Distinguer intérêt exploratoire d’un cannabinoïde et traitement recommandé d’une maladie.",
+      "category": "prevention",
+      "articleId": "ref-thc",
+      "topicId": "prevention",
+      "jurisdiction": "États-Unis ; avis professionnel adopté le20janvier 2018, présenté comme document historique"
+    },
+    {
+      "key": "cannabis-opioid-sparing-not-established",
+      "level": 2,
+      "prompt": "Dans la synthèse AHRQ de 2025, que peut-on conclure sur la réduction des opioïdes grâce au cannabis contre la douleur chronique ?",
+      "options": [
+        "Une baisse cliniquement importante et bien établie",
+        "Un effet d’épargne restant insuffisamment établi",
+        "Une absence d’effet solidement démontrée",
+        "Une augmentation nette du recours aux opioïdes"
+      ],
+      "answer": 1,
+      "explanation": "Les données sur l’usage d’opioïdes sont trop incomplètes pour établir un effet d’épargne fiable. Un petit bénéfice moyen sur la douleur ne démontre pas, à lui seul, une réduction des opioïdes.",
+      "subjectKey": "cannabis-opioid-sparing",
+      "property": "Effet d’épargne opioïde non établi",
+      "sources": [
+        "ahrq"
+      ],
+      "learningObjective": "Distinguer soulagement de la douleur et réduction démontrée d’un autre médicament.",
+      "category": "prevention",
+      "articleId": "ref-thc",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "cbd-ocular-pressure-can-rise-in-pilot",
+      "level": 2,
+      "prompt": "Dans le petit essai de Tomida sur la pression oculaire, quel résultat a été observé avec le CBD ?",
+      "options": [
+        "Une baisse maintenue avec les deux doses",
+        "Une baisse seulement avec la dose la plus faible",
+        "Une hausse transitoire avec la dose la plus élevée",
+        "Une hausse maintenue avec les deux doses"
+      ],
+      "answer": 2,
+      "explanation": "Chez ces six patients, le CBD n’a pas abaissé la pression oculaire et une hausse transitoire a été observée à la dose la plus élevée. Le résultat ne permet pas de traiter le CBD comme un traitement du glaucome.",
+      "subjectKey": "cbd-glaucoma-ocular-pressure",
+      "property": "Hausse transitoire de pression oculaire dans un pilote CBD",
+      "sources": [
+        "cbd-iop"
+      ],
+      "learningObjective": "Distinguer les effets oculaires du CBD d’une extrapolation à partir du THC.",
+      "category": "prevention",
+      "articleId": "ref-cbd",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "purified-cbd-withdrawal-healthy-volunteers",
+      "level": 2,
+      "prompt": "Qu’a montré un essai d’arrêt du CBD purifié après un traitement bref chez des volontaires sains ?",
+      "options": [
+        "Sevrage objectivé, sans effets indésirables rapportés",
+        "Sevrage objectivé, avec des effets indésirables rapportés",
+        "Pas de sevrage objectivé, ni d’effets indésirables rapportés",
+        "Pas de sevrage objectivé, mais des effets indésirables rapportés"
+      ],
+      "answer": 3,
+      "explanation": "Après cet usage bref, aucun sevrage n’a été démontré malgré des effets indésirables rapportés. Ces volontaires étaient sains : cela n’autorise pas à arrêter brutalement un traitement antiépileptique au CBD.",
+      "subjectKey": "epidiolex-purified-cbd",
+      "property": "Absence de sevrage démontré après un usage bref chez volontaires sains",
+      "sources": [
+        "cbd-withdrawal",
+        "fda-cbd"
+      ],
+      "learningObjective": "Distinguer syndrome de sevrage et risque de crises lors de l’arrêt d’un antiépileptique.",
+      "category": "prevention",
+      "articleId": "ref-cbd",
+      "topicId": "prevention",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "jwh018-full-cb1-agonism",
+      "level": 3,
+      "prompt": "Quel mécanisme de JWH018, présent dans certains produits Spice, a été mis en évidence dans les expériences de Brents ?",
+      "options": [
+        "Un agonisme plein du récepteur CB1",
+        "Un antagonisme du récepteur CB1",
+        "Un agonisme limité au récepteur CB2",
+        "Un antagonisme limité au récepteur CB2"
+      ],
+      "answer": 0,
+      "explanation": "Dans ces préparations, JWH018 atteint une activation de plein agoniste CB1, contrairement au THC agoniste partiel. Ce résultat aide à distinguer leurs pharmacologies sans prédire chaque intoxication humaine.",
+      "subjectKey": "synthetic-cannabinoid-cb1-efficacy",
+      "property": "Agonisme plein CB1 de JWH018",
+      "sources": [
+        "jwh018"
+      ],
+      "learningObjective": "Comprendre une différence pharmacologique entre un synthétique de Spice et le THC.",
+      "category": "constituents",
+      "articleId": "ref-systeme-endocannabinoide",
+      "topicId": "evidence",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "cb1-gi-signaling-reduces-camp",
+      "level": 3,
+      "prompt": "Dans sa voie classique couplée à Gi/o, quel effet l’activation du récepteur CB1 a-t-elle sur l’AMP cyclique ?",
+      "options": [
+        "Production accrue par stimulation de l’adénylate cyclase",
+        "Production réduite par inhibition de l’adénylate cyclase",
+        "Dégradation réduite par blocage des phosphodiestérases",
+        "Dégradation accrue par activation des phosphodiestérases"
+      ],
+      "answer": 1,
+      "explanation": "La voie classique CB1–Gi/o inhibe l’adénylate cyclase et diminue l’AMP cyclique. Des couplages différents existent selon le contexte cellulaire : ce n’est pas une règle absolue de toute réponse au THC.",
+      "subjectKey": "cb1-gi-camp-signaling",
+      "property": "Inhibition de l’adénylate cyclase dans la voie classique CB1",
+      "sources": [
+        "cb1-signaling",
+        "howlett-gi"
+      ],
+      "learningObjective": "Relier l’activation d’un récepteur cannabinoïde à une voie de signalisation intracellulaire.",
+      "category": "constituents",
+      "articleId": "ref-systeme-endocannabinoide",
+      "topicId": "evidence",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    },
+    {
+      "key": "thcv-experimental-competitive-antagonism",
+      "level": 3,
+      "prompt": "Dans les préparations de Thomas et collègues, quel comportement le THCV a-t-il montré sur CB1 et CB2 ?",
+      "options": [
+        "Un agonisme plein sur les deux récepteurs",
+        "Un agonisme inverse uniquement sur CB2",
+        "Un antagonisme compétitif des deux récepteurs",
+        "Une absence de liaison aux deux récepteurs"
+      ],
+      "answer": 2,
+      "explanation": "Le THCV a montré un antagonisme compétitif dans ces expériences. L’activité dépend du tissu et des conditions ; ce résultat ne valide pas un antidote au THC ni un traitement humain amaigrissant.",
+      "subjectKey": "thcv-experimental-pharmacology",
+      "property": "Antagonisme compétitif CB1 et CB2 en préparations expérimentales",
+      "sources": [
+        "thcv"
+      ],
+      "learningObjective": "Distinguer un mécanisme préclinique du THCV de promesses thérapeutiques humaines.",
+      "category": "constituents",
+      "articleId": "ref-cannabinoides-mineurs",
+      "topicId": "evidence",
+      "jurisdiction": "Portée pharmacologique générale ; résultats bornés au contexte de la source"
+    }
+  ],
+  "scopeExpansion": {
+    "classicsAllowedByRoot": 12,
+    "additionalCurrentLawAllowedByRoot": 20,
+    "currentLawPreviouslyAuthored": 29,
+    "plannedCurrentLawHere": 9,
+    "franceAnnouncementHistoricalNotCurrent": true
+  },
+  "researchNotes": [
+    "Aucun catalogue du site n’a inspiré ces faits ; noms proposés indépendamment puis coordonnés avec B.",
+    "Lecture des catalogues externes limitée aux faits revendiqués ; méthodes de culture et promesses médicales exclues.",
+    "BubbleGum remplacé par LAConfidential car deux faits SeriousSeeds déjàretenus.",
+    "THCP affinité réservé pour ra06 ; accès plein article bloqué, extrait primaire indexé déjàlu, pas encore soumis.",
+    "Schengen et Espagne clubs restent pistes non retenues de ce lot, faute de preuve actuelle simple et clairement bornée.",
+    "France2025 : annonce historique datée, ne pas extrapoler l’accès patient courant de2026."
+  ],
+  "priorReviewsCompleted": [
+    "reviews/r-products-03.json",
+    "reviews/r-actives-b-05.json",
+    "facts/rm01-katabira-independent-review.json"
+  ],
+  "constraintErrors": [],
+  "closePairsChecked": [
+    "Ancienne définition CHS (en02), distincte des nouvelles prise en charge et limite des bains chauds.",
+    "Anciennes questions uruguayennes loi2013/IRCCA/données sensibles, distinctes de l’unicité des trois voies.",
+    "Ancien Skunk#1 avec AcapulcoGold dans parents, distinct de la provenance revendiquée de la version AcapulcoGold.",
+    "Ancienne efficacité CuttlerCBG et propriétés THCV structurelles, distinctes des faits de ce lot."
+  ],
+  "finalChecks": {
+    "count": 34,
+    "sources": 32,
+    "levels": {
+      "1": 7,
+      "2": 24,
+      "3": 3,
+      "4": 0
+    },
+    "authorNote": "7L1/24L2/3L3 honnêtes ; aucun niveau baissé pour remplir la cible indicative.12classiques,9faits de droit courant et1annoncehistoriqueFrance2025,12faits cliniques ou mécanistiques. Aucun protocole."
+  },
+  "freeze": {
+    "frozenAt": "2026-11-17",
+    "reader": "rebalance_classify_a",
+    "questionHashes": {
+      "hemp-q2-ra05-blue-dream-hso-pedigree": "fae9c1dbd55d0fcb1b5aabd328e16e7f0a7d4e3ad070e7fe2ab11f4421dddca0",
+      "hemp-q2-ra05-trainwreck-arcata-california": "71bdafc7c1e56957daf0ee34978830e2e3f8f1589f8dd575fd93106b81ce3589",
+      "hemp-q2-ra05-tangie-dna-cali-o-skunk": "1a14dc461b812010c2b264f3a97f2a0f0942cee2fd88c853fcc42cb4149a2f6d",
+      "hemp-q2-ra05-super-skunk-afghani-addition": "acab2b790e1d4f9b5d68bcad867f1b48c58e126249228558c36bfd68aaa6a5bd",
+      "hemp-q2-ra05-dosidos-archive-ogkb-faceoff": "e2deb0eb4fa2fd12f3b1e557e1cd056aecd0913cb40b22db04169895906cb908",
+      "hemp-q2-ra05-runtz-barneys-original-z-gelato": "6bfd11fcce1304c5943d24bdbf5e99d9e02d4a963a9ad1e58ac0d5a340449097",
+      "hemp-q2-ra05-la-confidential-dna-parentage": "033657a78e41ca7bc925209121172b9aba0a45e0e78aadbb6f99f249bafc13d5",
+      "hemp-q2-ra05-wedding-cake-pink-cookies-alias": "79b26d746d2be6214928fac628f1c799a4da32142e8535e98e0635e0c8a7749b",
+      "hemp-q2-ra05-maui-waui-nirvana-tropical-aroma": "48dd4b1545ecf401a7eda66ce41467b5beb13336ee1517c123621d2993c4402b",
+      "hemp-q2-ra05-acapulco-gold-central-american-origin": "b7409a4ff8dfed9d134753dcbf60d63463a5a23bfc231a3f7932dab58a0170cd",
+      "hemp-q2-ra05-strawberry-cough-kushman-diffusion": "fd2fc8b5dae077aa27b682d23a7c95a06cdd0a51c8dec3b82b7419c601a50c1e",
+      "hemp-q2-ra05-og-kush-hso-parentage": "d138639dd08efa9c988993d9a587c1c8d2aee7cfaa94b3bc6474318bb5c74a18",
+      "hemp-q2-ra05-uk-cbd-flowers-still-controlled": "4708a504b81e4eb853c13035cf4fc8cf300579e85b2662155a76990218ff7531",
+      "hemp-q2-ra05-uk-cbn-class-b-controlled": "d7db980004967700c67dff4d74722eac16c61633264074415c251ad6532973f5",
+      "hemp-q2-ra05-england-nhs-cannabis-specialist": "a16dee987427ea7232e6dcf22c909bb27f50ca5f48ef15650aa96effa7f10c22",
+      "hemp-q2-ra05-uruguay-one-access-route": "6c3b696c356d904ab2218a72c108d390e03219f106a68919c8a0497c8e912325",
+      "hemp-q2-ra05-germany-medical-ordinary-prescription": "ba6534492d6dfea3513306e0d02e86c471d2a943c4169f1489b11b8bd5e35494",
+      "hemp-q2-ra05-germany-2026-insurance-standardized-extracts": "dc604c7a9d227e73727286b8b7f786c71b2814fa20abecf2f9ab0b5af00a084b",
+      "hemp-q2-ra05-canada-cannabis-approved-pesticides-only": "a946eb86ec826d9bbe99fdae135ccec64104d31e24de82006db1c9078461bce3",
+      "hemp-q2-ra05-thailand-2026-prescription-not-shop-presence": "a0c52cdf51f30812a5778f1ce9b450c1c55170b598588c1a5ce050a53d323ed5",
+      "hemp-q2-ra05-australia-schedule3-cbd-no-registered-product": "bf721bf731bc9c8ba437c236f1a2779e73b9466ecc6f3557cf7d84d30756a17b",
+      "hemp-q2-ra05-france-2025-medical-last-line-announcement": "ea48bfa1358db6f44b4e03a77d586236b9cdd42c93d72a4ac823997b22ebede6",
+      "hemp-q2-ra05-cannabis-allergy-protein-allergens": "2eb2dc36fb172263cd5867ead3080467f2a197b4740b78409d1415eaf0491b26",
+      "hemp-q2-ra05-cannabis-skin-contact-allergy": "b418c90061128caac9ea0029d22b6bb17ddfd752965bcc9841faccc12bb7fa9b",
+      "hemp-q2-ra05-cannabis-peach-cross-reactive-allergy": "dbebe5c91261d111e4521c7fc12731ab29a9bb786c84630389f1c4daf05ba7c6",
+      "hemp-q2-ra05-chs-cannabis-cessation-effective-management": "cb6e25ed44e8ad8a10d55193bf11f7dde7b1f8680ea8c0d316e2158f6088279c",
+      "hemp-q2-ra05-chs-hot-baths-not-specific": "201d3dfe7e44adc4c7003d5d69822f116388c0f11c734c2351726636440d203c",
+      "hemp-q2-ra05-aasm-2018-cannabis-not-osa-treatment": "d26a7ded204462656e1dc217ec73fe8c3d7e7f152c6b524db3fbd947f60db4d3",
+      "hemp-q2-ra05-cannabis-opioid-sparing-not-established": "2a42083ad408ac11af51e818d0b72852ea55d5ddfd65f53c61223b270e000e69",
+      "hemp-q2-ra05-cbd-ocular-pressure-can-rise-in-pilot": "aea892c4c8e1b974045208a9279a410c351063a882558cee14cba079e29e3e10",
+      "hemp-q2-ra05-purified-cbd-withdrawal-healthy-volunteers": "2ea07b08afc8131ec3f6cb7bddae43dbe9cc9167e8d3fa2598b08bb70122dcf1",
+      "hemp-q2-ra05-jwh018-full-cb1-agonism": "828236eec96787a65a0858c26a5b85719bbcf2b0ee1f885dd19b8b74c42e5bbf",
+      "hemp-q2-ra05-cb1-gi-signaling-reduces-camp": "6f3fc30b3f8d3aaba4e609b6c4e2692d64a00aea7c81b65cd24271a7641ec1ce",
+      "hemp-q2-ra05-thcv-experimental-competitive-antagonism": "d8ca36967e9bb896ae63310a03ac8d361c22a7ee696ee9cb410be40c9b63c4f3"
+    },
+    "sourceHashes": {
+      "q2-ra05-blue-dream": "d4162617c20ea9c89832fc30cd8e6ba193945778e1f64066ada61cd9335f4fc0",
+      "q2-ra05-trainwreck": "1ffaeea2a470399aec0733d1b0d6b6db2571a8265822f3c6444b8cf89d8e7899",
+      "q2-ra05-tangie": "800fa65088c8b515d3150110ecb744da845f81e308971e4b3ff5c2b56bce5eed",
+      "q2-ra05-super-skunk": "9cee0a35e7caceb7a9a8f32a47abd8ac90cdc176b598db98e78788c0c4c96801",
+      "q2-ra05-dosidos": "60dfc0eb01415c22dca3c0de830c6ed5f23a00f268b70ba00d93ad933d98bf86",
+      "q2-ra05-runtz": "07a9679f85d134ea842673bce7a265ed5c84b6e4c86c912ce7f2a26bad7e9416",
+      "q2-ra05-la-confidential": "f50d5023d5d2f83ecaefa553009c857171d3f1e80a5f62d2a9a2ae02c07c452e",
+      "q2-ra05-wedding-cake": "65c3d100771df16cb462e2cd3e1f4ea59349466a472683606b9eec6464e3bfc1",
+      "q2-ra05-maui-waui": "cf9add45a835fe18a7f505da5efcdf6c7b08adf619b4c63b5f8a29cf877977ee",
+      "q2-ra05-acapulco": "1bad7239640ff9058d87a98781891ac1bd7b028447a08dea1288e8d0646f9cdb",
+      "q2-ra05-og-kush": "337dc3c208aa9fcd1e200f201ad3ab2fd66113d2945686c19a724bb8ebd0811c",
+      "q2-ra05-strawberry": "a670ed77d9686acb9ddaa8b511dd21395e821d168751e397ff186edc0a5f0d40",
+      "q2-ra05-uk-hemp": "88e8db040545bcc92545e052dd1c026b0e1460295b1f20a6540d5bf5b29d0296",
+      "q2-ra05-uk-factsheet": "5e5eb1c85361a16368c12a649095623d5e33da1598190f8c8e40d4c4b7322298",
+      "q2-ra05-nhs-medical": "7c776637479c922b491839836ad0ea9cbbc3d45c75d552374caf31366c0ec138",
+      "q2-ra05-uruguay": "04a405b927a4cdb44c0f4488396fd88994023f5afc19aed7ac76798e5a16c6a1",
+      "q2-ra05-germany-medical": "1a6b4ee3b6541ddd3eb75f000956ffe8306475f30b034181ae96ad691f687519",
+      "q2-ra05-canada-pesticides": "966afa6da8232615c38c641258719298bf869792052863252b86ac5ef690f729",
+      "q2-ra05-thailand": "a11078c193202e4af60c095582e0a94ca82e85151be86ac1277cc4f9713eaf2c",
+      "q2-ra05-australia": "34afccf1f1e1210ef838be3b28ae1e1cbc9d28b10b23d4357f05a3ec3b84a7db",
+      "q2-ra05-france-announcement": "113bc529bd147a993cb8f32e7ffa5cdb2f418ddec9f35c222840b9d1df34a1f5",
+      "q2-ra05-allergy": "12ee26819293246f9886c687c393ce36c7056549e1b0b031927e669295874b36",
+      "q2-ra05-chs": "ed9532db60ae3370c33f7d9a4beb060d5032b9ad4e7cc7beb4d6d02a4ec977e2",
+      "q2-ra05-aasm": "b774331f8b4e2b94bfe409504f672b5503f5b5b5947e5f65c4b4ac1814bb5516",
+      "q2-ra05-ahrq": "bf07a9074cb40b2744461ea75c179cb48732caaa618378a67a7b3e732e8e6d0c",
+      "q2-ra05-fda-cbd": "c1a5e8f8ec44e05640b467363879de0c8834379ca5eaeb9612fa752721ef87c0",
+      "q2-ra05-thcv": "5569a98d0e38f95d5005fdef18d952dd0e676f209125493c7ba71d4be3534793",
+      "q2-ra05-cbd-iop": "b39d2b57dda9d51bd495aa7cdb613f26854b822b782321b7c39fc8a4a0965394",
+      "q2-ra05-cbd-withdrawal": "552976219d9a0772092988383347a61514893286b634625ff8d2741a2638ce65",
+      "q2-ra05-jwh018": "a622e9852ed63704d7148df507039474c2bb5e58ac273f465f3d0df86d76156f",
+      "q2-ra05-cb1-signaling": "d329fda72ad3e883e5efa3166078c1fd0b5d56488971eef91489f6b50a5b97f4",
+      "q2-ra05-howlett-gi": "cc60b9857868c0031764fab50229191ca45d0cb96f460b9a452d97d4cb7d3611"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { isKqQueuedOrder, type KqQueuedOrder } from "./kanab-quest-market-queue";
 /** Virtual positions only. All execution maths belongs to PostgreSQL NUMERIC. */
 export const KQ_CRYPTO_MAX_QUOTE_AGE_MS = 10 * 60 * 1000;
 const parisClock = new Intl.DateTimeFormat("en-GB", {
@@ -25,9 +26,9 @@ export type KqCryptoAsset = { id: number; rank: number | null; name: string; sym
 export type KqCryptoPosition = { assetId: number; quantity: string; costBasisCents: number; valueCents: number | null };
 export type KqCryptoTrade = { orderId: string; assetId: number; side: "buy" | "sell"; quantity: string; priceEur: string; amountCents: number; costBasisCents: number; realizedPnlCents: number; cashAfterCents: number; createdAt: string };
 export type KqCryptoRefreshStatus = { refreshing: boolean; nextAttemptAt: string | null; lastFailureCode: null | "rate_limited" | "provider_unavailable" | "invalid_quotes" | "publish_failed" };
-export type KqCryptoSnapshot = { version: 1; serverNow: string; marketStatus: "live" | "stale" | "unconfigured" | "unavailable"; updatedAt: string | null; cashCents: number; assets: KqCryptoAsset[]; positions: KqCryptoPosition[]; recentTrades: KqCryptoTrade[]; refresh?: KqCryptoRefreshStatus };
+export type KqCryptoSnapshot = { queuedOrders?: KqQueuedOrder[]; version: 1; serverNow: string; marketStatus: "live" | "stale" | "unconfigured" | "unavailable"; updatedAt: string | null; cashCents: number; assets: KqCryptoAsset[]; positions: KqCryptoPosition[]; recentTrades: KqCryptoTrade[]; refresh?: KqCryptoRefreshStatus };
 export type KqCryptoOrder = { orderId: string; assetId: number; side: "buy" | "sell"; quantity: string; priceEur: string; amountCents: number; expiresAt: string; quotedAt: string };
-export type KqCryptoAction = { action: "preview"; side: "buy"; assetId: number; amountCents: number } | { action: "preview"; side: "sell"; assetId: number; quantity: string } | { action: "confirm"; orderId: string };
+export type KqCryptoAction = { action: "preview"; side: "buy"; assetId: number; amountCents: number } | { action: "preview"; side: "sell"; assetId: number; quantity: string } | { action: "confirm"; orderId: string; executionPolicy?: "next-publication" };
 export const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value && typeof value === "object" && !Array.isArray(value));
 const natural = (value: unknown) => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const date = (value: unknown) => typeof value === "string" && Number.isFinite(Date.parse(value));
@@ -38,7 +39,7 @@ export class KqCryptoRequestError extends Error {}
 
 export function parseKqCryptoAction(value: unknown): KqCryptoAction {
   if (!isRecord(value)) throw new KqCryptoRequestError("Ordre crypto invalide.");
-  if (value.action === "confirm" && typeof value.orderId === "string" && KQ_CRYPTO_UUID.test(value.orderId)) return { action: "confirm", orderId: value.orderId };
+  if (value.action === "confirm" && typeof value.orderId === "string" && KQ_CRYPTO_UUID.test(value.orderId)) return { action: "confirm", orderId: value.orderId, ...(value.executionPolicy === "next-publication" ? { executionPolicy: "next-publication" as const } : {}) };
   if (value.action === "preview" && natural(value.assetId) && Number(value.assetId) > 0 && Number(value.assetId) <= 2_147_483_647) {
     if (value.side === "buy" && natural(value.amountCents) && Number(value.amountCents) >= 100 && Number(value.amountCents) <= KQ_CRYPTO_MAX_ORDER_CENTS) return { action: "preview", side: "buy", assetId: Number(value.assetId), amountCents: Number(value.amountCents) };
     if (value.side === "sell" && decimal(value.quantity)) return { action: "preview", side: "sell", assetId: Number(value.assetId), quantity: value.quantity as string };
@@ -70,7 +71,7 @@ export function isKqCryptoRefreshStatus(value: unknown): value is KqCryptoRefres
     && (value.lastFailureCode === null || (typeof value.lastFailureCode === "string" && ["rate_limited", "provider_unavailable", "invalid_quotes", "publish_failed"].includes(value.lastFailureCode)));
 }
 export function isKqCryptoSnapshot(value: unknown): value is KqCryptoSnapshot {
-  return isRecord(value) && value.version === 1 && date(value.serverNow) && ["live", "stale", "unconfigured", "unavailable"].includes(String(value.marketStatus))
+  return isRecord(value) && (value.queuedOrders === undefined || Array.isArray(value.queuedOrders) && value.queuedOrders.every(isKqQueuedOrder)) && value.version === 1 && date(value.serverNow) && ["live", "stale", "unconfigured", "unavailable"].includes(String(value.marketStatus))
     && (value.updatedAt === null || date(value.updatedAt)) && natural(value.cashCents)
     && Array.isArray(value.assets) && value.assets.every(isKqCryptoAsset) && Array.isArray(value.positions)
     && value.positions.every(p => isRecord(p) && natural(p.assetId) && decimal(p.quantity) && natural(p.costBasisCents) && (p.valueCents === null || natural(p.valueCents)))

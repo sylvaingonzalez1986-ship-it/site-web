@@ -17,7 +17,9 @@ function Result({ label, result, healthBefore }: { label: string; result: KqCard
 export function KqCardPlayPreview({ preview }: { preview: CardPlayPreview }) {
   if (preview.kind !== "deterministic") return <p className={styles.description} data-card-play-preview={preview.kind}>{preview.description}</p>;
   const { before, after } = preview;
+  const changedDice = after.dice.flatMap((face, index) => face === before.dice[index] ? [] : [`Dé ${index + 1} de ${before.dice[index]} à ${face}`]);
   return <section className={styles.preview} data-card-play-preview="deterministic" aria-label="Comparer avant de jouer la carte">
+    {changedDice.length ? <p data-card-dice-target><strong>Effet sur les dés</strong> · {changedDice.join(" · ")}</p> : null}
     <h3>Si tu valides ensuite</h3>
     <p>Avec les dés affichés et les soins déjà activés.</p>
     <div className={styles.results}><Result label="Sans la carte" result={before} healthBefore={before.health} /><Result label="Avec la carte" result={after} healthBefore={before.health} /></div>

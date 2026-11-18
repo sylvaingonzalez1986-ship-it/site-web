@@ -46,6 +46,7 @@ export function KqBattleVerdictDialog({ battleId, flowerId, kind, winner, subtit
     dialogProps={{ "data-verdict-result": true, "data-battle-id": battleId, "data-victory": won || undefined,
       "data-guide-jury-verdict": Boolean(battleId) || undefined, "data-guide-flower-id": flowerId }}
     footer={<div className={styles.nextActions}>
+    <div data-farm-guide-host />
       {onOpenLot ? <button type="button" className={styles.continue} data-verdict-open-lot onClick={onOpenLot}><ShoppingBag size={18} aria-hidden="true" />Voir ce lot dans Commerce<ArrowRight size={18} aria-hidden="true" /></button> : null}
       {onPrepare ? <button type="button" className={onOpenLot ? styles.secondary : styles.continue} data-verdict-prepare onClick={onPrepare}>{prepareLabel}</button>
         : prepareHref ? <Link className={onOpenLot ? styles.secondary : styles.continue} data-verdict-prepare href={prepareHref} prefetch={false}>{prepareLabel}</Link>

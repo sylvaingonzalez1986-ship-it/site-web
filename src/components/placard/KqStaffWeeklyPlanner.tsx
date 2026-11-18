@@ -102,7 +102,7 @@ export function KqStaffWeeklyPlanner({ employee, snapshot, prepare, disabled }: 
     });
   }
 
-  return <section ref={root} className={styles.planner} aria-labelledby={titleId} data-staff-weekly-planner={employee.id}>
+  return <section ref={root} className={styles.planner} aria-labelledby={titleId} data-staff-weekly-planner={employee.id} data-tutorial-observation={!disabled ? "staff-week" : undefined}>
     <header className={styles.header}><h4 id={titleId}>Semaine type</h4><KqStaffWeeklyPause employee={employee} snapshot={snapshot} prepare={prepare} disabled={disabled} /></header>
     {!supported ? <p className={desk.callout} role="status" data-weekly-unavailable>La semaine type n’est pas encore disponible sur ce serveur. L’organisation à la journée reste accessible.</p> : <>
       <p className={styles.note}>Répétée dès le prochain jour du jeu après activation. Jusqu’à trois activités et 7 h par jour travaillé ; samedi et dimanche au repos.</p>

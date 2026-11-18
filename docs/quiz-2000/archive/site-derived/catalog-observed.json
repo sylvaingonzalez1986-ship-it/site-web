@@ -1,0 +1,507 @@
+{
+  "observedAt": "2026-11-16T17:10:31.171Z",
+  "source": "Application Supabase catalogue; selected public-facing fields, read-only",
+  "externalFactValidation": false,
+  "producers": [
+    {
+      "id": "producer-1787050571187-9641",
+      "name": "Kanadea",
+      "description": "Salut ! Moi c'est Julien, chanvrier passionné et créateur de la marque Kanadea. Depuis 2023 je cultive dans les Hautes-Pyrénées au coeur de la Bigorre du chanvre CBD et CBG 100% naturel, sans pesticides ni produits chimiques. Une production locale qui met en avant la pureté du terroir pyrénéen.",
+      "location": "Hautes-Pyrenees, Occitanie",
+      "department": "Hautes-Pyrenees",
+      "region": "Occitanie",
+      "website": "https://www.kanadea.fr/",
+      "culture_type": [
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773872025906-6885",
+      "name": "Skud Farm",
+      "description": "Chez SKUD FARM, notre passion pour le Cannabis Sativa L. se traduit par 20 ans d’expérience et un savoir-faire unique. Depuis nos débuts, nous avons évolué en concevant des salles de culture et en accompagnant les cultivateurs.\nL’aventure SKUD FARM s’est enrichie pendant 10 ans à l’étranger et notamment aux États-Unis, où nous avons travaillé aux côtés de producteurs de cannabis qualifiés. Ces séjours nous ont permis d’acquérir des techniques de culture de pointe et d’atteindre un nouveau niveau de perfectionnement.\n\nSKUD FARM, c’est aussi une exigence sans compromis dans tout le processus de culture. De la sélection rigoureuse des variétés de chanvre à la récolte soignée des fleurs de cannabis CBD, nous maintenons une approche artisanale au sein de notre entreprise à taille humaine.\nAujourd’hui, nous sommes fiers de vous offrir un CBD français de qualité supérieure, riche en saveurs et cultivé dans le respect des normes les plus strictes et éthiques.\n« Chacun de nos produits incarne notre passion et notre expertise. »",
+      "location": "Eure, Normandie",
+      "department": "Eure",
+      "region": "Normandie",
+      "website": "https://www.skudfarm.fr/",
+      "culture_type": [
+        "indoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773869866555-1494",
+      "name": "La Vaca Del Diablo",
+      "description": "Chanvre cultivé dans le Jura, sol vivant, AB, pas d'ajout d'isolat, de terpènes ou autre, que de l'amour.",
+      "location": "Jura, Bourgogne-Franche-Comte",
+      "department": "Jura",
+      "region": "Bourgogne-Franche-Comte",
+      "website": "https://www.lavacadeldiablo.fr/",
+      "culture_type": [
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1784410504995-5263",
+      "name": "3 Feuilles",
+      "description": "Mes fleurs sont cultivées sur un sol vivant, aucun labour n'est pratiqué, préservant ainsi la structure du sol et  l'équilibre de sa microfaune au fil des cultures. Aucun produit chimique n'est utilisé, les plantes sont nourries grâce aux fumier des moutons élevés en bio sur la ferme. L'effeuillage est réalisé entièrement à la main pour garantir à chaque étape des fleurs propres, intactes et d'une qualité irréprochable.",
+      "location": "Ille-et-Vilaine, Bretagne",
+      "department": "Ille-et-Vilaine",
+      "region": "Bretagne",
+      "website": "",
+      "culture_type": [
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1787423717166-9078",
+      "name": "Buds Of Delight",
+      "description": "Nous sommes Letty et Martin, un couple passionné et uni depuis plus de 17 ans. En 2021, nous avons décidé de nous lancer dans une aventure commune en créant notre exploitation familiale au cœur des Landes. Avec un engagement fort pour le respect de la nature, Martin s’est tourné vers le maraîchage biologique, tandis que Letty a développé une pension pour chevaux, alliant ainsi nos valeurs et nos passions.\n \n🌿 Une passion pour le chanvre:\n \nFasciné par le chanvre depuis plus de 20 ans, Martin a entrepris en 2022 ses premières expérimentations sur cette culture prometteuse sous le nom Buds of Delight. Cette initiative est née de notre volonté de produire un CBD artisanal et de qualité, tout en respectant notre environnement.\n \n✨ Un cadre juridique clarifié, un projet affirmé:\n \nEn décembre 2022, la décision du Conseil d’État clarifiant le cadre légal du cannabis nous a donné un nouvel élan. Motivés et résolus, nous avons poursuivi nos efforts, perfectionnant nos méthodes et affinant notre savoir-faire.\n \n💎 Des fleurs de qualité:\n \nÀ la fin de la saison 2023, nous avons franchi une étape cruciale : notre exploitation a produit pour la première fois des fleurs de CBD bio d’une qualité exceptionnelle. Ce succès marque le début de notre engagement à offrir des produits naturels et authentiques sous la marque Buds of Delight.\n \nChez Buds of Delight, nous maîtrisons chaque étape, de la graine à la récolte, avec un objectif clair : vous offrir le meilleur du chanvre, cultivé avec passion et respect. Nous sommes fiers de partager notre aventure et nos valeurs à travers nos produits.\nNotre vision d'une production de qualité\nChez Buds of Delight, nous croyons en une approche artisanale et minutieuse, où la qualité prime toujours sur la quantité. Chaque étape de notre production est réalisée à la main, avec soin et passion, afin de préserver l’intégrité et les bienfaits naturels de nos plantes.\n \n🌿 Préserver l’essence du chanvre:\nNos techniques de travail ont été pensées pour protéger les trichomes de la plante, ces précieuses structures où se logent les cannabinoïdes. Ce sont ces molécules actives, reconnues pour leurs bienfaits, qui font toute la richesse de nos produits.\n \n✨ Sélection rigoureuse:\nTravailler sur de petites surfaces nous permet d’apporter une attention particulière à chaque plante. Nous sélectionnons uniquement les meilleures pour la transformation, afin de garantir des produits d’une qualité exceptionnelle, aux arômes uniques et naturels.\n \n💎 Un engagement pour l’authenticité:\nCette approche artisanale et respectueuse de la nature reflète notre volonté de proposer des produits qui ne se contentent pas d’être bons, mais qui incarnent le savoir-faire et la passion de notre exploitation.\n",
+      "location": "Landes, Nouvelle-Aquitaine",
+      "department": "Landes",
+      "region": "Nouvelle-Aquitaine",
+      "website": "https://www.budsofdelight.com/",
+      "culture_type": [
+        "outdoor",
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1771159879557-3228",
+      "name": "Hot Alpine Weed",
+      "description": "Lorsque tu savoures une fleur d’ Hot Alpine Weed ce n’est pas juste consommer une fleur. Tu savoures 5 années d’études et 20 ans d’expérience dans l’agriculture et le chanvre.\n\n​\n\nJe suis passionné par cette plante et j'ai testé tous les modes de culture imaginables. C'est pourquoi aujourd'hui j'ai une pratique agricole qui à mes yeux fait ressortir tout le potentiel de cette plante. J'ai aussi la chance de pouvoir cultiver dans un environnement préservé à la montagne. \n\n​\n\nIci c'est pas de chimie, pas de travail du sol, je limite les intrants ( fumier d'un collègue, purins fait maison..), des variétés de compet’, culture en plein champ et sous serre, le soleil des Hautes-Alpes, l'eau de la rivière qui arrive des sommets et bien sûr la certification agriculture biologique.\n\n​\n\nJ'ai choisi de cultiver peu de plantes sur une petite surface afin de pouvoir les bichonner au cas par cas. C'est une histoire d'amour, ou même plusieurs histoires d'amour..",
+      "location": "Hautes-Alpes, Provence-Alpes-Cote d'Azur",
+      "department": "Hautes-Alpes",
+      "region": "Provence-Alpes-Cote d'Azur",
+      "website": "",
+      "culture_type": [
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773870683520-7273",
+      "name": "Le Potagéant",
+      "description": "Fabricants locaux de produits à base de CBD\nNous sommes Baptiste et Michael, nous nous sommes rencontrés en formation maraichage en 2017.\n \nNotre passion pour le chanvre et notre envie d’apporter une offre artisanale et locale sur ce marché nous à fait franchir le pas de la culture en 2023. Nous souhaitons nous démarquer sur ce marché où il y a de tout et pas toujours le meilleur que ce soit en terme d’éthique ou d’utilisation de procédés ou produits chimiques.\n \nParce que nous croyons au bien-être que le cannabis légal peut apporter, parce qu’on est utopistes et rêveurs, un peu anarchistes aussi mais surtout parce qu’il n’y a aucune raison de ne pas le faire. Produire des légumes bio est un engagement, une passion, et entourer et alterner ces cultures avec le chanvre ne peut qu’améliorer le système et la planète.\n \nJe suis Baptiste en fin d’année 2020 je crée la micro ferme Le PotaGéant, après 3 ans de maraîchage diversifié insatisfaisant je réoriente la production vers une spécialisation en CBD avec mon associé et ami Michael rencontré en formation maraichage. Nous produisons nous mêmes le CBD et ses diverses formes ainsi que de l’ail, des échalotes, des oignons et des patates douces. Toujours sur les principes de sol vivant et sans intrants chimiques.\nLa majorité de nos opération sont réalisées à la main afin d’assurer une qualité maximale.",
+      "location": "Loire-Atlantique, Pays de la Loire",
+      "department": "Loire-Atlantique",
+      "region": "Pays de la Loire",
+      "website": "https://www.lepotageant.com/",
+      "culture_type": [
+        "outdoor",
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773871212890-5816",
+      "name": "Cannapache",
+      "description": ".Je cultive dans un local de 25 m² que j'ai aménagé moi-même.\nNous sommes installés dans les Pyrénées-Orientales (66).\nNotre entreprise est familiale : je m'occupe de toute la partie culture, technique et vente. Ma femme et mon père viennent me prêter main forte dès que nécessaire !\n\nToute notre culture est réalisée sur sol vivant. Je produis ce que j'aime consommer moi-même, c'est pourquoi je m'applique à proposer un produit sain et surtout respectueux d'une certaine éthique.",
+      "location": "Pyrenees-Orientales, Occitanie",
+      "department": "Pyrenees-Orientales",
+      "region": "Occitanie",
+      "website": "",
+      "culture_type": [
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773870509228-7130",
+      "name": "Terracanna",
+      "description": "🏆 Fondée sur des principes solides, une passion pour la terre et le chanvre !\n\n🐮 Producteur paysan situé en Ariège, non loin du château de Roquefixade notre chanvre est certifié bio ! On va au-delà même de l'agriculture biologique en adoptant une approche respectueuse de la terre. Nos méthodes de culture sans travail du sol préserve la biodiversité et favorise la régénération.\n\n🌱 Le chanvre est une plante qui exprime pleinement les caractéristiques de son terroir.",
+      "location": "Ariege, Occitanie",
+      "department": "Ariege",
+      "region": "Occitanie",
+      "website": "",
+      "culture_type": [
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773873534114-8538",
+      "name": "La Ferme Chanvrière des Cévennes",
+      "description": "Nichée au coeur des Cévennes gardoises, notre ferme est une petite exploitation à taille humaine, dédiés à la culture responsable du cannabidiol (CBD).\nFondée en 2023, l'idée est de créer une entreprise respectueuse de l'environnement, axée sur la production de CBD de la plus haute qualité. Nous cultivons notre chanvre avec le plus grand soins et avec une attention particulière.",
+      "location": "Lozere, Occitanie",
+      "department": "Lozere",
+      "region": "Occitanie",
+      "website": "https://www.la-ferme-chanvriere-des-cevennes.fr/",
+      "culture_type": [
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1790012817375-3215",
+      "name": "Iznofarm",
+      "description": "Avec 16 ans d’expérience dans la culture du cannabis, et 9 ans dans le maraîchage, j’ai créé ma ferme en 2019. Je cultive à la main des légumes, des fruits et du chanvre. Je m’inspire de la permaculture et utilise uniquement des intrants naturels ( fumier, compost, bois broyé, fientes de poules, thé de compost, drêches de brasserie…). J’ai ensuite été rejoint par Iago début 2021, pour développer la culture du cbd.\n\nNotre travail repose sur une sélection variétale très pointue, des techniques de cultures novatrices apprises en Oregon et en Californie et des méthodes ancestrales découvertes dans l’Himalaya et au Maroc.\n\nLa qualité Izno c’est également une observation minutieuse quotidienne, un séchage lent, une manucure à la main et un bon curing.\n\n",
+      "location": "Correze, Nouvelle-Aquitaine",
+      "department": "Correze",
+      "region": "Nouvelle-Aquitaine",
+      "website": "https://iznofarm.com/",
+      "culture_type": [
+        "greenhouse",
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773871368477-5738",
+      "name": "Cap Estuaire",
+      "description": "Ferme bio, production du sol vivant.\nCharente-Maritime/Estuaire de la Gironde\n",
+      "location": "Charente-Maritime, Nouvelle-Aquitaine",
+      "department": "Charente-Maritime",
+      "region": "Nouvelle-Aquitaine",
+      "website": "https://cap-estuaire.fr/",
+      "culture_type": [
+        "outdoor",
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773871640332-4267",
+      "name": "Cannevyire",
+      "description": "L'endroit où l’on cultive le chanvre...\n​\nCannevyire a vu le jour en avril 2021 grâce à la collaboration de deux amis de longue date passionnés de chanvre et des plantes en général. Nous avons créé Cannevyire, qui signifie « endroit où l’on cultive le chanvre » en patois normand. Nous sommes situés en Normandie et plus précisément dans l’Orne sur l’exploitation agricole de Marc certifiée BIO depuis plus de 15 ans.\n\n​\n\nUne culture respecteuse de l’environnement\n​\nNos produits sont majoritairement fabriqués à la ferme et de manière artisanale. Nous travaillons de la façon la plus naturelle possible, en favorisant les circuits courts. Nos valeurs se retrouvent étroitement liées à la culture du chanvre.\n\nTout d’abord avec l’aspect écologique qui est au coeur de nos préoccupations mais également par l’aspect bien-être que le chanvre peut apporter. La qualité et la pureté de nos produits sont le fruit d’un travail méticuleux et respectueux de l’environnement.",
+      "location": "Orne, Normandie",
+      "department": "Orne",
+      "region": "Normandie",
+      "website": "https://www.cannevyire.fr/",
+      "culture_type": [
+        "outdoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1773870264609-7958",
+      "name": "Ty Kanna",
+      "description": "Bienvenue chez Ty Kanna, producteur de chanvre CBD dans le Morbihan. Nos fleurs sont cultivées en pleine terre sur sol vivant, une partie sous serre et l'autre en extérieur, sans aucun engrais ni pesticides chimiques, uniquement des apports d'engrais 100% naturels\n et biologiques.\n\nNos plantes sont cultivées sur prairie herbeuse puis séchées en intérieur dans un espace clos et propre, ce qui nous permet de proposer des produits exempts de poussières et de résidus de terre. Toutes nos fleurs sont ensuite manucurées à la main et stockées\n dans un endroit frais, à l'abri de la lumière et de l'humidité.\n\nUne attention particulière est portée au respect de la biodiversité, la parcelle étant bordée d'arbres et de haies, il n'est pas rare d'y croiser hérissons, oiseaux, chauves-souris ainsi que papillons et insectes et parfois même des chevreuils curieux! Bonne\n dégustation!\n",
+      "location": "Morbihan, Bretagne",
+      "department": "Morbihan",
+      "region": "Bretagne",
+      "website": "",
+      "culture_type": [
+        "outdoor",
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1775332866395-6178",
+      "name": "Les Fleurs De Dame Nature",
+      "description": "DU PRODUCTEUR AU CONSOMMATEUR \n\nBienvenu dans l'aventure, ici pas de triche dans votre verdure. Voici les fleurs de Dame nature, cultivées en serre et en extérieur de qualité premium sur un sol vivant.\n\n Produites dans le sud de la France, dans le Var 83, proche de Toulon.\n\n\nLes fleurs de Dame nature c'est quoi ? \n\nC'est une entreprise agricole de production végétale basée sur la culture du chanvre bien être sur sol vivant. Ici, c'est plus de dix ans de non labour, nous n'exploitons pas la terre!\n\nNous travaillons en symbiose avec elle et ses habitants qui sont nos alliés.\n\nLes fleurs de Dame nature...Mais...Ca vient d'où?\n\nNous produisons nos fleurs en extérieur et en green house dans le Var (83) entre:\n\n•  le Mont Coudon connu pour ses falaises de roche calcaires et\n\n•  le Fenouillet connu pour son sol shistique avec ses paillettes de mica.\n\nCette assemblage minérale nous offre un terroir unique, si particulier qu'il fait office d'une exception.",
+      "location": "Var, Provence-Alpes-Cote d'Azur",
+      "department": "Var",
+      "region": "Provence-Alpes-Cote d'Azur",
+      "website": "https://lesfleursdedamenature.fr/",
+      "culture_type": [
+        "outdoor",
+        "greenhouse"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    },
+    {
+      "id": "producer-1791486661239-2355",
+      "name": "Original Growing",
+      "description": "Deux approches.\nUn même soin.\nDans le Morbihan, nous cultivons en indoor en adaptant notre méthode aux variétés et à chaque projet.\nLiving soil\nUn sol vivant au cœur de la culture, suivi avec attention tout au long du cycle.\nRDWC\nUne culture hydroponique en eau profonde recirculée, avec une solution nutritive oxygénée.",
+      "location": "Morbihan, Bretagne",
+      "department": "Morbihan",
+      "region": "Bretagne",
+      "website": "https://originalgrowing.com/#collection",
+      "culture_type": [
+        "indoor"
+      ],
+      "certifications": [],
+      "speciality": "",
+      "philosophy": "",
+      "experience": "",
+      "founded": ""
+    }
+  ],
+  "products": [
+    {
+      "id": "product-1775333841673",
+      "name": "Small Bud Mix",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": null,
+      "description": "",
+      "analysis_pdf": null,
+      "variant_label": null,
+      "updated_at": "2026-11-16T16:31:16.732918+00:00"
+    },
+    {
+      "id": "product-1784378979737",
+      "name": "Strawnana OG",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1773869866555-1494",
+      "description": "Une explosion de fruits avec une touche crémeuse.\n\nLa Strawnana OG CBD séduit dès l’ouverture du sachet par son profil aromatique généreux. Son bouquet mêle des notes de fraise bien mûre, de banane sucrée et une légère touche crémeuse, le tout relevé par une subtile fraîcheur d’agrumes et un fond végétal rappelant les variétés OG. Cette combinaison en fait une fleur particulièrement gourmande et agréable à déguster.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/b46394b1-61b9-4a43-894e-587dc4cdb92a.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-09T13:20:21.298983+00:00"
+    },
+    {
+      "id": "product-1788596868038",
+      "name": "Skunk",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1784410504995-5263",
+      "description": "Cette célèbre variété se distingue par une structure florale aérée mais richement recouverte de résine. CBD+CBDV, elle développe un bouquet aromatique complexe, où les notes fruitées de pomme et de fruits rouges cèdent la place à une signature fraîche et intense de forêt de pins.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/2f3f9499-ba33-432e-bafb-31be9be23e66.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-09T15:57:12.879468+00:00"
+    },
+    {
+      "id": "product-1782391212934",
+      "name": "Heaven",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": null,
+      "description": "La Heaven est une variété de CBD au profil doux et gourmand, avec des arômes floraux, fruités et une légère touche sucrée. Ses fleurs sont compactes, bien résineuses et riches en terpènes, ce qui lui donne un parfum agréable et bien marqué.\n\nUne variété équilibrée, appréciée aussi bien par les habitués que par ceux qui découvrent le CBD.\n\nArômes : Floral • Fruité • Légèrement sucré  \nAspect : Fleurs denses et résineuses  \nTHC : Conforme à la réglementation en vigueur\n\nUne fleur simple et efficace, à découvrir pour son parfum et sa belle qualité.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/be5cd5d3-a7b8-4764-8a83-0327c955a1b1.pdf",
+      "variant_label": null,
+      "updated_at": "2026-08-15T11:18:26.584288+00:00"
+    },
+    {
+      "id": "product-1785789994800",
+      "name": "Legendary Platinium",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1773873534114-8538",
+      "description": "La Legendary Platinium offre un profil aromatique profond mêlant notes terreuses, boisées et légèrement épicées. Une variété au caractère affirmé, appréciée pour son authenticité et sa richesse aromatique.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/7f2afcba-32cd-4639-9ec0-a8b65601c3b2.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-08T20:34:52.32971+00:00"
+    },
+    {
+      "id": "product-1788597425269",
+      "name": "White Cbg",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1784410504995-5263",
+      "description": "Avec un taux de CBG atteignant 11%, la White CBG séduit par son profil aromatique rafraîchissant, où se mêlent les notes florales de lavande et les touches acidulées de pamplemousse. Cette fleur CBG apaise sans fatiguer et convient à tout moment de la journée. ",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/66a06212-89b9-48c9-8b33-1fc1e517c43f.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-08T20:34:52.32971+00:00"
+    },
+    {
+      "id": "product-1785787553459",
+      "name": "Pink Pineapple",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1773873534114-8538",
+      "description": "La Pink Pineapple dévoile un profil aromatique gourmand dominé par l’ananas mûr et les fruits tropicaux. Des fleurs résineuses, riches en saveurs, pour une variété fruitée aussi agréable au nez qu’en bouche.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/87635571-762b-459d-a37c-bde41203cf7f.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-06T13:52:37.424535+00:00"
+    },
+    {
+      "id": "product-1787247334187",
+      "name": "Caramelo",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1787050571187-9641",
+      "description": "CARAMELO séduit par son profil aromatique unique, où la douceur s’invite dès la première inspiration. Ses effluves rappellent subtilement le caramel fondant et les biscuits dorés, offrant une expérience à la fois réconfortante et raffinée.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/f8e5f890-9916-4b25-89de-1bf85643d227.pdf",
+      "variant_label": null,
+      "updated_at": "2026-10-30T09:49:01.76419+00:00"
+    },
+    {
+      "id": "product-1773870383362",
+      "name": "Sour Space Candy",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1773870264609-7958",
+      "description": "Sour Space Candy, fleurs outdoor denses et résineuses avec un parfum de citron vert et des arômes d'agrumes.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/f3fad60e-e74d-485c-9ee6-d823118d38e7.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-09T15:57:12.879468+00:00"
+    },
+    {
+      "id": "product-1778010711652",
+      "name": "Pink Indica",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1773870683520-7273",
+      "description": "Une des petites nouvelles de l’année, elle se situe dans la lignée de la Painted Lady de 2023 (pour ceux qui étaient déjà là)\n\nUn goût fruité acidulé intéressant et des têtes compactes, solides avec de gros calices. Une bonne fleur traditionnelle qui ravira les connaisseurs. Les pistils étaient roses et les plantes bien buissonnantes en culture.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/fa325ce6-96c4-46fc-82ad-b9b726415c74.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-09T15:57:12.879468+00:00"
+    },
+    {
+      "id": "product-1791486846758",
+      "name": "Black Berserker ",
+      "category": "fleurs",
+      "culture_type": "indoor",
+      "producer_id": "producer-1791486661239-2355",
+      "description": "Kush, terreux, épicé, avec des notes de gaz.",
+      "analysis_pdf": null,
+      "variant_label": null,
+      "updated_at": "2026-11-10T19:58:19.602035+00:00"
+    },
+    {
+      "id": "product-1773870065552",
+      "name": "Sour RNA",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1773869866555-1494",
+      "description": "La Sour RNA CBD offre un profil intense, acidulé et fruité, avec des notes d’agrumes et une légère touche gazeuse. Une fleur expressive, au caractère bien marqué.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/e3a728b0-c5c3-48a5-969c-7b8b3d07c40f.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-10T19:58:19.602035+00:00"
+    },
+    {
+      "id": "product-1773870609046",
+      "name": "Suver Haze",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1773870509228-7130",
+      "description": "La Suver Haze dévoile un parfum frais dominé par les agrumes et les aiguilles de pin, accompagné de notes boisées et légèrement poivrées. En bouche, son profil est rond, équilibré et persistant.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/e572177d-1444-4bdd-b740-be5db87ef77e.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-10T19:58:19.602035+00:00"
+    },
+    {
+      "id": "product-1773871822760",
+      "name": "Shiva's Nectar",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1773871640332-4267",
+      "description": "Profil terpénique et aromatique\n\nArômes dominants : Ail, gaz (diesel), cannelle épicée, avec une douceur rappelant les bonbons Hot Tamales\n\nTerpènes majeurs :\n\nβ-Myrcène : terreux, rond, relaxant\n\nα-Pinène : frais, vivifiant, pin\n\nβ-Caryophyllène : épicé, poivré\n​\n\nD-Limonène : citronné, tonique",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/fe431faf-ba88-4843-81dc-3f230d27326b.pdf",
+      "variant_label": null,
+      "updated_at": "2026-10-30T09:49:01.76419+00:00"
+    },
+    {
+      "id": "product-1784378769542",
+      "name": "Cake Brulée",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1773870264609-7958",
+      "description": "La Cakeberry Brûlée Greenhouse révèle des arômes de baies avec des notes crémeuses. Bien denses et résineuses, les fleurs présentes des nuances de couleurs allant du vert au violet. Culture sous serre sur sol vivant sans engrais ni pesticides chimiques.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/eab400e8-a6c8-4947-9136-2682943bf065.pdf",
+      "variant_label": null,
+      "updated_at": "2026-10-27T06:29:14.652674+00:00"
+    },
+    {
+      "id": "product-1793171523177",
+      "name": "Lemon Flambé ",
+      "category": "fleurs",
+      "culture_type": "indoor",
+      "producer_id": "producer-1773870264609-7958",
+      "description": "La Lemon Flambée CBD mêle un citron vif et acidulé à de douces notes de cookie. Un profil frais et gourmand, complété par de subtiles touches fruitées, qui ravira les amateurs d’agrumes.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/7681efb1-1aff-4057-a6da-58aeab8eac0d.pdf",
+      "variant_label": null,
+      "updated_at": "2026-11-16T01:06:34.118025+00:00"
+    },
+    {
+      "id": "product-1790013054742",
+      "name": "Shaolin ",
+      "category": "fleurs",
+      "culture_type": "greenhouse",
+      "producer_id": "producer-1790012817375-3215",
+      "description": "La Shaolin ne fait pas dans la discrétion. Dès l’ouverture du sachet, elle libère un nez puissant et franchement gazy, accompagné de notes florales plus fines qui viennent complexifier l’ensemble.",
+      "analysis_pdf": null,
+      "variant_label": null,
+      "updated_at": "2026-11-08T20:34:52.32971+00:00"
+    },
+    {
+      "id": "product-1787424552998",
+      "name": "Sweet Candy Premium \"1000mg -- 10ml\"",
+      "category": "e-liquide",
+      "culture_type": null,
+      "producer_id": "producer-1787423717166-9078",
+      "description": "Laissez-vous séduire par Sweet Candy, un e-liquide naturellement sucré aux arômes de bonbons fruités, pour une vape douce et apaisante.\nFabriqués artisanalement dans les Landes à partir de nos fleurs de CBD bio, ces e-liquides full spectrum sont sans arômes artificiels ni isolats, pour un goût authentique et naturel.\n\n CBD full spectrum 1000mg, sans nicotine, THC < 0,3 %.\n\n",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/aea9f16e-b1ff-42d8-8379-3d233f8efea3.pdf",
+      "variant_label": null,
+      "updated_at": "2026-08-22T19:01:16.194052+00:00"
+    },
+    {
+      "id": "product-1775333135261",
+      "name": "Blood Lime",
+      "category": "fleurs",
+      "culture_type": "outdoor",
+      "producer_id": "producer-1775332866395-6178",
+      "description": "Arôme : Odeur crémeuse et douce de citron sur une pointe Gazzy Orange.  \nAspect : Plus ou moins violette.\nGoût :  Fruit acidulé, citron crémeux et touche d'orange sanguine.",
+      "analysis_pdf": null,
+      "variant_label": null,
+      "updated_at": "2026-10-30T09:49:01.76419+00:00"
+    },
+    {
+      "id": "product-1787424055218",
+      "name": "Green Gold \"360mg -- 10ml\"",
+      "category": "e-liquide",
+      "culture_type": null,
+      "producer_id": "producer-1787423717166-9078",
+      "description": "L’essence du chanvre dans un e-liquide doux et naturel. Green Gold 360mg, c’est l’équilibre parfait pour une vape légère et authentique.\n Fabriqué artisanalement à partir de fleurs de CBD bio cultivées dans les Landes, sans arômes artificiels ni isolats. Il reflète tout notre savoir-faire, du champ au flacon.\n CBD full spectrum 360mg, sans nicotine, THC < 0,3 %, testé en laboratoire français.\nIdéal pour découvrir le CBD en toute simplicité, avec la qualité Buds of Delight.",
+      "analysis_pdf": "https://eyowwwpdmfrulhkpvlnf.supabase.co/storage/v1/object/public/product-analyses/d55c38c2-3ed8-4f9c-a1dc-f5313d16b4f8.pdf",
+      "variant_label": null,
+      "updated_at": "2026-08-22T19:01:16.194052+00:00"
+    }
+  ]
+}

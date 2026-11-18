@@ -1,0 +1,1906 @@
+{
+  "batchId": "c-new-06",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Chez des bactéries, comment nomme-t-on un groupe de gènes voisins transcrits ensemble dans un même ARN messager ?",
+      "options": [
+        "Un opéron",
+        "Un cistron",
+        "Un nucléosome",
+        "Un réplicon"
+      ],
+      "answer": 0,
+      "explanation": "Un opéron peut regrouper plusieurs gènes transcrits en un ARN messager commun. Cet ARN peut servir à produire plusieurs protéines ; l’organisation décrite est bactérienne.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-operons"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Organisation d’un opéron bactérien",
+        "subjectKey": "operon-bacterien",
+        "property": "Plusieurs gènes voisins transcrits dans un même ARN",
+        "expectedAnswer": "Un opéron",
+        "learningObjective": "Reconnaître une unité de transcription bactérienne regroupant plusieurs gènes.",
+        "factKey": "bacterial-operon-adjacent-genes-one-messenger",
+        "form": "identification",
+        "difficultyRationale": "Notion intermédiaire d’organisation de la transcription, demandant de distinguer des unités génétiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-operons",
+            "locator": "Introduction, paragraphe sur les opérons ; The trp Operon, premiers paragraphes",
+            "support": "Les gènes voisins d’un opéron bactérien sont transcrits en un seul ARN messager ; l’exemple trp produit les instructions de plusieurs enzymes."
+          }
+        ],
+        "replacementReason": "Remplace le fait mutation/origine de variation, trop proche de hemp-genetics-mutation-clonale ; nouvel objectif sur l’organisation de la transcription."
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-allele-fixation-frequency-one",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que signifie la fixation d’un allèle à un locus dans une population ?",
+      "options": [
+        "La moitié des copies de ce locus portent cet allèle",
+        "Cet allèle apparaît dans un seul individu",
+        "Cet allèle vient de disparaître de la population",
+        "Toutes les copies de ce locus portent cet allèle"
+      ],
+      "answer": 3,
+      "explanation": "Un allèle fixé a une fréquence de 1 à ce locus : les autres variantes y sont absentes de la population considérée. Fixé ne veut pas dire plus avantageux.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-effective-population"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Fixation d’un allèle",
+        "subjectKey": "fixation-allele",
+        "property": "Fréquence égale à un",
+        "expectedAnswer": "Toutes les copies de ce locus portent cet allèle",
+        "learningObjective": "Distinguer présence, fréquence et fixation d’une variante.",
+        "factKey": "allele-fixation-frequency-one",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-effective-population",
+            "locator": "Genetic Drift Decreases Gene Diversity and Leads to Population Subdivision",
+            "support": "La fixation est définie par une fréquence allélique de 1,0, tous les individus portant le même allèle au locus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-hardy-weinberg-heterozygote-frequency-two-p-q",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "À l’équilibre de Hardy-Weinberg pour deux allèles de fréquences p et q, quelle est la fréquence attendue des hétérozygotes ?",
+      "options": [
+        "q²",
+        "p + q",
+        "2pq",
+        "p²"
+      ],
+      "answer": 2,
+      "explanation": "Les deux combinaisons possibles des allèles différents donnent 2pq. Ce modèle suppose notamment des unions aléatoires et l’absence de forces évolutives dans une population idéale.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Équilibre de Hardy-Weinberg",
+        "subjectKey": "hardy-weinberg",
+        "property": "Fréquence des hétérozygotes",
+        "expectedAnswer": "2pq",
+        "learningObjective": "Relier fréquences alléliques et fréquence d’un génotype dans un modèle explicite.",
+        "factKey": "hardy-weinberg-heterozygote-frequency-two-p-q",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-evolution",
+            "locator": "The Hardy-Weinberg Principle, figure 19.2",
+            "support": "Pour un locus à deux allèles, le modèle donne p² pour un homozygote, 2pq pour les hétérozygotes et q² pour l’autre homozygote."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heritability-population-variance-not-individual-percentage",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Que décrit l’héritabilité d’un caractère dans une population et un environnement donnés ?",
+      "options": [
+        "La proportion de gènes identiques entre tous les individus",
+        "La part de sa variation attribuable aux différences génétiques",
+        "La part génétique du caractère chez chaque individu",
+        "La probabilité qu’un enfant copie exactement un parent"
+      ],
+      "answer": 1,
+      "explanation": "L’héritabilité porte sur les différences entre individus dans un contexte donné. Elle ne découpe pas le caractère d’un individu en une part génétique et une part environnementale.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-genetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Héritabilité",
+        "subjectKey": "heritabilite",
+        "property": "Part génétique de la variance entre individus",
+        "expectedAnswer": "La part de sa variation attribuable aux différences génétiques",
+        "learningObjective": "Éviter une interprétation individuelle ou universelle d’une statistique de population.",
+        "factKey": "heritability-population-variance-not-individual-percentage",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-genetics",
+            "locator": "Genetic variability, paragraphe Heritability",
+            "support": "L’héritabilité est la fraction de la variation phénotypique attribuable aux différences génétiques entre individus d’une population."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-effective-population-size-differs-census",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel type d’effectif désigne la taille efficace d’une population, par opposition à son recensement ?",
+      "options": [
+        "Un effectif théorique lié à la transmission à la génération suivante",
+        "Le nombre total d’individus vivants effectivement recensés",
+        "Le nombre total de gamètes produits pendant une saison",
+        "Le nombre de variantes alléliques différentes recensées"
+      ],
+      "answer": 0,
+      "explanation": "La taille efficace décrit une population idéale comparable du point de vue de la transmission génétique. Elle dépend de la reproduction et peut être inférieure à l’effectif visible.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-effective-population"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Taille efficace",
+        "subjectKey": "taille-efficace-population",
+        "property": "Distinction entre effectif et contribution génétique",
+        "expectedAnswer": "Un effectif théorique lié à la transmission à la génération suivante",
+        "learningObjective": "Comprendre pourquoi compter les individus ne résume pas la transmission de diversité.",
+        "factKey": "effective-population-size-differs-census",
+        "form": "identification",
+        "difficultyRationale": "Distinguer effectif théorique, comptage des individus, production de gamètes et richesse allélique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-effective-population",
+            "locator": "Measuring Genetic Drift",
+            "support": "La taille efficace est rarement le nombre recensé ; elle dépend des individus contribuant aux gamètes et des stratégies de reproduction."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-directional-selection-favors-one-phenotypic-extreme",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une population fictive, les plantes les plus grandes laissent davantage de descendants que les autres. Quelle sélection cela illustre-t-il ?",
+      "options": [
+        "Une sélection stabilisante",
+        "Une sélection diversifiante",
+        "Une sélection favorisant les formes rares",
+        "Une sélection directionnelle"
+      ],
+      "answer": 3,
+      "explanation": "La sélection directionnelle favorise un côté de la variation d’un caractère. La distribution peut se déplacer vers cet extrême au fil des générations si la variation est transmissible.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-adaptive-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sélection directionnelle",
+        "subjectKey": "selection-naturelle",
+        "property": "Avantage d’un extrême phénotypique",
+        "expectedAnswer": "Une sélection directionnelle",
+        "learningObjective": "Reconnaître un déplacement orienté de la distribution des caractères.",
+        "factKey": "directional-selection-favors-one-phenotypic-extreme",
+        "form": "situation",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-adaptive-evolution",
+            "locator": "Directional Selection",
+            "support": "La sélection directionnelle favorise les phénotypes situés à une extrémité de la variation existante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-sexual-selection-access-to-mates",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel type de succès est directement au cœur de la sélection sexuelle ?",
+      "options": [
+        "La résistance à un nouvel agent pathogène",
+        "La tolérance à une température extrême",
+        "L’accès aux partenaires reproducteurs",
+        "La survie pendant une pénurie alimentaire"
+      ],
+      "answer": 2,
+      "explanation": "La sélection sexuelle agit notamment par la compétition pour les partenaires ou leur choix. Un caractère peut ainsi favoriser l’accouplement sans améliorer la survie.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-adaptive-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sélection sexuelle",
+        "subjectKey": "selection-sexuelle",
+        "property": "Succès d’accès aux partenaires",
+        "expectedAnswer": "L’accès aux partenaires reproducteurs",
+        "learningObjective": "Distinguer succès d’accouplement et seuls avantages de survie.",
+        "factKey": "sexual-selection-access-to-mates",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-adaptive-evolution",
+            "locator": "Sexual Selection",
+            "support": "La compétition et le choix des partenaires peuvent produire des différences de succès reproducteur et sélectionner des caractères associés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heterozygote-advantage-maintains-two-alleles",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Si l’hétérozygote laisse plus de descendants que chacun des deux homozygotes, que peut favoriser la sélection ?",
+      "options": [
+        "La fixation de l’allèle dont l’expression est dominante",
+        "Le maintien des deux allèles dans la population",
+        "La fixation de l’allèle initialement le plus fréquent",
+        "La fixation de l’allèle porté par le parent maternel"
+      ],
+      "answer": 1,
+      "explanation": "L’avantage de l’hétérozygote peut maintenir un polymorphisme équilibré. C’est une situation où la sélection contribue à conserver plusieurs allèles, au lieu de n’en garder qu’un.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-balancing-selection"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Avantage de l’hétérozygote",
+        "subjectKey": "selection-equilibrante",
+        "property": "Maintien du polymorphisme",
+        "expectedAnswer": "Le maintien des deux allèles dans la population",
+        "learningObjective": "Comprendre comment la sélection peut conserver de la diversité génétique.",
+        "factKey": "heterozygote-advantage-maintains-two-alleles",
+        "form": "deduction",
+        "difficultyRationale": "Déduire le maintien possible des deux allèles à partir de la supériorité de l’hétérozygote explicitement fournie.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-balancing-selection",
+            "locator": "Page 3, balancing selection ; heterozygote advantage",
+            "support": "Un hétérozygote de valeur sélective supérieure aux deux homozygotes peut conduire à un polymorphisme équilibré."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-negative-frequency-dependent-selection-rare-advantage",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Un phénotype a un avantage quand il est rare, mais cet avantage baisse à mesure qu’il devient commun. Quelle sélection est illustrée ?",
+      "options": [
+        "Une sélection négativement dépendante de la fréquence",
+        "Une sélection positivement dépendante de la fréquence",
+        "Une sélection indépendante de la fréquence",
+        "Une dérive sans différence de succès reproducteur"
+      ],
+      "answer": 0,
+      "explanation": "L’avantage peut diminuer quand la forme devient commune. Cette dépendance à la fréquence peut contribuer au maintien de plusieurs formes dans une population.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-adaptive-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sélection dépendante de la fréquence",
+        "subjectKey": "selection-frequence",
+        "property": "Avantage lié à la rareté",
+        "expectedAnswer": "Une sélection négativement dépendante de la fréquence",
+        "learningObjective": "Reconnaître un avantage qui dépend de la composition de la population.",
+        "factKey": "negative-frequency-dependent-selection-rare-advantage",
+        "form": "situation",
+        "difficultyRationale": "Relier le sens de variation de la fréquence au sens de variation de l’avantage, parmi plusieurs modèles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-adaptive-evolution",
+            "locator": "Frequency-Dependent Selection",
+            "support": "La sélection négativement dépendante de la fréquence favorise les phénotypes rares et peut accroître la variabilité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-biological-species-fertile-viable-offspring",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Dans le concept biologique d’espèce, quel critère relie des individus d’une même espèce à reproduction sexuée ?",
+      "options": [
+        "Avoir exactement la même couleur et la même taille",
+        "Vivre sur le même continent dans le même habitat",
+        "Posséder exactement la même séquence d’ADN",
+        "Pouvoir se reproduire entre eux et avoir une descendance viable et fertile"
+      ],
+      "answer": 3,
+      "explanation": "Ce concept repose sur la reproduction et l’isolement reproducteur. Il a des limites, notamment pour les organismes asexués et certaines lignées qui s’hybrident.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-speciation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Concept biologique d’espèce",
+        "subjectKey": "espece-biologique",
+        "property": "Reproduction avec descendance viable et fertile",
+        "expectedAnswer": "Pouvoir se reproduire entre eux et avoir une descendance viable et fertile",
+        "learningObjective": "Distinguer un critère reproducteur d’une simple ressemblance.",
+        "factKey": "biological-species-fertile-viable-offspring",
+        "form": "identification",
+        "difficultyRationale": "Repère de culture scientifique générale, sans prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-speciation",
+            "locator": "Species and the Ability to Reproduce",
+            "support": "Le concept définit une espèce par la capacité à se reproduire et produire une descendance viable et fertile."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-flowering-time-temporal-reproductive-isolation",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Deux populations voisines fleurissent à des moments différents. À quel stade cela peut-il empêcher leurs échanges génétiques ?",
+      "options": [
+        "Après la fécondation, par mort des embryons hybrides",
+        "Lors de la méiose des hybrides, par production de gamètes stériles",
+        "Avant la fécondation, en limitant la rencontre des gamètes",
+        "Après la germination, par mortalité des plantules hybrides"
+      ],
+      "answer": 2,
+      "explanation": "Si leurs phases reproductrices ne coïncident pas, les populations échangent moins de gamètes. La barrière intervient avant la fécondation, même sans éloignement géographique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-speciation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Isolement temporel",
+        "subjectKey": "isolement-reproducteur",
+        "property": "Barrière avant la fécondation due au calendrier reproducteur",
+        "expectedAnswer": "Avant la fécondation, en limitant la rencontre des gamètes",
+        "learningObjective": "Relier un décalage reproducteur à une barrière prézygotique plutôt qu’à une conséquence chez l’hybride.",
+        "factKey": "flowering-time-prezygotic-reproductive-barrier",
+        "form": "deduction",
+        "difficultyRationale": "Situer l’effet d’un calendrier reproducteur dans le cycle, face à trois stades postzygotiques plausibles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-speciation",
+            "locator": "Reproductive Isolation, temporal isolation",
+            "support": "Des calendriers reproducteurs différents peuvent constituer un isolement temporel avant la formation d’un zygote."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-phylogenetic-branch-point-common-ancestral-lineage",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans un arbre phylogénétique enraciné, que représente un point d’où divergent deux branches ?",
+      "options": [
+        "Une espèce actuelle donnant directement naissance à sa voisine",
+        "Une lignée ancestrale commune aux deux lignées issues du point",
+        "Une hybridation obligatoire entre les deux espèces actuelles",
+        "Une mutation identique apparue séparément dans les deux espèces"
+      ],
+      "answer": 1,
+      "explanation": "Le point de branchement représente la séparation de lignées à partir d’un ancêtre commun. Deux espèces placées au bout des branches ne descendent pas pour autant l’une de l’autre.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-phylogenies"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Arbres phylogénétiques",
+        "subjectKey": "arbre-phylogenetique",
+        "property": "Sens d’un point de branchement",
+        "expectedAnswer": "Une lignée ancestrale commune aux deux lignées issues du point",
+        "learningObjective": "Lire une relation d’ascendance commune sans confondre espèces actuelles et ancêtres.",
+        "factKey": "phylogenetic-branch-point-common-ancestral-lineage",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-phylogenies",
+            "locator": "Phylogenetic Trees, figure 20.3",
+            "support": "Un point de branchement marque la divergence de lignées ; les taxons issus d’un même point partagent une ascendance sans dériver l’un de l’autre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-clade-common-ancestor-all-descendants",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Qu’inclut un groupe monophylétique, ou clade ?",
+      "options": [
+        "Un ancêtre commun et tous ses descendants",
+        "Un ancêtre commun et certains de ses descendants seulement",
+        "Des espèces ressemblantes sans considérer leur ascendance",
+        "Uniquement les espèces actuelles vivant dans le même milieu"
+      ],
+      "answer": 0,
+      "explanation": "Un clade est défini par l’ascendance commune et l’inclusion de tous les descendants. Une ressemblance ou un même habitat ne suffisent pas à constituer ce groupe.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-relationships"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Clade",
+        "subjectKey": "clade-monophyletique",
+        "property": "Ancêtre et descendance complète",
+        "expectedAnswer": "Un ancêtre commun et tous ses descendants",
+        "learningObjective": "Distinguer un groupe d’ascendance d’un regroupement fondé sur l’apparence.",
+        "factKey": "clade-common-ancestor-all-descendants",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-relationships",
+            "locator": "Building Phylogenetic Trees, figures 20.10 et 20.11",
+            "support": "Un groupe monophylétique rassemble un ancêtre commun et tous ses descendants."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-convergent-evolution-independent-similar-adaptations",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "En évolution végétale, quelle explication correspond à une convergence de formes ?",
+      "options": [
+        "Des formes similaires héritées d’un ancêtre commun proche",
+        "Des formes ancestrales devenant différentes entre les lignées",
+        "Des formes différentes conservées par une sélection divergente",
+        "Des formes similaires acquises séparément dans plusieurs lignées"
+      ],
+      "answer": 3,
+      "explanation": "Des contraintes environnementales semblables peuvent favoriser des formes comparables dans des lignées éloignées. Une ressemblance ne prouve donc pas toujours une parenté proche.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-relationships"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Convergence évolutive",
+        "subjectKey": "convergence-evolutive",
+        "property": "Ressemblance acquise indépendamment",
+        "expectedAnswer": "Des formes similaires acquises séparément dans plusieurs lignées",
+        "learningObjective": "Distinguer adaptation semblable et héritage d’un ancêtre proche.",
+        "factKey": "convergent-evolution-independent-similar-adaptations",
+        "form": "identification",
+        "difficultyRationale": "Distinguer plusieurs histoires évolutives possibles d’une forme, sans indice préalable d’indépendance.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-relationships",
+            "locator": "Misleading Appearances",
+            "support": "Des lignées éloignées peuvent acquérir des adaptations similaires sous des contraintes environnementales semblables."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-allopolyploid-combines-chromosome-sets-species",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "D’où viennent les jeux chromosomiques dans l’ordre allopolyploïdie puis autopolyploïdie ?",
+      "options": [
+        "De plusieurs espèces ; de plusieurs espèces",
+        "D’une seule espèce ; d’une seule espèce",
+        "De plusieurs espèces ; d’une seule espèce",
+        "D’une seule espèce ; de plusieurs espèces"
+      ],
+      "answer": 2,
+      "explanation": "L’allopolyploïdie réunit des jeux provenant d’espèces différentes. L’autopolyploïdie multiplie des jeux d’une même espèce ; ces deux histoires ne se confondent pas.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-speciation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Allopolyploïdie",
+        "subjectKey": "polyploidie",
+        "property": "Origine interspécifique des jeux",
+        "expectedAnswer": "De plusieurs espèces ; d’une seule espèce",
+        "learningObjective": "Distinguer deux origines évolutives de la polyploïdie végétale.",
+        "factKey": "allopolyploid-combines-chromosome-sets-species",
+        "form": "comparaison",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-speciation",
+            "locator": "Sympatric Speciation, figures 18.15 et 18.16",
+            "support": "L’autopolyploïdie multiplie les jeux d’une même espèce ; l’allopolyploïdie associe des jeux issus d’espèces distinctes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Lors d’une transformation naturelle par Agrobacterium, où le segment T-DNA peut-il s’intégrer ?",
+      "options": [
+        "Dans l’ADN des chloroplastes de la plante",
+        "Dans les chromosomes nucléaires de la plante",
+        "Dans l’ADN des mitochondries de la plante",
+        "Dans le plasmide d’une bactérie voisine"
+      ],
+      "answer": 1,
+      "explanation": "Agrobacterium peut transférer un segment T-DNA vers le noyau végétal, puis ce segment peut s’intégrer aux chromosomes. Il s’agit d’un transfert d’ADN bactérien vers la plante, distinct d’une fécondation.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-agrobacterium-2022"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Transfert d’ADN par Agrobacterium",
+        "subjectKey": "agrobacterium-transfert-adn",
+        "property": "Intégration possible du T-DNA dans les chromosomes nucléaires végétaux",
+        "expectedAnswer": "Dans les chromosomes nucléaires de la plante",
+        "learningObjective": "Identifier le compartiment génétique végétal concerné par l’intégration naturelle du T-DNA.",
+        "factKey": "agrobacterium-can-transfer-dna-into-plant-genome",
+        "form": "identification",
+        "difficultyRationale": "Distinguer des compartiments génétiques plausibles pour un transfert bactérien, sans choix fongiques hors système.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-agrobacterium-2022",
+            "locator": "Introduction, paragraphes sur l’entrée du T-DNA dans le noyau et l’intégration chromosomique",
+            "support": "Le T-DNA est acheminé dans le noyau végétal, où les modèles d’intégration le relient à l’ADN chromosomique de la plante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-retrotransposon-rna-intermediate-reverse-transcription",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel enchaînement permet à un rétrotransposon de produire une nouvelle copie dans le génome ?",
+      "options": [
+        "Transcription, transcription inverse, insertion d’ADN",
+        "Découpe de l’ADN d’origine, déplacement, réinsertion d’ADN",
+        "Réplication directe, découpe de l’original, insertion d’ADN",
+        "Réplication directe, élimination de l’original, insertion d’ADN"
+      ],
+      "answer": 0,
+      "explanation": "Le rétrotransposon est d’abord transcrit en ARN, puis cet ARN est recopié en ADN. Une nouvelle copie peut s’insérer ailleurs, selon un mécanisme de copie et insertion.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-retrotransposons"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Rétrotransposons",
+        "subjectKey": "elements-transposables",
+        "property": "Intermédiaire ARN avant une nouvelle copie d’ADN",
+        "expectedAnswer": "Transcription, transcription inverse, insertion d’ADN",
+        "learningObjective": "Distinguer un mécanisme de mobilité fondé sur l’ARN de la simple mobilité d’ADN.",
+        "factKey": "retrotransposon-rna-intermediate-reverse-transcription",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-retrotransposons",
+            "locator": "Known types of transposable element families",
+            "support": "Les éléments de classe I, ou rétrotransposons, se déplacent via un intermédiaire ARN et une transcription inverse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-endoreduplication-dna-replication-without-mitosis",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel modèle de copie de l’ADN et de division caractérise l’endoréplication végétale ?",
+      "options": [
+        "Copies répétées ; mitose et cytocinèse à chaque cycle",
+        "Copies répétées ; mitose sans cytocinèse",
+        "Copies répétées ; cytocinèse sans mitose",
+        "Copies répétées ; absence de mitose et de cytocinèse"
+      ],
+      "answer": 3,
+      "explanation": "L’endoréplication augmente la quantité d’ADN dans un noyau sans multiplier les cellules. C’est une variante du cycle cellulaire observée au cours du développement végétal.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-endoreplication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Endoréplication",
+        "subjectKey": "endoreplication",
+        "property": "Réplication sans division",
+        "expectedAnswer": "Copies répétées ; absence de mitose et de cytocinèse",
+        "learningObjective": "Distinguer augmentation de l’ADN nucléaire et augmentation du nombre de cellules.",
+        "factKey": "endoreduplication-dna-replication-without-mitosis",
+        "form": "identification",
+        "difficultyRationale": "Distinguer la dissociation entre réplication, division du noyau et division du cytoplasme dans quatre modèles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-endoreplication",
+            "locator": "Abstract",
+            "support": "Le cycle endoréplicatif répète la réplication de l’ADN sans mitose ni cytocinèse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-genomic-imprinting-parent-origin-allele-expression",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans l’empreinte génomique, de quoi dépend l’expression différente de deux copies parentales d’un gène ?",
+      "options": [
+        "Du nombre d’acides aminés dans leurs protéines",
+        "De la place occupée par leur chromosome dans le noyau",
+        "Du parent dont chaque copie a été héritée",
+        "De la longueur des séquences codantes des copies"
+      ],
+      "answer": 2,
+      "explanation": "L’origine maternelle ou paternelle peut conditionner l’activité d’une copie par des marques épigénétiques. La séquence d’ADN n’a pas besoin d’être modifiée pour cette différence d’expression.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-imprinting"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Empreinte génomique",
+        "subjectKey": "empreinte-genomique",
+        "property": "Expression selon l’origine parentale",
+        "expectedAnswer": "Du parent dont chaque copie a été héritée",
+        "learningObjective": "Distinguer une asymétrie épigénétique parentale d’une différence de séquence.",
+        "factKey": "genomic-imprinting-parent-origin-allele-expression",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-imprinting",
+            "locator": "Definition",
+            "support": "L’empreinte peut supprimer l’expression d’une copie selon qu’elle provient de la mère ou du père, sans modifier sa séquence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-reciprocal-translocation-nonhomologous-segment-exchange",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Deux chromosomes non homologues échangent des segments sans perte globale d’ADN. Quel remaniement est décrit ?",
+      "options": [
+        "Une duplication locale d’un segment",
+        "Une translocation réciproque équilibrée",
+        "Une inversion à l’intérieur d’un chromosome",
+        "Une trisomie d’un chromosome entier"
+      ],
+      "answer": 1,
+      "explanation": "Une translocation réciproque déplace des segments entre chromosomes non homologues. Même sans perte d’ADN, elle peut modifier la position des gènes ou leur contexte régulateur.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-chromosome-errors"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Translocation chromosomique",
+        "subjectKey": "translocation-chromosomique",
+        "property": "Échange équilibré entre non-homologues",
+        "expectedAnswer": "Une translocation réciproque équilibrée",
+        "learningObjective": "Distinguer déplacement de segments et variation de quantité d’ADN.",
+        "factKey": "reciprocal-translocation-nonhomologous-segment-exchange",
+        "form": "situation",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-chromosome-errors",
+            "locator": "Translocations, figure 13.13",
+            "support": "Une translocation réciproque échange des segments entre deux chromosomes non homologues, sans gain ni perte de matériel dans le cas équilibré."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-fusion-gene-parts-two-previously-separate-genes",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Un gène nouveau réunit des portions de deux gènes auparavant séparés. Quel terme décrit cette organisation ?",
+      "options": [
+        "Un gène de fusion",
+        "Un gène dupliqué",
+        "Un pseudogène",
+        "Un allèle récessif"
+      ],
+      "answer": 0,
+      "explanation": "Un gène de fusion associe des parties provenant de deux gènes distincts. Il peut résulter d’un remaniement de l’ADN ; sa seule présence ne permet pas de conclure à un effet particulier.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-fusion-gene"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Gène de fusion",
+        "subjectKey": "fusion-genique",
+        "property": "Association de portions de deux gènes",
+        "expectedAnswer": "Un gène de fusion",
+        "learningObjective": "Identifier un type de nouvelle organisation génique.",
+        "factKey": "fusion-gene-parts-two-previously-separate-genes",
+        "form": "situation",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-fusion-gene",
+            "locator": "Définition initiale",
+            "support": "Un gène de fusion est formé par l’association de parties de deux gènes différents."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heteroplasmy-multiple-mitochondrial-sequences-one-individual",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Que désigne l’hétéroplasmie mitochondriale ?",
+      "options": [
+        "La présence d’un allèle nucléaire maternel et d’un allèle paternel",
+        "La présence de mitochondries dans plusieurs types de tissus",
+        "La présence simultanée de mitochondries et de chloroplastes",
+        "La coexistence de plusieurs séquences d’ADN mitochondrial chez un individu"
+      ],
+      "answer": 3,
+      "explanation": "Les copies du génome mitochondrial d’un individu ne sont pas forcément toutes identiques. L’hétéroplasmie décrit cette coexistence de variantes, pas simplement la présence de nombreux organites.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-heteroplasmy"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Hétéroplasmie mitochondriale",
+        "subjectKey": "heteroplasmie",
+        "property": "Coexistence de variantes mitochondriales",
+        "expectedAnswer": "La coexistence de plusieurs séquences d’ADN mitochondrial chez un individu",
+        "learningObjective": "Distinguer nombre d’organites et diversité de leurs séquences.",
+        "factKey": "heteroplasmy-multiple-mitochondrial-sequences-one-individual",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-heteroplasmy",
+            "locator": "Définition",
+            "support": "L’hétéroplasmie correspond à la présence de plusieurs séquences ou types d’ADN mitochondrial dans un même individu."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Qu’est-ce qu’un polysome lors de la synthèse des protéines ?",
+      "options": [
+        "Plusieurs chromosomes copiés par une même ADN polymérase",
+        "Plusieurs acides aminés transportés par un seul ARN de transfert",
+        "Plusieurs ribosomes traduisant simultanément un même ARN messager",
+        "Plusieurs ARN messagers traduits en même temps par un seul ribosome"
+      ],
+      "answer": 2,
+      "explanation": "Un même message peut porter plusieurs ribosomes qui avancent dans le même sens. Chacun fabrique sa chaîne protéique : plusieurs copies peuvent ainsi être produites à partir d’un ARN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-ribosomes"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Polysomes",
+        "subjectKey": "ribosome",
+        "property": "Traduction simultanée d’un message",
+        "expectedAnswer": "Plusieurs ribosomes traduisant simultanément un même ARN messager",
+        "learningObjective": "Comprendre comment un seul message permet plusieurs synthèses simultanées.",
+        "factKey": "polysome-many-ribosomes-one-message",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-ribosomes",
+            "locator": "Ribosomes, paragraphe polysome",
+            "support": "Un ARN messager peut être traduit simultanément par plusieurs ribosomes ; l’ensemble constitue un polysome."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-ubiquitin-chain-proteasome-degradation-signal",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel marqueur le protéasome reconnaît-il dans la voie classique de dégradation des protéines marquées ?",
+      "options": [
+        "Un résidu de glucose",
+        "Une chaîne d’ubiquitine",
+        "Un groupe acétyle",
+        "Un groupe méthyle"
+      ],
+      "answer": 1,
+      "explanation": "Une chaîne d’ubiquitine peut signaler une protéine au protéasome, qui la dégrade. La durée de vie des protéines constitue ainsi un niveau de contrôle après leur synthèse.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-protein-degradation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Dégradation des protéines",
+        "subjectKey": "ubiquitine-proteasome",
+        "property": "Signal de reconnaissance pour la dégradation",
+        "expectedAnswer": "Une chaîne d’ubiquitine",
+        "learningObjective": "Comprendre que la régulation peut agir sur la durée de vie du produit protéique.",
+        "factKey": "ubiquitin-chain-proteasome-degradation-signal",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-protein-degradation",
+            "locator": "Chemical Modifications, Protein Activity, and Longevity, figure 16.15",
+            "support": "Les protéines marquées par plusieurs unités d’ubiquitine sont dirigées vers le protéasome pour être dégradées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-enhancer-can-regulate-transcription-from-distance",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Comment les protéines d’un enhancer éloigné peuvent-elles interagir avec celles du promoteur du gène régulé ?",
+      "options": [
+        "Le repliement de l’ADN rapproche les deux régions",
+        "Une recombinaison les rapproche avant chaque transcription",
+        "Une duplication place l’enhancer juste à côté du promoteur",
+        "L’excision des introns rapproche l’enhancer du promoteur"
+      ],
+      "answer": 0,
+      "explanation": "Un enhancer peut être situé à distance. Le repliement de l’ADN permet aux protéines qui y sont liées d’interagir avec la machinerie assemblée près du promoteur.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-transcription-regulation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Enhancers",
+        "subjectKey": "enhancers",
+        "property": "Régulation possible à distance",
+        "expectedAnswer": "Le repliement de l’ADN rapproche les deux régions",
+        "learningObjective": "Comprendre qu’une région régulatrice n’est pas toujours adjacente à son gène cible.",
+        "factKey": "enhancer-can-regulate-transcription-from-distance",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-transcription-regulation",
+            "locator": "Enhancers and Transcription, figure 16.10",
+            "support": "Les enhancers peuvent se trouver à plusieurs milliers de nucléotides du gène ; la courbure de l’ADN rapproche les complexes protéiques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-transcription-factors-sequence-specific-regulatory-proteins",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel rôle distingue un facteur de transcription spécifique des facteurs généraux chez les eucaryotes ?",
+      "options": [
+        "Fournir la séquence d’ADN qui sert de point de départ",
+        "Catalyser la synthèse du brin d’ARN à partir de l’ADN",
+        "Assurer l’assemblage basal du complexe au promoteur",
+        "Reconnaître des motifs régulateurs et activer ou réprimer un gène"
+      ],
+      "answer": 3,
+      "explanation": "Ces protéines reconnaissent des motifs d’ADN et peuvent favoriser ou freiner la transcription. Elles ne sont ni les gènes eux-mêmes ni les enzymes qui fabriquent l’ARN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-transcription-regulation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Facteurs de transcription",
+        "subjectKey": "facteurs-transcription",
+        "property": "Protéines de régulation de la transcription",
+        "expectedAnswer": "Reconnaître des motifs régulateurs et activer ou réprimer un gène",
+        "learningObjective": "Distinguer un régulateur protéique de sa séquence cible.",
+        "factKey": "transcription-factors-sequence-specific-regulatory-proteins",
+        "form": "identification",
+        "difficultyRationale": "Comparer facteur spécifique, facteur général, séquence cible et enzyme de synthèse dans un même processus.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-transcription-regulation",
+            "locator": "Introduction ; The Promoter and the Transcription Machinery",
+            "support": "Les facteurs spécifiques sont des protéines se liant à des motifs d’ADN et modulant l’activité de la machinerie de transcription."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-histone-acetylation-generally-loosens-dna-binding",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans l’ouverture de la chromatine par acétylation des histones, quel effet sur leur charge et leur lien à l’ADN est décrit ?",
+      "options": [
+        "Charge positive réduite ; liaison à l’ADN renforcée",
+        "Charge positive accrue ; liaison à l’ADN relâchée",
+        "Charge positive réduite ; liaison à l’ADN relâchée",
+        "Charge positive accrue ; liaison à l’ADN renforcée"
+      ],
+      "answer": 2,
+      "explanation": "L’acétylation réduit la charge positive de certaines parties des histones et peut relâcher leur interaction avec l’ADN. L’accessibilité de la chromatine contribue au contrôle des gènes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-epigenetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Acétylation des histones",
+        "subjectKey": "modifications-histones",
+        "property": "Effet sur l’accessibilité de la chromatine",
+        "expectedAnswer": "Charge positive réduite ; liaison à l’ADN relâchée",
+        "learningObjective": "Relier une modification protéique à la régulation de l’accès à l’ADN.",
+        "factKey": "histone-acetylation-generally-loosens-dna-binding",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-epigenetics",
+            "locator": "Epigenetic Control, paragraphe acetyl groups",
+            "support": "L’ajout de groupes acétyle réduit la charge positive et relâche l’interaction ADN-histones, ouvrant des régions à la transcription."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-plant-rddm-small-rnas-guide-dna-methylation",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Dans la voie végétale RdDM, quel rôle jouent les petits ARN interférents associés aux protéines Argonaute ?",
+      "options": [
+        "Guider l’appariement des homologues à la méiose",
+        "Guider le ciblage de la méthylation de l’ADN",
+        "Guider l’excision des introns d’un ARN messager",
+        "Guider l’ajout des acides aminés dans une protéine"
+      ],
+      "answer": 1,
+      "explanation": "La méthylation de l’ADN dirigée par l’ARN utilise des petits ARN pour cibler des régions du génome. Elle participe notamment au contrôle des éléments transposables chez les plantes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-rddm-2016"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Méthylation dirigée par l’ARN",
+        "subjectKey": "rddm-vegetale",
+        "property": "Guidage de marques de l’ADN par petits ARN",
+        "expectedAnswer": "Guider le ciblage de la méthylation de l’ADN",
+        "learningObjective": "Distinguer un guidage épigénétique de l’ADN de la régulation d’un ARN messager.",
+        "factKey": "plant-rddm-small-rnas-guide-dna-methylation",
+        "form": "identification",
+        "difficultyRationale": "Connaissance experte portant sur un système précisément défini.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-rddm-2016",
+            "locator": "Introduction, petits ARN associés à AGO recrutant DRM1/DRM2 ; Discussion",
+            "support": "Les petits ARN associés à Argonaute contribuent au recrutement des méthyltransférases DRM et au ciblage de la méthylation de l’ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-crispr-cas-natural-antiviral-defense",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Avant ses usages en édition génétique, quelle fonction naturelle possède le système CRISPR-Cas chez des bactéries ?",
+      "options": [
+        "La défense contre des éléments génétiques envahissants, dont les virus",
+        "La réparation des mésappariements lors de la copie de l’ADN",
+        "Le couplage de la transcription et de la traduction",
+        "La ségrégation des chromosomes au cours de la division"
+      ],
+      "answer": 0,
+      "explanation": "Des fragments de séquences envahissantes peuvent servir de mémoire et guider une réponse ultérieure. Les outils d’édition se sont inspirés de ce système naturel de défense.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-crispr-2008"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Origine de CRISPR-Cas",
+        "subjectKey": "crispr-cas",
+        "property": "Fonction naturelle de défense",
+        "expectedAnswer": "La défense contre des éléments génétiques envahissants, dont les virus",
+        "learningObjective": "Situer l’origine biologique d’un outil moderne de génétique.",
+        "factKey": "crispr-cas-natural-antiviral-defense",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-crispr-2008",
+            "locator": "Abstract ; introduction",
+            "support": "Les systèmes CRISPR-Cas protègent de nombreux procaryotes contre des séquences envahissantes ; des ARN guides participent à la défense antivirale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-morgan-fruit-fly-classical-genetics-model",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel animal est au centre des travaux de Thomas Hunt Morgan sur les chromosomes et l’hérédité ?",
+      "options": [
+        "Le ver de terre",
+        "L’abeille domestique",
+        "Le poisson zèbre",
+        "La mouche drosophile"
+      ],
+      "answer": 3,
+      "explanation": "Morgan et son équipe travaillent sur Drosophila melanogaster, notamment sur des caractères liés au sexe. Cette petite mouche devient un organisme majeur de la génétique expérimentale.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-morgan-history"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Travaux de Thomas Hunt Morgan",
+        "subjectKey": "thomas-hunt-morgan",
+        "property": "Organisme modèle étudié",
+        "expectedAnswer": "La mouche drosophile",
+        "learningObjective": "Relier un pionnier de la génétique à son organisme de recherche.",
+        "factKey": "morgan-fruit-fly-classical-genetics-model",
+        "form": "identification",
+        "difficultyRationale": "Repère de culture scientifique générale, sans prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-morgan-history",
+            "locator": "Page 1, introduction et choix de D. melanogaster",
+            "support": "Morgan utilise Drosophila melanogaster et combine les croisements mendéliens avec l’étude des chromosomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-miescher-first-isolated-dna-nuclein",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel chercheur isole en 1869 une substance qu’il nomme « nucléine », aujourd’hui identifiée à l’ADN ?",
+      "options": [
+        "Louis Pasteur",
+        "Robert Koch",
+        "Friedrich Miescher",
+        "Gregor Mendel"
+      ],
+      "answer": 2,
+      "explanation": "Miescher isole une matière riche en phosphore à partir de cellules. Cette découverte précède de plusieurs décennies la démonstration du rôle héréditaire de l’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-miescher-1869"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Isolement initial de l’ADN",
+        "subjectKey": "friedrich-miescher",
+        "property": "Auteur de l’isolement de la nucléine",
+        "expectedAnswer": "Friedrich Miescher",
+        "learningObjective": "Distinguer découverte de la substance, fonction héréditaire et structure moléculaire.",
+        "factKey": "miescher-first-isolated-dna-nuclein",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-miescher-1869",
+            "locator": "Paragraphe initial",
+            "support": "Friedrich Miescher isole l’ADN pour la première fois en 1869 et nomme la substance nucléine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-johannsen-coined-word-gene",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel botaniste danois propose le mot « gène » pour les unités mendéliennes de l’hérédité ?",
+      "options": [
+        "Carl Correns",
+        "Wilhelm Johannsen",
+        "William Bateson",
+        "Hugo de Vries"
+      ],
+      "answer": 1,
+      "explanation": "Johannsen propose le terme en 1909 et distingue aussi génotype et phénotype. Ce vocabulaire décrit alors l’hérédité avant la connaissance de la structure moléculaire de l’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-johannsen-1909"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Origine du mot gène",
+        "subjectKey": "wilhelm-johannsen",
+        "property": "Introduction du terme",
+        "expectedAnswer": "Wilhelm Johannsen",
+        "learningObjective": "Situer l’origine historique du vocabulaire de la génétique.",
+        "factKey": "johannsen-coined-word-gene",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-johannsen-1909",
+            "locator": "Premier paragraphe",
+            "support": "Le botaniste danois Wilhelm Johannsen crée le mot gene pour désigner les unités mendéliennes d’hérédité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-autosomes-chromosomes-other-than-sex-chromosomes",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une espèce ayant des chromosomes sexuels, qu’appelle-t-on un autosome ?",
+      "options": [
+        "Un chromosome autre qu’un chromosome sexuel",
+        "Un chromosome hérité seulement du père",
+        "Un chromosome présent seulement dans les gamètes",
+        "Un chromosome d’ADN mitochondrial"
+      ],
+      "answer": 0,
+      "explanation": "Le terme distingue les chromosomes sexuels des autres chromosomes nucléaires. Il ne dit pas qu’un autosome est inactif ni qu’il provient d’un seul des deux parents.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-autosome"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Autosomes",
+        "subjectKey": "autosomes",
+        "property": "Distinction avec les chromosomes sexuels",
+        "expectedAnswer": "Un chromosome autre qu’un chromosome sexuel",
+        "learningObjective": "Identifier une catégorie de chromosomes sans reprendre les nombres humains.",
+        "factKey": "autosomes-chromosomes-other-than-sex-chromosomes",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-autosome",
+            "locator": "Definition",
+            "support": "Un autosome est distingué des chromosomes sexuels."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-apomixis-seed-embryo-without-fertilization",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Chez certaines plantes à fleurs, que permet l’apomixie ?",
+      "options": [
+        "Former un embryon par fusion de deux gamètes",
+        "Former un fruit sans développement d’embryon",
+        "Former un individu à partir d’un fragment de tige",
+        "Former un embryon dans une graine sans fécondation de l’oosphère"
+      ],
+      "answer": 3,
+      "explanation": "L’apomixie permet une reproduction par graines sans fécondation de l’oosphère. Ce mécanisme observé chez certaines plantes n’est pas affirmé ici comme un mode habituel du chanvre.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-asexual"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Apomixie",
+        "subjectKey": "apomixie",
+        "property": "Embryon sans fécondation de l’oosphère",
+        "expectedAnswer": "Former un embryon dans une graine sans fécondation de l’oosphère",
+        "learningObjective": "Comprendre qu’une reproduction par graines n’est pas toujours sexuée.",
+        "factKey": "apomixis-seed-embryo-without-fertilization",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-asexual",
+            "locator": "Introduction, paragraphe apomixis",
+            "support": "Certaines plantes produisent des graines sans fécondation ; le manuel nomme ce mode de reproduction apomixie."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-parthenocarpy-fruit-development-without-fertilization",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel phénomène désigne le développement d’un fruit sans fécondation ?",
+      "options": [
+        "La polyembryonie",
+        "La germination",
+        "La parthénocarpie",
+        "La double fécondation"
+      ],
+      "answer": 2,
+      "explanation": "Un fruit parthénocarpique se développe sans fécondation et ne contient pas de graines issues de celle-ci. Le développement du fruit peut ainsi être dissocié de la formation des graines.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-parthenocarpy"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Parthénocarpie",
+        "subjectKey": "parthenocarpie",
+        "property": "Fruit sans fécondation",
+        "expectedAnswer": "La parthénocarpie",
+        "learningObjective": "Distinguer développement d’un fruit et développement d’une graine.",
+        "factKey": "parthenocarpy-fruit-development-without-fertilization",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-parthenocarpy",
+            "locator": "Introduction",
+            "support": "Les fruits parthénocarpiques se développent sans fécondation et sont sans graines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-polyembryony-more-than-one-embryo-one-seed",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Qu’appelle-t-on polyembryonie chez les plantes ?",
+      "options": [
+        "La présence de plusieurs cotylédons dans un seul embryon",
+        "La présence de plusieurs embryons dans un même ovule ou une graine",
+        "La présence de plusieurs graines dans un même fruit",
+        "La présence de plusieurs fruits dans une inflorescence"
+      ],
+      "answer": 1,
+      "explanation": "Plusieurs embryons peuvent se développer à partir d’un même ovule ou dans une même graine. Ils ne proviennent pas nécessairement tous du même mécanisme de formation.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-polyembryony"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Polyembryonie",
+        "subjectKey": "polyembryonie",
+        "property": "Pluralité d’embryons par ovule ou graine",
+        "expectedAnswer": "La présence de plusieurs embryons dans un même ovule ou une graine",
+        "learningObjective": "Distinguer nombre d’embryons et nombre de graines ou de cotylédons.",
+        "factKey": "polyembryony-more-than-one-embryo-one-seed",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-polyembryony",
+            "locator": "Polyembryony in Ovule of Flower, définition initiale",
+            "support": "La polyembryonie désigne la formation de plus d’un embryon dans un ovule ; plusieurs embryons peuvent être présents dans une graine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Deux génotypes mesurent 10 et 20 cm en milieu A, puis 20 et 30 cm en B. Quel bilan décrit ces valeurs fictives ?",
+      "options": [
+        "Effets du génotype et du milieu, sans interaction dans ces valeurs",
+        "Effet du milieu seul, sans différence entre génotypes",
+        "Effet du génotype seul, sans effet du milieu",
+        "Interaction avec inversion du classement des génotypes"
+      ],
+      "answer": 0,
+      "explanation": "Les génotypes gardent un écart de 10 cm et gagnent chacun 10 cm entre A et B. Ces valeurs illustrent des effets du génotype et du milieu additifs, sans interaction entre eux.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn06-gxe-2023"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Interaction génotype-environnement",
+        "subjectKey": "interaction-genotype-environnement",
+        "property": "Réponses parallèles avec effets génétique et environnemental additifs",
+        "expectedAnswer": "Effets du génotype et du milieu, sans interaction dans ces valeurs",
+        "learningObjective": "Distinguer les effets séparés du génotype et du milieu d’une interaction à partir de valeurs explicites.",
+        "factKey": "parallel-responses-g-and-e-without-interaction",
+        "form": "deduction",
+        "difficultyRationale": "Interpréter deux écarts constants dans des données fictives et distinguer effets G, E et interaction.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn06-gxe-2023",
+            "locator": "Figure 1, scénario B, p. 111 ; introduction sur les normes de réaction, p. 110",
+            "support": "Le scénario B présente des génotypes différents répondant du même montant entre environnements : effets génétique et environnemental, sans interaction G×E."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-aminoacyl-trna-synthetase-matches-amino-acid-trna",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel rôle joue une aminoacyl-ARNt synthétase dans la fidélité de la traduction ?",
+      "options": [
+        "Vérifier le codon et l’anticodon au sein du ribosome",
+        "Déplacer le ribosome d’un codon sur l’ARN messager",
+        "Libérer la chaîne produite au signal de terminaison",
+        "Associer le bon acide aminé à l’ARNt correspondant"
+      ],
+      "answer": 3,
+      "explanation": "L’aminoacyl-ARNt synthétase charge un ARN de transfert avec l’acide aminé approprié. La justesse de cette association est une étape de fidélité distincte du décodage réalisé ensuite par le ribosome.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-ribosomes"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Charge des ARN de transfert",
+        "subjectKey": "arn-de-transfert",
+        "property": "Association d’un acide aminé à son ARNt",
+        "expectedAnswer": "Associer le bon acide aminé à l’ARNt correspondant",
+        "learningObjective": "Identifier une étape de fidélité distincte de la lecture du codon.",
+        "factKey": "aminoacyl-trna-synthetase-matches-amino-acid-trna",
+        "form": "identification",
+        "difficultyRationale": "Distinguer la charge de l’ARNt du décodage, de la translocation et de la terminaison au sein de la traduction.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-ribosomes",
+            "locator": "Aminoacyl tRNA Synthetases",
+            "support": "Les aminoacyl-ARNt synthétases lient un acide aminé à l’ARNt correspondant après la production de l’ARNt."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-dna-polymerase-replication-needs-primer",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel élément fournit l’extrémité existante que l’ADN polymérase allonge au démarrage d’un nouveau brin ?",
+      "options": [
+        "Une origine de réplication non amorcée",
+        "Un complexe initiateur lié à l’origine",
+        "Une amorce appariée au brin matrice",
+        "Une hélicase ouvrant les deux brins"
+      ],
+      "answer": 2,
+      "explanation": "L’ADN polymérase allonge une extrémité existante ; elle ne démarre pas seule un brin neuf. Pendant la réplication, la primase fournit une amorce qui permet ce démarrage.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Amorces de réplication",
+        "subjectKey": "replication-adn",
+        "property": "Besoin d’une extrémité préexistante",
+        "expectedAnswer": "Une amorce appariée au brin matrice",
+        "learningObjective": "Distinguer démarrage d’un brin et allongement par la polymérase.",
+        "factKey": "dna-polymerase-replication-needs-primer",
+        "form": "identification",
+        "difficultyRationale": "Distinguer l’extrémité à allonger des autres structures et acteurs de l’initiation de la réplication.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Paragraphe suivant le tableau 14.2",
+            "support": "La primase forme les amorces ; à partir d’une amorce, l’ADN polymérase peut commencer la synthèse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-nucleolus-ribosomal-subunit-assembly",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans quelle région du noyau s’assemblent les ARN ribosomiques avec des protéines pour former les sous-unités des ribosomes ?",
+      "options": [
+        "Le pore nucléaire",
+        "Le nucléole",
+        "Le centromère",
+        "Le télomère"
+      ],
+      "answer": 1,
+      "explanation": "Le nucléole concentre la production d’ARN ribosomiques et l’assemblage des sous-unités. Celles-ci rejoignent ensuite le cytoplasme, où les ribosomes participent à la synthèse des protéines.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Nucléole",
+        "subjectKey": "ribosome",
+        "property": "Assemblage des sous-unités ribosomiques",
+        "expectedAnswer": "Le nucléole",
+        "learningObjective": "Identifier une fonction du nucléole au sein du noyau.",
+        "factKey": "nucleolus-ribosomal-subunit-assembly",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "The Nucleolus",
+            "support": "Le nucléole rassemble les ARN ribosomiques et les protéines pour assembler les sous-unités, ensuite transportées par les pores vers le cytoplasme."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cn06-effective-population",
+      "title": "Population Genetics of Plant Pathogens — Genetic Drift",
+      "organization": "American Phytopathological Society",
+      "url": "https://www.apsnet.org/edcenter/sites/PopGenetics/Pages/geneticdrift.aspx",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif APS Education Center",
+      "published": "s.d.",
+      "passage": "Measuring Genetic Drift ; Genetic Drift Decreases Gene Diversity and Leads to Population Subdivision",
+      "access": "official-page",
+      "documentKind": "Cours scientifique institutionnel",
+      "limitation": "Les définitions générales sont utilisées ; aucune taille efficace ni valeur mesurée chez un pathogène n’est attribuée au chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Measuring Genetic Drift ; Genetic Drift Decreases Gene Diversity and Leads to Population Subdivision",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-balancing-selection",
+      "title": "Bio 1B — Evolution lecture #12: Selection",
+      "organization": "Department of Integrative Biology, University of California, Berkeley",
+      "url": "https://ib.berkeley.edu/courses/bio1b/evolutionfall08/pdfs/Mishler12_Selection.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Brent D. Mishler",
+      "published": "2008-12-03",
+      "passage": "Page 3 : balancing selection et heterozygote advantage",
+      "access": "full-text",
+      "documentKind": "Support de cours universitaire",
+      "limitation": "Seul le principe évolutif est utilisé ; les exemples médicaux humains ne sont pas repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Page 3 : balancing selection et heterozygote advantage",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-speciation",
+      "title": "Biology 2e — 18.2 Formation of New Species",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/18-2-formation-of-new-species",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Species and the Ability to Reproduce ; Reproductive Isolation ; Sympatric Speciation",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Species and the Ability to Reproduce ; Reproductive Isolation ; Sympatric Speciation",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-phylogenies",
+      "title": "Biology 2e — 20.1 Organizing Life on Earth",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/20-1-organizing-life-on-earth",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Phylogenetic Trees, figure 20.3",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Phylogenetic Trees, figure 20.3",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-relationships",
+      "title": "Biology 2e — 20.2 Determining Evolutionary Relationships",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/20-2-determining-evolutionary-relationships",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Misleading Appearances ; Building Phylogenetic Trees",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Misleading Appearances ; Building Phylogenetic Trees",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-agrobacterium-2022",
+      "title": "Characterization of T-Circles and Their Formation Reveal Similarities to Agrobacterium T-DNA Integration Patterns",
+      "organization": "Frontiers in Plant Science ; Purdue University",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.849930/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Kamy Singer, Lan-Ying Lee, Jing Yuan et Stanton B. Gelvin",
+      "published": "2022-05-06",
+      "passage": "Abstract ; Introduction",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Seule la propriété naturelle de transfert d’ADN vers la plante est utilisée ; aucun protocole de transformation ni application au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Introduction",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-retrotransposons",
+      "title": "Twenty years of transposable element analysis in the Arabidopsis thaliana genome",
+      "organization": "Mobile DNA ; INRAE",
+      "url": "https://link.springer.com/article/10.1186/s13100-020-00223-x",
+      "verifiedAt": "2026-11-16",
+      "author": "Hadi Quesneville",
+      "published": "2020-07-27",
+      "passage": "Transposable element families in Arabidopsis thaliana — Known types of transposable element families",
+      "access": "full-text",
+      "documentKind": "Article de synthèse scientifique",
+      "limitation": "Mécanisme général des rétrotransposons ; les abondances mesurées chez Arabidopsis ne sont pas attribuées au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Transposable element families in Arabidopsis thaliana — Known types of transposable element families",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-endoreplication",
+      "title": "Cytokinins promote onset of endoreplication by controlling cell cycle machinery",
+      "organization": "Plant Signaling & Behavior ; Nara Institute of Science and Technology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4203642/",
+      "verifiedAt": "2026-11-16",
+      "author": "Naoki Takahashi et Masaaki Umeda",
+      "published": "2014-06-04",
+      "passage": "Abstract, définition du cycle endoréplicatif",
+      "access": "full-text",
+      "documentKind": "Commentaire scientifique d’une recherche des auteurs",
+      "limitation": "La définition cellulaire est utilisée ; les résultats hormonaux sur Arabidopsis ne sont pas convertis en conseils de culture.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, définition du cycle endoréplicatif",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-imprinting",
+      "title": "Genetic Imprinting",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/genetics-glossary/Genetic-Imprinting",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "s.d.",
+      "passage": "Definition ; Narration",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Définition générale de l’empreinte parentale ; les mécanismes propres aux mammifères ne sont pas présentés comme propres au chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-fusion-gene",
+      "title": "Fusion gene",
+      "organization": "National Cancer Institute, NIH",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-terms/def/fusion-gene",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NCI",
+      "published": "s.d.",
+      "passage": "Définition initiale",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Seule la définition génétique est reprise ; pas de question de diagnostic, de traitement ou de risque médical.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Définition initiale",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-heteroplasmy",
+      "title": "Heteroplasmy",
+      "organization": "National Institute of Standards and Technology, OSAC Lexicon",
+      "url": "https://www.nist.gov/glossary-term/25016",
+      "verifiedAt": "2026-11-16",
+      "author": "Comité Human Forensic Biology",
+      "published": "Ajout au lexique 2023-06-12",
+      "passage": "Définition",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Définition de coexistence de séquences mitochondriales ; aucun seuil clinique humain ni fréquence n’est attribué aux végétaux.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Définition",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-protein-degradation",
+      "title": "Biology 2e — 16.6 Eukaryotic Translational and Post-translational Gene Regulation",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/16-6-eukaryotic-translational-and-post-translational-gene-regulation",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Chemical Modifications, Protein Activity, and Longevity, figure 16.15",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Chemical Modifications, Protein Activity, and Longevity, figure 16.15",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-transcription-regulation",
+      "title": "Biology 2e — 16.4 Eukaryotic Transcription Gene Regulation",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/16-4-eukaryotic-transcription-gene-regulation",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction ; Enhancers and Transcription",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Enhancers and Transcription",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-rddm-2016",
+      "title": "Mobile small RNAs regulate genome-wide DNA methylation",
+      "organization": "PNAS ; Salk Institute et University of Cambridge",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4760824/",
+      "verifiedAt": "2026-11-16",
+      "author": "Mathew G. Lewsey et collaborateurs",
+      "published": "2016-01-19",
+      "passage": "Introduction sur les siRNA et DRM1/DRM2 ; Discussion",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Étude sur Arabidopsis ; la question porte sur le mécanisme végétal de ciblage, sans généraliser des nombres de sites au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction sur les siRNA et DRM1/DRM2 ; Discussion",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-crispr-2008",
+      "title": "Small CRISPR RNAs Guide Antiviral Defense in Prokaryotes",
+      "organization": "Science ; Wageningen University et collaborateurs",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5898235/",
+      "verifiedAt": "2026-11-16",
+      "author": "Stan J. J. Brouns et collaborateurs",
+      "published": "2008-08-15",
+      "passage": "Abstract ; introduction",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Fonction naturelle de défense des procaryotes, sans protocole d’édition ni conseil de transformation végétale.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; introduction",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-morgan-history",
+      "title": "Morgan, T. H. — Encyclopedia of Evolution",
+      "organization": "Encyclopedia of Evolution ; dépôt Arizona State University",
+      "url": "https://cbs.asu.edu/sites/g/files/litvpz546/files/2023-01/Maienschein%20Thomas%20Hunt%20Morgan%20in%20Encyclopedia%20of%20Evolution%202002_0.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Jane Maienschein",
+      "published": "2002",
+      "passage": "Page 1, introduction et choix de Drosophila melanogaster",
+      "access": "full-text",
+      "documentKind": "Article historique universitaire",
+      "limitation": "L’organisme de recherche de Morgan est identifié sans prétendre qu’il a été le premier chercheur à élever des drosophiles.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Page 1, introduction et choix de Drosophila melanogaster",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-miescher-1869",
+      "title": "1869: DNA First Isolated",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/25520232/online-education-kit-1869-dna-first-isolated",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "Mise à jour 2013-04-22 ; événement 1869",
+      "passage": "Paragraphe initial sur l’isolement de la nucléine",
+      "access": "official-page",
+      "documentKind": "Chronologie historique institutionnelle",
+      "limitation": "Ne pas confondre l’isolement initial de la substance et l’identification ultérieure de sa fonction héréditaire.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphe initial sur l’isolement de la nucléine",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-johannsen-1909",
+      "title": "1909: The Word Gene Coined",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/25520244/online-education-kit-1909-the-word-gene-coined",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "Mise à jour 2013-04-22 ; événement 1909",
+      "passage": "Premier paragraphe",
+      "access": "official-page",
+      "documentKind": "Chronologie historique institutionnelle",
+      "limitation": "Le fait porte sur l’introduction du terme gène, sans attribuer à Johannsen la découverte de la structure de l’ADN.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Premier paragraphe",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-autosome",
+      "title": "Autosome",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/genetics-glossary/Autosome",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "s.d.",
+      "passage": "Definition",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "La distinction générale est utilisée ; les numéros et les nombres humains ne sont pas attribués au chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-asexual",
+      "title": "Biology 2e — 32.3 Asexual Reproduction",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/32-3-asexual-reproduction",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction, apomixis",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, apomixis",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-parthenocarpy",
+      "title": "Seeds — Parthenocarpy",
+      "organization": "University of Florida, University of Kentucky et Texas A&M University",
+      "url": "https://propg.ifas.ufl.edu/04-seeds/01-development/09-seedsdevelopment-parthenocarpy.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif Plant Propagation",
+      "published": "Dernière modification 2023-02-24",
+      "passage": "Introduction, développement sans fécondation",
+      "access": "official-page",
+      "documentKind": "Formation universitaire de botanique",
+      "limitation": "Définition générale ; absence d’affirmation selon laquelle le chanvre produit habituellement des fruits parthénocarpiques.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, développement sans fécondation",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-polyembryony",
+      "title": "Polyembryony",
+      "organization": "Department of Crop Botany, GAU, Digital Herbarium of Crop Plants",
+      "url": "https://dhcrop.gau.edu.bd/polyembryony/",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif Department of Crop Botany",
+      "published": "2018-10-20",
+      "passage": "Polyembryony in Ovule of Flower, définition initiale",
+      "access": "official-page",
+      "documentKind": "Ressource universitaire de botanique",
+      "limitation": "Seule la définition est reprise ; aucun mécanisme particulier ni occurrence ne sont affirmés chez le cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Polyembryony in Ovule of Flower, définition initiale",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-gxe-2023",
+      "title": "Gene-by-environment interactions in plants: Molecular mechanisms, environmental drivers, and adaptive plasticity",
+      "organization": "The Plant Cell ; University of Texas at Austin ; dépôt USDA Forest Service",
+      "url": "https://www.fs.usda.gov/rm/pubs_journals/2023/rmrs_2023_napier_j001.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Joseph D. Napier, Robert W. Heckman et Thomas E. Juenger",
+      "published": "2023, volume 35, pages 109–124",
+      "passage": "Introduction aux interactions G×E, p. 110 ; figure 1, p. 111",
+      "access": "full-text",
+      "documentKind": "Article de synthèse scientifique",
+      "limitation": "Définition et situation fictive d’interaction, sans protocole de sélection ni recommandation de culture.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction aux interactions G×E, p. 110 ; figure 1, p. 111",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn06-operons",
+      "title": "Biology 2e — 16.2 Prokaryotic Gene Regulation",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/16-2-prokaryotic-gene-regulation",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction, paragraphe sur les opérons ; The trp Operon, premiers paragraphes",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Organisation bactérienne explicitement désignée ; aucune affirmation selon laquelle les gènes nucléaires du chanvre seraient organisés comme ces opérons.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, paragraphe sur les opérons ; The trp Operon, premiers paragraphes",
+        "result": "Paragraphes effectivement ouverts et lus : plusieurs gènes d’un opéron sont transcrits en un même ARN messager."
+      }
+    }
+  ]
+}

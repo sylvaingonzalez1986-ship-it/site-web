@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, BookOpen, Landmark, Megaphone, PackageCheck, Pause, Play, Scan, ShoppingBag, Sprout, Store, Swords, Target, UsersRound, Wallet, Warehouse, X, ZoomIn } from "lucide-react";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
@@ -212,6 +213,7 @@ export function KqPlacardMap({ onOpen, activeRun, cashCents, readyLotCount, avai
         <span><Wallet size={17} aria-hidden="true" /><span><small>Argent du jeu</small><strong>{cashCents !== null ? formatKqCash(cashCents) : "—"}</strong></span></span>
       </div>
       <div className={styles.mapTools}>
+        {!isolated ? <Link href="/arene/placard?world=3d" prefetch={false} className={styles.zoomButton}>Voir le village en 3D</Link> : null}
         {reducedMotion ? <button type="button" className={styles.zoomButton} data-map-motion-opt-in aria-pressed={motionOverride} aria-controls={viewportId} aria-label={motionOverride ? "Mettre les animations en pause" : "Lancer les animations"} title={motionOverride ? "Mettre les animations en pause" : "Lancer les animations"} onClick={() => updateMap({ motionOverride: !motionOverride })}>{motionOverride ? <Pause size={20} fill="currentColor" aria-hidden="true" /> : <Play size={20} fill="currentColor" aria-hidden="true" />}</button> : null}
         <button type="button" className={styles.zoomButton} data-map-zoom-toggle aria-label={zoomed ? "Voir tout le quartier" : "Agrandir la carte"} aria-pressed={zoomed} aria-controls={viewportId} onClick={toggleZoom}>{zoomed ? <Scan size={18} aria-hidden="true" /> : <ZoomIn size={18} aria-hidden="true" />}<span>{zoomed ? "Tout le quartier" : "Agrandir"}</span></button>
       </div>

@@ -1,0 +1,381 @@
+{
+  "batchId": "r-mixed-01",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "author_complete_pending_independent_review",
+  "count": 25,
+  "domains": {
+    "food": 12,
+    "materials": 13
+  },
+  "levels": {
+    "1": 8,
+    "2": 12,
+    "3": 5
+  },
+  "neighbourSearch": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "terms": [
+      "édestine",
+      "albumine",
+      "phytate",
+      "noisette",
+      "Bama",
+      "GRAS",
+      "cotonisation",
+      "filasse",
+      "polyester",
+      "primaire",
+      "secondaire",
+      "finitions",
+      "terre-chanvre",
+      "hygroscopie"
+    ],
+    "openedNeighbours": [
+      "hemp-seeds-edestine",
+      "hemp-profiles-hygroscopie",
+      "hemp-seeds-omega-trois",
+      "hemp-seeds-fractions-proteines",
+      "hemp-en-3-07",
+      "hemp-profiles-beton",
+      "hemp-profiles-renfort",
+      "hemp-profiles-remplissage",
+      "hemp-profiles-carbonatation",
+      "hemp-en-3-11",
+      "hemp-q2-d04-hemp-dehulling-fibre-down-protein-concentrated"
+    ],
+    "distinctions": [
+      "Aucun recyclage du fait générique retiré sur hygroscopie ; les questions portent sur choix de finitions et matériau concret.",
+      "Édestine : identité majoritaire distincte de son assemblage en six sous-unités.",
+      "Albumine : solubilité spécifique, distincte de la seule liste des familles de protéines.",
+      "GLA : autre oméga6 minoritaire, distinct de ALA oméga3 de hemp-seeds-omega-trois ; confusion gamma/alpha explicitement enseignée ; subjectKey huile-chenevis partagé.",
+      "Pas de nouveau fait décorticage/concentration protéique, PUFA majoritaires, stockage, pressage ou pectine du rouissage.",
+      "Primaire/secondaire compare deux qualités libériennes, distinct du contraste écorce/chènevotte.",
+      "MAPP retiré après revue de périmètre et remplacé par le vêtement textile katabira, sans voisin dans l’index.",
+      "Fabrication du liant dans ACV distincte de la capture de CO2 par carbonatation."
+    ]
+  },
+  "actualReadings": [
+    {
+      "sourceId": "q2-rm01-galasso16",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+      "access": "full-text",
+      "locator": "Introduction ; Results, Table 4 ; Discussion, paragraphes phytic acid et TI",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-tang06",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17090145/",
+      "access": "abstract",
+      "locator": "Résumé, premières phrases",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-bhatia18",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5936671/",
+      "access": "full-text",
+      "locator": "Observation clinique, paragraphes 2–4 et Discussion",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-inrae-hazelnut",
+      "url": "https://www.inrae.fr/sites/default/files/pdf/rapport_fm_2024-eng.pdf",
+      "access": "full-text",
+      "locator": "p. 54 imprimée, Results et Future outlook",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-mihoc12",
+      "url": "https://link.springer.com/article/10.1186/1752-153X-6-122",
+      "access": "full-text",
+      "locator": "Résumé, Conclusion ; Background, risque de métaux dans les graines",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-china-bama",
+      "url": "https://zhuanti.mct.gov.cn/xczgshsh2023/syxj/detail_shi/3817.html",
+      "access": "official-page",
+      "locator": "Rubrique 五, 特色美食, entrée 火麻",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-fda-gras2018",
+      "url": "https://www.fda.gov/food/hfp-constituent-updates/fda-responds-three-gras-notices-hemp-seed-derived-ingredients-use-human-food",
+      "access": "official-page",
+      "locator": "Constituent Update, 20 décembre 2018, premier paragraphe",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-queensland-seed-food",
+      "url": "https://www.qld.gov.au/health/staying-healthy/food-pantry/food-safety-for-consumers/food-warnings-and-advice/low-thc-hemp-foods",
+      "access": "official-page",
+      "locator": "Legal hemp seed foods ; The plant, dernier paragraphe",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-beran20",
+      "url": "https://www.confer.cz/nanocon/2020/download/3724-extraction-and-micronization-of-edestin-from-hemp-seed.pdf",
+      "access": "full-text",
+      "locator": "p. 1, Abstract et Introduction ; p. 2, §2.2",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-bai25-seed-oil-flavour",
+      "url": "https://www.mdpi.com/2227-9717/13/2/530",
+      "access": "full-text",
+      "locator": "Abstract, paragraphes odorants et reconstitution aromatique ; Introduction",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-mijas25-cottonization",
+      "url": "https://link.springer.com/article/10.1007/s10570-025-06557-0",
+      "access": "full-text",
+      "locator": "Introduction, paragraphes lignin et cottonization ; Abstract",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-sankari00-bast",
+      "url": "https://www.votehemp.com/wp-content/uploads/2018/09/381.pdf",
+      "access": "full-text",
+      "locator": "p. 74, Introduction, paragraphes primary and secondary fibres",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-rissanen23-recycling",
+      "url": "https://acris.aalto.fi/ws/portalfiles/portal/115488051/CHEM_Rissanen_et_al_Chemical_recycling_2023_Textile_Research_Journal.pdf",
+      "access": "full-text",
+      "locator": "p. 2545, Abstract ; p. 2546, Chemical recycling",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-kyoto-katabira",
+      "url": "https://www.kyohaku.go.jp/old/eng/theme/floor1_4/past/sensyoku_20180719.html",
+      "access": "official-page",
+      "locator": "Présentation de l’exposition, deuxième paragraphe",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-cenc-finishes",
+      "url": "https://www.construire-en-chanvre.fr/documents/pdf/formations/CenC_Bonnes_Pratiques_Tome_3.pdf",
+      "access": "full-text",
+      "locator": "p. 38–39 imprimées, gobetis ; p. 44–45, souplesse ; p. 64–65, gypse ; p. 74–77, finitions et vapeur",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-dreal-fibre-excerpt",
+      "url": "https://www.centre-val-de-loire.developpement-durable.gouv.fr/IMG/pdf/recueil_technique_13-07-18_vf.pdf",
+      "access": "excerpt",
+      "locator": "p. 7, Filasse de chanvre, Fabrication ; Laine de chanvre, Fabrication — extrait indexé",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "URL originale ouverte mais en maintenance ; extrait indexé des deux rubriques effectivement lu, accès déclaré excerpt."
+    },
+    {
+      "sourceId": "q2-rm01-cerema-earth-hemp",
+      "url": "https://www.cerema.fr/fr/actualites/ecoterra-projet-recherche-performances-betons-terre-chanvre",
+      "access": "official-page",
+      "locator": "Favoriser l’utilisation des isolants terre-chanvre, premiers paragraphes",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    },
+    {
+      "sourceId": "q2-rm01-pretot14-lca",
+      "url": "https://www.scribd.com/document/765592222/pretot2014",
+      "access": "full-text",
+      "locator": "Manuscrit accepté, Abstract ; §4.2, Fig. 5, contribution des matériaux",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "result": "Texte original ou document institutionnel ouvert et passage indiqué lu."
+    }
+  ],
+  "safeguards": [
+    "Aucune autoapprobation et aucun fichier actif modifié",
+    "Source DREAL en excerpt explicitement déclaré ; manuscrit Pretot lu sur miroir déclaré",
+    "Préface historique du guide Construire en Chanvre exclue pour récits non fiables",
+    "Pas de promesse santé, longévité, ratio idéal ou neutralité carbone universelle",
+    "Aucun niveau4 forcé"
+  ],
+  "facts": [
+    {
+      "id": "hemp-q2-rm01-seed-essential-amino-acids-present",
+      "domain": "food",
+      "factKey": "seed-essential-amino-acids-present",
+      "expectedAnswer": "Les neuf sont présents"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-main-protein-edestin",
+      "domain": "food",
+      "factKey": "seed-main-protein-edestin",
+      "expectedAnswer": "L’édestine"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-oil-gla-omega6",
+      "domain": "food",
+      "factKey": "seed-oil-gla-omega6",
+      "expectedAnswer": "L’acide gamma-linolénique, ou GLA"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-meal-phytate-minerals",
+      "domain": "food",
+      "factKey": "seed-meal-phytate-minerals",
+      "expectedAnswer": "Les phytates"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-food-anaphylaxis",
+      "domain": "food",
+      "factKey": "seed-food-anaphylaxis",
+      "expectedAnswer": "Une réaction immédiate avec anaphylaxie"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-hazelnut-cross-reactivity",
+      "domain": "food",
+      "factKey": "seed-hazelnut-cross-reactivity",
+      "expectedAnswer": "La noisette"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-cadmium-from-soil",
+      "domain": "food",
+      "factKey": "seed-cadmium-from-soil",
+      "expectedAnswer": "Il a aussi été retrouvé dans les graines"
+    },
+    {
+      "id": "hemp-q2-rm01-bama-seed-soup",
+      "domain": "food",
+      "factKey": "bama-seed-soup",
+      "expectedAnswer": "Une soupe à base de graines moulues"
+    },
+    {
+      "id": "hemp-q2-rm01-fda-gras-three-seed-ingredients",
+      "domain": "food",
+      "factKey": "fda-gras-three-seed-ingredients",
+      "expectedAnswer": "Graines décortiquées, poudre protéique et huile de graines"
+    },
+    {
+      "id": "hemp-q2-rm01-australia-retail-seeds-nonviable",
+      "domain": "food",
+      "factKey": "australia-retail-seeds-nonviable",
+      "expectedAnswer": "Des graines décortiquées et incapables de germer"
+    },
+    {
+      "id": "hemp-q2-rm01-seed-albumin-water-solubility",
+      "domain": "food",
+      "factKey": "seed-albumin-water-solubility",
+      "expectedAnswer": "La fraction albumine"
+    },
+    {
+      "id": "hemp-q2-rm01-roasted-seed-oil-pyrazine-notes",
+      "domain": "food",
+      "factKey": "roasted-seed-oil-pyrazine-notes",
+      "expectedAnswer": "Les pyrazines"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-cottonization-purpose",
+      "domain": "materials",
+      "factKey": "hemp-cottonization-purpose",
+      "expectedAnswer": "Obtenir des fibres plus fines adaptées aux équipements coton"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-lignin-coarse-texture",
+      "domain": "materials",
+      "factKey": "hemp-lignin-coarse-texture",
+      "expectedAnswer": "La lignine"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-primary-bast-textile-length",
+      "domain": "materials",
+      "factKey": "hemp-primary-bast-textile-length",
+      "expectedAnswer": "Les fibres primaires, plus longues"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-textile-cellulose-regeneration",
+      "domain": "materials",
+      "factKey": "hemp-textile-cellulose-regeneration",
+      "expectedAnswer": "Dissoudre puis régénérer sa cellulose"
+    },
+    {
+      "id": "hemp-q2-rm01-katabira-hemp-summer-robe",
+      "domain": "materials",
+      "factKey": "katabira-hemp-summer-robe",
+      "expectedAnswer": "Le katabira, un kimono non doublé"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-vapour-compatible-finish",
+      "domain": "materials",
+      "factKey": "hemp-wall-vapour-compatible-finish",
+      "expectedAnswer": "Sa perméabilité à la vapeur d’eau"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-flexible-plaster",
+      "domain": "materials",
+      "factKey": "hemp-wall-flexible-plaster",
+      "expectedAnswer": "Pour accompagner la déformabilité du support"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-gypsum-acoustic-difference",
+      "domain": "materials",
+      "factKey": "hemp-wall-gypsum-acoustic-difference",
+      "expectedAnswer": "Bonne réduction du son transmis, absorption moins favorable"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wall-first-rain-protection",
+      "domain": "materials",
+      "factKey": "hemp-wall-first-rain-protection",
+      "expectedAnswer": "La pluie et les projections d’eau liquide"
+    },
+    {
+      "id": "hemp-q2-rm01-earth-hemp-clay-binder",
+      "domain": "materials",
+      "factKey": "earth-hemp-clay-binder",
+      "expectedAnswer": "Une terre argileuse crue"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-plumbing-tow-seals",
+      "domain": "materials",
+      "factKey": "hemp-plumbing-tow-seals",
+      "expectedAnswer": "Étanchéifier des raccords"
+    },
+    {
+      "id": "hemp-q2-rm01-hemp-wool-polyester-binder",
+      "domain": "materials",
+      "factKey": "hemp-wool-polyester-binder",
+      "expectedAnswer": "Du polyester"
+    },
+    {
+      "id": "hemp-q2-rm01-hempcrete-lca-binder-production",
+      "domain": "materials",
+      "factKey": "hempcrete-lca-binder-production",
+      "expectedAnswer": "Le liant à base de chaux"
+    }
+  ]
+}

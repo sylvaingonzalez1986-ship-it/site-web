@@ -1,0 +1,575 @@
+{
+  "batchId": "r-products-01",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "author_complete_pending_independent_review",
+  "contract": "AUTHORING.md : révision 17 novembre 2026, 800 active / 100 food / 100 materials ; aucun fait du catalogue du site.",
+  "count": 40,
+  "levels": {
+    "1": 18,
+    "2": 18,
+    "3": 4
+  },
+  "revisionAfterIndependentReview": {
+    "review": "reviews/r-products-01.json",
+    "preservedApprovedObjects": 30,
+    "correctedExistingObjects": 5,
+    "replacedObjects": 5,
+    "replacements": {
+      "hemp-q2-rp01-extracts-can-be-cbd-dominant": "hemp-q2-rp01-thca-diamonds-crystalline-cannabinoid",
+      "hemp-q2-rp01-mg-per-g-cannabinoid-percent": "hemp-q2-rp01-terp-sauce-aromatic-concentrate",
+      "hemp-q2-rp01-dry-basis-excludes-sample-water": "hemp-q2-rp01-bubble-hash-solventless-family",
+      "hemp-q2-rp01-edible-per-unit-not-package": "hemp-q2-rp01-nabiximols-thc-cbd-formulation",
+      "hemp-q2-rp01-oral-spray-per-activation": "hemp-q2-rp01-dronabinol-delta9-thc-identity"
+    },
+    "sourceCorrection": "q2-rp01-hc-medical-products : date janvier 2026 attestée aux crédits du PDF, relus par l’auteur ; nouvelle empreinte à vérifier par A.",
+    "status": "awaiting_independent_revalidation_no_self_approval"
+  },
+  "neighbourSearch": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "terms": [
+      "rosin",
+      "hash",
+      "isolat",
+      "spectre",
+      "concentr",
+      "distillat",
+      "trichome",
+      "CBD",
+      "THC",
+      "cannabino",
+      "solvant",
+      "transderm",
+      "nano",
+      "HHC",
+      "résine",
+      "émulsion"
+    ],
+    "openedBatches": [
+      "b-01.json (questions sur flos, cut flos et certificat de lot)",
+      "e-new-01.json (analyses et étiquetage génériques à éviter)"
+    ],
+    "neighbours": [
+      {
+        "id": "hemp-plant-trichome",
+        "decision": "Pas de nouveau rappel sur la production de cannabinoïdes par les glandes ; le kief teste la matière d’un produit."
+      },
+      {
+        "id": "hemp-q2-c-trichome-cavite-sous-cuticule",
+        "decision": "Compartiment cellulaire non repris ; hash et kief testent les présentations commerciales."
+      },
+      {
+        "id": "hemp-q2-b01-bedrocan-flos-whole-dried-flower",
+        "decision": "Identification de flos non reprise ; les préroulés testent un format distinct."
+      },
+      {
+        "id": "hemp-q2-b01-bedrocan-cutflos-reduced-not-powder",
+        "decision": "Comparaison cut flos/poudre non reprise ; la poudre décarboxylée teste une destination commerciale propre."
+      },
+      {
+        "id": "hemp-q2-b01-bedrocan-average-versus-batch-coa",
+        "decision": "Pas de nouveau rappel sur le certificat propre au lot."
+      },
+      {
+        "id": "hemp-evidence-decarboxylation",
+        "decision": "Molécule CO2 libérée non retestée ; le THC total porte sur une convention d’analyse et son facteur massique."
+      },
+      {
+        "id": "hemp-evidence-hhc-epimeres",
+        "decision": "Aucune nouvelle question sur l’épimérie 9R/9S ; la structure saturée HHC/THC est un autre fait."
+      },
+      {
+        "id": "hemp-q2-en01-below-quantification-not-zero",
+        "decision": "Pas de nouveau fait général <LQ ; broad spectrum teste une définition de produit à plusieurs cannabinoïdes."
+      },
+      {
+        "id": "hemp-q2-en02-cbd-adulterated-substances",
+        "decision": "Alerte sanitaire et conduite à tenir non reprises ; fleurs HHC teste une composition de produit explicitement décrite."
+      },
+      {
+        "id": "hemp-q2-a01-lemon-potion-rapport-annonce",
+        "decision": "Rapport commercial variétal non repris ; la nouvelle question teste ce qu’un rapport 1:1 permet et ne permet pas de comparer."
+      }
+    ]
+  },
+  "actualReadings": [
+    {
+      "sourceId": "q2-rp01-inspq-products-2025",
+      "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+      "locator": "p. 4 et 6–20, sections 2, 3 et 4",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-ccsa-products-2020",
+      "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+      "locator": "p. 2–3 : encadré What is dabbing?, tableau 1 et note 3",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-ccsa-extracts-2019",
+      "url": "https://www.ccsa.ca/sites/default/files/2019-07/CCSA-Things-You-Need-to-Know-about-Cannabis-Extracts-2019-en.pdf",
+      "locator": "p. 1, What Are Cannabis Extracts? et point 1",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-hc-cbd",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "locator": "The difference between cannabis oil and hemp-seed oil, liste Cannabis oil is a combination of",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-hc-label-consumer",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+      "locator": "Information on a cannabis product label, 4. THC and CBD amount",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-hc-label-guide",
+      "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/packaging-labelling-guide-cannabis-products.html",
+      "locator": "Tableau 3, notes 1–2 ; section 6.1.3, tableau 5",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-nist-hemp-2024",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.260-248.pdf",
+      "locator": "p. 22, §3.1.11.2, équation 5 ; p. 56, §6 et tableau 27",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-who-extracts-2018",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+      "locator": "Section 1 Chemistry, p. 15 note 1 ; p. 22, §3.2.4.3",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-ny-hemp-definitions",
+      "url": "https://cannabis.ny.gov/system/files/documents/2024/01/part-114-exprs-trms-adopted-12-2023.pdf",
+      "locator": "§114.1(b), p. 2 ; §114.1(s), p. 6",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-fda-delta8",
+      "url": "https://www.fda.gov/consumers/consumer-updates/5-things-know-about-delta-8-tetrahydrocannabinol-delta-8-thc",
+      "locator": "Introduction et points 1, 3–4",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-euda-products-2023",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+      "locator": "Encadré Emergence of semi-synthetic cannabinoids: delta-8-THC, HHC and HHC-O",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-emcdda-hhc-2023",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "locator": "p. 5–6, résumé ; p. 24–25, figures 9–10 ; p. 75, paragraphe H4CBD",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-hc-nano-research",
+      "url": "https://www.canada.ca/en/health-canada/services/publications/science-research-data/compilation-research-abstracts-2021-2022.html",
+      "locator": "Characterization of cannabis nanoemulsions and uptake analysis survey using zebrafish – New",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-bccs-form-products",
+      "url": "https://www.bccannabisstores.com/blogs/learn/the-bccs-guide-to-infused-pre-rolls",
+      "locator": "Types of Concentrates Used : THCA Diamonds, Bubble Hash (Ice Water Hash), Terp Sauce",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-nci-nabiximols",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/nabiximols",
+      "locator": "Définition, premier paragraphe et synonymes",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-nci-dronabinol",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/dronabinol",
+      "locator": "Définition et liste de synonymes",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-hc-infused",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/tracking-system/monthly-reporting-guide/frequent-issues-solutions.html",
+      "locator": "Adding other forms of cannabis to dried cannabis products (for example infused pre-rolls)",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp01-hc-medical-products",
+      "url": "https://www.canada.ca/content/dam/hc-sc/documents/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/cannabis-medical-purposes.pdf",
+      "locator": "p. 7, Choosing a cannabis product, Content of a cannabis product ; crédits janvier 2026",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    }
+  ],
+  "declinedSources": [
+    {
+      "url": "https://www.health.ny.gov/community/cannabis/key_terms.htm",
+      "result": "403 via web ; connexion locale refusée. Source non utilisée."
+    },
+    {
+      "url": "https://ocs.ca/blogs/cannabis-made-clear/a-guide-to-cannabis-extracts",
+      "result": "URL non accessible. Source non utilisée."
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8461879/",
+      "result": "Page de contrôle navigateur ; non utilisée."
+    },
+    {
+      "url": "https://pubs.rsc.org/en/content/articlepdf/2022/fo/d1fo04433h",
+      "result": "403 ; non utilisée."
+    },
+    {
+      "url": "https://lcb.wa.gov/education/reading_a_product_label",
+      "result": "Ouverture ne restituant que le menu ; extrait de recherche insuffisant, non utilisé."
+    }
+  ],
+  "safeguards": [
+    "Aucun protocole ni paramètre de fabrication ou de culture",
+    "Aucune recommandation de dose ; les unités désignent des étiquettes et des analyses",
+    "Aucune promesse thérapeutique",
+    "Définitions full/broad explicitement rattachées au texte new-yorkais identifié",
+    "Aucune autoapprobation ; aucune revue ni banque active modifiée"
+  ],
+  "finishCondition": "40 objets complets, contrôles mécaniques de longueur et références valides ; à soumettre à une lecture indépendante objet par objet.",
+  "facts": [
+    {
+      "id": "hemp-q2-rp01-kief-loose-trichome-powder",
+      "domain": "active",
+      "factKey": "kief-loose-trichome-powder",
+      "subjectKey": "cannabis-kief",
+      "property": "Matière principale du produit",
+      "expectedAnswer": "De trichomes détachés sous forme de poudre"
+    },
+    {
+      "id": "hemp-q2-rp01-hash-compressed-resinous-material",
+      "domain": "active",
+      "factKey": "hash-compressed-resinous-material",
+      "subjectKey": "cannabis-hashish",
+      "property": "Forme compacte de résine glandulaire",
+      "expectedAnswer": "Une matière résineuse rassemblée en masse compacte"
+    },
+    {
+      "id": "hemp-q2-rp01-rosin-solventless-versus-resin",
+      "domain": "active",
+      "factKey": "rosin-solventless-versus-resin",
+      "subjectKey": "cannabis-rosin",
+      "property": "Distinction terminologique entre familles d’extraits",
+      "expectedAnswer": "L’absence de solvant organique pour son extraction"
+    },
+    {
+      "id": "hemp-q2-rp01-wax-pen-concentrate-accessory",
+      "domain": "active",
+      "factKey": "wax-pen-concentrate-accessory",
+      "subjectKey": "cannabis-wax-pen",
+      "property": "Produit auquel correspond le nom de l’accessoire",
+      "expectedAnswer": "À des concentrés comme la wax"
+    },
+    {
+      "id": "hemp-q2-rp01-extract-not-always-concentrate",
+      "domain": "active",
+      "factKey": "extract-not-always-concentrate",
+      "subjectKey": "cannabis-diluted-extract",
+      "property": "Extrait et concentré ne sont pas équivalents",
+      "expectedAnswer": "Il peut être dilué dans une huile de support"
+    },
+    {
+      "id": "hemp-q2-rp01-distillate-low-native-terpenes",
+      "domain": "active",
+      "factKey": "distillate-low-native-terpenes",
+      "subjectKey": "cannabis-distillate",
+      "property": "Appauvrissement initial en terpènes",
+      "expectedAnswer": "Une forte réduction des terpènes d’origine"
+    },
+    {
+      "id": "hemp-q2-rp01-isolate-single-cannabinoid",
+      "domain": "active",
+      "factKey": "isolate-single-cannabinoid",
+      "subjectKey": "cannabis-cannabinoid-isolate",
+      "property": "Sélection d’un seul cannabinoïde",
+      "expectedAnswer": "Un cannabinoïde particulier"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-oil-carrier",
+      "domain": "active",
+      "factKey": "oral-cannabis-oil-carrier",
+      "subjectKey": "cannabis-oral-carrier-oil",
+      "property": "Fonction du véhicule huileux",
+      "expectedAnswer": "Servir de véhicule au CBD dans la formulation"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-oil-distinct-vape-liquid",
+      "domain": "active",
+      "factKey": "oral-oil-distinct-vape-liquid",
+      "subjectKey": "cannabis-oral-versus-vape-oil",
+      "property": "Formulation liée à la destination du produit",
+      "expectedAnswer": "Une huile alimentaire comme véhicule"
+    },
+    {
+      "id": "hemp-q2-rp01-pre-roll-already-rolled-flower",
+      "domain": "active",
+      "factKey": "pre-roll-already-rolled-flower",
+      "subjectKey": "cannabis-pre-roll",
+      "property": "Présentation du produit prêt à l’emploi",
+      "expectedAnswer": "Un joint vendu déjà roulé"
+    },
+    {
+      "id": "hemp-q2-rp01-infused-pre-roll-added-extract",
+      "domain": "active",
+      "factKey": "infused-pre-roll-added-extract",
+      "subjectKey": "cannabis-infused-pre-roll",
+      "property": "Ajout d’extrait à la fleur",
+      "expectedAnswer": "Il associe de la fleur à un extrait ajouté"
+    },
+    {
+      "id": "hemp-q2-rp01-shatter-glasslike-brittle",
+      "domain": "active",
+      "factKey": "shatter-glasslike-brittle",
+      "subjectKey": "cannabis-shatter",
+      "property": "Aspect physique qui caractérise le shatter",
+      "expectedAnswer": "Le shatter"
+    },
+    {
+      "id": "hemp-q2-rp01-crumble-dry-crumbly-texture",
+      "domain": "active",
+      "factKey": "crumble-dry-crumbly-texture",
+      "subjectKey": "cannabis-crumble",
+      "property": "Texture friable du crumble",
+      "expectedAnswer": "Crumble"
+    },
+    {
+      "id": "hemp-q2-rp01-live-resin-fresh-frozen-origin",
+      "domain": "active",
+      "factKey": "live-resin-fresh-frozen-origin",
+      "subjectKey": "cannabis-live-resin",
+      "property": "Sens de live dans l’appellation",
+      "expectedAnswer": "À une matière végétale fraîche conservée congelée après récolte"
+    },
+    {
+      "id": "hemp-q2-rp01-bho-expansion-butane-hash-oil",
+      "domain": "active",
+      "factKey": "bho-expansion-butane-hash-oil",
+      "subjectKey": "cannabis-bho",
+      "property": "Développement du sigle de produit",
+      "expectedAnswer": "Butane hash oil"
+    },
+    {
+      "id": "hemp-q2-rp01-thca-diamonds-crystalline-cannabinoid",
+      "domain": "active",
+      "factKey": "thca-diamonds-crystalline-cannabinoid",
+      "subjectKey": "cannabis-thca-diamonds",
+      "property": "Présentation cristalline d’un cannabinoïde acide",
+      "expectedAnswer": "Des cristaux d’un cannabinoïde acide"
+    },
+    {
+      "id": "hemp-q2-rp01-traditional-tincture-alcohol-extract",
+      "domain": "active",
+      "factKey": "traditional-tincture-alcohol-extract",
+      "subjectKey": "cannabis-tincture",
+      "property": "Sens traditionnel du terme teinture",
+      "expectedAnswer": "Un extrait alcoolique"
+    },
+    {
+      "id": "hemp-q2-rp01-dabbing-vaporizing-concentrate",
+      "domain": "active",
+      "factKey": "dabbing-vaporizing-concentrate",
+      "subjectKey": "cannabis-dabbing",
+      "property": "Méthode d’usage plutôt que substance",
+      "expectedAnswer": "Une manière de vaporiser un concentré"
+    },
+    {
+      "id": "hemp-q2-rp01-full-spectrum-native-mixture",
+      "domain": "active",
+      "factKey": "full-spectrum-native-mixture",
+      "subjectKey": "cannabis-full-spectrum",
+      "property": "Pluralité de constituants dans le spectre complet",
+      "expectedAnswer": "Plusieurs cannabinoïdes et d’autres constituants naturels"
+    },
+    {
+      "id": "hemp-q2-rp01-broad-spectrum-thc-removal",
+      "domain": "active",
+      "factKey": "broad-spectrum-thc-removal",
+      "subjectKey": "cannabis-broad-spectrum",
+      "property": "Plusieurs cannabinoïdes après retrait du THC",
+      "expectedAnswer": "Plusieurs cannabinoïdes, avec le THC retiré au niveau non détectable"
+    },
+    {
+      "id": "hemp-q2-rp01-ratio-thc-cbd-not-concentration",
+      "domain": "active",
+      "factKey": "ratio-thc-cbd-not-concentration",
+      "subjectKey": "cannabis-thc-cbd-ratio",
+      "property": "Proportion relative distincte d’une teneur absolue",
+      "expectedAnswer": "Des proportions égales de THC et de CBD"
+    },
+    {
+      "id": "hemp-q2-rp01-terp-sauce-aromatic-concentrate",
+      "domain": "active",
+      "factKey": "terp-sauce-aromatic-concentrate",
+      "subjectKey": "cannabis-terp-sauce",
+      "property": "Fraction de concentré privilégiant les terpènes",
+      "expectedAnswer": "Un concentré privilégiant les composés aromatiques"
+    },
+    {
+      "id": "hemp-q2-rp01-total-thc-molar-mass-convention",
+      "domain": "active",
+      "factKey": "total-thc-molar-mass-convention",
+      "subjectKey": "cannabis-total-thc",
+      "property": "Convention de calcul en équivalent THC",
+      "expectedAnswer": "THC + 0,877 × THCA"
+    },
+    {
+      "id": "hemp-q2-rp01-bubble-hash-solventless-family",
+      "domain": "active",
+      "factKey": "bubble-hash-solventless-family",
+      "subjectKey": "cannabis-bubble-hash",
+      "property": "Famille de résine sans solvant organique",
+      "expectedAnswer": "Les concentrés séparés sans solvant organique"
+    },
+    {
+      "id": "hemp-q2-rp01-nabiximols-thc-cbd-formulation",
+      "domain": "active",
+      "factKey": "nabiximols-thc-cbd-formulation",
+      "subjectKey": "nabiximols",
+      "property": "Association THC/CBD d’un extrait pharmaceutique nommé",
+      "expectedAnswer": "THC et CBD"
+    },
+    {
+      "id": "hemp-q2-rp01-dronabinol-delta9-thc-identity",
+      "domain": "active",
+      "factKey": "dronabinol-delta9-thc-identity",
+      "subjectKey": "dronabinol",
+      "property": "Identité moléculaire d’un nom pharmaceutique",
+      "expectedAnswer": "Le delta-9-THC"
+    },
+    {
+      "id": "hemp-q2-rp01-essential-oil-aromatic-volatile-mixture",
+      "domain": "active",
+      "factKey": "essential-oil-aromatic-volatile-mixture",
+      "subjectKey": "cannabis-essential-oil",
+      "property": "Mélange aromatique distinct d’une huile cannabinoïde",
+      "expectedAnswer": "Elle rassemble surtout des constituants aromatiques volatils"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-name-hexahydrocannabinol",
+      "domain": "active",
+      "factKey": "hhc-name-hexahydrocannabinol",
+      "subjectKey": "hhc",
+      "property": "Développement du sigle HHC",
+      "expectedAnswer": "Hexahydrocannabinol"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-saturated-thc-analogue",
+      "domain": "active",
+      "factKey": "hhc-saturated-thc-analogue",
+      "subjectKey": "hhc",
+      "property": "Saturation du cycle par rapport au THC",
+      "expectedAnswer": "La double liaison du cycle carboné du THC est saturée"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-o-acetate-derivative",
+      "domain": "active",
+      "factKey": "hhc-o-acetate-derivative",
+      "subjectKey": "hhc-o",
+      "property": "Nature du lien chimique entre HHC et HHC-O",
+      "expectedAnswer": "Un dérivé acétate du HHC"
+    },
+    {
+      "id": "hemp-q2-rp01-semi-synthetic-natural-cannabinoid-modified",
+      "domain": "active",
+      "factKey": "semi-synthetic-natural-cannabinoid-modified",
+      "subjectKey": "semi-synthetic-cannabinoids",
+      "property": "Sens de l’origine semi-synthétique",
+      "expectedAnswer": "Un cannabinoïde naturel sert de départ à une modification chimique"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-flower-added-to-low-thc-flower",
+      "domain": "active",
+      "factKey": "hhc-flower-added-to-low-thc-flower",
+      "subjectKey": "hhc-added-flower",
+      "property": "Actif ajouté sur un support végétal",
+      "expectedAnswer": "Des fleurs pauvres en THC auxquelles du HHC a été ajouté"
+    },
+    {
+      "id": "hemp-q2-rp01-delta8-products-usually-cbd-conversion",
+      "domain": "active",
+      "factKey": "delta8-products-usually-cbd-conversion",
+      "subjectKey": "delta8-thc-products",
+      "property": "Origine habituelle des quantités concentrées du marché",
+      "expectedAnswer": "Du CBD de chanvre transformé chimiquement"
+    },
+    {
+      "id": "hemp-q2-rp01-hemp-label-not-nonintoxicating-guarantee",
+      "domain": "active",
+      "factKey": "hemp-label-not-nonintoxicating-guarantee",
+      "subjectKey": "hemp-derived-delta8-labelling",
+      "property": "Origine végétale distincte des propriétés de l’actif final",
+      "expectedAnswer": "L’origine chanvre n’empêche pas la présence d’un actif intoxicant"
+    },
+    {
+      "id": "hemp-q2-rp01-cannabis-drink-nanoemulsion-droplets",
+      "domain": "active",
+      "factKey": "cannabis-drink-nanoemulsion-droplets",
+      "subjectKey": "cannabis-nanoemulsion",
+      "property": "Nature physique des petites unités dispersées",
+      "expectedAnswer": "Des gouttelettes portant les cannabinoïdes"
+    },
+    {
+      "id": "hemp-q2-rp01-decarboxylated-flower-powder-oral",
+      "domain": "active",
+      "factKey": "decarboxylated-flower-powder-oral",
+      "subjectKey": "cannabis-decarboxylated-flower-powder",
+      "property": "Destination d’une forme précise de poudre",
+      "expectedAnswer": "À l’ingestion"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-film-mouth-dissolution",
+      "domain": "active",
+      "factKey": "oral-cannabis-film-mouth-dissolution",
+      "subjectKey": "cannabis-oral-film",
+      "property": "Forme buccale dissolvante",
+      "expectedAnswer": "Une fine préparation conçue pour se dissoudre dans la bouche"
+    },
+    {
+      "id": "hemp-q2-rp01-transdermal-patch-systemic-design",
+      "domain": "active",
+      "factKey": "transdermal-patch-systemic-design",
+      "subjectKey": "cannabis-transdermal-patch",
+      "property": "Destination systémique à travers la peau",
+      "expectedAnswer": "Faire passer des cannabinoïdes à travers la peau vers le sang"
+    },
+    {
+      "id": "hemp-q2-rp01-h4cbd-hydrogenated-cbd",
+      "domain": "active",
+      "factKey": "h4cbd-hydrogenated-cbd",
+      "subjectKey": "h4cbd",
+      "property": "Identité d’un dérivé distinct du CBD",
+      "expectedAnswer": "Un dérivé hydrogéné du CBD"
+    },
+    {
+      "id": "hemp-q2-rp01-residual-solvent-origin",
+      "domain": "active",
+      "factKey": "residual-solvent-origin",
+      "subjectKey": "cannabis-extract-residual-solvents",
+      "property": "Origine d’un résidu distinct des constituants natifs",
+      "expectedAnswer": "Une trace de solvant restée dans le produit après sa fabrication"
+    }
+  ]
+}

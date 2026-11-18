@@ -1,0 +1,1718 @@
+{
+  "batchId": "r-actives-b-05",
+  "author": "rebalance_classify_b",
+  "role": "Rédaction externe indépendante, cannabis récréatif, CBD et chanvre à actifs",
+  "questions": [
+    {
+      "id": "hemp-q2-rb05-ssh-trio",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel trio Green House Seed Company revendique-t-il dans le pedigree de Super Silver Haze ?",
+      "options": [
+        "Skunk, Northern Lights et Haze",
+        "Blueberry, Skunk et White Widow",
+        "Haze, Durban Poison et AK-47",
+        "Northern Lights, Cheese et Bubble Gum"
+      ],
+      "answer": 0,
+      "explanation": "Green House annonce Skunk × Northern Lights × Haze. Le nom Super Silver Haze désigne ici la lignée de cette maison, dont le pedigree est une déclaration commerciale attribuée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-ssh"
+      ],
+      "subjectKey": "super-silver-haze-ghsc",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "super-silver-haze-ghsc",
+        "subjectKey": "super-silver-haze-ghsc",
+        "property": "Trois lignées du pedigree revendiqué",
+        "expectedAnswer": "Skunk, Northern Lights et Haze",
+        "learningObjective": "Trois lignées du pedigree revendiqué.",
+        "factKey": "ssh-trio",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-ssh",
+            "locator": "GENETICS : Skunk x Northern Lights x Haze",
+            "support": "La rubrique Genetics annonce explicitement ces trois composantes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-cheese-skunk-selection",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "De quelle lignée Royal Queen Seeds fait-il provenir la Cheese originelle dans son récit historique ?",
+      "options": [
+        "Blueberry",
+        "Skunk #1",
+        "Northern Lights",
+        "Original Haze"
+      ],
+      "answer": 1,
+      "explanation": "Le récit fait de Cheese un phénotype particulier de Skunk #1 repéré au Royaume-Uni. Sa diffusion par boutures dans la scène britannique a précédé l’apparition de versions proposées sous forme de graines.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-cheese"
+      ],
+      "subjectKey": "cheese-history",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "cheese-history",
+        "subjectKey": "cheese-history",
+        "property": "Ascendance Skunk#1 de la Cheese historique",
+        "expectedAnswer": "Skunk #1",
+        "learningObjective": "Ascendance Skunk#1 de la Cheese historique.",
+        "factKey": "cheese-skunk-selection",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-cheese",
+            "locator": "Key Takeaways ; What is Cheese ; The history of Cheese, paragraphes clone-only et Skunk#1 au Royaume-Uni",
+            "support": "La page situe la découverte d’un phénotype de Skunk#1 au Royaume-Uni."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-critical-mass-pedigree",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle association Mr. Nice Seedbank indique-t-il pour le pedigree de sa Critical Mass ?",
+      "options": [
+        "White Widow et AK-47",
+        "Blueberry et Durban Poison",
+        "Afghani et Skunk #1",
+        "Haze et Northern Lights"
+      ],
+      "answer": 2,
+      "explanation": "Mr. Nice décrit une Afghani associée à la Skunk #1 originelle et présente Critical Mass comme une reprise de Big Bud. Cette annonce ne certifie pas les produits homonymes d’autres maisons.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-critical"
+      ],
+      "subjectKey": "critical-mass-mr-nice",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "critical-mass-mr-nice",
+        "subjectKey": "critical-mass-mr-nice",
+        "property": "Parenté revendiquée de Critical Mass",
+        "expectedAnswer": "Afghani et Skunk #1",
+        "learningObjective": "Parenté revendiquée de Critical Mass.",
+        "factKey": "critical-mass-pedigree",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-critical",
+            "locator": "Description, genetic pedigree Afghani combined with original Skunk#1",
+            "support": "La description annonce une Afghani combinée à la Skunk#1 originale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-charlotte-web-prenom",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "À qui la marque CBD Charlotte’s Web associe-t-elle son nom dans son histoire officielle ?",
+      "options": [
+        "À Charlotte Brontë, l’écrivaine britannique",
+        "À Charlotte Rampling, l’actrice britannique",
+        "À Charlotte Gainsbourg, la chanteuse et actrice",
+        "À Charlotte Figi, une enfant et sa famille"
+      ],
+      "answer": 3,
+      "explanation": "Le nom renvoie à Charlotte Figi. Sa mère Paige avait recherché un extrait riche en CBD ; l’histoire de cette famille a fortement contribué à la médiatisation du CBD pédiatrique.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-charlotte"
+      ],
+      "subjectKey": "charlottes-web-figi",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "charlottes-web-figi",
+        "subjectKey": "charlottes-web-figi",
+        "property": "Origine familiale du nom Charlotte’s Web",
+        "expectedAnswer": "À Charlotte Figi, une enfant et sa famille",
+        "learningObjective": "Origine familiale du nom Charlotte’s Web.",
+        "factKey": "charlotte-web-prenom",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-charlotte",
+            "locator": "Récit familial, extrait Original Formula et paragraphe carries her name",
+            "support": "L’histoire officielle décrit Charlotte Figi et précise que la marque porte son nom."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-grinspoon-fleurs-perles",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle disposition florale Barney’s Farm décrit-il pour sa lignée Dr Grinspoon ?",
+      "options": [
+        "Des petites grappes en perles espacées sur des tiges fines",
+        "De gros amas continus serrés autour des branches",
+        "Des têtes rondes et très denses sur des branches épaisses",
+        "De longs épis compacts et effilés au sommet des branches"
+      ],
+      "answer": 0,
+      "explanation": "La maison décrit des petites masses florales rappelant des perles vertes et brun-rouge, suspendues de façon lâche sur de fines tiges. Ce portrait particulier distingue cette lignée des têtes très compactes.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-grinspoon"
+      ],
+      "subjectKey": "dr-grinspoon-barneys",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "dr-grinspoon-barneys",
+        "subjectKey": "dr-grinspoon-barneys",
+        "property": "Aspect perlé et espacé des masses florales",
+        "expectedAnswer": "Des petites grappes en perles espacées sur des tiges fines",
+        "learningObjective": "Aspect perlé et espacé des masses florales.",
+        "factKey": "grinspoon-fleurs-perles",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-grinspoon",
+            "locator": "Description, colas resemble compact green and reddish-brown beads ; loosely hang on thin stems",
+            "support": "La description compare les colas à des perles compactes suspendues lâchement à des tiges fines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-gelato-parentage-annonce",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle parenté Dutch Passion attribue-t-il à la Gelato historique dans sa présentation de cette famille ?",
+      "options": [
+        "Durban Poison et Original Haze",
+        "Sunset Sherbet et Thin Mint Cookies GSC",
+        "Blueberry et Northern Lights",
+        "Skunk #1 et White Widow"
+      ],
+      "answer": 1,
+      "explanation": "Dutch Passion attribue à l’équipe Cookie Fam le croisement Sunset Sherbet × Thin Mint Cookies GSC. L’histoire de cette famille ne garantit pas l’identité de tous les lots commercialisés sous le nom Gelato.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-gelato"
+      ],
+      "subjectKey": "gelato-history",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "gelato-history",
+        "subjectKey": "gelato-history",
+        "property": "Parenté attribuée à la famille Gelato",
+        "expectedAnswer": "Sunset Sherbet et Thin Mint Cookies GSC",
+        "learningObjective": "Parenté attribuée à la famille Gelato.",
+        "factKey": "gelato-parentage-annonce",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-gelato",
+            "locator": "Table Gelato weed strains characteristics, ligne Origins",
+            "support": "La ligne Origins cite Cookie Fam et ce croisement précis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-lowryder-joint-doctor",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel breeder présente son travail à l’origine de Lowryder dans l’entretien publié par Dutch Passion ?",
+      "options": [
+        "Sam the Skunkman",
+        "Neville Schoenmakers",
+        "The Joint Doctor",
+        "DJ Short"
+      ],
+      "answer": 2,
+      "explanation": "The Joint Doctor raconte le développement de Lowryder, issue d’un travail initialement nommé Willy’s Automatic. Cette lignée a marqué l’histoire des cannabis autoflorissants destinés à leurs actifs.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-lowryder"
+      ],
+      "subjectKey": "lowryder-joint-doctor",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "lowryder-joint-doctor",
+        "subjectKey": "lowryder-joint-doctor",
+        "property": "Breeder associé à Lowryder dans son témoignage",
+        "expectedAnswer": "The Joint Doctor",
+        "learningObjective": "Breeder associé à Lowryder dans son témoignage.",
+        "factKey": "lowryder-joint-doctor",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-lowryder",
+            "locator": "Présentation du breeder ; Mexican Rudy, incertitude du pedigree ; Willy’s Automatic et Lowryder",
+            "support": "L’entretien donne la parole au Joint Doctor sur l’histoire de sa Lowryder."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-mexican-rudy-origine-incertaine",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le récit du Joint Doctor, quel statut a l’origine russo-mexicaine de Mexican Rudy, ancêtre de Lowryder ?",
+      "options": [
+        "Une parenté établie par séquençage des parents",
+        "Un pedigree certifié par un registre officiel",
+        "Une origine exclue par les analyses du breeder",
+        "Une hypothèse, faute de confirmation génétique"
+      ],
+      "answer": 3,
+      "explanation": "Le témoignage envisage un croisement de ruderalis russe et de cannabis mexicain, mais reconnaît qu’il reste à confirmer. Le nom Mexican Rudy ne suffit donc pas à certifier ce récit de parenté.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-lowryder"
+      ],
+      "subjectKey": "lowryder-joint-doctor",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "lowryder-joint-doctor",
+        "subjectKey": "lowryder-joint-doctor",
+        "property": "Incertitude déclarée sur le pedigree de Mexican Rudy",
+        "expectedAnswer": "Une hypothèse, faute de confirmation génétique",
+        "learningObjective": "Incertitude déclarée sur le pedigree de Mexican Rudy.",
+        "factKey": "mexican-rudy-origine-incertaine",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-lowryder",
+            "locator": "Présentation du breeder ; Mexican Rudy, incertitude du pedigree ; Willy’s Automatic et Lowryder",
+            "support": "Le récit dit que personne ne peut en être sûr sans identification génétique et présente la parenté comme possibilité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-lebowski-dude",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel film met en scène le Dude, consommateur de cannabis et amateur de bowling pris pour un millionnaire homonyme ?",
+      "options": [
+        "The Big Lebowski",
+        "Pineapple Express",
+        "Half Baked",
+        "Friday"
+      ],
+      "answer": 0,
+      "explanation": "Jeff Lebowski, surnommé le Dude, est entraîné dans une intrigue policière à cause d’une confusion d’identité. Le film des frères Coen mêle polar, bowling et culture des stoners.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-lebowski"
+      ],
+      "subjectKey": "the-big-lebowski",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "the-big-lebowski",
+        "subjectKey": "the-big-lebowski",
+        "property": "Film mettant en scène le Dude, figure de culture cannabique",
+        "expectedAnswer": "The Big Lebowski",
+        "learningObjective": "Film mettant en scène le Dude, figure de culture cannabique.",
+        "factKey": "lebowski-dude",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-lebowski",
+            "locator": "The Big Lebowski, paragraphe bowling stoner Jeff The Dude",
+            "support": "Le BFI décrit Jeff The Dude Lebowski comme stoner et joueur de bowling pris pour un millionnaire homonyme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-smiley-cupcakes",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans « Smiley Face », quel incident lance les mésaventures cannabiques de Jane, jouée par Anna Faris ?",
+      "options": [
+        "Elle doit remplacer un vendeur dans un dispensaire",
+        "Elle mange les cupcakes au cannabis de son colocataire",
+        "Elle échange par erreur sa valise avec celle d’un dealer",
+        "Elle hérite d’une plantation clandestine"
+      ],
+      "answer": 1,
+      "explanation": "Jane est une actrice en difficulté et consommatrice de cannabis. Les cupcakes de son colocataire précipitent une série de mésaventures qui la font traverser Los Angeles.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-smiley"
+      ],
+      "subjectKey": "smiley-face-film",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "smiley-face-film",
+        "subjectKey": "smiley-face-film",
+        "property": "Incident alimentaire cannabique au départ du récit",
+        "expectedAnswer": "Elle mange les cupcakes au cannabis de son colocataire",
+        "learningObjective": "Incident alimentaire cannabique au départ du récit.",
+        "factKey": "smiley-cupcakes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-smiley",
+            "locator": "Synopsis Jane, cupcakes au cannabis de son colocataire, mésaventures à Los Angeles",
+            "support": "Le synopsis officiel identifie les cupcakes au cannabis et les mésaventures de Jane à Los Angeles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-gentlemen-domaine-heritage",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la série « The Gentlemen », comment Eddie découvre-t-il le commerce de cannabis lié à sa famille ?",
+      "options": [
+        "Il est recruté comme coursier pour payer sa caution",
+        "Il trouve du cannabis dans un taxi abandonné",
+        "Il hérite d’un domaine abritant une ferme clandestine",
+        "Il rachète un dispensaire pour éviter sa fermeture"
+      ],
+      "answer": 2,
+      "explanation": "Eddie Horniman hérite de la propriété familiale sans savoir qu’elle abrite une vaste activité clandestine de cannabis. La série de Guy Ritchie fait se rencontrer aristocratie britannique et criminalité.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-gentlemen"
+      ],
+      "subjectKey": "the-gentlemen-series",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "the-gentlemen-series",
+        "subjectKey": "the-gentlemen-series",
+        "property": "Héritage immobilier révélant une activité cannabique clandestine",
+        "expectedAnswer": "Il hérite d’un domaine abritant une ferme clandestine",
+        "learningObjective": "Héritage immobilier révélant une activité cannabique clandestine.",
+        "factKey": "gentlemen-domaine-heritage",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-gentlemen",
+            "locator": "Présentation Eddie Horniman, domaine hérité et ferme clandestine sous la propriété",
+            "support": "Netflix présente le domaine hérité et l’activité de cannabis sous la propriété."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-half-baked-caution",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans « Half Baked » de 1998, pourquoi les amis se lancent-ils dans la vente de cannabis ?",
+      "options": [
+        "Pour financer une campagne électorale",
+        "Pour sauver le dispensaire de leur quartier",
+        "Pour rembourser la dette d’un musicien disparu",
+        "Pour payer la caution d’un ami emprisonné"
+      ],
+      "answer": 3,
+      "explanation": "Le trio cherche à réunir la caution de son ami Kenny. Cette quête relie les situations de la comédie avec Dave Chappelle, Jim Breuer et Guillermo Díaz.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-half"
+      ],
+      "subjectKey": "half-baked-1998",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "half-baked-1998",
+        "subjectKey": "half-baked-1998",
+        "property": "Caution d’un ami comme mobile du commerce cannabique",
+        "expectedAnswer": "Pour payer la caution d’un ami emprisonné",
+        "learningObjective": "Caution d’un ami comme mobile du commerce cannabique.",
+        "factKey": "half-baked-caution",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-half",
+            "locator": "Synopsis : trois New-Yorkais vendent du cannabis pour payer la caution de leur ami arrêté après la mort d’un cheval de police",
+            "support": "Le studio indique que les trois amis veulent faire sortir leur ami de prison en payant sa caution."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-grass-greener-angle",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel angle sur le cannabis adopte le documentaire « Grass Is Greener » de Fab 5 Freddy ?",
+      "options": [
+        "Culture populaire et inégalités raciales de la répression",
+        "Parcours de familles cherchant un accès au cannabis médical",
+        "Vie de producteurs ruraux et marchés du haschich",
+        "Neurosciences comparées des effets du THC et du CBD"
+      ],
+      "answer": 0,
+      "explanation": "Le film croise jazz, hip-hop, histoire de la criminalisation et inégalités raciales aux États-Unis. Il donne notamment la parole à Snoop Dogg, B-Real et Damian Marley.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-grass"
+      ],
+      "subjectKey": "grass-is-greener-documentary",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "grass-is-greener-documentary",
+        "subjectKey": "grass-is-greener-documentary",
+        "property": "Angle musical et racial de l’histoire cannabique du documentaire",
+        "expectedAnswer": "Culture populaire et inégalités raciales de la répression",
+        "learningObjective": "Angle musical et racial de l’histoire cannabique du documentaire.",
+        "factKey": "grass-greener-angle",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-grass",
+            "locator": "Synopsis, musique/culture populaire et histoire racialisée de la criminalisation du cannabis",
+            "support": "Le synopsis associe musique, culture populaire et effets de la criminalisation sur communautés noires et latino-américaines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-super-high-me-benson",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel humoriste a présenté le documentaire cannabique « Super High Me » à SXSW en 2008 ?",
+      "options": [
+        "Tommy Chong",
+        "Doug Benson",
+        "Dave Chappelle",
+        "Seth Rogen"
+      ],
+      "answer": 1,
+      "explanation": "L’archive de SXSW associe le documentaire cannabique à Doug Benson. Elle rappelle une projection à 16h20 : un clin d’œil au code 420 de la culture du cannabis dans la programmation du festival.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-superhigh"
+      ],
+      "subjectKey": "super-high-me",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "super-high-me",
+        "subjectKey": "super-high-me",
+        "property": "Humoriste associé au documentaire cannabique",
+        "expectedAnswer": "Doug Benson",
+        "learningObjective": "Humoriste associé au documentaire cannabique.",
+        "factKey": "super-high-me-benson",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-superhigh",
+            "locator": "Section2008, Doug Benson premieres his pot doc Super High Me",
+            "support": "L’archive2008 annonce Doug Benson et son pot doc Super High Me à4:20pm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-cypress-hill-hits-bong",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel groupe de hip-hop, avec B-Real, a enregistré « Hits from the Bong » et défendu publiquement le cannabis ?",
+      "options": [
+        "Wu-Tang Clan",
+        "Beastie Boys",
+        "Cypress Hill",
+        "Public Enemy"
+      ],
+      "answer": 2,
+      "explanation": "Cypress Hill a fait du cannabis un thème récurrent de ses chansons et de son engagement public. B-Real cite aussi I Wanna Get High et des prises de position en faveur de réformes.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-cypress"
+      ],
+      "subjectKey": "cypress-hill-cannabis",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "cypress-hill-cannabis",
+        "subjectKey": "cypress-hill-cannabis",
+        "property": "Groupe associé à ces chansons cannabiques",
+        "expectedAnswer": "Cypress Hill",
+        "learningObjective": "Groupe associé à ces chansons cannabiques.",
+        "factKey": "cypress-hill-hits-bong",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-cypress",
+            "locator": "Introduction : B-Real de Cypress Hill ; titres Hits From the Bong, I Wanna Get High ; entretien",
+            "support": "Le site officiel identifie B-Real comme membre de Cypress Hill et cite les titres."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-willie-snoop-duo",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel chanteur de country a enregistré « Roll Me Up and Smoke Me When I Die » avec Snoop Dogg ?",
+      "options": [
+        "Johnny Cash",
+        "Kenny Rogers",
+        "Garth Brooks",
+        "Willie Nelson"
+      ],
+      "answer": 3,
+      "explanation": "La chanson figure sur Heroes de Willie Nelson, paru en 2012. Snoop Dogg, Kris Kristofferson et Jamey Johnson participent à cet enregistrement qui fait se rencontrer country et culture cannabique.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-willie"
+      ],
+      "subjectKey": "willie-nelson-roll-me-up",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "willie-nelson-roll-me-up",
+        "subjectKey": "willie-nelson-roll-me-up",
+        "property": "Interprète country de l’enregistrement avec Snoop Dogg",
+        "expectedAnswer": "Willie Nelson",
+        "learningObjective": "Interprète country de l’enregistrement avec Snoop Dogg.",
+        "factKey": "willie-snoop-duo",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-willie",
+            "locator": "Album Details ; Track Listings, piste02, Roll Me Up And Smoke Me When I Die, invités",
+            "support": "Les crédits officiels de Heroes piste2 associent Willie Nelson à Snoop Dogg, Kristofferson et Johnson."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-kaya-sens-cannabique",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans le titre « Kaya » de Bob Marley, à quoi renvoie ce mot dans le contexte rastafari présenté par sa discographie ?",
+      "options": [
+        "À la marijuana",
+        "À une danse de carnaval",
+        "À un rythme de percussion",
+        "À un quartier de Kingston"
+      ],
+      "answer": 0,
+      "explanation": "La notice officielle explique le sens cannabique de kaya dans ce contexte. L’album de Bob Marley et des Wailers associe cette référence à des thèmes d’amour, de communauté et d’unité.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-kaya"
+      ],
+      "subjectKey": "bob-marley-kaya",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "bob-marley-kaya",
+        "subjectKey": "bob-marley-kaya",
+        "property": "Sens cannabique du mot dans cette œuvre",
+        "expectedAnswer": "À la marijuana",
+        "learningObjective": "Sens cannabique du mot dans cette œuvre.",
+        "factKey": "kaya-sens-cannabique",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-kaya",
+            "locator": "Notice du disque : mot kaya synonyme de marijuana dans la culture rastafari",
+            "support": "La notice du disque donne kaya comme synonyme de marijuana dans la culture rastafari."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-kif-melange-traditionnel",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Au Maroc, que peut désigner le « kif » dans son sens de préparation traditionnelle à fumer ?",
+      "options": [
+        "Une infusion de cannabis et de lait",
+        "Un mélange de cannabis et de tabac",
+        "Une résine de cannabis seule, sans végétaux",
+        "Un concentré de cannabis dissous dans de l’alcool"
+      ],
+      "answer": 1,
+      "explanation": "Le terme peut nommer la plante elle-même ou la préparation traditionnelle avec du tabac. Il ne se confond donc pas systématiquement avec le haschich, qui désigne la résine de cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-kif"
+      ],
+      "subjectKey": "morocco-kif-tradition",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "morocco-kif-tradition",
+        "subjectKey": "morocco-kif-tradition",
+        "property": "Sens du kif comme préparation cannabis-tabac",
+        "expectedAnswer": "Un mélange de cannabis et de tabac",
+        "learningObjective": "Sens du kif comme préparation cannabis-tabac.",
+        "factKey": "kif-melange-traditionnel",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-kif",
+            "locator": "p.2 encadré Repères historiques ; p.1–2 Du kif au haschich, demande européenne dans les années1960",
+            "support": "L’encadré historique p.2 distingue plante, mélange cannabis-tabac et résine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-sebsi-pipe",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel objet est le « sebsi » associé à l’usage traditionnel du kif au Maroc ?",
+      "options": [
+        "Un filtre en carton",
+        "Un pot de conservation",
+        "Une pipe",
+        "Un papier à rouler"
+      ],
+      "answer": 2,
+      "explanation": "Le sebsi est la pipe traditionnellement associée au kif marocain. Le même mot kif peut désigner la plante ou le mélange de cannabis et de tabac fumé dans cette pipe.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-kif"
+      ],
+      "subjectKey": "morocco-kif-tradition",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "morocco-kif-tradition",
+        "subjectKey": "morocco-kif-tradition",
+        "property": "Pipe traditionnelle associée au kif",
+        "expectedAnswer": "Une pipe",
+        "learningObjective": "Pipe traditionnelle associée au kif.",
+        "factKey": "sebsi-pipe",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-kif",
+            "locator": "p.2 encadré Repères historiques ; p.1–2 Du kif au haschich, demande européenne dans les années1960",
+            "support": "L’encadré historique nomme explicitement les pipes sebsi."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-head-shop-accessoires",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la contre-culture cannabique des années 1970, quel commerce décrit le terme « head shop » ?",
+      "options": [
+        "Un point de vente de fleurs de cannabis médical",
+        "Un magasin de semences et d’équipement horticole",
+        "Un atelier créant de nouvelles lignées de cannabis",
+        "Un magasin d’accessoires pour consommer du cannabis"
+      ],
+      "answer": 3,
+      "explanation": "Les archives Smithsonian documentent un commerce d’accessoires distribuant notamment bongs, pipes et papiers. Le head shop d’accessoires se distingue ainsi d’un point de vente de fleurs de cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-headshops"
+      ],
+      "subjectKey": "head-shops-cannabis",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "head-shops-cannabis",
+        "subjectKey": "head-shops-cannabis",
+        "property": "Commerce d’accessoires de la contre-culture cannabique",
+        "expectedAnswer": "Un magasin d’accessoires pour consommer du cannabis",
+        "learningObjective": "Commerce d’accessoires de la contre-culture cannabique.",
+        "factKey": "head-shop-accessoires",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-headshops",
+            "locator": "Summary et Historical Note, p.1–2 imprimées, PDF indices2–3 : accessoires et head shops des années1970",
+            "support": "L’inventaire décrit les head shops et les marchandises distribuées : pipes, bongs et papiers notamment."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-budtender-vente",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans un magasin de cannabis, à quel rôle correspond généralement le titre anglais « budtender » ?",
+      "options": [
+        "Un vendeur au contact des clients",
+        "Un médecin chargé des prescriptions",
+        "Un analyste qui certifie les teneurs",
+        "Un sélectionneur qui crée les lignées"
+      ],
+      "answer": 0,
+      "explanation": "Le guide des métiers du Connecticut place le budtender dans la vente au détail, sous l’intitulé Sales Rep. Ce titre décrit une fonction commerciale et ne confère pas en lui-même une qualification médicale.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-budtender"
+      ],
+      "subjectKey": "cannabis-budtender",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "cannabis-budtender",
+        "subjectKey": "cannabis-budtender",
+        "property": "Fonction commerciale du budtender",
+        "expectedAnswer": "Un vendeur au contact des clients",
+        "learningObjective": "Fonction commerciale du budtender.",
+        "factKey": "budtender-vente",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-budtender",
+            "locator": "PDF p.2 organigramme Retail Budtender (Sales Rep.) ; p.6 Retail",
+            "support": "Le guide officiel classe Retail Budtender comme Sales Rep."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-710-oil-code",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans la culture du cannabis, à quelle famille de produits le code « 710 » est-il associé ?",
+      "options": [
+        "Aux boissons infusées au cannabis",
+        "Aux huiles et concentrés de cannabis",
+        "Aux fleurs séchées entières",
+        "Aux aliments infusés au cannabis"
+      ],
+      "answer": 1,
+      "explanation": "Le code 710 renvoie à la culture des huiles concentrées de cannabis. Le nombre évoque OIL retourné et peut aussi servir à désigner le 10 juillet dans l’écriture américaine des dates.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-710"
+      ],
+      "subjectKey": "710-cannabis-culture",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "710-cannabis-culture",
+        "subjectKey": "710-cannabis-culture",
+        "property": "Famille de produits associée au code culturel710",
+        "expectedAnswer": "Aux huiles et concentrés de cannabis",
+        "learningObjective": "Associer710 à la culture des huiles et concentrés de cannabis.",
+        "factKey": "710-oil-code",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-710",
+            "locator": "Entrée710, association hash oil et OIL renversé",
+            "support": "Le glossaire institutionnel associe explicitement710 à hash oil et à la date du10juillet."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-coffeeshops-paradoxe-approvisionnement",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel paradoxe a motivé l’expérience néerlandaise d’approvisionnement des coffeeshops lancée dans les années 2020 ?",
+      "options": [
+        "Vente de fleurs tolérée, mais achat de résine toujours interdit",
+        "Importations autorisées, mais fourniture interdite aux coffeeshops",
+        "Vente tolérée sous conditions, mais approvisionnement illégal",
+        "Production autorisée, mais vente interdite aux résidents"
+      ],
+      "answer": 2,
+      "explanation": "La vente au consommateur était tolérée sous conditions alors que production et fourniture ne l’étaient pas. L’expérience cherche à tester une chaîne réglementée pour répondre à cette incohérence.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb05-nl"
+      ],
+      "subjectKey": "netherlands-cannabis-supply-experiment",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "netherlands-cannabis-supply-experiment",
+        "subjectKey": "netherlands-cannabis-supply-experiment",
+        "property": "Paradoxe entre vente tolérée et approvisionnement illégal",
+        "expectedAnswer": "Vente tolérée sous conditions, mais approvisionnement illégal",
+        "learningObjective": "Paradoxe entre vente tolérée et approvisionnement illégal.",
+        "factKey": "coffeeshops-paradoxe-approvisionnement",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-nl",
+            "locator": "Why an experiment, vente tolérée et production/approvisionnement illégaux ; What does the experiment involve, communes participantes",
+            "support": "Le gouvernement explique la différence entre vente tolérée et production/fourniture illégales comme raison de l’expérimentation."
+          }
+        ],
+        "jurisdiction": "Pays-Bas, contexte historique du lancement de l’expérimentation2025",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-coffeeshops-experience-chaine",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel périmètre l’expérience néerlandaise ouverte en 2025 vise-t-elle à réglementer dans les communes participantes ?",
+      "options": [
+        "La vente au comptoir et la consommation dans les coffeeshops",
+        "La production médicale et les ventes de cannabis en pharmacie",
+        "Les clubs privés et l’autoproduction de leurs membres",
+        "La production, la distribution et la vente du cannabis"
+      ],
+      "answer": 3,
+      "explanation": "L’expérience porte sur une chaîne contrôlée allant des producteurs désignés aux coffeeshops participants. Elle permet d’étudier ses effets sur la santé publique, la sécurité et la criminalité.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb05-nl"
+      ],
+      "subjectKey": "netherlands-cannabis-supply-experiment",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "netherlands-cannabis-supply-experiment",
+        "subjectKey": "netherlands-cannabis-supply-experiment",
+        "property": "Chaîne complète testée dans des communes participantes",
+        "expectedAnswer": "La production, la distribution et la vente du cannabis",
+        "learningObjective": "Chaîne complète testée dans des communes participantes.",
+        "factKey": "coffeeshops-experience-chaine",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-nl",
+            "locator": "Why an experiment, vente tolérée et production/approvisionnement illégaux ; What does the experiment involve, communes participantes",
+            "support": "La page officielle annonce l’évaluation d’une production-distribution-vente réglementée et de ses effets."
+          }
+        ],
+        "jurisdiction": "Pays-Bas, modèle de l’expérimentation lancée en2025",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-us-programme-compassionnel",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Que recevait le petit groupe du programme fédéral Compassionate Use décrit par l’Institute of Medicine en 2000 ?",
+      "options": [
+        "Des cigarettes de cannabis préparées par le gouvernement",
+        "Des capsules de dronabinol distribuées par les pharmacies",
+        "Un extrait alcoolique de cannabis dispensé en pharmacie",
+        "Des comprimés de nabilone fournis par un fabricant privé"
+      ],
+      "answer": 0,
+      "explanation": "Le livre décrit quelques patients recevant du cannabis préparé par le gouvernement fédéral. Il précise que le programme était fermé aux nouveaux patients depuis 1992 : une exception historique très limitée.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-compassionate"
+      ],
+      "subjectKey": "us-compassionate-cannabis-program",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "us-compassionate-cannabis-program",
+        "subjectKey": "us-compassionate-cannabis-program",
+        "property": "Fourniture fédérale de cannabis dans un programme compassionnel historique",
+        "expectedAnswer": "Des cigarettes de cannabis préparées par le gouvernement",
+        "learningObjective": "Fourniture fédérale de cannabis dans un programme compassionnel historique.",
+        "factKey": "us-programme-compassionnel",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-compassionate",
+            "locator": "p.22–23 imprimées, PDF indices37–38 : cigarettes préparées par gouvernement dans Compassionate Use Program",
+            "support": "Le texte p.22–23 indique que les patients reçoivent des cigarettes préparées par le gouvernement américain dans ce programme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-leary-tax-auto-incrimination",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans Leary v. United States (1969), quelle protection a fait tomber la condamnation liée à la taxe sur le cannabis ?",
+      "options": [
+        "La liberté d’expression des chercheurs",
+        "La protection contre l’auto-incrimination",
+        "La liberté de culte dans les associations religieuses",
+        "L’interdiction des perquisitions sans mandat"
+      ],
+      "answer": 1,
+      "explanation": "La Cour a jugé que les obligations fiscales exposaient Leary à s’incriminer pour sa possession de cannabis. Elle a annulé sa condamnation fiscale sur ce fondement, sans créer de droit général à consommer.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb05-leary"
+      ],
+      "subjectKey": "marihuana-tax-act",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "marihuana-tax-act",
+        "subjectKey": "marihuana-tax-act",
+        "property": "Protection contre l’auto-incrimination appliquée à la taxe cannabis",
+        "expectedAnswer": "La protection contre l’auto-incrimination",
+        "learningObjective": "Protection contre l’auto-incrimination appliquée à la taxe cannabis.",
+        "factKey": "leary-tax-auto-incrimination",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-leary",
+            "locator": "Introduction et partieI : condamnation fiscale cannabis et privilège du Fifth Amendment contre auto-incrimination",
+            "support": "L’arrêt traite explicitement du privilège Fifth Amendment et statue en faveur de Leary sur sa condamnation fiscale."
+          }
+        ],
+        "jurisdiction": "États-Unis, arrêt historique du19mai1969",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-uk2018-epilepsie-enfants",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelles situations ont poussé le gouvernement britannique à revoir le classement médical du cannabis en juin 2018 ?",
+      "options": [
+        "Des patients atteints de sclérose en plaques et de spasmes",
+        "Des personnes âgées vivant avec la maladie de Parkinson",
+        "Des enfants atteints d’épilepsies graves cherchant un traitement",
+        "Des adultes souffrant de douleurs liées à un cancer"
+      ],
+      "answer": 2,
+      "explanation": "Le Home Office citait les cas de Billy Caldwell et d’Alfie Dingley et l’accès à des médicaments à base de cannabis. La révision annoncée concernait l’usage médical, en séparant ce débat de la légalisation récréative.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-uk"
+      ],
+      "subjectKey": "uk-cannabis-medical-review-2018",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "uk-cannabis-medical-review-2018",
+        "subjectKey": "uk-cannabis-medical-review-2018",
+        "property": "Contexte pédiatrique du réexamen historique du cannabis médical",
+        "expectedAnswer": "Des enfants atteints d’épilepsies graves cherchant un traitement",
+        "learningObjective": "Contexte pédiatrique du réexamen historique du cannabis médical.",
+        "factKey": "uk2018-epilepsie-enfants",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-uk",
+            "locator": "Annonce et déclaration sur Billy Caldwell/Alfie Dingley, médicament pour épilepsie rare ; exclusion légalisation récréative",
+            "support": "Le communiqué cite Caldwell/Dingley et l’accès à un médicament cannabique pour une forme rare d’épilepsie."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-cheese-clone-originel",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Selon le récit de Royal Queen Seeds, sous quelle forme la Cheese originelle circulait-elle ?",
+      "options": [
+        "Sous forme de semences F1 certifiées",
+        "Sous forme de mélanges de graines sauvages",
+        "Sous forme de plantules obtenues in vitro",
+        "Sous forme de boutures d’un clone"
+      ],
+      "answer": 3,
+      "explanation": "La Cheese historique est décrite comme clone-only. Les versions ultérieures en graines cherchent à retrouver le profil aromatique du clone ; elles ne sont pas nécessairement des copies identiques de celui-ci.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb05-cheese"
+      ],
+      "subjectKey": "cheese-history",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "cheese-history",
+        "subjectKey": "cheese-history",
+        "property": "Diffusion initiale de Cheese par clone",
+        "expectedAnswer": "Sous forme de boutures d’un clone",
+        "learningObjective": "Diffusion initiale de Cheese par clone.",
+        "factKey": "cheese-clone-originel",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-cheese",
+            "locator": "Key Takeaways ; What is Cheese ; The history of Cheese, paragraphes clone-only et Skunk#1 au Royaume-Uni",
+            "support": "Le paragraphe What is Cheese indique clone-only avant les versions en graines cherchant son profil aromatique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-rif-demande-europeenne-resine",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle demande l’OFDT relie-t-il à la transition du kif traditionnel vers le haschich de masse au Maroc dès les années 1960 ?",
+      "options": [
+        "La demande européenne de résine de cannabis",
+        "La demande américaine d’herbe de cannabis",
+        "La demande indienne de haschich",
+        "La demande marocaine de kif traditionnel"
+      ],
+      "answer": 0,
+      "explanation": "L’enquête relie l’expansion du haschich destiné à l’Europe à la demande croissante de résine. Elle distingue cette filière de l’ancien usage local du kif, davantage orienté vers l’autoconsommation.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-kif"
+      ],
+      "subjectKey": "morocco-rif-cannabis-resin",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "morocco-rif-cannabis-resin",
+        "subjectKey": "morocco-rif-cannabis-resin",
+        "property": "Demande européenne dans la transformation historique de la filière",
+        "expectedAnswer": "La demande européenne de résine de cannabis",
+        "learningObjective": "Demande européenne dans la transformation historique de la filière.",
+        "factKey": "rif-demande-europeenne-resine",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-kif",
+            "locator": "p.2 encadré Repères historiques ; p.1–2 Du kif au haschich, demande européenne dans les années1960",
+            "support": "Le texte p.2 et sa note3 relient la demande européenne au passage de la production de kif à celle de haschich."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-bekaa-liban-resine",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quel pays la vallée de la Bekaa est-elle un foyer historique de production de résine de cannabis ?",
+      "options": [
+        "Au Népal",
+        "Au Liban",
+        "Au Maroc",
+        "En Afghanistan"
+      ],
+      "answer": 1,
+      "explanation": "Le rapport ONUDC décrit la concentration de la production libanaise dans la Bekaa, notamment autour de Baalbek et Hermel. C’est un autre foyer historique du haschich, distinct du Rif marocain.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-bekaa"
+      ],
+      "subjectKey": "lebanon-bekaa-cannabis-resin",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "lebanon-bekaa-cannabis-resin",
+        "subjectKey": "lebanon-bekaa-cannabis-resin",
+        "property": "Localisation du foyer historique de la Bekaa",
+        "expectedAnswer": "Au Liban",
+        "learningObjective": "Localisation du foyer historique de la Bekaa.",
+        "factKey": "bekaa-liban-resine",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-bekaa",
+            "locator": "Section production résine, paragraphe Liban : vallée de la Bekaa, Baalbek et Hermel",
+            "support": "Le paragraphe Liban du rapport2006 situe sa production dans cette vallée, zones de Baalbek et Hermel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb05-freak-street-kathmandu",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "À quelle ville est associée « Freak Street », connue pour ses commerces de haschich sur la route hippie des années 1960–1970 ?",
+      "options": [
+        "Bangkok",
+        "Kaboul",
+        "Katmandou",
+        "Goa"
+      ],
+      "answer": 2,
+      "explanation": "Les archives de Johns Hopkins présentent une affiche de l’Eden Hashish Center de Katmandou vers 1971. Le lieu se trouvait dans Freak Street, avant la fermeture de ces commerces lors du durcissement de 1973.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb05-freakstreet"
+      ],
+      "subjectKey": "kathmandu-freak-street",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "kathmandu-freak-street",
+        "subjectKey": "kathmandu-freak-street",
+        "property": "Ville de Freak Street dans l’histoire du tourisme cannabique",
+        "expectedAnswer": "Katmandou",
+        "learningObjective": "Ville de Freak Street dans l’histoire du tourisme cannabique.",
+        "factKey": "freak-street-kathmandu",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb05-freakstreet",
+            "locator": "Extrait indexé du passage Eden Hashish Center, Freak Street de Kathmandu, affiche vers 1971 et fermeture1973",
+            "support": "L’extrait universitaire situe l’Eden Hashish Center dans Freak Street de Kathmandu avant la répression de1973."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rb05-ssh",
+      "title": "Super Silver Haze (Feminised)",
+      "organization": "Green House Seed Company",
+      "url": "https://shop.greenhouseseeds.nl/feminised-cannabis-seeds/1-seed-pack/super-silver-haze/",
+      "verifiedAt": "2026-11-17",
+      "author": "Green House Seed Company",
+      "published": "s.d.",
+      "passage": "GENETICS : Skunk x Northern Lights x Haze",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Pedigree revendiqué par la maison ; aucune généalogie génomique indépendante déduite.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "GENETICS : Skunk x Northern Lights x Haze",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-cheese",
+      "title": "The History of Cheese Marijuana Strains",
+      "organization": "Royal Queen Seeds",
+      "url": "https://www.royalqueenseeds.com/us/content/182-the-history-of-cheese-marijuana-strains",
+      "verifiedAt": "2026-11-17",
+      "author": "Royal Queen Seeds",
+      "published": "s.d.",
+      "passage": "Key Takeaways ; What is Cheese ; The history of Cheese, paragraphes clone-only et Skunk#1 au Royaume-Uni",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Récit historique de breeder attribué ; les recettes de culture et promesses d’effets sont exclues.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Key Takeaways ; What is Cheese ; The history of Cheese, paragraphes clone-only et Skunk#1 au Royaume-Uni",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-critical",
+      "title": "Critical Mass",
+      "organization": "Mr. Nice Seedbank",
+      "url": "https://mrnice.nl/product/critical-mass-174/",
+      "verifiedAt": "2026-11-17",
+      "author": "Mr. Nice Seedbank",
+      "published": "s.d.",
+      "passage": "Description, genetic pedigree Afghani combined with original Skunk#1",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Annonce de pedigree, pas preuve indépendante ; aucun rendement ni protocole repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Description, genetic pedigree Afghani combined with original Skunk#1",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-charlotte",
+      "title": "Charlotte Figi: The Girl Who Changed the World",
+      "organization": "Charlotte’s Web",
+      "url": "https://ca.charlottesweb.com/blogs/learn/charlotte-figi-the-girl-who-changed-the-world",
+      "verifiedAt": "2026-11-17",
+      "author": "Charlotte’s Web",
+      "published": "2025-04-07",
+      "passage": "Récit familial, extrait Original Formula et paragraphe carries her name",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Source commerciale utilisée pour l’histoire du nom seulement ; aucun bénéfice thérapeutique ni récit de guérison repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Récit familial, extrait Original Formula et paragraphe carries her name",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-grinspoon",
+      "title": "Dr Grinspoon Strain",
+      "organization": "Barney’s Farm",
+      "url": "https://www.barneysfarm.com/dr-grinspoon-5",
+      "verifiedAt": "2026-11-17",
+      "author": "Barney’s Farm",
+      "published": "s.d.",
+      "passage": "Description, colas resemble compact green and reddish-brown beads ; loosely hang on thin stems",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Morphologie annoncée de cette lignée ; pas de promesse d’effets, de rendement ou de conseil de culture.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Description, colas resemble compact green and reddish-brown beads ; loosely hang on thin stems",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-gelato",
+      "title": "Gelato cannabis seeds",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/gelato-cannabis-seeds",
+      "verifiedAt": "2026-11-17",
+      "author": "Dutch Passion",
+      "published": "s.d.",
+      "passage": "Table Gelato weed strains characteristics, ligne Origins",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Origine attribuée dans le récit de Dutch Passion, pas certification de tous les produits nommés Gelato.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Table Gelato weed strains characteristics, ligne Origins",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-lowryder",
+      "title": "Interview With The Joint Doctor",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/blog/interview-with-the-joint-doctor-n384",
+      "verifiedAt": "2026-11-17",
+      "author": "The Joint Doctor, entretien publié par Dutch Passion",
+      "published": "s.d.",
+      "passage": "Présentation du breeder ; Mexican Rudy, incertitude du pedigree ; Willy’s Automatic et Lowryder",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Témoignage primaire rétrospectif. La parenté de Mexican Rudy y est explicitement incertaine. Aucun protocole de sélection ni conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation du breeder ; Mexican Rudy, incertitude du pedigree ; Willy’s Automatic et Lowryder",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-lebowski",
+      "title": "10 great films of 1998",
+      "organization": "British Film Institute",
+      "url": "https://www.bfi.org.uk/lists/10-great-films-1998",
+      "verifiedAt": "2026-11-17",
+      "author": "Charles Graham-Dixon, section The Big Lebowski",
+      "published": "2023-02-02 (mise à jour)",
+      "passage": "The Big Lebowski, paragraphe bowling stoner Jeff The Dude",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Critique institutionnelle de cinéma utilisée pour identifier un personnage de fiction.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "The Big Lebowski, paragraphe bowling stoner Jeff The Dude",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-smiley",
+      "title": "Smiley Face",
+      "organization": "Apple TV, notice de distribution",
+      "url": "https://tv.apple.com/ca/movie/smiley-face/umc.cmc.5y2ermj7qd9ee7g2rfzy9ryya",
+      "verifiedAt": "2026-11-17",
+      "author": "Apple TV / notice du film",
+      "published": "s.d. (film2007)",
+      "passage": "Synopsis Jane, cupcakes au cannabis de son colocataire, mésaventures à Los Angeles",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Synopsis de fiction ; aucune conclusion de santé tirée des péripéties.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis Jane, cupcakes au cannabis de son colocataire, mésaventures à Los Angeles",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-gentlemen",
+      "title": "Theo James Joins Guy Ritchie’s The Gentlemen TV Series",
+      "organization": "Netflix Tudum",
+      "url": "https://www.netflix.com/tudum/articles/the-gentlemen-series-theo-james-cast",
+      "verifiedAt": "2026-11-17",
+      "author": "Anne Cohen",
+      "published": "2022-11-04",
+      "passage": "Présentation Eddie Horniman, domaine hérité et ferme clandestine sous la propriété",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Annonce du diffuseur sur la prémisse de la série, pas description d’un cas réel.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation Eddie Horniman, domaine hérité et ferme clandestine sous la propriété",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-half",
+      "title": "Half Baked",
+      "organization": "Prime Video, notice de distribution",
+      "url": "https://www.primevideo.com/detail/0OWK03GWOPARGZRRTFSFPNPWAV",
+      "verifiedAt": "2026-11-17",
+      "author": "Prime Video / notice du film",
+      "published": "s.d. (film1998)",
+      "passage": "Synopsis : trois New-Yorkais vendent du cannabis pour payer la caution de leur ami arrêté après la mort d’un cheval de police",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Notice de distribution du film ; objectif narratif et non méthode de trafic.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis : trois New-Yorkais vendent du cannabis pour payer la caution de leur ami arrêté après la mort d’un cheval de police",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-grass",
+      "title": "Grass Is Greener",
+      "organization": "Netflix Media Center",
+      "url": "https://media.netflix.com/en/only-on-netflix/80213712",
+      "verifiedAt": "2026-11-17",
+      "author": "Netflix / Fab 5 Freddy",
+      "published": "2019-04-20 (sortie annoncée)",
+      "passage": "Synopsis, musique/culture populaire et histoire racialisée de la criminalisation du cannabis",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Présentation du documentaire par son diffuseur ; décrit son angle, pas validation de chaque thèse du film.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis, musique/culture populaire et histoire racialisée de la criminalisation du cannabis",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-superhigh",
+      "title": "History of SXSW, 2008",
+      "organization": "SXSW",
+      "url": "https://sxsw.com/about/history/page/4/",
+      "verifiedAt": "2026-11-17",
+      "author": "SXSW",
+      "published": "s.d. (archive2008)",
+      "passage": "Section2008, Doug Benson premieres his pot doc Super High Me",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Archive primaire du festival ; identité culturelle du protagoniste, pas évaluation médicale de son expérience.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Section2008, Doug Benson premieres his pot doc Super High Me",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-cypress",
+      "title": "It’s about time: Cypress Hill’s longtime cannabis proponent B-Real",
+      "organization": "Cypress Hill, site officiel",
+      "url": "https://cypresshill.com/2021/04/20/its-about-time-cypress-hills-longtime-cannabis-proponent-b-real-on-legalization-measures-sweeping-america/",
+      "verifiedAt": "2026-11-17",
+      "author": "Entretien de B-Real, via Yahoo, repris par Cypress Hill",
+      "published": "2021-04-20",
+      "passage": "Introduction : B-Real de Cypress Hill ; titres Hits From the Bong, I Wanna Get High ; entretien",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Témoignage d’artiste sur ses œuvres et son engagement, pas information pharmacologique.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction : B-Real de Cypress Hill ; titres Hits From the Bong, I Wanna Get High ; entretien",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-willie",
+      "title": "Heroes",
+      "organization": "Willie Nelson, discographie officielle",
+      "url": "https://willienelson.com/products/heroes",
+      "verifiedAt": "2026-11-17",
+      "author": "Willie Nelson",
+      "published": "2012-05-15 (sortie de l’album)",
+      "passage": "Album Details ; Track Listings, piste02, Roll Me Up And Smoke Me When I Die, invités",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Crédits de l’enregistrement, pas paroles reproduites ni conseil d’usage.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Album Details ; Track Listings, piste02, Roll Me Up And Smoke Me When I Die, invités",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-kaya",
+      "title": "Kaya LP",
+      "organization": "Bob Marley, boutique officielle",
+      "url": "https://shop.bobmarley.com/products/kaya-lp",
+      "verifiedAt": "2026-11-17",
+      "author": "Bob Marley Official Store",
+      "published": "s.d.",
+      "passage": "Notice du disque : mot kaya synonyme de marijuana dans la culture rastafari",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Notice officielle d’une œuvre, sens culturel contextualisé ; pas définition universelle de tous les emplois du mot.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Notice du disque : mot kaya synonyme de marijuana dans la culture rastafari",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-kif",
+      "title": "Le haschich marocain, du kif aux hybrides",
+      "organization": "OFDT, Drogues enjeux internationaux8",
+      "url": "https://bdoc.ofdt.fr/doc_num.php?explnum_id=20769",
+      "verifiedAt": "2026-11-17",
+      "author": "Kenza Afsahi et Pierre-Arnaud Chouvy ; préambule Laurent Laniel",
+      "published": "2015-02",
+      "passage": "p.2 encadré Repères historiques ; p.1–2 Du kif au haschich, demande européenne dans les années1960",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Enquête historique et géographique datée. Pas de recette de mélange, de technique de culture ou de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "p.2 encadré Repères historiques ; p.1–2 Du kif au haschich, demande européenne dans les années1960",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-headshops",
+      "title": "Arland Adams, Jr., Drug Paraphernalia Collection, NMAH.AC.1594",
+      "organization": "Smithsonian, National Museum of American History Archives Center",
+      "url": "https://sirismm.si.edu/EADpdfs/NMAH.AC.1594.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Audrey Clancy, sous supervision de Franklin A. Robinson Jr.",
+      "published": "2025-07",
+      "passage": "Summary et Historical Note, p.1–2 imprimées, PDF indices2–3 : accessoires et head shops des années1970",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Inventaire d’archives de commerce d’accessoires ; la collection inclut aussi d’autres drogues, seuls les objets cannabiques pertinents sont retenus.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Summary et Historical Note, p.1–2 imprimées, PDF indices2–3 : accessoires et head shops des années1970",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-budtender",
+      "title": "Cannabis Career Pathways",
+      "organization": "Social Equity Council, State of Connecticut",
+      "url": "https://portal.ct.gov/socialequitycouncil/-/media/social-equity-council/sec/applicant-resources/lottery-information/cannabis-career-pathways_social-equity-council.pdf?rev=5e8f0a6a618f44beb5c14dd0f611b7ee",
+      "verifiedAt": "2026-11-17",
+      "author": "Social Equity Council",
+      "published": "s.d.",
+      "passage": "PDF p.2 organigramme Retail Budtender (Sales Rep.) ; p.6 Retail",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Titre de métier de vente au détail, pas profession médicale ni description d’une autorisation applicable partout.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "PDF p.2 organigramme Retail Budtender (Sales Rep.) ; p.6 Retail",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-710",
+      "title": "Glossary – Cannabis FactCheck",
+      "organization": "Ventura County Behavioral Health",
+      "url": "https://positivepaths.venturacounty.gov/cannabis/glossary",
+      "verifiedAt": "2026-11-17",
+      "author": "Ventura County Behavioral Health",
+      "published": "s.d.",
+      "passage": "Entrée710, association hash oil et OIL renversé",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Vocabulaire de culture cannabique ; aucune technique de consommation ou de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Entrée710, association hash oil et OIL renversé",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-nl",
+      "title": "Background information and experiment design",
+      "organization": "Government of the Netherlands",
+      "url": "https://www.government.nl/themes/family-health-and-care/controlled-cannabis-supply-chain-experiment/background-information-and-experiment-design",
+      "verifiedAt": "2026-11-17",
+      "author": "Gouvernement néerlandais",
+      "published": "s.d.",
+      "passage": "Why an experiment, vente tolérée et production/approvisionnement illégaux ; What does the experiment involve, communes participantes",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Règle générale historique ayant motivé l’expérience ; les dérogations transitoires du haschisch en2025 ne sont pas projetées en2026.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Why an experiment, vente tolérée et production/approvisionnement illégaux ; What does the experiment involve, communes participantes",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-compassionate",
+      "title": "Marijuana as Medicine? The Science Beyond the Controversy",
+      "organization": "Institute of Medicine / National Academies Press",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK224394/pdf/Bookshelf_NBK224394.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Alison Mack et Janet Joy",
+      "published": "2000",
+      "passage": "p.22–23 imprimées, PDF indices37–38 : cigarettes préparées par gouvernement dans Compassionate Use Program",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "État historique du programme en2000, pas chiffre de participants actuel ni recommandation de fumer.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "p.22–23 imprimées, PDF indices37–38 : cigarettes préparées par gouvernement dans Compassionate Use Program",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-leary",
+      "title": "Leary v. United States, 395 U.S.6",
+      "organization": "Cour suprême des États-Unis ; texte Cornell LII",
+      "url": "https://www.law.cornell.edu/supremecourt/text/395/6",
+      "verifiedAt": "2026-11-17",
+      "author": "Cour suprême, opinion de John Marshall Harlan II",
+      "published": "1969-05-19",
+      "passage": "Introduction et partieI : condamnation fiscale cannabis et privilège du Fifth Amendment contre auto-incrimination",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Arrêt historique sur dispositions précises de la taxe ; ne signifie pas légalisation générale du cannabis.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction et partieI : condamnation fiscale cannabis et privilège du Fifth Amendment contre auto-incrimination",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-uk",
+      "title": "Home Office launches review into medical use of cannabis",
+      "organization": "Home Office, Royaume-Uni",
+      "url": "https://www.gov.uk/government/news/home-office-launches-review-into-medical-use-of-cannabis",
+      "verifiedAt": "2026-11-17",
+      "author": "Home Office / Sajid Javid",
+      "published": "2018-06-19",
+      "passage": "Annonce et déclaration sur Billy Caldwell/Alfie Dingley, médicament pour épilepsie rare ; exclusion légalisation récréative",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Événement historique2018, ne décrit pas les conditions de prescription actuelles ni efficacité générale.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Annonce et déclaration sur Billy Caldwell/Alfie Dingley, médicament pour épilepsie rare ; exclusion légalisation récréative",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-bekaa",
+      "title": "Rapport mondial sur les drogues2006, volume1",
+      "organization": "ONUDC",
+      "url": "https://unodc.org/pdf/WDR_2006/wdr06_french_vol1.www.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Office des Nations unies contre la drogue et le crime",
+      "published": "2006",
+      "passage": "Section production résine, paragraphe Liban : vallée de la Bekaa, Baalbek et Hermel",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Repère géographique d’une filière historique ; chiffres2006 et classement mondial ancien non repris comme actuels.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Section production résine, paragraphe Liban : vallée de la Bekaa, Baalbek et Hermel",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb05-freakstreet",
+      "title": "Meet Our First-Year Fellows: Meenal Srivastava on the Counterculture",
+      "organization": "Johns Hopkins University, Sheridan Libraries",
+      "url": "https://www.library.jhu.edu/news/2025/03/meet-our-first-year-fellows-meenal-srivastava-on-the-counterculture/",
+      "verifiedAt": "2026-11-17",
+      "author": "Meenal Srivastava / Sheridan Libraries",
+      "published": "2025-03 (rubrique datée de l’URL)",
+      "passage": "Extrait indexé du passage Eden Hashish Center, Freak Street de Kathmandu, affiche vers 1971 et fermeture1973",
+      "access": "excerpt",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Accès direct Cache miss à deux ouvertures ; extrait primaire indexé réellement lu. Aucune lecture intégrale revendiquée.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Extrait indexé du passage Eden Hashish Center, Freak Street de Kathmandu, affiche vers 1971 et fermeture1973",
+        "result": "Extrait textuel indexé effectivement lu ; accès direct incomplet, aucune lecture intégrale revendiquée."
+      }
+    }
+  ]
+}

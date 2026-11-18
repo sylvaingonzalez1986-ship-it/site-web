@@ -1,0 +1,768 @@
+{
+  "batchId": "r-products-03",
+  "reviewer": "rebalance_classify_a",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rp03-bhang-drink-description",
+      "status": "approved",
+      "comment": "Présentation traditionnelle correctement bornée au rapport OMS ; distincte de Holi et du condiment de graines déjà retenus.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-who-product-descriptions",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section1, p.9, §1.2.4.3",
+          "result": "PDF original ouvert ; p.9 imprimée/PDF12, Bhang et cannabutter, retrait des cires ; p.19/PDF22, RSO brun foncé dense. Seules les descriptions finales sont validées, aucune recette.",
+          "sourceHash": "ad6cf53fe3804add8b04cceacc91f84a836458affd32c28881c1dbe523b4d8af"
+        }
+      ],
+      "contentHash": "7d7695331c4e52f5742f4909786853f329d253fa0a7ecdf66bb4bdfd256a4cfc"
+    },
+    {
+      "id": "hemp-q2-rp03-rso-dense-resinous-oil",
+      "status": "approved",
+      "comment": "Aspect physique exactement décrit dans le rapport ; aucune validation des allégations de traitement du cancer.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-who-product-descriptions",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section1, p.19, §3.1.5–3.1.6.1",
+          "result": "PDF original ouvert ; p.9 imprimée/PDF12, Bhang et cannabutter, retrait des cires ; p.19/PDF22, RSO brun foncé dense. Seules les descriptions finales sont validées, aucune recette.",
+          "sourceHash": "ad6cf53fe3804add8b04cceacc91f84a836458affd32c28881c1dbe523b4d8af"
+        }
+      ],
+      "contentHash": "438b2cd1d60e9bf596936fe4e763d858d396b26496773741d16fba7c952205cb"
+    },
+    {
+      "id": "hemp-q2-rp03-cannabutter-active-butter",
+      "status": "approved",
+      "comment": "Vocabulaire utile de préparation à actifs, avec distinction du chènevis. Réponse un peu transparente pour un anglophone mais objet courant et niveau 1 cohérent.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-who-product-descriptions",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section1, p.9, §1.2.4.3",
+          "result": "PDF original ouvert ; p.9 imprimée/PDF12, Bhang et cannabutter, retrait des cires ; p.19/PDF22, RSO brun foncé dense. Seules les descriptions finales sont validées, aucune recette.",
+          "sourceHash": "ad6cf53fe3804add8b04cceacc91f84a836458affd32c28881c1dbe523b4d8af"
+        }
+      ],
+      "contentHash": "6ed53ff918d67b553faa3f5ee1d655990f23d96868db8e3bdd4d1437e4e776d2"
+    },
+    {
+      "id": "hemp-q2-rp03-hash-oil-not-seed-oil",
+      "status": "approved",
+      "comment": "Distinction des familles de produits soutenue par EUDA ; ni doublon du développement de BHO ni inversion de la composition de l’huile essentielle.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-euda-hash-oil",
+          "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+          "locator": "Introduction, second paragraphe ; Origin",
+          "result": "Page EUDA ouverte ; Introduction/Origin identifient cannabis(hash)oil comme extrait de cannabis ou résine ; aucun droit ancien repris.",
+          "sourceHash": "93aca8921c7886497420608a279bde77890cc8cd8a9c44bbe5c127c08d796508"
+        }
+      ],
+      "contentHash": "70ccd8b0c215d78259eb587eb2d5feda2c26835830d4aef6680a3e0c813bb408"
+    },
+    {
+      "id": "hemp-q2-rp03-dewaxed-extract-reduced-waxes",
+      "status": "approved",
+      "comment": "Le terme winterisé remplace la traduction littérale dewaxed, conformément au passage OMS relu par A. Composition finale seulement, aucun procédé ajouté.",
+      "domain": "active",
+      "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-who-product-descriptions",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section1, p.9, paragraphe de-wax / winterization",
+          "result": "PDF original ouvert ; p.9 imprimée/PDF12, Bhang et cannabutter, retrait des cires ; p.19/PDF22, RSO brun foncé dense. Seules les descriptions finales sont validées, aucune recette.",
+          "sourceHash": "ad6cf53fe3804add8b04cceacc91f84a836458affd32c28881c1dbe523b4d8af"
+        }
+      ],
+      "contentHash": "887c55ae6ba7d1d12b34ce98f420969d927e2ff7508a7b8f58ea6655e77d9317",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp03-dewaxed-extract-reduced-waxes",
+          "status": "changes_requested",
+          "comment": "Le fait est exact, mais dewaxed → cires teste principalement une traduction anglaise littérale. Employer plutôt « extrait winterisé » avec le même fait soutenu par le passage et sans décrire le procédé ; conserver la limite sur la pureté.",
+          "domain": "active",
+          "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp03-who-product-descriptions",
+              "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+              "locator": "Section1, p.9, paragraphe de-wax / winterization",
+              "result": "PDF original ouvert ; p.9 imprimée/PDF12, Bhang et cannabutter, retrait des cires ; p.19/PDF22, RSO brun foncé dense. Seules les descriptions finales sont validées, aucune recette.",
+              "sourceHash": "ad6cf53fe3804add8b04cceacc91f84a836458affd32c28881c1dbe523b4d8af"
+            }
+          ],
+          "contentHash": "632c2bbf52e5c14f8dc9dff87cf95da204970cae539553efbdfcb1c273b17ab3"
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "632c2bbf52e5c14f8dc9dff87cf95da204970cae539553efbdfcb1c273b17ab3",
+        "after": {
+          "id": "hemp-q2-rp03-dewaxed-extract-reduced-waxes",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Dans un extrait de cannabis dit « winterisé », quelle famille de constituants a été particulièrement réduite ?",
+          "options": [
+            "Les cires végétales",
+            "Les cannabinoïdes acides",
+            "Les terpènes aromatiques",
+            "Les pigments anthocyaniques"
+          ],
+          "answer": 0,
+          "explanation": "Le rapport associe la winterisation au retrait d’une partie des cires de l’extrait. Cette caractéristique de composition ne garantit pas à elle seule la pureté ou la sécurité globale du produit.",
+          "articleId": "ref-resines-extraits",
+          "sourceIds": [
+            "q2-rp03-who-product-descriptions"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Extrait débarrassé de cires",
+            "subjectKey": "cannabis-dewaxed-extract",
+            "property": "Constituants visés par l’appellation",
+            "expectedAnswer": "Les cires végétales",
+            "learningObjective": "Lire une caractéristique de composition d’extrait sans protocole.",
+            "factKey": "dewaxed-extract-reduced-waxes",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée d’une formulation, d’une interaction ou d’une règle propre à ces produits.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rp03-who-product-descriptions",
+                "locator": "Section1, p.9, paragraphe de-wax / winterization",
+                "support": "Le rapport décrit le retrait de cires dans cette catégorie de produit."
+              }
+            ]
+          }
+        },
+        "correctedBy": "rebalance_products_sol"
+      },
+      "coordinatorScope": "Cinq corrections ciblées rédigées par C à partir des propositions et passages explicitement contrôlés par A. Root a relu les quatre choix et les corrections ; sources inchangées, aucune nouvelle consultation de source revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rp03-flower-vaporization-lower-co",
+      "status": "approved",
+      "comment": "Résultat du pilote Abrams effectivement retrouvé sur la page du centre de recherche ; borné aux fleurs et sans garantie d’innocuité.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-ucsd-vaporization",
+          "url": "https://cmcr.ucsd.edu/index.php?id=23&option=com_content&view=article",
+          "locator": "Étude Donald Abrams, Results",
+          "result": "Page CMCR de l’équipe responsable ouverte ; Results rapporte le CO significativement réduit avec fleur vaporisée dans ce pilote.",
+          "sourceHash": "d56f716c2b56099092a234a1af7774f1328ab9624a5988c5b9005318f4babbac"
+        }
+      ],
+      "contentHash": "6de871c9d49dea4f3117955f8d3128d6d2a074bcd74550394b54fb629cf8d65c"
+    },
+    {
+      "id": "hemp-q2-rp03-breath-holding-toxic-intake",
+      "status": "approved",
+      "comment": "Risque spécifique à la pratique de rétention de fumée, distinct de la seule présence de toxiques dans la fumée déjà retenue.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-hc-breath-holding",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/resources/lower-risk-cannabis-use-guidelines.html",
+          "locator": "Modes of administration, breath-holding",
+          "result": "Page officielle ouverte, Modes of administration : inhalation profonde/rétention augmentent disproportionnellement l’entrée de toxiques.",
+          "sourceHash": "d92ca6981978d79c349d82de62c44979244336a2e06770a11e13884aa32a9fd4"
+        }
+      ],
+      "contentHash": "91a623b11b66266d45d858391cbb7877ccb50bfcc4fceca558767b95ddd7dd4b"
+    },
+    {
+      "id": "hemp-q2-rp03-oral-cbd-fat-meal-exposure",
+      "status": "approved",
+      "comment": "La notice décrit une augmentation du pic et de l’exposition totale en présence d’un repas gras ; aucune dose ni stratégie d’optimisation donnée.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-fda-epidiolex-2026",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§12.3 Effect of Food",
+          "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+          "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+        }
+      ],
+      "contentHash": "9ea51a21c608d4cf945c98a457171fdbbb0cdb1c486f1d50321ec750062c2d20"
+    },
+    {
+      "id": "hemp-q2-rp03-cbd-clobazam-active-metabolite",
+      "status": "approved",
+      "comment": "Clobazam et N-desméthylclobazam explicitement confirmés ; les quatre choix sont des antiépileptiques plausibles.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-fda-epidiolex-2026",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§7.2 Clobazam ; §12.3 Drug Interaction Studies",
+          "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+          "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+        }
+      ],
+      "contentHash": "1b746ffc0ec52f3845910f4db7647073cf59b176d8360eec6d09e521808d0c2c"
+    },
+    {
+      "id": "hemp-q2-rp03-cbd-valproate-liver-enzymes",
+      "status": "approved",
+      "comment": "Interaction spécifique avec le valproate confirmée ; distincte de la simple identification du foie dans en02-cbd-liver-risk.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-fda-epidiolex-2026",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§7.3 ; §5.1 Concomitant Valproate and Clobazam",
+          "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+          "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+        }
+      ],
+      "contentHash": "fd8316132569768e793c492983db89b20b7789dfde4ce4007d2e2de65f3ecf12"
+    },
+    {
+      "id": "hemp-q2-rp03-cbd-sedatives-somnolence",
+      "status": "approved",
+      "comment": "C a appliqué l’association concrète CBD–alcool explicitement proposée et sourcée par A dans §7.4. Le mot sédatifs ne donne plus la réponse ; subjectKey, factKey et preuve décrivent maintenant cette association.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-fda-epidiolex-2026",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§7.4 CNS Depressants and Alcohol",
+          "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+          "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+        }
+      ],
+      "contentHash": "d224f79d70678d63bd1160a7ed7e8befa45ddcdcc18e8d9bcdc0bf0142d1e741",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp03-cbd-sedatives-somnolence",
+          "status": "changes_requested",
+          "comment": "Interaction exacte, mais le mot « sédatifs » donne directement « somnolence ». Présenter une association concrète sans nommer déjà son effet. Par exemple la coadministration avec de l’alcool est explicitement couverte par §7.4 et évite l’indice sédatifs → sédation ; ajuster alors factKey/subjectKey et la preuve à cette association.",
+          "domain": "active",
+          "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp03-fda-epidiolex-2026",
+              "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+              "locator": "§7.4 CNS Depressants and Alcohol",
+              "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+              "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+            }
+          ],
+          "contentHash": "1f8d7434438a7840b670a6e4e1ba2091ddb156e35cc13dbbc474364d81854db7"
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "1f8d7434438a7840b670a6e4e1ba2091ddb156e35cc13dbbc474364d81854db7",
+        "after": {
+          "id": "hemp-q2-rp03-cbd-sedatives-somnolence",
+          "topicId": "prevention",
+          "level": 1,
+          "prompt": "Quel effet la notice d’Epidiolex signale-t-elle comme potentiellement accru quand ce CBD pharmaceutique est associé à l’alcool ?",
+          "options": [
+            "La diarrhée",
+            "Les éruptions cutanées",
+            "La somnolence",
+            "La fièvre"
+          ],
+          "answer": 2,
+          "explanation": "La notice inclut l’alcool parmi les substances pouvant accroître sédation et somnolence avec Epidiolex. L’absence de high caractéristique du THC n’exclut pas cette interaction du CBD.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-rp03-fda-epidiolex-2026"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "CBD pharmaceutique et alcool",
+            "subjectKey": "cbd-alcohol-combination",
+            "property": "Renforcement possible de la somnolence",
+            "expectedAnswer": "La somnolence",
+            "learningObjective": "Connaître une interaction du CBD avec l’alcool sans la confondre avec celle du THC.",
+            "factKey": "cbd-alcohol-somnolence-interaction",
+            "form": "identification",
+            "difficultyRationale": "Repère concret de forme ou de risque compréhensible sans mécanisme moléculaire détaillé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rp03-fda-epidiolex-2026",
+                "locator": "§7.4 CNS Depressants and Alcohol",
+                "support": "La combinaison avec l’alcool peut augmenter sédation et somnolence."
+              }
+            ],
+            "jurisdiction": "États-Unis, notice Epidiolex mai2026",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "correctedBy": "rebalance_products_sol"
+      },
+      "coordinatorScope": "Cinq corrections ciblées rédigées par C à partir des propositions et passages explicitement contrôlés par A. Root a relu les quatre choix et les corrections ; sources inchangées, aucune nouvelle consultation de source revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rp03-spliff-cessation-clozapine-levels",
+      "status": "approved",
+      "comment": "La politique NHS confirme l’induction par la fumée du tabac, la hausse lors de l’arrêt, et compte expressément le tabac des joints. Le domaine actif est justifié par cette situation de mélange, pas par une attribution au THC.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-nhs-clozapine-smoking",
+          "url": "https://foi.ghc.nhs.uk/wp-content/uploads/2026/02/5.8-CLP265-Clozapine-Policy-V5.1-issued-16.12.25.pdf",
+          "locator": "p.27 Action Card12 ; p.53 §6.18",
+          "result": "PDF NHS 71 pages ouvert ; p.27/indice26 hausse de clozapine lors de l’arrêt du tabac et p.53/indice52 dernière puce comptant le tabac des joints réellement lus.",
+          "sourceHash": "53e18769c5be0fe2b3d6f0ebe0f78905f580fea87cbf44816391dbc70aa99292"
+        }
+      ],
+      "contentHash": "cdf48a54c4efc1247e8a6e76b5977f0fbe8f3643fb94239de1752ea25f2f9415"
+    },
+    {
+      "id": "hemp-q2-rp03-oromucosal-spray-local-stinging",
+      "status": "approved",
+      "comment": "Picotements/brûlure des produits sous la langue explicitement signalés par Santé Canada, distinction locale pertinente.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-hc-oromucosal-local-effects",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/using-cannabis-product.html",
+          "locator": "Dissolving under the tongue",
+          "result": "Page Santé Canada ouverte ; Dissolving under the tongue mentionne explicitement sting or burn pour les sprays.",
+          "sourceHash": "9e5e9038b837b53fbc057a99e038a7eb40054d98ebfb1df38e33aab0c04d94e9"
+        }
+      ],
+      "contentHash": "3306638985c910db90075097a210d5f6ea79071b2d6d9e460b8c7cddb70cf7ef"
+    },
+    {
+      "id": "hemp-q2-rp03-oromucosal-spray-part-swallowed",
+      "status": "approved",
+      "comment": "Les quatre choix décrivent des voies d’absorption comparables. Le passage indépendant Karschner soutient la fraction avalée et digestive ; clé nabiximols commune appliquée.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-karschner-oromucosal",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3717338/",
+          "locator": "Discussion, paragraphe portion of the drug was inevitably swallowed",
+          "result": "Article original PMC ouvert ; Discussion confirme une portion inévitablement avalée malgré l’absorption muqueuse recherchée. Publication en ligne 15 novembre 2010, numéro janvier 2011.",
+          "sourceHash": "a82bae0fba81e2148ba04f90a05a7b11c68931ae51adb0c8be7ce5fa33727076"
+        }
+      ],
+      "contentHash": "a18f4d07cee18702418f5e501266a31d717585776b2c25ebb14696c0953394ba",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp03-oromucosal-spray-part-swallowed",
+          "status": "changes_requested",
+          "comment": "Le passage de Karschner confirme le médicament avalé. Les choix « reste dans le flacon » et « s’évapore avant la pulvérisation » ne répondent pas au devenir d’une portion appliquée et s’éliminent sans connaissance. Tester plutôt la contribution digestive face à une absorption exclusivement muqueuse, avec quatre explications de même nature. Harmoniser aussi subjectKey à « nabiximols », déjà utilisé pour Sativex dans rp01/ra04.",
+          "domain": "active",
+          "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp03-karschner-oromucosal",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3717338/",
+              "locator": "Discussion, paragraphe portion of the drug was inevitably swallowed",
+              "result": "Article original PMC ouvert ; Discussion confirme une portion inévitablement avalée malgré l’absorption muqueuse recherchée. Publication en ligne 15 novembre 2010, numéro janvier 2011.",
+              "sourceHash": "a82bae0fba81e2148ba04f90a05a7b11c68931ae51adb0c8be7ce5fa33727076"
+            }
+          ],
+          "contentHash": "9436a6f217a58fc5ec63eff1abae1279b52b5accb1926ad7e0063fbfa8486b7b"
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "9436a6f217a58fc5ec63eff1abae1279b52b5accb1926ad7e0063fbfa8486b7b",
+        "after": {
+          "id": "hemp-q2-rp03-oromucosal-spray-part-swallowed",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Dans l’étude de Karschner sur Sativex, quelle contribution à l’exposition a été décrite malgré la voie oromuqueuse recherchée ?",
+          "options": [
+            "Une absorption pulmonaire de la fraction inhalée",
+            "Une absorption digestive de la fraction avalée",
+            "Une absorption nasale de la fraction remontant vers le nez",
+            "Une absorption limitée à la seule muqueuse buccale"
+          ],
+          "answer": 1,
+          "explanation": "Dans l’étude humaine de Karschner, une partie du spray a été avalée malgré l’application dans la bouche. Une formulation oromuqueuse peut donc aussi contribuer à une exposition digestive.",
+          "articleId": "ref-origines-formulations",
+          "sourceIds": [
+            "q2-rp03-karschner-oromucosal"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Spray de cannabis et déglutition",
+            "subjectKey": "nabiximols",
+            "property": "Contribution possible d’une fraction avalée",
+            "expectedAnswer": "Une absorption digestive de la fraction avalée",
+            "learningObjective": "Ne pas confondre lieu de pulvérisation et absorption exclusivement muqueuse.",
+            "factKey": "oromucosal-spray-part-swallowed",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée d’une formulation, d’une interaction ou d’une règle propre à ces produits.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rp03-karschner-oromucosal",
+                "locator": "Discussion, paragraphe portion of the drug was inevitably swallowed",
+                "support": "Une partie du médicament a été avalée malgré la consigne d’absorption muqueuse, contribuant à la variabilité."
+              }
+            ],
+            "jurisdiction": "États-Unis, étude humaine originale",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "correctedBy": "rebalance_products_sol"
+      },
+      "coordinatorScope": "Cinq corrections ciblées rédigées par C à partir des propositions et passages explicitement contrôlés par A. Root a relu les quatre choix et les corrections ; sources inchangées, aucune nouvelle consultation de source revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rp03-child-edible-thc-breathing",
+      "status": "approved",
+      "comment": "Difficultés respiratoires pédiatriques expressément citées par les CDC ; fait distinct du rangement des bonbons et du délai des effets.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-cdc-pediatric-edibles",
+          "url": "https://www.cdc.gov/cannabis/health-effects/poisoning.html",
+          "locator": "Effects of edible cannabis, paragraphe Children...",
+          "result": "Page CDC ouverte ; paragraphe enfants indique expressément les difficultés à respirer après ingestion de THC.",
+          "sourceHash": "d8b9c433d09d0d0f3d0623771abf044304ee7c2e6f45d05f564b039af93bc4f9"
+        }
+      ],
+      "contentHash": "8f2b652ff5d0acc0fd2036f3051d35ada968f1aa3f2c7ddf9ee88ae51562276f"
+    },
+    {
+      "id": "hemp-q2-rp03-dog-thc-ataxia-incontinence",
+      "status": "approved",
+      "comment": "Ataxie et incontinence du chien confirmées par le manuel vétérinaire révisé en février 2026 ; limites diagnostiques appropriées.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-merck-pets-thc-2026",
+          "url": "https://www.merckvetmanual.com/toxicology/toxicoses-from-human-recreational-drugs/toxicosis-in-dogs-and-cats-from-tetrahydrocannabinol-thc",
+          "locator": "Clinical Signs of THC Toxicosis",
+          "result": "Manuel vétérinaire effectivement ouvert, révision février 2026 ; Clinical Signs confirme ataxie/incontinence et Diagnosis les fréquents faux négatifs humains ainsi que l’hypothèse de métabolites non détectés.",
+          "sourceHash": "8ccdb509384c6f3c91020a19e63f90f8743bc74d1b9034de7971ea91cbba30e4"
+        }
+      ],
+      "contentHash": "8afd627837f4b5cd3e10d5181724ff48f358be144ac88366145aff85ded4db61"
+    },
+    {
+      "id": "hemp-q2-rp03-syndros-ethanol-excipient",
+      "status": "approved",
+      "comment": "Éthanol et précautions de formulation confirmés dans Description/§5.3 ; version DailyMed actualisée le 21 avril 2026 vérifiée sur la fiche drugInfo, avec texte portant aussi Revised 10/2022.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-syndros-formulation",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=a7801c70-995d-46a2-91ee-141ef427c6b5&type=display",
+          "locator": "§11 Description ; §5.3",
+          "result": "Texte DailyMed effectivement ouvert : §5.3/§11 éthanol et réactions de formulation ; fiche drugInfo complémentaire affiche Updated April 21, 2026. Distinction avec Revised 10/2022 conservée.",
+          "sourceHash": "e781fc37250b99ceb30d2b79b9fa93df73159c2064868dc2cd621e9fbcd5e0d7"
+        }
+      ],
+      "contentHash": "8a58136590ebbccff5c2ad68ae55b04645623d02f883ad8792d054b9f5f4cc46"
+    },
+    {
+      "id": "hemp-q2-rp03-epidiolex-sesame-oil-excipient",
+      "status": "approved",
+      "comment": "Clé epidiolex-purified-cbd commune appliquée au produit, sans changement du fait, du corrigé ou de sa source.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-fda-epidiolex-2026",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§5.4 et §11 Description",
+          "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+          "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+        }
+      ],
+      "contentHash": "b00b26a26b8f409c41a7fd7500f13b8b6b601b99ae7114247a95caa4fac63c5d",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp03-epidiolex-sesame-oil-excipient",
+          "status": "changes_requested",
+          "comment": "Le fait et la contre-indication sont exacts (§5.4/§11). Harmoniser subjectKey à « epidiolex-purified-cbd » (rp02 et ra04), puisque le fait concerne le même produit récurrent ; la clé actuelle recrée un sujet par propriété.",
+          "domain": "active",
+          "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp03-fda-epidiolex-2026",
+              "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+              "locator": "§5.4 et §11 Description",
+              "result": "PDF FDA original ouvert et passages ciblés réellement lus : §12.3 repas gras et N-desméthylclobazam, §7.3 valproate, §7.4 dépresseurs centraux/alcool, §5.4 et §11 huile de sésame. Soutien précis de la question confirmé.",
+              "sourceHash": "11f0234ebeef3c46ce4eb966575139c1c3640dabd9d19ef42127a6f50aac562b"
+            }
+          ],
+          "contentHash": "d909e8822f20f391492f6bf4c1de6cfde571213f850c1aaf8f97c434a1fc3c48"
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "d909e8822f20f391492f6bf4c1de6cfde571213f850c1aaf8f97c434a1fc3c48",
+        "after": {
+          "id": "hemp-q2-rp03-epidiolex-sesame-oil-excipient",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Quelle huile végétale figure dans les excipients d’Epidiolex et compte dans ses contre-indications d’hypersensibilité ?",
+          "options": [
+            "L’huile de noix de coco",
+            "L’huile de graines de sésame",
+            "L’huile de graines de tournesol",
+            "L’huile d’olive"
+          ],
+          "answer": 1,
+          "explanation": "La notice mentionne l’huile de sésame et les réactions d’hypersensibilité aux ingrédients. Un CBD purifié dans une solution pharmaceutique ne signifie pas que le produit fini contient du CBD seul.",
+          "articleId": "ref-origines-formulations",
+          "sourceIds": [
+            "q2-rp03-fda-epidiolex-2026"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Excipients d’Epidiolex",
+            "subjectKey": "epidiolex-purified-cbd",
+            "property": "Huile de sésame dans la formulation",
+            "expectedAnswer": "L’huile de graines de sésame",
+            "learningObjective": "Distinguer substance purifiée et solution finale comportant des excipients.",
+            "factKey": "epidiolex-sesame-oil-excipient",
+            "form": "identification",
+            "difficultyRationale": "Connaissance ciblée d’une formulation, d’une interaction ou d’une règle propre à ces produits.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rp03-fda-epidiolex-2026",
+                "locator": "§5.4 et §11 Description",
+                "support": "L’huile de sésame est un excipient ; hypersensibilité à l’un des ingrédients constitue une contre-indication."
+              }
+            ],
+            "jurisdiction": "États-Unis, notice Epidiolex mai2026",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "correctedBy": "rebalance_products_sol"
+      },
+      "coordinatorScope": "Cinq corrections ciblées rédigées par C à partir des propositions et passages explicitement contrôlés par A. Root a relu les quatre choix et les corrections ; sources inchangées, aucune nouvelle consultation de source revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-topical-external-not-internal",
+      "status": "approved",
+      "comment": "Avertissement canadien Part 4 confirmé ; usage externe et peau intacte sont une distinction réglementaire utile, sans conseil thérapeutique.",
+      "domain": "active",
+      "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-hc-topical-warning-2025",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/laws-regulations/regulations-support-cannabis-act/health-warning-messages.html",
+          "locator": "Part4, cannabis topical products",
+          "result": "Page officielle ouverte ; Part 4 exclut ingestion, usage interne et peau lésée/irritée/qui démange.",
+          "sourceHash": "435d20884f7f871685b9e9654f381f1974d0386cbf6be5ef7d3608021ad0d4aa"
+        }
+      ],
+      "contentHash": "167db90d9656a86ad854cb818551aa136b9e8cfeb5c93c8b92a5d100297d73c6"
+    },
+    {
+      "id": "hemp-q2-rp03-smoked-cannabis-bronchitis-symptoms",
+      "status": "approved",
+      "comment": "Toux/mucus/bronchite confirmés par les CDC ; conséquence respiratoire distincte de la composition toxique de la fumée déjà retenue.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-cdc-bronchitis",
+          "url": "https://www.cdc.gov/cannabis/health-effects/lung-health.html",
+          "locator": "Lung health and smoking cannabis",
+          "result": "Page CDC effectivement ouverte, Lung health and smoking cannabis : bronchite, toux et mucus explicitement cités ; limites sur les autres maladies non extrapolées.",
+          "sourceHash": "3349bb4a8f0861924171af8d795073af5a9773e3484cf61dfc5dba5a08052d38"
+        }
+      ],
+      "contentHash": "90b8f2bc6f1cb00002bb892ec19b349fe7b6e76d5966849287b52f362581b292"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-edible-alcohol-cap",
+      "status": "approved",
+      "comment": "Plafond 0,5 % masse/masse confirmé dans la section comestibles ; unités exactes et aucune dose de consommation.",
+      "domain": "active",
+      "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-hc-edible-alcohol",
+          "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+          "locator": "Edible cannabis, Ethyl alcohol",
+          "result": "Guide officiel ouvert ; Edible cannabis / Ethyl alcohol confirme 0,5 % poids/poids, §102.3.",
+          "sourceHash": "6e19b62110bf60fd0c0d82c0b3f9b5f48f7a6c6362cdd79fbb066cb35d5e9d2f"
+        }
+      ],
+      "contentHash": "37a60b1df72a2e8a13fad326560dc9247304533f4f021f411925a2c7a660c20e"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-candy-extract-still-edible",
+      "status": "approved",
+      "comment": "Le distracteur est désormais la classe extraits de cannabis, sans l’indice à inhaler ; distinction ingrédient/classe du produit final conservée.",
+      "domain": "active",
+      "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-hc-ingestible-classification",
+          "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/classification-edible-cannabis.html",
+          "locator": "Differences between edible cannabis and cannabis extracts ; exemples confectionery",
+          "result": "Page officielle ouverte ; format confiserie, dont gummies/bonbons, reconnu comme alimentaire indépendamment de l’emploi d’un extrait comme ingrédient.",
+          "sourceHash": "6b1bf4035084daca9ee16a9fb22c945a6895ff55083d936e7e65623788dbc497"
+        }
+      ],
+      "contentHash": "bf0007708c6926ca8c75ce1a265a55f2938baa1362fb58d688024655cf6362aa",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp03-canada-candy-extract-still-edible",
+          "status": "changes_requested",
+          "comment": "Classement fédéral exact et utile, mais « extraits à inhaler » élimine d’emblée le seul distracteur susceptible de représenter la confusion visée. Remplacer par « extraits de cannabis » pour tester la classe réglementaire, sans ajouter une destination qui donne la réponse.",
+          "domain": "active",
+          "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp03-hc-ingestible-classification",
+              "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/classification-edible-cannabis.html",
+              "locator": "Differences between edible cannabis and cannabis extracts ; exemples confectionery",
+              "result": "Page officielle ouverte ; format confiserie, dont gummies/bonbons, reconnu comme alimentaire indépendamment de l’emploi d’un extrait comme ingrédient.",
+              "sourceHash": "6b1bf4035084daca9ee16a9fb22c945a6895ff55083d936e7e65623788dbc497"
+            }
+          ],
+          "contentHash": "84036f0ead106e386441326abcfa22d79e5476f3ea958e2f896022157327a027"
+        }
+      ],
+      "coordinatorChange": {
+        "beforeContentHash": "84036f0ead106e386441326abcfa22d79e5476f3ea958e2f896022157327a027",
+        "after": {
+          "id": "hemp-q2-rp03-canada-candy-extract-still-edible",
+          "topicId": "prevention",
+          "level": 1,
+          "prompt": "Au Canada, un bonbon au THC fabriqué avec un extrait de cannabis relève normalement de quelle classe de produit ?",
+          "options": [
+            "Des extraits de cannabis",
+            "Du cannabis comestible",
+            "Du cannabis séché",
+            "Des topiques au cannabis"
+          ],
+          "answer": 1,
+          "explanation": "Le format consommé comme un aliment détermine la classe comestible. Utiliser un extrait comme ingrédient ne suffit pas à classer le bonbon parmi les extraits ni à lui appliquer leurs plafonds.",
+          "articleId": "ref-reglementation-produits",
+          "sourceIds": [
+            "q2-rp03-hc-ingestible-classification"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "quality",
+            "subject": "Classification des confiseries au THC",
+            "subjectKey": "canada-cannabis-food-format",
+            "property": "Classe liée au format alimentaire du produit",
+            "expectedAnswer": "Du cannabis comestible",
+            "learningObjective": "Distinguer ingrédient extrait et classe réglementaire du produit fini.",
+            "factKey": "canada-candy-extract-still-edible",
+            "form": "identification",
+            "difficultyRationale": "Repère concret de forme ou de risque compréhensible sans mécanisme moléculaire détaillé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-rp03-hc-ingestible-classification",
+                "locator": "Differences between edible cannabis and cannabis extracts ; exemples confectionery",
+                "support": "Le format confiserie appartient aux aliments au cannabis et est exclu de la classe cannabis extracts."
+              }
+            ],
+            "jurisdiction": "Canada, classement fédéral consulté en novembre2026",
+            "reviewAfter": "2027-05-17"
+          }
+        },
+        "correctedBy": "rebalance_products_sol"
+      },
+      "coordinatorScope": "Cinq corrections ciblées rédigées par C à partir des propositions et passages explicitement contrôlés par A. Root a relu les quatre choix et les corrections ; sources inchangées, aucune nouvelle consultation de source revendiquée.",
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-rp03-quebec-extract-no-colour-additive",
+      "status": "approved",
+      "comment": "Article 6, alinéa 2 effectivement consulté dans le texte officiel à jour au 1er juillet 2026 ; pas d’extrapolation mondiale.",
+      "domain": "active",
+      "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-quebec-extract-colour",
+          "url": "https://www.legisquebec.gouv.qc.ca/fr/document/rc/C-5.3,%20r.%200.1",
+          "locator": "Article6, deuxième alinéa",
+          "result": "Texte Légis Québec ouvert ; article 6 alinéa 2 interdit les colorants visant à modifier la couleur ; page à jour au 1er juillet 2026.",
+          "sourceHash": "467d277d4b0c245a4cee2d0f427b7df617c169c1b071247fb3e8116ccba2d807"
+        }
+      ],
+      "contentHash": "08ba729f62ea808981e55e000d7018ce41e44d0035dc82d6baa2ac924075d200"
+    },
+    {
+      "id": "hemp-q2-rp03-pet-human-urine-thc-false-negatives",
+      "status": "approved",
+      "comment": "Explication hypothétique par métabolites non détectés conservée comme telle. Fait spécifique à la toxicologie THC vétérinaire, distinct de l’identification des signes cliniques.",
+      "domain": "active",
+      "domainComment": "Forme, voie ou effet spécifique au cannabis/THC/CBD ; le fait ne constitue pas une leçon générale habillée de cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-merck-pets-thc-2026",
+          "url": "https://www.merckvetmanual.com/toxicology/toxicoses-from-human-recreational-drugs/toxicosis-in-dogs-and-cats-from-tetrahydrocannabinol-thc",
+          "locator": "Diagnosis",
+          "result": "Manuel vétérinaire effectivement ouvert, révision février 2026 ; Clinical Signs confirme ataxie/incontinence et Diagnosis les fréquents faux négatifs humains ainsi que l’hypothèse de métabolites non détectés.",
+          "sourceHash": "8ccdb509384c6f3c91020a19e63f90f8743bc74d1b9034de7971ea91cbba30e4"
+        }
+      ],
+      "contentHash": "7cdd8c77873c1e42b8effa67a57e6770ca261951e8dc2c21124f19dc25bd0cf4"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-cbd-products-cannabis-act",
+      "status": "approved",
+      "comment": "Le cadre canadien couvre explicitement le CBD issu du chanvre industriel ; distinction de droit cannabis utile, sans généralisation France/UE.",
+      "domain": "active",
+      "domainComment": "Qualité, formulation ou catégorie réglementaire d’un produit cannabique à actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp03-hc-cbd-framework",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+          "locator": "How we regulate CBD in Canada",
+          "result": "Page Santé Canada ouverte ; How we regulate CBD in Canada inclut explicitement le CBD issu du chanvre industriel sous Cannabis Act.",
+          "sourceHash": "202b087a51fa2d08f40de24e45ac8e5a4ce2f2f1ec82ad31e8b679915892ae8f"
+        }
+      ],
+      "contentHash": "b716b4ce2d495c4120b9bdae65d4686ee404f81e8c5426bd10afbdd4e84d56fb"
+    }
+  ],
+  "summary": {
+    "questionsRead": 25,
+    "sourcesActuallyOpened": 17,
+    "approved": 20,
+    "changes_requested": 5,
+    "rejected": 0,
+    "domains": {
+      "active": 25
+    },
+    "factualFindings": "Réponses soutenues par les passages consultés. Cinq demandes ciblées de jouabilité ou association des sujets, sans modification auteur.",
+    "duplicateCheck": "Index complet interrogé par familles de formes, voies, interactions et risques. Voisins proches ouverts en entier : en02 smoke-toxic-compounds et cbd-liver-risk ; rp01 extract-not-always-concentrate, essential-oil-aromatic-volatile-mixture, bho-expansion ; rp02 edible-thc-container-limit. Aucun doublon exact retenu détecté. Les faits proches et leur distinction sont documentés dans les commentaires."
+  },
+  "coordinatorSummary": "25 questions approuvées :20 textes et preuves inchangés,5 corrections ciblées appliquées par C puis arbitrées par root ;17 objets sources inchangés. Les demandes initiales et leurs empreintes sont conservées."
+}

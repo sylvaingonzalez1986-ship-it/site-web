@@ -1,0 +1,726 @@
+{
+  "batchId": "d-new-04",
+  "status": "in-progress-not-a-batch",
+  "questions": [
+    {
+      "id": "hemp-q2-d04-hemp-oil-finishing-rather-than-frying",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Une huile de chènevis non raffinée doit apporter sa saveur à un plat. Quel geste est le plus adapté ?",
+      "options": [
+        "Faire une vinaigrette ou finir un plat",
+        "Cuire des beignets en bain de friture",
+        "Saisir une viande à feu très vif",
+        "Graisser une plaque pour une cuisson prolongée"
+      ],
+      "answer": 0,
+      "explanation": "Les fiches culinaires conseillent l'huile de chènevis en assaisonnement ou en finition. Elle apporte sa saveur au plat sans subir la forte chaleur d'une friture.",
+      "articleId": "ref-huile-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "huile-chenevis",
+        "subjectKey": "huile-chenevis",
+        "property": "Choisir un usage culinaire adapté à l'huile non raffinée",
+        "expectedAnswer": "Faire une vinaigrette ou finir un plat",
+        "learningObjective": "Choisir un usage culinaire adapté à l'huile non raffinée.",
+        "factKey": "hemp-oil-finishing-rather-than-frying",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "Hemp Seed Culinary Uses, PDF p. 2",
+            "support": "L'ACF préconise une huile de finition plutôt qu'une huile de friture, notamment pour sauces et assaisonnements."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Après ouverture d'un paquet de graines de chanvre, quel rangement conseille l'American Culinary Federation ?",
+      "options": [
+        "Un sachet papier dans un placard",
+        "Un bocal fermé près des plaques de cuisson",
+        "Un récipient hermétique au réfrigérateur",
+        "Un pot transparent sur le plan de travail"
+      ],
+      "answer": 2,
+      "explanation": "La fiche recommande un contenant hermétique et le froid après ouverture. Cela protège ces graines riches en huile ; l'emballage du produit reste à consulter pour ses consignes propres.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-seed",
+        "subjectKey": "hemp-food-seed",
+        "property": "Conserver les graines ouvertes dans un contenant hermétique au froid",
+        "expectedAnswer": "Un récipient hermétique au réfrigérateur",
+        "learningObjective": "Conserver les graines ouvertes dans un contenant hermétique au froid.",
+        "factKey": "opened-hemp-seeds-airtight-cold-storage",
+        "form": "situation",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "Storing Hemp Seeds, PDF p. 2, premier point",
+            "support": "Le document recommande de réfrigérer ou congeler le paquet ouvert ou son contenu dans un récipient hermétique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-traditional-mortar-pestle",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel outil réduit traditionnellement les graines torréfiées en pâte pour le kaņepju sviests letton ?",
+      "options": [
+        "Un moulin à meules",
+        "Un mortier et son pilon",
+        "Une presse à vis",
+        "Un broyeur à cylindres"
+      ],
+      "answer": 1,
+      "explanation": "L'encyclopédie décrit les graines torréfiées puis pilées au mortier jusqu'à former une masse grasse. Il s'agit de fabriquer une pâte, et non de séparer l'huile comme dans un pressage.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Distinguer le pilage d'une pâte de graines et l'extraction d'huile",
+        "expectedAnswer": "Un mortier et son pilon",
+        "learningObjective": "Distinguer le pilage d'une pâte de graines et l'extraction d'huile.",
+        "factKey": "kanepju-sviests-traditional-mortar-pestle",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Vēsturiskās un ģeogrāfiskās atšķirības ēdiena pagatavošanā",
+            "support": "Les graines sont d'abord torréfiées, puis écrasées au mortier pour former une masse grasse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-hemp-seed-coating-instead-wheat-breadcrumbs",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Parmi ces ingrédients de panure, lequel l'ACF propose-t-elle comme alternative à la chapelure de blé ?",
+      "options": [
+        "De la semoule de blé dur",
+        "Des miettes de pain de seigle",
+        "De la farine d'orge",
+        "Des graines de chanvre"
+      ],
+      "answer": 3,
+      "explanation": "La fiche culinaire propose les graines de chanvre pour enrober poulet ou poisson à la place de la chapelure. Cela change aussi la texture de l'enrobage ; la recette complète reste à considérer.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-acf-hemp-2021"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "hemp-food-seed",
+        "subjectKey": "hemp-food-seed",
+        "property": "Reconnaître un usage des graines comme enrobage culinaire",
+        "expectedAnswer": "Des graines de chanvre",
+        "learningObjective": "Reconnaître un usage des graines comme enrobage culinaire.",
+        "factKey": "hemp-seed-coating-instead-wheat-breadcrumbs",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète d'ingrédient ou application familière en cuisine : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-acf-hemp-2021",
+            "locator": "Hemp Seed Culinary Uses, PDF p. 2",
+            "support": "Les graines sont proposées comme substitut à la chapelure pour enrober poulet ou poisson."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pourquoi le nom letton kaņepju sviests rapproche-t-il une pâte de graines de chanvre du beurre ?",
+      "options": [
+        "Pour sa consistance tartinable et son rôle d'accompagnement gras",
+        "Pour une fabrication traditionnelle par barattage de crème",
+        "Pour une fermentation lactique qui épaissit le mélange",
+        "Pour un égouttage du caillé comparable à celui d'un fromage"
+      ],
+      "answer": 0,
+      "explanation": "L'encyclopédie lettone explique le nom par la consistance et l'usage : les deux produits se tartinent. Le mot « beurre » ne suffit donc pas à décrire la composition exacte de la recette.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Comprendre l'analogie culinaire dans le nom kaņepju sviests",
+        "expectedAnswer": "Pour sa consistance tartinable et son rôle d'accompagnement gras",
+        "learningObjective": "Comprendre l'analogie culinaire dans le nom kaņepju sviests.",
+        "factKey": "kanepju-sviests-butter-name-spreadable-use",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Nosaukuma izcelsme, paragraphe sur sviests",
+            "support": "Le nom est fondé sur une association de consistance et d'usage, les deux produits étant tartinables et utilisés comme accompagnement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-historical-butter-substitute",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans l'alimentation paysanne lettone décrite par l'encyclopédie nationale, pourquoi préparait-on du kaņepju sviests ?",
+      "options": [
+        "Pour utiliser une crème devenue trop acide",
+        "Pour compléter ou remplacer un beurre trop peu abondant",
+        "Pour conserver les céréales sous une couche de matière grasse",
+        "Pour employer les résidus d'une fabrication de fromage"
+      ],
+      "answer": 1,
+      "explanation": "Cette pâte de graines de chanvre complétait le beurre ou le remplaçait quand il manquait. Des noms régionaux évoquent d'ailleurs un « beurre de la faim » ou des domestiques.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Découvrir le rôle historique d'une pâte de chanvre comme substitut du beurre",
+        "expectedAnswer": "Pour compléter ou remplacer un beurre trop peu abondant",
+        "learningObjective": "Découvrir le rôle historique d'une pâte de chanvre comme substitut du beurre.",
+        "factKey": "kanepju-sviests-historical-butter-substitute",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Ēdiena loma kultūrā, premier paragraphe",
+            "support": "Les paysans préparaient la pâte lorsque le beurre manquait ; elle en complétait la quantité ou le remplaçait entièrement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-interwar-poverty-association",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pourquoi certains Lettons devenus plus aisés ont-ils délaissé le kaņepju sviests entre les deux guerres ?",
+      "options": [
+        "Il était surtout proposé dans les menus religieux",
+        "Il était devenu plus cher que le beurre laitier",
+        "Il évoquait une alimentation paysanne pauvre",
+        "Il était associé aux repas de l'armée"
+      ],
+      "answer": 2,
+      "explanation": "Selon l'encyclopédie nationale, la pâte au chanvre était associée à la pauvreté paysanne. Certains préféraient alors le beurre laitier : un choix alimentaire pouvait aussi exprimer une position sociale.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Relier un choix alimentaire historique à son image sociale",
+        "expectedAnswer": "Il évoquait une alimentation paysanne pauvre",
+        "learningObjective": "Relier un choix alimentaire historique à son image sociale.",
+        "factKey": "kanepju-sviests-interwar-poverty-association",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Ēdiena loma kultūrā, paragraphe sur le XXe siècle et l'entre-deux-guerres",
+            "support": "La popularité diminue ; le produit évoque la pauvreté paysanne et les personnes devenues plus aisées choisissent le vrai beurre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quel usage du kaņepju sviests l'encyclopédie lettone rapproche-t-elle d'un en-cas à emporter ?",
+      "options": [
+        "Une offrande préparée pour les mariages",
+        "Une entrée servie dans les banquets officiels",
+        "Un dessert du repas dominical",
+        "Une provision pour les déplacements et le travail en forêt"
+      ],
+      "answer": 3,
+      "explanation": "On emportait la pâte de chanvre en chemin, aux travaux forestiers ou à la garde des troupeaux. L'encyclopédie la rapproche ainsi d'un en-cas dans les conditions de vie rurales.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-natencyclopedia-hemp-spread"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanepju-sviests",
+        "subjectKey": "kanepju-sviests",
+        "property": "Découvrir un usage pratique de la pâte de chanvre dans la vie rurale",
+        "expectedAnswer": "Une provision pour les déplacements et le travail en forêt",
+        "learningObjective": "Découvrir un usage pratique de la pâte de chanvre dans la vie rurale.",
+        "factKey": "kanepju-sviests-portable-work-provision",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-natencyclopedia-hemp-spread",
+            "locator": "Ēdiena loma kultūrā, passage sur ceļā, meža darbos un ganos",
+            "support": "La pâte était emportée pendant les déplacements, le travail en forêt et la garde des troupeaux."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-thickened-ground-millet",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quelle céréale moulue épaissit la siemieniotka dans la recette ancienne citée par le ministère polonais de l'Agriculture ?",
+      "options": [
+        "Le millet",
+        "Le seigle",
+        "L'avoine",
+        "Le maïs"
+      ],
+      "answer": 0,
+      "explanation": "La recette rapportée ajoute du millet très finement moulu au liquide obtenu des graines de chanvre. Cette céréale ne doit pas être confondue avec la matière première qui donne son nom à la soupe.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "Identifier le rôle du millet moulu dans une recette de soupe au chanvre",
+        "expectedAnswer": "Le millet",
+        "learningObjective": "Identifier le rôle du millet moulu dans une recette de soupe au chanvre.",
+        "factKey": "siemieniotka-thickened-ground-millet",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Tradycja, citation de Wera Sztabowa, derniers paragraphes",
+            "support": "Le texte mentionne de la kasza jaglana finement moulue, ajoutée à la polewka de chanvre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-sieve-keeps-hemp-liquid",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans la recette traditionnelle de siemieniotka citée par le ministère polonais, quelle partie recueille-t-on après le tamisage ?",
+      "options": [
+        "Les enveloppes sèches des graines uniquement",
+        "Le liquide blanchâtre provenant des graines écrasées",
+        "L'huile séparée par décantation",
+        "Les grains de millet encore entiers"
+      ],
+      "answer": 1,
+      "explanation": "Les graines de chanvre écrasées sont rincées, puis le liquide est passé au tamis et recueilli. Ce procédé culinaire sépare les gros résidus de la base liquide de la soupe.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "Comprendre la fonction du tamisage dans une soupe de graines",
+        "expectedAnswer": "Le liquide blanchâtre provenant des graines écrasées",
+        "learningObjective": "Comprendre la fonction du tamisage dans une soupe de graines.",
+        "factKey": "siemieniotka-sieve-keeps-hemp-liquid",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Tradycja, recette citée de Krupnioki i moczka",
+            "support": "Le passage décrit le liquide devenant blanc puis son passage par un tamis dans le récipient qui recueille le bouillon de chanvre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-siemieniotka-grey-dark-seed-flecks",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "À quoi la fiche polonaise attribue-t-elle les points foncés visibles dans la soupe de chanvre siemieniotka ?",
+      "options": [
+        "À des grains de poivre",
+        "À des fragments de champignons séchés",
+        "À des restes de graines de chanvre moulues",
+        "À des graines de pavot ajoutées"
+      ],
+      "answer": 2,
+      "explanation": "La fiche décrit une soupe grise ponctuée de fragments du chanvre moulu. Ces repères visuels font partie du portrait d'un plat dont la recette et les gestes sont transmis entre générations.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-polish-ministry-siemieniotka"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "siemieniotka",
+        "subjectKey": "siemieniotka",
+        "property": "Reconnaître la présence visible de fragments de graines dans la soupe traditionnelle",
+        "expectedAnswer": "À des restes de graines de chanvre moulues",
+        "learningObjective": "Reconnaître la présence visible de fragments de graines dans la soupe traditionnelle.",
+        "factKey": "siemieniotka-grey-dark-seed-flecks",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-polish-ministry-siemieniotka",
+            "locator": "Barwa",
+            "support": "La fiche décrit des points foncés comme les restes du siemienia konopnego moulu."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "À quelle région lituanienne le Conseil de la culture ethnique rattache-t-il les plats kanapių taboka et kanapių rasalas ?",
+      "options": [
+        "À la Dzūkija",
+        "À l'Aukštaitija",
+        "À la Suvalkija",
+        "À la Samogitie, ou Žemaitija"
+      ],
+      "answer": 3,
+      "explanation": "La présentation de la Samogitie souligne la place des graines de chanvre dans sa cuisine. Elle cite notamment une préparation accompagnant les pommes de terre et une base de chanvre mêlée de hareng.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ekgt-samogitia"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "samogitian-hemp-foods",
+        "subjectKey": "samogitian-hemp-foods",
+        "property": "Situer des préparations de chanvre dans le patrimoine régional lituanien",
+        "expectedAnswer": "À la Samogitie, ou Žemaitija",
+        "learningObjective": "Situer des préparations de chanvre dans le patrimoine régional lituanien.",
+        "factKey": "samogitia-hemp-food-regional-heritage",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ekgt-samogitia",
+            "locator": "Žemaitija, Kulinarinis paveldas, paragraphe sur kanapės",
+            "support": "La page de la Samogitie cite kanapių taboka et kanapių rasalas parmi les spécialités régionales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-served-with-skin-on-potatoes",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "À Nasrėnai, avec quel aliment sert-on traditionnellement la spirgynė, une préparation de graines de chanvre ?",
+      "options": [
+        "Des pommes de terre cuites avec leur peau",
+        "Des nouilles de sarrasin froides",
+        "Des tranches de pomme au miel",
+        "Des galettes de seigle grillées"
+      ],
+      "answer": 0,
+      "explanation": "La notice de Nasrėnai décrit des pommes de terre chaudes cuites avec leur peau, que l'on trempe dans la spirgynė. Le chanvre y joue le rôle d'accompagnement.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-kretinga-cuisine"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "spirgyne",
+        "subjectKey": "spirgyne",
+        "property": "Découvrir l'accompagnement traditionnel de la spirgynė",
+        "expectedAnswer": "Des pommes de terre cuites avec leur peau",
+        "learningObjective": "Découvrir l'accompagnement traditionnel de la spirgynė.",
+        "factKey": "spirgyne-served-with-skin-on-potatoes",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-kretinga-cuisine",
+            "locator": "Paragraphe d'ouverture et paragraphe Spirgynę",
+            "support": "Les pommes de terre sont cuites avec leur peau et accompagnées de spirgynė, dans laquelle elles sont trempées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kanapiu-rasalas-hemp-milk-herring-onion",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans le kanapių rasalas décrit en Samogitie, quel ingrédient animal accompagne la base de chanvre et les oignons ?",
+      "options": [
+        "De la crème aigre",
+        "Du hareng écrasé",
+        "Du lard fumé",
+        "Du fromage frais"
+      ],
+      "answer": 1,
+      "explanation": "Le Conseil lituanien décrit le rasalas comme une base de « lait » de chanvre mêlée de hareng écrasé et d'oignons. Cet exemple montre qu'une préparation de graines végétales peut aussi comprendre du poisson.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ekgt-samogitia"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "kanapiu-rasalas",
+        "subjectKey": "kanapiu-rasalas",
+        "property": "Identifier une association traditionnelle de chanvre et de poisson",
+        "expectedAnswer": "Du hareng écrasé",
+        "learningObjective": "Identifier une association traditionnelle de chanvre et de poisson.",
+        "factKey": "kanapiu-rasalas-hemp-milk-herring-onion",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ekgt-samogitia",
+            "locator": "Kulinarinis paveldas, phrase Kanapių rasalas",
+            "support": "Le rasalas associe du lait de chanvre, du hareng écrasé et des oignons."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-dry-fast-excluded-dairy",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans le « jeûne sec » évoqué à propos de la spirgynė de Nasrėnai, quels aliments étaient écartés en plus de la viande ?",
+      "options": [
+        "Les pommes de terre",
+        "Le pain de seigle",
+        "Les produits laitiers",
+        "Les graines oléagineuses"
+      ],
+      "answer": 2,
+      "explanation": "La notice précise que ce jeûne excluait aussi les produits laitiers. La préparation de graines de chanvre s'inscrit donc dans un contexte alimentaire allant au-delà de la seule absence de viande.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-kretinga-cuisine"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "spirgyne",
+        "subjectKey": "spirgyne",
+        "property": "Comprendre un contexte alimentaire historique sans viande ni produits laitiers",
+        "expectedAnswer": "Les produits laitiers",
+        "learningObjective": "Comprendre un contexte alimentaire historique sans viande ni produits laitiers.",
+        "factKey": "spirgyne-dry-fast-excluded-dairy",
+        "form": "anecdote",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-kretinga-cuisine",
+            "locator": "Paragraphe Spirgynę, première phrase",
+            "support": "Le sausasis pasninkas excluait non seulement la viande mais aussi les produits laitiers."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-spirgyne-linseed-alternative-to-hempseed",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quelle autre graine la notice de Nasrėnai propose-t-elle à la place du chanvre pour préparer une spirgynė ?",
+      "options": [
+        "Le pavot",
+        "Le sésame",
+        "Le tournesol",
+        "Le lin"
+      ],
+      "answer": 3,
+      "explanation": "La notice cite les graines de lin comme variante. La préparation garde son rôle d'accompagnement des pommes de terre, même si la matière première oléagineuse change.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-kretinga-cuisine"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "spirgyne",
+        "subjectKey": "spirgyne",
+        "property": "Découvrir une variante de graine dans la préparation spirgynė",
+        "expectedAnswer": "Le lin",
+        "learningObjective": "Découvrir une variante de graine dans la préparation spirgynė.",
+        "factKey": "spirgyne-linseed-alternative-to-hempseed",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-kretinga-cuisine",
+            "locator": "Paragraphe Spirgynę, phrase Vietoj kanapių galima naudoti ir linų sėmenis",
+            "support": "Le texte autorise explicitement le remplacement du chanvre par des graines de lin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-himalayan-bhang-bhangeera-distinct-seeds",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'enquête d'Ojha en Himalaya, qu'est-ce qui distingue bhang ki chutney de bhangeera ki chutney ?",
+      "options": [
+        "Chanvre pour le premier, périlla pour le second",
+        "Périlla pour le premier, chanvre pour le second",
+        "Chanvre pour le premier, moutarde pour le second",
+        "Moutarde pour le premier, périlla pour le second"
+      ],
+      "answer": 0,
+      "explanation": "Les noms voisins ne désignent pas la même graine : le tableau associe bhang au chanvre et bhangeera à la périlla. Les deux recettes de chutney recensées contiennent également du citron.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ojha-himalayan-foods-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "ojha-2022-himalayan-hemp-foods",
+        "subjectKey": "ojha-2022-himalayan-hemp-foods",
+        "property": "Distinguer deux condiments de graines portant des noms proches",
+        "expectedAnswer": "Chanvre pour le premier, périlla pour le second",
+        "learningObjective": "Distinguer deux condiments de graines portant des noms proches.",
+        "factKey": "himalayan-bhang-bhangeera-distinct-seeds",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+            "locator": "Table 6, rubrique G, recettes 70 et 71",
+            "support": "Les entrées distinguent hemp seed et perilla seeds, toutes deux avec lemon extract."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-kaddu-meethi-hemp-pumpkin-chutney",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans l'enquête d'Ojha en Himalaya central, quel légume accompagne le chanvre dans le kaddu ke meethi chutney ?",
+      "options": [
+        "L'aubergine",
+        "La courge",
+        "Le radis",
+        "La pomme de terre"
+      ],
+      "answer": 1,
+      "explanation": "La recette recensée associe courge, graines de chanvre, jaggery et citron. Ce chutney illustre une place des graines dans les accompagnements mêlant notes douces et acides.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ojha-himalayan-foods-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "ojha-2022-himalayan-hemp-foods",
+        "subjectKey": "ojha-2022-himalayan-hemp-foods",
+        "property": "Découvrir une association culinaire de courge et de graines de chanvre",
+        "expectedAnswer": "La courge",
+        "learningObjective": "Découvrir une association culinaire de courge et de graines de chanvre.",
+        "factKey": "kaddu-meethi-hemp-pumpkin-chutney",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+            "locator": "Table 6, rubrique G, recette 74",
+            "support": "Kaddu ke meethi Chutney est décrit par pumpkin, hemp seed, jaggery et lemon extract."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-nimbu-saani-hemp-curd-ingredient",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quel ingrédient laitier accompagne le citron et les graines de chanvre dans le nimbu ke saani recensé par Ojha ?",
+      "options": [
+        "Du beurre clarifié",
+        "De la crème fouettée",
+        "Du lait caillé",
+        "Du fromage à pâte dure"
+      ],
+      "answer": 2,
+      "explanation": "Le tableau de terrain associe citron, graines de chanvre, curd et jaggery. Le curd correspond ici au lait caillé ; cette préparation assemble ainsi des ingrédients végétaux et laitiers.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d04-ojha-himalayan-foods-2022"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "ojha-2022-himalayan-hemp-foods",
+        "subjectKey": "ojha-2022-himalayan-hemp-foods",
+        "property": "Identifier un ingrédient laitier dans une préparation traditionnelle au chanvre",
+        "expectedAnswer": "Du lait caillé",
+        "learningObjective": "Identifier un ingrédient laitier dans une préparation traditionnelle au chanvre.",
+        "factKey": "nimbu-saani-hemp-curd-ingredient",
+        "form": "identification",
+        "difficultyRationale": "Connaissance précise d'une tradition ou d'un mécanisme alimentaire : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d04-ojha-himalayan-foods-2022",
+            "locator": "Table 6, rubrique G, recette 75",
+            "support": "Nimbu ke saani associe lemon, hemp seeds, curd et jaggery."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-d04-traditional-shichimi-whole-unhulled-hempseed",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Sous quelle forme le rapport de 2021 préparé pour l'ambassade américaine à Tokyo décrit-il le chanvre du shichimi traditionnel ?",
+      "options": [
+        "En huile raffinée",
+        "En farine déshuilée",
+        "En pâte fermentée",
+        "En graines avec leur enveloppe"
+      ],
+      "answer": 3,
+      "explanation": "Le rapport décrit des graines encore dans leur enveloppe dans le shichimi traditionnel. Leur forme se distingue des graines décortiquées souvent vendues pour être ajoutées directement aux plats.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-d-usda-japan-hemp-seed"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "shichimi",
+        "subjectKey": "shichimi",
+        "property": "Reconnaître la forme traditionnelle des graines de chanvre dans le shichimi",
+        "expectedAnswer": "En graines avec leur enveloppe",
+        "learningObjective": "Reconnaître la forme traditionnelle des graines de chanvre dans le shichimi.",
+        "factKey": "traditional-shichimi-whole-unhulled-hempseed",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre ingrédients, pratiques ou notions alimentaires proches : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-d-usda-japan-hemp-seed",
+            "locator": "Hemp Seed Market, page imprimée 6, PDF p. 7",
+            "support": "Le rapport mentionne hemp seed in the shell dans le shichimi courant."
+          }
+        ]
+      }
+    }
+  ]
+}

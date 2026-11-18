@@ -1,0 +1,723 @@
+{
+  "batchId": "r-products-02",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rp02-sinsemilla-seedless-flower",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Définition sans graines explicite ; le périmètre concerne la présentation des fleurs actives.",
+      "comment": "Thème et catégorie corrigés vers plante/botanique ; le fait concerne les fleurs de cannabis à actifs, et non l’alimentation par graines.",
+      "contentHash": "88e1b5bada250d1bd8bca2bf930787a75b02df73b50d222fc3d3db10d113b3f0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-ofdt-glossaire",
+          "url": "https://www.ofdt.fr/sites/ofdt/files/2023-08/field_media_document-480-cdeannex.pdf",
+          "locator": "Glossaire, entrée SINSEMILLA",
+          "result": "PDF p.19 (index19), entrées SINSEMILLA et SPACE-CAKE réellement lues : sens sans graine et gâteau contenant du cannabis confirmés ; règles historiques et conseils de culture exclus.",
+          "sourceHash": "a23a4b49582b1a53751900a12cdcd47703723cb090ae150cfc64501aded49141"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-sinsemilla-seedless-flower",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Définition sans graines explicite ; le périmètre concerne la présentation des fleurs actives.",
+          "comment": "Fait et choix recevables. Corriger topicId en plant et category en botany : le sens « sans graines » décrit les fleurs, pas un cannabinoïde. Garder domain active.",
+          "contentHash": "8303568c796bcf976fa8ec8b6b7ff0f72729825a944b2f4d80a78b2c7a467723",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-ofdt-glossaire",
+              "url": "https://www.ofdt.fr/sites/ofdt/files/2023-08/field_media_document-480-cdeannex.pdf",
+              "locator": "Glossaire, entrée SINSEMILLA",
+              "result": "PDF p.19 (index19), entrées SINSEMILLA et SPACE-CAKE réellement lues : sens sans graine et gâteau contenant du cannabis confirmés ; règles historiques et conseils de culture exclus.",
+              "sourceHash": "a23a4b49582b1a53751900a12cdcd47703723cb090ae150cfc64501aded49141"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-charas-resin-name",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Charas est explicitement classé parmi les noms de résine ; pas de technique ni origine disputée.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Charas est explicitement classé parmi les noms de résine ; pas de technique ni origine disputée.",
+      "contentHash": "ef12e0fd83e3128cecd4776f13967cfd7d974de23993ad9730c8a7991593a106",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-euda-charas",
+          "url": "https://www.euda.europa.eu/changes-europe%E2%80%99s-cannabis-resin-market_en",
+          "locator": "1. Analysis, premier paragraphe",
+          "result": "Analyse, premier paragraphe réellement lu : charas donné comme nom de résine avec hashish. Aucun procédé repris.",
+          "sourceHash": "de3fd187f01e948b0dbc0cfb3dd5ad77521a3b9571927ec675644951500b28d2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-moonrocks-flower-concentrate-kief",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le bulletin décrit les trois composants ; question descriptive sans paramètres de fabrication.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Le bulletin décrit les trois composants ; question descriptive sans paramètres de fabrication.",
+      "contentHash": "6c9394d1bf45c9fe9cbf7ebd14b8051b6820bd87535a33c7053efe50493732c2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-michigan-moonrocks",
+          "url": "https://www.michigan.gov/cra/-/media/Project/Websites/cra/bulletin/5Technical/Marihuana_Sampling_and_Testing_-Combination_Products_732964_7.pdf?hash=192A8E7AECDEB28EB165011852DAFAE1&rev=ebed2017f31e40b5b44285c6863fca4b",
+          "locator": "p. 1, Moon rocks",
+          "result": "Bulletin du 19 septembre 2022, p.1, Moon rocks réellement lu : fleur, concentré et kief confirmés ; seule composition descriptive retenue.",
+          "sourceHash": "d7e2745cb443ef871f7948597855e0c34318183e205bead899b03078a23b623f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-spliff-cannabis-tobacco",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Tableau ATS : tabac et cannabis roulés ensemble ; le contexte anglophone évite la variation du mot joint.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Tableau ATS : tabac et cannabis roulés ensemble ; le contexte anglophone évite la variation du mot joint.",
+      "contentHash": "630a0e514893ff9be0ebf089f3e4262b096316c4f48bec6c7c62699f822705ee",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-ats-terminology",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+          "locator": "Tableau 1, Inhaled co-use methods, Spliff",
+          "result": "Tableau 1 et paragraphe sur les nouvelles enveloppes sans tabac réellement lus : spliff, blunt traditionnel et vaporisateur à fleurs confirmés, terminologie culturellement située.",
+          "sourceHash": "d2aef709b4d9ae6695b87d29052a4cd74210aed5f521126a08bc6dd6e886731d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-traditional-blunt-tobacco-wrapper",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Tableau ATS et paragraphe suivant sur les enveloppes modernes sans tabac effectivement lus.",
+      "comment": "Quatre enveloppes végétales plausibles ; définition traditionnelle et réserve sur les enveloppes modernes conservées.",
+      "contentHash": "a6bedd1b0b08e0475f527c7c82c6f03c43c0b46872cbd85b41c5de267a650e19",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-ats-terminology",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+          "locator": "Tableau 1, Blunt",
+          "result": "Tableau 1 et paragraphe sur les nouvelles enveloppes sans tabac réellement lus : spliff, blunt traditionnel et vaporisateur à fleurs confirmés, terminologie culturellement située.",
+          "sourceHash": "d2aef709b4d9ae6695b87d29052a4cd74210aed5f521126a08bc6dd6e886731d"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-traditional-blunt-tobacco-wrapper",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Tableau ATS et paragraphe suivant sur les enveloppes modernes sans tabac effectivement lus.",
+          "comment": "Le fait traditionnel et la réserve sur les enveloppes modernes sont soutenus. Remplacer les choix « absence complète d’enveloppe combustible » et « enveloppe comestible dissoute dans la bouche », trop fantaisistes pour un blunt. Proposer quatre matériaux/enveloppes plausibles.",
+          "contentHash": "817af96d36b525d8d022239b4aa8914083ebbddad7d5d005e27bdcaabb710c84",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-ats-terminology",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+              "locator": "Tableau 1, Blunt",
+              "result": "Tableau 1 et paragraphe sur les nouvelles enveloppes sans tabac réellement lus : spliff, blunt traditionnel et vaporisateur à fleurs confirmés, terminologie culturellement située.",
+              "sourceHash": "d2aef709b4d9ae6695b87d29052a4cd74210aed5f521126a08bc6dd6e886731d"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-dry-herb-vaporizer-flower",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Tableau ATS : fleurs chauffées sans combustion ; la réserve sur les accessoires pour extraits est soutenue.",
+      "comment": "Quatre matières destinées à différents appareils d’inhalation remplacent les usages oraux éloignés ; aucun indice uniquement/tous.",
+      "contentHash": "ffc665d892e787df9b26a78d3581c62f8cc4126a4209c92f16b567a021eb6281",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-ats-terminology",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+          "locator": "Tableau 1, Dry-herb vaporizer",
+          "result": "Tableau 1 et paragraphe sur les nouvelles enveloppes sans tabac réellement lus : spliff, blunt traditionnel et vaporisateur à fleurs confirmés, terminologie culturellement située.",
+          "sourceHash": "d2aef709b4d9ae6695b87d29052a4cd74210aed5f521126a08bc6dd6e886731d"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-dry-herb-vaporizer-flower",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Tableau ATS : fleurs chauffées sans combustion ; la réserve sur les accessoires pour extraits est soutenue.",
+          "comment": "Le fait est soutenu, mais les trois mauvaises réponses ont « uniquement », contrairement à la bonne. Rééquilibrer les formulations ; une huile orale et une teinture alcoolique sont également très éloignées de la destination d’un appareil à herbes sèches.",
+          "contentHash": "625f4fd79fd95614e4d9bca18f33fc836f8879c50177e04b53b98415eb7760d6",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-ats-terminology",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+              "locator": "Tableau 1, Dry-herb vaporizer",
+              "result": "Tableau 1 et paragraphe sur les nouvelles enveloppes sans tabac réellement lus : spliff, blunt traditionnel et vaporisateur à fleurs confirmés, terminologie culturellement située.",
+              "sourceHash": "d2aef709b4d9ae6695b87d29052a4cd74210aed5f521126a08bc6dd6e886731d"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-bong-water-cools-smoke",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Santé Canada distingue refroidissement et innocuité ; cette limite est correctement conservée.",
+      "comment": "Quatre composants réels du bong sont comparés ; le refroidissement par l’eau reste le fait sourcé, sans promesse d’innocuité.",
+      "contentHash": "d891440d6ce4a4f8610bf7c1ae3c52ea9bf292c801065103360e41aeac59e344",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-accessories",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "locator": "Smoking accessories, Pipes",
+          "result": "Passages Pipes et Vaping réellement lus : refroidissement sans innocuité, aérosol d’extrait chauffé et migration de métaux confirmés.",
+          "sourceHash": "4f101705711d9a84a7c336ae2649521903489a379f04eb22c01d16041892bc62"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-bong-water-cools-smoke",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Santé Canada distingue refroidissement et innocuité ; cette limite est correctement conservée.",
+          "comment": "Le refroidissement est soutenu. Les choix conversion CBD→THC et remplacement par de l’air pur sont fantaisistes ; l’arrêt de combustion est également facilement éliminé. Proposer des effets plausibles du passage dans l’eau, sans présenter une réduction de risque comme garantie.",
+          "contentHash": "d53b7dddd39fc6e58bb20858c0cf5403b0a368b91c07ca985f249e57492000ec",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-hc-accessories",
+              "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+              "locator": "Smoking accessories, Pipes",
+              "result": "Passages Pipes et Vaping réellement lus : refroidissement sans innocuité, aérosol d’extrait chauffé et migration de métaux confirmés.",
+              "sourceHash": "4f101705711d9a84a7c336ae2649521903489a379f04eb22c01d16041892bc62"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-cannabis-vaping-aerosol",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Santé Canada définit précisément le vapotage d’extrait par production d’un aérosol.",
+      "comment": "Quatre mécanismes de production d’un aérosol ou d’une fumée remplacent les propositions de pureté absolue ; le chauffage est le mécanisme décrit par la source.",
+      "contentHash": "ef1abd16f98452b044287015c98abd04b0a731c669b83bb7736b601866e3699d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-accessories",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "locator": "Vaping, premier et deuxième paragraphes",
+          "result": "Passages Pipes et Vaping réellement lus : refroidissement sans innocuité, aérosol d’extrait chauffé et migration de métaux confirmés.",
+          "sourceHash": "4f101705711d9a84a7c336ae2649521903489a379f04eb22c01d16041892bc62"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-cannabis-vaping-aerosol",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Santé Canada définit précisément le vapotage d’extrait par production d’un aérosol.",
+          "comment": "L’aérosol est soutenu. Deux distracteurs reposent sur une pureté absolue (« eau pure », « uniquement THC pur »), ce qui isole la réponse prudente. Remplacer ces deux choix par des compositions ou phénomènes physiquement plausibles et comparables.",
+          "contentHash": "098da75ad87b754edf54c40de79a16d3605f293504690007f707e075fd653d0d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-hc-accessories",
+              "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+              "locator": "Vaping, premier et deuxième paragraphes",
+              "result": "Passages Pipes et Vaping réellement lus : refroidissement sans innocuité, aérosol d’extrait chauffé et migration de métaux confirmés.",
+              "sourceHash": "4f101705711d9a84a7c336ae2649521903489a379f04eb22c01d16041892bc62"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-cartridge-metals-device-source",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le passage sur la migration de métaux vers l’extrait puis l’aérosol soutient la réponse et sa provenance matérielle.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Le passage sur la migration de métaux vers l’extrait puis l’aérosol soutient la réponse et sa provenance matérielle.",
+      "contentHash": "94d9bea19e8da64f6d3ff001623bad4a7c6006f62c94802c869f70206cdd8db8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-accessories",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "locator": "Vaping, deuxième paragraphe et notes 3–4",
+          "result": "Passages Pipes et Vaping réellement lus : refroidissement sans innocuité, aérosol d’extrait chauffé et migration de métaux confirmés.",
+          "sourceHash": "4f101705711d9a84a7c336ae2649521903489a379f04eb22c01d16041892bc62"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-vape-heating-new-byproducts",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le résumé de recherche rapporte des produits de dégradation ; la limite du substitut expérimental est conservée.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Le résumé de recherche rapporte des produits de dégradation ; la limite du substitut expérimental est conservée.",
+      "contentHash": "a988b7ab7feffe2ed60891e65a37305a126a7979a3d1e16241c86187ced5ac29",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-vape-byproducts",
+          "url": "https://www.canada.ca/en/health-canada/services/publications/science-research-data/compilation-research-abstracts-2021-2022.html",
+          "locator": "Investigation of degradation by-products..., résultats et limite méthodologique",
+          "result": "Résumé Investigation of degradation by-products... réellement lu : sous-produits oxydatifs/de dégradation et limite du substitut de laboratoire confirmés ; aucune fréquence ou toxicité extrapolée.",
+          "sourceHash": "449568e3d99b3416a3539894b7dd0115a2557392a76daf3cd8114b95746dcad9"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-evali-vitamin-e-acetate-2019",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le rapport CDC retrouve l’acétate dans les lavages ; association historique et causalité non exclusive correctement distinguées.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Le rapport CDC retrouve l’acétate dans les lavages ; association historique et causalité non exclusive correctement distinguées.",
+      "contentHash": "279f2d67ebf767a2079e8be577e646c07885e5b84942f87f0e560e47b5c78127",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-cdc-evali",
+          "url": "https://www.cdc.gov/mmwr/volumes/68/wr/mm6845e2.htm",
+          "locator": "p. 1040–1041, résultats des lavages et discussion",
+          "result": "Résultats et discussion du rapport MMWR réellement lus : 29 lavages positifs à l’acétate, association et limites causales. Erratum du 31 janvier 2020 ouvert : noms omis, pas de changement de résultat.",
+          "sourceHash": "cc0c93546441e25af0d7d3ddacbbc215b5760371522d420d68ad2863b49c7138"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-spice-k2-synthetic-cannabinoid-products",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "La DEA rattache Spice/K2 aux cannabinoïdes synthétiques imitant le THC ; pas de généralisation de puissance.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. La DEA rattache Spice/K2 aux cannabinoïdes synthétiques imitant le THC ; pas de généralisation de puissance.",
+      "contentHash": "00e40405a635c09f7cd8ca83e9429e369a52125297d446d13df9b8c83151857e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-dea-spice",
+          "url": "https://www.dea.gov/factsheets/spice-k2-synthetic-marijuana",
+          "locator": "What is Spice/K2, Synthetic Marijuana?",
+          "result": "What is Spice/K2 et How is it abused réellement lus : noms de produits à cannabinoïdes synthétiques, présentation possible comme encens végétal confirmés.",
+          "sourceHash": "499b46ab3e3747c9e555bb7a625c7604929a39c935f9481cfd7582ba118a3d70"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-thca-flower-heating-thc",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le paragraphe EUDA sur le fumage soutient la conversion. Distinct du bilan CO2 de hemp-evidence-decarboxylation et du calcul conventionnel rp01.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Le paragraphe EUDA sur le fumage soutient la conversion. Distinct du bilan CO2 de hemp-evidence-decarboxylation et du calcul conventionnel rp01.",
+      "contentHash": "07cdca1ca200b9a121fbc37863b7f2bd599a45d532248de897dab9ff43f94001",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-euda-flower-thca-heating",
+          "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+          "locator": "Biosynthesis of cannabinoids in cannabis, paragraphe When natural cannabis products are smoked",
+          "result": "Biosynthesis..., paragraphe When natural cannabis products are smoked réellement lu : THCA converti en THC sous chaleur ; aucun paramètre de transformation repris.",
+          "sourceHash": "127820753a49813f567cc98ab42a178f2cc22d074dd02442c1bfe58627c0a54f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-canada-excise-stamp-license-holder",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le sens du timbre et les exemptions sont explicites ; le marquage reste propre au cannabis réglementé.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Le sens du timbre et les exemptions sont explicites ; le marquage reste propre au cannabis réglementé.",
+      "contentHash": "28b0ab641b826ec9381bef5cabfc6eecf302b38dd36eb5cd12b66b241ba5d698",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-label",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+          "locator": "3. Excise stamp",
+          "result": "Sections 1 et 3 réellement lues : symbole THC au-delà de 10 microgrammes/g, provenance du titulaire de licence et exemptions du timbre confirmés.",
+          "sourceHash": "b266a1660d977967519c67945231b454a3f12282a7f207d73bac35da74f0d7ca"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-canada-standard-symbol-thc",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "La substance signalée et le seuil de marquage sont explicités par Santé Canada.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. La substance signalée et le seuil de marquage sont explicités par Santé Canada.",
+      "contentHash": "a2debff5aacbf8769cd13214688be9dce0324488676e49629d7d4c433571ffea",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-label",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+          "locator": "1. Standardized cannabis symbol",
+          "result": "Sections 1 et 3 réellement lues : symbole THC au-delà de 10 microgrammes/g, provenance du titulaire de licence et exemptions du timbre confirmés.",
+          "sourceHash": "b266a1660d977967519c67945231b454a3f12282a7f207d73bac35da74f0d7ca"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-france-cbd-foods-not-authorised-2026",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Communiqué du 20 mai 2026 : ajout alimentaire de CBD non autorisé, y compris compléments ; état et juridiction datés.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Communiqué du 20 mai 2026 : ajout alimentaire de CBD non autorisé, y compris compléments ; état et juridiction datés.",
+      "contentHash": "c06a31040e7beebf1b420341ce7819262f4f6a84e697209ed8631a3d2405ebd1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-maasa-cbd-foods-2026",
+          "url": "https://agriculture.gouv.fr/node/110883",
+          "locator": "Communiqué, paragraphes 1 et 3",
+          "result": "Communiqué du 20 mai 2026 réellement lu : CBD ajouté non autorisé, compléments inclus ; feuilles exclusivement pour infusion aqueuse sans enrichissement distinguées, sous limites THC.",
+          "sourceHash": "de1bdcfc388caab89a2f6585933defa38399c710cb00795ac276a327f097c8c7"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-france-leaf-water-infusion-exception",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Communiqué : exception des feuilles exclusivement pour infusion aqueuse, sans enrichissement et sous limites de THC ; distinction spécifique du CBD alimentaire.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Communiqué : exception des feuilles exclusivement pour infusion aqueuse, sans enrichissement et sous limites de THC ; distinction spécifique du CBD alimentaire.",
+      "contentHash": "9b61357d622c34c595ba0ee7537f835a824bf93bd29aa0f7014431685a40cb0a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-maasa-cbd-foods-2026",
+          "url": "https://agriculture.gouv.fr/node/110883",
+          "locator": "Communiqué, paragraphes Seules les graines... et Elles peuvent donc...",
+          "result": "Communiqué du 20 mai 2026 réellement lu : CBD ajouté non autorisé, compléments inclus ; feuilles exclusivement pour infusion aqueuse sans enrichissement distinguées, sous limites THC.",
+          "sourceHash": "de1bdcfc388caab89a2f6585933defa38399c710cb00795ac276a327f097c8c7"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-france-pure-cbd-cosmetic-ingredient",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Flyer p.2 : CBD pur comme ingrédient cosmétique et limite de THC ; aucune promesse de santé.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Flyer p.2 : CBD pur comme ingrédient cosmétique et limite de THC ; aucune promesse de santé.",
+      "contentHash": "e05cfc5ad79a84b296fa4d94fd64ff41ec313154548605c500272a2a39e27a26",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-mildeca-product-categories-2026",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "locator": "p. 2, Produits cosmétiques",
+          "result": "Flyer officiel octobre2026, p.2 intégralement lu aux rubriques concernées : cosmétique CBD pur, animal non autorisé, deux origines vape/REACH et déclaration Anses confirmés ; autres affirmations non utilisées.",
+          "sourceHash": "10f8cdea5af5ebf4de3698eac9c66558b4d8cf9252dc5da879348ef542bc55a0"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-eu-cbd-animal-feed-unauthorised-additive",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Flyer p.2 : absence d’autorisation comme additif animal explicitement affirmée.",
+      "comment": "Quatre statuts réglementaires comparables du même actif ; juridiction, année et distinction avec la graine alimentaire conservées.",
+      "contentHash": "0dbb985994d78cc205d09a8525305065046d4a823aecf633bd90552b3c027b8b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-mildeca-product-categories-2026",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "locator": "p. 2, Produits alimentaires et vétérinaires",
+          "result": "Flyer officiel octobre2026, p.2 intégralement lu aux rubriques concernées : cosmétique CBD pur, animal non autorisé, deux origines vape/REACH et déclaration Anses confirmés ; autres affirmations non utilisées.",
+          "sourceHash": "10f8cdea5af5ebf4de3698eac9c66558b4d8cf9252dc5da879348ef542bc55a0"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-eu-cbd-animal-feed-unauthorised-additive",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Flyer p.2 : absence d’autorisation comme additif animal explicitement affirmée.",
+          "comment": "Statut européen confirmé dans le flyer. Les distracteurs « tous les animaux », « dès qu’il est végétal » et « médicament ... sans examen » sont excessifs ; ce dernier change aussi de catégorie. Proposer quatre statuts réglementaires comparables, sans trois autorisations caricaturales face à une seule absence d’autorisation.",
+          "contentHash": "7d705cce1b7d25ecb0eb4a5f9e65de9fdf254f8df356db72ca5007a67489e3d5",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-mildeca-product-categories-2026",
+              "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+              "locator": "p. 2, Produits alimentaires et vétérinaires",
+              "result": "Flyer officiel octobre2026, p.2 intégralement lu aux rubriques concernées : cosmétique CBD pur, animal non autorisé, deux origines vape/REACH et déclaration Anses confirmés ; autres affirmations non utilisées.",
+              "sourceHash": "10f8cdea5af5ebf4de3698eac9c66558b4d8cf9252dc5da879348ef542bc55a0"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-france-vape-cbd-chemical-or-extracted",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Flyer p.2 : origine chimique ou extraction et obligations REACH explicitement mentionnées.",
+      "comment": "Quatre paires d’origines parallèles ; question explicitement bornée aux origines mentionnées par le flyer, sans déduire le statut d’une origine non citée.",
+      "contentHash": "35eb11139fd66b73bd22224e6676d66cee0d7d5d077795ea886d081cf8a1c69d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-mildeca-product-categories-2026",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "locator": "p. 2, Produits de vapotage",
+          "result": "Flyer officiel octobre2026, p.2 intégralement lu aux rubriques concernées : cosmétique CBD pur, animal non autorisé, deux origines vape/REACH et déclaration Anses confirmés ; autres affirmations non utilisées.",
+          "sourceHash": "10f8cdea5af5ebf4de3698eac9c66558b4d8cf9252dc5da879348ef542bc55a0"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-france-vape-cbd-chemical-or-extracted",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Flyer p.2 : origine chimique ou extraction et obligations REACH explicitement mentionnées.",
+          "comment": "Les deux origines sont confirmées. Trois réponses « seulement » opposées à la seule combinaison rendent la réponse facile à deviner ; l’huile de graines n’est en outre pas une origine plausible du CBD. Réécrire les choix en catégories d’origine parallèles et crédibles.",
+          "contentHash": "23e3940879dfe52dc19a4feb297f9abb149fd963464137dc8949ae9eeb20aa84",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-mildeca-product-categories-2026",
+              "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+              "locator": "p. 2, Produits de vapotage",
+              "result": "Flyer officiel octobre2026, p.2 intégralement lu aux rubriques concernées : cosmétique CBD pur, animal non autorisé, deux origines vape/REACH et déclaration Anses confirmés ; autres affirmations non utilisées.",
+              "sourceHash": "10f8cdea5af5ebf4de3698eac9c66558b4d8cf9252dc5da879348ef542bc55a0"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-france-smoking-hemp-anses-declaration",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Flyer p.2 : déclaration à l’Anses par fabricants et distributeurs ; distinction avec autorisation de médicament correcte.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Flyer p.2 : déclaration à l’Anses par fabricants et distributeurs ; distinction avec autorisation de médicament correcte.",
+      "contentHash": "d5d9c8672770c924235f710dc8c48e102f6152b3436d6d35528aa783d3367682",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-mildeca-product-categories-2026",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "locator": "p. 2, Produits de vapotage, phrase sur les produits à fumer",
+          "result": "Flyer officiel octobre2026, p.2 intégralement lu aux rubriques concernées : cosmétique CBD pur, animal non autorisé, deux origines vape/REACH et déclaration Anses confirmés ; autres affirmations non utilisées.",
+          "sourceHash": "10f8cdea5af5ebf4de3698eac9c66558b4d8cf9252dc5da879348ef542bc55a0"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-quebec-nonedible-thc-cap-30-percent",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Article 3 officiel : plafond de 30 % p/p hors comestibles ; source à jour au 1er juillet 2026.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Article 3 officiel : plafond de 30 % p/p hors comestibles ; source à jour au 1er juillet 2026.",
+      "contentHash": "ebc6725487e09182368efc2ed62b5d0661682faad98643a00b1019ff31ae7744",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-quebec-products-2026",
+          "url": "https://www.legisquebec.gouv.qc.ca/fr/document/rc/C-5.3,%20r.%200.1",
+          "locator": "Article 3",
+          "result": "Texte officiel à jour au 1er juillet 2026 réellement lu, articles 3 et 4 : 30 % p/p hors comestibles ; exclusions chocolat/confiserie/dessert confirmées.",
+          "sourceHash": "f13ca585217d76bce018b635d5df8f2f0009148b9f90674c7ee26d34cdbeec2c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-quebec-edible-chocolate-ban",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Article 4 officiel : chocolat et confiseries explicitement exclus ; les autres formats ne sont pas interdits par leur simple catégorie.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Article 4 officiel : chocolat et confiseries explicitement exclus ; les autres formats ne sont pas interdits par leur simple catégorie.",
+      "contentHash": "a6cda71ea010cfbef80544c9a07bdbc19cfe89ba44f7abf76d6d77ad7c4cf062",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-quebec-products-2026",
+          "url": "https://www.legisquebec.gouv.qc.ca/fr/document/rc/C-5.3,%20r.%200.1",
+          "locator": "Article 4",
+          "result": "Texte officiel à jour au 1er juillet 2026 réellement lu, articles 3 et 4 : 30 % p/p hors comestibles ; exclusions chocolat/confiserie/dessert confirmées.",
+          "sourceHash": "f13ca585217d76bce018b635d5df8f2f0009148b9f90674c7ee26d34cdbeec2c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-canada-edible-thc-container-limit",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Guide canadien : 10 mg de THC total par contenant immédiat ; règle de conditionnement clairement séparée d’un conseil de consommation.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Guide canadien : 10 mg de THC total par contenant immédiat ; règle de conditionnement clairement séparée d’un conseil de consommation.",
+      "contentHash": "85769c7367c9ec5887e719436ce84eb6747458ddc9e4e77b14e39231e055c520",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-composition",
+          "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+          "locator": "Edible cannabis, Maximum quantities",
+          "result": "Guide réellement lu aux passages nicotine, caffeine et edible maximum quantities : nicotine exclue, caféine naturelle sous plafond et 10 mg THC total/contenant comestible confirmés.",
+          "sourceHash": "94b6b24cf85a42166fb701467fce5bb5a9c539cdfb59350653966c8b5869c7e5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-canada-extract-no-nicotine",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Guide canadien : nicotine explicitement non permise dans les extraits.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Guide canadien : nicotine explicitement non permise dans les extraits.",
+      "contentHash": "374e1d8b45e51c0cd876fc751a0929f1dbe7bdb40d3e9c470318e8b807147cd7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-composition",
+          "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+          "locator": "Cannabis extracts, Prohibited ingredients, Note that nicotine...",
+          "result": "Guide réellement lu aux passages nicotine, caffeine et edible maximum quantities : nicotine exclue, caféine naturelle sous plafond et 10 mg THC total/contenant comestible confirmés.",
+          "sourceHash": "94b6b24cf85a42166fb701467fce5bb5a9c539cdfb59350653966c8b5869c7e5"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-canada-edible-caffeine-natural-ingredients",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Guide canadien : caféine naturellement apportée par des ingrédients et sous plafond, ajout de caféine/citrate exclu.",
+      "comment": "Quatre conditions réglementaires comparables remplacent les autorisations absolues ; distinction entre ingrédients caféinés et additif conforme à la preuve.",
+      "contentHash": "a9950e869fa0197afe4c379a55fadb971457d49d0e347d200f20cebe3ceecee8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-hc-composition",
+          "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+          "locator": "Edible cannabis, Caffeine",
+          "result": "Guide réellement lu aux passages nicotine, caffeine et edible maximum quantities : nicotine exclue, caféine naturelle sous plafond et 10 mg THC total/contenant comestible confirmés.",
+          "sourceHash": "94b6b24cf85a42166fb701467fce5bb5a9c539cdfb59350653966c8b5869c7e5"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-canada-edible-caffeine-natural-ingredients",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Guide canadien : caféine naturellement apportée par des ingrédients et sous plafond, ajout de caféine/citrate exclu.",
+          "comment": "Règle canadienne confirmée. La bonne réponse est seule à comporter une condition réglementaire ; deux distracteurs annoncent un ajout « libre » et le dernier supprime tout cannabinoïde. Réécrire les quatre conditions d’admission à longueur comparable et avec de vraies alternatives réglementaires.",
+          "contentHash": "262e8ce859f50438fd3e7f322ee31a64eb356cbccf659e5e241d456310692ac0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-hc-composition",
+              "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+              "locator": "Edible cannabis, Caffeine",
+              "result": "Guide réellement lu aux passages nicotine, caffeine et edible maximum quantities : nicotine exclue, caféine naturelle sous plafond et 10 mg THC total/contenant comestible confirmés.",
+              "sourceHash": "94b6b24cf85a42166fb701467fce5bb5a9c539cdfb59350653966c8b5869c7e5"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-nabilone-synthetic-not-native",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "FDA : nabilone synthétique non naturellement présent ; distinct du fait ancien sur son indication antiémétique.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. FDA : nabilone synthétique non naturellement présent ; distinct du fait ancien sur son indication antiémétique.",
+      "contentHash": "af19240653b8b5bbec59a115a2c5d645861b125b3cc9d8ef6a26d26b87eeca1d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-fda-drug-identities",
+          "url": "https://www.fda.gov/news-events/public-health-focus/fda-and-cannabis-research-and-drug-approval-process",
+          "locator": "Cannabis-related compounds, Examples ; Another FDA-approved drug",
+          "result": "Diagramme et paragraphes sur Epidiolex/Cesamet réellement lus : CBD purifié et nabilone synthétique non naturellement présent confirmés ; indication/âge non repris.",
+          "sourceHash": "611c8657a5d383488e767e0c0e893d99e888c22cd0c48451318b55c247bec3b2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-epidiolex-purified-cbd",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "FDA : formulation Epidiolex contenant du CBD purifié ; aucune indication ou limite d’âge obsolète reprise.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. FDA : formulation Epidiolex contenant du CBD purifié ; aucune indication ou limite d’âge obsolète reprise.",
+      "contentHash": "c98dd217e3e78fee7716346ba07066c81c5c54cf6e467eb98e2d6474d4e4f2fa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-fda-drug-identities",
+          "url": "https://www.fda.gov/news-events/public-health-focus/fda-and-cannabis-research-and-drug-approval-process",
+          "locator": "Paragraphe FDA has approved Epidiolex",
+          "result": "Diagramme et paragraphes sur Epidiolex/Cesamet réellement lus : CBD purifié et nabilone synthétique non naturellement présent confirmés ; indication/âge non repris.",
+          "sourceHash": "611c8657a5d383488e767e0c0e893d99e888c22cd0c48451318b55c247bec3b2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rp02-shake-flower-fragments-versus-trim-leaves",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Encadré UNODC : fragments de fleurs versus feuilles retirées ; pas de taux ou d’extraction généralisé.",
+      "comment": "Quatre distinctions entre matières végétales remplacent huiles, cristaux et résines ; vocabulaire et réserve sur le taux cannabinoïde conservés.",
+      "contentHash": "d55363901565c595fbeaa772109d74504625ffcb40ff6eaae5a3a513a4be3566",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-unodc-shake-trim",
+          "url": "https://www.minjusticia.gov.co/programas-co/ODC/Publicaciones/Publicaciones/WDR19_Booklet_5_CANNABIS_HALLUCINOGENS.pdf",
+          "locator": "p. 31, encadré Understanding cannabis products",
+          "result": "Rapport original UNODC sur serveur ministériel, encadré p.31 imprimée/PDF index32 réellement lu : shake fragments floraux, trim feuilles retirées.",
+          "sourceHash": "9a280996e04fba40b4cebadaebe81c8e6f496eeed16746f9c7da281838b96ca5"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rp02-shake-flower-fragments-versus-trim-leaves",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Encadré UNODC : fragments de fleurs versus feuilles retirées ; pas de taux ou d’extraction généralisé.",
+          "comment": "La distinction shake/trim est précisément soutenue. Les trois autres choix (huiles, cristaux, résines) sont trop éloignés de deux matières végétales. Employer des distinctions concurrentes entre fleurs, feuilles et fragments pour tester le vocabulaire lui-même.",
+          "contentHash": "a56aec822302847d45f2a27141c1686728dfa4b0c5e38a2177f16c00a5319338",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rp02-unodc-shake-trim",
+              "url": "https://www.minjusticia.gov.co/programas-co/ODC/Publicaciones/Publicaciones/WDR19_Booklet_5_CANNABIS_HALLUCINOGENS.pdf",
+              "locator": "p. 31, encadré Understanding cannabis products",
+              "result": "Rapport original UNODC sur serveur ministériel, encadré p.31 imprimée/PDF index32 réellement lu : shake fragments floraux, trim feuilles retirées.",
+              "sourceHash": "9a280996e04fba40b4cebadaebe81c8e6f496eeed16746f9c7da281838b96ca5"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture complète des neuf questions corrigées et comparaison avec les versions soumises à Sol. SourceEvidence et objets sources inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rp02-spacecake-cannabis-cake",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Glossaire OFDT : gâteau au cannabis ; terme de culture de produit distinct de sa composition précise.",
+      "comment": "Fait, réponse et explication soutenus ; choix et difficulté recevables. Glossaire OFDT : gâteau au cannabis ; terme de culture de produit distinct de sa composition précise.",
+      "contentHash": "c51bca8eed4ca33eb46c9324a67c3ed33740b4f177587fcc1b0dbbe35f71f9c2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp02-ofdt-glossaire",
+          "url": "https://www.ofdt.fr/sites/ofdt/files/2023-08/field_media_document-480-cdeannex.pdf",
+          "locator": "Glossaire, entrée SPACE-CAKE",
+          "result": "PDF p.19 (index19), entrées SINSEMILLA et SPACE-CAKE réellement lues : sens sans graine et gâteau contenant du cannabis confirmés ; règles historiques et conseils de culture exclus.",
+          "sourceHash": "a23a4b49582b1a53751900a12cdcd47703723cb090ae150cfc64501aded49141"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "reviewed": 30,
+    "approved": 21,
+    "changes_requested": 9,
+    "rejected": 0,
+    "sourcesIndependentlyConsulted": 16,
+    "duplicateCheck": "Index des faits existants et voisins consultés. Proximités THCA/CO2/calcul THC total, nabilone/indication et cosmétique/étiquette générale distinctes par propriété. Aucun doublon de fait imposant retrait trouvé."
+  }
+}

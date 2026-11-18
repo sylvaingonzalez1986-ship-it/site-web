@@ -2,6 +2,8 @@ import { createKqFlower } from "./kanab-quest-battle";
 import { KQ_BUDDIE_ROTATION_REQUIRED } from "./kanab-quest-buddie-rotation";
 import { getKqCampaignParticipants, getKqCampaignWarehouse } from "./kanab-quest-campaign";
 import { getKqCannabinoidReport, getKqTerpeneReport, getKqCarePricing, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
+import { getKqCareInventoryRows } from "./kanab-quest-care-reserve";
+import { isKqCareSector } from "./kanab-quest-care-spatial";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
 import { getKqCardArtwork } from "./kanab-quest-artwork";
 import { KQ_ACTIVE_CARDS } from "./kanab-quest-game";
@@ -19,9 +21,7 @@ type Port = { getState: () => KqReleveProductionState; setState: (next: KqReleve
 const now = (state: KqReleveProductionState) => new Date(state.clock).toISOString();
 const flowerId = (zoneId: string) => `releve-flower-${zoneId}`;
 const rotation = (state: KqReleveProductionState) => ({ requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: state.recentBuddieCodes });
-const careInventory = (state: KqReleveProductionState) => KQ_CARE_PRODUCTS.map(({ code: productCode }) => ({ productCode,
-  quantity: (state.careInventory[productCode] ?? 0) + Math.floor((state.careAreaInventory?.[productCode] ?? 0) / getKqCarePricing(state.game ?? undefined).pricingUnits),
-  legacyQuantity: state.careInventory[productCode] ?? 0, areaQuantity: state.careAreaInventory?.[productCode] ?? 0 }));
+const careInventory = (state: KqReleveProductionState) => getKqCareInventoryRows(state.game ?? undefined, state.careInventory, state.careAreaInventory);
 const rank = (state: KqReleveProductionState) => Object.entries(state.battles).reduce((profile, [zoneId, battle]) => state.milestones.includes(`jury-ranked:${zoneId}`)
   ? applyKqBattleToRanking(profile, battle, battle.opponentRating) : profile, createKqRankProfile());
 
@@ -103,6 +103,27 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
       if (init?.body) body = JSON.parse(String(init.body));
       const state = port.getState();
       const requestKey = typeof body.requestKey === "string" ? `${path}:${body.requestKey}` : null;
+      const careMutation = method === "POST" && (path === "/care" || /^\/runs\/[^/]+\/care$/.test(path));
+      const target = body.target;
+      if (careMutation && target !== undefined && (!isKqCareSector(target) || path === "/care" || typeof body.productCode !== "string")) throw new Error("Case de culture invalide.");
+      const careSignature = careMutation ? JSON.stringify(path === "/care"
+        ? [body.productCode, body.quantity ?? 1, body.expectedPriceCents]
+        : [body.productCode, body.basicPriceCents, isKqCareSector(target) ? [target.zoneId, target.x, target.y] : null]) : "";
+      const priorCare = careMutation && requestKey ? state.careReceipts?.find(receipt => receipt.key === requestKey) : undefined;
+      const careResponse = (next: KqReleveProductionState, chargedCents: number, replayed: boolean) => Response.json({
+        cashCents: next.cashCents, inventory: careInventory(next), replayed,
+        ...(path === "/care" ? { totalPriceCents: chargedCents } : { state: next.game, updatedAt: now(next), chargedCents }),
+      });
+      if (priorCare) {
+        if (priorCare.signature !== careSignature) throw new Error("Cette demande correspond déjà à une autre intervention.");
+        return careResponse(state, priorCare.chargedCents, true);
+      }
+      const commitCare = (next: KqReleveProductionState) => {
+        const chargedCents = state.cashCents - next.cashCents;
+        if (requestKey) next.careReceipts = [...(next.careReceipts ?? []), { key: requestKey, signature: careSignature, chargedCents }];
+        port.setState(next);
+        return careResponse(next, chargedCents, false);
+      };
       if (requestKey && replay.has(requestKey)) return Response.json({ ...replay.get(requestKey) as object, replayed: true });
       const respond = (value: object) => { if (requestKey) replay.set(requestKey, value); return Response.json(value); };
       if (method === "GET" && path === "/bootstrap") return respond({
@@ -161,8 +182,7 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
         if (!product || body.expectedPriceCents !== product.priceCents * getKqCarePricing(state.game ?? undefined).pricingUnits * quantity) throw new Error("Actualise le tarif des intrants.");
         let next = state;
         for (let index = 0; index < quantity; index++) next = applyKqReleveProductionAction(next, { type: "buy-care", code: String(body.productCode) });
-        port.setState(next);
-        return respond({ cashCents: next.cashCents, inventory: careInventory(next), totalPriceCents: state.cashCents - next.cashCents, replayed: false });
+        return commitCare(next);
       }
       if (path === "/runs" && method === "POST") {
         let next = state;
@@ -187,8 +207,9 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
         }
         if (run[2] === "cards") { const next = act({ type: "play", code: String(body.cardCode) }); return respond({ state: next.game, burnReceipt: receipts(next).at(-1)! }); }
         if (typeof body.productCode !== "string" && body.basicPriceCents !== getKqCarePricing(state.game ?? undefined).basicCarePriceCents) throw new Error("Actualise le tarif de l’entretien.");
-        const next = typeof body.productCode === "string" ? act({ type: "apply-care", code: body.productCode }) : act({ type: "basic-care" });
-        return respond({ state: next.game, updatedAt: now(next), cashCents: next.cashCents, chargedCents: state.cashCents - next.cashCents, inventory: careInventory(next), replayed: false });
+        const action: KqReleveProductionAction = typeof body.productCode === "string"
+          ? { type: "apply-care", code: body.productCode, target: isKqCareSector(target) ? target : undefined } : { type: "basic-care" };
+        return commitCare(applyKqReleveProductionAction(state, action));
       }
       const verdictRequest = path.match(/^\/battles\/([^/]+)\/verdict$/);
       if (method === "POST" && (path === "/bot-battles" || path === "/battles" || verdictRequest)) {

@@ -1,0 +1,258 @@
+{
+  "batchId": "pilot-d",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16",
+  "duplicateCheck": "Comparaison avec les 360 actifs et les lots AB/C : aucun fait strictement répété. Saveur de noix diffère des réserves lipidiques/protéiques ; shichimi et pâtes/soupes régionales constituent des usages distincts ; sambe/Andongpo partagent le chanvre coréen sans tester la même propriété. Cire de réserve et symbolique textile ne doublonnent ni le tissage ni le peignage.",
+  "difficultyNote": "Niveaux 2 adoptés pour shichimi et notice Met ; les connaissances spécialisées ne sont pas classées faciles par simplicité du vocabulaire. Le chiffre textile opaque a été retiré. Les exercices restent surtout des identifications ; le contexte Hmong est une situation courte sans déduction chiffrée.",
+  "items": [
+    {
+      "id": "hemp-q2-d-chenevis-saveur-noix",
+      "status": "approved",
+      "comment": "Quatre saveurs comparables ; note légère correctement distinguée des arômes floraux. Source technique décrit la qualité alimentaire sans en déduire garantie sanitaire. Niveau 1 plausible pour une expérience sensorielle quotidienne, à calibrer.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-alberta-food-seed",
+          "url": "https://www1.agric.gov.ab.ca/$department/deptdocs.nsf/all/crop15539/$file/HempHarvestStorage.pdf",
+          "locator": "PDF page imprimée 2, index 1 ; lignes extraites 24–30, Flavour and Odour",
+          "result": "Guide institutionnel ouvert et passage lu le 16 novembre 2026 : légère saveur et odeur de noix parmi les propriétés des graines alimentaires. Les seuils, rendements et techniques du document ne sont pas repris.",
+          "sourceHash": "a037fec6cbedb1228b09b7bdad87d9270dbb07dccf3bbe8d2cec5e50e5ba60d4"
+        }
+      ],
+      "contentHash": "308da57b48ef5edbddf4fbcdcd714460e5cdfcb1da10c55b83716029ad2e061a"
+    },
+    {
+      "id": "hemp-q2-d-shichimi-condiment",
+      "status": "approved",
+      "comment": "Niveau 2, nouvel énoncé et justification relus : présence traditionnelle dans certaines recettes, sans universaliser la composition. Quatre condiments plausibles ; passage USDA déjà consulté inchangé.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-usda-japan-hemp-seed",
+          "url": "https://www.usdajapan.org/download/7266/",
+          "locator": "PDF p.5 imprimée, index 6 ; section 3.1, lignes extraites 149–153",
+          "result": "Rapport commandé par USDA ouvert et passage lu le 16 novembre 2026 : graines de chanvre entières traditionnellement dans le shichimi, mélange de sept épices ; exemple commercial sans ces graines également signalé. Aucune donnée économique ou règle actuelle déduite de 2021.",
+          "sourceHash": "3ab958db1db996b1dfbae9f18333a11d1e6d03a8d0a9d5158df70501aec0dfde"
+        }
+      ],
+      "contentHash": "c4657e9429ae5a50ebecbc864430f64253923ab202122dcc8fdbe6aed25cb2b6",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "f6dbf6bf7f00afb69969171d310202b24d7b86f663ca0d56713f19b20472e2f9",
+          "previousStatus": "approved",
+          "previousComment": "Usage alimentaire précis, quatre condiments japonais plausibles. La variation des recettes est bien indiquée ; ajouter traditionnellement dans l’énoncé serait plus précis que peut contenir, sans changer le fait. Niveau 1 reste discutable : identifier un condiment méconnu n’est pas facile du seul fait que la question est courte.",
+          "contentHash": "c4657e9429ae5a50ebecbc864430f64253923ab202122dcc8fdbe6aed25cb2b6",
+          "result": "Niveau 2, nouvel énoncé et justification relus : présence traditionnelle dans certaines recettes, sans universaliser la composition. Quatre condiments plausibles ; passage USDA déjà consulté inchangé.",
+          "sourceEvidence": "Même fait et passages déjà ouverts cette session ; aucune réouverture inutile."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-met-accessoire-pieds",
+      "status": "approved",
+      "comment": "Énoncé désormais borné à la notice citée et datée 1615–1868. Niveau 2 approprié au rappel d’un objet patrimonial, sans prétendre reconnaissance visuelle. Quatre accessoires plausibles ; sandales directement attestées par la notice Met déjà consultée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-met-hemp-sandals",
+          "url": "https://www.metmuseum.org/art/collection/search/24603",
+          "locator": "Artwork Details, lignes extraites 45–52",
+          "result": "Notice originale ouverte et lue le 16 novembre 2026 : Pair of Straw Hemp Sandals, japonais, vers 1615–1868, matière Hemp, numéro 36.25.3021. La source établit cet objet, pas l’exclusivité du type d’accessoire dans toute la collection.",
+          "sourceHash": "d5706f4ef8e82b7c2f476b84a5c88363e4b532e32a335e80dbd8f7a9b89ddc9f"
+        }
+      ],
+      "contentHash": "0b3487f59d85b3d38acd42a7dd79318149a9a5ed46972963eaa77f1db48e15ca",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "544cb2b8f6fd810ff9eb6e724f971cdafabfcf266a76e03063f54d08ebecc307",
+          "previousStatus": "changes_requested",
+          "previousComment": "La notice confirme une paire de sandales en chanvre, mais l’énoncé vise toute la collection japonaise du Met ; cette seule notice ne garantit pas qu’aucun gant, ceinture ou chapeau en chanvre ne soit aussi conservé. Limiter à la notice 36.25.3021 et à sa datation pour un fait clairement identifiable. Même ID possible puisque le fait reste le type de cet objet. La précision muséale doit rester compréhensible et son niveau ne se déduit pas du vocabulaire quotidien.",
+          "contentHash": "0b3487f59d85b3d38acd42a7dd79318149a9a5ed46972963eaa77f1db48e15ca",
+          "result": "Énoncé désormais borné à la notice citée et datée 1615–1868. Niveau 2 approprié au rappel d’un objet patrimonial, sans prétendre reconnaissance visuelle. Quatre accessoires plausibles ; sandales directement attestées par la notice Met déjà consultée.",
+          "sourceEvidence": "Même fait et passages déjà ouverts cette session ; aucune réouverture inutile."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-kanepju-sviests-lettonie",
+      "status": "approved",
+      "comment": "Quatre cuisines comparables ; appartenance culturelle et usage sur pain/pommes de terre confirmés. L’orthographe lettone du nom n’est pas un défaut mais peut fournir un indice linguistique aux joueurs familiers des langues baltes. Niveau 2 approprié comme connaissance régionale.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-natencyclopedia-hemp-spread",
+          "url": "https://enciklopedija.lv/skirklis/116732-ka%C5%86epju-sviests",
+          "locator": "Définition ligne extraite 9 ; sections historiques/culturelles lignes 49–54",
+          "result": "Article signé de l’encyclopédie nationale ouvert et lu le 16 novembre 2026 : masse de graines grillées et broyées, usage paysan en Lettonie sur pain et pommes de terre, remplacement du beurre. Paraphrase française ciblée du texte letton ; hypothèses étymologiques exclues.",
+          "sourceHash": "8d70d47219aca55ca5665dcf10cdf7f7ca14af0e96215fda4905dc2247f81a55"
+        }
+      ],
+      "contentHash": "b6dc64d9a9aea71f08306c32191cfd00c067dafe9e5ddd62ce3f18f62e6846f8"
+    },
+    {
+      "id": "hemp-q2-d-siemieniotka-reveillon",
+      "status": "approved",
+      "comment": "Quatre repas de fête comparables, contexte silésien conservé. La fête du réveillon est documentée et le récit religieux de la notice n’est pas transformé en fait historique. Niveau 2 plausible ; fait culturel autonome et distinct des autres aliments du lot.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-polish-ministry-siemieniotka",
+          "url": "https://www.gov.pl/web/rolnictwo/siemieniotka",
+          "locator": "Barwa ligne extraite 130 ; Tradycja ligne 142",
+          "result": "Notice ministérielle ouverte et passages lus le 16 novembre 2026 : chanvre moulu dans la soupe ; service traditionnel pendant la wieczerza wigilijna, repas de la veille de Noël. Le mécanisme de transmission familiale est explicitement décrit. Recette pratique non reprise.",
+          "sourceHash": "8f7b06091067cddcbefe1676158008a6ae50702728eb751c6d7e53226cd49f1d"
+        }
+      ],
+      "contentHash": "bb82bf7b6ab3e5e2984c23c7470ecdd97af2333e776bb1d64bafa370b06d1b77"
+    },
+    {
+      "id": "hemp-q2-d-asanoha-voeu-enfant",
+      "status": "approved",
+      "comment": "Quatre souhaits désormais comparables pour un enfant, accents restaurés. Bonne croissance reste le symbole explicitement décrit par le directeur du musée ; même fait et même source déjà lue, sans efficacité sanitaire.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-tokyo-toy-museum-asanoha",
+          "url": "https://toy-museum.note.jp/n/nb494d9173f0c?hl=en",
+          "locator": "Chapter 1, lignes extraites 19–23 ; auteur/date lignes 6–8",
+          "result": "Article du directeur sur canal officiel du musée ouvert et passage lu le 16 novembre 2026 : croissance rapide et droite du chanvre, motif sur vêtements de bébé depuis Edo, souhait que l’enfant grandisse droit et en bonne santé. La source décrit aussi une croyance protectrice qui n’est pas présentée comme efficacité réelle.",
+          "sourceHash": "4f6964039cfe6e340dc9cbf6985586da455e79a822757f46366344133b7fa5ef"
+        }
+      ],
+      "contentHash": "79a665f627e513ce39801e42726299caeab9ca2383a2c5466c26780448cca894",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "a73938f432a9f312fbd324cde2daf22de47f90f483542ea9933b827eb4adda14",
+          "previousStatus": "changes_requested",
+          "previousComment": "Fait culturel étayé et quatre souhaits comparables. Réparer les chaînes corrompues « prosp?rit? mat?rielle » et « r?ussite » avant approbation ; ces défauts sont présents dans le JSON décodé. Même ID et même fait. Le corrigé distingue convenablement symbole culturel et effet sanitaire ; aucune promesse de santé à ajouter.",
+          "contentHash": "79a665f627e513ce39801e42726299caeab9ca2383a2c5466c26780448cca894",
+          "result": "Quatre souhaits désormais comparables pour un enfant, accents restaurés. Bonne croissance reste le symbole explicitement décrit par le directeur du musée ; même fait et même source déjà lue, sans efficacité sanitaire.",
+          "sourceEvidence": "Même fait et passages déjà ouverts cette session ; aucune réouverture inutile."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-hmong-cire-reserve",
+      "status": "approved",
+      "comment": "Énoncé allégé relu : numéro documentaire retiré du prompt mais préservé en provenance ; fonction concrète de protection des motifs avant indigo. Forme situation décrit ce contexte, tout en restant un rappel de la matière cire. Même objet et preuve muséale déjà consultée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-auckland-hmong-skirt",
+          "url": "https://www.aucklandmuseum.com/discover/collections/record/662199",
+          "locator": "Public Access Text lignes extraites 131–141 ; date 159 ; Media/Materials et notes 188,217–219",
+          "result": "Notice originale ouverte et passages lus le 16 novembre 2026 : cire résistante à la teinture avant immersion indigo ; jupe hmong du Vietnam vers 1970–1980. Analyse initiale : fibre libérienne ; identification chanvre confirmée ensuite par un chercheur invité selon la note du musée. Ces réserves sont consignées sans prétendre à une analyse indépendante.",
+          "sourceHash": "51ce8544b7be89ca50e7988e7e27999a5b863a21b6d807c0b32ded2e1df82443"
+        }
+      ],
+      "contentHash": "e013cd6a4e7097f7af2291e33dd8faf6c497a3c882ae346ef9e80d0a94759e11",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "e7539ad92a2aadf36620b38ed502e9c23236de493f996699582d37a912d08f0c",
+          "previousStatus": "approved",
+          "previousComment": "Question limitée à un objet précis, quatre matières plausibles pour une surface. Le procédé est expliqué sans devenir protocole d’extraction/culture. L’identification du chanvre est celle du catalogue et tient compte de la nuance d’analyse ; pas de généralisation à tout textile hmong. Niveau 2 plausible.",
+          "contentHash": "e013cd6a4e7097f7af2291e33dd8faf6c497a3c882ae346ef9e80d0a94759e11",
+          "result": "Énoncé allégé relu : numéro documentaire retiré du prompt mais préservé en provenance ; fonction concrète de protection des motifs avant indigo. Forme situation décrit ce contexte, tout en restant un rappel de la matière cire. Même objet et preuve muséale déjà consultée.",
+          "sourceEvidence": "Même fait et passages déjà ouverts cette session ; aucune réouverture inutile."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-sambe-rites-deuil",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, corrigé et métadonnées relus en UTF-8 : accents correctement restaurés. Usage rituel de deuil, niveau 2 et limites de la source inchangés. Le résumé Hwang déjà lu suffit ; aucune lecture intégrale nouvelle revendiquée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-hwang-hemp-korea",
+          "url": "https://digitalcommons.unl.edu/tsaconf/347/",
+          "locator": "Abstract, lignes extraites 45–48 ; auteur/date 26,30",
+          "result": "Notice institutionnelle et résumé développé ouverts et lus le 16 novembre 2026 : sambe comme tissu de chanvre, habits funéraires et port du deuil comme acte symbolique des proches. Texte intégral PDF non consulté dans cette relecture ; légende d’origine et durées rituelles exclues de la question.",
+          "sourceHash": "8f45bd7c33d13132bfdda375950d13441561d47fc3e2e2cb6c6664616b7714a5"
+        }
+      ],
+      "contentHash": "eab618b00a2a8171288a6ebf3cb1f4c9c74bf9af0fdd81a0858be05a1521ea9e",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "eab618b00a2a8171288a6ebf3cb1f4c9c74bf9af0fdd81a0858be05a1521ea9e",
+          "previousStatus": "changes_requested",
+          "previousComment": "L’usage rituel de deuil est confirmé et les autres événements sont comparables. L’énoncé, les choix, le corrigé, les métadonnées éditoriales et la source Hwang contiennent de nombreux ? à la place des accents : restaurer toutes les chaînes en UTF-8 avant approbation. Même fait et même ID. Le résumé évoque également d’autres usages vestimentaires ; le mot rituel préserve ici la spécificité du deuil.",
+          "contentHash": "eab618b00a2a8171288a6ebf3cb1f4c9c74bf9af0fdd81a0858be05a1521ea9e",
+          "result": "Énoncé, quatre choix, corrigé et métadonnées relus en UTF-8 : accents correctement restaurés. Usage rituel de deuil, niveau 2 et limites de la source inchangés. Le résumé Hwang déjà lu suffit ; aucune lecture intégrale nouvelle revendiquée.",
+          "sourceEvidence": "Même fait et passages déjà ouverts cette session ; aucune réouverture inutile."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-d-rabelais-tiers-livre",
+      "status": "approved",
+      "comment": "Quatre œuvres du même auteur, localisation littéraire exacte et fait distinct des références Gautier/Baudelaire de la banque initiale. La plante de fiction n’est pas présentée comme description scientifique exacte du chanvre. Niveau 3 cohérent avec un épisode précis de la Renaissance.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-rabelais-athena-tiers-livre",
+          "url": "https://athena.unige.ch/athena/rabelais/rabelais-le-tiers-livre.html",
+          "locator": "En-tête édition 1552 lignes 46–50 ; table XLIX–LII lignes 104–107 ; début XLIX lignes 2211–2219",
+          "result": "Transcription universitaire du texte primaire ouverte et passages lus le 16 novembre 2026 : quatre derniers chapitres du Tiers Livre sur Pantagruélion, préparatifs maritimes et fibres explicitement évoqués. Les assertions médicales anciennes du texte sont exclues.",
+          "sourceHash": "17c4ac80692b185ddc03158acedaec85d0cb9606f0d655d82fa0479738dc4d3c"
+        }
+      ],
+      "contentHash": "a3313ec3cd0c1129c4747314cdd2c0aa240bd4275b7e78c014026963d45c48dd"
+    },
+    {
+      "id": "hemp-q2-d-pain-proteines-elasticite",
+      "status": "approved",
+      "comment": "Nouvelle question lue intégralement avec ses quatre combinaisons de tendances, son corrigé et ses métadonnées. Tendance protéique croissante et élasticité décroissante correctement attribuée à Rusu 2021, sans universalité ni relation significative à chaque dose. La note sur le gluten aide à comprendre pourquoi davantage de protéines ne garantit pas une mie plus élastique. Niveau 2 défendable ; fait distinct des compositions générales des graines dans la banque initiale.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-rusu-hemp-wheat-bread",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8398023/",
+          "locator": "§2.1, tableau 1 (lignes extraites193–275) ; §2.2, tableau3 (318–338) ; résumé154–155",
+          "result": "Texte primaire ouvert et passages lus le 16 novembre 2026. Les teneurs protéiques des formulations dépassent le témoin ; l’élasticité tend à diminuer. Le premier ajout Dacia a une valeur légèrement supérieure au témoin et plusieurs comparaisons sont non significatives : la question parle bien de tendance, et le corrigé ne généralise pas à toute dose. Les auteurs relient la tendance à l’absence de gluten de la farine de chanvre ; ni recette ni bénéfice sanitaire repris.",
+          "sourceHash": "f897c1da533c1212aad6a671e3b9a64a6f297d030807cc03673f9f49f38e0059"
+        }
+      ],
+      "contentHash": "6bdff3c1c538c8fc61485461026fc89c4bc97a91eef925449e2ee3ae2b954e36"
+    }
+  ],
+  "retiredReviews": [
+    {
+      "id": "hemp-q2-d-andongpo-compte-ol",
+      "status": "changes_requested",
+      "comment": "La traduction du portail donne bien 80, mais ne définit ni le terme ol, ni largeur ou dénominateur du compte : la question fait mémoriser un nombre opaque et le corrigé n’explique pas l’unité. Ce détail n’est pas un apprentissage expert utile en l’état. Retrouver une définition explicite dans le document coréen original pour rendre la convention intelligible, ou remplacer par un fait textile interprétable (nouvel objectif donc nouvel ID). Ne pas inventer d’équivalence sae ou de compte par largeur absent du passage.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d-koreantk-andongpo",
+          "url": "https://koreantk.com/ktkp2014/life/life-view.view?artNo=0010205000690&tempLang=en",
+          "locator": "General Aspect ligne extraite 9 ; Published Information lignes 25–27",
+          "result": "Fiche institutionnelle ouverte et lue le 16 novembre 2026 : traduction anglaise donne nombre de base Ol 80 puis associe un nombre supérieur à finesse, densité et prix. La notice référence RDA p.768–769 et base publiée en 2010 ; la convention et l’unité ne sont pas définies dans le passage accessible."
+        }
+      ],
+      "contentHash": "3b48b2c4b633b87bbd2994420d0037e24817f5d10f3ba95dbfae97a8223b777c",
+      "replacedBy": "hemp-q2-d-pain-proteines-elasticite",
+      "resolution": "Fait opaque ol80 retiré des candidats ; nouveau fait alimentaire et nouvel ID. Aucune approbation de la convention de comptage."
+    }
+  ],
+  "finalRevalidation": {
+    "reviewer": "f_existing_audit",
+    "reviewedAt": "2026-11-16",
+    "changedExistingHashesRead": 4,
+    "previouslyPendingSameHashExplicitlyRead": 1,
+    "newQuestionWithNewPrimaryEvidence": 1,
+    "scope": "Chaque question modifiée ou encore en attente a été relue ; nouvelle source primaire réellement consultée pour le remplacement alimentaire. Les autres approbations à empreinte inchangée sont conservées."
+  },
+  "sourceSealing": {
+    "reviewer": "f_existing_audit",
+    "sealedAt": "2026-11-16",
+    "algorithm": "SHA-256(JSON.stringify(fullSourceObject))",
+    "scope": "Current approved items only. URLs, passages, access levels and consultation records compared with the sources personally opened during this review. Honest missing-publication-date labels accepted for AB; no fresh external reading claimed. Archived retired reviews remain historical.",
+    "verifiedReferencedSourceIds": [
+      "q2-d-alberta-food-seed",
+      "q2-d-usda-japan-hemp-seed",
+      "q2-d-met-hemp-sandals",
+      "q2-d-natencyclopedia-hemp-spread",
+      "q2-d-polish-ministry-siemieniotka",
+      "q2-d-tokyo-toy-museum-asanoha",
+      "q2-d-auckland-hmong-skirt",
+      "q2-d-hwang-hemp-korea",
+      "q2-d-rabelais-athena-tiers-livre",
+      "q2-d-rusu-hemp-wheat-bread"
+    ]
+  }
+}

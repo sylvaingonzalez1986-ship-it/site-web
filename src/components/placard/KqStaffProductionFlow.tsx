@@ -26,7 +26,7 @@ const stageIcons = { culture: Sprout, drying: Hourglass, trim: Scissors, process
 
 function availability(employee: KqStaffEmployee, snapshot: KqStaffSnapshot) {
   if (employee.leave.some(leave => snapshot.calendar.day >= leave.startDay && snapshot.calendar.day <= leave.endDay)) return "En congé";
-  const capacity = getKqStaffCapacity(employee, snapshot.calendar);
+  const capacity = getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans);
   if (snapshot.calendar.weekend || capacity.baseHours === 0) return "Repos prévu au contrat";
   return `${n(capacity.remainingHours)} h disponibles aujourd’hui`;
 }

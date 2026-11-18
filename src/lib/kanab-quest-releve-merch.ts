@@ -20,7 +20,7 @@ export function prepareReleveCommerceMerch(input: KqReleveCommerceState): KqRele
   const online = createKqOnlinePreview(clock);
   commerce.computerOwned = true;
   Object.assign(commerce.business!.shop, {
-    name: 'La collection de Sylvain · essai', createdAt: now, active: true,
+    name: 'La collection de Loïc · essai', createdAt: now, active: true,
     tier: site.code, monthlyCents: site.monthlyCents, paidUntil, renew: false,
   });
   Object.assign(online.site, { tier: site.code, createdAt: now, active: true, paidUntil, renew: false });

@@ -1,0 +1,1791 @@
+{
+  "batchId": "c-new-05",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-cn05-seed-coat-maternal-tissue-genotype",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "De quelle plante provient le tissu du tégument qui entoure une graine de chanvre ?",
+      "options": [
+        "De la plante qui porte l’ovule",
+        "Du parent qui fournit le pollen",
+        "De l’embryon issu de la fécondation",
+        "Des deux gamètes fusionnés à parts égales"
+      ],
+      "answer": 0,
+      "explanation": "Le tégument se développe à partir des enveloppes de l’ovule, appartenant à la plante mère. Son origine génétique se distingue de celle de l’embryon.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Tégument de la graine",
+        "subjectKey": "tegument-graine",
+        "property": "Origine maternelle du tissu",
+        "expectedAnswer": "De la plante qui porte l’ovule",
+        "learningObjective": "Distinguer les tissus maternels de la graine et l’embryon biparental.",
+        "factKey": "seed-coat-maternal-tissue-genotype",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Development of the Seed",
+            "support": "Les enveloppes de l’ovule donnent le tégument de la graine ; ce sont des tissus du parent portant l’ovule."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-endosperm-two-maternal-one-paternal-genome",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans l’albumen triploïde typique des plantes à fleurs, quelle est la contribution des parents en jeux chromosomiques ?",
+      "options": [
+        "Un maternel et deux paternels",
+        "Trois maternels et aucun paternel",
+        "Trois paternels et aucun maternel",
+        "Deux maternels et un paternel"
+      ],
+      "answer": 3,
+      "explanation": "Un gamète mâle fusionne avec les deux noyaux polaires du sac embryonnaire. L’albumen typique réunit donc deux contributions maternelles pour une paternelle.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Albumen des angiospermes",
+        "subjectKey": "double-fecondation",
+        "property": "Rapport parental des génomes",
+        "expectedAnswer": "Deux maternels et un paternel",
+        "learningObjective": "Comprendre l’asymétrie génétique de l’albumen, au-delà de son rôle nourricier.",
+        "factKey": "endosperm-two-maternal-one-paternal-genome",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Double Fertilization",
+            "support": "Un spermatozoïde et les deux noyaux polaires haploïdes produisent le noyau triploïde de l’albumen."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-cannabis-organelle-dna-maternal-lineage",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Chez Cannabis sativa, par quelle lignée se transmettent habituellement les ADN chloroplastique et mitochondrial ?",
+      "options": [
+        "Par les deux lignées à parts égales",
+        "Par une lignée différente pour chaque organite",
+        "Par la lignée maternelle",
+        "Par la lignée paternelle"
+      ],
+      "answer": 2,
+      "explanation": "Ces génomes d’organites sont décrits comme transmis par la mère chez le cannabis. Ils ne suivent donc pas le même partage biparental que les chromosomes nucléaires.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-houston-2018"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Génomes des organites du cannabis",
+        "subjectKey": "genomes-organites-cannabis",
+        "property": "Transmission maternelle",
+        "expectedAnswer": "Par la lignée maternelle",
+        "learningObjective": "Distinguer hérédité nucléaire et hérédité des organites.",
+        "factKey": "cannabis-organelle-dna-maternal-lineage",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-houston-2018",
+            "locator": "Chloroplast DNA ; Origin determination, p. 50–52",
+            "support": "La thèse décrit la transmission maternelle des ADN du chloroplaste et de la mitochondrie de C. sativa."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mitochondria-plastids-endosymbiotic-bacterial-origin",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle origine évolutive est retenue pour les mitochondries et les chloroplastes des cellules végétales ?",
+      "options": [
+        "Des vacuoles ayant acquis la photosynthèse",
+        "Des bactéries intégrées à des cellules ancestrales",
+        "Des replis de la membrane nucléaire ancestrale",
+        "Des fragments détachés des chromosomes nucléaires"
+      ],
+      "answer": 1,
+      "explanation": "L’endosymbiose explique leur origine : des bactéries ont été intégrées durablement à une cellule hôte. Mitochondries et plastes proviennent de lignées bactériennes différentes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-eukaryotic-origins"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Origine des organites",
+        "subjectKey": "endosymbiose-organites",
+        "property": "Ancêtres bactériens",
+        "expectedAnswer": "Des bactéries intégrées à des cellules ancestrales",
+        "learningObjective": "Relier l’organisation actuelle des cellules à leur histoire évolutive.",
+        "factKey": "mitochondria-plastids-endosymbiotic-bacterial-origin",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-eukaryotic-origins",
+            "locator": "Endosymbiosis ; Mitochondria ; Plastids",
+            "support": "Les mitochondries dérivent de bactéries apparentées aux alphaprotéobactéries ; les plastes dérivent de cyanobactéries."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-organelle-proteins-nuclear-gene-dependence",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Pourquoi l’ADN propre des mitochondries ne suffit-il pas à les rendre génétiquement autonomes ?",
+      "options": [
+        "De nombreuses protéines nécessaires dépendent de gènes nucléaires",
+        "Leur ADN est recopié seulement au moment de la division du noyau",
+        "Leurs gènes deviennent inactifs après la germination",
+        "Elles ne possèdent aucun ribosome pour traduire leurs messages"
+      ],
+      "answer": 0,
+      "explanation": "Au cours de l’évolution, de nombreux gènes de l’ancêtre mitochondrial ont été transférés au noyau. Le fonctionnement de l’organite dépend ainsi de deux compartiments génétiques.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-eukaryotic-origins"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Dépendance génétique des mitochondries",
+        "subjectKey": "endosymbiose-organites",
+        "property": "Transfert évolutif de gènes vers le noyau",
+        "expectedAnswer": "De nombreuses protéines nécessaires dépendent de gènes nucléaires",
+        "learningObjective": "Comprendre pourquoi un organite possédant de l’ADN reste dépendant de la cellule.",
+        "factKey": "organelle-proteins-nuclear-gene-dependence",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-eukaryotic-origins",
+            "locator": "Mitochondria",
+            "support": "De nombreux gènes nécessaires à la respiration ont été transférés au génome nucléaire au cours de l’évolution."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-nuclear-pores-control-rna-exchange",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Par où passent notamment les ARN quittant le noyau d’une cellule végétale vers le cytoplasme ?",
+      "options": [
+        "Par le nucléole au centre du noyau",
+        "Par les centromères des chromosomes",
+        "Par les télomères des chromosomes",
+        "Par les pores de l’enveloppe nucléaire"
+      ],
+      "answer": 3,
+      "explanation": "L’enveloppe nucléaire est percée de pores qui contrôlent les échanges, notamment d’ARN, avec le cytoplasme. Le noyau n’est donc pas un compartiment hermétique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Enveloppe nucléaire",
+        "subjectKey": "enveloppe-nucleaire",
+        "property": "Voies d’échange avec le cytoplasme",
+        "expectedAnswer": "Par les pores de l’enveloppe nucléaire",
+        "learningObjective": "Identifier la connexion fonctionnelle entre noyau et cytoplasme.",
+        "factKey": "nuclear-pores-control-rna-exchange",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "The Nuclear Envelope",
+            "support": "Les pores nucléaires contrôlent le passage de molécules et d’ARN entre nucléoplasme et cytoplasme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-cytokinesis-cell-plate-partition",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle structure se forme entre deux cellules filles lors de la division typique d’une cellule végétale ?",
+      "options": [
+        "Une enveloppe nucléaire entourant chaque noyau fils",
+        "Un fuseau de microtubules attaché aux chromosomes",
+        "Une plaque cellulaire qui devient une nouvelle cloison",
+        "Un sillon qui étrangle la cellule depuis sa périphérie"
+      ],
+      "answer": 2,
+      "explanation": "Des vésicules fusionnent au centre de la cellule pour former une plaque cellulaire. Celle-ci s’étend vers les côtés et contribue à séparer les deux cellules filles.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cell-cycle"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Cytocinèse végétale",
+        "subjectKey": "cytocinese-vegetale",
+        "property": "Formation d’une plaque cellulaire",
+        "expectedAnswer": "Une plaque cellulaire qui devient une nouvelle cloison",
+        "learningObjective": "Distinguer la séparation cellulaire végétale du sillon de division animal.",
+        "factKey": "plant-cytokinesis-cell-plate-partition",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cell-cycle",
+            "locator": "Cytokinesis, figure 10.9",
+            "support": "Les vésicules fusionnent en une plaque cellulaire centrale qui s’étend vers les parois et donne une nouvelle séparation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-g-zero-living-cell-outside-division-cycle",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans le cycle cellulaire, que caractérise la phase G0 ?",
+      "options": [
+        "Une cellule dont les deux cellules filles se séparent",
+        "Une cellule sortie du cycle et ne préparant pas de division",
+        "Une cellule dont l’ADN est en cours de duplication",
+        "Une cellule qui sépare ses chromosomes homologues"
+      ],
+      "answer": 1,
+      "explanation": "Une cellule en G0 ne prépare pas activement sa division. Cet état peut être temporaire : sortir du cycle ne signifie pas nécessairement mourir.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cell-cycle"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Phase G0",
+        "subjectKey": "cycle-cellulaire",
+        "property": "État hors du cycle de division",
+        "expectedAnswer": "Une cellule sortie du cycle et ne préparant pas de division",
+        "learningObjective": "Distinguer arrêt du cycle cellulaire et mort de la cellule.",
+        "factKey": "g-zero-living-cell-outside-division-cycle",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cell-cycle",
+            "locator": "G0 Phase",
+            "support": "Les cellules en G0 ont quitté le cycle classique et ne préparent pas activement une division ; certaines y entrent temporairement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-s-phase-chromosome-dna-replication",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À quelle phase du cycle cellulaire l’ADN des chromosomes est-il normalement répliqué ?",
+      "options": [
+        "Pendant la phase S",
+        "Pendant la phase G1",
+        "Pendant la phase G2",
+        "Pendant la phase M"
+      ],
+      "answer": 0,
+      "explanation": "La phase S précède la mitose : chaque chromosome est copié avant que les copies soient réparties. L’interphase est donc une période d’activité, pas une simple pause.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cell-cycle"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Phase S",
+        "subjectKey": "cycle-cellulaire",
+        "property": "Moment de la réplication de l’ADN",
+        "expectedAnswer": "Pendant la phase S",
+        "learningObjective": "Situer la copie de l’ADN avant la séparation des chromosomes.",
+        "factKey": "s-phase-chromosome-dna-replication",
+        "form": "identification",
+        "difficultyRationale": "Distinguer quatre phases de même granularité en connaissant la fonction de la phase S.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cell-cycle",
+            "locator": "S Phase ; figure 10.5",
+            "support": "La réplication de l’ADN intervient pendant la phase S de l’interphase."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-chromosome-x-shape-not-permanent",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Un chromosome nucléaire a-t-il en permanence la forme compacte en X souvent dessinée dans les manuels ?",
+      "options": [
+        "Oui : cette forme reste identique dans tout le cycle",
+        "Oui : les deux bras restent séparés même avant sa copie",
+        "Non : cette forme existe seulement dans les gamètes",
+        "Non : son degré de condensation varie au cours du cycle"
+      ],
+      "answer": 3,
+      "explanation": "Les chromosomes sont généralement moins condensés entre les divisions. Le X représente un chromosome copié et condensé, dont les deux chromatides sont encore associées.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cells"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Aspect des chromosomes",
+        "subjectKey": "chromosome",
+        "property": "Variation de la condensation",
+        "expectedAnswer": "Non : son degré de condensation varie au cours du cycle",
+        "learningObjective": "Corriger une représentation courante du chromosome comme X permanent.",
+        "factKey": "chromosome-x-shape-not-permanent",
+        "form": "identification",
+        "difficultyRationale": "Compréhension d’une représentation scolaire courante, sans nom de phase à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cells",
+            "locator": "Chromatin and Chromosomes",
+            "support": "Les chromosomes deviennent visibles et distincts lors de la préparation de la division ; ils sont décondensés durant la croissance."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-spindle-microtubules-distribute-chromosomes",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelles structures contribuent au déplacement des chromosomes pendant la division d’une cellule végétale ?",
+      "options": [
+        "Les fibres de cellulose de la paroi",
+        "Les filaments intermédiaires du cytosquelette",
+        "Les microtubules du fuseau de division",
+        "Les microfilaments d’actine du cortex cellulaire"
+      ],
+      "answer": 2,
+      "explanation": "Le fuseau contient des microtubules associés aux chromosomes par des complexes spécialisés. Leur organisation permet de répartir les chromosomes vers les futurs noyaux.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn01-cell-cycle"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Fuseau de division",
+        "subjectKey": "fuseau-division",
+        "property": "Déplacement des chromosomes",
+        "expectedAnswer": "Les microtubules du fuseau de division",
+        "learningObjective": "Relier le cytosquelette à la transmission des chromosomes.",
+        "factKey": "spindle-microtubules-distribute-chromosomes",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn01-cell-cycle",
+            "locator": "The Mitotic Phase ; Anaphase",
+            "support": "Le fuseau mitotique comprend des microtubules ; ceux-ci participent au déplacement des chromatides vers les pôles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-centromere-spindle-attachment-region",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À quelle région d’un chromosome s’organise le point d’attache au fuseau de division, via le kinétochore ?",
+      "options": [
+        "À l’origine de réplication",
+        "Au centromère",
+        "Au télomère",
+        "Au promoteur"
+      ],
+      "answer": 1,
+      "explanation": "Le kinétochore est un complexe protéique assemblé au centromère. Il assure le lien avec les microtubules du fuseau ; le centromère n’est pas forcément au milieu du chromosome.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-centromere"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Centromère",
+        "subjectKey": "fuseau-division",
+        "property": "Région d’attache au fuseau",
+        "expectedAnswer": "Au centromère",
+        "learningObjective": "Distinguer une région de ségrégation des extrémités et des régions d’expression.",
+        "factKey": "centromere-spindle-attachment-region",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-centromere",
+            "locator": "Definition ; Narration",
+            "support": "Le centromère est la région à laquelle s’attachent les fibres du fuseau ; son emplacement n’est pas nécessairement médian."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-telomeres-protect-linear-chromosome-ends",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel rôle jouent les télomères aux extrémités des chromosomes linéaires ?",
+      "options": [
+        "Protéger les extrémités contre la dégradation et les fusions",
+        "Former les points d’attache centraux du fuseau de division",
+        "Déclencher la transcription de tous les gènes du chromosome",
+        "Servir de charnières lors des échanges entre homologues"
+      ],
+      "answer": 0,
+      "explanation": "Les télomères sont des séquences répétées associées à des protéines protectrices. Ils aident la cellule à distinguer une extrémité normale d’une cassure d’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-telomere"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Télomères",
+        "subjectKey": "telomeres",
+        "property": "Protection des extrémités",
+        "expectedAnswer": "Protéger les extrémités contre la dégradation et les fusions",
+        "learningObjective": "Comprendre pourquoi les chromosomes linéaires ont des régions terminales spécialisées.",
+        "factKey": "telomeres-protect-linear-chromosome-ends",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-telomere",
+            "locator": "Definition ; Narration",
+            "support": "Les télomères protègent les extrémités chromosomiques ; sans eux, des extrémités peuvent être perdues ou réunies."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-telomerase-built-in-rna-template",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel support la télomérase utilise-t-elle pour ajouter des répétitions d’ADN aux extrémités chromosomiques ?",
+      "options": [
+        "Le chromosome homologue apparié",
+        "La séquence protéique d’une histone",
+        "L’ARN de transfert portant une méthionine",
+        "Une matrice d’ARN qu’elle contient"
+      ],
+      "answer": 3,
+      "explanation": "La télomérase contient un ARN servant de matrice pour allonger l’ADN télomérique. C’est un exemple où une séquence d’ARN guide la synthèse d’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Télomérase",
+        "subjectKey": "telomeres",
+        "property": "Matrice d’ARN de l’enzyme",
+        "expectedAnswer": "Une matrice d’ARN qu’elle contient",
+        "learningObjective": "Identifier un mécanisme particulier de maintenance de l’ADN.",
+        "factKey": "telomerase-built-in-rna-template",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Telomere Replication",
+            "support": "La télomérase porte une matrice d’ARN utilisée pour étendre l’extrémité du chromosome."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-meiosis-one-replication-two-nuclear-divisions",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une méiose normale, quelle succession décrit la copie de l’ADN et les divisions nucléaires ?",
+      "options": [
+        "Une copie de l’ADN avant chacune des deux divisions",
+        "Deux divisions, puis une seule copie de l’ADN",
+        "Une copie de l’ADN, puis deux divisions",
+        "Deux copies de l’ADN, puis une division"
+      ],
+      "answer": 2,
+      "explanation": "L’ADN est répliqué avant la méiose I. La méiose II s’enchaîne sans nouvelle réplication, ce qui contribue à réduire le nombre de jeux chromosomiques.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-meiosis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Organisation de la méiose",
+        "subjectKey": "meiose",
+        "property": "Nombre de réplications avant les divisions",
+        "expectedAnswer": "Une copie de l’ADN, puis deux divisions",
+        "learningObjective": "Comprendre l’enchaînement de la réduction chromosomique.",
+        "factKey": "meiosis-one-replication-two-nuclear-divisions",
+        "form": "chronologie",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-meiosis",
+            "locator": "Introduction ; Meiosis I",
+            "support": "Une seule réplication chromosomique est suivie de deux divisions nucléaires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-independent-orientation-homologous-pairs-meiosis",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À la métaphase I, comment s’oriente une paire de chromosomes homologues par rapport aux autres paires ?",
+      "options": [
+        "Selon l’ordre des gènes sur le chromosome",
+        "Indépendamment de l’orientation des autres paires",
+        "Comme toutes les paires d’origine maternelle",
+        "Selon la longueur totale de chaque chromosome"
+      ],
+      "answer": 1,
+      "explanation": "Chaque paire peut orienter son homologue maternel vers l’un ou l’autre pôle. Ce brassage entre paires s’ajoute aux échanges de segments réalisés entre homologues.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-meiosis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Brassage interchromosomique",
+        "subjectKey": "brassage-interchromosomique",
+        "property": "Orientation indépendante des paires",
+        "expectedAnswer": "Indépendamment de l’orientation des autres paires",
+        "learningObjective": "Distinguer l’assortiment des paires du crossing-over au sein d’une paire.",
+        "factKey": "independent-orientation-homologous-pairs-meiosis",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-meiosis",
+            "locator": "Metaphase I, figure 11.5",
+            "support": "L’orientation de chaque paire d’homologues à la métaphase I est indépendante de celle des autres paires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-crossing-over-occurs-prophase-one",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "À quelle étape de la méiose se produisent les échanges de segments entre chromatides homologues non sœurs ?",
+      "options": [
+        "En prophase I",
+        "En anaphase I",
+        "En métaphase II",
+        "En télophase II"
+      ],
+      "answer": 0,
+      "explanation": "Le crossing-over a lieu quand les homologues sont étroitement appariés en prophase I. Les points de liaison visibles après ces échanges sont les chiasmas.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-meiosis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Crossing-over",
+        "subjectKey": "cannabis-crossing-over",
+        "property": "Position dans la méiose",
+        "expectedAnswer": "En prophase I",
+        "learningObjective": "Situer les échanges chromosomiques dans le déroulement de la méiose.",
+        "factKey": "crossing-over-occurs-prophase-one",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-meiosis",
+            "locator": "Prophase I",
+            "support": "Le complexe synaptonémal rapproche les homologues en prophase I et permet les échanges entre chromatides non sœurs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-nondisjunction-chromosomes-fail-to-separate",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne une non-disjonction lors de la division cellulaire ?",
+      "options": [
+        "Un fragment chromosomique qui se retourne sur lui-même",
+        "Une base de l’ADN remplacée par une autre",
+        "Un segment chromosomique copié à côté de l’original",
+        "Des chromosomes ou chromatides qui ne se séparent pas correctement"
+      ],
+      "answer": 3,
+      "explanation": "Une séparation défaillante peut distribuer trop de chromosomes à une cellule fille et pas assez à l’autre. Elle touche leur répartition, plutôt que l’ordre des bases dans l’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-chromosome-errors"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Non-disjonction",
+        "subjectKey": "non-disjonction-chromosomique",
+        "property": "Défaut de ségrégation",
+        "expectedAnswer": "Des chromosomes ou chromatides qui ne se séparent pas correctement",
+        "learningObjective": "Identifier une cause d’anomalie du nombre de chromosomes.",
+        "factKey": "nondisjunction-chromosomes-fail-to-separate",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-chromosome-errors",
+            "locator": "Nondisjunction",
+            "support": "Une non-disjonction empêche des homologues ou des chromatides sœurs de se séparer normalement et produit une répartition inégale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-aneuploidy-single-chromosome-gain-loss",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Une plante diploïde possède un chromosome supplémentaire, sans jeu complet supplémentaire. Comment qualifier ce cas ?",
+      "options": [
+        "Une tétraploïdie",
+        "Une inversion chromosomique",
+        "Une aneuploïdie",
+        "Une triploïdie"
+      ],
+      "answer": 2,
+      "explanation": "L’aneuploïdie concerne le gain ou la perte de chromosomes individuels. La polyploïdie concerne au contraire des jeux chromosomiques complets supplémentaires.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-chromosome-errors"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Aneuploïdie",
+        "subjectKey": "aneuploidie",
+        "property": "Déséquilibre de chromosomes individuels",
+        "expectedAnswer": "Une aneuploïdie",
+        "learningObjective": "Distinguer une variation individuelle du nombre de chromosomes d’un changement de ploïdie.",
+        "factKey": "aneuploidy-single-chromosome-gain-loss",
+        "form": "situation",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-chromosome-errors",
+            "locator": "Aneuploidy ; Polyploidy",
+            "support": "Une trisomie ajoute un chromosome individuel ; une polyploïdie ajoute des jeux complets."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mosaicism-genetically-different-cell-lineages-one-zygote",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Qu’est-ce qu’une mosaïque génétique dans un organisme issu d’un seul zygote ?",
+      "options": [
+        "Des cellules provenant de deux zygotes distincts",
+        "Des lignées de cellules ayant des génomes différents",
+        "Des cellules ayant toutes les mêmes mutations",
+        "Des cellules ayant uniquement des fonctions différentes"
+      ],
+      "answer": 1,
+      "explanation": "Une mutation apparue au cours du développement peut être transmise aux descendants d’une cellule. L’organisme peut ainsi réunir plusieurs lignées génétiques issues du même zygote.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-mosaicism"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Mosaïcisme génétique",
+        "subjectKey": "mosaiques-genetiques",
+        "property": "Diversité génétique entre lignées cellulaires",
+        "expectedAnswer": "Des lignées de cellules ayant des génomes différents",
+        "learningObjective": "Distinguer variation entre cellules d’un individu et simple spécialisation cellulaire.",
+        "factKey": "mosaicism-genetically-different-cell-lineages-one-zygote",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-mosaicism",
+            "locator": "Definition ; Narration",
+            "support": "Le mosaïcisme réunit des cellules aux génomes distincts, issues du même zygote, à la suite de changements survenus après la fécondation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-meristem-somatic-mutations-can-enter-gametes",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Pourquoi certaines mutations apparues pendant la croissance d’une plante peuvent-elles parvenir à sa descendance par graines ?",
+      "options": [
+        "Des cellules méristématiques donnent aussi naissance aux gamètes",
+        "Les gamètes forment les méristèmes avant toute fécondation",
+        "La lignée des gamètes est isolée dès le début de tout embryon",
+        "Les cellules mutées deviennent nécessairement des cellules sexuelles"
+      ],
+      "answer": 0,
+      "explanation": "Chez les plantes, des lignées du méristème participent à la croissance et peuvent aussi produire des gamètes. Certaines mutations somatiques deviennent ainsi transmissibles par reproduction sexuée.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-somatic-mutations-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Mutations somatiques des plantes",
+        "subjectKey": "mutations-somatiques-vegetales",
+        "property": "Transmission possible par la lignée méristématique",
+        "expectedAnswer": "Des cellules méristématiques donnent aussi naissance aux gamètes",
+        "learningObjective": "Comprendre pourquoi somatique ne signifie pas toujours non transmissible chez les plantes.",
+        "factKey": "plant-meristem-somatic-mutations-can-enter-gametes",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-somatic-mutations-2025",
+            "locator": "Abstract ; Introduction",
+            "support": "Les cellules méristématiques responsables de la croissance végétative peuvent également engendrer les gamètes, permettant la transmission de certaines mutations somatiques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-cell-totipotency-whole-plant-capacity",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne la totipotence d’une cellule végétale ?",
+      "options": [
+        "Sa capacité à produire seulement plusieurs types d’un même tissu",
+        "Sa capacité à produire un seul type de cellule spécialisée",
+        "Sa capacité à se diviser sans pouvoir former des organes",
+        "Sa capacité à donner une plante entière dans des conditions adaptées"
+      ],
+      "answer": 3,
+      "explanation": "La totipotence est un potentiel de développement complet. Sa réalisation dépend du type de cellule et des conditions ; elle ne signifie pas qu’une cellule isolée régénère spontanément une plante.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-totipotency"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Totipotence végétale",
+        "subjectKey": "totipotence-vegetale",
+        "property": "Potentiel de développement complet",
+        "expectedAnswer": "Sa capacité à donner une plante entière dans des conditions adaptées",
+        "learningObjective": "Distinguer le potentiel génétique d’une cellule de sa fonction actuelle.",
+        "factKey": "plant-cell-totipotency-whole-plant-capacity",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-totipotency",
+            "locator": "Cells",
+            "support": "La totipotence correspond à la capacité de développer une plante complète à partir d’une cellule végétale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-graft-composite-plant-retains-two-genotypes",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Dans un pommier greffé, le greffon et le porte-greffe ont des génotypes différents. Que devient cette différence ?",
+      "options": [
+        "Toutes les cellules prennent le génotype du porte-greffe",
+        "Chaque cellule reçoit la moitié des chromosomes de chaque partie",
+        "Les deux parties conservent chacune leur génotype",
+        "Toutes les cellules prennent le génotype du greffon"
+      ],
+      "answer": 2,
+      "explanation": "La greffe réunit des tissus en une plante composite. Elle ne réalise pas une fécondation : les tissus du greffon et du porte-greffe conservent leurs identités génétiques.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-grafts"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Plante greffée",
+        "subjectKey": "greffe-genotypes",
+        "property": "Conservation des génotypes des tissus",
+        "expectedAnswer": "Les deux parties conservent chacune leur génotype",
+        "learningObjective": "Distinguer assemblage de tissus et hybridation sexuée.",
+        "factKey": "graft-composite-plant-retains-two-genotypes",
+        "form": "situation",
+        "difficultyRationale": "Situation horticole familière, sans vocabulaire moléculaire ni calcul.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-grafts",
+            "locator": "Grafting, exemple du pommier",
+            "support": "Le pommier greffé porte le génotype du porte-greffe dans les racines et celui du greffon dans la partie aérienne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-helicase-separates-dna-strands",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle enzyme ouvre la double hélice d’ADN pour rendre ses brins accessibles pendant la réplication ?",
+      "options": [
+        "La télomérase",
+        "L’hélicase",
+        "L’ADN ligase",
+        "L’ARN polymérase"
+      ],
+      "answer": 1,
+      "explanation": "L’hélicase sépare les brins de l’ADN en utilisant de l’énergie. Les brins exposés peuvent alors servir de matrices pour la synthèse de nouvelles copies.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Hélicase",
+        "subjectKey": "replication-adn",
+        "property": "Ouverture de la double hélice",
+        "expectedAnswer": "L’hélicase",
+        "learningObjective": "Distinguer les fonctions des enzymes de réplication.",
+        "factKey": "helicase-separates-dna-strands",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Paragraphe après le tableau 14.2",
+            "support": "Une hélicase utilisant l’énergie de l’ATP ouvre la double hélice aux fourches de réplication."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-dna-ligase-seals-backbone-breaks",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle enzyme referme les interruptions du squelette sucre-phosphate entre les fragments d’ADN nouvellement copiés ?",
+      "options": [
+        "L’ADN ligase",
+        "L’hélicase",
+        "La primase",
+        "La télomérase"
+      ],
+      "answer": 0,
+      "explanation": "L’ADN ligase rétablit les liaisons entre fragments adjacents après le remplacement des amorces. Elle assure la continuité du brin sans en recopier toute la séquence.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ADN ligase",
+        "subjectKey": "replication-adn",
+        "property": "Continuité du squelette de l’ADN",
+        "expectedAnswer": "L’ADN ligase",
+        "learningObjective": "Distinguer assemblage final des fragments et synthèse de leur séquence.",
+        "factKey": "dna-ligase-seals-backbone-breaks",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Paragraphe sur les fragments d’Okazaki",
+            "support": "L’ADN ligase scelle les interruptions restantes par formation d’une liaison phosphodiester."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-eukaryotic-chromosomes-multiple-replication-origins",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Sur un grand chromosome nucléaire végétal, la réplication de l’ADN commence généralement à combien de sites ?",
+      "options": [
+        "À un seul site pour tout le chromosome",
+        "Aux deux extrémités du chromosome seulement",
+        "À un seul site pour tout le noyau",
+        "À de nombreux sites répartis sur le chromosome"
+      ],
+      "answer": 3,
+      "explanation": "Les chromosomes eucaryotes possèdent de multiples origines de réplication. Plusieurs portions peuvent donc être copiées en parallèle avant la division cellulaire.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Origines de réplication",
+        "subjectKey": "replication-adn",
+        "property": "Multiplicité des sites de départ",
+        "expectedAnswer": "À de nombreux sites répartis sur le chromosome",
+        "learningObjective": "Comprendre comment un grand chromosome peut être copié en plusieurs régions simultanément.",
+        "factKey": "eukaryotic-chromosomes-multiple-replication-origins",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Tableau 14.2, Origin of replication",
+            "support": "Le tableau oppose l’origine unique du modèle procaryote aux origines multiples chez les eucaryotes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-lagging-strand-okazaki-fragments",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel brin est synthétisé en fragments d’Okazaki à une fourche de réplication ?",
+      "options": [
+        "Les deux nouveaux brins en alternance",
+        "Les deux brins parentaux après leur séparation",
+        "Le brin retardé",
+        "Le brin directeur"
+      ],
+      "answer": 2,
+      "explanation": "La synthèse du brin retardé progresse par fragments, ensuite réunis. Cette organisation permet de copier les deux matrices malgré leurs orientations opposées.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Fragments d’Okazaki",
+        "subjectKey": "replication-adn",
+        "property": "Synthèse discontinue du brin retardé",
+        "expectedAnswer": "Le brin retardé",
+        "learningObjective": "Relier l’organisation de la fourche à une synthèse discontinue.",
+        "factKey": "lagging-strand-okazaki-fragments",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Paragraphes sur leading strand et lagging strand",
+            "support": "Le brin retardé est synthétisé par fragments d’Okazaki, ensuite joints après le remplacement des amorces."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-microrna-complementarity-represses-target-message",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Comment un microARN peut-il diminuer la production d’une protéine à partir d’un ARN messager ciblé ?",
+      "options": [
+        "En reconnaissant le message et en accélérant son épissage",
+        "En s’appariant au message et en freinant sa traduction ou sa stabilité",
+        "En s’appariant au message et en empêchant sa transcription",
+        "En reconnaissant le message et en augmentant sa durée de vie"
+      ],
+      "answer": 1,
+      "explanation": "Un microARN guide un complexe vers un ARN présentant une séquence complémentaire. Le message peut être moins traduit ou dégradé, sans changer la séquence du gène.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-posttranscriptional"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "MicroARN",
+        "subjectKey": "microarn",
+        "property": "Répression post-transcriptionnelle ciblée",
+        "expectedAnswer": "En s’appariant au message et en freinant sa traduction ou sa stabilité",
+        "learningObjective": "Identifier une régulation fondée sur la complémentarité entre ARN.",
+        "factKey": "microrna-complementarity-represses-target-message",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-posttranscriptional",
+            "locator": "RNA Stability and microRNAs",
+            "support": "Le microARN associé à RISC s’apparie avec une séquence complémentaire d’ARNm et peut inhiber sa traduction ou favoriser sa dégradation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-organellar-rna-editing-c-to-u",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans les mitochondries et chloroplastes végétaux, quelle modification de l’ARN est un type courant d’édition ?",
+      "options": [
+        "La conversion ciblée de cytidines en uridines",
+        "La conversion ciblée d’adénosines en inosines",
+        "L’excision de toutes les séquences introniques",
+        "L’ajout d’une longue queue d’adénosines"
+      ],
+      "answer": 0,
+      "explanation": "L’édition C→U modifie certaines positions de l’ARN après sa transcription. Le message mature peut donc différer de la copie brute de la séquence d’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-plant-rna-editing"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Édition des ARN végétaux",
+        "subjectKey": "edition-arn-organites",
+        "property": "Conversions C vers U",
+        "expectedAnswer": "La conversion ciblée de cytidines en uridines",
+        "learningObjective": "Distinguer une modification du transcrit d’une mutation de l’ADN.",
+        "factKey": "plant-organellar-rna-editing-c-to-u",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-plant-rna-editing",
+            "locator": "Introduction ; figure 1",
+            "support": "Dans les organites végétaux, l’édition de l’ARN implique principalement des conversions spécifiques de cytidines en uridines."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-poly-a-tail-protects-messenger-rna",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel effet la queue poly(A) a-t-elle notamment sur un ARN messager eucaryote ?",
+      "options": [
+        "Elle définit l’acide aminé correspondant à chaque codon",
+        "Elle retire les introns encore présents dans le message",
+        "Elle fournit la matrice de transcription du message",
+        "Elle protège son extrémité contre certaines dégradations"
+      ],
+      "answer": 3,
+      "explanation": "La queue poly(A) est ajoutée à l’extrémité 3′ de nombreux ARN messagers. Avec la coiffe, elle contribue à leur protection ; la durée de vie d’un message influence sa traduction.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-posttranscriptional"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Queue poly(A)",
+        "subjectKey": "maturation-arn",
+        "property": "Protection de l’extrémité du message",
+        "expectedAnswer": "Elle protège son extrémité contre certaines dégradations",
+        "learningObjective": "Relier maturation et durée de vie d’un ARN messager.",
+        "factKey": "poly-a-tail-protects-messenger-rna",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-posttranscriptional",
+            "locator": "Control of RNA Stability",
+            "support": "La queue poly(A), avec la coiffe, protège les extrémités du message contre les exonucleases."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-ribosomal-rna-catalytic-role",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le ribosome, quel type de molécule joue un rôle catalytique central dans la formation des liaisons peptidiques ?",
+      "options": [
+        "Un ADN mitochondrial",
+        "Un ARN de transfert",
+        "Un ARN ribosomique",
+        "Un ARN messager"
+      ],
+      "answer": 2,
+      "explanation": "Le ribosome réunit protéines et ARN. L’activité catalytique centrale repose sur de l’ARN ribosomique : une molécule d’ARN peut donc participer directement à une catalyse.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-ribosomes"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ARN ribosomique",
+        "subjectKey": "ribosome",
+        "property": "Composant catalytique",
+        "expectedAnswer": "Un ARN ribosomique",
+        "learningObjective": "Comprendre que les enzymes ne sont pas toutes exclusivement protéiques.",
+        "factKey": "ribosomal-rna-catalytic-role",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-ribosomes",
+            "locator": "Ribosomes",
+            "support": "Le ribosome est composé d’ARN ribosomiques structurels et catalytiques ainsi que de polypeptides."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-ortholog-speciation-paralog-duplication",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle différence d’origine distingue deux gènes orthologues de deux gènes paralogues ?",
+      "options": [
+        "Même chromosome pour les premiers, chromosomes distincts pour les seconds",
+        "Séparation d’espèces pour les premiers, duplication pour les seconds",
+        "Duplication pour les premiers, séparation d’espèces pour les seconds",
+        "Même espèce pour les premiers, même tissu pour les seconds"
+      ],
+      "answer": 1,
+      "explanation": "L’orthologie résulte de la séparation de lignées d’espèces ; la paralogie résulte d’une duplication de gène. Ces termes décrivent une histoire évolutive, et non un tissu d’expression.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-gene-homology"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Relations entre gènes homologues",
+        "subjectKey": "homologie-genes",
+        "property": "Origine des relations orthologues et paralogues",
+        "expectedAnswer": "Séparation d’espèces pour les premiers, duplication pour les seconds",
+        "learningObjective": "Distinguer deux histoires évolutives possibles de gènes apparentés.",
+        "factKey": "ortholog-speciation-paralog-duplication",
+        "form": "comparaison",
+        "difficultyRationale": "Mécanisme moléculaire ou cellulaire spécialisé, rappelé sans prémisses.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-gene-homology",
+            "locator": "Définitions de paralogous genes et orthologous genes",
+            "support": "Les paralogues résultent d’une duplication ; les orthologues ont divergé à partir d’un gène ancestral à la suite d’une spéciation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-franklin-gosling-photograph-51",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Qui a réalisé la célèbre image de diffraction de l’ADN appelée « Photograph 51 » ?",
+      "options": [
+        "Rosalind Franklin et Raymond Gosling",
+        "James Watson et Francis Crick",
+        "François Jacob et Jacques Monod",
+        "Matthew Meselson et Franklin Stahl"
+      ],
+      "answer": 0,
+      "explanation": "Franklin et son doctorant Gosling ont obtenu cette image en 1952 au King’s College London. Elle fait partie des données expérimentales ayant éclairé la structure de l’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-photo-51"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Photograph 51",
+        "subjectKey": "photograph-51",
+        "property": "Crédit de l’image",
+        "expectedAnswer": "Rosalind Franklin et Raymond Gosling",
+        "learningObjective": "Reconnaître les auteurs d’une image majeure de l’histoire de la génétique.",
+        "factKey": "franklin-gosling-photograph-51",
+        "form": "identification",
+        "difficultyRationale": "Rappel historique précis associant une chercheuse et ses travaux, sans indice donnant le nom ou l’organisme attendu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-photo-51",
+            "locator": "Introduction, image obtenue en mai 1952",
+            "support": "La photographie a été obtenue par Rosalind Franklin et son doctorant Raymond Gosling en mai 1952."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-watson-crick-dna-double-helix-model-1953",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel duo publie en 1953 un modèle de la structure en double hélice de l’ADN ?",
+      "options": [
+        "François Jacob et Jacques Monod",
+        "Matthew Meselson et Franklin Stahl",
+        "Alfred Hershey et Martha Chase",
+        "James Watson et Francis Crick"
+      ],
+      "answer": 3,
+      "explanation": "Watson et Crick proposent le modèle en 1953. Il s’appuie notamment sur les mesures de diffraction de Franklin et Wilkins et sur les résultats de Chargaff concernant les bases.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-dna-1953"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Modèle de l’ADN en 1953",
+        "subjectKey": "modele-adn-1953",
+        "property": "Auteurs du modèle publié",
+        "expectedAnswer": "James Watson et Francis Crick",
+        "learningObjective": "Situer une contribution précise dans une découverte collective.",
+        "factKey": "watson-crick-dna-double-helix-model-1953",
+        "form": "identification",
+        "difficultyRationale": "Repère de culture scientifique générale, sans prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-dna-1953",
+            "locator": "Introduction ; publication dans Nature le 25 avril 1953",
+            "support": "Francis Crick et James Watson décrivent la structure en double hélice ; la page précise les données de Franklin, Wilkins et Chargaff."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mcclintock-mobile-elements-studied-in-maize",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Sur quelle plante Barbara McClintock a-t-elle mené ses travaux pionniers sur les éléments génétiques mobiles ?",
+      "options": [
+        "La tomate",
+        "Le blé",
+        "Le maïs",
+        "Le pois"
+      ],
+      "answer": 2,
+      "explanation": "McClintock étudie la génétique et les chromosomes du maïs. Ses travaux sur les éléments transposables ont montré que l’organisation du génome pouvait être dynamique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-mcclintock"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Travaux de Barbara McClintock",
+        "subjectKey": "barbara-mcclintock",
+        "property": "Plante étudiée pour les éléments mobiles",
+        "expectedAnswer": "Le maïs",
+        "learningObjective": "Associer une découverte majeure à son organisme d’étude.",
+        "factKey": "mcclintock-mobile-elements-studied-in-maize",
+        "form": "identification",
+        "difficultyRationale": "Rappel historique précis associant une chercheuse et ses travaux, sans indice donnant le nom ou l’organisme attendu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-mcclintock",
+            "locator": "Premier paragraphe de Barbara McClintock: Life & Work",
+            "support": "La biographie attribue à McClintock des recherches pionnières sur les éléments transposables du maïs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-darwin-wallace-independent-natural-selection-formulation",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quels naturalistes ont formulé indépendamment le mécanisme de sélection naturelle au XIXe siècle ?",
+      "options": [
+        "Carl von Linné et Georges Cuvier",
+        "Charles Darwin et Alfred Russel Wallace",
+        "Gregor Mendel et Thomas Hunt Morgan",
+        "Louis Pasteur et Robert Koch"
+      ],
+      "answer": 1,
+      "explanation": "Darwin et Wallace développent indépendamment cette explication de l’évolution. Leurs textes sont présentés conjointement à la Linnean Society en 1858.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-evolution"
+      ],
+      "editorial": {
+        "category": "history",
+        "subject": "Histoire de la sélection naturelle",
+        "subjectKey": "darwin-wallace-selection",
+        "property": "Formulation indépendante par deux naturalistes",
+        "expectedAnswer": "Charles Darwin et Alfred Russel Wallace",
+        "learningObjective": "Reconnaître la contribution de Wallace aux côtés de celle de Darwin.",
+        "factKey": "darwin-wallace-independent-natural-selection-formulation",
+        "form": "identification",
+        "difficultyRationale": "Repère de culture scientifique générale, sans prérequis technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-evolution",
+            "locator": "Darwin and Natural Selection",
+            "support": "Darwin et Wallace développent indépendamment l’explication par sélection naturelle ; leurs textes sont présentés en 1858."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-arabidopsis-thaliana-plant-genetics-model",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle petite plante à fleurs est un organisme modèle majeur de la génétique végétale ?",
+      "options": [
+        "Arabidopsis thaliana",
+        "Cannabis sativa",
+        "Zostera marina",
+        "Ginkgo biloba"
+      ],
+      "answer": 0,
+      "explanation": "Arabidopsis thaliana est largement utilisée pour étudier le fonctionnement des plantes. Un organisme modèle facilite des recherches fondamentales ; il ne représente pas à lui seul toute la diversité végétale.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-arabidopsis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Arabidopsis thaliana",
+        "subjectKey": "arabidopsis-thaliana",
+        "property": "Rôle d’organisme modèle",
+        "expectedAnswer": "Arabidopsis thaliana",
+        "learningObjective": "Identifier une plante de référence de la recherche génétique.",
+        "factKey": "arabidopsis-thaliana-plant-genetics-model",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-arabidopsis",
+            "locator": "Introduction ; emergence as a model plant",
+            "support": "Arabidopsis est présentée comme une petite plante à fleurs très utilisée comme organisme modèle en biologie et génétique végétales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-genetic-code-nearly-universal-across-species",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Le même codon correspond-il généralement au même acide aminé chez une plante et chez un animal ?",
+      "options": [
+        "Non, chaque espèce emploie un code entièrement différent",
+        "Non, chaque tissu d’un organisme emploie un code différent",
+        "Oui, mais seulement si les espèces peuvent se croiser",
+        "Oui, le code génétique est presque universel"
+      ],
+      "answer": 3,
+      "explanation": "Le sens des codons est largement partagé dans le vivant, avec certaines exceptions. Cette conservation ne signifie pas que les espèces possèdent les mêmes gènes ni les mêmes protéines.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genetic-code"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Quasi-universalité du code",
+        "subjectKey": "code-genetique",
+        "property": "Conservation du sens des codons",
+        "expectedAnswer": "Oui, le code génétique est presque universel",
+        "learningObjective": "Distinguer code partagé et identité des séquences génétiques.",
+        "factKey": "genetic-code-nearly-universal-across-species",
+        "form": "identification",
+        "difficultyRationale": "Idée générale de culture scientifique, sans codon particulier à connaître.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genetic-code",
+            "locator": "The Genetic Code Is Degenerate and Universal, paragraphe nearly universal",
+            "support": "À quelques exceptions près, les espèces utilisent le même code génétique pour la synthèse protéique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-flowering-plant-meiosis-directly-produces-spores",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Chez les plantes à fleurs, dont le chanvre, que produit directement la méiose dans le cycle reproducteur ?",
+      "options": [
+        "Des spores diploïdes",
+        "Des gamètes diploïdes",
+        "Des spores haploïdes",
+        "Des gamètes haploïdes"
+      ],
+      "answer": 2,
+      "explanation": "La méiose produit des spores haploïdes. Elles se développent en gamétophytes, dont les gamètes sont ensuite formés par mitose : le cycle végétal diffère ici du cycle animal typique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-meiosis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Cycle reproducteur des plantes",
+        "subjectKey": "alternance-generations",
+        "property": "Production directe de spores par méiose",
+        "expectedAnswer": "Des spores haploïdes",
+        "learningObjective": "Distinguer formation des spores et formation des gamètes chez les plantes.",
+        "factKey": "flowering-plant-meiosis-directly-produces-spores",
+        "form": "identification",
+        "difficultyRationale": "Notion de biologie intermédiaire demandant de distinguer des mécanismes voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-meiosis",
+            "locator": "Introduction, paragraphe sur sporophytes et gametophytes ; Metaphase I",
+            "support": "Les plantes utilisent la mitose pour la croissance des gamétophytes et la production des gamètes ; la méiose introduit la diversité dans les spores."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-cell-cycle-checkpoints-can-pause-progression",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel critère est vérifié au point de contrôle G2 avant l’entrée en mitose ?",
+      "options": [
+        "L’attache de chaque kinétochore au fuseau",
+        "La copie complète des chromosomes et l’intégrité de l’ADN",
+        "L’achèvement de la séparation du cytoplasme",
+        "L’appariement des chromosomes homologues"
+      ],
+      "answer": 1,
+      "explanation": "Le contrôle G2 peut empêcher l’entrée en mitose si la réplication est incomplète ou l’ADN endommagé. L’attache des kinétochores au fuseau relève d’un contrôle plus tardif.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn05-cell-control"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Points de contrôle du cycle",
+        "subjectKey": "cycle-cellulaire",
+        "property": "Vérification de la copie et de l’intégrité de l’ADN en G2",
+        "expectedAnswer": "La copie complète des chromosomes et l’intégrité de l’ADN",
+        "learningObjective": "Distinguer la surveillance de la réplication avant mitose de celle de l’attache au fuseau.",
+        "factKey": "g2-checkpoint-complete-undamaged-dna",
+        "form": "identification",
+        "difficultyRationale": "Connaissance intermédiaire des critères contrôlés à deux étapes du cycle, comparés à des processus cellulaires voisins.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn05-cell-control",
+            "locator": "The G2 Checkpoint ; The M Checkpoint",
+            "support": "Le contrôle G2 vérifie que les chromosomes sont répliqués et l’ADN intact ; le contrôle M vérifie l’attache des kinétochores au fuseau."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cn05-houston-2018",
+      "title": "Development of A Comprehensive Genetic Tool For Identification of Cannabis Sativa Samples for Forensic and Intelligence Purposes",
+      "organization": "Sam Houston State University ; dépôt NIJ",
+      "url": "https://www.ojp.gov/pdffiles1/nij/grants/254756.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Rachel Michelle Houston",
+      "published": "2018-05 ; dépôt NIJ reçu en 2020-05",
+      "passage": "Chloroplast DNA ; Origin determination, pages 50–52 du PDF",
+      "access": "full-text",
+      "documentKind": "Thèse de doctorat, recherche génétique et synthèse bibliographique",
+      "limitation": "Le passage sur la transmission maternelle du cannabis est bibliographique ; la thèse ne représente pas la position officielle du ministère américain de la Justice.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Chloroplast DNA ; Origin determination, pages 50–52 du PDF",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-eukaryotic-origins",
+      "title": "Biology 2e — 23.1 Eukaryotic Origins",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/23-1-eukaryotic-origins",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Endosymbiosis ; Mitochondria ; Plastids",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Endosymbiosis ; Mitochondria ; Plastids",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-centromere",
+      "title": "Centromere",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/genetics-glossary/Centromere",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "s.d.",
+      "passage": "Definition ; Narration",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "La définition générale est utilisée ; les exemples humains de séquences satellites ne sont pas étendus aux plantes.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-telomere",
+      "title": "Telomere",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/genetics-glossary/Telomere",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "s.d.",
+      "passage": "Definition ; Narration",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "Seule la fonction générale aux extrémités est retenue ; aucune conclusion sur le vieillissement humain n’est étendue au chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-chromosome-errors",
+      "title": "Biology 2e — 13.2 Chromosomal Basis of Inherited Disorders",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/13-2-chromosomal-basis-of-inherited-disorders",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Nondisjunction ; Aneuploidy ; Polyploidy",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Nondisjunction ; Aneuploidy ; Polyploidy",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-mosaicism",
+      "title": "Mosaicism",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/genetics-glossary/Mosaicism",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "s.d.",
+      "passage": "Definition ; Narration",
+      "access": "official-page",
+      "documentKind": "Glossaire institutionnel",
+      "limitation": "La distinction générale entre mosaïque et chimère est utilisée ; pas d’extrapolation médicale humaine.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-somatic-mutations-2025",
+      "title": "Inheritance of somatic mutations can affect fitness in monkeyflowers",
+      "organization": "Journal of Evolutionary Biology ; University of Oregon et Portland State University",
+      "url": "https://academic.oup.com/jeb/article/38/5/630/8098494",
+      "verifiedAt": "2026-11-16",
+      "author": "Matthew A. Streisfeld, Jessie C. Crown, Jack J. McLean, Aidan W. Short et Mitchell B. Cruzan",
+      "published": "2025-03-28",
+      "passage": "Abstract ; Introduction, DOI 10.1093/jeb/voaf033",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Expérience sur Mimulus aurantiacus, pas sur le cannabis ; seul le mécanisme général reliant méristèmes et gamètes est utilisé.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Introduction, DOI 10.1093/jeb/voaf033",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-totipotency",
+      "title": "Internal plant parts",
+      "organization": "Oregon State University Extension Service",
+      "url": "https://extension.oregonstate.edu/catalog/em-9898-internal-plant-parts",
+      "verifiedAt": "2026-11-16",
+      "author": "Ann Marie VanDerZanden",
+      "published": "2008-01 ; révision 2024",
+      "passage": "Cells",
+      "access": "official-page",
+      "documentKind": "Publication universitaire de botanique",
+      "limitation": "La capacité est définie sans affirmer que toute cellule de tout génotype de cannabis régénère spontanément une plante.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Cells",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-grafts",
+      "title": "The Science of Plants — 10.1 Grafts and Wounds",
+      "organization": "University of Minnesota Libraries Publishing",
+      "url": "https://open.lib.umn.edu/horticulture/chapter/10-1-grafts-and-wounds/",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif The Science of Plants",
+      "published": "s.d.",
+      "passage": "Grafting, paragraphes sur les deux génotypes et l’exemple du pommier",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Exemple horticole général, sans protocole de greffage ni affirmation de compatibilité entre toutes les plantes.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Grafting, paragraphes sur les deux génotypes et l’exemple du pommier",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-posttranscriptional",
+      "title": "Biology 2e — 16.5 Eukaryotic Post-transcriptional Gene Regulation",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/16-5-eukaryotic-post-transcriptional-gene-regulation",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Control of RNA Stability ; RNA Stability and microRNAs",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Control of RNA Stability ; RNA Stability and microRNAs",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-plant-rna-editing",
+      "title": "Plant Organellar RNA Editing",
+      "organization": "Institute of Plant Genetics, Leibniz University Hannover",
+      "url": "https://www.genetik.uni-hannover.de/en/research/sections/plant-proteomics/plant-organellar-rna-editing",
+      "verifiedAt": "2026-11-16",
+      "author": "Équipe Plant Proteomics",
+      "published": "s.d.",
+      "passage": "Introduction, figure 1 : Codon changes by C-to-U RNA editing in Arabidopsis thaliana",
+      "access": "official-page",
+      "documentKind": "Présentation institutionnelle d’un domaine de recherche",
+      "limitation": "Mécanisme général des organites végétaux ; ni nombre de sites ni performance d’édition attribués au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, figure 1 : Codon changes by C-to-U RNA editing in Arabidopsis thaliana",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-ribosomes",
+      "title": "Biology 2e — 15.5 Ribosomes and Protein Synthesis",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "The Protein Synthesis Machinery ; Ribosomes",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "The Protein Synthesis Machinery ; Ribosomes",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-gene-homology",
+      "title": "Domain duplication and divergence",
+      "organization": "EMBL-EBI Training",
+      "url": "https://www.ebi.ac.uk/training/online/courses/proteins-domains/mechanisms-of-domain-repertoire-expansion/domain-duplication-and-divergence/",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif EMBL-EBI",
+      "published": "s.d.",
+      "passage": "Paragraphes définissant paralogous genes et orthologous genes",
+      "access": "official-page",
+      "documentKind": "Formation scientifique institutionnelle",
+      "limitation": "Définition évolutive des relations entre gènes ; aucune similarité fonctionnelle absolue n’est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Paragraphes définissant paralogous genes et orthologous genes",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-photo-51",
+      "title": "The story behind Photograph 51",
+      "organization": "King’s College London",
+      "url": "https://www.kcl.ac.uk/the-story-behind-photograph-51",
+      "verifiedAt": "2026-11-16",
+      "author": "Brian Sutton",
+      "published": "2023-04-14",
+      "passage": "Introduction ; capture de Photograph 51 en mai 1952",
+      "access": "official-page",
+      "documentKind": "Article historique universitaire",
+      "limitation": "Le crédit porte sur cette image précise ; ne pas attribuer à un duo seul l’ensemble des travaux sur la structure de l’ADN.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; capture de Photograph 51 en mai 1952",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-dna-1953",
+      "title": "1953: DNA Double Helix",
+      "organization": "National Human Genome Research Institute, NIH",
+      "url": "https://www.genome.gov/25520255/online-education-kit-1953-dna-double-helix",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif NHGRI",
+      "published": "Mise à jour 2013-04-23 ; événement 1953",
+      "passage": "Introduction ; modèle et article publié le 25 avril 1953",
+      "access": "official-page",
+      "documentKind": "Chronologie historique institutionnelle",
+      "limitation": "Les apports de Franklin, Wilkins, Chargaff et d’autres travaux sont explicitement reconnus.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; modèle et article publié le 25 avril 1953",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-mcclintock",
+      "title": "Barbara McClintock: Life & Work",
+      "organization": "Maize Genetics Cooperation",
+      "url": "https://www.maizegenetics.org/awards/mcclintock-biography",
+      "verifiedAt": "2026-11-16",
+      "author": "Lee B. Kass, Cornell University",
+      "published": "s.d. ; adaptation de Kass 2007",
+      "passage": "Premier paragraphe de la biographie",
+      "access": "official-page",
+      "documentKind": "Biographie scientifique par une chercheuse universitaire",
+      "limitation": "Le fait concerne la plante étudiée ; il ne présente pas les transposons comme propres au maïs.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Premier paragraphe de la biographie",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-arabidopsis",
+      "title": "What is Arabidopsis thaliana?",
+      "organization": "MSU-DOE Plant Research Laboratory, Michigan State University",
+      "url": "https://prl.natsci.msu.edu/about/history/arabidopsis/what-is-arabidopsis-thaliana.aspx",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif MSU-DOE Plant Research Laboratory",
+      "published": "s.d.",
+      "passage": "Introduction ; The emergence of Arabidopsis as a model plant",
+      "access": "official-page",
+      "documentKind": "Présentation historique institutionnelle",
+      "limitation": "Plante modèle distincte du cannabis ; aucune expérience sur Arabidopsis n’est présentée comme une mesure sur chanvre.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; The emergence of Arabidopsis as a model plant",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn05-cell-control",
+      "title": "Biology 2e — 10.3 Control of the Cell Cycle",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/10-3-control-of-the-cell-cycle",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Regulation at Internal Checkpoints ; The G2 Checkpoint",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Connaissance générale : ne constitue pas un caractère propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Regulation at Internal Checkpoints ; The G2 Checkpoint",
+        "result": "Passage indiqué effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    }
+  ]
+}

@@ -21,6 +21,8 @@ vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({
 
 import { GET } from "@/app/api/admin/placard/session/route";
 
+const getRequest = () => new Request("http://localhost/api/admin/placard/session");
+
 describe("GET /api/admin/placard/session", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -30,7 +32,7 @@ describe("GET /api/admin/placard/session", () => {
 
   it("refuses unauthenticated session bootstraps", async () => {
     getValidatedAdminContext.mockResolvedValue(null);
-    expect((await GET()).status).toBe(401);
+    expect((await GET(getRequest())).status).toBe(401);
     expect(getKqAdminRunsSnapshot).not.toHaveBeenCalled();
   });
 
@@ -39,7 +41,7 @@ describe("GET /api/admin/placard/session", () => {
     getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1" }, activeRuns: [{ runId: "run-1" }] });
     getKqAdminFlowers.mockResolvedValue([{ id: "flower-1" }]);
     getKqAdminBattles.mockResolvedValue([{ id: "battle-1" }]);
-    const response = await GET();
+    const response = await GET(getRequest());
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(await response.json()).toEqual({
@@ -62,7 +64,7 @@ describe("GET /api/admin/placard/session", () => {
     getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: null, activeRuns: [] });
     getKqAdminFlowers.mockResolvedValue([]);
     getKqAdminBattles.mockResolvedValue([]);
-    const response = await GET();
+    const response = await GET(getRequest());
     expect(response.status).toBe(200);
     expect((await response.json()).warnings).toEqual(["Expiration des duels : RPC indisponible."]);
   });
@@ -72,7 +74,7 @@ describe("GET /api/admin/placard/session", () => {
     getKqAdminRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1" }, activeRuns: [{ runId: "run-1" }] });
     getKqAdminFlowers.mockResolvedValue([{ id: "flower-1" }]);
     getKqAdminBattles.mockRejectedValue(new Error("Historique indisponible."));
-    const response = await GET();
+    const response = await GET(getRequest());
     const payload = await response.json();
     expect(response.status).toBe(200);
     expect(payload.activeRun).toEqual({ runId: "run-1" });
@@ -85,7 +87,7 @@ describe("GET /api/admin/placard/session", () => {
     getKqAdminRunsSnapshot.mockRejectedValue(new Error("A"));
     getKqAdminFlowers.mockRejectedValue(new Error("B"));
     getKqAdminBattles.mockRejectedValue(new Error("C"));
-    const response = await GET();
+    const response = await GET(getRequest());
     expect(response.status).toBe(503);
     expect((await response.json()).warnings).toHaveLength(3);
   });

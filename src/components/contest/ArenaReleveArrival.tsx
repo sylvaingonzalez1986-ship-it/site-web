@@ -11,8 +11,8 @@ import { formatKqCash } from '@/lib/kanab-quest-equipment';
 import styles from './ArenaReleveArrival.module.css';
 
 const SCENES = {
-  locked: { src: ARENA_RELEVE_SCENES.arrival, alt: 'Sylvain tend les clés devant les portes turquoise de la ferme.', title: 'La ferme de Grand-père', action: 'Les clés', label: 'Prendre les clés et ouvrir la grange', Icon: KeyRound, anchor: [39, 43], camera: 40 },
-  opened: { src: '/contest/releve/clearing-sylvain-v1.webp', alt: 'Dans la grange vide de tout animal, Sylvain attend avec son balai. Les anciennes installations sont à retirer.', title: 'On fait place nette', action: 'Tout vider', label: 'Vider la grange', Icon: BrushCleaning, anchor: [73, 76], camera: 70 },
+  locked: { src: ARENA_RELEVE_SCENES.arrival, alt: 'Loïc tend les clés devant les portes turquoise de la ferme.', title: 'La ferme de Grand-père', action: 'Les clés', label: 'Prendre les clés et ouvrir la grange', Icon: KeyRound, anchor: [39, 43], camera: 40 },
+  opened: { src: '/contest/releve/clearing-sylvain-v1.webp', alt: 'Dans la grange vide de tout animal, Loïc attend avec son balai. Les anciennes installations sont à retirer.', title: 'On fait place nette', action: 'Tout vider', label: 'Vider la grange', Icon: BrushCleaning, anchor: [73, 76], camera: 70 },
   emptied: { src: '/contest/releve/worksite-sylvain-v1.webp', alt: 'Le chantier : un sol neuf, des panneaux techniques et la ventilation en cours de pose. Aucune plante.', title: 'La transformation', action: 'Rénover', label: 'Rénover tout l’intérieur', Icon: PaintRoller, anchor: [85, 79], camera: 76 },
   renovated: { src: ARENA_RELEVE_SCENES.renovation, alt: 'La chambre de culture professionnelle terminée : sol en résine, parois techniques et ventilation. Les 100 m² sont prêts à aménager.', title: 'À toi les 100 m²', action: 'Aménager', label: 'Continuer : aménager mon entrepôt', Icon: Ruler, anchor: [63, 65], camera: 56 },
 } as const;
@@ -53,7 +53,7 @@ export function ArenaReleveArrival({ renovation, onRenovate, onContinue, toolbar
   useEffect(() => () => {
     if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
   }, []);
-  // Portrait compositions keep Sylvain and the object together on tall screens.
+  // Portrait compositions keep Loïc and the object together on tall screens.
   const portrait = size.width > 0 && size.width <= 700 && size.height > size.width;
   const artwork = portrait ? PORTRAITS[renovation] : scene;
   const imageWidth = portrait ? 1024 : 1536, imageHeight = portrait ? 1536 : 1024;

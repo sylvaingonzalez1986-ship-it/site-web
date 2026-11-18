@@ -130,11 +130,11 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
     if (key === 'workshop' && canVisitWarehouse) { setWarehouseVisit(true); setQuarter(false); setQuarterNotice(''); return; }
     if (key === currentNav) { if (warehouseVisit) resumeCulture(); setQuarter(false); setQuarterNotice(''); return; }
     if (progress.complete && key === nextNav) { next(); return; }
-    setQuarterNotice(`Nous découvrirons ce lieu plus tard. Sylvain t’attend : ${CHAPTER_PLACES[chapter.stage]}.`);
+    setQuarterNotice(`Nous découvrirons ce lieu plus tard. Loïc t’attend : ${CHAPTER_PLACES[chapter.stage]}.`);
   };
   const openMap: PlacardMapOpen = (view, options) => {
     if (view === 'treasury' && options?.treasuryPole === 'bank') {
-      setQuarterNotice('Sylvain te présentera la banque après ta première récolte, dans les rencontres du quartier.');
+      setQuarterNotice('Loïc te présentera la banque après ta première récolte, dans les rencontres du quartier.');
       return;
     }
     navigate(view === 'arena' ? 'harvests' : view);
@@ -160,7 +160,7 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
       {warehouseVisit && !quarter ? <Production chapter="plan" state={state.production} onChange={production => session.update(current => ({ ...current, production }))} onOpenCulture={resumeCulture} /> : null}
       <div hidden={quarter || warehouseVisit} className={isArrival ? styles.immersiveActivity : styles.activity} data-releve-activity>
       {!isArrival ? <h2 ref={heading} tabIndex={-1} className={styles.activityHeading}>{state.completed ? 'Le registre se remplit.' : chapter.title}</h2> : null}
-      {state.completed ? <section className={styles.completion}><div className={styles.completionScene}><Image src={ARENA_RELEVE_SCENES.packing} alt="Sylvain t’accompagne pour ta première livraison, dans la chambre de culture rénovée." width={1536} height={1024} sizes="(max-width:700px) 100vw, 1100px" /><div><Check size={24} aria-hidden="true" /><h3>Ta ferme a pris vie.</h3><p>Le quartier t’attend pour la suite.</p></div></div><details className={styles.why}><summary><Check size={17} aria-hidden="true" />9 chapitres accomplis</summary><ul>{ARENA_RELEVE_CHAPTERS.map(item => <li key={item.id}><Check size={17} aria-hidden="true" />{item.milestone}</li>)}</ul></details><details className={styles.why}><summary>Retrouver mon registre et mes comptes</summary>{state.commerce ? <Commerce chapter="ledger" state={state.commerce} onChange={commerce => session.update(current => ({ ...current, commerce }))} /> : null}</details></section>
+      {state.completed ? <section className={styles.completion}><div className={styles.completionScene}><Image src={ARENA_RELEVE_SCENES.packing} alt="Loïc t’accompagne pour ta première livraison, dans la chambre de culture rénovée." width={1536} height={1024} sizes="(max-width:700px) 100vw, 1100px" /><div><Check size={24} aria-hidden="true" /><h3>Ta ferme a pris vie.</h3><p>Le quartier t’attend pour la suite.</p></div></div><details className={styles.why}><summary><Check size={17} aria-hidden="true" />9 chapitres accomplis</summary><ul>{ARENA_RELEVE_CHAPTERS.map(item => <li key={item.id}><Check size={17} aria-hidden="true" />{item.milestone}</li>)}</ul></details><details className={styles.why}><summary>Retrouver mon registre et mes comptes</summary>{state.commerce ? <Commerce chapter="ledger" state={state.commerce} onChange={commerce => session.update(current => ({ ...current, commerce }))} /> : null}</details></section>
         : <div className={`${styles.workspace} ${isArrival ? styles.immersiveWorkspace : ''}`} data-releve-workspace key={`${chapter.stage}:${generation}`}>
           {chapter.stage === 'arrival' ? <ArenaReleveArrival renovation={state.renovation} onRenovate={() => session.update(current => ({ ...current, renovation: RENOVATION_ACTIONS[current.renovation as keyof typeof RENOVATION_ACTIONS]?.next ?? current.renovation }))} onContinue={next} toolbar={journal} cashCents={cashCents} />
             : chapter.stage === 'delivery' || chapter.stage === 'shop' || chapter.stage === 'ledger' ? state.commerce && <Commerce chapter={chapter.stage} destination={commerceDestination} onDestinationChange={setCommerceDestination} state={state.commerce} onChange={commerce => session.update(current => ({ ...current, commerce }))} />

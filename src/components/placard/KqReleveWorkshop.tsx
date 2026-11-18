@@ -17,7 +17,7 @@ function restore(storage?: ArenaLearningStorage) {
   try {
     const raw = typeof window === 'undefined' ? null : (storage ?? window.localStorage).getItem(KQ_RELEVE_WORKSHOP_STORAGE_KEY);
     const saved = raw ? readKqReleveWorkshop(JSON.parse(raw)) : null;
-    return { state: saved ?? createKqReleveWorkshop(), warning: raw && !saved ? 'Le dossier enregistré était incomplet. Sylvain a préparé un nouvel essai.' : '' };
+    return { state: saved ?? createKqReleveWorkshop(), warning: raw && !saved ? 'Le dossier enregistré était incomplet. Loïc a préparé un nouvel essai.' : '' };
   } catch { return { state: createKqReleveWorkshop(), warning: 'La reprise sur cet appareil est indisponible. Tu peux terminer cette rencontre pendant cette visite.' }; }
 }
 

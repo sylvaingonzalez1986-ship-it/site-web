@@ -1,0 +1,2147 @@
+{
+  "batch": {
+    "batchId": "r-products-05",
+    "author": "rebalance_products_sol",
+    "role": "Produits, objets, culture des usages et interactions du cannabis",
+    "questions": [
+      {
+        "id": "hemp-q2-rp05-cbd-increases-caffeine-exposure",
+        "topicId": "prevention",
+        "level": 3,
+        "prompt": "Dans l’essai de Thai (2021), quel effet le CBD pharmaceutique avait-il sur la caféine ?",
+        "options": [
+          "Il augmentait l’exposition et ralentissait son élimination",
+          "Il diminuait l’exposition et accélérait son élimination",
+          "Il empêchait son absorption digestive",
+          "Il ne modifiait pas son devenir dans l’organisme"
+        ],
+        "answer": 0,
+        "explanation": "L’essai observe une exposition accrue à la caféine, cohérente avec une inhibition du CYP1A2. Ce résultat pharmacocinétique ne prédit pas à lui seul les symptômes de chaque consommateur.",
+        "articleId": "ref-cbd",
+        "sourceIds": [
+          "q2-rp05-thai-caffeine"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "CBD et caféine",
+          "subjectKey": "cbd-caffeine-interaction",
+          "property": "Exposition accrue à la caféine",
+          "expectedAnswer": "Il augmentait l’exposition et ralentissait son élimination",
+          "learningObjective": "Reconnaître une interaction pharmacocinétique propre au CBD.",
+          "factKey": "cbd-increases-caffeine-exposure",
+          "form": "identification",
+          "difficultyRationale": "Résultat pharmacocinétique ou observation scientifique circonscrite demandant une distinction spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-thai-caffeine",
+              "locator": "Abstract ; Results ; Discussion, exposition à la caféine",
+              "support": "Le CBD pharmaceutique à l’état stationnaire augmente l’exposition à la caféine et ralentit son élimination dans cet essai pharmacocinétique."
+            }
+          ],
+          "jurisdiction": "Essai humain2021 sur CBD pharmaceutique",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-rifampin-decreases-cbd-exposure",
+        "topicId": "prevention",
+        "level": 3,
+        "prompt": "Selon la notice FDA de2026, comment la rifampicine modifie-t-elle l’exposition au CBD pharmaceutique et au7-OH-CBD ?",
+        "options": [
+          "Elle augmente les deux",
+          "Elle diminue les deux",
+          "Elle augmente le CBD et diminue le7-OH-CBD",
+          "Elle diminue le CBD et augmente le7-OH-CBD"
+        ],
+        "answer": 1,
+        "explanation": "La rifampicine stimule des enzymes qui interviennent dans le devenir du CBD et réduit l’exposition au CBD et au7-OH-CBD. Il s’agit d’une interaction de médicament, sans consigne d’ajustement personnel.",
+        "articleId": "ref-cbd",
+        "sourceIds": [
+          "q2-rp05-fda-epidiolex-rifampin"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Rifampicine et CBD",
+          "subjectKey": "cbd-rifampin-interaction",
+          "property": "Diminution de l’exposition au CBD",
+          "expectedAnswer": "Elle diminue les deux",
+          "learningObjective": "Distinguer une interaction réduisant l’exposition de celles qui l’augmentent.",
+          "factKey": "rifampin-decreases-cbd-exposure",
+          "form": "identification",
+          "difficultyRationale": "Résultat pharmacocinétique ou observation scientifique circonscrite demandant une distinction spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-fda-epidiolex-rifampin",
+              "locator": "§7.1 p10 et §12.3 p17 : rifampin",
+              "support": "La rifampicine, inducteur puissant des CYP3A4 et CYP2C19, diminue l’exposition au CBD pharmaceutique et à son métabolite7-OH-CBD."
+            }
+          ],
+          "jurisdiction": "États-Unis, notice FDA mai2026",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-sebsi-wood-clay-materials",
+        "topicId": "history",
+        "level": 2,
+        "prompt": "Quels matériaux composent traditionnellement le sebsi marocain décrit par le Hash Museum ?",
+        "options": [
+          "Une tige en métal et un foyer en verre",
+          "Une tige en roseau et un foyer en pierre",
+          "Une tige en bois et un foyer en argile",
+          "Une tige en verre et un foyer en bois"
+        ],
+        "answer": 2,
+        "explanation": "Cette longue pipe fine associe une tige en bois à un petit foyer d’argile. Le sebsi appartient à la culture marocaine du kif ; il se distingue des pipes à réservoir d’eau.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-museum-sebsi"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Pipe sebsi",
+          "subjectKey": "sebsi-pipe",
+          "property": "Tige bois et foyer argile",
+          "expectedAnswer": "Une tige en bois et un foyer en argile",
+          "learningObjective": "Reconnaître les matériaux d’un objet traditionnel lié au kif.",
+          "factKey": "sebsi-wood-clay-materials",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-museum-sebsi",
+              "locator": "Rubrique Sebsi",
+              "support": "Le sebsi marocain est une longue pipe fine composée d’une tige en bois et d’un foyer en argile."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-malana-cream-himachal-origin",
+        "topicId": "history",
+        "level": 2,
+        "prompt": "À quelle région le NCB indien rattache-t-il le haschich appelé « Malana Cream » ?",
+        "options": [
+          "Le Rif, autour de Chefchaouen",
+          "La Bekaa, autour de Baalbek",
+          "L’Hindu Kush, autour de Mazar-e-Charif",
+          "L’Himachal Pradesh, autour de Malana et Kullu"
+        ],
+        "answer": 3,
+        "explanation": "Le communiqué situe Malana dans la vallée de Parvati et le district de Kullu, en Himachal Pradesh. Cette indication géographique ne certifie pas l’origine de tout produit vendu sous ce nom.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-pib-malana"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Malana Cream",
+          "subjectKey": "malana-cream",
+          "property": "Ancrage géographique en Himachal Pradesh",
+          "expectedAnswer": "L’Himachal Pradesh, autour de Malana et Kullu",
+          "learningObjective": "Situer une appellation de résine sans en faire une certification.",
+          "factKey": "malana-cream-himachal-origin",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-pib-malana",
+              "locator": "Paragraphe sur Malana, vallée de Parvati, district de Kullu",
+              "support": "Le communiqué rattache le hash appelé Malana Cream à la région de Malana et de la vallée de Parvati, dans le district de Kullu, Himachal Pradesh."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-chemdog-grateful-dead-concert",
+        "topicId": "history",
+        "level": 2,
+        "prompt": "Selon le récit de Greg Krzanowski, un concert de quel groupe est lié à l’histoire de Chemdog en1991 ?",
+        "options": [
+          "Grateful Dead",
+          "Pink Floyd",
+          "The Rolling Stones",
+          "Santana"
+        ],
+        "answer": 0,
+        "explanation": "Krzanowski raconte avoir acheté le cannabis à l’origine de cette histoire lors d’un concert du Grateful Dead. Ce témoignage situe un récit de circulation du cannabis ; il ne prouve pas un pedigree.",
+        "articleId": "ref-noms-lignees",
+        "sourceIds": [
+          "q2-rp05-chemdog-concert"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Histoire de Chemdog",
+          "subjectKey": "chemdog-chem91-history",
+          "property": "Concert du Grateful Dead",
+          "expectedAnswer": "Grateful Dead",
+          "learningObjective": "Relier une lignée à un récit documenté de culture musicale.",
+          "factKey": "chemdog-grateful-dead-concert",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-chemdog-concert",
+              "locator": "Récit de l’achat au concert de 1991, paragraphes précédant l’histoire des graines",
+              "support": "Greg Krzanowski rattache l’histoire de Chemdog à du cannabis acheté lors d’un concert du Grateful Dead en 1991."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-chronic-ak47-pedigree",
+        "topicId": "genetics",
+        "level": 2,
+        "prompt": "Quelle lignée Serious Seeds cite-t-il aux côtés de Northern Light et Northern Light/Skunk dans l’ascendance de Chronic ?",
+        "options": [
+          "White Widow",
+          "AK-47",
+          "Haze",
+          "Blueberry"
+        ],
+        "answer": 1,
+        "explanation": "Le pedigree revendiqué par Serious Seeds réunit AK-47, Northern Light et un croisement Northern Light/Skunk. Il s’agit d’une attribution d’obtenteur, sans validation génétique indépendante.",
+        "articleId": "ref-noms-lignees",
+        "sourceIds": [
+          "q2-rp05-serious-chronic"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "varieties",
+          "subject": "Chronic",
+          "subjectKey": "chronic",
+          "property": "AK-47 dans le pedigree revendiqué",
+          "expectedAnswer": "AK-47",
+          "learningObjective": "Lire une parenté précise attribuée à un obtenteur externe.",
+          "factKey": "chronic-ak47-pedigree",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-serious-chronic",
+              "locator": "Genetics : AK-47, Northern Light et Northern Light/Skunk",
+              "support": "Serious Seeds donne pour Chronic une ascendance réunissant AK-47, Northern Light et un croisement Northern Light/Skunk."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-kali-mist-serious-seeds",
+        "topicId": "genetics",
+        "level": 2,
+        "prompt": "Quel obtenteur présente Kali Mist comme l’une de ses créations ?",
+        "options": [
+          "Sensi Seeds",
+          "Dutch Passion",
+          "Serious Seeds",
+          "Barney’s Farm"
+        ],
+        "answer": 2,
+        "explanation": "La fiche originale de Kali Mist la présente comme une création de Serious Seeds. Une attribution d’obtenteur ne permet pas de déduire une teneur ni un effet de tous les lots portant ce nom.",
+        "articleId": "ref-noms-lignees",
+        "sourceIds": [
+          "q2-rp05-serious-kali-mist"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "varieties",
+          "subject": "Kali Mist",
+          "subjectKey": "kali-mist",
+          "property": "Création Serious Seeds",
+          "expectedAnswer": "Serious Seeds",
+          "learningObjective": "Identifier l’obtenteur d’une lignée connue sans déduire sa composition.",
+          "factKey": "kali-mist-serious-seeds",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-serious-kali-mist",
+              "locator": "Titre et présentation de la variété",
+              "support": "La fiche officielle présente Kali Mist comme une création de Serious Seeds."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-cream-caramel-three-parents",
+        "topicId": "genetics",
+        "level": 3,
+        "prompt": "Quel trio Sweet Seeds donne-t-il comme ascendance de Cream Caramel dans son catalogue2024 ?",
+        "options": [
+          "Blueberry, Northern Light et White Widow",
+          "Black Domina, Afghani et Skunk#1",
+          "Blue Dream, Hindu Kush et White Russian",
+          "BlueBlack, Maple Leaf Indica et White Rhino"
+        ],
+        "answer": 3,
+        "explanation": "Le catalogue attribue Cream Caramel à BlueBlack, Maple Leaf Indica et White Rhino. Cette parenté commerciale est distincte des arômes suggérés par le nom de la variété.",
+        "articleId": "ref-noms-lignees",
+        "sourceIds": [
+          "q2-rp05-sweet-cream-caramel"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "varieties",
+          "subject": "Cream Caramel",
+          "subjectKey": "cream-caramel",
+          "property": "Trio parental du catalogue Sweet Seeds",
+          "expectedAnswer": "BlueBlack, Maple Leaf Indica et White Rhino",
+          "learningObjective": "Distinguer une parenté annoncée d’un nom de profil aromatique.",
+          "factKey": "cream-caramel-three-parents",
+          "form": "identification",
+          "difficultyRationale": "Résultat pharmacocinétique ou observation scientifique circonscrite demandant une distinction spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-sweet-cream-caramel",
+              "locator": "Catalogue édition2024 p47 ; extrait indexé Cream Caramel",
+              "support": "Le catalogue donne Cream Caramel comme croisement de BlueBlack, Maple Leaf Indica et White Rhino."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-cannabis-periodontal-association",
+        "topicId": "prevention",
+        "level": 2,
+        "prompt": "Quelle atteinte bucco-dentaire l’étude de Meier (2016) associe-t-elle à l’usage prolongé de cannabis ?",
+        "options": [
+          "Une dégradation des tissus de soutien des dents",
+          "Une augmentation des caries de l’émail uniquement",
+          "Une érosion acide des dents uniquement",
+          "Une prolifération de champignons sur la langue"
+        ],
+        "answer": 0,
+        "explanation": "L’association porte sur la santé parodontale, donc les tissus qui soutiennent les dents, et persiste après prise en compte du tabac. Cette observation n’établit pas une causalité certaine.",
+        "articleId": "ref-thc",
+        "sourceIds": [
+          "q2-rp05-meier-periodontal"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Cannabis et parodonte",
+          "subjectKey": "cannabis-periodontal-health",
+          "property": "Santé parodontale dégradée",
+          "expectedAnswer": "Une dégradation des tissus de soutien des dents",
+          "learningObjective": "Identifier une association bucco-dentaire documentée sans la transformer en causalité.",
+          "factKey": "cannabis-periodontal-association",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-meier-periodontal",
+              "locator": "Abstract complet : Results et Conclusions",
+              "support": "L’usage prolongé de cannabis est associé à une dégradation de la santé parodontale, y compris après prise en compte du tabac."
+            }
+          ],
+          "jurisdiction": "Nouvelle-Zélande, cohorte observationnelle publiée2016",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-cannabis-propofol-endoscopy",
+        "topicId": "prevention",
+        "level": 2,
+        "prompt": "Quelle association l’étude d’Imasogie (2021) relève-t-elle entre cannabis et propofol lors d’endoscopies ?",
+        "options": [
+          "Des besoins de propofol plus faibles chez les usagers",
+          "Des besoins de propofol plus élevés chez les usagers",
+          "Des besoins comparables, sans lien avec l’usage de cannabis",
+          "Un lien limité au tabac associé, sans effet propre du cannabis"
+        ],
+        "answer": 1,
+        "explanation": "L’étude observe une association avec davantage de propofol pour la sédation. Elle ne démontre pas à elle seule une causalité et ne fournit pas une règle de dose applicable à une personne.",
+        "articleId": "ref-thc",
+        "sourceIds": [
+          "q2-rp05-imasogie-propofol"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Cannabis et propofol",
+          "subjectKey": "cannabis-propofol-endoscopy",
+          "property": "Besoins plus élevés associés",
+          "expectedAnswer": "Des besoins de propofol plus élevés chez les usagers",
+          "learningObjective": "Distinguer besoins de sédation et besoins d’analgésie postopératoire.",
+          "factKey": "cannabis-propofol-endoscopy",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-imasogie-propofol",
+              "locator": "Abstract Results/Conclusion ; Discussion et limites",
+              "support": "Dans cette étude d’endoscopie, les personnes exposées au cannabis recevaient davantage de propofol pour obtenir la sédation ; association maintenue dans l’analyse ajustée."
+            }
+          ],
+          "jurisdiction": "Canada, étude observationnelle2021",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-redcross-cannabis-donor-eligibility",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Selon la Croix-Rouge américaine, un usage de cannabis exclut-il automatiquement le don de sang ?",
+        "options": [
+          "Oui ; tout usage antérieur exclut définitivement le donneur",
+          "Oui ; même un usage ancien nécessite un test THC négatif",
+          "Non ; une altération de compréhension ou de mémoire empêche le don",
+          "Non ; le don reste possible pendant une ivresse cannabique"
+        ],
+        "answer": 2,
+        "explanation": "L’usage seul ne disqualifie pas automatiquement. L’organisme refuse toutefois un don lorsque mémoire ou compréhension sont altérées ; cette règle américaine ne se généralise pas aux autres pays.",
+        "articleId": "ref-thc",
+        "sourceIds": [
+          "q2-rp05-redcross-blood"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Cannabis et don de sang",
+          "subjectKey": "cannabis-blood-donation-red-cross",
+          "property": "Pas d’exclusion automatique pour usage seul",
+          "expectedAnswer": "Non ; une altération de compréhension ou de mémoire empêche le don",
+          "learningObjective": "Connaître une règle concrète d’éligibilité sans inventer de délai.",
+          "factKey": "redcross-cannabis-donor-eligibility",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-redcross-blood",
+              "locator": "Key Points ; What You Should Know",
+              "support": "L’usage de cannabis n’exclut pas automatiquement le don de sang auprès de la Croix-Rouge américaine ; une altération de la mémoire ou de la compréhension empêche le don."
+            }
+          ],
+          "jurisdiction": "États-Unis, American Red Cross2024",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-uruguay-pharmacy-residency",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Quel statut est nécessaire pour s’inscrire à l’achat réglementé de cannabis en pharmacie en Uruguay ?",
+        "options": [
+          "Être touriste muni d’un passeport étranger",
+          "Avoir une réservation dans un hôtel uruguayen",
+          "Être ressortissant de n’importe quel pays du Mercosur",
+          "Être citoyen uruguayen ou résident permanent"
+        ],
+        "answer": 3,
+        "explanation": "Le dispositif exige la citoyenneté uruguayenne ou la résidence permanente. La présence comme simple touriste ne donne donc pas accès à ce circuit réglementé d’achat.",
+        "articleId": "ref-histoire-politiques",
+        "sourceIds": [
+          "q2-rp05-uruguay-residence"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Inscription cannabis en Uruguay",
+          "subjectKey": "uruguay-pharmacy-residency",
+          "property": "Citoyenneté ou résidence permanente",
+          "expectedAnswer": "Être citoyen uruguayen ou résident permanent",
+          "learningObjective": "Distinguer accès des résidents et présence touristique.",
+          "factKey": "uruguay-pharmacy-residency",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-uruguay-residence",
+              "locator": "§4.3.1 : inscription des acquéreurs en pharmacie, PDF p48",
+              "support": "L’inscription pour l’achat réglementé en pharmacie exige la citoyenneté uruguayenne naturelle ou légale, ou la résidence permanente."
+            }
+          ],
+          "jurisdiction": "Uruguay, évaluation institutionnelle2026",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-cbd-vape-transformation-hydroxyquinones",
+        "topicId": "evidence",
+        "level": 3,
+        "prompt": "Quel dérivé du CBD l’essai de Robertson (2024) observe-t-il dans les aérosols étudiés ?",
+        "options": [
+          "Des hydroxyquinones du CBD",
+          "Du delta-9-THC",
+          "De l’acide cannabidiolique (CBDA)",
+          "Du cannabigérol (CBG)"
+        ],
+        "answer": 0,
+        "explanation": "Le CBD ne reste pas nécessairement chimiquement intact dans l’aérosol : cet essai observe notamment des hydroxyquinones. Le résultat dépend des conditions étudiées et ne chiffre pas un risque clinique.",
+        "articleId": "ref-cbd",
+        "sourceIds": [
+          "q2-rp05-robertson-quinones"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "constituents",
+          "subject": "Transformations du CBD vapoté",
+          "subjectKey": "cbd-vaping-transformation",
+          "property": "Formation d’hydroxyquinones",
+          "expectedAnswer": "Des hydroxyquinones du CBD",
+          "learningObjective": "Comprendre que l’identité du liquide ne décrit pas seule l’aérosol.",
+          "factKey": "cbd-vape-transformation-hydroxyquinones",
+          "form": "identification",
+          "difficultyRationale": "Résultat pharmacocinétique ou observation scientifique circonscrite demandant une distinction spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-robertson-quinones",
+              "locator": "Abstract complet : produits de transformation des cannabinoïdes",
+              "support": "L’essai sur aérosols observe notamment la formation d’hydroxyquinones à partir du CBD ; la transformation dépend des composés et conditions testés."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-cbd-cartridge-crystallization",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Selon le guide OCS, que peuvent être des cristaux dans une cartouche riche en CBD ?",
+        "options": [
+          "Des moisissures, dans tous les cas",
+          "Du CBD cristallisé, sans défaut nécessaire du produit",
+          "La preuve d’une présence de THC pur",
+          "La preuve d’un ajout de nicotine"
+        ],
+        "answer": 1,
+        "explanation": "Le guide décrit une cristallisation possible dans les produits riches en CBD. L’aspect cristallin n’identifie donc pas à lui seul une contamination ou un autre cannabinoïde.",
+        "articleId": "ref-resines-extraits",
+        "sourceIds": [
+          "q2-rp05-ocs-vape-guide"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "quality",
+          "subject": "Cristallisation dans cartouches CBD",
+          "subjectKey": "cbd-cartridge-crystallization",
+          "property": "Cristallisation possible du CBD",
+          "expectedAnswer": "Du CBD cristallisé, sans défaut nécessaire du produit",
+          "learningObjective": "Reconnaître un comportement physique concret d’un produit riche en CBD.",
+          "factKey": "cbd-cartridge-crystallization",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-ocs-vape-guide",
+              "locator": "Compatibility ; Crystallization",
+              "support": "Le guide distingue les connexions510 des cartouches propriétaires et décrit une cristallisation possible dans des produits riches en CBD, sans que celle-ci indique nécessairement un défaut."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-weedmaps-dispensary-directory",
+        "topicId": "history",
+        "level": 1,
+        "prompt": "À quoi sert principalement Weedmaps dans le secteur cannabique, selon la société ?",
+        "options": [
+          "À certifier en laboratoire les teneurs des fleurs",
+          "À enregistrer officiellement les nouveaux cultivars",
+          "À trouver des dispensaires, livraisons et marques",
+          "À délivrer des autorisations médicales de cannabis"
+        ],
+        "answer": 2,
+        "explanation": "Weedmaps est un service numérique reliant consommateurs et entreprises du cannabis. Une fiche sur ce service n’est pas une analyse de produit ni une autorisation administrative.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-weedmaps-corporate"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Service Weedmaps",
+          "subjectKey": "weedmaps-service",
+          "property": "Découverte des commerces et marques",
+          "expectedAnswer": "À trouver des dispensaires, livraisons et marques",
+          "learningObjective": "Reconnaître un acteur numérique de la culture commerciale du cannabis.",
+          "factKey": "weedmaps-dispensary-directory",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-weedmaps-corporate",
+              "locator": "Présentation du service ; connecting consumers and businesses",
+              "support": "Weedmaps présente un service numérique permettant de découvrir des dispensaires, services de livraison et marques de cannabis."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-vape-510-connection",
+        "topicId": "prevention",
+        "level": 2,
+        "prompt": "Dans le guide OCS, que désigne «510» pour une cartouche de cannabis ?",
+        "options": [
+          "La quantité normalisée de THC dans la cartouche",
+          "Le nombre de bouffées garanti par le fabricant",
+          "Une classe réglementaire de pureté du liquide",
+          "Un type de connexion vissée à la batterie"
+        ],
+        "answer": 3,
+        "explanation": "Le terme décrit une connexion matérielle, et non une teneur ou une certification. Le guide distingue ces cartouches des systèmes propriétaires ; le marquage ne garantit pas toute compatibilité entre marques.",
+        "articleId": "ref-resines-extraits",
+        "sourceIds": [
+          "q2-rp05-ocs-vape-guide"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "quality",
+          "subject": "Connexion de cartouche510",
+          "subjectKey": "cannabis-vape-510",
+          "property": "Connexion cartouche-batterie",
+          "expectedAnswer": "Un type de connexion vissée à la batterie",
+          "learningObjective": "Lire une caractéristique concrète d’un dispositif de cannabis.",
+          "factKey": "vape-510-connection",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-ocs-vape-guide",
+              "locator": "Compatibility ; Crystallization",
+              "support": "Le guide distingue les connexions510 des cartouches propriétaires et décrit une cristallisation possible dans des produits riches en CBD, sans que celle-ci indique nécessairement un défaut."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-carb-cap-airflow-role",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Quelle fonction Puffco attribue-t-il au « carb cap » d’un dispositif à concentrés ?",
+        "options": [
+          "Réguler le passage de l’air dans le compartiment chauffé",
+          "Filtrer l’eau du réservoir du dispositif",
+          "Mesurer la teneur en THC du concentré",
+          "Fragmenter les fleurs avant leur chauffage"
+        ],
+        "answer": 0,
+        "explanation": "Il s’agit d’un couvercle associé au nail ou banger, avec un rôle sur la circulation de l’air. Cette description d’accessoire ne constitue ni une méthode d’utilisation ni une garantie sanitaire.",
+        "articleId": "ref-resines-extraits",
+        "sourceIds": [
+          "q2-rp05-puffco-carb-cap"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "quality",
+          "subject": "Carb cap",
+          "subjectKey": "cannabis-carb-cap",
+          "property": "Régulation du passage de l’air",
+          "expectedAnswer": "Réguler le passage de l’air dans le compartiment chauffé",
+          "learningObjective": "Reconnaître le rôle d’un accessoire distinct du banger.",
+          "factKey": "carb-cap-airflow-role",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-puffco-carb-cap",
+              "locator": "What is a Carb Cap? ; Improved Airflow Control",
+              "support": "Le carb cap est un couvercle du nail/banger qui sert notamment à réguler ou diriger le passage de l’air."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-picasso-paris-hashish-account",
+        "topicId": "history",
+        "level": 2,
+        "prompt": "Quel peintre la notice du Hash Museum associe-t-elle au haschich dans le Paris de sa période rose ?",
+        "options": [
+          "Claude Monet",
+          "Pablo Picasso",
+          "Henri Rousseau",
+          "Paul Cézanne"
+        ],
+        "answer": 1,
+        "explanation": "Le musée rapporte des consommations de Picasso et Fernande Olivier dans le Paris de sa période rose. Ce récit biographique ne démontre pas que le cannabis aurait déterminé son œuvre.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-museum-picasso"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Picasso et haschich",
+          "subjectKey": "picasso-paris-hashish",
+          "property": "Récit de consommation à Paris",
+          "expectedAnswer": "Pablo Picasso",
+          "learningObjective": "Identifier un repère historique des usages sans causalité artistique inventée.",
+          "factKey": "picasso-paris-hashish-account",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-museum-picasso",
+              "locator": "Paragraphe sur Picasso et Fernande Olivier à Paris pendant la période rose",
+              "support": "La notice historique du musée rapporte des consommations de haschich par Picasso et Fernande Olivier dans le Paris de sa période rose."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-dawamesk-resin-paste-form",
+        "topicId": "history",
+        "level": 2,
+        "prompt": "Sous quelle forme le dawamesk est-il décrit dans la notice BnF du « Club des hachichins » ?",
+        "options": [
+          "Une boisson claire obtenue à partir des graines",
+          "Une huile parfumée destinée aux cheveux",
+          "Une confiture verte contenant de la résine de cannabis",
+          "Une poudre de feuilles destinée à être fumée"
+        ],
+        "answer": 2,
+        "explanation": "Le résumé d’éditeur repris par la BnF décrit une confiture verte à la résine de cannabis. C’est une préparation ingérée de l’histoire des usages, distincte d’une résine présentée seule.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-bnf-dawamesk"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Dawamesk historique",
+          "subjectKey": "dawamesk-preparation",
+          "property": "Préparation de type confiture à la résine",
+          "expectedAnswer": "Une confiture verte contenant de la résine de cannabis",
+          "learningObjective": "Identifier une forme historique de produit sans en donner de recette.",
+          "factKey": "dawamesk-resin-paste-form",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-bnf-dawamesk",
+              "locator": "Résumé de l’éditeur, description du dawamesk",
+              "support": "Le résumé décrit le dawamesk comme une confiture verte contenant de la résine de cannabis."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-us-national-parks-recreational-ban",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Un État américain autorise le cannabis récréatif : qu’en est-il dans un parc national sous juridiction fédérale ?",
+        "options": [
+          "La même autorisation s’applique partout dans le parc",
+          "Seul l’usage dans les campings y est autorisé",
+          "Seule la possession de fleurs y est autorisée",
+          "La possession et l’usage récréatif y restent interdits"
+        ],
+        "answer": 3,
+        "explanation": "Le National Park Service rappelle la compétence fédérale des parcs. Une autorisation de l’État ne suffit donc pas à y autoriser la possession et l’usage récréatif de cannabis.",
+        "articleId": "ref-histoire-politiques",
+        "sourceIds": [
+          "q2-rp05-nps-federal-parks"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Cannabis récréatif dans les parcs nationaux",
+          "subjectKey": "us-national-park-cannabis",
+          "property": "Interdiction récréative fédérale",
+          "expectedAnswer": "La possession et l’usage récréatif y restent interdits",
+          "learningObjective": "Distinguer règles d’un État et règles d’un parc fédéral.",
+          "factKey": "us-national-parks-recreational-ban",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-nps-federal-parks",
+              "locator": "Marijuana",
+              "support": "La possession et l’usage récréatif de marijuana restent interdits dans les parcs nationaux sous juridiction fédérale, même lorsqu’un État autorise cet usage."
+            }
+          ],
+          "jurisdiction": "États-Unis, National Park Service consulté2026-11-17",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-dugout-pipe-flower-storage",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Dans le vocabulaire des accessoires de cannabis décrit par RYOT, qu’est-ce qu’un « dugout » ?",
+        "options": [
+          "Une boîte avec logements pour fleurs et petite pipe",
+          "Un broyeur à compartiment récupérateur de kief",
+          "Une pipe à eau à plusieurs chambres",
+          "Un ballon collectant l’aérosol d’un vaporisateur"
+        ],
+        "answer": 0,
+        "explanation": "Le dugout réunit dans une boîte des compartiments séparés pour les fleurs et une petite pipe de type one-hitter. Le nom désigne cet ensemble de rangement, pas un procédé de transformation.",
+        "articleId": "ref-resines-extraits",
+        "sourceIds": [
+          "q2-rp05-ryot-dugout"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "quality",
+          "subject": "Accessoire dugout",
+          "subjectKey": "cannabis-dugout",
+          "property": "Boîte pour fleurs et petite pipe",
+          "expectedAnswer": "Une boîte avec logements pour fleurs et petite pipe",
+          "learningObjective": "Identifier un objet de la culture matérielle des usages.",
+          "factKey": "dugout-pipe-flower-storage",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-ryot-dugout",
+              "locator": "What exactly is a one hitter? : dugout stash box",
+              "support": "Le fabricant décrit le dugout comme une boîte avec des compartiments séparés pour les fleurs de cannabis et la petite pipe one-hitter."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-portugal-personal-cultivation-criminal",
+        "topicId": "prevention",
+        "level": 2,
+        "prompt": "Au Portugal, la dépénalisation de la possession personnelle autorise-t-elle aussi la culture personnelle de cannabis ?",
+        "options": [
+          "Oui : la culture personnelle est libre sans condition",
+          "Non : la culture personnelle reste une infraction pénale",
+          "Oui : toute culture relève seulement d’une sanction administrative",
+          "Non : la culture n’est pénale que si elle est destinée à la vente"
+        ],
+        "answer": 1,
+        "explanation": "L’EUDA distingue expressément les deux régimes : la possession personnelle est dépénalisée, mais cultiver reste pénal, même pour soi. La dépénalisation d’un acte n’englobe pas tous les autres.",
+        "articleId": "ref-histoire-politiques",
+        "sourceIds": [
+          "q2-rp05-euda-portugal-cultivation"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Culture personnelle au Portugal",
+          "subjectKey": "portugal-personal-cultivation",
+          "property": "Culture personnelle restant pénale",
+          "expectedAnswer": "Non : la culture personnelle reste une infraction pénale",
+          "learningObjective": "Distinguer le régime de culture de celui de la possession.",
+          "factKey": "portugal-personal-cultivation-criminal",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-euda-portugal-cultivation",
+              "locator": "Example: Penalties and limits to cultivation for personal use, paragraphe Portugal/Croatia",
+              "support": "Au Portugal, malgré la dépénalisation de l’usage et de la possession personnels, la culture reste une infraction pénale, même pour l’usage personnel."
+            }
+          ],
+          "jurisdiction": "Portugal, synthèse EUDA révisée2026-04-21",
+          "reviewAfter": "2027-05-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-mary-jane-rick-james",
+        "topicId": "history",
+        "level": 1,
+        "prompt": "Quel artiste funk a enregistré « Mary Jane », décrite comme une ode au cannabis dans sa biographie officielle ?",
+        "options": [
+          "James Brown",
+          "George Clinton",
+          "Rick James",
+          "Curtis Mayfield"
+        ],
+        "answer": 2,
+        "explanation": "La biographie officielle de Rick James présente ce titre de son premier album comme une ode au cannabis. Le fait porte sur un repère musical des usages, sans reproduire les paroles.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-rick-james-biography"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Rick James et Mary Jane",
+          "subjectKey": "rick-james-mary-jane",
+          "property": "Artiste du morceau cannabique",
+          "expectedAnswer": "Rick James",
+          "learningObjective": "Reconnaître une référence funk de la culture du cannabis.",
+          "factKey": "mary-jane-rick-james",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-rick-james-biography",
+              "locator": "Paragraphe commençant1977 saw him assemble ; Mary Jane dans le premier album",
+              "support": "La biographie officielle attribue Mary Jane à Rick James et décrit le morceau comme une ode au cannabis."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-full-melt-low-plant-residue",
+        "topicId": "prevention",
+        "level": 2,
+        "prompt": "Quel caractère les descriptions commerciales de haschich « full melt » mettent-elles en avant ?",
+        "options": [
+          "Un ramollissement de surface avec un noyau végétal intact",
+          "Un noircissement prédominant avec peu de matière fondue",
+          "Une séparation en huile et en fibres végétales abondantes",
+          "Une fusion presque totale avec très peu de résidu végétal"
+        ],
+        "answer": 3,
+        "explanation": "710 Labs et Maratek associent cette appellation au comportement à la chaleur et à peu de résidu végétal. Il s’agit d’un descripteur commercial, sans teneur universelle ni garantie d’innocuité.",
+        "articleId": "ref-resines-extraits",
+        "sourceIds": [
+          "q2-rp05-710-full-melt",
+          "q2-rp05-maratek-full-melt"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "quality",
+          "subject": "Appellation full melt",
+          "subjectKey": "hash-full-melt",
+          "property": "Peu de matière végétale résiduelle",
+          "expectedAnswer": "Une fusion presque totale avec très peu de résidu végétal",
+          "learningObjective": "Comprendre un qualificatif de produit sans le confondre avec une norme analytique.",
+          "factKey": "full-melt-low-plant-residue",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-710-full-melt",
+              "locator": "Unique paragraphe sous Persy Water Hash",
+              "support": "La description du fabricant associe full melt à des glandes résineuses qui fondent plutôt que de noircir avec de la matière végétale."
+            },
+            {
+              "sourceId": "q2-rp05-maratek-full-melt",
+              "locator": "p2/index1 : Introduction to Bubble Hash, full melt",
+              "support": "Le document commercial décrit full melt comme laissant peu ou pas de matière végétale résiduelle après fusion."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-muddy-waters-champagne-reefer",
+        "topicId": "history",
+        "level": 2,
+        "prompt": "Quel bluesman interprète « Champagne & Reefer » sur l’album « King Bee » ?",
+        "options": [
+          "Muddy Waters",
+          "B.B. King",
+          "Howlin’ Wolf",
+          "John Lee Hooker"
+        ],
+        "answer": 0,
+        "explanation": "Les métadonnées officielles d’Epic/Legacy attribuent cet enregistrement à Muddy Waters. Reefer est un terme d’argot désignant le cannabis ou une cigarette de cannabis.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-muddy-waters-licensed",
+          "q2-rp05-merriam-reefer"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Muddy Waters et Champagne & Reefer",
+          "subjectKey": "muddy-waters-champagne-reefer",
+          "property": "Interprète de l’enregistrement sur King Bee",
+          "expectedAnswer": "Muddy Waters",
+          "learningObjective": "Reconnaître une référence au cannabis dans le blues.",
+          "factKey": "muddy-waters-champagne-reefer",
+          "form": "identification",
+          "difficultyRationale": "Connaissance précise d’un produit, d’un récit historique ou d’une règle nationale.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-muddy-waters-licensed",
+              "locator": "Métadonnées originales Provided to YouTube by Epic/Legacy : artiste et album",
+              "support": "L’enregistrement Champagne & Reefer sur King Bee est attribué à Muddy Waters par les métadonnées mises en ligne par Epic/Legacy."
+            },
+            {
+              "sourceId": "q2-rp05-merriam-reefer",
+              "locator": "Noun3 : marijuana / marijuana cigarette",
+              "support": "Dans l’argot relevé par le dictionnaire, reefer désigne le cannabis ou une cigarette de cannabis."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-weedcraft-economic-management-game",
+        "topicId": "history",
+        "level": 1,
+        "prompt": "Quel type de jeu est « Weedcraft Inc », consacré au commerce du cannabis ?",
+        "options": [
+          "Un jeu de tir tactique à la première personne",
+          "Un jeu de gestion économique et de stratégie",
+          "Un jeu de courses automobiles en monde ouvert",
+          "Un jeu de rythme fondé sur des chansons reggae"
+        ],
+        "answer": 1,
+        "explanation": "L’éditeur le présente comme une simulation des enjeux économiques, politiques et culturels du commerce du cannabis. Ses mécaniques de jeu ne sont pas des preuves sur des pratiques réelles.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-weedcraft-publisher"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "Jeu Weedcraft Inc",
+          "subjectKey": "weedcraft-inc-game",
+          "property": "Jeu de gestion et stratégie",
+          "expectedAnswer": "Un jeu de gestion économique et de stratégie",
+          "learningObjective": "Identifier une représentation vidéoludique de l’économie cannabique.",
+          "factKey": "weedcraft-economic-management-game",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-weedcraft-publisher",
+              "locator": "Description de l’éditeur ; genres officiels ; date de sortie",
+              "support": "Weedcraft Inc est un jeu de gestion et de stratégie consacré aux aspects économiques, politiques et culturels du commerce du cannabis."
+            }
+          ]
+        }
+      },
+      {
+        "id": "hemp-q2-rp05-thcnyc-opening-museum",
+        "topicId": "history",
+        "level": 1,
+        "prompt": "À son ouverture new-yorkaise en2023, quelle était la nature de « The House of Cannabis » (THC NYC) ?",
+        "options": [
+          "Un dispensaire distribuant du cannabis médical",
+          "Un laboratoire officiel d’analyse des fleurs",
+          "Un musée interactif consacré à la culture du cannabis",
+          "Un club privé réservant des cultures à ses membres"
+        ],
+        "answer": 2,
+        "explanation": "La notice locale d’avril2023 présente un musée immersif sur les liens du cannabis avec l’art, la culture et la politique. Elle le distingue alors d’un dispensaire ; le fait est historique.",
+        "articleId": "ref-histoire-culture",
+        "sourceIds": [
+          "q2-rp05-soho-thcnyc"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "history",
+          "subject": "The House of Cannabis NYC",
+          "subjectKey": "thcnyc-museum",
+          "property": "Musée interactif à l’ouverture2023",
+          "expectedAnswer": "Un musée interactif consacré à la culture du cannabis",
+          "learningObjective": "Distinguer un établissement culturel d’un point de distribution.",
+          "factKey": "thcnyc-opening-museum",
+          "form": "identification",
+          "difficultyRationale": "Repère concret de culture ou d’objet, reconnaissable sans notion technique spécialisée.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-rp05-soho-thcnyc",
+              "locator": "About ; Date Opened : April2023",
+              "support": "À son ouverture en avril2023, The House of Cannabis est présenté comme un musée interactif sur l’art, la culture, la science et la politique liés au cannabis, et non un dispensaire."
+            }
+          ]
+        }
+      }
+    ],
+    "sources": [
+      {
+        "id": "q2-rp05-thai-caffeine",
+        "title": "A Phase 1 Open-Label, Fixed-Sequence Pharmacokinetic Drug Interaction Trial to Investigate the Effect of Cannabidiol on the CYP1A2 Probe Caffeine",
+        "organization": "GW Research / Clinical Pharmacology in Drug Development",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8596598/",
+        "verifiedAt": "2026-11-17",
+        "author": "Ching Thai, Bola Tayo et David Critchley",
+        "published": "2021-05-05",
+        "passage": "Le CBD pharmaceutique à l’état stationnaire augmente l’exposition à la caféine et ralentit son élimination dans cet essai pharmacocinétique.",
+        "access": "full-text",
+        "documentKind": "original-research",
+        "limitation": "Effet pharmacocinétique d’une formulation pharmaceutique ; ne prédit pas une fréquence de symptômes ni l’effet de toutes les huiles commerciales. Aucun protocole ni dose repris.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Abstract ; Results ; Discussion, exposition à la caféine",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-fda-epidiolex-rifampin",
+        "title": "EPIDIOLEX — Prescribing Information",
+        "organization": "FDA / Jazz Pharmaceuticals",
+        "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+        "verifiedAt": "2026-11-17",
+        "author": "FDA / Jazz Pharmaceuticals",
+        "published": "2026-05",
+        "passage": "La rifampicine, inducteur puissant des CYP3A4 et CYP2C19, diminue l’exposition au CBD pharmaceutique et à son métabolite7-OH-CBD.",
+        "access": "full-text",
+        "documentKind": "regulatory-label",
+        "limitation": "Interaction pharmacocinétique de médicament ; aucun ajustement de traitement ni dose n’est proposé.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "§7.1 p10 et §12.3 p17 : rifampin",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-museum-sebsi",
+        "title": "The history of smoking — Sebsi",
+        "organization": "Hash Marihuana & Hemp Museum",
+        "url": "https://hashmuseum.com/en/collection/history-of-smoking/",
+        "verifiedAt": "2026-11-17",
+        "author": "Hash Marihuana & Hemp Museum",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "Le sebsi marocain est une longue pipe fine composée d’une tige en bois et d’un foyer en argile.",
+        "access": "official-page",
+        "documentKind": "museum-catalogue",
+        "limitation": "Matériaux de l’objet uniquement ; proportions du kif, gestes de fumage et affirmations de refroidissement exclus.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Rubrique Sebsi",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-pib-malana",
+        "title": "NCB busts international hashish trafficking syndicate",
+        "organization": "Press Information Bureau / Narcotics Control Bureau, Inde",
+        "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1711213&lang=2&reg=48",
+        "verifiedAt": "2026-11-17",
+        "author": "Press Information Bureau / Narcotics Control Bureau, Inde",
+        "published": "2021-04-12",
+        "passage": "Le communiqué rattache le hash appelé Malana Cream à la région de Malana et de la vallée de Parvati, dans le district de Kullu, Himachal Pradesh.",
+        "access": "excerpt",
+        "documentKind": "institutional-press-release",
+        "limitation": "URL directement tentée mais inaccessible ; extrait original indexé lu. Aucun chiffre de saisie, prix ni superlatif de puissance repris.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Paragraphe sur Malana, vallée de Parvati, district de Kullu",
+          "result": "Extrait original indexé effectivement lu après tentative d’ouverture directe ; aucune lecture intégrale revendiquée."
+        }
+      },
+      {
+        "id": "q2-rp05-chemdog-concert",
+        "title": "30 Years of Chemdog Spotlighted in Northeast Leaf 2021 Harvest Issue",
+        "organization": "Canna Provisions / témoignage de Greg Krzanowski",
+        "url": "https://cannaprovisions.com/blog/30-years-of-chemdog-spotlighted-in-northeast-leaf-2021-harvest-issue/",
+        "verifiedAt": "2026-11-17",
+        "author": "Greg Krzanowski, témoignage repris par Canna Provisions",
+        "published": "2021",
+        "passage": "Greg Krzanowski rattache l’histoire de Chemdog à du cannabis acheté lors d’un concert du Grateful Dead en 1991.",
+        "access": "official-page",
+        "documentKind": "first-person-historical-account",
+        "limitation": "Témoignage commercial attribué, non preuve génétique. Le lieu exact et les détails de culture du récit sont exclus.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Récit de l’achat au concert de 1991, paragraphes précédant l’histoire des graines",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-serious-chronic",
+        "title": "Chronic — Serious Seeds",
+        "organization": "Serious Seeds",
+        "url": "https://www.seriousseeds.com/cannabis-seeds/chronic",
+        "verifiedAt": "2026-11-17",
+        "author": "Serious Seeds",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "Serious Seeds donne pour Chronic une ascendance réunissant AK-47, Northern Light et un croisement Northern Light/Skunk.",
+        "access": "official-page",
+        "documentKind": "breeder-catalogue",
+        "limitation": "Pedigree revendiqué par l’obtenteur, sans vérification génétique indépendante. Texte introductif incohérent sur les arômes et conseils de culture exclus.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Genetics : AK-47, Northern Light et Northern Light/Skunk",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-serious-kali-mist",
+        "title": "Kali Mist Strain — Created by Serious Seeds",
+        "organization": "Serious Seeds",
+        "url": "https://www.seriousseeds.com/cannabis-seeds/kali-mist",
+        "verifiedAt": "2026-11-17",
+        "author": "Serious Seeds",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "La fiche officielle présente Kali Mist comme une création de Serious Seeds.",
+        "access": "official-page",
+        "documentKind": "breeder-catalogue",
+        "limitation": "Identité de l’obtenteur ; aucune parenté inconnue déduite, ni promesse d’effet ou conseil de culture.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Titre et présentation de la variété",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-sweet-cream-caramel",
+        "title": "Catálogo Sweet Seeds 2024 — Cream Caramel SWS04",
+        "organization": "Sweet Seeds",
+        "url": "https://sweetseeds.es/upload/catalogos/2024/es.pdf",
+        "verifiedAt": "2026-11-17",
+        "author": "Sweet Seeds",
+        "published": "Édition2024, date précise non indiquée",
+        "passage": "Le catalogue donne Cream Caramel comme croisement de BlueBlack, Maple Leaf Indica et White Rhino.",
+        "access": "excerpt",
+        "documentKind": "breeder-catalogue",
+        "limitation": "PDF original tenté sans accès intégral ; passage original indexé effectivement lu, également retrouvé dans le catalogue anglais2022 p39. Aucune instruction de culture ni teneur revendiquée reprise.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Catalogue édition2024 p47 ; extrait indexé Cream Caramel",
+          "result": "Extrait original indexé effectivement lu après tentative d’ouverture directe ; aucune lecture intégrale revendiquée."
+        }
+      },
+      {
+        "id": "q2-rp05-meier-periodontal",
+        "title": "Associations Between Cannabis Use and Physical Health Problems in Early Midlife",
+        "organization": "JAMA Psychiatry / University of Otago et collaborateurs",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27249330/",
+        "verifiedAt": "2026-11-17",
+        "author": "Madeline H. Meier et collaborateurs",
+        "published": "2016",
+        "passage": "L’usage prolongé de cannabis est associé à une dégradation de la santé parodontale, y compris après prise en compte du tabac.",
+        "access": "abstract",
+        "documentKind": "original-research",
+        "limitation": "Étude observationnelle : association, non démonstration que tout usage cause une parodontite. Pas de taille d’échantillon ni résultat hors santé parodontale testé.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Abstract complet : Results et Conclusions",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-imasogie-propofol",
+        "title": "High quantities: Evaluating the association between cannabis use and propofol anesthesia during endoscopy",
+        "organization": "PLOS ONE",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0248062",
+        "verifiedAt": "2026-11-17",
+        "author": "Ngozi Imasogie, Rhiannon V. Rose et Aze Wilson",
+        "published": "2021-03-04",
+        "passage": "Dans cette étude d’endoscopie, les personnes exposées au cannabis recevaient davantage de propofol pour obtenir la sédation ; association maintenue dans l’analyse ajustée.",
+        "access": "full-text",
+        "documentKind": "original-research",
+        "limitation": "Association observationnelle, non prescription individuelle ni causalité certaine. Aucun dosage d’anesthésique ou de cannabis repris.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Abstract Results/Conclusion ; Discussion et limites",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-redcross-blood",
+        "title": "Can You Donate Blood If You Use Cannabis?",
+        "organization": "American Red Cross",
+        "url": "https://www.redcrossblood.org/local-homepage/news/article/can-you-donate-blood-if-you-use-cannabis-.html",
+        "verifiedAt": "2026-11-17",
+        "author": "American Red Cross",
+        "published": "2024-04-18",
+        "passage": "L’usage de cannabis n’exclut pas automatiquement le don de sang auprès de la Croix-Rouge américaine ; une altération de la mémoire ou de la compréhension empêche le don.",
+        "access": "official-page",
+        "documentKind": "institutional-donor-guidance",
+        "limitation": "Règle de cet organisme américain, sans extrapolation à la France ni délai d’attente inventé.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Key Points ; What You Should Know",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-uruguay-residence",
+        "title": "Regulación del mercado de cannabis en Uruguay — Segunda evaluación de la ley19.172",
+        "organization": "Junta Nacional de Drogas / Observatorio Uruguayo de Drogas / IRCCA",
+        "url": "https://www.gub.uy/junta-nacional-drogas/sites/junta-nacional-drogas/files/documentos/publicaciones/Regulacion_mar2026_0.pdf",
+        "verifiedAt": "2026-11-17",
+        "author": "Jessica Ramírez, Leticia Keuroglian et Héctor Suárez",
+        "published": "2026",
+        "passage": "L’inscription pour l’achat réglementé en pharmacie exige la citoyenneté uruguayenne naturelle ou légale, ou la résidence permanente.",
+        "access": "full-text",
+        "documentKind": "institutional-evaluation",
+        "limitation": "Condition de résidence du circuit réglementé, distincte de l’interdiction de cumuler trois voies d’accès déjà couverte. Aucun âge ni quantité testé.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "§4.3.1 : inscription des acquéreurs en pharmacie, PDF p48",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-robertson-quinones",
+        "title": "Chemical Composition of Aerosols from E-Cigarette Vaping of Natural and Synthetic Cannabinoids",
+        "organization": "Chemical Research in Toxicology",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39535063/",
+        "verifiedAt": "2026-11-17",
+        "author": "Nicholas E. Robertson et collaborateurs",
+        "published": "2024-11-13",
+        "passage": "L’essai sur aérosols observe notamment la formation d’hydroxyquinones à partir du CBD ; la transformation dépend des composés et conditions testés.",
+        "access": "abstract",
+        "documentKind": "original-research",
+        "limitation": "Résultat d’un dispositif expérimental, non inventaire de toutes les cigarettes électroniques ni quantification du risque clinique. Aucune température, puissance, composition chiffrée ou méthode reprise.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Abstract complet : produits de transformation des cannabinoïdes",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-ocs-vape-guide",
+        "title": "Vape Education & Troubleshooting",
+        "organization": "Ontario Cannabis Store Wholesale",
+        "url": "https://learn.ocswholesale.ca/vape-education-and-troubleshooting/",
+        "verifiedAt": "2026-11-17",
+        "author": "Samantha Lobo",
+        "published": "2021-01-28",
+        "passage": "Le guide distingue les connexions510 des cartouches propriétaires et décrit une cristallisation possible dans des produits riches en CBD, sans que celle-ci indique nécessairement un défaut.",
+        "access": "official-page",
+        "documentKind": "institutional-retailer-guide",
+        "limitation": "Caractéristiques descriptives de produits seulement. Seuils, réglages, chauffage correctif, gestes et conseils d’optimisation exclus ; aucune compatibilité universelle de toute cartouche510 affirmée.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Compatibility ; Crystallization",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-puffco-carb-cap",
+        "title": "Carb Cap Guide",
+        "organization": "Puffco",
+        "url": "https://www.puffco.com/blogs/cannabis-knowledge-base/carb-cap-guide",
+        "verifiedAt": "2026-11-17",
+        "author": "Puffco",
+        "published": "2025-04-03",
+        "passage": "Le carb cap est un couvercle du nail/banger qui sert notamment à réguler ou diriger le passage de l’air.",
+        "access": "official-page",
+        "documentKind": "manufacturer-accessory-guide",
+        "limitation": "Simple fonction d’un accessoire de consommation ; méthodes d’utilisation, température, rendement, arôme, promesses de moindre nocivité et entretien exclus.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "What is a Carb Cap? ; Improved Airflow Control",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-museum-picasso",
+        "title": "Picasso, Paris and Hashish",
+        "organization": "Hash Marihuana & Hemp Museum",
+        "url": "https://hashmuseum.com/en/collection/history-of-smoking/picasso-paris-and-hashish/",
+        "verifiedAt": "2026-11-17",
+        "author": "Hash Marihuana & Hemp Museum",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "La notice historique du musée rapporte des consommations de haschich par Picasso et Fernande Olivier dans le Paris de sa période rose.",
+        "access": "official-page",
+        "documentKind": "museum-historical-notice",
+        "limitation": "Récit biographique secondaire attribué au musée, qui renvoie à Patrick O’Brian. Aucune causalité artistique ni spéculation sur les mélanges consommés reprise.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Paragraphe sur Picasso et Fernande Olivier à Paris pendant la période rose",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-bnf-dawamesk",
+        "title": "Le Club des hachichins / Théophile Gautier — notice bibliographique",
+        "organization": "Bibliothèque nationale de France / résumé de La République des Lettres",
+        "url": "https://catalogue.bnf.fr/ark:/12148/cb47598038s",
+        "verifiedAt": "2026-11-17",
+        "author": "Bibliothèque nationale de France / résumé de La République des Lettres",
+        "published": "Édition2024 ; notice non datée",
+        "passage": "Le résumé décrit le dawamesk comme une confiture verte contenant de la résine de cannabis.",
+        "access": "catalogue",
+        "documentKind": "library-catalogue",
+        "limitation": "Résumé d’éditeur signalé comme tel par la BnF ; forme de préparation historique seulement, sans autres ingrédients, recette, quantité ou mode d’emploi.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Résumé de l’éditeur, description du dawamesk",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-nps-federal-parks",
+        "title": "Alcohol & Marijuana Policy — Shenandoah National Park",
+        "organization": "National Park Service",
+        "url": "https://www.nps.gov/shen/planyourvisit/alcoholpolicy.htm",
+        "verifiedAt": "2026-11-17",
+        "author": "National Park Service",
+        "published": "2022-12-19",
+        "passage": "La possession et l’usage récréatif de marijuana restent interdits dans les parcs nationaux sous juridiction fédérale, même lorsqu’un État autorise cet usage.",
+        "access": "official-page",
+        "documentKind": "institutional-visitor-rule",
+        "limitation": "Interdiction d’usage récréatif consultée le17novembre2026 ; pas de conclusion sur un classement fédéral médical actuel.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Marijuana",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-ryot-dugout",
+        "title": "RYOT’s Guide to Using a One Hitter",
+        "organization": "RYOT",
+        "url": "https://ryot.com/ryots-guide-to-using-a-one-hitter/",
+        "verifiedAt": "2026-11-17",
+        "author": "RYOT",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "Le fabricant décrit le dugout comme une boîte avec des compartiments séparés pour les fleurs de cannabis et la petite pipe one-hitter.",
+        "access": "official-page",
+        "documentKind": "manufacturer-accessory-guide",
+        "limitation": "Identification de l’objet fini uniquement ; capacités, doses, préparation, chargement, allumage et arguments de discrétion exclus.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "What exactly is a one hitter? : dugout stash box",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-euda-portugal-cultivation",
+        "title": "Cannabis laws in Europe FAQ — How do EU countries respond to illegal use and supply of cannabis?",
+        "organization": "European Union Drugs Agency",
+        "url": "https://www.euda.europa.eu/publications/faqs/cannabis-laws-in-europe-faq/how-do-eu-countries-respond-illegal-use-and-supply-cannabis_en",
+        "verifiedAt": "2026-11-17",
+        "author": "European Union Drugs Agency",
+        "published": "Révisé2026-04-21",
+        "passage": "Au Portugal, malgré la dépénalisation de l’usage et de la possession personnels, la culture reste une infraction pénale, même pour l’usage personnel.",
+        "access": "official-page",
+        "documentKind": "institutional-legal-faq",
+        "limitation": "Fait testé : régime pénal de la culture personnelle, pas régime administratif de la possession ou interdiction de vente déjà couverts. Aucune quantité de culture ni conseil pratique.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Example: Penalties and limits to cultivation for personal use, paragraphe Portugal/Croatia",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-rick-james-biography",
+        "title": "Biography",
+        "organization": "Rick James — site officiel / succession",
+        "url": "https://rickjames.com/pages/biography",
+        "verifiedAt": "2026-11-17",
+        "author": "Rick James — site officiel / succession",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "La biographie officielle attribue Mary Jane à Rick James et décrit le morceau comme une ode au cannabis.",
+        "access": "excerpt",
+        "documentKind": "first-party-biographical-account",
+        "limitation": "LecteurB : trois ouvertures directes échouées402 ; extrait primaire indexé réellement lu. Pas d’analyse des paroles ni d’étymologie du groupe Mary Jane Girls.",
+        "consultation": {
+          "reader": "rebalance_classify_b",
+          "date": "2026-11-17",
+          "locator": "Paragraphe commençant1977 saw him assemble ; Mary Jane dans le premier album",
+          "result": "Extrait original indexé effectivement lu après tentative d’ouverture directe ; aucune lecture intégrale revendiquée."
+        }
+      },
+      {
+        "id": "q2-rp05-710-full-melt",
+        "title": "Persy Water Hash",
+        "organization": "710 Labs",
+        "url": "https://710labs.com/persy-water-hash",
+        "verifiedAt": "2026-11-17",
+        "author": "710 Labs",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "La description du fabricant associe full melt à des glandes résineuses qui fondent plutôt que de noircir avec de la matière végétale.",
+        "access": "official-page",
+        "documentKind": "manufacturer-product-description",
+        "limitation": "LecteurB, page canonique réellement ouverte. Description commerciale, sans garantie sanitaire ou analytique ; aucun réglage, protocole, appareil ou procédé de fabrication repris.",
+        "consultation": {
+          "reader": "rebalance_classify_b",
+          "date": "2026-11-17",
+          "locator": "Unique paragraphe sous Persy Water Hash",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-maratek-full-melt",
+        "title": "Water Extraction Whitepaper",
+        "organization": "Maratek",
+        "url": "https://www.maratek.com/hubfs/Whitepapers%20December%202021/Water%20Extraction%20Whitepaper.pdf?hsLang=en",
+        "verifiedAt": "2026-11-17",
+        "author": "Maratek",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "Le document commercial décrit full melt comme laissant peu ou pas de matière végétale résiduelle après fusion.",
+        "access": "full-text",
+        "documentKind": "commercial-whitepaper",
+        "limitation": "LecteurB, PDF3pages ouvert ; date non attestée malgré le chemin2021. Ni norme officielle, ni preuve de sécurité. Protocoles de production, tamis, rendement et échelle étoilée non repris.",
+        "consultation": {
+          "reader": "rebalance_classify_b",
+          "date": "2026-11-17",
+          "locator": "p2/index1 : Introduction to Bubble Hash, full melt",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-muddy-waters-licensed",
+        "title": "Champagne & Reefer — Muddy Waters, King Bee",
+        "organization": "Epic/Legacy / Sony Music — Muddy Waters Topic",
+        "url": "https://www.youtube.com/watch?v=rea4Stp0SeE",
+        "verifiedAt": "2026-11-17",
+        "author": "Epic/Legacy / Sony Music — Muddy Waters Topic",
+        "published": "2017-01-25, mise en ligne ; enregistrement ©1981",
+        "passage": "L’enregistrement Champagne & Reefer sur King Bee est attribué à Muddy Waters par les métadonnées mises en ligne par Epic/Legacy.",
+        "access": "excerpt",
+        "documentKind": "label-licensed-recording-metadata",
+        "limitation": "Ouverture directe indisponible ; métadonnées originales indexées effectivement lues. Aucun vers de chanson reproduit ; date de mise en ligne distincte de l’enregistrement.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Métadonnées originales Provided to YouTube by Epic/Legacy : artiste et album",
+          "result": "Extrait original indexé effectivement lu après tentative d’ouverture directe ; aucune lecture intégrale revendiquée."
+        }
+      },
+      {
+        "id": "q2-rp05-merriam-reefer",
+        "title": "Reefer — Definition & Meaning",
+        "organization": "Merriam-Webster",
+        "url": "https://www.merriam-webster.com/dictionary/reefer",
+        "verifiedAt": "2026-11-17",
+        "author": "Merriam-Webster",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "Dans l’argot relevé par le dictionnaire, reefer désigne le cannabis ou une cigarette de cannabis.",
+        "access": "official-page",
+        "documentKind": "dictionary-entry",
+        "limitation": "Passage descriptif seulement ; aucune dose, recette, méthode de production, optimisation de culture ou consigne de consommation reprise.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Noun3 : marijuana / marijuana cigarette",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-weedcraft-publisher",
+        "title": "Weedcraft Inc — Steam",
+        "organization": "Vile Monarch / Devolver Digital",
+        "url": "https://store.steampowered.com/app/622720/Weedcraft_Inc/",
+        "verifiedAt": "2026-11-17",
+        "author": "Vile Monarch / Devolver Digital",
+        "published": "Jeu sorti le2019-04-11 ; fiche non datée",
+        "passage": "Weedcraft Inc est un jeu de gestion et de stratégie consacré aux aspects économiques, politiques et culturels du commerce du cannabis.",
+        "access": "official-page",
+        "documentKind": "publisher-game-description",
+        "limitation": "Description officielle de l’éditeur sur Steam, non avis d’utilisateurs. Pas de recette de jeu, d’optimisation ni d’assimilation de ses mécaniques à la réalité.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Description de l’éditeur ; genres officiels ; date de sortie",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-soho-thcnyc",
+        "title": "The House of Cannabis Takes Root on Broadway",
+        "organization": "SoHo Broadway Initiative",
+        "url": "https://sohobroadway.org/welcome-to-soho-broadway-house-of-cannabis/",
+        "verifiedAt": "2026-11-17",
+        "author": "SoHo Broadway Initiative",
+        "published": "2023-04-30",
+        "passage": "À son ouverture en avril2023, The House of Cannabis est présenté comme un musée interactif sur l’art, la culture, la science et la politique liés au cannabis, et non un dispensaire.",
+        "access": "official-page",
+        "documentKind": "local-institution-firsthand-notice",
+        "limitation": "Nature de l’établissement lors de son ouverture2023 ; aucune affirmation sur l’absence actuelle de services commerciaux ou sur des horaires actuels.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "About ; Date Opened : April2023",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      },
+      {
+        "id": "q2-rp05-weedmaps-corporate",
+        "title": "Weedmaps — Find your weed",
+        "organization": "Weedmaps / WM Technology",
+        "url": "https://weedmaps.com/corporate",
+        "verifiedAt": "2026-11-17",
+        "author": "Weedmaps / WM Technology",
+        "published": "Date non indiquée sur la page consultée",
+        "passage": "Weedmaps présente un service numérique permettant de découvrir des dispensaires, services de livraison et marques de cannabis.",
+        "access": "official-page",
+        "documentKind": "company-service-description",
+        "limitation": "Fonction revendiquée par la société, sans recommandation d’achat, garantie de vendeur, démarche d’achat ou conseil de contournement légal.",
+        "consultation": {
+          "reader": "rebalance_products_sol",
+          "date": "2026-11-17",
+          "locator": "Présentation du service ; connecting consumers and businesses",
+          "result": "Source originale ouverte ; passage indiqué effectivement lu et paraphrasé."
+        }
+      }
+    ]
+  },
+  "review": {
+    "batchId": "r-products-05",
+    "reviewer": "rebalance_classify_a",
+    "reviewedAt": "2026-11-17",
+    "items": [
+      {
+        "id": "hemp-q2-rp05-cbd-increases-caffeine-exposure",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-thai-caffeine",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8596598/",
+            "locator": "Abstract, Results, Discussion",
+            "result": "Thai, Tayo, Critchley ; en ligne5mai2021, numéro novembre2021. Le CBD à l’état stationnaire augmente l’exposition à la caféine, surtout AUC ; aucun résultat clinique universel ni fréquence de symptômes ne peut être déduit. Limite de lecture indépendante : Essai pharmacocinétique chez volontaires sains ; pas conseil de dose.",
+            "sourceHash": "e95cbc8da5d37d69744f9df45d0ba22bee01b1b65ef43fcde496b5ec1c55854d"
+          }
+        ],
+        "contentHash": "57feb8e9aaef6b7fe40d19d398be751541ac388239d329d51336c78b9a9d65bc"
+      },
+      {
+        "id": "hemp-q2-rp05-rifampin-decreases-cbd-exposure",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-fda-epidiolex-rifampin",
+            "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+            "locator": "§7.1, PDF p.10 ; §12.3",
+            "result": "Notice EPIDIOLEX : rifampicine, inducteur CYP3A4/CYP2C19, diminue concentrations CBD et7-OH-CBD ; impact sur efficacité non connu. Limite de lecture indépendante : Notice réglementaire primaire, non essai de symptômes. Écarter ajustement posologique.",
+            "sourceHash": "63b9301292a62e891f147f5f7fd717fc9b80ac0dec69f1c44ceb205f151d5e09"
+          }
+        ],
+        "contentHash": "a838ad391be7eb44bfa46e8d26667841623dd3c9e795feac1ea3b9bea2e8bbdd"
+      },
+      {
+        "id": "hemp-q2-rp05-sebsi-wood-clay-materials",
+        "status": "changes_requested",
+        "comment": "Fait soutenu et distinct du simple « une pipe » rb05. Harmoniser editorial.subjectKey avec morocco-kif-tradition, déjà employée par hemp-q2-rb05-sebsi-pipe, plutôt que créer sebsi-pipe pour le même objet. Aucun changement de fait requis.",
+        "domain": "active",
+        "domainComment": "Objet culturel du kif, matériaux réels de cette pipe ; distinct d’un cours générique sur le bois.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-museum-sebsi",
+            "url": "https://hashmuseum.com/en/collection/history-of-smoking/",
+            "locator": "Sebsi, lignes71–72",
+            "result": "Le musée décrit la pipe marocaine longue et fine, tige en bois et foyer d’argile. Limite de lecture indépendante : Définition d’objet culturel ; ne pas reprendre proportions, gestes de consommation ni allégations.",
+            "sourceHash": "64db42c3f8451a5fbf7cc0a0e16a6783be2872ee0e515ef9e036296619c06c55"
+          }
+        ],
+        "contentHash": "edcc16ca0fde5898fa9ca3fc7337f2326095f873be61b68c0264c5292c2e88df"
+      },
+      {
+        "id": "hemp-q2-rp05-malana-cream-himachal-origin",
+        "status": "changes_requested",
+        "comment": "Fait géographique soutenu dans l’extrait primaire indexé. Corriger le titre de source : le communiqué1711213 est « 3 kg of Charas seized by NCB Chennai: Two persons arrested in this connection » (PIB Chennai,12avril2021). Le titre actuel international hashish trafficking syndicate n’est pas celui du document et transforme son cadrage inter-state. Question/corrigé inchangés possibles.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-pib-malana",
+            "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1711213&lang=2&reg=48",
+            "locator": "Paragraphe Malana dans communiqué NCB/PIB12avril2021",
+            "result": "L’extrait primaire situe Malana Cream dans la vallée de Parvati, district de Kullu ; partie Himachal Pradesh. Limite de lecture indépendante : Ouverture directe cachemiss. Recherche ciblée a effectivement livré le communiqué original indexé ; aucune lecture intégrale directe revendiquée. Écarter superlatifs et quantités de saisie.",
+            "sourceHash": "665436c9d2d6f8923ff615646dc4f37958cb5ad8749529d81d9869d43cb603de"
+          }
+        ],
+        "contentHash": "83d171443f6500b05ca5ad77e66de57db3bf52f9af65f4321a9873cfe3c6c4b7"
+      },
+      {
+        "id": "hemp-q2-rp05-chemdog-grateful-dead-concert",
+        "status": "changes_requested",
+        "comment": "Fait du concert soutenu et distinct de l’identité civile ra06, clé commune correcte. Qualifier published : « numéro Northeast Leaf de novembre2021 cité ; date de cette page non déterminée » ; le texte consulté atteste le numéro et le témoignage, pas à lui seul l’année de mise en ligne de la page Canna Provisions. Aucun changement du fait testé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-chemdog-concert",
+            "url": "https://cannaprovisions.com/blog/30-years-of-chemdog-spotlighted-in-northeast-leaf-2021-harvest-issue/",
+            "locator": "lignes23–30",
+            "result": "Greg Krzanowski relie son récit de1991 à des fleurs acquises auprès de Joe B/Pbud lors d’un concert Grateful Dead ; numéro Northeast Leaf novembre2021. Limite de lecture indépendante : Témoignage direct repris par son employeur ; lieu Deer Park ne doit pas être certifié. Fait concert distinct de l’identité civile ra06.",
+            "sourceHash": "82ca0f63b9ab11bc075aeebf6c0382fec0b76bed1baee1cea60b9e6b8d0240ae"
+          }
+        ],
+        "contentHash": "616ca5d06f9c9daa4f1dc191f163686973ce4f421febe9084fb9e8aed21f0af0"
+      },
+      {
+        "id": "hemp-q2-rp05-chronic-ak47-pedigree",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-serious-chronic",
+            "url": "https://www.seriousseeds.com/cannabis-seeds/chronic",
+            "locator": "Genetics, lignes114–116",
+            "result": "Serious annonce AK47, Northern Light et un croisement Northern Light/Skunk. Limite de lecture indépendante : Introduction strawberry incohérente paraît copiée ; aucun arôme ni effet ni conseil de culture utilisé.",
+            "sourceHash": "8b71298ba925d43ae08d5a68e65b442f577abc15ea2bc539454bf13610e1917c"
+          }
+        ],
+        "contentHash": "ef23743d34ebdf8fc737b2cb78e5a2ad3d05992b4b0861e7e989173831d927b8"
+      },
+      {
+        "id": "hemp-q2-rp05-kali-mist-serious-seeds",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-serious-kali-mist",
+            "url": "https://www.seriousseeds.com/cannabis-seeds/kali-mist",
+            "locator": "Titre et présentation",
+            "result": "Le titre de la maison annonce Kali Mist Strain Created by Serious Seeds. Limite de lecture indépendante : Attribution commerciale, pas pedigree précis ni garantie d’effet.",
+            "sourceHash": "540243096872094bc91ed0805f3312d2719cb04e656747a97edc81e32d084d0e"
+          }
+        ],
+        "contentHash": "b476c0df57f474889401be31e92625b0c41919b07c13d5a55de16e672916f77d"
+      },
+      {
+        "id": "hemp-q2-rp05-cream-caramel-three-parents",
+        "status": "changes_requested",
+        "comment": "Parenté soutenue par l’édition officielle2020 réellement accessible et lue, mais je ne retrouve pas indépendamment l’extrait du PDF2024 malgré ouverture et recherches ciblées. Remplacer la notice par l’édition primaire accessible2020 (URL et passage en supplementalConsultations) et retirer2024 du prompt ou le remplacer par2020 ; la réponse reste identique. Corriger aussi difficultyRationale, qui parle de pharmacocinétique alors que la difficulté vient du trio parental à mémoriser. Aucun nouveau fait nécessaire.",
+        "domain": "active",
+        "domainComment": "Ascendance d’une lignée récréative précisément attribuée à un breeder externe.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-sweet-cream-caramel",
+            "url": "https://sweetseeds.es/upload/catalogos/2024/es.pdf",
+            "locator": "Tentative d’ouverture directe",
+            "result": "Ouverture inaccessible ; ma recherche primaire ciblée n’a pas renvoyé ce PDF, donc le passage2024 n’est pas encore indépendamment confirmé. Limite de lecture indépendante : Ne pas hériter de la consultation auteur. Une autre édition primaire accessible est documentée ci-dessous comme corroboration, pas comme lecture du catalogue2024.",
+            "sourceHash": "9b046fd0251ab48b1aa30417826d4ae032d10ba2816ad18d500df1337ca05ea4"
+          }
+        ],
+        "contentHash": "5125133afcc98bfe93fbf3597510a6ac5358ca7068d13f401b07c5ac4203ab7b"
+      },
+      {
+        "id": "hemp-q2-rp05-cannabis-periodontal-association",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-meier-periodontal",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/27249330/",
+            "locator": "Résumé original complet, Results et Conclusions",
+            "result": "Meier et al., JAMA Psychiatry2016 : cohorte Dunedin, usage de cannabis associé à santé parodontale dégradée après contrôle du tabac et de facteurs précoces. Limite de lecture indépendante : Étude longitudinale observationnelle, pas preuve de causalité ; pas généraliser à toute santé physique.",
+            "sourceHash": "96fe7a91d2445d417f079044ac917f04206f873109a6eb255a9fdbf88b2f0c26"
+          }
+        ],
+        "contentHash": "657012aed26e0eea3e599a3efab5e577d2d5fe13c8be6cabe6cd8a45c4e636a0"
+      },
+      {
+        "id": "hemp-q2-rp05-cannabis-propofol-endoscopy",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-imasogie-propofol",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0248062",
+            "locator": "Abstract, Results and discussion, limites",
+            "result": "Imasogie, Rose, Wilson,4mars2021 : usage déclaré associé à dose de propofol plus élevée en endoscopie, y compris modèle ajusté ; quotidien supérieur aux fréquences moindres. Limite de lecture indépendante : Un centre, cas-témoins ; association, pas adaptation thérapeutique universelle. Distinct de douleur postopératoire ra06.",
+            "sourceHash": "451b03143693902d7ab270ced40d64595af75ec60c43cfca014c49ba1bed5917"
+          }
+        ],
+        "contentHash": "c28624d2f96e1803b8a1a83c7b521a4bded953bdfc250a24b10baaf5bc805b3e"
+      },
+      {
+        "id": "hemp-q2-rp05-redcross-cannabis-donor-eligibility",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-redcross-blood",
+            "url": "https://www.redcrossblood.org/local-homepage/news/article/can-you-donate-blood-if-you-use-cannabis-.html",
+            "locator": "Key Points et Details, lignes102–115",
+            "result": "Croix-Rouge américaine18avril2024 : usage ne disqualifie pas automatiquement ; mémoire/compréhension altérées empêchent le don ; pas de délai universel fixé. Limite de lecture indépendante : Règle américaine, pas française ; ne pas inventer délai d’attente.",
+            "sourceHash": "5913c7dfb24dee15ba87f478dd7c269e620a4dc63e0aa2546e7e717f6877f2c3"
+          }
+        ],
+        "contentHash": "63f7abaf631535fe561600099dffbafdc1d38593cbfcb19cf19b4d10fc6b8d31"
+      },
+      {
+        "id": "hemp-q2-rp05-uruguay-pharmacy-residency",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-uruguay-residence",
+            "url": "https://www.gub.uy/junta-nacional-drogas/sites/junta-nacional-drogas/files/documentos/publicaciones/Regulacion_mar2026_0.pdf",
+            "locator": "§4.3.1, PDF index47 / imprimée48 ; crédits index1",
+            "result": "PDF primaire ouvert ; crédits Ramírez, Keuroglian, Suárez contrôlés. Le passage indique citoyenneté naturelle/légale ou résidence permanente. Cohérent avec les conditions IRCCA lues séparément.",
+            "sourceHash": "619abc01aa501ec54cedf606796d7d917a96f7df1247de9ebed0e6fb81a90fe7"
+          }
+        ],
+        "contentHash": "99a86f2448ffa407f8cec7d5d36f1a7dd43c5a1091f0173deac3d4dd065bd942"
+      },
+      {
+        "id": "hemp-q2-rp05-cbd-vape-transformation-hydroxyquinones",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Transformation chimique du CBD dans un aérosol de consommation ; active malgré détail spécialisé, sans protocole.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-robertson-quinones",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/39535063/",
+            "locator": "Résumé original complet",
+            "result": "Robertson et al., en ligne13novembre2024, numéro16décembre2024 : tous cannabinoïdes étudiés sauf CBDA donnent hydroxyquinones ; CBDA décarboxyle majoritairement en CBD ; conversionCBD→THC non observée dans ces conditions. Limite de lecture indépendante : Étude expérimentale d’aérosols ; ne pas généraliser à tous produits/conditions ni déduire un risque clinique quantifié.",
+            "sourceHash": "8d92e37ee437c05795d01dcba29006b993f9a815e926cd9fd5beb8cb59d756d6"
+          }
+        ],
+        "contentHash": "147697e34b73b2e0f7840610c61ce340f361caa1c316190f0ec2b1f80c27baaa"
+      },
+      {
+        "id": "hemp-q2-rp05-cbd-cartridge-crystallization",
+        "status": "changes_requested",
+        "comment": "Le fait CBD/cristallisation est soutenu et actif. Le prompt donne déjà « riche en CBD », puis le corrigé nomme le CBD ; les trois distracteurs sont des certitudes peu crédibles (moisissures dans tous les cas, THC pur, ajout nicotine). Tester plutôt quelle composition de cartouche OCS associe à une cristallisation possible, sans donner cette composition au prompt : quatre profils de composition plausibles et parallèles. Garder la nuance absence de défaut nécessaire ; pas de méthode de réchauffage.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-ocs-vape-guide",
+            "url": "https://learn.ocswholesale.ca/vape-education-and-troubleshooting/",
+            "locator": "Compatibility et Crystallization",
+            "result": "Samantha Lobo28janvier2021 : cartouches/batteries510 compatibles mais certains systèmes sont propriétaires ; cristallisation naturelle possible si CBD élevé et pas nécessairement défaut. Limite de lecture indépendante : Ne pas reprendre réglages, chaleur, seuils ou gestes pour optimiser la consommation.",
+            "sourceHash": "f155a3d0ef635091bebd36b6be9c4cfb6ecf7e41de6175df275c828f2f14ddfc"
+          }
+        ],
+        "contentHash": "c1510eeefb62c5d8a08dba6817635aa71624525aeb3f656dde97e1ed2d582dbb"
+      },
+      {
+        "id": "hemp-q2-rp05-weedmaps-dispensary-directory",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-weedmaps-corporate",
+            "url": "https://weedmaps.com/corporate",
+            "locator": "En-tête Dispensaries Deliveries Brands ; paragraphes12–16 et39",
+            "result": "Page corporate ouverte ; découverte de commerces, livraisons et marques et connexion consommateurs/entreprises soutenues. Pas certification analytique/autorisation médicale attribuée au service.",
+            "sourceHash": "84920592e7560564f7227a6758a90396174eefa41c276dad45dc40fab5449dda"
+          }
+        ],
+        "contentHash": "acf1535934f9fcb53376da29e7d115950623a9490332ff571966419b14857931"
+      },
+      {
+        "id": "hemp-q2-rp05-vape-510-connection",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Désignation concrète d’une connexion de cartouche de cannabis, utile au vocabulaire produit ; pas leçon générale de physique.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-ocs-vape-guide",
+            "url": "https://learn.ocswholesale.ca/vape-education-and-troubleshooting/",
+            "locator": "Compatibility et Crystallization",
+            "result": "Samantha Lobo28janvier2021 : cartouches/batteries510 compatibles mais certains systèmes sont propriétaires ; cristallisation naturelle possible si CBD élevé et pas nécessairement défaut. Limite de lecture indépendante : Ne pas reprendre réglages, chaleur, seuils ou gestes pour optimiser la consommation.",
+            "sourceHash": "f155a3d0ef635091bebd36b6be9c4cfb6ecf7e41de6175df275c828f2f14ddfc"
+          }
+        ],
+        "contentHash": "2e9da17de47d6d78541c0985701ee9b0871a22eafc59f350ba3ceff941945f1a"
+      },
+      {
+        "id": "hemp-q2-rp05-carb-cap-airflow-role",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Fonction descriptive d’un accessoire de concentrés, sans conseil d’optimisation.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-puffco-carb-cap",
+            "url": "https://www.puffco.com/blogs/cannabis-knowledge-base/carb-cap-guide",
+            "locator": "What is a Carb Cap? ; Improved Airflow Control ; date3avril2025",
+            "result": "Page fabricant ouverte ; fonction de régulation/direction de l’air soutenue. Pas de méthode, température ou optimisation dans la question.",
+            "sourceHash": "b514aca85f9ac5db56b8abfd55e8163c60c0dc8f435645b2c9f6bfb1b1d842b3"
+          }
+        ],
+        "contentHash": "44e23456a10b793efccd1f731155b5179a80a431e1b9d8ab8fa51b41ec681a57"
+      },
+      {
+        "id": "hemp-q2-rp05-picasso-paris-hashish-account",
+        "status": "changes_requested",
+        "comment": "Fait historique soutenu, mais « période rose » permet de répondre Picasso par connaissance artistique générale sans connaître le lien cannabique. Retirer cet indice du prompt et poser directement l’attribution du récit de consommation de haschich à Paris ; les quatre noms de peintres peuvent rester. L’explication peut conserver la période après réponse. Aucun nouveau fait/source requis.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-museum-picasso",
+            "url": "https://hashmuseum.com/en/collection/history-of-smoking/picasso-paris-and-hashish/",
+            "locator": "Paragraphes55–56, Rose Period et Fernande Olivier",
+            "result": "Notice muséale secondaire effectivement lue ; attribue usage de haschich à Picasso/Fernande Olivier et renvoie à O’Brian1976. Fait soutenu sans causalité artistique ; indice période rose trop révélateur au prompt.",
+            "sourceHash": "22c8bbdded0fe04cc7a85d7176b025ce33ee5901227861a94574277441991b1b"
+          }
+        ],
+        "contentHash": "0ef99035155191f1114ed3fea040f8689496f48813b6c69e2e7f29a1437e6823"
+      },
+      {
+        "id": "hemp-q2-rp05-dawamesk-resin-paste-form",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Préparation historique à résine cannabique ingérée, donc active et non alimentaire graines.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-bnf-dawamesk",
+            "url": "https://catalogue.bnf.fr/ark:/12148/cb47598038s",
+            "locator": "Résumé éditeur, lignes75–79 ; DL2024",
+            "result": "Notice BnF ouverte et résumé identifié comme source éditeur. Confiture verdâtre à résine de cannabis soutenue ; aucune recette dans le quiz.",
+            "sourceHash": "7ce8ff754d5451ce0f20993aba4b359e2bdc0b02bb641aaed4d51372ad4c9374"
+          }
+        ],
+        "contentHash": "760aa91d33cd0edd2478802cfebfbb75f32c6c5f340a7cdb169ac282f8ead043"
+      },
+      {
+        "id": "hemp-q2-rp05-us-national-parks-recreational-ban",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-nps-federal-parks",
+            "url": "https://www.nps.gov/shen/planyourvisit/alcoholpolicy.htm",
+            "locator": "Marijuana, ligne36 ; mise à jour19décembre2022",
+            "result": "Page NPS ouverte ; interdit possession/usage de marijuana dans les parcs fédéraux même si l’État autorise le récréatif. Réponse bornée au récréatif ; pas de conclusion sur le reclassement médical2026.",
+            "sourceHash": "5104c06d586d901fd68a35945378da8714d619b9bba5594c7a6d5a1e7389496e"
+          }
+        ],
+        "contentHash": "2e466bc8121ab8f444b4e7638fed94e40f63208126c0777c61fb34cfbc1a18a1"
+      },
+      {
+        "id": "hemp-q2-rp05-dugout-pipe-flower-storage",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-ryot-dugout",
+            "url": "https://ryot.com/ryots-guide-to-using-a-one-hitter/",
+            "locator": "What exactly is a one hitter and dugout?, lignes47–52",
+            "result": "Page fabricant ouverte ; distingue pipe et boîte dugout avec logements pour pipe et cannabis. Aucun détail de chargement/consommation repris.",
+            "sourceHash": "ee915e02b4bdbbfd5c4edf531ab002f736ac9f6f7b431462087500b57978427a"
+          }
+        ],
+        "contentHash": "75d2a279e1de557f5b4ba931de695f462648f63d6121babbe931a6dd79df46ad"
+      },
+      {
+        "id": "hemp-q2-rp05-portugal-personal-cultivation-criminal",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Régime pénal propre à la culture du cannabis ; différent du régime de possession déjà couvert.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-euda-portugal-cultivation",
+            "url": "https://www.euda.europa.eu/publications/faqs/cannabis-laws-in-europe-faq/how-do-eu-countries-respond-illegal-use-and-supply-cannabis_en",
+            "locator": "Example: Penalties and limits to cultivation for personal use, ligne504",
+            "result": "Passage EUDA effectivement lu : culture restant pénale même pour soi au Portugal/Croatie. Différent de possession ra03 ; ne reprend pas les autres passages obsolètes sur Allemagne/US de cette FAQ. Consolidation portugaise2026 ouverte en corroboration.",
+            "sourceHash": "ad6534210afbb434ea47718c1a2cd9a1ee9f1c0a59195294fa0efe3f94423c2b"
+          }
+        ],
+        "contentHash": "70bf41bfd784e8c7f3c16d8d37530a75cffc3bf5abbae88b560e6beb56c3c488"
+      },
+      {
+        "id": "hemp-q2-rp05-mary-jane-rick-james",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-rick-james-biography",
+            "url": "https://rickjames.com/pages/biography",
+            "locator": "Paragraphe premier album1978 et Mary Jane",
+            "result": "La biographie officielle désigne Mary Jane comme pot paean et l’attribue à Rick James ; lien cannabique et artiste soutenus. Limite de lecture indépendante : Ouverture directe402. Paragraphe primaire indexé effectivement lu via requête ciblée ; aucune lecture intégrale directe ni paroles reproduites.",
+            "sourceHash": "62e53cde04b16e5c5e6ca0a5a447dfaa91b450880c016878b4c3b2aa95ec710c"
+          }
+        ],
+        "contentHash": "5740c14b104d5afdbd48303590f841d2720f2e936e308794b0a194565fabb896"
+      },
+      {
+        "id": "hemp-q2-rp05-full-melt-low-plant-residue",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-710-full-melt",
+            "url": "https://710labs.com/persy-water-hash",
+            "locator": "Paragraphe Persy Water Hash, ligne90",
+            "result": "Le fabricant relie full melt au comportement des têtes résineuses à la chaleur plutôt qu’à un noircissement. Limite de lecture indépendante : Description commerciale attribuée, pas résultat de contrôle analytique ni garantie sanitaire.",
+            "sourceHash": "3a5365a78f2f11d1e482a227fe538f3c98daeecb81b9a75a68c1742fd47b5130"
+          },
+          {
+            "sourceId": "q2-rp05-maratek-full-melt",
+            "url": "https://www.maratek.com/hubfs/Whitepapers%20December%202021/Water%20Extraction%20Whitepaper.pdf?hsLang=en",
+            "locator": "PDF p.2, Introduction to Bubble Hash, lignes33–35",
+            "result": "Le fabricant d’équipements décrit full melt comme laissant peu ou pas de matière végétale après fusion ; échelle1–6 présentée comme usage commercial. Limite de lecture indépendante : Document commercial, pas norme officielle. Méthodes, généralisation tamis et promesses de santé exclues. Date2021 issue du chemin seulement, non validée comme date documentaire.",
+            "sourceHash": "b3cb0f5b5070fe3780f027d8aa764e4052d39ac1ed18776336ee402eb16a9d01"
+          }
+        ],
+        "contentHash": "f5be15903b4c01aabfad65f04aad7e39829532de29f57dc4021fa20bb6a09679"
+      },
+      {
+        "id": "hemp-q2-rp05-muddy-waters-champagne-reefer",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-muddy-waters-licensed",
+            "url": "https://www.youtube.com/watch?v=rea4Stp0SeE",
+            "locator": "Métadonnées Epic/Legacy indexées : artiste, album King Bee, phonogramme℗1981 ; mise en ligne25janvier2017",
+            "result": "Ouverture directe échouée ; recherche ciblée a réellement livré les métadonnées originales de cette URL. Muddy Waters, King Bee et date de mise en ligne vérifiés, sans paroles. Le symbole exact du crédit est ℗1981, distinct de la date de mise en ligne.",
+            "sourceHash": "116c42645f86fbe96baa41fe6e9e59f5106e607e6bbc6a38aad326c8bf5c014b"
+          },
+          {
+            "sourceId": "q2-rp05-merriam-reefer",
+            "url": "https://www.merriam-webster.com/dictionary/reefer",
+            "locator": "Noun(3), lignes64–72",
+            "result": "Dictionnaire original ouvert ; sens cannabis ou cigarette de cannabis confirmé ; autres sens frigorifiques et vêtement distingués.",
+            "sourceHash": "411b20c813de52f6cf441330dc15ab66d1613fb9e3690cafabc9cd78ad6d162b"
+          }
+        ],
+        "contentHash": "3ba8ef4c46c13ca22444e4a6f1dbce34f071ea01288be9866ce83dc7badbdff3"
+      },
+      {
+        "id": "hemp-q2-rp05-weedcraft-economic-management-game",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-weedcraft-publisher",
+            "url": "https://store.steampowered.com/app/622720/Weedcraft_Inc/",
+            "locator": "Présentation, Genre officiel Simulation/Strategy, date11avril2019",
+            "result": "Fiche éditeur Steam ouverte ; Vile Monarch développeur, Devolver éditeur. Le genre et la présentation de gestion économique du cannabis sont soutenus ; pas utilisation des tags utilisateurs comme seule preuve.",
+            "sourceHash": "236e2d0d954667cb15ce621c7863891cd52da6510c535a47ddfbb9f200b15e66"
+          }
+        ],
+        "contentHash": "bdc79fd64adc7c3c7cd37c6f979ee523f8db1533be1204cf58c4206bcfdf60bf"
+      },
+      {
+        "id": "hemp-q2-rp05-thcnyc-opening-museum",
+        "status": "approved",
+        "comment": "Question, quatre choix, corrigé, explication et notices finales lus ; fait soutenu et limites conservées. Aucun doublon exact retrouvé.",
+        "domain": "active",
+        "domainComment": "Le fait testé porte directement sur cannabis à actifs, ses effets, ses produits, sa culture ou ses règles spécifiques.",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-rp05-soho-thcnyc",
+            "url": "https://sohobroadway.org/welcome-to-soho-broadway-house-of-cannabis/",
+            "locator": "Date Opened April2023 ; About, lignes51–63 ; signature30avril2023",
+            "result": "Notice de l’organisme local effectivement lue ; musée interactif, explicitement distinct d’un dispensaire à l’ouverture. Fait historique sans supposer état commercial actuel.",
+            "sourceHash": "03ac29ce7af82383deaf93ee6e3c995873b660fc4894cf43001290e8903a832f"
+          }
+        ],
+        "contentHash": "120b6ec3ba34b8103693e7d91cec5f3f5a3a6ff776dc44a8a4ddd84dd8383485"
+      }
+    ],
+    "summary": {
+      "questionsRead": 27,
+      "sourceObjectsRead": 28,
+      "sourceChecks": 29,
+      "approved": 21,
+      "changesRequested": 6,
+      "rejected": 0,
+      "domainCounts": {
+        "active": 27
+      },
+      "batchUnchanged": true,
+      "batchFileHash": "45f143af4227636ba3239ca60df3f72bd20d0af55bb5abb57048cd4e4ae3ee7a",
+      "fullObjectRead": "27questions,108choix,27explications et28notices finales lus. Préconsultations rapprochées des sources finales ; nouvelles URLs et passages effectivement lus.",
+      "sourceLimits": "Les limites d’extrait des sources PIB, Rick James et YouTube sont conservées ; source2024CreamCaramel non confirmée indépendamment, demande ciblée avec alternative primaire accessible."
+    },
+    "neighbourChecks": [
+      {
+        "ids": [
+          "hemp-q2-rb05-sebsi-pipe",
+          "hemp-q2-rp05-sebsi-wood-clay-materials"
+        ],
+        "result": "Voisin complet relu : simple identité pipe contre composition bois/argile, faits distincts ; harmonisation de clé requise."
+      },
+      {
+        "ids": [
+          "hemp-q2-ra06-chemdog-greg-krzanowski",
+          "hemp-q2-rp05-chemdog-grateful-dead-concert"
+        ],
+        "result": "Identité du breeder contre concert ; distincts, clé commune correcte."
+      },
+      {
+        "ids": [
+          "hemp-q2-ra05-uruguay-one-access-route",
+          "hemp-q2-rp05-uruguay-pharmacy-residency"
+        ],
+        "result": "Voisin complet relu ; exclusivité des voies ne teste pas condition de citoyenneté/résidence."
+      },
+      {
+        "ids": [
+          "hemp-q2-ra03-portugal-personal-cannabis-possession-administrative",
+          "hemp-q2-rp05-portugal-personal-cultivation-criminal"
+        ],
+        "result": "Voisin complet relu : possession administrative et vente non légalisée, sans culture personnelle ; nouveau fait distinct."
+      },
+      {
+        "ids": [
+          "hemp-q2-ra06-chronic-thc-postoperative-pain-risk",
+          "hemp-q2-rp05-cannabis-propofol-endoscopy"
+        ],
+        "result": "Douleur postopératoire et besoin d’anesthésique en endoscopie sont distincts ; pas extrapolation de dose."
+      },
+      {
+        "ids": [
+          "hemp-hc-001",
+          "hemp-hc-002",
+          "hemp-hc-015",
+          "hemp-hc-017",
+          "hemp-hc-052",
+          "hemp-q2-rp05-dawamesk-resin-paste-form"
+        ],
+        "result": "Index puis objets complets de Gautier/Balzac relus : auteur, lieu, support/date de publication, refus de Balzac ne testent pas la forme confiture résineuse ; pas doublon exact."
+      }
+    ],
+    "supplementalConsultations": [
+      {
+        "url": "https://wholesales.sweetseeds.info/descargas/descripciones/2020/en/descripciones.pdf",
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "access": "full-text",
+        "locator": "PDF p.23, SWS04, lignes1100–1111",
+        "result": "Le document officiel Sweet Seeds donne Cream Caramel comme Blue Black × Maple Leaf Indica × White Rhino. Le document2020 est directement accessible, lu indépendamment ; aucune promesse thérapeutique ou instruction reprise.",
+        "limitation": "Cette lecture ne vaut pas confirmation de l’édition2024 actuellement citée. Une nouvelle notice finale doit refléter l’édition réellement utilisée."
+      },
+      {
+        "url": "https://pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=181&so_miolo=&tabela=leis",
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "access": "official-page",
+        "locator": "Consolidation34aprèsDL19-F/2026 ; article40",
+        "result": "Consolidation législative officielle portugaise ouverte pour contexte ; la décision q22 s’appuie sur le passage EUDA explicite effectivement lu."
+      }
+    ],
+    "metadataObservations": [
+      {
+        "sourceId": "q2-rp05-muddy-waters-licensed",
+        "observation": "Métadonnées originales portent ℗1981SonyMusic, et non © ; la mise en ligne25janvier2017 est distincte. Cette précision de crédit ne change pas l’interprète, l’album ni le fait testé."
+      }
+    ],
+    "independence": "Aucune participation de ce reviewer à la rédaction des questions. Les deux recherches B (Rick James et full melt) ont été vérifiées indépendamment ; aucun emprunt d’approbation de B."
+  }
+}

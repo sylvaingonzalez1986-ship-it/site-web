@@ -54,14 +54,14 @@ describe("private production Placard access", () => {
     mocks.session.mockResolvedValue(player(email as string, beta as boolean));
     expect(await isKqPlayerRequestEnabled()).toBe(true);
     expect(isKqPublicPlayerApiEnabled()).toBe(false);
-    expect((await GET()).status).toBe(200);
+    expect((await GET(new Request("http://localhost/api/arena/placard/runs"))).status).toBe(200);
     expect(mocks.activeRun).toHaveBeenCalledWith("verified-customer-id", {});
   });
 
   it.each([null, player("ordinary@example.test")])("denies anonymous and ordinary customers even when contest beta restrictions are disabled", async (session) => {
     mocks.session.mockResolvedValue(session);
     expect(await isKqPlayerRequestEnabled()).toBe(false);
-    expect((await GET()).status).toBe(404);
+    expect((await GET(new Request("http://localhost/api/arena/placard/runs"))).status).toBe(404);
     expect(mocks.activeRun).not.toHaveBeenCalled();
   });
 

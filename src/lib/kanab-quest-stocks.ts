@@ -1,3 +1,4 @@
+import { isKqQueuedOrder, type KqQueuedOrder } from "./kanab-quest-market-queue";
 /** Virtual index units and equities. Execution and FX arithmetic belong to PostgreSQL NUMERIC. */
 import catalog from "./stock-market-catalog.json";
 export const KQ_STOCK_MAX_ORDER_CENTS = 100_000_000;
@@ -17,8 +18,8 @@ export type KqStockAsset = KqStockInstrument & {
 export type KqStockPosition = { assetId: string; quantity: string; costBasisCents: number; valueCents: number | null };
 export type KqStockTrade = { orderId: string; assetId: string; side: "buy" | "sell"; quantity: string; priceEur: string; amountCents: number; costBasisCents: number; realizedPnlCents: number; cashAfterCents: number; createdAt: string };
 export type KqStockOrder = { orderId: string; assetId: string; side: "buy" | "sell"; quantity: string; priceEur: string; amountCents: number; expiresAt: string; quotedAt: string };
-export type KqStockSnapshot = { version: 1; serverNow: string; cashCents: number; assets: KqStockAsset[]; positions: KqStockPosition[]; recentTrades: KqStockTrade[] };
-export type KqStockAction = { action: "preview"; side: "buy"; assetId: string; amountCents: number } | { action: "preview"; side: "sell"; assetId: string; quantity: string } | { action: "confirm"; orderId: string };
+export type KqStockSnapshot = { queuedOrders?: KqQueuedOrder[]; version: 1; serverNow: string; cashCents: number; assets: KqStockAsset[]; positions: KqStockPosition[]; recentTrades: KqStockTrade[] };
+export type KqStockAction = { action: "preview"; side: "buy"; assetId: string; amountCents: number } | { action: "preview"; side: "sell"; assetId: string; quantity: string } | { action: "confirm"; orderId: string; executionPolicy?: "next-publication" };
 export const KQ_STOCK_INSTRUMENTS = catalog.instruments as KqStockInstrument[];
 export const KQ_STOCK_CATALOG_DATE = catalog.asOf;
 const instruments = new Map(KQ_STOCK_INSTRUMENTS.map(asset => [asset.id, asset]));
@@ -36,7 +37,7 @@ export function parseKqStockAssetIds(value: string | null): string[] {
 }
 export function parseKqStockAction(value: unknown): KqStockAction {
  if (!isRecord(value)) throw new KqStockRequestError("Ordre boursier invalide.");
- if (value.action === "confirm" && typeof value.orderId === "string" && KQ_STOCK_UUID.test(value.orderId)) return { action: "confirm", orderId: value.orderId };
+ if (value.action === "confirm" && typeof value.orderId === "string" && KQ_STOCK_UUID.test(value.orderId)) return { action: "confirm", orderId: value.orderId, ...(value.executionPolicy === "next-publication" ? { executionPolicy: "next-publication" as const } : {}) };
  if (value.action === "preview" && assetId(value.assetId)) {
   if (value.side === "buy" && natural(value.amountCents) && Number(value.amountCents) >= 100 && Number(value.amountCents) <= KQ_STOCK_MAX_ORDER_CENTS) return { action: "preview", side: "buy", assetId: value.assetId, amountCents: Number(value.amountCents) };
   if (value.side === "sell" && decimal(value.quantity)) return { action: "preview", side: "sell", assetId: value.assetId, quantity: value.quantity };
@@ -66,7 +67,7 @@ export function isKqStockTrade(value: unknown): value is KqStockTrade {
   && Number.isSafeInteger(value.realizedPnlCents) && natural(value.cashAfterCents) && date(value.createdAt);
 }
 export function isKqStockSnapshot(value: unknown): value is KqStockSnapshot {
- return isRecord(value) && value.version === 1 && date(value.serverNow) && natural(value.cashCents)
+ return isRecord(value) && (value.queuedOrders === undefined || Array.isArray(value.queuedOrders) && value.queuedOrders.every(isKqQueuedOrder)) && value.version === 1 && date(value.serverNow) && natural(value.cashCents)
   && Array.isArray(value.assets) && value.assets.every(isKqStockAsset) && new Set(value.assets.map(a => a.id)).size === value.assets.length
   && Array.isArray(value.positions) && value.positions.every(p => isRecord(p) && assetId(p.assetId) && decimal(p.quantity) && natural(p.costBasisCents) && (p.valueCents === null || natural(p.valueCents)))
   && new Set(value.positions.map(p => p.assetId)).size === value.positions.length

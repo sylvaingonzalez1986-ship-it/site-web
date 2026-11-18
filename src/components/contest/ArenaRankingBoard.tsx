@@ -116,7 +116,7 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
     return <li key={row.key} value={row.rank}>{row.href ? <Link href={row.href} className={styles.row} data-viewer={isViewer || undefined} aria-label={`Voir le profil de ${row.pseudo}, place ${row.rank}`}>{content}</Link> : <div className={styles.row} tabIndex={-1} data-viewer={isViewer || undefined}>{content}</div>}</li>;
   };
 
-  return <section id={id} className={styles.board} data-arena-ranking-board data-mode={mode} data-compact={compact || undefined} aria-labelledby={titleId}>
+  return <section id={id} className={styles.board} data-arena-ranking-board data-tutorial-ready={!loading && !unavailable} data-mode={mode} data-compact={compact || undefined} aria-labelledby={titleId}>
     <header className={styles.heading}>
       <div><h3 id={titleId}>{titles[mode]}</h3><p className={styles.intro}>{intros[mode]}</p></div>
       <span className={styles.seal}><KqPrintedArt kind="achievements" className={styles.illustration} sizes="(max-width: 560px) 82px, 150px" /><small>Sans plafond</small></span>

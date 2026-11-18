@@ -1,0 +1,246 @@
+{
+  "batchId": "pilot-c",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16",
+  "duplicateCheck": "Comparaison avec les 360 entrées actives, leurs corrigés et les dix items AB : aucun fait nouveau strictement répété. Abeilles/pollen diffère du transport par le vent ; une graine par fruit diffère de deux cotylédons par embryon ; stockage sous-cuticulaire diffère du nom des structures glandulaires ; cofacteur FAD diffère de la réaction ou du chromosome des synthases. Les deux items trichomes partagent subjectKey mais portent sur des propriétés distinctes.",
+  "difficultyNote": "Corrections E de niveaux et formes appliquées et relues. Calibrage éditorial honnête privilégié, sans mesure psychométrique ni ratio artificiel. La plupart des exercices restent des identifications.",
+  "items": [
+    {
+      "id": "hemp-q2-c-abeilles-ressource-pollen",
+      "status": "approved",
+      "comment": "Question écologique concrète, quatre ressources récoltables ou présentes sur les plantes. Pollen et absence de nectar confirmés. Le corrigé distingue visite des insectes et pollinisation par le vent sans contradiction avec l’ancienne banque. Niveau 1 plausible par le contexte, sans prétendre qu’il est mesuré.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-flicker-bees-2020",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31789341/",
+          "locator": "Abstract, ligne extraite 240",
+          "result": "Résumé primaire ouvert et lu le 16 novembre 2026 : le chanvre n’offre pas de nectar et son pollen abondant attire diverses espèces d’abeilles. Texte intégral non lu ; aucune diversité locale extrapolée.",
+          "sourceHash": "1bc28f0a5d21d8b24fb4f493f66f0ee4a541f171672e972fe0818db046b2e046"
+        }
+      ],
+      "contentHash": "84c02d6f0d96bb3fb90e6f59645d65ccfc37d5c6728b4d7a973178b615fb9175"
+    },
+    {
+      "id": "hemp-q2-c-fleur-male-cinq-etamines",
+      "status": "approved",
+      "comment": "Niveau relevé à 2 : connaître le nombre d’organes reproducteurs. Cinq étamines et passage Flora of China inchangés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-flora-china-cannabaceae-2003",
+          "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+          "locator": "PDF, p.74 imprimée, description des fleurs mâles lignes extraites 12–13 ; clé Cannabis lignes 25–27",
+          "result": "Traitement institutionnel ouvert et passages lus le 16 novembre 2026 : cinq sépales, cinq étamines opposées aux sépales ; filets courts et anthères décrits. Cannabis est couvert par cette description familiale.",
+          "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c"
+        }
+      ],
+      "contentHash": "946f4399041be1b6ee8e59523a4b9eb18749f4f5b9ad2f35abfff51ffeaafaf3",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "df62364739da9efe2013ddcedc30bde886752ec3a565ea325ccea8f22bb3a74a",
+          "previousStatus": "approved",
+          "previousComment": "Morphologie normale correctement qualifiée, quatre nombres plausibles. La position en face des sépales et la fonction des anthères sont cohérentes. Repère introductif possible, mais la petitesse des nombres ne suffit pas à prouver que cette connaissance est facile.",
+          "contentHash": "946f4399041be1b6ee8e59523a4b9eb18749f4f5b9ad2f35abfff51ffeaafaf3",
+          "result": "Niveau relevé à 2 : connaître le nombre d’organes reproducteurs. Cinq étamines et passage Flora of China inchangés.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-chenevis-une-graine",
+      "status": "approved",
+      "comment": "Le fruit et la graine sont correctement distingués et le nombre n’est pas confondu avec celui des cotylédons. Quatre nombres comparables ; aucune variante du fait akène ou péricarpe déjà évalué. Niveau 1 possible comme fondation, à calibrer.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-flora-china-cannabaceae-2003",
+          "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+          "locator": "PDF, p.74 imprimée, lignes extraites 14–16 ; traitement Cannabis p.75",
+          "result": "Source ouverte et passages lus le 16 novembre 2026 : ovaire uniloculaire à ovule solitaire et fruit akène. Cela étaye le fruit normalement monosperme et l’origine de sa graine.",
+          "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c"
+        }
+      ],
+      "contentHash": "1a98d7483fbb0e01fe7a9bd9c48b33f053123440af46615c3ed335507c655039",
+      "metadataAdjustment": {
+        "id": "hemp-q2-c-chenevis-une-graine",
+        "from": "hemp-achene-seed-number",
+        "to": "chenevis",
+        "beforeHash": "102f8d14e172b50bc36e505a32a11026eaa591c44f073b50c7e55a2680d6db3e",
+        "proposedBy": "f_existing_audit",
+        "approvedAndAppliedBy": "root",
+        "basedOn": "reviews/d-legacy-02.json#duplicateReview.pairs",
+        "reason": "One recurring fruit: common name, fruit wall, seed count and reserves are distinct properties with answer leakage between prompts.",
+        "scope": "Subject grouping only; question wording, choices, answer, explanation and source evidence unchanged.",
+        "afterHash": "1a98d7483fbb0e01fe7a9bd9c48b33f053123440af46615c3ed335507c655039"
+      }
+    },
+    {
+      "id": "hemp-q2-c-cannflavines-flavonoides",
+      "status": "approved",
+      "comment": "Quatre familles chimiques plausibles, fait distinct de tous les cannabinoïdes et terpènes de la banque initiale. Le corrigé évite toute promesse anti-inflammatoire. Niveau 2 plausible pour un constituant moins connu.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-rea-cannflavins-2019",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31151063/",
+          "locator": "Abstract, ligne extraite 244",
+          "result": "Résumé de recherche primaire ouvert et lu le 16 novembre 2026 : cannflavines A et B explicitement classées comme flavonoïdes prénylés de Cannabis sativa. Les effets de modèles cellulaires évoqués par la source sont exclus du quiz.",
+          "sourceHash": "9e9c7b262fe546b7a8cf943abfe8b3c5a0a6737687a1bee520e89d7f1e0415dd"
+        }
+      ],
+      "contentHash": "68e41bade8a5209eb7005f5152fe842dc3a6ec4b1fec52d8f2954bd67ab21ad1"
+    },
+    {
+      "id": "hemp-q2-c-trichome-cavite-sous-cuticule",
+      "status": "approved",
+      "comment": "Énoncé et quatre compartiments plausibles relus. La principale réserve extracellulaire sous la cuticule demeure univoque. Même fait et passage Livingston déjà lu.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-livingston-trichomes-2020",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+          "locator": "Introduction lignes extraites 242 et 249 ; discussion ligne 401",
+          "result": "Article original ouvert et passages ciblés lus le 16 novembre 2026 : disque de cellules sécrétrices et cavité de stockage sous-cuticulaire dans les têtes sessiles et pédonculées du cannabis. Pas de transfert des autres types capités chez d’autres plantes.",
+          "sourceHash": "e7b549a3d104578faa216660016f6e26d8305432be983eb6d055cb751b3a6b8a"
+        }
+      ],
+      "contentHash": "9a3969d6394f8a94d37789247ed8f58001c2f1b9dff82786385bb69f51ff119c",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "99ab8f324d39c07645fd311df18a1796d67f8921d5ac858ecebc8851f24f2e0c",
+          "previousStatus": "approved",
+          "previousComment": "Localisation précise du stockage, distincte de la question ancienne nommant les trichomes. Quatre compartiments/tissus végétaux de niveau comparable ; la cavité ne se confond pas avec le noyau des cellules sécrétrices. Niveau 2 plausible.",
+          "contentHash": "9a3969d6394f8a94d37789247ed8f58001c2f1b9dff82786385bb69f51ff119c",
+          "result": "Énoncé et quatre compartiments plausibles relus. La principale réserve extracellulaire sous la cuticule demeure univoque. Même fait et passage Livingston déjà lu.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-premieres-feuilles-une-foliole",
+      "status": "approved",
+      "comment": "Les quatre nombres de folioles sont plausibles et la question dépasse l’image familière de la feuille palmée. Le mot généralement évite l’universalité ; ne pas étendre les séquences de nœuds ultérieurs étudiées chez White Widow à tous les cultivars. Niveau 2 approprié comme observation du développement.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-hesami-morphology-2023",
+          "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+          "locator": "Résultats 2.1 Leaf Morphology, ligne extraite 199 et Figure 1",
+          "result": "Article original ouvert et passage lu le 16 novembre 2026 : après expansion des cotylédons, les premières vraies feuilles observées ont chacune une seule foliole dentée. La limitation au matériel étudié est connue ; les détails ultérieurs de photopériode ne sont pas repris.",
+          "sourceHash": "f523f492f63eebf9ad8c6bc34b239b91a087908058772941501b4983335b7f6e"
+        }
+      ],
+      "contentHash": "b3f6970c61950f702f0cc7f25408627c616865f2dc9344cfecb0959425c987de"
+    },
+    {
+      "id": "hemp-q2-c-chanvre-divergence-genome",
+      "status": "approved",
+      "comment": "Énoncé et choix relus : quatre échelles parallèles, sans trois seulement réservés aux distracteurs. Conclusion à l’ensemble du génome et échantillon 124 inchangés ; preuve Sawler déjà consultée suffisante.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-sawler-genetic-structure-2015",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0133292",
+          "locator": "Abstract lignes extraites 143–145",
+          "result": "Article primaire ouvert et résumé/résultats ciblés lus le 16 novembre 2026 : 14 031 SNP, 81 échantillons de type drogue et 43 chanvres, différenciation génomique dépassant les seuls gènes de production du THC. La limitation aux groupes étudiés est correctement conservée.",
+          "sourceHash": "5fdac0766015e43fe414cae165361db610d8e140a5b8a451637422f1a3f66138"
+        }
+      ],
+      "contentHash": "dc962cdb7bc5585fcf9f7df50bfe3f1db99bbf0e8d17ef7ccc0feae4ea09a5c0",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "5dd7dbcbdf63380011c778aad59d48dbfa355072266a9215abd39d98fec992d4",
+          "previousStatus": "changes_requested",
+          "previousComment": "Résultat et attribution scientifique exacts, avec 81+43=124 échantillons. Les trois distracteurs commencent par seulement et opposent une restriction absolue à la seule réponse générale : indice de forme qui permet de répondre sans connaître le résultat. Remplacer par quatre portées génomiques ou observations réellement comparables sans trois absolus identiques. Même fait et même ID conservables. Forme comparaison décrit le résultat étudié ; l’exercice actuel est surtout du rappel.",
+          "contentHash": "dc962cdb7bc5585fcf9f7df50bfe3f1db99bbf0e8d17ef7ccc0feae4ea09a5c0",
+          "result": "Énoncé et choix relus : quatre échelles parallèles, sans trois seulement réservés aux distracteurs. Conclusion à l’ensemble du génome et échantillon 124 inchangés ; preuve Sawler déjà consultée suffisante.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-graines-thc-contamination",
+      "status": "approved",
+      "comment": "Quatre origines relues : transformations fantaisistes disparues. Contact, absorption, synthèse tissulaire et confusion analytique sont plausibles comme catégories ; selon le BfR délimite la bonne réponse au mécanisme par contact déjà lu.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-bfr-hemp-food-2022",
+          "url": "https://www.bfr.bund.de/en/service/frequently-asked-questions/topic/questions-and-answers-on-the-health-risks-of-food-and-feed-containing-hemp/",
+          "locator": "FAQ What are the ingredients in hemp?, lignes extraites 405–410",
+          "result": "Page institutionnelle ouverte et passages lus le 16 novembre 2026 : absence de poils glandulaires sur les graines ; les teneurs mesurées sont attribuées au contact avec des parties contenant du THC lors de récolte/transformation. Les seuils et appréciations sanitaires datés de cette FAQ ne sont pas repris.",
+          "sourceHash": "8a8c175efa86d9ed469339088b0a6592890dea0eaab577c20a58f2e4bd3a20b9"
+        }
+      ],
+      "contentHash": "92f8d29a7d2b5b2e92a15ee2544f11e38e2aff2f51866783aade0e01c1601de1",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "b5d93ebe8aeca881b2be04f827feeb9a9e6f919a7e6800876f10942a1017414e",
+          "previousStatus": "changes_requested",
+          "previousComment": "Le mécanisme par contact est bien étayé et utile. Transformation d’huile ou de protéines en THC constitue cependant deux distracteurs fantaisistes, en contradiction avec le contrat. Proposer quatre origines de présence apparente/contamination réalistes, suffisamment distinctes pour garder une seule bonne réponse. Même fait et même ID conservables. Aucun seuil sanitaire ni conseil médical actuel n’est demandé, donc ne pas ajouter de règle juridique inutile.",
+          "contentHash": "92f8d29a7d2b5b2e92a15ee2544f11e38e2aff2f51866783aade0e01c1601de1",
+          "result": "Quatre origines relues : transformations fantaisistes disparues. Contact, absorption, synthèse tissulaire et confusion analytique sont plausibles comme catégories ; selon le BfR délimite la bonne réponse au mécanisme par contact déjà lu.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-c-trichomes-disques-cellules",
+      "status": "approved",
+      "comment": "Résultat microscopique spécialisé, correctement attaché aux observations Livingston 2020. Quatre plages numériques comparables et typiquement évite d’en faire une constante. Le fait est distinct de la cavité de stockage et des types morphologiques de l’ancienne banque. Niveau 3 cohérent.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-livingston-trichomes-2020",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+          "locator": "Résultats lignes extraites 280–284, Figure 3 ; résumé lignes 231–232",
+          "result": "Passages originaux ouverts et lus le 16 novembre 2026 : grands trichomes pédonculés à 12–16 cellules typiquement ; sessiles à huit cellules, avec variabilité des prélèvements floraux mentionnée. L’étude explique le contraste avec des comptages antérieurs.",
+          "sourceHash": "e7b549a3d104578faa216660016f6e26d8305432be983eb6d055cb751b3a6b8a"
+        }
+      ],
+      "contentHash": "9c088b4fc5eb1c35c54d12acdf6a3e12393abec21a1c5776a87961e66feb4c10"
+    },
+    {
+      "id": "hemp-q2-c-thcas-cofacteur-fad",
+      "status": "approved",
+      "comment": "Quatre cofacteurs enzymatiques réels et comparables. La liaison covalente du FAD et les résidus du corrigé sont corroborés ; aucun protocole pratique n’est donné. Fait nouveau par rapport aux questions précédentes de voie biosynthétique. Niveau 4 justifié par la biochimie structurale.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c-pdb-3vte-2012",
+          "url": "https://www.rcsb.org/structure/3VTE",
+          "locator": "Literature, résumé de l’article original, lignes extraites 141–144 ; ligand FAD lignes 152–157",
+          "result": "Dépôt primaire ouvert et résumé associé lu le 16 novembre 2026 : FAD covalent avec His114 et Cys176 ; structure cristallographique et ligand présents. Publication intégrale associée non lue.",
+          "sourceHash": "68cc2d14c0aa996e3d788a40113856f1778b8acf102727e2185a53a3bd6d63bf"
+        },
+        {
+          "sourceId": "q2-c-iubmb-thcas",
+          "url": "https://iubmb.qmul.ac.uk/enzyme/EC1/21/3/7.html",
+          "locator": "Comments, ligne extraite 14",
+          "result": "Notice officielle ouverte et lue le 16 novembre 2026 : flavoprotéine à FAD lié de façon covalente. Confirme le noyau de la réponse indépendamment de l’interface PDB.",
+          "sourceHash": "51aed12de66acf85ec696635dde9f34bc0614fc1eb2270675195109fcf8f50ca"
+        }
+      ],
+      "contentHash": "829a14a2565e372908d18b676f0b4fb3e233ef2816a93b6fdae771703a877529"
+    }
+  ],
+  "finalRevalidation": {
+    "reviewer": "f_existing_audit",
+    "reviewedAt": "2026-11-16",
+    "changedQuestionsRead": 4,
+    "unchangedHashesRetained": 6,
+    "scope": "Lecture des objets complets modifiés, des quatre choix, corrigé et métadonnées ; aucun lot édité par le reviewer."
+  },
+  "sourceSealing": {
+    "reviewer": "f_existing_audit",
+    "sealedAt": "2026-11-16",
+    "algorithm": "SHA-256(JSON.stringify(fullSourceObject))",
+    "scope": "Current approved items only. URLs, passages, access levels and consultation records compared with the sources personally opened during this review. Honest missing-publication-date labels accepted for AB; no fresh external reading claimed. Archived retired reviews remain historical.",
+    "verifiedReferencedSourceIds": [
+      "q2-c-flicker-bees-2020",
+      "q2-c-flora-china-cannabaceae-2003",
+      "q2-c-rea-cannflavins-2019",
+      "q2-c-livingston-trichomes-2020",
+      "q2-c-hesami-morphology-2023",
+      "q2-c-sawler-genetic-structure-2015",
+      "q2-c-bfr-hemp-food-2022",
+      "q2-c-pdb-3vte-2012",
+      "q2-c-iubmb-thcas"
+    ]
+  }
+}

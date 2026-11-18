@@ -1,0 +1,1414 @@
+{
+  "batchId": "r-actives-a-02",
+  "author": "rebalance_classify_a",
+  "role": "active-cannabinoids-aromas-and-current-law",
+  "questions": [
+    {
+      "id": "hemp-q2-ra02-delta8-delta9-double-bond-position",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quelle différence chimique distingue le delta-8-THC du delta-9-THC ?",
+      "options": [
+        "La longueur de leur chaîne latérale",
+        "La position d’une double liaison",
+        "Le nombre de leurs atomes d’oxygène",
+        "La présence d’azote dans le delta-8"
+      ],
+      "answer": 1,
+      "explanation": "Les deux isomères diffèrent par la position d’une double liaison du cycle. Les nombres 8 et 9 ne désignent ni une concentration ni un classement de puissance.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra02-euda"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Différence structurale delta-8/delta-9",
+        "subjectKey": "thc-isomers",
+        "property": "Différence structurale delta-8/delta-9",
+        "expectedAnswer": "La position d’une double liaison",
+        "learningObjective": "Distinguer les isomères delta-8 et delta-9 du THC par leur double liaison.",
+        "factKey": "delta8-delta9-double-bond-position",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-euda",
+            "locator": "Chemistry, double liaison du cycle",
+            "support": "Le profil chimique situe la double liaison entre C8 et C9 pour le delta-8, contre C9 et C10 pour le delta-9."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-thc-plasma-protein-binding",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans le plasma sanguin, sous quelle forme circule une grande part du THC ?",
+      "options": [
+        "Lié à des protéines plasmatiques",
+        "Dissous librement dans l’eau du plasma",
+        "Essentiellement stocké dans les globules rouges",
+        "Principalement fixé aux plaquettes sanguines"
+      ],
+      "answer": 0,
+      "explanation": "Le THC est fortement lié aux protéines du plasma. La concentration totale mesurée ne correspond donc pas uniquement à la fraction libre qui peut se distribuer vers les tissus.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra02-who-thc"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Transport sanguin du THC",
+        "subjectKey": "thc-distribution",
+        "property": "Transport sanguin du THC",
+        "expectedAnswer": "Lié à des protéines plasmatiques",
+        "learningObjective": "Comprendre que le THC plasmatique circule largement lié à des protéines.",
+        "factKey": "thc-plasma-protein-binding",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-who-thc",
+            "locator": "Section2 §1.2 Pharmacokinetics, PDFp39",
+            "support": "Le rapport décrit une forte liaison du THC aux protéines plasmatiques liée à sa lipophilie."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-thc-excretion-mainly-fecal",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Selon le rapport de l’OMS, quelle voie élimine la plus grande part des dérivés du THC ?",
+      "options": [
+        "La sueur",
+        "L’air expiré",
+        "Les urines",
+        "Les selles"
+      ],
+      "answer": 3,
+      "explanation": "Le rapport décrit une élimination surtout fécale, puis urinaire, après métabolisme. Le THC est peu éliminé sous sa forme inchangée ; un test urinaire ne reflète pas toute l’élimination.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra02-who-thc"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Voie principale d’excrétion des dérivés du THC",
+        "subjectKey": "thc-elimination",
+        "property": "Voie principale d’excrétion des dérivés du THC",
+        "expectedAnswer": "Les selles",
+        "learningObjective": "Identifier la principale voie d’excrétion des dérivés du THC après leur métabolisme.",
+        "factKey": "thc-excretion-mainly-fecal",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-who-thc",
+            "locator": "Section2 §1.2, PDFp40",
+            "support": "Le rapport donne 65–80% d’excrétion fécale contre 20–35% urinaire, avec peu de THC éliminé inchangé."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-thc-plasma-decline-effects-persist",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Selon l’OMS, quelle évolution est possible après du THC oral ?",
+      "options": [
+        "Les effets cessent dès que le THC plasmatique baisse",
+        "Le THC plasmatique reste stable pendant tous les effets",
+        "Le THC plasmatique baisse alors que des effets persistent",
+        "Les effets cessent avant que le THC plasmatique atteigne son maximum"
+      ],
+      "answer": 2,
+      "explanation": "Le THC se distribue dans les tissus et forme aussi un métabolite actif. Des effets peuvent donc persister malgré une baisse du THC dans le plasma : ces deux évolutions ne se superposent pas exactement.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "q2-ra02-who-thc"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Décalage entre concentration plasmatique et effets",
+        "subjectKey": "thc-distribution",
+        "property": "Décalage entre concentration plasmatique et effets",
+        "expectedAnswer": "Le THC plasmatique baisse alors que des effets persistent",
+        "learningObjective": "Comprendre le décalage possible entre concentration plasmatique et effets du THC.",
+        "factKey": "thc-plasma-decline-effects-persist",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-who-thc",
+            "locator": "Section2 §1.2, PDFp39",
+            "support": "Le rapport décrit une baisse rapide des taux plasmatiques après ingestion malgré la poursuite des effets pharmacologiques."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-chronic-cannabis-cortical-cb1-downregulation",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans l’étude humaine de Hirvonen, quelle adaptation accompagne l’usage quotidien chronique de cannabis ?",
+      "options": [
+        "Une augmentation de CB1 dans certaines régions corticales",
+        "Une diminution de CB1 dans certaines régions corticales",
+        "Une diminution de CB2 dans certaines régions corticales",
+        "Une augmentation de CB2 dans certaines régions corticales"
+      ],
+      "answer": 1,
+      "explanation": "L’étude observe une diminution régionale des récepteurs CB1, réversible après une période d’abstinence surveillée. Cette adaptation aide à comprendre la tolérance ; elle ne permet pas de prédire un délai individuel.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "q2-ra02-hirvonen"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Adaptation des récepteurs CB1 à l’usage chronique",
+        "subjectKey": "cb1-adaptation",
+        "property": "Adaptation des récepteurs CB1 à l’usage chronique",
+        "expectedAnswer": "Une diminution de CB1 dans certaines régions corticales",
+        "learningObjective": "Relier l’usage chronique de cannabis à une adaptation régionale des récepteurs CB1.",
+        "factKey": "chronic-cannabis-cortical-cb1-downregulation",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-hirvonen",
+            "locator": "Abstract, observations corticales",
+            "support": "L’étude par TEP décrit une réduction sélective et réversible des CB1 corticaux chez des usagers quotidiens chroniques."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-cbd-anticonvulsant-exact-mechanism-unknown",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Que précise la notice américaine de 2026 sur le mécanisme anticonvulsivant du CBD médical ?",
+      "options": [
+        "Il repose sur sa conversion en THC",
+        "Il repose sur l’activation directe de CB1",
+        "Il repose sur le blocage direct de CB2",
+        "Ses mécanismes exacts chez l’humain restent inconnus"
+      ],
+      "answer": 3,
+      "explanation": "La notice indique que les mécanismes exacts restent inconnus et ne semblent pas dépendre des récepteurs cannabinoïdes. Une efficacité clinique peut être établie avant l’explication complète du mécanisme.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-ra02-fda"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Limite des connaissances sur le mécanisme anticonvulsivant",
+        "subjectKey": "cbd-anticonvulsant-mechanism",
+        "property": "Limite des connaissances sur le mécanisme anticonvulsivant",
+        "expectedAnswer": "Ses mécanismes exacts chez l’humain restent inconnus",
+        "learningObjective": "Connaître la limite actuelle d’explication du mécanisme anticonvulsivant du CBD médical.",
+        "factKey": "cbd-anticonvulsant-exact-mechanism-unknown",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-fda",
+            "locator": "§12.1 Mechanism of Action, PDFp14",
+            "support": "La notice dit les mécanismes anticonvulsivants humains précis inconnus, sans effet apparent par interaction avec les récepteurs cannabinoïdes."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-cbd-7-hydroxy-active-metabolite",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel métabolite du CBD est décrit comme actif dans la notice américaine du cannabidiol médical ?",
+      "options": [
+        "Le THC-COOH",
+        "Le 11-hydroxy-THC",
+        "Le 7-hydroxy-CBD",
+        "Le CBDA"
+      ],
+      "answer": 2,
+      "explanation": "Le 7-hydroxy-CBD est un métabolite actif du cannabidiol. La notice distingue ses résultats anticonvulsivants chez la souris de leur pertinence encore inconnue dans l’épilepsie humaine.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-ra02-fda"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Métabolite actif du cannabidiol",
+        "subjectKey": "cbd-metabolism",
+        "property": "Métabolite actif du cannabidiol",
+        "expectedAnswer": "Le 7-hydroxy-CBD",
+        "learningObjective": "Reconnaître l’existence d’un métabolite actif du CBD.",
+        "factKey": "cbd-7-hydroxy-active-metabolite",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-fda",
+            "locator": "§12.3 Metabolism, PDFp15",
+            "support": "La notice qualifie le 7-OH-CBD de métabolite actif et borne les données anticonvulsivantes détaillées aux modèles murins."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-alpha-pinene-no-thc-memory-protection-human",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Quel résultat de l’alpha-pinène associé au THC ressort de l’essai humain de Kumar (2025) ?",
+      "options": [
+        "Pas de baisse des troubles de mémoire ni de changement ressenti détectés",
+        "Moins de troubles de mémoire, sans changer les effets ressentis",
+        "Troubles de mémoire inchangés, avec moins d’effets ressentis",
+        "Plus de troubles de mémoire et des effets ressentis renforcés"
+      ],
+      "answer": 0,
+      "explanation": "L’alpha-pinène n’a pas atténué les troubles de mémoire provoqués par le THC dans cet essai. Une odeur de pin ou la présence de ce terpène ne constitue donc pas une protection démontrée contre ces troubles.",
+      "articleId": "record-terpene-alphapinene",
+      "sourceIds": [
+        "q2-ra02-kumar"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Limite de la protection mnésique attribuée à l’alpha-pinène",
+        "subjectKey": "alpha-pinene-thc-human",
+        "property": "Limite de la protection mnésique attribuée à l’alpha-pinène",
+        "expectedAnswer": "Pas de baisse des troubles de mémoire ni de changement ressenti détectés",
+        "learningObjective": "Distinguer la protection mnésique prêtée à l’alpha-pinène du résultat humain observé.",
+        "factKey": "alpha-pinene-no-thc-memory-protection-human",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-kumar",
+            "locator": "Abstract, Results et Conclusions",
+            "support": "Dans cet essai randomisé chez19adultes, l’association n’a ni atténué les troubles de mémoire du THC ni modifié significativement les autres effets aigus."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-similar-major-terpenes-different-aroma",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Quel constat d’Oswald (2023) nuance l’emploi des seuls terpènes dominants pour décrire le parfum du cannabis ?",
+      "options": [
+        "Des parfums différents exigent des terpènes dominants différents",
+        "Le parfum dépend de la teneur en THC des échantillons",
+        "Des profils terpéniques proches accompagnent des parfums distincts",
+        "Le parfum dépend du rapport entre CBD et THC"
+      ],
+      "answer": 2,
+      "explanation": "Des constituants peu abondants peuvent peser fortement dans le bouquet. L’étude trouve des profils terpéniques proches pour des arômes différents : la quantité d’un composé ne suffit pas à prévoir son impact olfactif.",
+      "articleId": "ref-odeur-cannabis",
+      "sourceIds": [
+        "q2-ra02-oswald23"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Limite d’un profil des seuls terpènes dominants",
+        "subjectKey": "cannabis-aroma-minor-compounds",
+        "property": "Limite d’un profil des seuls terpènes dominants",
+        "expectedAnswer": "Des profils terpéniques proches accompagnent des parfums distincts",
+        "learningObjective": "Comprendre les limites des seuls terpènes dominants pour décrire le bouquet du cannabis.",
+        "factKey": "similar-major-terpenes-different-aroma",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-oswald23",
+            "locator": "Abstract ; discussion des flavorants",
+            "support": "L’étude de31extraits présente des profils terpéniques proches mais des parfums différenciés par des odorants non terpéniques minoritaires."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-humulene-earthy-woody-aroma",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Quel registre olfactif la fiche du ministère de la Santé d’Hawaï associe-t-elle à l’humulène du cannabis ?",
+      "options": [
+        "Terreux et boisé",
+        "Floral et lavandé",
+        "Citronné et zesté",
+        "Mentholé et frais"
+      ],
+      "answer": 0,
+      "explanation": "L’humulène est associé à des notes terreuses et boisées. Cette description d’un constituant ne permet pas, à elle seule, de prédire tout le bouquet ni les effets d’une fleur.",
+      "articleId": "record-terpene-alpha-humulene",
+      "sourceIds": [
+        "q2-ra02-hawaii"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Registre olfactif de l’humulène",
+        "subjectKey": "alpha-humulene",
+        "property": "Registre olfactif de l’humulène",
+        "expectedAnswer": "Terreux et boisé",
+        "learningObjective": "Reconnaître le registre terreux et boisé de l’humulène.",
+        "factKey": "humulene-earthy-woody-aroma",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-hawaii",
+            "locator": "Page1, roue des terpènes",
+            "support": "L’infographie donne Earthy, woody pour l’humulène parmi les principaux terpènes du cannabis."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-cbd-knee-osteoarthritis-no-extra-analgesia",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans l’essai de Pramhas (2023), quel effet antalgique supplémentaire le CBD a-t-il montré dans l’arthrose du genou ?",
+      "options": [
+        "Un bénéfice supérieur au placebo sur la douleur",
+        "Un bénéfice supérieur uniquement pendant la marche",
+        "Un bénéfice supplémentaire non démontré face au placebo",
+        "Un bénéfice supérieur uniquement pendant la nuit"
+      ],
+      "answer": 2,
+      "explanation": "Ajouter du CBD oral au paracétamol n’a pas apporté de soulagement supplémentaire par rapport au placebo dans cet essai. Ce résultat sur l’arthrose du genou ne décrit pas toutes les douleurs ni tous les cannabinoïdes.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "q2-ra02-pramhas"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "CBD et arthrose du genou",
+        "subjectKey": "cbd-knee-osteoarthritis",
+        "property": "Limite de l’effet antalgique du CBD dans un essai humain",
+        "expectedAnswer": "Un bénéfice supplémentaire non démontré face au placebo",
+        "learningObjective": "Distinguer l’effet antalgique espéré du CBD du résultat d’un essai contrôlé sur l’arthrose du genou.",
+        "factKey": "cbd-knee-osteoarthritis-no-extra-analgesia",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-pramhas",
+            "locator": "Summary, Findings et Interpretation",
+            "support": "Dans cet essai randomisé, le CBD oral ajouté au paracétamol n’a pas procuré d’effet antalgique supplémentaire par rapport au placebo."
+          }
+        ],
+        "jurisdiction": "Résultat clinique expérimental, Autriche ; ne constitue pas une indication générale",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-cannabis-esters-fruity-sweet-aroma",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Dans l’étude d’Oswald (2023), quel registre est associé à divers esters volatils du cannabis ?",
+      "options": [
+        "Doux et fruité",
+        "Soufré et alliacé",
+        "Métallique et minéral",
+        "Fumé et brûlé"
+      ],
+      "answer": 0,
+      "explanation": "L’étude identifie divers esters aux nuances fruitées dans le cannabis. Un bouquet de fruit peut ainsi venir de constituants naturellement présents, sans se résumer à un unique terpène.",
+      "articleId": "ref-volatils-non-terpeniques",
+      "sourceIds": [
+        "q2-ra02-oswald23"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Participation des esters aux notes fruitées",
+        "subjectKey": "cannabis-fruity-esters",
+        "property": "Participation des esters aux notes fruitées",
+        "expectedAnswer": "Doux et fruité",
+        "learningObjective": "Identifier le registre doux et fruité auquel contribuent certains esters du cannabis.",
+        "factKey": "cannabis-esters-fruity-sweet-aroma",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-oswald23",
+            "locator": "Esters: Flavor of Fruits, PDFp6",
+            "support": "La partie Esters:Flavor of Fruits décrit des esters du cannabis aux notes fruitées, pomme, ananas ou banane."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-cbg-acute-anxiety-human-exploratory-signal",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel signal l’essai exploratoire de Cuttler (2024) rapporte-t-il après du CBG chez des adultes en bonne santé ?",
+      "options": [
+        "Une augmentation de l’ivresse et de l’anxiété",
+        "Une baisse d’anxiété déclarée sans signe d’ivresse",
+        "Une baisse d’anxiété accompagnée d’une perte de mémoire",
+        "Une hausse d’anxiété accompagnée de somnolence"
+      ],
+      "answer": 1,
+      "explanation": "L’essai rapporte une baisse d’anxiété déclarée sans signe d’ivresse. Cette petite étude aiguë chez des adultes en bonne santé ne démontre pas le traitement d’un trouble anxieux ni une efficacité durable du CBG.",
+      "articleId": "ref-cannabinoides-mineurs",
+      "sourceIds": [
+        "q2-ra02-cuttler"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Signal humain exploratoire sur l’anxiété",
+        "subjectKey": "cbg-human-evidence",
+        "property": "Signal humain exploratoire sur l’anxiété",
+        "expectedAnswer": "Une baisse d’anxiété déclarée sans signe d’ivresse",
+        "learningObjective": "Situer le signal exploratoire humain du CBG sans en faire un traitement établi.",
+        "factKey": "cbg-acute-anxiety-human-exploratory-signal",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-cuttler",
+            "locator": "Abstract ; Discussion, limites de l’essai",
+            "support": "L’essai aigu chez34adultes rapporte une réduction d’anxiété et pas d’effets subjectifs de drogue ou d’altération mesurée."
+          }
+        ],
+        "jurisdiction": "Portée pharmacologique et chimique générale ; résultats expérimentaux bornés à leur source",
+        "reviewAfter": "2027-05-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-france-illicit-cannabis-use-offence",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En France, quel statut s’applique en 2026 à l’usage récréatif de cannabis classé stupéfiant ?",
+      "options": [
+        "Un acte autorisé à domicile",
+        "Une simple infraction au règlement municipal",
+        "Un délit pénal",
+        "Une activité libre à partir de 18 ans"
+      ],
+      "answer": 2,
+      "explanation": "L’usage illicite d’un stupéfiant reste un délit. La possibilité d’une amende forfaitaire pour certaines situations ne crée pas un droit général à consommer du cannabis stupéfiant.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-fr-code"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Statut pénal de l’usage illicite",
+        "subjectKey": "france-cannabis-use-law",
+        "property": "Statut pénal de l’usage illicite",
+        "expectedAnswer": "Un délit pénal",
+        "learningObjective": "Connaître le statut pénal français de l’usage illicite de cannabis stupéfiant.",
+        "factKey": "france-illicit-cannabis-use-offence",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-fr-code",
+            "locator": "Article L3421-1, premier alinéa",
+            "support": "L3421-1 qualifie l’usage illicite de substances ou plantes stupéfiantes par une peine pénale et prévoit une procédure forfaitaire."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-france-2026-drug-use-fixed-fine",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Selon L3421-1 en vigueur depuis août 2026, quel montant ordinaire d’amende forfaitaire vise l’usage de cannabis stupéfiant ?",
+      "options": [
+        "200 €",
+        "400 €",
+        "1 000 €",
+        "500 €"
+      ],
+      "answer": 3,
+      "explanation": "La version consultée fixe le montant ordinaire à 500 €, contre 400 € minoré et 1 000 € majoré. Ce montant concerne la procédure forfaitaire ; il ne correspond pas à la peine maximale encourue devant un tribunal.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-fr-code"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Montant forfaitaire ordinaire dans la version2026",
+        "subjectKey": "france-cannabis-use-law",
+        "property": "Montant forfaitaire ordinaire dans la version2026",
+        "expectedAnswer": "500 €",
+        "learningObjective": "Distinguer le montant forfaitaire ordinaire de2026 des montants minoré et majoré.",
+        "factKey": "france-2026-drug-use-fixed-fine",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-fr-code",
+            "locator": "Article L3421-1, dernier alinéa, version20août 2026",
+            "support": "La version entrée en vigueur le20août 2026 fixe500 €ordinaire,400 €minorée,1 000 €majorée."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-france-cbd-flowers-2022-blanket-ban-annulled",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quelle interdiction générale le Conseil d’État a-t-il annulée le 29 décembre 2022 à propos du CBD ?",
+      "options": [
+        "La vente de fleurs et feuilles brutes à faible taux de THC",
+        "La vente de produits au CBD sur Internet",
+        "La vente de toute huile cosmétique contenant du CBD",
+        "La vente de graines de variétés de cannabis autorisées"
+      ],
+      "answer": 0,
+      "explanation": "L’annulation vise la commercialisation générale et absolue des fleurs et feuilles brutes à faible THC. Elle ne légalise ni le cannabis stupéfiant en général ni tous les usages possibles d’un produit au CBD.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-ra02-fr-ce"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Objet précis de l’annulation du Conseil d’État",
+        "subjectKey": "france-cbd-flowers-ruling",
+        "property": "Objet précis de l’annulation du Conseil d’État",
+        "expectedAnswer": "La vente de fleurs et feuilles brutes à faible taux de THC",
+        "learningObjective": "Identifier la portée précise de l’annulation juridictionnelle française sur les fleurs et feuilles CBD.",
+        "factKey": "france-cbd-flowers-2022-blanket-ban-annulled",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-fr-ce",
+            "locator": "Décision29 décembre 2022, objet et portée de l’annulation",
+            "support": "Le Conseil d’État annule la prohibition générale de vente des fleurs et feuilles brutes à faible THC, et non toutes les règles sur le cannabis."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-eu-cbd-import-ban-public-health-proportionality",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Selon l’arrêt européen C-663/18, quelle justification peut permettre de restreindre un CBD légalement produit dans un autre État ?",
+      "options": [
+        "Préférer les producteurs nationaux",
+        "Protéger la santé publique par une mesure nécessaire et proportionnée",
+        "Écarter un extrait parce qu’il provient de fleurs",
+        "Réserver le marché aux entreprises déjà implantées"
+      ],
+      "answer": 1,
+      "explanation": "La Cour impose une justification de santé publique et un contrôle de nécessité et de proportionnalité. L’arrêt ne dispense pas les produits au CBD des règles propres à leur usage ou à leur composition.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-ra02-curia"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Justification d’une restriction à la circulation du CBD",
+        "subjectKey": "eu-kanavape-cbd",
+        "property": "Justification d’une restriction à la circulation du CBD",
+        "expectedAnswer": "Protéger la santé publique par une mesure nécessaire et proportionnée",
+        "learningObjective": "Comprendre la condition de santé publique d’une restriction européenne au commerce du CBD.",
+        "factKey": "eu-cbd-import-ban-public-health-proportionality",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-curia",
+            "locator": "Communiqué141/20, PDFp2, appréciation du risque",
+            "support": "La Cour admet une restriction justifiée par une protection de santé publique suffisamment établie, nécessaire et proportionnée."
+          }
+        ],
+        "jurisdiction": "Union européenne, portée de l’affaire C-663/18",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-clubs-noncommercial-model",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En Allemagne, quel modèle décrit les associations autorisées de cannabis non médical en 2026 ?",
+      "options": [
+        "Des magasins privés ouverts à tout passant",
+        "Des pharmacies publiques sans prescription",
+        "Des associations non commerciales de membres",
+        "Des franchises commerciales de bars"
+      ],
+      "answer": 2,
+      "explanation": "Les associations organisent une production coopérative non commerciale pour leurs membres. Elles couvrent leurs frais selon le cadre légal ; leur licence ne les transforme pas en commerces ouverts au public.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Nature non commerciale des associations",
+        "subjectKey": "germany-cannabis-clubs",
+        "property": "Nature non commerciale des associations",
+        "expectedAnswer": "Des associations non commerciales de membres",
+        "learningObjective": "Distinguer les associations allemandes de cannabis d’un commerce ouvert au public.",
+        "factKey": "germany-clubs-noncommercial-model",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "Cultivation associations: nature et financement",
+            "support": "La FAQ précise la nature non commerciale et coopérative et un financement par les cotisations des membres."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-public-possession-25g",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "En Allemagne, quel plafond ordinaire de cannabis séché un adulte peut-il porter sur lui selon les règles consultées en 2026 ?",
+      "options": [
+        "5 g",
+        "10 g",
+        "50 g",
+        "25 g"
+      ],
+      "answer": 3,
+      "explanation": "Le plafond ordinaire est 25 g par adulte hors domicile ; la sphère privée relève d’un plafond différent. Cela ne lève pas les interdictions de vente, de remise à autrui ou de consommation dans certains lieux.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Plafond ordinaire de possession hors domicile",
+        "subjectKey": "germany-cannabis-possession",
+        "property": "Plafond ordinaire de possession hors domicile",
+        "expectedAnswer": "25 g",
+        "learningObjective": "Connaître le plafond allemand ordinaire de possession de cannabis hors domicile.",
+        "factKey": "germany-public-possession-25g",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "Provisions on possession: How much cannabis am I allowed to possess?",
+            "support": "La FAQ autorise chaque adulte à posséder et porter jusqu’à25 grammes de cannabis séché."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-club-residency-six-months",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Pour adhérer à une association de cannabis en Allemagne, depuis combien de temps faut-il avoir sa résidence dans ce pays ?",
+      "options": [
+        "Un mois",
+        "Six mois",
+        "Un an",
+        "Trois ans"
+      ],
+      "answer": 1,
+      "explanation": "La FAQ exige une résidence ou un séjour habituel en Allemagne depuis au moins six mois, ainsi que la majorité. Une visite touristique ne remplit donc pas cette condition d’adhésion.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Condition de résidence pour adhérer",
+        "subjectKey": "germany-cannabis-clubs",
+        "property": "Condition de résidence pour adhérer",
+        "expectedAnswer": "Six mois",
+        "learningObjective": "Connaître la condition allemande de résidence pour adhérer à une association de cannabis.",
+        "factKey": "germany-club-residency-six-months",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "How can I become a member?",
+            "support": "La FAQ exige18 ans et au moins six mois de résidence ou résidence habituelle en Allemagne."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-nonmedical-mail-order-prohibited",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En Allemagne, quelle pratique reste interdite pour le cannabis non médical dans le cadre consulté en 2026 ?",
+      "options": [
+        "La remise réglementée par une association à son membre",
+        "La détention personnelle dans les limites légales",
+        "L’envoi et la vente en ligne de cannabis",
+        "L’adhésion d’un adulte résident à une association"
+      ],
+      "answer": 2,
+      "explanation": "L’expédition, la livraison et le commerce en ligne de cannabis non médical restent interdits. La FAQ distingue le régime des semences et celui du cannabis médical ; la question ne les vise pas.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Interdiction d’envoi commercial de cannabis non médical",
+        "subjectKey": "germany-cannabis-distribution",
+        "property": "Interdiction d’envoi commercial de cannabis non médical",
+        "expectedAnswer": "L’envoi et la vente en ligne de cannabis",
+        "learningObjective": "Distinguer la remise encadrée de cannabis non médical de la vente en ligne interdite en Allemagne.",
+        "factKey": "germany-nonmedical-mail-order-prohibited",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "Child and youth protection: sending, delivery and online trade",
+            "support": "La FAQ maintient la prohibition de l’envoi, de la livraison et du commerce en ligne de cannabis dans le cadre non médical."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-club-consumption-prohibited",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Dans une association allemande de cannabis, quel usage des locaux est interdit selon la FAQ ministérielle ?",
+      "options": [
+        "Consommer du cannabis dans l’enceinte de l’association",
+        "Vérifier l’âge des personnes qui entrent",
+        "Remettre du cannabis au membre selon les limites légales",
+        "Informer les membres sur les risques du cannabis"
+      ],
+      "answer": 0,
+      "explanation": "La consommation est interdite dans l’enceinte de l’association et dans son champ de visibilité. Un lieu autorisé à remettre du cannabis aux membres n’est donc pas nécessairement un salon où le consommer.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Interdiction de consommation dans les associations",
+        "subjectKey": "germany-cannabis-clubs",
+        "property": "Interdiction de consommation dans les associations",
+        "expectedAnswer": "Consommer du cannabis dans l’enceinte de l’association",
+        "learningObjective": "Comprendre qu’une association allemande de cannabis n’est pas un lieu où le consommer.",
+        "factKey": "germany-club-consumption-prohibited",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "May cannabis be consumed in cultivation associations?",
+            "support": "La FAQ interdit la consommation dans l’enceinte de l’association ainsi qu’à portée de vue de son entrée."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-consumption-near-minors-prohibited",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En Allemagne, quelle situation reste interdite à un adulte qui consomme du cannabis en 2026 ?",
+      "options": [
+        "Consommer sans posséder une carte de club",
+        "Consommer en présence immédiate de mineurs",
+        "Consommer en présence d’adultes de moins de 25 ans",
+        "Consommer sans détenir une prescription médicale"
+      ],
+      "answer": 1,
+      "explanation": "Le cadre interdit la consommation à proximité immédiate des moins de 18 ans. L’autorisation limitée pour les adultes s’accompagne de restrictions de lieux et de protection des jeunes.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Protection des mineurs présents",
+        "subjectKey": "germany-youth-protection",
+        "property": "Protection des mineurs présents",
+        "expectedAnswer": "Consommer en présence immédiate de mineurs",
+        "learningObjective": "Connaître la protection des mineurs présents dans le régime allemand de consommation de cannabis.",
+        "factKey": "germany-consumption-near-minors-prohibited",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "Restrictions on public cannabis consumption",
+            "support": "La FAQ interdit la consommation à proximité immédiate de personnes âgées de moins de 18 ans."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-germany-cannabis-advertising-sponsorship-ban",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "En Allemagne, quelle règle encadre en 2026 la publicité pour le cannabis et ses associations, y compris sur les réseaux sociaux ?",
+      "options": [
+        "Elle est libre si elle vise des adultes",
+        "Elle est libre pour une association autorisée",
+        "Elle est libre si aucun prix n’est mentionné",
+        "Une interdiction générale de publicité et de parrainage s’applique"
+      ],
+      "answer": 3,
+      "explanation": "La FAQ prévoit une interdiction générale de publicité et de parrainage, réseaux sociaux compris. Le statut autorisé d’une association ne lui donne pas un droit général de promotion commerciale.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-de-bmg"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Publicité et parrainage",
+        "subjectKey": "germany-cannabis-advertising",
+        "property": "Publicité et parrainage",
+        "expectedAnswer": "Une interdiction générale de publicité et de parrainage s’applique",
+        "learningObjective": "Connaître l’interdiction allemande de publicité et de parrainage du cannabis.",
+        "factKey": "germany-cannabis-advertising-sponsorship-ban",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-de-bmg",
+            "locator": "Child and youth protection: ban on advertising and sponsorship",
+            "support": "La FAQ énonce une interdiction générale de publicité et de parrainage concernant le cannabis et ses associations, y compris sur les réseaux sociaux."
+          }
+        ],
+        "jurisdiction": "Allemagne, KCanG, cannabis non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-malta-associations-not-tourist-access",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "À Malte, quel accès l’ARUC prévoit-elle aux associations de réduction des risques liés au cannabis pour les touristes ?",
+      "options": [
+        "Une entrée libre après contrôle du passeport",
+        "Une adhésion journalière pour les visiteurs",
+        "Pas d’accès aux associations pour les touristes",
+        "Un accueil réservé aux visiteurs non européens"
+      ],
+      "answer": 2,
+      "explanation": "L’ARUC décrit un espace fermé réservé aux membres, sans accès pour les touristes ou les personnes non inscrites. Ce dispositif ne correspond pas à des boutiques ouvertes aux visiteurs.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-mt-aruc"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Absence d’accès touristique aux associations",
+        "subjectKey": "malta-cannabis-associations",
+        "property": "Absence d’accès touristique aux associations",
+        "expectedAnswer": "Pas d’accès aux associations pour les touristes",
+        "learningObjective": "Distinguer le modèle associatif maltais d’un marché touristique du cannabis.",
+        "factKey": "malta-associations-not-tourist-access",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-mt-aruc",
+            "locator": "What is the task of the Authority?",
+            "support": "La FAQ ARUC exclut les touristes et les non-membres des espaces fermés des associations."
+          }
+        ],
+        "jurisdiction": "Malte, associations CHRA",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-malta-one-association-membership",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "À Malte, à combien d’associations de réduction des risques liés au cannabis une personne peut-elle être inscrite simultanément ?",
+      "options": [
+        "Une seule",
+        "Deux au maximum",
+        "Une par région",
+        "Autant qu’elle le souhaite"
+      ],
+      "answer": 0,
+      "explanation": "L’inscription centralisée vise à empêcher une adhésion simultanée à plusieurs associations. L’ARUC présente cette règle comme un élément d’usage responsable et de maîtrise de la distribution.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-mt-aruc"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Unicité de l’adhésion aux associations",
+        "subjectKey": "malta-cannabis-associations",
+        "property": "Unicité de l’adhésion aux associations",
+        "expectedAnswer": "Une seule",
+        "learningObjective": "Connaître l’unicité de l’adhésion aux associations maltaises de cannabis.",
+        "factKey": "malta-one-association-membership",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-mt-aruc",
+            "locator": "How can I become a member of a CHRA?",
+            "support": "Le système centralisé empêche l’enregistrement d’une même personne dans plus d’une association."
+          }
+        ],
+        "jurisdiction": "Malte, associations CHRA",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-luxembourg-public-use-still-prohibited",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Au Luxembourg, quel statut s’applique à la consommation de cannabis dans la rue ?",
+      "options": [
+        "Autorisée pour les adultes résidents",
+        "Autorisée dans la limite de 3 g",
+        "Autorisée si le cannabis vient du domicile",
+        "Interdite, malgré l’autorisation limitée à domicile"
+      ],
+      "answer": 3,
+      "explanation": "La consommation en public reste interdite. La procédure allégée prévue pour de petites quantités ne transforme pas l’usage dans la rue en activité autorisée.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-lu-mj"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Limite spatiale de l’usage autorisé",
+        "subjectKey": "luxembourg-cannabis-use",
+        "property": "Limite spatiale de l’usage autorisé",
+        "expectedAnswer": "Interdite, malgré l’autorisation limitée à domicile",
+        "learningObjective": "Distinguer l’autorisation luxembourgeoise à domicile de la consommation en public.",
+        "factKey": "luxembourg-public-use-still-prohibited",
+        "form": "identification",
+        "difficultyRationale": "Distinction courante exprimée sanscalcul ni technique ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-lu-mj",
+            "locator": "Flyer, page3: consommation en public",
+            "support": "Le flyer du ministère de la Justice précise que la consommation en public et hors du lieu de culture est interdite."
+          }
+        ],
+        "jurisdiction": "Luxembourg, usage non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-ra02-luxembourg-four-plants-per-household",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Au Luxembourg, le plafond légal de quatre plantes de cannabis à domicile s’applique à quelle unité ?",
+      "options": [
+        "Chaque adulte du logement",
+        "La communauté domestique dans son ensemble",
+        "Chaque propriétaire du logement",
+        "Chaque personne inscrite à la commune"
+      ],
+      "answer": 1,
+      "explanation": "Le plafond de quatre plantes s’applique par communauté domestique, pas par adulte. Le texte prévoit aussi des conditions de lieu et de visibilité des plantes.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-ra02-lu-mj"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "prevention",
+        "subject": "Unité du plafond légal de plantes",
+        "subjectKey": "luxembourg-home-cannabis-law",
+        "property": "Unité du plafond légal de plantes",
+        "expectedAnswer": "La communauté domestique dans son ensemble",
+        "learningObjective": "Distinguer un plafond luxembourgeois de plantes par foyer d’un plafond par adulte.",
+        "factKey": "luxembourg-four-plants-per-household",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d’une règle précise ou d’un résultat scientifique borné ; difficulté estimée éditorialement.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-ra02-lu-mj",
+            "locator": "Flyer, page2: quatre plantes par communauté domestique",
+            "support": "La loi présentée par le ministère fixe quatre plantes maximum par communauté domestique, au domicile ou à la résidence habituelle."
+          }
+        ],
+        "jurisdiction": "Luxembourg, usage non médical",
+        "reviewAfter": "2027-02-17",
+        "verifiedAsOf": "2026-11-17"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-ra02-euda",
+      "title": "Cannabis drug profile",
+      "organization": "European Union Drugs Agency (EUDA)",
+      "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EUDA ; profil rédigé avec Leslie A. King",
+      "published": "2013-05-08",
+      "passage": "Chemistry, paragraphes delta-9 et delta-8",
+      "access": "official-page",
+      "documentKind": "Profil scientifique institutionnel",
+      "limitation": "Profil ancien ; seuls les faits structuraux sont utilisés, pas ses assertions historiques ou réglementaires.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Chemistry, paragraphes delta-9 et delta-8",
+        "result": "Double liaison C9–C10 pour delta-9 contre C8–C9 pour delta-8 ; passage effectivement lu."
+      }
+    },
+    {
+      "id": "q2-ra02-who-thc",
+      "title": "Delta-9-tetrahydrocannabinol: Critical Review",
+      "organization": "World Health Organization, Expert Committee on Drug Dependence",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Secrétariat ECDD ; sectionpharmacologie Jenny Wiley",
+      "published": "2018",
+      "passage": "Section2 §1.2 Pharmacokinetics, pages PDF39–40",
+      "access": "full-text",
+      "documentKind": "Rapport scientifique institutionnel",
+      "limitation": "Rapport de synthèse ; passages pharmacocinétiques lus, pas nouvelle lecture indépendante de toutes les études citées.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Section2 §1.2 Pharmacokinetics, pages PDF39–40",
+        "result": "Passages lus : liaison plasmatique, distribution rapide, persistance d’effets malgré baisse plasmatique, métabolisme et élimination fécale/urinaire."
+      }
+    },
+    {
+      "id": "q2-ra02-hirvonen",
+      "title": "Reversible and regionally selective downregulation of brain cannabinoid CB1 receptors in chronic daily cannabis smokers",
+      "organization": "Molecular Psychiatry / NIH",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21747398/",
+      "verifiedAt": "2026-11-17",
+      "author": "J. Hirvonen, R.S. Goodwin, C.-T. Li, G.E. Terry, S.S. Zoghbi, C. Morse, V.W. Pike, N.D. Volkow, M.A. Huestis, R.B. Innis",
+      "published": "2011-07-12 en ligne ;2012-06 numéro",
+      "passage": "Abstract PubMed et légendes, régions corticales et abstinence surveillée",
+      "access": "abstract",
+      "documentKind": "Étude humaine originale par TEP",
+      "limitation": "Échantillon d’usagers chroniques ; résultat régional et collectif, pas un délai individuel de récupération.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract PubMed et légendes, régions corticales et abstinence surveillée",
+        "result": "Résumé original lu : diminution réversible et régionale des CB1 corticaux dans l’usage quotidien chronique."
+      }
+    },
+    {
+      "id": "q2-ra02-fda",
+      "title": "EPIDIOLEX (cannabidiol) oral solution: Prescribing Information, revised05/2026",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Jazz Pharmaceuticals ; notice approuvée FDA",
+      "published": "2026-05",
+      "passage": "§12.1, page PDF14 ; §12.3 Metabolism, page PDF15",
+      "access": "full-text",
+      "documentKind": "Notice réglementaire de médicament",
+      "limitation": "Notice d’un médicament défini ; données métaboliques animales explicitement séparées de leur pertinence humaine ; pas de conseil de dose.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§12.1, page PDF14 ; §12.3 Metabolism, page PDF15",
+        "result": "§12.1 et12.3 lus : mécanismes anticonvulsivants humains précis inconnus, absence apparente de médiation par récepteurs cannabinoïdes,7-OH-CBD décrit comme actif."
+      }
+    },
+    {
+      "id": "q2-ra02-kumar",
+      "title": "The Individual and Interactive Effects of Alpha-Pinene and Delta-9-Tetrahydrocannabinol in Healthy Adults",
+      "organization": "Medical Cannabis and Cannabinoids / Johns Hopkins University",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40734690/",
+      "verifiedAt": "2026-11-17",
+      "author": "Lakshmi Kumar, Tory R. Spindle, C. Austin Zamarripa, Harrison J. Elder, Ethan B. Russo, George Bigelow, Ryan Vandrey",
+      "published": "2025-06-25",
+      "passage": "Abstract, Results et Conclusions",
+      "access": "abstract",
+      "documentKind": "Essai humain randomisé original",
+      "limitation": "Dix-neuf adultes ; conditions aiguës et contrôlées ; pas de généralisation à toutes les interactions ou à toutes les voies.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, Results et Conclusions",
+        "result": "Résumé original lu : l’alpha-pinène associé auTHC n’atténue ni les déficits de mémoire ni les autres effets aigus significativement dans cet essai."
+      }
+    },
+    {
+      "id": "q2-ra02-oswald23",
+      "title": "Minor, Nonterpenoid Volatile Compounds Drive the Aroma Differences of Exotic Cannabis",
+      "organization": "ACS Omega / Abstrax Tech",
+      "url": "https://future4200.com/uploads/short-url/sBr3rZnhgBULx3DOpFOiEHvV2A8.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Iain W.H. Oswald, Twinkle R. Paryani, Manuel E. Sosa et collègues",
+      "published": "2023-10-12",
+      "passage": "Abstract ; Tropical VSCs ; Esters: Flavor of Fruits, PDFp6",
+      "access": "full-text",
+      "documentKind": "Étude chimique et sensorielle originale, copie PDF du texte publié",
+      "limitation": "Corpus de31extraits et panel sensoriel ; intérêts commerciaux et brevets déclarés ; résultats bornés au corpus, aucune revendication de soin.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract ; Tropical VSCs ; Esters: Flavor of Fruits, PDFp6",
+        "result": "Passages lus : profils terpéniques semblables malgré arômes distincts, impact des minoritaires, groupe mercaptohexyle et notes tropicales, esters et notes fruitées."
+      }
+    },
+    {
+      "id": "q2-ra02-hawaii",
+      "title": "Hawaiʻi Medical Cannabis Newsletter: What are terpenes?",
+      "organization": "Hawaiʻi State Department of Health, Office of Medical Cannabis Control and Regulation",
+      "url": "https://health.hawaii.gov/medicalcannabisregistry/files/2024/08/OMCCR-July-2024-Newsletter.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Office of Medical Cannabis Control and Regulation",
+      "published": "2024-07",
+      "passage": "Page1, infographie des principaux terpènes",
+      "access": "official-page",
+      "documentKind": "Bulletin institutionnel public au format PDF",
+      "limitation": "Seule la description olfactive est utilisée ; ne pas reprendre la formule trop absolue de l’infographie sur l’unicité de la liaison CB2.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Page1, infographie des principaux terpènes",
+        "result": "Infographie lue : humulène associé àdes notes terreuses et boisées."
+      }
+    },
+    {
+      "id": "q2-ra02-cuttler",
+      "title": "Acute effects of cannabigerol on anxiety, stress, and mood: a double-blind, placebo-controlled, crossover, field trial",
+      "organization": "Scientific Reports / Washington State University, UCLA",
+      "url": "https://ethanrusso.org/wp-content/uploads/2024/07/Cuttler_et_al-Acute-effects-of-cannabigerol-on-anxiety-stressm-and-mood-A-double-blind-placebo-controled-crossover-field-trial-Scientific-Reports-2024.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Carrie Cuttler, Amanda Stueber, Ziva D. Cooper, Ethan Russo",
+      "published": "2024-07-13",
+      "passage": "Abstract, page1 ; Discussion et limites",
+      "access": "full-text",
+      "documentKind": "Essai humain randomisé original, copie auteur du PDF publié",
+      "limitation": "Petit essai aigu àdistance chez34adultes enbonne santé ; pas un essai de traitement d’untrouble anxieux, niune preuve d’usage prolongé.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, page1 ; Discussion et limites",
+        "result": "Résumé et limites lus : réduction d’anxiété rapportée, pas de signes subjectifs d’ivresse ni d’altération mesurée dans ces conditions."
+      }
+    },
+    {
+      "id": "q2-ra02-fr-code",
+      "title": "Code de la santé publique, article L3421-1, version en vigueur depuis le20août2026",
+      "organization": "Légifrance / République française",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+      "verifiedAt": "2026-11-17",
+      "author": "Législateur français ; diffusion DILA",
+      "published": "Version en vigueur2026-08-20",
+      "passage": "ArticleL3421-1, alinéas1 etdernier",
+      "access": "official-page",
+      "documentKind": "Texte législatif consolidé",
+      "limitation": "Version datée ; distinguer peine maximale et procédure d’amende forfaitaire ; vérifier ànouveau avant réemploi ultérieur.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "ArticleL3421-1, alinéas1 etdernier",
+        "result": "Texte lu : usage illicite pénalisé, AFD500€, minorée400€, majorée1000€ ; concordance avec ServicePublic vérifié21août2026."
+      }
+    },
+    {
+      "id": "q2-ra02-fr-ce",
+      "title": "CBD : Annulation de l’arrêté interdisant la vente des fleurs et feuilles de cannabis sans propriétés stupéfiantes",
+      "organization": "Conseil d’État",
+      "url": "https://www.conseil-etat.fr/actualites/cbd-annulation-de-l-arrete-interdisant-la-vente-des-fleurs-et-feuilles-de-cannabis-sans-proprietes-stupefiantes",
+      "verifiedAt": "2026-11-17",
+      "author": "Conseil d’État",
+      "published": "2022-12-29",
+      "passage": "Objet et portée de l’annulation ; paragraphes surl’arrêté2021",
+      "access": "official-page",
+      "documentKind": "Présentation institutionnelle d’une décision de justice",
+      "limitation": "Question limitée àce qui aété annulé en2022 ; ne vaut pas panorama de toutes les règles d’usage2026. Le flyerMILDECA2026 ambigu n’est pas utilisé pour inférer un revirement.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Objet et portée de l’annulation ; paragraphes surl’arrêté2021",
+        "result": "Page entière lue : annulation de l’interdiction générale et absolue de commercialiser àl’état brut les fleurs et feuilles àfaibleTHC."
+      }
+    },
+    {
+      "id": "q2-ra02-curia",
+      "title": "AffaireC-663/18 : commercialisation du cannabidiol légalement produit dans un autre État membre, communiqué141/20",
+      "organization": "Cour de justice de l’Union européenne",
+      "url": "https://curia.europa.eu/site/upload/docs/application/pdf/2020-11/cp200141fr.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Service de presse et information de la CJUE",
+      "published": "2020-11-19",
+      "passage": "PDFp2, contrôle de santé publique et proportionnalité",
+      "access": "official-page",
+      "documentKind": "Communiqué institutionnel présentant l’arrêt",
+      "limitation": "Document de presse explicatif, pas le texte intégral de l’arrêt ; principe du cas précisé, ne crée pas d’autorisation générale de tout produitCBD.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "PDFp2, contrôle de santé publique et proportionnalité",
+        "result": "Deux pages lues : libre circulation applicable auCBD encause ; restriction possible si santé publique réellement justifiée, nécessaire et proportionnée."
+      }
+    },
+    {
+      "id": "q2-ra02-de-bmg",
+      "title": "Frequently asked questions on the Cannabis Act",
+      "organization": "Bundesministerium für Gesundheit, Allemagne",
+      "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+      "verifiedAt": "2026-11-17",
+      "author": "Federal Ministry of Health (BMG)",
+      "published": "Date non indiquée dans les passages ; page incluant l’évaluation2026",
+      "passage": "Possession ; Cultivation associations ; Child and youth protection",
+      "access": "official-page",
+      "documentKind": "FAQ ministérielle publique, version anglaise",
+      "limitation": "Cadre allemand du cannabis non médical, consulté17novembre2026 ; prescriptions médicales et semences obéissent àdes régimes spécifiques ; règles locales peuvent s’ajouter.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Possession ; Cultivation associations ; Child and youth protection",
+        "result": "Passages lus :25g portés, nature noncommerciale desclubs, résidence sixmois, interdiction envoi/vente enligne, consommation dansclub/présencemineurs, publicité etparrainage."
+      }
+    },
+    {
+      "id": "q2-ra02-mt-aruc",
+      "title": "Harm Reduction: Frequently asked questions",
+      "organization": "Authority for the Responsible Use of Cannabis (ARUC), Malta",
+      "url": "https://aruc.mt/harmreduction/",
+      "verifiedAt": "2026-11-17",
+      "author": "ARUC",
+      "published": "Date non indiquée",
+      "passage": "What is the task of the Authority? ; How can I become a member of a CHRA?",
+      "access": "official-page",
+      "documentKind": "FAQ du régulateur public",
+      "limitation": "Cadre desassociations maltaises uniquement ; ne signifie pas une absence totale de sanctions hors dispositif. Aucun contenu de quiz externe n’aété consulté.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "What is the task of the Authority? ; How can I become a member of a CHRA?",
+        "result": "Passages lus : espaces fermés nonaccessibles auxtouristes etnonmembres ; système centralisé empêchant uneadhésion multiple."
+      }
+    },
+    {
+      "id": "q2-ra02-lu-mj",
+      "title": "Culture à domicile et décorrectionalisation de petites quantités de cannabis",
+      "organization": "Ministère de la Justice, Luxembourg",
+      "url": "https://mj.gouvernement.lu/dam-assets/dossiers/cannabis/flyer-fr.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Ministère de la Justice du Grand-Duché de Luxembourg",
+      "published": "Date nonindiquée ; dépliant de présentation de la loi du10juillet2023",
+      "passage": "Pages2–3 : communauté domestique, consommation enpublic",
+      "access": "official-page",
+      "documentKind": "Dépliant ministériel public auformatPDF",
+      "limitation": "Faits juridiques descriptifs uniquement ; aucun conseil de culture. Existence ducadre actuel recoupée avec pages Police etPortailSanté consultées par recherche.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Pages2–3 : communauté domestique, consommation enpublic",
+        "result": "Dépliant lu : quatreplantes parcommunauté domestique, usage personnelàdomicile ; consommation enpublic ethorslieudeculture resteinterdite."
+      }
+    },
+    {
+      "id": "q2-ra02-pramhas",
+      "title": "Oral cannabidiol (CBD) as add-on to paracetamol for painful chronic osteoarthritis of the knee: a randomized, double-blind, placebo-controlled clinical trial",
+      "organization": "The Lancet Regional Health – Europe / Medical University of Vienna",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10682664/",
+      "verifiedAt": "2026-11-17",
+      "author": "Sibylle Pramhas, Teresa Thalhammer, Sebastian Terner, Daniel Pickelsberger, Andreas Gleiss, Sabine Sator, Hans G. Kress",
+      "published": "2023-11-10",
+      "passage": "Summary, Findings et Interpretation ; Research in context",
+      "access": "full-text",
+      "documentKind": "Essai clinique randomisé original",
+      "limitation": "CBD oral ajouté au paracétamol, arthrose du genou ; absence de bénéfice supplémentaire dans cet essai, pas conclusion sur toutes les douleurs ni tous les cannabinoïdes.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Summary, Findings et Interpretation ; Research in context",
+        "result": "Texte original ouvert : 86 personnes randomisées ; réduction de douleur semblable CBD/placebo et absence de bénéfice antalgique supplémentaire ; doses non reprises."
+      }
+    }
+  ]
+}

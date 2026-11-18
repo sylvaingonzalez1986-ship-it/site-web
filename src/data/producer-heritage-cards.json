@@ -44,20 +44,6 @@
       "focalY": 0.35
     },
     {
-      "code": "HERITAGE-004",
-      "producerId": "producer-1771159879557-3228",
-      "producerName": "Hot Alpine Weed",
-      "name": "Climat stable",
-      "effect": "climate-danger-to-spark",
-      "timing": "once-per-run",
-      "description": "+2 XP au départ. Le dé le plus faible devient une Étincelle face au Climat, ou au Séchage si le pouvoir reste disponible.",
-      "drawback": "Une activation automatique ; le Séchage sert de relais si aucune Situation Climat ne l’a déclenchée.",
-      "activationLabel": "AUTOMATIQUE · CLIMAT OU SÉCHAGE",
-      "illustrationUrl": "/app/kanab-quest/cards/heritage-004-climat-stable-producer-v2.webp",
-      "frontUrl": "/app/kanab-quest/card-fronts/heritage-004-climat-stable-producer-front-v5.webp",
-      "focalY": 0.35
-    },
-    {
       "code": "HERITAGE-005",
       "producerId": "producer-1773870264609-7958",
       "producerName": "Ty Kanna",

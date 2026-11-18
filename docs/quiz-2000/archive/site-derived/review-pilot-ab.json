@@ -1,0 +1,294 @@
+{
+  "batchId": "pilot-ab",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16",
+  "mechanicalCorrectionsApplied": [
+    "UTF-8 sans BOM",
+    "Séquences littérales \\u0027 remplacées par apostrophes dans les chaînes",
+    "Deux topicId profiles corrigés : arôme en molecules, marque/producteur en genetics"
+  ],
+  "batchIssues": [],
+  "duplicateCheck": "Comparaison avec les 360 énoncés et corrigés actifs lus dans l’audit F et recherche des sujets nommés : aucun doublon de fait identifié. Entre ces dix items, les versions de White Widow et la remontée de pedigree sont distinctes de l’arôme de Sweet and Sour Widow. Aucun autre lot pilote n’était présent au début de cette relecture.",
+  "items": [
+    {
+      "id": "hemp-q2-ab-sweet-sour-widow-oignon",
+      "status": "approved",
+      "comment": "Niveau relevé à 2 : connaissance d’un catalogue précis. Arôme attribué, quatre choix et preuve inchangés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-cbdcrew-widow",
+          "url": "https://cbdcrew.org/varieties/cbd-sweet-and-sour-widow/",
+          "locator": "Description ligne extraite 33 et ligne Aroma 42",
+          "result": "Page officielle ouverte et passages lus le 16 novembre 2026 : l’obtenteur décrit explicitement une fragrance d’oignon acidulé. Le corrigé limite correctement la portée sensorielle.",
+          "sourceHash": "e8fd4cea030c58dca55c75a5c5cd3f6ff73486de5619871b206f5bf1bfcfdf4c"
+        }
+      ],
+      "contentHash": "590d897acc58fae526a2144a5f82b9b4e3500879c21f590c033727163c7c9d82",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "a3e51443cb5ce3987c190f86efdef0382e83f130c52e4d09b37c027dae6bd9b0",
+          "previousStatus": "approved",
+          "previousComment": "Question autonome, quatre arômes de même nature, attribution explicite à CBD Crew. La source confirme l’oignon acidulé sans démontrer une mesure de terpènes par lot. Niveau 1 acceptable comme rappel sensoriel, difficulté seulement estimée. Code HH2026-018 retrouvé dans le registre local des cartes ; le code n’atteste pas un lot commercial précis.",
+          "contentHash": "590d897acc58fae526a2144a5f82b9b4e3500879c21f590c033727163c7c9d82",
+          "result": "Niveau relevé à 2 : connaissance d’un catalogue précis. Arôme attribué, quatre choix et preuve inchangés.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-kanadea-pyrenees-botanic",
+      "status": "approved",
+      "comment": "Niveau relevé à 2 : identité commerciale spécialisée. Distinction entreprise/marque et passage source inchangés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-kanadea",
+          "url": "https://kanadea.fr/mentions-legales/",
+          "locator": "Qui sommes nous, lignes extraites 28–30 ; répétition 45–49",
+          "result": "Page officielle ouverte et passages lus le 16 novembre 2026 : Pyrénées Botanic cultive et transforme le chanvre puis distribue ses produits sous la marque Kanadea. Réponse et distinction de rôles étayées.",
+          "sourceHash": "846b9a6472e0a47308546814d13a6a409dd7ea7f8a698a4420e27a09395cfa3b"
+        }
+      ],
+      "contentHash": "ebb4b8a6d6ef42d4953bd767ad9cbed3d883e161aaa1c10cd5022ff102d84141",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "404e0cfe9a881b38d0f7052ec3807d473665cb1ddd933829dbb019523054f603",
+          "previousStatus": "approved",
+          "previousComment": "Bonne distinction entreprise agricole/marque, quatre marques françaises plausibles. Aucun transfert génétique ni certification déduit. Niveau 1 fondé sur l’association de deux noms, sous réserve de calibration joueurs.",
+          "contentHash": "ebb4b8a6d6ef42d4953bd767ad9cbed3d883e161aaa1c10cd5022ff102d84141",
+          "result": "Niveau relevé à 2 : identité commerciale spécialisée. Distinction entreprise/marque et passage source inchangés.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-cannatonic-correction-2015",
+      "status": "approved",
+      "comment": "Niveau 3 et forme identification relus : rappel d’un pedigree corrigé à une date donnée, sans tâche chronologique artificielle. Fait et preuve inchangés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-resin-cannatonic",
+          "url": "https://resinseeds.net/new-cannatonic-information/",
+          "locator": "Date de publication ligne 36, correction ligne 38, modification ligne 40",
+          "result": "Annonce Resin Seeds ouverte et lue le 16 novembre 2026 : publication le 10 novembre 2015, modification affichée le 17 janvier 2016 ; parenté Reina Madre × NYCD en remplacement de MK-Ultra × G13. La question attribue correctement la correction de novembre 2015 à la publication.",
+          "sourceHash": "62f369b1f172376611b595bf2392a4fc184474b96bc23b3ec5402af1c88dbdc4"
+        }
+      ],
+      "contentHash": "8b668cf3602451e04ccecaad96057de5d793dd1c3fb9439e2c3951f3ee459e34",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "c26dbde37bdb7f869158e75b094dedfc66e1fecf12eeb0df331d2c625fbb56c8",
+          "previousStatus": "approved",
+          "previousComment": "Correction historique datée et attribuée ; le distracteur MK-Ultra × G13 reprend l’ancienne déclaration, ce qui rend la comparaison utile. Le corrigé ne transforme pas la déclaration de l’obtenteur en preuve indépendante de parentage. Niveau 2 plausible. Code HH2026-003 présent dans les cartes locales.",
+          "contentHash": "8b668cf3602451e04ccecaad96057de5d793dd1c3fb9439e2c3951f3ee459e34",
+          "result": "Niveau 3 et forme identification relus : rappel d’un pedigree corrigé à une date donnée, sans tâche chronologique artificielle. Fait et preuve inchangés.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-hawaiian-haze-obtenteur",
+      "status": "approved",
+      "comment": "Obtenteur déclaré clairement distingué de cultivateur et revendeur ; quatre acteurs de sélection plausibles. Attribution GTR dans l’énoncé suffisante pour délimiter la version homonyme. Niveau 2 plausible. Code HH2026-007 présent localement.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-gtr-hawaiian",
+          "url": "https://gtrseeds.com/products/hawaiian-haze",
+          "locator": "Description, attribution Bred by, ligne extraite 93",
+          "result": "Catalogue officiel ouvert et passage lu le 16 novembre 2026 : Oregon CBD Seeds crédité expressément comme obtenteur. Aucun rendement, teneur ou mode de culture repris dans la question.",
+          "sourceHash": "721fcf2cda46003cbbb47be9a83f7f02088804e6fa61d003f87ce519221272e1"
+        }
+      ],
+      "contentHash": "a4540adae32242dc845b3277f40de86c4ad1097674e1fd969da0061a454f0e48"
+    },
+    {
+      "id": "hemp-q2-ab-lifter-gtr-catalogue-2026",
+      "status": "approved",
+      "comment": "Niveau 3 et forme identification relus : pedigree daté aux sigles proches, corrigé borné à la fiche consultée. Preuve SH50 × KAP inchangée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-gtr-lifter",
+          "url": "https://gtrseeds.com/products/lifter-organic",
+          "locator": "Description, Lineage, ligne extraite 72",
+          "result": "Catalogue officiel ouvert et passage lu le 16 novembre 2026 : SH50 × KAP explicitement affiché. Cette source actuelle ne prouve pas la parenté de l’original 2018 ; l’absence de buddyCodes pour cette version est appropriée.",
+          "sourceHash": "a3fd29317309eb7b2eff4beb2bcb8d347fbd0f191680b3f3f3db0cae3544b899"
+        }
+      ],
+      "contentHash": "e2990227f804e27577c9e627f7d9070d3f6933503c3e2e42efa1892fd8b06258",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "db59a09e6f502d81331203ba9068b8ef8435929ca8a00d617a684cfb6fa91a76",
+          "previousStatus": "approved",
+          "previousComment": "Corrigé relu après modification : la mention du registre technique a disparu, la version de novembre 2026 et les limites aux homonymes sont conservées. Fait SH50 × KAP confirmé par le passage déjà ouvert cette session. Quatre pedigrees plausibles, même fait et même ID.",
+          "contentHash": "e2990227f804e27577c9e627f7d9070d3f6933503c3e2e42efa1892fd8b06258",
+          "result": "Niveau 3 et forme identification relus : pedigree daté aux sigles proches, corrigé borné à la fiche consultée. Preuve SH50 × KAP inchangée.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-berry-blossom-chardonnay",
+      "status": "approved",
+      "comment": "Forme identification corrigée : le joueur restitue une ascendance. Niveau 3, fait et preuve AOSCA inchangés.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-aosca-berry",
+          "url": "https://aosca.org/wp-content/uploads/2024/12/2022-Hemp-High-Grade-Hemp-Seed-%E2%80%93-Berry-Blossom.pdf",
+          "locator": "Fichier PDF d’une page, page imprimée 8 ; lignes extraites 4–5 et 12–15",
+          "result": "PDF original ouvert et passages lus le 16 novembre 2026 : Berry Blossom résulte de Cherry Kandahar S1 et Chardonnay ; Chardonnay est déclaré F1 entre Black Rose et une sélection de Cherry Wine. Le dossier consigne cette déclaration, sans preuve moléculaire de parentage par lot.",
+          "sourceHash": "7ae68e2f15472df41c041720048b1a80fa808608521a32f59ad5e144a3161302"
+        }
+      ],
+      "contentHash": "6a191879d9d369bba970df08906777b69cee484aa087decaef19ec49357944d4",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "a22cb1dbb34d1264371195cc77e031a6f6a807423c7ef85b2de0239254efbccd",
+          "previousStatus": "approved",
+          "previousComment": "Source attribuée et relation entre parent et grands-parents correctement séparée. Quatre couples de lignées, sans dosage ni protocole. Niveau 3 cohérent avec le détail de pedigree ; le joueur répond par connaissance du pedigree et ne dispose pas d’une déduction à faire à partir de données dans l’énoncé. Forme editorial deduction acceptable comme provenance de rédaction, mais identification serait plus exact pour l’exercice affiché. Code HH2026-039 présent localement.",
+          "contentHash": "6a191879d9d369bba970df08906777b69cee484aa087decaef19ec49357944d4",
+          "result": "Forme identification corrigée : le joueur restitue une ascendance. Niveau 3, fait et preuve AOSCA inchangés.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-jack-herer-hommage",
+      "status": "approved",
+      "comment": "Anecdote culturelle utile, quatre activités comparables et réponse sans promesse d’effet. La question se limite à la Jack Herer de Sensi Seeds et à la personne honorée. Niveau 1 éditorialement plausible ; aucun doublon historique dans les 360 actifs.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-sensi-jack",
+          "url": "https://sensiseeds.com/en/blog/cannabis-strain-focus-jack-herer-from-sensi-seeds/",
+          "locator": "Introduction ligne extraite 67, date de mise à jour ligne 58",
+          "result": "Article officiel ouvert et introduction lue le 16 novembre 2026 : Sensi Seeds attribue le nom à l’auteur de The Emperor Wears No Clothes et à son militantisme pour le cannabis. Les conseils de culture et superlatifs de la page n’ont pas été retenus.",
+          "sourceHash": "e3e0f4bcea778deb342f7aa57f7a8c3be42e7283a018016d9a50846ea243c01f"
+        }
+      ],
+      "contentHash": "6a148f01c270d42aa8613f036b743131b53a7b5da9f259830ba36ad55e31480b"
+    },
+    {
+      "id": "hemp-q2-ab-blueberry-dj-short",
+      "status": "approved",
+      "comment": "Niveau relevé à 2 : attribution spécialisée à un créateur. Distinction créateur/catalogue et source inchangées.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-dutchpassion-blueberry",
+          "url": "https://dutch-passion.com/en/cannabis-seeds/blueberry",
+          "locator": "Dutch Passion Blueberry: one of the most rewarding cannabis strains, ligne extraite 453",
+          "result": "Fiche officielle ouverte et passage lu le 16 novembre 2026 : la Blue Family est créditée à DJ Short puis adoptée par Dutch Passion dans le cadre d’une coopération. Le corrigé respecte exactement ce rôle.",
+          "sourceHash": "981cd6f105956f040d691afb04097f924d772f315d157954478a00ebe7c116d1"
+        }
+      ],
+      "contentHash": "a24d46b955b37498bf8ad89fb58584decad4f1704830264ac784070816d8df21",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "99dfd632c381ac03fc77b3a581f5301f0309fc7de4602921f5a16e1b667f51e7",
+          "previousStatus": "approved",
+          "previousComment": "Créateur original et marque commerciale correctement distingués. Les quatre personnes sont des obtenteurs crédibles ; l’énoncé attribue le crédit à Dutch Passion sans présenter le catalogue comme preuve indépendante. Niveau 1 fondé sur la notoriété et le rappel simple, à calibrer.",
+          "contentHash": "a24d46b955b37498bf8ad89fb58584decad4f1704830264ac784070816d8df21",
+          "result": "Niveau relevé à 2 : attribution spécialisée à un créateur. Distinction créateur/catalogue et source inchangées.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ab-pineapple-express-barneys",
+      "status": "approved",
+      "comment": "Attribution et version féminisée explicites. Quatre couples parentaux comparables ; aucune transposition à une fleur CBD homonyme. La traduction abrégée Hawaiian reste éclairée par la description de sativa locale hawaïenne dans le corrigé. Niveau 2 acceptable comme connaissance de pedigree.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-barneys-pineapple",
+          "url": "https://www.barneysfarm.com/pineapple-express-609",
+          "locator": "Introduction lignes extraites 49–58, Genetics du profil",
+          "result": "Fiche officielle ouverte et passages lus le 16 novembre 2026 : Hawaiian Landrace Sativa × Trainwreck pour la version féminisée. Aucun conseil de culture, rendement ou effet de la fiche transféré à la question.",
+          "sourceHash": "01508f8f5a667fc57e025a1226df2959184de1165c432c3b1e0d8c9db26d0221"
+        }
+      ],
+      "contentHash": "cbaf7fcbc8d567a5ef2072cf92a65550fad7461628b2ca31d1a39a1c93dbea89"
+    },
+    {
+      "id": "hemp-q2-ab-trikoma-widow-bilbo-bcn",
+      "status": "approved",
+      "comment": "Niveau 3 et quatre pedigrees relus : tous incluent Widow, sans indice lexical réservé au bon choix. Le fait reste Widow Bilbo × Widow BCN dans la fiche espagnole déjà consultée ; aucune inférence vers la version CBD.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-trikoma-widow",
+          "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+          "locator": "Características de un vistazo, Genética, ligne extraite 124",
+          "result": "Passage de la fiche officielle ouvert et lu cette session le 16 novembre 2026 : Widow Bilbo × Widow BCN, directement affiché pour cette White Widow. La nouvelle question correspond à ce passage ; aucune identité avec le parent de la version CBD n’est inférée.",
+          "sourceHash": "b70310aa07ec23f7cd0741a70d63508607370a682f8eceb758d7a0fa8853f767"
+        }
+      ],
+      "contentHash": "e015f531ff1f9b4b95ac95926d43e717a4e55ee3f055fa99b58ac87812431ba5",
+      "revalidationHistory": [
+        {
+          "reviewedAt": "2026-11-16",
+          "previousContentHash": "136c734bd70b0055df273757967da7518d163ca9ac0e473b63fcbad169a371f6",
+          "previousStatus": "approved",
+          "previousComment": "Nouvel ID et objectif relus : question autonome sur le pedigree directement déclaré dans la fiche espagnole Trikoma. Le corrigé exclut toute extension aux White Widow homonymes et à la version CBD. Quatre pedigrees plausibles ; niveau expert provisoire fondé sur une connaissance commerciale spécialisée, sans inférence à deux générations.",
+          "contentHash": "e015f531ff1f9b4b95ac95926d43e717a4e55ee3f055fa99b58ac87812431ba5",
+          "result": "Niveau 3 et quatre pedigrees relus : tous incluent Widow, sans indice lexical réservé au bon choix. Le fait reste Widow Bilbo × Widow BCN dans la fiche espagnole déjà consultée ; aucune inférence vers la version CBD.",
+          "sourceEvidence": "Mêmes fait et passages déjà ouverts et lus cette session ; aucune nouvelle consultation revendiquée."
+        }
+      ]
+    }
+  ],
+  "retiredReviews": [
+    {
+      "id": "hemp-q2-ab-trikoma-widow-deux-generations",
+      "status": "changes_requested",
+      "comment": "Chaque fiche soutient son pedigree isolé, mais le lien d’identité entre le parent nommé White Widow sur l’ancienne fiche CBD et la version actuelle Widow Bilbo × Widow BCN n’est pas établi explicitement par ces passages. Le nom homonyme et le même obtenteur ne suffisent pas à certifier cette remontée sur deux générations. Ajouter un document ou lien explicite de l’obtenteur établissant cette identité, ou limiter la question à la White Widow de la fiche espagnole. Ce second choix change l’objectif : nouvel ID et archivage de celui-ci. Les quatre pedigrees sont plausibles, mais le niveau 4 ne suffit pas à justifier l’inférence absente.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ab-trikoma-widow",
+          "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+          "locator": "Linaje genético lignes 119–121 et tableau Genética ligne 124",
+          "result": "Page officielle ouverte et passages lus le 16 novembre 2026 : la White Widow actuellement décrite est Widow Bilbo × Widow BCN. Ces passages ne disent pas expressément que cette version est celle employée dans la White Widow CBD de l’autre fiche."
+        },
+        {
+          "sourceId": "q2-ab-trikoma-widow-cbd",
+          "url": "https://www.trikomaseeds.com/en/semillas/white-widow-cbd/",
+          "locator": "Features of White Widow CBD, ligne extraite 99 ; comparaison avec version féminisée ligne 68",
+          "result": "Page officielle ouverte et passages lus le 16 novembre 2026 : White Widow × CBD seulement. La version féminisée est évoquée pour la saveur sans préciser Bilbo/BCN ni fournir de lien identifiant le parent. Vérification complémentaire de la fiche espagnole CBD : même absence de parent détaillé, lignes 69 et 93."
+        }
+      ],
+      "contentHash": "13c022a19c713819c806c41d0b9e35c5bb0ba84cf86e1d95958895c7fba436bb",
+      "resolution": "Auteur a archivé cet ID jamais actif ; nouvelle question limitée à la fiche espagnole, sans inférence White Widow CBD."
+    }
+  ],
+  "resolvedBatchIssues": [
+    "Huit sources ont published:null, alors que le contrat/vérificateur exige une chaîne non vide. Indiquer honnêtement date non indiquée si absente ; ne pas inventer une date.",
+    "Les approbations ci-dessous portent sur le contenu de chaque question et les passages source ; elles ne dispensent pas de corriger les métadonnées du lot."
+  ],
+  "difficultyNote": "Corrections E de niveaux et formes appliquées et relues. Calibrage éditorial honnête privilégié, sans mesure psychométrique ni ratio artificiel. La plupart des exercices restent des identifications.",
+  "finalRevalidation": {
+    "reviewer": "f_existing_audit",
+    "reviewedAt": "2026-11-16",
+    "changedQuestionsRead": 7,
+    "unchangedHashesRetained": 3,
+    "scope": "Lecture des objets complets modifiés, des quatre choix, corrigé et métadonnées ; aucun lot édité par le reviewer."
+  },
+  "sourceSealing": {
+    "reviewer": "f_existing_audit",
+    "sealedAt": "2026-11-16",
+    "algorithm": "SHA-256(JSON.stringify(fullSourceObject))",
+    "scope": "Current approved items only. URLs, passages, access levels and consultation records compared with the sources personally opened during this review. Honest missing-publication-date labels accepted for AB; no fresh external reading claimed. Archived retired reviews remain historical.",
+    "verifiedReferencedSourceIds": [
+      "q2-ab-cbdcrew-widow",
+      "q2-ab-kanadea",
+      "q2-ab-resin-cannatonic",
+      "q2-ab-gtr-hawaiian",
+      "q2-ab-gtr-lifter",
+      "q2-ab-aosca-berry",
+      "q2-ab-sensi-jack",
+      "q2-ab-dutchpassion-blueberry",
+      "q2-ab-barneys-pineapple",
+      "q2-ab-trikoma-widow"
+    ]
+  }
+}

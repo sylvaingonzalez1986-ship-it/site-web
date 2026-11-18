@@ -113,6 +113,8 @@ try{
    assert.ok(metric.confirm.height>=44,'Confirmation is a touch target of at least 44 px');
    assert.equal(await page.$$eval('[data-app-dialog] h2',nodes=>nodes.length),1,'One card title');
    const card=await page.evaluate(()=>window.__card),cost=await page.$eval('[data-culture-card-cost]',e=>e.textContent);
+   assert.ok(await page.$eval('[data-card-target]',e=>e.textContent.includes(window.__game.varietyName)),'Inspection identifies the actual culture');
+   assert.match(await page.$eval('[data-card-dice-target]',e=>e.textContent),/Dé 1 de 2 à 6/,'Automatic die target comes from the deterministic effect');
    assert.ok(cost.includes(`${card.xpCost} XP`)&&cost.includes('1 copie détruite')&&cost.includes('10 XP')&&cost.includes('3 copies'),'Visible footer lists XP cost, permanent consumption and balances');
    assert.equal(await page.$eval('[data-culture-card-cost]',e=>{const b=e.getBoundingClientRect();return b.top>=0&&b.bottom<=innerHeight}),true,'Costs stay visible together with confirmation');
    const described=await page.$eval('[data-culture-confirm-card]',e=>e.getAttribute('aria-describedby').split(' ').map(id=>document.getElementById(id)?.textContent).join(' '));
@@ -177,6 +179,7 @@ try{
    await frames();
    assert.equal(await page.evaluate(()=>window.__calls.filter(call=>call.method==='POST').length),1,'A second click during confirmation cannot send another play');
    assert.deepEqual(await page.evaluate(()=>window.__game),expected,'Confirmed effect equals real domain execution');
+   assert.ok(await page.$eval('[data-card-play-result]',e=>e.textContent.includes(window.__game.effectNotices.at(-1))),'The hand shows the confirmed effect');
    assert.equal(await page.evaluate(code=>window.__inventory[code],code),2,'Exactly one of three copies is consumed');
    await page.waitForFunction(()=>document.activeElement?.matches('[data-action-card], [data-culture-hand], [data-culture-hand] > summary'),{timeout:2000});
    assert.equal(await page.evaluate(()=>document.activeElement?.matches('[data-action-card], [data-culture-hand], [data-culture-hand] > summary')),true,'Filtered-card removal retains useful keyboard focus in the hand');

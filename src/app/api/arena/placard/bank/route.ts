@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { financeOwnerProblem } from "@/lib/kanab-quest-finance-recovery";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
@@ -42,6 +43,8 @@ async function handle(request: Request, mutation = false) {
     }
     let value: unknown;
     try { value = JSON.parse(Buffer.concat(chunks).toString("utf8")); } catch { return NextResponse.json({ error: "Opération invalide." }, { status: 400, headers }); }
+    const ownerProblem = financeOwnerProblem(value, session.customerId);
+    if (ownerProblem) return NextResponse.json({ code: "finance_owner_changed", error: "Reconnecte-toi au compte de cette confirmation." }, { status: ownerProblem === "invalid" ? 400 : 409, headers });
     const command = parseKqBankCommand(value);
     if (!command) return NextResponse.json({ error: "Montant ou opération invalide." }, { status: 400, headers });
     return NextResponse.json(await getKqBank(session.customerId, command), { headers });

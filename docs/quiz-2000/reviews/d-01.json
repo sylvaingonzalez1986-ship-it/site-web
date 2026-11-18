@@ -1,0 +1,2406 @@
+{
+  "batchId": "d-01",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16T18:54:53.033Z",
+  "reviewScope": "Version corrigée :20objets modifiés relus et7nouveaux faits contrôlés ;16approuvés strictement inchangés conservés sans nouvelle lecture. Première revue conservée dans reviewHistory.",
+  "sourceTiming": "Sources ouvertes le16novembre2026. reviewedAt date la sauvegarde de la revue ; heure exacte de chaque ouverture non enregistrée.",
+  "hashMethod": "SHA-256 de JSON.stringify(question) objet complet ; sourceHash = SHA-256 de JSON.stringify(source) objet complet du tableau batch.sources, dans son ordre original.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-dnext01-patrick-kentucky",
+      "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+      "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF p.1–3,5–10 ; auteur en tête",
+      "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien."
+    },
+    {
+      "sourceId": "q2-dnext01-skoglund-2013",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+      "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résumé83–84 ; Introduction87–107 ; Methods179–195",
+      "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle."
+    },
+    {
+      "sourceId": "q2-dnext01-fao-abaca",
+      "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/cropView?id=1506",
+      "sourceHash": "f88ac889e0dc068a8fa073c6c079b8c74d8e40370debe35f0357816acbbcbfba",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "Family/Common names3–8 ; USES13",
+      "limitation": "Fibre d’abaca, pas Cannabis sativa ; aucun chiffre commercial ou conseil cultural repris."
+    },
+    {
+      "sourceId": "q2-dnext01-eckhardt-2024",
+      "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+      "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF tableaux1–3,5–6,8 ; §3.5.1–3.6",
+      "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+    },
+    {
+      "sourceId": "q2-dnext01-collet-pretot-2014",
+      "url": "https://arxiv.org/pdf/1406.3310",
+      "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF §2.1–2.2,4.2–4.4 ; notice arXiv",
+      "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue.",
+      "additionalUrlsRead": [
+        "https://arxiv.org/abs/1406.3310"
+      ]
+    },
+    {
+      "sourceId": "q2-dnext01-badji-2020",
+      "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+      "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résumé324–326 ; Weathering357 ; Sampling365–366 ; Conclusion449 ; corrigendum283–288",
+      "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées.",
+      "additionalUrlsRead": [
+        "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00266/full"
+      ]
+    },
+    {
+      "sourceId": "q2-dnext01-lopez-2021",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+      "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "abstract",
+      "locator": "PubMed référence177–179 ; résumé243–246",
+      "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+    },
+    {
+      "sourceId": "q2-dnext01-mortas-2023",
+      "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+      "sourceHash": "0343820cfa031ae7810a75ed96c5ca5f2acb3c48d3b81c29b1eac74e7ed13626",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "abstract",
+      "locator": "Éditeur, date14 ; résumé37–39",
+      "limitation": "Résumé éditeur seulement ; p>0,05 n’établit pas une équivalence."
+    },
+    {
+      "sourceId": "q2-dnext01-loturco-2023",
+      "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+      "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résumé187–190 ; §3.1,3.3,3.4,3.6 ; Conclusion",
+      "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+    },
+    {
+      "sourceId": "q2-d01-wu-syneresis-2023",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10355138/",
+      "sourceHash": "cb135b9cb1ef9815476ccfd0b9c9f6a0fd0442ef90af0f6100ebb2e2cfd395d2",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "Résumé104 etIntroduction111–114",
+      "limitation": "Définition de synérèse seulement ; aucune mesure du système modèle transférée quantitativement au chanvre."
+    },
+    {
+      "sourceId": "q2-d01-inrae-oleosomes-2022",
+      "url": "https://www.inrae.fr/actualites/corps-lipidiques-graine-chanvre-valorisation-dune-nouvelle-source-lipides-alimentation-saine-durable",
+      "sourceHash": "b106a883a9da4cf24b0e93507e2c831ecedd4abf867547d60bef0aa00250bd6e",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "Publication12 ; Un intérêt croissant18 ; lien étudeLopez",
+      "limitation": "Organisation de l’oléosome uniquement ; aucune promesse nutritionnelle ou médicale du communiqué reprise."
+    }
+  ],
+  "duplicateReview": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "exactDuplicateFound": false,
+    "recurringContexts": [
+      {
+        "ids": [
+          "hemp-q2-d01-coton-emballage",
+          "hemp-q2-d01-kentucky-travail-asservi",
+          "hemp-q2-d01-cordier-recul",
+          "hemp-q2-d01-machine-annonce-adoption"
+        ],
+        "subjectKey": "kentucky-hemp-patrick",
+        "result": "Quatre clés initialement éclatées réunies."
+      },
+      {
+        "ids": [
+          "hemp-q2-d01-textiles-fins-scandinaves",
+          "hemp-q2-d01-fibrilles-z-s",
+          "hemp-q2-d01-adn-rouissage",
+          "hemp-q2-d01-pollen-preuve-textile"
+        ],
+        "subjectKey": "skoglund-2013-scandinavian-textiles",
+        "result": "Contexte textile commun désormais regroupé."
+      },
+      {
+        "ids": [
+          "hemp-q2-d01-manille-abaca",
+          "hemp-q2-d01-abaca-eau-salee"
+        ],
+        "subjectKey": "abaca-musa-textilis",
+        "result": "Identité botanique donnée par l’item maritime ; clé commune évite leur répétition dans la même partie."
+      }
+    ],
+    "newFactNote": "Nouveaux faits conceptuels distincts des simples lectures de valeurs ou seuils remplacées ; les explications ne recyclent pas un nouveau même fait sous un identifiant différent."
+  },
+  "items": [
+    {
+      "id": "hemp-q2-d01-coton-emballage",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "85dc5336305669d3f7272ba0984d60b8442562a15c938a76f972c6cc0f4e6c22",
+      "previousContentHash": "b08558d2e9c18b3b46ae8e3165a4fc3d83372a71807ff9cfe703251ee191be20",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+          "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+          "locator": "p.7–9 PDF, lignes158,191–203",
+          "result": "Débouchés : emballages et liens de balles de coton ; le lien économique avec le Sud est explicite.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-kentucky-travail-asservi",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "6442f5739c4fb90409425c72b6d44db1b9a2c9ed6aebef79fb1256822a28e454",
+      "previousContentHash": "c459e19d74600537f58ee3a9738a0cb086ec61b377fdf7a31065346d9cbb0ba4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+          "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+          "locator": "p.1–3 et9–10 PDF, lignes7–8,36,211–223",
+          "result": "La filière dépend largement de personnes asservies aux champs et dans les manufactures.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-cordier-recul",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "6110ce12d2e6d1740d82d8bdeb82e316eaadbeb42cadbdf1b43439c5d4ae9cc4",
+      "previousContentHash": "f941916d6de57acfb5bcd45e554a2912bba676f5d67a1f7be47063acd6613d49",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+          "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+          "locator": "p.9 PDF, lignes195–203",
+          "result": "Le fileur recule en délivrant les fibres ; l’aire allongée du ropewalk correspond à ce déplacement.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-machine-annonce-adoption",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "307fdf4a5b288dbcd792278bad42b0d81a827029ceabc60d7fd4e13491ad969a",
+      "previousContentHash": "e57526d265ea7d62686e63e32cf0cde6e42c50fea2912b193c255c4a38bb7c82",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-patrick-kentucky",
+          "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+          "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+          "locator": "p.5–6 PDF, lignes115–136",
+          "result": "Patrick distingue les annonces Mansell/Barnum de leur faible influence durable.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-textiles-fins-scandinaves",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "fe79262dbc3a5afcbadadc7ad7610e0748e007e0e3e8334d6c49684a84d13669",
+      "previousContentHash": "9d92ed122064deec08d8ae56c5749b896c8fe21d36f2afc196ed0999b71aa4bd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+          "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+          "locator": "Résumé83–84 ; Introduction101–107",
+          "result": "Quatre textiles du corpus contiennent du chanvre ; la finesse ne permet pas de les assigner tous au lin.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-fibrilles-z-s",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "f0b9497f28975372cc3252222f7d1029b380250aabccedb33f7c4590127f750a",
+      "previousContentHash": "06af414fd2eeb47889cacd33938cdea70a6b9e47fe7b5c589d78c1e1a6aac0c2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+          "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+          "locator": "Methods179–195, Figure5 légende",
+          "result": "Fibrilles de chanvre en Z ; lin et ortie en S. L’orientation interne diffère de la torsion du fil.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-adn-rouissage",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "25bb41ce379282e9613e1b97d2308bd20799d75a896e8fcd9ab60ec83682ef86",
+      "previousContentHash": "55257e02584315c2dee923c8de3690b509b6dc5d3f706190db464fb5704ff84f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+          "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+          "locator": "Methods179–180",
+          "result": "Le rouissage aqueux augmente le risque de dégradation hydrolytique de l’ADN ; limitation historique d’identification, pas impossibilité absolue actuelle.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-pollen-preuve-textile",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "531c5883d52324c890d44c34b20ee2ac8ec6f43fb1e066abe782308cc5b8943f",
+      "previousContentHash": "a224f090b802feea92af58a4693624335e487147ee8e1829198a5215abea07ec",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-skoglund-2013",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+          "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+          "locator": "Introduction87–98",
+          "result": "Pollen/graines seuls ne démontrent pas une production textile ; usages alimentaires ou huile possibles.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-manille-abaca",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "f43fb6c6b44e34e6eca9cd3588a19b3516e4ff1254f44ad2da268e15a951677d",
+      "previousContentHash": "e44feab106dfd2aa2154d7af1cc4f8f0b7b4c909a8c75e10acfe2374cca6c712",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-fao-abaca",
+          "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/cropView?id=1506",
+          "sourceHash": "f88ac889e0dc068a8fa073c6c079b8c74d8e40370debe35f0357816acbbcbfba",
+          "locator": "Fiche FAO, lignes3–8",
+          "result": "Musa textilis, famille Musaceae ; noms abaca et Manila hemp.",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Fibre d’abaca, pas Cannabis sativa ; aucun chiffre commercial ou conseil cultural repris.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-abaca-eau-salee",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Version modifiée relue ; demandes précédentes résolues,fait et passages source inchangés.",
+      "contentHash": "1d4e120c09d8ab0cc51dd9e20fff7206ae90401ad0cdcffcf5504c3e8dfa017d",
+      "previousContentHash": "a713fc94bd51312da5f1a3ab29c88966d70bee4bca62c54e4c5993aebe02994d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-fao-abaca",
+          "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/cropView?id=1506",
+          "sourceHash": "f88ac889e0dc068a8fa073c6c079b8c74d8e40370debe35f0357816acbbcbfba",
+          "locator": "Fiche FAO, USES ligne13",
+          "result": "L’ancien emploi maritime est explicitement relié à la durabilité de la fibre en eau salée.",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Fibre d’abaca, pas Cannabis sativa ; aucun chiffre commercial ou conseil cultural repris.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-isolat-purete-rendement",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "f77bd375db6ac609e3e031ab408ad3a8fa63ae4f607614d16af78aa1120e6989",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "Tableaux1–2 et notes, p.6 PDF, lignes558–560,585–588",
+          "result": "Pureté rapportée au produit final ; rendement rapporté aux protéines du tourteau de départ.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-colorimetrie-clarte",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "12c6b64b4583dc06323b8c198cc4265d190e7d7696c1ab54d385611c20815564",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "§2.5 Color measurement,PDFp.3,lignes283–291",
+          "result": "L* décrit la clarté noir–blanc ; a* et b* les axes chromatiques. Brillance et teinte ne sont pas confondues.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-isolats-milieu-acide",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Les choix énoncent maintenant une différence complète de solubilité et répondent à la question. Résultat,pH,milieu et limitation correctement maintenus.",
+      "contentHash": "79ff35ffe51fc9c0a6657573afb050c145e91b6f1e5e241058f61f24747c9b02",
+      "previousContentHash": "282c335cc53029acd20db0d556506b39825adf8ac4a72c475e55e8c71c62eba1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "Tableau5, p.9 PDF, lignes819–855 ; §3.5.1,865–871",
+          "result": "Dans l’eau, les isolats ont une solubilité supérieure à pH3,2 qu’à pH7, pour les conditions comparées.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-gel-synerese",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "8760ff86cdd8e3d0fcaf25b7ad9416d16fa8f355afc700025a33d57fcbaf33b8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d01-wu-syneresis-2023",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10355138/",
+          "sourceHash": "cb135b9cb1ef9815476ccfd0b9c9f6a0fd0442ef90af0f6100ebb2e2cfd395d2",
+          "locator": "Résumé104 ; Introduction111–114",
+          "result": "Synérèse : contraction/compaction du réseau avec expulsion de liquide, distincte d’une simple transition solide–liquide.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définition de synérèse seulement ; aucune mesure du système modèle transférée quantitativement au chanvre."
+        },
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "§3.5.2,lignes915–941,953–968",
+          "result": "Rétention d’eau et synérèse discutées pour gels de chanvre ; pH-HPI comparé dans eau/NaCl, salt-HPI sans gel dans eau.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-lysine-limitante",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "dc82658b2b0d8c8471e8b85382c3bf694cd1cbab3bbb6dab407d2f4accd623d5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "§3.6, p.12 PDF, lignes1168–1173 ; tableau8",
+          "result": "La lysine est l’acide aminé limitant utilisé pour calculer le score ; elle n’est pas absente.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-proteines-interface-emulsion",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "140399bfe5aa0333d992667b940feef68dc03eadb6ec136e609175c12e641ea9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "§3.5.3,lignes969–979",
+          "result": "Protéines dispersées capables d’atteindre l’interface huile–eau au lieu de sortir de la solution ; mécanisme fonctionnel repris sans recette.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-beton-densite-chaleur",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "f08458ca623309903c120917d6402e7e2077c734419a12ac3c04526b25ec3a0c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "url": "https://arxiv.org/pdf/1406.3310",
+          "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+          "locator": "§4.2, p.15–16 PDF, lignes399–425 ; conclusion478–484",
+          "result": "La conductivité augmente avec la densité, à formulation et état hydrique comparables.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-beton-humidite-isolation",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "5fdfa94d32900f40fdb3e620facb7a0d732ad7ecc3ca93c481029da64dd04b78",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "url": "https://arxiv.org/pdf/1406.3310",
+          "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+          "locator": "§4.3–4.4, p.17–18 PDF, lignes429–463",
+          "result": "L’eau augmente la conductivité du même béton ; à épaisseur fixée cela réduit sa résistance thermique.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-beton-grands-pores",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "« D’assemblage » retiré du prompt ; la localisation n’est plus livrée par son intitulé. Pores internes/interparticules et échelle matérielle correctement distingués.",
+      "contentHash": "3e77fe896b1e8c2ed843b7ec9a417292c7bbae635a0f8de9771cc58458e095b5",
+      "previousContentHash": "c2b07935c0477e93b1f95432d03df73c6b222eac0071e17699ab899d799e5f50",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "url": "https://arxiv.org/pdf/1406.3310",
+          "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+          "locator": "§2.2, p.6–7 PDF, lignes144–154",
+          "result": "Pores micrométriques internes aux constituants et plus grands vides liés à l’arrangement entre chènevottes.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-beton-projection",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "58b7a4fa67342a797c869f6c7501f66c3b569e012b7b7f47d85a507ce1ec21dc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "url": "https://arxiv.org/pdf/1406.3310",
+          "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+          "locator": "§2.1, p.4–5 PDF, lignes90–110",
+          "result": "Le procédé de projection emploie un mélange sec transporté par air ; l’eau arrive près de la sortie.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-composite-sous-verre",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "037dac45f706714a6b12d39f7c73c4c05fdd1ac9ff2b64bb41bdf031f42489da",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+          "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+          "locator": "Weathering Conditions, ligne357 ; corrigendum283–288",
+          "result": "L’essai sous pare-brise simule un habitacle automobile ; correction d’affiliations sans changement des conclusions.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-composite-emissions-surface",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "19e996fb126f10a1cb886f62d567ac7d4e16c903fe09b8cc1c05bc9430d07625",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+          "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+          "locator": "Sampling and Analytical Methodology, lignes365–366",
+          "result": "La cellule isole une surface et collecte les composés diffusés vers son air ; ce n’est pas une composition globale du solide.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-composite-temoin-matrice",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "a4af4c2302bfa116b6995d1d905f6ff4d4cb035d6bca274d04af427c088b79a7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+          "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+          "locator": "Résumé324 ; comparaison matrice/fibres, Introduction et Conclusion",
+          "result": "La matrice forme des produits oxygénés ; un témoin sans chanvre permet de constater sa contribution possible.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-composite-profils-volatils",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "8028bd95c23c4dbff5e530032ddda34739f23ff2bede3ae909b34ab89d241784",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-badji-2020",
+          "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+          "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+          "locator": "Résumé324–326 ; Conclusion449",
+          "result": "Les profils furannes/furanones servent à discuter des voies chimiques de vieillissement ; mécanismes proposés gardés comme hypothèses.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-corps-lipidiques-emulsion",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "f464b303589a66abe618250d8865a23a20aade27a901fa08029f8db70819c2cd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+          "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+          "locator": "Résumé PubMed243–246 et mots-clés",
+          "result": "Corps lipidiques naturels, émulsion huile-dans-eau ; l’huile dispersée et l’eau continue sont correctement distinguées.",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-gouttes-et-depot",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "dac485bc5580b0cd1582894262219c028cc115362ca8e20c498fb9afc9ffef75",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+          "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+          "locator": "Résumé PubMed244",
+          "result": "L’homogénéisation réduit les gouttes sans supprimer la sédimentation de corps protéiques d’édestine.",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-gouttes-coalescence",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "287ab30e2e1f96997b5548038bd07eb5926cdcf5596cb8a4474013a5401bf00a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-lopez-2021",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+          "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+          "locator": "Résumé PubMed245",
+          "result": "Coalescence médiée par fusion membranaire distinguée de l’agrégation ; les options décrivent des phénomènes de dispersion réels.",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-oleosome-monocouche",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "bcd585cd3e8e3dfc7b7ed7e54408b38a94112100b267ddf1bea09690161eff82",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-d01-inrae-oleosomes-2022",
+          "url": "https://www.inrae.fr/actualites/corps-lipidiques-graine-chanvre-valorisation-dune-nouvelle-source-lipides-alimentation-saine-durable",
+          "sourceHash": "b106a883a9da4cf24b0e93507e2c831ecedd4abf867547d60bef0aa00250bd6e",
+          "locator": "INRAE,publication12 ; §Un intérêt croissant18",
+          "result": "Oléosomes : microgouttes d’huile entourées d’une monocouche de phospholipides et de protéines spécifiques appelées oléosines.",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Organisation de l’oléosome uniquement ; aucune promesse nutritionnelle ou médicale du communiqué reprise."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-boisson-poudre-atomisation",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "d35ad4bd3a41777bd617ec5421c471c63e53ee7436fa269ef136089affc35091",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-mortas-2023",
+          "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+          "sourceHash": "0343820cfa031ae7810a75ed96c5ca5f2acb3c48d3b81c29b1eac74e7ed13626",
+          "locator": "Résumé éditeur, lignes37–39",
+          "result": "L’étude transforme une boisson de chènevis en poudre par séchage par atomisation.",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "limitation": "Résumé éditeur seulement ; p>0,05 n’établit pas une équivalence."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-proteines-dosage-azote",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "f875e6fbeccb3f70d77e4267190a1dd2f42d691e57c218d7f5d633e21bf319d2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "locator": "§2.2,lignes200–204 ; §2.3.2,240–242",
+          "result": "Dosage Dumas avec analyseur d’azote puis conversion en protéines ; pas comptage direct des protéines individuelles.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-poudres-moussage",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Le résultat p>0,05 demande une interprétation statistique ; équivalence et supériorités sont maintenant des alternatives distinctes. Absence de différence détectée correctement limitée à l’essai.",
+      "contentHash": "c0ac744bc29e4e6e814903ae3d4c24f8d88ccfe157499fa4520e572b791711c8",
+      "previousContentHash": "fc7629f4c9a37fa3dc7986dc67a19acf0de0d4f16b2bfe8eef0278dff44ef2a1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-mortas-2023",
+          "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+          "sourceHash": "0343820cfa031ae7810a75ed96c5ca5f2acb3c48d3b81c29b1eac74e7ed13626",
+          "locator": "Résumé éditeur, ligne39",
+          "result": "Différences non significatives de capacité/stabilité de moussage entre les deux poudres ; cela ne prouve pas une équivalence.",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "limitation": "Résumé éditeur seulement ; p>0,05 n’établit pas une équivalence.",
+          "readingReused": true
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    },
+    {
+      "id": "hemp-q2-d01-huile-filtration-oxydation",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "b762030aa362329124c120d721956a99cd567e04c3fbe68fc07664a69be36927",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "locator": "Résumé188–189 ; §3.1,279–289 ; Conclusion422",
+          "result": "L’huile filtrée présente le meilleur état hydrolytique/oxydatif dans ce suivi de douze semaines.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-chlorophylles-lumiere",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "0c0a76f8d3520c06d27697a87243cad91edd9affcf5242975b3fbe262cef4dc1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "locator": "§3.4, lignes366–371",
+          "result": "Les chlorophylles et dérivés peuvent agir comme photosensibilisateurs sous lumière, en lien avec la photooxydation.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-acidite-peroxydes",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "3a5e6492f773200cfb363503608d0c4ca4498a31298414fedb3ffdce8041829b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "locator": "§3.1, lignes279–285",
+          "result": "Acidité libre : suivi hydrolytique ; peroxydes/hydroperoxydes : état d’oxydation primaire.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-antioxydants-compromis",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+      "contentHash": "be56eb376cdaa3293adddd8fc518cf3195d092ff328c6d4fb9e71c5aa0bf7acf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "locator": "Résumé189 ; §3.3,325–329",
+          "result": "Tocophérols initialement moins abondants après filtration ; le bilan des auteurs rapporte une dégradation généralement moins prononcée.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": [],
+      "nonBlockingNotes": [
+        "Le résultat est conservable comme bilan global des auteurs ; ne pas l’élargir à chaque tocophérol ou chaque intervalle."
+      ],
+      "carriedForwardFromReviewAt": "2026-11-16T18:21:51.620Z"
+    },
+    {
+      "id": "hemp-q2-d01-huile-elements-icpms",
+      "status": "approved",
+      "reviewedAt": "2026-11-16T18:54:53.033Z",
+      "comment": "Nouvel objet complet relu ; définition ou mécanisme utile étayé par les passages indiqués. Quatre choix plausibles,niveau cohérent et pas de doublon central dans l’index.",
+      "contentHash": "fa733f509c4a4fdb04b8703722361fee840426d14954774f0e85235687901217",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-loturco-2023",
+          "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+          "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+          "locator": "§2.9 Element Analysis,lignes260–265",
+          "result": "Analyse élémentaire effectuée par ICP-MS quadripolaire ; techniques moléculaires/couleur des autres choix distinguées.",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+        }
+      ],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "factUniqueness": "no-exact-duplicate-found",
+        "sourceAttributionAndVersion": "reviewed"
+      },
+      "blockingIssues": []
+    }
+  ],
+  "summary": {
+    "total": 36,
+    "approved": 36,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourcesSealed": 11,
+    "sourceChecks": 37,
+    "newSourcesOpenedThisRevalidation": 2,
+    "unchangedApprovedQuestionsNotReread": 16,
+    "changedQuestionsRead": 20,
+    "newFactsRead": 7,
+    "factualErrorsEstablished": 0,
+    "unverifiedSources": 0,
+    "levelDistribution": {
+      "1": 5,
+      "2": 26,
+      "3": 5
+    },
+    "note": "Sept faibles items remplacés par des notions réelles ; pas de simple baisse de niveau pour préserver le compte."
+  },
+  "additionalEditorialAssessment": "Les cas d’étude sont pertinents lorsqu’ils enseignent une propriété ou une distinction réelle ; leur seule attribution auteur/date ne justifie pas mémorisation d’un seuil ou reformulation des données. Réserves réexaminées dans les explications complètes, sans rejet automatique des déductions accessibles.",
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-11-16T18:21:51.620Z",
+      "summary": {
+        "total": 36,
+        "approved": 16,
+        "changes_requested": 20,
+        "rejected": 0,
+        "sourcesOpened": 9,
+        "additionalPrimaryPagesOpened": 2,
+        "factualErrorsEstablished": 0,
+        "unverifiedSources": 0,
+        "levelDistributionRead": {
+          "1": 5,
+          "2": 25,
+          "3": 6
+        },
+        "levelNote": "Les difficultés sont jugées selon connaissance et raisonnement. Pour les faibles reformulations, une baisse de niveau ne suffit pas : une réécriture utile ou un remplacement est demandé, indépendamment des quotas."
+      },
+      "items": [
+        {
+          "id": "hemp-q2-d01-coton-emballage",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "b08558d2e9c18b3b46ae8e3165a4fc3d83372a71807ff9cfe703251ee191be20",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-patrick-kentucky",
+              "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+              "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+              "locator": "p.7–9 PDF, lignes158,191–203",
+              "result": "Débouchés : emballages et liens de balles de coton ; le lien économique avec le Sud est explicite.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Quatre clés différentes dispersent le même contexte d’étude sur la filière du Kentucky et permettent sa répétition dans une partie.",
+              "requestedChange": "Partager une clé de contexte stable, par exemple kentucky-hemp-patrick, pour les quatre questions ; conserver leurs factKey distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-kentucky-travail-asservi",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "c459e19d74600537f58ee3a9738a0cb086ec61b377fdf7a31065346d9cbb0ba4",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-patrick-kentucky",
+              "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+              "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+              "locator": "p.1–3 et9–10 PDF, lignes7–8,36,211–223",
+              "result": "La filière dépend largement de personnes asservies aux champs et dans les manufactures.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Quatre clés différentes dispersent le même contexte d’étude sur la filière du Kentucky et permettent sa répétition dans une partie.",
+              "requestedChange": "Partager une clé de contexte stable, par exemple kentucky-hemp-patrick, pour les quatre questions ; conserver leurs factKey distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-cordier-recul",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "f941916d6de57acfb5bcd45e554a2912bba676f5d67a1f7be47063acd6613d49",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-patrick-kentucky",
+              "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+              "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+              "locator": "p.9 PDF, lignes195–203",
+              "result": "Le fileur recule en délivrant les fibres ; l’aire allongée du ropewalk correspond à ce déplacement.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Quatre clés différentes dispersent le même contexte d’étude sur la filière du Kentucky et permettent sa répétition dans une partie.",
+              "requestedChange": "Partager une clé de contexte stable, par exemple kentucky-hemp-patrick, pour les quatre questions ; conserver leurs factKey distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-machine-annonce-adoption",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "e57526d265ea7d62686e63e32cf0cde6e42c50fea2912b193c255c4a38bb7c82",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-patrick-kentucky",
+              "url": "https://filsonhistorical.org/wp-content/uploads/Patrick-%E2%80%98Cotton-Bagging-and-Bale-Rope%E2%80%99-Hemp-Tech-in-KY.pdf",
+              "sourceHash": "a1d1200f3f8ac5ed81614dc05825ae5d728a2d31ffd2c7478ce92e07e8c95175",
+              "locator": "p.5–6 PDF, lignes115–136",
+              "result": "Patrick distingue les annonces Mansell/Barnum de leur faible influence durable.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Version de recherche historique ; annonces et citations de propriétaires distinguées du bilan de l’historien."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Quatre clés différentes dispersent le même contexte d’étude sur la filière du Kentucky et permettent sa répétition dans une partie.",
+              "requestedChange": "Partager une clé de contexte stable, par exemple kentucky-hemp-patrick, pour les quatre questions ; conserver leurs factKey distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-textiles-fins-scandinaves",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "9d92ed122064deec08d8ae56c5749b896c8fe21d36f2afc196ed0999b71aa4bd",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-skoglund-2013",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+              "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+              "locator": "Résumé83–84 ; Introduction101–107",
+              "result": "Quatre textiles du corpus contiennent du chanvre ; la finesse ne permet pas de les assigner tous au lin.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Le même corpus/étude Skoglund2013 est éclaté en quatre clés malgré le contrôle de répétition par sujet.",
+              "requestedChange": "Partager une clé de contexte pour l’étude textile Skoglund2013 ; les faits identification/orientation/ADN/force de preuve restent distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-fibrilles-z-s",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "06af414fd2eeb47889cacd33938cdea70a6b9e47fe7b5c589d78c1e1a6aac0c2",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-skoglund-2013",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+              "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+              "locator": "Methods179–195, Figure5 légende",
+              "result": "Fibrilles de chanvre en Z ; lin et ortie en S. L’orientation interne diffère de la torsion du fil.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Le même corpus/étude Skoglund2013 est éclaté en quatre clés malgré le contrôle de répétition par sujet.",
+              "requestedChange": "Partager une clé de contexte pour l’étude textile Skoglund2013 ; les faits identification/orientation/ADN/force de preuve restent distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-adn-rouissage",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "55257e02584315c2dee923c8de3690b509b6dc5d3f706190db464fb5704ff84f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-skoglund-2013",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+              "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+              "locator": "Methods179–180",
+              "result": "Le rouissage aqueux augmente le risque de dégradation hydrolytique de l’ADN ; limitation historique d’identification, pas impossibilité absolue actuelle.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Le même corpus/étude Skoglund2013 est éclaté en quatre clés malgré le contrôle de répétition par sujet.",
+              "requestedChange": "Partager une clé de contexte pour l’étude textile Skoglund2013 ; les faits identification/orientation/ADN/force de preuve restent distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-pollen-preuve-textile",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "a224f090b802feea92af58a4693624335e487147ee8e1829198a5215abea07ec",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-skoglund-2013",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+              "sourceHash": "94af9f88e8f579fd0468f24e43c39a21aaf9796c1bd98e43310555bedc1d8073",
+              "locator": "Introduction87–98",
+              "result": "Pollen/graines seuls ne démontrent pas une production textile ; usages alimentaires ou huile possibles.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit corpus ; orientation S compatible aussi avec ortie ; les limites ADN de2013 ne sont pas transformées en impossibilité actuelle."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "recurring_subject_split",
+              "field": "editorial.subjectKey",
+              "reason": "Le même corpus/étude Skoglund2013 est éclaté en quatre clés malgré le contrôle de répétition par sujet.",
+              "requestedChange": "Partager une clé de contexte pour l’étude textile Skoglund2013 ; les faits identification/orientation/ADN/force de preuve restent distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-manille-abaca",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "e44feab106dfd2aa2154d7af1cc4f8f0b7b4c909a8c75e10acfe2374cca6c712",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-fao-abaca",
+              "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/cropView?id=1506",
+              "sourceHash": "f88ac889e0dc068a8fa073c6c079b8c74d8e40370debe35f0357816acbbcbfba",
+              "locator": "Fiche FAO, lignes3–8",
+              "result": "Musa textilis, famille Musaceae ; noms abaca et Manila hemp.",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Fibre d’abaca, pas Cannabis sativa ; aucun chiffre commercial ou conseil cultural repris."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "cross_item_answer_leak",
+              "field": "editorial.subjectKey",
+              "reason": "L’abaca/chanvre de Manille est un même objet sous deux clés ; le prompt de la question maritime donne l’identité demandée par l’autre.",
+              "requestedChange": "Employer une clé canonique commune aux deux questions, par exemple abaca-musa-textilis ; conserver identité et propriété maritime comme faits distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-abaca-eau-salee",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "a713fc94bd51312da5f1a3ab29c88966d70bee4bca62c54e4c5993aebe02994d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-fao-abaca",
+              "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/cropView?id=1506",
+              "sourceHash": "f88ac889e0dc068a8fa073c6c079b8c74d8e40370debe35f0357816acbbcbfba",
+              "locator": "Fiche FAO, USES ligne13",
+              "result": "L’ancien emploi maritime est explicitement relié à la durabilité de la fibre en eau salée.",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Fibre d’abaca, pas Cannabis sativa ; aucun chiffre commercial ou conseil cultural repris."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "cross_item_answer_leak",
+              "field": "editorial.subjectKey",
+              "reason": "L’abaca/chanvre de Manille est un même objet sous deux clés ; le prompt de la question maritime donne l’identité demandée par l’autre.",
+              "requestedChange": "Employer une clé canonique commune aux deux questions, par exemple abaca-musa-textilis ; conserver identité et propriété maritime comme faits distincts."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-isolat-purete-rendement",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "f77bd375db6ac609e3e031ab408ad3a8fa63ae4f607614d16af78aa1120e6989",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "locator": "Tableaux1–2 et notes, p.6 PDF, lignes558–560,585–588",
+              "result": "Pureté rapportée au produit final ; rendement rapporté aux protéines du tourteau de départ.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-isolats-clarte",
+          "status": "changes_requested",
+          "comment": "Fait source soutenu ; réécriture pédagogique requise. Une simple baisse de niveau ne suffit pas à valider cet item.",
+          "contentHash": "0b1e5382842199d718608519b21bb7f7ea48535b002700c6aa3b04559fd547a9",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "locator": "Tableau3, p.6 PDF, lignes599–608",
+              "result": "Même matériel CFX-2 2016 : L*=82,8 voie pH et91,9 voie saline ; les valeurs et leur sens sont exacts.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "requires-reassessment-after-rewrite",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "low_learning_value_reformulation",
+              "field": "prompt/options/editorial",
+              "reason": "Les nombres et le sens de L* rendent la réponse immédiate ; la question ne fait qu’ordonner deux valeurs.",
+              "requestedChange": "Réécrire pour faire identifier ou distinguer une propriété optique réellement utile, sans fournir déjà la conclusion, ou remplacer par un fait distinct du corpus. Un passage au niveau1 seul ne résout pas le faible intérêt."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-isolats-milieu-acide",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "282c335cc53029acd20db0d556506b39825adf8ac4a72c475e55e8c71c62eba1",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "locator": "Tableau5, p.9 PDF, lignes819–855 ; §3.5.1,865–871",
+              "result": "Dans l’eau, les isolats ont une solubilité supérieure à pH3,2 qu’à pH7, pour les conditions comparées.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "incomplete_question_answer_fit",
+              "field": "prompt/options",
+              "reason": "« Quelle différence de solubilité » ne se répond pas par « À pH3,2 plutôt qu’à pH7 » sans préciser plus soluble.",
+              "requestedChange": "Demander à quel pH les isolats sont davantage solubles, ou compléter chaque choix avec le sens de la différence. Fait et ID peuvent rester."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-gel-force-eau",
+          "status": "changes_requested",
+          "comment": "Fait source soutenu ; réécriture pédagogique requise. Une simple baisse de niveau ne suffit pas à valider cet item.",
+          "contentHash": "d588428c9b3f8f6ba53a1e63e7148facaed1cdc41a2b456e1324d834b36c05c3",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "locator": "§3.5.2, p.10 PDF, lignes942–964 ; tableau5",
+              "result": "Le pH-HPI comparé donne un gel plus fort en milieu salin mais une rétention d’eau moindre.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "requires-reassessment-after-rewrite",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "low_learning_value_reformulation",
+              "field": "prompt/options/editorial",
+              "reason": "La réponse répète gel plus ferme/eau libérée en hausse sous forme de synonymes ; aucune distinction conceptuelle n’est réellement mise à l’épreuve.",
+              "requestedChange": "Conserver la distinction utile résistance mécanique/rétention d’eau en demandant ce qui permet de les séparer, sans annoncer les deux résultats à recopier ; sinon remplacer. Distinguer le pH-HPI comparé du salt-HPI sans gel dans l’eau."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-lysine-limitante",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "dc82658b2b0d8c8471e8b85382c3bf694cd1cbab3bbb6dab407d2f4accd623d5",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "locator": "§3.6, p.12 PDF, lignes1168–1173 ; tableau8",
+              "result": "La lysine est l’acide aminé limitant utilisé pour calculer le score ; elle n’est pas absente.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-isolats-emulsion-sel",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "3ed4e66df2cd833ca627dc046d426285f4996bc0655af630b45d2fb204ccb5bb",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "locator": "§3.5.3, p.10 PDF, lignes969–978 ; tableau6",
+              "result": "Pas d’émulsion dans l’eau à pH7 ; émulsions dans la solution de NaCl testée.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Matériels et milieux expérimentaux précis ; pas de résultat nutritionnel clinique. Lecture des tableaux et paragraphes, sans recette d’extraction."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "odd_one_out_distractors",
+              "field": "options",
+              "reason": "Trois solutions de sucres contre une seule solution saline créent un indice de famille chimique au niveau3.",
+              "requestedChange": "Remplacer une partie des sucres par des milieux alimentaires plausibles de familles variées, sans prétendre qu’ils ont tous été testés dans l’article."
+            },
+            {
+              "code": "concept_over_author_recall",
+              "field": "prompt/explanation",
+              "reason": "La question vise seulement le milieu nommé dans un essai ; le lien utile entre solubilité et arrivée des protéines à l’interface n’apparaît pas dans l’explication.",
+              "requestedChange": "Faire apparaître le concept fonctionnel documenté au §3.5.3 : protéines dispersées capables d’atteindre l’interface huile/eau. Éviter une simple interrogation de recette ou de sel choisi."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-beton-densite-chaleur",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "f08458ca623309903c120917d6402e7e2077c734419a12ac3c04526b25ec3a0c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-collet-pretot-2014",
+              "url": "https://arxiv.org/pdf/1406.3310",
+              "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+              "locator": "§4.2, p.15–16 PDF, lignes399–425 ; conclusion478–484",
+              "result": "La conductivité augmente avec la densité, à formulation et état hydrique comparables.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-beton-humidite-isolation",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "5fdfa94d32900f40fdb3e620facb7a0d732ad7ecc3ca93c481029da64dd04b78",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-collet-pretot-2014",
+              "url": "https://arxiv.org/pdf/1406.3310",
+              "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+              "locator": "§4.3–4.4, p.17–18 PDF, lignes429–463",
+              "result": "L’eau augmente la conductivité du même béton ; à épaisseur fixée cela réduit sa résistance thermique.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-beton-grands-pores",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "c2b07935c0477e93b1f95432d03df73c6b222eac0071e17699ab899d799e5f50",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-collet-pretot-2014",
+              "url": "https://arxiv.org/pdf/1406.3310",
+              "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+              "locator": "§2.2, p.6–7 PDF, lignes144–154",
+              "result": "Pores micrométriques internes aux constituants et plus grands vides liés à l’arrangement entre chènevottes.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "answer_cued_in_prompt",
+              "field": "prompt",
+              "reason": "L’expression « pores d’assemblage » indique déjà la réponse « entre les grains assemblés ».",
+              "requestedChange": "Demander où se trouvent les plus grands pores, sans les nommer d’emblée « d’assemblage » ; garder les échelles et localisations concurrentes."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-beton-projection",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "58b7a4fa67342a797c869f6c7501f66c3b569e012b7b7f47d85a507ce1ec21dc",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-collet-pretot-2014",
+              "url": "https://arxiv.org/pdf/1406.3310",
+              "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+              "locator": "§2.1, p.4–5 PDF, lignes90–110",
+              "result": "Le procédé de projection emploie un mélange sec transporté par air ; l’eau arrive près de la sortie.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Distinguer observations et modèle ; formulation/état hydrique conservés. Notice arXiv confirme dépôt11juin2014 et référence de revue."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-composite-sous-verre",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "037dac45f706714a6b12d39f7c73c4c05fdd1ac9ff2b64bb41bdf031f42489da",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-badji-2020",
+              "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+              "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+              "locator": "Weathering Conditions, ligne357 ; corrigendum283–288",
+              "result": "L’essai sous pare-brise simule un habitacle automobile ; correction d’affiliations sans changement des conclusions.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-composite-emissions-surface",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "19e996fb126f10a1cb886f62d567ac7d4e16c903fe09b8cc1c05bc9430d07625",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-badji-2020",
+              "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+              "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+              "locator": "Sampling and Analytical Methodology, lignes365–366",
+              "result": "La cellule isole une surface et collecte les composés diffusés vers son air ; ce n’est pas une composition globale du solide.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-composite-temoin-matrice",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "a4af4c2302bfa116b6995d1d905f6ff4d4cb035d6bca274d04af427c088b79a7",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-badji-2020",
+              "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+              "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+              "locator": "Résumé324 ; comparaison matrice/fibres, Introduction et Conclusion",
+              "result": "La matrice forme des produits oxygénés ; un témoin sans chanvre permet de constater sa contribution possible.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-composite-profils-volatils",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "8028bd95c23c4dbff5e530032ddda34739f23ff2bede3ae909b34ab89d241784",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-badji-2020",
+              "url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2020.00162/full",
+              "sourceHash": "f6c85ab1b166aae0b9e220cd60a7eab25ffa0c013c09090d644d7f2bf192bbec",
+              "locator": "Résumé324–326 ; Conclusion449",
+              "result": "Les profils furannes/furanones servent à discuter des voies chimiques de vieillissement ; mécanismes proposés gardés comme hypothèses.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Mécanismes parfois proposés ; pas de déduction toxicologique. Corrigendum6novembre2020 réellement lu : affiliations2et3, conclusions inchangées."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-corps-lipidiques-emulsion",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "f464b303589a66abe618250d8865a23a20aade27a901fa08029f8db70819c2cd",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-lopez-2021",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+              "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+              "locator": "Résumé PubMed243–246 et mots-clés",
+              "result": "Corps lipidiques naturels, émulsion huile-dans-eau ; l’huile dispersée et l’eau continue sont correctement distinguées.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-gouttes-et-depot",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "dac485bc5580b0cd1582894262219c028cc115362ca8e20c498fb9afc9ffef75",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-lopez-2021",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+              "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+              "locator": "Résumé PubMed244",
+              "result": "L’homogénéisation réduit les gouttes sans supprimer la sédimentation de corps protéiques d’édestine.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-calcium-coalescence",
+          "status": "changes_requested",
+          "comment": "Le résumé primaire étaye le résultat ; réserve bloquante sur le choix de ce qui est réellement appris et testé.",
+          "contentHash": "9d9376deb01cab3e94d258a230c84711035ef3d683307a25f3f760f63651875e",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-lopez-2021",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+              "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+              "locator": "Résumé PubMed245",
+              "result": "CaCl2 induit agrégation et coalescence par fusion membranaire ; NaCl n’est associé ici qu’à l’agrégation.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "study_result_interest",
+              "field": "prompt/editorial.learningObjective",
+              "reason": "L’intérêt actuel repose sur le souvenir d’un résultat CaCl2 d’une étude inconnue ; l’objectif agrégation/coalescence n’est pas ce que demande directement le prompt.",
+              "requestedChange": "Réécrire autour de la différence réelle entre amas de gouttelettes et fusion/coalescence, reliée au cas de l’étude, plutôt que faire réciter l’effet d’un sel nommé. Remplacer par un nouveau fait si le fait testé change."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-corps-lipidiques-acidite",
+          "status": "changes_requested",
+          "comment": "Le résumé primaire étaye le résultat ; réserve bloquante sur le choix de ce qui est réellement appris et testé.",
+          "contentHash": "63324aecb04b4e07e082efbebecbdcf2a08ebe52e72ead2e6ca13804d66779eb",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-lopez-2021",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/34865777/",
+              "sourceHash": "8f28eb90871024b61b6a7e338fa6f45878c05a152aa937b0948f9e96710a363f",
+              "locator": "Résumé PubMed245",
+              "result": "Les pH inférieurs à6 modifient les propriétés de surface et induisent l’agrégation des corps lipidiques.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé primaire seulement ; ni texte intégral ni paramètres absents du résumé revendiqués."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "study_result_interest",
+              "field": "prompt/editorial.learningObjective",
+              "reason": "Retenir un seuil pH6 propre à cet essai n’apporte pas en soi un apprentissage utile ; la citation auteur/date ne le rend pas pertinent.",
+              "requestedChange": "Réécrire autour d’un concept de stabilité colloïdale ou des effets de propriétés de surface, sans faire retenir ce seuil arbitraire ; ou sélectionner un autre fait précis et utile du corpus. Ne pas confondre avec solubilité d’isolats d’Eckhardt."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-boisson-poudre-atomisation",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "d35ad4bd3a41777bd617ec5421c471c63e53ee7436fa269ef136089affc35091",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-mortas-2023",
+              "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+              "sourceHash": "0343820cfa031ae7810a75ed96c5ca5f2acb3c48d3b81c29b1eac74e7ed13626",
+              "locator": "Résumé éditeur, lignes37–39",
+              "result": "L’étude transforme une boisson de chènevis en poudre par séchage par atomisation.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé éditeur seulement ; p>0,05 n’établit pas une équivalence."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-poudre-coproduit-recuperation",
+          "status": "changes_requested",
+          "comment": "Fait source soutenu ; réécriture pédagogique requise. Une simple baisse de niveau ne suffit pas à valider cet item.",
+          "contentHash": "58179467e29e27ae0258d8f26b7304175ff6da3c69d746c43fd8a37e81dae66d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-mortas-2023",
+              "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+              "sourceHash": "0343820cfa031ae7810a75ed96c5ca5f2acb3c48d3b81c29b1eac74e7ed13626",
+              "locator": "Résumé éditeur, ligne39",
+              "result": "La récupération au séchage passe de31 à44% avec le coproduit déshuilé, sans agent porteur.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé éditeur seulement ; p>0,05 n’établit pas une équivalence."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "requires-reassessment-after-rewrite",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "low_learning_value_reformulation",
+              "field": "prompt/options/editorial",
+              "reason": "La bonne réponse reprend la variable « récupère » et compare44à31 ; cela ne teste ni procédé ni interprétation scientifique.",
+              "requestedChange": "Réécrire autour d’un apprentissage technologique réel du résultat, ou remplacer par un autre fait utile. Ne pas créer une seconde variante rendement/pureté déjà traitée par isolat-purete-rendement ; le seul niveau1 ne suffit pas."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-poudres-moussage",
+          "status": "changes_requested",
+          "comment": "Fait et corrigé soutenus par les passages relus ; corrections bloquantes précisées ci-dessous.",
+          "contentHash": "fc7629f4c9a37fa3dc7986dc67a19acf0de0d4f16b2bfe8eef0278dff44ef2a1",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-mortas-2023",
+              "url": "https://link.springer.com/article/10.1007/s11130-023-01053-x",
+              "sourceHash": "0343820cfa031ae7810a75ed96c5ca5f2acb3c48d3b81c29b1eac74e7ed13626",
+              "locator": "Résumé éditeur, ligne39",
+              "result": "Différences non significatives de capacité/stabilité de moussage entre les deux poudres ; cela ne prouve pas une équivalence.",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "limitation": "Résumé éditeur seulement ; p>0,05 n’établit pas une équivalence."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "answer_repeated_in_prompt",
+              "field": "prompt/options",
+              "reason": "« Ne détecte pas d’écart significatif » est reformulé mot pour mot par « pas de différence mise en évidence » ; l’équivalence, pourtant objectif principal, ne figure pas dans les choix.",
+              "requestedChange": "Présenter le résultat p>0,05 réellement rapporté, sans annoncer déjà sa conclusion ; proposer l’équivalence démontrée comme distracteur et l’absence de différence détectée comme réponse."
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-huile-filtration-oxydation",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "b762030aa362329124c120d721956a99cd567e04c3fbe68fc07664a69be36927",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-loturco-2023",
+              "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+              "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+              "locator": "Résumé188–189 ; §3.1,279–289 ; Conclusion422",
+              "result": "L’huile filtrée présente le meilleur état hydrolytique/oxydatif dans ce suivi de douze semaines.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-chlorophylles-lumiere",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "0c0a76f8d3520c06d27697a87243cad91edd9affcf5242975b3fbe262cef4dc1",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-loturco-2023",
+              "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+              "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+              "locator": "§3.4, lignes366–371",
+              "result": "Les chlorophylles et dérivés peuvent agir comme photosensibilisateurs sous lumière, en lien avec la photooxydation.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-acidite-peroxydes",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "3a5e6492f773200cfb363503608d0c4ca4498a31298414fedb3ffdce8041829b",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-loturco-2023",
+              "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+              "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+              "locator": "§3.1, lignes279–285",
+              "result": "Acidité libre : suivi hydrolytique ; peroxydes/hydroperoxydes : état d’oxydation primaire.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": []
+        },
+        {
+          "id": "hemp-q2-d01-antioxydants-compromis",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, réponse et explication relus ; fait distinct soutenu par les passages indiqués. Niveau estimé cohérent avec la connaissance ou l’inférence demandée.",
+          "contentHash": "be56eb376cdaa3293adddd8fc518cf3195d092ff328c6d4fb9e71c5aa0bf7acf",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-loturco-2023",
+              "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+              "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+              "locator": "Résumé189 ; §3.3,325–329",
+              "result": "Tocophérols initialement moins abondants après filtration ; le bilan des auteurs rapporte une dégradation généralement moins prononcée.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [],
+          "nonBlockingNotes": [
+            "Le résultat est conservable comme bilan global des auteurs ; ne pas l’élargir à chaque tocophérol ou chaque intervalle."
+          ]
+        },
+        {
+          "id": "hemp-q2-d01-filtration-elements-pigments",
+          "status": "changes_requested",
+          "comment": "Fait source soutenu ; réécriture pédagogique requise. Une simple baisse de niveau ne suffit pas à valider cet item.",
+          "contentHash": "97c34d3b137244ff8b359fa9299b56047a9d7cba6818bfdbf7cdf4e892a6e2a0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-loturco-2023",
+              "url": "https://www.mdpi.com/2076-3921/12/6/1231",
+              "sourceHash": "952a504122c0d3da560ac63dd5e878e206536ed7169add7fb717c382c53f8de1",
+              "locator": "Résumé190 ; §3.6,404–412",
+              "result": "Pigments diminués, mais concentrations des éléments inorganiques sans différence significative après la filtration étudiée.",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Essai de douze semaines ; le bilan global ne garantit pas chaque huile, chaque isomère ou chaque intervalle ; aucune conclusion sanitaire."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "requires-reassessment-after-rewrite",
+            "factUniqueness": "no-exact-duplicate-found",
+            "sourceAttributionAndVersion": "reviewed"
+          },
+          "blockingIssues": [
+            {
+              "code": "low_learning_value_reformulation",
+              "field": "prompt/options/editorial",
+              "reason": "La réponse « constituants répondent différemment » reformule exactement les deux évolutions fournies.",
+              "requestedChange": "Faire tester la portée réelle du traitement ou de la mesure élémentaire, sans fournir déjà le bilan à reformuler ; ou remplacer. Garder la distinction entre absence de différence détectée et équivalence générale."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "previousReviewAt": "2026-11-16T18:21:51.620Z",
+    "changedObjectsRead": 20,
+    "unchangedApprovedObjectsCarriedForward": 16,
+    "newFactsRead": 7,
+    "newSourcesOpened": 2,
+    "existingSourcesTargetedForNewFacts": [
+      "q2-dnext01-eckhardt-2024",
+      "q2-dnext01-loturco-2023"
+    ],
+    "nineOriginalSourceObjectsUnchanged": true,
+    "unchangedIds": [
+      "hemp-q2-d01-isolat-purete-rendement",
+      "hemp-q2-d01-lysine-limitante",
+      "hemp-q2-d01-beton-densite-chaleur",
+      "hemp-q2-d01-beton-humidite-isolation",
+      "hemp-q2-d01-beton-projection",
+      "hemp-q2-d01-composite-sous-verre",
+      "hemp-q2-d01-composite-emissions-surface",
+      "hemp-q2-d01-composite-temoin-matrice",
+      "hemp-q2-d01-composite-profils-volatils",
+      "hemp-q2-d01-corps-lipidiques-emulsion",
+      "hemp-q2-d01-gouttes-et-depot",
+      "hemp-q2-d01-boisson-poudre-atomisation",
+      "hemp-q2-d01-huile-filtration-oxydation",
+      "hemp-q2-d01-chlorophylles-lumiere",
+      "hemp-q2-d01-acidite-peroxydes",
+      "hemp-q2-d01-antioxydants-compromis"
+    ],
+    "supersededIds": [
+      "hemp-q2-d01-isolats-clarte",
+      "hemp-q2-d01-gel-force-eau",
+      "hemp-q2-d01-isolats-emulsion-sel",
+      "hemp-q2-d01-calcium-coalescence",
+      "hemp-q2-d01-corps-lipidiques-acidite",
+      "hemp-q2-d01-poudre-coproduit-recuperation",
+      "hemp-q2-d01-filtration-elements-pigments"
+    ],
+    "indexChecked": "docs/quiz-2000/fact-index.jsonl",
+    "newFactNeighbours": "Synérèse,oléosomes,coalescence,Dumas,ICP-MS,CIELAB et interface cherchés ; pas de doublon central. Fonction nutritive de l’azote anciennement testée distincte de son dosage Dumas."
+  }
+}

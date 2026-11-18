@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({ session: vi.fn(), introduction: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/components/contest/ArenaGameEntry", () => ({ ArenaGameEntry: () => null }));
 vi.mock("@/lib/supabase/arena-introduction-backend", () => ({ getArenaIntroductionState: mocks.introduction }));
+vi.mock("@/lib/supabase/arena-beta-connection", () => ({ getArenaBetaConnectionKey: async () => "test-connection" }));
 
 import PlacardPlayerPage from "./page";
 
@@ -38,6 +39,7 @@ describe("Placard page entry", () => {
   it.each([
     { view: "staff", employee: "employee-a" },
     { view: "workshop", section: "processing", workshop: "trim", flower: "flower-b", employee: "employee-a", from: "harvests", fromSection: "storage", fromFlower: "flower-b" },
+    { world: "3d", view: "game", zone: "zone-a", run: "run-a", from: "missions" },
   ])("returns a logged-out player to the same Staff or Trim context: %j", async query => {
     const error = await renderPage(query).catch(error => error);
     const login = new URL(error.digest.split(";")[2], "https://example.test");
@@ -100,8 +102,20 @@ describe("Placard page entry", () => {
     mocks.introduction.mockResolvedValue(introductionState);
     const entry = await renderPage();
     expect(mocks.introduction).toHaveBeenCalledExactlyOnceWith("verified-id");
-    expect(entry.props).toEqual({ userId: "verified-id", introductionState });
+    expect(entry.props).toEqual({ userId: "verified-id", introductionState, betaConnectionKey: "test-connection" });
     expect(entry.key).toBe("verified-id");
+  });
+
+  it.each(["2d", "3d"])("passes an explicit %s presentation through the existing authenticated gate", async world => {
+    mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
+    const entry = await renderPage({ world });
+    expect(entry.props).toEqual({ userId: "verified-id", introductionState: "new", betaConnectionKey: "test-connection", worldMode: world });
+  });
+
+  it.each(["invalid", ["3d", "2d"]])("does not pass an invalid or ambiguous presentation: %j", async world => {
+    mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
+    const entry = await renderPage({ world });
+    expect(entry.props).not.toHaveProperty("worldMode");
   });
 });
 

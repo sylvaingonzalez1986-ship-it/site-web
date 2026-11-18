@@ -13,7 +13,7 @@ import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 export function CommunityMissionWelcome({ title = "Centre de missions", children }: { title?: string; children?: React.ReactNode }) {
   return <header className={styles.welcome}>
     <div><span className={styles.eyebrow}>Le rendez-vous des chanvriers</span><h1 data-arena-tour="missions">{title}</h1><p>Montre tes plus belles Fleurs, relève les défis et fais grandir la communauté.</p>{children ?? <span className={styles.welcomeNote}><Gift size={18} aria-hidden="true" />Packs, Buddies et argent du jeu à gagner</span>}</div>
-    <Image src="/contest/mascot/arena-lobby-sylvain-v1.png" alt="Sylvain t’accueille au centre de missions" width={280} height={280} sizes="(max-width: 600px) 120px, 240px" priority />
+    <Image src="/contest/mascot/arena-lobby-sylvain-v1.png" alt="Loïc t’accueille au centre de missions" width={280} height={280} sizes="(max-width: 600px) 120px, 240px" priority />
   </header>;
 }
 
@@ -103,7 +103,7 @@ export function CommunityMissionsBoard() {
     <div className={styles.filters} aria-label="Afficher les missions"><button type="button" aria-pressed={tab === "available"} onClick={() => { setTab("available"); setPage(0); }}>Participer{hasChanges ? <span>{corrections} à compléter</span> : null}</button><button type="button" aria-pressed={tab === "history"} onClick={() => { setTab("history"); setPage(0); }}>Mes envois{pending > 0 ? <span>{pending} en attente</span> : null}</button></div>
     {notice ? <p className={styles.success} role="status"><Check size={18} aria-hidden="true" />{notice}</p> : null}
     {error ? <div className={styles.error} role="alert"><p>{error}</p>{signedOut ? <Link href="/compte/connexion?next=%2Farene%2Fplacard%3Fview%3Dmissions">Me connecter</Link> : <button type="button" className={styles.secondary} disabled={loading} onClick={() => void refresh()}>Réessayer</button>}</div> : null}
-    {loading && !loaded ? <p className={styles.empty} role="status">Sylvain prépare ton tableau…</p> : null}
+    {loading && !loaded ? <p className={styles.empty} role="status">Loïc prépare ton tableau…</p> : null}
     {loaded && tab === "available" ? <div className={styles.cards}>{active.slice(start, start + PAGE_SIZE).map((mission) => {
       const correction = mission.userSubmissions.find((submission) => submission.status === "changes_requested");
       const pendingSubmission = mission.userSubmissions.find((submission) => submission.status === "pending");
@@ -122,7 +122,7 @@ export function CommunityMissionsBoard() {
       </article>;
     })}</div> : null}
     {loaded && tab === "history" ? <ul className={styles.history}>{history.slice(start, start + PAGE_SIZE).map(({ mission, submission }) => <SubmissionHistory key={submission.id} mission={mission} submission={submission} />)}</ul> : null}
-    {loaded && total === 0 ? <div className={styles.empty}><Gift size={30} aria-hidden="true" /><h3>{tab === "history" ? "Ton aventure commence ici" : "De nouvelles missions se préparent"}</h3><p>{tab === "history" ? "Tes preuves et les réponses de l’équipe apparaîtront ici." : "Reviens découvrir les prochains défis de Sylvain. Tes envois précédents restent dans Mes envois."}</p></div> : null}
+    {loaded && total === 0 ? <div className={styles.empty}><Gift size={30} aria-hidden="true" /><h3>{tab === "history" ? "Ton aventure commence ici" : "De nouvelles missions se préparent"}</h3><p>{tab === "history" ? "Tes preuves et les réponses de l’équipe apparaîtront ici." : "Reviens découvrir les prochains défis de Loïc. Tes envois précédents restent dans Mes envois."}</p></div> : null}
     {pages > 1 ? <nav className={styles.pagination} aria-label="Pages des missions"><button type="button" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>Précédent</button><span>{currentPage + 1} / {pages}</span><button type="button" disabled={currentPage + 1 >= pages} onClick={() => setPage(currentPage + 1)}>Suivant</button></nav> : null}
     {pendingReferrals.length > 0 ? <aside className={styles.referrals} aria-label="Cadeaux de parrainage">{pendingReferrals.map((reward) => <div key={reward.id}><Gift size={23} aria-hidden="true" /><p><strong>Ton parrainage a porté ses fruits !</strong><span>{reward.pointsAmount} points fidélité ou {reward.packsAmount} pack{reward.packsAmount > 1 ? "s" : ""} Buddies</span></p><button type="button" className={styles.primary} onClick={() => setChoice(reward)}>Choisir mon cadeau</button></div>)}</aside> : null}
     <details className={styles.how}><summary>Comment ça marche ?</summary><ol><li>Choisis une mission et suis ses consignes.</li><li>Envoie ta capture et, si disponible, le lien de ta publication directement ici.</li><li>L’équipe vérifie ta preuve. Après validation, ton gain arrive automatiquement, une seule fois.</li></ol><p>Besoin de compléter ta preuve ? Le message de l’équipe t’explique quoi corriger. Aucune connexion à un réseau social n’est nécessaire.</p></details>

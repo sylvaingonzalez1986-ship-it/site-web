@@ -92,17 +92,23 @@ export type KqStaffState = {
   lastSettledAt: string; supplierDiscountPercent: number; supplierDiscountUntil: string | null;
   prospecting: Record<string, number>;
   trimmerOwned: boolean; playerWorkDays: Record<string, { usedHours: number }>; playerProcessingXp: number;
+  /** Receipts for today's instantaneous personal actions that carry a work charge. */
+  playerActions?: { day: number; entries: Array<{ domain: string; action: string; hours: number; at: string }> };
   /** Older farms keep their existing transformation XP when this is first populated. */
   playerSkills?: KqStaffSkills;
   /** Missing means disabled, including on farms created before the capability. */
   administrationRules?: KqStaffAdministrationRules;
   production?: KqStaffProductionState;
+  dayPlans?: KqTeamDayPlan[];
+  dayPlanVersion?: number;
 };
 export type KqStaffContext = {
   businessStartedAt: string; reputation: number; instagramFollowers: number; shopPartners: number;
   activeRuns: Array<{ id: string; name: string; startedAt?: string }>;
   processingBatches: Array<{ id: string; flowerId: string; name: string; startedAt: string; readyAt: string }>;
-  processingJobs?: Array<{ id?: string; flowerId: string; status: "running" | "blocked" | "passive" | "completed"; createdAt: string }>;
+  processingJobs?: Array<{ id?: string; flowerId: string; status: "running" | "blocked" | "passive" | "completed"; createdAt: string; finalReadyAt?: string | null }>;
+  /** Actual work on lots and played stages, projected from their original receipts. */
+  teamWork?: KqTeamWorkReceipt[];
   supplierInvoices: Array<{ id: string; remainingCents: number; dueAt: string }>;
   trimLots?: KqStaffTrimLot[];
   trimQueueVersion?: 2;
@@ -112,13 +118,18 @@ export type KqStaffContext = {
   contractLifecycleVersion?: 1;
   staffBenefitsVersion?: 1;
   productionVersion?: 1;
+  dayPlanVersion?: 1;
   productionFacility?: KqProductionFacilityInput;
   /** Conservative game post abstraction: one role shares the ordinary CDD waiting period. */
   contractCooldowns?: Partial<Record<KqStaffRole, string>>;
   /** Persisted owner-scoped source, hydrated on the server; never accepted from a command. */
   rehireSource?: KqStaffEmployee;
 };
-export type KqStaffRawSnapshot = { state: KqStaffState | null; revision: number; serverNow: string; cashCents: number; context: KqStaffContext; archiveCount?: number; benefits?: KqStaffBenefits };
+export type KqTeamWorkReceipt = {
+  id: string; assigneeId: string; kind: "processing" | "culture"; target: string; hours: number;
+  startedAt: string; completesAt: string; stage?: number;
+};
+export type KqStaffRawSnapshot = { state: KqStaffState | null; revision: number; serverNow: string; cashCents: number; context: KqStaffContext; replayed?: boolean; archiveCount?: number; benefits?: KqStaffBenefits };
 export type KqStaffArchiveKind = "contract" | "payroll" | "task";
 export type KqStaffArchiveCursor = { at: string; id: string };
 export type KqStaffArchiveItems = { contract: KqStaffEmployee; payroll: KqStaffPayroll; task: KqStaffTask };
@@ -132,7 +143,7 @@ export type KqStaffSnapshot = KqStaffRawSnapshot & {
   calendar: { day: number; week: number; weekday: number; label: string; weekend: boolean; nextDayAt: string };
   monthlyGrossCents: number; monthlyEmployerCostCents: number; outstandingCents: number;
 };
-export type KqStaffCommand =
+type KqStaffWorkCommand =
   | KqProductionRulesCommand
   | { action: "assign-production"; employeeId: string; hours: number; productionStep: KqProductionStep }
   | ({ action: "set-administration-rules" } & Omit<KqStaffAdministrationRules, "updatedAt">)
@@ -152,6 +163,14 @@ export type KqStaffCommand =
   | { action: "trim"; employeeId: string | null; flowerId?: string; mode: KqStaffTrimMode; hours: number; expectedCostCents: number }
   | { action: "buy-trimmer"; expectedCostCents: number }
   | { action: "settle" };
+export type KqStaffCommand = KqStaffWorkCommand | KqTeamPlanCommand;
+export type KqTeamAssignment = Extract<KqStaffWorkCommand, { action: "assign" | "train" | "player-assign" | "assign-production" | "trim" }>;
+export type KqTeamDayPlan = { id: string; day: number; assigneeId: string; assignment: KqTeamAssignment };
+export type KqTeamPlanCommand = { expectedDay: number; expectedVersion: number } & (
+  | { action: "save-day-plan"; assignment: KqTeamAssignment; day: number; planId?: string; beforeId?: string | null }
+  | { action: "start-team-task"; assignment: KqTeamAssignment }
+  | { action: "start-day-plan" | "remove-day-plan"; planId: string }
+);
 export type KqStaffEffect =
   | KqProductionEffect
   | { kind: "culture"; runId: string; vitalityDelta: number; terpenesDelta: number; yieldBonusDelta: number; cannabinoidDelta: number }

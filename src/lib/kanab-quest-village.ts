@@ -1,6 +1,6 @@
 import type { KqPlacardNextAction } from "./kanab-quest-hub";
 
-/** Keep Sylvain's reply tied to the next action, without inventing a visit history. */
+/** Keep Loïc's reply tied to the next action, without inventing a visit history. */
 export function getKqVillageWelcome(action: KqPlacardNextAction) {
   const reply = action.destination === "storage"
     ? "La récolte s’affine avant de rencontrer le jury. Retrouvons tes lots et leurs contenants dans le stockage."

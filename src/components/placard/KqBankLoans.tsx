@@ -5,7 +5,8 @@ import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { useEffect, useRef, useState } from "react";
 import { BadgeCheck, ChevronDown, Landmark, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
 import { createClientRequestKey } from "@/lib/client-request-key";
-import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankEuros, KQ_BANK_INSTALLMENT_COUNT, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankCommand, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
+import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankEuros, KQ_BANK_INSTALLMENT_COUNT, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
+import { KqFinanceRecoveryNotice, useKqFinanceRecovery } from "./KqFinanceRecovery";
 import { getKqBankLoanSummary } from "@/lib/kanab-quest-bank-summary";
 import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
 import { KqBankCreditChart, KqBankRepaymentChart } from "./KqBankVisuals";
@@ -18,16 +19,16 @@ const percent = (bps: number) => (bps / 100).toLocaleString("fr-FR", { maximumFr
 const date = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 export function KqBankLoans() {
   const api = useKqTutorialApi();
+  const recovery = useKqFinanceRecovery("bank"); const { requireLogin } = recovery;
   const [data, setData] = useState<KqBankSnapshot | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [amount, setAmount] = useState("1000");
   const [draft, setDraft] = useState<KqBankDraft | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [retrying, setRetrying] = useState(false);
+  const busy = recovery.busy || recovery.auth || !!recovery.saved || !!recovery.error;
+  const retrying = !!recovery.saved;
   const noticeElement = useRef<HTMLParagraphElement>(null);
-  const retry = useRef<{ fingerprint: string; command: KqBankCommand } | null>(null);
   const inFlight = useRef(false);
   const mutationVersion = useRef(0);
 
@@ -46,6 +47,7 @@ export function KqBankLoans() {
     async function load() {
       try {
         const response = await api.request("/api/arena/placard/bank", { cache: "no-store", signal: controller.signal });
+        if (response.status === 401) { if (!controller.signal.aborted) requireLogin(); return; }
         const value: unknown = await response.json();
         if (!response.ok || !isKqBankSnapshot(value)) throw new Error("Le banquier ne peut pas ouvrir ton dossier pour le moment.");
         if (!controller.signal.aborted && version === mutationVersion.current && !inFlight.current) {
@@ -60,7 +62,7 @@ export function KqBankLoans() {
     }
     void load();
     return () => controller.abort();
-  }, [api, refresh]);
+  }, [api, refresh, requireLogin]);
   useEffect(() => {
     const update = () => { if (!document.hidden && !inFlight.current) setRefresh(value => value + 1); };
     const timer = window.setInterval(update, 60_000);
@@ -75,38 +77,31 @@ export function KqBankLoans() {
   const installmentMinCents = terms ? Math.min(...terms.installments) : 0;
   const installmentMaxCents = terms ? Math.max(...terms.installments) : 0;
   function review(value: KqBankDraft) {
-    if (inFlight.current) return;
-    setRetrying(retry.current?.fingerprint === JSON.stringify(value));
+    if (inFlight.current || recovery.blocked) return;
     setNotice("");
     setDraft(value); setError("");
   }
   function cancelReview() {
     if (inFlight.current) return;
-    setDraft(null); setRetrying(false); setError(""); setRefresh(value => value + 1);
+    setDraft(null); setError(""); setRefresh(value => value + 1);
   }
   async function confirm() {
-    if (!draft || inFlight.current) return;
-    inFlight.current = true; mutationVersion.current++; setBusy(true); setError(""); setNotice("");
-    const fingerprint = JSON.stringify(draft);
-    if (retry.current?.fingerprint !== fingerprint) retry.current = { fingerprint, command: { ...draft, requestKey: createClientRequestKey() } };
+    const command = recovery.saved?.command ?? (draft ? { ...draft, requestKey: createClientRequestKey() } : null);
+    if (!command || inFlight.current) return;
+    inFlight.current = true; mutationVersion.current++; setError(""); setNotice("");
     try {
-      const response = await api.request("/api/arena/placard/bank", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(retry.current.command) });
-      const value = await response.json();
-      if (!response.ok) {
-        if (response.status < 500) retry.current = null;
-        throw new Error(value.error || "L’opération n’a pas pu être confirmée.");
-      }
-      if (!isKqBankSnapshot(value)) throw new Error("Réponse bancaire incomplète. Réessaie la même opération.");
-      setData(value); retry.current = null; setRetrying(false);
-      setNotice(draft.action === "borrow" ? "Contrat signé. Le capital est disponible dans ta trésorerie." : "Prêt soldé. Ton dossier est à jour.");
+      const value = await recovery.send(command, recovery.saved?.summary ?? `${command.action === "borrow" ? "Emprunt" : "Remboursement"} · ${euros(Number(command.amountCents))}${command.action === "borrow" ? ` · taux ${percent(Number(command.expectedRateBps))}` : ""}`, isKqBankSnapshot);
+      setDraft(null);
+      if (!isKqBankSnapshot(value)) return;
+      setData(value);
+      setNotice(command.action === "borrow" ? "Contrat signé. Le capital est disponible dans ta trésorerie." : "Prêt soldé. Ton dossier est à jour.");
       setDraft(null);
       api.notify("kq:equipment-updated");
       api.notify("kq:treasury-updated");
     } catch (cause) {
-      setRetrying(retry.current !== null);
       setError(cause instanceof Error ? cause.message : "Connexion interrompue. Réessaie la même opération.");
     }
-    finally { inFlight.current = false; setBusy(false); }
+    finally { inFlight.current = false; }
   }
   const scenario = data ? KQ_BANK_SCENARIOS[data.market.scenario] : null;
   const loan = data?.loan;
@@ -125,6 +120,7 @@ export function KqBankLoans() {
     <header className={styles.heading}><Landmark aria-hidden="true" size={25} /><h3 id="bank-loans-title">{loan ? "Mon prêt" : "Emprunter"}</h3><button type="button" className={styles.refresh} disabled={busy} aria-label="Actualiser le dossier bancaire" onClick={() => setRefresh(value => value + 1)}><RefreshCw size={18} aria-hidden="true" /></button></header>
     {!data && !error ? <p role="status">Le banquier examine ton dossier…</p> : null}
     {error && !draft ? <p className={styles.error} role="alert">{error}</p> : null}
+    <KqFinanceRecoveryNotice recovery={recovery} resume={() => void confirm()} />
     <p ref={noticeElement} className={styles.notice} role="status" tabIndex={-1} data-bank-notice>{notice ? <><BadgeCheck size={18} aria-hidden="true" />{notice}</> : null}</p>
     {data && scenario ? <>
       {loan && loanSummary ? <div className={styles.loan} data-bank-active-loan>
@@ -220,6 +216,6 @@ export function KqBankLoans() {
       </details>
       {data.history.length ? <details className={styles.details}><summary>Prêts remboursés <ChevronDown size={16} aria-hidden="true" /></summary><ul>{data.history.map(item => <li key={item.id}>{euros(item.principalCents)} empruntés · {euros(item.totalCents)} remboursés · {item.paidAt ? "soldé le " + date(item.paidAt) : "date de clôture indisponible"}.</li>)}</ul></details> : null}
     </> : null}
-    <KqBankConfirmation draft={draft} cashCents={data?.cashCents ?? null} busy={busy} retrying={retrying} error={error} onCancel={cancelReview} onConfirm={() => void confirm()} />
+    <KqBankConfirmation draft={draft} cashCents={data?.cashCents ?? null} busy={recovery.busy} retrying={retrying} error={error} onCancel={cancelReview} onConfirm={() => void confirm()} />
   </section>;
 }

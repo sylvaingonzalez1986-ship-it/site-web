@@ -8,7 +8,9 @@ import { applyKqRemoteCare, getKqRemoteCareShop } from "@/lib/kanab-quest-api";
 import { applyKqLocalCare, getKqLocalCareSnapshot, loadKqLocalCare, type KqCareStorage } from "@/lib/kanab-quest-care-local";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { getKqCareProductArtwork } from "@/lib/kanab-quest-care-artwork";
+import { careApplicationKey, getKqCareProblemPlants, type KqCareSector } from "@/lib/kanab-quest-care-spatial";
 import { getKqCarePresentation } from "@/lib/kanab-quest-care-presentation";
+import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import { getKqCareActionAvailability, getKqCareAvailabilityScope, parseKqCareReserveSnapshot, type KqCareAvailabilityNotice, type KqCareReserveSnapshot } from "@/lib/kanab-quest-care-reserve";
 import { getKqStageDisplayName, hasKqFirstCultureRescue, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
 import { KqCareShop } from "./KqCareShop";
@@ -21,17 +23,19 @@ import styles from "./KqCultureCare.module.css";
 const formatCash = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 type CareSection = "overview" | "intervention" | "quality";
 
-export function KqCultureCarePanel({ state, request, storage, runId, disabled, compact = false, active = true, presentation: layout = "disclosure", onStateChange, onBusyChange, onOpenHarvest, onAvailabilityChange }: {
+export function KqCultureCarePanel({ state, request, storage, runId, disabled, compact = false, active = true, presentation: layout = "disclosure", onStateChange, onBusyChange, onOpenHarvest, onAvailabilityChange, onChooseCareSector, onMaintenance }: {
   state: KqGameState; request: typeof fetch; storage?: KqCareStorage; runId?: string | null; disabled?: boolean; compact?: boolean; active?: boolean; presentation?: "disclosure" | "carousel";
   onStateChange: (state: KqGameState) => void; onBusyChange: (busy: boolean) => void; onOpenHarvest?: () => void;
   onAvailabilityChange?: (availability: KqCareAvailabilityNotice) => void;
+  onChooseCareSector?: (code: string, submit: (cell: KqCareSector) => Promise<void>) => void;
+  onMaintenance?: () => void;
 }) {
   const carousel = layout === "carousel";
   const [expanded, setExpanded] = useState(carousel);
   const [careSection, setCareSection] = useState<CareSection>("overview");
   const [shopOpen, setShopOpen] = useState(false);
   const [shopVisited, setShopVisited] = useState(false);
-  const [notice, setNotice] = useState("");
+  const [feedback, setFeedback] = useState<{ turn: string; text: string } | null>(null);
   const [pending, setPending] = useState(false);
   const [shopPending, setShopPending] = useState(false);
   const [reserve, setReserve] = useState<{ scope: string; snapshot: KqCareReserveSnapshot } | null>(null);
@@ -39,6 +43,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   const [shopRecovery, setShopRecovery] = useState(false);
   const [balanceError, setBalanceError] = useState("");
   const availabilityScope = getKqCareAvailabilityScope(state, runId);
+  const carePlan = state.warehouse?.sourceState ?? state.campaign?.members[0]?.warehouse.sourceState;
   const liveScope = useRef(availabilityScope);
   liveScope.current = availabilityScope;
   const balance = reserve?.scope === availabilityScope ? reserve.snapshot : null;
@@ -53,6 +58,8 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   const lock = useRef(false);
   const receipt = useRef<{ action: string; key: string; basicPriceCents?: number } | null>(null);
   const basicAction = `${state.seed}:${state.stageIndex}:${state.phase}:basic`;
+  const turn = JSON.stringify([state.campaign?.leaderRunId ?? runId, state.seed, state.startedAt, state.stageIndex, state.phase]);
+  const notice = feedback?.turn === turn ? feedback.text : "";
   const refreshBalance = useCallback(async () => {
     if (availabilityScope !== liveScope.current) return;
     const generation = ++balanceGeneration.current;
@@ -91,11 +98,12 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
     setShopPending(value);
     onBusyChange(busy.current.care || busy.current.shop);
   };
-  const apply = async (productCode?: string) => {
-    if (lock.current) return;
-    lock.current = true; setCareBusy(true); setNotice("");
+  const apply = async (productCode?: string, target?: KqCareSector) => {
+    if (liveScope.current !== availabilityScope) throw new Error("La culture a changé. Choisis à nouveau ton intervention.");
+    if (lock.current) throw new Error("Une intervention est en cours.");
+    lock.current = true; setCareBusy(true); setFeedback(null);
     try {
-      const action = `${state.seed}:${state.stageIndex}:${state.phase}:${productCode ?? "basic"}`;
+      const action = `${state.seed}:${state.stageIndex}:${state.phase}:${productCode ?? "basic"}` + (target ? JSON.stringify(target) : "");
       const retry = receipt.current?.action === action;
       if (!productCode && !retry) {
         if (!quotedPriceReady || basicPrice === null || !balance) throw new Error("Tarif d’entretien indisponible. Actualise le suivi avant de payer.");
@@ -108,7 +116,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
       let replayed = false;
       if (storage) {
         const previousCash = loadKqLocalCare(storage).cashCents;
-        next = applyKqLocalCare(storage, state, productCode);
+        next = applyKqLocalCare(storage, state, productCode, target);
         const currentCash = loadKqLocalCare(storage).cashCents;
         chargedCents = Math.max(0, previousCash - currentCash);
         replayed = !productCode && chargedCents === 0;
@@ -117,18 +125,22 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
       else {
         const actionRunId = state.campaign?.leaderRunId ?? runId;
         if (!actionRunId) throw new Error("Reprends une culture officielle pour intervenir.");
-        const result = await applyKqRemoteCare(actionRunId, { ...(productCode ? { productCode } : { action: "basic" as const, basicPriceCents: receipt.current.basicPriceCents! }), requestKey: receipt.current.key }, request);
+        const result = await applyKqRemoteCare(actionRunId, { ...(productCode ? { productCode, ...(target && {target}) } : { action: "basic" as const, basicPriceCents: receipt.current.basicPriceCents! }), requestKey: receipt.current.key }, request);
         next = result.state;
         chargedCents = result.chargedCents ?? 0;
         replayed = result.replayed;
         if (Number.isSafeInteger(result.cashCents)) updateCash(result.cashCents);
       }
-      receipt.current = null; onStateChange(next);
+      receipt.current = null;
+      if (liveScope.current !== availabilityScope) return;
+      onStateChange(next);
+      if (!productCode && next.care?.lastBasicCareStage !== state.care?.lastBasicCareStage) onMaintenance?.();
       const payment = chargedCents > 0 ? replayed ? `Paiement de ${formatCash(chargedCents)} déjà enregistré, aucun nouveau débit.` : `${formatCash(chargedCents)} débités de ta trésorerie.` : "Aucun nouveau débit.";
-      setNotice(productCode ? "Intervention enregistrée. Le prochain bilan en suivra les effets." : `${payment} Entretien activé pour l’étape « ${basicCareStageLabel} ». Il agira à sa validation ; la santé ne change pas au clic.`);
+      if (!productCode) setFeedback({ turn, text: `${payment} Entretien activé pour l’étape « ${basicCareStageLabel} ». La santé sera évaluée à sa validation.` });
     } catch (error) {
       if (error instanceof Error && error.message === "Le prix ou la surface a changé. Actualise le suivi avant de confirmer.") receipt.current = null;
-      setNotice(error instanceof Error ? error.message : "Intervention indisponible."); void refreshBalance(); throw error;
+      if (!productCode) setFeedback({ turn, text: error instanceof Error ? error.message : "Intervention indisponible." });
+      void refreshBalance(); throw error;
     }
     finally { lock.current = false; setCareBusy(false); }
   };
@@ -153,6 +165,8 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   const careSections: readonly CareSection[] = hasOwnQuality ? ["overview", "intervention", "quality"] : ["overview", "intervention"];
   const visibleSection = careSections.includes(careSection) ? careSection : "overview";
   const result = presentation.latestResult;
+  const lastStage = state.history.at(-1)?.stage;
+  const lastHealthCheck = lastStage && care.history.findLast(event => event.kind === "resolution" && event.stageIndex === KQ_STAGES.indexOf(lastStage));
   const basicCareWindow = state.rulesVersion === 3 && basicCareStage < 5 && !completed && !dead;
   const basicCareQueued = basicCareWindow && care.lastBasicCareStage === basicCareStage;
   const retryBasic = receipt.current?.action === basicAction;
@@ -165,7 +179,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
     <div className={styles.summary}>
       <div className={styles.portrait}>
         <Image src={presentation.artwork.src} alt={presentation.artwork.alt} width={240} height={240} sizes="(max-width: 600px) 80px, 120px" data-care-portrait />
-        <span className={styles.portraitName}>Sylvain</span>
+        <span className={styles.portraitName}>Loïc</span>
       </div>
       <div className={styles.summaryMain}>
         <div className={styles.summaryHeading}><div><small className={styles.eyebrow} data-care-stage><span>{String(presentation.stageIndex + 1).padStart(2, "0")} / 06</span> {presentation.stageLabel}</small><h2>{completed || postHarvest ? "Bilan de santé" : state.campaign ? "Santé commune" : "Santé de la culture"}</h2></div></div>
@@ -174,6 +188,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         <div className={styles.summaryStatus}>
           <span className={styles.healthStatus} data-alert={!!primaryProblem || care.vitality <= 30 || undefined} data-care-alert aria-live="polite">{primaryProblem || care.vitality <= 30 ? <TriangleAlert size={14} aria-hidden="true" /> : <Check size={14} aria-hidden="true" />}<span>{dead ? "Culture arrêtée · aucun lot récolté" : postHarvest ? "Suivi de la plante terminé · bilan conservé" : <>{care.vitality <= 30 ? "Vitalité critique · " : ""}{primaryProblem ? `${problems.length} ${problems.length > 1 ? "problèmes" : "problème"} · ${getKqCareProblem(primaryProblem.code)?.name ?? primaryProblem.code}${primaryProblem.severity === 3 ? " · critique" : ""}` : "Aucun problème actif"}</>}</span></span>
           {!dead && !postHarvest && care.interventions.length ? <span className={styles.interventionCount}><Clock3 size={13} aria-hidden="true" />{care.interventions.length} {care.interventions.length > 1 ? "interventions en cours" : "intervention en cours"}</span> : null}
+          {basicCareQueued ? <span className={styles.interventionCount} data-care-waiting><Clock3 size={13} aria-hidden="true" />Entretien prévu au bilan · {basicCareStageLabel}</span> : null}
         </div>
       </div>
       {!carousel ? <button className={styles.toggle} type="button" aria-expanded={expanded} aria-controls={contentId} disabled={busyNow} onClick={() => { if (!busy.current.care && !busy.current.shop) { setExpanded(!expanded); if (expanded) setShopOpen(false); } }} data-care-toggle><span>{expanded ? "Replier" : compact ? "Soins et suivi" : "Voir le suivi"}</span><ChevronDown size={18} aria-hidden="true" /></button> : null}
@@ -197,10 +212,12 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
           <div className={styles.stageNote}>{dead ? <TriangleAlert size={20} aria-hidden="true" /> : postHarvest ? <PackageOpen size={20} aria-hidden="true" /> : <Sprout size={20} aria-hidden="true" />}<p>{presentation.stageCaption}</p></div>
           <ol className={styles.stageTrack} aria-label="Progression de la culture">{KQ_STAGES.map((stage, index) => <li key={stage} aria-current={index === presentation.stageIndex ? "step" : undefined} data-reached={index < presentation.stageIndex || undefined} title={getKqStageDisplayName(stage)}><span aria-hidden="true">{index < presentation.stageIndex ? <Check size={12} /> : index + 1}</span><span>{getKqStageDisplayName(stage)}</span></li>)}</ol>
           {result ? <div className={styles.lastResult} data-care-result data-outcome={result.outcome}><span><small>Dernière opération · {result.stageLabel}</small><b>{result.label}</b></span>{typeof result.vitalityDelta === "number" ? <strong data-negative={result.vitalityDelta < 0 || undefined}><Heart size={14} aria-hidden="true" />{result.vitalityDelta === 0 ? "Santé stable" : `${result.vitalityDelta > 0 ? "+" : ""}${result.vitalityDelta} santé`}</strong> : null}</div> : null}
+          {lastHealthCheck ? <details className={styles.basicCareDetails} data-care-last-check><summary>Lire le bilan de santé</summary><p>{lastHealthCheck.message}</p></details> : null}
         </div>
         <div className={styles.sectionHeading}><h3>{postHarvest ? "Observations à la récolte" : completed || dead ? "Dernières observations" : "À surveiller"}</h3><span>{completed || dead || postHarvest ? "Bilan conservé" : "Observation gratuite"}</span></div>
         <div className={styles.problems}>{problems.length ? problems.map(problem => {
           const definition = getKqCareProblem(problem.code);
+          const plants = getKqCareProblemPlants(state, problem);
           const ProblemIcon = definition?.family === "pest" ? Bug : definition?.family === "nutrition" ? Leaf : Sun;
           const TrendIcon = problem.trend === "worsening" ? ArrowUpRight : problem.trend === "recovering" ? ArrowDownRight : Minus;
           return <article key={problem.code} data-severity={problem.severity}>
@@ -211,12 +228,18 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
             </div>
             <div className={styles.problemHeading}><h4>{definition?.name ?? problem.code}</h4><span>{KQ_CARE_SEVERITY_LABELS[problem.severity]}</span></div>
             <p>{definition?.symptoms[problem.variant]}</p>
+            {!!plants.length && <p>{plants.length} plant{plants.length > 1 ? "s" : ""} atteint{plants.length > 1 ? "s" : ""} sur le plan.{definition?.family === "pest" && " Au bilan, le foyer peut gagner un plant voisin. Dans un secteur protégé, le risque est de 1 sur 10."}</p>}
             <div className={styles.problemFoot}>
               <small>{problem.status === "suspected" ? "Hypothèse à suivre" : definition?.family === "pest" ? "Foyer observé" : "Trouble confirmé"}</small>
               <strong data-trend={problem.trend}><TrendIcon size={14} aria-hidden="true" />{KQ_CARE_TREND_LABELS[problem.trend]}</strong>
             </div>
           </article>;
         }) : <p className={styles.calm}><ShieldCheck size={22} aria-hidden="true" />{dead ? "Le suivi est clos. Retrouve les événements dans le journal." : postHarvest ? "Les observations sur la plante sont closes. Les événements restent dans le journal." : "Aucun problème actif observé."}</p>}</div>
+        {carousel && primaryProblem && basicCareWindow ? <button type="button" className={styles.qualityLink} data-care-open-products
+          disabled={busyNow} onClick={() => {
+            setCareSection("intervention"); setShopVisited(true); setShopOpen(true);
+            requestAnimationFrame(() => document.getElementById(`${reserveId}-toggle`)?.focus());
+          }}>Consulter les produits de soin <ArrowUpRight size={15} aria-hidden="true" /></button> : null}
         <details className={styles.basicCareDetails}><summary>Comment évolue le suivi ?</summary><KqHelpDashboard>
           {dead ? <KqHelpGrid art="help-care" items={[{ label: "Culture terminée", value: "Suivi clos", detail: "Opérations et problèmes conservés dans le journal." }]} /> : state.stageIndex >= 5 ? <KqHelpGrid art="help-care" items={[
             { label: "Santé", value: "Bilan conservé", detail: "Valeur à la récolte." },
@@ -231,16 +254,17 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         {!dead && !postHarvest && care.interventions.length ? <div className={styles.ongoing}><h3>Interventions en cours</h3><ul className={styles.interventions}>{care.interventions.map(item => {
           const product = getKqCareProduct(item.productCode);
           const artwork = getKqCareProductArtwork(item.productCode);
-          const firstCheck = product?.pbi?.reductions[0] ? "Prédation au prochain bilan" : "Installation en cours";
-          return <li key={`${item.productCode}:${item.stageIndex}`}>{artwork ? <Image src={artwork.src} alt="" width={52} height={52} sizes="52px" /> : <ShieldCheck size={24} aria-hidden="true" />}<div><b>{product?.name ?? item.productCode}</b><span>{item.status === "installing" ? firstCheck : "Action suivie"}</span><small><Clock3 size={12} aria-hidden="true" />{item.remainingSteps} {item.remainingSteps > 1 ? "bilans restants" : "bilan restant"}</small></div></li>;
+          const firstCheck = product?.kind === "input" ? "Apport effectué" : product?.pbi?.reductions[0] ? "Prédation au prochain bilan" : "Installation en cours";
+          const zone = item.target && carePlan ? getKqZoneIdentity(carePlan, item.target.zoneId)?.label : undefined;
+          return <li key={careApplicationKey(item)}>{artwork ? <Image src={artwork.src} alt="" width={52} height={52} sizes="52px" /> : <ShieldCheck size={24} aria-hidden="true" />}<div><b>{product?.name ?? item.productCode}</b><span>{item.status === "installing" ? firstCheck : "Action suivie"}{item.target ? ` · ${zone ?? item.target.zoneId}, case ${item.target.x + 1}, ${item.target.y + 1}` : ""}</span><small><Clock3 size={12} aria-hidden="true" />{item.remainingSteps} {item.remainingSteps > 1 ? "bilans restants" : "bilan restant"}</small></div></li>;
         })}</ul></div> : null}
         </div>
         <div id={`${contentId}-intervention`} role={carousel ? "tabpanel" : undefined} aria-labelledby={carousel ? `${contentId}-tab-intervention` : undefined} hidden={carousel && visibleSection !== "intervention"} inert={carousel && visibleSection !== "intervention"}>
         {!completed && !dead ? <div className={styles.careActions}>
-          <button className={styles.reserveToggle} type="button" aria-expanded={shopOpen} aria-controls={reserveId} onClick={() => { if (!busy.current.care && !busy.current.shop) { setShopVisited(true); setShopOpen(!shopOpen); } }} disabled={busyNow} data-care-reserve-toggle><PackageOpen size={24} aria-hidden="true" /><span><b>Produits de soin <KqActionBadge count={actions?.products} label={actions?.products === 1 ? "produit utilisable" : "produits utilisables"} /></b><small>{shopOpen ? "Replier les produits" : "Choisir un produit et consulter ma réserve"}</small></span><ChevronDown size={18} aria-hidden="true" /></button>
-          <div id={reserveId} hidden={!shopOpen}>{shopVisited ? <div className={styles.reserve}><KqCareShop request={request} storage={storage} state={state} runId={runId} reserveState={{ snapshot: balance, loading: balanceLoading, error: balanceError, recovering: !!receipt.current || shopRecovery, refresh: refreshBalance }} onRecoveryChange={setShopRecovery} disabled={disabled || pending} onApply={apply} onBusyChange={setShopBusy} /></div> : null}</div>
+          <button className={styles.reserveToggle} id={`${reserveId}-toggle`} type="button" aria-expanded={shopOpen} aria-controls={reserveId} onClick={() => { if (!busy.current.care && !busy.current.shop) { setShopVisited(true); setShopOpen(!shopOpen); } }} disabled={busyNow} data-care-reserve-toggle><PackageOpen size={24} aria-hidden="true" /><span><b>Produits de soin <KqActionBadge count={actions?.products} label={actions?.products === 1 ? "produit utilisable" : "produits utilisables"} /></b><small>{shopOpen ? "Replier les produits" : "Choisir un produit et consulter ma réserve"}</small></span><ChevronDown size={18} aria-hidden="true" /></button>
+          <div id={reserveId} hidden={!shopOpen}>{shopVisited ? <div className={styles.reserve}><KqCareShop request={request} storage={storage} state={state} runId={runId} reserveState={{ snapshot: balance, loading: balanceLoading, error: balanceError, recovering: !!receipt.current || shopRecovery, refresh: refreshBalance }} onRecoveryChange={setShopRecovery} disabled={disabled || pending} onApply={apply} onChooseSector={onChooseCareSector && (code => onChooseCareSector(code, target => apply(code, target)))} onBusyChange={setShopBusy} /></div> : null}</div>
           <div className={styles.basicCareSection} data-care-basic-section>
-            {showHealthyCareChoice ? <p id={basicCareChoiceId} className={styles.careChoice} data-care-choice><Leaf size={18} aria-hidden="true" /><span><strong>Tu peux continuer sans entretien.</strong> Santé : {care.vitality}/100, aucun problème actif.</span></p> : null}
+            {showHealthyCareChoice ? <p id={basicCareChoiceId} className={styles.careChoice} data-care-choice><Leaf size={18} aria-hidden="true" /><span><strong>Tu peux continuer sans entretien.</strong> Santé {care.vitality}/100, aucun problème actif. Tu gardes les {formatCash(basicPrice!)} de cet entretien.</span></p> : null}
             <div className={styles.actions}>
               <button className={styles.basicCare} type="button" data-care-basic data-queued={basicCareQueued || undefined} disabled={disabled || busyNow || !permission.allowed || (!retryBasic && (!quotedPriceReady || insufficientCash))} aria-describedby={[showHealthyCareChoice ? basicCareChoiceId : null, basicCareDescriptionId].filter(Boolean).join(" ")} onClick={() => void apply().catch(() => undefined)}>
                 {basicCareQueued ? <Check size={15} aria-hidden="true" /> : <Heart size={15} aria-hidden="true" />}
@@ -249,15 +273,16 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
               {basicCareWindow ? <small><b>{basicCareStageLabel}</b> · {basicCareQueued ? "Prévu pour ce bilan" : "Une fois pour ce bilan"}</small> : null}
             </div>
             {basicCareWindow ? <div className={styles.careBalance}><span data-care-cash data-cash-cents={balance?.cashCents}>{storage ? "Budget de simulation" : "Trésorerie"} : <b>{balance ? formatCash(balance.cashCents) : "Chargement…"}</b></span><button type="button" onClick={() => void refreshBalance()} disabled={busyNow} aria-label="Actualiser la trésorerie"><RefreshCw size={14} aria-hidden="true" /></button></div> : null}
+            {notice ? <p role="status" className={styles.notice} data-care-feedback>{notice}</p> : null}
             {basicCareWindow && !basicCareQueued ? <p className={styles.paymentHint} role="status">{retryBasic ? "Une demande a déjà été envoyée. Vérifie son résultat : elle ne sera pas facturée deux fois." : balanceError || (balance && !quotedPriceReady ? "L’entretien payant est momentanément indisponible. Actualise le suivi pour consulter le tarif." : insufficientCash ? `Trésorerie insuffisante : il manque ${formatCash(basicPrice! - balance!.cashCents)}.` : balance?.areaM2 ? `Tarif pour ${balance.areaM2.toLocaleString("fr-FR")} m². Chaque entretien est payé séparément.` : "Chaque entretien est payé séparément. Aucun renouvellement automatique.")}</p> : null}
-            <p id={basicCareDescriptionId} className={styles.basicCareEffect}>{basicCareWindow ? <>Entretien facultatif. Au prochain bilan : <strong>+3 santé dans le calcul</strong> et <strong>jusqu’à 2 dégâts en moins par problème persistant</strong>. L’effet arrive quand tu valides l’opération.</> : permission.reason}</p>
+            <p id={basicCareDescriptionId} className={styles.basicCareEffect}>{basicCareWindow ? <>Ton personnage balaie les allées de {state.warehouse || state.campaign ? "l’entrepôt" : "la tente"}. Le prochain bilan compte <strong>+3 santé</strong> et <strong>jusqu’à 2 dégâts en moins par problème persistant</strong>.</> : permission.reason}</p>
             {basicCareWindow ? <details className={styles.basicCareDetails}>
               <summary>Comprendre l’entretien</summary>
               <KqHelpDashboard>
                 <KqHelpGrid art="help-care" items={[
                   { label: "Une activation", value: quotedPriceReady ? formatCash(basicPrice!) : "À vérifier", detail: balance?.areaM2 ? `Pour ${balance.areaM2.toLocaleString("fr-FR")} m² cultivés.` : "Argent de jeu · un seul prélèvement.", art: "help-accounts" },
                   { label: "Si acheté aux cinq étapes", value: quotedPriceReady ? formatCash(basicPrice! * 5) : "À vérifier", detail: "Coût total possible, sans achat automatique.", art: "help-plan" },
-                  { label: "Entretien de Sylvain", value: "0 charge de produit", detail: "Aucun dé lancé." },
+                  { label: "Nettoyage", value: "0 charge de produit", detail: "Ton personnage balaie les allées." },
                 ]} />
                 <KqHelpSteps art="help-care" steps={[
                   { label: "Activer l’entretien", detail: "Prochain bilan : +3 santé dans le calcul, plafond 100." },
@@ -273,7 +298,6 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
           </div>
         </div> : null}
         {completed || dead ? <p>Le suivi est terminé. Les interventions sont conservées dans le journal.</p> : null}
-        {notice ? <p role="status" className={styles.notice}>{notice}</p> : null}
         </div>
         {hasOwnQuality ? <div id={`${contentId}-quality`} role={carousel ? "tabpanel" : undefined} aria-labelledby={carousel ? `${contentId}-tab-quality` : undefined} hidden={carousel && visibleSection !== "quality"} inert={carousel && visibleSection !== "quality"}>
         {!dead && !state.campaign ? <div className={styles.quality}><h3>{completed ? "Qualité obtenue" : "Qualité en développement"}</h3><div className={styles.metrics}><div><Flower2 size={18} aria-hidden="true" /><span>Arômes · terpènes</span><b>{care.terpenes}<small>/99</small></b><span className={styles.statTrack} aria-hidden="true"><i style={{ width: `${care.terpenes / 99 * 100}%` }} /></span></div><div><FlaskConical size={18} aria-hidden="true" /><span>Potentiel cannabinoïde</span><b>{care.cannabinoidExpression}<small>/99</small></b><span className={styles.statTrack} aria-hidden="true"><i style={{ width: `${care.cannabinoidExpression / 99 * 100}%` }} /></span></div><div><Wheat size={18} aria-hidden="true" /><span>Soutien de production</span><b>+{care.yieldBonusPercent}<small>%</small></b><small>Bonus accumulé</small></div><div data-loss={care.yieldLossPercent > 0 || undefined}><PackageOpen size={18} aria-hidden="true" /><span>Pertes enregistrées</span><b>−{care.yieldLossPercent}<small>%</small></b><small>Déjà subies</small></div></div><p className={styles.hint}>Le potentiel cannabinoïde est un indice de jeu : il suit ce que ta variété a développé puis conservé. Les taux de CBD, CBG et THC sont affichés séparément en %.</p><KqCannabinoidReport report={getKqCannabinoidReport(state)} provisional={!completed} /></div> : null}

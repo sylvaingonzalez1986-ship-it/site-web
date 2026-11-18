@@ -15,7 +15,7 @@ export const KQ_PLACARD_MAP_SCENE = {
   width: 1536,
   height: 1024,
   image: "/placard/map/placard-world-quizzshow-v9.webp",
-  alt: "Le quartier breton de Sylvain : la Maison des cartes et QuizzShow, avec son enseigne dorée et ses quatre pupitres à buzzers, rejoignent la ferme, le commerce, les finances, le personnel, les missions et le jury au bord de la mer.",
+  alt: "Le quartier breton de Loïc : la Maison des cartes et QuizzShow, avec son enseigne dorée et ses quatre pupitres à buzzers, rejoignent la ferme, le commerce, les finances, le personnel, les missions et le jury au bord de la mer.",
 } as const;
 
 /** Coordinates are kept separate from navigation and can follow a new drawing. */

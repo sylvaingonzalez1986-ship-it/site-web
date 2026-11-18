@@ -6,6 +6,7 @@ import { applyKqPlayerCare, getKqCareShopSnapshot, purchaseKqCareProduct } from 
 import { advanceKqStage, resolveKqStage, startKqGame } from "@/lib/kanab-quest-game";
 import { applyKqCareProduct, createKqCareState, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS, performKqBasicCare, type KqCareProblem } from "@/lib/kanab-quest-care";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
+import { createKqWarehouseStarter, getKqWarehouseRunSnapshot } from "@/lib/kanab-quest-warehouse";
 const userId = "00000000-0000-4000-8000-000000000001", runId = "00000000-0000-4000-8000-000000000002", requestKey = "00000000-0000-4000-8000-000000000003";
 const input = { userId, runId, requestKey, productCode: "CARE-SEAWEED" };
 const problem = (code: string): KqCareProblem => ({ code, severity: 2, status: "confirmed", trend: "stable", appearedAt: 0, variant: 0 });
@@ -34,7 +35,29 @@ describe("server-authoritative care transitions", () => {
   });
   it("does not apply against a stale browser version", async () => {
     await expect(applyKqPlayerCare({ ...input, expectedUpdatedAt: "older" })).rejects.toThrow("La culture a évolué");
-    expect(mocks.rpc).toHaveBeenCalledTimes(1);
+    expect(mocks.rpc.mock.calls.map(([name]) => name)).toEqual(["rpc_kq_care_intervention_receipt","rpc_kq_care_intervention_receipt"]);
+  });
+  it.each(["CARE-ORIUS", ...KQ_CARE_PRODUCTS.filter(product => product.kind === "input").map(product => product.code)])("binds the frozen culture cell to replay and persisted state for %s", async productCode => {
+    const state = startKqGame(31, { warehouse: getKqWarehouseRunSnapshot(createKqWarehouseStarter(), 0, "starter") });
+    state.care!.problems = [problem("THRIPS")];
+    mocks.maybeSingle.mockResolvedValue({ data: { state, status: "active", updated_at: "version" }, error: null });
+    const target = { zoneId: "starter", x: 0, y: 0 };
+    await expect(applyKqPlayerCare({ ...input, productCode })).rejects.toThrow(/case/);
+    await expect(applyKqPlayerCare({ ...input, productCode, target: { ...target, x: 1 } })).rejects.toThrow(/case/);
+    expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_apply_care")).toBe(false);
+    await applyKqPlayerCare({ ...input, productCode, target });
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_care_intervention_receipt", {
+      p_user_id: userId, p_run_id: runId, p_product_code: productCode, p_request_key: requestKey, p_target: target,
+    });
+    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_apply_care", expect.objectContaining({ p_next_state: applyKqCareProduct(state, productCode, target) }));
+  });
+  it("returns a matching receipt committed between the initial lookup and run read", async () => {
+    const target = { zoneId: "starter", x: 0, y: 0 };
+    const saved = { inventory: [], replayed: true };
+    mocks.rpc.mockResolvedValueOnce({ data: null, error: null }).mockResolvedValueOnce({ data: saved, error: null });
+    expect(await applyKqPlayerCare({ ...input, productCode: "CARE-ORIUS", target, expectedUpdatedAt: "older" })).toEqual(saved);
+    expect(mocks.rpc.mock.calls).toHaveLength(2);
+    expect(mocks.rpc.mock.calls[0]).toEqual(mocks.rpc.mock.calls[1]);
   });
   it("rejects legacy runs and unavailable products before any stock write", async () => {
     const legacy = { ...startKqGame(31), rulesVersion: 2, care: undefined };
@@ -96,7 +119,7 @@ describe("server-authoritative care transitions", () => {
     expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
     mocks.maybeSingle.mockResolvedValue({ data: { state, status: "active", updated_at: "version" }, error: null });
     await expect(applyKqPlayerCare({ ...input, productCode: "CARE-PHYTOSEIULUS" })).rejects.toThrow(reason === "heat" ? /thermique|chaleur|chaud/i : /récolte|deux bilans|tard/i);
-    expect(mocks.rpc).toHaveBeenCalledTimes(1);
+    expect(mocks.rpc).toHaveBeenCalledTimes(2);
     expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_care_intervention_receipt", {
       p_user_id: userId, p_run_id: runId, p_request_key: requestKey, p_product_code: "CARE-PHYTOSEIULUS",
     });

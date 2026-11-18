@@ -1,4 +1,5 @@
 import type { KqGameState, KqOutcome, KqPest, KqSituation } from "./kanab-quest-game";
+import { careApplicationKey, getKqCareProblemPlants, getKqCareSectors, isKqCareSector, isKqRunSector, plantKey, resolveKqPlantFocus, sameKqCareSector, sectorKey, type KqCarePlant, type KqCareSector } from "./kanab-quest-care-spatial";
 
 /** Biological observations are sourced; points, prices and turns are game rules.
  * Cannabinoid percentages below are explicitly fictional game values, never
@@ -138,14 +139,14 @@ export const KQ_CARE_PROBLEMS: KqCareProblemDefinition[] = [
   { code: "HEAT", name: "Stress thermique", family: "stress", target: "stress", symptoms: ["Le feuillage perd temporairement sa tenue pendant l’épisode chaud.", "Certaines parties exposées restent abîmées après le retour au calme."], sourceUrl: "https://extension.umn.edu/about/our-stories/news/yard-and-garden-news/keep-gardens-thriving-through-the-heat" },
 ];
 export const getKqCareProblem = (code: string) => KQ_CARE_PROBLEMS.find(problem => problem.code === code);
-export type KqCareProblem = { code: string; severity: 1 | 2 | 3; status: "suspected" | "confirmed"; trend: "worsening" | "stable" | "recovering"; appearedAt: number; variant: 0 | 1 };
-export type KqCareIntervention = { productCode: string; stageIndex: number; remainingSteps: number; status: "installing" | "active" };
+export type KqCareProblem = { code: string; severity: 1 | 2 | 3; status: "suspected" | "confirmed"; trend: "worsening" | "stable" | "recovering"; appearedAt: number; variant: 0 | 1; plants?: KqCarePlant[] };
+export type KqCareIntervention = { productCode: string; stageIndex: number; remainingSteps: number; status: "installing" | "active"; target?: KqCareSector };
 export type KqCareEvent = { stageIndex: number; kind: "observation" | "intervention" | "resolution"; message: string; vitalityDelta: number; terpenesDelta: number; cannabinoidDelta?: number; productCode?: string };
 export type KqCareState = {
   version: 1; vitality: number; terpenes: number; cannabinoidExpression: number;
   cannabinoidConversion: number; cannabinoidOxidation: number; yieldBonusPercent: number; yieldLossPercent: number;
   problems: KqCareProblem[]; interventions: KqCareIntervention[];
-  applications: { productCode: string; stageIndex: number }[];
+  applications: { productCode: string; stageIndex: number; target?: KqCareSector }[];
   lastBasicCareStage: number | null; history: KqCareEvent[];
 };
 export const KQ_CARE_SEVERITY_LABELS = { 1: "Léger", 2: "Marqué", 3: "Critique" } as const;
@@ -173,51 +174,83 @@ const clamp = (value: number, min: number, max: number) => Math.min(max, Math.ma
 const appendEvent = (care: KqCareState, event: KqCareEvent): KqCareState => ({ ...care, history: [...care.history, event].slice(-48) });
 const interventionStage = (state: KqGameState) => state.stageIndex + Number(state.phase === "resolved");
 const permission = (allowed: boolean, reason: string) => ({ allowed, reason });
+type CareApplication = KqCareState["applications"][number];
+const inputPassKey = (item: CareApplication) => JSON.stringify([item.productCode, item.stageIndex]);
+const inputCodes = new Set(KQ_CARE_PRODUCTS.filter(product => product.kind === "input").map(product => product.code));
+// A single input pass can be distributed across the whole warehouse (1000 m²).
+// Each auxiliary release still counts separately against the existing limits.
+const maxCareEntries = 2 * 1000 + 12;
+function countCarePasses(items: CareApplication[]) {
+  const inputPasses = new Set<string>();
+  let releases = 0;
+  for (const item of items) {
+    if (inputCodes.has(item.productCode)) inputPasses.add(inputPassKey(item));
+    else releases++;
+  }
+  return inputPasses.size + releases;
+}
 function canIntervene(state: KqGameState) {
   if (state.rulesVersion !== 3 || !state.care) return permission(false, "Cette culture conserve ses règles historiques.");
   if (state.phase === "complete" || state.cultureDead) return permission(false, "Cette culture est terminée.");
   if (interventionStage(state) >= 5) return permission(false, "Après récolte, le suivi concerne la conservation du lot.");
   return permission(true, "Disponible entre les opérations ; le prochain bilan applique les effets.");
 }
-export function canApplyKqCareProduct(state: KqGameState, code: string) {
+export function canApplyKqCareProduct(state: KqGameState, code: string, target?: KqCareSector): ReturnType<typeof permission> {
   const access = canIntervene(state);
   if (!access.allowed || !state.care) return access;
   const product = getKqCareProduct(code);
   if (!product) return permission(false, "Produit inconnu.");
+  if (target !== undefined && !isKqRunSector(state, target)) return permission(false, "Choisis une case cultivée de cette partie.");
   const stageIndex = interventionStage(state);
-  if (state.care.interventions.some(item => item.productCode === code)) return permission(false, "Cette intervention est encore active.");
-  if (state.care.applications.some(item => item.productCode === code && item.stageIndex === stageIndex)) return permission(false, "Déjà utilisé pour ce bilan.");
-  if (state.care.interventions.length >= 4) return permission(false, "Quatre interventions sont déjà en cours. Attends le prochain bilan.");
-  if (state.care.applications.length >= 12) return permission(false, "Le nombre maximal d’interventions de cette culture est atteint.");
+  const { interventions, applications } = state.care;
+  const conflicts = [
+    { entries: interventions.filter(item => item.productCode === code), reason: "Cette intervention est encore active." },
+    { entries: applications.filter(item => item.productCode === code && item.stageIndex === stageIndex), reason: "Déjà utilisé pour ce bilan." },
+    { entries: product.kind === "pbi" ? interventions.filter(item => {
+      const active = getKqCareProduct(item.productCode);
+      return active?.kind === "pbi" && active.targets.some(group => product.targets.includes(group));
+    }) : [], reason: "Un auxiliaire agit déjà sur cette cible ; attendre son bilan." },
+  ];
+  const conflict = conflicts.find(group => group.entries.some(item => !target || !item.target || sameKqCareSector(target, item.target)));
+  if (conflict) {
+    if (target) return permission(false, conflict.reason);
+    const blocked = new Set(conflicts.flatMap(group => group.entries.map(item => item.target && sectorKey(item.target))));
+    if (blocked.has(undefined) || !getKqCareSectors(state).some(cell => !blocked.has(sectorKey(cell)))) return permission(false, conflict.reason);
+  }
+  const isCurrentInput = (item: CareApplication) => product.kind === "input" && item.productCode === code && item.stageIndex === stageIndex;
+  if (!interventions.some(isCurrentInput) && countCarePasses(interventions) >= 4) return permission(false, "Quatre interventions sont déjà en cours. Attends le prochain bilan.");
+  if (!applications.some(isCurrentInput) && countCarePasses(applications) >= 12) return permission(false, "Le nombre maximal d’interventions de cette culture est atteint.");
   if (product.kind === "input") {
-    const inputs = state.care.applications.filter(item => getKqCareProduct(item.productCode)?.kind === "input");
-    if (inputs.length >= 2) return permission(false, "Deux apports maximum par culture.");
-    if (inputs.some(item => item.stageIndex === stageIndex)) return permission(false, "Un seul intrant par bilan.");
-    if (inputs.some(item => item.productCode === code)) return permission(false, "Cet intrant a déjà été utilisé dans cette culture.");
+    const inputs = applications.filter(item => inputCodes.has(item.productCode));
+    if (inputs.some(item => item.productCode !== code && item.stageIndex === stageIndex)) return permission(false, "Un seul intrant par bilan.");
+    if (inputs.some(item => item.productCode === code && item.stageIndex !== stageIndex)) return permission(false, "Cet intrant a déjà été utilisé dans cette culture.");
+    if (!inputs.some(isCurrentInput) && countCarePasses(inputs) >= 2) return permission(false, "Deux apports maximum par culture.");
     if (code === "CARE-ORGANIC-FEED" && state.care.problems.some(item => item.code === "SALTS")) return permission(false, "Un stress salin est présent : cet apport est inadapté.");
   } else {
     if (stageIndex >= 4) return permission(false, "Trop tard pour une nouvelle PBI : ses deux bilans doivent tenir avant la fin de la récolte. La charge reste en réserve.");
     if (code === "CARE-PHYTOSEIULUS" && state.care.problems.some(item => item.code === "HEAT")) return permission(false, "Stress thermique actif : Phytoseiulus ne peut pas s’installer. Attends le rétablissement ; la charge reste en réserve.");
     const targets = state.care.problems.map(item => getKqCareProblem(item.code)?.target);
     if (!product.targets.some(target => targets.includes(target))) return permission(false, "Aucun foyer compatible observé dans cette culture.");
-    if (state.care.interventions.some(item => {
-      const active = getKqCareProduct(item.productCode);
-      return active?.kind === "pbi" && active.targets.some(target => product.targets.includes(target));
-    })) return permission(false, "Un auxiliaire agit déjà sur cette cible ; attendre son bilan.");
   }
   return permission(true, product.pbi
-    ? `Une charge, deux bilans. ${product.pbi.reductions[0] ? "Recul du foyer dès le premier bilan." : "Installation puis recul du foyer au second bilan."}`
-    : "Une charge sera consommée. Effet suivi aux prochaines validations.");
+    ? `${state.warehouse || state.campaign ? "1 m²" : "Une charge"}, deux bilans. ${product.pbi.reductions[0] ? "Recul du foyer dès le premier bilan." : "Installation puis recul du foyer au second bilan."}`
+    : state.warehouse || state.campaign ? "1 m² sera consommé pour la case choisie. Effet au prochain bilan."
+      : "Une charge sera consommée. Effet suivi aux prochaines validations.");
 }
-export function applyKqCareProduct(state: KqGameState, code: string): KqGameState {
-  if (!canApplyKqCareProduct(state, code).allowed || !state.care) return state;
+export function applyKqCareProduct(state: KqGameState, code: string, target?: KqCareSector): KqGameState {
+  if (!canApplyKqCareProduct(state, code, target).allowed || !state.care) return state;
   const product = getKqCareProduct(code)!;
+  if (!target && getKqCareSectors(state).length) return state;
+  const location = target ? { target: { zoneId: target.zoneId, x: target.x, y: target.y } } : {};
   const stageIndex = interventionStage(state);
-  const care = appendEvent({ ...state.care,
-    applications: [...state.care.applications, { productCode: code, stageIndex }],
-    interventions: [...state.care.interventions, { productCode: code, stageIndex, remainingSteps: product.kind === "pbi" || code === "CARE-VERMICOMPOST" ? 2 : 1, status: "installing" }],
-  }, { stageIndex, kind: "intervention", message: `${product.name} : intervention engagée, bilan à la prochaine validation.`, vitalityDelta: 0, terpenesDelta: 0, productCode: code });
-  return { ...state, care };
+  const care: KqCareState = { ...state.care,
+    applications: [...state.care.applications, { productCode: code, stageIndex, ...location }],
+    interventions: [...state.care.interventions, { productCode: code, stageIndex, ...location, remainingSteps: product.kind === "pbi" || code === "CARE-VERMICOMPOST" ? 2 : 1, status: "installing" }],
+  };
+  // Every square is recorded in applications. Keep one journal entry for the
+  // pass so a large room cannot evict the current stage's observation.
+  if (product.kind === "input" && state.care.applications.some(item => item.productCode === code && item.stageIndex === stageIndex)) return { ...state, care };
+  return { ...state, care: appendEvent(care, { stageIndex, kind: "intervention", message: `${product.name} : intervention engagée, bilan à la prochaine validation.`, vitalityDelta: 0, terpenesDelta: 0, productCode: code }) };
 }
 export function canPerformKqBasicCare(state: KqGameState) {
   const access = canIntervene(state);
@@ -255,6 +288,10 @@ export function observeKqCareStage(state: KqGameState, situation: KqSituation): 
   const definition = candidate ? getKqCareProblem(candidate) : undefined;
   const canAdd = definition && care.problems.length < KQ_CARE_MAX_PROBLEMS && !care.problems.some(item => item.code === definition.code);
   const problem: KqCareProblem | undefined = canAdd ? { code: definition.code, severity: 1, status: definition.family === "pest" ? "confirmed" : "suspected", trend: "stable", appearedAt: stageIndex, variant: (choice % 2) as 0 | 1 } : undefined;
+  if (problem) {
+    const plants = getKqCareProblemPlants(state, problem);
+    if (plants.length) problem.plants = plants;
+  }
   return { ...state, care: appendEvent({ ...care, problems: problem ? [...care.problems, problem] : care.problems }, { stageIndex, kind: "observation", message: problem && definition ? definition.symptoms[problem.variant] : care.problems.length ? "Le suivi reprend les foyers présents ; aucun nouveau trouble observé." : "Observation calme : aucun problème actif détecté.", vitalityDelta: 0, terpenesDelta: 0 }) };
 }
 
@@ -267,27 +304,55 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
   const lot = state.stageIndex >= 5;
   const basic = care.lastBasicCareStage === state.stageIndex;
   const active = care.interventions.filter(item => item.stageIndex <= state.stageIndex && item.remainingSteps > 0);
-  let support = 0;
-  let yieldBonus = care.yieldBonusPercent;
+  const area = getKqCareSectors(state).length || 1;
+  const focusPlants = new Map(care.problems.map(problem => [problem.code, getKqCareProblemPlants(state, problem)]));
+  let supportPointsM2 = 0;
+  let yieldPointsM2 = 0;
   const notes: string[] = [];
+  const inputNotes = new Set<string>();
   for (const intervention of active) {
     const product = getKqCareProduct(intervention.productCode)!;
     if (product.kind !== "input" || lot) continue;
-    const compatible = product.targets.some(target => care.problems.some(problem => {
+    const matches = care.problems.filter(problem => {
       const definition = getKqCareProblem(problem.code)!;
-      return target === definition.target || target === definition.family;
-    })) || (product.code === "CARE-COMPOST-TEA" && situation.tags.includes("roots"));
-    if (!compatible) { notes.push(`${product.name} : soutien non activé, aucune situation compatible.`); continue; }
-    if (product.code === "CARE-SEAWEED") support += 3;
+      return product.targets.includes(definition.target) || product.targets.includes(definition.family);
+    });
+    const compatible = matches.some(problem => !intervention.target || focusPlants.get(problem.code)!.some(plant => sameKqCareSector(intervention.target, plant)))
+      || (product.code === "CARE-COMPOST-TEA" && situation.tags.includes("roots") && (!intervention.target || !matches.length));
+    if (!compatible) {
+      inputNotes.add(`${product.name} : soutien non activé, ${intervention.target ? "aucune observation compatible sur la case traitée" : "aucune situation compatible"}.`);
+      continue;
+    }
+    const coverage = intervention.target ? 1 : area;
+    if (product.code === "CARE-SEAWEED") supportPointsM2 += 3 * coverage;
     else if (won) {
-      support += 2;
-      yieldBonus = Math.min(10, yieldBonus + (product.code === "CARE-ORGANIC-FEED" ? 5 : 2));
-    } else if (outcome === "fragile") support += 1;
-    notes.push(`${product.name} : ${won || product.code === "CARE-SEAWEED" ? "soutien activé" : "bénéfice limité par le résultat"}.`);
+      supportPointsM2 += 2 * coverage;
+      yieldPointsM2 += (product.code === "CARE-ORGANIC-FEED" ? 5 : 2) * coverage;
+    } else if (outcome === "fragile") supportPointsM2 += coverage;
+    inputNotes.add(`${product.name} : ${won || product.code === "CARE-SEAWEED" ? "soutien activé" : "bénéfice limité par le résultat"}.`);
   }
+  notes.push(...inputNotes);
+  const support = Math.round(supportPointsM2 / area);
+  const yieldBonus = Math.min(10, care.yieldBonusPercent + Math.round(yieldPointsM2 / area));
   let damage = 0;
   const problems = lot ? [] : care.problems.flatMap(problem => {
     const definition = getKqCareProblem(problem.code)!;
+    const previous = focusPlants.get(problem.code)!;
+    if (definition.family === "pest" && previous.length) {
+      const protection = (plant: KqCarePlant) => {
+        const treatment = active.find(i => (!i.target || sameKqCareSector(i.target, plant)) && getKqCareProduct(i.productCode)?.targets.includes(definition.target)
+          && !(i.productCode === "CARE-PHYTOSEIULUS" && care.problems.some(p => p.code === "HEAT")));
+        const pbi = treatment && getKqCareProduct(treatment.productCode)?.pbi;
+        return pbi && { reduction: pbi.reductions[treatment.status === "installing" ? 0 : 1] };
+      };
+      const help = biological && won && (basic || relevantOperation || situation.tags.includes("pest"));
+      const { plants, spread } = resolveKqPlantFocus(state, problem, protection, help, biological && outcome === "failure" && !basic);
+      if (!plants.length) { notes.push(`${definition.name} résorbé.`); return []; }
+      const severity = Math.max(...plants.map(p => p.severity)) as KqCarePlant["severity"];
+      damage += Math.max(0, ...previous.map(p => p.severity * 3 - Number(!!protection(p)) * 3 - Number(basic) * 2));
+      notes.push(`${definition.name} · ${plants.length} plant${plants.length > 1 ? "s" : ""} atteint${plants.length > 1 ? "s" : ""}${spread ? ", un nouveau plant touché" : ""}.`);
+      return [{ ...problem, plants, severity, status: "confirmed" as const, trend: spread || severity > problem.severity ? "worsening" as const : severity < problem.severity || plants.length < previous.length ? "recovering" as const : "stable" as const }];
+    }
     const pbi = active.find(item => {
       const product = getKqCareProduct(item.productCode)!;
       return product.kind === "pbi" && product.targets.includes(definition.target);
@@ -299,15 +364,25 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
     // never changes a problem. These levels are game balance, not efficacy data.
     const pbiReduction = pbiEstablished && pbi
       ? getKqCareProduct(pbi.productCode)?.pbi?.reductions[pbi.status === "installing" ? 0 : 1] ?? 0 : 0;
-    const nutritionHelp = definition.family === "nutrition" && active.some(item => getKqCareProduct(item.productCode)?.targets.includes("nutrition"));
+    const treatingInputs = active.filter(item => inputCodes.has(item.productCode) && getKqCareProduct(item.productCode)!.targets.includes(definition.target));
+    const nutritionHelp = definition.family === "nutrition" && treatingInputs.some(item => !item.target);
     const operationHelp = biological && won && (basic || relevantOperation || situation.tags.includes(definition.family === "pest" ? "pest" : definition.target === "roots" ? "roots" : "climate"));
     const reduction = pbiReduction + Number(operationHelp || (nutritionHelp && won));
     const increase = biological && outcome === "failure" && !basic && !pbiEstablished ? 1 : 0;
-    const nextSeverity = problem.severity + increase - reduction;
+    // Non-contagious problems stay on their affected plants. A successful
+    // input helps only its treated squares. Global historical inputs retain
+    // their original nutrition, vitality and yield effects.
+    const survivingPlants = previous.flatMap(plant => {
+      const helped = won && treatingInputs.some(item => item.target && sameKqCareSector(item.target, plant));
+      const severity = plant.severity + increase - Math.max(reduction, Number(helped));
+      return severity > 0 ? [{ ...plant, severity: Math.min(3, severity) as KqCarePlant["severity"] }] : [];
+    });
+    const nextSeverity = previous.length ? Math.max(0, ...survivingPlants.map(plant => plant.severity)) : problem.severity + increase - reduction;
     if (pbi) notes.push(`${getKqCareProduct(pbi.productCode)!.name} · ${definition.name} : ${blockedPbi ? "action perturbée par le stress thermique" : pbiReduction ? `recul de ${pbiReduction} niveau${pbiReduction > 1 ? "x" : ""} au bilan` : "installation et contention du foyer"}.`);
     if (nextSeverity <= 0) { notes.push(`${definition.name} : problème résorbé ; les pertes antérieures restent enregistrées.`); return []; }
     damage += Math.max(0, problem.severity * 3 - Number(pbiEstablished) * 3 - Number(basic) * 2);
-    return [{ ...problem, severity: clamp(nextSeverity, 1, 3) as 1 | 2 | 3, status: "confirmed" as const, trend: reduction > 0 ? "recovering" as const : increase > 0 ? "worsening" as const : "stable" as const }];
+    const recovering = reduction > 0 || nextSeverity < problem.severity || survivingPlants.length < previous.length;
+    return [{ ...problem, ...(previous.length ? { plants: survivingPlants } : {}), severity: clamp(nextSeverity, 1, 3) as 1 | 2 | 3, status: "confirmed" as const, trend: recovering ? "recovering" as const : increase > 0 ? "worsening" as const : "stable" as const }];
   });
   const operationDelta = biological ? outcome === "critical" ? 7 : won ? 4 : outcome === "fragile" ? -4 : -16 : 0;
   const vitality = lot ? care.vitality : clamp(care.vitality + operationDelta - damage + support + (basic ? 3 : 0) + (biological && won && relevantOperation ? 2 : 0), 0, 100);
@@ -345,15 +420,23 @@ export function isKqCareState(value: unknown): value is KqCareState {
     || !getKqCareProblem(String(item.code)) || !int(item.severity, 1, 3) || !int(item.appearedAt, 0, 4) || !int(item.variant, 0, 1)
     || !["suspected", "confirmed"].includes(String(item.status)) || !["worsening", "stable", "recovering"].includes(String(item.trend)))) return false;
   if (new Set(value.problems.map(item => item.code)).size !== value.problems.length) return false;
-  if (!Array.isArray(value.applications) || value.applications.length > 12 || value.applications.some(item => !record(item) || !getKqCareProduct(String(item.productCode)) || !int(item.stageIndex, 0, 4))) return false;
-  if (new Set(value.applications.map(item => `${item.productCode}:${item.stageIndex}`)).size !== value.applications.length) return false;
-  const inputs = value.applications.filter(item => getKqCareProduct(item.productCode)?.kind === "input");
-  if (inputs.length > 2 || new Set(inputs.map(item => item.productCode)).size !== inputs.length || new Set(inputs.map(item => item.stageIndex)).size !== inputs.length) return false;
-  if (!Array.isArray(value.interventions) || value.interventions.length > 4 || value.interventions.some(item => !record(item)
+  if (value.problems.some(p => p.plants !== undefined && (!Array.isArray(p.plants) || !p.plants.length || p.plants.length > 4000
+    || p.plants.some((plant: KqCarePlant) => !isKqCareSector(plant) || !int(plant.slot, 0, 3) || !int(plant.severity, 1, 3)) || new Set(p.plants.map(plantKey)).size !== p.plants.length))) return false;
+  if (!Array.isArray(value.applications) || value.applications.length > maxCareEntries || value.applications.some(item => !record(item) || !getKqCareProduct(String(item.productCode)) || !int(item.stageIndex, 0, 4))) return false;
+  if (value.applications.some(i => i.target !== undefined && !isKqCareSector(i.target)) || countCarePasses(value.applications) > 12) return false;
+  const applicationKeys = new Set(value.applications.map(careApplicationKey));
+  if (applicationKeys.size !== value.applications.length) return false;
+  if (value.applications.some(item => item.target && applicationKeys.has(careApplicationKey({ ...item, target: undefined })))) return false;
+  const inputs = value.applications.filter(item => inputCodes.has(item.productCode));
+  const passes = countCarePasses(inputs);
+  if (passes > 2 || new Set(inputs.map(item => item.productCode)).size !== passes || new Set(inputs.map(item => item.stageIndex)).size !== passes) return false;
+  if (!Array.isArray(value.interventions) || value.interventions.length > maxCareEntries || value.interventions.some(item => !record(item)
     || !getKqCareProduct(String(item.productCode)) || !int(item.stageIndex, 0, 4) || !int(item.remainingSteps, 1, 2)
     || !["installing", "active"].includes(String(item.status))
-    || !(value.applications as Record<string, unknown>[]).some(application => application.productCode === item.productCode && application.stageIndex === item.stageIndex))) return false;
-  if (new Set(value.interventions.map(item => item.productCode)).size !== value.interventions.length) return false;
+    || (item.target !== undefined && !isKqCareSector(item.target))
+    || !applicationKeys.has(careApplicationKey(item as CareApplication)))) return false;
+  if (countCarePasses(value.interventions) > 4) return false;
+  if (new Set(value.interventions.map(item => careApplicationKey({ ...item, stageIndex: 0 }))).size !== value.interventions.length) return false;
   if (!Array.isArray(value.history) || value.history.length > 48 || value.history.some(item => !record(item)
     || !int(item.stageIndex, 0, 5) || !["observation", "intervention", "resolution"].includes(String(item.kind))
     || typeof item.message !== "string" || item.message.length > 3000 || !int(item.vitalityDelta, -100, 100)

@@ -1,0 +1,473 @@
+[
+  {
+    "clusterId": "D01",
+    "type": "doublon fort",
+    "concept": "Classe monoacylglycérol du 2-AG",
+    "ids": [
+      "hemp-evidence-2ag",
+      "hemp-hs-sci-2ag-lipid"
+    ],
+    "recommendedRetire": [
+      "hemp-hs-sci-2ag-lipid"
+    ]
+  },
+  {
+    "clusterId": "D02",
+    "type": "doublon fort",
+    "concept": "FAAH hydrolyse l’anandamide",
+    "ids": [
+      "hemp-hs-sci-receptors-type",
+      "hemp-hs-sci-2ag-early-study-limit"
+    ],
+    "recommendedRetire": [
+      "hemp-hs-sci-2ag-early-study-limit"
+    ]
+  },
+  {
+    "clusterId": "D03",
+    "type": "redondance forte",
+    "concept": "Clonage CB1 en 1990 puis CB2 en 1993",
+    "ids": [
+      "hemp-hs-sci-cb1",
+      "hemp-hs-sci-cb2",
+      "hemp-hs-sci-cb1-discovery-v-clone"
+    ],
+    "recommendedRetire": [
+      "hemp-hs-sci-cb1-discovery-v-clone"
+    ]
+  },
+  {
+    "clusterId": "D04",
+    "type": "doublon fort",
+    "concept": "Retrait du tableau IV de 1961, maintien I après 2020",
+    "ids": [
+      "hemp-hs-hist-un2020-schedule",
+      "hemp-hs-hist-two-treaties"
+    ],
+    "recommendedRetire": [
+      "hemp-hs-hist-two-treaties"
+    ]
+  },
+  {
+    "clusterId": "D05",
+    "type": "doublon par inversion",
+    "concept": "Chènevotte plus lignifiée que liber",
+    "ids": [
+      "hemp-en-3-06",
+      "hemp-en-3-12"
+    ],
+    "recommendedRetire": [
+      "hemp-en-3-12"
+    ]
+  },
+  {
+    "clusterId": "D06",
+    "type": "redondance forte",
+    "concept": "Houblon proche parent Cannabaceae, brasserie comme nouvel habillage",
+    "ids": [
+      "hemp-genetics-famille",
+      "hemp-en-1-01",
+      "hemp-en-2-05"
+    ],
+    "recommendedRetire": [
+      "hemp-en-2-05"
+    ]
+  },
+  {
+    "clusterId": "D07",
+    "type": "redondance forte",
+    "concept": "Conservation Yanghai : aridité, profondeur, alcalinité",
+    "ids": [
+      "hemp-hc-047",
+      "hemp-hc-057"
+    ],
+    "recommendedRetire": [
+      "hemp-hc-057"
+    ]
+  },
+  {
+    "clusterId": "R01",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Anandamide : nom, éthanolamine et liaison amide",
+    "ids": [
+      "hemp-hs-sci-anandamide-name",
+      "hemp-hs-sci-anandamide-molecule",
+      "hemp-hs-sci-anandamide-precursor"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R02",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "CBGA : précurseur et branches parallèles",
+    "ids": [
+      "hemp-evidence-cbga-carrefour",
+      "hemp-evidence-branches",
+      "hemp-hs-sci-cb-receptor-gprotein",
+      "hemp-hs-sci-2ag-study-assay"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R03",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "CB1/CB2 : distribution tissulaire et comparaison",
+    "ids": [
+      "hemp-hs-sci-cb1-brain",
+      "hemp-hs-sci-cb2-tissue",
+      "hemp-hs-sci-cb-receptors-contrast"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R04",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Travail CBD 1963 : pays, institut et structure",
+    "ids": [
+      "hemp-hs-sci-mechoulam-country",
+      "hemp-hs-sci-cbd-structure-date",
+      "hemp-hs-sci-cbd-mn-vs-indian"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R05",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "THC 1964 : composé et opérations de chimie",
+    "ids": [
+      "hemp-hs-sci-thc-1964",
+      "hemp-hs-sci-thc-stereochemistry"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R06",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Pollen : transport et morphologie",
+    "ids": [
+      "hemp-plant-transport-pollen",
+      "hemp-en-1-10"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R07",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Follicules/folioles : nom, bord et pétiole",
+    "ids": [
+      "hemp-plant-feuille-palmee",
+      "hemp-plant-petiole",
+      "hemp-en-1-03"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R08",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Cinéole : synonyme, fonction éther et eucalyptus",
+    "ids": [
+      "hemp-molecules-cineole",
+      "hemp-molecules-cineole-fonction",
+      "hemp-en-2-01"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R09",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Skunk : famille et composé précis",
+    "ids": [
+      "hemp-molecules-skunk-thiol",
+      "hemp-en-2-14"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R10",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Rouissage, pectines, microbes et lamelle moyenne",
+    "ids": [
+      "hemp-profiles-pectines",
+      "hemp-profiles-rouissage-organismes",
+      "hemp-en-3-18"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R11",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Tourteau : définition et composition résiduelle",
+    "ids": [
+      "hemp-seeds-tourteau",
+      "hemp-seeds-tourteau-fractions"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R12",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Édestine et familles de protéines de réserve",
+    "ids": [
+      "hemp-seeds-edestine",
+      "hemp-seeds-fractions-proteines"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R13",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Chènevis : nom courant, péricarpe, akène",
+    "ids": [
+      "hemp-seeds-chenevis",
+      "hemp-seeds-pericarpe",
+      "hemp-en-1-08"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R14",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Oxydation huile : réaction, graines cassées, produits primaires et hexanal",
+    "ids": [
+      "hemp-seeds-hexanal",
+      "hemp-prevention-huile-rance",
+      "hemp-prevention-bris-graines",
+      "hemp-prevention-hydroperoxydes"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R15",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Condensation et point de rosée",
+    "ids": [
+      "hemp-prevention-condensation",
+      "hemp-prevention-point-rosee"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R16",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Gautier 1846 : auteur, revue et date",
+    "ids": [
+      "hemp-hc-001",
+      "hemp-hc-015",
+      "hemp-hc-017"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R17",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Pimodan : hôtel, île et hôte",
+    "ids": [
+      "hemp-hc-002",
+      "hemp-hc-003",
+      "hemp-hc-014"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R18",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Moreau : médecin, traité, ville, objectif",
+    "ids": [
+      "hemp-hc-004",
+      "hemp-hc-005",
+      "hemp-hc-016",
+      "hemp-hc-032"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R19",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Emprunt marihuana, graphies et étymologie",
+    "ids": [
+      "hemp-hc-012",
+      "hemp-hc-023",
+      "hemp-hc-042",
+      "hemp-hc-060"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R20",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Rochefort : fibre, corderie et longueur illustrative",
+    "ids": [
+      "hemp-hc-007",
+      "hemp-hc-025",
+      "hemp-hc-055"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R21",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Jirzankal : région, nom, âge, zone B et matériau",
+    "ids": [
+      "hemp-hc-011",
+      "hemp-hc-044",
+      "hemp-hc-045",
+      "hemp-hc-046",
+      "hemp-hc-058"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R22",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Yanghai : âge, restes, instrument, lieu et conservation",
+    "ids": [
+      "hemp-hc-010",
+      "hemp-hc-029",
+      "hemp-hc-030",
+      "hemp-hc-043",
+      "hemp-hc-047",
+      "hemp-hc-057"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R23",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Tissage : entrecroisement et ourdissage",
+    "ids": [
+      "hemp-profiles-tissage",
+      "hemp-profiles-ourdissage"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R24",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Papier : feuille, pâte et résistance mécanique",
+    "ids": [
+      "hemp-profiles-papier",
+      "hemp-en-3-05",
+      "hemp-en-3-15",
+      "hemp-en-3-20"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R25",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Béton chanvre-chaux : ingrédients et eau",
+    "ids": [
+      "hemp-profiles-beton",
+      "hemp-en-3-01"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R26",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "1937 : nom, exclusions et promulgation",
+    "ids": [
+      "hemp-hs-hist-1937-law",
+      "hemp-hs-hist-1937-exemptions",
+      "hemp-hs-hist-1937-date"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R27",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "ONU 1961 : nom, lieu et entrée en vigueur",
+    "ids": [
+      "hemp-hs-hist-single",
+      "hemp-hs-hist-un-venue",
+      "hemp-hs-hist-un1961-into-force"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R28",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "ONU 1971 : nom et lieu",
+    "ids": [
+      "hemp-hs-hist-psychotropic",
+      "hemp-hs-hist-un-psychotropics-city"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R29",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "ONU 2020 : organe, classement et décompte",
+    "ids": [
+      "hemp-hs-hist-vote",
+      "hemp-hs-hist-un2020-schedule",
+      "hemp-hs-hist-vote-numbers",
+      "hemp-hs-hist-two-treaties"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R30",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Uruguay : pays, institution, principe, dates",
+    "ids": [
+      "hemp-hs-hist-uruguay-law",
+      "hemp-hs-hist-uruguay-control",
+      "hemp-hs-hist-uruguay-policy",
+      "hemp-hs-hist-uruguay-promulgation-publication"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R31",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Myrcène : identité et absence de cycle",
+    "ids": [
+      "hemp-molecules-myrcene",
+      "hemp-en-2-06"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R32",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Caryophyllène : odeur, nom humulène, oxyde, petit cycle",
+    "ids": [
+      "hemp-molecules-caryophyllene-arome",
+      "hemp-molecules-humulene",
+      "hemp-molecules-caryophyllene-oxyde",
+      "hemp-en-2-18"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R33",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "THCV/CBGVA : chaînes propyle et homologie",
+    "ids": [
+      "hemp-evidence-variniques",
+      "hemp-evidence-cbgva"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R34",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Vers/tétranyques : animal et stade larvaire",
+    "ids": [
+      "hemp-biodiversity-tetranyque",
+      "hemp-biodiversity-larve-tetranyque"
+    ],
+    "recommendedRetire": []
+  },
+  {
+    "clusterId": "R35",
+    "type": "notions proches, pas doublons exacts",
+    "concept": "Oïdium : aspect et agent identifié",
+    "ids": [
+      "hemp-biodiversity-oidium",
+      "hemp-biodiversity-podosphaera"
+    ],
+    "recommendedRetire": []
+  }
+]

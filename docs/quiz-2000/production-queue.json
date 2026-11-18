@@ -1,0 +1,304 @@
+{
+  "target": 1000,
+  "status": "1000-delivery-complete-expansion-deferred",
+  "legacyActiveAssumption": 353,
+  "newQuestionsNeeded": 647,
+  "alreadyApprovedOrReservedBeforeThisQueue": 296,
+  "reservationsBeforeQueue": {
+    "pilot": 30,
+    "b01": 40,
+    "b02": 30,
+    "b03": 40,
+    "d01": 36,
+    "a01": 40,
+    "cNew01": 40,
+    "cNew02": 40
+  },
+  "remainingPlannedNewSlots": 0,
+  "assumptions": "353 validated legacy survivors plus647 additions make1000.296 additions preceded this queue; its351 slots are the only current delivery scope. Statuses below distinguish approvals from reviews. Every other batch is deferred by the user.",
+  "difficultyGuidance": "At760 validated entries,146 are level1. Prefer genuinely accessible, useful new facts and concrete situations, especially in food, quality, prevention and uses. About22 accessible items per40 can guide suitable batches; specialized cultivar/history/genetics batches may be lower. Never manufacture variants or downgrade a specialized fact to meet a quota. Actual grading and distinctiveness govern.",
+  "batches": [
+    {
+      "batchId": "a-02",
+      "category": "varieties",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "a-03",
+      "category": "varieties",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "b-04",
+      "category": "varieties",
+      "count": 31,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "previousPlannedCount": 40,
+      "author": "b_external_varieties",
+      "authoredCount": 31,
+      "reviewer": "f_existing_audit",
+      "approvedCount": 31
+    },
+    {
+      "batchId": "b-05",
+      "category": "varieties",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "b-06",
+      "category": "varieties",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "b-07",
+      "category": "varieties",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-03",
+      "category": "genetics",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "authoredCount": 40,
+      "approvedCount": 40
+    },
+    {
+      "batchId": "c-new-04",
+      "category": "genetics",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "c_science_pilot",
+      "reviewer": "e_engine_audit",
+      "authoredCount": 40,
+      "approvedCount": 40
+    },
+    {
+      "batchId": "c-new-05",
+      "category": "genetics",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "c_science_pilot",
+      "authoredCount": 40,
+      "reviewer": "f_existing_audit",
+      "approvedCount": 40
+    },
+    {
+      "batchId": "c-new-06",
+      "category": "genetics",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "c_science_pilot",
+      "reviewer": "f_existing_audit",
+      "authoredCount": 40,
+      "approvedCount": 40
+    },
+    {
+      "batchId": "c-new-07",
+      "category": "genetics",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-08",
+      "category": "botany",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-09",
+      "category": "botany",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-10",
+      "category": "botany",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-11",
+      "category": "constituents",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-12",
+      "category": "constituents",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-13",
+      "category": "constituents",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-14",
+      "category": "constituents",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-15",
+      "category": "agronomy",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "c-new-16",
+      "category": "agronomy",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-01",
+      "category": "history",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-02",
+      "category": "history",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-03",
+      "category": "history",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-04",
+      "category": "food",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "d_history_food_pilot",
+      "authoredCount": 40,
+      "reviewer": "f_existing_audit",
+      "approvedCount": 40
+    },
+    {
+      "batchId": "d-new-05",
+      "category": "food",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "d_history_food_pilot",
+      "reviewer": "f_existing_audit",
+      "authoredCount": 40,
+      "approvedCount": 40
+    },
+    {
+      "batchId": "d-new-06",
+      "category": "food",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-07",
+      "category": "hemp-uses",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-08",
+      "category": "hemp-uses",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "d-new-09",
+      "category": "hemp-uses",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "e-new-01",
+      "category": "quality",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "e_engine_audit",
+      "authoredCount": 40,
+      "reviewer": "c_science_pilot",
+      "approvedCount": 40
+    },
+    {
+      "batchId": "e-new-02",
+      "category": "prevention",
+      "count": 40,
+      "status": "approved",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler.",
+      "author": "a_cbd_inventory",
+      "authoredCount": 40,
+      "reviewer": "e_engine_audit",
+      "approvedCount": 40
+    },
+    {
+      "batchId": "e-new-03",
+      "category": "prevention",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "e-new-04",
+      "category": "prevention",
+      "count": 40,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    },
+    {
+      "batchId": "final-mixed-01",
+      "category": "coverage-gaps",
+      "count": 31,
+      "status": "deferred-by-user-until-future-expansion",
+      "rule": "Research externally, draft a distinct batch, independent review, correct, then integrate. No site inspiration or filler."
+    }
+  ],
+  "previousTarget": 2000,
+  "futureExpansionTarget": 2000,
+  "validatedActiveAtScopeReduction": 769,
+  "remainingAtScopeReduction": 231,
+  "originalPlannedNewSlots": 351,
+  "completedActive": 1000,
+  "completedOn": "2026-11-17"
+}

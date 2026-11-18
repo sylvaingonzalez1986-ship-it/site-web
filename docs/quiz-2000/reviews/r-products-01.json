@@ -1,0 +1,881 @@
+{
+  "batchId": "r-products-01",
+  "reviewer": "rebalance_classify_a",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rp01-kief-loose-trichome-powder",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 8, §3.1",
+          "result": "Confirmé : trichomes majoritaires du kief.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Kief, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "88e3409c00de82cd560853fdd916f0800a9777f4f26016c577d2a0df12848aa7"
+    },
+    {
+      "id": "hemp-q2-rp01-hash-compressed-resinous-material",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 3, tableau 1, Hash",
+          "result": "Confirmé : hash pressé, matière résineuse solide.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Haschich, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "e66e9ec757823ed3bc7e96fe2b22bbfad67bf56df6e6811152fdd64346ba89fe"
+    },
+    {
+      "id": "hemp-q2-rp01-rosin-solventless-versus-resin",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 10, §3.3 et p. 14, Terminologie",
+          "result": "Passage déjà lu, objet source inchangé ; correction de formulation conforme au fait.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Rosin et resin.",
+      "contentHash": "520fd94f0da7b052434c5cfdad1da7614ec1a7dc1f82568be7159a4563616b41"
+    },
+    {
+      "id": "hemp-q2-rp01-wax-pen-concentrate-accessory",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 15, tableau 11, Autres appellations",
+          "result": "Confirmé : wax pen destiné au tamponnage des résines.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Wax pen, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "b7317ea1f38e6c27fcb5a9792685fc2be56f80e118c09629cf3e9df60d6bd4ee"
+    },
+    {
+      "id": "hemp-q2-rp01-extract-not-always-concentrate",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 6, §3, paragraphes 3–4",
+          "result": "Confirmé : des extraits peuvent être dilués.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Extraits dilués, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "967ffbcaf78b36972363f257863ac1e150b87506e7fb9e06f7f300a70b4bdc23"
+    },
+    {
+      "id": "hemp-q2-rp01-distillate-low-native-terpenes",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-who-extracts-2018",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section 1, p. 10, §1.2.4.6",
+          "result": "Confirmé : distillat pauvre en terpènes ; réaromatisation possible.",
+          "sourceHash": "7749e1a0a018f0c6f73a242770326fef6227a9de174a55499893fa1cd6885d02"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Distillat, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "26047f7ba86a1ccfd4ca62916ad1740776e1edb801c1f38f4c4ecc8a38ba858a"
+    },
+    {
+      "id": "hemp-q2-rp01-isolate-single-cannabinoid",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 13, §3.6",
+          "result": "Confirmé : purification d’un seul cannabinoïde.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Isolat de cannabinoïde, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "2a310aa219b23482a197040c374e12e5820fe418fe45d6ec1ddade2f2ec19a59"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-oil-carrier",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-cbd",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+          "locator": "The difference between cannabis oil and hemp-seed oil",
+          "result": "Passage déjà lu, objet source inchangé ; correction de formulation conforme au fait.",
+          "sourceHash": "645df4925671c37b3a4a3aa855b210de329ca8af4f0359b3cd7e12ba46894e9a"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Huile orale au CBD.",
+      "contentHash": "ee19a3453641b86f0d3cca41c87288073efbc9d3ab324067a7f7f0b242152420"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-oil-distinct-vape-liquid",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 16, §4.1.1, paragraphes 1–3",
+          "result": "Passage déjà lu, objet source inchangé ; correction de formulation conforme au fait.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Huile orale et liquide de vapotage.",
+      "contentHash": "f2a5209221196a5a14bfba371e7d943d558cc8fe1f6158270be6a9c3226411e0"
+    },
+    {
+      "id": "hemp-q2-rp01-pre-roll-already-rolled-flower",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 4, §2.1",
+          "result": "Confirmé : joint commercialisé déjà roulé.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Préroulé, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "773a86465e420c9a3c540ebe67378f50d2bf067ee0b7bb1e8b7113a8ef9173c1"
+    },
+    {
+      "id": "hemp-q2-rp01-infused-pre-roll-added-extract",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-infused",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/tracking-system/monthly-reporting-guide/frequent-issues-solutions.html",
+          "locator": "Adding other forms of cannabis to dried cannabis products",
+          "result": "Confirmé : fleur et hash/kief ajoutés ; voir aussi Pure intermediates, Scenario2.",
+          "sourceHash": "0ae51fad00117599a8e6efaa88ccf5d0cc1fda0ac46c8125ac1cf405c8b8d41c"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Préroulé infusé, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "550c13476f0ea74b1238ac7568fa17dff870285497573b7ca1319a02f3f64cee"
+    },
+    {
+      "id": "hemp-q2-rp01-shatter-glasslike-brittle",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 3, tableau 1, Shatter",
+          "result": "Confirmé : shatter vitreux et ambré.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Shatter, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "76011622fefa9131c5521ff9b537b4245d9731cd5207fdfa046cec7d9ffd645b"
+    },
+    {
+      "id": "hemp-q2-rp01-crumble-dry-crumbly-texture",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 3, tableau 1, Wax",
+          "result": "Confirmé : crumble plus sec et friable.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Crumble et budder, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "250f507f0d1a06f6d00ea7c4fd78bcfead0e44698385dcfc0551570d33b8ac05"
+    },
+    {
+      "id": "hemp-q2-rp01-live-resin-fresh-frozen-origin",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 3, tableau 1, Live Resin",
+          "result": "Confirmé : matière fraîche immédiatement congelée.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Live resin, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "b49f44926eec704f00bc47535347b9334f9287984f8c887c5e04fb969c106470"
+    },
+    {
+      "id": "hemp-q2-rp01-bho-expansion-butane-hash-oil",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 3, note 3",
+          "result": "Confirmé : BHO développé en butane hash oil.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur BHO, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "f8ae517667323121821a7e9ed56f4c3fb68740fe5abeb4d74e0ba5cfc2349d2f"
+    },
+    {
+      "id": "hemp-q2-rp01-thca-diamonds-crystalline-cannabinoid",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-bccs-form-products",
+          "url": "https://www.bccannabisstores.com/blogs/learn/the-bccs-guide-to-infused-pre-rolls",
+          "locator": "Types of Concentrates Used : THCA Diamonds",
+          "result": "Guide effectivement ouvert : cristaux THCA, terp sauce aromatique et bubble hash solventless explicitement décrits, sans reprendre les promesses commerciales.",
+          "sourceHash": "ed21087d62f5a6a416f5c511c74494c0e04560dcda190e260ad0fc2c3da51f6f"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Diamants de THCA.",
+      "contentHash": "f5c9dcdfb080ff617d400103de59d641298b0e65e2db9c7185a96f23e013fba1"
+    },
+    {
+      "id": "hemp-q2-rp01-traditional-tincture-alcohol-extract",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-who-extracts-2018",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section 1, p. 15, note 1",
+          "result": "Confirmé : teinture au sens d’extraction alcoolique.",
+          "sourceHash": "7749e1a0a018f0c6f73a242770326fef6227a9de174a55499893fa1cd6885d02"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Teinture de cannabis, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "0a4d2a80f962fb2edb79d8be86f4dfd6d8033606df1f3ec85cd0ecb1dc11cd07"
+    },
+    {
+      "id": "hemp-q2-rp01-dabbing-vaporizing-concentrate",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 2, encadré What is dabbing?",
+          "result": "Passage déjà lu, objet source inchangé ; correction de formulation conforme au fait.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Dabbing.",
+      "contentHash": "7b10566fcc39638c9ec1d759920f000acf7fdc29572a7394255bc12cab23a664"
+    },
+    {
+      "id": "hemp-q2-rp01-full-spectrum-native-mixture",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ny-hemp-definitions",
+          "url": "https://cannabis.ny.gov/system/files/documents/2024/01/part-114-exprs-trms-adopted-12-2023.pdf",
+          "locator": "§114.1(s), p. 6",
+          "result": "Confirmé : définition new-yorkaise datée, plusieurs composés natifs.",
+          "sourceHash": "844e2e9aebff15e753f10224d6782dfe328d834dbcf59bc1b9c06c1f7ed88920"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Extrait à spectre complet, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "4591f515211661f4a1c962cd389828b3fdd17d73a274bbb2029ea1974cb42af8"
+    },
+    {
+      "id": "hemp-q2-rp01-broad-spectrum-thc-removal",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ny-hemp-definitions",
+          "url": "https://cannabis.ny.gov/system/files/documents/2024/01/part-114-exprs-trms-adopted-12-2023.pdf",
+          "locator": "§114.1(b), p. 2",
+          "result": "Confirmé : pluralité de cannabinoïdes après retrait du THC.",
+          "sourceHash": "844e2e9aebff15e753f10224d6782dfe328d834dbcf59bc1b9c06c1f7ed88920"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Extrait à large spectre, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "ede1340c2fc218b41df8fde73ec5276d81451e52520e36ac23f6e2e1d4e54ef1"
+    },
+    {
+      "id": "hemp-q2-rp01-ratio-thc-cbd-not-concentration",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-medical-products",
+          "url": "https://www.canada.ca/content/dam/hc-sc/documents/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/cannabis-medical-purposes.pdf",
+          "locator": "Choosing a cannabis product, Content of a cannabis product et indications mg/g, mg/ml, mg",
+          "result": "Passages et crédits relus : date janvier2026 correcte ; profils THC/CBD et teneurs distincts.",
+          "sourceHash": "e61181b0fd978eb38b5c1263efdddd4f7d8d7a6ec215d6375c4ae99e0a01c6f3"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Rapport THC/CBD.",
+      "contentHash": "966f808ea91be95e9d5cf0e6579ce791de8e538b7a8cb7cfb7e1a51f9cdc8fcd"
+    },
+    {
+      "id": "hemp-q2-rp01-terp-sauce-aromatic-concentrate",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-bccs-form-products",
+          "url": "https://www.bccannabisstores.com/blogs/learn/the-bccs-guide-to-infused-pre-rolls",
+          "locator": "Types of Concentrates Used : Terp Sauce",
+          "result": "Guide effectivement ouvert : cristaux THCA, terp sauce aromatique et bubble hash solventless explicitement décrits, sans reprendre les promesses commerciales.",
+          "sourceHash": "ed21087d62f5a6a416f5c511c74494c0e04560dcda190e260ad0fc2c3da51f6f"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Terp sauce.",
+      "contentHash": "f23646f8ab58ae612197178b1743508c79109cd95231cb555956b6395588b173"
+    },
+    {
+      "id": "hemp-q2-rp01-total-thc-molar-mass-convention",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-nist-hemp-2024",
+          "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.260-248.pdf",
+          "locator": "p. 22, §3.1.11.2, équation 5",
+          "result": "Confirmé : équation5, THC+0,877THCA, facteur de masses molaires.",
+          "sourceHash": "fbac331723159d6bb122df30b2a40581193d0045faf4546dbc26324f3ce99631"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur THC total analytique, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "94ac4b2eda549b4e6c124ca681e52f863807d4ddd82211aa67b4a8be50e34989"
+    },
+    {
+      "id": "hemp-q2-rp01-bubble-hash-solventless-family",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-bccs-form-products",
+          "url": "https://www.bccannabisstores.com/blogs/learn/the-bccs-guide-to-infused-pre-rolls",
+          "locator": "Types of Concentrates Used : Bubble Hash (Ice Water Hash)",
+          "result": "Guide effectivement ouvert : cristaux THCA, terp sauce aromatique et bubble hash solventless explicitement décrits, sans reprendre les promesses commerciales.",
+          "sourceHash": "ed21087d62f5a6a416f5c511c74494c0e04560dcda190e260ad0fc2c3da51f6f"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Bubble hash.",
+      "contentHash": "78d4b33aadb6fc6e00eaa74f4fb72985640f5b6c0d22152277a4f1f823fba7bb"
+    },
+    {
+      "id": "hemp-q2-rp01-nabiximols-thc-cbd-formulation",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-nci-nabiximols",
+          "url": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/nabiximols",
+          "locator": "Définition, premier paragraphe",
+          "result": "Définition et synonymes effectivement lus : préparation standardisée THC/CBD, spray oromucosal.",
+          "sourceHash": "b85e09ab08381c4b065866759c8acebe0f57df0f564cbc296576e3030fcec01e"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Nabiximols.",
+      "contentHash": "6a4158b8a96db5a43dae9ce63de840eaed48f92fc64d050b0403ee520f038d15"
+    },
+    {
+      "id": "hemp-q2-rp01-dronabinol-delta9-thc-identity",
+      "status": "approved",
+      "comment": "Correction ou remplacement relu individuellement : fait soutenu, formulation acceptable et domaine actif vérifié. Aucun doublon de fait établi dans la banque retenue.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-nci-dronabinol",
+          "url": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/dronabinol",
+          "locator": "Définition et liste de synonymes",
+          "result": "Définition et synonymes effectivement lus : dronabinol aussi appelé delta-9-THC.",
+          "sourceHash": "02eb3684c7ac80a5cad57bbe09840cd61060b9aa56ef51b665f8065e464ffff8"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Produit ou formulation spécifique du cannabis à actifs : Dronabinol.",
+      "contentHash": "a18082ab34eef49731869f69423a3aeba46689ab50a1c7423f3afa493bab8bbd"
+    },
+    {
+      "id": "hemp-q2-rp01-essential-oil-aromatic-volatile-mixture",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-who-extracts-2018",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "locator": "Section 1, p. 22, §3.2.4.3",
+          "result": "Confirmé : huile essentielle dominée par les composés volatils.",
+          "sourceHash": "7749e1a0a018f0c6f73a242770326fef6227a9de174a55499893fa1cd6885d02"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Huile essentielle de cannabis, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "e3c8b46471617500a49f00b7fc3c72aa20751089461f96758596e698e32f41d8"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-name-hexahydrocannabinol",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-emcdda-hhc-2023",
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "locator": "p. 26, Common names ; p. 17, Other SSCs in Europe",
+          "result": "Confirmé : HHC=hexahydrocannabinol.",
+          "sourceHash": "4035cf6b19dfc0c6016aa9930723c3a4aa4f71b2ab5d5443e94b569bb7adbb37"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur HHC, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "3abea2db2e406acc0115ea98c97d5bc6f5121c1412d876f636900ab485adb53e"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-saturated-thc-analogue",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-emcdda-hhc-2023",
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "locator": "p. 24–25, figures 9–10",
+          "result": "Confirmé : formules et structures HHC/THC ; saturation du cycle.",
+          "sourceHash": "4035cf6b19dfc0c6016aa9930723c3a4aa4f71b2ab5d5443e94b569bb7adbb37"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Structure du HHC, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "6a1ad9b2928f55048db7461a710ae827324e276f6a8b85e34e480a51b8d7cd90"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-o-acetate-derivative",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-euda-products-2023",
+          "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+          "locator": "Emergence of semi-synthetic cannabinoids, paragraphe HHC-O",
+          "result": "Confirmé : HHC-O ester acétate.",
+          "sourceHash": "b582f12e65ba60e3a33d8500466af1dfa2e4fa7dabc3956ffa59443aff772416"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur HHC-O, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "0fdb026c8e31d5b1405c4673f5f0f40e2c02902b0ff4acfdbd299a8d262e184e"
+    },
+    {
+      "id": "hemp-q2-rp01-semi-synthetic-natural-cannabinoid-modified",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-euda-products-2023",
+          "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+          "locator": "Encadré Emergence of semi-synthetic cannabinoids, premier paragraphe",
+          "result": "Confirmé : modification de cannabinoïdes naturels.",
+          "sourceHash": "b582f12e65ba60e3a33d8500466af1dfa2e4fa7dabc3956ffa59443aff772416"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Cannabinoïdes semi-synthétiques, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "9e13c7f5253de81b11fa74a7e32cc26ea5b230d1379a1ef9bf7585ac9696485f"
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-flower-added-to-low-thc-flower",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-emcdda-hhc-2023",
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "locator": "p. 5–6, résumé, formes vendues",
+          "result": "Confirmé : HHC ajouté à des supports pauvres en THC.",
+          "sourceHash": "4035cf6b19dfc0c6016aa9930723c3a4aa4f71b2ab5d5443e94b569bb7adbb37"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Fleurs contenant du HHC, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "17adaddf32f23852b0e98bdb986ed606acb1f5aaeebf519a3e5084c70abd2a00"
+    },
+    {
+      "id": "hemp-q2-rp01-delta8-products-usually-cbd-conversion",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-fda-delta8",
+          "url": "https://www.fda.gov/consumers/consumer-updates/5-things-know-about-delta-8-tetrahydrocannabinol-delta-8-thc",
+          "locator": "Introduction et point 4",
+          "result": "Confirmé : delta-8 concentré généralement issu de CBD transformé.",
+          "sourceHash": "17d9001686de1e164920933739328eb1aef81c96b51140eb59ed05264fe4c9ba"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Produits au delta-8 THC, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "6da45d87a63f295493f24c01bb0d1c436c9ce269d53ca1fa25012142e77bfb21"
+    },
+    {
+      "id": "hemp-q2-rp01-hemp-label-not-nonintoxicating-guarantee",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-fda-delta8",
+          "url": "https://www.fda.gov/consumers/consumer-updates/5-things-know-about-delta-8-tetrahydrocannabinol-delta-8-thc",
+          "locator": "Points 1 et 3",
+          "result": "Confirmé : origine hemp distincte de l’absence d’intoxication.",
+          "sourceHash": "17d9001686de1e164920933739328eb1aef81c96b51140eb59ed05264fe4c9ba"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Appellation dérivé du chanvre, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "3244fa40220d5da4a95684a489c6f0919312984d70b717e71899bad1b3f1d872"
+    },
+    {
+      "id": "hemp-q2-rp01-cannabis-drink-nanoemulsion-droplets",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 17, §4.1.2",
+          "result": "Confirmé : cannabinoïdes portés par des gouttelettes.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Boisson au cannabis nanoémulsionnée, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "e0d32c4af7f29310926771087bcf102954dd7d4c5d906c668c7ceaaedcb68edf"
+    },
+    {
+      "id": "hemp-q2-rp01-decarboxylated-flower-powder-oral",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 4, §2.1, paragraphe poudre décarboxylée",
+          "result": "Confirmé : poudre décarboxylée destinée à ingestion.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Poudre de cannabis décarboxylée, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "9b6452aac9ee67a613dd728335cb88c2dd927bc68675f47a1b2d8029afd4d150"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-film-mouth-dissolution",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 19, §4.1.4",
+          "result": "Confirmé : film oral conçu pour dissolution buccale.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Film oral au cannabis, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "771862269b1a8fd6235c89129aa03c3ee3f444c8e01127845598ceb10543bfa2"
+    },
+    {
+      "id": "hemp-q2-rp01-transdermal-patch-systemic-design",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 20, §4.2, paragraphes 2–3",
+          "result": "Confirmé : destination transdermique vers la circulation.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Timbre transdermique, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "57296cacd99ea29c8b584383a099c0b0ff24fdd3439ba2dd88efae961950e028"
+    },
+    {
+      "id": "hemp-q2-rp01-h4cbd-hydrogenated-cbd",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-emcdda-hhc-2023",
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "locator": "p. 75, paragraphe The fully hydrogenated derivative of CBD",
+          "result": "Confirmé : H4CBD dérivé entièrement hydrogéné du CBD.",
+          "sourceHash": "4035cf6b19dfc0c6016aa9930723c3a4aa4f71b2ab5d5443e94b569bb7adbb37"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur H4CBD, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "ff1b339b8693c02dc768835dfba55f07f1a7cea81284a7c500c37b2ffe16350f"
+    },
+    {
+      "id": "hemp-q2-rp01-residual-solvent-origin",
+      "status": "approved",
+      "comment": "Fait soutenu par le passage lu ; périmètre et formulation approuvés. Pas de doublon de fait identifié dans l’index.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-extracts-2019",
+          "url": "https://www.ccsa.ca/sites/default/files/2019-07/CCSA-Things-You-Need-to-Know-about-Cannabis-Extracts-2019-en.pdf",
+          "locator": "p. 1, point 1, premières phrases",
+          "result": "Confirmé : résidus des solvants de fabrication possibles.",
+          "sourceHash": "3976aee114cd35647a3a17d461e435c4dbbee896963dd34b12b941fcd16a1a71"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Solvants résiduels des extraits, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "bfda5058274b77b9234ad8020bb3e6d24eb6e8ba110cb802414715ece8e40b89"
+    }
+  ],
+  "summary": {
+    "readQuestions": 40,
+    "approved": 40,
+    "changesRequested": 0,
+    "rejected": 0,
+    "initialReview": {
+      "approved": 30,
+      "changesRequested": 10
+    },
+    "revisionReview": {
+      "questionsRead": 10,
+      "unchangedApprovalsPreserved": 30,
+      "newSourcesOpened": 3,
+      "modifiedSourceRechecked": "q2-rp01-hc-medical-products",
+      "sourceHashesUnchangedForPreservedApprovals": true
+    },
+    "sourcesReferenced": 15,
+    "scope": "Les cinq faits tautologiques ou génériques ont été remplacés par cinq faits de produits nommés ; les autres demandes de formulation et provenance sont résolues.",
+    "duplicateCheck": "Index actif vérifié sur diamants THCA, terp sauce, bubble hash, nabiximols et dronabinol. Les questions précédentes sur HHC et cannabinoïdes traitent des propriétés différentes.",
+    "sourceCaveats": "Guide BCCS attribué à son détaillant public ; aucune promesse de bénéfice ou mode de préparation repris. Terminologie INSPQ explicitement bornée.",
+    "hashMethod": "SHA-256 de JSON.stringify, validation native Node réalisée après écriture."
+  },
+  "previousChangesRequested": [
+    {
+      "id": "hemp-q2-rp01-rosin-solventless-versus-resin",
+      "status": "changes_requested",
+      "comment": "Qualifier le prompt par « Dans la terminologie de l’INSPQ » ou équivalent : resin est aussi un terme anglais général pour la résine, pas une catégorie universelle strictement opposée au rosin. Le passage de l’INSPQ soutient cette convention locale.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 10, §3.3 et p. 14, Terminologie",
+          "result": "Confirmé dans la terminologie explicitement adoptée par l’INSPQ.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Rosin et resin, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "2cbcfb6dfcbb5c820432b318a3813ce31cdad30ff66ea55689a94c79c07799de"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-oil-carrier",
+      "status": "changes_requested",
+      "comment": "Conserver le fait, mais remplacer les trois distracteurs : identifier une variété, remplacer une mesure et transformer le CBD en THC ne sont pas des rôles plausibles d’une huile de support. Proposer quatre fonctions de formulation de même nature et mettre à jour explanation/expectedAnswer si nécessaire.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-cbd",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+          "locator": "The difference between cannabis oil and hemp-seed oil",
+          "result": "Confirmé : association d’extrait cannabinoïde et d’huile végétale.",
+          "sourceHash": "645df4925671c37b3a4a3aa855b210de329ca8af4f0359b3cd7e12ba46894e9a"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Huile orale au CBD, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "c024d350106325306b1d4138063ce0426c2fbbc68adce683eb2247c7ebb2ce0f"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-oil-distinct-vape-liquid",
+      "status": "changes_requested",
+      "comment": "Conserver la distinction utile huile orale/liquide à inhaler, mais refaire les distracteurs : « deux molécules de CBD », transformation obligatoire en THC et seule taille du flacon sont éliminables sans connaissance du produit. Comparer des différences de composition ou de destination plausibles.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-inspq-products-2025",
+          "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+          "locator": "p. 16, §4.1.1, paragraphes 1–3",
+          "result": "Confirmé : formulation ingérable inadaptée à l’inhalation.",
+          "sourceHash": "bdec4a11d1101ada649f754a14c17278815815e43154254718830bc9674366ab"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Huile orale et liquide de vapotage, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "58e071e6480ea0c9b0ac11d10ea2c057c293ec76c57bf01844d9b01bf2674c18"
+    },
+    {
+      "id": "hemp-q2-rp01-extracts-can-be-cbd-dominant",
+      "status": "changes_requested",
+      "comment": "Remplacer cet item : le prompt donne déjà « surtout du CBD et peu de THC », puis demande de choisir « dominante CBD ». Le seul fait appris apparaît dans l’énoncé ; une inversion ne suffira pas. Trouver un fait distinct sur un produit réel, avec preuve.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-extracts-2019",
+          "url": "https://www.ccsa.ca/sites/default/files/2019-07/CCSA-Things-You-Need-to-Know-about-Cannabis-Extracts-2019-en.pdf",
+          "locator": "p. 1, What Are Cannabis Extracts?",
+          "result": "Source correcte ; formulation de question tautologique.",
+          "sourceHash": "3976aee114cd35647a3a17d461e435c4dbbee896963dd34b12b941fcd16a1a71"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Profil cannabinoïde des extraits, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "9b7e8e0bf5a77fac8b5c45f600f3e2c874847264f73c707e38eae538cf8bdef1"
+    },
+    {
+      "id": "hemp-q2-rp01-dabbing-vaporizing-concentrate",
+      "status": "changes_requested",
+      "comment": "Refaire les choix avec quatre pratiques ou voies d’usage plausibles. Les alternatives actuelles sont une famille de molécules, une variété et un arôme : natures différentes, contrairement à AUTHORING.md. Conserver l’identification descriptive, sans protocole.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-ccsa-products-2020",
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "locator": "p. 2, encadré What is dabbing?",
+          "result": "Confirmé : vaporisation de concentrés solides.",
+          "sourceHash": "491a0721d023282787b3b4050031927100cf2cdef88073b8003116e6dd001e16"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Dabbing, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "0a7f6f41fb012708dc04da4fefd03d03a092ab23209164114c8b5306740d00ac"
+    },
+    {
+      "id": "hemp-q2-rp01-ratio-thc-cbd-not-concentration",
+      "status": "changes_requested",
+      "comment": "Fait de lecture THC/CBD recevable à la limite, mais corriger published de la source q2-rp01-hc-medical-products : la page de crédits indique explicitement janvier2026, pas date non indiquée. Ajouter cette date à la provenance. Le changement de source exigera une nouvelle empreinte.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-medical-products",
+          "url": "https://www.canada.ca/content/dam/hc-sc/documents/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/cannabis-medical-purposes.pdf",
+          "locator": "Choosing a cannabis product, Content of a cannabis product et indications mg/g, mg/ml, mg",
+          "result": "La source distingue profils relatifs et teneurs ; crédits datés janvier2026.",
+          "sourceHash": "1c74d77d12e064c3f332c9df89424914a02e8b1ba700263374a6ab3ab62714cb"
+        }
+      ],
+      "domain": "active",
+      "domainComment": "Fait portant sur Rapport THC/CBD, produit, constituant ou formulation du cannabis à actifs.",
+      "contentHash": "966f808ea91be95e9d5cf0e6579ce791de8e538b7a8cb7cfb7e1a51f9cdc8fcd"
+    },
+    {
+      "id": "hemp-q2-rp01-mg-per-g-cannabinoid-percent",
+      "status": "changes_requested",
+      "comment": "Remplacer : 100 mg/1000 mg =10% est un exercice de conversion universel et le CBD est seulement l’habillage. La page de Santé Canada distingue les unités mais n’apporte aucun fait propre aux actifs testé ici. Préférer une propriété ou convention réellement cannabinoïde distincte de THCtotal.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-label-guide",
+          "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/packaging-labelling-guide-cannabis-products.html",
+          "locator": "§6.1.3, distinction quantité mg et concentration mg/g",
+          "result": "La page distingue mg et mg/g ; conversion arithmétique correcte mais générique.",
+          "sourceHash": "46fe533b31c8cd388447fe89c9c7015540a65b68aac6671b2f6de60af79b9a40"
+        }
+      ],
+      "domain": "offscope",
+      "domainComment": "Définition ou calcul générique, sans fait propre du cannabis à actifs.",
+      "contentHash": "eb5ee387d685b83de2655e0b7a59bac7323258d66db3981795ad7cdf05108f20"
+    },
+    {
+      "id": "hemp-q2-rp01-dry-basis-excludes-sample-water",
+      "status": "changes_requested",
+      "comment": "Remplacer : exclure l’eau du dénominateur est la définition générale de base sèche, commune à tous matériaux. Le NIST soutient la formule mais le cannabis n’est pas nécessaire à la question. Préférer un fait sur la composition ou l’interprétation propre des cannabinoïdes.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-nist-hemp-2024",
+          "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.260-248.pdf",
+          "locator": "p. 56, §6, Mass Fractions on a Dry Mass Basis",
+          "result": "Confirmé : §6 corrige pour l’humidité ; définition générique.",
+          "sourceHash": "fbac331723159d6bb122df30b2a40581193d0045faf4546dbc26324f3ce99631"
+        }
+      ],
+      "domain": "offscope",
+      "domainComment": "Définition ou calcul générique, sans fait propre du cannabis à actifs.",
+      "contentHash": "b8d90f29d8e050df6dd25cdf9a1ea1f29a13cfa986b573bd62718b4361817dfd"
+    },
+    {
+      "id": "hemp-q2-rp01-edible-per-unit-not-package",
+      "status": "changes_requested",
+      "comment": "Remplacer ou réécrire autour d’une information réellement propre aux actifs : « par unité » signifie une pièce dans tout emballage. À l’état actuel, la question est une leçon générale d’étiquetage habillée de THC, de même nature que les items génériques exclus.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-label-consumer",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+          "locator": "4. THC and CBD amount, Amount by unit et Total amount",
+          "result": "Confirmé : la page distingue pièce et emballage ; sens générique.",
+          "sourceHash": "46eaff011859349f4a973038b559bf4d101defa1f77a3bbbb67b7ad5e4552983"
+        }
+      ],
+      "domain": "offscope",
+      "domainComment": "Définition ou calcul générique, sans fait propre du cannabis à actifs.",
+      "contentHash": "e89854204210a612af5ece6ab78ce7c1117cbcdbf376ebe5c74348973ea66aaf"
+    },
+    {
+      "id": "hemp-q2-rp01-oral-spray-per-activation",
+      "status": "changes_requested",
+      "comment": "Remplacer ou réécrire autour d’un fait cannabinoïde ou d’un dispositif au cannabis précis : « par activation » signifie une pulvérisation pour tout atomiseur. Les distinctions délivrance/absorption sont utiles mais l’énoncé ne teste aucune propriété propre du cannabis.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rp01-hc-label-consumer",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+          "locator": "4. THC and CBD amount, By activation",
+          "result": "Confirmé : quantité délivrée par pulvérisation ; sens générique.",
+          "sourceHash": "46eaff011859349f4a973038b559bf4d101defa1f77a3bbbb67b7ad5e4552983"
+        }
+      ],
+      "domain": "offscope",
+      "domainComment": "Définition ou calcul générique, sans fait propre du cannabis à actifs.",
+      "contentHash": "878d6c7ec756454656a9808ad48a5d2cfeb8bb819aa23209f4ab7c93df79b563"
+    }
+  ]
+}

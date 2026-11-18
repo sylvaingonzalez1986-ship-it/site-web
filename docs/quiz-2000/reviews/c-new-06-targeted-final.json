@@ -1,0 +1,143 @@
+{
+  "batchId": "c-new-06",
+  "reviewer": "a_cbd_inventory",
+  "reviewedAt": "2026-11-16",
+  "scope": {
+    "kind": "Revalidation indépendante ciblée de trois objets corrigés et figés",
+    "questionIds": [
+      "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+      "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+      "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome"
+    ],
+    "filesRead": [
+      "docs/quiz-2000/batches/c-new-06.json",
+      "docs/quiz-2000/fact-index.jsonl"
+    ],
+    "excluded": "Aucune modification du lot ou de sa revue principale ; aucun arbitrage des onze autres corrections."
+  },
+  "nearFactChecks": [
+    {
+      "questionId": "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+      "decision": "distinct",
+      "comparedWith": [
+        "hemp-genetics-mutation-clonale"
+      ],
+      "reason": "Le remplacement porte sur l'organisation d'une transcription bactérielle commune, sans reprendre l'origine mutationnelle d'une variation. Aucun autre opéron ou ARN polycistronique trouvé dans l'index ciblé."
+    },
+    {
+      "questionId": "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+      "decision": "distinct",
+      "comparedWith": [
+        "hemp-genetics-clones-milieu",
+        "hemp-q2-b02-usda-multistate-trials-genetic-environment-interaction"
+      ],
+      "reason": "Le fait corrigé est l'absence d'interaction sur l'échelle explicite des centimètres malgré deux effets principaux. Cela diffère de l'effet du milieu sur un seul génotype cloné et du but général d'essais multi-sites. L'index conserve encore la formulation initiale sous le même ID ; la version effectivement relue est celle du lot figé."
+    },
+    {
+      "questionId": "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+      "decision": "distinct",
+      "comparedWith": [
+        "hemp-q2-cn01-plant-cell-most-dna-in-nucleus"
+      ],
+      "reason": "La cible est l'intégration d'ADN transféré par une bactérie dans un compartiment nucléaire végétal, pas la localisation générale de la plus grande partie de l'ADN d'une cellule. L'index conserve encore la version initiale du même objet."
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+      "status": "approved",
+      "comment": "Objet entier, quatre choix et explication relus. OpenStax décrit des gènes adjacents transcrits en un seul ARN messager et l'exemple trp produisant plusieurs enzymes. Opéron est la seule réponse ; cistron, réplicon et nucléosome désignent d'autres unités ou organisations. Le contexte bactérien est explicite, sans attribution erronée aux gènes nucléaires du chanvre. Niveau 2 cohérent.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-operons",
+          "url": "https://openstax.org/books/biology-2e/pages/16-2-prokaryotic-gene-regulation",
+          "locator": "Introduction, ligne 29 ; The trp Operon, lignes 32–36",
+          "result": "Page originale ouverte et passages lus : les gènes voisins des opérons lac et trp sont transcrits dans un ARN messager commun ; l'exemple trp comporte plusieurs gènes et plusieurs enzymes. Le soutien couvre le terme demandé et l'explication.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "Introduction sur les opérons et premiers paragraphes de The trp Operon."
+          },
+          "sourceHash": "ba5f5d18c6e03244044982f7516a23dd29fb641c378503abfae9fc18b037ad77"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate-level-2",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "2b528767fe4bab9819d3c499edfe09f703b274d5dd100488d3e264dfa861437f"
+    },
+    {
+      "id": "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+      "status": "approved",
+      "comment": "Objet entier et quatre bilans relus. Dans A, les génotypes diffèrent de 10 cm ; dans B, ils diffèrent encore de 10 cm. Chacun gagne 10 cm : deux effets principaux additifs, réponses parallèles, pas d'interaction dans ces valeurs. Ni effet du milieu seul, ni effet du génotype seul, ni inversion de classement. Exemple explicitement fictif, sans test statistique ou mesure réelle prétendus ; niveau 2 adapté.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-gxe-2023",
+          "url": "https://www.fs.usda.gov/rm/pubs_journals/2023/rmrs_2023_napier_j001.pdf",
+          "locator": "Page imprimée 110 : G×E background ; page imprimée 111 (page 3 du PDF), figure 1 et légende du scénario B ; lignes 193–200",
+          "result": "PDF ouvert ; cadre des normes de réaction et légende lus. Le scénario B distingue les effets du génotype et du milieu de l'interaction : des valeurs différentes entre génotypes changent du même montant entre environnements, sans G×E. L'exemple 10/20 puis 20/30 reproduit cette structure sur l'échelle des centimètres ; ces nombres n'appartiennent pas à des résultats expérimentaux de la source.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "G×E background p.110 et figure 1, scénario B et légende p.111."
+          },
+          "sourceHash": "06f9d60ba53a57867095f5792dc52693e293bfa5b9a1db0e0ac4a2ff7862f236"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported-as-labelled-fictional-example",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate-level-2",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "5e3f406f7a3e218f632afc9464ba5f143234fc9b0fa92634337196c9ba5a4c96"
+    },
+    {
+      "id": "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+      "status": "approved",
+      "comment": "Objet entier, quatre compartiments et explication relus. La précision nucléaire répond à la correction demandée : la source décrit l'entrée du T-DNA dans le noyau, puis son intégration possible dans les chromosomes végétaux. Chloroplastes, mitochondries et plasmide d'une bactérie voisine ne correspondent pas à ce transfert vers les chromosomes nucléaires. Niveau 2 cohérent ; aucune technique ou application au cannabis n'est enseignée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-agrobacterium-2022",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.849930/full",
+          "locator": "Introduction, lignes 368–373 ; entrée dans le noyau et modèles d'intégration dans les chromosomes végétaux",
+          "result": "Article original ouvert et introduction lue : le T-DNA est dirigé vers le noyau végétal et peut s'intégrer dans l'ADN chromosomique. La question reste au niveau du compartiment cible ; elle ne tranche pas les mécanismes d'intégration que les auteurs présentent comme encore discutés.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "Introduction, transfert du T-DNA au noyau et intégration chromosomique."
+          },
+          "sourceHash": "224315095a102d9972e375dd1f47065a38621849e90effa4511c39daf5b7f891"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate-level-2",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "178e6ee39328ac9836f3acbea0ed81aec13c6367d6823c66f2528b890276deaf"
+    }
+  ],
+  "summary": {
+    "reviewed": 3,
+    "approved": 3,
+    "changesRequested": 0,
+    "rejected": 0
+  }
+}

@@ -1,0 +1,770 @@
+{
+  "batchId": "r-actives-a-02",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-ra02-delta8-delta9-double-bond-position",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Isomères psychoactifs du THC.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "ca0c919cd0b314754bf5b331377a20666094a117ed715e6d43f195e19be4acd5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-euda",
+          "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+          "locator": "Chemistry, double liaison du cycle",
+          "result": "Chemistry réellement lu : double liaison C8–C9 contre C9–C10 confirmée.",
+          "sourceHash": "64568b378c9a7d137b2e28c352de7eab1b2c4bad26c92ce81708710b262541e2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-thc-plasma-protein-binding",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Distribution du THC.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "86ed5d2024ee75358646cd7ec0f359f896ac7d6682f0c04ad3d8354f623396b1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-who-thc",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+          "locator": "Section2 §1.2 Pharmacokinetics, PDFp39",
+          "result": "OMS PDF index39 réellement lu : forte liaison du THC aux protéines plasmatiques.",
+          "sourceHash": "ea9fe2f3a656834eaed795aa1655c102f569af6a389bed79b94ae768e9ecc943"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-thc-excretion-mainly-fecal",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Élimination des dérivés du THC.",
+      "comment": "La voie urinaire est maintenant une alternative présente ; distinction pharmacocinétique et explication inchangées.",
+      "contentHash": "1b1774ba7d333cec5d439cc505e6b60a6748fb2b087f9cf0d9acd3cb6ab8be56",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-who-thc",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+          "locator": "Section2 §1.2, PDFp40",
+          "result": "OMS PDF index40 réellement lu : élimination principalement fécale, puis urinaire ; faible part inchangée.",
+          "sourceHash": "ea9fe2f3a656834eaed795aa1655c102f569af6a389bed79b94ae768e9ecc943"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-thc-excretion-mainly-fecal",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Élimination des dérivés du THC.",
+          "comment": "Voie fécale et explication confirmées. Ajouter la voie urinaire parmi les choix : c’est l’alternative réellement pertinente à distinguer. Les larmes face aux selles, sans urine, rendent cette question trop facile à éliminer pour un fait de pharmacocinétique niveau2.",
+          "contentHash": "a485a8155c9209db991a27f49ea4808006d1b582d631eeaa3639892f581edeed",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-who-thc",
+              "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+              "locator": "Section2 §1.2, PDFp40",
+              "result": "OMS PDF index40 réellement lu : élimination principalement fécale, puis urinaire ; faible part inchangée.",
+              "sourceHash": "ea9fe2f3a656834eaed795aa1655c102f569af6a389bed79b94ae768e9ecc943"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-thc-plasma-decline-effects-persist",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Persistance des effets du THC.",
+      "comment": "Quatre évolutions concentration/effets remplacent la conversion fantaisiste en CBD ; dissociation temporelle limitée à la source.",
+      "contentHash": "82c40342e3c9adbea1d2949dda09d9d96edcc13c9dae0143eff8aae4d5da9e7f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-who-thc",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+          "locator": "Section2 §1.2, PDFp39",
+          "result": "OMS PDF index39 réellement lu : baisse plasmatique après voie orale malgré poursuite des effets.",
+          "sourceHash": "ea9fe2f3a656834eaed795aa1655c102f569af6a389bed79b94ae768e9ecc943"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-thc-plasma-decline-effects-persist",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Persistance des effets du THC.",
+          "comment": "Fait de dissociation concentration/effets confirmé. Remplacer la conversion complète du THC en CBD, fantaisiste. Comparer quatre évolutions temporelles plausibles des effets et de la concentration.",
+          "contentHash": "02832be92c34b4c1418a3cf51cfff21355ad5cde04d6b0fd69b4ab0d4cc0224f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-who-thc",
+              "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+              "locator": "Section2 §1.2, PDFp39",
+              "result": "OMS PDF index39 réellement lu : baisse plasmatique après voie orale malgré poursuite des effets.",
+              "sourceHash": "ea9fe2f3a656834eaed795aa1655c102f569af6a389bed79b94ae768e9ecc943"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-chronic-cannabis-cortical-cb1-downregulation",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Adaptation CB1 à l’usage chronique.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "990095997fc2eb43c93e7cf4ba380fa55b3c10d5883f0bf373548b4edc49f13b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-hirvonen",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21747398/",
+          "locator": "Abstract, observations corticales",
+          "result": "Résumé PubMed et légendes réellement lus : réduction régionale corticale CB1 réversible ; aucune durée individuelle déduite.",
+          "sourceHash": "a28003947baed5953c6528a75a84170e51e6b760d417aa09b3616497c1006218"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-cbd-anticonvulsant-exact-mechanism-unknown",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite du mécanisme du CBD médical.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "f9cb5219a6595049a8dd17ad1066e786b574fc0da152be6357f443ebbb7924f4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-fda",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§12.1 Mechanism of Action, PDFp14",
+          "result": "Notice FDA2026 §12.1 réellement lu : mécanismes anticonvulsivants humains précis inconnus, interaction cannabinoïde non apparente.",
+          "sourceHash": "d06f22d48b1b516e5b430b6370f91e0929fc874c18d6be5100bcd2d516b65551"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-cbd-7-hydroxy-active-metabolite",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Métabolite actif du CBD.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "4f78486c33030980f659a68c25f0f67a2683fef0efb28e4c8bd3ca42b9eabf23",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-fda",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+          "locator": "§12.3 Metabolism, PDFp15",
+          "result": "Notice FDA2026 §12.3 réellement lu : 7-OH-CBD actif ; résultats murins séparés de leur pertinence humaine.",
+          "sourceHash": "d06f22d48b1b516e5b430b6370f91e0929fc874c18d6be5100bcd2d516b65551"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-alpha-pinene-no-thc-memory-protection-human",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite clinique de l’alpha-pinène associé au THC.",
+      "comment": "Quatre conclusions expérimentales comparables, sans garantie universelle. Le coordinateur remplace le jargon ambigu atténuation mnésique par troubles de mémoire, après lecture du résumé original Results/Conclusions.",
+      "contentHash": "9b20a4def77107a50e4edece07ebb6fd12e3bd7e9894da1ce12842412099cd63",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-kumar",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40734690/",
+          "locator": "Abstract, Results et Conclusions",
+          "result": "Résumé original Kumar réellement lu : aucune atténuation mnésique du THC par alpha-pinène dans cet essai19adultes.",
+          "sourceHash": "92e5fbf75635898b6d82b85432cceebfddabc0f39376c28fb52fd21c8a0e75d0"
+        }
+      ],
+      "coordinatorChange": {
+        "optionsBefore": [
+          "Pas d’atténuation mnésique ni de modification subjective détectée",
+          "Atténuation mnésique avec des effets subjectifs inchangés",
+          "Mémoire inchangée avec atténuation des effets subjectifs",
+          "Aggravation mnésique avec renforcement des effets subjectifs"
+        ],
+        "explanationBefore": "L’alpha-pinène n’a pas atténué les troubles de mémoire provoqués par le THC dans cet essai. Une odeur de pin ou la présence de ce terpène ne constitue donc pas une protection mnésique démontrée.",
+        "optionsAfter": [
+          "Pas de baisse des troubles de mémoire ni de changement ressenti détectés",
+          "Moins de troubles de mémoire, sans changer les effets ressentis",
+          "Troubles de mémoire inchangés, avec moins d’effets ressentis",
+          "Plus de troubles de mémoire et des effets ressentis renforcés"
+        ],
+        "explanationAfter": "L’alpha-pinène n’a pas atténué les troubles de mémoire provoqués par le THC dans cet essai. Une odeur de pin ou la présence de ce terpène ne constitue donc pas une protection démontrée contre ces troubles."
+      },
+      "coordinatorConsultation": {
+        "reader": "root",
+        "date": "2026-11-17",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40734690/",
+        "access": "abstract",
+        "locator": "Résumé original, Results et Conclusions",
+        "result": "Absence d’atténuation de la mémoire et de modification significative des autres effets aigus confirmée. Lecture du résumé, sans revendication de lecture intégrale."
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-alpha-pinene-no-thc-memory-protection-human",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Limite clinique de l’alpha-pinène associé au THC.",
+          "comment": "Résultat humain confirmé, niveau2 recevable. Le prompt appelle oui/non mais les réponses commencent par des constats nominaux ; préférer « Quel résultat ... ? ». Rééquilibrer la seule absence d’atténuation face à trois protections : comparer quatre conclusions expérimentales formulées de façon parallèle, sans effet garanti à chaque condition.",
+          "contentHash": "0e9e08b4a5a05b701ed0e523ab43d036e4624e43cd3aa26a70e696e2c4048ab0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-kumar",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/40734690/",
+              "locator": "Abstract, Results et Conclusions",
+              "result": "Résumé original Kumar réellement lu : aucune atténuation mnésique du THC par alpha-pinène dans cet essai19adultes.",
+              "sourceHash": "92e5fbf75635898b6d82b85432cceebfddabc0f39376c28fb52fd21c8a0e75d0"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-similar-major-terpenes-different-aroma",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Profils olfactifs concrets du cannabis.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "bb6945be8d3d32df1fb8b31197269d6610448b6e97a6fb631bddaf63609e57bf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-oswald23",
+          "url": "https://future4200.com/uploads/short-url/sBr3rZnhgBULx3DOpFOiEHvV2A8.pdf",
+          "locator": "Abstract ; discussion des flavorants",
+          "result": "Résumé Oswald2023 réellement lu : profils terpéniques similaires malgré parfums distincts, rôle des constituants minoritaires.",
+          "sourceHash": "171c16e2aa2c6f215295f14100f2b7ab5a31966f4e9f6a60e25ef2e78dcdf296"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-humulene-earthy-woody-aroma",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Arôme de l’humulène du cannabis.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "557a298e1bff475ffc3cfa2040f4f67271866b1673240da63e09359bac6696ad",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-hawaii",
+          "url": "https://health.hawaii.gov/medicalcannabisregistry/files/2024/08/OMCCR-July-2024-Newsletter.pdf",
+          "locator": "Page1, roue des terpènes",
+          "result": "Infographie ministérielle PDF index0 réellement lue : humulène, registre terreux et boisé.",
+          "sourceHash": "2be44b23a46b80d313fe7d5b10f276d0f9ea03517ad93005fb89cea8ddf5d540"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-cbd-knee-osteoarthritis-no-extra-analgesia",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite clinique du CBD dans une douleur définie.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "39c011f2abb60925652fb491f9eecc1c6d841c8deab58504c51c5d1991b776c7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-pramhas",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10682664/",
+          "locator": "Summary, Findings et Interpretation",
+          "result": "Summary/Interpretation et limites réellement lus : pas de bénéfice antalgique supplémentaire du CBD ajouté au paracétamol dans cet essai.",
+          "sourceHash": "aa066a1f2d5036dc5d7807e91530f43b0a37daa804b32e07cb4832949689b8dd"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-cannabis-esters-fruity-sweet-aroma",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Esters odorants du cannabis.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "7edef1ecf0eaa3a53a672f4f52305545c5ccaa4abd1447840e60d9aee3b48101",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-oswald23",
+          "url": "https://future4200.com/uploads/short-url/sBr3rZnhgBULx3DOpFOiEHvV2A8.pdf",
+          "locator": "Esters: Flavor of Fruits, PDFp6",
+          "result": "Esters: Flavor of Fruits, PDF index6 réellement lu : esters présents, descriptions fruitées et douces confirmées.",
+          "sourceHash": "171c16e2aa2c6f215295f14100f2b7ab5a31966f4e9f6a60e25ef2e78dcdf296"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-cbg-acute-anxiety-human-exploratory-signal",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Signal clinique exploratoire du CBG.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "ee401fd97f773d5e40f9effdc0c05c4f7df3f09a78c4b0fbe62778760c875475",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-cuttler",
+          "url": "https://ethanrusso.org/wp-content/uploads/2024/07/Cuttler_et_al-Acute-effects-of-cannabigerol-on-anxiety-stressm-and-mood-A-double-blind-placebo-controled-crossover-field-trial-Scientific-Reports-2024.pdf",
+          "locator": "Abstract ; Discussion, limites de l’essai",
+          "result": "Résumé et limites du PDF auteur réellement lus : anxiété déclarée réduite sans ivresse ; population non clinique et petite étude aiguë.",
+          "sourceHash": "146b1cce6044fc834d99829dce6bd4d01c628d2c8df80d7250d584e285c0f088"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-france-illicit-cannabis-use-offence",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Statut du cannabis stupéfiant en France.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "60427728133b8b299b0e901ea3240dbb0fe46a81049c476fb142db06f1f7f064",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-fr-code",
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+          "locator": "Article L3421-1, premier alinéa",
+          "result": "L3421-1 version20août2026 réellement lu : usage illicite pénalisé, qualifié de délit.",
+          "sourceHash": "cdc58d1222b6fda9711402a4836362394a95d14ad2005959da52616dfcb324b2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-france-2026-drug-use-fixed-fine",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Sanction forfaitaire française de l’usage.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "8dcee12f66de803cf749b444477aa31b3716d0ef0bd18278870357e81a21fa37",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-fr-code",
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+          "locator": "Article L3421-1, dernier alinéa, version20août 2026",
+          "result": "L3421-1 dernier alinéa réellement lu :500€ ordinaire,400€ minoré,1000€ majoré ; procédure distincte du maximum pénal.",
+          "sourceHash": "cdc58d1222b6fda9711402a4836362394a95d14ad2005959da52616dfcb324b2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-france-cbd-flowers-2022-blanket-ban-annulled",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Portée historique du contentieux fleurs CBD.",
+      "comment": "Quatre interdictions commerciales comparables ; annulation historiquement bornée, sans déduction d’autorisation générale.",
+      "contentHash": "85d143b40a819a5b6c923bf76217bc26f56f924be0dfb86cad001c65cd224411",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-fr-ce",
+          "url": "https://www.conseil-etat.fr/actualites/cbd-annulation-de-l-arrete-interdisant-la-vente-des-fleurs-et-feuilles-de-cannabis-sans-proprietes-stupefiantes",
+          "locator": "Décision29 décembre 2022, objet et portée de l’annulation",
+          "result": "Présentation officielle de la décision29décembre2022 réellement lue : interdiction générale de commercialiser fleurs/feuilles brutes faible THC annulée.",
+          "sourceHash": "c7938e213c4a298a2fb98770130203d238ba812be0eb3863bae346f3dbd7dc5e"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-france-cbd-flowers-2022-blanket-ban-annulled",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Portée historique du contentieux fleurs CBD.",
+          "comment": "Portée historique de l’annulation correctement bornée et soutenue. Les choix portent sur fleurs, mineurs, conduite et médicaments ; le dernier n’est même pas une interdiction. Comparer quatre interdictions commerciales plausibles dans le contentieux CBD, pour que la réponse ne soit pas la seule relevant de l’objet annoncé.",
+          "contentHash": "232daf240ba4869bd3cee8f30d25e5da76ebf6283c36c644d580174fb95a9f74",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-fr-ce",
+              "url": "https://www.conseil-etat.fr/actualites/cbd-annulation-de-l-arrete-interdisant-la-vente-des-fleurs-et-feuilles-de-cannabis-sans-proprietes-stupefiantes",
+              "locator": "Décision29 décembre 2022, objet et portée de l’annulation",
+              "result": "Présentation officielle de la décision29décembre2022 réellement lue : interdiction générale de commercialiser fleurs/feuilles brutes faible THC annulée.",
+              "sourceHash": "c7938e213c4a298a2fb98770130203d238ba812be0eb3863bae346f3dbd7dc5e"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-eu-cbd-import-ban-public-health-proportionality",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Circulation européenne du CBD.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "31c5f2593683d3b997c3d0d4094c59e37ad877c761baf8ddc79b1ddab499d886",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-curia",
+          "url": "https://curia.europa.eu/site/upload/docs/application/pdf/2020-11/cp200141fr.pdf",
+          "locator": "Communiqué141/20, PDFp2, appréciation du risque",
+          "result": "Communiqué CJUE141/20 p.2 réellement lu : santé publique, aptitude et nécessité de la mesure ; cas du CBD légalement produit dans un autre État.",
+          "sourceHash": "862b2b3d661874ea9ad4ab78946c86bbd41821d3d1e78aa55eb9242a4fe847d9"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-germany-clubs-noncommercial-model",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Modèle associatif du cannabis non médical.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "ccd1bcb032df4c5d216e928ec634b8e53403c84b124c025ccc22d3c7219907bb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "Cultivation associations: nature et financement",
+          "result": "FAQ BMG réellement lue : associations non commerciales, coopératives et financement par cotisations.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-germany-public-possession-25g",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Possession personnelle de cannabis.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "5559699e52533435e127a983019484b67bd416360554c83f08ec52018e6f780f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "Provisions on possession: How much cannabis am I allowed to possess?",
+          "result": "FAQ BMG possession réellement lue :25g séchés portés par adulte.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-germany-club-residency-six-months",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Accès aux associations de cannabis.",
+      "comment": "Allemagne explicitement nommée dans le prompt ; objet associatif partagé avec les autres propriétés du même régime.",
+      "contentHash": "8898a54ada35ab31d919592e818deb080f4314d736318b934c10ea26fa854d9a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "How can I become a member?",
+          "result": "FAQ BMG membership réellement lue : majorité et six mois de résidence habituelle.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-germany-club-residency-six-months",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Accès aux associations de cannabis.",
+          "comment": "Condition de six mois confirmée. Harmoniser editorial.subjectKey avec germany-cannabis-clubs, utilisé par la question20 pour le même objet associatif ; la clé actuelle par propriété contourne la limite de répétition. Dire explicitement « en Allemagne » dans le prompt pour éviter le référent de « y ».",
+          "contentHash": "93816e7d163aaee500351b8279fc675ac419a85045d8fce169aaefbc4222c459",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-de-bmg",
+              "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+              "locator": "How can I become a member?",
+              "result": "FAQ BMG membership réellement lue : majorité et six mois de résidence habituelle.",
+              "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-germany-nonmedical-mail-order-prohibited",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Remise du cannabis non médical.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "11b5f3e933a24947a9f6a407ec0dba668bc72efede8e0ee9841dcd9439641fed",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "Child and youth protection: sending, delivery and online trade",
+          "result": "FAQ BMG protection des jeunes réellement lue : envoi/livraison/commerce en ligne restent interdits.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-germany-club-consumption-prohibited",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Usage des locaux associatifs de cannabis.",
+      "comment": "Clé germany-cannabis-clubs commune au même objet ; contenu factuel et source inchangés.",
+      "contentHash": "9f0f09ed7bf85e087118e47b57e02eb2b771676930375995980860a1d1c27385",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "May cannabis be consumed in cultivation associations?",
+          "result": "FAQ BMG locaux réellement lue : consommation interdite dans l’enceinte et à portée de vue.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-germany-club-consumption-prohibited",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Usage des locaux associatifs de cannabis.",
+          "comment": "Interdiction de consommation confirmée. Harmoniser editorial.subjectKey avec germany-cannabis-clubs (question20) : même objet récurrent, propriété distincte, pas de clé séparée pour les locaux.",
+          "contentHash": "ff5d6212a93f2ebb7820ab676bd304e8c86b920b503be93d6e827c4b58d7a0e9",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-de-bmg",
+              "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+              "locator": "May cannabis be consumed in cultivation associations?",
+              "result": "FAQ BMG locaux réellement lue : consommation interdite dans l’enceinte et à portée de vue.",
+              "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-germany-consumption-near-minors-prohibited",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Consommation de cannabis à proximité des mineurs.",
+      "comment": "Restriction relative aux jeunes remplace le faux seuil65ans ; alternatives cohérentes avec des régimes d’accès au cannabis.",
+      "contentHash": "2566326f9b1bbd58621c06ceb3d8dafcb603b05ff3f0970e0b9b641583ffa1a0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "Restrictions on public cannabis consumption",
+          "result": "FAQ BMG restrictions réellement lue : consommation interdite à proximité immédiate des mineurs.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-germany-consumption-near-minors-prohibited",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Consommation de cannabis à proximité des mineurs.",
+          "comment": "Interdiction à proximité immédiate des mineurs confirmée. Remplacer le distracteur « après65ans », sans fondement plausible ; proposer une autre restriction spatiale ou de public crédible.",
+          "contentHash": "60da75edbd2d7c3ed5bc2c9c58850d3e92c3dcd59fa6428b8e4beba80e95fbc3",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-de-bmg",
+              "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+              "locator": "Restrictions on public cannabis consumption",
+              "result": "FAQ BMG restrictions réellement lue : consommation interdite à proximité immédiate des mineurs.",
+              "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-germany-cannabis-advertising-sponsorship-ban",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Promotion du cannabis non médical.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "ac1b9e4769b5c045ef6c19edda9783bf3558820060f5879158b679c1c1fefdef",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-de-bmg",
+          "url": "https://www.bundesgesundheitsministerium.de/en/themen/cannabis/faq-cannabis-act/page",
+          "locator": "Child and youth protection: ban on advertising and sponsorship",
+          "result": "FAQ BMG publicité réellement lue : interdiction générale publicité/parrainage, réseaux sociaux inclus.",
+          "sourceHash": "69c51b8d3be7ef83539a81cfe027557897c62fc6e08814f4949b1c733a680f2f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-malta-associations-not-tourist-access",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Accès touristique aux associations de cannabis.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "e30f9c153db0c20651db16b22792729f9402cabb7226e3863075b202546cf126",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-mt-aruc",
+          "url": "https://aruc.mt/harmreduction/",
+          "locator": "What is the task of the Authority?",
+          "result": "FAQ ARUC task réellement lue : espace fermé sans accès touristes/non-membres.",
+          "sourceHash": "be4253274687d4c07960bacae0583a172f36de6e1c135ee0b0926699a77cf018"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-malta-one-association-membership",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Adhésion aux associations de cannabis.",
+      "comment": "Clé malta-cannabis-associations commune au même objet ; contenu factuel et source inchangés.",
+      "contentHash": "5f2197e00ba6f4d9f6da19aae990b84df87c20da4401d06e03f6416edb5815f7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-mt-aruc",
+          "url": "https://aruc.mt/harmreduction/",
+          "locator": "How can I become a member of a CHRA?",
+          "result": "FAQ ARUC membership réellement lue : inscription centralisée empêchant plusieurs associations simultanées.",
+          "sourceHash": "be4253274687d4c07960bacae0583a172f36de6e1c135ee0b0926699a77cf018"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-malta-one-association-membership",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Adhésion aux associations de cannabis.",
+          "comment": "Unicité d’adhésion confirmée. Harmoniser editorial.subjectKey avec malta-cannabis-associations (question27) pour le même objet ; ne pas ajouter une clé propre à la seule propriété membership.",
+          "contentHash": "e8c5ef3acbb8b524bb11b047c2349c5f85ba796508a79ee27dedbb6fdc074995",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-mt-aruc",
+              "url": "https://aruc.mt/harmreduction/",
+              "locator": "How can I become a member of a CHRA?",
+              "result": "FAQ ARUC membership réellement lue : inscription centralisée empêchant plusieurs associations simultanées.",
+              "sourceHash": "be4253274687d4c07960bacae0583a172f36de6e1c135ee0b0926699a77cf018"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    },
+    {
+      "id": "hemp-q2-ra02-luxembourg-public-use-still-prohibited",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Distinction usage public/privé du cannabis.",
+      "comment": "Fait et corrigé soutenus ; portée, choix et niveau recevables.",
+      "contentHash": "838e52379da07c3915bab09afcfdf020030e57f9c2581f99f288999533b50a68",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-lu-mj",
+          "url": "https://mj.gouvernement.lu/dam-assets/dossiers/cannabis/flyer-fr.pdf",
+          "locator": "Flyer, page3: consommation en public",
+          "result": "Flyer ministériel p.3 réellement lu : consommation publique et hors lieu de culture reste interdite.",
+          "sourceHash": "332acab74efdfb0d575611f6bc0f0632fed5588b84ca318a738e263e5849303f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra02-luxembourg-four-plants-per-household",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Unité d’un plafond juridique, sans conseil de culture.",
+      "comment": "Quatre unités juridiques/résidentielles remplacent les chambres. Le coordinateur retire seulement une phrase défensive sans utilité pédagogique.",
+      "contentHash": "12c89d7d41833449ce7a6468dcdedd628612e56c75bac7ee08269a0f20ab028b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-lu-mj",
+          "url": "https://mj.gouvernement.lu/dam-assets/dossiers/cannabis/flyer-fr.pdf",
+          "locator": "Flyer, page2: quatre plantes par communauté domestique",
+          "result": "Flyer ministériel p.2 réellement lu : quatre plantes par communauté domestique ; aucun paramètre de culture repris.",
+          "sourceHash": "332acab74efdfb0d575611f6bc0f0632fed5588b84ca318a738e263e5849303f"
+        }
+      ],
+      "coordinatorChange": {
+        "explanationBefore": "Le plafond de quatre plantes s’applique par communauté domestique, pas par adulte. La loi prévoit aussi des conditions de lieu et de visibilité ; il s’agit ici du plafond juridique, sans conseil de culture.",
+        "explanationAfter": "Le plafond de quatre plantes s’applique par communauté domestique, pas par adulte. Le texte prévoit aussi des conditions de lieu et de visibilité des plantes."
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra02-luxembourg-four-plants-per-household",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Unité d’un plafond juridique, sans conseil de culture.",
+          "comment": "Plafond par communauté domestique confirmé, sans guide de culture. Remplacer « chaque chambre utilisée », trop fantaisiste pour une unité juridique, par une unité administrative ou résidentielle plausible.",
+          "contentHash": "2cfdcbe605bbd2b1c0a6e642bee324c88c6af4d78ab33d5cc9c12e5cc6262f92",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra02-lu-mj",
+              "url": "https://mj.gouvernement.lu/dam-assets/dossiers/cannabis/flyer-fr.pdf",
+              "locator": "Flyer, page2: quatre plantes par communauté domestique",
+              "result": "Flyer ministériel p.2 réellement lu : quatre plantes par communauté domestique ; aucun paramètre de culture repris.",
+              "sourceHash": "332acab74efdfb0d575611f6bc0f0632fed5588b84ca318a738e263e5849303f"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Neuf QCM corrigés relus entièrement. Sources exactes de la première revue Sol préservées ; seul le résumé Kumar2025 a également été consulté par le coordinateur pour une clarification de vocabulaire."
+    }
+  ],
+  "summary": {
+    "reviewed": 30,
+    "approved": 19,
+    "changes_requested": 11,
+    "rejected": 0,
+    "sourcesIndependentlyConsulted": 17,
+    "assemblyCheck": "30 couples question/4choix/corrigé/source/juridiction intégralement lus ; publicitéAllemagne et adhésionMalte restaurées, aucune collision restante constatée.",
+    "duplicateCheck": "Index et voisins consultés ; objets complets hemp-molecules-skunk-thiol et hemp-molecules-caryophyllene-arome relus : doublons questions9 et12. THCdelta8structure distinct d’origineproduitsrp01 ; humulènearôme distinct de synonymie ; indications médicales distinctes des limites ici testées.",
+    "constraints": "Longueurs et choix distincts contrôlés ; tous les faits dans le domaine active. Les clés d’objet des associations doivent être harmonisées."
+  },
+  "supersededItems": [
+    {
+      "id": "hemp-q2-ra02-skunk-aroma-prenylated-thiols",
+      "status": "rejected",
+      "domain": "active",
+      "domainComment": "Odorants du cannabis, mais fait déjà testé.",
+      "comment": "Fait aromatique déjà actif : candidat doublon retiré avant activation, sans nouvelle variante.",
+      "contentHash": "2ecd68f3d29363998bd216fc6e135fdb7bf04ac77bda0c05b0544fc41ab6fc2f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-oswald21",
+          "url": "https://future4200.com/uploads/short-url/tr0wH0rCEza9NY1Xhy2zUeYuoXL.pdf",
+          "locator": "Abstract ; reconstitution aromatique, PDFp5–6",
+          "result": "Résumé et reconstitution aromatique PDF index5–6 réellement lus : contribution soufrée prénylée à la note skunk confirmée.",
+          "sourceHash": "49df964b715ae6b5b3880436a7f42d7d72e867dd5d96c9c2f6ee6ee21c09b917"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    },
+    {
+      "id": "hemp-q2-ra02-beta-caryophyllene-spicy-clove-aroma",
+      "status": "rejected",
+      "domain": "active",
+      "domainComment": "Arôme du bêta-caryophyllène du cannabis.",
+      "comment": "Fait aromatique déjà actif : candidat doublon retiré avant activation, sans nouvelle variante.",
+      "contentHash": "7956f15f91ec8eec45073657214c94780cedde2a19509472f2ba6fe3e8ea7779",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra02-paryani24",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11223244/",
+          "locator": "Terpene Analysis, paragraphe bêta-caryophyllène",
+          "result": "Terpene Analysis réellement lu : bêta-caryophyllène décrit épicé, terreux et giroflé.",
+          "sourceHash": "cb02f54e040e4f0c4346a788a4c4f8af545bf5076387be3c18f286546c3209b3"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17"
+    }
+  ],
+  "revisionHistory": [
+    {
+      "date": "2026-11-17",
+      "reviewer": "root",
+      "removedIds": [
+        "hemp-q2-ra02-skunk-aroma-prenylated-thiols",
+        "hemp-q2-ra02-beta-caryophyllene-spicy-clove-aroma"
+      ],
+      "replacementSlots": "ra06 grows to32; A total stays180"
+    }
+  ]
+}

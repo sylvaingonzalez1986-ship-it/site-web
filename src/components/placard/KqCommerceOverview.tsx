@@ -46,7 +46,7 @@ export function KqCommerceOverview({ data, onOpenShop }: {
     </summary>
     <div className={styles.content}>
       <section className={styles.reputation} aria-label="Ta réputation">
-        <div className={styles.officeArt}><Image src={officeArt} alt="Sylvain prépare ses commandes dans l’espace de gestion du Marché, entouré de colis et des portraits de ses partenaires" fill sizes="(max-width: 700px) 100vw, 400px" /></div>
+        <div className={styles.officeArt}><Image src={officeArt} alt="Loïc prépare ses commandes dans l’espace de gestion du Marché, entouré de colis et des portraits de ses partenaires" fill sizes="(max-width: 700px) 100vw, 400px" /></div>
         <div className={styles.rankProgress}>
           <small className={styles.eyebrow}><Trophy size={17} aria-hidden="true" /> Ta réputation</small>
           <h2>{progress.tier.name}</h2>

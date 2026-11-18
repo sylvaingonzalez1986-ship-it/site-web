@@ -1,5 +1,6 @@
 import { getKqStageDisplayName, KQ_STAGES, type KqGameState, type KqOutcome, type KqStage } from "./kanab-quest-game";
 import { KQ_DEAD_CULTURE_ARTWORK, KQ_OUTCOME_ARTWORK, KQ_OUTCOME_LABELS } from "./kanab-quest-outcome-artwork";
+import { getKqCareProblem, getKqCareProduct, type KqCareState } from "./kanab-quest-care";
 
 export type KqCarePresentation = {
   stage: KqStage;
@@ -13,12 +14,12 @@ export type KqCarePresentation = {
 };
 
 const STAGE_ARTWORK: Record<KqStage, { src: string; alt: string }> = {
-  Germination: { src: "/app/kanab-quest/stages/sylvain-germination-v1.webp", alt: "Sylvain place une graine germée dans son support de culture." },
-  Enracinement: { src: "/app/kanab-quest/stages/sylvain-enracinement-v1.webp", alt: "Sylvain accompagne un jeune plant et ses premières racines." },
-  Croissance: { src: "/app/kanab-quest/stages/sylvain-croissance-v1.webp", alt: "Sylvain guide les branches du plant pendant sa croissance." },
-  Floraison: { src: "/app/kanab-quest/stages/sylvain-floraison-v1.webp", alt: "Sylvain inspecte les fleurs et règle la ventilation." },
-  Récolte: { src: "/app/kanab-quest/stages/sylvain-recolte-v1.webp", alt: "Sylvain récolte les fleurs arrivées à maturité." },
-  "Séchage & affinage": { src: "/app/kanab-quest/stages/sylvain-sechage-affinage-v1.webp", alt: "Sylvain contrôle le séchage de sa récolte avant le jury." },
+  Germination: { src: "/app/kanab-quest/stages/sylvain-germination-v1.webp", alt: "Loïc place une graine germée dans son support de culture." },
+  Enracinement: { src: "/app/kanab-quest/stages/sylvain-enracinement-v1.webp", alt: "Loïc accompagne un jeune plant et ses premières racines." },
+  Croissance: { src: "/app/kanab-quest/stages/sylvain-croissance-v1.webp", alt: "Loïc guide les branches du plant pendant sa croissance." },
+  Floraison: { src: "/app/kanab-quest/stages/sylvain-floraison-v1.webp", alt: "Loïc inspecte les fleurs et règle la ventilation." },
+  Récolte: { src: "/app/kanab-quest/stages/sylvain-recolte-v1.webp", alt: "Loïc récolte les fleurs arrivées à maturité." },
+  "Séchage & affinage": { src: "/app/kanab-quest/stages/sylvain-sechage-affinage-v1.webp", alt: "Loïc contrôle le séchage de sa récolte avant le jury." },
 };
 
 const STAGE_CAPTIONS: Record<KqStage, string> = {
@@ -29,6 +30,37 @@ const STAGE_CAPTIONS: Record<KqStage, string> = {
   Récolte: "Les fleurs arrivent à la récolte. Leur état compte pour la suite.",
   "Séchage & affinage": "Le lot sèche. La santé affichée conserve le bilan à la récolte.",
 };
+
+function careFlags(care?: KqCareState) {
+  const severity = Math.max(0, ...(care?.problems.map(problem => problem.severity) ?? []));
+  const vitality = care?.vitality;
+  const healthCritical = vitality !== undefined && vitality <= 30;
+  const healthFragile = vitality !== undefined && vitality <= 60;
+  return { severity, healthCritical, healthFragile, critical: healthCritical || severity === 3, watch: healthFragile || severity > 0 };
+}
+
+/** Compact, read-only fields shared by the room and the warehouse overview. */
+export function getKqRoomCare(stage: number, care: KqCareState, zoneId?: string | null) {
+  const localProblems = zoneId ? care.problems.flatMap(problem => {
+    if (!problem.plants) return [problem];
+    const plants = problem.plants.filter(plant => plant.zoneId === zoneId);
+    if (!plants.length) return [];
+    const severity = plants.reduce((highest, plant) => plant.severity > highest ? plant.severity : highest, plants[0].severity);
+    return [{ ...problem, plants, severity }];
+  }) : care.problems;
+  const { critical, watch, healthCritical } = careFlags({ ...care, problems: localProblems });
+  const attention = stage >= 5 ? undefined : critical ? healthCritical ? "Santé critique" : "Alerte critique" : watch ? "À surveiller" : undefined;
+  const interventions = care.interventions.filter(i => !zoneId || !i.target || i.target.zoneId === zoneId);
+  const effects = interventions.map(({ productCode, remainingSteps, target }) =>
+    `${getKqCareProduct(productCode)?.name ?? productCode}${target ? ` · case ${target.x + 1}, ${target.y + 1}` : ""} · ${remainingSteps} bilan${remainingSteps > 1 ? "s" : ""}`);
+  const active = stage < 5 ? interventions : [];
+  const protectedSectors = active.flatMap(i => i.target && getKqCareProduct(i.productCode)?.kind === "pbi" ? [i.target] : []);
+  const inputSectors = active.flatMap(i => i.target && getKqCareProduct(i.productCode)?.kind === "input" ? [i.target] : []);
+  const affectedPlants = stage < 5 ? localProblems.flatMap(problem => (problem.plants ?? [])
+    .map(plant => ({ ...plant, label: getKqCareProblem(problem.code)?.name }))) : [];
+  return { vitality: care.vitality, attention, effects, ...(affectedPlants.length ? { affectedPlants } : {}),
+    ...(protectedSectors.length ? { protectedSectors } : {}), ...(inputSectors.length ? { inputSectors } : {}) };
+}
 
 /** Selects existing illustrations only. Neither a die result nor a warning
  * changes the botanical stage, the recorded outcome, or the culture's health. */
@@ -49,12 +81,7 @@ export function getKqCarePresentation(state: KqGameState): KqCarePresentation {
     ...(resolution ? { vitalityDelta: resolution.vitalityDelta } : {}),
   } : null;
 
-  const severity = Math.max(0, ...(state.care?.problems.map(problem => problem.severity) ?? []));
-  const vitality = state.care?.vitality;
-  const healthCritical = vitality !== undefined && vitality <= 30;
-  const healthFragile = vitality !== undefined && vitality <= 60;
-  const critical = healthCritical || severity === 3;
-  const watch = healthFragile || severity > 0;
+  const { severity, healthCritical, healthFragile, critical, watch } = careFlags(state.care);
   const harvested = stageIndex >= 5;
   const condition: KqCarePresentation["condition"] = state.cultureDead ? "dead"
     : harvested ? "harvested" : critical ? "critical" : watch ? "watch" : "healthy";

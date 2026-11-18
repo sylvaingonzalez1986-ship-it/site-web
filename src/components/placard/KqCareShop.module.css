@@ -61,10 +61,17 @@
 .shop .use:disabled { color: #455748; opacity: .72; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .reason { display: block; grid-column: 1 / -1; margin: 0; color: #455748; font-size: 13px; line-height: 1.5; }
 .reason[data-available] { color: #172923; }
+.productEffect { grid-column: 1 / -1; margin: 0; font-size: 13px; line-height: 1.45; }
+.product > .notice { grid-column: 1 / -1; margin: 0; }
 .cashHint { display: block; grid-column: 1 / -1; margin: 0; color: #8c6033; font-size: 13px; }
 .notice { margin: 10px 0; padding: 10px 0; border: 0; border-block: 1px solid #17292340; border-radius: var(--game-panel-radius, 2px); background: none; color: #172923; font-size: 13px; }
 .error { color: #8a3427; }
 .empty { margin: 16px 0; font-size: 14px; }
+
+@container (min-width: 671px) {
+  .productEffect { grid-column: 1; grid-row: 2; }
+  .shop[data-reserve] .productActions { grid-column: 2; grid-row: 1 / span 2; }
+}
 
 @container (max-width: 670px) {
   .product, .product[data-stocked] { grid-template-columns: minmax(0, 1fr); gap: 10px; }

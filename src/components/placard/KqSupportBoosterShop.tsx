@@ -56,6 +56,7 @@ function KqSupportBoosterCounter({
   const purchaseKey = useRef<string | null>(restoredPurchaseKey);
   const [shop, setShop] = useState<ShopPayload | null>(null);
   const [openedCards, setOpenedCards] = useState<KqOpenedSupportCard[]>([]);
+  const [openedConfirmed, setOpenedConfirmed] = useState(false);
   const [pending, setPending] = useState<"load" | "claim" | "buy" | "open" | null>("load");
   const [notice, setNotice] = useState("");
   const [purchaseRetry, setPurchaseRetry] = useState(restoredPurchaseKey !== null);
@@ -168,6 +169,7 @@ function KqSupportBoosterCounter({
     setNotice("");
     try {
       const cards = await requestKqSupportPackOpening(api.request, entitlement.id);
+      setOpenedConfirmed(true);
       setOpenedCards(cards);
       setOpeningRetry(null);
       api.notify("kq:collection-updated");
@@ -186,15 +188,15 @@ function KqSupportBoosterCounter({
   const { duelRewards, shopPacks } = splitShopEntitlements(shop?.availableEntitlements ?? []);
   const nextShopPack = shopPacks.find(item => item.source === "welcome_pack") ?? shopPacks[0];
   const canAct = !!shop?.collectionActive && pending === null && (api.isTutorial || userId !== null);
-  const closeReveal = () => setOpenedCards([]);
+  const closeReveal = () => { setOpenedCards([]); setOpenedConfirmed(false); };
 
   return <section id="boutique-la-botte" className={styles.embeddedShop} data-shop-page={embedded || undefined}>
     {!embedded ? <button type="button" onClick={() => setShopOpen(true)} aria-haspopup="dialog" className={styles.front}>
-      <Image src="/placard/card-shop-sylvain-v1.webp" alt="Sylvain t’attend dans sa boutique de cartes." width={1536} height={512} sizes="(max-width: 768px) 100vw, 1100px" />
+      <Image src="/placard/card-shop-sylvain-v1.webp" alt="Loïc t’attend dans sa boutique de cartes." width={1536} height={512} sizes="(max-width: 768px) 100vw, 1100px" />
       <span>Ouvrir la boutique <PackageOpen aria-hidden="true" /></span>
     </button> : null}
     {shopOpen ? <div className={styles.backdrop} data-embedded={embedded || undefined} onClick={embedded ? undefined : closeShop}>
-      <section ref={dialogRef} data-arena-tour-surface="shop" data-arena-tour-blocked={busy || undefined} tabIndex={-1}
+      <section ref={dialogRef} data-arena-tour-surface="shop" data-guide-pack-count={shop ? shop.availableEntitlements.length : undefined} data-arena-tour-blocked={busy || undefined} tabIndex={-1}
         role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : true} aria-labelledby="kq-shop-title"
         className={styles.shopDialog} onClick={event => event.stopPropagation()} onKeyDown={event => {
           if (embedded || event.key !== "Tab" || document.querySelector("dialog[open]")
@@ -212,7 +214,7 @@ function KqSupportBoosterCounter({
             <button type="button" className={styles.exit} disabled={busy} aria-label="Quitter la boutique" onClick={closeShop}><X aria-hidden="true" /></button>
           </div>
         </header>
-        <Image className={styles.interior} src="/placard/card-shop-sylvain-v1.webp" alt="Sylvain et ses cartes au comptoir d’une petite boutique bretonne." width={1536} height={512} priority sizes="(max-width: 768px) 100vw, 1100px" />
+        <Image className={styles.interior} src="/placard/card-shop-sylvain-v1.webp" alt="Loïc et ses cartes au comptoir d’une petite boutique bretonne." width={1536} height={512} priority sizes="(max-width: 768px) 100vw, 1100px" />
         <div className={styles.shelves}>
           <nav className={styles.tabs} aria-label="Rayons de la boutique">
             <button type="button" data-shop-section="botte" aria-pressed={section === "botte"} disabled={busy} onClick={() => selectSection("botte")}>Botte du Chanvrier</button>
@@ -261,6 +263,7 @@ function KqSupportBoosterCounter({
               </footer>
             </div>
             {!shop?.collectionActive && localPreview ? <button type="button" className={styles.preview} onClick={() => {
+              setOpenedConfirmed(false);
               setOpenedCards(openKqSupportBooster(Date.now()).map(card => ({ code: card.code, name: card.name, rarity: card.rarity, imageUrl: getKqCardArtwork(card.code) ?? undefined })));
               setNotice("Aperçu local : aucun point débité, aucune carte enregistrée.");
             }}>Aperçu local</button> : null}
@@ -269,6 +272,6 @@ function KqSupportBoosterCounter({
         </div>
       </section>
     </div> : null}
-    {openedCards.length ? <KqSupportPackOpening cards={openedCards} cardCount={openedCards.length} busy={false} error="" canRetry={false} onRetry={() => {}} onClose={closeReveal} onContinue={closeReveal} continueLabel="Retour à la boutique" /> : null}
+    {openedCards.length ? <KqSupportPackOpening confirmed={openedConfirmed} cards={openedCards} cardCount={openedCards.length} busy={false} error="" canRetry={false} onRetry={() => {}} onClose={closeReveal} onContinue={closeReveal} continueLabel="Retour à la boutique" /> : null}
   </section>;
 }

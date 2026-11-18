@@ -96,7 +96,7 @@ export function KqCustomerDemandDashboard({ data, now, busy = false, onChooseLot
       const request = demand.requests.find(item => item.channel === circuit.code);
       return request ? <DemandCard key={request.id} request={request} data={data} now={current} expired={expired} busy={busy} onChooseLot={onChooseLot} onOpenCulture={onOpenCulture} onOpenListings={onOpenListings} /> : null;
     })}</div>
-    <details className={styles.rules}><summary>Conditions du bonus et prix de référence</summary><KqHelpGrid items={[
+    <details className={styles.rules} data-tutorial-observation="customer-demand"><summary>Conditions du bonus et prix de référence</summary><KqHelpGrid items={[
       { art: "help-quality" as const, label: "Produit admissible", value: "Mûr ou transformé", detail: "Transformation terminée, qualité minimale atteinte et volume disponible." },
       { art: "harvest" as const, label: "Goûts communs", value: "1 = demi-prime · 2 = prime complète", detail: "Résines, hash et rosins gardent les goûts d’origine et leur propre tarif." },
       { art: "warehouse" as const, label: "Volume bonifié", value: "Grammes vendus", detail: "Partagé entre fleurs et produits transformés." },

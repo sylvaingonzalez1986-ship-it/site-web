@@ -12,7 +12,6 @@
 .spotlight { position:fixed; z-index:2147483000; pointer-events:none; border:3px solid #008c7c; border-radius:12px; box-shadow:0 0 0 4px #f8d16abf,0 3px 18px #0b473a33; transition:top .16s ease,left .16s ease,width .16s ease,height .16s ease; }
 .spotlight > span { position:absolute; right:5px; top:-14px; display:flex; gap:4px; align-items:center; background:transparent; border:1.5px solid transparent; color:#172923; padding:3px 8px; border-radius:0; border-image:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")) var(--game-control-slice, 40) fill / 8px / 0 stretch; font:800 11px/1.2 var(--font-body),sans-serif; white-space:nowrap; }
 .coach :global([data-releve-next]:disabled) { display:none; }
-:global([data-releve-guide-active]) { outline:3px solid #008c7c !important; outline-offset:3px; scroll-margin-block:16px; }
 .coach[data-complete] .portrait { background:#ffdc7f; }
 @media(max-width:700px) {
  .coach { grid-template-columns:48px minmax(0,1fr); gap:8px 12px; }

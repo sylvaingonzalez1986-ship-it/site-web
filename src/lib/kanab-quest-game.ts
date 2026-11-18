@@ -3,6 +3,7 @@ import type { KqDomiciliation } from "./kanab-quest-business";
 import { getKqProductionUnits, type KqTentEquipmentProfile } from "./kanab-quest-production-scale";
 import { summarizeKqTentEquipment } from "./kanab-quest-production";
 import { isKqWarehouseRunSnapshot, type KqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import { getKqCareProblemPlants, sameKqCareSector } from "./kanab-quest-care-spatial";
 import { calculateKqWarehouseHarvest, quoteKqWarehouseEnergy } from "./kanab-quest-warehouse-run";
 import { applyKqBuddieYield, isKqBuddieCultivationProfile, type KqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
 import type { KqCampaign } from "./kanab-quest-campaign";
@@ -488,7 +489,7 @@ export const KQ_SITUATIONS: KqSituation[] = [
   { code: "SIT-021", stage: "Croissance", name: "Surcharge au compteur", story: "L’installation électrique sature. Si les dés ne passent pas, une panne coupe le courant pour l’étape suivante. La facture du cycle sera calculée à la récolte.", difficulty: 2, tags: ["energy", "climate"], incident: "electricity-bill", successTrait: "Charge maîtrisée", fragileTrait: "Installation sous tension", failureTrait: "Courant coupé" },
   { code: "SIT-022", stage: "Floraison", name: "Air trop humide", story: "L’humidité reste haute au cœur des fleurs et demande une bonne circulation d’air.", difficulty: 3, tags: ["climate", "flower"], successTrait: "Fleurs bien aérées", fragileTrait: "Humidité contenue", failureTrait: "Floraison humide" },
   { code: "SIT-023", stage: "Floraison", name: "Branches chargées", story: "Le poids des fleurs met les branches les plus fines à l’épreuve.", difficulty: 2, tags: ["flower"], successTrait: "Charpente solide", fragileTrait: "Branches souples", failureTrait: "Port affaissé" },
-  { code: "SIT-024", stage: "Floraison", name: "Contrôle DDTM", story: "Une contrôleuse demande les justificatifs pendant que Sylvain tente de retrouver le bon classeur.", difficulty: 3, tags: ["compliance"], incident: "ddtm-inspection", successTrait: "Dossier irréprochable", fragileTrait: "Papiers éparpillés", failureTrait: "Contrôle défavorable" },
+  { code: "SIT-024", stage: "Floraison", name: "Contrôle DDTM", story: "Une contrôleuse demande les justificatifs pendant que Loïc tente de retrouver le bon classeur.", difficulty: 3, tags: ["compliance"], incident: "ddtm-inspection", successTrait: "Dossier irréprochable", fragileTrait: "Papiers éparpillés", failureTrait: "Contrôle défavorable" },
   { code: "SIT-025", stage: "Récolte", name: "Trichomes contrastés", story: "Les signes de maturité ne racontent pas exactement la même histoire partout.", difficulty: 3, tags: ["harvest", "flower"], successTrait: "Lecture précise", fragileTrait: "Choix prudent", failureTrait: "Maturité mal estimée" },
   { code: "SIT-026", stage: "Récolte", name: "Matinée trop chaude", story: "La température monte rapidement et menace la fraîcheur aromatique du lot.", difficulty: 2, tags: ["harvest", "climate"], successTrait: "Fraîcheur préservée", fragileTrait: "Récolte accélérée", failureTrait: "Arômes échauffés" },
   { code: "SIT-027", stage: "Récolte", name: "Renard à deux pattes", story: "Quelqu’un vient de repartir avec une caisse de la production. Sans protection, une partie du poids final disparaît.", difficulty: 3, tags: ["harvest", "security"], incident: "crop-theft", successTrait: "Voleur repoussé", fragileTrait: "Caisse entamée", failureTrait: "Production dérobée" },
@@ -1291,7 +1292,8 @@ export function resolveKqStage(state: KqGameState): KqGameState {
     const product = getKqCareProduct(intervention.productCode);
     return intervention.stageIndex <= state.stageIndex && product?.kind === "pbi"
       && !(product.code === "CARE-PHYTOSEIULUS" && state.care?.problems.some(problem => problem.code === "HEAT"))
-      && state.care?.problems.some(problem => product.targets.includes(getKqCareProblem(problem.code)!.target));
+      && state.care?.problems.some(problem => product.targets.includes(getKqCareProblem(problem.code)!.target)
+        && (!intervention.target || getKqCareProblemPlants(state, problem).some(p => sameKqCareSector(p, intervention.target))));
   });
   const trait = effectiveOutcome === "critical" || effectiveOutcome === "success" ? situation.successTrait : effectiveOutcome === "fragile" ? situation.fragileTrait : situation.failureTrait;
   const harvestQualityBonus = effectiveOutcome === "critical" || effectiveOutcome === "success"

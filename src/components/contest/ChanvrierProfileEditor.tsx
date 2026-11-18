@@ -23,13 +23,14 @@ const NEW_LOOK: ChanvrierAppearance = { ...getChanvrierAppearance({ gender: "mal
 type Step = "inheritance" | "look" | "strength" | "review";
 const STEP_LABELS: Record<Step, string> = { inheritance: "Héritage", look: "Personnage", strength: "Spécialité", review: "Départ" };
 
-export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile) => void; onClose: () => void }) {
+export function ChanvrierProfileEditor({ profile, onSaved, onClose, skipInheritance = false }: { profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile) => void; onClose: () => void; skipInheritance?: boolean }) {
   const api = useKqTutorialApi();
   const isArrival = !profile && !api.isTutorial;
-  const steps: Step[] = profile ? ["look", "review"] : isArrival ? ["inheritance", "look", "strength", "review"] : ["look", "strength", "review"];
+  const showInheritance = isArrival && !skipInheritance;
+  const steps: Step[] = profile ? ["look", "review"] : showInheritance ? ["inheritance", "look", "strength", "review"] : ["look", "strength", "review"];
   const [draft, setDraft] = useState<ChanvrierProfile>(profile ?? { nickname: "", gender: "male", clothing: "ochre", skin: "ivory", strength: "green-thumb", appearance: NEW_LOOK });
   const [portraitView, setPortraitView] = useState<"full" | "portrait">("portrait");
-  const [step, setStep] = useState<Step>(isArrival ? "inheritance" : "look");
+  const [step, setStep] = useState<Step>(showInheritance ? "inheritance" : "look");
   const [lookTab, setLookTab] = useState<typeof LOOK_TABS[number]["code"]>("face");
   const [confirmedStrength, setConfirmedStrength] = useState(false);
   const [nicknameTouched, setNicknameTouched] = useState(false);
@@ -107,9 +108,10 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile:
   };
 
   const title = step === "inheritance" ? "La maison de Grand-père" : step === "look" ? profile ? "Ton personnage" : "Qui s’installe au Quartier ?" : step === "strength" ? "Ton coup de pouce" : profile ? "Tes changements" : "Prêt à écrire la suite ?";
-  const nextLabel = step === "inheritance" ? "Créer mon personnage" : step === "look" ? profile ? "Vérifier mes changements" : "Choisir ma spécialité" : step === "strength" ? "Vérifier mon départ" : profile ? "Enregistrer mon profil" : api.isTutorial ? "Créer mon personnage d’essai" : "Commencer mon histoire";
+  const nextLabel = step === "inheritance" ? "Créer mon personnage" : step === "look" ? profile ? "Vérifier mes changements" : "Choisir ma spécialité" : step === "strength" ? "Vérifier mon départ" : profile ? "Enregistrer mon profil" : api.isTutorial ? "Créer mon personnage d’essai" : skipInheritance ? "Terminer mon personnage" : "Commencer mon histoire";
 
   return <dialog ref={dialog} className={styles.dialog} data-chanvrier-profile data-profile-step={step} aria-labelledby={titleId} aria-busy={busy} onCancel={event => { event.preventDefault(); if (!inFlight.current) onClose(); }}>
+    <div data-farm-guide-host />
     <button className={styles.close} type="button" aria-label="Fermer le profil" onClick={onClose} disabled={busy}><X aria-hidden="true" /></button>
     <header className={styles.topbar}>
       <ol className={styles.progress} aria-label={profile ? "Modification du personnage" : "Création du personnage"}>
@@ -121,8 +123,8 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile:
     </header>
     <div className={styles.layout} data-scene={step === "inheritance" || undefined}>
       {step === "inheritance" ? <aside className={styles.storyScene}>
-        <Image className={styles.sceneImage} src={ARENA_RELEVE_SCENES.arrival} alt="Sylvain t’attend avec les clés devant la grange aux portes turquoise." width={1536} height={1024} sizes="(max-width: 680px) 100vw, 480px" loading="eager" />
-        <p className={styles.sceneCaption}>Sylvain a gardé les clés. Il t’aidera à faire tes premiers pas.</p>
+        <Image className={styles.sceneImage} src={ARENA_RELEVE_SCENES.arrival} alt="Loïc t’attend avec les clés devant la grange aux portes turquoise." width={1536} height={1024} sizes="(max-width: 680px) 100vw, 480px" loading="eager" />
+        <p className={styles.sceneCaption}>Loïc a gardé les clés. Il t’aidera à faire tes premiers pas.</p>
       </aside> : <aside className={styles.portrait} data-view={portraitView}>
         <ChanvrierAvatar profile={draft} className={styles.avatar} view={portraitView} />
         <div className={styles.viewControls} aria-label="Vue du personnage"><button type="button" aria-pressed={portraitView === "full"} onClick={() => setPortraitView("full")} disabled={busy}>En pied</button><button type="button" aria-pressed={portraitView === "portrait"} onClick={() => setPortraitView("portrait")} disabled={busy}>Zoom visage</button></div>
@@ -138,10 +140,10 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile:
           <div className={styles.letter} aria-label="La lettre de Grand-père">
             {ARENA_RELEVE_LETTER.map((paragraph, index) => <p key={paragraph} className={index === ARENA_RELEVE_LETTER.length - 1 ? styles.signature : undefined}>{paragraph}</p>)}
           </div>
-          <p className={styles.note}>Au début de l’aventure, Sylvain te guide pas à pas dans les écrans de ta ferme et du quartier.</p>
+          <p className={styles.note}>Au début de l’aventure, Loïc te guide pas à pas dans les écrans de ta ferme et du quartier.</p>
         </> : step === "look" ? <>
           <label className={styles.nickname}>Ton surnom
-            <input autoComplete="nickname" autoCapitalize="none" spellCheck={false} value={draft.nickname} maxLength={24} placeholder="Ex. Sylvain29" aria-invalid={nicknameError || undefined} aria-describedby={`${nicknameHintId}${nicknameError ? ` ${nicknameErrorId}` : ""}`} onBlur={() => setNicknameTouched(true)} onChange={event => setDraft({ ...draft, nickname: event.target.value })} />
+            <input autoComplete="nickname" autoCapitalize="none" spellCheck={false} value={draft.nickname} maxLength={24} placeholder="Ex. Loic29" aria-invalid={nicknameError || undefined} aria-describedby={`${nicknameHintId}${nicknameError ? ` ${nicknameErrorId}` : ""}`} onBlur={() => setNicknameTouched(true)} onChange={event => setDraft({ ...draft, nickname: event.target.value })} />
             <small id={nicknameHintId}>3 à 24 caractères : lettres sans accent, chiffres, . _ -</small>
             {nicknameError ? <span id={nicknameErrorId} className={styles.fieldError}>Choisis un surnom de 3 à 24 caractères autorisés pour continuer.</span> : null}
           </label>

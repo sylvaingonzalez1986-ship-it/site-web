@@ -1,0 +1,1809 @@
+{
+  "batchId": "c-new-04",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-cn04-complete-dominance-heterozygote-phenotype",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "En dominance complète où A domine a, quels génotypes de chanvre ont le même phénotype à ce locus ?",
+      "options": [
+        "AA et Aa : homozygote pour A et hétérozygote",
+        "Aa et aa : hétérozygote et homozygote pour a",
+        "AA et aa : les deux homozygotes",
+        "AA, Aa et aa : les trois génotypes"
+      ],
+      "answer": 0,
+      "explanation": "En dominance complète, Aa et AA présentent le même phénotype pour le caractère considéré. Dominant décrit une relation entre allèles, et non une transformation de l’un par l’autre.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-traits"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Dominance complète",
+        "subjectKey": "dominance-complete",
+        "property": "Phénotype de l’hétérozygote",
+        "expectedAnswer": "AA et Aa : homozygote pour A et hétérozygote",
+        "learningObjective": "Comprendre le sens génétique de dominant dans un modèle explicitement simple.",
+        "factKey": "complete-dominance-heterozygote-phenotype",
+        "form": "identification",
+        "difficultyRationale": "Base scolaire de l’hérédité, avec modèle de dominance précisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-traits",
+            "locator": "Dominant and Recessive Alleles",
+            "support": "En dominance complète, les individus homozygotes dominants et hétérozygotes présentent le même phénotype."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-aa-by-aa-homozygous-parents-all-heterozygous",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Exemple théorique de chanvre : deux parents AA et aa ne produisent que des gamètes ordinaires. Quel génotype auront leurs descendants ?",
+      "options": [
+        "Tous hétérozygotes avec un allèle de chaque parent",
+        "Tous homozygotes comme le premier parent (A/A)",
+        "Tous homozygotes comme le second parent (a/a)",
+        "Moitié homozygotes A/A, moitié homozygotes a/a"
+      ],
+      "answer": 0,
+      "explanation": "Le parent AA transmet A et le parent aa transmet a. Chaque descendant reçoit donc Aa à ce locus, sans que cela garantisse l’uniformité de tous ses autres caractères.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-traits"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Descendance AA × aa",
+        "subjectKey": "croisement-monohybride",
+        "property": "Hétérozygotie uniforme au locus considéré",
+        "expectedAnswer": "Tous hétérozygotes avec un allèle de chaque parent",
+        "learningObjective": "Déduire un génotype à partir des allèles transmis par deux parents.",
+        "factKey": "aa-by-aa-homozygous-parents-all-heterozygous",
+        "form": "deduction",
+        "difficultyRationale": "Combinaison mendélienne élémentaire, sans attribuer ce modèle à un trait réel non démontré.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-traits",
+            "locator": "The Punnett Square Approach for a Monohybrid Cross",
+            "support": "Le croisement de deux parents homozygotes portant des allèles différents produit des descendants hétérozygotes au locus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-heterozygote-segregates-two-alleles-equally",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À un locus mendélien, un chanvre Aa forme des gamètes sans distorsion de ségrégation. Quelle transmission attend-on ?",
+      "options": [
+        "Uniquement des gamètes A",
+        "Trois gamètes A pour un gamète a",
+        "Autant de gamètes A que de gamètes a",
+        "Des gamètes portant toujours A et a ensemble"
+      ],
+      "answer": 2,
+      "explanation": "La ségrégation sépare les deux allèles d’un locus : chacun a normalement la même probabilité d’être transmis dans un gamète. Ce partage n’est pas un rapport de phénotypes parmi les descendants.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-laws"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Ségrégation allélique",
+        "subjectKey": "segregation-allelique",
+        "property": "Transmission égale de deux allèles aux gamètes",
+        "expectedAnswer": "Autant de gamètes A que de gamètes a",
+        "learningObjective": "Séparer fréquence des gamètes et phénotypes de la descendance.",
+        "factKey": "heterozygote-segregates-two-alleles-equally",
+        "form": "identification",
+        "difficultyRationale": "Une règle mendélienne intermédiaire avec absence de distorsion explicitée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-laws",
+            "locator": "Equal Segregation of Alleles",
+            "support": "Les deux facteurs alléliques se séparent également dans les gamètes, donnant la même probabilité de transmission."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-polygenic-trait-influenced-by-several-genes",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Qu’appelle-t-on un caractère polygénique, chez le chanvre comme chez d’autres organismes ?",
+      "options": [
+        "Un gène influençant plusieurs caractères",
+        "Un caractère présent dans un seul sexe",
+        "Un caractère sans influence génétique",
+        "Un caractère influencé par plusieurs gènes"
+      ],
+      "answer": 3,
+      "explanation": "Un caractère polygénique dépend de contributions de plusieurs gènes. Il peut aussi être influencé par le milieu ; cela ne se réduit pas à une paire d’allèles d’un unique gène.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-polygenic"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Caractère polygénique",
+        "subjectKey": "caractere-polygenique",
+        "property": "Plusieurs gènes contribuent au même caractère",
+        "expectedAnswer": "Un caractère influencé par plusieurs gènes",
+        "learningObjective": "Reconnaître une architecture génétique complexe sans lui imposer un rapport mendélien simple.",
+        "factKey": "polygenic-trait-influenced-by-several-genes",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire de génétique quantitative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-polygenic",
+            "locator": "Definition",
+            "support": "Un caractère polygénique est influencé par au moins deux gènes et peut également dépendre de l’environnement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-pleiotropy-one-gene-multiple-traits",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel terme décrit l’influence d’un même gène sur plusieurs caractères distincts d’une plante ?",
+      "options": [
+        "La pléiotropie",
+        "La codominance",
+        "La liaison génétique",
+        "La polyploïdie"
+      ],
+      "answer": 0,
+      "explanation": "La pléiotropie relie un même gène à plusieurs effets phénotypiques. Modifier l’action d’un gène peut donc avoir des conséquences au-delà du seul caractère auquel on l’associe d’abord.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-pleiotropy"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Pléiotropie",
+        "subjectKey": "pleiotropie",
+        "property": "Un gène influence plusieurs caractères",
+        "expectedAnswer": "La pléiotropie",
+        "learningObjective": "Comprendre qu’un gène ne correspond pas nécessairement à un seul caractère.",
+        "factKey": "pleiotropy-one-gene-multiple-traits",
+        "form": "identification",
+        "difficultyRationale": "Terme intermédiaire décrivant une architecture gène-caractères.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-pleiotropy",
+            "locator": "Définition MeSH D058685",
+            "support": "La pléiotropie génétique correspond à plusieurs effets phénotypiques influencés par un seul gène ou produit génique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-incomplete-dominance-intermediate-heterozygote",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans un exemple fictif de chanvre, l’hétérozygote a un phénotype intermédiaire entre les deux homozygotes. Quel modèle cela illustre-t-il ?",
+      "options": [
+        "Une dominance complète",
+        "Une dominance incomplète",
+        "Une codominance",
+        "Une épistasie"
+      ],
+      "answer": 1,
+      "explanation": "La dominance incomplète donne un phénotype hétérozygote intermédiaire. Cela ne signifie pas que les allèles ont fusionné : ils restent distincts et peuvent se séparer à la génération suivante.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-traits"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Dominance incomplète",
+        "subjectKey": "dominance-incomplete",
+        "property": "Phénotype hétérozygote intermédiaire",
+        "expectedAnswer": "Une dominance incomplète",
+        "learningObjective": "Distinguer apparence intermédiaire et fusion irréversible de l’information héréditaire.",
+        "factKey": "incomplete-dominance-intermediate-heterozygote",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’un modèle intermédiaire à partir de son phénotype caractéristique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-traits",
+            "locator": "Incomplete Dominance",
+            "support": "Dans ce modèle, l’hétérozygote présente un phénotype intermédiaire entre les deux homozygotes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-codominance-both-allelic-products-detectable",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Exemple fictif : deux versions d’une protéine sont détectées chez un chanvre hétérozygote à un locus. Quel modèle décrit cette expression ?",
+      "options": [
+        "Une dominance complète",
+        "Une dominance incomplète",
+        "Une codominance",
+        "Une extinction des deux allèles"
+      ],
+      "answer": 2,
+      "explanation": "En codominance, les effets ou produits des deux allèles se manifestent chez l’hétérozygote. Ce n’est pas nécessairement un mélange intermédiaire unique entre les deux formes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-traits"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Codominance",
+        "subjectKey": "codominance",
+        "property": "Expression simultanée des deux allèles",
+        "expectedAnswer": "Une codominance",
+        "learningObjective": "Distinguer coexistence des effets et dominance complète.",
+        "factKey": "codominance-both-allelic-products-detectable",
+        "form": "identification",
+        "difficultyRationale": "Interprétation intermédiaire d’une observation d’expression à un locus.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-traits",
+            "locator": "Codominance",
+            "support": "Les deux allèles d’un même caractère s’expriment simultanément chez l’hétérozygote."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-meiosis-reduces-chromosome-set-number",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel est le résultat chromosomique caractéristique d’une méiose normale à partir d’une cellule diploïde du chanvre ?",
+      "options": [
+        "Des noyaux portant chacun trois jeux de chromosomes",
+        "Des noyaux portant chacun quatre jeux de chromosomes",
+        "Des noyaux gardant les deux jeux de chromosomes",
+        "Des noyaux ne portant qu’un jeu de chromosomes"
+      ],
+      "answer": 3,
+      "explanation": "La méiose fait passer de deux jeux de chromosomes à un seul dans les noyaux produits. Chez les plantes, les cellules haploïdes qui en résultent participent ensuite à la formation des gamétophytes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-meiosis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Réduction méiotique",
+        "subjectKey": "meiose",
+        "property": "Passage de deux jeux à un jeu chromosomique",
+        "expectedAnswer": "Des noyaux ne portant qu’un jeu de chromosomes",
+        "learningObjective": "Comprendre le rôle de réduction de la méiose dans le cycle reproducteur.",
+        "factKey": "meiosis-reduces-chromosome-set-number",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme intermédiaire ; ne pas confondre méiose végétale et production directe de gamètes animaux.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-meiosis",
+            "locator": "Introduction, définition de meiosis",
+            "support": "La méiose produit des noyaux haploïdes à partir d’un noyau diploïde en réduisant de moitié le nombre de jeux de chromosomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-self-fertilization-gametes-same-individual",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Que signifie une autofécondation chez une plante de chanvre capable de produire les deux types de gamètes ?",
+      "options": [
+        "Les deux gamètes viennent du même individu",
+        "Les gamètes viennent de deux individus voisins",
+        "La graine se forme sans aucune fusion de gamètes",
+        "La plante produit un clone sans former de graine"
+      ],
+      "answer": 0,
+      "explanation": "L’autofécondation réunit des gamètes issus du même individu. Elle reste une reproduction sexuée, même si un seul plant joue les deux rôles parentaux.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Autofécondation",
+        "subjectKey": "autofecondation",
+        "property": "Origine commune des deux gamètes",
+        "expectedAnswer": "Les deux gamètes viennent du même individu",
+        "learningObjective": "Distinguer autofécondation, fécondation croisée et multiplication végétative.",
+        "factKey": "self-fertilization-gametes-same-individual",
+        "form": "identification",
+        "difficultyRationale": "Notion accessible sur l’origine des gamètes, sans technique de production.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "Pollination, définition de self-pollination et fertilization",
+            "support": "L’autopollinisation peut impliquer une même fleur ou deux fleurs du même individu et précède une fécondation entre ses gamètes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-inbreeding-mating-related-individuals",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Que signifie la consanguinité dans une population de chanvre ?",
+      "options": [
+        "Une reproduction entre individus d’espèces différentes",
+        "Une reproduction entre individus apparentés",
+        "Une reproduction entre individus sans parenté récente",
+        "Une reproduction sans union de gamètes"
+      ],
+      "answer": 1,
+      "explanation": "La consanguinité concerne la parenté entre reproducteurs. Elle augmente la probabilité de réunir des copies d’allèles héritées d’ancêtres communs, avec des effets qui dépendent du patrimoine concerné.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-genetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Consanguinité",
+        "subjectKey": "consanguinite",
+        "property": "Reproduction entre apparentés",
+        "expectedAnswer": "Une reproduction entre individus apparentés",
+        "learningObjective": "Comprendre un terme de parenté génétique sans le confondre avec une maladie.",
+        "factKey": "inbreeding-mating-related-individuals",
+        "form": "identification",
+        "difficultyRationale": "Notion de parenté courante et directement accessible.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-genetics",
+            "locator": "Genetic variability, dernier paragraphe",
+            "support": "Le texte définit l’inbreeding comme un accouplement entre individus étroitement apparentés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-repeated-selfing-increases-homozygosity",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle tendance génétique des autofécondations répétées peuvent-elles produire dans une lignée végétale, dont le chanvre ?",
+      "options": [
+        "Une augmentation systématique de l’hétérozygotie",
+        "Une conservation de l’hétérozygotie à chaque locus",
+        "Une augmentation de l’homozygotie",
+        "Une alternance obligatoire entre diploïdie et haploïdie"
+      ],
+      "answer": 2,
+      "explanation": "L’autofécondation répétée tend à réduire l’hétérozygotie et à accroître l’homozygotie. Cela décrit une tendance génétique, sans garantir la vigueur ou l’identité parfaite de tous les descendants.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mating-2022",
+        "q2-cn04-cannabis-inbreeding-2026"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Autofécondation et homozygotie",
+        "subjectKey": "autofecondation",
+        "property": "Augmentation de l’homozygotie avec l’autofécondation",
+        "expectedAnswer": "Une augmentation de l’homozygotie",
+        "learningObjective": "Relier un système de reproduction à l’évolution des génotypes.",
+        "factKey": "repeated-selfing-increases-homozygosity",
+        "form": "identification",
+        "difficultyRationale": "Conséquence intermédiaire d’un système de reproduction, sans programme pratique de sélection.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mating-2022",
+            "locator": "Introduction, troisième effet du selfing",
+            "support": "L’autofécondation accroît l’homozygotie, les chromosomes homologues étant plus souvent identiques."
+          },
+          {
+            "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+            "locator": "Introduction, paragraphe sur self-fertilization-induced inbreeding",
+            "support": "La synthèse introductive décrit l’augmentation d’homozygotie provoquée par la consanguinité issue d’autofécondations."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-heterosis-performance-above-midparent",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Comment nomme-t-on une performance d’hybrides supérieure à la moyenne de leurs parents pour un caractère donné ?",
+      "options": [
+        "Une dépression de consanguinité",
+        "Une dominance incomplète",
+        "Une perte de diversité allélique",
+        "Un hétérosis moyen-parental"
+      ],
+      "answer": 3,
+      "explanation": "L’hétérosis peut se mesurer relativement à la moyenne des parents, pour un caractère précis. Il ne signifie pas que tout hybride surpasse nécessairement le meilleur parent pour tous les caractères.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-cannabis-inbreeding-2026"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Hétérosis moyen-parental",
+        "subjectKey": "heterosis",
+        "property": "Performance au-dessus de la moyenne parentale",
+        "expectedAnswer": "Un hétérosis moyen-parental",
+        "learningObjective": "Interpréter le terme vigueur hybride sans en faire une garantie universelle.",
+        "factKey": "heterosis-performance-above-midparent",
+        "form": "identification",
+        "difficultyRationale": "Concept intermédiaire avec référence de comparaison explicitée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+            "locator": "Abstract, comparaison des F1 à leurs midparents",
+            "support": "Les auteurs qualifient d’hétérosis les gains de performance de certains hybrides par rapport à leur moyenne parentale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-gene-pool-all-alleles-population",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne le pool génétique d’une population de chanvre ?",
+      "options": [
+        "L’ensemble des allèles présents dans cette population",
+        "Le seul génome du plus grand individu",
+        "Les seuls allèles visibles dans le phénotype",
+        "Les seules protéines présentes dans les graines"
+      ],
+      "answer": 0,
+      "explanation": "Le pool génétique rassemble les allèles de la population, y compris ceux qui ne produisent pas un caractère visible chez certains porteurs. Il ne se réduit pas à un individu représentatif.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Pool génétique",
+        "subjectKey": "pool-genetique",
+        "property": "Ensemble des allèles d’une population",
+        "expectedAnswer": "L’ensemble des allèles présents dans cette population",
+        "learningObjective": "Passer du génome individuel à la composition génétique collective.",
+        "factKey": "gene-pool-all-alleles-population",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire de génétique des populations.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-evolution",
+            "locator": "Population Genetics, définition de gene pool",
+            "support": "Le pool génétique est la somme de tous les allèles d’une population."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-population-can-have-more-than-two-alleles-per-locus",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Plusieurs chanvres diploïdes sont réunis. Combien de versions d’un même locus peuvent exister à l’échelle de leur population ?",
+      "options": [
+        "Exactement autant que le nombre de chromosomes d’un plant",
+        "Plus de deux, même si chaque individu n’en porte que deux",
+        "Deux au maximum dans toute la population",
+        "Une seule, puisque les plantes sont de la même espèce"
+      ],
+      "answer": 1,
+      "explanation": "La limite de deux copies concerne un locus ordinaire d’un individu diploïde. Différents individus peuvent porter différentes paires, de sorte que la population compte plus de deux allèles.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-traits"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Allèles dans la population",
+        "subjectKey": "alleles-population",
+        "property": "Plusieurs allèles collectifs malgré deux copies individuelles",
+        "expectedAnswer": "Plus de deux, même si chaque individu n’en porte que deux",
+        "learningObjective": "Distinguer diversité collective et nombre de copies par individu.",
+        "factKey": "population-can-have-more-than-two-alleles-per-locus",
+        "form": "identification",
+        "difficultyRationale": "Comprendre locus et diploïdie, puis distinguer deux copies individuelles de la diversité allélique collective à l’échelle d’une population.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-traits",
+            "locator": "Multiple Alleles",
+            "support": "Un individu diploïde ne peut porter que deux allèles à un locus, mais la population peut en compter davantage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-allele-frequency-copies-denominator",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Exemple fictif : sur 20 copies d’un locus de chanvre, 8 portent l’allèle A. Quelle est sa fréquence allélique ?",
+      "options": [
+        "20 %",
+        "80 %",
+        "40 %",
+        "8 %"
+      ],
+      "answer": 2,
+      "explanation": "La fréquence d’un allèle est le nombre de ses copies divisé par le nombre total de copies du locus. Ici, 8 sur 20 donne 0,40, soit 40 %, et non 8 % simplement parce qu’il existe huit copies.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Fréquence allélique",
+        "subjectKey": "frequence-allelique",
+        "property": "Fraction de copies d’un allèle",
+        "expectedAnswer": "40 %",
+        "learningObjective": "Utiliser le bon dénominateur pour décrire une population.",
+        "factKey": "allele-frequency-copies-denominator",
+        "form": "deduction",
+        "difficultyRationale": "Fraction simple et données fictives explicites ; aucune fréquence réelle de cultivar à retenir.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-evolution",
+            "locator": "Population Genetics, définition et exemple de allele frequency",
+            "support": "La fréquence est le nombre de copies d’un allèle divisé par le nombre total de copies du gène dans la population."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-genetic-drift-random-frequency-change",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel processus peut faire varier au hasard la fréquence d’un allèle dans une petite population de chanvre ?",
+      "options": [
+        "La dérive génétique",
+        "La sélection naturelle directionnelle",
+        "La sélection artificielle des reproducteurs",
+        "La sélection sexuelle"
+      ],
+      "answer": 0,
+      "explanation": "La dérive génétique vient du hasard de la transmission et de la reproduction. Un allèle peut devenir plus fréquent ou disparaître sans avoir conféré un avantage particulier.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-genetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Dérive génétique",
+        "subjectKey": "derive-genetique",
+        "property": "Variation aléatoire de fréquence des allèles",
+        "expectedAnswer": "La dérive génétique",
+        "learningObjective": "Distinguer changement par hasard et changement dû à un avantage reproductif.",
+        "factKey": "genetic-drift-random-frequency-change",
+        "form": "identification",
+        "difficultyRationale": "Concept intermédiaire de dynamique des populations.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-genetics",
+            "locator": "Genetic Drift, premiers paragraphes",
+            "support": "La dérive est un changement de fréquence dû au hasard et affecte plus fortement les petites populations."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-bottleneck-population-reduction-loss-diversity",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Après une catastrophe, seuls quelques chanvres survivent au hasard dans une population. Quel effet génétique est particulièrement attendu ?",
+      "options": [
+        "Un goulot d’étranglement pouvant faire perdre des allèles",
+        "Un effet fondateur lié à la colonisation d’un nouvel espace",
+        "Une sélection directionnelle en faveur d’un allèle précis",
+        "Une hybridation avec une population voisine"
+      ],
+      "answer": 0,
+      "explanation": "Un goulot d’étranglement réduit brutalement l’effectif et peut supprimer des allèles par échantillonnage. Les survivants ne représentent pas forcément toute la diversité de départ.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-genetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Goulot d’étranglement",
+        "subjectKey": "goulot-etranglement",
+        "property": "Perte aléatoire d’allèles après réduction d’effectif",
+        "expectedAnswer": "Un goulot d’étranglement pouvant faire perdre des allèles",
+        "learningObjective": "Comprendre l’effet génétique possible d’une chute démographique.",
+        "factKey": "bottleneck-population-reduction-loss-diversity",
+        "form": "identification",
+        "difficultyRationale": "Un mécanisme intermédiaire reliant effectif et diversité, sans cause sélective imposée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-genetics",
+            "locator": "Bottleneck Effect, paragraphes avant Figure 19.5",
+            "support": "Une catastrophe qui élimine au hasard une grande part des individus peut réduire brutalement le pool génétique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-founder-effect-few-colonists-biased-alleles",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelques graines fondent une nouvelle population de chanvre avec une fréquence d’allèles différente du groupe d’origine. Quel effet est illustré ?",
+      "options": [
+        "Une sélection stabilisante",
+        "Une dépression de consanguinité",
+        "Une dominance incomplète",
+        "L’effet fondateur"
+      ],
+      "answer": 3,
+      "explanation": "Un petit groupe fondateur peut emporter un échantillon non représentatif des allèles d’origine. La nouvelle population démarre alors avec une composition génétique particulière, même sans sélection initiale.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-genetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Effet fondateur",
+        "subjectKey": "effet-fondateur",
+        "property": "Échantillonnage particulier lors d’une fondation",
+        "expectedAnswer": "L’effet fondateur",
+        "learningObjective": "Relier colonisation par peu d’individus et composition allélique de départ.",
+        "factKey": "founder-effect-few-colonists-biased-alleles",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance intermédiaire d’un cas particulier de dynamique des populations.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-genetics",
+            "locator": "Paragraphe Founder Effect après Bottleneck Effect",
+            "support": "Un petit groupe colonisateur peut représenter imparfaitement la diversité du groupe source et modifier les fréquences de la nouvelle population."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-natural-selection-heritable-differential-reproduction",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quel mécanisme caractérise la sélection naturelle dans une population de chanvre ?",
+      "options": [
+        "Le hasard seul décide des allèles transmis",
+        "Des différences héréditaires influencent le succès reproducteur",
+        "Des migrants apportent des allèles à une population",
+        "Des mutations créent de nouvelles versions de séquence"
+      ],
+      "answer": 1,
+      "explanation": "Lorsque des différences héréditaires influencent la survie ou la reproduction, les allèles associés peuvent changer de fréquence. La sélection ne suppose ni intention ni choix conscient des plantes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-adaptive-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sélection naturelle",
+        "subjectKey": "selection-naturelle",
+        "property": "Succès reproducteur différent lié à des traits héréditaires",
+        "expectedAnswer": "Des différences héréditaires influencent le succès reproducteur",
+        "learningObjective": "Comprendre le mécanisme général de sélection sans intention prêtée aux organismes.",
+        "factKey": "natural-selection-heritable-differential-reproduction",
+        "form": "identification",
+        "difficultyRationale": "Notion scolaire générale de l’évolution.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-adaptive-evolution",
+            "locator": "Introduction, contribution au pool génétique de la génération suivante",
+            "support": "La sélection favorise les individus dont les traits héréditaires augmentent la contribution à la génération suivante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-artificial-selection-human-choice-parents",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Qu’est-ce qui caractérise la sélection artificielle d’un caractère du chanvre industriel ?",
+      "options": [
+        "La simple survie différentielle sans choix humain",
+        "Le hasard de transmission des allèles entre générations",
+        "La colonisation d’un milieu par quelques graines",
+        "Le choix humain des reproducteurs selon les caractères recherchés"
+      ],
+      "answer": 3,
+      "explanation": "La sélection artificielle repose sur un choix humain des reproducteurs et des caractères recherchés. Elle peut utiliser des variations déjà présentes, sans être synonyme d’édition du génome.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-plant-breeding"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sélection artificielle",
+        "subjectKey": "selection-artificielle",
+        "property": "Choix humain des caractères et reproducteurs",
+        "expectedAnswer": "Le choix humain des reproducteurs selon les caractères recherchés",
+        "learningObjective": "Distinguer sélection végétale et modification moléculaire directe.",
+        "factKey": "artificial-selection-human-choice-parents",
+        "form": "identification",
+        "difficultyRationale": "Principe accessible de domestication et de sélection des plantes.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-plant-breeding",
+            "locator": "Page 1, premiers paragraphes",
+            "support": "Les sélectionneurs choisissent des parents et les caractères désirés : cette sélection est qualifiée d’artificielle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-evolutionary-fitness-relative-reproductive-contribution",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "En génétique des populations, à quoi correspond la valeur sélective d’un chanvre ?",
+      "options": [
+        "À sa contribution reproductive à la génération suivante",
+        "À sa hauteur maximale seule",
+        "À sa durée de vie seule",
+        "À son nombre de feuilles seul"
+      ],
+      "answer": 0,
+      "explanation": "La valeur sélective, ou fitness, concerne la contribution aux générations suivantes. Une grande taille ou une longue vie ne suffisent pas à prouver un meilleur succès reproducteur.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-adaptive-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Valeur sélective",
+        "subjectKey": "valeur-selective",
+        "property": "Contribution reproductive plutôt que simple vigueur",
+        "expectedAnswer": "À sa contribution reproductive à la génération suivante",
+        "learningObjective": "Comprendre que survivre longtemps et transmettre davantage ne sont pas équivalents.",
+        "factKey": "evolutionary-fitness-relative-reproductive-contribution",
+        "form": "identification",
+        "difficultyRationale": "Un principe accessible malgré un terme technique expliqué par les choix.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-adaptive-evolution",
+            "locator": "Introduction, evolutionary fitness et relative fitness",
+            "support": "La fitness décrit la contribution des individus au pool génétique de la génération suivante, relativement aux autres individus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-selection-response-requires-heritable-variation",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans un exemple végétal, un gène masque l’effet phénotypique d’un gène situé à un autre locus. Quel phénomène cela décrit-il ?",
+      "options": [
+        "L’épistasie",
+        "La dominance complète",
+        "La codominance",
+        "La pléiotropie"
+      ],
+      "answer": 0,
+      "explanation": "L’épistasie est une interaction entre gènes de loci différents : l’un peut masquer l’effet de l’autre. Elle se distingue de la dominance, qui décrit une relation entre allèles d’un même locus.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-mendel-laws"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Épistasie entre loci",
+        "subjectKey": "epistasie",
+        "property": "Masquage de l’effet d’un gène par un autre locus",
+        "expectedAnswer": "L’épistasie",
+        "learningObjective": "Distinguer interaction entre loci et relation de dominance entre allèles d’un même locus.",
+        "factKey": "epistasis-masking-between-different-loci",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire d’interaction génétique, avec distinction des échelles allèle et locus.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-mendel-laws",
+            "locator": "Epistasis, paragraphes de définition et exemple des gènes de pigmentation",
+            "support": "Un gène peut masquer ou interférer avec l’expression phénotypique d’un autre gène ; les exemples mettent en jeu deux loci distincts."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-allele-advantage-depends-on-environment",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Un allèle de chanvre avantageux dans un milieu humide garde-t-il nécessairement le même avantage après un assèchement durable ?",
+      "options": [
+        "Oui, si cet allèle est dominant",
+        "Oui, si cet allèle est fréquent au départ",
+        "Non, l’avantage sélectif dépend du milieu",
+        "Oui, l’avantage d’un allèle est toujours fixe"
+      ],
+      "answer": 2,
+      "explanation": "La valeur d’un caractère dépend des conditions rencontrées. Un changement de milieu peut modifier les avantages relatifs des génotypes, ce qui explique l’intérêt de conserver une diversité de réponses.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Avantage génétique et milieu",
+        "subjectKey": "adaptation-milieu",
+        "property": "Avantage sélectif dépendant des conditions",
+        "expectedAnswer": "Non, l’avantage sélectif dépend du milieu",
+        "learningObjective": "Comprendre qu’un allèle favorable n’est pas universellement supérieur.",
+        "factKey": "allele-advantage-depends-on-environment",
+        "form": "identification",
+        "difficultyRationale": "Une relation écologique simple, sans prédire un allèle réel de tolérance du chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-evolution",
+            "locator": "Processes and Patterns of Evolution, exemple de climat humide puis sec",
+            "support": "Les caractères favorisés peuvent changer quand l’environnement change ; l’exemple oppose besoins et avantages de feuilles dans deux climats."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-evolution-populations-across-generations-not-growth",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quel changement correspond à une évolution génétique d’une population de chanvre ?",
+      "options": [
+        "Une feuille qui se déplie pendant une journée",
+        "Une tige qui s’allonge pendant une semaine",
+        "Une racine qui absorbe de l’eau pendant une heure",
+        "Une fréquence d’allèle qui change entre générations"
+      ],
+      "answer": 3,
+      "explanation": "L’évolution génétique concerne des changements dans les populations au fil des générations. La croissance et le fonctionnement d’un individu ne sont pas, à eux seuls, une évolution de la population.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-population-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Évolution génétique",
+        "subjectKey": "evolution-population",
+        "property": "Changement de fréquence allélique entre générations",
+        "expectedAnswer": "Une fréquence d’allèle qui change entre générations",
+        "learningObjective": "Distinguer développement individuel et évolution d’une population.",
+        "factKey": "evolution-populations-across-generations-not-growth",
+        "form": "identification",
+        "difficultyRationale": "Distinction de base entre deux sens courants du mot évolution.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-population-evolution",
+            "locator": "Population Genetics, définition de evolution",
+            "support": "La génétique des populations définit l’évolution par un changement des fréquences alléliques d’une population."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-stabilizing-selection-favours-intermediate-phenotypes",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Exemple fictif de chanvre : les tailles intermédiaires laissent plus de descendants que les deux extrêmes. Quel type de sélection est illustré ?",
+      "options": [
+        "Une sélection stabilisante",
+        "Une sélection directionnelle",
+        "Une sélection diversifiante",
+        "Une dérive génétique sans avantage de taille"
+      ],
+      "answer": 0,
+      "explanation": "La sélection stabilisante favorise les phénotypes intermédiaires et défavorise les extrêmes. Elle peut ainsi réduire la dispersion d’un caractère sans déplacer fortement sa valeur moyenne.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-adaptive-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sélection stabilisante",
+        "subjectKey": "selection-stabilisante",
+        "property": "Avantage des phénotypes intermédiaires",
+        "expectedAnswer": "Une sélection stabilisante",
+        "learningObjective": "Identifier un mode de sélection à partir de la répartition des succès reproducteurs.",
+        "factKey": "stabilizing-selection-favours-intermediate-phenotypes",
+        "form": "identification",
+        "difficultyRationale": "Classification intermédiaire entre plusieurs modes de sélection à partir d’un exemple fictif.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-adaptive-evolution",
+            "locator": "Stabilizing Selection, premier paragraphe",
+            "support": "La sélection stabilisante favorise un phénotype moyen et sélectionne contre les variations extrêmes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-ultraviolet-can-damage-dna-bases",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quel rayonnement peut directement provoquer des liaisons anormales entre bases voisines de l’ADN dans des cellules végétales ?",
+      "options": [
+        "Les ondes radio FM",
+        "Les infrarouges",
+        "Les micro-ondes",
+        "Les ultraviolets"
+      ],
+      "answer": 3,
+      "explanation": "Les ultraviolets peuvent provoquer des liaisons anormales entre certaines bases voisines de l’ADN. Les cellules disposent de réparations, qui ne corrigent cependant pas toujours toutes les lésions.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-repair"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Lésions de l’ADN par les UV",
+        "subjectKey": "lesions-adn-uv",
+        "property": "Formation de liaisons anormales entre bases voisines",
+        "expectedAnswer": "Les ultraviolets",
+        "learningObjective": "Comprendre un exemple d’origine physique de dommages génétiques.",
+        "factKey": "ultraviolet-can-damage-dna-bases",
+        "form": "identification",
+        "difficultyRationale": "Lien général accessible entre UV et lésions d’ADN, sans paramètres d’exposition.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-repair",
+            "locator": "Nucleotide excision repair, paragraphe des pyrimidine dimers",
+            "support": "L’exposition aux UV peut former des dimères de pyrimidines, notamment de thymine, ensuite pris en charge par la réparation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-mutations-not-directed-by-organism-needs",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Comment s’articulent mutation et sélection lors d’un changement de milieu dans une population de chanvre ?",
+      "options": [
+        "Mutations selon le besoin, puis tri par la sélection",
+        "Mutations sans utilité anticipée, puis tri par la sélection",
+        "Mutations sans utilité anticipée, sans aucun tri possible",
+        "Mutations selon le besoin, sans aucun tri possible"
+      ],
+      "answer": 1,
+      "explanation": "Les mutations ne constituent pas des réponses conçues pour résoudre les besoins de la plante. La sélection peut ensuite favoriser certaines variations ; elle ne commande pas leur apparition ciblée.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Mutation et besoin adaptatif",
+        "subjectKey": "origine-variation",
+        "property": "Absence de mutation orientée par un besoin",
+        "expectedAnswer": "Mutations sans utilité anticipée, puis tri par la sélection",
+        "learningObjective": "Distinguer apparition d’une variation et tri sélectif des variants.",
+        "factKey": "mutations-not-directed-by-organism-needs",
+        "form": "identification",
+        "difficultyRationale": "Correction d’une idée intuitive fréquente sur l’adaptation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-evolution",
+            "locator": "Organisms Evolve on Purpose, exemple de résistance et mutation",
+            "support": "La variation sur laquelle agit la sélection n’apparaît pas intentionnellement en réponse au besoin créé par le milieu."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-snp-variant-at-one-base-position",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne un SNP dans une comparaison de génomes de chanvre ?",
+      "options": [
+        "Une variation à une seule position de base de l’ADN",
+        "Le retournement d’un long segment d’ADN",
+        "Une variation du nombre de répétitions d’un motif",
+        "Une copie supplémentaire d’un gène entier"
+      ],
+      "answer": 0,
+      "explanation": "Un SNP est un polymorphisme portant sur une position nucléotidique. Il peut servir à décrire des différences entre individus, sans être nécessairement responsable d’un caractère visible.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-snp"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "SNP",
+        "subjectKey": "snp",
+        "property": "Variation à une position nucléotidique",
+        "expectedAnswer": "Une variation à une seule position de base de l’ADN",
+        "learningObjective": "Comprendre la dimension d’un variant désigné par un sigle fréquent.",
+        "factKey": "snp-variant-at-one-base-position",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire de diversité génomique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-snp",
+            "locator": "Definition et Narration",
+            "support": "Un SNP est un variant génomique à une position unique de base dans l’ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-microsatellite-short-dna-motif-tandem-repeats",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle structure caractérise un microsatellite d’ADN, utilisé notamment en génétique végétale ?",
+      "options": [
+        "Un court motif répété plusieurs fois à la suite",
+        "Deux séquences éloignées jointes après une cassure",
+        "Une paire de bases différente entre deux individus",
+        "Un segment d’ADN retourné sur le même chromosome"
+      ],
+      "answer": 0,
+      "explanation": "Un microsatellite est constitué d’un petit motif d’ADN répété en tandem. Le nombre de répétitions peut varier entre individus et devenir un repère de variation génétique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-microsatellite"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Microsatellite",
+        "subjectKey": "microsatellite",
+        "property": "Répétitions successives d’un court motif d’ADN",
+        "expectedAnswer": "Un court motif répété plusieurs fois à la suite",
+        "learningObjective": "Identifier une forme de séquence répétée sans protocole de génotypage.",
+        "factKey": "microsatellite-short-dna-motif-tandem-repeats",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire d’architecture génomique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-microsatellite",
+            "locator": "Definition et Narration",
+            "support": "Un microsatellite est une courte séquence répétée successivement dont le nombre de répétitions peut varier."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-chromosomal-inversion-reverses-segment-orientation",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans le génome d’un chanvre, que décrit une inversion chromosomique ?",
+      "options": [
+        "Une copie supplémentaire d’un segment sans retournement",
+        "Un segment réinséré dans le même chromosome en sens inverse",
+        "Une base remplacée par une autre au même endroit",
+        "Un segment déplacé vers un autre chromosome"
+      ],
+      "answer": 1,
+      "explanation": "Une inversion change l’orientation d’un segment dans le chromosome. Elle se distingue d’une duplication ou d’une substitution ; des variations de structure de ce type existent dans le cannabis.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-inversion",
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Inversion chromosomique",
+        "subjectKey": "inversion-chromosomique",
+        "property": "Orientation inversée d’un segment",
+        "expectedAnswer": "Un segment réinséré dans le même chromosome en sens inverse",
+        "learningObjective": "Distinguer une réorganisation de segment d’un changement ponctuel ou d’un gain de copie.",
+        "factKey": "chromosomal-inversion-reverses-segment-orientation",
+        "form": "identification",
+        "difficultyRationale": "Classification intermédiaire d’une variation structurale.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-inversion",
+            "locator": "Definition",
+            "support": "Une inversion est la réinsertion d’un segment dans le même chromosome avec une orientation inversée."
+          },
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "SVs drive innovation, inversions et Figure 3",
+            "support": "L’étude du pangénome documente des inversions dans les génomes de cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-transcriptome-set-of-rna-transcripts",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne le transcriptome d’un tissu de chanvre étudié à un moment donné ?",
+      "options": [
+        "L’ensemble de ses protéines déjà fabriquées",
+        "L’ensemble de ses sucres de réserve",
+        "L’ensemble de ses transcrits d’ARN",
+        "L’ensemble de son ADN chromosomique"
+      ],
+      "answer": 2,
+      "explanation": "Le transcriptome décrit les ARN présents dans le tissu et les conditions considérés. Il peut changer avec l’état du tissu, contrairement à l’idée d’une simple copie figée de tout son génome.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-transcriptome"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Transcriptome",
+        "subjectKey": "transcriptome",
+        "property": "Ensemble des transcrits d’ARN",
+        "expectedAnswer": "L’ensemble de ses transcrits d’ARN",
+        "learningObjective": "Distinguer contenu génétique et messages effectivement présents.",
+        "factKey": "transcriptome-set-of-rna-transcripts",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire de l’expression des gènes.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-transcriptome",
+            "locator": "What is a transcriptome?, définition",
+            "support": "Le transcriptome correspond à la collection des transcrits présents dans une cellule."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-promoter-region-initiates-transcription",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle fonction remplit le promoteur d’un gène de chanvre ?",
+      "options": [
+        "Former la protection terminale d’un chromosome",
+        "Porter le signal de fin de synthèse d’une protéine",
+        "Définir la séquence d’un ARN de transfert mature",
+        "Accueillir des protéines qui initient sa transcription"
+      ],
+      "answer": 3,
+      "explanation": "Le promoteur est une région d’ADN où se fixent des protéines nécessaires au démarrage de la transcription. Une variation de cette région peut donc concerner l’utilisation d’un gène plutôt que la séquence de sa protéine.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-promoter"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Promoteur d’un gène",
+        "subjectKey": "promoteur-gene",
+        "property": "Fixation de la machinerie d’initiation de transcription",
+        "expectedAnswer": "Accueillir des protéines qui initient sa transcription",
+        "learningObjective": "Relier une région régulatrice à l’utilisation de l’information d’un gène.",
+        "factKey": "promoter-region-initiates-transcription",
+        "form": "identification",
+        "difficultyRationale": "Fonction intermédiaire d’un élément du génome.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-promoter",
+            "locator": "Definition",
+            "support": "Le promoteur est une région où se fixent notamment ARN polymérase et facteurs de transcription pour initier la transcription."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-pseudogene-resembles-gene-lost-coding-capacity",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Qu’est-ce qu’un pseudogène, tel qu’on peut en rencontrer dans les familles de gènes du cannabis ?",
+      "options": [
+        "Une séquence ressemblant à un gène mais ayant perdu sa capacité codante",
+        "Une région d’ADN où commence la transcription d’un gène",
+        "Une copie d’ARN correspondant à un gène encore actif",
+        "Une région chromosomique définie par un motif court répété"
+      ],
+      "answer": 0,
+      "explanation": "Un pseudogène peut ressembler fortement à un gène fonctionnel tout en ayant perdu la capacité de coder sa protéine. La ressemblance de séquence ne suffit donc pas à prouver une même fonction.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-pseudogene",
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Pseudogène",
+        "subjectKey": "pseudogene",
+        "property": "Ressemblance et perte de capacité codante",
+        "expectedAnswer": "Une séquence ressemblant à un gène mais ayant perdu sa capacité codante",
+        "learningObjective": "Distinguer présence d’une séquence apparentée et présence d’un gène codant fonctionnel.",
+        "factKey": "pseudogene-resembles-gene-lost-coding-capacity",
+        "form": "identification",
+        "difficultyRationale": "Notion intermédiaire de génomique descriptive.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-pseudogene",
+            "locator": "Definition",
+            "support": "Un pseudogène ressemble structurellement à un gène mais n’est pas capable de coder une protéine."
+          },
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Abstract et ensembles de cannabinoid synthases",
+            "support": "L’article décrit des paralogues pseudogénisés dans les régions de synthases du cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-noncoding-rna-can-regulate-gene-expression",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel rôle un ARN non codant peut-il assurer dans une cellule de chanvre ?",
+      "options": [
+        "Ajouter lui-même des nucléotides lors de la copie de l’ADN",
+        "Participer à la régulation de l’expression de gènes",
+        "Encoder nécessairement une protéine après traduction",
+        "Former le squelette sucre-phosphate d’un chromosome"
+      ],
+      "answer": 1,
+      "explanation": "Non codant signifie que cet ARN ne sert pas de message pour une protéine. Certains ARN non codants remplissent pourtant des fonctions, notamment dans la structure cellulaire ou la régulation des gènes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-transcriptome"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ARN non codant",
+        "subjectKey": "arn-non-codant",
+        "property": "Fonctions autres que coder une protéine",
+        "expectedAnswer": "Participer à la régulation de l’expression de gènes",
+        "learningObjective": "Distinguer absence de message protéique et absence de fonction.",
+        "factKey": "noncoding-rna-can-regulate-gene-expression",
+        "form": "identification",
+        "difficultyRationale": "Notion intermédiaire qui évite de réduire tous les ARN aux messages protéiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-transcriptome",
+            "locator": "What is a transcriptome?, dernier paragraphe",
+            "support": "Certains ARN ne codent pas de protéines mais contribuent à la structure cellulaire et à la régulation des gènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-cannabis-genome-majority-transposable-derived-sequences",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Selon Lynch et al. (2025), quelle catégorie occupe la plus grande part de l’ADN du génome du cannabis ?",
+      "options": [
+        "Les seules régions codantes des protéines",
+        "Les seules séquences de promoteurs des gènes",
+        "Les éléments transposables et leurs séquences associées",
+        "Les seules séquences de télomères et de centromères"
+      ],
+      "answer": 2,
+      "explanation": "L’article décrit un génome très riche en éléments transposables, largement au-delà des seules séquences codantes. Une grande part de l’ADN n’est donc pas un catalogue de gènes de protéines alignés bout à bout.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Paysage du génome du cannabis",
+        "subjectKey": "lynch-2025-paysage-genome",
+        "property": "Majorité de séquences d’éléments transposables",
+        "expectedAnswer": "Les éléments transposables et leurs séquences associées",
+        "learningObjective": "Comprendre qualitativement la place du répétitif dans le génome sans chiffre à mémoriser.",
+        "factKey": "cannabis-genome-majority-transposable-derived-sequences",
+        "form": "identification",
+        "difficultyRationale": "Résultat génomique spécialisé issu d’une publication, avec catégories comparables.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Introduction, haploid cannabis genome and transposable elements",
+            "support": "Les auteurs donnent une proportion d’environ 79 % d’éléments transposables dans le génome haploïde du cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-lynch-cannabis-local-duplications-not-recent-wgd",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle source de diversification génomique Lynch et al. (2025) mettent-ils en avant pour le cannabis ?",
+      "options": [
+        "Des doublements récents répétés de l’ensemble du génome",
+        "Des hybridations récentes suivies d’allopolyploïdie",
+        "Des pertes répétées de chromosomes entiers",
+        "Des duplications locales, dont des duplications en tandem"
+      ],
+      "answer": 3,
+      "explanation": "Les auteurs soulignent l’absence de duplication récente de tout le génome du cannabis. Ils mettent plutôt en avant des duplications locales et en tandem comme sources de diversification génomique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Origine des duplications du cannabis",
+        "subjectKey": "lynch-2025-paysage-genome",
+        "property": "Duplications locales plutôt que doublement récent global",
+        "expectedAnswer": "Des duplications locales, dont des duplications en tandem",
+        "learningObjective": "Distinguer deux échelles de duplication dans l’évolution d’un génome.",
+        "factKey": "lynch-cannabis-local-duplications-not-recent-wgd",
+        "form": "identification",
+        "difficultyRationale": "Rappel spécialisé d’une conclusion comparative sur l’histoire du génome.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Paragraphe Cannabis has not undergone a whole-genome duplication",
+            "support": "Les auteurs opposent les duplications locales et en tandem à une duplication récente de l’ensemble du génome."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-nearby-loci-lower-recombination-usually",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Sur un même chromosome de chanvre, que suggère généralement une faible distance génétique entre deux loci ?",
+      "options": [
+        "Leurs allèles sont moins souvent séparés par recombinaison",
+        "Leurs gènes produisent nécessairement la même protéine",
+        "Leurs allèles sont plus souvent séparés que ceux de loci distants",
+        "Leurs gènes sont nécessairement exprimés au même moment"
+      ],
+      "answer": 0,
+      "explanation": "Deux loci proches sont généralement moins souvent séparés par un événement de recombinaison qu’une paire plus distante. Cela ne prouve pas que leurs gènes ont la même fonction ou sont exprimés ensemble.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-linkage"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Distance génétique et liaison",
+        "subjectKey": "liaison-genetique",
+        "property": "Faible recombinaison entre loci génétiquement proches",
+        "expectedAnswer": "Leurs allèles sont moins souvent séparés par recombinaison",
+        "learningObjective": "Interpréter une proximité génétique sans en déduire une fonction commune.",
+        "factKey": "nearby-loci-lower-recombination-usually",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme spécialisé de liaison et recombinaison, distinct d’une distance physique universelle.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-linkage",
+            "locator": "Genetic Maps, hypothèse de Sturtevant et paragraphe suivant",
+            "support": "Les allèles proches ont davantage tendance à être hérités ensemble ; la fréquence de recombinaison sert à définir leur distance génétique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-meiosis-one-homologs-two-sister-chromatids",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quels éléments se séparent respectivement lors de la première puis de la seconde division méiotique du chanvre ?",
+      "options": [
+        "Chromatides sœurs, puis chromosomes homologues",
+        "Chromosomes homologues, puis chromatides sœurs",
+        "Chromosomes homologues dans chacune des deux divisions",
+        "Chromatides sœurs dans chacune des deux divisions"
+      ],
+      "answer": 1,
+      "explanation": "La première division sépare les chromosomes homologues. La seconde sépare leurs chromatides sœurs ; cette succession participe à la production de noyaux portant un seul jeu chromosomique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-meiosis"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Deux divisions méiotiques",
+        "subjectKey": "meiose",
+        "property": "Ordre de séparation des homologues et chromatides",
+        "expectedAnswer": "Chromosomes homologues, puis chromatides sœurs",
+        "learningObjective": "Distinguer les deux événements chromosomiques de la méiose.",
+        "factKey": "meiosis-one-homologs-two-sister-chromatids",
+        "form": "identification",
+        "difficultyRationale": "Organisation spécialisée de deux divisions successives.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-meiosis",
+            "locator": "Meiosis I et Meiosis II",
+            "support": "Les homologues sont séparés lors de la première division et les chromatides sœurs lors de la seconde."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-inbreeding-depression-recessive-deleterious-expression",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel mécanisme peut contribuer à la dépression de consanguinité du chanvre, selon Garcia-de Heer et al. (2026) ?",
+      "options": [
+        "Plus d’homozygotie et moins d’expression des récessifs délétères",
+        "Moins d’homozygotie et plus d’expression des récessifs délétères",
+        "Plus d’homozygotie et plus d’expression des récessifs délétères",
+        "Moins d’homozygotie et moins d’expression des récessifs délétères"
+      ],
+      "answer": 2,
+      "explanation": "La consanguinité peut réunir deux copies d’allèles délétères auparavant masqués chez des hétérozygotes. Leur expression peut réduire la performance ; ce n’est pas le seul mécanisme possible.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn04-cannabis-inbreeding-2026"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Mécanisme de dépression de consanguinité",
+        "subjectKey": "consanguinite",
+        "property": "Expression homozygote d’allèles délétères récessifs",
+        "expectedAnswer": "Plus d’homozygotie et plus d’expression des récessifs délétères",
+        "learningObjective": "Relier un risque de consanguinité au comportement d’allèles récessifs.",
+        "factKey": "inbreeding-depression-recessive-deleterious-expression",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme génétique spécialisé rappelé dans une publication sur cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+            "locator": "Introduction, paragraphe First, it increases homozygosity",
+            "support": "Les auteurs expliquent que l’homozygotie peut rendre visibles les effets d’allèles délétères récessifs auparavant masqués."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn04-lynch-y-sdr-gene-poor-high-methylation",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Chez Lynch (2025), quel profil caractérise la SDR, région déterminant le sexe du chromosome Y du cannabis ?",
+      "options": [
+        "Riche en gènes et plus faiblement méthylée",
+        "Pauvre en gènes et plus faiblement méthylée",
+        "Riche en gènes et plus fortement méthylée",
+        "Pauvre en gènes et plus fortement méthylée"
+      ],
+      "answer": 3,
+      "explanation": "La région déterminant le sexe du Y est décrite comme pauvre en gènes, avec une méthylation accrue. Ce paysage régional est différent du simple nombre de chromosomes ou de leur rôle dans le sexe.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Paysage de la SDR du Y",
+        "subjectKey": "cannabis-y-recombination-regions",
+        "property": "Pauvreté génique et méthylation accrue de la SDR",
+        "expectedAnswer": "Pauvre en gènes et plus fortement méthylée",
+        "learningObjective": "Associer une région du chromosome sexuel à ses propriétés génomiques observées.",
+        "factKey": "lynch-y-sdr-gene-poor-high-methylation",
+        "form": "identification",
+        "difficultyRationale": "Rappel expert conjoint de deux propriétés, annotation génique et méthylation, d’une sous-région précise du Y dans le pangénome de Lynch.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Section sur le chromosome Y et les éléments transposables, paragraphe On the Y chromosome",
+            "support": "La SDR du Y présente une méthylation accrue, cohérente avec sa nature dégénérée et pauvre en gènes."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cn04-mendel-traits",
+      "title": "Biology 2e — 12.2 Characteristics and Traits",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Dominant and Recessive Alleles ; Punnett Square ; Incomplete Dominance ; Codominance ; Multiple Alleles",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Dominant and Recessive Alleles ; Punnett Square ; Incomplete Dominance ; Codominance ; Multiple Alleles",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-mendel-laws",
+      "title": "Biology 2e — 12.3 Laws of Inheritance",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/12-3-laws-of-inheritance",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Equal Segregation of Alleles ; répartition des allèles dans les gamètes",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Equal Segregation of Alleles ; répartition des allèles dans les gamètes",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-meiosis",
+      "title": "Biology 2e — 11.1 The Process of Meiosis",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction ; Meiosis I ; Meiosis II",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; Meiosis I ; Meiosis II",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-population-evolution",
+      "title": "Biology 2e — 19.1 Population Evolution",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Population Genetics, fréquences alléliques et gene pool",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Population Genetics, fréquences alléliques et gene pool",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-population-genetics",
+      "title": "Biology 2e — 19.2 Population Genetics",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Genetic variability ; Genetic Drift ; Bottleneck Effect et Founder Effect",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Genetic variability ; Genetic Drift ; Bottleneck Effect et Founder Effect",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-adaptive-evolution",
+      "title": "Biology 2e — 19.3 Adaptive Evolution",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction, contribution reproductive et fitness",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, contribution reproductive et fitness",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-evolution",
+      "title": "Biology 2e — 18.1 Understanding Evolution",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Processes and Patterns of Evolution ; Organisms Evolve on Purpose",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Processes and Patterns of Evolution ; Organisms Evolve on Purpose",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-polygenic",
+      "title": "Polygenic Trait — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Polygenic-Trait",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., ressource institutionnelle évolutive",
+      "passage": "Definition, caractère influencé par plusieurs gènes",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, caractère influencé par plusieurs gènes",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-snp",
+      "title": "Single Nucleotide Polymorphisms (SNPs) — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Single-Nucleotide-Polymorphisms-SNPs",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., ressource institutionnelle évolutive",
+      "passage": "Definition, variant à une position nucléotidique",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, variant à une position nucléotidique",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-microsatellite",
+      "title": "Microsatellite — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Microsatellite",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., ressource institutionnelle évolutive",
+      "passage": "Definition et Narration, motif répété et variation du nombre de répétitions",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition et Narration, motif répété et variation du nombre de répétitions",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-inversion",
+      "title": "Inversion — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Inversion",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., ressource institutionnelle évolutive",
+      "passage": "Definition, réorientation d’un segment sur le même chromosome",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, réorientation d’un segment sur le même chromosome",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-promoter",
+      "title": "Promoter — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Promoter",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., ressource institutionnelle évolutive",
+      "passage": "Definition, fixation des protéines initiant la transcription",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, fixation des protéines initiant la transcription",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-pseudogene",
+      "title": "Pseudogene — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Pseudogene",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., ressource institutionnelle évolutive",
+      "passage": "Definition, ressemblance avec un gène et perte de capacité codante",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, ressemblance avec un gène et perte de capacité codante",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-transcriptome",
+      "title": "Transcriptome Fact Sheet",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/about-genomics/fact-sheets/Transcriptome-Fact-Sheet",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "2020-08-17, mise à jour affichée",
+      "passage": "What is a transcriptome? ; ARN ne codant pas de protéines ; What can a transcriptome tell us?",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "What is a transcriptome? ; ARN ne codant pas de protéines ; What can a transcriptome tell us?",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-pleiotropy",
+      "title": "Genetic Pleiotropy — MeSH",
+      "organization": "National Library of Medicine, NIH",
+      "url": "https://www.ncbi.nlm.nih.gov/mesh?term=Genetic+Pleiotropy",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction du vocabulaire MeSH",
+      "published": "2011, année d’introduction du terme",
+      "passage": "Définition principale, MeSH D058685",
+      "access": "official-page",
+      "documentKind": "Vocabulaire institutionnel de génétique",
+      "limitation": "Notion générale applicable au chanvre ; aucune donnée humaine n’est présentée comme mesure propre au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Définition principale, MeSH D058685",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-plant-breeding",
+      "title": "What is Plant Breeding?",
+      "organization": "National Agricultural Library, USDA",
+      "url": "https://www.nal.usda.gov/sites/default/files/page-files/What_is_a_Plant_Breeder_NAL.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Vanessa S. Gordon",
+      "published": "s.d.",
+      "passage": "Page 1, premiers paragraphes, choix des parents et sélection artificielle",
+      "access": "full-text",
+      "documentKind": "Fiche institutionnelle de sélection végétale",
+      "limitation": "Principe de sélection artificielle ; aucun protocole de croisement ni conseil de production psychoactive n’est repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Page 1, premiers paragraphes, choix des parents et sélection artificielle",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-mating-2022",
+      "title": "Mating system and speciation I: Accumulation of genetic incompatibilities in allopatry",
+      "organization": "PLOS Genetics ; Université de Rennes, CNRS et University of Oslo",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9799327/",
+      "verifiedAt": "2026-11-16",
+      "author": "Lucas Marie-Orleach, Christian Brochmann et Sylvain Glémin",
+      "published": "2022-12-15",
+      "passage": "Introduction, effets de l’autofécondation sur l’homozygotie",
+      "access": "full-text",
+      "documentKind": "Article de recherche théorique primaire",
+      "limitation": "Modèles de génétique des populations ; aucune prédiction numérique propre à un cultivar de chanvre n’en est tirée.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, effets de l’autofécondation sur l’homozygotie",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn04-cannabis-inbreeding-2026",
+      "title": "Weeding out variability: a proof-of-concept for producing uniform F1 hybrid Cannabis sativa L. using single-seed descent",
+      "organization": "Horticulture Research ; Southern Cross University",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13188225/",
+      "verifiedAt": "2026-11-16",
+      "author": "Lennard Garcia-de Heer, Jos Mieog, Adam Burn, Matthew Nolan, Lei Liu, Stephen Manansala-Siazon et Tobias Kretzschmar",
+      "published": "2026-02-19",
+      "passage": "Introduction, homozygotie et expression des allèles délétères ; Abstract, hétérosis et comparaison aux moyennes parentales",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire",
+      "limitation": "Seuls les concepts génétiques descriptifs sont repris ; aucun traitement, dosage, méthode de production de graines ni optimisation de culture n’est repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, homozygotie et expression des allèles délétères ; Abstract, hétérosis et comparaison aux moyennes parentales",
+        "result": "Passage utile effectivement ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    }
+  ]
+}

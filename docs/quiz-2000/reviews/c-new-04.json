@@ -1,0 +1,1023 @@
+{
+  "batchId": "c-new-04",
+  "reviewer": "e_engine_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16T21:13:14.141Z",
+  "scope": "Relecture indépendante des 40 questions complètes, de leurs choix, explications, niveaux, formes, subjectKey, sources et faits voisins. Version AA × aa corrigée pendant la revue lue et approuvée. Aucune écriture de lot auteur ou d’actifs.",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "factualResult": "Appuis factuels confirmés. Demandes : éviter la tautologie dominante, relever un niveau intermédiaire et un niveau expert, remplacer un noyau factuel déjà testé dans le lot. La correction des options AA/aa est approuvée. Le remplacement par l’épistasie est confirmé après nouvelle lectureF du passage ; aucune demande en attente.",
+    "sourceResult": "22 références couvertes, dont les 18 nouveaux documents : passages utiles réellement ouverts et lus, pas une lecture intégrale revendiquée de tous les ouvrages. Pour la référence Pollination and Fertilization, passages inchangés déjà lus le 16 novembre lors des revues précédentes réutilisés explicitement. Les trois autres références réutilisées ont de nouveaux passages lus ici.",
+    "levels": "Versions actuelles : {\"1\":11,\"2\":23,\"3\":5,\"4\":1}. Estimation éditoriale fondée sur la tâche, sans quota artificiel.",
+    "forms": "38 identifications et deux déductions réelles : croisement AA × aa et fraction de copies alléliques. Pas de quota artificiel de formes.",
+    "subjectKeys": "Autofécondation, consanguinité et méiose partagent chacun une clé entre leurs propriétés. Les deux faits de paysage génomique Lynch partagent leur objet ; la SDR conserve la clé commune du pilote. Les différents modèles d’expression allélique testent des relations distinctes.",
+    "hempApplication": "Les exemples mendéliens sont explicitement théoriques ou fictifs ; aucun caractère réel du cannabis n’est arbitrairement déclaré monogénique ou dominant. Les définitions institutionnelles sont appliquées comme notions générales, les observations du cannabis restent attribuées aux publications.",
+    "finalNote": "Les39autres validations et arbitrages root sont préservés exactement. Seul le nouveau fait épistasie a reçu sa première lecture indépendanteF avec preuve ciblée et empreintes complètes."
+  },
+  "sourceAudit": [
+    {
+      "sourceId": "q2-cn04-mendel-traits",
+      "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+      "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-mendel-laws",
+      "url": "https://openstax.org/books/biology-2e/pages/12-3-laws-of-inheritance",
+      "sourceHash": "2bc09d5d402a9de08a81b117e568dc6e53688e5f5806aea8128cd1209658b470",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-polygenic",
+      "url": "https://www.genome.gov/genetics-glossary/Polygenic-Trait",
+      "sourceHash": "f1c033db5e3e176b5a2e736be0bbb1f54f0480c668e8cebe54f448310567dc83",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-pleiotropy",
+      "url": "https://www.ncbi.nlm.nih.gov/mesh?term=Genetic+Pleiotropy",
+      "sourceHash": "f237b51ba979d777e0cc769ac4dca2086018c80d677a07b651a08e3faf274efc",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-meiosis",
+      "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+      "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "bf-reproduction-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+      "checkedAt": "2026-11-16",
+      "basis": "Lecture réelle du 16 novembre réutilisée pour pollinisation/fécondation ; passage et objet source inchangés."
+    },
+    {
+      "sourceId": "q2-cn04-population-genetics",
+      "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+      "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-mating-2022",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9799327/",
+      "sourceHash": "7123a21e98232b1d9935f2087ac92962dd8050eee7573d2761604ce1330a0372",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13188225/",
+      "sourceHash": "ba26510769404ee8c1c0eed808db12f5a72a07fd8b9ed99ca41c79e570ea52c5",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-population-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+      "sourceHash": "71ab59bf80e8460138caab5cc7a7cc365be7a888092022ba3cdc2e8e3b0fd87a",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-adaptive-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+      "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-plant-breeding",
+      "url": "https://www.nal.usda.gov/sites/default/files/page-files/What_is_a_Plant_Breeder_NAL.pdf",
+      "sourceHash": "0eb463e63ebecc8faab31933f777d6b13854f94398b8d0b36d5acc7367627d57",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+      "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn03-dna-repair",
+      "url": "https://openstax.org/books/biology-2e/pages/14-6-dna-repair",
+      "sourceHash": "b7c039ab2d7019c427dbc0c35e8be7740401e186375b5eafe8d4d820f830aab4",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-snp",
+      "url": "https://www.genome.gov/genetics-glossary/Single-Nucleotide-Polymorphisms-SNPs",
+      "sourceHash": "80f0f22d711baf8db80955a250f79a6334b2b876885ea9891d3af0ad59e66f91",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-microsatellite",
+      "url": "https://www.genome.gov/genetics-glossary/Microsatellite",
+      "sourceHash": "baf73e588867a58370d56e1810434b4338282d8b8a3656d741d7ac4ee715caa1",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-inversion",
+      "url": "https://www.genome.gov/genetics-glossary/Inversion",
+      "sourceHash": "c4da067b8d52c47ba35e819828aad9a4b744b618f05b5c11646ac4d843a4cbd4",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cfix-lynch-pangenome-2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+      "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-transcriptome",
+      "url": "https://www.genome.gov/about-genomics/fact-sheets/Transcriptome-Fact-Sheet",
+      "sourceHash": "aeda43295d4fc754e3b0413d4d15c9c12c5300024076af12c4ded9dd06b54f15",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-promoter",
+      "url": "https://www.genome.gov/genetics-glossary/Promoter",
+      "sourceHash": "277e5a688d8fc9a6c95992ee234fa0782267741d91f40bd7209d62b26b9d95f4",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn04-pseudogene",
+      "url": "https://www.genome.gov/genetics-glossary/Pseudogene",
+      "sourceHash": "1e155eed24469f3ff05bb3cd591f8d0281bcc1e471de8b83b894ef90b1390745",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn03-linkage",
+      "url": "https://openstax.org/books/biology-2e/pages/13-1-chromosomal-theory-and-genetic-linkage",
+      "sourceHash": "ad5c7cf2fa2f2015d0e54eefc7a25e6cccadea19b2ddb05607b37a9ef132c45e",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; passages utiles effectivement lus pendant cette revue."
+    }
+  ],
+  "deduplication": {
+    "method": "Index compact recherché par notions et propriétés ; comparaison de l’ensemble énoncé/réponse/propriété des 40 objets C03 avec C04, puis coordination avec f_existing_audit sans refaire son audit documentaire. FactKey comparés dans tous les lots.",
+    "result": "Aucun factKey identique trouvé hors du lot. Recouvrement interne retenu entre les deux questions sur le rôle nécessaire des différences héréditaires.",
+    "overlap": [
+      {
+        "ids": [
+          "hemp-q2-cn04-natural-selection-heritable-differential-reproduction",
+          "hemp-q2-cn04-selection-response-requires-heritable-variation"
+        ],
+        "decision": "Conserver la première définition du mécanisme et remplacer le second noyau factuel, déjà contenu dans sa réponse correcte."
+      }
+    ],
+    "arbitrations": [
+      "Polygénie (plusieurs gènes vers un caractère) et pléiotropie (un gène vers plusieurs caractères) ne sont pas une simple inversion question-réponse : ce sont deux architectures biologiques différentes.",
+      "Dérive, goulot d’étranglement et effet fondateur distinguent processus aléatoire général, catastrophe et colonisation ; ils ne réinterrogent pas un même événement nommé autrement.",
+      "Définition de l’élément transposable C03 et part majoritaire des TE C04 sont distinctes. Définition de duplication C03 et mécanismes locaux de diversification chez Lynch C04 sont distincts.",
+      "Structures homologues/sœurs de C03, réduction méiotique et ordre des divisions de C04 sont des propriétés distinctes.",
+      "Nature de la méthylation et régulation épigénétique de C03 diffèrent du profil régional de la SDR dans C04 ; la SDR conserve le sujet commun du pilote.",
+      "Transcriptome distinct du génome et de la transcription ; F a demandé dans C03 de retirer la définition incidente du transcriptome de l’explication genome-entire-dna-set pour éviter de révéler cette réponse.",
+      "La définition SNP est distincte du choix chronologique de marqueurs et des limites de validation du panel CREA. Autofécondation et consanguinité générales ne répètent pas une étape ou un risque historique annoncé par un obtenteur."
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-q2-cn04-complete-dominance-heterozygote-phenotype",
+      "status": "approved",
+      "comment": "Root final arbitration after independent E review: Complete dominance now compares explicit AA/Aa/aa genotypes and phenotypes, as requested by E; no circular dominant-produces-dominant answer. Same verified fact and level1 retained.",
+      "contentHash": "32ad8469f70556858eba679796c922cad025d4bb48cd2386f82035e1084bf3f5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Dominant and Recessive Alleles",
+          "result": "Équivalence phénotypique des homozygotes dominants et hétérozygotes confirmée.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn04-aa-by-aa-homozygous-parents-all-heterozygous",
+      "status": "approved",
+      "comment": "Version corrigée lue : descriptions explicites et comparables, sans confusion de casse ni hypothèse de dominance. Déduction au locus correctement bornée ; niveau 2 acceptable.",
+      "contentHash": "217fdf159d1d619a8176b9bf270ffff2d9c7b4a9c908a85ead1e0cf4b159fa68",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Introduction, Genotypes and Phenotypes, paragraphes sur parents homozygotes contrastés et F1 hétérozygote (lignes 37–38)",
+          "result": "Croisement de parents homozygotes contrastés donnant des hétérozygotes confirmé.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-heterozygote-segregates-two-alleles-equally",
+      "status": "approved",
+      "comment": "Ségrégation égale formulée comme attente et probabilité ; distincte d’un rapport de phénotypes parmi les descendants.",
+      "contentHash": "f4fa65c956ca560146e7c61b093575590f1ad0691523011180156ad0d9004cff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-laws",
+          "url": "https://openstax.org/books/biology-2e/pages/12-3-laws-of-inheritance",
+          "locator": "Equal Segregation of Alleles",
+          "result": "Séparation égale des deux allèles dans les gamètes confirmée.",
+          "sourceHash": "2bc09d5d402a9de08a81b117e568dc6e53688e5f5806aea8128cd1209658b470",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-polygenic-trait-influenced-by-several-genes",
+      "status": "approved",
+      "comment": "Plusieurs gènes pour un caractère distinct de plusieurs effets d’un gène ; notion générale correctement appliquée.",
+      "contentHash": "734d1d8efdb80d27cc787e771fe9553efadbc54850addcf8fad8a6603a3ebd70",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-polygenic",
+          "url": "https://www.genome.gov/genetics-glossary/Polygenic-Trait",
+          "locator": "Definition",
+          "result": "Caractère influencé par au moins deux gènes confirmé.",
+          "sourceHash": "f1c033db5e3e176b5a2e736be0bbb1f54f0480c668e8cebe54f448310567dc83",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-pleiotropy-one-gene-multiple-traits",
+      "status": "approved",
+      "comment": "Pléiotropie distincte de polygénie, codominance et polyploïdie ; niveau 2 terminologique adapté.",
+      "contentHash": "2e4bb7836f4e395b47d6e24e956d81fc741f74b644fb2c5780d17c69f7bf4c47",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-pleiotropy",
+          "url": "https://www.ncbi.nlm.nih.gov/mesh?term=Genetic+Pleiotropy",
+          "locator": "Définition MeSH D058685",
+          "result": "Plusieurs effets phénotypiques d’un même gène confirmés.",
+          "sourceHash": "f237b51ba979d777e0cc769ac4dca2086018c80d677a07b651a08e3faf274efc",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-incomplete-dominance-intermediate-heterozygote",
+      "status": "approved",
+      "comment": "Modèle fictif explicite ; dominance incomplète définie par le phénotype, sans mélange irréversible des allèles.",
+      "contentHash": "824e91064a6234ede79db9ef7677b7759154bb978d73c059efd31c90679d9448",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Incomplete Dominance",
+          "result": "Phénotype intermédiaire de l’hétérozygote confirmé.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-codominance-both-allelic-products-detectable",
+      "status": "approved",
+      "comment": "Coexistence des produits décrite au niveau de l’expression mesurée ; aucune codominance d’un caractère réel du chanvre déduite.",
+      "contentHash": "8e28d8ba138d71850f79b5a5051c8d4e2dfb8bab165e92334695138de7d4fddf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Codominance",
+          "result": "Expression simultanée des deux produits alléliques confirmée.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-meiosis-reduces-chromosome-set-number",
+      "status": "approved",
+      "comment": "Réduction des jeux chromosomiques correcte ; l’explication préserve le rôle des gamétophytes végétaux.",
+      "contentHash": "daa719aaa60703e8f38dd5e050a7d0990bb520530445cd31e896bb8f3e1f34b9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "locator": "Introduction, définition de meiosis",
+          "result": "Réduction diploïde vers haploïde confirmée.",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-self-fertilization-gametes-same-individual",
+      "status": "approved",
+      "comment": "Origine commune des gamètes distincte de l’absence de fécondation ou du clonage ; niveau 1 acceptable.",
+      "contentHash": "cbaaabf7e2f24d5bc1abf4ee7cde10b934dc9eccb82f1734e9092c74ac65709f",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Pollination, définition de self-pollination et fertilization",
+          "result": "Autopollinisation au sein d’un individu et fécondation distinguées.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture réelle du 16 novembre réutilisée ; passage et objet source inchangés."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-inbreeding-mating-related-individuals",
+      "status": "approved",
+      "comment": "Parenté des reproducteurs correctement définie ; elle n’est pas assimilée à une pathologie obligatoire.",
+      "contentHash": "ba8e588245411a7dfe6a76bb460717be5926a9e0a7b0df1a04f6b193b3f62e59",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-genetics",
+          "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+          "locator": "Genetic variability, dernier paragraphe",
+          "result": "Consanguinité définie comme reproduction entre apparentés.",
+          "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-repeated-selfing-increases-homozygosity",
+      "status": "approved",
+      "comment": "Conséquence sur homozygotie étayée par le modèle général et par la littérature cannabis ; sans garantie de vigueur.",
+      "contentHash": "8b8b7f61b88dff2accc6697ef6ee835c301a7c7a5ecfdcc0fd9375cd61ba5b1d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mating-2022",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9799327/",
+          "locator": "Introduction, troisième effet du selfing",
+          "result": "Augmentation d’homozygotie par autofécondation confirmée.",
+          "sourceHash": "7123a21e98232b1d9935f2087ac92962dd8050eee7573d2761604ce1330a0372",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13188225/",
+          "locator": "Introduction, paragraphe sur self-fertilization-induced inbreeding",
+          "result": "Effet d’autofécondation sur homozygotie repris pour le cannabis.",
+          "sourceHash": "ba26510769404ee8c1c0eed808db12f5a72a07fd8b9ed99ca41c79e570ea52c5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-heterosis-performance-above-midparent",
+      "status": "approved",
+      "comment": "Hétérosis moyen-parental correctement borné à un caractère et une référence ; pas de supériorité universelle promise.",
+      "contentHash": "fce78fe3a096789d9f3b272f336204773f1f6c76c8bb8d81fead37281cce21dd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13188225/",
+          "locator": "Abstract, comparaison des F1 à leurs midparents",
+          "result": "Gains par rapport aux moyennes parentales qualifiés d’hétérosis.",
+          "sourceHash": "ba26510769404ee8c1c0eed808db12f5a72a07fd8b9ed99ca41c79e570ea52c5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-gene-pool-all-alleles-population",
+      "status": "approved",
+      "comment": "Objet collectif distinct du génome individuel et de ses seuls allèles visibles ; niveau 2 adapté.",
+      "contentHash": "b28544958cf638e181de57f865795c6b265272a9937b375e7d8de4e938b56d26",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+          "locator": "Population Genetics, définition de gene pool",
+          "result": "Pool défini comme somme des allèles de la population.",
+          "sourceHash": "71ab59bf80e8460138caab5cc7a7cc365be7a888092022ba3cdc2e8e3b0fd87a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-population-can-have-more-than-two-alleles-per-locus",
+      "status": "approved",
+      "comment": "Root final arbitration after independent E review: Level2 and rationale now reflect the locus/diploidy prerequisites and individual/population distinction requested by E; factual body and source unchanged.",
+      "proposedLevel": 2,
+      "contentHash": "93ae2c426eceecaf8773b397f887b24904dff3f7e2829aae96da25be27e4977b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Multiple Alleles",
+          "result": "Deux allèles individuels et davantage dans la population explicitement distingués.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn04-allele-frequency-copies-denominator",
+      "status": "approved",
+      "comment": "Calcul simple à données fictives ; bon dénominateur et explication utile, niveau 1 cohérent.",
+      "contentHash": "53708282ba48b77c23edad4bd49095f1a9ab18929036ad46f158e4e6b69fd42c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+          "locator": "Population Genetics, définition et exemple de allele frequency",
+          "result": "Copies de l’allèle divisées par toutes les copies du locus confirmées.",
+          "sourceHash": "71ab59bf80e8460138caab5cc7a7cc365be7a888092022ba3cdc2e8e3b0fd87a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-genetic-drift-random-frequency-change",
+      "status": "approved",
+      "comment": "Hasard de fréquence distinct des sélections ; petite population correctement mentionnée sans attribuer un avantage à l’allèle.",
+      "contentHash": "b9c26652533b4aa54cf9a28b294c1be068fb8d6ab81f9f978950f0dde72e3073",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-genetics",
+          "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+          "locator": "Genetic Drift, premiers paragraphes",
+          "result": "Variation par hasard et sensibilité des petites populations confirmées.",
+          "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-bottleneck-population-reduction-loss-diversity",
+      "status": "approved",
+      "comment": "Échantillonnage après catastrophe distinct de la fondation d’un nouveau groupe ; perte d’allèles présentée comme possible.",
+      "contentHash": "4fdfd05c748d1363ed821e1cc32d8ccd5ab6c3a58233eadbe719905b5123382c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-genetics",
+          "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+          "locator": "Bottleneck Effect, paragraphes avant Figure 19.5",
+          "result": "Perte de pool génétique après catastrophe aléatoire confirmée.",
+          "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-founder-effect-few-colonists-biased-alleles",
+      "status": "approved",
+      "comment": "Petit groupe fondateur et fréquence initiale particulière correctement associés ; aucune sélection obligatoire inventée.",
+      "contentHash": "35f7b041f30daaabde3ae2a39c5577c044e3297ee7cca8ee7cf5db821a5bac12",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-genetics",
+          "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+          "locator": "Paragraphe Founder Effect après Bottleneck Effect",
+          "result": "Échantillonnage particulier du petit groupe colonisateur confirmé.",
+          "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-natural-selection-heritable-differential-reproduction",
+      "status": "approved",
+      "comment": "Succès reproducteur lié aux différences héréditaires correctement identifié parmi des mécanismes évolutifs comparables.",
+      "contentHash": "e73d56ba66e63051888399a3dd1156cac9c4efd0e25b249d64e4797b9baee6ff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Introduction, contribution au pool génétique de la génération suivante",
+          "result": "Succès reproducteur et caractères héréditaires reliés à la sélection.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-artificial-selection-human-choice-parents",
+      "status": "approved",
+      "comment": "Choix humain des reproducteurs distingué de sélection naturelle, dérive et effet fondateur ; aucun protocole pratique.",
+      "contentHash": "85e1b85600a823bce4e8ebf778d7fbc1f884c76fe9c62786d9e68069f6810cef",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-plant-breeding",
+          "url": "https://www.nal.usda.gov/sites/default/files/page-files/What_is_a_Plant_Breeder_NAL.pdf",
+          "locator": "Page 1, premiers paragraphes",
+          "result": "Sélection artificielle et choix humain des parents explicités.",
+          "sourceHash": "0eb463e63ebecc8faab31933f777d6b13854f94398b8d0b36d5acc7367627d57",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-evolutionary-fitness-relative-reproductive-contribution",
+      "status": "approved",
+      "comment": "Valeur sélective correctement distinguée de taille, longévité et nombre de feuilles seuls ; contribution reproductive utile.",
+      "contentHash": "ffd509745ff4038e12bb01fd5c3d4783ce394810feb06477065546f335b41199",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Introduction, evolutionary fitness et relative fitness",
+          "result": "Contribution au pool de la génération suivante définie comme fitness.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-selection-response-requires-heritable-variation",
+      "status": "approved",
+      "reviewer": "f_existing_audit",
+      "comment": "Nouveau fait réellement distinct : masquage entre loci (épistasie), distingué des relations entre allèles d’un même locus et de la pléiotropie. L’exemple végétal est conceptuel, sans propriété mendélienne arbitrairement attribuée au chanvre. Quatre concepts comparables, une seule réponse, niveau2 et forme identification justifiés.",
+      "contentHash": "bcfa57726864ab97624b3a5af3ab66dbad50f44815fa4f18c2e1a47080d59729",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-laws",
+          "url": "https://openstax.org/books/biology-2e/pages/12-3-laws-of-inheritance",
+          "locator": "§12.3 Epistasis, lignes126–133 ; exemple végétal de courge à deux lociW/Y",
+          "result": "Passage directement ouvert et lu par F : un gène peut masquer/interférer avec l’expression d’un autre ; exemples à loci séparés, dont fruit de courge. L’explication distingue correctement dominance au même locus et interaction entre loci.",
+          "sourceHash": "2bc09d5d402a9de08a81b117e568dc6e53688e5f5806aea8128cd1209658b470",
+          "checkedAt": "2026-11-16",
+          "reader": "f_existing_audit",
+          "consultationBasis": "Nouvelle lecture indépendante du passageEpistasis pour le nouveau fait ; le locator initial de la notice sur ségrégation n’est pas prétendu suffisant."
+        }
+      ],
+      "previousDecision": {
+        "id": "hemp-q2-cn04-selection-response-requires-heritable-variation",
+        "status": "changes_requested",
+        "comment": "La condition de différences transmissibles est déjà la composante centrale de la bonne réponse à natural-selection-heritable-differential-reproduction. Ce second énoncé interroge le même noyau factuel sous une autre forme ; remplacer ce fait plutôt que changer sa clé.",
+        "requestedChanges": [
+          "Remplacer le fait testé par un fait réellement distinct et sourcé, ou retirer cette entrée : la nécessité d’une variation héréditaire est déjà testée dans hemp-q2-cn04-natural-selection-heritable-differential-reproduction. Un changement de formulation, de vocabulaire ou de factKey ne résout pas ce recouvrement."
+        ],
+        "contentHash": "a4fce6adf3abf261431db234041565597e55ea97cb3ea48ed59c8df7aeba31df",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-cn04-evolution",
+            "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+            "locator": "Processes and Patterns of Evolution, premier paragraphe",
+            "result": "Variation à base génétique requise pour un changement transmis confirmée.",
+            "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+            "checkedAt": "2026-11-16",
+            "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+          }
+        ]
+      },
+      "reviewedAt": "2026-11-16T21:13:14.139Z"
+    },
+    {
+      "id": "hemp-q2-cn04-allele-advantage-depends-on-environment",
+      "status": "approved",
+      "comment": "Dépendance au milieu correctement illustrée sans prétendre documenter un allèle réel de tolérance du chanvre.",
+      "contentHash": "46ce95b36ff5b7bcdb5fcac2ad3d4a7e81636bcedd622ca5b1d8f833c0f27d20",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+          "locator": "Processes and Patterns of Evolution, exemple de climat humide puis sec",
+          "result": "Exemple humide puis sec illustrant un avantage variable confirmé.",
+          "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-evolution-populations-across-generations-not-growth",
+      "status": "approved",
+      "comment": "Évolution de population et fonctionnement individuel correctement distingués ; niveau 1 accessible.",
+      "contentHash": "144b4041c07011df1f0cf6180c2a47de19f9869e242cae1494a1f060bebd72ff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+          "locator": "Population Genetics, définition de evolution",
+          "result": "Évolution définie comme changement de fréquence allélique.",
+          "sourceHash": "71ab59bf80e8460138caab5cc7a7cc365be7a888092022ba3cdc2e8e3b0fd87a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-stabilizing-selection-favours-intermediate-phenotypes",
+      "status": "approved",
+      "comment": "Avantage des intermédiaires correctement distingué des autres formes de sélection ; exemple fictif explicite.",
+      "contentHash": "b52334bfa41c9b80e0ee2f9ea66ec454da776ac8cc4ea27677bc03bf1e95e1f6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Stabilizing Selection, premier paragraphe",
+          "result": "Phénotype moyen favorisé contre les extrêmes confirmé.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-ultraviolet-can-damage-dna-bases",
+      "status": "approved",
+      "comment": "UV et liaisons anormales entre bases voisines étayés ; distinct de la définition générale de réparation de l’ADN.",
+      "contentHash": "1651db89899a334f2c9b16ec636b6ad36922c13cc79d3c6e871694910dc95fbb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-dna-repair",
+          "url": "https://openstax.org/books/biology-2e/pages/14-6-dna-repair",
+          "locator": "Nucleotide excision repair, dimères de pyrimidines ; figure 14.19 et thymines adjacentes (lignes 37–40)",
+          "result": "UV causant dimères entre thymines adjacentes confirmés.",
+          "sourceHash": "b7c039ab2d7019c427dbc0c35e8be7740401e186375b5eafe8d4d820f830aab4",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-mutations-not-directed-by-organism-needs",
+      "status": "approved",
+      "comment": "Absence de mutation anticipant un besoin correctement opposée au tri ultérieur ; sans intention prêtée à la plante.",
+      "contentHash": "8d3f6602c8c54738801b60e34e789aceacdb373abd49fdf2900f3b8971d5680c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+          "locator": "Organisms Evolve on Purpose, exemple de résistance et mutation",
+          "result": "Variation non orientée par le besoin puis sélection confirmées.",
+          "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-snp-variant-at-one-base-position",
+      "status": "approved",
+      "comment": "Dimension ponctuelle du SNP correctement définie ; sigle objet de la question, niveau 2 adapté.",
+      "contentHash": "300b505584054ddfd45eabacd86bebcb6573c57275a0cd26ebfa9a491eb5753a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-snp",
+          "url": "https://www.genome.gov/genetics-glossary/Single-Nucleotide-Polymorphisms-SNPs",
+          "locator": "Definition et Narration",
+          "result": "Variant à une position de base unique confirmé.",
+          "sourceHash": "80f0f22d711baf8db80955a250f79a6334b2b876885ea9891d3af0ad59e66f91",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-microsatellite-short-dna-motif-tandem-repeats",
+      "status": "approved",
+      "comment": "Motif répété en tandem distingué des substitutions et réarrangements ; niveau 2 adapté.",
+      "contentHash": "0d3dcfb040bceb64104cc225b233c9059536bd43b6fe5aa7f62c74d0f8b019b4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-microsatellite",
+          "url": "https://www.genome.gov/genetics-glossary/Microsatellite",
+          "locator": "Definition et Narration",
+          "result": "Court motif successivement répété et polymorphisme de répétition confirmés.",
+          "sourceHash": "baf73e588867a58370d56e1810434b4338282d8b8a3656d741d7ac4ee715caa1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-chromosomal-inversion-reverses-segment-orientation",
+      "status": "approved",
+      "comment": "Inversion générale étayée et présence d’inversions confirmée chez cannabis ; orientation et copie distinguées.",
+      "contentHash": "bf0e1d59d10a706229c80ba123c2e2b2e0570e4816a0aa06d4c91d09296bdf8d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-inversion",
+          "url": "https://www.genome.gov/genetics-glossary/Inversion",
+          "locator": "Definition",
+          "result": "Segment réattaché en sens inverse dans le même chromosome confirmé.",
+          "sourceHash": "c4da067b8d52c47ba35e819828aad9a4b744b618f05b5c11646ac4d843a4cbd4",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Extended Data Fig. 5, inversions orange (ligne 293) ; Extended Data Fig. 6, classes SV dont inversions (ligne 302)",
+          "result": "Inversions effectivement décrites dans les variations structurelles du cannabis.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-transcriptome-set-of-rna-transcripts",
+      "status": "approved",
+      "comment": "Collection d’ARN située dans un tissu et un moment donnés ; fait distinct du génome et de la transcription.",
+      "contentHash": "07cd53f59eab12fef902760476f080ee27816f7edd9f121ff42498d53021c4e1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-transcriptome",
+          "url": "https://www.genome.gov/about-genomics/fact-sheets/Transcriptome-Fact-Sheet",
+          "locator": "What is a transcriptome?, définition",
+          "result": "Ensemble des transcrits et variation d’activité tissulaire confirmés.",
+          "sourceHash": "aeda43295d4fc754e3b0413d4d15c9c12c5300024076af12c4ded9dd06b54f15",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-promoter-region-initiates-transcription",
+      "status": "approved",
+      "comment": "Fonction du promoteur étayée ; régulation distincte de la seule séquence protéique ou d’un signal stop.",
+      "contentHash": "93e679ce89c3fbdf7fb4dbf11d0ae595c20c90fcb17bf28dcc7d7af457dad417",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-promoter",
+          "url": "https://www.genome.gov/genetics-glossary/Promoter",
+          "locator": "Definition",
+          "result": "Fixation des protéines initiatrices de transcription confirmée.",
+          "sourceHash": "277e5a688d8fc9a6c95992ee234fa0782267741d91f40bd7209d62b26b9d95f4",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-pseudogene-resembles-gene-lost-coding-capacity",
+      "status": "approved",
+      "comment": "Perte de capacité à coder la protéine distinguée de simple ressemblance ; présence de paralogues pseudogénisés confirmée chez cannabis.",
+      "contentHash": "ba104d2a76de07b349aa6ff86903dcf3ddd69d8e1aba608d9a4e01efdeec2b38",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-pseudogene",
+          "url": "https://www.genome.gov/genetics-glossary/Pseudogene",
+          "locator": "Definition",
+          "result": "Séquence ressemblant à un gène sans capacité protéique confirmée.",
+          "sourceHash": "1e155eed24469f3ff05bb3cd591f8d0281bcc1e471de8b83b894ef90b1390745",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Abstract, paralogues pseudogénisés dans les régions de synthases (ligne 231)",
+          "result": "Paralogues pseudogénisés des synthases décrits dans le résumé.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-noncoding-rna-can-regulate-gene-expression",
+      "status": "approved",
+      "comment": "Régulation par ARN non codant correctement indiquée comme possibilité ; non codant n’est pas assimilé à sans fonction.",
+      "contentHash": "31e058ae0d908b536fc64440cd924fdb0525c301aa3f2fc7e9f836811de1897b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-transcriptome",
+          "url": "https://www.genome.gov/about-genomics/fact-sheets/Transcriptome-Fact-Sheet",
+          "locator": "What is a transcriptome?, dernier paragraphe",
+          "result": "ARN non codants influençant structure et régulation génique confirmés.",
+          "sourceHash": "aeda43295d4fc754e3b0413d4d15c9c12c5300024076af12c4ded9dd06b54f15",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-cannabis-genome-majority-transposable-derived-sequences",
+      "status": "approved",
+      "comment": "Proportion majoritaire des éléments transposables confirmée sans nombre à mémoriser ; distinct de leur mobilité.",
+      "contentHash": "ed06a8e320d1b556d9178fd07cf7364c5f59638275613d033367e8b9fb44ed4b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Main, génome haploïde et environ 79 % de TE (ligne 245)",
+          "result": "Part d’environ 79 % d’éléments transposables confirmée.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-lynch-cannabis-local-duplications-not-recent-wgd",
+      "status": "approved",
+      "comment": "Duplications locales et tandem confirmées dans le passage comparatif ; ne répète pas la définition d’une duplication.",
+      "contentHash": "3d1d1be40bad5587725a9e15e448ebc2aeb04b244f0ff40fa4d42f287402d4c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "Paragraphe Cannabis has not undergone a whole-genome duplication (ligne 320)",
+          "result": "Absence de doublement récent et duplications locales/tandem confirmées.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-nearby-loci-lower-recombination-usually",
+      "status": "approved",
+      "comment": "Distance génétique correctement reliée à recombinaison ; aucune fonction commune ou conversion physique universelle déduite.",
+      "contentHash": "6ab58ec09ea76c79ef1162f2bd5c9275bb5e499c02413f012570ca466de013b4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-linkage",
+          "url": "https://openstax.org/books/biology-2e/pages/13-1-chromosomal-theory-and-genetic-linkage",
+          "locator": "Genetic Maps, hypothèse de Sturtevant et paragraphe suivant",
+          "result": "Héritage conjoint plus fréquent des loci proches et distance de recombinaison confirmés.",
+          "sourceHash": "ad5c7cf2fa2f2015d0e54eefc7a25e6cccadea19b2ddb05607b37a9ef132c45e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-meiosis-one-homologs-two-sister-chromatids",
+      "status": "approved",
+      "comment": "Ordre homologues puis chromatides correctement étayé ; distinct de leurs définitions et du seul bilan haploïde.",
+      "contentHash": "3b6fa829d16aaa8b2db674eb1d928579e95a99dc20f5ba973abfe5522caf7246",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "locator": "Meiosis I et Meiosis II",
+          "result": "Homologues séparés en I, chromatides sœurs en II confirmés.",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-inbreeding-depression-recessive-deleterious-expression",
+      "status": "approved",
+      "comment": "Expression d’allèles délétères récessifs masqués correctement bornée à un mécanisme possible parmi plusieurs.",
+      "contentHash": "be60a777e98558dbfe647038dc9cf28d4e3c0d918af845831234b81a38a9b74f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-cannabis-inbreeding-2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13188225/",
+          "locator": "Introduction, paragraphe First, it increases homozygosity",
+          "result": "Homozygotie rendant visibles des récessifs délétères confirmée.",
+          "sourceHash": "ba26510769404ee8c1c0eed808db12f5a72a07fd8b9ed99ca41c79e570ea52c5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-lynch-y-sdr-gene-poor-high-methylation",
+      "status": "approved",
+      "comment": "Root final arbitration after independent E review: Level4 and rationale now reflect specialized recall of the two Y-SDR properties in the named pangenome study, as requested by E; factual body and source unchanged.",
+      "proposedLevel": 4,
+      "contentHash": "e5c670d67a9b61a4865888ac812a5d3a4f9bc0498ca2de2f9cfa7fde06f9a2fb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "The Y chromosome and transposable elements, On the Y chromosome… ; SDR, increased methylation, gene-poor (lignes 367–368)",
+          "result": "SDR du Y décrite comme pauvre en gènes et plus méthylée.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    }
+  ],
+  "initialRequestsBeforeRootArbitration": [
+    {
+      "id": "hemp-q2-cn04-complete-dominance-heterozygote-phenotype",
+      "status": "changes_requested",
+      "comment": "La réponse « l’allèle dominant produit le phénotype dominant » répète presque l’énoncé. Tester explicitement l’équivalence des phénotypes AA et Aa ferait apprendre le fait annoncé sans tautologie.",
+      "requestedChanges": [
+        "Reformuler pour interroger la comparaison des phénotypes AA et Aa dans le modèle de dominance complète, avec quatre réponses comparables et sans répéter « dominant produit dominant ». Conserver le même fait et le niveau 1."
+      ],
+      "contentHash": "3874a225293234e77d2176c50bc1a936e149c4df27392ffbd447b6fddd847364",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Dominant and Recessive Alleles",
+          "result": "Équivalence phénotypique des homozygotes dominants et hétérozygotes confirmée.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-population-can-have-more-than-two-alleles-per-locus",
+      "status": "changes_requested",
+      "comment": "Fait correct, mais comprendre les allèles multiples d’une population malgré la diploïdie individuelle exige les notions de locus, copies et diversité collective. La présence d’un petit nombre ne justifie pas le niveau 1 : niveau 2.",
+      "requestedChanges": [
+        "Passer au niveau 2 et adapter la justification aux prérequis de génétique (locus/diploïdie et distinction individu-population). Contenu, choix et explication approuvés."
+      ],
+      "proposedLevel": 2,
+      "contentHash": "fc97156b045c4c1e48a4dd6ef1a0e7f55e9d37c56859ca8b89d5d31f639b6b6f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-mendel-traits",
+          "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits",
+          "locator": "Multiple Alleles",
+          "result": "Deux allèles individuels et davantage dans la population explicitement distingués.",
+          "sourceHash": "429c532b2aa26113574560d36c5ab154745c43b357b2418ba1c81043c679fe61",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn04-lynch-y-sdr-gene-poor-high-methylation",
+      "status": "changes_requested",
+      "comment": "Fait exact et choix comparables. Le rappel conjoint du paysage génique et épigénétique d’une sous-région du Y, dans une étude de pangénome nommée, relève ici du niveau 4 expert plutôt que d’une notion générale de génétique.",
+      "requestedChanges": [
+        "Passer au niveau 4 et préciser la justification : rappel spécialisé de deux propriétés du paysage de la SDR du Y dans le pangénome Lynch. Fait, source, quatre choix et explication approuvés."
+      ],
+      "proposedLevel": 4,
+      "contentHash": "8cd4dd9ffbf5810fa84550819bdb949ef8df4a57936f87942d9f98e2ef5559e3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cfix-lynch-pangenome-2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+          "locator": "The Y chromosome and transposable elements, On the Y chromosome… ; SDR, increased methylation, gene-poor (lignes 367–368)",
+          "result": "SDR du Y décrite comme pauvre en gènes et plus méthylée.",
+          "sourceHash": "e6d29e3462eadc688b5de51d6bb286c3b4983e4b16767326636c472b51caed94",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    }
+  ],
+  "rootArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "ids": [
+      "hemp-q2-cn04-complete-dominance-heterozygote-phenotype",
+      "hemp-q2-cn04-population-can-have-more-than-two-alleles-per-locus",
+      "hemp-q2-cn04-lynch-y-sdr-gene-poor-high-methylation"
+    ],
+    "scope": "Three corrections of previously verified facts;36 previous approved objects unchanged. The replacement epistasis fact remains pending independent Sol review."
+  },
+  "finalFactReviewF": {
+    "id": "hemp-q2-cn04-selection-response-requires-heritable-variation",
+    "reviewer": "f_existing_audit",
+    "reviewedAt": "2026-11-16T21:13:14.141Z",
+    "newFact": true,
+    "sourceIds": [
+      "q2-cn04-mendel-laws"
+    ],
+    "sourceHash": "2bc09d5d402a9de08a81b117e568dc6e53688e5f5806aea8128cd1209658b470",
+    "contentHash": "bcfa57726864ab97624b3a5af3ab66dbad50f44815fa4f18c2e1a47080d59729",
+    "indexCheck": "Rechercheepistas/epistatic/masquage-loci : aucun autre fait identique trouvé hors cet objet."
+  }
+}

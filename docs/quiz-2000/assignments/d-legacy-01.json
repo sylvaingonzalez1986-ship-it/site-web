@@ -1,0 +1,367 @@
+{
+  "batchId": "d-legacy-01",
+  "status": "reserved-not-started",
+  "scope": "Local beta: rewriting or replacing the fact is allowed. Preserve factual quality and independent review.",
+  "entries": [
+    {
+      "id": "hemp-hc-001",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait primaire vérifié ; auteur/date d’un récit précis est connaissance intermédiaire, niveau1 trop optimiste. Réestimer2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-002",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait primaire vérifié ; repère immobilier spécialisé mérite niveau2 et non1.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-003",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Source institutionnelle concordante ; localisation spécialisée mérite niveau2, pas niveau1 par seul vocabulaire simple.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-004",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait historique vérifié ; connaissance du médecin spécialisé à classer niveau2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-005",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Titre vérifié, niveau2 plutôt que1 pour connaissance bibliographique spécialisée. Aucune validité médicale actuelle déduite.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-008",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Passage précis vérifié ; détail patrimonial local requiert niveau3 plutôt que1. Distracteurs de même type d’évènement à proposer.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-009",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Attribution à une fiche secondaire correctement limitée ; vérifier le texte primaire carolingien avant d’en faire un fait historique général.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-010",
+      "topicId": "history",
+      "initialAction": "remplacer",
+      "currentDecision": "not-reviewed",
+      "reason": "Âge d’un défunt sans portée botanique/historique discriminante suffisante ; détail arbitraire pour une expansion à 2000. Fait non réfuté, remplacement éditorial conseillé.",
+      "identityImpact": "Nouveau fait ou nouvel objectif : nouvel ID hemp-q2-* obligatoire ; archiver l’ancien.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-011",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Pamir comparé à Bretagne/Nil/Sicile donne une élimination géographique triviale à L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-012",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Deux dictionnaires concordants ; fait linguistique spécifique, réestimer niveau2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-013",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Archives du domaine soutiennent fait ; les trois présidents proposés vivent bien après période de Washington et de Mount Vernon connu. Proposer présidents/fondateurs de même époque ou réestimer difficulté2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-014",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Source institutionnelle nomme Ferdinand Boissard ; fait spécialisé niveau2–3 plutôt que1, nom complet Boisdenier à corroborer si maintenu.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-015",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Publication primaire/notice vérifiée ; revue exacte d’un récit spécialisé mérite niveau2–3, pas1.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-016",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Google Books fournit auteur,titre,éditeur,date mais pas Paris dans passage accessible ; ajouter page de titre ou notice bibliographique précisant lieu.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-019",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "« La présentation de la recherche historique » ne désigne pas une référence identifiable. Nommer auteur ou étude.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-023",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Deux dictionnaires prouvent graphie ; les trois autres formes semblent inventées et sont sans sources. Remplacer par graphies ou mots réellement attestés, pas faux distracteurs lexicaux.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-027",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Localisation soutenue ; explication lin étayée par inventaire qh-culture-bretagne-fibres réellement lu mais non attaché. Ajouter cette référence avant approbation complète.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-028",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Un seul choix est un port breton : reformuler avec quatre ports bretons plausibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-029",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Passage primaire précis vérifié ; café torréfié/coton teint/pollen seul sont des distracteurs très éloignés du contexte. Proposer contenus végétaux funéraires comparables.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-032",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Voiles/ports/rites romains sont hors sujet du médecin ; niveau L3 sans discrimination.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-033",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Attribution au narrateur bien limitée ; préserver cette réserve, sans transformer la fréquence littéraire en calendrier historique.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-034",
+      "topicId": "history",
+      "initialAction": "remplacer",
+      "currentDecision": "not-reviewed",
+      "reason": "Prénom secondaire non contextualisé, valeur de connaissance cannabis faible ; dépendance à une biographie de seconde main.",
+      "identityImpact": "Nouveau fait ou nouvel objectif : nouvel ID hemp-q2-* obligatoire ; archiver l’ancien.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-035",
+      "topicId": "history",
+      "initialAction": "remplacer",
+      "currentDecision": "not-reviewed",
+      "reason": "Localité d’envoi d’une lettre secondaire : détail arbitraire, document original non consulté.",
+      "identityImpact": "Nouveau fait ou nouvel objectif : nouvel ID hemp-q2-* obligatoire ; archiver l’ancien.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-037",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Archive du domaine vérifiée ; autres réponses métalliques/verre/plomb rendent l’élimination immédiate. Choix d’équipements fibreux plausibles à proposer au niveau3.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-039",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Passage inventaire exact ; moulin à vent distracteur disproportionné et non outil manuel. Le remplacer par outil de préparation textile comparable.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-041",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Référence à une étude secondaire : nommer l’étude et maintenir l’attribution ; retrouver publication de fouille originale avant validation.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-042",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Le distracteur « nom botanique officiel » est trop éloigné de la question étymologique L3.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-046",
+      "topicId": "history",
+      "initialAction": "remplacer",
+      "currentDecision": "not-reviewed",
+      "reason": "Altitude exacte zone B à 16 m près : précision archéologique sans apprentissage cannabis substantiel ; fait non réfuté.",
+      "identityImpact": "Nouveau fait ou nouvel objectif : nouvel ID hemp-q2-* obligatoire ; archiver l’ancien.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-047",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Conservation observée et facteurs proposés : éviter causalité quantitative ; conserver le contexte d’une tombe particulière.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-048",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "La synthèse et non la publication originale japonaise étaye cette attribution. Pas de validation primaire actuelle ; citer précisément la synthèse.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-050",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Comparaison secondaire dans Jirzankal ; retrouver compte rendu original de Pazyryk pour certifier le contexte précis.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-051",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Notice primaire vérifiée ; date d’une œuvre littéraire connue mérite niveau2–3 plutôt que4expert, sans raisonnement supplémentaire.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-052",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "L’item porte surtout sur l’opium. Lien cannabis indirect : éviter de compter cette connaissance comme nouvelle connaissance spécifique cannabis.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-054",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Passage primaire vérifié ; auteur/livre/usages scythes connaissance spécialisée, réestimer niveau2.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-055",
+      "topicId": "history",
+      "initialAction": "remplacer",
+      "currentDecision": "not-reviewed",
+      "reason": "195 m est un exemple dans une fiche secondaire, pas une propriété générale ; tester l’usage naval plutôt que mémoriser une longueur illustrative.",
+      "identityImpact": "Nouveau fait ou nouvel objectif : nouvel ID hemp-q2-* obligatoire ; archiver l’ancien.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-056",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Fait inventaire vérifié ; étymologie locale spécialisée niveau2, pas automatiquement accessible par vocabulaire simple.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-059",
+      "topicId": "history",
+      "initialAction": "corriger",
+      "currentDecision": "not-reviewed",
+      "reason": "Verre/chrome/fonte donnent une réponse évidente à L4 ; comparer usages de matières végétales plausibles.",
+      "identityImpact": "Conserver ID seulement si même fait et même objectif ; correction de formulation, choix ou précision. Tout changement de fait exige nouvel ID.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hc-060",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Académie française vérifiée ; fait linguistique spécialisé relève niveau3, pas4expert sans autre difficulté. Même contexte que origine mexicaine mais propriété distincte.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-1937-law",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "Texte original vérifié ; identification d’une loi étrangère spécialisée mérite niveau2 plutôt que1. Ne pas en déduire le droit actuel.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    },
+    {
+      "id": "hemp-hs-hist-csa-name",
+      "topicId": "history",
+      "initialAction": "conserver",
+      "currentDecision": "changes_requested",
+      "reason": "DEA institutionnel vérifié ; fait législatif étranger spécifique relève niveau2, pas automatiquement niveau1.",
+      "identityImpact": "ID conservable pour le même fait, sous réserve de validation finale.",
+      "assignedBatch": null
+    }
+  ]
+}

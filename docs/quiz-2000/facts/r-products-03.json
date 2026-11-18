@@ -1,0 +1,333 @@
+{
+  "batchId": "r-products-03",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "author_complete_pending_independent_review",
+  "count": 25,
+  "domain": "active",
+  "levels": {
+    "1": 12,
+    "2": 13
+  },
+  "neighbourSearch": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "terms": [
+      "bhang",
+      "cannabutter",
+      "Simpson",
+      "winter",
+      "clobazam",
+      "valproate",
+      "clozapine",
+      "sésame",
+      "monoxyde",
+      "bronchite",
+      "urinaire",
+      "chien",
+      "repas",
+      "sédatif",
+      "éthanol"
+    ],
+    "openedNeighbours": [
+      "hemp-q2-en02-edible-onset-duration",
+      "hemp-q2-en02-locked-storage-children",
+      "hemp-q2-en02-smoke-toxic-compounds",
+      "hemp-q2-en02-cbd-medication-review",
+      "hemp-q2-en02-cbd-liver-risk",
+      "hemp-q2-rp01-oral-cannabis-oil-carrier",
+      "hemp-q2-rb02-holi-cannabis-tradition"
+    ],
+    "distinctions": [
+      "Aucun nouveau fait délai/durée des edibles ni rangement des enfants",
+      "Interactions nommées distinctes du conseil général de consulter",
+      "Valproate teste une association spécifique, pas simplement l’identité du foie",
+      "Symptômes bronchiques distincts de la présence de toxiques dans la fumée",
+      "Bhang : forme du produit, pas fête associée",
+      "Huile de sésame : composition d’une formulation précise, pas fonction générale d’huile porteuse"
+    ]
+  },
+  "actualReadings": [
+    {
+      "sourceId": "q2-rp03-who-product-descriptions",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+      "locator": "Section 1, p. 9 : winterization et Edibles ; p. 19, §3.1.5–3.1.6.1",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-euda-hash-oil",
+      "url": "https://www.euda.europa.eu/publications/drug-profiles/cannabis_en",
+      "locator": "Introduction, second paragraphe ; Origin",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-ucsd-vaporization",
+      "url": "https://cmcr.ucsd.edu/index.php?id=23&option=com_content&view=article",
+      "locator": "Donald Abrams, étude de vaporisation ; Results, paragraphe carbon monoxide",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-hc-breath-holding",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/resources/lower-risk-cannabis-use-guidelines.html",
+      "locator": "Modes of administration, paragraphe deep inhalation et breath-holding",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-fda-epidiolex-2026",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/210365s024s029s030lbl.pdf",
+      "locator": "§12.3 Effect of Food ; §7.2 Clobazam ; §7.3 ; §7.4 ; §5.4 et §11",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-nhs-clozapine-smoking",
+      "url": "https://foi.ghc.nhs.uk/wp-content/uploads/2026/02/5.8-CLP265-Clozapine-Policy-V5.1-issued-16.12.25.pdf",
+      "locator": "p. 27, Action Card 12 ; p. 53, §6.18, dernière puce cannabis avec tabac",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-hc-oromucosal-local-effects",
+      "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/using-cannabis-product.html",
+      "locator": "Dissolving under the tongue, premier paragraphe",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-karschner-oromucosal",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3717338/",
+      "locator": "Discussion, paragraphe although participants were encouraged...",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-cdc-pediatric-edibles",
+      "url": "https://www.cdc.gov/cannabis/health-effects/poisoning.html",
+      "locator": "Effects of edible cannabis, paragraphe Children who consume...",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-merck-pets-thc-2026",
+      "url": "https://www.merckvetmanual.com/toxicology/toxicoses-from-human-recreational-drugs/toxicosis-in-dogs-and-cats-from-tetrahydrocannabinol-thc",
+      "locator": "Clinical Signs of THC Toxicosis ; Diagnosis",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-syndros-formulation",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=a7801c70-995d-46a2-91ee-141ef427c6b5&type=display",
+      "locator": "§11 Description ; §5.3 ; métadonnées Version 9, Effective Time 20260421",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-hc-topical-warning-2025",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/laws-regulations/regulations-support-cannabis-act/health-warning-messages.html",
+      "locator": "Part 4, avertissement des cannabis topical products ; date d’entrée en vigueur",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-cdc-bronchitis",
+      "url": "https://www.cdc.gov/cannabis/health-effects/lung-health.html",
+      "locator": "Lung health and smoking cannabis, paragraphe bronchitis/cough/mucus",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-hc-edible-alcohol",
+      "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+      "locator": "Edible cannabis, Ethyl alcohol",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-hc-ingestible-classification",
+      "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/classification-edible-cannabis.html",
+      "locator": "The product is in a food format ; exemples confectionery et history of food use",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-quebec-extract-colour",
+      "url": "https://www.legisquebec.gouv.qc.ca/fr/document/rc/C-5.3,%20r.%200.1",
+      "locator": "Article 6, deuxième alinéa ; texte officiel à jour au1erjuillet2026",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp03-hc-cbd-framework",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "locator": "How we regulate CBD in Canada, paragraphe As a result...",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    }
+  ],
+  "coordination": {
+    "agentA": "Repas gras/clobazam/valproate/sédatifs/fumée-clozapine expressément laissés à ce lot ; les effets intrinsèques et la clinique générale restent chez A.",
+    "agentB": "Vocabulaire des formes réservé ; aucune histoire de circuits de résine ni variétés du site."
+  },
+  "safeguards": [
+    "Aucun dosage, traitement ou ajustement de médicament conseillé",
+    "Aucun mode de production/extraction ni recette de produit psychoactif",
+    "Descriptions de produits finis, sans paramètres",
+    "Limites réglementaires identifiées par pays et date",
+    "Aucune autoapprobation, aucun fichier actif ou revue modifié"
+  ],
+  "facts": [
+    {
+      "id": "hemp-q2-rp03-bhang-drink-description",
+      "domain": "active",
+      "factKey": "bhang-drink-description",
+      "expectedAnswer": "Une boisson au cannabis, souvent avec du lait"
+    },
+    {
+      "id": "hemp-q2-rp03-rso-dense-resinous-oil",
+      "domain": "active",
+      "factKey": "rso-dense-resinous-oil",
+      "expectedAnswer": "Une huile résineuse brune et dense"
+    },
+    {
+      "id": "hemp-q2-rp03-cannabutter-active-butter",
+      "domain": "active",
+      "factKey": "cannabutter-active-butter",
+      "expectedAnswer": "Un beurre contenant des constituants actifs du cannabis"
+    },
+    {
+      "id": "hemp-q2-rp03-hash-oil-not-seed-oil",
+      "domain": "active",
+      "factKey": "hash-oil-not-seed-oil",
+      "expectedAnswer": "Un extrait de cannabis ou de résine, de consistance huileuse"
+    },
+    {
+      "id": "hemp-q2-rp03-dewaxed-extract-reduced-waxes",
+      "domain": "active",
+      "factKey": "dewaxed-extract-reduced-waxes",
+      "expectedAnswer": "Les cires végétales"
+    },
+    {
+      "id": "hemp-q2-rp03-flower-vaporization-lower-co",
+      "domain": "active",
+      "factKey": "flower-vaporization-lower-co",
+      "expectedAnswer": "Le monoxyde de carbone"
+    },
+    {
+      "id": "hemp-q2-rp03-breath-holding-toxic-intake",
+      "domain": "active",
+      "factKey": "breath-holding-toxic-intake",
+      "expectedAnswer": "Une augmentation disproportionnée de l’entrée de toxiques"
+    },
+    {
+      "id": "hemp-q2-rp03-oral-cbd-fat-meal-exposure",
+      "domain": "active",
+      "factKey": "oral-cbd-fat-meal-exposure",
+      "expectedAnswer": "Une exposition au CBD plus élevée"
+    },
+    {
+      "id": "hemp-q2-rp03-cbd-clobazam-active-metabolite",
+      "domain": "active",
+      "factKey": "cbd-clobazam-active-metabolite",
+      "expectedAnswer": "Le clobazam"
+    },
+    {
+      "id": "hemp-q2-rp03-cbd-valproate-liver-enzymes",
+      "domain": "active",
+      "factKey": "cbd-valproate-liver-enzymes",
+      "expectedAnswer": "Une augmentation des enzymes du foie"
+    },
+    {
+      "id": "hemp-q2-rp03-cbd-sedatives-somnolence",
+      "domain": "active",
+      "factKey": "cbd-alcohol-somnolence-interaction",
+      "expectedAnswer": "La somnolence"
+    },
+    {
+      "id": "hemp-q2-rp03-spliff-cessation-clozapine-levels",
+      "domain": "active",
+      "factKey": "spliff-cessation-clozapine-levels",
+      "expectedAnswer": "Une élimination plus lente et un taux plus élevé"
+    },
+    {
+      "id": "hemp-q2-rp03-oromucosal-spray-local-stinging",
+      "domain": "active",
+      "factKey": "oromucosal-spray-local-stinging",
+      "expectedAnswer": "Une sensation de picotement ou de brûlure"
+    },
+    {
+      "id": "hemp-q2-rp03-oromucosal-spray-part-swallowed",
+      "domain": "active",
+      "factKey": "oromucosal-spray-part-swallowed",
+      "expectedAnswer": "Une absorption digestive de la fraction avalée"
+    },
+    {
+      "id": "hemp-q2-rp03-child-edible-thc-breathing",
+      "domain": "active",
+      "factKey": "child-edible-thc-breathing",
+      "expectedAnswer": "Une difficulté à respirer"
+    },
+    {
+      "id": "hemp-q2-rp03-dog-thc-ataxia-incontinence",
+      "domain": "active",
+      "factKey": "dog-thc-ataxia-incontinence",
+      "expectedAnswer": "Une démarche mal coordonnée et des fuites urinaires"
+    },
+    {
+      "id": "hemp-q2-rp03-syndros-ethanol-excipient",
+      "domain": "active",
+      "factKey": "syndros-ethanol-excipient",
+      "expectedAnswer": "L’alcool éthylique"
+    },
+    {
+      "id": "hemp-q2-rp03-epidiolex-sesame-oil-excipient",
+      "domain": "active",
+      "factKey": "epidiolex-sesame-oil-excipient",
+      "expectedAnswer": "L’huile de graines de sésame"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-topical-external-not-internal",
+      "domain": "active",
+      "factKey": "canada-topical-external-not-internal",
+      "expectedAnswer": "Une application externe sur peau intacte"
+    },
+    {
+      "id": "hemp-q2-rp03-smoked-cannabis-bronchitis-symptoms",
+      "domain": "active",
+      "factKey": "smoked-cannabis-bronchitis-symptoms",
+      "expectedAnswer": "Une toux avec production de mucus"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-edible-alcohol-cap",
+      "domain": "active",
+      "factKey": "canada-edible-alcohol-cap",
+      "expectedAnswer": "0,5 % en masse"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-candy-extract-still-edible",
+      "domain": "active",
+      "factKey": "canada-candy-extract-still-edible",
+      "expectedAnswer": "Du cannabis comestible"
+    },
+    {
+      "id": "hemp-q2-rp03-quebec-extract-no-colour-additive",
+      "domain": "active",
+      "factKey": "quebec-extract-no-colour-additive",
+      "expectedAnswer": "Un colorant destiné à modifier leur couleur"
+    },
+    {
+      "id": "hemp-q2-rp03-pet-human-urine-thc-false-negatives",
+      "domain": "active",
+      "factKey": "pet-human-urine-thc-false-negatives",
+      "expectedAnswer": "Des métabolites urinaires mal reconnus par ces tests"
+    },
+    {
+      "id": "hemp-q2-rp03-canada-cbd-products-cannabis-act",
+      "domain": "active",
+      "factKey": "canada-cbd-products-cannabis-act",
+      "expectedAnswer": "La Loi sur le cannabis et ses règlements"
+    }
+  ]
+}

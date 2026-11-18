@@ -1,0 +1,92 @@
+{
+  "decidedBy": "root",
+  "date": "2026-11-16",
+  "initialReviewer": "f_existing_audit",
+  "decision": "replace-proposed-item",
+  "reason": "Both complete questions ask mutation as the origin of a change to DNA. The allele versus clonal-descendant setting does not provide enough independent learning value to count both. Keep the already approved legacy object; author a genuinely distinct C06 replacement and require independent source review.",
+  "versions": [
+    {
+      "contentHash": "09472722e33fdc501ac9bee74f94710d56ee0ed7200fb7dd1447f571f29cce9f",
+      "question": {
+        "id": "hemp-genetics-mutation-clonale",
+        "topicId": "genetics",
+        "level": 3,
+        "prompt": "Quel phénomène peut modifier l’ADN au sein d’une descendance clonale de chanvre ?",
+        "options": [
+          "La fécondation croisée",
+          "La recombinaison méiotique",
+          "Une mutation",
+          "La fusion des gamètes"
+        ],
+        "answer": 2,
+        "explanation": "Une mutation est une modification de l’ADN. Elle peut apparaître pendant les divisions de cellules puis être transmise à une branche de la descendance clonale.",
+        "articleId": "ref-cultivars-clones",
+        "sourceIds": [
+          "botany-diversity-schwabe"
+        ],
+        "editorial": {
+          "category": "genetics",
+          "subject": "clone-chanvre",
+          "subjectKey": "clone-chanvre",
+          "property": "mutation-adn",
+          "expectedAnswer": "Une mutation",
+          "factKey": "clone-chanvre--mutation-adn",
+          "classificationStatus": "individually-reviewed",
+          "legacyAction": "retain",
+          "identityImpact": "Objet initial inchangé ; toute réécriture demandée sera réalisée par un autre auteur. Changer le fait exige un nouvel ID.",
+          "learningObjective": "Reconnaître mutation adn pour clone chanvre.",
+          "form": "identification",
+          "difficultyRationale": "Connaissance requise : mutation adn. Niveau initial 3 estimé, sans calibration empirique.",
+          "sourceEvidence": [
+            {
+              "sourceId": "botany-diversity-schwabe",
+              "locator": "PDFp2–3, lignes117–147",
+              "support": "Clonage sans croisement et possibilité d’accumulation de mutations clonales."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "contentHash": "6da1eac92c8791a79dab59a10882e00e2d5c3d2af5f776e1fa8d3c50218f2787",
+      "question": {
+        "id": "hemp-q2-cn06-mutations-ultimate-source-new-alleles",
+        "topicId": "genetics",
+        "level": 1,
+        "prompt": "Quel processus peut créer un nouvel allèle, au lieu de redistribuer des allèles déjà présents ?",
+        "options": [
+          "Une mutation de l’ADN",
+          "Le brassage des chromosomes lors de la méiose",
+          "La dérive génétique dans une petite population",
+          "La sélection d’un phénotype déjà présent"
+        ],
+        "answer": 0,
+        "explanation": "Une mutation peut produire une nouvelle version d’une séquence d’ADN. Le brassage, la dérive et la sélection modifient surtout les combinaisons ou les fréquences des variantes existantes.",
+        "articleId": "ref-genetique-heredite",
+        "sourceIds": [
+          "q2-cn04-population-genetics"
+        ],
+        "editorial": {
+          "category": "genetics",
+          "subject": "Origine des nouveaux allèles",
+          "subjectKey": "mutation-adn",
+          "property": "Création de nouvelles variantes",
+          "expectedAnswer": "Une mutation de l’ADN",
+          "learningObjective": "Distinguer apparition d’une variante et redistribution de variantes existantes.",
+          "factKey": "mutations-ultimate-source-new-alleles",
+          "form": "identification",
+          "difficultyRationale": "Repère de culture scientifique générale, sans prérequis technique.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-cn04-population-genetics",
+              "locator": "Mutations",
+              "support": "Les mutations introduisent de nouvelles variations génétiques et constituent une source de diversité des populations."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "replacementId": "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+  "idChange": "Root renamed the pending replacement ID to match its operon fact before independent A final review; author C text and source object unchanged."
+}

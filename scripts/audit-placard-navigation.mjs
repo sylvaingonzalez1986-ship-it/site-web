@@ -19,9 +19,13 @@ import {auditSchoolSoil} from './audit-school-soil-scenarios.mjs';
 import {auditSchoolHealth} from './audit-school-health-scenarios.mjs';
 import {auditSchoolCultivation} from './audit-school-cultivation-scenarios.mjs';
 import {auditSchoolCannabinoids} from './audit-school-cannabinoids-scenarios.mjs';
+import {auditWorld3d,world3dFixturePayload} from './audit-world-3d-navigation-scenarios.mjs';
+import {auditQuarterTeam,createQuarterTeamFixture} from './audit-quarter-team-scenarios.mjs';
 
 const root=process.cwd(), output=resolve(root,'output/placard-navigation'), port=Number(process.env.NAVIGATION_AUDIT_PORT??3248), origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview');
 const clarityOnly=process.argv.includes('--clarity-only');
+const quarterTeam=process.argv.includes('--quarter-team');
+const world3d=quarterTeam||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
 const focusOnly=process.argv.includes('--focus-only');
 const cardsOnly=process.argv.includes('--cards-only');
@@ -41,7 +45,7 @@ const schoolReal=process.argv.includes('--school-real')||schoolVisual||schoolHis
 const schoolFixture=schoolReal?await createSchoolFixture():null;
 const schoolPlayerFixtures=new Map([[1,Promise.resolve(schoolFixture)]]);
 let tournamentFixturePromise;
-const reportName=schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
+const reportName=world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
 const MAP_ASSET='/placard/map/placard-world-quizzshow-v9.webp';
 const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','missions','collection'];
 // Independently inspected landmarks in the 1536 x 1024 v6 painting. These do
@@ -49,7 +53,8 @@ const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','mission
 const MAP_LANDMARKS={warehouse:[365,255],bank:[800,221],office:[1180,320],market:[275,551],shop:[809,796],arena:[1235,619],missions:[753,453],collection:[284,831]};
 const MAP_GROUND_POINTS=[[950,320],[530,410]];
 function fixturePayload(path,scenario){
- if(path==='/api/arena/placard/staff')return {state:{playerWorkDays:{'1':{usedHours:0}},employees:[],tasks:[],payroll:[]},calendar:{day:1,nextDayAt:'2026-10-11T14:00:00.000Z'},serverNow:'2026-10-11T12:00:00.000Z'};
+ if(world3d){const worldPayload=world3dFixturePayload(path);if(worldPayload)return worldPayload;}
+ if(path==='/api/arena/placard/staff')return baseStaffSnapshot;
  if(path==='/api/arena/placard/equipment')return {tentNumber:1,tents:[{tentNumber:1,equippedCodes:[],levels:{}}],productionUnits:scenario==='active'?4:1,ownedCodes:[],purchasedCodes:[],equippedCodes:[],cashCents:scenario==='investment'?500000:0,levels:{},reputation:0,activeRun:scenario==='active'||scenario==='motion'||scenario.startsWith('overflow')||scenario==='storage-error',readyLotCount:scenario==='lots'||scenario==='motion'?2:0,availableFlowerCount:scenario==='jury'||scenario==='motion'?1:0,routeMasteries:[],routePlan:null};
  if(path==='/api/arena/placard/storage')return scenario==='storage-error'?null:{serverNow:'2026-10-11T12:00:00.000Z',lots:scenario.startsWith('overflow')?[{flowerId:'first',flowerStatus:'available',projection:{stage:'curing',readyAt:'2026-10-11T16:00:00.000Z',nextChangeAt:'2026-10-11T12:30:00.000Z',capacity:{overflowUnits:1250,overflowDeadlineAt:'2026-10-11T12:30:00.000Z'}}},{flowerId:'second',flowerStatus:'available',projection:{stage:'curing',readyAt:'2026-10-11T16:00:00.000Z',nextChangeAt:'2026-10-11T14:00:00.000Z',capacity:{overflowUnits:2500,overflowDeadlineAt:'2026-10-11T14:00:00.000Z'}}}]:[]};
  if(path==='/api/arena/placard/collection')return {collection:{cards:[]}};
@@ -103,6 +108,7 @@ async function previewApi(req,res,url){
 // Preserve Vite's default deny list and also keep test scripts and server-only
 // school sources inaccessible through ordinary, ?raw, or /@fs module URLs.
 const privatePreviewFiles=['.env','.env.*','*.{crt,pem,key,p12,pfx,cer,der}','.npmrc','.yarnrc.yml','**/.git/**','**/.vercel/**','**/scripts/**','**/kanab-quest-school-answers.*','**/kanab-quest-school-*-answers.*','**/kanab-quest-school-server.*','**/kanab-quest-school-challenge-server.*','**/kanab-quest-school-tournament-server.*','**/kanab-quest-hemp-quiz-bank.*','**/kanab-quest-hemp-quiz-biology.*','**/kanab-quest-hemp-quiz-uses.*','**/kanab-quest-hemp-quiz-history-culture.*','**/kanab-quest-hemp-quiz-history-science.*','**/kanab-quest-hemp-quiz-expansion-nature.*'];
+privatePreviewFiles.push('**/kanab-quest-hemp-quiz-additions.json', '**/kanab-quest-hemp-quiz-reviewed.json', '**/docs/quiz-2000/**', '**/docs/quiz-rebalance-*/**');
 const stub=(name,body)=>`import React from 'react';export function ${name}(props){return <section data-destination="${name}" style={{padding:24}}><p data-simulated-destination>Destination simulée · vérification de navigation uniquement.</p>${body}</section>}`;
 const destinations={
  './KqSchool':stub('KqSchool','<h2>QuizzShow</h2><p data-school-section>{props.initialSection}</p><p data-school-module>{props.initialModuleId}</p><button data-school-read-buddy onClick={()=>props.onOpenBuddy("HH2026-001",props.initialModuleId||"plant")}>Lire sa fiche</button><button data-school-quiz onClick={()=>props.onSectionChange("quiz","plant")}>Quiz</button><button data-school-exit onClick={props.onExit}>Quartier</button>'),
@@ -117,6 +123,7 @@ const destinations={
  './KqMissionCenter':stub('KqMissionCenter','<h1>Missions</h1><button onClick={()=>props.onOpen("shop")}>Mes packs</button>'),
 };
 if(schoolReal)delete destinations['./KqSchool'];
+if(world3d)destinations['./KqStaffDesk']=stub('KqStaffDesk','<h1>Personnel</h1><button onClick={()=>props.onOpenTrim("fixture-employee")}>Trim dans l’Atelier</button><ol>{Array.from({length:18},(_,i)=><li key={i} style={{padding:12}}>Affectation locale {i+1} · horaires et coût du travail simulés.</li>)}</ol><button data-world-panel-end onClick={()=>props.onOpenTrim("fixture-last-employee")}>Ouvrir la dernière affectation</button>');
 const modules={
  'entry':`import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';import {PlacardPlayerShell} from '/src/components/placard/PlacardPlayerShell';${previewFetch}createRoot(document.getElementById('root')).render(<>${preview?`<p role="note" style={{margin:0,padding:"8px 16px",background:"#fffaf1",color:"#003f30",fontSize:12}}>${schoolReal?'Démo locale · progression et récompenses simulées.':'Prévisualisation locale du menu · données de démonstration. Les destinations sont simulées.'}</p>`:''}<PlacardPlayerShell/></>);`,
  'next/image':`import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
@@ -125,13 +132,18 @@ const modules={
  'next/dynamic':`import React from 'react';export default function dynamic(loader,options={}){const Component=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=><React.Suspense fallback={options.loading?<options.loading/>:null}><Component {...props}/></React.Suspense>}`,
  ...Object.fromEntries(Object.entries(destinations).map(([key,value])=>['destination:'+key,value])),
 };
+if(world3d){
+ modules['entry']=`import {QuarterCharacterGate} from '/src/components/contest/QuarterCharacterGate';${modules['entry'].replace('<PlacardPlayerShell/>','{new URLSearchParams(location.search).has("entryGate")?<QuarterCharacterGate ownerId="world-audit-player"><PlacardPlayerShell draftOwnerId="world-audit-player"/></QuarterCharacterGate>:<PlacardPlayerShell draftOwnerId="world-audit-player"/>}')}`;
+}
+// Consent itself is covered by the entry audit; this isolated shell fixture starts after it.
+modules['navigation-consent']='export const useCookieConsent=()=>({showBanner:false,consent:null,hasConsent:()=>false});';
 const fonts=`@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#003f30}button{cursor:pointer}`;
 // This isolated navigation fixture has no hosting environment or payment destination.
 modules['entry'] = `window.process={env:{NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL:''}};${modules['entry']}`;
-const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom','react-dom/client','lucide-react']},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom']},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'placard-clarity',enforce:'pre',resolveId(id,importer){if(importer?.replaceAll('\\','/').endsWith('/PlacardPlayerShell.tsx')&&id in destinations)return '\0destination:'+id;if(id in modules)return '\0'+id;},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{
+const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,world3d?'vite-cache-world-3d':'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom','react-dom/client','lucide-react',...(world3d?['react/jsx-runtime','three','@react-three/fiber','three/addons/controls/OrbitControls.js','three/addons/utils/BufferGeometryUtils.js']:[])]},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom',...(world3d?['three']:[])]},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'placard-clarity',enforce:'pre',resolveId(id,importer){if(id.replaceAll('\\','/').endsWith('/CookieConsentProvider'))return '\0navigation-consent';if(importer?.replaceAll('\\','/').endsWith('/PlacardPlayerShell.tsx')&&id in destinations)return '\0destination:'+id;if(id in modules)return '\0'+id;},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{
  const url=new URL(req.url||'/',origin);
  const path=decodeURIComponent(url.pathname).replaceAll('\\','/');
- const privateOutput=/\/output(?:\/|$)/i.test(path)&&!/\/output\/placard-navigation\/vite-cache\//i.test(path);
+ const privateOutput=/\/output(?:\/|$)/i.test(path)&&!/\/output\/placard-navigation\/vite-cache(?:-world-3d)?\//i.test(path);
  if(privateOutput||/(?:^|\/)(?:scripts\/|\.vercel(?:\/|$)|kanab-quest-school-(?:answers|server|(?:history|botany|terpenes|cannabinoids|cultivation|health|soil|products|harvest)(?:-[a-z-]+)?-answers)\.)/i.test(path)){res.statusCode=403;res.end('Source privée de la démo');return;}
  if(preview&&(url.pathname==='/api'||url.pathname.startsWith('/api/'))){void previewApi(req,res,url);return;}
  if(!['/','/arene/placard'].includes(url.pathname))return next();
@@ -141,6 +153,11 @@ const server=await createServer({root,configFile:false,envDir:false,cacheDir:res
  });}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null,fs:{deny:privatePreviewFiles}}});
 ﻿let browser, scenario='starter', failed=false;
 const errors=[], requests=[], results=[];
+const staffEngine = await server.ssrLoadModule('/src/lib/kanab-quest-staff.ts');
+const baseStaffSnapshot = staffEngine.projectKqStaffSnapshot({
+ state: null, revision: 0, serverNow: '2026-10-11T12:00:00.000Z', cashCents: 0,
+ context: {businessStartedAt:'2026-10-11T10:00:00.000Z',reputation:0,instagramFollowers:0,shopPartners:0,activeRuns:[],processingBatches:[],supplierInvoices:[],dayPlanVersion:1,teamWork:[]},
+});
 await mkdir(output,{recursive:true});
 if(preview){
  await server.listen();
@@ -150,19 +167,22 @@ if(preview){
 }
 else try {
  await server.listen();
- browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
+ browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:world3d?['--no-sandbox','--enable-unsafe-swiftshader']:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage(); page.setDefaultTimeout(60000); page.setDefaultNavigationTimeout(90000);
+ const teamFixture=quarterTeam?await createQuarterTeamFixture(server):null;
  page.on('pageerror',error=>errors.push(error.message));
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
  await page.setRequestInterception(true);
  page.on('request',request=>{
   const url=new URL(request.url());
-  if(url.protocol==='data:')return void request.continue();
+  if(url.protocol==='data:'||url.protocol==='blob:')return void request.continue();
   if(url.origin!==origin)return void request.abort();
   if(!url.pathname.startsWith('/api/'))return void request.continue();
   requests.push({path:url.pathname,method:request.method()});
+  if(teamFixture&&url.pathname==='/api/arena/placard/staff')return void teamFixture.handle(request);
   if(schoolFixture&&url.pathname.startsWith('/api/arena/placard/school'))return void schoolFixture.handle(request,url);
   if(request.method()!=='GET')return void request.respond({status:405,contentType:'application/json',body:'{"error":"Local audit is read-only"}'});
+  if(world3d&&scenario==='world-signed-out'&&url.pathname==='/api/arena/tutorial')return void request.respond({status:401,contentType:'application/json',body:'{}'});
   const payload=fixturePayload(url.pathname,scenario);
   if(scenario==='error'&&!failed&&url.pathname==='/api/arena/placard/equipment') { failed=true; return void request.respond({status:503,contentType:'application/json',body:'{"error":"Essai local"}'}); }
   if(scenario==='overflow-equipment-error'&&url.pathname==='/api/arena/placard/equipment')return void request.respond({status:503,contentType:'application/json',body:'{"error":"Résumé indisponible"}'});
@@ -324,7 +344,11 @@ else try {
   assert.equal(await page.$eval('[data-map-building="warehouse"]',element=>element===document.activeElement),true,'Keyboard activation restores the original building after Escape');
   return {geometry,landmarks};
  };
- if(schoolChallenge){
+ if(quarterTeam){
+   await auditQuarterTeam({page,visit,screenshot,assertNoOverflow,results,fixture:teamFixture});
+ }else if(world3d){
+   await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin});
+ }else if(schoolChallenge){
   await auditSchoolChallenge({page,visit,click,screenshot,assertNoOverflow,results,fixture:schoolFixture,setWidth:value=>{width=value;}});
  }else if(schoolQuizFlow){
   await auditSchoolQuizFlow({page,visit,click,screenshot,assertNoOverflow,results,fixture:schoolFixture,setWidth:value=>{width=value;}});
@@ -777,10 +801,10 @@ else try {
  await click('[data-open-shop-collection]');await page.waitForSelector(album);assert.equal(await page.$eval('[data-collection-tab=buddies]',element=>element.getAttribute('aria-selected')),'true');await click('[data-cards-tab="packs"]');
  results.push({scenario:'buddies-shop-album',initialSection:'buddies'});
  }
- assert.deepEqual(errors,[]);assert(requests.every(request=>request.method==='GET'||schoolReal&&request.path.startsWith('/api/arena/placard/school')),'Audit never mutates real state');
- await writeFile(resolve(output,reportName),JSON.stringify({results,errors,requests},null,2));
+ assert.deepEqual(errors,[]);assert(requests.every(request=>request.method==='GET'||schoolReal&&request.path.startsWith('/api/arena/placard/school')||quarterTeam&&request.path==='/api/arena/placard/staff'),'Only isolated fixtures receive mutations');
+ await writeFile(resolve(output,quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests},null,2));
  console.log(JSON.stringify({success:true,output,widths:results.filter(result=>result.width).map(result=>result.width),scenarios:results.filter(result=>result.scenario).length,errors:errors.length},null,2));
 }catch(error){
- if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
- await writeFile(resolve(output,reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
+ if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,quarterTeam?'quarter-team-failure.png':world3d?'world-3d-failure.png':motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
+ await writeFile(resolve(output,quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
 }finally{if(!preview){await browser?.close();await server.close();}}

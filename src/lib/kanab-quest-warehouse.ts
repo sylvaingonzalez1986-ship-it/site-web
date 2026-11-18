@@ -7,6 +7,23 @@ export const KQ_WAREHOUSE_COLUMNS = 40;
 export const KQ_WAREHOUSE_ROWS = 25;
 export const KQ_WAREHOUSE_AREA_M2 = KQ_WAREHOUSE_COLUMNS * KQ_WAREHOUSE_ROWS;
 export type KqWarehouseDimensions = { columns: number; rows: number };
+export type KqWarehouseRotation = 0 | 90 | 180 | 270;
+export const KQ_WAREHOUSE_PARTITION_THICKNESS = 0.12;
+export type KqWarehousePartition = {
+  id: string;
+  /** Initial whole floor cell. The segment follows that cell's centre line. */
+  x: number;
+  y: number;
+  axis: "x" | "y";
+  length: number;
+};
+
+/** Final physical footprint in metres, centred on the existing business floor. */
+export function getKqWarehousePartitionBounds(partition: KqWarehousePartition, dimensions: KqWarehouseDimensions) {
+  return partition.axis === "x"
+    ? { x: partition.x + partition.length / 2 - dimensions.columns / 2, z: partition.y + 0.5 - dimensions.rows / 2, width: partition.length, depth: KQ_WAREHOUSE_PARTITION_THICKNESS }
+    : { x: partition.x + 0.5 - dimensions.columns / 2, z: partition.y + partition.length / 2 - dimensions.rows / 2, width: KQ_WAREHOUSE_PARTITION_THICKNESS, depth: partition.length };
+}
 
 /** Game assumptions, not manufacturer specifications or a cultivation schedule. */
 export const KQ_WAREHOUSE_SIMULATION = {
@@ -30,6 +47,8 @@ export type KqWarehouseZone = {
   y: number;
   width: number;
   height: number;
+  /** Orientation only; width/height always describe the occupied grid footprint. */
+  rotation?: KqWarehouseRotation;
   active: boolean;
   lightingCode: string;
   airCode: string;
@@ -47,11 +66,16 @@ export type KqWarehouseServiceZone = {
   y: number;
   width: number;
   height: number;
+  rotation?: KqWarehouseRotation;
   kind: "drying" | "storage";
   deviceCode: string;
 };
 export type KqWarehouseState = {
   version: 1;
+  /** Optional spatial adapter version; legacy plans keep their exact layout. */
+  spatial?: { version: 1 };
+  /** Visual beta partitions. They do not buy equipment, capacity or preparation. */
+  partitions?: KqWarehousePartition[];
   /** Absence identifies the historical 40 × 25 floor. Only the server can adopt this floor. */
   floor?: { columns: 10; rows: 10 };
   zones: KqWarehouseZone[];
@@ -220,6 +244,7 @@ export function validateKqWarehouseServiceZones(value: unknown, cultureZones: Kq
     }
     if (ids.has(candidate.id)) errors.push("Chaque zone doit avoir un identifiant unique.");
     ids.add(candidate.id);
+    if ("rotation" in candidate && ![0, 90, 180, 270].includes(candidate.rotation as number)) errors.push("L’orientation doit suivre un quart de tour.");
     if (![candidate.x, candidate.y, candidate.width, candidate.height].every(natural) || candidate.width === 0 || candidate.height === 0) {
       errors.push("Les dimensions et positions doivent utiliser des cases entières de 1 m².");
       continue;
@@ -248,6 +273,7 @@ export function validateKqWarehouseZones(value: unknown, dimensions = getKqWareh
     }
     if (ids.has(candidate.id)) errors.push("Chaque zone doit avoir un identifiant unique.");
     ids.add(candidate.id);
+    if ("rotation" in candidate && ![0, 90, 180, 270].includes(candidate.rotation as number)) errors.push("L’orientation doit suivre un quart de tour.");
     if (![candidate.x, candidate.y, candidate.width, candidate.height].every(natural) || candidate.width === 0 || candidate.height === 0) {
       errors.push("Les dimensions et positions doivent utiliser des cases entières de 1 m².");
       continue;
@@ -269,14 +295,57 @@ export function validateKqWarehouseZones(value: unknown, dimensions = getKqWareh
   return [...new Set(errors)];
 }
 
+/** Centred segments join end-to-end; perpendicular intersections merge as junctions. */
+export function validateKqWarehousePartitions(value: unknown, zones: ZoneRectangle[] = [], dimensions = getKqWarehouseDimensions({})): string[] {
+  if (!Array.isArray(value) || value.length > dimensions.columns * dimensions.rows * 2) return ["Le plan des parois est invalide."];
+  const errors: string[] = [];
+  const ids = new Set<string>();
+  const valid: KqWarehousePartition[] = [];
+  for (const candidate of value) {
+    if (!record(candidate) || typeof candidate.id !== "string" || !candidate.id.trim() || candidate.id.length > 80
+      || !["x", "y"].includes(String(candidate.axis)) || ![candidate.x, candidate.y, candidate.length].every(natural) || candidate.length === 0) {
+      errors.push("Chaque paroi doit avoir un identifiant, un axe et une longueur entière d’au moins 1 m."); continue;
+    }
+    const partition = candidate as KqWarehousePartition;
+    if (ids.has(partition.id)) errors.push("Chaque paroi doit avoir un identifiant unique.");
+    ids.add(partition.id);
+    if (partition.x >= dimensions.columns || partition.y >= dimensions.rows
+      || partition.x + (partition.axis === "x" ? partition.length : 1) > dimensions.columns
+      || partition.y + (partition.axis === "y" ? partition.length : 1) > dimensions.rows) {
+      errors.push("Les parois doivent rester dans les limites de l’entrepôt."); continue;
+    }
+    const half = KQ_WAREHOUSE_PARTITION_THICKNESS / 2;
+    const rectangle = partition.axis === "x"
+      ? { x: partition.x, y: partition.y + 0.5 - half, width: partition.length, height: KQ_WAREHOUSE_PARTITION_THICKNESS }
+      : { x: partition.x + 0.5 - half, y: partition.y, width: KQ_WAREHOUSE_PARTITION_THICKNESS, height: partition.length };
+    if (zones.some(zone => doKqWarehouseZonesOverlap(rectangle, zone))) errors.push("Une paroi ne peut pas traverser une zone de culture, de séchage ou de stockage.");
+    for (const other of valid) {
+      if (partition.axis === other.axis) {
+        const sameLine = partition.axis === "x" ? partition.y === other.y : partition.x === other.x;
+        const start = partition.axis === "x" ? partition.x : partition.y, otherStart = other.axis === "x" ? other.x : other.y;
+        if (sameLine && start < otherStart + other.length && otherStart < start + partition.length) errors.push("Deux parois sur le même axe ne peuvent pas se superposer.");
+      }
+    }
+    valid.push(partition);
+  }
+  return [...new Set(errors)];
+}
+
 /** Validates drafts as well as persisted plans; a quote purchases missing devices. */
 export function validateKqWarehouseState(value: unknown): string[] {
   if (!record(value) || value.version !== 1) return ["Version du plan d’entrepôt inconnue."];
+  if ("spatial" in value && (!record(value.spatial) || value.spatial.version !== 1 || Object.keys(value.spatial).length !== 1)) return ["Version de l’aménagement 3D inconnue."];
   if ("floor" in value && (!record(value.floor) || value.floor.columns !== 10 || value.floor.rows !== 10
     || Object.keys(value.floor).length !== 2)) return ["Dimensions de l’entrepôt invalides."];
   const dimensions = getKqWarehouseDimensions(value as KqWarehouseState);
   const errors = validateKqWarehouseZones(value.zones, dimensions);
   if ("serviceZones" in value) errors.push(...validateKqWarehouseServiceZones(value.serviceZones, errors.length ? [] : value.zones as KqWarehouseZone[], dimensions));
+  if ("partitions" in value) {
+    const zones = errors.length ? [] : [...value.zones as KqWarehouseZone[], ...((value.serviceZones as KqWarehouseServiceZone[] | undefined) ?? [])];
+    errors.push(...validateKqWarehousePartitions(value.partitions, zones, dimensions));
+    const zoneIds = new Set(zones.map(zone => zone.id));
+    if (Array.isArray(value.partitions) && value.partitions.some(partition => record(partition) && zoneIds.has(String(partition.id)))) errors.push("Une paroi et une zone doivent avoir des identifiants distincts.");
+  }
   if ("storageClimateCode" in value) {
     const climate = typeof value.storageClimateCode === "string" ? deviceByCode(value.storageClimateCode) : undefined;
     if (climate?.kind !== "climate" || climate.room !== "storage") errors.push("Le climatiseur de stockage est invalide.");
@@ -406,6 +475,8 @@ const copyZone = (zone: KqWarehouseZone): KqWarehouseZone => ({ ...zone, ...(zon
 
 /** No implicit sale: removing a zone or replacing a device keeps existing assets in reserve. */
 export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWarehouseState): KqWarehouseQuote {
+  // Older 2D clients omit this optional field. Only an explicit array replaces it.
+  if (candidate.partitions === undefined && previous?.partitions !== undefined) candidate = { ...candidate, partitions: previous.partitions };
   assertState(candidate);
   if (previous) assertState(previous);
   if (previous && !!previous.floor !== !!candidate.floor) throw new Error("Les dimensions de l’entrepôt ne peuvent pas être modifiées dans un devis.");
@@ -437,6 +508,8 @@ export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWa
   return {
     nextState: {
       version: 1,
+      ...(candidate.spatial || previous?.spatial ? { spatial: { version: 1 } as const } : {}),
+      ...(candidate.partitions !== undefined ? { partitions: candidate.partitions.map(partition => ({ ...partition })) } : {}),
       ...(candidate.floor ? { floor: { ...candidate.floor } } : {}),
       zones: candidate.zones.map(copyZone),
       ...(candidate.serviceZones !== undefined ? { serviceZones: candidate.serviceZones.map(zone => ({ ...zone })) } : {}),
@@ -528,7 +601,7 @@ export function createKqWarehouseStarter(): KqWarehouseState {
  * A failed packing leaves the whole historical plan untouched. The server separately locks active runs. */
 export function compactKqWarehouseToStarterFloor(state: KqWarehouseState): KqWarehouseState | null {
   assertState(state);
-  if (state.floor || state.preparedAreaM2 > 100) return null;
+  if (state.spatial || state.partitions !== undefined || state.floor || state.preparedAreaM2 > 100) return null;
   const all = [...state.zones, ...(state.serviceZones ?? [])];
   if (all.some(zone => zone.width > 10 || zone.height > 10)
     || all.reduce((area, zone) => area + zone.width * zone.height, 0) > 100) return null;
@@ -597,6 +670,8 @@ export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0,
     ...(climateBillingVersion === 2 ? { climateBillingVersion: 2 as const } : {}),
     ...(postHarvestBalanceVersion === 2 ? { postHarvestBalanceVersion: 2 as const } : {}),
     sourceState: { ...state, ...(state.floor ? { floor: { ...state.floor } } : {}), zones: state.zones.map(copyZone), equipment: state.equipment.map((item) => ({ ...item })),
+      ...(state.spatial ? { spatial: { ...state.spatial } } : {}),
+      ...(state.partitions !== undefined ? { partitions: state.partitions.map(partition => ({ ...partition })) } : {}),
       ...(state.optionInventory !== undefined ? { optionInventory: state.optionInventory.map(item => ({ ...item })) } : {}),
       ...(state.serviceZones !== undefined ? { serviceZones: state.serviceZones.map(zone => ({ ...zone })) } : {}) },
     zones: zones.map(copyZone),

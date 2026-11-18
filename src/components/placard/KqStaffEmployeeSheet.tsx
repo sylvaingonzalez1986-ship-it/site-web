@@ -57,7 +57,7 @@ export function KqStaffEmployeeSheet({ employee, employeeName, snapshot, origin,
 
   const cost = employee ? getKqStaffMonthlyCost(employee, employee.weeklyHours) : null;
   const leave = employee ? getKqStaffLeave(employee, snapshot.serverNow) : null;
-  const capacity = employee ? getKqStaffCapacity(employee, snapshot.calendar) : null;
+  const capacity = employee ? getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans) : null;
   const currentLeave = employee?.leave.find(period => snapshot.calendar.day >= period.startDay && snapshot.calendar.day <= period.endDay);
   const outstanding = employee ? snapshot.state.payroll.filter(pay => pay.employeeId === employee.id).reduce((sum, pay) => sum + Math.max(0, pay.totalCents - pay.paidCents), 0) : null;
   const trait = employee ? KQ_STAFF_TRAITS[employee.trait] : null;
@@ -123,7 +123,7 @@ export function KqStaffEmployeeSheet({ employee, employeeName, snapshot, origin,
           <div className={styles.section}>
             {employee.status === "active" ? <>
               <p><strong>{snapshot.calendar.label}</strong> · {currentLeave ? `Congé payé jusqu’au jour ${currentLeave.endDay}` : snapshot.calendar.weekend ? "Repos du week-end" : !capacity.baseHours ? "Repos prévu au contrat" : `${hours(capacity.remainingHours)} disponibles`}</p>
-              <KqProgressMeter label="Heures utilisées ou réservées" value={capacity.usedHours} max={capacity.baseHours + capacity.extraHours} valueLabel={`${hours(capacity.usedHours)} / ${hours(capacity.baseHours + capacity.extraHours)}`} hint={capacity.extraHours ? `${hours(capacity.extraHours)} ajoutées à la journée.` : undefined} />
+              <KqProgressMeter label="Heures utilisées ou réservées" value={capacity.usedHours + capacity.plannedHours} max={capacity.baseHours + capacity.extraHours} valueLabel={`${hours(capacity.usedHours + capacity.plannedHours)} / ${hours(capacity.baseHours + capacity.extraHours)}`} hint={capacity.extraHours ? `${hours(capacity.extraHours)} ajoutées à la journée.` : undefined} />
             </> : null}
             <ul className={desk.schedule} aria-label={`Semaine contractuelle de ${hours(employee.weeklyHours)}, week-end au repos`}>{weekdays.map((day, index) => <li key={day} data-working={index < employee.weeklyHours / 7 && index < 5}><span>{day}</span><strong>{index < employee.weeklyHours / 7 && index < 5 ? "7 h" : "Repos"}</strong></li>)}</ul>
             <dl className={styles.facts}>

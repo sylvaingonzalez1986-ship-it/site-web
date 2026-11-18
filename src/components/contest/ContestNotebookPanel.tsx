@@ -1493,6 +1493,7 @@ function ContestNotebookEditor({
       </nav>
 
       <div key={pageIndex} className={styles.contentViewport} data-tasting-scroll>
+        {!isInlineDisplayMode ? <div data-farm-guide-host /> : null}
         <div ref={reviewFeedbackRef} tabIndex={-1} className={styles.feedback}>
           {draftMessage ? <p role="status">{draftMessage}</p> : hasDraftEdits && draftKey && !submittedReview ? <p>Ton brouillon est sauvegardé sur cet appareil.</p> : null}
           {reviewMessage ? <p role="status">{reviewMessage}</p> : null}

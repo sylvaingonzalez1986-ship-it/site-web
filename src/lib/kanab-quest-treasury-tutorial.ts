@@ -318,7 +318,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
       }
       if (method !== "GET") throw new Error("Méthode indisponible dans cet atelier.");
       if (url.pathname.endsWith("/care/purchases")) return Response.json({ items: [], nextCursor: null, totalPaidCents: 0, totalCount: 0, serverNow: new Date().toISOString() });
-      if (url.pathname === "/api/arena/chanvrier") return Response.json({ profile: { nickname: "SylvainEssai", gender: "male", clothing: "ochre", skin: "ivory", strength: "treasurer" } });
+      if (url.pathname === "/api/arena/chanvrier") return Response.json({ profile: { nickname: "LoicEssai", gender: "male", clothing: "ochre", skin: "ivory", strength: "treasurer" } });
       const result = url.pathname.endsWith("/bank") ? bankSnapshot() : url.pathname.endsWith("/savings") ? savingsSnapshot()
         : url.pathname.endsWith("/commerce") ? commerceSnapshot() : url.pathname.endsWith("/energy") ? energySnapshot()
           : url.pathname.endsWith("/treasury") ? treasurySnapshot(url) : url.pathname.endsWith("/stocks") ? stockSnapshot(url) : cryptoSnapshot();

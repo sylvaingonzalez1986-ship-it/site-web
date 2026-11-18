@@ -32,7 +32,7 @@ describe("crypto server authority",()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[101]}}).mockResolvedValueOnce({error:null,data:true});
   quotes.mockRejectedValue(new CoinMarketCapRequestError("[cmc] unavailable (HTTP 429)","rate_limited",600));
   expect(await refreshKqCryptoQuotes()).toBe("updated");
-  expect(rpc).toHaveBeenLastCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset],p_retry_after_seconds:600});
+  expect(rpc).toHaveBeenCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset],p_retry_after_seconds:600});
  });
  it("returns only client refresh metadata and omits operational counters",async()=>{
   const refresh={refreshing:false,nextAttemptAt:date,lastFailureCode:"rate_limited"};
@@ -60,7 +60,7 @@ describe("crypto server authority",()=>{
  it("a lease prevents external calls by losing server instances",async()=>{expect(await refreshKqCryptoQuotes()).toBe("skipped");expect(top).not.toHaveBeenCalled();expect(quotes).not.toHaveBeenCalled();});
  it("fetches only held IDs missing from top100 and publishes the shared quotes",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[1,101]}}).mockResolvedValueOnce({error:null,data:true});quotes.mockResolvedValue([{...asset,id:101,rank:101,inTop100:false}]);
-  await refreshKqCryptoQuotes();expect(quotes).toHaveBeenCalledWith([101]);expect(rpc).toHaveBeenLastCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset,{...asset,id:101,rank:101,inTop100:false}]});
+  await refreshKqCryptoQuotes();expect(quotes).toHaveBeenCalledWith([101]);expect(rpc).toHaveBeenCalledWith("rpc_kq_crypto_refresh_publish",{p_lease_id:id,p_assets:[asset,{...asset,id:101,rank:101,inTop100:false}]});
  });
  it("reports a rejected publication without pretending the cache was updated",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:{leaseId:id,heldAssetIds:[]}}).mockResolvedValueOnce({error:null,data:false});
@@ -71,13 +71,13 @@ describe("crypto server authority",()=>{
   await refreshKqCryptoQuotes();expect(console.warn).toHaveBeenCalledWith("[crypto:refresh] retaining last quotes",{reason:"provider request failed"});
   rpc.mockResolvedValueOnce({error:{code:"42501",message:"private db secret"},data:null});
   await expect(handleKqCryptoAction(owner,{action:"confirm",orderId:id})).rejects.toThrow("[supabase:crypto]");
-  expect(console.warn).toHaveBeenCalledWith("[crypto:rpc] request failed",{rpc:"rpc_kq_crypto_command",code:"42501"});
+  expect(console.warn).toHaveBeenCalledWith("[crypto:rpc] request failed",{rpc:"rpc_kq_market_order_submit",code:"42501"});
   expect(JSON.stringify(vi.mocked(console.warn).mock.calls)).not.toContain("private");
   expect(JSON.stringify(vi.mocked(console.warn).mock.calls)).not.toContain(owner);
  });
  it("confirmation retries do not depend on refresh, quote age, or provider availability",async()=>{
   rpc.mockResolvedValue({error:null,data:{trade,replayed:true}});expect(await handleKqCryptoAction(owner,{action:"confirm",orderId:id,userId:"victim",priceEur:"1"})).toEqual({trade,replayed:true});
-  expect(top).not.toHaveBeenCalled();expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_crypto_command",{p_user_id:owner,p_action:"confirm",p_payload:{orderId:id},p_market_enabled:true});
+  expect(top).not.toHaveBeenCalled();expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_market_order_submit",{p_market:"crypto",p_user_id:owner,p_payload:{orderId:id}});
  });
  it("accepts a persisted preview but strips client price and ownership",async()=>{
   rpc.mockResolvedValueOnce({error:null,data:null}).mockResolvedValueOnce({error:null,data:order});await handleKqCryptoAction(owner,{action:"preview",side:"buy",assetId:1,amountCents:10000,userId:"victim",priceEur:"1"});
@@ -88,4 +88,11 @@ describe("crypto server authority",()=>{
   rpc.mockResolvedValue({error:{message:"private db secret"},data:null});await expect(handleKqCryptoAction(owner,{action:"confirm",orderId:id})).rejects.toThrow("[supabase:crypto]");
  });
  it("fails closed on malformed snapshots",async()=>{rpc.mockResolvedValueOnce({error:null,data:null}).mockResolvedValueOnce({error:null,data:{...snapshot,cashCents:-1}});await expect(getKqCryptoSnapshot(owner)).rejects.toThrow("invalid snapshot");});
+});
+
+it("acknowledges a queued instruction without inventing an executed trade",async()=>{
+ const queuedOrder={orderId:id,market:"crypto",assetId:"1",side:"buy",budgetCents:10000,quantity:"1",submittedAt:date,deadlineAt:date,status:"pending",reason:null,executionAt:null};
+ rpc.mockResolvedValue({error:null,data:{queuedOrder,replayed:false}});
+ expect(await handleKqCryptoAction(owner,{action:"confirm",orderId:id,executionPolicy:"next-publication"})).toEqual({queuedOrder,replayed:false});
+ expect(rpc).toHaveBeenCalledWith("rpc_kq_market_order_submit",expect.objectContaining({p_market:"crypto",p_payload:{orderId:id,executionPolicy:"next-publication"}}));
 });

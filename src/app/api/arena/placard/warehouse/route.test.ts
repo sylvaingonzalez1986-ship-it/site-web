@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
-  session: vi.fn(), enabled: vi.fn(), rate: vi.fn(), logRateLimit: vi.fn(), snapshot: vi.fn(), save: vi.fn(), quote: vi.fn(), remove: vi.fn(),
+  session: vi.fn(), enabled: vi.fn(), rate: vi.fn(), logRateLimit: vi.fn(), snapshot: vi.fn(), observe: vi.fn(), save: vi.fn(), quote: vi.fn(), remove: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "test", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.logRateLimit }));
 vi.mock("@/lib/supabase/kanab-quest-warehouse-backend", () => ({
-  getKqWarehouseSnapshot: mocks.snapshot, saveKqWarehouseLayout: mocks.save,
+  getKqWarehouseSnapshot: mocks.snapshot, observeKqWarehouseRoom: mocks.observe, saveKqWarehouseLayout: mocks.save,
   quoteKqWarehouseZoneRemoval: mocks.quote, removeKqWarehouseCultureZone: mocks.remove,
   KqWarehouseError: class extends Error {
     constructor(message: string, public status = 400) { super(message); }
@@ -25,7 +25,27 @@ beforeEach(() => {
   mocks.remove.mockResolvedValue({ revision: 2 });
 });
 
+const getRequest = () => new Request("http://localhost/api/arena/placard/warehouse");
+
 describe("warehouse API access", () => {
+  it("observes only the session owner's saved room without opening the management flow", async () => {
+    mocks.observe.mockResolvedValue({ revision: 9 });
+    const open = () => GET(new Request("https://example.test/api/arena/placard/warehouse?layout=observation&userId=other"));
+    const response = await open();
+    expect(await response.json()).toEqual({ revision: 9 });
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(mocks.observe).toHaveBeenCalledWith("authenticated-owner");
+    mocks.session.mockResolvedValue(null);
+    expect((await open()).status).toBe(401);
+    expect(mocks.observe).toHaveBeenCalledTimes(1);
+    expect(mocks.snapshot).not.toHaveBeenCalled();
+  });
+  it("requests an unchanged legacy floor for the spatial adapter with private cache headers", async () => {
+    const response = await GET(new Request("https://example.test/api/arena/placard/warehouse?layout=spatial"));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(mocks.snapshot).toHaveBeenCalledWith("authenticated-owner", { preserveLayout: true });
+  });
   it("authenticates quote and removal commands and ignores an injected owner", async () => {
     const body = { action: "quote-zone-removal", userId: "another-player", zoneId: "zone", expectedRevision: 1 };
     const send = () => POST(new Request("https://example.test/api/arena/placard/warehouse", { method: "POST", body: JSON.stringify(body) }));
@@ -44,7 +64,7 @@ describe("warehouse API access", () => {
   });
   it("requires an authenticated player before reading or editing a plan", async () => {
     mocks.session.mockResolvedValue(null);
-    expect((await GET()).status).toBe(401);
+    expect((await GET(getRequest())).status).toBe(401);
     expect((await PATCH(new Request("https://example.test/api/arena/placard/warehouse", { method: "PATCH", body: "{}" }))).status).toBe(401);
     expect(mocks.snapshot).not.toHaveBeenCalled();
     expect(mocks.save).not.toHaveBeenCalled();
@@ -86,7 +106,7 @@ describe("warehouse API access", () => {
 
   it("does not disclose database errors or silently report success", async () => {
     mocks.snapshot.mockRejectedValue(new Error("[supabase:warehouse] secret internal relation"));
-    const response = await GET();
+    const response = await GET(getRequest());
     expect(response.status).toBe(500);
     expect(JSON.stringify(await response.json())).not.toContain("relation");
   });

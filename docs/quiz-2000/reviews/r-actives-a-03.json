@@ -1,0 +1,1214 @@
+{
+  "batchId": "r-actives-a-03",
+  "reviewer": "rebalance_classify_b",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-ra03-thc-increased-appetite",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Effet possible du THC sur l’appétit.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "e22c64fc3be05d697621bc958c85b22ebf81a4fe1f9df5d1f208c46408064a67",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-hc-side",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+          "locator": "Side effects of cannabis, listes THC et CBD",
+          "result": "Liste THC de Santé Canada réellement lue : augmentation de l’appétit ; le CBD figure avec diminution possible.",
+          "sourceHash": "7d4372aa50f8342f4bf93516dcaea8410013e8413ca3ea6aa43d74f0408510a3"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-thc-dry-mouth",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Effet buccal possible du THC.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "a8377cbc468a8952d09811795f33f51cc86d3039cd129a33b4d0d21dac9dc3ca",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-hc-side",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+          "locator": "Side effects of cannabis, liste THC",
+          "result": "Liste THC de Santé Canada réellement lue : dry mouth parmi les effets possibles.",
+          "sourceHash": "7d4372aa50f8342f4bf93516dcaea8410013e8413ca3ea6aa43d74f0408510a3"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-thc-altered-time-perception",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Modification perceptive du cannabis à THC.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "fdfedc44712c3a229e9eb22c8399528a87980a1f8309849de07b91c577848433",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-hc-hcp",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "Table1, Perception",
+          "result": "Table1 Perception du document professionnel réellement lue : distorsion du sens de l’espace et du temps.",
+          "sourceHash": "bae578918cc2d34abc5c5138654c25e1b05770f51073be1b4a8d616b1f94e3ca"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-cannabis-acute-blood-pressure-decrease",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Effet hémodynamique aigu du cannabis.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "cba9ed35d631480d63ffffd0db3b612b14df3581dd4d28696cbe271dcaa41710",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-hc-health",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/health-effects/effects.html",
+          "locator": "Short-term health effects, effets corporels",
+          "result": "Short-term health effects réellement lu : baisse de pression pouvant provoquer un évanouissement.",
+          "sourceHash": "d95349dfa373dcb18593fa4640072d20ed303fc2f94f8bf44a9fa389891da039"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-cbc-cb2-agonism-cell-assay",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Pharmacologie expérimentale du CBC.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "68f215fe63348a92ccc19cf30b381522ea481fc79579ea4b0b01572327c6c64c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-udoh",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6932936/",
+          "locator": "Abstract, Experimental Approach et Key Results",
+          "result": "Texte original ouvert, Abstract Experimental Approach/Key Results lus : cellules AtT20 exprimant récepteurs humains, CBC active CB2 sans activation CB1 dans cet essai.",
+          "sourceHash": "45b561e3a924117c6cb212a28fb9a5e8cdde64ec3293032bcbe94c2b741fd041"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-cbdv-focal-seizures-no-placebo-advantage",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite d’un essai clinique de CBDV.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "ef0008bb4e32a4d1f209d9178e3fda3b3a67592a75bc2d18601fab23b159fd46",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-brodie",
+          "url": "https://discovery.ucl.ac.uk/id/eprint/10124068/7/Sander_A%20Phase%202%20Randomized%20Controlled%20Trial%20of%20the%20Efficacy%20and%20Safety%20of%20Cannabidivarin%20as%20Add-on%20Therapy%20in%20Participants%20with%20Inadequately%20Controlled%20Focal%20Seizures_AOP.pdf",
+          "locator": "Abstract Results et Conclusion",
+          "result": "PDF original UCL p.1 réellement lu :162 participants, diminution comparable des crises focales, aucune supériorité significative CBDV/placebo.",
+          "sourceHash": "583330ac5ab5118e44ae54b77d8fcd9c0f69d89bbb8940fdbddec2703c1dbbed"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-ulcerative-colitis-symptoms-not-inflammation",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Dissociation symptômes/inflammation pour cannabis riche en THC.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "cc4c233dfcd8df5e1ddf95c2f99d39f2cb5393f713fd8991c8d9c22fdd0a390f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-naftali",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0246871",
+          "locator": "Abstract Results/Conclusion",
+          "result": "Résumé original PLOS réellement lu : amélioration clinique et qualité de vie ; différence intergroupes endoscopique non significative, marqueurs inflammatoires non améliorés.",
+          "sourceHash": "1f4274971a26a2696f9f5c8f3b37adaf4e4bf84443fa11a8e1ced3deab7bc8b2"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-cbd-schizophrenia-adjunct-positive-symptom-signal",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Signal clinique du CBD adjoint aux antipsychotiques.",
+      "comment": "Nouvelle source NHS ouverte indépendamment : section Positive and negative symptoms, lignes20–25, hallucinations et delusions explicitement classées positifs. Définition et traduction soutenues ; complément terminologique seulement, effet CBD toujours fondé sur le résumé McGuire déjà contre-lu. Explication révisée claire,227caractères et conforme à la limite240.",
+      "contentHash": "f6d3593e5c59881172a7eebbd54a881d32077999210f0171dd54895c2a482396",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-mcguire",
+          "url": "https://academic.oup.com/schizophreniabulletin/article/44/suppl_1/S27/4957130",
+          "locator": "Résumé original, Methods et Results",
+          "result": "Résumé original de congrès OUP réellement lu, Methods/Results :88 patients, CBD adjoint aux antipsychotiques, symptômes positifs réduits à six semaines ; cognition seulement tendancielle.",
+          "sourceHash": "af846c73ac5f3e9c13680b9fe670c6a40ecca0b0adb6b5ad6bb06856da9788a2"
+        },
+        {
+          "sourceId": "q2-ra03-nhs-schizophrenia-positive-symptoms",
+          "url": "https://www.nhs.uk/mental-health/conditions/schizophrenia/symptoms/",
+          "locator": "Positive and negative symptoms ; Hallucinations ; Delusions",
+          "result": "Page NHS effectivement ouverte, classification positive = hallucinations/delusions et contraste négatif retrait/émoussement lus. Dernière revue13avril2023, échéance13avril2026 affichées ; aucune mise à jour2026 inventée.",
+          "sourceHash": "11f526112a98c0179dd2184487108aaaca4fc821374be1d786c048b8001b7834"
+        }
+      ],
+      "finalReviewer": "rebalance_classify_b",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra03-cbd-schizophrenia-adjunct-positive-symptom-signal",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Signal clinique du CBD adjoint aux antipsychotiques.",
+          "comment": "Résultat confirmé dans le résumé original : baisse des symptômes positifs, cognition seulement tendancielle. Expliquer ce que signifie « symptômes positifs » dans la question ou l’explication, avec des exemples précisément sourcés : le terme clinique ne signifie pas symptômes bénéfiques. Sans cette aide, le fait demande un vocabulaire spécialisé que le niveau2 et l’explication actuelle ne rendent pas accessible.",
+          "contentHash": "c4f8c575163c0da9c6302a41f50c9264141aac4548040f1c513a04cbb710e9f8",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra03-mcguire",
+              "url": "https://academic.oup.com/schizophreniabulletin/article/44/suppl_1/S27/4957130",
+              "locator": "Résumé original, Methods et Results",
+              "result": "Résumé original de congrès OUP réellement lu, Methods/Results :88 patients, CBD adjoint aux antipsychotiques, symptômes positifs réduits à six semaines ; cognition seulement tendancielle.",
+              "sourceHash": "af846c73ac5f3e9c13680b9fe670c6a40ecca0b0adb6b5ad6bb06856da9788a2"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra03-cbd-schizophrenia-adjunct-positive-symptom-signal",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai de McGuire (2018), quel signal apparaît avec le CBD ajouté au traitement de la schizophrénie ?",
+          "options": [
+            "Un gain cognitif constituant le résultat le plus net",
+            "Une réduction des symptômes négatifs uniquement",
+            "Une amélioration surtout motrice",
+            "Une réduction des symptômes positifs"
+          ],
+          "answer": 3,
+          "explanation": "Le petit essai rapporte une baisse des symptômes dits positifs avec le CBD ajouté aux antipsychotiques. Il ne démontre ni qu’un CBD du commerce traite la schizophrénie ni qu’il remplace le traitement habituel.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-ra03-mcguire"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Signal sur symptômes positifs en complément du traitement",
+            "subjectKey": "cbd-schizophrenia-adjunct-trial",
+            "property": "Signal sur symptômes positifs en complément du traitement",
+            "expectedAnswer": "Une réduction des symptômes positifs",
+            "learningObjective": "Situer un signal clinique préliminaire du CBD sans le confondre avec les risques psychotiques du THC.",
+            "factKey": "cbd-schizophrenia-adjunct-positive-symptom-signal",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-mcguire",
+                "locator": "Résumé original, Methods et Results",
+                "support": "Le résumé rapporte une réduction des symptômes positifs à6 semaines ; les améliorations cognitives restent des tendances."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra03-cbd-schizophrenia-adjunct-positive-symptom-signal",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai de McGuire (2018), quel signal apparaît avec le CBD ajouté au traitement de la schizophrénie ?",
+          "options": [
+            "Un gain cognitif constituant le résultat le plus net",
+            "Une réduction des symptômes négatifs uniquement",
+            "Une amélioration surtout motrice",
+            "Une réduction des symptômes positifs"
+          ],
+          "answer": 3,
+          "explanation": "Les symptômes « positifs » désignent notamment hallucinations et idées délirantes. Le CBD ajouté aux antipsychotiques a donné un signal de réduction dans ce petit essai ; cela ne valide ni l’automédication ni leur remplacement.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-ra03-mcguire",
+            "q2-ra03-nhs-schizophrenia-positive-symptoms"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Signal sur symptômes positifs en complément du traitement",
+            "subjectKey": "cbd-schizophrenia-adjunct-trial",
+            "property": "Signal sur symptômes positifs en complément du traitement",
+            "expectedAnswer": "Une réduction des symptômes positifs",
+            "learningObjective": "Situer un signal clinique préliminaire du CBD sans le confondre avec les risques psychotiques du THC.",
+            "factKey": "cbd-schizophrenia-adjunct-positive-symptom-signal",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-mcguire",
+                "locator": "Résumé original, Methods et Results",
+                "support": "Le résumé rapporte une réduction des symptômes positifs à6 semaines ; les améliorations cognitives restent des tendances."
+              },
+              {
+                "sourceId": "q2-ra03-nhs-schizophrenia-positive-symptoms",
+                "locator": "Positive and negative symptoms ; Hallucinations ; Delusions",
+                "support": "Le NHS classe hallucinations et idées délirantes parmi les symptômes positifs ; le mot positif ne signifie pas bénéfique."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      },
+      "coordinatorScope": "Root applique sans modification la proposition A dont B a contrôlé le nouvel objet source et reconstitué l’empreinte complète de la question.",
+      "additionalIndependentReview": "docs/quiz-2000/facts/ra03-schizophrenia-independent-review.json"
+    },
+    {
+      "id": "hemp-q2-ra03-cbd-cannabis-use-disorder-phase2-signal",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Résultat exploratoire CBD dans le trouble de l’usage de cannabis.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "c6b16d6e11c8126e16bd3a121ada106ff45f5ce4e2870abfabd3579fd84d1154",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-freeman",
+          "url": "https://www.uniad.org.br/wp-content/uploads/dlm_uploads/2020/10/10.1016@S2215-03662030290-X.pdf",
+          "locator": "Summary Findings et Interpretation",
+          "result": "PDF original p.1 Findings/Interpretation réellement lus : phase2a82 personnes, deux conditions CBD retenues plus efficaces que placebo sur les critères de consommation ; résultat préliminaire.",
+          "sourceHash": "e9d810c3e64aab3ecc2cbad3704d30a4b8978154fc4a2d875ddbcbfc00f3fa11"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-thc-experimental-pain-higher-worsens",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Réponse antalgique expérimentale non linéaire au THC.",
+      "comment": "La formulation nomme les doses étudiées et le moment de mesure, sans valeur ni consigne. Le résultat expérimental et les limites temporelles relus par B sont conservés.",
+      "contentHash": "884d69144be5b612d41eb2fae859ca060945c6b6e6f39de457d1133128eed862",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-hc-hcp",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§4.7.1.1, essai Wallace2007, capsaïcine",
+          "result": "§4.7.1.1 passage Wallace2007 réellement lu :15 volontaires, effet dépendant dose/temps, dose intermédiaire analgésique au moment étudié et dose la plus élevée associée à hyperalgésie.",
+          "sourceHash": "bae578918cc2d34abc5c5138654c25e1b05770f51073be1b4a8d616b1f94e3ca"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorScope": "Correction ciblée après la première lecture indépendante de B ; aucune nouvelle consultation de source revendiquée par root.",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra03-thc-experimental-pain-higher-worsens",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Réponse antalgique expérimentale non linéaire au THC.",
+          "comment": "Hyperalgésie à la dose la plus élevée confirmée dans le passage Wallace2007. Remplacer « condition ... la plus riche » et « condition intermédiaire/élevée » par des formulations naturelles sur les doses étudiées, sans valeur ni conseil d’usage. Les effets diffèrent selon la dose et le moment : garder la portée expérimentale et ne pas faire de l’énoncé un repère de consommation.",
+          "contentHash": "6fe7151c34affbecae504e7b2ad24797e0f9ac91690a0cf97d3fe717f5707420",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra03-hc-hcp",
+              "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+              "locator": "§4.7.1.1, essai Wallace2007, capsaïcine",
+              "result": "§4.7.1.1 passage Wallace2007 réellement lu :15 volontaires, effet dépendant dose/temps, dose intermédiaire analgésique au moment étudié et dose la plus élevée associée à hyperalgésie.",
+              "sourceHash": "bae578918cc2d34abc5c5138654c25e1b05770f51073be1b4a8d616b1f94e3ca"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra03-thc-experimental-pain-higher-worsens",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai sur douleur provoquée résumé par Santé Canada, que pouvait produire la condition de cannabis la plus riche en THC ?",
+          "options": [
+            "Un soulagement plus important que la condition intermédiaire",
+            "Le même soulagement que la condition intermédiaire",
+            "Une douleur accrue plutôt qu’un meilleur soulagement",
+            "Une douleur inchangée mais un effet plus prolongé"
+          ],
+          "answer": 2,
+          "explanation": "Dans cet essai expérimental, la condition intermédiaire soulageait tandis que la plus élevée augmentait la douleur. Plus de THC ne signifie donc pas mécaniquement plus d’analgésie ; ce résultat ne donne pas de dose à utiliser.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra03-hc-hcp"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Hyperalgésie possible à condition élevée",
+            "subjectKey": "thc-experimental-pain-dose-response",
+            "property": "Hyperalgésie possible à condition élevée",
+            "expectedAnswer": "Une douleur accrue plutôt qu’un meilleur soulagement",
+            "learningObjective": "Comprendre que l’effet antalgique du THC n’augmente pas nécessairement avec l’exposition.",
+            "factKey": "thc-experimental-pain-higher-worsens",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-hc-hcp",
+                "locator": "§4.7.1.1, essai Wallace2007, capsaïcine",
+                "support": "Essai Wallace : condition intermédiaire analgésique, condition élevée associée à hyperalgésie, chez volontaires soumis à douleur provoquée."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra03-thc-experimental-pain-higher-worsens",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai sur la douleur provoquée cité par Santé Canada, quel effet avait la dose de THC la plus élevée au moment étudié ?",
+          "options": [
+            "Un soulagement plus important qu’avec la dose intermédiaire",
+            "Le même soulagement qu’avec la dose intermédiaire",
+            "Une douleur accrue plutôt qu’un meilleur soulagement",
+            "Une douleur inchangée mais un effet plus prolongé"
+          ],
+          "answer": 2,
+          "explanation": "Dans cet essai sur une douleur provoquée, la dose intermédiaire soulageait au moment étudié, tandis que la plus élevée augmentait la douleur. L’effet variait avec la dose et le temps : plus de THC ne signifiait pas plus de soulagement.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra03-hc-hcp"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Hyperalgésie possible à la dose élevée étudiée",
+            "subjectKey": "thc-experimental-pain-dose-response",
+            "property": "Hyperalgésie possible à la dose élevée étudiée",
+            "expectedAnswer": "Une douleur accrue plutôt qu’un meilleur soulagement",
+            "learningObjective": "Comprendre que l’effet antalgique du THC n’augmente pas nécessairement avec l’exposition.",
+            "factKey": "thc-experimental-pain-higher-worsens",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-hc-hcp",
+                "locator": "§4.7.1.1, essai Wallace2007, capsaïcine",
+                "support": "Essai Wallace : condition intermédiaire analgésique, condition élevée associée à hyperalgésie, chez volontaires soumis à douleur provoquée."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      }
+    },
+    {
+      "id": "hemp-q2-ra03-thc-stress-nonlinear-response-human",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Réponse émotionnelle humaine au THC.",
+      "comment": "Les quatre choix comparent désormais la détresse à la dose basse et l’humeur à la dose élevée. La nuance des deux mesures est conservée ; aucune valeur de dose ni instruction ajoutée.",
+      "contentHash": "09db2c6d1ff9ab14bb0e69c013a367f97a7410a7370ed9770c946ae6d489bc42",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-childs",
+          "url": "https://www.shayahealth.com/resources/Dose-related%20effects%20of%20delta-9-THC%20on%20emotional%20responses%20to%20acute%20psychosocial%20stress.pdf",
+          "locator": "Abstract Results et Conclusions",
+          "result": "PDF original p.1 Results/Conclusions réellement lus :42 adultes, dose moindre réduisant détresse après tâche ; dose supérieure augmentant humeur négative avant et pendant les tâches.",
+          "sourceHash": "d9deefc42afb9844ed20f97365e3bd62020f5c0cdfa989cced80f629ab1b10ad"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorScope": "Correction ciblée après la première lecture indépendante de B ; aucune nouvelle consultation de source revendiquée par root.",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra03-thc-stress-nonlinear-response-human",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Réponse émotionnelle humaine au THC.",
+          "comment": "Résultat humain confirmé. « Faible condition », « à forte » et « condition basse » sont peu naturels : parler des deux doses étudiées, sans valeurs ni consigne. Reformuler les quatre choix de manière parallèle ; le corrigé actuel est seul à distinguer détresse après tâche et humeur négative générale, tandis que les trois autres ne comparent que la détresse. Conserver cette nuance réelle du résultat.",
+          "contentHash": "87040c67c7060cf972f2d99d2dfff8c203091837fd13ddf098a4fa1da375e64f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra03-childs",
+              "url": "https://www.shayahealth.com/resources/Dose-related%20effects%20of%20delta-9-THC%20on%20emotional%20responses%20to%20acute%20psychosocial%20stress.pdf",
+              "locator": "Abstract Results et Conclusions",
+              "result": "PDF original p.1 Results/Conclusions réellement lus :42 adultes, dose moindre réduisant détresse après tâche ; dose supérieure augmentant humeur négative avant et pendant les tâches.",
+              "sourceHash": "d9deefc42afb9844ed20f97365e3bd62020f5c0cdfa989cced80f629ab1b10ad"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra03-thc-stress-nonlinear-response-human",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Quel profil l’essai de Childs (2017) a-t-il observé face à un stress aigu sous THC ?",
+          "options": [
+            "Moins de détresse à faible condition, plus d’humeur négative à forte",
+            "Davantage de détresse aux deux conditions testées",
+            "Moins de détresse aux deux conditions testées",
+            "Davantage de détresse à faible condition, moins à forte"
+          ],
+          "answer": 0,
+          "explanation": "La condition basse a réduit certains ressentis de détresse, mais la plus élevée a accru l’humeur négative. Ce contraste expérimental n’établit pas une dose antistress utilisable en dehors du laboratoire.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra03-childs"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Réponse émotionnelle différente selon exposition",
+            "subjectKey": "thc-experimental-stress-response",
+            "property": "Réponse émotionnelle différente selon exposition",
+            "expectedAnswer": "Moins de détresse à faible condition, plus d’humeur négative à forte",
+            "learningObjective": "Reconnaître qu’une augmentation de THC peut inverser un effet émotionnel recherché.",
+            "factKey": "thc-stress-nonlinear-response-human",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-childs",
+                "locator": "Abstract Results et Conclusions",
+                "support": "Dans42 adultes, la condition basse atténue la détresse après tâche stressante tandis que la haute augmente l’humeur négative."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra03-thc-stress-nonlinear-response-human",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai de Childs (2017) sur le stress, comment les effets du THC variaient-ils entre les deux doses étudiées ?",
+          "options": [
+            "Moins de détresse à faible dose, humeur plus négative à dose élevée",
+            "Moins de détresse à faible dose, humeur moins négative à dose élevée",
+            "Plus de détresse à faible dose, humeur plus négative à dose élevée",
+            "Plus de détresse à faible dose, humeur moins négative à dose élevée"
+          ],
+          "answer": 0,
+          "explanation": "Dans cet essai, la dose basse réduisait la détresse après l’épreuve ; la plus élevée augmentait l’humeur négative avant et pendant l’épreuve. Le résultat ne définit pas une dose antistress adaptée à chacun.",
+          "articleId": "ref-thc",
+          "sourceIds": [
+            "q2-ra03-childs"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Réponse émotionnelle différente selon exposition",
+            "subjectKey": "thc-experimental-stress-response",
+            "property": "Réponse émotionnelle différente selon exposition",
+            "expectedAnswer": "Moins de détresse à faible dose, humeur plus négative à dose élevée",
+            "learningObjective": "Reconnaître qu’une augmentation de THC peut inverser un effet émotionnel recherché.",
+            "factKey": "thc-stress-nonlinear-response-human",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-childs",
+                "locator": "Abstract Results et Conclusions",
+                "support": "Dans42 adultes, la condition basse atténue la détresse après tâche stressante tandis que la haute augmente l’humeur négative."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      }
+    },
+    {
+      "id": "hemp-q2-ra03-thc-antiemesis-central-cb1-mechanism",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Mécanisme préclinique de l’effet antiémétique du THC.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "642687e2180fa25914dd2d7157a007481e9df8b984695855969457ad39a9a39d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-hc-hcp",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+          "locator": "§4.3, Pre-clinical studies",
+          "result": "§4.3 passage préclinique réellement lu : effet anti-nausée/antiémétique probablement relié à l’agonisme CB1 central ; portée animale maintenue.",
+          "sourceHash": "bae578918cc2d34abc5c5138654c25e1b05770f51073be1b4a8d616b1f94e3ca"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-oral-cbd-thc-metabolic-clearance-inhibition",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Interaction métabolique CBD/THC par voie orale.",
+      "comment": "Clé commune cbd-thc-interaction appliquée conformément à la revue. Le fait oral pharmacocinétique reste distinct du résultat Haney après cannabis fumé.",
+      "contentHash": "52be8be5947d0e29de3d037696e5cd6f6d06f3864fb336d2d2432df076b82833",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-nccih-pk",
+          "url": "https://www.nccih.nih.gov/research/research-results/when-taken-orally-9-tetrahydrocannabinol-with-cannabidiol-can-result-in-stronger-drug-effects-than-9-tetrahydrocannabinol-alone",
+          "locator": "Paragraphes résultats et inhibition du métabolisme",
+          "result": "Compte rendu officiel NCCIH réellement lu : inhibition par CBD du métabolisme du THC et du11-OH-THC proposée, clairance réduite et exposition prolongée après association orale.",
+          "sourceHash": "a59e173e2b384a0b8cdee61265fb8ca35f568379df3f0d370b4f048addaed59e"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorScope": "Correction ciblée après la première lecture indépendante de B ; aucune nouvelle consultation de source revendiquée par root.",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra03-oral-cbd-thc-metabolic-clearance-inhibition",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Interaction métabolique CBD/THC par voie orale.",
+          "comment": "Mécanisme confirmé par la synthèse officielle du financeur, distinct du résultat Haney2016 sur CBD oral avant cannabis fumé : ici interaction métabolique après prise orale combinée. Harmoniser subjectKey avec cbd-thc-interaction déjà utilisé pour le même couple de composés ; une clé propre à cette seule propriété contourne la limite d’objet récurrent. Aucun changement de fait demandé.",
+          "contentHash": "e5ead053702a351ea55f8a1602f5fe9d206dbbc3002586e3d8323fa721ebdfc7",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra03-nccih-pk",
+              "url": "https://www.nccih.nih.gov/research/research-results/when-taken-orally-9-tetrahydrocannabinol-with-cannabidiol-can-result-in-stronger-drug-effects-than-9-tetrahydrocannabinol-alone",
+              "locator": "Paragraphes résultats et inhibition du métabolisme",
+              "result": "Compte rendu officiel NCCIH réellement lu : inhibition par CBD du métabolisme du THC et du11-OH-THC proposée, clairance réduite et exposition prolongée après association orale.",
+              "sourceHash": "a59e173e2b384a0b8cdee61265fb8ca35f568379df3f0d370b4f048addaed59e"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra03-oral-cbd-thc-metabolic-clearance-inhibition",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai oral de Zamarripa (2023), quel mécanisme est proposé pour l’effet renforcé du THC associé au CBD ?",
+          "options": [
+            "Une absorption intestinale diminuée du THC",
+            "Une formation moindre de son métabolite actif",
+            "Une élimination ralentie du THC et de son métabolite actif",
+            "Une élimination plus rapide du THC et de son métabolite actif"
+          ],
+          "answer": 2,
+          "explanation": "Le CBD aurait ralenti le métabolisme du THC et du 11-OH-THC, augmentant leur exposition. Le résultat concerne cette association orale étudiée et ne prédit pas l’effet de toute proportion CBD/THC.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-ra03-nccih-pk"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Inhibition métabolique et exposition accrue au THC",
+            "subjectKey": "cbd-thc-oral-pharmacokinetic-interaction",
+            "property": "Inhibition métabolique et exposition accrue au THC",
+            "expectedAnswer": "Une élimination ralentie du THC et de son métabolite actif",
+            "learningObjective": "Comprendre une interaction pharmacocinétique précise CBD/THC, distincte d’une simple promesse d’antidote.",
+            "factKey": "oral-cbd-thc-metabolic-clearance-inhibition",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-nccih-pk",
+                "locator": "Paragraphes résultats et inhibition du métabolisme",
+                "support": "Le compte rendu NCCIH rapporte une inhibition du métabolisme du THC et du11-OH-THC par CBD et une réduction de leur clairance."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra03-oral-cbd-thc-metabolic-clearance-inhibition",
+          "topicId": "evidence",
+          "level": 2,
+          "prompt": "Dans l’essai oral de Zamarripa (2023), quel mécanisme est proposé pour l’effet renforcé du THC associé au CBD ?",
+          "options": [
+            "Une absorption intestinale diminuée du THC",
+            "Une formation moindre de son métabolite actif",
+            "Une élimination ralentie du THC et de son métabolite actif",
+            "Une élimination plus rapide du THC et de son métabolite actif"
+          ],
+          "answer": 2,
+          "explanation": "Le CBD aurait ralenti le métabolisme du THC et du 11-OH-THC, augmentant leur exposition. Le résultat concerne cette association orale étudiée et ne prédit pas l’effet de toute proportion CBD/THC.",
+          "articleId": "ref-cbd",
+          "sourceIds": [
+            "q2-ra03-nccih-pk"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "constituents",
+            "subject": "Inhibition métabolique et exposition accrue au THC",
+            "subjectKey": "cbd-thc-interaction",
+            "property": "Inhibition métabolique et exposition accrue au THC",
+            "expectedAnswer": "Une élimination ralentie du THC et de son métabolite actif",
+            "learningObjective": "Comprendre une interaction pharmacocinétique précise CBD/THC, distincte d’une simple promesse d’antidote.",
+            "factKey": "oral-cbd-thc-metabolic-clearance-inhibition",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-nccih-pk",
+                "locator": "Paragraphes résultats et inhibition du métabolisme",
+                "support": "Le compte rendu NCCIH rapporte une inhibition du métabolisme du THC et du11-OH-THC par CBD et une réduction de leur clairance."
+              }
+            ],
+            "jurisdiction": "Portée pharmacologique générale ; résultats expérimentaux bornés à la population et aux conditions de la source",
+            "reviewAfter": "2027-05-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      }
+    },
+    {
+      "id": "hemp-q2-ra03-thc-cooh-glucuronidation-urinary-solubility",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Élimination d’un métabolite humain du THC.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "875502f5d7ca4d2851ee65e62957291d564dec7edfd820e965e84b67d03c7f37",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-who",
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/thcv1.pdf",
+          "locator": "Section2 §1.2, PDFp40, glucuronidation",
+          "result": "Rapport OMS PDF index40 réellement lu : THC-COOH transformé en conjugué glucuronide hydrosoluble éliminé dans l’urine.",
+          "sourceHash": "43bb7af49ffbf0bc95ebff582a0fb94f05a8067d20f8fb87ac5156dc3679db4c"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-cbd-insomnia-severity-no-placebo-difference",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite d’un essai clinique CBD sur l’insomnie.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "6dff534f520edf97402293611855d5a58aa2eb24bccd5973071ba257821fe901",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-narayan",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38174873/",
+          "locator": "Abstract Results et Conclusions",
+          "result": "Résumé original PubMed Results/Conclusions réellement lus : sévérité de l’insomnie sans différence entre traitements, quelques critères secondaires favorables ; petit essai de30 personnes.",
+          "sourceHash": "79d19543ffcc3f17dc3cbc2fc14e909c9549e6ddea7d7a17e1ea402352e73811"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-cannabis-glaucoma-pressure-effect-short",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Limite de pertinence clinique d’un effet du cannabis.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "9ce74fab390a28a892ec86d28871c402f1ede6ac7867acd0f408918f8e98a959",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-nccih-glaucoma",
+          "url": "https://www.nccih.nih.gov/health/cannabis-marijuana-and-cannabinoids-what-you-need-to-know",
+          "locator": "Glaucoma",
+          "result": "Page NCCIH section Glaucoma réellement lue : baisse de pression oculaire de courte durée et moins efficace que traitements disponibles.",
+          "sourceHash": "d546950340cd6f861a7d6b440d25808e9422203431bf1e340eada1191b7aa03a"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-france-cbd-itself-not-narcotic",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Statut français du CBD lui-même.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "4bc016dc3c26f7a72b3382874cf7f96fa037117e776d9e5cb0cf7842ab143f0d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-fr-cbd",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "locator": "PDFp1, Ce n’est pas : un stupéfiant",
+          "result": "Flyer officiel octobre2026 p.1 réellement lu : CBD lui-même non stupéfiant, contrairement au THC. Les indications problématiques sur les fleurs ailleurs dans ce flyer ne sont pas reprises.",
+          "sourceHash": "655f7f4a17d75869ca62cedcb2c9b7cf83a7e00ce035665a2473053d3cd57992"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-france-free-cannabis-gift-is-supply",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Offre gratuite de cannabis stupéfiant.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "660d16e0c1556899c453f23496df9ee65eaec14c1b6efcb15cfa3ec6f3cb739a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-fr-gift",
+          "url": "https://www.drogues.gouv.fr/en-matiere-de-stupefiants",
+          "locator": "Le trafic, note vendre ou offrir même à des amis",
+          "result": "Page MILDECA Le trafic, note réellement lue : vendre ou offrir, même entre amis et en petite quantité, constitue offre/cession de stupéfiants ; anciennes peines non reprises.",
+          "sourceHash": "25013e225d26622dc7c16e51d45c0aabe477fb4f79de11ec3d65edf35d581fb3"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-france-cbd-flower-grower-active-farmer",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Statut juridique de la culture de fleurs CBD.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "b91a6b017dbd5675acbb3e5a24351a3b239b571fc5cf4d2de79cef7f31d036d6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-fr-grow",
+          "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213/",
+          "locator": "Article1 I, alinéa agriculteurs actifs",
+          "result": "URL générale Légifrance inaccessible403 ; même article1 consolidé réellement ouvert sur https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000046912786/2023-03-16 : I impose agriculteur actif pour fleurs/feuilles, II annulé après29décembre2022. Date de version consultée explicitement conservée.",
+          "sourceHash": "b9530f659bd0f8d8eb94a4119d31403bae739e690352a6d011ff68487d3065d6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-eu-personal-cannabis-law-not-harmonized",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Répartition des compétences juridiques sur l’usage du cannabis.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "aa8bff191f6c7168ef6156e6f5b7c3f70edfb2202e728c7ceb5a3978c99a0a27",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-eu-laws",
+          "url": "https://www.euda.europa.eu/publications/faqs/cannabis-laws-in-europe-faq/how-do-eu-countries-respond-illegal-use-and-supply-cannabis_en",
+          "locator": "Does the European Union have any influence on national cannabis laws?",
+          "result": "FAQ officielle EUDA section Is there a harmonised EU law réellement lue : pas d’harmonisation usage/possession personnelle, compétence des États membres ; trafic transfrontalier distinct.",
+          "sourceHash": "d81f22ee62826cb20173772067425a34bb8ae91b621a1d3da71f75559b49b90b"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-portugal-personal-cannabis-possession-administrative",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Régime portugais de possession personnelle du cannabis.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "80d709a16d4dbfea578125508b54bf15438eb9bcd10fefc16533a503737ce23d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-pt-law",
+          "url": "https://pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=181&so_miolo=&tabela=leis",
+          "locator": "Artigo40 n.os2–4",
+          "result": "Consolidation officielle PGR Lisboa article40 nos2–4 réellement lus : possession propre contraordenação ; seuil dix jours indicatif, pas qualification automatique de trafic si destination personnelle démontrée.",
+          "sourceHash": "5b297e7c58895ade2f8562b7894a5aa91040bd164f2b7574ad6a029183dedc4e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-spain-public-cannabis-use-administrative-offence",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Usage et possession publique du cannabis en Espagne.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "3c5349e60075f66af21322f17dbc8d74c3ef2d0a2a37b3f0daefb35c749e7115",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-es-law",
+          "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-3442",
+          "locator": "Artículo36.16",
+          "result": "BOE consolidé article36.16 réellement lu : consommation/possession illicites dans lieux publics, même sans destination au trafic ; infraction administrative grave.",
+          "sourceHash": "3a51d21f73911415c005608980326364b594bc5d4a6502e80159c2a5ca686590"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-switzerland-cannabis-pilots-scientific-limited",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Modèle suisse d’accès non médical au cannabis.",
+      "comment": "La question ne révèle plus la nature expérimentale par les mots essais pilotes. Quatre cadres comparables distinguent le périmètre local/temporaire des cadres permanents ou nationaux. Le fait et la source sont inchangés.",
+      "contentHash": "c7e92f837ad4ba8c56874c710340b252c4c65eb7b269e2d3ef1f3e7a2444b663",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-ch-pilot",
+          "url": "https://www.bag.admin.ch/fr/essais-pilotes-cannabis",
+          "locator": "Introduction et objectif de la nouvelle réglementation",
+          "result": "Introduction OFSP réellement lue : article8a, essais scientifiques limités dans le temps et l’espace pour éclairer de futures décisions.",
+          "sourceHash": "9cb574918bbb6a5e0ce5de628e8682421e69052921efd85de0e0888a26014427"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorScope": "Correction ciblée après la première lecture indépendante de B ; aucune nouvelle consultation de source revendiquée par root.",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra03-switzerland-cannabis-pilots-scientific-limited",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Modèle suisse d’accès non médical au cannabis.",
+          "comment": "La source confirme un accès scientifique contrôlé limité dans le temps et l’espace. Mais « essais pilotes » dans le prompt donne presque directement « études scientifiques » ; « non médical » élimine aussi le seul autre modèle prudent. Interroger la portée concrète de l’accès suisse sans donner la nature expérimentale dans la question, et proposer quatre modèles d’accès comparables et plausibles.",
+          "contentHash": "f67c28194094bce81f4b3e3ddf69d66b59d303583f01e3497fd3d4ba22b0e535",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra03-ch-pilot",
+              "url": "https://www.bag.admin.ch/fr/essais-pilotes-cannabis",
+              "locator": "Introduction et objectif de la nouvelle réglementation",
+              "result": "Introduction OFSP réellement lue : article8a, essais scientifiques limités dans le temps et l’espace pour éclairer de futures décisions.",
+              "sourceHash": "9cb574918bbb6a5e0ce5de628e8682421e69052921efd85de0e0888a26014427"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra03-switzerland-cannabis-pilots-scientific-limited",
+          "topicId": "prevention",
+          "level": 1,
+          "prompt": "Quel modèle décrit les essais pilotes suisses de remise de cannabis non médical ?",
+          "options": [
+            "Une vente libre dans toutes les pharmacies du pays",
+            "Des études scientifiques avec accès limité et contrôlé",
+            "Un accès médical réservé aux patients hospitalisés",
+            "Un marché touristique ouvert à tout adulte de passage"
+          ],
+          "answer": 1,
+          "explanation": "Ces essais étudient un accès contrôlé au cannabis non médical et sont limités dans le temps et l’espace. Ils fournissent des données pour de futures décisions, sans ouvrir un marché général à tout adulte.",
+          "articleId": "ref-histoire-politiques",
+          "sourceIds": [
+            "q2-ra03-ch-pilot"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Accès scientifique limité plutôt que marché général",
+            "subjectKey": "switzerland-cannabis-pilot-trials",
+            "property": "Accès scientifique limité plutôt que marché général",
+            "expectedAnswer": "Des études scientifiques avec accès limité et contrôlé",
+            "learningObjective": "Reconnaître la nature expérimentale du modèle suisse.",
+            "factKey": "switzerland-cannabis-pilots-scientific-limited",
+            "form": "identification",
+            "difficultyRationale": "Distinction concrète exprimée dans le vocabulaire courant, sans mémorisation de résultat spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-ch-pilot",
+                "locator": "Introduction et objectif de la nouvelle réglementation",
+                "support": "La page décrit l’article8a et des essais scientifiques non médicaux limités spatialement et temporellement."
+              }
+            ],
+            "jurisdiction": "Suisse, essais pilotes non médicaux, novembre 2026",
+            "reviewAfter": "2027-02-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra03-switzerland-cannabis-pilots-scientific-limited",
+          "topicId": "prevention",
+          "level": 1,
+          "prompt": "Quel cadre permet la remise encadrée de cannabis non médical en Suisse en novembre 2026 ?",
+          "options": [
+            "Un marché national permanent sous licence publique",
+            "Un accès expérimental limité dans le temps et l’espace",
+            "Un marché cantonal permanent réservé aux résidents",
+            "Un accès temporaire ouvert à tout adulte dans le pays"
+          ],
+          "answer": 1,
+          "explanation": "Ces essais étudient un accès contrôlé au cannabis non médical et sont limités dans le temps et l’espace. Ils fournissent des données pour de futures décisions, sans ouvrir un marché général à tout adulte.",
+          "articleId": "ref-histoire-politiques",
+          "sourceIds": [
+            "q2-ra03-ch-pilot"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Accès scientifique limité plutôt que marché général",
+            "subjectKey": "switzerland-cannabis-pilot-trials",
+            "property": "Accès scientifique limité plutôt que marché général",
+            "expectedAnswer": "Un accès expérimental limité dans le temps et l’espace",
+            "learningObjective": "Reconnaître la nature expérimentale du modèle suisse.",
+            "factKey": "switzerland-cannabis-pilots-scientific-limited",
+            "form": "identification",
+            "difficultyRationale": "Distinction concrète exprimée dans le vocabulaire courant, sans mémorisation de résultat spécialisé.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-ch-pilot",
+                "locator": "Introduction et objectif de la nouvelle réglementation",
+                "support": "La page décrit l’article8a et des essais scientifiques non médicaux limités spatialement et temporellement."
+              }
+            ],
+            "jurisdiction": "Suisse, essais pilotes non médicaux, novembre 2026",
+            "reviewAfter": "2027-02-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      }
+    },
+    {
+      "id": "hemp-q2-ra03-switzerland-pilots-already-cannabis-consumers",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Conditions d’accès aux essais cannabiques suisses.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "d30e71aa276f0a48ca25e464cf472a45114e8d743cc96b70fc92a201bdad9d53",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-ch-participants",
+          "url": "https://www.bag.admin.ch/fr/faq-questions-frequentes-sur-les-essais-pilotes-avec-du-cannabis",
+          "locator": "Participation, Qui peut participer ?",
+          "result": "FAQ OFSP Qui peut participer réellement lue : preuve d’une consommation de cannabis déjà existante, majorité et autres conditions.",
+          "sourceHash": "3dde32d8fad4da92c6b2662cc95a3ca3793e6cf760ebc4a916cbf9010c9ede27"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-switzerland-medical-no-individual-foph-exception",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Prescription suisse de cannabis médical.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "a8be02e9aaa46e7606d9743357edb49133deea3f9d479bcb0ae26f176ce7de0d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-ch-medical",
+          "url": "https://www.bag.admin.ch/fr/utilisation-du-cannabis-a-des-fins-medicales",
+          "locator": "Usage à des fins médicales : levée de l’interdiction",
+          "result": "Page OFSP section réforme réellement lue : suppression autorisation exceptionnelle individuelle pour prescription depuis1août2022 ; régime de contrôle et prescription conservés.",
+          "sourceHash": "e21b45caae081442040300490de2b42e3528eae492caf425b934967e90fc5e89"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-quebec-nonmedical-cannabis-minimum-age-21",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Âge québécois pour cannabis non médical.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "f4ccc0548aa6667fafd9d6044989d83ac333d1d01bbfd4821addef8bef2b4b95",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-qc",
+          "url": "https://www.quebec.ca/sante/conseils-et-prevention/alcool-drogues-jeu/connaitre-les-drogues-et-leurs-effets/cannabis/encadrement-cannabis-quebec/cadre-legal-cannabis-bref",
+          "locator": "Possession, interdiction complète moins de21 ans",
+          "result": "Page officielle Québec Possession réellement lue : interdiction complète de posséder pour les moins de21ans, champ non médical.",
+          "sourceHash": "2505948a7fab5c287f067682316e4be974b300af50e80792816f4b2ac5241c07"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-quebec-personal-home-growing-prohibited",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Interdiction québécoise de culture personnelle.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "a8c091428bed59f7b170844b1ea0d14d116e89f7884352ebb6968ad1f2bce180",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-qc",
+          "url": "https://www.quebec.ca/sante/conseils-et-prevention/alcool-drogues-jeu/connaitre-les-drogues-et-leurs-effets/cannabis/encadrement-cannabis-quebec/cadre-legal-cannabis-bref",
+          "locator": "Culture du cannabis",
+          "result": "Page officielle Québec Interdiction de la culture réellement lue : culture personnelle et possession d’une plante interdites ; champ non médical de la question.",
+          "sourceHash": "2505948a7fab5c287f067682316e4be974b300af50e80792816f4b2ac5241c07"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-ra03-us-2026-schedule3-qualified-medical-only",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Portée précise d’un ordre fédéral2026 sur cannabis médical.",
+      "comment": "Quatre périmètres juridiques sont proposés sans opposition grammaticale Tout/Toute contre Certaines. La date et le champ médical fédéral restent explicites.",
+      "contentHash": "e662b515a23a222d83ea5ed9ff2c7e768e053c60ca89fb244f4c6fe7edb23f15",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-us-doj",
+          "url": "https://www.justice.gov/opa/pr/justice-department-announces-issuance-federal-registrations-medical-marijuana-dispensaries",
+          "locator": "Dernier paragraphe du communiqué mis à jour3novembre2026",
+          "result": "Communiqué DOJ30octobre mis à jour3novembre2026 réellement lu : activités médicales admissibles sous ordre d’avril ; hors champ, dont récréatif, reste ScheduleI ; procédure plus large séparée.",
+          "sourceHash": "7ddae1dddc692407146bb8b8fa178efb4024f79d376e96de3cdf8757f2c566d4"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorScope": "Correction ciblée après la première lecture indépendante de B ; aucune nouvelle consultation de source revendiquée par root.",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-ra03-us-2026-schedule3-qualified-medical-only",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Portée précise d’un ordre fédéral2026 sur cannabis médical.",
+          "comment": "Portée fédérale2026 confirmée dans le communiqué DOJ réellement ouvert : certaines activités médicales admissibles, autres activités encore ScheduleI. Trois réponses commencent par Tout/Toute contre la seule réponse nuancée Certaines : rééquilibrer quatre périmètres juridiques plausibles, sans indice grammatical par absolu. Conserver date et distinction médical/récréatif.",
+          "contentHash": "619d4b05344bf6c629bdaacc5f9a32593a7f93b20629c9880ef2324cfd8b05eb",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-ra03-us-doj",
+              "url": "https://www.justice.gov/opa/pr/justice-department-announces-issuance-federal-registrations-medical-marijuana-dispensaries",
+              "locator": "Dernier paragraphe du communiqué mis à jour3novembre2026",
+              "result": "Communiqué DOJ30octobre mis à jour3novembre2026 réellement lu : activités médicales admissibles sous ordre d’avril ; hors champ, dont récréatif, reste ScheduleI ; procédure plus large séparée.",
+              "sourceHash": "7ddae1dddc692407146bb8b8fa178efb4024f79d376e96de3cdf8757f2c566d4"
+            }
+          ]
+        }
+      ],
+      "coordinatorChange": {
+        "before": {
+          "id": "hemp-q2-ra03-us-2026-schedule3-qualified-medical-only",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Selon le DOJ en novembre 2026, quelle activité bénéficie du cadre ScheduleIII mis en œuvre par l’ordre d’avril 2026 ?",
+          "options": [
+            "Tout cannabis récréatif autorisé par un État",
+            "Toute possession de cannabis par un adulte",
+            "Toute vente de cannabis à faible teneur en THC",
+            "Certaines activités de cannabis médical admissibles"
+          ],
+          "answer": 3,
+          "explanation": "L’ordre vise des activités médicales définies et admissibles, pas l’ensemble du cannabis. Le DOJ précise que le cannabis hors de ce champ reste sous contrôles ScheduleI et qu’une procédure plus large est distincte.",
+          "articleId": "ref-histoire-politiques",
+          "sourceIds": [
+            "q2-ra03-us-doj"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Portée limitée du ScheduleIII médical",
+            "subjectKey": "us-2026-medical-marijuana-federal-order",
+            "property": "Portée limitée du ScheduleIII médical",
+            "expectedAnswer": "Certaines activités de cannabis médical admissibles",
+            "learningObjective": "Distinguer un cadre médical fédéral ciblé d’un reclassement général du cannabis.",
+            "factKey": "us-2026-schedule3-qualified-medical-only",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-us-doj",
+                "locator": "Dernier paragraphe du communiqué mis à jour3novembre2026",
+                "support": "Dernier paragraphe : ordre limité aux activités médicales qualifiées, autres activités dont récréatives non autorisées, cannabis hors champ reste ScheduleI."
+              }
+            ],
+            "jurisdiction": "États-Unis, communiqué DOJ30octobre2026 mis à jour3novembre2026",
+            "reviewAfter": "2027-02-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        },
+        "after": {
+          "id": "hemp-q2-ra03-us-2026-schedule3-qualified-medical-only",
+          "topicId": "prevention",
+          "level": 2,
+          "prompt": "Selon le DOJ en novembre 2026, quelle activité bénéficie du cadre Schedule III mis en œuvre par l’ordre d’avril 2026 ?",
+          "options": [
+            "Les ventes récréatives sous licence d’un État",
+            "La possession personnelle dans les États qui l’autorisent",
+            "Les ventes de fleurs sous le seuil de THC fixé pour le chanvre",
+            "Les activités médicales remplissant les critères fédéraux"
+          ],
+          "answer": 3,
+          "explanation": "L’ordre vise des activités médicales définies et admissibles, pas l’ensemble du cannabis. Le DOJ précise que le cannabis hors de ce champ reste sous contrôles Schedule I et qu’une procédure plus large est distincte.",
+          "articleId": "ref-histoire-politiques",
+          "sourceIds": [
+            "q2-ra03-us-doj"
+          ],
+          "editorial": {
+            "domain": "active",
+            "category": "prevention",
+            "subject": "Portée limitée du ScheduleIII médical",
+            "subjectKey": "us-2026-medical-marijuana-federal-order",
+            "property": "Portée limitée du ScheduleIII médical",
+            "expectedAnswer": "Les activités médicales remplissant les critères fédéraux",
+            "learningObjective": "Distinguer un cadre médical fédéral ciblé d’un reclassement général du cannabis.",
+            "factKey": "us-2026-schedule3-qualified-medical-only",
+            "form": "identification",
+            "difficultyRationale": "Règle juridique précise ou résultat clinique borné demandant une connaissance intermédiaire.",
+            "sourceEvidence": [
+              {
+                "sourceId": "q2-ra03-us-doj",
+                "locator": "Dernier paragraphe du communiqué mis à jour3novembre2026",
+                "support": "Dernier paragraphe : ordre limité aux activités médicales qualifiées, autres activités dont récréatives non autorisées, cannabis hors champ reste ScheduleI."
+              }
+            ],
+            "jurisdiction": "États-Unis, communiqué DOJ30octobre2026 mis à jour3novembre2026",
+            "reviewAfter": "2027-02-17",
+            "verifiedAsOf": "2026-11-17"
+          }
+        }
+      }
+    },
+    {
+      "id": "hemp-q2-ra03-us-state-medical-licence-not-federal-registration",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Licence étatique et enregistrement fédéral du cannabis médical.",
+      "comment": "Fait, portée, corrigé, choix et niveau recevables après lecture intégrale et vérification du passage.",
+      "contentHash": "59abc0f6d1329c4301b87a638767a29fd94875b4a6deb21514fd602265e57aa8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-us-doj",
+          "url": "https://www.justice.gov/opa/pr/justice-department-announces-issuance-federal-registrations-medical-marijuana-dispensaries",
+          "locator": "Paragraphes exigences fédérales et licence d’État",
+          "result": "Même communiqué DOJ paragraphes exigences/enregistrement réellement lus : licence d’État seule ne confère pas automatiquement l’enregistrement fédéral, enquête et exigences DEA subsistent.",
+          "sourceHash": "7ddae1dddc692407146bb8b8fa178efb4024f79d376e96de3cdf8757f2c566d4"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "reviewed": 30,
+    "approved": 23,
+    "changes_requested": 7,
+    "rejected": 0,
+    "sourcesIndependentlyConsulted": 25,
+    "completeReading": "30 objets complets, quatre choix et corrigés,25 sources et passages pertinents lus ; aucune validation par échantillonnage.",
+    "formatCheck": "Longueurs, quatre choix distincts et alignement corrigé/expectedAnswer conformes pour30 questions.",
+    "duplicateCheck": "Index interrogé sur effets, cannabinoïdes, clinique et juridictions. Doublon exact frontièreCanada en02 relu dans son lot. CBNinsomnie ra01 distinct de CBDinsomnie ; CBC pharmacologie distincte des questions CB2/caryophyllène ; aucun autre doublon exact constaté.",
+    "closePairs": "Ra01 Haney2016 intégralement relu : CBD oral préalable puis cannabis fumé, absence d’atténuation subjective. Ra03 Zamarripa2023 : association entièrement orale, inhibition métabolique et exposition THC/11-OH accrue. Fait et protocole distincts ; demande de clé d’objet commune uniquement.",
+    "legalScope": "Versions officielles effectivement consultées ; DOJ2026 confirme un cadre médical limité, Portugal art40 conserve infractions administratives. Pour arrêté français, URL générale403 mais article1 consolidé accessible via URL datée2023-03-16 ; consultation décrite sans prétendre ouvrir la version2026.",
+    "domainCheck": "30 faits réellement liés aux effets, cannabinoïdes ou règles du cannabis à actifs ; aucun fait food/materials ni biologie générale."
+  },
+  "supersededItems": [
+    {
+      "id": "hemp-q2-ra03-canada-legal-cannabis-not-border-permission",
+      "status": "rejected",
+      "domain": "active",
+      "domainComment": "Frontière canadienne et cannabis, mais fait déjà présent.",
+      "comment": "Doublon exact de hemp-q2-en02-canada-border-domestic-legal, déjà approuvé ; objet complet relu dans batches/e-new-02.json. Même voyage entre deux pays où le cannabis est légal, même absence d’autorisation et même règle de frontière canadienne. L’inversion entrer/sortir ou le changement de factKey ne crée pas un fait distinct. Retirer ou remplacer par une autre connaissance ; nouvelle preuve à contre-lire si remplacement.",
+      "contentHash": "1f5b0b055333cc1e9cef639694e5ed6cf4e98e9aff0750c7c9945838c0dfdf3b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-ra03-ca-border",
+          "url": "https://www.cbsa-asfc.gc.ca/travel-voyage/cannabis-eng.html",
+          "locator": "Know the rules before you travel ; exceptions médicales",
+          "result": "Page CBSA réellement lue : interdiction même si légalité dans les deux pays ; autorisations médicales spécifiques traitées séparément. Fait exact déjà testé par en02.",
+          "sourceHash": "f63d106ff6ffee68b145292799b0c2ee5a5e6793ee79ab65abcd5e218030a095"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorScope": "Doublon exact de hemp-q2-en02-canada-border-domestic-legal retiré avant activation ; la place est réaffectée au dernier lot A.",
+      "question": {
+        "id": "hemp-q2-ra03-canada-legal-cannabis-not-border-permission",
+        "topicId": "prevention",
+        "level": 1,
+        "prompt": "Un voyageur sans permis spécial peut-il sortir du Canada avec son cannabis vers un pays qui l’a aussi légalisé ?",
+        "options": [
+          "Oui, si la quantité reste sous le plafond canadien de possession",
+          "Oui, si le produit a été acheté dans un commerce autorisé",
+          "Non, la légalité des deux côtés ne permet pas ce passage",
+          "Oui, si le cannabis reste dans son emballage d’origine"
+        ],
+        "answer": 2,
+        "explanation": "La légalisation locale ne permet pas d’emporter du cannabis à travers la frontière canadienne. Les rares exceptions médicales ou scientifiques requièrent des autorisations spécifiques ; un achat légal ne suffit pas.",
+        "articleId": "ref-histoire-politiques",
+        "sourceIds": [
+          "q2-ra03-ca-border"
+        ],
+        "editorial": {
+          "domain": "active",
+          "category": "prevention",
+          "subject": "Légalité locale ne permet pas le passage de frontière",
+          "subjectKey": "canada-cannabis-international-border",
+          "property": "Légalité locale ne permet pas le passage de frontière",
+          "expectedAnswer": "Non, la légalité des deux côtés ne permet pas ce passage",
+          "learningObjective": "Distinguer possession légale à l’intérieur d’un pays et transport international.",
+          "factKey": "canada-legal-cannabis-not-border-permission",
+          "form": "situation",
+          "difficultyRationale": "Distinction concrète exprimée dans le vocabulaire courant, sans mémorisation de résultat spécialisé.",
+          "sourceEvidence": [
+            {
+              "sourceId": "q2-ra03-ca-border",
+              "locator": "Know the rules before you travel ; exceptions médicales",
+              "support": "La page interdit le transport transfrontalier même entre juridictions légalisées ; elle décrit séparément les exceptions autorisées."
+            }
+          ],
+          "jurisdiction": "Canada, voyage ordinaire sans permis/exemption ; page12novembre2026",
+          "reviewAfter": "2027-02-17",
+          "verifiedAsOf": "2026-11-17"
+        }
+      }
+    }
+  ],
+  "coordinatorSummary": "29 questions approuvées. Cinq corrections ciblées de formulation/clé arbitrées par root, un complément terminologique rédigé par A puis contre-lu par B, un doublon retiré avant activation et archivé. La place retirée est réaffectée à ra06."
+}

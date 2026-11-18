@@ -1,0 +1,241 @@
+{
+  "batchId": "r-actives-b-04",
+  "author": "rebalance_classify_b",
+  "date": "2026-11-17",
+  "state": "frozen-awaiting-independent-review",
+  "count": 31,
+  "sources": 22,
+  "domain": "active",
+  "levels": {
+    "1": 13,
+    "2": 15,
+    "3": 3,
+    "4": 0
+  },
+  "lineageQuestions": 8,
+  "sourceVerification": "Les22sources ont été ouvertes et leurs passages ciblés lus. Le PDF Smithsonian remplace la page de catalogue404 ; le PDF NationalAcademies remplace la page web bloquée ; l’éditeurMDPI remplace PMC bloqué pour l’étude historique de Barcelone. Aucune source seulement supposée consultée.",
+  "scopeNotes": [
+    "Huit récits externes de lignées, attribués aux breeders, sans effets ou rendement garantis.",
+    "Culture et fictions du cannabis, histoire pharmaceutique à actifs, circuits de résine et deux faits de traitement de fleurs médicales.",
+    "Aucun protocole de culture/extraction/irradiation ni dose.",
+    "Faits de marché EUDA2026 bornés aux observations et données agrégées ; provenance duRif et changement vers hybrides contextualisés."
+  ],
+  "duplicateCheck": "Index des faits actifs et lots voisins consultés ; TaxAct réutilise marihuana-tax-act et CommissionIndienne réutilise indian-hemp-drugs-commission. Pas de nouvelle question sur terpènes déjà testés, couplages F2, THCtotal ou mêmes appellations de produits.",
+  "remainingPlan": "29+30+29+31+31+35=185 ; après ce lot119candidats,66restent à rédiger.",
+  "items": [
+    {
+      "id": "hemp-q2-rb04-jack-herer-hommage",
+      "contentHash": "449f4fc22a2a3348eb9a62ec9362b19aa539bae42f9bab1b3f5f5abb6e802cf5"
+    },
+    {
+      "id": "hemp-q2-rb04-white-widow-parents",
+      "contentHash": "19b96cf799a034a3d147cf673abb90e12a4eb683401183ffa8ccb84ddb7cecc0"
+    },
+    {
+      "id": "hemp-q2-rb04-northern-lights-ascendances",
+      "contentHash": "4bfd2033d2a81e0b1f5c57c6df9bc5b77453337db52a6b670f6ebf1f788ca320"
+    },
+    {
+      "id": "hemp-q2-rb04-blueberry-dj-short",
+      "contentHash": "15ec866ea4e43061695be4d685dbbd2e43a836bda7a73558b4ca1dbc59bd4a4a"
+    },
+    {
+      "id": "hemp-q2-rb04-durban-poison-afrique-sud",
+      "contentHash": "930e1e827d0d35392e3a804ebe334e5d656c73285001477d9c98f6c88dac7331"
+    },
+    {
+      "id": "hemp-q2-rb04-skunk1-trois-ascendances",
+      "contentHash": "34f0e2265d22b914e38a6df877f5d897dab9b04fb185874f52a4987b0172043f"
+    },
+    {
+      "id": "hemp-q2-rb04-cannatonic-pedigree-corrige",
+      "contentHash": "93279dfab7333d4ec7ec176d8bf4acb3f52bacf6324b9a091b23d7ccf68593cc"
+    },
+    {
+      "id": "hemp-q2-rb04-hindu-kush-provenance",
+      "contentHash": "7daf7c13b119e0713468e37c3e5212c3bda71d9c5112ca2ce7d7863a56ebaaaa"
+    },
+    {
+      "id": "hemp-q2-rb04-appel18joint-revendication",
+      "contentHash": "d8aaea6ae5e8f2392cb386eef826e9ccaebcd7c62abc02b4222eb1ddd4612d04"
+    },
+    {
+      "id": "hemp-q2-rb04-actuel-presse-underground",
+      "contentHash": "0de5f02af7ad9652803146b0b7dbf5731d5779cfcde8649eaac209f7e79e469e"
+    },
+    {
+      "id": "hemp-q2-rb04-reefer-man-calloway",
+      "contentHash": "162aa5c661e650bb2335cc6fe62e178de4536cd80bcd4b88159d25614165cd78"
+    },
+    {
+      "id": "hemp-q2-rb04-how-high-harvard",
+      "contentHash": "26fcdf78277c7d461e64aaaa508f496be92255e33f5d6e840de853ccba6258bf"
+    },
+    {
+      "id": "hemp-q2-rb04-harold-kumar-quete",
+      "contentHash": "9ff853f2a4ac32ed8b6c367306dda2e811c72d1bb8a4f730b62431c508e486ac"
+    },
+    {
+      "id": "hemp-q2-rb04-saving-grace-dettes",
+      "contentHash": "b65b413afbd597ad01e36f8ed632a0b57b5bb791b9ca203050b77a7734fb541a"
+    },
+    {
+      "id": "hemp-q2-rb04-grass-documentaire-histoire",
+      "contentHash": "faedc0fce2b5e3e73bfc9465b25acff5c95387605da41ca9fc7a4d08e21305b4"
+    },
+    {
+      "id": "hemp-q2-rb04-family-business-boucherie",
+      "contentHash": "1dc1e899c8917972dce7ed09df6058c90a53fd5724e9f33e39e7b99f837e5f40"
+    },
+    {
+      "id": "hemp-q2-rb04-paulette-retraitee",
+      "contentHash": "e8947e9360d30d93cfdeb162eee59b00e1e0af5920178eb7012a71eb9bf3ab1e"
+    },
+    {
+      "id": "hemp-q2-rb04-marijuana-stigmatisation1930",
+      "contentHash": "f5f8b1d87804932962712176197c0548a4605ecfc4a2f980d5cc78ae478f37e8"
+    },
+    {
+      "id": "hemp-q2-rb04-rif-resine-maroc",
+      "contentHash": "33ccf04d103e6b24e7fa6a657941710c2303734b546fd0cbe9d6e5c826615e24"
+    },
+    {
+      "id": "hemp-q2-rb04-resine-herbe-teneur-moyenne2024",
+      "contentHash": "64f58259c12720192863cabce5a2bd04a2bd711d84ae74243c51130c6eba2993"
+    },
+    {
+      "id": "hemp-q2-rb04-imports-amerique-nord-europe",
+      "contentHash": "452cd6893fefcf5f26043786690977f534c37c39850f48b8dbbd3f6e58cb7316"
+    },
+    {
+      "id": "hemp-q2-rb04-rif-hybrides-resine",
+      "contentHash": "1cd211147d7288c1be102f9d7c6760a3bd139fd42356e7e8b031c2424d7b0f67"
+    },
+    {
+      "id": "hemp-q2-rb04-europe-cannabis-premier-illicite",
+      "contentHash": "dfac772aac977e0adbe5530e836543e61d1210313eaf008af6ca0f501931a2bc"
+    },
+    {
+      "id": "hemp-q2-rb04-irradiation-but-microbien",
+      "contentHash": "0865a8ec3e89902365f9d1e42b717e8e3fc06e9c49c4e698bc9f103d42bd7098"
+    },
+    {
+      "id": "hemp-q2-rb04-irradiation-profil-chimique",
+      "contentHash": "4db931b75b16e3956c5cabbabd729109163e07e9b408b325eb394821b8aa307c"
+    },
+    {
+      "id": "hemp-q2-rb04-taxact1937-usage-medical",
+      "contentHash": "65cb950c6d090d7b27fb274bd765f3484db47217d96db99cece02f2c5c3cc009"
+    },
+    {
+      "id": "hemp-q2-rb04-medecine-variabilite-lots",
+      "contentHash": "efbd3cda1c56c713d322b3c67563f881c35fa83e0f170523c917673c71644dc3"
+    },
+    {
+      "id": "hemp-q2-rb04-commission-indienne-prohibition",
+      "contentHash": "7054529039d9d5dc2595ba8e64c88b07e05c77ec94dd77870c2e1c693c146164"
+    },
+    {
+      "id": "hemp-q2-rb04-herba-indicae-resine1925",
+      "contentHash": "c51ff57841af3125528ed6f9f41458d24253f0aeef02d46976660232bcd81be9"
+    },
+    {
+      "id": "hemp-q2-rb04-cannabine-extrait-historique",
+      "contentHash": "593a1396efabf31708a2a444832535b29a1748eb09f80d164ea89d64faa7391b"
+    },
+    {
+      "id": "hemp-q2-rb04-indian-hemp-appellation-pharmacie",
+      "contentHash": "7cdbdf3693eedc3b4e2827710fd3ed62a844a7eff11024dffa997a92a7c2688a"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "id": "q2-rb04-herer",
+      "sourceHash": "84baea7ff53386cf176f2f46e8d180ad24e348dcd6f0232768bdfcb288cecf54"
+    },
+    {
+      "id": "q2-rb04-widow",
+      "sourceHash": "c849fce7751d23054ec0ed0365b9f864e7bd5ed3586887a852f0442982161006"
+    },
+    {
+      "id": "q2-rb04-northern",
+      "sourceHash": "46243908738e8382188a5af0d3c20c09556b71a1e3a8cc9e82aecc9c0fcab691"
+    },
+    {
+      "id": "q2-rb04-blueberry",
+      "sourceHash": "22bfe92cd988c3a103a09b489c941b19cb457e8faa7a2033748afa6ee69d4360"
+    },
+    {
+      "id": "q2-rb04-durban",
+      "sourceHash": "8610d020bd0a764c5d8bacae0152e3a0fb64938cc045670e0875b1f2c31b588f"
+    },
+    {
+      "id": "q2-rb04-landrace",
+      "sourceHash": "15e321c51ea7093fedbc3d9c452c3282bb3bb0b0842d404132c60fa6026e7058"
+    },
+    {
+      "id": "q2-rb04-cannatonic",
+      "sourceHash": "f0ee5b8e30ee0b42e88732d7afcb62c882a03361892c67ad7fbd39d59a95139a"
+    },
+    {
+      "id": "q2-rb04-presse",
+      "sourceHash": "b9f324175ee8e4118d6f9b198244d059fd9e3904b93a656a5fc9185ff0d8d0b8"
+    },
+    {
+      "id": "q2-rb04-reefer",
+      "sourceHash": "ed515e7bcc40fec59c652b36d8f040ea1334a7a4f3a5aacb6722a140dfdcd089"
+    },
+    {
+      "id": "q2-rb04-howhigh",
+      "sourceHash": "10f6ab56d9eaff85f09898ba3c0d5f7a81fe19bb97490958a3c4ea31df436026"
+    },
+    {
+      "id": "q2-rb04-harold",
+      "sourceHash": "677050b87e263b57bb8fdb8ddc115ef5a04560ecb8bbb9e05320e5c1f82bd9d6"
+    },
+    {
+      "id": "q2-rb04-grace",
+      "sourceHash": "38b170677818e04521c06b80ce86c5f2c6342dd90283fe9c87f3786f23715885"
+    },
+    {
+      "id": "q2-rb04-grass",
+      "sourceHash": "b2c0f9a827615728abeb874b37baad0fc13ea7ebd83d49697d6a734ad37480f1"
+    },
+    {
+      "id": "q2-rb04-family",
+      "sourceHash": "7e32ac3a95e6b81066129174e7db66bc5296ba33598137aabec3cec09e38ec27"
+    },
+    {
+      "id": "q2-rb04-paulette",
+      "sourceHash": "0fe59274e6b6bc18b1c17c253859cf3d9aca9bc84bfdcf32135f9da0ab97a122"
+    },
+    {
+      "id": "q2-rb04-nlm",
+      "sourceHash": "5dcee748269b46126ab3d407cf4c1ea4c5e705ef0af69fd31999bdd2ebd0c5c1"
+    },
+    {
+      "id": "q2-rb04-resinmarkets",
+      "sourceHash": "70582ce02d317e07a42bd56ea792675c57efd05e2d1fc93b5b3b9b7231e7748c"
+    },
+    {
+      "id": "q2-rb04-euda26",
+      "sourceHash": "7e20af72ab66524b0aa2d13f89b31997bb36ce7a2db7972e4d5b008ee46f5490"
+    },
+    {
+      "id": "q2-rb04-irradiation",
+      "sourceHash": "d69f089a1244c367d6c7628a182a03156c716792a845a916bff35138b8ab3af5"
+    },
+    {
+      "id": "q2-rb04-zuardi",
+      "sourceHash": "08c47cb29064cac99372b30bb4ced97f6c6168402a98753332d916a7d7f8c740"
+    },
+    {
+      "id": "q2-rb04-iom",
+      "sourceHash": "987d0b663f66be7b37c0b41c1f31aaa5c8f4e0b95346205614d7bf43f4a23d47"
+    },
+    {
+      "id": "q2-rb04-pharmahistory",
+      "sourceHash": "79e442d541ad4c7a379e016b3fe96a6490327034d119085039a27861fef5866a"
+    }
+  ]
+}

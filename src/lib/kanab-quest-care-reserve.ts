@@ -1,4 +1,5 @@
-import { canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProblem, getKqCareProduct, KQ_CARE_PRODUCTS, type KqCareProduct } from "./kanab-quest-care";
+import { canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProblem, getKqCareProduct, KQ_CARE_PRODUCTS, type KqCareProduct } from "./kanab-quest-care";
+import { getKqCareSectors } from "./kanab-quest-care-spatial";
 import type { KqGameState } from "./kanab-quest-game";
 
 export type KqCareReserveMatch = { product: KqCareProduct; problemLabels: string[] };
@@ -15,14 +16,42 @@ export type KqCareReserveSnapshot = {
 
 export type KqCareAvailabilityNotice = { scope: string; count: number | null };
 
+export function getKqCareStockQuantity(legacyQuantity: number, areaQuantity: number, pricingUnits: number, targeted: boolean) {
+  return targeted ? legacyQuantity * pricingUnits + areaQuantity : legacyQuantity + Math.floor(areaQuantity / pricingUnits);
+}
+
+export function getKqCareInventoryRows(state: KqGameState | undefined, inventory: Record<string, number>, areaInventory?: Record<string, number>) {
+  const { pricingUnits } = getKqCarePricing(state);
+  const hasSectors = !!state && getKqCareSectors(state).length > 0;
+  return KQ_CARE_PRODUCTS.map(({ code: productCode }) => {
+    const legacyQuantity = inventory[productCode] ?? 0;
+    const areaQuantity = areaInventory?.[productCode] ?? 0;
+    return { productCode, legacyQuantity, areaQuantity,
+      quantity: getKqCareStockQuantity(legacyQuantity, areaQuantity, pricingUnits, hasSectors) };
+  });
+}
+
+/** A targeted release uses loose coverage first, opening a legacy passage only when needed. */
+export function consumeKqCareStock(inventory: Record<string, number>, areaInventory: Record<string, number> | undefined,
+  code: string, pricingUnits: number, targeted: boolean) {
+  const area = areaInventory?.[code] ?? 0;
+  const legacy = inventory[code] ?? 0;
+  if (legacy > 0 && (!targeted || area === 0)) {
+    const remainingArea = targeted ? { ...areaInventory, [code]: pricingUnits - 1 } : areaInventory;
+    return { inventory: { ...inventory, [code]: legacy - 1 }, ...(remainingArea && { areaInventory: remainingArea }) };
+  }
+  const required = targeted ? 1 : pricingUnits;
+  if (area < required) throw new Error("Réserve insuffisante pour la surface cultivée.");
+  return { inventory, areaInventory: { ...areaInventory, [code]: area - required } };
+}
+
 /** A quote is tied to the culture, its surface and the exact intervention window. */
 export function getKqCareAvailabilityScope(state: KqGameState, runId?: string | null): string {
   return JSON.stringify([runId ?? null, state.seed, state.startedAt, state.stageIndex, state.phase,
     state.rulesVersion, state.cultureDead, state.warehouse?.activeAreaM2, state.equipment?.productionUnits, state.campaign, state.care]);
 }
 
-/** Counts choices, never doses or catalogue matches. The inventory already contains
- * complete passages for the quoted surface; partial coverage is not usable stock. */
+/** Inventory expresses usable applications, either one sector or one complete passage. */
 export function getKqCareActionAvailability(snapshot: KqCareReserveSnapshot | null, state?: KqGameState) {
   if (!snapshot) return null;
   const usable = state ? KQ_CARE_PRODUCTS.filter(product => (snapshot.inventory[product.code] ?? 0) > 0

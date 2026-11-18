@@ -86,6 +86,16 @@ const plannedTasks = (raw: ReturnType<typeof fixture>) => raw.state.tasks.filter
 const history = (raw: ReturnType<typeof fixture>, day: number) => raw.state.employees[0].weeklyPlan!.history.find(entry => entry.day === day);
 
 describe("weekly template validation and prices", () => {
+  it("uses a booked workshop segment only on its actual day during catch-up", () => {
+    const raw = fixture();
+    configure(raw, days([1, [communication()]], [2, [communication()]]));
+    raw.context.teamWork = [{ id: "segment", assigneeId: employeeId, kind: "processing", target: "Atelier", hours: 1,
+      startedAt: dayAt(3, 1), completesAt: dayAt(3, 2) }];
+    advance(raw, 3, 4);
+    expect(plannedTasks(raw).map(task => [task.day, task.startedAt, task.status])).toEqual([
+      [2, dayAt(2), "completed"], [3, dayAt(3, 2), "completed"],
+    ]);
+  });
   it("quotes only training and travel, independently of salary and untrusted client prices", () => {
     const trip = KQ_STAFF_CITIES.find(city => city.id === "brest")!.travelCents;
     expect(getKqStaffPlannedTaskCost(training())).toBe(7000);

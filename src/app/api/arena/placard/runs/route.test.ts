@@ -57,7 +57,7 @@ describe("POST /api/arena/placard/runs", () => {
 
   it("resumes only the authenticated player's active culture", async () => {
     getKqPlayerRunsSnapshot.mockResolvedValue({ activeRun: { runId: "run-1" }, activeRuns: [{ runId: "run-1" }] });
-    const response = await GET();
+    const response = await GET(new Request("http://localhost/api/arena/placard/runs"));
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(getKqPlayerRunsSnapshot).toHaveBeenCalledWith(customerId, {});

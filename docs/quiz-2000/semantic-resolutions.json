@@ -1,0 +1,51 @@
+[
+  {
+    "ids": [
+      "hemp-hs-sci-cb1",
+      "hemp-hs-sci-cb2"
+    ],
+    "decision": "distinct",
+    "reviewer": "f_existing_audit",
+    "reason": "Deux événements biologiques distincts : clonage CB1 en1990 et clonage CB2 en1993, portant sur deux récepteurs différents et deux publications. Ce ne sont pas deux formulations de la date d’un même événement. Le contexte chronologique très proche impose néanmoins un subjectKey commun pour éviter leur répétition dans une même partie ; aucune nouvelle question de simple permutation n’est autorisée par cet arbitrage.",
+    "contentHashes": {
+      "hemp-hs-sci-cb1": "f6b25bb8c6fdd77f1f20fc66c262df3d7eb2dba5a93644f8d579cd7e1ece3f54",
+      "hemp-hs-sci-cb2": "aa8d0c59af1828e49777a74da6feab1689e85b9f344ea1ef7472a075edbfd870"
+    }
+  },
+  {
+    "ids": [
+      "hemp-hc-015",
+      "hemp-hc-017"
+    ],
+    "decision": "distinct",
+    "reviewer": "root",
+    "basedOn": "reviews/d-legacy-01.json#duplicateReview",
+    "reason": "The journal of publication and the exact publication date are distinct documentary properties. The date question names the journal, so both questions share club-hachichins and cannot recur together when unique subjects are feasible. Both current question versions are independently approved.",
+    "contentHashes": {
+      "hemp-hc-015": "f19f45a4f63e85630565d50108566c74695c3a10491c50e7a18c9c06706c17ed",
+      "hemp-hc-017": "ae7ff55b65ae655d28a81588abe029b6ba2e9dc171e27d89327f21d7c63835cb"
+    },
+    "approvalStatusById": {
+      "hemp-hc-015": "approved",
+      "hemp-hc-017": "approved"
+    }
+  },
+  {
+    "ids": [
+      "hemp-q2-rm01-seed-oil-gla-omega6",
+      "hemp-seeds-omega-trois"
+    ],
+    "decision": "distinct",
+    "reviewer": "root",
+    "basedOn": "reviews/r-mixed-01.json#summary.closePairGLA",
+    "reason": "B a lu les deux objets complets et la source Galasso : la question ancienne identifie l’ALA comme oméga3, la nouvelle identifie le GLA minoritaire comme oméga6. Deux molécules et deux familles distinctes, sans inversion du même fait. La clé huile-chenevis commune évite leur présence ensemble dans une partie.",
+    "contentHashes": {
+      "hemp-q2-rm01-seed-oil-gla-omega6": "7f4226296d524984a7e33107efc9bd5b6781211afd7ac41894c58beeaee7d604",
+      "hemp-seeds-omega-trois": "312eb658e11c3c55eb61c289418eb9f3065d6779fc29726de121e1f787a6d8ee"
+    },
+    "approvalStatusById": {
+      "hemp-q2-rm01-seed-oil-gla-omega6": "approved",
+      "hemp-seeds-omega-trois": "approved"
+    }
+  }
+]

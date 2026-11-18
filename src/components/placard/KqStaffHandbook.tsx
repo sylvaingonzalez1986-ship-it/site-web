@@ -35,6 +35,18 @@ export function KqStaffHandbook() {
         <KqHelpNote>La personne choisie utilise ses heures. Change de portrait avant la prochaine étape pour passer le relais. Les missions doivent finir avant le lendemain. Dans les fiches, « Organiser sa journée » permet d’ajouter des heures avec leurs limites et majorations.</KqHelpNote>
       </KqHelpDashboard>
     </details>
+    <details className={styles.reference} data-staff-guide="week">
+      <summary>Comprendre la semaine type</summary>
+      <KqHelpDashboard>
+        <KqHelpNote>Tu peux démarrer seul avec tes propres heures. La semaine type servira à organiser tes salariés lorsque tu décideras de recruter.</KqHelpNote>
+        <KqHelpGrid items={[
+          { label: "Heures", value: "Jusqu’à 7 h / jour travaillé", detail: "Les jours travaillés dépendent du contrat de chaque salarié.", art: "help-time" },
+          { label: "Repos", value: "Samedi et dimanche", detail: "Prévois aussi les repos du contrat et les congés payés.", art: "help-rest" },
+          { label: "Tâches", value: "Jusqu’à 3 activités / jour", detail: "Répartis les heures entre les activités et vérifie leurs frais avant de confirmer.", art: "help-plan" },
+        ]} />
+        <KqHelpNote>Après une embauche, ouvre Planning → Semaine type pour ce salarié. Une fois activée, cette organisation se répète dès le prochain jour du jeu. Lire cette aide ne recrute personne et n’enregistre aucun planning.</KqHelpNote>
+      </KqHelpDashboard>
+    </details>
     <details className={styles.reference} data-staff-guide="development">
       <summary>Formations et congés</summary>
       <KqHelpDashboard>

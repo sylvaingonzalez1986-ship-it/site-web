@@ -18,16 +18,24 @@ const TARGET_LABELS: Record<string, string> = {
   roots: "Racines", nutrition: "Nutrition", stress: "Stress",
   aphids: "Pucerons", mites: "Tétranyques", thrips: "Thrips",
 };
+const INPUT_EFFECTS: Record<string, string> = {
+  "CARE-COMPOST-TEA": "Soutien au prochain bilan si la situation ou le problème concerne les racines.",
+  "CARE-VERMICOMPOST": "Soutien nutritif pendant deux bilans. Son effet dépend du résultat de chaque opération.",
+  "CARE-ORGANIC-FEED": "Un trouble nutritif et une opération réussie peuvent améliorer la production au prochain bilan.",
+  "CARE-SEAWEED": "Soutien au prochain bilan si les plantes traitées subissent un stress compatible.",
+};
 const formatPrice = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 
-export function KqCareShop({ request, storage, state, runId, disabled, embedded, refreshKey, reserveState, onApply, onBusyChange, onPurchased, onClose, onRecoveryChange }: {
+export function KqCareShop({ request, storage, state, runId, disabled, embedded, refreshKey, reserveState, onApply, onChooseSector, onBusyChange, onPurchased, onClose, onRecoveryChange }: {
   request: typeof fetch; storage?: KqCareStorage; state?: KqGameState; runId?: string | null; disabled?: boolean;
   embedded?: boolean; refreshKey?: number; onPurchased?: (cashCents: number) => void;
   onApply?: (productCode: string) => Promise<void>; onBusyChange?: (busy: boolean) => void; onClose?: () => void;
+  onChooseSector?: (code: string) => void;
   onRecoveryChange?: (recovering: boolean) => void;
   reserveState?: { snapshot: KqCareReserveSnapshot | null; loading: boolean; error: string; recovering?: boolean; refresh: () => Promise<void> };
 }) {
   const reserveView = Boolean(state && onApply);
+  const spatial = Boolean(onChooseSector && (state?.warehouse || state?.campaign));
   const [view, setView] = useState<"context" | "input" | "pbi">(reserveView ? "context" : "input");
   const [localWallet, setWallet] = useState<KqCareReserveSnapshot | null>(null);
   const [localLoading, setLoading] = useState(true);
@@ -39,12 +47,13 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
   const loadError = reserveState ? reserveState.error : localError;
   const sharedRefresh = reserveState?.refresh;
   const [pending, setPending] = useState<string | null>(null);
-  const [notice, setNotice] = useState("");
+  const [feedback, setFeedback] = useState<{ scope: string; code: string; text: string } | null>(null);
   const lock = useRef(false);
   const refreshGeneration = useRef(0);
   const receipts = useRef(new Map<string, { requestKey: string; runId?: string; expectedPriceCents: number }>());
   const [applyReceipt, setApplyReceipt] = useState<{ code: string; scope: string } | null>(null);
-  const applyScope = `${state?.seed}:${state?.stageIndex}:${state?.phase}`;
+  const applyScope = JSON.stringify([state?.campaign?.leaderRunId ?? runId, state?.startedAt, state?.seed, state?.stageIndex, state?.phase]);
+  const notice = feedback?.scope === applyScope ? feedback : null;
   const retryApply = applyReceipt?.scope === applyScope ? applyReceipt.code : null;
   const recovering = !!retryApply || receipts.current.size > 0;
   useEffect(() => { onRecoveryChange?.(recovering); }, [onRecoveryChange, recovering]);
@@ -77,7 +86,7 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
       } else if (wallet.prices[code] === undefined || wallet.cashCents < wallet.prices[code]) return;
     }
     refreshGeneration.current += 1;
-    lock.current = true; setPending(code); setNotice(""); onBusyChange?.(true);
+    lock.current = true; setPending(code); setFeedback(null); onBusyChange?.(true);
     try {
       let replayedPurchase = false;
       if (apply) {
@@ -99,11 +108,11 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
         await refresh();
         if (Number.isSafeInteger(result.cashCents) && result.cashCents >= 0) onPurchased?.(result.cashCents);
       }
-      setNotice(apply ? "Intervention engagée. Son effet sera évalué au prochain bilan." : replayedPurchase ? "Achat déjà enregistré. Aucun nouveau débit." : "Produit ajouté à la réserve. Achat réglé.");
+      setFeedback({ scope: applyScope, code, text: apply ? "Intervention engagée pour 1 passage. Premier bilan à la validation de l’opération." : replayedPurchase ? "Achat déjà enregistré. Aucun nouveau débit." : "Produit ajouté à la réserve. Achat réglé." });
     } catch (error) {
       // This explicit server rejection is raised before any purchase is recorded.
       if (!apply && error instanceof Error && error.message === "Le prix ou la surface a changé. Actualise le suivi avant de confirmer.") receipts.current.delete(code);
-      setNotice(error instanceof Error ? error.message : "Opération impossible. Réessaie."); await refresh();
+      setFeedback({ scope: applyScope, code, text: error instanceof Error ? error.message : "Opération impossible. Réessaie." }); await refresh();
     }
     finally { lock.current = false; setPending(null); onBusyChange?.(false); }
   };
@@ -122,9 +131,9 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
       <button type="button" data-care-shop-refresh onClick={() => void refresh()} disabled={!!pending} aria-label="Actualiser la réserve"><RefreshCw size={16} aria-hidden="true" /></button>
       {onClose ? <button type="button" className={styles.close} onClick={onClose} disabled={!!pending}>Fermer</button> : null}
     </header>
-    <p className={styles.intro}>{reserveView ? "Un passage couvre cette culture. L’achat ajoute le produit à ta réserve ; son utilisation reste une action séparée." : "Achète de la couverture en m², puis utilise tes produits depuis le suivi de la culture."}</p>
+    <p className={styles.intro}>{spatial ? "Choisis un intrant ou un auxiliaire en réserve, puis touche le mètre carré où ton personnage doit intervenir." : reserveView ? "Un passage couvre cette culture. L’achat ajoute le produit à ta réserve." : "Achète de la couverture en m², puis utilise tes produits depuis le suivi de la culture."}</p>
     {loading ? <p role="status">Vérification des stocks et de la trésorerie…</p> : loadError ? <p role="alert" className={styles.error}>{loadError}</p> : null}
-    {notice ? <p role="status" className={styles.notice}>{notice}</p> : null}
+    {notice && !products.some(product => product.code === notice.code) ? <p role="status" className={styles.notice}>{notice.text}</p> : null}
     <div className={styles.tabs} role="group" aria-label="Rayon">
       {reserveView ? <button type="button" data-care-rayon="context" disabled={!!pending} aria-pressed={view === "context"} onClick={() => setView("context")}><span>Pour cette culture</span><KqActionBadge count={actions?.usable.context} label={badgeLabel(actions?.usable.context)} /></button> : null}
       <button type="button" data-care-rayon="input" disabled={!!pending} aria-pressed={view === "input"} onClick={() => setView("input")}><Leaf size={17} aria-hidden="true" /><span>Intrants du sol vivant</span><KqActionBadge count={rayonCounts?.input} label={badgeLabel(rayonCounts?.input)} /></button>
@@ -137,6 +146,7 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
       const stock = known ? wallet.inventory[product.code] ?? 0 : null;
       const price = known ? wallet.prices[product.code] : undefined;
       const artwork = getKqCareProductArtwork(product.code);
+      const observedTargets = matches.find(match => match.product.code === product.code)?.problemLabels;
       const insufficientCash = known && price !== undefined && wallet.cashCents < price;
       const retryBuy = receipts.current.has(product.code);
       const verifyUse = retryApply === product.code;
@@ -145,17 +155,22 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
         <div className={styles.productMain}>
           <div className={styles.illustration}>{artwork ? <Image src={artwork.src} alt={artwork.alt} width={72} height={72} sizes="72px" className={styles.productImage} /> : <Leaf aria-hidden="true" />}</div>
           <div className={styles.productIdentity}>
-            <small className={styles.stock} data-stocked={stock !== null && stock > 0 || undefined}>{stock === null ? "Stock à vérifier" : `${stock} passage${stock > 1 ? "s" : ""} disponible${stock > 1 ? "s" : ""}`}</small>
+            <small className={styles.stock} data-stocked={stock !== null && stock > 0 || undefined}>{stock === null ? "Stock à vérifier" : spatial ? `${stock} m² en réserve` : `${stock} passage${stock > 1 ? "s" : ""} disponible${stock > 1 ? "s" : ""}`}</small>
             <h3>{product.name}</h3>
             <span className={styles.target}><span>Cible</span>{product.targets.map(target => TARGET_LABELS[target] ?? target).join(" · ")}</span>
             {product.pbi ? <small className={styles.role}>{product.pbi.role}</small> : null}
           </div>
         </div>
+        {reserveView ? <p className={styles.productEffect} data-care-product-effect>
+          {observedTargets?.length ? <strong>{observedTargets.join(" · ")}. </strong> : null}
+          {product.pbi ? `1er bilan · ${product.pbi.reductions[0] ? `gravité −${product.pbi.reductions[0]}` : "foyer contenu"}. 2e bilan · gravité −${product.pbi.reductions[1]} si le foyer persiste.` : INPUT_EFFECTS[product.code] ?? product.description}
+        </p> : null}
         <footer className={styles.productActions}>
-          {canUse ? <button type="button" data-care-product-use className={styles.use} disabled={disabled || !!pending || (!verifyUse && (!known || !stock || !permission?.allowed || !!retryApply))} onClick={() => void act(product.code, true)}>{verifyUse ? "Vérifier l’intervention" : "Utiliser · 1 passage"}</button> : null}
+          {canUse ? <button type="button" data-care-product-use className={styles.use} disabled={disabled || !!pending || (!verifyUse && (!known || !stock || !permission?.allowed || !!retryApply))} onClick={() => spatial ? onChooseSector?.(product.code) : void act(product.code, true)}>{spatial ? "Choisir 1 m² sur le plan" : verifyUse ? "Vérifier l’intervention" : "Utiliser · 1 passage"}</button> : null}
           <span className={styles.price}><strong>{price === undefined ? "Prix à vérifier" : formatPrice(price)}</strong><small>{known && wallet.areaM2 != null ? `pour ${wallet.areaM2.toLocaleString("fr-FR")} m²` : "pour 1 passage"}</small></span>
           <button type="button" data-care-product-buy className={styles.buy} disabled={disabled || !!pending || (!retryBuy && (!known || price === undefined || insufficientCash))} onClick={() => void act(product.code, false)}>{retryBuy ? "Vérifier l’achat" : "Acheter 1 passage"}</button>
         </footer>
+        {notice?.code === product.code ? <p role="status" className={styles.notice} data-care-product-feedback>{notice.text}</p> : null}
         {permission ? <small className={styles.reason} data-available={stock !== null && stock > 0 && permission.allowed || undefined}>{verifyUse ? "Vérifie la demande déjà envoyée, sans consommer une deuxième charge." : !permission.allowed ? permission.reason : stock === null ? "Vérifie ta réserve avant de choisir une intervention." : !stock ? "Aucune charge en réserve. L’achat et l’utilisation sont deux actions distinctes." : permission.reason}</small> : null}
         {retryBuy ? <small className={styles.reason}>Une demande d’achat reste à vérifier. La même demande ne sera pas débitée deux fois.</small> : null}
         {insufficientCash ? <small className={styles.cashHint}>Trésorerie insuffisante pour cet achat.</small> : null}

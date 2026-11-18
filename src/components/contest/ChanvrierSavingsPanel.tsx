@@ -56,7 +56,7 @@ export function ChanvrierSavingsPanel({ embedded = false, onSnapshot, refreshKey
   }
   return <section className={`${styles.panel}${embedded ? ` ${styles.embedded}` : ""}`} aria-label="Mon livret d’épargne">
     {embedded ? <header className={styles.embeddedHeader}><PiggyBank size={23} aria-hidden="true" /><div><h3>Mon livret d’épargne</h3><small>Avantage Trésorier · +5 % toutes les 24 h</small></div></header> : <button type="button" className={styles.toggle} aria-expanded={open} onClick={() => setOpen(value => !value)}><PiggyBank size={22} aria-hidden="true" /><span><strong>Mon livret d’épargne</strong><small>Trésorier · +5 % toutes les 24 h</small></span><b>{open ? "−" : "+"}</b></button>}
-    {open || embedded ? <div className={styles.body} aria-busy={busy}>
+    {open || embedded ? <div className={styles.body} aria-busy={busy} data-tutorial-observation={data && !busy && !error ? "banking-savings" : undefined}>
       {data ? <><KqAllocationBar label="Trésorerie et épargne" items={[{ label: "Sur ton livret", value: data.balanceCents, displayValue: euro(data.balanceCents), tone: "teal" }, { label: "Disponible en jeu", value: data.cashCents, displayValue: euro(data.cashCents), tone: "gold" }]} />
         {data.nextInterestAt ? <p>Prochains intérêts : {new Date(data.nextInterestAt).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}.</p> : <p>{data.balanceCents >= data.maxBalanceCents ? "Le plafond du livret est atteint." : "Dépose au moins 0,20 € pour commencer à gagner des intérêts."}</p>}
         {data.interestCreditedCents > 0 ? <p className={styles.gain}>+{euro(data.interestCreditedCents)} d’intérêts ajoutés au livret.</p> : null}

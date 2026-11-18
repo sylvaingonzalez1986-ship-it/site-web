@@ -1,0 +1,104 @@
+{
+  "batchId": "e-new-01",
+  "reviewer": "a_cbd_inventory",
+  "reviewedAt": "2026-11-16",
+  "scope": {
+    "kind": "Relecture indépendante ciblée de deux remplacements, distincte de la revue principale",
+    "questionIds": [
+      "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+      "hemp-q2-en01-chromatographic-retention-time-peak-maximum"
+    ],
+    "filesRead": [
+      "docs/quiz-2000/batches/e-new-01.json",
+      "docs/quiz-2000/fact-index.jsonl",
+      "docs/quiz-2000/reviews/e-new-01.json"
+    ],
+    "excluded": "Aucun arbitrage des dix autres corrections ; aucune modification du lot, de la revue principale ou du runtime."
+  },
+  "nearFactChecks": [
+    {
+      "questionId": "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+      "decision": "distinct",
+      "comparedWith": [
+        "hemp-q2-d05-fat-higher-energy-per-gram-protein-carbohydrate"
+      ],
+      "reason": "Le fait porte sur deux unités pour la même grandeur et la même quantité, non sur l'énergie comparée des macronutriments ni sur une comparaison pour 100 g."
+    },
+    {
+      "questionId": "hemp-q2-en01-chromatographic-retention-time-peak-maximum",
+      "decision": "distinct",
+      "comparedWith": [
+        "chromatography-separates-mixture-components"
+      ],
+      "reason": "Le repère injection–maximum du pic est distinct de la fonction générale de séparation, de la largeur du pic et de l'intervalle entre pics. Aucun autre temps de rétention n'a été retrouvé dans l'index ciblé."
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+      "status": "approved",
+      "comment": "Question, quatre choix et explication relus entièrement. Une seule réponse décrit la double expression de la même énergie pour 100 g. Les autres choix correspondent à des confusions plausibles de nutriments, de préparation ou de base de quantité. Niveau 1, catégorie food, portée UE et date de réexamen adaptés ; fait distinct des questions nutritionnelles voisines.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-eu-nutrition-energy",
+          "url": "https://europa.eu/youreurope/business/product-rules-compliance/food/nutrition-declaration/index_fr.htm",
+          "locator": "Section Comment calculer la valeur énergétique et les quantités de nutriments ?, lignes 491–493 ; tableau ligne 511 ; date ligne 527",
+          "result": "Lecture directe de la page officielle : la même valeur énergétique est exprimée en kilojoules et kilocalories pour 100 g ou 100 ml. Le tableau place kJ/kcal sur l'unique ligne énergie. Dernière vérification affichée : 23 juin 2026. Le soutien couvre la bonne réponse et l'explication, sans déduire une teneur réelle de la barre fictive.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "official-page",
+            "passageRead": "Calcul de la valeur énergétique, présentation des unités et date de vérification."
+          },
+          "sourceHash": "b552af2ec1a5faf5df72882ac902264eab301c16693869fee3f1393b511e9735"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "4afad4ee80cead14ee549e2197fde38dd781f6cdd88297011f3dc011928879ca"
+    },
+    {
+      "id": "hemp-q2-en01-chromatographic-retention-time-peak-maximum",
+      "status": "approved",
+      "comment": "Question, quatre intervalles et explication relus entièrement. Le manuel définit précisément le temps entre injection et maximum du pic, distingue l'écart entre maxima et la largeur à la base ; la durée totale d'analyse ne définit pas le temps du composé. Niveau 2 et catégorie quality cohérents. Fait distinct de la seule fonction de séparation chromatographique, sans protocole de préparation ni réglage instrumental.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en01-fda-retention-time",
+          "url": "https://www.fda.gov/media/74709/download",
+          "locator": "PAM I, chapitre 6, §602 C, page imprimée 602-5, page 29 du PDF (index 28) ; lignes 1131–1147, figure 602-a",
+          "result": "PDF original ouvert et texte du passage lu : le temps de rétention est défini de l'injection au maximum du pic. Le même passage distingue le temps entre maxima de deux pics et la largeur à la base. La table du chapitre et le pied de page confirment les dates 9/96 et 1/94 indiquées par la source. Seule la convention de lecture est transposée au contexte chanvre.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "Définitions du temps de rétention, du temps ajusté, de l'écart entre pics et de la largeur, dans §602 C."
+          },
+          "sourceHash": "9fe9f525dafdb874953b1593404c4f4efd2fe28fb1aa7dc8d28c462b82b688f0"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "3076cb450621eb5530cf4c29dd4e8b89ab71df7cd566ecb5d25dbd41b3b4232d"
+    }
+  ],
+  "summary": {
+    "reviewed": 2,
+    "approved": 2,
+    "changesRequested": 0,
+    "rejected": 0
+  }
+}

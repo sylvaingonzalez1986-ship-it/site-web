@@ -1,0 +1,394 @@
+{
+  "batchId": "r-products-02",
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "author_complete_pending_independent_review",
+  "count": 30,
+  "levels": {
+    "1": 14,
+    "2": 16
+  },
+  "domain": "active",
+  "revisionAfterIndependentReview": {
+    "review": "reviews/r-products-02.json",
+    "correctedObjects": 9,
+    "preservedApprovedObjects": 21,
+    "sourceObjectsUnchanged": true,
+    "status": "awaiting_coordinator_arbitration_no_self_approval"
+  },
+  "contract": "AUTHORING.md, correction du 17 novembre 2026 ; 800 active / 100 food / 100 materials.",
+  "neighbourSearch": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "terms": [
+      "sinsemilla",
+      "charas",
+      "moonrock",
+      "spliff",
+      "blunt",
+      "spacecake",
+      "nabilone",
+      "Epidiolex",
+      "shake",
+      "trim",
+      "aérosol",
+      "adulter",
+      "infusion",
+      "FDA",
+      "nicotine",
+      "caféine"
+    ],
+    "neighbours": [
+      {
+        "id": "hemp-q2-en02-cannabinoid-supportive-care",
+        "decision": "Indication antiémétique existante non reprise : nabilone teste son origine synthétique."
+      },
+      {
+        "id": "hemp-q2-en02-cbd-adulterated-substances",
+        "decision": "Nature des substances non déclarées et conduite à tenir non reprises : Spice/K2 teste des appellations de produits spécifiques."
+      },
+      {
+        "id": "hemp-q2-rp01-dronabinol-delta9-thc-identity",
+        "decision": "Dronabinol non repris : nabilone est un autre actif et Epidiolex une formulation au CBD."
+      },
+      {
+        "id": "hemp-q2-rp01-total-thc-molar-mass-convention",
+        "decision": "Formule analytique non reprise : la fleur THCA teste la transformation du produit au fumage."
+      },
+      {
+        "id": "hemp-evidence-decarboxylation",
+        "decision": "La molécule CO2 libérée n’est pas retestée ; application au produit floral et à la faiblesse du THC initial."
+      },
+      {
+        "id": "hemp-q2-rp01-oral-oil-distinct-vape-liquid",
+        "decision": "L’huile alimentaire et le liquide de vape ne sont pas comparés à nouveau ; ici aérosol, matériel et sous-produits."
+      },
+      {
+        "id": "hemp-q2-rp01-wax-pen-concentrate-accessory",
+        "decision": "La destination concentrés du waxpen n’est pas reprise : le vaporisateur à herbes sèches teste la fleur."
+      },
+      {
+        "id": "hemp-q2-rp01-infused-pre-roll-added-extract",
+        "decision": "Les moonrocks sont une présentation composite distincte, fleur entière/concentré/kief, pas un préroulé."
+      }
+    ]
+  },
+  "actualReadings": [
+    {
+      "sourceId": "q2-rp02-ofdt-glossaire",
+      "url": "https://www.ofdt.fr/sites/ofdt/files/2023-08/field_media_document-480-cdeannex.pdf",
+      "locator": "Glossaire, PDF p. 19, entrées SINSEMILLA et SPACE-CAKE",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-euda-charas",
+      "url": "https://www.euda.europa.eu/changes-europe%E2%80%99s-cannabis-resin-market_en",
+      "locator": "1. Analysis: the European market for cannabis resin, premier paragraphe",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-michigan-moonrocks",
+      "url": "https://www.michigan.gov/cra/-/media/Project/Websites/cra/bulletin/5Technical/Marihuana_Sampling_and_Testing_-Combination_Products_732964_7.pdf?hash=192A8E7AECDEB28EB165011852DAFAE1&rev=ebed2017f31e40b5b44285c6863fca4b",
+      "locator": "p. 1, Inhalable Compound Concentrate Products, Moon rocks",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-ats-terminology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12618986/",
+      "locator": "Tableau 1, Devices and methods of use ; Inhaled co-use methods",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-hc-accessories",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "locator": "Smoking accessories, Pipes ; Vaping, deux premiers paragraphes",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-hc-vape-byproducts",
+      "url": "https://www.canada.ca/en/health-canada/services/publications/science-research-data/compilation-research-abstracts-2021-2022.html",
+      "locator": "Investigation of degradation by-products from cannabis vaping liquid ingredients via thermal desorption – New",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-cdc-evali",
+      "url": "https://www.cdc.gov/mmwr/volumes/68/wr/mm6845e2.htm",
+      "locator": "MMWR 68(45), p. 1040–1041, paragraphes sur les additifs et les résultats des lavages",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-dea-spice",
+      "url": "https://www.dea.gov/factsheets/spice-k2-synthetic-marijuana",
+      "locator": "What is Spice/K2, Synthetic Marijuana? ; How is it abused?",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-hc-label",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/how-read-understand-cannabis-product-label.html",
+      "locator": "Information on a cannabis product label, 1. Standardized cannabis symbol ; 3. Excise stamp",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-maasa-cbd-foods-2026",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "locator": "Communiqué du 20 mai 2026, paragraphes 1 et 3–6",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-quebec-products-2026",
+      "url": "https://www.legisquebec.gouv.qc.ca/fr/document/rc/C-5.3,%20r.%200.1",
+      "locator": "Articles 3 et 4 ; texte officiel à jour au 1er juillet 2026",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-hc-composition",
+      "url": "https://www.canada.ca/en/services/health/publications/drugs-health-products/composition-requirements-cannabis-products.html",
+      "locator": "Cannabis extracts, Prohibited ingredients ; Edible cannabis, Caffeine et Maximum quantities",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-fda-drug-identities",
+      "url": "https://www.fda.gov/news-events/public-health-focus/fda-and-cannabis-research-and-drug-approval-process",
+      "locator": "Cannabis-related compounds, Examples ; paragraphes FDA has approved Epidiolex et Another FDA-approved drug",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-unodc-shake-trim",
+      "url": "https://www.minjusticia.gov.co/programas-co/ODC/Publicaciones/Publicaciones/WDR19_Booklet_5_CANNABIS_HALLUCINOGENS.pdf",
+      "locator": "p. 31 (PDF p. 32), encadré Understanding cannabis products",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-mildeca-product-categories-2026",
+      "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+      "locator": "p. 2, Produits alimentaires et vétérinaires ; Produits cosmétiques ; Produits de vapotage",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-rp02-euda-flower-thca-heating",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+      "locator": "Biosynthesis of cannabinoids in cannabis, paragraphe When natural cannabis products are smoked",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    },
+    {
+      "sourceId": "q2-en02-mildeca-2026",
+      "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+      "locator": "p. 2, produits alimentaires/vétérinaires, cosmétiques et vapotage",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "limitation": "Passage fleurs/feuilles non repris ; communiquer alimentaire MAASA plus précis sur infusions et autorité."
+    },
+    {
+      "sourceId": "q2-rp01-euda-products-2023",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+      "locator": "Biosynthesis of cannabinoids in cannabis, paragraphe sur le fumage",
+      "reader": "rebalance_products_sol",
+      "date": "2026-11-17"
+    }
+  ],
+  "safeguards": [
+    "Aucun protocole de fabrication, dosage conseillé ni recette psychoactive",
+    "Limite de 10 mg explicitement juridique et liée au contenant",
+    "Cosmétique limité au CBD actif, aucune question sur huile de graines cosmétique",
+    "Aucune inspiration de cultivar ou producteur du site",
+    "Lot complet de 30, aucun brouillon dans batches/",
+    "Aucune autoapprobation, revue et banque active non modifiées"
+  ],
+  "facts": [
+    {
+      "id": "hemp-q2-rp02-sinsemilla-seedless-flower",
+      "domain": "active",
+      "factKey": "sinsemilla-seedless-flower",
+      "expectedAnswer": "Sans graines"
+    },
+    {
+      "id": "hemp-q2-rp02-charas-resin-name",
+      "domain": "active",
+      "factKey": "charas-resin-name",
+      "expectedAnswer": "Aux résines de cannabis"
+    },
+    {
+      "id": "hemp-q2-rp02-moonrocks-flower-concentrate-kief",
+      "domain": "active",
+      "factKey": "moonrocks-flower-concentrate-kief",
+      "expectedAnswer": "Fleur, concentré et couche de kief"
+    },
+    {
+      "id": "hemp-q2-rp02-spliff-cannabis-tobacco",
+      "domain": "active",
+      "factKey": "spliff-cannabis-tobacco",
+      "expectedAnswer": "Du cannabis mélangé à du tabac"
+    },
+    {
+      "id": "hemp-q2-rp02-traditional-blunt-tobacco-wrapper",
+      "domain": "active",
+      "factKey": "traditional-blunt-tobacco-wrapper",
+      "expectedAnswer": "Une enveloppe de cigare faite de tabac"
+    },
+    {
+      "id": "hemp-q2-rp02-dry-herb-vaporizer-flower",
+      "domain": "active",
+      "factKey": "dry-herb-vaporizer-flower",
+      "expectedAnswer": "Des fleurs de cannabis séchées"
+    },
+    {
+      "id": "hemp-q2-rp02-bong-water-cools-smoke",
+      "domain": "active",
+      "factKey": "bong-water-cools-smoke",
+      "expectedAnswer": "L’eau traversée par la fumée"
+    },
+    {
+      "id": "hemp-q2-rp02-cannabis-vaping-aerosol",
+      "domain": "active",
+      "factKey": "cannabis-vaping-aerosol",
+      "expectedAnswer": "Un aérosol formé par le chauffage de l’extrait"
+    },
+    {
+      "id": "hemp-q2-rp02-cartridge-metals-device-source",
+      "domain": "active",
+      "factKey": "cartridge-metals-device-source",
+      "expectedAnswer": "Une contamination par des métaux"
+    },
+    {
+      "id": "hemp-q2-rp02-vape-heating-new-byproducts",
+      "domain": "active",
+      "factKey": "vape-heating-new-byproducts",
+      "expectedAnswer": "La dégradation thermique de certains ingrédients"
+    },
+    {
+      "id": "hemp-q2-rp02-evali-vitamin-e-acetate-2019",
+      "domain": "active",
+      "factKey": "evali-vitamin-e-acetate-2019",
+      "expectedAnswer": "L’acétate de vitamine E"
+    },
+    {
+      "id": "hemp-q2-rp02-spice-k2-synthetic-cannabinoid-products",
+      "domain": "active",
+      "factKey": "spice-k2-synthetic-cannabinoid-products",
+      "expectedAnswer": "Des produits à cannabinoïdes de synthèse"
+    },
+    {
+      "id": "hemp-q2-rp02-thca-flower-heating-thc",
+      "domain": "active",
+      "factKey": "thca-flower-heating-thc",
+      "expectedAnswer": "Du THCA en THC"
+    },
+    {
+      "id": "hemp-q2-rp02-canada-excise-stamp-license-holder",
+      "domain": "active",
+      "factKey": "canada-excise-stamp-license-holder",
+      "expectedAnswer": "Une provenance auprès d’un titulaire de licence de Santé Canada"
+    },
+    {
+      "id": "hemp-q2-rp02-canada-standard-symbol-thc",
+      "domain": "active",
+      "factKey": "canada-standard-symbol-thc",
+      "expectedAnswer": "Le THC"
+    },
+    {
+      "id": "hemp-q2-rp02-france-cbd-foods-not-authorised-2026",
+      "domain": "active",
+      "factKey": "france-cbd-foods-not-authorised-2026",
+      "expectedAnswer": "Ils ne sont pas autorisés comme denrées alimentaires"
+    },
+    {
+      "id": "hemp-q2-rp02-france-leaf-water-infusion-exception",
+      "domain": "active",
+      "factKey": "france-leaf-water-infusion-exception",
+      "expectedAnswer": "Des feuilles pour infusion aqueuse, sans enrichissement"
+    },
+    {
+      "id": "hemp-q2-rp02-france-pure-cbd-cosmetic-ingredient",
+      "domain": "active",
+      "factKey": "france-pure-cbd-cosmetic-ingredient",
+      "expectedAnswer": "Les produits cosmétiques"
+    },
+    {
+      "id": "hemp-q2-rp02-eu-cbd-animal-feed-unauthorised-additive",
+      "domain": "active",
+      "factKey": "eu-cbd-animal-feed-unauthorised-additive",
+      "expectedAnswer": "Un additif non autorisé"
+    },
+    {
+      "id": "hemp-q2-rp02-france-vape-cbd-chemical-or-extracted",
+      "domain": "active",
+      "factKey": "france-vape-cbd-chemical-or-extracted",
+      "expectedAnswer": "Extraction du chanvre ou synthèse chimique"
+    },
+    {
+      "id": "hemp-q2-rp02-france-smoking-hemp-anses-declaration",
+      "domain": "active",
+      "factKey": "france-smoking-hemp-anses-declaration",
+      "expectedAnswer": "À l’Anses"
+    },
+    {
+      "id": "hemp-q2-rp02-quebec-nonedible-thc-cap-30-percent",
+      "domain": "active",
+      "factKey": "quebec-nonedible-thc-cap-30-percent",
+      "expectedAnswer": "30 % en masse"
+    },
+    {
+      "id": "hemp-q2-rp02-quebec-edible-chocolate-ban",
+      "domain": "active",
+      "factKey": "quebec-edible-chocolate-ban",
+      "expectedAnswer": "Les chocolats et les confiseries"
+    },
+    {
+      "id": "hemp-q2-rp02-canada-edible-thc-container-limit",
+      "domain": "active",
+      "factKey": "canada-edible-thc-container-limit",
+      "expectedAnswer": "10 mg"
+    },
+    {
+      "id": "hemp-q2-rp02-canada-extract-no-nicotine",
+      "domain": "active",
+      "factKey": "canada-extract-no-nicotine",
+      "expectedAnswer": "La nicotine"
+    },
+    {
+      "id": "hemp-q2-rp02-canada-edible-caffeine-natural-ingredients",
+      "domain": "active",
+      "factKey": "canada-edible-caffeine-natural-ingredients",
+      "expectedAnswer": "Par des ingrédients naturellement caféinés, sous plafond"
+    },
+    {
+      "id": "hemp-q2-rp02-nabilone-synthetic-not-native",
+      "domain": "active",
+      "factKey": "nabilone-synthetic-not-native",
+      "expectedAnswer": "Un cannabinoïde de synthèse non naturellement présent dans la plante"
+    },
+    {
+      "id": "hemp-q2-rp02-epidiolex-purified-cbd",
+      "domain": "active",
+      "factKey": "epidiolex-purified-cbd",
+      "expectedAnswer": "Du cannabidiol purifié"
+    },
+    {
+      "id": "hemp-q2-rp02-shake-flower-fragments-versus-trim-leaves",
+      "domain": "active",
+      "factKey": "shake-flower-fragments-versus-trim-leaves",
+      "expectedAnswer": "Shake : fragments de fleurs ; trim : feuilles retirées autour"
+    },
+    {
+      "id": "hemp-q2-rp02-spacecake-cannabis-cake",
+      "domain": "active",
+      "factKey": "spacecake-cannabis-cake",
+      "expectedAnswer": "Un gâteau contenant du cannabis"
+    }
+  ]
+}

@@ -73,6 +73,9 @@
 .map text { font-family: inherit; }
 .measurements { font-size: 14px; font-weight: 800; fill: #172923; paint-order: stroke; stroke: #fff1d6; stroke-width: 4px; stroke-linejoin: round; }
 .zone { cursor: pointer; }
+.partition { cursor: pointer; outline: none; }
+.partitionFocus { display: none; }
+.partition:focus-visible .partitionFocus { display: block; }
 .zoneOutline { transition: stroke .12s; stroke-linejoin: round; }
 .zone:hover .zoneOutline, .zone[data-selected=true] .zoneOutline { stroke-width: 3; }
 .selectionOutline { stroke-linejoin: round; }
@@ -186,6 +189,22 @@
 .plan[data-compact=true] .toolbar button { width: auto; min-width: 44px; padding-inline: 10px; }
 .plan[data-compact=true] .toolbar button > svg { flex-shrink: 0; }
 .plan[data-compact=true] .toolbar button > span { display: inline; }
+.plan[data-cell-builder=true] .toolbar { flex-wrap: wrap; }
+.plan[data-cell-builder=true] .map { cursor: crosshair; }
+.plan[data-cell-builder=true] .map .zone, .plan[data-cell-builder=true] .map .partition { cursor: pointer; }
+.plan[data-compact=true][data-cell-builder=true] .viewport { overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.plan[data-cell-builder=true] .cameraControls { flex-wrap: nowrap; }
+.plan[data-cell-builder=true] .cameraControls output { width: 42px; }
+.advanced { border-bottom: 1px solid #17292340; }
+.advanced > summary {
+  width: fit-content; margin: 8px 12px; min-height: 44px; padding: 10px 14px;
+  cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; color: var(--ink);
+  background: transparent; border: var(--game-control-border-width, 2px) solid transparent; box-shadow: none;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+.advanced > summary:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.advanced > summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
 /* Declare this on the HTML viewport before contact, including the space around the SVG. */
 .plan .viewport[data-manipulating=true] { touch-action: none; overscroll-behavior: none; }

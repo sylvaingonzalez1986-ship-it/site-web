@@ -1,0 +1,2622 @@
+{
+  "batchId": "c-new-06",
+  "reviewer": "f_existing_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16T22:38:40.016Z",
+  "scope": "Lecture indépendante complète des40questions figées, dont nouveau faitubiquitine/protéasome. Contrôle des énoncés, quatre choix, réponses, explications, niveaux, formes, sources et proximités. Trente-et-un objets sources scellés :27documents/passages ouverts ici, quatre références dont les mêmes passages ont été effectivement lus parF précédemment et dont les hashes sont identiques. Aucun fichier auteur ni runtime modifié.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière), et de JSON.stringify(objet source complet dans son registre originel).",
+  "sourceTiming": "LecturesF le16novembre2026 ; pour les quatre références réutilisées, consultation antérieure réelle du même jour explicitement distinguée des nouvelles lectures. Pas de lecture intégrale revendiquée des manuels, articles oucours quand seuls les passages utiles sont vérifiés. reviewedAt date le scellement, pas chaque ouverture.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-cn04-population-genetics",
+      "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+      "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§19.2, Heritability ligne40 ; Mutation lignes88–90",
+      "result": "Héritabilité de variation de population ; mutations introduisant de nouvelles variantes.",
+      "limitation": "Pas de statistique individuelle ou d’effet médical ; contexte population/environnement requis.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-effective-population",
+      "url": "https://www.apsnet.org/edcenter/sites/PopGenetics/Pages/geneticdrift.aspx",
+      "sourceHash": "1c3509248948e9731e06f89f607e62dfe3d2e4a962745fbad2dec0e1b6462e57",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "institutional-course-targeted",
+      "locator": "MeasuringGeneticDrift lignes278–281 ; fixation lignes302–308",
+      "result": "Taille efficace distincte du recensement ; fixation à fréquence1.",
+      "limitation": "Modèle de transmission, pas effectif réel du chanvre ni simple équivalence universelle au nombre de parents.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn04-population-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+      "sourceHash": "71ab59bf80e8460138caab5cc7a7cc365be7a888092022ba3cdc2e8e3b0fd87a",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "Hardy-Weinberg, lignes49–63",
+      "result": "Génotypesp²/2pq/q² et hypothèses du modèle d’équilibre.",
+      "limitation": "Population idéale ; pas estimation d’une population réelle ou effet de dominance déduit de fréquence.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn04-adaptive-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+      "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "Directional/Frequency-Dependent/SexualSelection, lignes37–38,55–62,63–71",
+      "result": "Extrême favorisé, rareté favorisée en dépendance négative et accès aux partenaires.",
+      "limitation": "Scénarios végétaux fictifs ; pas réalité d’un caractère monogénique du cannabis inventée.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-balancing-selection",
+      "url": "https://ib.berkeley.edu/courses/bio1b/evolutionfall08/pdfs/Mishler12_Selection.pdf",
+      "sourceHash": "27a921f7894b62c88001ea80d09644fd272e35e574e07ff3705a9c9a653957e8",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-course-pdf-targeted",
+      "locator": "PDFp.3, lignes81–84, tableaufitness associé",
+      "result": "Avantage de l’hétérozygote pouvant maintenir les deux allèles.",
+      "limitation": "Principe évolutif conditionnel, pas garantie malgré dérive ou allèle absent ; exemples médicaux exclus.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-speciation",
+      "url": "https://openstax.org/books/biology-2e/pages/18-2-formation-of-new-species",
+      "sourceHash": "73aadaf7dc7a25c51a236449e2e2aee4034bbd590e97c783dff677709dee6cf7",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "Species/ReproductiveIsolation/SympatricSpeciation, lignes87–102 etintroduction",
+      "result": "Critère viable/fertile, isolement temporel, origines auto/allopolyploïdes.",
+      "limitation": "Concept d’espèce avec limites ; chiffres et stérilités animales non transférés aux plantes.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-phylogenies",
+      "url": "https://openstax.org/books/biology-2e/pages/20-1-organizing-life-on-earth",
+      "sourceHash": "dd925c6bf15c7a8e447993ee92de09c8bf2f543bbae7dbccfaa59dca8ece35e7",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "PhylogeneticTrees, lignes35–45, figure20.3",
+      "result": "Point de branchement représentant ascendance/divergence de lignées.",
+      "limitation": "Ni espèce actuelle ancêtre obligé d’une autre, ni ordre gauche-droite interprété comme échelle de progrès.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-relationships",
+      "url": "https://openstax.org/books/biology-2e/pages/20-2-determining-evolutionary-relationships",
+      "sourceHash": "92bd145a340e90d12778fe53b33a23e5462dc03fdd607cd2a93bcc0b49000418",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "MisleadingAppearances/BuildingPhylogeneticTrees, lignes36–42,60–70",
+      "result": "Ressemblances convergentes ; clade incluant ancêtre et tous descendants.",
+      "limitation": "Ressemblance seule insuffisante pour parenté ; pas analogie automatiquement preuve d’origine commune.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-agrobacterium-2022",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.849930/full",
+      "sourceHash": "224315095a102d9972e375dd1f47065a38621849e90effa4511c39daf5b7f891",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "primary-research-targeted",
+      "locator": "Résumé/Introduction, lignes362–370",
+      "result": "Bactérie transférantT-DNA à des cellules végétales avec intégration possible.",
+      "limitation": "Mécanisme naturel général, sans protocole de transformation ni résultat sur cannabis.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-retrotransposons",
+      "url": "https://link.springer.com/article/10.1186/s13100-020-00223-x",
+      "sourceHash": "64e2abed37a14b19dc683243d61c8a9563b32fe47a19fefe980550b7b290b97e",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "scientific-review-targeted",
+      "locator": "KnownTypes, lignes84–93",
+      "result": "ClasseI via intermédiaireARN et transcription inverse ; copie/insertion.",
+      "limitation": "Mécanisme général, pas abondancesArabidopsis étendues au chanvre ou copies toutes actives.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-endoreplication",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4203642/",
+      "sourceHash": "d365665ee273c1b9ba2e1c2d6e1e742dac166ee7282136b163ab204dd58b2df9",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "scientific-commentary-targeted",
+      "locator": "Résumé/Introduction, lignes76–88",
+      "result": "Réplication répétée sans mitose ni cytocinèse, quantitéADN accrue.",
+      "limitation": "Définition d’endocycle, pas effet hormonal appliqué au cannabis ni recommandation de culture.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-imprinting",
+      "url": "https://www.genome.gov/genetics-glossary/Genetic-Imprinting",
+      "sourceHash": "cde77449af46fdab00436674c0074385654899a57a7bbd8b0b40945fe0939f9c",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes14–17",
+      "result": "Expression d’une copie dépendant de son origine parentale, sans changement de séquence.",
+      "limitation": "Définition générale ; persistance mammalienne du marquage non généralisée aux plantes.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-chromosome-errors",
+      "url": "https://openstax.org/books/biology-2e/pages/13-2-chromosomal-basis-of-inherited-disorders",
+      "sourceHash": "ca4a328f4601450daeea928dfcb81bb3e989cfc3cec99b0b0dbef13060dcff0f",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "Translocations, lignes103–106, figure13.13",
+      "result": "Échange réciproque entre non-homologues sans gain/perte dans le cas équilibré.",
+      "limitation": "Nouveau passage réellement ouvert aprèsC05 ; exemples cliniques non transposés.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-fusion-gene",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-terms/def/fusion-gene",
+      "sourceHash": "769be4fcb6a06e51db5ee94a26622d52b2791561ceed5ca9e27d171556f34d60",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-dictionary-targeted",
+      "locator": "Définition initiale, ligne16",
+      "result": "Association de portions de deux gènes distincts.",
+      "limitation": "Définition génétique seulement ; aucun diagnostic ou risque cancéreux attribué à tout gène de fusion.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-heteroplasmy",
+      "url": "https://www.nist.gov/glossary-term/25016",
+      "sourceHash": "1d3ddd5650db99441cc78e25d4322695a2d49dee42053b772191eb392fa8d830",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-dictionary-targeted",
+      "locator": "OSACLexicon, ligne119",
+      "result": "Plusieurs séquences/types d’ADN mitochondrial chez un individu.",
+      "limitation": "Définition générale ; pas de seuil clinique ou de fréquence végétale inventée.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-ribosomes",
+      "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+      "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§15.5 lignes44,55–57",
+      "result": "Polysome : ribosomes sur un message ; synthétases chargeantARNt avec acide aminé.",
+      "limitation": "Ces paragraphes voisins ont été effectivement affichés/lus parF pendantC05, pas supposés couverts par le seul titre de la notice. SourceHash inchangé.",
+      "earlierReadingReused": true,
+      "readingBasis": "Passage réellement affiché et lu durant les revuesF antérieuresC03/C05 ; même objet source et même portée, pas nouvelle ouverture prétendue.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-protein-degradation",
+      "url": "https://openstax.org/books/biology-2e/pages/16-6-eukaryotic-translational-and-post-translational-gene-regulation",
+      "sourceHash": "b719c04459e5a171887bd6df3b60225f8efedc85bedab3ff250aea16bc4537c3",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§16.6, lignes42–46, figure16.15",
+      "result": "Protéine polyubiquitinée dirigée vers protéasome pour dégradation.",
+      "limitation": "Voie classique qualifiée ; pas toute ubiquitination assimilée à une destruction obligatoire.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-transcription-regulation",
+      "url": "https://openstax.org/books/biology-2e/pages/16-4-eukaryotic-transcription-gene-regulation",
+      "sourceHash": "73b423f638ff45cc224ebee2040a1cc7e76fe27a06d7ff3d019133a9e52c0480",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§16.4, lignes29–30,38–54, figure16.10",
+      "result": "Facteurs spécifiques et généraux ; repliement rapprochant enhancer/promoteur.",
+      "limitation": "Principes de régulation, sans protocole ni séquence régulatrice du cannabis attribuée sans mesure.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-epigenetics",
+      "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+      "sourceHash": "ac1f9256f9b020143cb7b23966789b2e929e4d6f69e6e10648f1a0f9e42d2865",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§16.3, lignes43–48",
+      "result": "Acétylation réduisant charge positive et relâchant liaisonhistones/ADN.",
+      "limitation": "PassageF réellement lu dansC03, même objet source haché ; contexte de mammifères et règlesCpG non généralisés au végétal.",
+      "earlierReadingReused": true,
+      "readingBasis": "Passage réellement affiché et lu durant les revuesF antérieuresC03/C05 ; même objet source et même portée, pas nouvelle ouverture prétendue.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-rddm-2016",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4760824/",
+      "sourceHash": "0bed5eab75e0d1f5c03a4d149d1b2aa3633faa008ffd4bcc8fb9c4dd4c867c5d",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "primary-research-targeted",
+      "locator": "Introduction/Résumé/Discussion, lignes152–167,172",
+      "result": "PetitsARN–AGO ciblant transcritséchafaudages et recrutementDRM pour méthylationADN.",
+      "limitation": "RésultatsArabidopsis ; seul guidage épigénétique végétal général retenu, pas nombre de sites ou conseil de greffe.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-crispr-2008",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5898235/",
+      "sourceHash": "ef5bfcdc0d068104483febf5de16c6df57d3d91e50f80be717e9be4fea7a5088",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "primary-research-targeted",
+      "locator": "Résumé/Introduction, lignes133–137",
+      "result": "Mémoire de séquences et défense de procaryotes contre éléments envahissants/virus.",
+      "limitation": "Fonction naturelle, sans outil d’édition ou protocole ; ne signifie pas que toutes les bactéries possèdent ce système.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-morgan-history",
+      "url": "https://cbs.asu.edu/sites/g/files/litvpz546/files/2023-01/Maienschein%20Thomas%20Hunt%20Morgan%20in%20Encyclopedia%20of%20Evolution%202002_0.pdf",
+      "sourceHash": "df7c032b7f5557e9106aed0fb0068840a5504ed406bf521334ad0bb062df8913",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-history-pdf-targeted",
+      "locator": "PDFp.1 lignes3–8 ; p.2 lignes40–62",
+      "result": "TravauxMorgan/Drosophila, équipe et caractères liés au sexe.",
+      "limitation": "L’affirmation de priorité absolue de la notice n’est pas reprise ; recherches antérieures sur drosophiles non niées.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-miescher-1869",
+      "url": "https://www.genome.gov/25520232/online-education-kit-1869-dna-first-isolated",
+      "sourceHash": "405d543a7a60c561bd67f58ce91542a050982d74bdab50a1bd327c8271ca46db",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-history-page-targeted",
+      "locator": "1869:DNAFirstIsolated, ligne8",
+      "result": "Miescher isole la nucléine riche en phosphore ; date1869.",
+      "limitation": "Isolement de substance, pas démonstration de fonction héréditaire ou structure de double hélice.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-johannsen-1909",
+      "url": "https://www.genome.gov/25520244/online-education-kit-1909-the-word-gene-coined",
+      "sourceHash": "43e7f127749d0fe80c1edb65df4afe05fe97a7923785547d85d10cb053fbd0f1",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-history-page-targeted",
+      "locator": "1909:TheWordGeneCoined, lignes9–14",
+      "result": "Johannsen proposegène ; distinction génotype/phénotype également explicitement citée.",
+      "limitation": "Page complète relue après extrait filtré incomplet : le détour de l’explication est bien appuyé, aucune demande de preuve maintenue.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-autosome",
+      "url": "https://www.genome.gov/genetics-glossary/Autosome",
+      "sourceHash": "8ff63c9596fce1c2651fb92e09af2725250f1c3fa7b8b5b54a2a0f2aa7fcc7b6",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition, ligne15",
+      "result": "Autosomes distingués des chromosomes sexuels.",
+      "limitation": "Numérotation, nombres et tailles humains non attribués au chanvre.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-asexual",
+      "url": "https://openstax.org/books/biology-2e/pages/32-3-asexual-reproduction",
+      "sourceHash": "4aabd1c833552785c9f3623ba808bbd329c8bb044a09c4ffabdf6bd1d551a5df",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "Introduction, ligne36",
+      "result": "Certaines plantes forment des graines/embryons sans fécondation, apomixie.",
+      "limitation": "Question spécifie absence de fécondation de l’oosphère, sans exclure toute fécondation centrale dans les formes pseudogames ; pas occurrence habituelle chez chanvre affirmée.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-parthenocarpy",
+      "url": "https://propg.ifas.ufl.edu/04-seeds/01-development/09-seedsdevelopment-parthenocarpy.html",
+      "sourceHash": "eeb588a4564f81c10ffbace40f8956bac3a11efddf6180a42b03defcd10209e3",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Introduction, lignes5–9",
+      "result": "Fruit sans fécondation ; distinction pollinisation/fécondation.",
+      "limitation": "Ni recette culturale ni occurrence sur cannabis. Explication ne nie pas théoriquement des graines apomictiques en parlant de graines issues de fécondation.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-polyembryony",
+      "url": "https://dhcrop.gau.edu.bd/polyembryony/",
+      "sourceHash": "2abb1bb312b5faa332bec6fbe9f2b52b86a1cfabb8724d0733b748b7693ea115",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Définition lignes7–9 ; exemplesmécanismes13–23",
+      "result": "Plusieurs embryons dans un ovule ou une graine, selon plusieurs origines.",
+      "limitation": "Seule définition générale ; viabilité, absence de maladie et occurrence sur chanvre non généralisées depuis la page.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn06-gxe-2023",
+      "url": "https://www.fs.usda.gov/rm/pubs_journals/2023/rmrs_2023_napier_j001.pdf",
+      "sourceHash": "06f9d60ba53a57867095f5792dc52693e293bfa5b9a1db0e0ac4a2ff7862f236",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "scientific-review-pdf-targeted",
+      "locator": "PDFpp.2–3/pages110–111, lignes63–66,108–129, figure1/légende193–199",
+      "result": "G×E lorsque réponses des génotypes diffèrent ; normes non parallèles distinctes des seuls effetsG/E.",
+      "limitation": "Scénario fictif explicite ; pas nombre ou recommandation de sélection attribué à une étude du chanvre.",
+      "earlierReadingReused": false,
+      "readingBasis": "Passage utile réellement ouvert et lu pourC06.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-euk-replication",
+      "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+      "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§14.5, lignes47–49",
+      "result": "Primase formant amorce à partir de laquelleADNpolymérase allonge.",
+      "limitation": "Passage effectivement lu parF avantC06, même objet haché ; cadre de réplication eucaryote, sans protocole.",
+      "earlierReadingReused": true,
+      "readingBasis": "Passage réellement affiché et lu durant les revuesF antérieuresC03/C05 ; même objet source et même portée, pas nouvelle ouverture prétendue.",
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn01-cells",
+      "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+      "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§4.3 TheNucleolus, ligne72",
+      "result": "ARNr et protéines assemblés en sous-unités au nucléole, puis export.",
+      "limitation": "Phrase effectivement lue durantC05 et hash inchangé ; pas traduction protéique dans le nucléole.",
+      "earlierReadingReused": true,
+      "readingBasis": "Passage réellement affiché et lu durant les revuesF antérieuresC03/C05 ; même objet source et même portée, pas nouvelle ouverture prétendue.",
+      "timePrecision": "day"
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+      "status": "approved",
+      "comment": "Objet entier, quatre choix et explication relus. OpenStax décrit des gènes adjacents transcrits en un seul ARN messager et l'exemple trp produisant plusieurs enzymes. Opéron est la seule réponse ; cistron, réplicon et nucléosome désignent d'autres unités ou organisations. Le contexte bactérien est explicite, sans attribution erronée aux gènes nucléaires du chanvre. Niveau 2 cohérent.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-operons",
+          "url": "https://openstax.org/books/biology-2e/pages/16-2-prokaryotic-gene-regulation",
+          "locator": "Introduction, ligne 29 ; The trp Operon, lignes 32–36",
+          "result": "Page originale ouverte et passages lus : les gènes voisins des opérons lac et trp sont transcrits dans un ARN messager commun ; l'exemple trp comporte plusieurs gènes et plusieurs enzymes. Le soutien couvre le terme demandé et l'explication.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "Introduction sur les opérons et premiers paragraphes de The trp Operon."
+          },
+          "sourceHash": "ba5f5d18c6e03244044982f7516a23dd29fb641c378503abfae9fc18b037ad77"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate-level-2",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "2b528767fe4bab9819d3c499edfe09f703b274d5dd100488d3e264dfa861437f",
+      "finalReviewer": "a_cbd_inventory",
+      "finalReviewedAt": "2026-11-16",
+      "independentFinalReview": "docs/quiz-2000/reviews/c-new-06-targeted-final.json"
+    },
+    {
+      "id": "hemp-q2-cn06-allele-fixation-frequency-one",
+      "status": "approved",
+      "comment": "Fréquence de copies égale àun, pas simple présence dans tous les individus ; nuance fixation≠avantage exacte.",
+      "contentHash": "51593b81a5641f51a2e83029320139c8e6403dba69cb6db51c64adaa0db50b01",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-effective-population",
+          "url": "https://www.apsnet.org/edcenter/sites/PopGenetics/Pages/geneticdrift.aspx",
+          "locator": "MeasuringGeneticDrift lignes278–281 ; fixation lignes302–308 ; preuvequestion : Genetic Drift Decreases Gene Diversity and Leads to Population Subdivision",
+          "result": "Fixation définie par fréquenceallélique1,0.",
+          "sourceHash": "1c3509248948e9731e06f89f607e62dfe3d2e4a962745fbad2dec0e1b6462e57",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "institutional-course-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-hardy-weinberg-heterozygote-frequency-two-p-q",
+      "status": "approved",
+      "comment": "Modèle biallélique explicite, quatre expressions comparables ; niveau spécialisé de modèle génétique/probabiliste défendable.",
+      "contentHash": "dc03fccd5a229276c19ea11a81d1c49fd7ff4a365ac3a259a6a3e4b235cf5869",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-1-population-evolution",
+          "locator": "Hardy-Weinberg, lignes49–63 ; preuvequestion : The Hardy-Weinberg Principle, figure 19.2",
+          "result": "Fréquence2pq des hétérozygotes explicitement donnée sousHardy-Weinberg.",
+          "sourceHash": "71ab59bf80e8460138caab5cc7a7cc365be7a888092022ba3cdc2e8e3b0fd87a",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heritability-population-variance-not-individual-percentage",
+      "status": "approved",
+      "comment": "Statistique de variation entre individus et contexte donnés ; interprétation individuelle rejetée correctement.",
+      "contentHash": "e894ab40097b5c91029be1dbf1371e1dcba9c454d9f08df57070decdb2728de1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-population-genetics",
+          "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+          "locator": "§19.2, Heritability ligne40 ; Mutation lignes88–90 ; preuvequestion : Genetic variability, paragraphe Heritability",
+          "result": "Héritabilité définie sur la variation phénotypique d’une population attribuable aux différences génétiques.",
+          "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-effective-population-size-differs-census",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four quantitative population concepts replace unrelated biomass/chromosome/area choices. The theoretical effective size remains distinct from census and the explanation retains its reproductive interpretation.",
+      "contentHash": "e6aeb5b2aaab1c5465b0336821cacd5c66b066c3350d971da3a7984726e37d8c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-effective-population",
+          "url": "https://www.apsnet.org/edcenter/sites/PopGenetics/Pages/geneticdrift.aspx",
+          "locator": "MeasuringGeneticDrift lignes278–281 ; fixation lignes302–308 ; preuvequestion : Measuring Genetic Drift",
+          "result": "Ne théorique distinct du recensement, lié aux contributions reproductrices.",
+          "sourceHash": "1c3509248948e9731e06f89f607e62dfe3d2e4a962745fbad2dec0e1b6462e57",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "institutional-course-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "noncomparable_distractors",
+          "reason": "Seule réponse sur transmission génétique, face à biomasse, chromosomes par cellule et surface d’habitat. On peut ignorer ce qu’estNe.",
+          "requestedChange": "Tester la distinction recensement/taille efficace avec quatre contributions/effectifs plausibles ou un vrai cas de reproduction, sans réduireNe au simple nombre visible d’individus."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-directional-selection-favors-one-phenotypic-extreme",
+      "status": "approved",
+      "comment": "Cas fictif d’un extrême favorisé, choix de sélections comparables ; évolution conditionnée à transmission dans l’explication.",
+      "contentHash": "46ab7b25ad8b7c3c7e6161029389b2d1b7a0b1ab07448dcafb95da6fd44428e9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Directional/Frequency-Dependent/SexualSelection, lignes37–38,55–62,63–71 ; preuvequestion : Directional Selection",
+          "result": "Sélection directionnelle favorisant un extrême décrite.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-sexual-selection-access-to-mates",
+      "status": "approved",
+      "comment": "Accès aux partenaires distingué de survie ; aucun trait réel du cannabis arbitrairement déclaré sélectionné.",
+      "contentHash": "6d91fedc610564d59e5d80bfeac3aaad49a5e1991ee7d4cd1ba2a3ddddb854a2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Directional/Frequency-Dependent/SexualSelection, lignes37–38,55–62,63–71 ; preuvequestion : Sexual Selection",
+          "result": "Sélection sexuelle sur accès/choix des partenaires décrite.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heterozygote-advantage-maintains-two-alleles",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Level2 and the rationale now describe the actual deduction from the supplied heterozygote advantage; the checked balancing-selection fact is unchanged.",
+      "contentHash": "bf490fab1b54f8a169c19e6451131c9e2520782a276632415f1e596a11bd7e06",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-balancing-selection",
+          "url": "https://ib.berkeley.edu/courses/bio1b/evolutionfall08/pdfs/Mishler12_Selection.pdf",
+          "locator": "PDFp.3, lignes81–84, tableaufitness associé ; preuvequestion : Page 3, balancing selection ; heterozygote advantage",
+          "result": "Fitnesshétérozygote supérieure pouvant maintenir polymorphisme équilibré décrite.",
+          "sourceHash": "27a921f7894b62c88001ea80d09644fd272e35e574e07ff3705a9c9a653957e8",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-course-pdf-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty_and_rationale",
+          "reason": "La supériorité de l’hétérozygote est donnée dans l’énoncé : la tâche est une déduction, contrairement à la justification « rappelé sans prémisses ». Le maintien des deux allèles peut se déduire de cette prémisse et des notions homo/hétérozygote.",
+          "requestedChange": "Justifier le niveau par le raisonnement effectivement demandé ; niveau2 paraît plus adapté ici, ou préciser un besoin théorique supplémentaire sans donner de chiffre arbitraire. Garder la forme deduction et éviter une justification copiée de mécanismes cellulaires."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-negative-frequency-dependent-selection-rare-advantage",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The task compares negative, positive, absent frequency dependence and drift. The sign now depends on understanding how the advantage changes with frequency.",
+      "contentHash": "06ef7e133d2a2be6fd5b6a8376949b0919cbb27e3e4f80d5fec0a6fabbca8618",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Directional/Frequency-Dependent/SexualSelection, lignes37–38,55–62,63–71 ; preuvequestion : Frequency-Dependent Selection",
+          "result": "Dépendance négative favorisant les phénotypes rares décrite.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "frequency_word_cue",
+          "reason": "Seule option dépendant de la fréquence face à trois alternatives qui l’écartent explicitement ou introduisent une mutation identique chez tous. Rare suffit à choisir, sans comprendre le signe négatif.",
+          "requestedChange": "Comparer des modèles de sélection/avantages plausibles, notamment le sens de la dépendance, ou une situation qui demande vraiment relier fréquence et valeur sélective."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-biological-species-fertile-viable-offspring",
+      "status": "approved",
+      "comment": "Concept reproducteur correctement borné et limites mentionnées, sans théorie taxonomique du cannabis imposée.",
+      "contentHash": "b0620f07ca2efa55cf03e94d10f93b17dbe97a2e0b787c645a33f2f42380be1a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-speciation",
+          "url": "https://openstax.org/books/biology-2e/pages/18-2-formation-of-new-species",
+          "locator": "Species/ReproductiveIsolation/SympatricSpeciation, lignes87–102 etintroduction ; preuvequestion : Species and the Ability to Reproduce",
+          "result": "Concept biologique d’espèce basé sur descendance viable/fertile décrit.",
+          "sourceHash": "73aadaf7dc7a25c51a236449e2e2aee4034bbd590e97c783dff677709dee6cf7",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-flowering-time-temporal-reproductive-isolation",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The task asks where the reproductive barrier acts, with four stages/mechanisms, rather than translating periods into temporal. The same independently checked prezygotic fact is retained.",
+      "contentHash": "9bd53abf8e46bd718a953e20c9ce62376647cf2cc57baddd2d653a1ecbf6abc3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-speciation",
+          "url": "https://openstax.org/books/biology-2e/pages/18-2-formation-of-new-species",
+          "locator": "Species/ReproductiveIsolation/SympatricSpeciation, lignes87–102 etintroduction ; preuvequestion : Reproductive Isolation, temporal isolation",
+          "result": "Calendriers reproducteurs décalés produisant isolement temporel prézygotique décrits.",
+          "sourceHash": "73aadaf7dc7a25c51a236449e2e2aee4034bbd590e97c783dff677709dee6cf7",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "lexical_answer_cue",
+          "reason": "Périodes sans chevauchement donne temporel ; les trois autres barrières sont après fécondation ou hors calendrier. La tâche traduit simplement le mot.",
+          "requestedChange": "Faire tester l’effet reproducteur ou le stade de barrière dans un cas aux choix comparables, plutôt que périodes→temporel."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-phylogenetic-branch-point-common-ancestral-lineage",
+      "status": "approved",
+      "comment": "Lecture d’ascendance commune utile ; espèces actuelles non confondues avec leur propre ancêtre.",
+      "contentHash": "66b25edffb85460c63bd78696a6b13b3c25b7ae05622753695b98939593f1bd0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-phylogenies",
+          "url": "https://openstax.org/books/biology-2e/pages/20-1-organizing-life-on-earth",
+          "locator": "PhylogeneticTrees, lignes35–45, figure20.3 ; preuvequestion : Phylogenetic Trees, figure 20.3",
+          "result": "Branchement représentant ascendance/divergence commune, pas une espèce actuelle ancêtre de sa voisine.",
+          "sourceHash": "dd925c6bf15c7a8e447993ee92de09c8bf2f543bbae7dbccfaa59dca8ece35e7",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-clade-common-ancestor-all-descendants",
+      "status": "approved",
+      "comment": "Définition de clade précise, distinction descendants complets/partiels réellement testée.",
+      "contentHash": "bdc3ff79dbcaec6497d69ee24eab6111a07c2a16206a1cece99d35942bc03b90",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-relationships",
+          "url": "https://openstax.org/books/biology-2e/pages/20-2-determining-evolutionary-relationships",
+          "locator": "MisleadingAppearances/BuildingPhylogeneticTrees, lignes36–42,60–70 ; preuvequestion : Building Phylogenetic Trees, figures 20.10 et 20.11",
+          "result": "Clade comprenant ancêtre et tous descendants explicitement défini.",
+          "sourceHash": "92bd145a340e90d12778fe53b33a23e5462dc03fdd607cd2a93bcc0b49000418",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-convergent-evolution-independent-similar-adaptations",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four evolutionary histories replace mixed-scale processes. The prompt no longer gives independent acquisition; the answer must distinguish convergence from ancestry and divergence.",
+      "contentHash": "66be82aa4a0f813164beae6b29b4efc0f4cfb6b7894eafba6736d57689455d98",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-relationships",
+          "url": "https://openstax.org/books/biology-2e/pages/20-2-determining-evolutionary-relationships",
+          "locator": "MisleadingAppearances/BuildingPhylogeneticTrees, lignes36–42,60–70 ; preuvequestion : Misleading Appearances",
+          "result": "Adaptations semblables acquises indépendamment dans des lignées éloignées décrites.",
+          "sourceHash": "92bd145a340e90d12778fe53b33a23e5462dc03fdd607cd2a93bcc0b49000418",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "noncomparable_processes",
+          "reason": "Indépendamment exclut les transferts par introgression ou clone ; duplication d’un chromosome est à une autre échelle que le motif d’évolution décrit.",
+          "requestedChange": "Proposer quatre explications évolutives crédibles d’une ressemblance, avec assez de contexte pour distinguer héritage et acquisition indépendante sans autre terme artificiellement exclusif."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-allopolyploid-combines-chromosome-sets-species",
+      "status": "approved",
+      "comment": "Comparaison de deux origines de jeux chromosomiques, distincte de nombre de chromosomes ou réduction méiotique.",
+      "contentHash": "f16d6ed0277f24c5b5188ebc06e8b71f9b401a0eeddba101d3698d353b563568",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-speciation",
+          "url": "https://openstax.org/books/biology-2e/pages/18-2-formation-of-new-species",
+          "locator": "Species/ReproductiveIsolation/SympatricSpeciation, lignes87–102 etintroduction ; preuvequestion : Sympatric Speciation, figures 18.15 et 18.16",
+          "result": "Jeux de plusieurs espèces pour allopolyploïdie, d’une espèce pour autopolyploïdie.",
+          "sourceHash": "73aadaf7dc7a25c51a236449e2e2aee4034bbd590e97c783dff677709dee6cf7",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+      "status": "approved",
+      "comment": "Objet entier, quatre compartiments et explication relus. La précision nucléaire répond à la correction demandée : la source décrit l'entrée du T-DNA dans le noyau, puis son intégration possible dans les chromosomes végétaux. Chloroplastes, mitochondries et plasmide d'une bactérie voisine ne correspondent pas à ce transfert vers les chromosomes nucléaires. Niveau 2 cohérent ; aucune technique ou application au cannabis n'est enseignée.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-agrobacterium-2022",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.849930/full",
+          "locator": "Introduction, lignes 368–373 ; entrée dans le noyau et modèles d'intégration dans les chromosomes végétaux",
+          "result": "Article original ouvert et introduction lue : le T-DNA est dirigé vers le noyau végétal et peut s'intégrer dans l'ADN chromosomique. La question reste au niveau du compartiment cible ; elle ne tranche pas les mécanismes d'intégration que les auteurs présentent comme encore discutés.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "Introduction, transfert du T-DNA au noyau et intégration chromosomique."
+          },
+          "sourceHash": "224315095a102d9972e375dd1f47065a38621849e90effa4511c39daf5b7f891"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate-level-2",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "178e6ee39328ac9836f3acbea0ed81aec13c6367d6823c66f2528b890276deaf",
+      "finalReviewer": "a_cbd_inventory",
+      "finalReviewedAt": "2026-11-16",
+      "independentFinalReview": "docs/quiz-2000/reviews/c-new-06-targeted-final.json"
+    },
+    {
+      "id": "hemp-q2-cn06-retrotransposon-rna-intermediate-reverse-transcription",
+      "status": "approved",
+      "comment": "ARN intermédiaire et nouvelle copie distingués du déplacement direct d’ADN ; pas toute copie actuelle mobile supposée.",
+      "contentHash": "765d639fc82c4c104cbcca4fe9e9227986ed40bc3b5439c1f2c1e0239d2b9d49",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-retrotransposons",
+          "url": "https://link.springer.com/article/10.1186/s13100-020-00223-x",
+          "locator": "KnownTypes, lignes84–93 ; preuvequestion : Known types of transposable element families",
+          "result": "ClasseI par intermédiaireARN, transcription inverse et copie/insertion décrite.",
+          "sourceHash": "64e2abed37a14b19dc683243d61c8a9563b32fe47a19fefe980550b7b290b97e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "scientific-review-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-endoreduplication-dna-replication-without-mitosis",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: All four models include repeated DNA copying. Correct identification now requires distinguishing mitosis and cytokinesis; the independently checked absence of both is retained.",
+      "contentHash": "ee47096d111b63b3f740c9d3d30e5aed9c6e45405dcdd46b38ab50c2592398e8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-endoreplication",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4203642/",
+          "locator": "Résumé/Introduction, lignes76–88 ; preuvequestion : Abstract",
+          "result": "Endocycle répétant la copie sans mitose ni cytocinèse défini.",
+          "sourceHash": "d365665ee273c1b9ba2e1c2d6e1e742dac166ee7282136b163ab204dd58b2df9",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "scientific-commentary-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "replication_word_cue",
+          "reason": "Seule réponse contenant une copie d’ADN ; les autres sont fusion/perte/deuxmitoses sans copie. Le mot endoréplication suffit sans connaître absence de mitose.",
+          "requestedChange": "Comparer des modèles de réplication/division plausibles pour tester spécifiquement la dissociation entre copie, mitose et cytocinèse."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-genomic-imprinting-parent-origin-allele-expression",
+      "status": "approved",
+      "comment": "Origine parentale et empreinte épigénétique correctement distinguées de différence de séquence ; pas règle mammalienne généralisée.",
+      "contentHash": "1d06d99067c93fe614bf582321304f2cba09976947bb75bf2745ef562fd6c136",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-imprinting",
+          "url": "https://www.genome.gov/genetics-glossary/Genetic-Imprinting",
+          "locator": "Definition/Narration, lignes14–17 ; preuvequestion : Definition",
+          "result": "Origine maternelle/paternelle conditionnant expression sans mutation de séquence décrite.",
+          "sourceHash": "cde77449af46fdab00436674c0074385654899a57a7bbd8b0b40945fe0939f9c",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-reciprocal-translocation-nonhomologous-segment-exchange",
+      "status": "approved",
+      "comment": "Cas équilibré explicitement qualifié ; effets de contexte possibles malgré quantité conservée.",
+      "contentHash": "2d8d7d7e7701d627623429cb5d178285e77a8340fe75fe14c89a7e38532c8c2d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-chromosome-errors",
+          "url": "https://openstax.org/books/biology-2e/pages/13-2-chromosomal-basis-of-inherited-disorders",
+          "locator": "Translocations, lignes103–106, figure13.13 ; preuvequestion : Translocations, figure 13.13",
+          "result": "Translocation réciproque entre non-homologues sans gain/perte décrite.",
+          "sourceHash": "ca4a328f4601450daeea928dfcb81bb3e989cfc3cec99b0b0dbef13060dcff0f",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-fusion-gene-parts-two-previously-separate-genes",
+      "status": "approved",
+      "comment": "Définition génétique correcte, sans diagnostic ni effet obligatoire attribué au gène de fusion.",
+      "contentHash": "3aa6a63154eabb25e253c03b31c2fb545170fc49c51a321fc36e0412ca6220c5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-fusion-gene",
+          "url": "https://www.cancer.gov/publications/dictionaries/cancer-terms/def/fusion-gene",
+          "locator": "Définition initiale, ligne16 ; preuvequestion : Définition initiale",
+          "result": "Gène fusion associant parties de deux gènes défini.",
+          "sourceHash": "769be4fcb6a06e51db5ee94a26622d52b2791561ceed5ca9e27d171556f34d60",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-dictionary-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heteroplasmy-multiple-mitochondrial-sequences-one-individual",
+      "status": "approved",
+      "comment": "Variantes mitochondriales distinguées du nombre/tissu des organites et d’allèles nucléaires ; niveau spécialisé.",
+      "contentHash": "1cd013077144a79a2ee6c74abfc8efa2c2cab465307d180166b880c77ecb1b8a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-heteroplasmy",
+          "url": "https://www.nist.gov/glossary-term/25016",
+          "locator": "OSACLexicon, ligne119 ; preuvequestion : Définition",
+          "result": "Hétéroplasmie comme plusieurs types/séquencesmtDNA par individu définie.",
+          "sourceHash": "1d3ddd5650db99441cc78e25d4322695a2d49dee42053b772191eb392fa8d830",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-dictionary-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+      "status": "approved",
+      "comment": "Plusieurs chaînes produites par plusieurs ribosomes sur un message ; distinct de fonction générale du ribosome.",
+      "contentHash": "df5ec7ad8b0c6776d4032bcaf374e447577cd6791b611ae4de8a3821b3027207",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-ribosomes",
+          "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+          "locator": "§15.5 lignes44,55–57 ; preuvequestion : Ribosomes, paragraphe polysome",
+          "result": "Polysome constitué de plusieurs ribosomes sur unARNm défini.",
+          "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "metadataAdjustment": {
+        "id": "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+        "from": "polysome",
+        "to": "ribosome",
+        "beforeHash": "ce42937954e00954078bf0a3865a6764cc1ae875f9f9a5c62921c7bbefd6579e",
+        "afterHash": "df5ec7ad8b0c6776d4032bcaf374e447577cd6791b611ae4de8a3821b3027207",
+        "proposedBy": "root",
+        "approvedAndAppliedBy": "root",
+        "basedOn": "reviews/c-new-06.json and approved cn01-ribosome-direct-protein-assembly",
+        "reason": "Distinct ribosome properties share explanatory information about protein assembly. Group them so the subject reservation avoids their co-occurrence in a draw.",
+        "scope": "Subject grouping only; wording, choices, answer, explanation and source objects unchanged."
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-ubiquitin-chain-proteasome-degradation-signal",
+      "status": "approved",
+      "comment": "Nouveau fait de régulation post-traductionnelle, distinct de synthèse ou hydrolyse générique ; voie classique bien cadrée.",
+      "contentHash": "64aaf6b8070e04e37a64394942b83fdfc28d8980fb2a02732d36df99f6c171f0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-protein-degradation",
+          "url": "https://openstax.org/books/biology-2e/pages/16-6-eukaryotic-translational-and-post-translational-gene-regulation",
+          "locator": "§16.6, lignes42–46, figure16.15 ; preuvequestion : Chemical Modifications, Protein Activity, and Longevity, figure 16.15",
+          "result": "Polyubiquitination dirigeant vers protéasome pour dégradation illustrée.",
+          "sourceHash": "b719c04459e5a171887bd6df3b60225f8efedc85bedab3ff250aea16bc4537c3",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-enhancer-can-regulate-transcription-from-distance",
+      "status": "approved",
+      "comment": "Repliement spatial distinct de changements de séquence ou de maturationARN ; source figure et texte concordants.",
+      "contentHash": "ef6e6e3abd78aa86a4f25979c2c4b84a8aaed6bd24f0276d283a05279bd6784a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-transcription-regulation",
+          "url": "https://openstax.org/books/biology-2e/pages/16-4-eukaryotic-transcription-gene-regulation",
+          "locator": "§16.4, lignes29–30,38–54, figure16.10 ; preuvequestion : Enhancers and Transcription, figure 16.10",
+          "result": "ADN courbé rapprochant complexesenhancer/promoteur décrit.",
+          "sourceHash": "73b423f638ff45cc224ebee2040a1cc7e76fe27a06d7ff3d019133a9e52c0480",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-transcription-factors-sequence-specific-regulatory-proteins",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four transcription-related functions replace unrelated enzymes. The task distinguishes a specific regulator from general machinery, polymerase and the DNA sequence itself.",
+      "contentHash": "6a7d1d86cb161ae805e2693f2c1f89fee13be68ddd04c8550d7743abb2db02a8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-transcription-regulation",
+          "url": "https://openstax.org/books/biology-2e/pages/16-4-eukaryotic-transcription-gene-regulation",
+          "locator": "§16.4, lignes29–30,38–54, figure16.10 ; preuvequestion : Introduction ; The Promoter and the Transcription Machinery",
+          "result": "Facteurs spécifiques reconnaissant motifs et modulant transcription décrits.",
+          "sourceHash": "73b423f638ff45cc224ebee2040a1cc7e76fe27a06d7ff3d019133a9e52c0480",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "transcription_word_cue",
+          "reason": "Seule option liée à transcription/productionARN face à trois enzymes hors transcription. La fonction de régulation par reconnaissance de motifs n’est pas réellement distinguée.",
+          "requestedChange": "Comparer des acteurs/activités de régulation plausibles, ou tester réellement la distinction facteur spécifique–machinerie–séquence cible sans seule correspondance transcription→ARN."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-histone-acetylation-generally-loosens-dna-binding",
+      "status": "approved",
+      "comment": "Effet de charge et de liaison testé en deux dimensions ; ouverture donnée ne fournit pas la variation de charge.",
+      "contentHash": "533759409e7e43077e6128ec46b8c425cfc5af2c245a037118d4a72103fa022c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-epigenetics",
+          "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+          "locator": "§16.3, lignes43–48 ; preuvequestion : Epigenetic Control, paragraphe acetyl groups",
+          "result": "Acétylation réduisant charge positive et relâchant liaisonADN/histones décrite.",
+          "sourceHash": "ac1f9256f9b020143cb7b23966789b2e929e4d6f69e6e10648f1a0f9e42d2865",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-plant-rddm-small-rnas-guide-dna-methylation",
+      "status": "approved",
+      "comment": "Rôle de guidage méthylationADN correct ; ciblagevia transcritséchafaudages vérifié, pas simple effet surARNm.",
+      "contentHash": "b87373b2ed2f65665d4662fc8ec62c4dca16947332e0f95cfabf5762d8fbd494",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-rddm-2016",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4760824/",
+          "locator": "Introduction/Résumé/Discussion, lignes152–167,172 ; preuvequestion : Introduction, petits ARN associés à AGO recrutant DRM1/DRM2 ; Discussion",
+          "result": "PetitsARN–AGO guidant recrutementDRM et ciblage de méthylationADN décrits.",
+          "sourceHash": "0bed5eab75e0d1f5c03a4d149d1b2aa3633faa008ffd4bcc8fb9c4dd4c867c5d",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-research-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-crispr-cas-natural-antiviral-defense",
+      "status": "approved",
+      "comment": "Fonction naturelle de défense, mémoire etARN guides exacts ; aucun protocole d’édition demandé.",
+      "contentHash": "b486fba9433df63816d574142fb7eae311afe963d39984b005a5f9691eae44ba",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-crispr-2008",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5898235/",
+          "locator": "Résumé/Introduction, lignes133–137 ; preuvequestion : Abstract ; introduction",
+          "result": "CRISPR-Cas défense adaptative naturelle contre éléments envahissants/virus décrite.",
+          "sourceHash": "ef5bfcdc0d068104483febf5de16c6df57d3d91e50f80be717e9be4fea7a5088",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-research-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-morgan-fruit-fly-classical-genetics-model",
+      "status": "approved",
+      "comment": "Association scolaire classiqueMorgan/drosophile, quatre organismes d’étude plausibles ; niveau1 défendable, sans priorité absolue.",
+      "contentHash": "3c2fc12d1876e33978b3e1c0d1b6b949730dd2e7b7d3b2a14ff5444d3194050c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-morgan-history",
+          "url": "https://cbs.asu.edu/sites/g/files/litvpz546/files/2023-01/Maienschein%20Thomas%20Hunt%20Morgan%20in%20Encyclopedia%20of%20Evolution%202002_0.pdf",
+          "locator": "PDFp.1 lignes3–8 ; p.2 lignes40–62 ; preuvequestion : Page 1, introduction et choix de D. melanogaster",
+          "result": "Morgan/Drosophila et recherches sur hérédité/chromosomes confirmés.",
+          "sourceHash": "df7c032b7f5557e9106aed0fb0068840a5504ed406bf521334ad0bb062df8913",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-history-pdf-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-miescher-first-isolated-dna-nuclein",
+      "status": "approved",
+      "comment": "Isolement de substance distinct de rôle héréditaire et doublehélice ; niveau historique intermédiaire.",
+      "contentHash": "a1ef72b1d63aaff2e4edfb9ec7ac97ed18599ad0e0c929201de33ae28b41e178",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-miescher-1869",
+          "url": "https://www.genome.gov/25520232/online-education-kit-1869-dna-first-isolated",
+          "locator": "1869:DNAFirstIsolated, ligne8 ; preuvequestion : Paragraphe initial",
+          "result": "Miescher isolant nucléine en1869 confirmé.",
+          "sourceHash": "405d543a7a60c561bd67f58ce91542a050982d74bdab50a1bd327c8271ca46db",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-history-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-johannsen-coined-word-gene",
+      "status": "approved",
+      "comment": "Attribution exacte ; génotype/phénotype sont bien appuyés par ligne11, réserve préliminaire de preuve retirée.",
+      "contentHash": "01cd75db750d38bb34dd8f9776563b5c1d77e64f1a0fadb2885d453a30c47d93",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-johannsen-1909",
+          "url": "https://www.genome.gov/25520244/online-education-kit-1909-the-word-gene-coined",
+          "locator": "1909:TheWordGeneCoined, lignes9–14 ; preuvequestion : Premier paragraphe",
+          "result": "Johannsen proposantgène en1909 et distinguant génotype/phénotype confirmé sur page complète.",
+          "sourceHash": "43e7f127749d0fe80c1edb65df4afe05fe97a7923785547d85d10cb053fbd0f1",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-history-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-autosomes-chromosomes-other-than-sex-chromosomes",
+      "status": "approved",
+      "comment": "Catégorie nucléaire générale, sans numérotation ou héritage paternel humain transposé.",
+      "contentHash": "b1879e06a2dce16f5c48707e7cc4fe6e025b2842d57a000e66e45049c4882b77",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-autosome",
+          "url": "https://www.genome.gov/genetics-glossary/Autosome",
+          "locator": "Definition, ligne15 ; preuvequestion : Definition",
+          "result": "Autosome distingué des chromosomes sexuels.",
+          "sourceHash": "8ff63c9596fce1c2651fb92e09af2725250f1c3fa7b8b5b54a2a0f2aa7fcc7b6",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-apomixis-seed-embryo-without-fertilization",
+      "status": "approved",
+      "comment": "Embryon sans fécondation de l’oosphère, compatible avec distinction des autres formes d’apomixie ; certaines plantes seulement.",
+      "contentHash": "4f3a4b4a778b20306b071995e1bc45912490133005441237c947fa6dfa63ce7d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-asexual",
+          "url": "https://openstax.org/books/biology-2e/pages/32-3-asexual-reproduction",
+          "locator": "Introduction, ligne36 ; preuvequestion : Introduction, paragraphe apomixis",
+          "result": "Apomixie permettant formation d’embryon/graine sans fécondation de l’oosphère décrite.",
+          "sourceHash": "4aabd1c833552785c9f3623ba808bbd329c8bb044a09c4ffabdf6bd1d551a5df",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-parthenocarpy-fruit-development-without-fertilization",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The corrected explanation stays with fruit development without fertilization and no longer defines polyembryony. The original independently verified fact and answer remain.",
+      "contentHash": "c1cbae7675ef1670f38f13a0effb89445f66f21e687253f889af20c0120e33d7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-parthenocarpy",
+          "url": "https://propg.ifas.ufl.edu/04-seeds/01-development/09-seedsdevelopment-parthenocarpy.html",
+          "locator": "Introduction, lignes5–9 ; preuvequestion : Introduction",
+          "result": "Fruit parthénocarpique développé sans fécondation décrit.",
+          "sourceHash": "eeb588a4564f81c10ffbace40f8956bac3a11efddf6180a42b03defcd10209e3",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_leak",
+          "reason": "L’explication définit les plusieurs embryons d’une graine, réponse de l’item36, alors que les clés parthenocarpie/polyembryonie diffèrent.",
+          "requestedChange": "Retirer ce détour hors du fait parthénocarpie ou regrouper de manière justifiée ; garder la distinction fruit/fécondation sans livrer la définition de l’autre item."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-polyembryony-more-than-one-embryo-one-seed",
+      "status": "approved",
+      "comment": "Nombre d’embryons distinct de cotylédons/graines/fruits ; pas occurrence propre au cannabis affirmée.",
+      "contentHash": "0aada8748673c9da778047f42fab376ac026ca9128488f6abac996890ddf5fea",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-polyembryony",
+          "url": "https://dhcrop.gau.edu.bd/polyembryony/",
+          "locator": "Définition lignes7–9 ; exemplesmécanismes13–23 ; preuvequestion : Polyembryony in Ovule of Flower, définition initiale",
+          "result": "Plusieurs embryons par ovule/graine, plusieurs origines possibles, définis.",
+          "sourceHash": "2abb1bb312b5faa332bec6fbe9f2b52b86a1cfabb8724d0733b748b7693ea115",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+      "status": "approved",
+      "comment": "Objet entier et quatre bilans relus. Dans A, les génotypes diffèrent de 10 cm ; dans B, ils diffèrent encore de 10 cm. Chacun gagne 10 cm : deux effets principaux additifs, réponses parallèles, pas d'interaction dans ces valeurs. Ni effet du milieu seul, ni effet du génotype seul, ni inversion de classement. Exemple explicitement fictif, sans test statistique ou mesure réelle prétendus ; niveau 2 adapté.",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-gxe-2023",
+          "url": "https://www.fs.usda.gov/rm/pubs_journals/2023/rmrs_2023_napier_j001.pdf",
+          "locator": "Page imprimée 110 : G×E background ; page imprimée 111 (page 3 du PDF), figure 1 et légende du scénario B ; lignes 193–200",
+          "result": "PDF ouvert ; cadre des normes de réaction et légende lus. Le scénario B distingue les effets du génotype et du milieu de l'interaction : des valeurs différentes entre génotypes changent du même montant entre environnements, sans G×E. L'exemple 10/20 puis 20/30 reproduit cette structure sur l'échelle des centimètres ; ces nombres n'appartiennent pas à des résultats expérimentaux de la source.",
+          "consultation": {
+            "reader": "a_cbd_inventory",
+            "date": "2026-11-16",
+            "access": "full-text",
+            "passageRead": "G×E background p.110 et figure 1, scénario B et légende p.111."
+          },
+          "sourceHash": "06f9d60ba53a57867095f5792dc52693e293bfa5b9a1db0e0ac4a2ff7862f236"
+        }
+      ],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported-as-labelled-fictional-example",
+        "singleCorrectOption": "verified",
+        "difficulty": "appropriate-level-2",
+        "factIndexAndNeighbourFacts": "checked",
+        "structuralLimits": "passed"
+      },
+      "contentHash": "5e3f406f7a3e218f632afc9464ba5f143234fc9b0fa92634337196c9ba5a4c96",
+      "finalReviewer": "a_cbd_inventory",
+      "finalReviewedAt": "2026-11-16",
+      "independentFinalReview": "docs/quiz-2000/reviews/c-new-06-targeted-final.json"
+    },
+    {
+      "id": "hemp-q2-cn06-aminoacyl-trna-synthetase-matches-amino-acid-trna",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four translation activities replace enzyme-name matching. The charged-tRNA fidelity step is now distinguished from decoding, translocation and termination; shared subjectKey arn-de-transfert prevents the nearby tRNA-role pair.",
+      "contentHash": "2dab787d1a6a6db2ecab4f4c07a2e796d9f59d3fa3f448007e5b4c1b38abca51",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-ribosomes",
+          "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+          "locator": "§15.5 lignes44,55–57 ; preuvequestion : Aminoacyl tRNA Synthetases",
+          "result": "Synthétases liant acide aminé approprié àARNt avant traduction décrites.",
+          "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "enzyme_name_matches_stem",
+          "reason": "Seule enzyme dont le nom contient à la fois acideaminé/ARNt, face à des enzymes de transcription/réplication hors chargeARNt. La difficulté3 annoncée ne correspond pas à cette élimination.",
+          "requestedChange": "Comparer des enzymes/étapes de traduction ou maturationARN plausibles, pour identifier réellement la charge de l’ARNt et sa fidélité ; réévaluer le niveau selon la version finale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-dna-polymerase-replication-needs-primer",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Four replication-start structures/actors replace unrelated translation signals. The primer supplies the existing end, matching the original independent eukaryotic-replication reading.",
+      "contentHash": "0085a81c16bee776cdbbb1ceaa01f44f7658bf64810cc0b6779f529907940cae",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "locator": "§14.5, lignes47–49 ; preuvequestion : Paragraphe suivant le tableau 14.2",
+          "result": "ADNpolymérase démarrant allongement à partir d’une amorce fournie parprimase.",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_starting_requirements",
+          "reason": "Codon traduit etARNt chargé relèvent de traduction ; télomère à chaque départ interne est contradictoire. Amorce se retrouve seule candidate plausible sans connaître le besoin d’extrémité existante.",
+          "requestedChange": "Comparer des structures/signaux de démarrage plausibles de réplication ou distinguer allongement et démarragede novo, dans le cadre eucaryote sourcé."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn06-nucleolus-ribosomal-subunit-assembly",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The explanation no longer identifies nuclear pores. Root additionally groups this ribosome-assembly fact with the ribosome subject to prevent its explanation revealing the existing protein-assembly question in the same draw.",
+      "contentHash": "78b5b5a894cacaf5ca07e3b9d1a69568b4c873a9290e43b430f3ce939e38b81f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "§4.3 TheNucleolus, ligne72 ; preuvequestion : The Nucleolus",
+          "result": "AssemblageARNr/protéines en sous-unités dans nucléole et export confirmés.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "cross_batch_answer_leak",
+          "reason": "L’explication nomme les pores nucléaires comme voie d’export, réponse du C05 nuclear-pores-control-rna-exchange sous une autre clé.",
+          "requestedChange": "Retirer le nom de la voie hors fait (destination cytoplasmique peut rester), ou appliquer un regroupement justifié avec C05. Le fait site d’assemblage nucléolaire est distinct et étayé."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    }
+  ],
+  "deduplication": [
+    {
+      "ids": [
+        "hemp-q2-cn06-mutations-ultimate-source-new-alleles",
+        "hemp-genetics-mutation-clonale"
+      ],
+      "decision": "explicit_arbitration_requested",
+      "reason": "Deux tâches ont pour réponse mutation avec modification de l’ADN comme noyau. La seconde explique la création d’allèle versus redistribution, l’ancienne la non-immutabilité d’une lignée clonale. Cette nuance doit être arbitrée explicitement, pas validée distincte par défaut.",
+      "existingVersionRead": {
+        "prompt": "Quel phénomène peut modifier l’ADN au sein d’une descendance clonale de chanvre ?",
+        "answer": "Une mutation",
+        "explanation": "Une mutation est une modification de l’ADN. Elle peut apparaître pendant les divisions de cellules puis être transmise à une branche de la descendance clonale."
+      }
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-allele-fixation-frequency-one",
+        "hemp-q2-cn04-allele-frequency-copies-denominator"
+      ],
+      "decision": "distinct",
+      "reason": "Étatfixation fréquence1 versus calcul d’une fractionallélique ; nouvelle propriété d’absence d’autres variantes."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-directional-selection-favors-one-phenotypic-extreme",
+        "hemp-q2-cn04-stabilizing-selection-favours-intermediate-phenotypes",
+        "hemp-q2-cn04-natural-selection-heritable-differential-reproduction"
+      ],
+      "decision": "distinct",
+      "reason": "Extrême favorisé, moyenne favorisée et condition générale de différences transmissibles ne sont pas le même résultat ; cléselection-naturelle commune avec le principe général."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-heterozygote-advantage-maintains-two-alleles",
+        "hemp-q2-cn04-codominance-both-allelic-products-detectable"
+      ],
+      "decision": "distinct",
+      "reason": "Avantage de fitness maintenant polymorphisme versus expression simultanée de produitsalléliques ; ne pas assimiler codominance et surdominance."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-allopolyploid-combines-chromosome-sets-species",
+        "hemp-q2-ext-triploide-trois-jeux",
+        "hemp-q2-cn05-aneuploidy-single-chromosome-gain-loss"
+      ],
+      "decision": "distinct",
+      "reason": "Origine de jeux, nombre de jeux et ajout individuel de chromosome testent trois propriétés distinctes."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-retrotransposon-rna-intermediate-reverse-transcription",
+        "hemp-q2-cn03-transposable-element-mobile-dna",
+        "hemp-q2-cn04-cannabis-genome-majority-transposable-derived-sequences"
+      ],
+      "decision": "distinct",
+      "reason": "MécanismeARN/transcriptioninverse d’une classe versus définition de mobilité et proportion génomique ; clééléments-transposables commune avec la définition."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-endoreduplication-dna-replication-without-mitosis",
+        "hemp-q2-cn05-meiosis-one-replication-two-nuclear-divisions",
+        "hemp-q2-cn05-s-phase-chromosome-dna-replication"
+      ],
+      "decision": "distinct",
+      "reason": "Dissociation copie/division dans endocycle versus déroulement normal de méiose et position du tempsS ; reprise de choix demandée pour tester réellement la dissociation."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-heteroplasmy-multiple-mitochondrial-sequences-one-individual",
+        "hemp-q2-cn05-mosaicism-genetically-different-cell-lineages-one-zygote",
+        "hemp-q2-cn05-cannabis-organelle-dna-maternal-lineage"
+      ],
+      "decision": "distinct",
+      "reason": "Variantes d’un génome organellaire chez un individu, lignées cellulaires génétiquement distinctes et mode de transmission d’organites sont des propriétés différentes."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+        "hemp-q2-cn05-ribosomal-rna-catalytic-role",
+        "hemp-q2-cn01-ribosome-direct-protein-assembly"
+      ],
+      "decision": "distinct",
+      "reason": "Organisation simultanée sur un message, nature du catalyseur et identité du lieu de synthèse différents."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-ubiquitin-chain-proteasome-degradation-signal",
+        "hemp-q2-d05-protease-cuts-proteins-peptides",
+        "hemp-q2-cn01-ribosome-direct-protein-assembly"
+      ],
+      "decision": "distinct",
+      "reason": "Marqueur de reconnaissance pour destruction d’un produit protéique, substrat d’une hydrolase et synthèse protéique différents. Le remplacementubiquitine n’est pas réemploi du rôle de ribosome retiré avant revue."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-genomic-imprinting-parent-origin-allele-expression",
+        "hemp-q2-cn03-epigenetic-regulation-without-dna-sequence-change",
+        "hemp-q2-cn06-histone-acetylation-generally-loosens-dna-binding",
+        "hemp-q2-cn06-plant-rddm-small-rnas-guide-dna-methylation"
+      ],
+      "decision": "distinct",
+      "reason": "Définition large de régulation sans séquence, asymétrie parentale, mécanisme électrostatique et guidageARN de méthylation sont des propriétés distinctes ; aucune conséquence universelle de toute marque affirmée."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-parthenocarpy-fruit-development-without-fertilization",
+        "hemp-q2-cn06-polyembryony-more-than-one-embryo-one-seed",
+        "hemp-q2-cn06-apomixis-seed-embryo-without-fertilization"
+      ],
+      "decision": "distinct_answer_leak_fix_requested",
+      "reason": "Fruit sans fécondation, embryons multiples et embryon sans fécondation de l’oosphère diffèrent ; la comparaison dans l’explication du premier donne toutefois la définition du second."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+        "hemp-q2-b02-usda-multistate-trials-genetic-environment-interaction",
+        "hemp-genetics-clones-milieu"
+      ],
+      "decision": "distinct_application_requires_better_task",
+      "reason": "Définition de réponses non parallèles versus objectif d’essaisUSDA et effet du milieu sur clones de même génotype. La nouvelle tâche doit vraiment distinguer effetsG/E etG×E pour apporter son apprentissage."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn06-nucleolus-ribosomal-subunit-assembly",
+        "hemp-q2-cn05-nuclear-pores-control-rna-exchange"
+      ],
+      "decision": "distinct_cross_batch_answer_leak_fix_requested",
+      "reason": "Site d’assemblage et voie d’export différents, mais explication actuelle donne les pores sous une autre clé."
+    }
+  ],
+  "editorialAssessment": {
+    "interest": "Notions de population, phylogénie et régulation réellement utiles ; pas de règle de culture ou de résultat de laboratoire arbitraire à mémoriser. Plusieurs tâches demandées en correction confondent reconnaissance d’un mot ou exclusion d’options hors échelle et connaissance du mécanisme.",
+    "difficulty": "Pas de quota imposé. Hardy-Weinberg et héritabilité requièrent un modèle ou une interprétationstatistique spécialisée ; RdDM constitue bien un système expert. La supériorité de l’hétérozygote est toutefois une prémisse donnée, pas un rappel sans prémisses. Morgan/drosophile peut rester un repère scolaire classique accessible ; Miescher etJohannsen sont déjà correctement en2. Plusieurs justificationscopiées parlent de mécanismesmoléculaires/cellulaires pour des statistiques : la revue précise ici les connaissances réelles attendues, à reformuler lors d’une prochaine retouche de métadonnées.",
+    "forms": "Situations fictives clairement identifiées ; la comparaison auto/allopolyploïdie et la déduction du maintienallélique sont de vraies tâches. Une simple reprise du vocabulaire du scénario ne suffit pas aux situationsG×E outemporelles actuelles.",
+    "sourceLimits": "Les cadres humains duNCI/NIST/NHGRI ne deviennent pas risques ou fréquences cliniques des plantes. Le commentaire sur endoréplication, les revuesArabidopsis/G×E, les cours et les articles expérimentaux sont correctement distingués ; aucune étude de cannabis n’est inventée.",
+    "preliminaryPointResolved": "La pageJohannsen complète mentionne bien génotype/phénotype à la ligne11 ; la réserve initiale issue d’un affichagefiltré est retirée avant toute décision. Aucune modification de ce passage n’est requise."
+  },
+  "summary": {
+    "total": 40,
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourceObjects": 32,
+    "sourceChecks": 40,
+    "finalLevels": {
+      "1": 2,
+      "2": 24,
+      "3": 13,
+      "4": 1
+    },
+    "decision": "All40 final versions approved. Mutation overlap replaced by the operon fact, three targeted final versions independently read by A, eleven other corrections arbitrated by root after F review, and two ribosome groupings recorded.",
+    "sourceReadingScope": "Distinct source IDs and checks in the final approved items. Actual readers, targeted passages, earlier readings and supplemental consultations remain recorded in the individual proof objects; these counts do not claim full-book reading or a fresh opening of every source."
+  },
+  "beforeRootFinalArbitration": [
+    {
+      "id": "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+      "status": "approved",
+      "comment": "Plusieurs chaînes produites par plusieurs ribosomes sur un message ; distinct de fonction générale du ribosome.",
+      "contentHash": "ce42937954e00954078bf0a3865a6764cc1ae875f9f9a5c62921c7bbefd6579e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-ribosomes",
+          "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+          "locator": "§15.5 lignes44,55–57 ; preuvequestion : Ribosomes, paragraphe polysome",
+          "result": "Polysome constitué de plusieurs ribosomes sur unARNm défini.",
+          "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-effective-population-size-differs-census",
+      "status": "changes_requested",
+      "comment": "Ne étayé, mais seule réponse de transmission génétique face à mesures hors concept ; tâche insuffisante.",
+      "contentHash": "bd378b4b9ca94fb6c49be715703586d4c6e28dde7b6d33bfbc2f320814fc7422",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-effective-population",
+          "url": "https://www.apsnet.org/edcenter/sites/PopGenetics/Pages/geneticdrift.aspx",
+          "locator": "MeasuringGeneticDrift lignes278–281 ; fixation lignes302–308 ; preuvequestion : Measuring Genetic Drift",
+          "result": "Ne théorique distinct du recensement, lié aux contributions reproductrices.",
+          "sourceHash": "1c3509248948e9731e06f89f607e62dfe3d2e4a962745fbad2dec0e1b6462e57",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "institutional-course-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "noncomparable_distractors",
+          "reason": "Seule réponse sur transmission génétique, face à biomasse, chromosomes par cellule et surface d’habitat. On peut ignorer ce qu’estNe.",
+          "requestedChange": "Tester la distinction recensement/taille efficace avec quatre contributions/effectifs plausibles ou un vrai cas de reproduction, sans réduireNe au simple nombre visible d’individus."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-heterozygote-advantage-maintains-two-alleles",
+      "status": "changes_requested",
+      "comment": "Déduction correcte à partir de fitness fournie ; justification de niveau prétend à tort absence de prémisses.",
+      "contentHash": "1993d3bcfed20d312be878288aa2c6f5d2cb85b59df3bdd7968035da647b3b76",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-balancing-selection",
+          "url": "https://ib.berkeley.edu/courses/bio1b/evolutionfall08/pdfs/Mishler12_Selection.pdf",
+          "locator": "PDFp.3, lignes81–84, tableaufitness associé ; preuvequestion : Page 3, balancing selection ; heterozygote advantage",
+          "result": "Fitnesshétérozygote supérieure pouvant maintenir polymorphisme équilibré décrite.",
+          "sourceHash": "27a921f7894b62c88001ea80d09644fd272e35e574e07ff3705a9c9a653957e8",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-course-pdf-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty_and_rationale",
+          "reason": "La supériorité de l’hétérozygote est donnée dans l’énoncé : la tâche est une déduction, contrairement à la justification « rappelé sans prémisses ». Le maintien des deux allèles peut se déduire de cette prémisse et des notions homo/hétérozygote.",
+          "requestedChange": "Justifier le niveau par le raisonnement effectivement demandé ; niveau2 paraît plus adapté ici, ou préciser un besoin théorique supplémentaire sans donner de chiffre arbitraire. Garder la forme deduction et éviter une justification copiée de mécanismes cellulaires."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-negative-frequency-dependent-selection-rare-advantage",
+      "status": "changes_requested",
+      "comment": "Fait exact ; seule option évoquant fréquence rend la tâche trop lexicale.",
+      "contentHash": "30189706c5e14758121569c1cd856ac7c0069bda41b7f62c2de6973bc3f04121",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-adaptive-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/19-3-adaptive-evolution",
+          "locator": "Directional/Frequency-Dependent/SexualSelection, lignes37–38,55–62,63–71 ; preuvequestion : Frequency-Dependent Selection",
+          "result": "Dépendance négative favorisant les phénotypes rares décrite.",
+          "sourceHash": "c8e5624ccf6312edc6bc85aef9db8565cc0e89b751ba0e5b64764ce30d7c3970",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "frequency_word_cue",
+          "reason": "Seule option dépendant de la fréquence face à trois alternatives qui l’écartent explicitement ou introduisent une mutation identique chez tous. Rare suffit à choisir, sans comprendre le signe négatif.",
+          "requestedChange": "Comparer des modèles de sélection/avantages plausibles, notamment le sens de la dépendance, ou une situation qui demande vraiment relier fréquence et valeur sélective."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-flowering-time-temporal-reproductive-isolation",
+      "status": "changes_requested",
+      "comment": "Fait étayé mais périodes→temporel donne la seule réponse avant fécondation.",
+      "contentHash": "6a1ca1b348bc0816e784ffd1a7c10b115df194131ee3a9321bef8f56974b1453",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-speciation",
+          "url": "https://openstax.org/books/biology-2e/pages/18-2-formation-of-new-species",
+          "locator": "Species/ReproductiveIsolation/SympatricSpeciation, lignes87–102 etintroduction ; preuvequestion : Reproductive Isolation, temporal isolation",
+          "result": "Calendriers reproducteurs décalés produisant isolement temporel prézygotique décrits.",
+          "sourceHash": "73aadaf7dc7a25c51a236449e2e2aee4034bbd590e97c783dff677709dee6cf7",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "lexical_answer_cue",
+          "reason": "Périodes sans chevauchement donne temporel ; les trois autres barrières sont après fécondation ou hors calendrier. La tâche traduit simplement le mot.",
+          "requestedChange": "Faire tester l’effet reproducteur ou le stade de barrière dans un cas aux choix comparables, plutôt que périodes→temporel."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-convergent-evolution-independent-similar-adaptations",
+      "status": "changes_requested",
+      "comment": "Convergence correcte ; choix mélangent transfert, duplication et motif évolutif à reprendre.",
+      "contentHash": "958bc43d4670b85277c31f526f2e7bc88fc395f088ef8e6e3639a699e18a8bad",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-relationships",
+          "url": "https://openstax.org/books/biology-2e/pages/20-2-determining-evolutionary-relationships",
+          "locator": "MisleadingAppearances/BuildingPhylogeneticTrees, lignes36–42,60–70 ; preuvequestion : Misleading Appearances",
+          "result": "Adaptations semblables acquises indépendamment dans des lignées éloignées décrites.",
+          "sourceHash": "92bd145a340e90d12778fe53b33a23e5462dc03fdd607cd2a93bcc0b49000418",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "noncomparable_processes",
+          "reason": "Indépendamment exclut les transferts par introgression ou clone ; duplication d’un chromosome est à une autre échelle que le motif d’évolution décrit.",
+          "requestedChange": "Proposer quatre explications évolutives crédibles d’une ressemblance, avec assez de contexte pour distinguer héritage et acquisition indépendante sans autre terme artificiellement exclusif."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-endoreduplication-dna-replication-without-mitosis",
+      "status": "changes_requested",
+      "comment": "Définition exacte, mais seule option avec copie rend le nom réplication suffisant.",
+      "contentHash": "3c28f8a1f5896583578d14888c745563ceb0155c6bf6812edde7432c4aaaea9d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-endoreplication",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4203642/",
+          "locator": "Résumé/Introduction, lignes76–88 ; preuvequestion : Abstract",
+          "result": "Endocycle répétant la copie sans mitose ni cytocinèse défini.",
+          "sourceHash": "d365665ee273c1b9ba2e1c2d6e1e742dac166ee7282136b163ab204dd58b2df9",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "scientific-commentary-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "replication_word_cue",
+          "reason": "Seule réponse contenant une copie d’ADN ; les autres sont fusion/perte/deuxmitoses sans copie. Le mot endoréplication suffit sans connaître absence de mitose.",
+          "requestedChange": "Comparer des modèles de réplication/division plausibles pour tester spécifiquement la dissociation entre copie, mitose et cytocinèse."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-transcription-factors-sequence-specific-regulatory-proteins",
+      "status": "changes_requested",
+      "comment": "Fonction exacte mais seule option liée à transcription/ARN, sans test réel de spécificité régulatrice.",
+      "contentHash": "def178eb865260341cb38326415311d362c58d90991397e6ec5422867332788f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-transcription-regulation",
+          "url": "https://openstax.org/books/biology-2e/pages/16-4-eukaryotic-transcription-gene-regulation",
+          "locator": "§16.4, lignes29–30,38–54, figure16.10 ; preuvequestion : Introduction ; The Promoter and the Transcription Machinery",
+          "result": "Facteurs spécifiques reconnaissant motifs et modulant transcription décrits.",
+          "sourceHash": "73b423f638ff45cc224ebee2040a1cc7e76fe27a06d7ff3d019133a9e52c0480",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "transcription_word_cue",
+          "reason": "Seule option liée à transcription/productionARN face à trois enzymes hors transcription. La fonction de régulation par reconnaissance de motifs n’est pas réellement distinguée.",
+          "requestedChange": "Comparer des acteurs/activités de régulation plausibles, ou tester réellement la distinction facteur spécifique–machinerie–séquence cible sans seule correspondance transcription→ARN."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-parthenocarpy-fruit-development-without-fertilization",
+      "status": "changes_requested",
+      "comment": "Fruit sans fécondation correctement qualifié ; détour polyembryonie dans l’explication à retirer.",
+      "contentHash": "4a43f7bcc540e0073f93cb2cca7d20031d5afa2dfdb1bad497160fe055136137",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn06-parthenocarpy",
+          "url": "https://propg.ifas.ufl.edu/04-seeds/01-development/09-seedsdevelopment-parthenocarpy.html",
+          "locator": "Introduction, lignes5–9 ; preuvequestion : Introduction",
+          "result": "Fruit parthénocarpique développé sans fécondation décrit.",
+          "sourceHash": "eeb588a4564f81c10ffbace40f8956bac3a11efddf6180a42b03defcd10209e3",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "earlierReadingReused": false,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "answer_leak",
+          "reason": "L’explication définit les plusieurs embryons d’une graine, réponse de l’item36, alors que les clés parthenocarpie/polyembryonie diffèrent.",
+          "requestedChange": "Retirer ce détour hors du fait parthénocarpie ou regrouper de manière justifiée ; garder la distinction fruit/fécondation sans livrer la définition de l’autre item."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-aminoacyl-trna-synthetase-matches-amino-acid-trna",
+      "status": "changes_requested",
+      "comment": "Fonction de charge étayée ; nom de seule enzyme de traduction reprend déjà tous les termes du stem.",
+      "contentHash": "49a9081ec77f50139898b8c9d548beb4a474f8f4601445e7b14045f37fd50e40",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-ribosomes",
+          "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+          "locator": "§15.5 lignes44,55–57 ; preuvequestion : Aminoacyl tRNA Synthetases",
+          "result": "Synthétases liant acide aminé approprié àARNt avant traduction décrites.",
+          "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "enzyme_name_matches_stem",
+          "reason": "Seule enzyme dont le nom contient à la fois acideaminé/ARNt, face à des enzymes de transcription/réplication hors chargeARNt. La difficulté3 annoncée ne correspond pas à cette élimination.",
+          "requestedChange": "Comparer des enzymes/étapes de traduction ou maturationARN plausibles, pour identifier réellement la charge de l’ARNt et sa fidélité ; réévaluer le niveau selon la version finale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-dna-polymerase-replication-needs-primer",
+      "status": "changes_requested",
+      "comment": "Besoin d’amorce exact dans le cadre eucaryote ; trois structures hors processus à remplacer.",
+      "contentHash": "b3d8f92148c8796f8bd6303199bb631c7b40ed4a29cff58e698de981b5fbd97a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "locator": "§14.5, lignes47–49 ; preuvequestion : Paragraphe suivant le tableau 14.2",
+          "result": "ADNpolymérase démarrant allongement à partir d’une amorce fournie parprimase.",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "implausible_starting_requirements",
+          "reason": "Codon traduit etARNt chargé relèvent de traduction ; télomère à chaque départ interne est contradictoire. Amorce se retrouve seule candidate plausible sans connaître le besoin d’extrémité existante.",
+          "requestedChange": "Comparer des structures/signaux de démarrage plausibles de réplication ou distinguer allongement et démarragede novo, dans le cadre eucaryote sourcé."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn06-nucleolus-ribosomal-subunit-assembly",
+      "status": "changes_requested",
+      "comment": "Site nucléolaire distinct du rôle de traduction du ribosome ; explication actuelle révèle la voie d’export testée dansC05.",
+      "contentHash": "7bca77c7b6afde1dc67044b33b0cbe65fa66a1559f33a275f2dd38f5944b4e72",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "locator": "§4.3 TheNucleolus, ligne72 ; preuvequestion : The Nucleolus",
+          "result": "AssemblageARNr/protéines en sous-unités dans nucléole et export confirmés.",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "earlierReadingReused": true,
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "cross_batch_answer_leak",
+          "reason": "L’explication nomme les pores nucléaires comme voie d’export, réponse du C05 nuclear-pores-control-rna-exchange sous une autre clé.",
+          "requestedChange": "Retirer le nom de la voie hors fait (destination cytoplasmique peut rester), ou appliquer un regroupement justifié avec C05. Le fait site d’assemblage nucléolaire est distinct et étayé."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "rootFinalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "scope": "Eleven full corrected objects arbitrated after F source review; one already approved polysome object changes only subject grouping. Twenty-five other approvals remain exact. Three targeted facts remain with independent A for final reading.",
+    "ids": [
+      "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+      "hemp-q2-cn06-effective-population-size-differs-census",
+      "hemp-q2-cn06-heterozygote-advantage-maintains-two-alleles",
+      "hemp-q2-cn06-negative-frequency-dependent-selection-rare-advantage",
+      "hemp-q2-cn06-flowering-time-temporal-reproductive-isolation",
+      "hemp-q2-cn06-convergent-evolution-independent-similar-adaptations",
+      "hemp-q2-cn06-endoreduplication-dna-replication-without-mitosis",
+      "hemp-q2-cn06-transcription-factors-sequence-specific-regulatory-proteins",
+      "hemp-q2-cn06-parthenocarpy-fruit-development-without-fertilization",
+      "hemp-q2-cn06-aminoacyl-trna-synthetase-matches-amino-acid-trna",
+      "hemp-q2-cn06-dna-polymerase-replication-needs-primer",
+      "hemp-q2-cn06-nucleolus-ribosomal-subunit-assembly"
+    ],
+    "sourceReadingAttribution": "Original sourceChecks remain attributed to f_existing_audit; root does not claim new browsing."
+  },
+  "beforeIndependentTargetedFinal": [
+    {
+      "finalId": "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+      "initialReview": {
+        "id": "hemp-q2-cn06-mutations-ultimate-source-new-alleles",
+        "status": "changes_requested",
+        "comment": "Source factuelle soutenue ; proximité avec mutation modifiant l’ADN d’un clone à arbitrer explicitement avant comptage comme ajout.",
+        "contentHash": "6da1eac92c8791a79dab59a10882e00e2d5c3d2af5f776e1fa8d3c50218f2787",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-cn04-population-genetics",
+            "url": "https://openstax.org/books/biology-2e/pages/19-2-population-genetics",
+            "locator": "§19.2, Heritability ligne40 ; Mutation lignes88–90 ; preuvequestion : Mutations",
+            "result": "Mutations introduisant une nouvelle variation génétique explicitement décrites.",
+            "sourceHash": "95aed95a85c6d5af1bf74bbc5710714aa108f554300a2f70dba4fc8744ba25eb",
+            "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+            "reader": "f_existing_audit",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "textbook-targeted",
+            "earlierReadingReused": false,
+            "supportStatus": "supported"
+          }
+        ],
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "semantic_overlap_requires_arbitration",
+            "reason": "Même réponse mutation et noyau modification de l’ADN que hemp-genetics-mutation-clonale, dont l’explication définit explicitement mutation. La nouvelle tâche oppose création d’allèle à redistribution ; le gain de propriété distincte reste à arbitrer, plutôt que l’approuver par défaut.",
+            "requestedChange": "Faire un arbitrage explicite sur cet objectif réellement distinct, avec versions exactes ; à défaut remplacer par une propriété nouvelle sourcée. Un nouveau factKey ne suffit pas."
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        }
+      }
+    },
+    {
+      "finalId": "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+      "initialReview": {
+        "id": "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+        "status": "changes_requested",
+        "comment": "DéfinitionG×E exacte, mais choix hors modèle et simple correspondance de mots à reprendre.",
+        "contentHash": "659e187100d06540064af4be50e3d5ad4cddece5925d73ff73658af82b41850f",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-cn06-gxe-2023",
+            "url": "https://www.fs.usda.gov/rm/pubs_journals/2023/rmrs_2023_napier_j001.pdf",
+            "locator": "PDFpp.2–3/pages110–111, lignes63–66,108–129, figure1/légende193–199 ; preuvequestion : Introduction p. 110 ; figure 1 p. 111",
+            "result": "Réponses nonadditives/différentes entre génotypes selonmilieu définissantG×E décrites.",
+            "sourceHash": "06f9d60ba53a57867095f5792dc52693e293bfa5b9a1db0e0ac4a2ff7862f236",
+            "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+            "reader": "f_existing_audit",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "scientific-review-pdf-targeted",
+            "earlierReadingReused": false,
+            "supportStatus": "supported"
+          }
+        ],
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "noncomparable_genetic_models",
+            "reason": "L’énoncé donne deux génotypes et des réponses différentes entre milieux ; seule réponse reprendG×E, face à effet identique explicitement contredit et dominance/fixation hors comparaison.",
+            "requestedChange": "Tester une vraie distinction entre effetsG/E séparés et interaction, avec choix comparables ou données fictives explicites. Ne pas seulement remplacer la définition par son sigle."
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        }
+      }
+    },
+    {
+      "finalId": "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+      "initialReview": {
+        "id": "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+        "status": "changes_requested",
+        "comment": "Fait bactérien exact ; deux réponses fongiques hors infection citée réduisent la concurrence.",
+        "contentHash": "33468b27aed6cacc2ad8c59d2b6461f00b88cde3af72ca9599260d218c72f2b7",
+        "sourceChecks": [
+          {
+            "sourceId": "q2-cn06-agrobacterium-2022",
+            "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.849930/full",
+            "locator": "Résumé/Introduction, lignes362–370 ; preuvequestion : Abstract ; Introduction",
+            "result": "Agrobacterium transférantT-DNA aux cellules végétales avec intégration possible.",
+            "sourceHash": "224315095a102d9972e375dd1f47065a38621849e90effa4511c39daf5b7f891",
+            "sourceRegistry": "docs/quiz-2000/batches/c-new-06.json",
+            "reader": "f_existing_audit",
+            "consultedOn": "2026-11-16",
+            "accessObserved": "primary-research-targeted",
+            "earlierReadingReused": false,
+            "supportStatus": "supported"
+          }
+        ],
+        "issues": [
+          {
+            "severity": "blocking",
+            "code": "unrelated_fungal_choices",
+            "reason": "Deux choix introduisent des cellules fongiques absentes de l’infection bactérienne végétale citée ; ils ne concurrencent pas les deux sens bactérie/plante.",
+            "requestedChange": "Comparer des transferts ou devenirs d’ADN plausibles dans le système décrit, sans paramètre pratique ni détour fongique hors sujet."
+          }
+        ],
+        "checked": {
+          "entireQuestion": true,
+          "fourOptions": true,
+          "answerUniqueness": true,
+          "explanation": true,
+          "sourcePassages": true,
+          "levelsAndForms": true,
+          "nearbyFacts": true
+        }
+      }
+    }
+  ],
+  "targetedFinalReview": {
+    "reviewer": "a_cbd_inventory",
+    "record": "docs/quiz-2000/reviews/c-new-06-targeted-final.json",
+    "integratedBy": "root"
+  },
+  "summaryBeforeDeliveryNormalization": {
+    "historicalContext": true,
+    "record": {
+      "total": 40,
+      "approved": 40,
+      "changes_requested": 0,
+      "rejected": 0,
+      "sourceObjects": 31,
+      "newSources": 23,
+      "reusedRegistrySources": 8,
+      "sourceChecks": 40,
+      "documentsOrPassagesOpenedForThisReview": 27,
+      "earlierFReadingsReused": 4,
+      "sourceAccessBlocked": 0,
+      "unverifiedSources": 0,
+      "exactDuplicateConfirmed": 0,
+      "semanticOverlapAwaitingArbitration": 1,
+      "blockingFactualContradictionConfirmed": 0,
+      "declaredLevels": {
+        "1": 3,
+        "2": 22,
+        "3": 14,
+        "4": 1
+      },
+      "decisions": "Quatorze demandes : choix/tâches, deux fuites d’explication, une difficulté de déduction et une proximitémutation à arbitrer. Vingt-six objets actuels approuvés sur leur empreinte exacte. Le nouveau faitubiquitine est approuvé."
+    }
+  }
+}

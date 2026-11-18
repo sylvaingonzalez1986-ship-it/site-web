@@ -71,6 +71,10 @@ try {
   const oldRows = await scalar("SELECT jsonb_agg(to_jsonb(b) ORDER BY flower_id) FROM kq_commerce_batches b");
   await db.exec(await sql("20261108000400_kq_processing_work.sql"));
   await db.exec(await sql("20261108001300_kq_processing_work_choice.sql"));
+  const cultureWork = await sql("20261108000300_kq_culture_work_steps.sql");
+  await db.exec(section(cultureWork, "CREATE TABLE public.kq_culture_work_steps", "CREATE FUNCTION public.kq_culture_work_roll"));
+  await db.exec(section(await sql("20261108001200_kq_culture_work_choice.sql"), "ALTER FUNCTION public.kq_culture_work_preview", "CREATE FUNCTION public.rpc_kq_culture_work_quote"));
+  await db.exec(await sql("20261118000300_kq_team_workday_sources.sql"));
   await db.exec("BEGIN");
   equal(await scalar("SELECT jsonb_agg(to_jsonb(b) ORDER BY flower_id) FROM kq_commerce_batches b"), oldRows, "Migration preserves every historical batch byte for byte");
   const engine = await vite.ssrLoadModule("/src/lib/kanab-quest-staff.ts");
@@ -121,6 +125,24 @@ try {
 
   await assign(2);
   equal((await read()).state.employees[0].workDays[1].usedHours, 2, "Assignment reserves employee availability once");
+  for (const actor of ["player", employee.id]) {
+    await db.exec("SAVEPOINT team_mission_before_workshop");
+    const raw = await read(), missionId = randomUUID();
+    const mission = actor === "player"
+      ? { action: "player-assign", kind: "administration", hours: 1, expectedCostCents: 0 }
+      : { action: "assign", employeeId: actor, kind: "administration", hours: 1 };
+    const transition = engine.applyKqStaffCommand(raw, mission, missionId);
+    await scalar("SELECT rpc_kq_staff_commit($1,$2,$3,$4,$5,$6,$7)",
+      [owner, raw.revision, randomUUID(), mission, transition.state, transition.debitCents, transition.effects]);
+    const work = plan(.5), flower = await makeLot(work);
+    const offer = await scalar("SELECT rpc_kq_processing_work_quote($1,$2,$3,$4)", [owner, flower, work, actor]);
+    const end = transition.state.tasks.find(row => row.id === missionId).completesAt;
+    equal(Date.parse(offer.startedAt) >= Date.parse(end), true, "Workshop quote begins after the person's confirmed mission");
+    await command("prepare", { flowerId: flower, route: "rosin-trial", expectedCostCents: 0, expectedWork: offer.token, actorId: actor });
+    const booked = await scalar("SELECT segments->-1 FROM kq_processing_jobs WHERE flower_id=$1", [flower]);
+    equal(Date.parse(booked.startedAt) >= Date.parse(end), true, "Persisted human workshop segment never overlaps the mission");
+    await db.exec("ROLLBACK TO SAVEPOINT team_mission_before_workshop");
+  }
   const work = plan(3, 2), lot = await makeLot(work), offer = await quote(lot, work);
   equal(model.isKqProcessingWorkQuote(offer), true, "SQL quote satisfies application validation");
   equal([offer.source, offer.bookedHours, offer.nominalHours, offer.efficiency], ["employee", 2, 2, 1], "Quick expert remains capped at the machine throughput");
@@ -310,6 +332,31 @@ try {
     await db.exec("ROLLBACK TO SAVEPOINT fractional_case");
   }
   await db.exec("ROLLBACK TO SAVEPOINT fractional_processing_balance");
+  await db.exec("SAVEPOINT team_reservations");
+  const teamPlans = [
+    { day: 1, assigneeId: "player", assignment: { hours: 2 } },
+    { day: 2, assigneeId: "player", assignment: { hours: 12 } },
+    { day: 1, assigneeId: employee.id, assignment: { hours: 7 } },
+  ];
+  await db.query(`UPDATE kq_staff_accounts SET state=state || jsonb_build_object('playerWorkDays','{"1":{"usedHours":9}}'::jsonb,'dayPlans',$2::jsonb) WHERE user_id=$1`, [owner, teamPlans]);
+  const freeQuote = await explicitQuote(invalidLot, plan(20), "player");
+  equal(freeQuote.playerRemainingHours, 1, "Workshop quote excludes only the actor's plans for this day");
+  await reject(() => scalar("SELECT kq_player_work_record_action($1,1.5,'storage','place')", [owner]), "player_work_exhausted");
+  await scalar("SELECT kq_player_work_record_action($1,1,'storage','place')", [owner]);
+  const refreshed = await scalar("SELECT kq_staff_snapshot($1)", [owner]);
+  equal(refreshed.state.playerActions.entries.at(-1).domain, "storage", "Instant storage work keeps its original charge and place");
+  equal(refreshed.state.playerWorkDays["1"].usedHours, 10, "Rejected charge preserves time and accepted charge consumes it once");
+  equal(refreshed.context.teamWork.some(row => row.kind === "processing" && row.assigneeId === "player"), true, "The refreshed team snapshot contains the financed human interval");
+  equal(refreshed.context.teamWork.some(row => row.kind === "processing" && row.assigneeId === employee.id), true, "Earlier funded employee segments survive a personal takeover");
+  await db.query("UPDATE kq_commerce_accounts SET shop_created_at=now(),shop_paid_until=now()+interval '1 day',shop_suspended=false WHERE user_id=$1", [owner]);
+  const renameKey = randomUUID(), rename = () => command("rename-shop", { name: "Jade", expectedCostCents: 0 }, renameKey);
+  await reject(rename, "player_work_exhausted");
+  await db.query("UPDATE kq_staff_accounts SET state=jsonb_set(state,'{playerWorkDays,1,usedHours}','9.5') WHERE user_id=$1", [owner]);
+  await rename();
+  await rename();
+  const actions = (await read()).state.playerActions.entries;
+  equal(actions.filter(entry => entry.action === "rename-shop").map(entry => [entry.domain,entry.hours]), [["commerce",.5]], "Actual commerce route records one exact charge through replay");
+  await db.exec("ROLLBACK TO SAVEPOINT team_reservations");
   for (const role of ["anon", "authenticated", "service_role"]) {
     equal(await scalar("SELECT has_function_privilege($1,'rpc_kq_processing_work_quote(uuid,uuid,jsonb,text)','EXECUTE')", [role]), role === "service_role", `${role} actor quote permissions are explicit`);
     equal(await scalar("SELECT has_function_privilege($1,'kq_processing_work_preview_actor(uuid,uuid,jsonb,text)','EXECUTE')", [role]), false, `${role} cannot call the internal actor calculation`);

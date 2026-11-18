@@ -3,6 +3,7 @@ import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
 import type { KqCultureWorkChoice, KqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
 import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/lib/kanab-quest-care";
+import type { KqCareSector } from "@/lib/kanab-quest-care-spatial";
 import type { KqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
 import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
 import type { KqStorageStockBreakdown } from "@/lib/kanab-quest-storage-breakdown";
@@ -170,7 +171,7 @@ export async function purchaseKqRemoteCareProduct(input: { productCode: string; 
   }));
 }
 
-export async function applyKqRemoteCare(runId: string, input: { productCode?: string; action?: "basic"; basicPriceCents?: number; requestKey: string; expectedUpdatedAt?: string }, request: typeof fetch = fetch) {
+export async function applyKqRemoteCare(runId: string, input: { productCode?: string; action?: "basic"; basicPriceCents?: number; target?: KqCareSector; requestKey: string; expectedUpdatedAt?: string }, request: typeof fetch = fetch) {
   return readKqResponse<{ state: KqGameState; updatedAt: string; cashCents: number; chargedCents: number; inventory: KqCareInventory; replayed: boolean }>(await request(`/api/admin/placard/runs/${encodeURIComponent(runId)}/care`, {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input),
   }));

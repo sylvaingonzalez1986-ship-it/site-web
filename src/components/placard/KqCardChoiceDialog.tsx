@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { ChevronDown, Flame, RefreshCw } from "lucide-react";
+import { ChevronDown, Crosshair, Flame, RefreshCw } from "lucide-react";
 import { AppDialog } from "@/components/ui/AppDialog";
 import { getKqCardTradeoff, type KqSupportCard } from "@/lib/kanab-quest-game";
 import type { KqCardPlayPreview as CardPlayPreview } from "@/lib/kanab-quest-card-preview";
@@ -11,8 +11,10 @@ import styles from "./KqCardChoiceDialog.module.css";
 
 type Props = {
   card: KqSupportCard;
-  copies: number;
+  copies: number | null;
   xp: number;
+  target: string;
+  situation: string;
   preview: CardPlayPreview | null;
   blockedReason: string | null;
   teachingAssistance: boolean;
@@ -23,7 +25,7 @@ type Props = {
   recovery?: { checking: boolean; onCheck: () => void };
 };
 
-export function KqCardChoiceDialog({ card, copies, xp, preview, blockedReason, teachingAssistance, confirming, notice, onClose, onConfirm, recovery }: Props) {
+export function KqCardChoiceDialog({ card, copies, xp, target, situation, preview, blockedReason, teachingAssistance, confirming, notice, onClose, onConfirm, recovery }: Props) {
   const id = useId();
   const tradeoff = getKqCardTradeoff(card);
   return <AppDialog open onClose={onClose} title={<h2 className={styles.title}>{card.name}</h2>}
@@ -32,7 +34,7 @@ export function KqCardChoiceDialog({ card, copies, xp, preview, blockedReason, t
       {notice ? <p className={styles.notice} role="status" tabIndex={0} data-card-choice-notice>{notice}</p> : null}
       <div className={styles.cost} id={`${id}-cost`} data-culture-card-cost>
         {recovery ? <><strong>Vérification sans dépense</strong><span>XP et copies disponibles à vérifier.</span></>
-          : <><strong>{card.xpCost} XP de culture · 1 copie détruite</strong><span>Disponibles : {xp} XP · {copies} copie{copies > 1 ? "s" : ""} dans l’album</span></>}
+          : <><strong>{card.xpCost} XP de culture · 1 copie détruite</strong><span>Disponibles : {xp} XP · {copies === null ? "album à vérifier" : `${copies} copie${copies > 1 ? "s" : ""} dans l’album`}</span></>}
       </div>
       <div className={styles.actions}>
         <button type="button" onClick={onClose}>{recovery || blockedReason || confirming ? "Fermer" : "Annuler"}</button>
@@ -40,7 +42,7 @@ export function KqCardChoiceDialog({ card, copies, xp, preview, blockedReason, t
           data-card-recovery-refresh aria-describedby={`${id}-cost`} onClick={recovery.onCheck}>
           <RefreshCw size={17} aria-hidden="true" />{recovery.checking ? "Vérification…" : "Vérifier ma culture"}
         </button> : <button type="button" className={styles.confirm} disabled={Boolean(blockedReason) || confirming}
-          aria-describedby={`${id}-cost${blockedReason || confirming ? ` ${id}-blocked` : ""}`}
+          aria-describedby={`${id}-target ${id}-cost${blockedReason || confirming ? ` ${id}-blocked` : ""}`}
           aria-busy={confirming || undefined} data-culture-confirm-card onClick={onConfirm}>
           <Flame size={17} aria-hidden="true" />{confirming ? "Confirmation…" : "Jouer la carte"}
         </button>}
@@ -49,6 +51,10 @@ export function KqCardChoiceDialog({ card, copies, xp, preview, blockedReason, t
     {blockedReason || confirming ? <p className={styles.blocked} id={`${id}-blocked`} data-card-blocked-reason role="status">
       {confirming ? "Confirmation en cours. Fermer cette fenêtre n’annule pas la demande." : blockedReason}
     </p> : null}
+    <div className={styles.target} id={`${id}-target`} data-card-target>
+      <Crosshair size={19} aria-hidden="true" />
+      <span><small>Cible de la carte</small><strong>{target}</strong><span>{situation}</span></span>
+    </div>
     <p className={styles.effect} data-card-choice-effect>{tradeoff.benefit}</p>
     <p className={styles.limit} data-card-choice-limit><strong>Limite : </strong>{tradeoff.risk}</p>
     {teachingAssistance ? <p className={styles.assistance} data-card-teaching-assistance>Dans cet essai, un secours accompagne les situations critiques.</p>

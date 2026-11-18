@@ -46,7 +46,7 @@ type DragPreview = { employeeId: string; x: number; y: number; station: KqStaffS
 
 function availability(employee: KqStaffEmployee, snapshot: KqStaffSnapshot) {
   const leave = employee.leave.find(period => snapshot.calendar.day >= period.startDay && snapshot.calendar.day <= period.endDay);
-  const capacity = getKqStaffCapacity(employee, snapshot.calendar);
+  const capacity = getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans);
   if (leave) return "Congé payé jusqu’au jour " + leave.endDay;
   if (snapshot.calendar.weekend) return "Repos du week-end";
   if (!capacity.baseHours) return "Repos prévu au contrat";
@@ -103,7 +103,7 @@ export function KqStaffWorkPlan({ snapshot, disabled = false, onAssign, renderPo
   const people = [
     { id: "player", name: "Toi", identity: "Ton personnage", remaining: workday.remainingHours, total: workday.dailyHours, availability: workday.remainingHours > 0 ? "Ta journée, week-end compris" : "Toutes tes heures sont réservées", portrait: renderPlayerPortrait ?? <UserRound size={36} /> },
     ...employees.map(employee => {
-      const capacity = getKqStaffCapacity(employee, snapshot.calendar);
+      const capacity = getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans);
       const contract = employee.contract === "cdi" ? "CDI" : employee.contract === "cdd" ? "CDD" : "Saisonnier";
       return { id: employee.id, name: employee.name, identity: `${contract} · ${hours(employee.weeklyHours)} / sem.`, remaining: capacity.remainingHours, total: capacity.baseHours + capacity.extraHours, availability: availability(employee, snapshot), portrait: renderPortrait(employee) };
     }),

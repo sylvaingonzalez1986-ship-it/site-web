@@ -1,5 +1,6 @@
 import type { CannabisReferenceArticle, CannabisReferenceCatalog, CannabisReferenceTopic, CannabisTopicId } from './kanab-quest-cannabis-reference-types';
 import { CANNABIS_REVIEWED_SOURCES, reviseCannabisArticle, reviseCannabisTerm } from './kanab-quest-cannabis-revision';
+import { HEMP_QUIZ_ADDITIONAL_SOURCES, withHempQuizReferences } from './kanab-quest-hemp-quiz-public-sources';
 
 export const CANNABIS_REFERENCE_TOPICS: readonly CannabisReferenceTopic[] = [
   { id: 'botany', title: 'La plante', description: 'Cannabis sativa, organes, fleurs, graines et cycle biologique.', image: '/placard/school/course-plant-v1.webp' },
@@ -31,8 +32,8 @@ export function loadCannabisReferenceCatalog(): Promise<CannabisReferenceCatalog
     // New historical trivia articles are independent of the retired methodology courses.
     const factualArticles = [...biology.CANNABIS_BIOLOGY_ARTICLES, ...society.CANNABIS_SOCIETY_ARTICLES].filter(article => article.topicId !== 'history').concat(expansion.CANNABIS_EXPANSION_ARTICLES);
     const availableIds = new Set([...factualArticles, ...records.CANNABIS_REFERENCE_RECORDS].map(article => article.id));
-    const articles = factualArticles.map(reviseCannabisArticle).map(article => ({ ...article, relatedArticleIds: article.relatedArticleIds.filter(id => availableIds.has(id)) }));
-    const revisedRecords = records.CANNABIS_REFERENCE_RECORDS.map(reviseCannabisArticle);
+    const articles = factualArticles.map(reviseCannabisArticle).map(withHempQuizReferences).map(article => ({ ...article, relatedArticleIds: article.relatedArticleIds.filter(id => availableIds.has(id)) }));
+    const revisedRecords = records.CANNABIS_REFERENCE_RECORDS.map(reviseCannabisArticle).map(withHempQuizReferences);
     const sources = [...history.HISTORY_SOURCES, ...botany.BOTANY_SOURCES, ...terpenes.TERPENE_SOURCES, ...cannabinoids.CANNABINOID_SOURCES, ...cultivation.CULTIVATION_SOURCES, ...health.HEALTH_SOURCES, ...soil.SOIL_SOURCES, ...products.PRODUCTS_SOURCES, ...harvest.HARVEST_SOURCES, ...expansionSources.HEMP_QUIZ_EXPANSION_SOURCES];
     const terms = [...history.HISTORY_TERMS, ...botany.BOTANY_TERMS, ...terpenes.TERPENE_TERMS, ...cannabinoids.CANNABINOID_TERMS, ...cultivation.CULTIVATION_TERMS, ...health.HEALTH_TERMS, ...soil.SOIL_TERMS, ...products.PRODUCTS_TERMS, ...harvest.HARVEST_TERMS];
     // Glossary membership is editorial: only terms attached to the new factual articles.
@@ -43,7 +44,7 @@ export function loadCannabisReferenceCatalog(): Promise<CannabisReferenceCatalog
     const revisedTerms = selectedTerms.map(reviseCannabisTerm);
     const usedSources = new Set([...articles, ...revisedRecords].flatMap(article => [...article.sourceIds, ...article.sections.flatMap(section => [...section.sourceIds, ...(section.details?.sourceIds || [])]), ...(article.diagram?.sourceIds || [])]).concat(revisedTerms.flatMap(term => [...term.sourceIds])));
     return { topics: CANNABIS_REFERENCE_TOPICS, articles, records: revisedRecords,
-      sources: [...new Map([...sources, ...CANNABIS_REVIEWED_SOURCES].filter(source => usedSources.has(source.id)).map(source => [source.id, source])).values()],
+      sources: [...new Map([...sources, ...CANNABIS_REVIEWED_SOURCES, ...HEMP_QUIZ_ADDITIONAL_SOURCES].filter(source => usedSources.has(source.id)).map(source => [source.id, source])).values()],
       terms: revisedTerms.sort((a, b) => a.term.localeCompare(b.term, 'fr')) };
   }).catch(error => { cached = undefined; throw error; });
 }

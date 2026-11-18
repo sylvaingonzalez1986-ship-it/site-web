@@ -91,7 +91,7 @@ function RankingsSession({ ownerId, onTournament }: Props) {
   const champion = snapshot?.champion;
   const reconnect = () => window.location.assign(getKqStaffReconnectHref(window.location));
 
-  return <section className={styles.rankings} data-school-rankings aria-label="Classement de QuizzShow">
+  return <section className={styles.rankings} data-school-rankings data-tutorial-observation={snapshot && !error && !loading ? "school-ranking" : undefined} aria-label="Classement de QuizzShow">
     <KqChapterHeading art="school" title="Classement">
       {snapshot ? <p>Édition du <time dateTime={snapshot.event.editionDate}>{editionDate(snapshot.event.editionDate)}</time>.</p>
         : <p>Les finales de la semaine et les titres remportés.</p>}

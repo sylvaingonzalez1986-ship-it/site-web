@@ -193,7 +193,7 @@ export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  case 'duel': {
   if(s.chapter!==6||g?.phase!=='complete'||s.battle)return s;
   const matured=s.rulesVersion===3&&g.completedAt?advanceKqTrialClock(s,Math.max(s.clock,Date.parse(g.completedAt)+KQ_CURING_DURATION_MS)):s;
-  return {...matured,curingBeforeJury:s.rulesVersion===3,battle:resolveKqBattle(lockKqBattle(createKqFlower(g,'Toi · essai'),createKqOpponent(2026,{ownerName:'Sylvain · entraînement',rulesVersion:g.rulesVersion}),2026),2026,new Date(matured.clock))};
+  return {...matured,curingBeforeJury:s.rulesVersion===3,battle:resolveKqBattle(lockKqBattle(createKqFlower(g,'Toi · essai'),createKqOpponent(2026,{ownerName:'Loïc · entraînement',rulesVersion:g.rulesVersion}),2026),2026,new Date(matured.clock))};
  }
  case 'round': return s.chapter===6&&s.battle&&s.rounds<3?{...s,rounds:s.rounds+1}:s;
  case 'transform': {

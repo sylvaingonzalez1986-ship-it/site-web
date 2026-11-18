@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Bug, Gift, Lightbulb, Mail, Send } from "lucide-react";
 import { AppDialog, useDialogNavigation } from "@/components/ui/AppDialog";
@@ -20,7 +20,11 @@ function OpenPacks({ onOpen }: { onOpen: () => void }) {
 }
 
 /** The map prop and its private correspondence stay together across modal closes. */
-export function KqMailbox({ onOpenPacks, onReveal }: { onOpenPacks: () => void; onReveal: (button: HTMLButtonElement) => void }) {
+export function KqMailbox({ onOpenPacks, onReveal, renderTrigger }: {
+  onOpenPacks: () => void;
+  onReveal?: (button: HTMLButtonElement) => void;
+  renderTrigger?: (openMailbox: () => void) => ReactNode;
+}) {
   const api = useKqTutorialApi();
   const [open, setOpen] = useState(false);
   const [kind, setKind] = useState<ArenaFeedbackKind>("bug");
@@ -92,12 +96,13 @@ export function KqMailbox({ onOpenPacks, onReveal }: { onOpenPacks: () => void; 
   }
 
   if (api.isTutorial) return null;
+  const openMailbox = () => { setOpen(true); void loadHistory(); };
   return <>
-    <button type="button" className={styles.mailbox} data-map-mailbox aria-label="Boîte aux lettres · Signaler un bug ou proposer une idée" aria-haspopup="dialog"
-      onFocus={event => onReveal(event.currentTarget)} onClick={() => { setOpen(true); void loadHistory(); }}>
+    {renderTrigger ? renderTrigger(openMailbox) : <button type="button" className={styles.mailbox} data-map-mailbox aria-label="Boîte aux lettres · Signaler un bug ou proposer une idée" aria-haspopup="dialog"
+      onFocus={event => onReveal?.(event.currentTarget)} onClick={openMailbox}>
       <KqPrintedArt kind="mailbox" className={styles.mapArt} sizes="180px" />
       <span className={styles.sign} data-map-label="mailbox"><Mail size={16} aria-hidden="true" /><span>Boîte aux lettres</span></span>
-    </button>
+    </button>}
     {open ? createPortal(<AppDialog open={open} onClose={() => setOpen(false)} labelledBy={titleId} className={styles.dialog} bodyClassName={styles.body} closeLabel="Fermer la boîte aux lettres" dialogProps={{ "data-mailbox-dialog": true }}>
       <KqChapterHeading art="mailbox" title="Boîte aux lettres" titleId={titleId} compact>
         <p>Un bug ou une idée pour le quartier ? Écris à l’équipe.</p>

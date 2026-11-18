@@ -1,0 +1,104 @@
+{
+  "questionId": "hemp-q2-rb05-710-oil-code",
+  "reviewerRequest": "rebalance_classify_a",
+  "originalQuestion": {
+    "id": "hemp-q2-rb05-710-oil-code",
+    "topicId": "history",
+    "level": 2,
+    "prompt": "Quel mot anglais retourné explique le code « 710 » dans une partie de la culture des concentrés de cannabis ?",
+    "options": [
+      "DAB",
+      "OIL",
+      "BUD",
+      "POT"
+    ],
+    "answer": 1,
+    "explanation": "En retournant 710, on peut lire OIL, « huile » en anglais. Ce code est lié aux huiles concentrées de cannabis et peut aussi renvoyer au 10 juillet dans l’écriture américaine des dates.",
+    "articleId": "ref-histoire-culture",
+    "sourceIds": [
+      "q2-rb05-710"
+    ],
+    "subjectKey": "710-cannabis-culture",
+    "domain": "active",
+    "editorial": {
+      "domain": "active",
+      "category": "history",
+      "subject": "710-cannabis-culture",
+      "subjectKey": "710-cannabis-culture",
+      "property": "Lecture OIL à l’origine du code culturel710",
+      "expectedAnswer": "OIL",
+      "learningObjective": "Lecture OIL à l’origine du code culturel710.",
+      "factKey": "710-oil-code",
+      "form": "identification",
+      "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-rb05-710",
+          "locator": "Entrée710, association hash oil et OIL renversé",
+          "support": "Le glossaire institutionnel rattache710 à hash oil et au mot OIL renversé."
+        }
+      ]
+    }
+  },
+  "correctedQuestion": {
+    "id": "hemp-q2-rb05-710-oil-code",
+    "topicId": "history",
+    "level": 2,
+    "prompt": "Dans la culture du cannabis, à quelle famille de produits le code « 710 » est-il associé ?",
+    "options": [
+      "Aux boissons infusées au cannabis",
+      "Aux huiles et concentrés de cannabis",
+      "Aux fleurs séchées entières",
+      "Aux aliments infusés au cannabis"
+    ],
+    "answer": 1,
+    "explanation": "Le code 710 renvoie à la culture des huiles concentrées de cannabis. Le nombre évoque OIL retourné et peut aussi servir à désigner le 10 juillet dans l’écriture américaine des dates.",
+    "articleId": "ref-histoire-culture",
+    "sourceIds": [
+      "q2-rb05-710"
+    ],
+    "subjectKey": "710-cannabis-culture",
+    "domain": "active",
+    "editorial": {
+      "domain": "active",
+      "category": "history",
+      "subject": "710-cannabis-culture",
+      "subjectKey": "710-cannabis-culture",
+      "property": "Famille de produits associée au code culturel710",
+      "expectedAnswer": "Aux huiles et concentrés de cannabis",
+      "learningObjective": "Associer710 à la culture des huiles et concentrés de cannabis.",
+      "factKey": "710-oil-code",
+      "form": "identification",
+      "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+      "sourceEvidence": [
+        {
+          "sourceId": "q2-rb05-710",
+          "locator": "Entrée710, association hash oil et OIL renversé",
+          "support": "Le glossaire institutionnel associe explicitement710 à hash oil et à la date du10juillet."
+        }
+      ]
+    }
+  },
+  "beforeHash": "612568c0b2b65bc66654ee0f19a1b732e28536b5bcb7abda75104e1ed4509efd",
+  "afterHash": "9b209b5d18cd6ad131bcfde1ec6379b12767ea81b9edac11fd678f0c9a0b45d2",
+  "sourceUnchanged": true,
+  "source": {
+    "id": "q2-rb05-710",
+    "title": "Glossary – Cannabis FactCheck",
+    "organization": "Ventura County Behavioral Health",
+    "url": "https://positivepaths.venturacounty.gov/cannabis/glossary",
+    "verifiedAt": "2026-11-17",
+    "author": "Ventura County Behavioral Health",
+    "published": "s.d.",
+    "passage": "Entrée710, association hash oil et OIL renversé",
+    "access": "official-page",
+    "documentKind": "Page ou notice externe",
+    "limitation": "Vocabulaire de culture cannabique ; aucune technique de consommation ou de fabrication.",
+    "consultation": {
+      "reader": "rebalance_classify_b",
+      "date": "2026-11-17",
+      "locator": "Entrée710, association hash oil et OIL renversé",
+      "result": "Document ouvert ; passages indiqués réellement lus."
+    }
+  }
+}

@@ -1,0 +1,2059 @@
+{
+  "batchId": "e-new-01",
+  "author": "e_engine_audit",
+  "role": "E",
+  "questions": [
+    {
+      "id": "hemp-q2-en01-net-content-excludes-packaging",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur un sachet de graines de chanvre, les « 200 g nets » correspondent à quelle masse ?",
+      "options": [
+        "La masse des graines sans le sachet",
+        "La masse des graines avec le sachet",
+        "La masse du sachet sans les graines",
+        "La masse des graines après séchage"
+      ],
+      "answer": 0,
+      "explanation": "La masse nette désigne le contenu. La masse de l’emballage est exclue ; le mot « net » ne signifie pas que les graines ont été séchées.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-net"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Quantité d’un préemballage",
+        "subjectKey": "preemballage-quantite",
+        "property": "Exclusion de la masse de l’emballage",
+        "expectedAnswer": "La masse des graines sans le sachet",
+        "learningObjective": "Lire une masse nette sans la confondre avec masse brute ou matière sèche.",
+        "factKey": "net-content-excludes-packaging",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire courant d’une étiquette, sans calcul ni nom spécialisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-net",
+            "locator": "Quantité nette, ligne 61",
+            "support": "La quantité nette exclut l’emballage."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-lot-code-traces-manufacturing-batch",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur une huile de graines de chanvre, à quoi sert surtout le numéro de lot ?",
+      "options": [
+        "À indiquer le prix par litre",
+        "À identifier un ensemble de fabrication",
+        "À annoncer le volume exact du flacon",
+        "À classer l’huile par valeur nutritionnelle"
+      ],
+      "answer": 1,
+      "explanation": "Le numéro de lot sert à la traçabilité : il relie le produit à un ensemble de fabrication. Il ne remplace ni la quantité ni les autres mentions de l’étiquette.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-lot"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Numéro de lot",
+        "subjectKey": "lot-produit",
+        "property": "Traçabilité d’une fabrication",
+        "expectedAnswer": "À identifier un ensemble de fabrication",
+        "learningObjective": "Reconnaître la fonction du code de lot sur un produit.",
+        "factKey": "lot-code-traces-manufacturing-batch",
+        "form": "identification",
+        "difficultyRationale": "Fonction usuelle d’un repère présent sur les produits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-lot",
+            "locator": "Mentions obligatoires, numéro de lot, ligne 57",
+            "support": "Le numéro de lot de fabrication permet la traçabilité."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-best-before-quality-date",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "En France, « à consommer de préférence avant » sur des graines de chanvre renvoie à quelle idée ?",
+      "options": [
+        "Une date d’ouverture du sachet",
+        "Une date limite de vente au magasin",
+        "Une date de maintien attendu des qualités",
+        "Une date de récolte des graines"
+      ],
+      "answer": 2,
+      "explanation": "Cette mention correspond à la date de durabilité minimale : elle concerne notamment le goût et les autres qualités du produit. Elle se distingue de la date limite de consommation.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-dates"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Dates alimentaires",
+        "subjectKey": "dates-alimentaires",
+        "property": "Signification de la date de durabilité minimale",
+        "expectedAnswer": "Une date de maintien attendu des qualités",
+        "learningObjective": "Comprendre ce que signifie une date « de préférence » sans la confondre avec la récolte ou la vente.",
+        "factKey": "best-before-quality-date",
+        "form": "identification",
+        "difficultyRationale": "Lecture d’une formule familière de consommation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-dates",
+            "locator": "Date de durabilité minimale, lignes 36 et 55–57",
+            "support": "La DDM concerne le maintien des qualités physiques, nutritives et organoleptiques."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-opened-food-secondary-shelf-life",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Une boisson au chanvre a une DDM lointaine et une consigne plus courte pour le produit ouvert. Quel délai s’applique une fois ouverte ?",
+      "options": [
+        "La DDM du produit fermé, même si elle est plus lointaine",
+        "La DDM prolongée du délai indiqué après ouverture",
+        "Un délai égal à la DDM, recommençant à l’ouverture",
+        "Le délai après ouverture, dans les conditions indiquées"
+      ],
+      "answer": 3,
+      "explanation": "Les conditions changent avec l’ouverture. L’étiquette peut donc donner une durée et des conditions spécifiques, distinctes de la date établie pour le produit fermé.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-dates"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Dates alimentaires",
+        "subjectKey": "dates-alimentaires",
+        "property": "Consignes applicables au produit ouvert",
+        "expectedAnswer": "Le délai après ouverture, dans les conditions indiquées",
+        "learningObjective": "Appliquer la consigne du produit ouvert plutôt que prolonger sa conservation à partir de la DDM du produit fermé.",
+        "factKey": "opened-food-secondary-shelf-life",
+        "form": "situation",
+        "difficultyRationale": "Conflit pratique entre deux indications courantes, sans durée à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-dates",
+            "locator": "Attention, ligne 79",
+            "support": "Après ouverture, il faut se référer aux indications de conservation et de délai après ouverture."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-cosmetic-pao-open-jar-months",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur un cosmétique à l’huile de chanvre, que signifie « 12M » dans le dessin d’un pot ouvert ?",
+      "options": [
+        "Douze mois d’utilisation après ouverture",
+        "Douze millilitres de produit dans le pot",
+        "Douze mois depuis la fabrication",
+        "Douze applications prévues par pot"
+      ],
+      "answer": 0,
+      "explanation": "Le pot ouvert indique la période après ouverture, ici en mois. Ce symbole n’indique ni le volume ni le nombre d’applications.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-cosmetique"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Étiquetage cosmétique",
+        "subjectKey": "etiquetage-cosmetique",
+        "property": "Lecture de la période après ouverture",
+        "expectedAnswer": "Douze mois d’utilisation après ouverture",
+        "learningObjective": "Interpréter un pictogramme courant sur un cosmétique.",
+        "factKey": "cosmetic-pao-open-jar-months",
+        "form": "identification",
+        "difficultyRationale": "Lecture directe d’un symbole fréquent ; aucune connaissance d’un ingrédient rare.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-cosmetique",
+            "locator": "Période après ouverture, ligne 64",
+            "support": "Le symbole du pot ouvert accompagne une durée d’utilisation après ouverture."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-inci-common-ingredient-names",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "En cosmétique, à quoi sert le système d’étiquetage INCI, notamment pour l’huile de chanvre ?",
+      "options": [
+        "Classer les ingrédients selon leur efficacité démontrée",
+        "Utiliser des désignations d’ingrédients communes entre les pays",
+        "Classer les ingrédients selon leur pays d’origine",
+        "Indiquer la teneur exacte de chaque ingrédient"
+      ],
+      "answer": 1,
+      "explanation": "L’INCI harmonise les noms, notamment en latin pour les plantes et en anglais pour d’autres ingrédients. Un nom INCI n’est pas une preuve d’efficacité ou d’origine.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-cosmetique"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Étiquetage cosmétique",
+        "subjectKey": "etiquetage-cosmetique",
+        "property": "Fonction d’une nomenclature commune",
+        "expectedAnswer": "Utiliser des désignations d’ingrédients communes entre les pays",
+        "learningObjective": "Comprendre pourquoi une liste cosmétique emploie des noms normalisés.",
+        "factKey": "inci-common-ingredient-names",
+        "form": "identification",
+        "difficultyRationale": "Connaissance de la fonction harmonisatrice d’un système spécifique d’étiquetage cosmétique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-cosmetique",
+            "locator": "Nomenclature INCI, ligne 78",
+            "support": "Les noms harmonisés permettent d’identifier les ingrédients selon une nomenclature commune."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-millilitres-measure-product-volume",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur une bouteille d’huile de graines de chanvre, « 250 ml » exprime quelle grandeur ?",
+      "options": [
+        "La proportion de graines dans l’huile",
+        "Le nombre de portions dans la bouteille",
+        "Le volume de l’huile",
+        "La masse de l’huile"
+      ],
+      "answer": 2,
+      "explanation": "Le millilitre est une unité de volume. Il ne donne pas directement la masse : celle-ci dépend aussi de la masse volumique de l’huile.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-net"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Quantité d’un préemballage",
+        "subjectKey": "preemballage-quantite",
+        "property": "Distinction entre volume et masse",
+        "expectedAnswer": "Le volume de l’huile",
+        "learningObjective": "Identifier la grandeur réellement indiquée par une unité.",
+        "factKey": "millilitres-measure-product-volume",
+        "form": "identification",
+        "difficultyRationale": "Unité usuelle de lecture des produits liquides.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-net",
+            "locator": "Unités de volume, ligne 54",
+            "support": "Le litre et ses sous-multiples sont des unités de volume."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-emark-batch-average-quantity",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Que signifie le signe « ℮ » près de la quantité d’un préemballage de graines de chanvre dans l’UE ?",
+      "options": [
+        "Une certification de culture biologique",
+        "Une garantie de poids identique pour chaque sachet",
+        "Une garantie d’origine agricole européenne",
+        "Un contrôle des quantités selon le régime européen"
+      ],
+      "answer": 3,
+      "explanation": "Le signe concerne les quantités préemballées : la moyenne du lot doit au moins atteindre la quantité annoncée, avec des tolérances encadrées. Ce n’est pas un label d’origine.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-emark"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Quantité d’un préemballage",
+        "subjectKey": "preemballage-quantite",
+        "property": "Signification du signe européen ℮",
+        "expectedAnswer": "Un contrôle des quantités selon le régime européen",
+        "learningObjective": "Distinguer contrôle quantitatif, origine et labels agricoles.",
+        "factKey": "emark-batch-average-quantity",
+        "form": "identification",
+        "difficultyRationale": "Symbole répandu dont le sens technique est moins connu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-emark",
+            "locator": "Quantity requirements, lignes 478–491",
+            "support": "Le signe ℮ concerne des quantités contrôlées et une exigence sur la moyenne du lot."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-per-100g-nutrient-comparison",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Deux barres aux graines de chanvre ont des portions différentes. Quelle colonne facilite la comparaison nutritionnelle ?",
+      "options": [
+        "Les valeurs pour 100 g de chaque barre",
+        "Les valeurs par portion sans tenir compte de sa taille",
+        "La masse totale de chaque emballage",
+        "Le nombre de portions annoncé par boîte"
+      ],
+      "answer": 0,
+      "explanation": "Une même base de 100 g permet de comparer les teneurs. Comparer directement des portions de tailles différentes peut masquer les écarts.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-en01-nutrition"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Déclaration nutritionnelle",
+        "subjectKey": "declaration-nutritionnelle",
+        "property": "Base commune de comparaison",
+        "expectedAnswer": "Les valeurs pour 100 g de chaque barre",
+        "learningObjective": "Comparer des produits sur une même quantité de référence.",
+        "factKey": "per-100g-nutrient-comparison",
+        "form": "situation",
+        "difficultyRationale": "Lecture pratique d’un tableau, sans calcul ni expertise nutritionnelle.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-nutrition",
+            "locator": "Base de comparaison, ligne 72",
+            "support": "L’expression pour 100 g ou 100 ml facilite la comparaison des aliments."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-e-number-identifies-food-additive",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans la liste d’ingrédients d’un aliment au chanvre, à quoi correspond un numéro commençant par E ?",
+      "options": [
+        "À la catégorie nutritionnelle du produit",
+        "À l’identifiant d’un additif alimentaire",
+        "À la quantité d’énergie d’une portion",
+        "À la proportion de l’ingrédient en pourcentage"
+      ],
+      "answer": 1,
+      "explanation": "Le numéro E identifie un additif dans la nomenclature européenne. Ce numéro ne fournit pas, à lui seul, sa quantité dans la recette.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-additifs"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Additifs alimentaires",
+        "subjectKey": "hemp-food-formulation-additives",
+        "property": "Identification par numéro E",
+        "expectedAnswer": "À l’identifiant d’un additif alimentaire",
+        "learningObjective": "Lire un code d’ingrédient sans le confondre avec une quantité ou un score.",
+        "factKey": "e-number-identifies-food-additive",
+        "form": "identification",
+        "difficultyRationale": "Décryptage d’un code courant sans mémorisation d’un numéro particulier.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-additifs",
+            "locator": "Introduction, ligne 2 ; étiquetage, lignes 59–64",
+            "support": "Un additif peut être désigné par son numéro E dans la liste d’ingrédients."
+          }
+        ],
+        "jurisdiction": "Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-mass-percent-grams-per-hundred-grams",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Un mélange alimentaire au chanvre contient 2 % de graines en masse. Quelle quantité de graines y a-t-il dans 100 g ?",
+      "options": [
+        "20 g",
+        "200 g",
+        "2 g",
+        "0,2 g"
+      ],
+      "answer": 2,
+      "explanation": "Une proportion en masse de 2 % signifie 2 g du constituant pour 100 g du mélange. Le pourcentage rapporte ici deux masses.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-en01-pourcentage"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Fraction massique",
+        "subjectKey": "fraction-massique",
+        "property": "Lecture d’un pourcentage en masse",
+        "expectedAnswer": "2 g",
+        "learningObjective": "Convertir un pourcentage simple en quantité pour 100 g.",
+        "factKey": "mass-percent-grams-per-hundred-grams",
+        "form": "deduction",
+        "difficultyRationale": "Calcul élémentaire sur 100 g, sans dosage de cannabinoïdes.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-pourcentage",
+            "locator": "§7.10.2, lignes 272–277 ; fraction massique, ligne 345",
+            "support": "Une fraction massique est un rapport de masses ; 1 % vaut un centième."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-label-salt-calculated-from-total-sodium",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans l’UE, la valeur « sel » du tableau nutritionnel d’une boisson au chanvre correspond à quoi ?",
+      "options": [
+        "Uniquement le sel ajouté pendant la fabrication",
+        "Uniquement le sodium naturellement présent",
+        "La somme de tous les minéraux du produit",
+        "L’équivalent en sel calculé à partir du sodium total"
+      ],
+      "answer": 3,
+      "explanation": "Le sel déclaré se calcule en multipliant la quantité de sodium total par 2,5. Il peut donc inclure du sodium qui ne vient pas d’un ajout de sel de table.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-en01-nutrition"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Déclaration nutritionnelle",
+        "subjectKey": "declaration-nutritionnelle",
+        "property": "Origine de la valeur déclarée pour le sel",
+        "expectedAnswer": "L’équivalent en sel calculé à partir du sodium total",
+        "learningObjective": "Distinguer le sel déclaré d’une simple quantité de sel ajouté.",
+        "factKey": "label-salt-calculated-from-total-sodium",
+        "form": "identification",
+        "difficultyRationale": "Convention réglementaire spécifique, non déductible du mot « sel » seul.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-nutrition",
+            "locator": "Calcul du sel, ligne 58",
+            "support": "La teneur en sel de la déclaration est obtenue en multipliant le sodium par 2,5."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-bold-ingredient-highlights-allergen",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans les ingrédients d’une barre au chanvre vendue en France, pourquoi le mot « LAIT » est-il mis en gras ?",
+      "options": [
+        "Pour signaler un allergène à déclaration obligatoire",
+        "Pour signaler l’ingrédient présent en plus grande masse",
+        "Pour signaler l’ingrédient apportant le plus d’énergie",
+        "Pour signaler l’ingrédient issu de l’agriculture biologique"
+      ],
+      "answer": 0,
+      "explanation": "La mise en évidence attire l’attention sur un allergène. Elle ne renseigne pas sur sa quantité ou sur le mode de production.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-en01-allergenes"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Allergènes et étiquetage",
+        "subjectKey": "allergenes-etiquetage",
+        "property": "Fonction de la mise en évidence typographique",
+        "expectedAnswer": "Pour signaler un allergène à déclaration obligatoire",
+        "learningObjective": "Reconnaître une alerte d’allergène dans une liste d’ingrédients.",
+        "factKey": "bold-ingredient-highlights-allergen",
+        "form": "identification",
+        "difficultyRationale": "Repère courant de lecture de l’étiquette.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-allergenes",
+            "locator": "Mise en évidence, lignes 149–151",
+            "support": "Les ingrédients allergènes sont distingués dans la liste, notamment par le gras."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-may-contain-unintended-allergen-contact",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur des graines de chanvre, « traces éventuelles de lait » signale quelle possibilité ?",
+      "options": [
+        "Une quantité de lait identique dans chaque sachet",
+        "Un contact involontaire avec du lait",
+        "Du lait ajouté volontairement à la recette",
+        "Une absence de lait garantie par analyse"
+      ],
+      "answer": 1,
+      "explanation": "Un contact fortuit peut survenir lors de la fabrication ou du transport. La mention de traces éventuelles ne décrit pas un ingrédient volontaire de la recette.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-en01-allergenes"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Allergènes et étiquetage",
+        "subjectKey": "allergenes-etiquetage",
+        "property": "Sens d’un avertissement de présence fortuite",
+        "expectedAnswer": "Un contact involontaire avec du lait",
+        "learningObjective": "Distinguer ingrédient volontaire et contamination possible.",
+        "factKey": "may-contain-unintended-allergen-contact",
+        "form": "identification",
+        "difficultyRationale": "Distinction pratique entre deux mentions d’étiquetage, sans seuil médical.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-allergenes",
+            "locator": "Présence fortuite, lignes 173–183",
+            "support": "Les traces éventuelles peuvent résulter d’un contact involontaire avec un allergène."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-unit-price-compares-package-sizes",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Pour comparer le prix de deux sachets de graines de chanvre équivalentes mais de tailles différentes, quel repère choisir ?",
+      "options": [
+        "La réduction en euros sans comparer les masses",
+        "Le prix d’une portion de taille différente",
+        "Le prix au kilogramme",
+        "Le prix total du sachet seul"
+      ],
+      "answer": 2,
+      "explanation": "Le prix au kilogramme ramène les deux offres à la même quantité. Un grand format n’est pas nécessairement moins cher par kilo.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-prix"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Prix à l’unité de mesure",
+        "subjectKey": "prix-unite-mesure",
+        "property": "Comparaison de formats différents",
+        "expectedAnswer": "Le prix au kilogramme",
+        "learningObjective": "Comparer le coût d’une même quantité de produit.",
+        "factKey": "unit-price-compares-package-sizes",
+        "form": "situation",
+        "difficultyRationale": "Repère courant d’achat, sans calcul imposé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-prix",
+            "locator": "Prix à l’unité de mesure, ligne 229",
+            "support": "Le prix au kilo permet la comparaison de produits équivalents."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-barcode-prefix-not-country-of-manufacture",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Le préfixe d’un code-barres GS1 sur une huile de chanvre suffit-il à connaître son pays de fabrication ?",
+      "options": [
+        "Oui : il désigne toujours le pays de fabrication",
+        "Oui : il désigne toujours le pays de récolte",
+        "Non : il désigne seulement le pays du magasin",
+        "Non : il désigne l’organisation GS1 attributrice"
+      ],
+      "answer": 3,
+      "explanation": "GS1 attribue des préfixes par ses organisations membres. Une entreprise peut faire fabriquer ses produits ailleurs : le préfixe n’est pas une preuve du lieu de fabrication.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-gs1"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Code-barres GS1",
+        "subjectKey": "code-barres-gs1",
+        "property": "Absence de garantie du pays de fabrication",
+        "expectedAnswer": "Non : il désigne l’organisation GS1 attributrice",
+        "learningObjective": "Éviter une fausse lecture de l’origine à partir d’un code-barres.",
+        "factKey": "barcode-prefix-not-country-of-manufacture",
+        "form": "identification",
+        "difficultyRationale": "La réponse exige de connaître le système d’attribution GS1, et pas simplement de lire un nombre sur l’étiquette.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-gs1",
+            "locator": "Réponse et explication, lignes 5–9",
+            "support": "Le préfixe renvoie à l’organisation GS1 qui a attribué le numéro, non à l’origine du produit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-nutriscore-nutrition-not-processing",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur un aliment aux graines de chanvre, quel aspect le Nutri-Score évalue-t-il ?",
+      "options": [
+        "La qualité nutritionnelle selon sa composition",
+        "Le degré de transformation industrielle",
+        "L’absence de tout additif dans la recette",
+        "Le respect d’un mode de culture biologique"
+      ],
+      "answer": 0,
+      "explanation": "Le Nutri-Score synthétise des caractéristiques nutritionnelles. Il ne constitue pas un classement du degré de transformation et ne remplace pas la liste d’ingrédients.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-en01-nutriscore"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Nutri-Score",
+        "subjectKey": "nutri-score",
+        "property": "Dimension évaluée par le score",
+        "expectedAnswer": "La qualité nutritionnelle selon sa composition",
+        "learningObjective": "Comprendre la portée d’un indicateur d’étiquetage.",
+        "factKey": "nutriscore-nutrition-not-processing",
+        "form": "identification",
+        "difficultyRationale": "Fonction générale d’un logo familier ; aucune formule de calcul.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-nutriscore",
+            "locator": "Le Nutri-Score est-il fiable ?, lignes 59–60",
+            "support": "Le Nutri-Score concerne la qualité nutritionnelle, et non le degré de transformation ou la présence d’additifs."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-glass-fork-food-contact-not-universal-heat",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur une boîte pour graines de chanvre, que signifie le pictogramme « verre et fourchette » ?",
+      "options": [
+        "La fabrication de la boîte en matière recyclée",
+        "L’aptitude au contact alimentaire dans les conditions prévues",
+        "L’aptitude à tout chauffage au four à micro-ondes",
+        "L’obligation de laver la boîte au lave-vaisselle"
+      ],
+      "answer": 1,
+      "explanation": "Le symbole concerne le contact avec les aliments. Les possibilités de chauffage ou de lavage dépendent d’autres indications et des conditions d’emploi.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "q2-en01-contact"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Matériaux au contact alimentaire",
+        "subjectKey": "contact-alimentaire",
+        "property": "Portée du symbole verre-fourchette",
+        "expectedAnswer": "L’aptitude au contact alimentaire dans les conditions prévues",
+        "learningObjective": "Distinguer aptitude au contact et compatibilité avec un mode d’utilisation.",
+        "factKey": "glass-fork-food-contact-not-universal-heat",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance d’un pictogramme courant, sans mémorisation normative.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-contact",
+            "locator": "Pictogramme, lignes 44 et 65 ; conditions d’emploi, lignes 56 et 66",
+            "support": "Le symbole verre-fourchette indique le contact alimentaire ; les conditions d’usage doivent être respectées."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-biosourced-material-from-biomass",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Un emballage à base de chanvre est dit « biosourcé ». Que précise ce terme ?",
+      "options": [
+        "Sa certification obligatoire en agriculture biologique",
+        "Sa fabrication exclusive à partir de plastique recyclé",
+        "L’origine d’au moins une partie de sa matière dans la biomasse",
+        "Sa dégradation garantie dans la nature"
+      ],
+      "answer": 2,
+      "explanation": "Biosourcé décrit une origine de matière, par exemple végétale. Cela ne garantit ni une agriculture biologique ni une biodégradation dans n’importe quel milieu.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-en01-plastiques"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Plastiques et emballages",
+        "subjectKey": "plastiques-emballage",
+        "property": "Origine biologique de la matière première",
+        "expectedAnswer": "L’origine d’au moins une partie de sa matière dans la biomasse",
+        "learningObjective": "Distinguer une origine de matière d’une propriété de fin de vie.",
+        "factKey": "biosourced-material-from-biomass",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire de produit expliqué par un contraste courant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-plastiques",
+            "locator": "Biosourcé, lignes 107–113",
+            "support": "Les matières biosourcées proviennent de la biomasse et ne sont pas nécessairement biologiques ou biodégradables."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-industrial-compost-not-home-conditions",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Pour un matériau au chanvre, quel écart de conditions distingue notamment le compostage industriel du compostage de jardin ?",
+      "options": [
+        "Une température plus basse en compost industriel",
+        "La même température, mais une humidité plus faible en industrie",
+        "La même température, mais moins d’oxygène en industrie",
+        "Une température plus élevée en compost industriel"
+      ],
+      "answer": 3,
+      "explanation": "Le compostage industriel peut atteindre des températures plus élevées. Un essai réussi dans ce milieu ne démontre donc pas le même résultat dans un compost de jardin.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-en01-plastiques"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Plastiques et emballages",
+        "subjectKey": "plastiques-emballage",
+        "property": "Conditions thermiques distinctes du compostage industriel",
+        "expectedAnswer": "Une température plus élevée en compost industriel",
+        "learningObjective": "Comprendre une différence concrète de milieu qui limite la transposition d’un résultat de compostage.",
+        "factKey": "industrial-compost-not-home-conditions",
+        "form": "comparaison",
+        "difficultyRationale": "Distinction concrète entre deux contextes de compostage ; aucun seuil technique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-plastiques",
+            "locator": "Conditions de compostage, lignes 122–123",
+            "support": "L’ADEME décrit des conditions industrielles plus drastiques, notamment une montée en température plus importante qu’au compostage domestique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-plastic-resin-code-identifies-material",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Sur un flacon d’huile de chanvre, le code « 1 PET » dans un triangle renseigne d’abord sur quoi ?",
+      "options": [
+        "La matière plastique du flacon",
+        "La part de plastique déjà recyclé",
+        "La collecte acceptée dans chaque commune",
+        "Le nombre de réutilisations du flacon"
+      ],
+      "answer": 0,
+      "explanation": "Le code identifie la résine plastique. Il ne garantit ni un taux de matière recyclée ni une possibilité de recyclage dans la collecte locale.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "q2-en01-resine"
+      ],
+      "editorial": {
+        "category": "hemp-uses",
+        "subject": "Plastiques et emballages",
+        "subjectKey": "plastiques-emballage",
+        "property": "Fonction d’un code de résine",
+        "expectedAnswer": "La matière plastique du flacon",
+        "learningObjective": "Lire un marquage de matière sans le transformer en consigne de tri.",
+        "factKey": "plastic-resin-code-identifies-material",
+        "form": "identification",
+        "difficultyRationale": "Distinction accessible entre identification d’un matériau et fin de vie.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-resine",
+            "locator": "Page 2, lignes 40–54",
+            "support": "Le code d’identification de la résine indique la matière, sans garantir sa recyclabilité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-freezing-not-sterilisation",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Dans un aliment aux graines de chanvre, quel devenir des bactéries correspond au principe de la congélation ?",
+      "options": [
+        "Croissance maintenue au même rythme qu’avant congélation",
+        "Croissance ralentie ou arrêtée, avec survie possible",
+        "Croissance arrêtée par destruction de toutes les bactéries",
+        "Croissance accélérée, avec survie des bactéries"
+      ],
+      "answer": 1,
+      "explanation": "La congélation peut arrêter ou ralentir la multiplication sans détruire tous les micro-organismes. Un aliment congelé ne devient donc pas automatiquement stérile.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "q2-en01-congelation"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Congélation alimentaire",
+        "subjectKey": "congelation-aliments",
+        "property": "Survie possible de bactéries",
+        "expectedAnswer": "Croissance ralentie ou arrêtée, avec survie possible",
+        "learningObjective": "Distinguer conservation au froid et stérilisation.",
+        "factKey": "freezing-not-sterilisation",
+        "form": "identification",
+        "difficultyRationale": "Repère courant d’hygiène alimentaire, sans procédure ni durée à connaître.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-congelation",
+            "locator": "Effet de la congélation sur les bactéries, lignes 32–37",
+            "support": "Certaines bactéries survivent à la congélation."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-colony-forming-units-culturable-microorganisms",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans un contrôle de graines de chanvre, quelle population est prise en compte par les UFC (unités formant colonie) ?",
+      "options": [
+        "Les unités viables, même non cultivables dans ce test",
+        "Les cellules mortes dont la paroi reste conservée",
+        "Les unités viables cultivables dans les conditions du test",
+        "Les cellules vivantes et mortes dénombrées ensemble"
+      ],
+      "answer": 2,
+      "explanation": "Une UFC correspond à une unité viable capable de former une colonie dans les conditions du test. Ce n’est pas un comptage de toutes les cellules, vivantes ou mortes.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-ufc"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Dénombrement microbiologique",
+        "subjectKey": "denombrement-ufc",
+        "property": "Unités capables de former des colonies",
+        "expectedAnswer": "Les unités viables cultivables dans les conditions du test",
+        "learningObjective": "Distinguer les unités viables cultivables d’un comptage de toutes les cellules.",
+        "factKey": "colony-forming-units-culturable-microorganisms",
+        "form": "identification",
+        "difficultyRationale": "Notion de microbiologie analytique ; le sigle est développé mais le sens du dénombrement reste à comprendre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-ufc",
+            "locator": "Glossaire, page 7 du PDF, lignes 283–287",
+            "support": "Les micro-organismes viables qui croissent dans les conditions définies donnent les colonies dénombrées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-mycotoxins-produced-by-fungi",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un rapport d’analyse de graines de chanvre recherche des mycotoxines. Quelle est l’origine de ces substances ?",
+      "options": [
+        "Certaines bactéries",
+        "Certaines plantes",
+        "Certains insectes",
+        "Certains champignons"
+      ],
+      "answer": 3,
+      "explanation": "Les mycotoxines sont des substances toxiques produites par certains champignons. Rechercher ces molécules ne revient pas simplement à compter des spores.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-en01-mycotoxines"
+      ],
+      "editorial": {
+        "category": "prevention",
+        "subject": "Mycotoxines",
+        "subjectKey": "mycotoxines",
+        "property": "Origine fongique des molécules",
+        "expectedAnswer": "Certains champignons",
+        "learningObjective": "Identifier la famille de contaminants recherchée par le laboratoire.",
+        "factKey": "mycotoxins-produced-by-fungi",
+        "form": "identification",
+        "difficultyRationale": "Terme de contamination spécialisé, même si la réponse utilise des mots simples.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-mycotoxines",
+            "locator": "Introduction, ligne 151",
+            "support": "Les mycotoxines sont des substances toxiques produites par certains champignons."
+          }
+        ],
+        "jurisdiction": "Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un lot de graines de chanvre varie entre sacs. Quel plan vise sa composition globale plutôt que celle d’un seul sac ?",
+      "options": [
+        "Répartir les prélèvements dans le lot selon un plan adapté",
+        "Répéter plusieurs dosages sur un prélèvement d’un seul sac",
+        "Analyser un matériau de référence à la place du prélèvement",
+        "Confier le même prélèvement à plusieurs laboratoires"
+      ],
+      "answer": 0,
+      "explanation": "L’analyse porte sur un échantillon, mais sa conclusion peut concerner le lot. Un prélèvement biaisé peut donc limiter la portée du résultat, même si la mesure est bien réalisée.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-echantillonnage"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Échantillonnage d’un lot",
+        "subjectKey": "echantillonnage-lot",
+        "property": "Représentativité de l’échantillon",
+        "expectedAnswer": "Répartir les prélèvements dans le lot selon un plan adapté",
+        "learningObjective": "Comprendre pourquoi la mesure seule ne suffit pas à décrire un lot.",
+        "factKey": "representative-sampling-heterogeneous-lot",
+        "form": "situation",
+        "difficultyRationale": "Il faut distinguer représentativité du prélèvement et contrôles qui améliorent la mesure sans élargir l’échantillonnage.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-echantillonnage",
+            "locator": "§7.3, pages 12–13, lignes 418–437",
+            "support": "L’échantillonnage doit fournir une partie représentative de l’ensemble concerné."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-below-quantification-not-zero",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour un contaminant dans des graines de chanvre, que signifie « < LQ », LQ étant la limite de quantification ?",
+      "options": [
+        "La teneur dépasse la gamme supérieure de la méthode",
+        "La teneur est sous le seuil de quantification fiable de la méthode",
+        "La substance est absolument absente de tout le lot",
+        "La teneur est exactement égale à la LQ du rapport"
+      ],
+      "answer": 1,
+      "explanation": "Sous la LQ, la méthode ne fournit pas une quantification avec la performance attendue à ce niveau. Cette mention ne prouve pas une absence absolue de la substance.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-validation"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Limite de quantification",
+        "subjectKey": "limite-quantification",
+        "property": "Interprétation d’un résultat inférieur à la LQ",
+        "expectedAnswer": "La teneur est sous le seuil de quantification fiable de la méthode",
+        "learningObjective": "Ne pas transformer une limite de méthode en teneur nulle.",
+        "factKey": "below-quantification-not-zero",
+        "form": "identification",
+        "difficultyRationale": "Lecture d’une limite analytique, avec le sigle développé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-validation",
+            "locator": "§5.3.1, page 31, lignes 2326–2329",
+            "support": "La LQ est le plus faible niveau quantifiable avec une performance acceptable pour l’application."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-method-blank-detects-procedure-contamination",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un laboratoire traite un blanc sans graines comme les échantillons de chanvre. Quel contrôle cherche-t-il à faire ?",
+      "options": [
+        "Évaluer les pertes du composé pendant sa récupération",
+        "Comparer la performance de plusieurs laboratoires",
+        "Repérer une contamination introduite par la procédure",
+        "Évaluer la représentativité des graines prélevées"
+      ],
+      "answer": 2,
+      "explanation": "Le blanc de procédure suit les étapes de l’analyse sans l’échantillon. Il peut révéler un signal provenant des réactifs, du matériel ou d’autres étapes de la procédure.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-blancs"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Blanc de procédure analytique",
+        "subjectKey": "blanc-analyse",
+        "property": "Contrôle des apports de la procédure",
+        "expectedAnswer": "Repérer une contamination introduite par la procédure",
+        "learningObjective": "Comprendre l’utilité d’un contrôle sans échantillon.",
+        "factKey": "method-blank-detects-procedure-contamination",
+        "form": "identification",
+        "difficultyRationale": "Principe de contrôle de laboratoire nécessitant une distinction entre échantillon et procédure.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-blancs",
+            "locator": "§2.3, page 4, lignes 195–206",
+            "support": "Un blanc de procédure sert notamment à déceler la contamination ou les interférences dues au processus analytique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-reference-material-checks-measurements",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pourquoi un laboratoire peut-il analyser un matériau de référence de chanvre aux teneurs déjà caractérisées ?",
+      "options": [
+        "Estimer la variation entre tous les flacons d’un lot",
+        "Établir la représentativité du prélèvement d’un client",
+        "Mesurer la stabilité d’un produit durant tout son stockage",
+        "Vérifier ses mesures par une valeur de comparaison"
+      ],
+      "answer": 3,
+      "explanation": "Le matériau de référence fournit un point de comparaison pour les méthodes. Le RM 8210 du NIST vise notamment l’harmonisation des mesures ; ses valeurs ne sont pas certifiées.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-rm8210"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Matériau de référence de chanvre",
+        "subjectKey": "nist-hemp-rm8210",
+        "property": "Comparaison avec un matériau caractérisé",
+        "expectedAnswer": "Vérifier ses mesures par une valeur de comparaison",
+        "learningObjective": "Comprendre un contrôle métrologique sans le confondre avec une certification de produit.",
+        "factKey": "reference-material-checks-measurements",
+        "form": "identification",
+        "difficultyRationale": "Usage d’un matériau de référence, notion de laboratoire intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-rm8210",
+            "locator": "Page 1, lignes 6–12",
+            "support": "Le RM 8210 est destiné au développement et au contrôle des méthodes et à l’harmonisation des mesures."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-proficiency-test-compares-laboratories",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quelle est la finalité principale d’un essai d’aptitude interlaboratoires portant sur un matériau de chanvre ?",
+      "options": [
+        "Évaluer la performance des laboratoires participants",
+        "Attribuer une valeur de référence à un matériau",
+        "Valider les performances d’une nouvelle méthode commune",
+        "Estimer la reproductibilité d’une méthode entre laboratoires"
+      ],
+      "answer": 0,
+      "explanation": "Dans un essai d’aptitude, la comparaison sert d’abord à évaluer les participants. D’autres études interlaboratoires peuvent avoir pour objectif de caractériser un matériau ou une méthode.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-cofrac"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Comparaisons interlaboratoires",
+        "subjectKey": "comparaisons-interlaboratoires",
+        "property": "Évaluation par essai d’aptitude",
+        "expectedAnswer": "Évaluer la performance des laboratoires participants",
+        "learningObjective": "Distinguer contrôle interne et comparaison entre laboratoires.",
+        "factKey": "proficiency-test-compares-laboratories",
+        "form": "identification",
+        "difficultyRationale": "Organisation spécifique du contrôle de qualité, non simple rappel d’un sigle.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-cofrac",
+            "locator": "Organisateurs d’essais d’aptitude, ligne 87",
+            "support": "Les essais d’aptitude évaluent la performance par comparaison interlaboratoires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-repeatability-same-measurement-conditions",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Un laboratoire étudie la répétabilité d’un dosage sur un extrait de chanvre. Quelle série de mesures convient ?",
+      "options": [
+        "Mesures de lots différents récoltés plusieurs années",
+        "Répétitions rapprochées avec le même opérateur et équipement",
+        "Répétitions réparties entre plusieurs laboratoires",
+        "Mesures par des techniques et appareils différents"
+      ],
+      "answer": 1,
+      "explanation": "Les conditions de répétabilité conservent notamment la procédure, l’opérateur, l’équipement et le lieu, sur un court intervalle. D’autres comparaisons évaluent d’autres composantes de variabilité.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-vim"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Fidélité des mesures",
+        "subjectKey": "fidelite-mesure",
+        "property": "Conditions de répétabilité",
+        "expectedAnswer": "Répétitions rapprochées avec le même opérateur et équipement",
+        "learningObjective": "Choisir une comparaison qui isole la répétabilité.",
+        "factKey": "repeatability-same-measurement-conditions",
+        "form": "identification",
+        "difficultyRationale": "Distinction métrologique entre conditions de répétition et changements de laboratoire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-vim",
+            "locator": "§2.20–2.21, pages 23–24, lignes 2488–2510",
+            "support": "La répétabilité est une fidélité dans des conditions conservant notamment opérateur et équipement sur un temps court."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-precision-distinct-from-trueness",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Des mesures d’un témoin de chanvre sont très groupées, mais nettement décalées de sa valeur de référence. Quel constat convient ?",
+      "options": [
+        "Bonne fidélité et justesse démontrées ensemble",
+        "Mauvaise fidélité démontrée par le seul décalage",
+        "Bonne fidélité, avec un problème possible de justesse",
+        "Bonne justesse, avec un problème possible de fidélité"
+      ],
+      "answer": 2,
+      "explanation": "La fidélité décrit le regroupement des mesures répétées. Leur proximité mutuelle ne garantit pas la justesse, qui concerne l’accord avec une valeur de référence.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-vim"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Fidélité des mesures",
+        "subjectKey": "fidelite-mesure",
+        "property": "Distinction entre regroupement et accord à la référence",
+        "expectedAnswer": "Bonne fidélité, avec un problème possible de justesse",
+        "learningObjective": "Comprendre qu’une faible dispersion ne supprime pas un décalage systématique.",
+        "factKey": "precision-distinct-from-trueness",
+        "form": "situation",
+        "difficultyRationale": "Deux dimensions de la qualité d’une mesure à distinguer dans un cas concret.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-vim",
+            "locator": "§2.14–2.15, pages 21–22, lignes 2316–2364",
+            "support": "La justesse concerne l’accord à une référence ; la fidélité concerne l’accord entre mesures répétées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "UE : une barre au chanvre affiche, pour 100 g, une énergie en kJ et en kcal. Comment lire ces deux valeurs ?",
+      "options": [
+        "L’énergie des lipides et celle des glucides séparément",
+        "L’énergie avant cuisson et celle du produit cuit",
+        "L’énergie d’une portion et celle du paquet entier",
+        "La même énergie exprimée dans deux unités différentes"
+      ],
+      "answer": 3,
+      "explanation": "Kilojoules et kilocalories sont deux unités d’énergie. Sur une même base de quantité d’aliment, les valeurs n’ont pas à être additionnées : elles expriment la même énergie.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-en01-eu-nutrition-energy"
+      ],
+      "editorial": {
+        "category": "food",
+        "subject": "Unités d’énergie de l’étiquette",
+        "subjectKey": "declaration-nutritionnelle",
+        "property": "Deux expressions de la même valeur énergétique",
+        "expectedAnswer": "La même énergie exprimée dans deux unités différentes",
+        "learningObjective": "Lire la double expression kJ/kcal sans additionner des unités ni les attribuer à des nutriments différents.",
+        "factKey": "nutrition-energy-kj-kcal-same-quantity",
+        "form": "identification",
+        "difficultyRationale": "Lecture pratique d’une ligne courante de l’étiquette, sans coefficient de conversion à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-eu-nutrition-energy",
+            "locator": "« Comment calculer la valeur énergétique et les quantités de nutriments ? », lignes 491–493 ; tableau des unités, ligne 511",
+            "support": "La valeur énergétique est exprimée en kilojoules et en kilocalories, sur la même base de quantité."
+          }
+        ],
+        "jurisdiction": "France et Union européenne",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-chromatographic-retention-time-peak-maximum",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour un composé du chanvre, le temps de rétention en chromatographie mesure quel intervalle ?",
+      "options": [
+        "De l’injection de l’échantillon au maximum du pic détecté",
+        "Du début à la fin du pic à la ligne de base",
+        "Entre les maxima de deux pics voisins",
+        "Du début à la fin de l’analyse complète"
+      ],
+      "answer": 0,
+      "explanation": "Le repère est le maximum du pic, pas sa largeur. Le délai entre deux maxima est un écart entre composés ; le temps de rétention se mesure depuis l’injection.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-fda-retention-time"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Temps de rétention chromatographique",
+        "subjectKey": "chromatographie",
+        "property": "Intervalle entre injection et maximum du pic",
+        "expectedAnswer": "De l’injection de l’échantillon au maximum du pic détecté",
+        "learningObjective": "Lire un repère temporel de chromatogramme sans le confondre avec largeur de pic ou écart entre pics.",
+        "factKey": "chromatographic-retention-time-peak-maximum",
+        "form": "identification",
+        "difficultyRationale": "Convention de lecture d’un résultat chromatographique, distincte de la simple connaissance de sa fonction de séparation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-fda-retention-time",
+            "locator": "Pesticide Analytical Manual, volume I, §602 C, page 602-5 (page 29 du PDF), lignes 1125–1147 et figure 602-a",
+            "support": "Le temps de rétention va de l’injection au maximum du pic ; le texte distingue l’écart entre maxima et la largeur du pic."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-mass-analysis-ions-mass-to-charge",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans un spectromètre de masse utilisé pour analyser un extrait de chanvre, selon quelle grandeur les ions sont-ils séparés ?",
+      "options": [
+        "Leur vitesse de migration dans un liquide",
+        "Le rapport de leur masse à leur charge électrique",
+        "Leur masse, indépendamment de leur charge électrique",
+        "Leur charge électrique, indépendamment de leur masse"
+      ],
+      "answer": 1,
+      "explanation": "La grandeur m/z rapporte la masse d’un ion à son nombre de charges. Le spectre enregistre des signaux en fonction de cette grandeur, et non de la seule masse du produit.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-spectrometrie"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Spectrométrie de masse",
+        "subjectKey": "spectrometrie-masse",
+        "property": "Grandeur utilisée pour séparer les ions",
+        "expectedAnswer": "Le rapport de leur masse à leur charge électrique",
+        "learningObjective": "Comprendre le rôle du rapport masse/charge dans une analyse.",
+        "factKey": "mass-analysis-ions-mass-to-charge",
+        "form": "identification",
+        "difficultyRationale": "Principe de technique analytique intermédiaire ; aucun appareil ou fragment rare à reconnaître.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-spectrometrie",
+            "locator": "§2.1, pages 4–5, lignes 201–215",
+            "support": "La spectrométrie de masse sépare des ions selon leur rapport masse/charge."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-calibration-relates-response-to-analyte",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Pour doser un composé dans le chanvre, une courbe d’étalonnage relie principalement quelles informations ?",
+      "options": [
+        "La masse du lot et le nombre de graines germées",
+        "La dispersion des répétitions et le nombre de mesures",
+        "Le signal mesuré et des concentrations de référence",
+        "La température de stockage et la durée de conservation"
+      ],
+      "answer": 2,
+      "explanation": "L’étalonnage établit une relation entre des indications de mesure et des valeurs connues. Cette relation aide à attribuer une valeur à un signal ; elle ne se confond pas avec un réglage.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-vim"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Étalonnage",
+        "subjectKey": "etalonnage",
+        "property": "Relation entre indication et valeur",
+        "expectedAnswer": "Le signal mesuré et des concentrations de référence",
+        "learningObjective": "Comprendre comment une réponse instrumentale est reliée à une quantité.",
+        "factKey": "calibration-relates-response-to-analyte",
+        "form": "identification",
+        "difficultyRationale": "Principe métrologique de conversion d’un signal, distinct du simple réglage.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-vim",
+            "locator": "§2.39, page 28, lignes 2918–2933 ; §4.31, page 45, lignes 4365–4367",
+            "support": "La courbe d’étalonnage exprime une relation entre indication et valeur mesurée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-matrix-effect-other-sample-components",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "À teneur identique, des coextraits de chanvre réduisent le signal en spectrométrie de masse. De quel phénomène s’agit-il ?",
+      "options": [
+        "Une dérive due au vieillissement de l’appareil",
+        "Une perte du composé pendant la préparation",
+        "Une erreur sur le volume final de dilution",
+        "Un effet de matrice par suppression du signal"
+      ],
+      "answer": 3,
+      "explanation": "Des constituants accompagnant l’analyte peuvent réduire ou amplifier sa réponse. Le signal peut donc changer sans que sa concentration change : c’est un effet de matrice.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-eurl"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Effet de matrice analytique",
+        "subjectKey": "effet-matrice",
+        "property": "Modification du signal par les autres constituants",
+        "expectedAnswer": "Un effet de matrice par suppression du signal",
+        "learningObjective": "Distinguer une variation de réponse d’une variation réelle de teneur.",
+        "factKey": "matrix-effect-other-sample-components",
+        "form": "identification",
+        "difficultyRationale": "Interprétation spécialisée d’une réponse instrumentale en présence de coextraits.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-eurl",
+            "locator": "§2.3, page 7, lignes 134–158",
+            "support": "Des constituants coextraits peuvent supprimer ou amplifier la réponse à concentration identique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-spike-recovery-analytical-check",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Contrôle fictif d’une analyse de graines : un ajout connu vaut 10 unités, dont 8 sont retrouvées après correction du fond. Quelle récupération ?",
+      "options": [
+        "80 %",
+        "20 %",
+        "125 %",
+        "180 %"
+      ],
+      "answer": 0,
+      "explanation": "La récupération compare la quantité retrouvée à celle de référence : 8 ÷ 10 × 100 = 80 %. Il faut tenir compte d’une présence initiale éventuelle ; ce contrôle ne certifie pas tout le lot.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-eurl"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Récupération en contrôle analytique",
+        "subjectKey": "taux-recuperation",
+        "property": "Rapport entre quantité retrouvée et ajout connu",
+        "expectedAnswer": "80 %",
+        "learningObjective": "Interpréter une récupération analytique en tenant compte du fond.",
+        "factKey": "spike-recovery-analytical-check",
+        "form": "deduction",
+        "difficultyRationale": "Application d’un rapport simple à un contrôle analytique ; les valeurs corrigées sont déjà fournies, sans difficulté experte de calcul.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-eurl",
+            "locator": "§2.5, pages 7–8, lignes 167–186",
+            "support": "La récupération rapporte la valeur mesurée, corrigée du fond si nécessaire, à la valeur de référence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-analytical-selectivity-interfering-components",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Dans un extrait complexe de chanvre, que décrit la sélectivité d’une méthode analytique ?",
+      "options": [
+        "Sa capacité à traiter le plus d’échantillons par heure",
+        "Sa capacité à mesurer le composé ciblé malgré les interférents",
+        "Sa capacité à mesurer la plus faible teneur possible",
+        "Sa capacité à donner des répétitions très groupées"
+      ],
+      "answer": 1,
+      "explanation": "La sélectivité concerne la distinction du composé recherché parmi les autres constituants. Elle se distingue d’une limite de quantification, de la fidélité et de la cadence d’analyse.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-validation"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Sélectivité analytique",
+        "subjectKey": "selectivite-analytique",
+        "property": "Mesure de l’analyte en présence d’autres constituants",
+        "expectedAnswer": "Sa capacité à mesurer le composé ciblé malgré les interférents",
+        "learningObjective": "Distinguer plusieurs performances d’une méthode.",
+        "factKey": "analytical-selectivity-interfering-components",
+        "form": "identification",
+        "difficultyRationale": "Distinction spécialisée entre caractéristiques de validation voisines.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-validation",
+            "locator": "§5.1.1, page 23, lignes 1733–1737",
+            "support": "Une méthode sélective détermine les analytes dans des mélanges sans interférence des autres composants."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-en01-accreditation-specific-scope-competence",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "En France, que reconnaît l’accréditation d’un laboratoire qui analyse des produits au chanvre ?",
+      "options": [
+        "La conformité d’un lot de produit à son cahier des charges",
+        "La conformité environnementale de son site à un label de production",
+        "Sa compétence technique pour les analyses précisées dans sa portée",
+        "La conformité de son management à une norme générale de gestion"
+      ],
+      "answer": 2,
+      "explanation": "L’accréditation porte sur des opérations spécifiées. Il faut donc vérifier sa portée ; elle ne transforme pas tous les produits reçus en produits certifiés.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-en01-cofrac"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Accréditation d’un laboratoire",
+        "subjectKey": "accreditation-laboratoire",
+        "property": "Reconnaissance limitée à un périmètre",
+        "expectedAnswer": "Sa compétence technique pour les analyses précisées dans sa portée",
+        "learningObjective": "Distinguer statut du laboratoire et certification du produit.",
+        "factKey": "accreditation-specific-scope-competence",
+        "form": "identification",
+        "difficultyRationale": "Portée d’une reconnaissance technique institutionnelle, non simple lecture d’un logo.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-cofrac",
+            "locator": "Laboratoires d’essais et d’étalonnages, ligne 80",
+            "support": "L’accréditation reconnaît compétence et impartialité pour des opérations spécifiées."
+          }
+        ],
+        "jurisdiction": "France",
+        "reviewAfter": "2027-05-16"
+      }
+    },
+    {
+      "id": "hemp-q2-en01-tamper-evident-seal-signals-opening",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Sur un flacon au chanvre, à quoi sert principalement la bague de première ouverture ?",
+      "options": [
+        "Limiter les fuites pendant le transport",
+        "Freiner l’accès au contenu par un jeune enfant",
+        "Réduire l’exposition du contenu à la lumière",
+        "Signaler une atteinte à la fermeture d’origine"
+      ],
+      "answer": 3,
+      "explanation": "Le témoin rend visible une rupture du dispositif. Il indique une atteinte à la fermeture, sans constituer à lui seul une garantie sur la composition ou la stérilité du contenu.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "q2-en01-ouverture"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "Témoin de première ouverture",
+        "subjectKey": "temoin-ouverture",
+        "property": "Preuve visible d’atteinte à la fermeture",
+        "expectedAnswer": "Signaler une atteinte à la fermeture d’origine",
+        "learningObjective": "Reconnaître la fonction d’un dispositif d’emballage.",
+        "factKey": "tamper-evident-seal-signals-opening",
+        "form": "identification",
+        "difficultyRationale": "Fonction visible d’une fermeture courante, sans règle juridique à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-en01-ouverture",
+            "locator": "§211.132(b)(1), page 1, lignes 39–55",
+            "support": "Un indicateur ou une barrière rompu ou absent donne une preuve visible d’une ouverture."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-en01-net",
+      "title": "Contrôle des quantités vendues : payer seulement ce que l’on achète",
+      "organization": "DGCCRF",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/controle-des-quantites-vendues-payer-seulement-ce-que-lon-achete",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : DGCCRF",
+      "published": "2022-06-24",
+      "passage": "Rubriques « Quantité nette » et unités ; lignes 52–61",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Rubriques « Quantité nette » et unités ; lignes 52–61",
+        "result": "Les unités distinguent masse et volume ; la quantité nette exclut l’emballage."
+      }
+    },
+    {
+      "id": "q2-en01-lot",
+      "title": "Étiquetage des denrées alimentaires : les règles à connaître",
+      "organization": "DGCCRF",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/etiquetage-des-denrees-alimentaires-les-regles-connaitre",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : DGCCRF",
+      "published": "2026-07-23",
+      "passage": "Mentions obligatoires, numéro de lot ; ligne 57",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Mentions obligatoires, numéro de lot ; ligne 57",
+        "result": "Le numéro de lot de fabrication permet la traçabilité."
+      }
+    },
+    {
+      "id": "q2-en01-dates",
+      "title": "Date limite de consommation et date de durabilité minimale : ce que vous devez savoir",
+      "organization": "DGCCRF",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/date-limite-de-consommation-et-date-de-durabilite-minimale-ce-que-vous-devez-savoir",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : DGCCRF",
+      "published": "s.d., date de publication non relevée",
+      "passage": "« Date de durabilité minimale », lignes 36 et 55–57 ; « Attention », ligne 79",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Sens des mentions et des consignes après ouverture en France/UE ; aucune garantie de sécurité après une date n’est inférée.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "« Date de durabilité minimale », lignes 36 et 55–57 ; « Attention », ligne 79",
+        "result": "La DDM porte sur les qualités du produit ; après ouverture, les indications spécifiques de conservation s’appliquent."
+      }
+    },
+    {
+      "id": "q2-en01-cosmetique",
+      "title": "Étiquetage de vos produits cosmétiques : comment le décrypter ?",
+      "organization": "DGCCRF",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/etiquetage-de-vos-produits-cosmetiques-comment-le-decrypter",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : DGCCRF",
+      "published": "2025-12-04",
+      "passage": "Période après ouverture, ligne 64 ; nomenclature INCI, ligne 78",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Règles d’étiquetage cosmétique en France/UE ; aucune efficacité d’un produit au chanvre n’est inférée.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Période après ouverture, ligne 64 ; nomenclature INCI, ligne 78",
+        "result": "Le pot ouvert indique une période après ouverture ; l’INCI harmonise les noms des ingrédients."
+      }
+    },
+    {
+      "id": "q2-en01-emark",
+      "title": "The e-mark: quantity information for prepackaged products",
+      "organization": "Commission européenne, Your Europe",
+      "url": "https://europa.eu/youreurope/business/product-rules-compliance/general-product-compliance/emark/index_en.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Commission européenne, Your Europe",
+      "published": "Dernière vérification affichée : 2026-10-12",
+      "passage": "« Quantity requirements », lignes 478–491",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Régime européen des préemballages ; moyenne et tolérances du lot, pas égalité de chaque unité.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "« Quantity requirements », lignes 478–491",
+        "result": "Le signe ℮ accompagne un contrôle des quantités préemballées : la moyenne du lot atteint au moins la quantité nominale."
+      }
+    },
+    {
+      "id": "q2-en01-nutrition",
+      "title": "Déclaration nutritionnelle sur les denrées alimentaires",
+      "organization": "DGCCRF",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/declaration-nutritionnelle-sur-les-denrees-alimentaires",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : DGCCRF",
+      "published": "2025-06-04",
+      "passage": "Calcul du sel, ligne 58 ; base de comparaison, ligne 72",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Calcul du sel, ligne 58 ; base de comparaison, ligne 72",
+        "result": "Les valeurs pour 100 g ou 100 ml facilitent la comparaison ; le sel déclaré est calculé à partir du sodium total."
+      }
+    },
+    {
+      "id": "q2-en01-additifs",
+      "title": "Qu’est-ce qu’un additif ?",
+      "organization": "SPF Santé publique, Belgique",
+      "url": "https://www.health.belgium.be/fr/professionnels/entreprises/produits-consommation/alimentation/substances-specifiques-ajoutees/additifs-alimentaires/quest-ce-quun-additif",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : SPF Santé publique, Belgique",
+      "published": "s.d.",
+      "passage": "Introduction, ligne 2 ; étiquetage, lignes 59–64",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition et identification réglementaire européennes ; aucune garantie générale de sécurité à toute dose.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Introduction, ligne 2 ; étiquetage, lignes 59–64",
+        "result": "Le numéro E sert à identifier un additif alimentaire."
+      }
+    },
+    {
+      "id": "q2-en01-pourcentage",
+      "title": "NIST Guide to the SI, Chapter 7: Rules and Style Conventions for Expressing Values of Quantities",
+      "organization": "NIST",
+      "url": "https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-7-rules-and-style-conventions-expressing-values",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : NIST",
+      "published": "2016-01-28 ; mise à jour affichée : 2025-08-18",
+      "passage": "§7.10.2, lignes 272–277 ; définition de la fraction massique, ligne 345",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§7.10.2, lignes 272–277 ; définition de la fraction massique, ligne 345",
+        "result": "Le pourcentage exprime des centièmes ; une fraction massique rapporte la masse du constituant à celle du mélange."
+      }
+    },
+    {
+      "id": "q2-en01-allergenes",
+      "title": "Quels allergènes doivent être mentionnés sur un produit alimentaire ?",
+      "organization": "Direction de l’information légale et administrative, Service-Public.fr",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F32192",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Direction de l’information légale et administrative, Service-Public.fr",
+      "published": "Vérifié le 2025-10-23",
+      "passage": "Mise en évidence, lignes 149–151 ; présence fortuite, lignes 173–183",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Information réglementaire française ; pas de conseil individuel ni de quantification du risque.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Mise en évidence, lignes 149–151 ; présence fortuite, lignes 173–183",
+        "result": "Les allergènes sont distingués typographiquement ; les traces éventuelles peuvent provenir d’un contact involontaire."
+      }
+    },
+    {
+      "id": "q2-en01-prix",
+      "title": "L’information sur les prix pour certains biens et services",
+      "organization": "Institut national de la consommation",
+      "url": "https://www.inc-conso.fr/content/linformation-sur-les-prix-pour-certains-biens-et-services",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Institut national de la consommation",
+      "published": "s.d., date de publication non relevée",
+      "passage": "Prix à l’unité de mesure, ligne 229",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Prix à l’unité de mesure, ligne 229",
+        "result": "Le prix au kilo ou au litre permet de comparer les prix de biens équivalents."
+      }
+    },
+    {
+      "id": "q2-en01-gs1",
+      "title": "Does the GS1 Prefix show the country of origin?",
+      "organization": "GS1",
+      "url": "https://support.gs1.org/support/solutions/articles/43000734188",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : GS1",
+      "published": "s.d., année de modification non affichée dans le passage consulté",
+      "passage": "Réponse et explication, lignes 5–9",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Réponse et explication, lignes 5–9",
+        "result": "Le préfixe désigne l’organisation GS1 qui a attribué le numéro, pas le pays de fabrication."
+      }
+    },
+    {
+      "id": "q2-en01-nutriscore",
+      "title": "Nutri-Score : tout comprendre de A à E !",
+      "organization": "INRAE",
+      "url": "https://www.inrae.fr/actualites/nutri-score",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : INRAE",
+      "published": "2026-06-22",
+      "passage": "« Le Nutri-Score est-il fiable ? », lignes 59–60",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Fonction du score en France à la date consultée ; pas de classement d’un produit réel.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "« Le Nutri-Score est-il fiable ? », lignes 59–60",
+        "result": "Le Nutri-Score évalue la qualité nutritionnelle et non le degré de transformation ou la présence d’additifs."
+      }
+    },
+    {
+      "id": "q2-en01-contact",
+      "title": "Les règles à respecter pour les matériaux, emballages, ustensiles et contenants au contact des aliments",
+      "organization": "DGCCRF",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/les-regles-respecter-pour-les-materiaux-emballages-ustensiles-et-contenants-au-contact-des-aliments",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : DGCCRF",
+      "published": "2026-02-18",
+      "passage": "Pictogramme verre-fourchette, lignes 44 et 65 ; conditions d’emploi, lignes 56 et 66",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale appliquée à un produit hypothétique au chanvre ; pas de donnée issue du site.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Pictogramme verre-fourchette, lignes 44 et 65 ; conditions d’emploi, lignes 56 et 66",
+        "result": "Le symbole indique l’aptitude au contact alimentaire ; d’autres indications précisent les conditions d’emploi."
+      }
+    },
+    {
+      "id": "q2-en01-plastiques",
+      "title": "Comprendre les symboles de tri",
+      "organization": "ADEME",
+      "url": "https://agirpourlatransition.ademe.fr/particuliers/reduire-dechets/bien-jeter/comprendre-symboles-tri",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : ADEME",
+      "published": "2025-11-20",
+      "passage": "« Biosourcé », lignes 107–113 ; compostage, ligne 122",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Vocabulaire des matériaux ; aucune consigne locale de tri ni autorisation d’allégation commerciale n’est déduite.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "« Biosourcé », lignes 107–113 ; compostage, ligne 122",
+        "result": "Biosourcé renvoie à une origine dans la biomasse ; le compostage industriel requiert des conditions particulières."
+      }
+    },
+    {
+      "id": "q2-en01-resine",
+      "title": "FAQ plastique — juillet 2024",
+      "organization": "Ministère de la Transition écologique, DGPR",
+      "url": "https://www.ecologie.gouv.fr/sites/default/files/documents/FAQ%20plastique%20juillet%202024.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Ministère de la Transition écologique, DGPR",
+      "published": "2024-07",
+      "passage": "Page 2, lignes 40–54",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Identification de la matière seulement ; pas de promesse locale de recyclage.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Page 2, lignes 40–54",
+        "result": "Le code d’identification de la résine précise la matière et ne garantit pas sa recyclabilité."
+      }
+    },
+    {
+      "id": "q2-en01-congelation",
+      "title": "Pourquoi ne faut-il pas recongeler un produit décongelé ?",
+      "organization": "Ministère de l’Agriculture",
+      "url": "https://agriculture.gouv.fr/pourquoi-ne-faut-il-pas-recongeler-un-produit-decongele",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Ministère de l’Agriculture",
+      "published": "2024-10-10",
+      "passage": "Effet de la congélation sur les bactéries, lignes 32–37",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Principe microbiologique général ; pas de procédure de conservation ni d’évaluation d’un lot réel.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Effet de la congélation sur les bactéries, lignes 32–37",
+        "result": "Certaines bactéries survivent à la congélation ; congeler n’est donc pas stériliser."
+      }
+    },
+    {
+      "id": "q2-en01-mycotoxines",
+      "title": "Mycotoxins",
+      "organization": "Autorité européenne de sécurité des aliments, EFSA",
+      "url": "https://www.efsa.europa.eu/en/topics/topic/mycotoxins",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Autorité européenne de sécurité des aliments, EFSA",
+      "published": "Révisé le 2026-01-06",
+      "passage": "Introduction, ligne 151",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Origine biologique générale ; aucune présence, teneur ou limite dans un lot de chanvre n’est inférée.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Introduction, ligne 151",
+        "result": "Les mycotoxines sont des substances toxiques produites par certains champignons."
+      }
+    },
+    {
+      "id": "q2-en01-echantillonnage",
+      "title": "LAB REF 02 — Exigences pour l’accréditation des laboratoires selon la norme NF EN ISO/IEC 17025:2017",
+      "organization": "Cofrac",
+      "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Cofrac",
+      "published": "Révision 15 ; date d’édition non relevée",
+      "passage": "§7.3, pages 12–13, lignes 418–437",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Principe de représentativité ; aucun plan universel ni nombre de prélèvements n’est prescrit.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§7.3, pages 12–13, lignes 418–437",
+        "result": "Un plan d’échantillonnage vise une partie représentative de l’ensemble ; sa qualité conditionne la fiabilité du résultat."
+      }
+    },
+    {
+      "id": "q2-en01-validation",
+      "title": "The Fitness for Purpose of Analytical Methods: A Laboratory Guide to Method Validation and Related Topics",
+      "organization": "Eurachem",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Helen Cantwell (dir.), groupe de travail Eurachem sur la validation des méthodes",
+      "published": "3e édition, 2025",
+      "passage": "§5.1.1, page 23, lignes 1733–1737 ; §5.3.1, page 31, lignes 2326–2329",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Principes généraux de validation ; aucune méthode particulière de dosage du cannabis n’est validée par cette référence.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§5.1.1, page 23, lignes 1733–1737 ; §5.3.1, page 31, lignes 2326–2329",
+        "result": "La sélectivité concerne les interférences ; la limite de quantification est liée à une performance acceptable au faible niveau."
+      }
+    },
+    {
+      "id": "q2-en01-blancs",
+      "title": "Blanks in Method Validation — Supplement to The Fitness for Purpose of Analytical Methods",
+      "organization": "Eurachem",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_Guide_Blanks_supplement_2nd_ed_EN.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Helen Cantwell (dir.), Eurachem",
+      "published": "2e édition, 2025",
+      "passage": "§2.3, page 4, lignes 195–206",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Principe du contrôle analytique ; absence de signal dans un blanc ne certifie pas un produit.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§2.3, page 4, lignes 195–206",
+        "result": "Le blanc de procédure suit l’analyse entière pour repérer des contaminations ou interférences introduites par celle-ci."
+      }
+    },
+    {
+      "id": "q2-en01-rm8210",
+      "title": "Reference Material 8210 Hemp Plant — Reference Material Information Sheet",
+      "organization": "NIST",
+      "url": "https://tsapps.nist.gov/srmext/certificates/8210.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : NIST",
+      "published": "2024-06-18",
+      "passage": "Page 1, lignes 6–12 ; page 2, lignes 63–64",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Valeurs non certifiées de RM 8210 ; ne pas les présenter comme certification d’un produit commercial.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Page 1, lignes 6–12 ; page 2, lignes 63–64",
+        "result": "Ce matériau sert à harmoniser des mesures ; ses valeurs sont exprimées sur matière sèche et ne sont pas certifiées."
+      }
+    },
+    {
+      "id": "q2-en01-cofrac",
+      "title": "La section Laboratoires du Cofrac",
+      "organization": "Cofrac",
+      "url": "https://www.cofrac.fr/a-propos-du-cofrac/organisation/section-laboratoires",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Cofrac",
+      "published": "s.d.",
+      "passage": "Laboratoires d’essais, ligne 80 ; organisateurs d’essais d’aptitude, ligne 87",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Portée précise de l’accréditation ; celle-ci ne vaut pas certification des produits analysés.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Laboratoires d’essais, ligne 80 ; organisateurs d’essais d’aptitude, ligne 87",
+        "result": "L’accréditation vise la compétence et l’impartialité pour des opérations spécifiées ; les essais d’aptitude comparent des laboratoires."
+      }
+    },
+    {
+      "id": "q2-en01-vim",
+      "title": "International vocabulary of metrology — Basic and general concepts and associated terms (VIM)",
+      "organization": "JCGM / Bureau international des poids et mesures",
+      "url": "https://www.bipm.org/documents/20126/2071204/JCGM_200_2012.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Joint Committee for Guides in Metrology (JCGM)",
+      "published": "JCGM 200:2012, 3e édition 2008 avec corrections mineures de 2012",
+      "passage": "§2.14–2.15, pages 21–22 ; §2.20–2.21, pages 23–24 ; §2.39, page 28 ; §4.31, page 45",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Définitions métrologiques générales ; exemples de chanvre hypothétiques.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§2.14–2.15, pages 21–22 ; §2.20–2.21, pages 23–24 ; §2.39, page 28 ; §4.31, page 45",
+        "result": "Le VIM distingue justesse et fidélité, définit les conditions de répétabilité et la relation d’étalonnage."
+      }
+    },
+    {
+      "id": "q2-en01-chromatographie",
+      "title": "Definition of chromatography — NCI Dictionary of Cancer Terms",
+      "organization": "National Cancer Institute, NIH",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-terms/def/chromatography",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : National Cancer Institute, NIH",
+      "published": "s.d.",
+      "passage": "Définition, ligne 14",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle",
+      "limitation": "Définition générale de la technique ; aucune conclusion médicale ou identification d’un composé particulier.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Définition, ligne 14",
+        "result": "La chromatographie sépare les substances d’un mélange selon leur migration."
+      }
+    },
+    {
+      "id": "q2-en01-spectrometrie",
+      "title": "Molecular Mass Distribution Measurement by Mass Spectrometry — NIST Recommended Practice Guide",
+      "organization": "NIST",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication960-21.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "William E. Wallace et Charles M. Guttman",
+      "published": "2010-04",
+      "passage": "§2.1, pages 4–5, lignes 201–215",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Guide consacré aux distributions de masses de polymères ; seul le principe physique général des ions est réutilisé.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§2.1, pages 4–5, lignes 201–215",
+        "result": "En spectrométrie de masse, des ions sont séparés selon leur rapport masse/charge."
+      }
+    },
+    {
+      "id": "q2-en01-eurl",
+      "title": "Guidance document on performance criteria for methods of analysis for mycotoxins and plant toxins in food and feed",
+      "organization": "Laboratoire de référence de l’Union européenne pour les mycotoxines et toxines végétales, EURL-MP",
+      "url": "https://www.eurl-mp.eu/api/media/file/EURL-MP%20guidance%20document%20performance%20criteria%2004.03.2026.pdf?prefix=68fa250fb84b67298bd64929",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Laboratoire de référence de l’Union européenne pour les mycotoxines et toxines végétales, EURL-MP",
+      "published": "Version 1.4, 2026-03-04",
+      "passage": "§2.3, page 7, lignes 134–158 ; §2.5, pages 7–8, lignes 167–186",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Guide d’analyses de contaminants alimentaires ; interprétation des contrôles, sans seuil ni protocole de fabrication/extraction.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§2.3, page 7, lignes 134–158 ; §2.5, pages 7–8, lignes 167–186",
+        "result": "Les coextraits peuvent modifier le signal ; la récupération compare une valeur mesurée, corrigée du fond si nécessaire, à une valeur de référence."
+      }
+    },
+    {
+      "id": "q2-en01-ouverture",
+      "title": "21 CFR §211.132 — Tamper-evident packaging requirements for OTC human drug products",
+      "organization": "Food and Drug Administration, États-Unis ; édition officielle GovInfo",
+      "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title21-vol4/pdf/CFR-2025-title21-vol4-sec211-132.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle : Food and Drug Administration, États-Unis ; édition officielle GovInfo",
+      "published": "Édition annuelle du 2025-04-01",
+      "passage": "§211.132(b)(1), page 1, lignes 39–55",
+      "access": "full-text",
+      "documentKind": "Document institutionnel PDF",
+      "limitation": "Texte américain relatif aux médicaments ; seule la fonction mécanique générique du témoin d’ouverture est utilisée. Aucune obligation sur les produits français au chanvre n’est déduite.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§211.132(b)(1), page 1, lignes 39–55",
+        "result": "Un témoin d’ouverture fournit une preuve visible lorsque la barrière est rompue ou absente."
+      }
+    },
+    {
+      "id": "q2-en01-ufc",
+      "title": "Commodity Specific Food Safety Guidelines for the Production, Harvest, Post-Harvest, and Value-Added Unit Operations of Green Onions",
+      "organization": "Groupe de travail interprofessionnel sur les oignons verts ; document diffusé par la FDA",
+      "url": "https://www.fda.gov/files/food/published/Commodity-Specific-Food-Safety-Guidelines-for-the-Production--Harvest--Post-Harvest--and-Value-Added-Unit-Operations-of-Green-Onions.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Collectif de contributeurs et relecteurs listés dans les remerciements, pages 2–3 du PDF",
+      "published": "2010-02-26",
+      "passage": "Glossaire, page 7 du PDF, lignes 283–287 ; date de couverture et remerciements consultés",
+      "access": "full-text",
+      "documentKind": "Guide interprofessionnel PDF diffusé par une institution",
+      "limitation": "Guide consacré aux oignons verts ; seule la définition microbiologique générale d’une UFC est réutilisée. Aucun seuil, protocole, obligation ou risque propre au chanvre n’est déduit.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Glossaire, page 7 du PDF, lignes 283–287",
+        "result": "Le dénombrement compte des colonies formées par des unités microbiennes viables dans les conditions du test."
+      }
+    },
+    {
+      "id": "q2-en01-eu-nutrition-energy",
+      "title": "Déclaration nutritionnelle — Règles de l’UE en matière d’étiquetage",
+      "organization": "Commission européenne, Your Europe",
+      "url": "https://europa.eu/youreurope/business/product-rules-compliance/food/nutrition-declaration/index_fr.htm",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction institutionnelle de la Commission européenne",
+      "published": "Dernière vérification affichée : 2026-06-23",
+      "passage": "« Comment calculer la valeur énergétique et les quantités de nutriments ? », lignes 491–493 ; tableau des unités, ligne 511",
+      "access": "official-page",
+      "documentKind": "Page institutionnelle européenne",
+      "limitation": "Sens des unités de la déclaration nutritionnelle dans l’UE ; aucune valeur mesurée sur un aliment au chanvre ni recommandation individuelle n’est fournie.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "Lignes 491–493 et 511 ; date affichée ligne 527",
+        "result": "L’énergie est exprimée à la fois en kJ et en kcal sur une même base de quantité d’aliment."
+      }
+    },
+    {
+      "id": "q2-en01-fda-retention-time",
+      "title": "Pesticide Analytical Manual, Volume I — Chapter 6: High Performance Liquid Chromatography, §602 C Column Evaluation",
+      "organization": "Food and Drug Administration, États-Unis",
+      "url": "https://www.fda.gov/media/74709/download",
+      "verifiedAt": "2026-11-16",
+      "author": "Food and Drug Administration",
+      "published": "Section 602 : transmission 94-1, janvier 1994 ; table du chapitre : transmission 96-E1, septembre 1996",
+      "passage": "§602 C, page 602-5 (page 29 du PDF), lignes 1125–1147 et figure 602-a",
+      "access": "full-text",
+      "documentKind": "Manuel analytique institutionnel PDF",
+      "limitation": "Manuel d’analyse de pesticides : seule la définition générale du repère temporel est utilisée. Aucun protocole, réglage instrumental, identification ou dosage du cannabis n’est déduit.",
+      "consultation": {
+        "reader": "e_engine_audit",
+        "date": "2026-11-16",
+        "locator": "§602 C, page 602-5 (page 29 du PDF), lignes 1125–1147 ; table et pied de page datés consultés",
+        "result": "Le temps de rétention est le délai de l’injection au maximum du pic ; l’intervalle entre pics et la largeur du pic sont définis séparément."
+      }
+    }
+  ]
+}

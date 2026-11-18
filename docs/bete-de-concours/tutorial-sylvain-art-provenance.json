@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-15",
+  "purpose": "Portraits contextuels de Sylvain pour le tutoriel progressif du Quartier.",
+  "mode": "Built-in image_gen.imagegen, four individual identity-preserving generations.",
+  "identityReference": "public/sylvain.png",
+  "visualValidation": "Chaque sortie inspectée : visage imberbe, casquette turquoise et beige, contours noirs et trame préservés ; accessoires distincts ; aucune information de jeu intégrée dans l'image.",
+  "presentation": "Illustrations décoratives : textes, valeurs, progression et actions en HTML. Le trophée du coach ne représente pas une récompense obtenue par le joueur.",
+  "processing": "Sharp : redimensionnement 512 × 512 en contain sans recadrage, WebP qualité 88, alpha d'origine conservé. Aucun traitement génératif supplémentaire.",
+  "assets": [
+    {
+      "role": "culture",
+      "file": "public/placard/tutorial/sylvain-culture-v1.webp",
+      "source": "C:/Users/sylva/.codex/generated_images/01a1e01d-fccc-7163-9963-32867aed18da/exec-1296aef0-0701-4162-bfe2-da4b3211073b.png",
+      "references": [
+        "public/sylvain.png"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent character cutout for a compact game tutorial coach. Use the attached Sylvain character as exact identity and drawing-style reference. Create ONE new waist-up pose of this SAME Sylvain for CULTURE: smiling warmly at the viewer while holding one small terracotta pot containing a young hemp seedling with a few serrated leaves in one hand, and gently indicating it with the other open hand. Preserve his round clean-shaven face, black short side hair, black oval eyes, small rounded nose, cheerful open-mouth smile, teal and tan baseball cap with black brim, tan sweater and teal lower clothes. Thick black cartoon outlines, simple flat teal/tan/cream colours, sparse small halftone dots exactly like reference. No facial hair, no glasses, no altered identity, no realistic skin, no photorealism. Square composition, bust centered, whole cap and both hands and plant fully inside frame, 8 percent empty transparent margin, straight quiet waist edge at bottom; silhouette entirely self-contained. Actual alpha transparency everywhere outside the figure and pot. No white or cream background, no scenery, no panel, no frame, no floor, no shadow outside silhouette, no words, letters, numbers, logo or interface."
+    },
+    {
+      "role": "atelier",
+      "file": "public/placard/tutorial/sylvain-atelier-v1.webp",
+      "source": "C:/Users/sylva/.codex/generated_images/01a1e01d-fccc-7163-9963-32867aed18da/exec-5d44502c-b4b2-445f-8e73-7c510a11d893.png",
+      "references": [
+        "public/sylvain.png",
+        "generated culture portrait"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent character cutout for a compact game tutorial coach. Create ONE new ATELIER pose of this SAME Sylvain character. Image 1 is the canonical identity reference. Image 2 is the approved CULTURE portrait: preserve exactly its bust size, visual style, face design, cap and sweater colours and isolated cutout composition; change only the arm pose and replace the plant accessory. ATELIER pose: Sylvain smiles at the viewer, holds a simple small steel open-end spanner upright in one hand, and presents a small closed plain cream kraft storage box with his other hand near waist. No industrial machine, no technical markings. Preserve round clean-shaven face, black short side hair, black oval eyes, small rounded nose, cheerful open-mouth smile, teal and tan baseball cap with black brim, tan sweater and teal lower clothes. Thick black cartoon outlines, simple flat teal/tan/cream colours, sparse small halftone dots. No beard, moustache, glasses, realistic skin or changed identity. Square composition with bust centered, whole cap, arms and props fully inside frame, 8 percent transparent outer margin, same quiet waist edge as image 2. Actual alpha transparency outside the figure and props. No opaque background, no scene, no panel, no frame, no floor, no shadow outside silhouette, no text, letters, numbers, logo or interface."
+    },
+    {
+      "role": "savoir",
+      "file": "public/placard/tutorial/sylvain-savoir-v1.webp",
+      "source": "C:/Users/sylva/.codex/generated_images/01a1e01d-fccc-7163-9963-32867aed18da/exec-350dbc18-31b3-4a9c-a2ab-343e1743f952.png",
+      "references": [
+        "public/sylvain.png",
+        "generated culture portrait"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent character cutout for a compact game tutorial coach. Create ONE new SAVOIR learning pose of this SAME Sylvain character. Image 1 is the canonical identity reference. Image 2 is the approved CULTURE portrait: preserve exactly its bust size, visual style, face design, cap and sweater colours and isolated cutout composition; change only the arms and accessory. SAVOIR pose: Sylvain smiles at the viewer while holding an open small cream book with a teal cover at mid chest, one finger pointing gently to a completely blank page. The book pages have no printed words, symbols or diagrams. Preserve round clean-shaven face, black short side hair, black oval eyes, small rounded nose, cheerful open-mouth smile, teal and tan baseball cap with black brim, tan sweater and teal lower clothes. Thick black cartoon outlines, simple flat teal/tan/cream colours, sparse small halftone dots. No beard, moustache, spectacles, graduation hat, realistic skin or changed identity. Square composition with bust centered, whole cap, arms and book fully inside frame, 8 percent transparent outer margin, same quiet waist edge as image 2. Actual alpha transparency outside the figure and book. No opaque background, no scene, no panel, no frame, no floor, no shadow outside silhouette, no text, letters, numbers, logo or interface."
+    },
+    {
+      "role": "defi",
+      "file": "public/placard/tutorial/sylvain-defi-v1.webp",
+      "source": "C:/Users/sylva/.codex/generated_images/01a1e01d-fccc-7163-9963-32867aed18da/exec-1488ebc3-5989-43b3-b087-43facfbc9755.png",
+      "references": [
+        "public/sylvain.png",
+        "generated culture portrait"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent character cutout for a compact game tutorial coach. Create ONE new DEFI challenge pose of this SAME Sylvain character. Image 1 is the canonical identity reference. Image 2 is the approved CULTURE portrait: preserve exactly its bust size, visual style, face design, cap and sweater colours and isolated cutout composition; change only the arms and accessory. DEFI pose: Sylvain smiles encouragingly at the viewer, gives a thumbs-up with one hand, and holds a single simple small gold trophy cup at waist level in his other hand. Cup is blank, with two little handles, no inscription or badge, no claim of a real earned reward. Preserve round clean-shaven face, black short side hair, black oval eyes, small rounded nose, cheerful open-mouth smile, teal and tan baseball cap with black brim, tan sweater and teal lower clothes. Thick black cartoon outlines, simple flat teal/tan/cream/gold colours, sparse small halftone dots. No beard, moustache, glasses, realistic skin or changed identity. Square composition with bust centered, whole cap, arms and trophy fully inside frame, 8 percent transparent outer margin, same quiet waist edge as image 2. Actual alpha transparency outside the figure and trophy. No opaque background, no scene, no panel, no frame, no floor, no shadow outside silhouette, no text, letters, numbers, logo or interface."
+    }
+  ]
+}

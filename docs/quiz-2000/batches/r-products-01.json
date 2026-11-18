@@ -1,0 +1,1782 @@
+{
+  "batchId": "r-products-01",
+  "author": "rebalance_products_sol",
+  "role": "Produits et formes du cannabis récréatif, CBD et actifs — rééquilibrage du 17 novembre 2026",
+  "questions": [
+    {
+      "id": "hemp-q2-rp01-kief-loose-trichome-powder",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "De quoi le kief est-il principalement constitué ?",
+      "options": [
+        "De trichomes détachés sous forme de poudre",
+        "De fleurs entières séchées et comprimées",
+        "De cristaux de CBD isolé",
+        "D’une huile végétale enrichie en cannabinoïdes"
+      ],
+      "answer": 0,
+      "explanation": "Le kief rassemble surtout des glandes résineuses détachées. Il se distingue de la fleur moulue, qui conserve davantage de tissus végétaux.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Kief",
+        "subjectKey": "cannabis-kief",
+        "property": "Matière principale du produit",
+        "expectedAnswer": "De trichomes détachés sous forme de poudre",
+        "learningObjective": "Distinguer poudre résineuse et fleur simplement fragmentée.",
+        "factKey": "kief-loose-trichome-powder",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 8, §3.1",
+            "support": "Le kief est une fine poudre composée principalement de trichomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-hash-compressed-resinous-material",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Quelle description correspond au haschich traditionnel ?",
+      "options": [
+        "Une huile de graines enrichie en arômes",
+        "Une matière résineuse rassemblée en masse compacte",
+        "Une poudre constituée d’un seul cannabinoïde purifié",
+        "Des fleurs entières conservant leur forme naturelle"
+      ],
+      "answer": 1,
+      "explanation": "Le haschich est un produit résineux compact, issu des glandes de la plante. Il ne correspond ni à une fleur entière ni à un cannabinoïde isolé.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ccsa-products-2020"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Haschich",
+        "subjectKey": "cannabis-hashish",
+        "property": "Forme compacte de résine glandulaire",
+        "expectedAnswer": "Une matière résineuse rassemblée en masse compacte",
+        "learningObjective": "Reconnaître le haschich parmi les grandes présentations du cannabis.",
+        "factKey": "hash-compressed-resinous-material",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-products-2020",
+            "locator": "p. 3, tableau 1, Hash",
+            "support": "Le hash est une substance composée de trichomes compressés ou purifiés, généralement solide lorsqu’elle est pressée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-rosin-solventless-versus-resin",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans la terminologie de l’INSPQ, qu’est-ce qui distingue le rosin de la resin ?",
+      "options": [
+        "La présence obligatoire de CBD plutôt que de THC",
+        "L’ajout systématique d’une huile alimentaire",
+        "L’absence de solvant organique pour son extraction",
+        "L’absence de terpènes dans le produit fini"
+      ],
+      "answer": 2,
+      "explanation": "Le rosin, ou résine pressée, relève d’une séparation mécanique. Dans cette terminologie, resin désigne une autre famille d’extraits, obtenus avec un solvant.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Rosin et resin",
+        "subjectKey": "cannabis-rosin",
+        "property": "Distinction terminologique entre familles d’extraits",
+        "expectedAnswer": "L’absence de solvant organique pour son extraction",
+        "learningObjective": "Comprendre que deux termes proches ne désignent pas la même catégorie.",
+        "factKey": "rosin-solventless-versus-resin",
+        "form": "comparaison",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 10, §3.3 et p. 14, Terminologie",
+            "support": "L’INSPQ distingue résine pressée mécanique et resin extraite chimiquement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-wax-pen-concentrate-accessory",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Au sens précis retenu par l’INSPQ, un « wax pen » est un appareil destiné à quel produit ?",
+      "options": [
+        "À des fleurs sèches entières uniquement",
+        "À une huile alimentaire au CBD",
+        "À une teinture alcoolique orale",
+        "À des concentrés comme la wax"
+      ],
+      "answer": 3,
+      "explanation": "Wax pen désigne un appareil pour des résines concentrées. L’INSPQ signale que ce nom est parfois employé trop largement pour tout dispositif de vapotage du cannabis.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Wax pen",
+        "subjectKey": "cannabis-wax-pen",
+        "property": "Produit auquel correspond le nom de l’accessoire",
+        "expectedAnswer": "À des concentrés comme la wax",
+        "learningObjective": "Distinguer vocabulaire d’un accessoire et nom générique du vapotage.",
+        "factKey": "wax-pen-concentrate-accessory",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 15, tableau 11, Autres appellations",
+            "support": "Le terme wax pen réfère à une catégorie d’accessoires pour tamponner des résines, dont la wax."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-extract-not-always-concentrate",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Pourquoi un extrait de cannabis vendu en huile orale n’est-il pas forcément un concentré ?",
+      "options": [
+        "Il peut être dilué dans une huile de support",
+        "Il peut avoir été débarrassé de ses cires",
+        "Il peut avoir été débarrassé de solvants résiduels",
+        "Il peut avoir perdu une partie de ses terpènes"
+      ],
+      "answer": 0,
+      "explanation": "Un extrait peut entrer dans une formulation diluée. Le mot « extrait » renseigne son origine, alors que « concentré » décrit ici une forte teneur en cannabinoïdes.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Extraits dilués",
+        "subjectKey": "cannabis-diluted-extract",
+        "property": "Extrait et concentré ne sont pas équivalents",
+        "expectedAnswer": "Il peut être dilué dans une huile de support",
+        "learningObjective": "Distinguer matière extraite et concentration finale.",
+        "factKey": "extract-not-always-concentrate",
+        "form": "deduction",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 6, §3, paragraphes 3–4",
+            "support": "Les extraits peuvent être dilués et moins concentrés que la plante ; tous les produits de cette catégorie ne sont donc pas des concentrés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-distillate-low-native-terpenes",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Comparé à un extrait à spectre complet, un distillat non réaromatisé se caractérise généralement par quoi ?",
+      "options": [
+        "Une conservation complète des arômes de la fleur",
+        "Une forte réduction des terpènes d’origine",
+        "Une prédominance des cannabinoïdes acides",
+        "Un rapport THC/CBD proche de l’équilibre"
+      ],
+      "answer": 1,
+      "explanation": "Le raffinage du distillat appauvrit son profil terpénique. Des terpènes peuvent ensuite être ajoutés à une formulation : le produit vendu peut donc être aromatique.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-who-extracts-2018"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Distillat",
+        "subjectKey": "cannabis-distillate",
+        "property": "Appauvrissement initial en terpènes",
+        "expectedAnswer": "Une forte réduction des terpènes d’origine",
+        "learningObjective": "Ne pas confondre arôme ajouté et conservation du bouquet initial.",
+        "factKey": "distillate-low-native-terpenes",
+        "form": "comparaison",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-who-extracts-2018",
+            "locator": "Section 1, p. 10, §1.2.4.6",
+            "support": "Les distillats sont pauvres en terpènes, lesquels peuvent être ajoutés après fabrication."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-isolate-single-cannabinoid",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Dans un isolat de cannabis, quelle composante a surtout été purifiée ?",
+      "options": [
+        "L’ensemble des arômes de la fleur",
+        "Un mélange complet de résines et de fibres",
+        "Un cannabinoïde particulier",
+        "La totalité des huiles de la plante"
+      ],
+      "answer": 2,
+      "explanation": "Un isolat vise un cannabinoïde particulier, par exemple le CBD. Il se distingue d’un extrait réunissant plusieurs cannabinoïdes et d’autres constituants de la fleur.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Isolat de cannabinoïde",
+        "subjectKey": "cannabis-cannabinoid-isolate",
+        "property": "Sélection d’un seul cannabinoïde",
+        "expectedAnswer": "Un cannabinoïde particulier",
+        "learningObjective": "Reconnaître le principe d’un isolat sans l’assimiler à un spectre complet.",
+        "factKey": "isolate-single-cannabinoid",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 13, §3.6",
+            "support": "Les isolats sont des produits hautement raffinés composés d’un seul cannabinoïde."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-oil-carrier",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Dans une huile orale au CBD, quel est le rôle d’une huile végétale dite « de support » ?",
+      "options": [
+        "Servir de conservateur antimicrobien principal",
+        "Former une enveloppe solide autour de chaque portion",
+        "Servir de correcteur de l’acidité du mélange",
+        "Servir de véhicule au CBD dans la formulation"
+      ],
+      "answer": 3,
+      "explanation": "Le CBD ou l’extrait riche en CBD est associé à une huile porteuse. La masse totale du liquide n’est donc pas une masse de CBD pur.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-hc-cbd"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Huile orale au CBD",
+        "subjectKey": "cannabis-oral-carrier-oil",
+        "property": "Fonction du véhicule huileux",
+        "expectedAnswer": "Servir de véhicule au CBD dans la formulation",
+        "learningObjective": "Distinguer substance active et support d’une formulation.",
+        "factKey": "oral-cannabis-oil-carrier",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-hc-cbd",
+            "locator": "The difference between cannabis oil and hemp-seed oil",
+            "support": "L’huile de cannabis est décrite comme une association d’extrait THC/CBD et d’huile végétale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-oral-oil-distinct-vape-liquid",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Dans une huile orale au CBD, quel ingrédient distingue notamment sa formulation d’un liquide conçu pour l’inhalation ?",
+      "options": [
+        "Une huile alimentaire comme véhicule",
+        "Un propulseur gazeux dans le liquide",
+        "Des fragments de fleurs gardés en suspension",
+        "Une forte proportion d’alcool destinée à s’évaporer"
+      ],
+      "answer": 0,
+      "explanation": "Les huiles ingérables comportent des huiles alimentaires et ne sont pas conçues pour l’inhalation. La présence de CBD dans les deux produits ne les rend pas interchangeables.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Huile orale et liquide de vapotage",
+        "subjectKey": "cannabis-oral-versus-vape-oil",
+        "property": "Formulation liée à la destination du produit",
+        "expectedAnswer": "Une huile alimentaire comme véhicule",
+        "learningObjective": "Distinguer deux liquides contenant le même actif.",
+        "factKey": "oral-oil-distinct-vape-liquid",
+        "form": "comparaison",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 16, §4.1.1, paragraphes 1–3",
+            "support": "La présence d’huile alimentaire rend les huiles ingérables inappropriées pour l’inhalation."
+          }
+        ],
+        "jurisdiction": "Portée générale ; source institutionnelle québécoise",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-pre-roll-already-rolled-flower",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Que désigne un préroulé de cannabis ordinaire ?",
+      "options": [
+        "Une capsule remplie d’huile de cannabis",
+        "Un joint vendu déjà roulé",
+        "Un bloc de résine sans papier",
+        "Une cartouche de liquide à vapoter"
+      ],
+      "answer": 1,
+      "explanation": "Le préroulé est une présentation du cannabis séché déjà roulé. Le nom décrit son format ; il n’indique pas à lui seul un taux de THC ou de CBD.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Préroulé",
+        "subjectKey": "cannabis-pre-roll",
+        "property": "Présentation du produit prêt à l’emploi",
+        "expectedAnswer": "Un joint vendu déjà roulé",
+        "learningObjective": "Reconnaître un format commercial sans lui attribuer un profil chimique.",
+        "factKey": "pre-roll-already-rolled-flower",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 4, §2.1",
+            "support": "Les joints achetés déjà fabriqués sont connus sous le nom de préroulés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-infused-pre-roll-added-extract",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Qu’a de particulier un préroulé de cannabis dit « infusé » ?",
+      "options": [
+        "Il ne comporte que des fleurs entières",
+        "Il contient nécessairement de l’alcool",
+        "Il associe de la fleur à un extrait ajouté",
+        "Il exclut les cannabinoïdes autres que le CBD"
+      ],
+      "answer": 2,
+      "explanation": "Un préroulé infusé peut associer la fleur à du kief, du haschich ou un autre extrait. Le mot « infusé » ne désigne pas ici une tisane.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-hc-infused"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Préroulé infusé",
+        "subjectKey": "cannabis-infused-pre-roll",
+        "property": "Ajout d’extrait à la fleur",
+        "expectedAnswer": "Il associe de la fleur à un extrait ajouté",
+        "learningObjective": "Comprendre l’emploi du mot infusé dans une présentation de cannabis.",
+        "factKey": "infused-pre-roll-added-extract",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-hc-infused",
+            "locator": "Adding other forms of cannabis to dried cannabis products",
+            "support": "Santé Canada donne l’exemple de préroulés contenant surtout de la fleur et du kief ou du haschich ajouté."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-shatter-glasslike-brittle",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Quel concentré doit son nom à son aspect vitreux et cassant ?",
+      "options": [
+        "Le budder",
+        "La teinture",
+        "Le kief",
+        "Le shatter"
+      ],
+      "answer": 3,
+      "explanation": "Le shatter est décrit comme ambré et semblable au verre. Ce nom renvoie à sa présentation physique, pas à l’identité d’un cannabinoïde particulier.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ccsa-products-2020"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Shatter",
+        "subjectKey": "cannabis-shatter",
+        "property": "Aspect physique qui caractérise le shatter",
+        "expectedAnswer": "Le shatter",
+        "learningObjective": "Associer un nom de concentré à une texture.",
+        "factKey": "shatter-glasslike-brittle",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-products-2020",
+            "locator": "p. 3, tableau 1, Shatter",
+            "support": "Le shatter a une apparence et une consistance vitreuses et ambrées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-crumble-dry-crumbly-texture",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Quel nom désigne une forme de wax particulièrement sèche et friable ?",
+      "options": [
+        "Crumble",
+        "Teinture",
+        "Live resin",
+        "Kief"
+      ],
+      "answer": 0,
+      "explanation": "Crumble désigne une forme friable de wax, tandis que budder renvoie à une consistance plus humide. Ces noms décrivent des textures de concentrés.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ccsa-products-2020"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Crumble et budder",
+        "subjectKey": "cannabis-crumble",
+        "property": "Texture friable du crumble",
+        "expectedAnswer": "Crumble",
+        "learningObjective": "Reconnaître une distinction de texture entre concentrés.",
+        "factKey": "crumble-dry-crumbly-texture",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-products-2020",
+            "locator": "p. 3, tableau 1, Wax",
+            "support": "Le crumble est la forme de wax plus sèche et plus friable, à la différence du budder."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-live-resin-fresh-frozen-origin",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans « live resin », à quoi renvoie le mot « live » ?",
+      "options": [
+        "À des fleurs toujours attachées à une plante vivante",
+        "À une matière végétale fraîche conservée congelée après récolte",
+        "À des cannabinoïdes produits par fermentation",
+        "À l’absence de toute transformation de la résine"
+      ],
+      "answer": 1,
+      "explanation": "L’appellation renvoie à l’état de la matière de départ, fraîche et congelée après récolte, plutôt qu’à du cannabis vivant dans le produit vendu.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ccsa-products-2020"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Live resin",
+        "subjectKey": "cannabis-live-resin",
+        "property": "Sens de live dans l’appellation",
+        "expectedAnswer": "À une matière végétale fraîche conservée congelée après récolte",
+        "learningObjective": "Comprendre une indication descriptive de matière de départ.",
+        "factKey": "live-resin-fresh-frozen-origin",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-products-2020",
+            "locator": "p. 3, tableau 1, Live Resin",
+            "support": "Live resin renvoie à du cannabis frais congelé immédiatement après la récolte."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-bho-expansion-butane-hash-oil",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans la terminologie des extraits de cannabis, que développe le sigle BHO ?",
+      "options": [
+        "Broad hemp oil",
+        "Botanical hash origin",
+        "Butane hash oil",
+        "Balanced hemp oleoresin"
+      ],
+      "answer": 2,
+      "explanation": "BHO signifie butane hash oil. Ce sigle désigne une famille d’extraits liée au solvant employé ; il ne précise pas à lui seul une texture ou un taux de cannabinoïdes.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ccsa-products-2020"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "BHO",
+        "subjectKey": "cannabis-bho",
+        "property": "Développement du sigle de produit",
+        "expectedAnswer": "Butane hash oil",
+        "learningObjective": "Décoder un terme courant sans en déduire une composition uniforme.",
+        "factKey": "bho-expansion-butane-hash-oil",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-products-2020",
+            "locator": "p. 3, note 3",
+            "support": "Les extraits utilisant du butane sont souvent appelés butane hash oils, abrégés BHO."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-thca-diamonds-crystalline-cannabinoid",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Dans le guide de BC Cannabis Stores, les « diamants de THCA » correspondent à quoi ?",
+      "options": [
+        "Des gouttelettes de terpènes sans cannabinoïdes",
+        "Des trichomes entiers agglomérés",
+        "Des fleurs séchées enrobées de résine",
+        "Des cristaux d’un cannabinoïde acide"
+      ],
+      "answer": 3,
+      "explanation": "Le guide décrit des cristaux de THCA, distincts du THC neutre. Le nom « diamant » décrit ici une présentation cristalline, pas une variété botanique.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-bccs-form-products"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Diamants de THCA",
+        "subjectKey": "cannabis-thca-diamonds",
+        "property": "Présentation cristalline d’un cannabinoïde acide",
+        "expectedAnswer": "Des cristaux d’un cannabinoïde acide",
+        "learningObjective": "Reconnaître un produit cristallin distinct d’une résine glandulaire.",
+        "factKey": "thca-diamonds-crystalline-cannabinoid",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-bccs-form-products",
+            "locator": "Types of Concentrates Used : THCA Diamonds",
+            "support": "Le guide décrit des cristaux solides de THCA."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-traditional-tincture-alcohol-extract",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Au sens pharmaceutique traditionnel, une teinture de cannabis est quel type de préparation ?",
+      "options": [
+        "Un extrait alcoolique",
+        "Une huile essentielle aromatique",
+        "Une poudre de glandes résineuses",
+        "Un mélange de fleurs et de résine compacte"
+      ],
+      "answer": 0,
+      "explanation": "Le sens traditionnel de teinture renvoie à un extrait alcoolique. Certains marchés emploient aujourd’hui ce nom plus largement pour des solutions orales, y compris huileuses.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-who-extracts-2018"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Teinture de cannabis",
+        "subjectKey": "cannabis-tincture",
+        "property": "Sens traditionnel du terme teinture",
+        "expectedAnswer": "Un extrait alcoolique",
+        "learningObjective": "Reconnaître un usage précis sans universaliser une appellation commerciale.",
+        "factKey": "traditional-tincture-alcohol-extract",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-who-extracts-2018",
+            "locator": "Section 1, p. 15, note 1",
+            "support": "Le terme cannabis tinctures y désigne des extractions alcooliques de sommités fleuries ou d’autres parties de la plante."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-dabbing-vaporizing-concentrate",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Le mot « dabbing » désigne quoi dans la culture des produits du cannabis ?",
+      "options": [
+        "Une manière d’ingérer une huile en capsule",
+        "Une manière de vaporiser un concentré",
+        "Une application d’extrait sur la muqueuse buccale",
+        "Une combustion de fleurs dans du papier à rouler"
+      ],
+      "answer": 1,
+      "explanation": "Dabbing désigne une méthode d’inhalation de concentrés, et non une molécule ou une variété. Des produits de textures différentes peuvent appartenir à cette catégorie d’usage.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ccsa-products-2020"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Dabbing",
+        "subjectKey": "cannabis-dabbing",
+        "property": "Méthode d’usage plutôt que substance",
+        "expectedAnswer": "Une manière de vaporiser un concentré",
+        "learningObjective": "Distinguer un mot d’usage des noms de molécules et de produits.",
+        "factKey": "dabbing-vaporizing-concentrate",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-products-2020",
+            "locator": "p. 2, encadré What is dabbing?",
+            "support": "Le dabbing est décrit comme une méthode de vaporisation de concentrés solides."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-full-spectrum-native-mixture",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Dans le texte new-yorkais de 2023, « full spectrum » décrit quel profil d’extrait de chanvre ?",
+      "options": [
+        "Un seul cannabinoïde isolé, sans autres constituants",
+        "Seulement les molécules aromatiques de la fleur",
+        "Plusieurs cannabinoïdes et d’autres constituants naturels",
+        "Un mélange défini uniquement par son rapport THC/CBD"
+      ],
+      "answer": 2,
+      "explanation": "Dans cette définition, le spectre complet réunit plusieurs cannabinoïdes, des terpènes et d’autres composés natifs, sans retrait complet intentionnel d’un constituant.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ny-hemp-definitions"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Extrait à spectre complet",
+        "subjectKey": "cannabis-full-spectrum",
+        "property": "Pluralité de constituants dans le spectre complet",
+        "expectedAnswer": "Plusieurs cannabinoïdes et d’autres constituants naturels",
+        "learningObjective": "Comprendre ce que décrit une appellation de composition.",
+        "factKey": "full-spectrum-native-mixture",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ny-hemp-definitions",
+            "locator": "§114.1(s), p. 6",
+            "support": "Full spectrum contient plusieurs cannabinoïdes, terpènes et autres composés naturels, sans élimination complète intentionnelle."
+          }
+        ],
+        "jurisdiction": "État de New York, États-Unis",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-broad-spectrum-thc-removal",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans le texte new-yorkais de 2023, qu’est-ce qui distingue « broad spectrum » d’un isolat de CBD ?",
+      "options": [
+        "Un cannabinoïde unique obtenu à une pureté plus élevée",
+        "Seulement des terpènes, sans aucun cannabinoïde",
+        "Un rapport fixe d’une part de THC pour une part de CBD",
+        "Plusieurs cannabinoïdes, avec le THC retiré au niveau non détectable"
+      ],
+      "answer": 3,
+      "explanation": "Broad spectrum conserve plusieurs cannabinoïdes, tout en visant un THC non détectable selon une méthode adaptée. Ce n’est donc pas le synonyme d’un isolat de CBD.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-ny-hemp-definitions"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Extrait à large spectre",
+        "subjectKey": "cannabis-broad-spectrum",
+        "property": "Plusieurs cannabinoïdes après retrait du THC",
+        "expectedAnswer": "Plusieurs cannabinoïdes, avec le THC retiré au niveau non détectable",
+        "learningObjective": "Différencier large spectre et cannabinoïde isolé.",
+        "factKey": "broad-spectrum-thc-removal",
+        "form": "comparaison",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ny-hemp-definitions",
+            "locator": "§114.1(b), p. 2",
+            "support": "Broad spectrum contient plusieurs cannabinoïdes mais son THC a été retiré à un niveau non détectable avec une méthode adaptée."
+          }
+        ],
+        "jurisdiction": "État de New York, États-Unis",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-ratio-thc-cbd-not-concentration",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Deux extraits affichent THC:CBD = 1:1. Quelle propriété partagent-ils, même si leurs concentrations diffèrent ?",
+      "options": [
+        "Des proportions égales de THC et de CBD",
+        "La même quantité totale de cannabinoïdes par gramme",
+        "La même teneur en chacun des terpènes",
+        "La même masse d’extrait dans leur emballage"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport renseigne les proportions relatives des deux cannabinoïdes. Il ne donne ni leur concentration absolue ni la quantité totale contenue dans un emballage.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-rp01-hc-medical-products"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Rapport THC/CBD",
+        "subjectKey": "cannabis-thc-cbd-ratio",
+        "property": "Proportion relative distincte d’une teneur absolue",
+        "expectedAnswer": "Des proportions égales de THC et de CBD",
+        "learningObjective": "Lire un rapport de composition sans lui attribuer une concentration.",
+        "factKey": "ratio-thc-cbd-not-concentration",
+        "form": "deduction",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-hc-medical-products",
+            "locator": "Choosing a cannabis product, Content of a cannabis product et indications mg/g, mg/ml, mg",
+            "support": "Santé Canada distingue les combinaisons THC/CBD des pourcentages, concentrations et quantités de chaque actif."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-terp-sauce-aromatic-concentrate",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Quel type de mélange le guide de BC Cannabis Stores appelle-t-il « terp sauce » ?",
+      "options": [
+        "Un isolat cristallin de THCA sans autres composants",
+        "Un concentré privilégiant les composés aromatiques",
+        "Une huile alimentaire diluant un extrait de CBD",
+        "Une pâte de fleurs entières mêlées à des fibres"
+      ],
+      "answer": 1,
+      "explanation": "Le guide décrit terp sauce comme un concentré privilégiant la teneur en terpènes. Il peut accompagner des cristaux de cannabinoïdes, dont il constitue une fraction distincte.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-bccs-form-products"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Terp sauce",
+        "subjectKey": "cannabis-terp-sauce",
+        "property": "Fraction de concentré privilégiant les terpènes",
+        "expectedAnswer": "Un concentré privilégiant les composés aromatiques",
+        "learningObjective": "Identifier le contenu aromatique d’une appellation de produit.",
+        "factKey": "terp-sauce-aromatic-concentrate",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-bccs-form-products",
+            "locator": "Types of Concentrates Used : Terp Sauce",
+            "support": "Terp Sauce est décrit comme un concentré mettant l’accent sur les terpènes, parfois associé à des diamants."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-total-thc-molar-mass-convention",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Pour une fleur contenant du THC et du THCA, quelle expression donne le THC total conventionnel ?",
+      "options": [
+        "THC + THCA",
+        "0,877 × THC + THCA",
+        "THC + 0,877 × THCA",
+        "THC + 1,14 × THCA"
+      ],
+      "answer": 2,
+      "explanation": "Les valeurs doivent être dans la même unité. Le facteur 0,877 convertit la masse de THCA en équivalent THC ; il ne mesure pas un rendement réel de transformation.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "q2-rp01-nist-hemp-2024"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "THC total analytique",
+        "subjectKey": "cannabis-total-thc",
+        "property": "Convention de calcul en équivalent THC",
+        "expectedAnswer": "THC + 0,877 × THCA",
+        "learningObjective": "Lire une teneur totale sans additionner directement deux masses moléculaires différentes.",
+        "factKey": "total-thc-molar-mass-convention",
+        "form": "identification",
+        "difficultyRationale": "Demande de lire une convention analytique ou une différence de structure chimique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-nist-hemp-2024",
+            "locator": "p. 22, §3.1.11.2, équation 5",
+            "support": "Le NIST définit le THC total comme THC + 0,877 × THCA, avec un facteur issu du rapport des masses molaires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-bubble-hash-solventless-family",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans quelle famille le guide de BC Cannabis Stores classe-t-il le bubble hash, aussi nommé ice water hash ?",
+      "options": [
+        "Les teintures alcooliques pour la voie orale",
+        "Les distillats de cannabinoïdes",
+        "Les isolats d’un cannabinoïde unique",
+        "Les concentrés séparés sans solvant organique"
+      ],
+      "answer": 3,
+      "explanation": "Bubble hash désigne ici une forme de résine séparée avec de l’eau, sans solvant organique ajouté. Cette classification ne correspond ni à un distillat ni à un cannabinoïde isolé.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-bccs-form-products"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Bubble hash",
+        "subjectKey": "cannabis-bubble-hash",
+        "property": "Famille de résine sans solvant organique",
+        "expectedAnswer": "Les concentrés séparés sans solvant organique",
+        "learningObjective": "Reconnaître le classement d’un produit de résine courant.",
+        "factKey": "bubble-hash-solventless-family",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-bccs-form-products",
+            "locator": "Types of Concentrates Used : Bubble Hash (Ice Water Hash)",
+            "support": "Le guide classe Bubble Hash / Ice Water Hash comme un extrait solventless utilisant l’eau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-nabiximols-thc-cbd-formulation",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quels deux cannabinoïdes entrent dans la formulation de nabiximols, l’extrait proposé en spray buccal ?",
+      "options": [
+        "THC et CBD",
+        "CBD et CBG",
+        "THC et CBN",
+        "CBG et CBC"
+      ],
+      "answer": 0,
+      "explanation": "Nabiximols est un extrait végétal standardisé associant notamment THC et CBD. Sa formulation ne correspond pas à du CBD isolé ni à du THC seul.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-nci-nabiximols"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Nabiximols",
+        "subjectKey": "nabiximols",
+        "property": "Association THC/CBD d’un extrait pharmaceutique nommé",
+        "expectedAnswer": "THC et CBD",
+        "learningObjective": "Distinguer une formulation végétale standardisée d’un cannabinoïde isolé.",
+        "factKey": "nabiximols-thc-cbd-formulation",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-nci-nabiximols",
+            "locator": "Définition, premier paragraphe",
+            "support": "Le NCI décrit un extrait standardisé contenant THC et CBD formulé en spray oromucosal."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-dronabinol-delta9-thc-identity",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Quel cannabinoïde est désigné par le nom pharmaceutique « dronabinol » ?",
+      "options": [
+        "Le cannabidiol",
+        "Le delta-9-THC",
+        "Le cannabinol",
+        "Le cannabigérol"
+      ],
+      "answer": 1,
+      "explanation": "Dronabinol est un nom du delta-9-THC employé en pharmacie. Ce nom ne désigne pas un mélange de cannabinoïdes comme un extrait végétal complet.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-nci-dronabinol"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Dronabinol",
+        "subjectKey": "dronabinol",
+        "property": "Identité moléculaire d’un nom pharmaceutique",
+        "expectedAnswer": "Le delta-9-THC",
+        "learningObjective": "Relier une dénomination de produit pharmaceutique à son cannabinoïde.",
+        "factKey": "dronabinol-delta9-thc-identity",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-nci-dronabinol",
+            "locator": "Définition et liste de synonymes",
+            "support": "Le NCI indique que dronabinol est aussi appelé delta-9-THC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-essential-oil-aromatic-volatile-mixture",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Pourquoi une huile essentielle de cannabis ne se confond-elle pas avec une huile riche en CBD ?",
+      "options": [
+        "Elle contient nécessairement un isolat de CBD",
+        "Elle est uniquement issue de graines broyées",
+        "Elle rassemble surtout des constituants aromatiques volatils",
+        "Elle est définie par une quantité égale de THC et de CBD"
+      ],
+      "answer": 2,
+      "explanation": "L’huile essentielle rassemble surtout des substances volatiles, notamment des terpènes. L’expression ne désigne pas un extrait concentré en cannabinoïdes.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-who-extracts-2018"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Huile essentielle de cannabis",
+        "subjectKey": "cannabis-essential-oil",
+        "property": "Mélange aromatique distinct d’une huile cannabinoïde",
+        "expectedAnswer": "Elle rassemble surtout des constituants aromatiques volatils",
+        "learningObjective": "Distinguer des produits différents malgré le mot huile.",
+        "factKey": "essential-oil-aromatic-volatile-mixture",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-who-extracts-2018",
+            "locator": "Section 1, p. 22, §3.2.4.3",
+            "support": "L’huile essentielle, surtout terpénique et volatile, doit être distinguée des huiles riches en cannabinoïdes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-name-hexahydrocannabinol",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Quel nom développe le sigle HHC rencontré sur certains produits du cannabis ?",
+      "options": [
+        "Hydroxycannabidiol",
+        "Hydrocannabigérol",
+        "Hexahydrocannabiphorol",
+        "Hexahydrocannabinol"
+      ],
+      "answer": 3,
+      "explanation": "HHC signifie hexahydrocannabinol. Le produit appelé HHC-P porte un nom plus long et correspond à une autre substance, pas à une simple présentation du même HHC.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp01-emcdda-hhc-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "HHC",
+        "subjectKey": "hhc",
+        "property": "Développement du sigle HHC",
+        "expectedAnswer": "Hexahydrocannabinol",
+        "learningObjective": "Identifier un cannabinoïde transformé sans confondre ses analogues.",
+        "factKey": "hhc-name-hexahydrocannabinol",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-emcdda-hhc-2023",
+            "locator": "p. 26, Common names ; p. 17, Other SSCs in Europe",
+            "support": "Le rapport donne HHC comme abréviation de hexahydrocannabinol et distingue hexahydrocannabiphorol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-saturated-thc-analogue",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Quelle différence de structure distingue le HHC du Δ9-THC ?",
+      "options": [
+        "La double liaison du cycle carboné du THC est saturée",
+        "Le HHC porte une chaîne latérale de sept carbones",
+        "Le HHC porte le groupe acide caractéristique du THCA",
+        "Le HHC est simplement une autre configuration du CBD"
+      ],
+      "answer": 0,
+      "explanation": "Le HHC possède deux hydrogènes de plus que le THC et un cycle carboné saturé à cet endroit. C’est une différence de structure, pas une différence de concentration du produit.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp01-emcdda-hhc-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Structure du HHC",
+        "subjectKey": "hhc",
+        "property": "Saturation du cycle par rapport au THC",
+        "expectedAnswer": "La double liaison du cycle carboné du THC est saturée",
+        "learningObjective": "Comprendre pourquoi HHC et THC ne sont pas la même molécule.",
+        "factKey": "hhc-saturated-thc-analogue",
+        "form": "comparaison",
+        "difficultyRationale": "Demande de lire une convention analytique ou une différence de structure chimique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-emcdda-hhc-2023",
+            "locator": "p. 24–25, figures 9–10",
+            "support": "Les structures comparées du HHC C21H32O2 et du THC C21H30O2 montrent la saturation de la double liaison cyclique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-o-acetate-derivative",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Que désigne HHC-O par rapport au HHC ?",
+      "options": [
+        "Un isolat de HHC sans aucun autre ingrédient",
+        "Un dérivé acétate du HHC",
+        "La forme acide naturelle du HHC",
+        "Le même HHC dilué dans une huile végétale"
+      ],
+      "answer": 1,
+      "explanation": "HHC-O désigne un ester acétate du HHC. Le suffixe correspond à une modification chimique, et non à une marque de pureté ou à une simple dilution huileuse.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp01-euda-products-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "HHC-O",
+        "subjectKey": "hhc-o",
+        "property": "Nature du lien chimique entre HHC et HHC-O",
+        "expectedAnswer": "Un dérivé acétate du HHC",
+        "learningObjective": "Décoder une dénomination de dérivé plutôt qu’un format commercial.",
+        "factKey": "hhc-o-acetate-derivative",
+        "form": "identification",
+        "difficultyRationale": "Demande de lire une convention analytique ou une différence de structure chimique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-euda-products-2023",
+            "locator": "Emergence of semi-synthetic cannabinoids, paragraphe HHC-O",
+            "support": "HHC-O est présenté comme l’ester acétate du HHC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-semi-synthetic-natural-cannabinoid-modified",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Que signifie « semi-synthétique » pour des cannabinoïdes comme ceux décrits par l’EUDA ?",
+      "options": [
+        "Deux cannabinoïdes sont simplement mélangés dans un flacon",
+        "La moitié du produit est constituée de matières végétales",
+        "Un cannabinoïde naturel sert de départ à une modification chimique",
+        "Le cannabinoïde a seulement été séparé des fleurs"
+      ],
+      "answer": 2,
+      "explanation": "Cette qualification décrit une origine chimique : une molécule naturelle est transformée. Elle ne signifie ni mélange à parts égales ni simple extraction.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp01-euda-products-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Cannabinoïdes semi-synthétiques",
+        "subjectKey": "semi-synthetic-cannabinoids",
+        "property": "Sens de l’origine semi-synthétique",
+        "expectedAnswer": "Un cannabinoïde naturel sert de départ à une modification chimique",
+        "learningObjective": "Distinguer transformation moléculaire et formulation ou séparation.",
+        "factKey": "semi-synthetic-natural-cannabinoid-modified",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-euda-products-2023",
+            "locator": "Encadré Emergence of semi-synthetic cannabinoids, premier paragraphe",
+            "support": "L’EUDA qualifie de semi-synthétiques des cannabinoïdes obtenus en transformant des cannabinoïdes présents naturellement."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-hhc-flower-added-to-low-thc-flower",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Comment le rapport européen de 2023 décrit-il certaines « fleurs au HHC » commercialisées ?",
+      "options": [
+        "Des fleurs dont le THCA a seulement été décarboxylé",
+        "Des fleurs classées THC dominantes après leur analyse",
+        "Des fleurs dont le CBD a été retiré sans autre modification",
+        "Des fleurs pauvres en THC auxquelles du HHC a été ajouté"
+      ],
+      "answer": 3,
+      "explanation": "Le rapport décrit des supports végétaux pauvres en THC contenant du HHC ajouté. L’appellation d’une fleur ne révèle donc pas nécessairement ce que la plante a produit elle-même.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-emcdda-hhc-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Fleurs contenant du HHC",
+        "subjectKey": "hhc-added-flower",
+        "property": "Actif ajouté sur un support végétal",
+        "expectedAnswer": "Des fleurs pauvres en THC auxquelles du HHC a été ajouté",
+        "learningObjective": "Distinguer composition du produit vendu et production native de la fleur.",
+        "factKey": "hhc-flower-added-to-low-thc-flower",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-emcdda-hhc-2023",
+            "locator": "p. 5–6, résumé, formes vendues",
+            "support": "Le HHC est vendu notamment comme fleurs ou résines pauvres en THC pulvérisées ou mélangées avec du HHC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-delta8-products-usually-cbd-conversion",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Selon la FDA, d’où provient généralement le delta-8 THC concentré des produits commercialisés ?",
+      "options": [
+        "Du CBD de chanvre transformé chimiquement",
+        "D’une fleur naturellement dominée par le delta-8 THC",
+        "D’une huile de graines riche naturellement en delta-8 THC",
+        "Du seul vieillissement d’une huile essentielle de cannabis"
+      ],
+      "answer": 0,
+      "explanation": "La plante contient naturellement peu de delta-8 THC. La FDA explique que les quantités concentrées commercialisées sont généralement obtenues à partir du CBD du chanvre.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp01-fda-delta8"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Produits au delta-8 THC",
+        "subjectKey": "delta8-thc-products",
+        "property": "Origine habituelle des quantités concentrées du marché",
+        "expectedAnswer": "Du CBD de chanvre transformé chimiquement",
+        "learningObjective": "Distinguer présence naturelle minoritaire et origine des produits concentrés.",
+        "factKey": "delta8-products-usually-cbd-conversion",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-fda-delta8",
+            "locator": "Introduction et point 4",
+            "support": "Le delta-8 THC est naturellement peu abondant ; des quantités concentrées sont typiquement manufacturées à partir du CBD de chanvre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-hemp-label-not-nonintoxicating-guarantee",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Pourquoi « dérivé du chanvre » ne décrit-il pas à lui seul les effets d’un produit au delta-8 THC ?",
+      "options": [
+        "L’origine chanvre impose une dominante CBD au produit fini",
+        "L’origine chanvre n’empêche pas la présence d’un actif intoxicant",
+        "L’origine chanvre indique seulement une faible teneur en terpènes",
+        "L’origine chanvre transforme le delta-8 en forme non intoxicante"
+      ],
+      "answer": 1,
+      "explanation": "Le delta-8 THC possède des effets intoxicants même quand sa matière de départ vient du chanvre. Une origine végétale ne suffit pas à définir les propriétés de la formulation finale.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-fda-delta8"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Appellation dérivé du chanvre",
+        "subjectKey": "hemp-derived-delta8-labelling",
+        "property": "Origine végétale distincte des propriétés de l’actif final",
+        "expectedAnswer": "L’origine chanvre n’empêche pas la présence d’un actif intoxicant",
+        "learningObjective": "Lire une origine commerciale sans lui attribuer l’absence d’effet.",
+        "factKey": "hemp-label-not-nonintoxicating-guarantee",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-fda-delta8",
+            "locator": "Points 1 et 3",
+            "support": "La FDA avertit que hemp peut être associé à tort à non-psychoactive alors que le delta-8 THC est intoxicant."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-cannabis-drink-nanoemulsion-droplets",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans une boisson au cannabis en nanoémulsion, que sont les objets dispersés de très petite taille ?",
+      "options": [
+        "Des cristaux de cannabinoïdes dispersés directement dans l’eau",
+        "Des bulles de gaz transportant les cannabinoïdes",
+        "Des gouttelettes portant les cannabinoïdes",
+        "Des fragments de tissu végétal portant les cannabinoïdes"
+      ],
+      "answer": 2,
+      "explanation": "La formulation disperse l’extrait en minuscules gouttelettes. Elle ne consiste pas à couper la molécule de THC ou de CBD en molécules plus petites.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Boisson au cannabis nanoémulsionnée",
+        "subjectKey": "cannabis-nanoemulsion",
+        "property": "Nature physique des petites unités dispersées",
+        "expectedAnswer": "Des gouttelettes portant les cannabinoïdes",
+        "learningObjective": "Comprendre une formulation de cannabinoïdes dans une boisson.",
+        "factKey": "cannabis-drink-nanoemulsion-droplets",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 17, §4.1.2",
+            "support": "Les boissons peuvent contenir une nanoémulsion dans laquelle l’extrait est réparti en minuscules gouttelettes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-decarboxylated-flower-powder-oral",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "L’INSPQ distingue une poudre de cannabis séché décarboxylée de la fleur à inhaler. À quel usage est-elle destinée ?",
+      "options": [
+        "À l’application transdermique",
+        "À l’inhalation par cartouche liquide",
+        "À l’application sur les muqueuses nasales",
+        "À l’ingestion"
+      ],
+      "answer": 3,
+      "explanation": "Il existe des poudres de cannabis décarboxylées destinées à être ingérées. Le mot « poudre » ne suffit donc pas à conclure qu’un produit est du kief ou un isolat.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Poudre de cannabis décarboxylée",
+        "subjectKey": "cannabis-decarboxylated-flower-powder",
+        "property": "Destination d’une forme précise de poudre",
+        "expectedAnswer": "À l’ingestion",
+        "learningObjective": "Reconnaître une forme commerciale différente du kief et de l’isolat.",
+        "factKey": "decarboxylated-flower-powder-oral",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 4, §2.1, paragraphe poudre décarboxylée",
+            "support": "Le cannabis séché peut être vendu en poudre décarboxylée destinée uniquement à être ingérée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-oral-cannabis-film-mouth-dissolution",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "À quoi correspond un film oral contenant un extrait de cannabis ?",
+      "options": [
+        "Une fine préparation conçue pour se dissoudre dans la bouche",
+        "Un timbre destiné à rester collé sur la peau",
+        "Une feuille pour emballer un bloc de haschich",
+        "Une cartouche où l’extrait est vaporisé"
+      ],
+      "answer": 0,
+      "explanation": "Les films ou timbres oraux contiennent un extrait et se dissolvent à l’intérieur de la bouche. Ils se distinguent des timbres transdermiques destinés à la peau.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Film oral au cannabis",
+        "subjectKey": "cannabis-oral-film",
+        "property": "Forme buccale dissolvante",
+        "expectedAnswer": "Une fine préparation conçue pour se dissoudre dans la bouche",
+        "learningObjective": "Distinguer film oral et timbre cutané.",
+        "factKey": "oral-cannabis-film-mouth-dissolution",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 19, §4.1.4",
+            "support": "Les pastilles et timbres oraux contiennent de l’extrait de cannabis et sont conçus pour être dissous à l’intérieur de la bouche."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-transdermal-patch-systemic-design",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans les produits aux cannabinoïdes, que signifie la destination « transdermique » d’un timbre ?",
+      "options": [
+        "Libérer des cannabinoïdes dans la bouche en se dissolvant",
+        "Faire passer des cannabinoïdes à travers la peau vers le sang",
+        "Disperser une huile dans une boisson",
+        "Retenir les cannabinoïdes uniquement à la surface de la peau"
+      ],
+      "answer": 1,
+      "explanation": "Le timbre transdermique vise un passage à travers la peau vers la circulation. Cette destination le distingue d’une préparation conçue pour une application locale.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "q2-rp01-inspq-products-2025"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Timbre transdermique",
+        "subjectKey": "cannabis-transdermal-patch",
+        "property": "Destination systémique à travers la peau",
+        "expectedAnswer": "Faire passer des cannabinoïdes à travers la peau vers le sang",
+        "learningObjective": "Lire une désignation de voie sans la confondre avec une application locale.",
+        "factKey": "transdermal-patch-systemic-design",
+        "form": "identification",
+        "difficultyRationale": "Distingue deux formes ou deux mesures proches ; demande une connaissance spécialisée simple.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-inspq-products-2025",
+            "locator": "p. 20, §4.2, paragraphes 2–3",
+            "support": "Les timbres transdermiques permettent aux cannabinoïdes de pénétrer dans le sang, à la différence de produits destinés à une action locale."
+          }
+        ],
+        "jurisdiction": "Portée générale ; source institutionnelle québécoise",
+        "reviewAfter": "2027-05-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-h4cbd-hydrogenated-cbd",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Le nom H4CBD désigne quel type de substance ?",
+      "options": [
+        "Un mélange de CBD, CBG, CBN et CBC",
+        "Une forme acide apparentée au CBD",
+        "Un dérivé hydrogéné du CBD",
+        "Un extrait contenant quatre parts de CBD pour une de THC"
+      ],
+      "answer": 2,
+      "explanation": "H4CBD désigne un dérivé hydrogéné du cannabidiol. Le chiffre appartient au nom chimique : il n’indique ni une pureté multipliée ni un rapport entre plusieurs cannabinoïdes.",
+      "articleId": "ref-cannabinoides-transformes",
+      "sourceIds": [
+        "q2-rp01-emcdda-hhc-2023"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "H4CBD",
+        "subjectKey": "h4cbd",
+        "property": "Identité d’un dérivé distinct du CBD",
+        "expectedAnswer": "Un dérivé hydrogéné du CBD",
+        "learningObjective": "Décoder une désignation de cannabinoïde transformé.",
+        "factKey": "h4cbd-hydrogenated-cbd",
+        "form": "identification",
+        "difficultyRationale": "Demande de lire une convention analytique ou une différence de structure chimique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-emcdda-hhc-2023",
+            "locator": "p. 75, paragraphe The fully hydrogenated derivative of CBD",
+            "support": "Le rapport identifie H4CBD comme le dérivé entièrement hydrogéné du CBD."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rp01-residual-solvent-origin",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Dans l’analyse d’un extrait de cannabis, « solvant résiduel » désigne quoi ?",
+      "options": [
+        "Un cannabinoïde naturellement présent à faible teneur",
+        "Un terpène qui donne une odeur de solvant",
+        "L’huile porteuse volontairement ajoutée à une huile orale",
+        "Une trace de solvant restée dans le produit après sa fabrication"
+      ],
+      "answer": 3,
+      "explanation": "Le terme concerne une substance utilisée pendant la fabrication et qui reste dans le produit. Il ne désigne ni un cannabinoïde minoritaire ni nécessairement un arôme.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rp01-ccsa-extracts-2019"
+      ],
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Solvants résiduels des extraits",
+        "subjectKey": "cannabis-extract-residual-solvents",
+        "property": "Origine d’un résidu distinct des constituants natifs",
+        "expectedAnswer": "Une trace de solvant restée dans le produit après sa fabrication",
+        "learningObjective": "Lire une famille de substances recherchées dans un extrait.",
+        "factKey": "residual-solvent-origin",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire concret courant des produits, sans calcul ni prérequis chimique avancé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rp01-ccsa-extracts-2019",
+            "locator": "p. 1, point 1, premières phrases",
+            "support": "Certains extraits sont fabriqués avec des solvants dont des traces peuvent rester dans le produit final."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rp01-inspq-products-2025",
+      "title": "Les types de produits du cannabis",
+      "organization": "Institut national de santé publique du Québec",
+      "url": "https://www.inspq.qc.ca/sites/default/files/publications/3673-types-produits-cannabis.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Antoine Fournier, Axelle Marchand et Jacinthe Brisson",
+      "published": "2025-06",
+      "passage": "Typologie : fleurs, extraits, produits dérivés ; descriptions du kief, des résines pressées, des distillats, des isolats et des formes orales.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Synthèse institutionnelle. Certaines définitions viennent de sources de marché et de l’OQLF. Les chiffres, règles de vente et généralisations discutables sur les voies ou concentrations ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 4 et 6–20, sections 2, 3 et 4",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-ccsa-products-2020",
+      "title": "Clearing the Smoke on Cannabis: Edible Cannabis Products, Cannabis Extracts and Cannabis Topicals",
+      "organization": "Canadian Centre on Substance Use and Addiction",
+      "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Robert Gabrys",
+      "published": "2020",
+      "passage": "Le tableau 1 distingue hash, kief, wax/crumble/budder, shatter, live resin et rosin ; la note 3 développe BHO. Un encadré décrit le dabbing comme une forme de vaporisation.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Rapport descriptif de 2020. Les plages de THC et les affirmations sur le prix ou les effets ne sont pas reprises.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 2–3 : encadré What is dabbing?, tableau 1 et note 3",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-ccsa-extracts-2019",
+      "title": "7 Things You Need to Know about Cannabis Extracts",
+      "organization": "Canadian Centre on Substance Use and Addiction",
+      "url": "https://www.ccsa.ca/sites/default/files/2019-07/CCSA-Things-You-Need-to-Know-about-Cannabis-Extracts-2019-en.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Canadian Centre on Substance Use and Addiction",
+      "published": "2019-07",
+      "passage": "Les extraits peuvent être dominés par le CBD ; les solvants employés peuvent laisser des résidus dans le produit fini.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Seules les descriptions de composition sont reprises ; aucun conseil de consommation ni chiffre de dose.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 1, What Are Cannabis Extracts? et point 1",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-hc-cbd",
+      "title": "Cannabidiol (CBD)",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "La rubrique The difference between cannabis oil and hemp-seed oil décrit une association entre extrait riche en THC et/ou CBD et huile végétale.",
+      "access": "official-page",
+      "documentKind": "official-page",
+      "limitation": "La page conserve un classement historique en cinq classes, non repris. Seule la description de formulation est utilisée.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "The difference between cannabis oil and hemp-seed oil, liste Cannabis oil is a combination of",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-nist-hemp-2024",
+      "title": "Characterization of Reference Material 8210: Hemp Plant (NIST SP 260-248)",
+      "organization": "National Institute of Standards and Technology",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.260-248.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Colleen E. Bryan Sallee et al.",
+      "published": "2024-06",
+      "passage": "Le THC total conventionnel vaut THC + 0,877 × THCA. La section 6 distingue masse sèche et produit tel que reçu.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Document métrologique original. Le facteur exprime un rapport de masses molaires, pas un rendement réel de fabrication.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 22, §3.1.11.2, équation 5 ; p. 56, §6 et tableau 27",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-who-extracts-2018",
+      "title": "Extracts and tinctures of cannabis — Critical Review",
+      "organization": "World Health Organization, Expert Committee on Drug Dependence",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Giuseppe Cannazza, Cinzia Citti et autres auteurs du rapport",
+      "published": "2018",
+      "passage": "La teinture est définie par un extrait alcoolique ; l’huile essentielle est décrite comme un mélange volatil principalement terpénique distinct des huiles riches en cannabinoïdes.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Rapport d’experts préparatoire : les opinions ne constituent pas les décisions de l’OMS. Les descriptions chimiques sont séparées des indications thérapeutiques.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Section 1 Chemistry, p. 15 note 1 ; p. 22, §3.2.4.3",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-ny-hemp-definitions",
+      "title": "Part 114 — Cannabinoid Hemp, adopted December 2023",
+      "organization": "New York State Cannabis Control Board / Office of Cannabis Management",
+      "url": "https://cannabis.ny.gov/system/files/documents/2024/01/part-114-exprs-trms-adopted-12-2023.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "New York State Cannabis Control Board",
+      "published": "2023-12",
+      "passage": "Définitions réglementaires délimitées : full spectrum réunit plusieurs cannabinoïdes, terpènes et autres composés natifs ; broad spectrum retire le THC à un niveau non détectable.",
+      "access": "full-text",
+      "documentKind": "regulation",
+      "limitation": "Le sens demandé est celui de ce texte identifié, pas une norme mondiale ni une validation des mentions de toutes les marques.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "§114.1(b), p. 2 ; §114.1(s), p. 6",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-fda-delta8",
+      "title": "5 Things to Know about Delta-8 Tetrahydrocannabinol – Delta-8 THC",
+      "organization": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/consumers/consumer-updates/5-things-know-about-delta-8-tetrahydrocannabinol-delta-8-thc",
+      "verifiedAt": "2026-11-17",
+      "author": "U.S. Food and Drug Administration",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le delta-8 THC est naturellement peu abondant et les quantités concentrées commercialisées sont généralement fabriquées à partir de CBD de chanvre ; le mot hemp ne signifie pas absence d’intoxication.",
+      "access": "official-page",
+      "documentKind": "official-page",
+      "limitation": "Description de produits aux États-Unis ; les alertes chiffrées, conseils sanitaires et règles juridiques ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Introduction et points 1, 3–4",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-euda-products-2023",
+      "title": "EU Drug Market: Cannabis — Production",
+      "organization": "EMCDDA and Europol (hébergé par EUDA)",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EMCDDA and Europol",
+      "published": "2023-11-16",
+      "passage": "Le marché comprend des cannabinoïdes dits semi-synthétiques issus de cannabinoïdes naturels modifiés ; HHC-O est un ester acétate du HHC.",
+      "access": "official-page",
+      "documentKind": "official-page",
+      "limitation": "Description historique de catégories chimiques ; aucun statut actuel, protocole ni comparaison d’intensité des effets n’est inféré.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Encadré Emergence of semi-synthetic cannabinoids: delta-8-THC, HHC and HHC-O",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-emcdda-hhc-2023",
+      "title": "Technical report: Hexahydrocannabinol (HHC) and related substances",
+      "organization": "European Monitoring Centre for Drugs and Drug Addiction",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "EMCDDA",
+      "published": "2023-04",
+      "passage": "HHC signifie hexahydrocannabinol ; sa structure saturée diffère de celle du THC. Des produits à fleurs pauvres en THC contiennent du HHC ajouté. H4CBD désigne un dérivé entièrement hydrogéné du CBD.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Rapport technique de 2023, limité ici à la structure et aux formes observées, sans affirmation de statut ou de bénéfice sanitaire.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 5–6, résumé ; p. 24–25, figures 9–10 ; p. 75, paragraphe H4CBD",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-bccs-form-products",
+      "title": "The BCCS Guide to Infused Pre-Rolls",
+      "organization": "BC Cannabis Stores / British Columbia Liquor Distribution Branch",
+      "url": "https://www.bccannabisstores.com/blogs/learn/the-bccs-guide-to-infused-pre-rolls",
+      "verifiedAt": "2026-11-17",
+      "author": "BC Cannabis Stores",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Le guide nomme les diamants de THCA comme des cristaux solides ; il décrit terp sauce comme un concentré privilégiant les terpènes et bubble hash parmi les formes sans solvant organique.",
+      "access": "official-page",
+      "documentKind": "retailer-guide",
+      "limitation": "Source primaire d’un détaillant public : terminologie de son guide explicitement attribuée. Les recommandations, procédés et promesses commerciales ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Types of Concentrates Used : THCA Diamonds, Bubble Hash (Ice Water Hash), Terp Sauce",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-nci-nabiximols",
+      "title": "NCI Drug Dictionary: nabiximols",
+      "organization": "National Cancer Institute",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/nabiximols",
+      "verifiedAt": "2026-11-17",
+      "author": "National Cancer Institute",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Nabiximols est une préparation végétale standardisée contenant notamment THC et CBD, formulée en spray oromucosal.",
+      "access": "official-page",
+      "documentKind": "institutional-dictionary",
+      "limitation": "La question porte sur l’identité et la composition, sans indication clinique, promesse ni conseil de dose.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Définition, premier paragraphe et synonymes",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-nci-dronabinol",
+      "title": "NCI Drug Dictionary: dronabinol",
+      "organization": "National Cancer Institute",
+      "url": "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/dronabinol",
+      "verifiedAt": "2026-11-17",
+      "author": "National Cancer Institute",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Dronabinol est également appelé delta-9-THC.",
+      "access": "official-page",
+      "documentKind": "institutional-dictionary",
+      "limitation": "Seule l’identité moléculaire est testée, sans indication clinique, promesse ni conseil de dose.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Définition et liste de synonymes",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-hc-infused",
+      "title": "Cannabis Tracking and Licensing System reporting guide: Frequent issues and solutions",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/tracking-system/monthly-reporting-guide/frequent-issues-solutions.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non indiquée sur la page consultée",
+      "passage": "Exemple de préroulés composés surtout de fleurs séchées avec kief ou hash ajouté.",
+      "access": "official-page",
+      "documentKind": "official-page",
+      "limitation": "Le seul fait testé est la composition du préroulé infusé, pas son classement légal canadien.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "Adding other forms of cannabis to dried cannabis products (for example infused pre-rolls)",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    },
+    {
+      "id": "q2-rp01-hc-medical-products",
+      "title": "Information on the use of cannabis for medical purposes",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/content/dam/hc-sc/documents/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/cannabis-medical-purposes.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "2026-01",
+      "passage": "La rubrique Choosing a cannabis product distingue proportions THC/CBD, formes de produits et indications en pourcentages, mg/g, mg/ml ou mg.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Les considérations cliniques ne servent pas aux questions ; seule la distinction composition relative / concentration est reprise.",
+      "consultation": {
+        "reader": "rebalance_products_sol",
+        "date": "2026-11-17",
+        "locator": "p. 7, Choosing a cannabis product, Content of a cannabis product ; crédits janvier 2026",
+        "result": "Passages indiqués réellement ouverts et lus ; soutien paraphrasé."
+      }
+    }
+  ]
+}

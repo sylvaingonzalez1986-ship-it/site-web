@@ -58,7 +58,8 @@ const workdayScenario=scenario==='workday';
 const workshopScenario=scenario==='workshop',staffGuideScenario=scenario==='staff-guide',staffPlanScenario=scenario==='staff-plan',storageScenario=${trimJourneyOnly}||scenario.startsWith('storage')||workshopScenario||staffPlanScenario;
 if(!new URLSearchParams(location.search).has('view'))history.replaceState(null,'','?scenario='+scenario+'&view='+(storageScenario?'harvests':'game&campaign=1'));
 let production=createKqReleveProduction();const act=action=>production=applyKqReleveProductionAction(production,action);
-act({type:'draft',warehouse:suggestKqRelevePlan(production)});act({type:'save-plan'});
+const badgeCase=new URLSearchParams(location.search).get('badgeCase');
+act({type:'draft',warehouse:suggestKqRelevePlan(production,1,badgeCase==='target-input'?2:1)});act({type:'save-plan'});
 for(let index=0;index<3;index++)act({type:'reveal-buddie'});
 act({type:'assign',zoneId:production.warehouse.zones[0].id,buddieCode:production.ownedBuddies[0]});act({type:'save-plan'});
 if(scenario.startsWith('culture-carousel')){
@@ -66,7 +67,6 @@ if(scenario.startsWith('culture-carousel')){
  if(scenario==='culture-carousel-complete')for(let index=0;index<6;index++){act({type:'roll'});act({type:'assist'});act({type:'resolve'});act({type:'advance'});}
  if(scenario==='culture-carousel-dead')production.game={...production.game,phase:'complete',cultureDead:true,harvestGrams:0,completedAt:new Date(production.clock).toISOString(),care:{...production.game.care,vitality:0}};
 }
-const badgeCase=new URLSearchParams(location.search).get('badgeCase');
 if(${cultureBadgesOnly}&&badgeCase){
  const hand=['BOTTE-005','BOTTE-005','BOTTE-017','BOTTE-003','BOTTE-006','BOTTE-024'];
  production.supportInventory={'BOTTE-005':9,'BOTTE-017':7,'BOTTE-003':8,'BOTTE-006':6,'BOTTE-024':4};
@@ -523,7 +523,7 @@ if (preview) {
     assert.equal((await mutations()).length, 0);
     results.push({ missingMaintenanceQuote: true, verifiedProductsStillCounted: 3, noInventedPrice: true });
 
-    await loadBadges('base'); await openCare(); await openProducts();
+    await loadBadges('target-input'); await openCare(); await openProducts();
     await keyClick('[data-care-rayon="input"]');
     await page.evaluate(() => { window.__control.allowPlay(true); window.__control.careMutationMode('pending'); });
     await keyClick('[data-care-product="CARE-VERMICOMPOST"] [data-care-product-buy]');
@@ -531,12 +531,35 @@ if (preview) {
     await expectCount(careTab, null); await expectCount(cardTab, null); await expectCount(products, null);
     await page.evaluate(() => { window.__control.careMutationMode('known'); window.__control.resolve(); });
     await expectCount(careTab, 5); await expectCount(products, 4); await expectCount('[data-care-rayon="input"]', 3);
-    assert.equal((await fixture()).production.careAreaInventory['CARE-VERMICOMPOST'] > 0, true, 'Explicit purchase records one complete surface passage');
-    await keyClick('[data-care-product="CARE-VERMICOMPOST"] [data-care-product-use]');
+    const purchased = (await fixture()).production;
+    const code = 'CARE-VERMICOMPOST';
+    assert.equal(purchased.careAreaInventory[code], 2, 'The quoted purchase supplies two square metres');
+    const sectorList = '[data-culture-room] select:has(option[value^="culture-1:"])';
+    for (const x of [0, 1]) {
+      const target = { zoneId: 'culture-1', x, y: 0 };
+      const remaining = 2 - x;
+      await keyClick('[data-care-product="CARE-VERMICOMPOST"] [data-care-product-use]');
+      await page.waitForSelector(sectorList, { visible: true });
+      await page.focus(sectorList);
+      await page.keyboard.press('Home');
+      await page.keyboard.press('ArrowDown');
+      await page.waitForFunction((selector, cell) => document.querySelector(selector)?.value === cell, {}, sectorList, `culture-1:${x}:0`);
+      assert.equal((await fixture()).production.careAreaInventory[code], remaining, 'Choosing a square reserves no stock');
+      assert.equal((await mutations()).length, x + 1);
+      await button('Traiter cette case', '[data-culture-room]');
+      await page.waitForFunction((code, previous) => window.__fixture().production.careAreaInventory[code] === previous - 1, {}, code, remaining);
+      await page.waitForSelector('[data-pbi-instructions]', { hidden: true });
+      const current = (await fixture()).production;
+      assert.deepEqual(current.game.care.applications.at(-1), { productCode: code, stageIndex: 0, target });
+      assert.deepEqual((await mutations()).at(-1).body.target, target);
+      assert.equal(current.cashCents, purchased.cashCents);
+      if (x === 0) {
+        await expectCount(careTab, 3); await expectCount(products, 2); await expectCount('[data-care-rayon="input"]', 1);
+      }
+    }
     await expectCount(careTab, 2); await expectCount(products, 1); await expectCount('[data-care-rayon="input"]', 0);
-    assert.equal((await fixture()).production.game.care.applications.some(item => item.productCode === 'CARE-VERMICOMPOST'), true);
-    assert.equal((await mutations()).length, 2, 'Only the requested local purchase and use were submitted');
-    results.push({ explicitPurchaseRefreshesCounts: true, useExcludesOtherInputsForThisStage: true, busyHasNoGreen: true, mutationCount: 2 });
+    assert.equal((await mutations()).length, 3, 'One purchase and two confirmed square metres were submitted');
+    results.push({ explicitPurchaseRefreshesCounts: true, purchaseM2: 2, keyboardTargetedM2: 2, remainingM2: 0, useExcludesOtherInputsForThisStage: true, busyHasNoGreen: true, mutationCount: 3 });
 
     await loadBadges('base'); await openCare(); await expectCount(careTab, 4);
     await page.evaluate(() => { window.__control.allowPlay(true); window.__control.careMutationMode('lost'); });

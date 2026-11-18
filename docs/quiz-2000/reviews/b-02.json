@@ -1,0 +1,2776 @@
+{
+  "batchId": "b-02",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16T19:08:54Z",
+  "reviewScope": "Revalidation indépendante des 24 versions modifiées du lot corrigé de 30 questions : énoncés, quatre choix, réponses, explications, métadonnées et soutien source. Six approbations antérieures reconduites après identité SHA-256. Aucun texte auteur modifié par F.",
+  "sourceTiming": "Ouvertures le16novembre2026 ; reviewedAt date la sauvegarde de revue. Heure exacte de chaque ouverture non enregistrée. Revalidation : réemploi honnête des passages déjà lus ; lecture complémentaire §6.4 du manuel et vérification ciblée de la circularité. consultationRecordedAt est l’heure de consignation, pas un horodatage exact d’ouverture.",
+  "hashMethod": "SHA256(JSON.stringify(question)) objet complet ; sourceHash=SHA256(JSON.stringify(source)) objet complet du tableau batch.sources dans son ordre original.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-b02-handbook",
+      "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+      "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "Couverture V4/date ; §2 p.10–12 ; §3.1 p.13–14 ; §6.1 p.27",
+      "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction.",
+      "revalidationAdditionalReading": {
+        "consultedOn": "2026-11-16",
+        "consultationRecordedAt": "2026-11-16T19:05:33Z",
+        "locator": "§6.4, p.29–30, percent_germ, lignes718–742",
+        "result": "Comptage de graines normalement germées ; soutien précis au nouvel item pureté/germination.",
+        "accessObserved": "full-text-targeted"
+      }
+    },
+    {
+      "sourceId": "q2-b02-grindescriptors",
+      "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+      "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "GENSTOCK128–135 ; PRODUCTION176 ; Last updated200",
+      "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée.",
+      "revalidationAdditionalReading": {
+        "consultedOn": "2026-11-16",
+        "locator": "GENSTOCK, SEED_CIRCULARITY, ligne131",
+        "result": "La valeur 100 renvoie au cercle de référence ; autres contours distincts.",
+        "accessObserved": "official-page"
+      }
+    },
+    {
+      "sourceId": "q2-b02-trial2022",
+      "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+      "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF p.1 Evaluation6–13 ; présentation22–26",
+      "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+    },
+    {
+      "sourceId": "q2-b02-report2024",
+      "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+      "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "En-tête8 ; Approach41–43 ; Progress46–49",
+      "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+    },
+    {
+      "sourceId": "q2-b02-seqproject",
+      "url": "https://www.ars.usda.gov/research/project/?accnNo=445646",
+      "sourceHash": "3bec0777a990f0c8252bf3b52deab11ea2bdafbd7d13048d356f5e57126cceff",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "Dates24–25 ; Objective27 ; Specific outcomes29",
+      "limitation": "Objectifs2024–2026 ; pas attestation d’achèvement."
+    },
+    {
+      "sourceId": "q2-b02-trubanova2026",
+      "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+      "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "full-text-targeted",
+      "locator": "Publication15 ; Methods82–92 ; Results127–140,170–183",
+      "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+    },
+    {
+      "sourceId": "q2-b02-ipk",
+      "url": "https://www.ipk-gatersleben.de/en/services/genbank",
+      "sourceHash": "a3c8d5428fc806bd5f4ffcee51bbd3e7338ea3762d0b6d8ce4139b560d1cda43",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "Genebank9–10",
+      "limitation": "Présentation institutionnelle consultée16novembre2026 ; pas disponibilité d’une accession précise."
+    },
+    {
+      "sourceId": "q2-b02-gbis",
+      "url": "https://gbis.ipk-gatersleben.de/apex/f?p=GBIS2I_ORDERING_PORTAL:1",
+      "sourceHash": "8da950b877a7bef4705e623d9608862409bf6c4466234acc1aa3df047154e156",
+      "consultedOn": "2026-11-16",
+      "accessObserved": "official-page",
+      "locator": "Welcome17–19",
+      "limitation": "Fonctionnalités observées16novembre2026 ; aucune commande ni disponibilité de matériel inférée."
+    }
+  ],
+  "duplicateReview": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "searchedTopics": [
+      "accession",
+      "passeport/passport",
+      "USDA/IPK/GRIN/GBIS",
+      "Trubanová",
+      "Finola/Kompolti/Korea/Felina",
+      "diversité intra/inter",
+      "masse mille graines/hectolitre",
+      "circularité",
+      "valeur manquante",
+      "clone/cultivar"
+    ],
+    "scope": "Index actualisé relu sur les thèmes ciblés ; candidats, faits approuvés et retraits distingués. Les objets comparés sont les versions finales hachées dans items.",
+    "exactExternalDuplicateFound": false,
+    "pairs": [
+      {
+        "ids": [
+          "hemp-q2-b02-usda-canopy-width-versus-vertical-position"
+        ],
+        "decision": "merged",
+        "reason": "Les deux anciennes définitions mcd/mcdh sont fusionnées en une comparaison architecturale utile ; aucune paire répétée restante."
+      },
+      {
+        "ids": [
+          "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw"
+        ],
+        "decision": "merged",
+        "reason": "Les anciennes questions sur mille graines et masse à volume fixé deviennent une seule comparaison de normalisations."
+      },
+      {
+        "ids": [
+          "hemp-q2-b02-usda-cultivar-samples-separate-inventories",
+          "hemp-q2-b02-trubanova-kompolti-two-ipk-accessions"
+        ],
+        "decision": "distinct",
+        "reason": "Inventaires rattachés à une accession selon la politique NPGS versus deux accessions Kompolti distinctes d’IPK. Une règle institutionnelle n’est pas étendue à toutes banques."
+      },
+      {
+        "ids": [
+          "hemp-q2-b02-accession-means-can-hide-internal-diversity",
+          "hemp-q2-b02-trubanova-same-cultivar-genetic-cluster-not-identical"
+        ],
+        "decision": "distinct",
+        "reason": "Égalité de moyennes n’impliquant pas égalité de dispersion phénotypique versus regroupement génétique n’impliquant pas identité clonale. Deux raisonnements et niveaux d’observation distincts."
+      },
+      {
+        "ids": [
+          "hemp-q2-b02-grin-seed-aspect-ratio-elongation",
+          "hemp-q2-b02-grin-seed-circularity-hundred-circle"
+        ],
+        "decision": "distinct",
+        "reason": "Rapport de dimensions pour l’allongement versus borne de référence d’un indice de contour. Les explications ne livrent pas la réponse à l’autre item."
+      },
+      {
+        "ids": [
+          "hemp-q2-b02-trubanova-finola-height-less-variable-observed",
+          "hemp-q2-b01-finola2-slightly-taller-than-finola"
+        ],
+        "decision": "distinct",
+        "reason": "Dispersion de hauteur dans un échantillon Finola versus différence de hauteur annoncée entre Finola2 et Finola."
+      },
+      {
+        "ids": [
+          "hemp-q2-b02-usda-puid-unambiguous-global-accession",
+          "hemp-q2-b02-ipk-gbis-quarterly-passport-snapshots-doi",
+          "hemp-q2-b03-crea-molecular-passport-varietal-dna-identity"
+        ],
+        "decision": "distinct",
+        "reason": "Identifiant d’une accession, version citable d’un jeu de données et identification variétale par ADN concernent trois objets distincts."
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-q2-b02-usda-hemp-repository-geneva-newyork",
+      "status": "approved",
+      "comment": "La localisation institutionnelle est sourcée ; le niveau 2 reconnaît maintenant la connaissance spécialisée requise.",
+      "contentHash": "e9bbe3a549e3ce2e92e0e9e7f08344946fd93598461f532e62ed1f59033c7ff0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-report2024",
+          "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+          "locator": "Rapport2024,en-tête8 etApproach41",
+          "result": "PGRU localisée à Geneva,NewYork ; conservation des ressources au même lieu.",
+          "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "a19fc9c1853a8765315043535c8e9be25a3a72d8a23a7d37f0df75e47bfb5be4",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-pgru-maintains-distributes-evaluates-germplasm",
+      "status": "approved",
+      "comment": "La mission de conservation, distribution et évaluation est distinguée de trois autres fonctions institutionnelles crédibles.",
+      "contentHash": "fd6ec75120054dec891ad5bd140140af90065f78fa4b5cbce7febb30ecfb427b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trial2022",
+          "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+          "locator": "Essai2022,p.1 lignes22–26",
+          "result": "La PGRU conserve,distribue et évalue des ressources génétiquement et géographiquement diverses.",
+          "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "6873e19f07052146f5b5441b4123b956eb35f14b02f99cd2338ba7594e3205c8",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-accession-means-can-hide-internal-diversity",
+      "status": "approved",
+      "comment": "L'exemple hypothétique distingue moyenne et dispersion : (0,5 + 1,5)/2 = 1 m, mais la variation interne diffère. Les sources appuient le concept, pas ces chiffres inventés.",
+      "contentHash": "48b449ae9ca3d803348878c00519df688773629f80a2fd2b4c5c2c3c4ae0079c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trial2022",
+          "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+          "locator": "PDF p.1, Evaluation, diversité intra/interaccessions",
+          "result": "La source distingue diversité au sein et entre accessions. Le cas chiffré est un exemple fictif calculé par le reviewer, pas une observation revendiquée de ce document.",
+          "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+        },
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Methods/Results, hauteurs et variations intra-cultivar, lignes127–129",
+          "result": "La source compare moyenne et dispersion des hauteurs dans le petit essai. Elle soutient la distinction des résumés statistiques, sans fournir les valeurs fictives 0,5/1/1,5 m du cas pédagogique.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": null,
+        "previousStatus": "new-replacement",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-multistate-trials-genetic-environment-interaction",
+      "status": "approved",
+      "comment": "L'objectif accession × milieu est distingué de la cartographie génétique, du vieillissement en stockage et du contrôle d'identité.",
+      "contentHash": "8c80d61cbd55c231b24e2ffbb258aa3de969d0dfce03c70bf93e1675bafc8709",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-report2024",
+          "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+          "locator": "Rapport2024,Approach42",
+          "result": "Les essais multilocaux doivent quantifier les interactions entre matériel génétique et environnement.",
+          "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "782cdb9ae4c862af05c479eb69a9b37338620856b7607620bb316720c5db068d",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-hemp-backups-national-preservation-lab",
+      "status": "approved",
+      "comment": "La copie biologique conservée ailleurs répond au risque de perte d'un site ; les autres contrôles ne constituent pas une sauvegarde indépendante.",
+      "contentHash": "9e0e3772d595895663e625402cbaf65e239998c7fd920750841ad7449572c261",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-report2024",
+          "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+          "locator": "Rapport2024,Approach41 etProgress47",
+          "result": "Sauvegardes au laboratoire national de préservation ; la coquille Prevention du Progress est résolue par l’Approach.",
+          "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "55f76365d3b0dcc9c6530f352223923abb368e6d8e60439310626474f5d51534",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-viability-and-pathogen-testing-distinct",
+      "status": "approved",
+      "comment": "Viabilité et présence de pathogènes correspondent à deux dimensions biologiques distinctes ; les quatre paires sont dans le domaine du contrôle des semences.",
+      "contentHash": "2079ac484af97dc920971cce88e0eff40e35a5005b6db2a23da973ebf2768ba8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-report2024",
+          "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+          "locator": "Rapport2024,Approach41",
+          "result": "Tests de pathogènes et de viabilité distinctement mentionnés.",
+          "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "b3289a5f781840356213cbbfb8d0b53e706fa44860317523c50157f754959e0c",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-characterization-public-grin-global",
+      "status": "approved",
+      "comment": "GRIN-Global est explicitement nommé par le rapport USDA ; les autres portails de ressources sont des distracteurs crédibles.",
+      "contentHash": "6d68f40cbb6874af7f5dd6aaf1181780abaf8ee491936ee30a9c869298e949dd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-report2024",
+          "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+          "locator": "Rapport2024,Approach42 ; Progress Report",
+          "result": "Informations de caractérisation diffusées via GRIN-Global.",
+          "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "42a7764ca9c4abbf5a4aecbd5d09e0f5e49b860d844f7545033382de53043291",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-seq-project-male-female-y-diversity",
+      "status": "approved",
+      "comment": "L'échantillonnage mâles/femelles est relié aux objectifs annoncés sur les systèmes sexuels et le chromosome Y ; aucun résultat achevé n'est affirmé.",
+      "contentHash": "bbf8a6c266dee19e3ca23ab2529b591f555ea094a084063a953a5c08acd87711",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-seqproject",
+          "url": "https://www.ars.usda.gov/research/project/?accnNo=445646",
+          "locator": "Projet445646,Objective27 etSpecific outcomes29",
+          "result": "Un mâle et une femelle par accession sont envisagés ; détermination sexuelle et diversité du Y parmi les buts.",
+          "sourceHash": "3bec0777a990f0c8252bf3b52deab11ea2bdafbd7d13048d356f5e57126cceff",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Objectifs2024–2026 ; pas attestation d’achèvement."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "71ee358dd4224e3f97b7e4121961d061ee204b77c76eb2d966a93e612d540673",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-accession-single-species-time-place-sample",
+      "status": "approved",
+      "comment": "L'accession est distinguée de l'individu d'essai, de l'inventaire de multiplication et du seul nom de cultivar.",
+      "contentHash": "8bb9fe9e27b21b1d73c977b6e6cd7c787297d2961bbf95ff5bd7963789d13de5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2 p.10,lignes255–259",
+          "result": "Accession définie comme échantillon d’une espèce à lieu et moment donnés ; peut représenter une ou plusieurs plantes.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "a8f4c89b41cd70f10cd52c337a78b9ef7211136d2180747b0c1724ad9386e41a",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-cultivar-samples-separate-inventories",
+      "status": "approved",
+      "comment": "Politique NPGS d’inventaires distincts dans l’accession étayée. Le scénario teste la traçabilité au-delà du nom ; niveau2 cohérent. Ne pas généraliser à toutes banques.",
+      "contentHash": "105b1e2662ace3a99d5c0e165ab8f09d2a6f30053b7e2d986c5e1bf39f788502",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2 p.10,lignes258–259",
+          "result": "NPGS conserve par défaut les échantillons d’un cultivar/population présumé en inventaires distincts imbriqués dans l’accession.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "carriedForwardFromReviewAt": "2026-11-16T18:50:30.875Z"
+    },
+    {
+      "id": "hemp-q2-b02-usda-botanical-var-not-breeder-cultivar",
+      "status": "approved",
+      "comment": "Le rang taxonomique var. est correctement distingué du cultivar, d'une génération de croisement et de l'unité conservée.",
+      "contentHash": "2d48a23f68be6f7d6b6649e307a287b37d0426d5e27fd737367290dc02c7d39e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2.1 p.10,lignes261–268",
+          "result": "Le rang taxonomique var. est explicitement distingué de la variété de sélection/cultivar.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "2424c92c82958872eba649ceaf1da3fcb6565e14306e2e0ec40f1f7881bc8fac",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-puid-unambiguous-global-accession",
+      "status": "approved",
+      "comment": "Le PUID est rattaché à l'accession ; les alternatives portent sur d'autres niveaux réels d'identité ou de version.",
+      "contentHash": "4be0a3f4b40af73ce2afffca4ea82baa08ce761a1726119e30d7a519b58eecec",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2.1 p.10,lignes269–274",
+          "result": "PUID : référencement mondial non ambigu de l’accession et agrégation de ses informations.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "7a0708ebc7376e680f7fd4edc745ec15fe7b6de5f409de5c43985a396b15d59c",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-passport-source-collector-developer-distinct",
+      "status": "approved",
+      "comment": "Source,collecteur et développeur distingués par le manuel ; quatre acteurs proposés. Définition biologique et niveau2 cohérents. « Obtenu » s’entend ici par sélection.",
+      "contentHash": "8b9f3701b1950f3fb3b50ec889a3b8c27257f60256301861d96b9d4c0cbde7c5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2.2 p.11–12,lignes300–307",
+          "result": "Source,collecteur et développeur séparés ; developer est l’organisation/personne ayant sélectionné le matériel.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "carriedForwardFromReviewAt": "2026-11-16T18:50:30.875Z"
+    },
+    {
+      "id": "hemp-q2-b02-usda-nonlatin-name-original-and-transliteration",
+      "status": "approved",
+      "comment": "Le maintien de l'écriture originale avec translittération est soutenu par le manuel ; les quatre politiques d'inscription sont comparables.",
+      "contentHash": "c8e5b17bf725db090e2724a8c6a1d35a2c44a8d2a33691bb1a78781820f418f6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2.1 p.11,lignes279–282",
+          "result": "Nom non latin : orthographe originale et translittération latine conservées dans les remarques.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "065ea433aeff83e7343c66898c1125f2afe17a1b078e9fba2da3c4bc6cf80cc8",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-coordinate-uncertainty-radius",
+      "status": "approved",
+      "comment": "La situation hypothétique distingue résolution d'affichage et incertitude de localisation ; les chiffres ne sont pas présentés comme un relevé réel.",
+      "contentHash": "b836fb9dfc5dc28a92f00c303b953fab317546496a0488a908bf96172cd1fea5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2.3 p.12,lignes325–329",
+          "result": "uncertainty définit le rayon maximal d’incertitude des coordonnées, en mètres.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "e9eee40f427abb3d1a3120ab07e90c20adc100cce5c7f18ff0ad5f5a94e2419d",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-usda-source-date-collection-not-breeding",
+      "status": "approved",
+      "comment": "Collecte distincte de création variétale ; quatre événements datables comparables. Fait utile de provenance et niveau2 cohérent.",
+      "contentHash": "8a59a1566685dfc0bba8e8ac61ad1ee7a03e23dad259debf612b9931153d69d7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§2.3 p.12,lignes314–315",
+          "result": "source_date date la collecte du matériel source, pas la création du cultivar.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "carriedForwardFromReviewAt": "2026-11-16T18:50:30.875Z"
+    },
+    {
+      "id": "hemp-q2-b02-usda-trunk-length-ground-first-branch",
+      "status": "approved",
+      "comment": "Distance sol–première branche distincte de hauteur apicale ; alternatives spatiales comparables. Fait morphométrique et niveau2 étayés.",
+      "contentHash": "9ff694d68830a05ef094724a02592b2a334195b683e31ab06cecd7e4827c8156",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "ManuelV4,§3.1 p.13–14,lignes339–349",
+          "result": "Hauteur jusqu’à l’inflorescence apicale ; trkl du sol à la première branche.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "carriedForwardFromReviewAt": "2026-11-16T18:50:30.875Z"
+    },
+    {
+      "id": "hemp-q2-b02-usda-canopy-width-versus-vertical-position",
+      "status": "approved",
+      "comment": "La fusion teste la position verticale de l'élargissement à dimensions maximales égales ; les quatre mesures sont pertinentes et seule mcdh distingue les silhouettes.",
+      "contentHash": "02f262fab3742b8ac3e19b5e7a8cc76b03b4195d09129c4ff8ee95dba3601db2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "§3.1 Morphology, p.14, mcd/mcdh, lignes341–347",
+          "result": "mcd est la largeur maximale ; mcdh est sa hauteur depuis le sol. À hauteur et largeur maximales égales, cette position verticale peut distinguer deux architectures hypothétiques.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": null,
+        "previousStatus": "new-replacement",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-grin-seed-aspect-ratio-elongation",
+      "status": "approved",
+      "comment": "Le rapport longueur/largeur mesure directement l'allongement ; aire, largeur seule et circularité décrivent d'autres aspects de la forme.",
+      "contentHash": "ba71c84680afd1cca20fcc8f94ebba7642b1a1ad395ecd6174a06c11af55a015",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-grindescriptors",
+          "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+          "locator": "GRIN,GENSTOCK,ligne132",
+          "result": "Rapport longueur/largeur de la graine, sans unité ; mesure d’allongement par construction géométrique.",
+          "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "bcac7b887e255bbd51c16871131e33cfe8a0103705a5fead1e24e0f6ad9418be",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw",
+      "status": "approved",
+      "comment": "La fusion compare deux dénominateurs physiques, volume et effectif ; elle ne se limite plus à demander le nombre mille.",
+      "contentHash": "147d6eb25b389b903dc3bcbb879f4974e07d1b9679a8b371f54eec0f98134de2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-grindescriptors",
+          "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+          "locator": "GRIN,GENSTOCK135 etPRODUCTION176",
+          "result": "TSW en grammes pour mille graines ; TEST_WEIGHT en kilogrammes par hectolitre.",
+          "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "40439329eb3216df58c52fdd967592749be2f891f27f93643149de8e5a822937",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-grin-seed-circularity-hundred-circle",
+      "status": "approved",
+      "comment": "La borne de circularité renvoie au cercle de référence dans GRIN ; les quatre propositions décrivent des contours.",
+      "contentHash": "ed19eee59ae49104bbea2419f232a3e32501c87f27c679276493c1496e5cd142",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-grindescriptors",
+          "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+          "locator": "GRIN,GENSTOCK131",
+          "result": "Circularité sans unité,0–100 ;100 correspond au cercle parfait dans ce référentiel.",
+          "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "2174a9bdeaf151440422713db2524580e1f525ebf629b3be1d19cffe48886fde",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-seed-lot-purity-versus-germination",
+      "status": "approved",
+      "comment": "La situation distingue pureté matérielle et résultat germinatif : la même fraction de débris ne détermine pas la germination. Le manuel comptabilise les graines normalement germées.",
+      "contentHash": "f8cddb0ef352515fb7e6ea0be90ad4526689d8a41ec92a3189351e6129c69f96",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-grindescriptors",
+          "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+          "locator": "GENSTOCK, NON_SEED, ligne128",
+          "result": "NON_SEED mesure la part de matière non constituée de graines ; cette mesure de composition ne donne pas le résultat germinatif.",
+          "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+        },
+        {
+          "sourceId": "q2-b02-handbook",
+          "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+          "locator": "§6.4 Germination & Viability, p.29–30, percent_germ, lignes718–742",
+          "result": "Lecture complémentaire pendant la revalidation : le comptage porte sur les graines vivantes, normales et germées. Le cas oppose donc correctement pureté matérielle et germination ; aucun pourcentage observé n’est inventé.",
+          "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Lecture ciblée de la définition et du comptage ; aucun protocole pratique repris dans la question. Le cas qualitatif n’est pas attribué à un essai réel.",
+          "consultationRecordedAt": "2026-11-16T19:05:33Z"
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": null,
+        "previousStatus": "new-replacement",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-nonflowering-recorded-missing-not-zero",
+      "status": "approved",
+      "comment": "L'absence de floraison dans la fenêtre d'observation est enregistrée manquante, distincte de zéro, d'une borne de suivi et d'une imputation.",
+      "contentHash": "201c670acc77e0dc6d08c9e8d0abf22d5914990836a94b63746a84e52e37d5b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Trubanová2026,Phenotypic measurements90",
+          "result": "Floraison non initiée pendant l’essai : temps de floraison et densité d’inflorescence enregistrés comme manquants.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "52d5e7c5c9c56152a4c43438f9b3c66ba53cd0cce2eff0c07ea2f0b04bf24973",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-kompolti-two-ipk-accessions",
+      "status": "approved",
+      "comment": "CAN 56 et CAN 70 sont bien deux accessions Kompolti d'IPK ; ni clones, ni stocks successifs, ni simple recodage ne sont établis.",
+      "contentHash": "5412e9c7d140d44e6d38fdf95c548f735aec02696bf75b161a82a71fc7fb7a43",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Trubanová2026,Plant growth83–85",
+          "result": "Kompolti CAN56 etCAN70 sont deux accessions obtenues d’IPK, sous un même nom de cultivar.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "aff6c440bccd4dcd272fb74bc005f6a0fbe446dea7b90494617e87c94ef2444e",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-finola-height-less-variable-observed",
+      "status": "approved",
+      "comment": "Dispersion de hauteur observée explicitement bornée à l’essai ; minimum/maximum vérifiés. Aucune uniformité universelle de Finola affirmée.",
+      "contentHash": "ea715ad344ceebf381e642134dd771e9d00559ecdb37af2106c5467b8d6f7158",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Trubanová2026,Results127–129",
+          "result": "Finola plus homogène en hauteur dans ce petit essai ; individus110–132cm.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "carriedForwardFromReviewAt": "2026-11-16T18:50:30.875Z"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-korea-stem-area-greater-finola",
+      "status": "approved",
+      "comment": "Moyennes de section comparées correctement et bornées au petit essai. Comparaison distincte de hauteur ou de dispersion ; quatre bilans possibles,niveau2 cohérent.",
+      "contentHash": "b0d2ce5c93275960e7e54f59fa4c805696029c62c463700c12de5a6e74f8768a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Trubanová2026,Results139",
+          "result": "Section moyenne de Korea2,24cm2 contreFinola0,81cm2 dans les plantes étudiées.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "carriedForwardFromReviewAt": "2026-11-16T18:50:30.875Z"
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-same-cultivar-genetic-cluster-not-identical",
+      "status": "approved",
+      "comment": "Le regroupement génétique n'efface pas la variation intra-cultivar et ne démontre ni clonage, ni lieu d'origine, ni statut F1. Niveau 3 cohérent.",
+      "contentHash": "3e4fc210f84fb147036e7de3c9aae6ac99f69683bfb1142dff148e30780829a3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Trubanová2026,Results170–183",
+          "result": "Regroupements par cultivar et différences substantielles entre individus du même cultivar coexistent.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "17bbdbc7f26104b3f4b1a445790a87b05cd762cbf1bf342638b15b9d5ce937bc",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-trubanova-greenhouse-position-randomization-bias",
+      "status": "approved",
+      "comment": "La randomisation vise les gradients spatiaux du milieu ; les autres biais ne sont pas corrigés par le déplacement des pots.",
+      "contentHash": "2b9ce3c191ae52fbe4a04fb7903ec1cfb886e0c3697c62af863270083fc7e13f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-trubanova2026",
+          "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+          "locator": "Trubanová2026,Plant growth87",
+          "result": "Positions randomisées puis réarrangements aléatoires pour limiter le biais d’emplacement en serre.",
+          "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "246a910990cc1ca062ae6c62d7f94cc115f59b7f84bcfa13c53f9f4f3b5476cb",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-ipk-gbis-quarterly-passport-snapshots-doi",
+      "status": "approved",
+      "comment": "Le DOI d'un instantané permet de désigner une version de données ; il ne désigne ni une accession physique, ni une autorisation.",
+      "contentHash": "cce8e7f9325f32335f02535463f82d5fd9ded8c5f74e85e2188d22abc2eb65e4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-gbis",
+          "url": "https://gbis.ipk-gatersleben.de/apex/f?p=GBIS2I_ORDERING_PORTAL:1",
+          "locator": "GBIS,Welcome18–19",
+          "result": "Instantanés trimestriels complets des passeports rendus citables avec DOI.",
+          "sourceHash": "8da950b877a7bef4705e623d9608862409bf6c4466234acc1aa3df047154e156",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Fonctionnalités observées16novembre2026 ; aucune commande ni disponibilité de matériel inférée."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "8977a4c50a83f0eb3c885d7764aeb44f6963b52075ffd53680d68671db5ccbc6",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    },
+    {
+      "id": "hemp-q2-b02-ipk-genebank-not-commercial-seed-supplier",
+      "status": "approved",
+      "comment": "Le cadre d'échange entre institutions décrit par IPK est correctement distingué des circuits commerciaux. Aucune disponibilité précise n'est présumée.",
+      "contentHash": "15d100eca87da43a0682bebaec5fdb29aa2de82d5560ee8eaad5f84307af3d2a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-b02-ipk",
+          "url": "https://www.ipk-gatersleben.de/en/services/genbank",
+          "locator": "IPK Genebank10",
+          "result": "Petits échantillons pour échanges entre banques de gènes/jardins botaniques ; IPK se déclare non commercial.",
+          "sourceHash": "a3c8d5428fc806bd5f4ffcee51bbd3e7338ea3762d0b6d8ce4139b560d1cda43",
+          "status": "verified",
+          "accessObserved": "official-page",
+          "consultedOn": "2026-11-16",
+          "limitation": "Présentation institutionnelle consultée16novembre2026 ; pas disponibilité d’une accession précise."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndex": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousContentHash": "a8881a8a802f3dfd9b9a007e6f954f933357fdb4cf6dc3ee5509e3fced1bf3c2",
+        "previousStatus": "changes_requested",
+        "questionAndFourOptionsRead": true,
+        "explanationAndEditorialRead": true,
+        "sourceEvidenceReuse": "Passages déjà lus le 16 novembre 2026 ; objets sources inchangés. Lecture complémentaire explicite dans sourceChecks pour la germination."
+      }
+    }
+  ],
+  "summary": {
+    "total": 30,
+    "approved": 30,
+    "changes_requested": 0,
+    "rejected": 0,
+    "changedQuestionsIndependentlyRead": 24,
+    "unchangedApprovalsCarriedForward": 6,
+    "distinctSources": 8,
+    "unverifiedSources": 0,
+    "additionalSourcePassagesRead": 2,
+    "categoriesRead": {
+      "varieties": 5,
+      "genetics": 11,
+      "quality": 10,
+      "botany": 4
+    },
+    "levelsRead": {
+      "1": 1,
+      "2": 28,
+      "3": 1,
+      "4": 0
+    },
+    "note": "Dix questions de moins après retrait et fusion des exercices faibles ; aucun quota de niveau ni compteur ne justifie une approbation. Les deux cas chiffrés inventés sont désormais explicitement fictifs."
+  },
+  "revalidation": {
+    "previousReviewAt": "2026-11-16T18:50:30.875Z",
+    "originalQuestions": 40,
+    "currentQuestions": 30,
+    "changedCurrentQuestions": 24,
+    "unchangedCurrentApprovals": 6,
+    "allEightSourceObjectsUnchanged": true,
+    "finalTwoLabelsRead": "Exemple fictif ; passeport fictif. Seuls ces deux prompts ont changé depuis la lecture des 24 réécritures.",
+    "removedFromCurrentCandidates": [
+      {
+        "id": "hemp-q2-b02-usda-2022-collection-includes-feral-material",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-2022-trial-within-and-between-accessions",
+        "disposition": "replaced-or-merged",
+        "replacementId": "hemp-q2-b02-accession-means-can-hide-internal-diversity",
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-2022-trial-evaluates-fibre-and-seed-quality",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-seq-project-objective-not-completed-result",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-number-plants-sampled-not-number-seeds",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-mixoploidy-passport-remarks",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-mcd-greatest-canopy-width",
+        "disposition": "replaced-or-merged",
+        "replacementId": "hemp-q2-b02-usda-canopy-width-versus-vertical-position",
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-mcdh-height-of-widest-canopy",
+        "disposition": "replaced-or-merged",
+        "replacementId": "hemp-q2-b02-usda-canopy-width-versus-vertical-position",
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-usda-thousand-seed-weight-standard-count",
+        "disposition": "replaced-or-merged",
+        "replacementId": "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw",
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-grin-non-seed-fraction-sample-purity",
+        "disposition": "replaced-or-merged",
+        "replacementId": "hemp-q2-b02-seed-lot-purity-versus-germination",
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-trubanova-felina32-sidebranch-largest-within-variation",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-ipk-gbis-passport-phenotype-search-no-login",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      },
+      {
+        "id": "hemp-q2-b02-ipk-collection-exsitu-described",
+        "disposition": "withdrawn",
+        "replacementId": null,
+        "reason": "Absent du lot corrigé après traitement des demandes de première revue ; décision antérieure conservée en historique, sans attente actuelle."
+      }
+    ],
+    "historyScope": "Les 40 décisions de première passe restent consultables uniquement dans reviewHistory et ne comptent pas comme candidats courants."
+  },
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-11-16T18:50:30.875Z",
+      "reviewScope": "Lecture indépendante des40énoncés,quatre choix,réponses,explications,métadonnées et passages précis des8sources. Aucun texte auteur modifié.",
+      "summary": {
+        "total": 40,
+        "approved": 6,
+        "changes_requested": 34,
+        "rejected": 0,
+        "sourcesOpened": 8,
+        "unverifiedSources": 0,
+        "factualErrorsEstablished": 0,
+        "categoriesRead": {
+          "varieties": 6,
+          "genetics": 14,
+          "quality": 15,
+          "botany": 5
+        },
+        "levelsRead": {
+          "1": 14,
+          "2": 18,
+          "3": 8
+        },
+        "note": "Faits globalement soutenus ; réserves principalement sur distracteurs hors sujet,traductions de champs,paraphrases et niveaux non justifiés. Une baisse de niveau seule ne sauve pas un item sans apprentissage réel. Aucune obligation de conserver40."
+      },
+      "duplicateReview": {
+        "index": "docs/quiz-2000/fact-index.jsonl",
+        "searchedTopics": [
+          "accession",
+          "passeport/passport",
+          "USDA/IPK/GRIN/GBIS",
+          "Trubanová",
+          "Finola/Kompolti/Korea/Felina",
+          "diversité intra/inter",
+          "masse mille graines/hectolitre",
+          "circularité",
+          "valeur manquante",
+          "clone/cultivar"
+        ],
+        "scope": "Faits existants,proposés et retirés ciblés ; rapprochements relus et statuts distingués de validation.",
+        "exactExternalDuplicateFound": false,
+        "pairs": [
+          {
+            "ids": [
+              "hemp-q2-b02-usda-thousand-seed-weight-standard-count",
+              "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw"
+            ],
+            "decision": "partial-overlap-rewrite-or-combine",
+            "reason": "q26 ne demande que la définition de masse de mille graines ; q27 la reprend face à une masse par volume. Préférer une vraie comparaison à deux variantes de définition."
+          },
+          {
+            "ids": [
+              "hemp-q2-b02-usda-mcd-greatest-canopy-width",
+              "hemp-q2-b02-usda-mcdh-height-of-widest-canopy"
+            ],
+            "decision": "related-facts-current-prompts-too-repetitive",
+            "reason": "Largeur et hauteur de ce niveau sont distinctes, mais les deux énoncés livrent leur réponse. Réécrire une comparaison architecturale utile ou combiner."
+          },
+          {
+            "ids": [
+              "hemp-q2-b02-usda-cultivar-samples-separate-inventories",
+              "hemp-q2-b02-trubanova-kompolti-two-ipk-accessions"
+            ],
+            "decision": "distinct-with-institutional-scope",
+            "reason": "Politique NPGS d’inventaires imbriqués versus deux accessions Kompolti d’IPK : structures différentes. La première ne s’étend pas automatiquement à toutes banques."
+          },
+          {
+            "ids": [
+              "hemp-q2-b02-usda-2022-trial-within-and-between-accessions",
+              "hemp-q2-b02-trubanova-same-cultivar-genetic-cluster-not-identical"
+            ],
+            "decision": "related-not-exact-duplicate",
+            "reason": "Niveaux intra/interaccessions versus différences génétiques intra-cultivar ; les réécritures ne doivent pas devenir deux paraphrases de « les individus diffèrent »."
+          },
+          {
+            "ids": [
+              "hemp-q2-b02-usda-seq-project-objective-not-completed-result",
+              "hemp-q2-d01-machine-annonce-adoption"
+            ],
+            "decision": "methodological-neighbour",
+            "reason": "Intentions/annonces ne prouvent pas réalisation/adoption ; B02 n’ajoute actuellement qu’une lecture grammaticale, d’où réécriture ou remplacement demandé."
+          },
+          {
+            "ids": [
+              "hemp-q2-b02-trubanova-finola-height-less-variable-observed",
+              "hemp-q2-b01-finola2-slightly-taller-than-finola"
+            ],
+            "decision": "distinct",
+            "reason": "Dispersion intra-Finola versus différence annoncée de hauteur entre Finola2 etFinola ; propriété et objets distincts."
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "hemp-q2-b02-usda-hemp-repository-geneva-newyork",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "a19fc9c1853a8765315043535c8e9be25a3a72d8a23a7d37f0df75e47bfb5be4",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-report2024",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+              "locator": "Rapport2024,en-tête8 etApproach41",
+              "result": "PGRU localisée à Geneva,NewYork ; conservation des ressources au même lieu.",
+              "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "difficulty_not_supported",
+              "field": "level/editorial.difficultyRationale",
+              "reason": "La localisation d’une unité américaine inconnue n’est pas fournie par l’énoncé ; « vocabulaire concret » ne suffit pas à la rendre facile.",
+              "requestedChange": "Classer niveau2 ou reconstruire une situation géographique réellement accessible ; justifier la connaissance demandée."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-pgru-maintains-distributes-evaluates-germplasm",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "6873e19f07052146f5b5441b4123b956eb35f14b02f99cd2338ba7594e3205c8",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trial2022",
+              "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+              "locator": "Essai2022,p.1 lignes22–26",
+              "result": "La PGRU conserve,distribue et évalue des ressources génétiquement et géographiquement diverses.",
+              "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Prix de toutes semences,certification biologique et marques privées sont manifestement hors mission d’une banque de ressources.",
+              "requestedChange": "Proposer quatre missions institutionnelles plausibles, en distinguant conservation,évaluation,amélioration et contrôle sans absurdités."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-2022-collection-includes-feral-material",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "aef008089fbe0a39e9d09e62f345550353c1f3bb04bef3e223ac0f169889b402",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trial2022",
+              "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+              "locator": "Essai2022,p.1 ligne24",
+              "result": "Le matériel feral est explicitement inclus aux côtés des classes fibre,grain et métabolites secondaires.",
+              "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "difficulty_and_explanation",
+              "field": "level/explanation",
+              "reason": "La présence de matériel feral dans une collection précise est un fait à connaître, pas une lecture donnée ; l’explication répète le mot sans l’éclairer.",
+              "requestedChange": "Réestimer niveau2 et expliquer ce que désigne ici le matériel feral avec une preuve de définition appropriée."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-2022-trial-within-and-between-accessions",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "e43f16cea7dacbc105aca19dc771707bc265888133179f80d75ce34cf9ef397f",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trial2022",
+              "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+              "locator": "Essai2022,p.1 Evaluation13",
+              "result": "La diversité dans et entre accessions figure dans les objectifs d’évaluation.",
+              "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "translation_instead_of_concept",
+              "field": "prompt/options",
+              "reason": "La bonne réponse traduit littéralement « within and between accessions » ; les trois « sans » excluent la comparaison fournie.",
+              "requestedChange": "Construire une vraie comparaison intra/inter sur des observations concrètes, sans livrer les deux niveaux dans le prompt."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-2022-trial-evaluates-fibre-and-seed-quality",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "17cfbf8072ae1cca8ba235dc0d5fde7c503bcc367969e2a931ceea0caaa37e71",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trial2022",
+              "url": "https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/a/7491/files/2022/08/Hemp-Field-Day-USDA-Handout_8-3-22-v2.pdf",
+              "locator": "Essai2022,p.1 Evaluation10–12",
+              "result": "La qualité des graines et celle des fibres sont toutes deux évaluées.",
+              "sourceHash": "36f572a2bf24ba2b252067417d3b4ccd185c5a6bf83b03523511e8cf6e2c05e3",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Présentation historique2022 ; aucun effectif actuel ni valeur lue sur graphique revendiqués."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "difficulty_and_interest",
+              "field": "level/explanation",
+              "reason": "La liste particulière d’un essai inconnu n’est pas donnée ; la brièveté de la phrase ne justifie pas niveau1.",
+              "requestedChange": "Réestimer2 et expliquer la distinction utile entre qualité des graines et des fibres, ou remplacer cette mémorisation de liste par un vrai caractère documenté."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-multistate-trials-genetic-environment-interaction",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "782cdb9ae4c862af05c479eb69a9b37338620856b7607620bb316720c5db068d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-report2024",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+              "locator": "Rapport2024,Approach42",
+              "result": "Les essais multilocaux doivent quantifier les interactions entre matériel génétique et environnement.",
+              "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Trois réponses remplacent ou suppriment abusivement l’observation ; une seule décrit une expérience scientifique raisonnable.",
+              "requestedChange": "Conserver le vrai concept génétique×milieu, mais proposer des objectifs expérimentaux crédibles et réévaluer le niveau après réécriture."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-hemp-backups-national-preservation-lab",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "55f76365d3b0dcc9c6530f352223923abb368e6d8e60439310626474f5d51534",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-report2024",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+              "locator": "Rapport2024,Approach41 etProgress47",
+              "result": "Sauvegardes au laboratoire national de préservation ; la coquille Prevention du Progress est résolue par l’Approach.",
+              "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Mélanger au site principal,supprimer les homonymes ou ne garder qu’un texte sont des pertes d’information évidentes.",
+              "requestedChange": "Proposer des stratégies de conservation plausibles qui obligent à reconnaître l’intérêt d’une sauvegarde biologique indépendante."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-viability-and-pathogen-testing-distinct",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "b3289a5f781840356213cbbfb8d0b53e706fa44860317523c50157f754959e0c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-report2024",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+              "locator": "Rapport2024,Approach41",
+              "result": "Tests de pathogènes et de viabilité distinctement mentionnés.",
+              "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Droits d’auteur,origine et couleur du pollen ne sont pas des alternatives biologiques comparables à deux tests de semences.",
+              "requestedChange": "Faire porter les quatre réponses sur des dimensions biologiques distinctes : viabilité,santé,pureté,identité,avec paires plausibles."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-characterization-public-grin-global",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "42a7764ca9c4abbf5a4aecbd5d09e0f5e49b860d844f7545033382de53043291",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-report2024",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=444227&fy=2024",
+              "locator": "Rapport2024,Approach42 ; Progress Report",
+              "result": "Informations de caractérisation diffusées via GRIN-Global.",
+              "sourceHash": "39b928c36e3ee1796a713d08eba3a8ddcb2e24bcc131e7af390e0a450e9eddbf",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs distingués des réalisations. Preservation corroboré par Approach malgré la coquille du Progress."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "difficulty_and_options",
+              "field": "level/options",
+              "reason": "Le nom de la base de caractérisation USDA est une connaissance spécialisée ; ClinicalTrials.gov est hors sujet.",
+              "requestedChange": "Réestimer2 et proposer des bases de ressources végétales/données réellement comparables plutôt qu’un registre d’essais cliniques."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-seq-project-male-female-y-diversity",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "71ee358dd4224e3f97b7e4121961d061ee204b77c76eb2d966a93e612d540673",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-seqproject",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=445646",
+              "locator": "Projet445646,Objective27 etSpecific outcomes29",
+              "result": "Un mâle et une femelle par accession sont envisagés ; détermination sexuelle et diversité du Y parmi les buts.",
+              "sourceHash": "3bec0777a990f0c8252bf3b52deab11ea2bdafbd7d13048d356f5e57126cceff",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs2024–2026 ; pas attestation d’achèvement."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Profil chimique imposé,huile uniquement et remplacement des passeports ne sont pas des objectifs plausibles de cet échantillonnage.",
+              "requestedChange": "Proposer des hypothèses de génétique/échantillonnage comparables ; le fait masculin/féminin et Y est utile sans ces distracteurs."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-seq-project-objective-not-completed-result",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "e9d03bcc026c6f98e857ca12b9065ccabbcc9f923efba6220254e8765e6adb27",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-seqproject",
+              "url": "https://www.ars.usda.gov/research/project/?accnNo=445646",
+              "locator": "Projet445646,Objective27",
+              "result": "Le séquençage est formulé comme objectif futur, sans preuve d’achèvement sur cette seule page.",
+              "sourceHash": "3bec0777a990f0c8252bf3b52deab11ea2bdafbd7d13048d356f5e57126cceff",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Objectifs2024–2026 ; pas attestation d’achèvement."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "future_tense_rephrasing",
+              "field": "prompt/options/editorial",
+              "reason": "Le futur « générera » donne déjà « objectif annoncé » ; les autres statuts proposés sont sans rapport. Le niveau3 et l’intérêt ne sont pas établis.",
+              "requestedChange": "Remplacer ou réécrire pour faire analyser une vraie différence entre objectif et preuve de réalisation. Ne pas sauver le seul exercice de grammaire par une baisse de niveau."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-accession-single-species-time-place-sample",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "a8f4c89b41cd70f10cd52c337a78b9ef7211136d2180747b0c1724ad9386e41a",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2 p.10,lignes255–259",
+              "result": "Accession définie comme échantillon d’une espèce à lieu et moment donnés ; peut représenter une ou plusieurs plantes.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "difficulty_and_units",
+              "field": "level/options",
+              "reason": "Accession est un terme spécialisé ; plusieurs fausses unités (« toute descendance mondiale ») sont outrées.",
+              "requestedChange": "Réestimer2 et proposer des unités de conservation plausibles : accession,individu,lot,inventaire,cultivar."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-cultivar-samples-separate-inventories",
+          "status": "approved",
+          "comment": "Politique NPGS d’inventaires distincts dans l’accession étayée. Le scénario teste la traçabilité au-delà du nom ; niveau2 cohérent. Ne pas généraliser à toutes banques.",
+          "contentHash": "105b1e2662ace3a99d5c0e165ab8f09d2a6f30053b7e2d986c5e1bf39f788502",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2 p.10,lignes258–259",
+              "result": "NPGS conserve par défaut les échantillons d’un cultivar/population présumé en inventaires distincts imbriqués dans l’accession.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-botanical-var-not-breeder-cultivar",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "2424c92c82958872eba649ceaf1da3fcb6565e14306e2e0ec40f1f7881bc8fac",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.1 p.10,lignes261–268",
+              "result": "Le rang taxonomique var. est explicitement distingué de la variété de sélection/cultivar.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Développeur,date et masse de graines ne sont pas des sens comparables du mot variété.",
+              "requestedChange": "Choisir quatre unités/labels botaniques ou de sélection plausibles et expliciter la distinction taxon/cultivar."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-puid-unambiguous-global-accession",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "7a0708ebc7376e680f7fd4edc745ec15fe7b6de5f409de5c43985a396b15d59c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.1 p.10,lignes269–274",
+              "result": "PUID : référencement mondial non ambigu de l’accession et agrégation de ses informations.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Calcul de rendement,arômes et suppression de dates ne sont pas des fonctions plausibles d’un identifiant.",
+              "requestedChange": "Proposer des rôles d’identification/traçabilité proches ; distinguer identifiant d’accession,nom de cultivar,lot et version de données."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-passport-source-collector-developer-distinct",
+          "status": "approved",
+          "comment": "Source,collecteur et développeur distingués par le manuel ; quatre acteurs proposés. Définition biologique et niveau2 cohérents. « Obtenu » s’entend ici par sélection.",
+          "contentHash": "8b9f3701b1950f3fb3b50ec889a3b8c27257f60256301861d96b9d4c0cbde7c5",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.2 p.11–12,lignes300–307",
+              "result": "Source,collecteur et développeur séparés ; developer est l’organisation/personne ayant sélectionné le matériel.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-number-plants-sampled-not-number-seeds",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "1242511d478f30553d8675582a85ea5b2e33737619bed7cb31ec044d5151ccf9",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.3 p.12,lignes311–313",
+              "result": "number_plants_sampled compte les plantes échantillonnées pour collecter le matériel.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "english_field_translation",
+              "field": "prompt/editorial",
+              "reason": "number_plants_sampled puis « plantes échantillonnées » ne teste qu’une traduction, pas la représentativité du prélèvement.",
+              "requestedChange": "Réécrire autour de l’unité et de la représentativité d’un échantillonnage réel, avec preuve appropriée, ou remplacer."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-nonlatin-name-original-and-transliteration",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "065ea433aeff83e7343c66898c1125f2afe17a1b078e9fba2da3c4bc6cf80cc8",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.1 p.11,lignes279–282",
+              "result": "Nom non latin : orthographe originale et translittération latine conservées dans les remarques.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Nom inventé,nom de pays seul ou couleur seule sont des destructions manifestes de la documentation.",
+              "requestedChange": "Comparer des politiques linguistiques plausibles : original seul,translittération seule,traduction du sens,original+translittération."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-coordinate-uncertainty-radius",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "e9eee40f427abb3d1a3120ab07e90c20adc100cce5c7f18ff0ad5f5a94e2419d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.3 p.12,lignes325–329",
+              "result": "uncertainty définit le rayon maximal d’incertitude des coordonnées, en mètres.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "vocabulary_cue_and_distractors",
+              "field": "prompt/options/level",
+              "reason": "Uncertainty géographique mène directement au rayon des coordonnées ; hauteur,parents et surface sont hors champ. Le niveau3 ne se justifie pas.",
+              "requestedChange": "Mettre en concurrence des interprétations géographiques crédibles et tester précision affichée versus incertitude ; réévaluer niveau2 selon le nouvel item."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-mixoploidy-passport-remarks",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "1c4a364e5c40ce2f5dea7a895a4a7e61294c2b00e2daa0630c5be52a7befe51e",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.1 p.11,lignes288–290",
+              "result": "Ploïdie connue enregistrée ; mixoploïdie ou autre cas détaillé dans passport_remarks.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "database_column_trivia",
+              "field": "prompt/editorial",
+              "reason": "Mémoriser passport_remarks n’enseigne pas ce qu’est une mixoploïdie ; les autres colonnes proposées sont absurdes.",
+              "requestedChange": "Remplacer par un concept biologique/documentaire substantiel soutenu par une source, sans faire réciter le nom d’un champ informatique."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-source-date-collection-not-breeding",
+          "status": "approved",
+          "comment": "Collecte distincte de création variétale ; quatre événements datables comparables. Fait utile de provenance et niveau2 cohérent.",
+          "contentHash": "8a59a1566685dfc0bba8e8ac61ad1ee7a03e23dad259debf612b9931153d69d7",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§2.3 p.12,lignes314–315",
+              "result": "source_date date la collecte du matériel source, pas la création du cultivar.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-trunk-length-ground-first-branch",
+          "status": "approved",
+          "comment": "Distance sol–première branche distincte de hauteur apicale ; alternatives spatiales comparables. Fait morphométrique et niveau2 étayés.",
+          "contentHash": "9ff694d68830a05ef094724a02592b2a334195b683e31ab06cecd7e4827c8156",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§3.1 p.13–14,lignes339–349",
+              "result": "Hauteur jusqu’à l’inflorescence apicale ; trkl du sol à la première branche.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-mcd-greatest-canopy-width",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "06543bc8549e25af9e0b5100623bfd80d7feb7cbb268b12a3ae7464525e9a667",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§3.1 p.14,lignes341–344",
+              "result": "mcd : largeur maximale de la plante, sans étirer les branches.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "definition_repeated",
+              "field": "prompt/options",
+              "reason": "« Diamètre maximal » est simplement redécrit comme « plus grande largeur » ; la nuance utile de mesure n’est pas testée.",
+              "requestedChange": "Réécrire autour d’une comparaison architecturale utile ou fusionner avec la distinction largeur/position verticale de l’item voisin."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-mcdh-height-of-widest-canopy",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "e1576d1092e17f135ae9091f6cf5b3a80c26428346dd3d5fcacaa89ec8363a2c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§3.1 p.14,lignes345–347",
+              "result": "mcdh est la hauteur du niveau où se trouve le diamètre maximal du couvert.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "answer_in_scenario",
+              "field": "prompt/options/level",
+              "reason": "L’énoncé dit hauteurs différentes et la réponse dit hauteur de ce niveau ; masse/circularité sont hors sujet. Ce n’est pas une difficulté3.",
+              "requestedChange": "Faire tester une vraie distinction entre largeur et position de largeur, avec caractères concurrents crédibles ; éviter une deuxième simple reformulation du même couple que q23."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-grin-seed-aspect-ratio-elongation",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "bcac7b887e255bbd51c16871131e33cfe8a0103705a5fead1e24e0f6ad9418be",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-grindescriptors",
+              "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+              "locator": "GRIN,GENSTOCK,ligne132",
+              "result": "Rapport longueur/largeur de la graine, sans unité ; mesure d’allongement par construction géométrique.",
+              "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Un seul choix est une mesure de forme ; masse,impuretés et luminosité s’éliminent sans comprendre le rapport.",
+              "requestedChange": "Proposer des descripteurs de forme réellement concurrents, par exemple aire,circularité,largeur et rapport longueur/largeur."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-usda-thousand-seed-weight-standard-count",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "4bd55480320d5048eda2447861b9b7eacbe54864de5da178bdf33a667dbe62c3",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-handbook",
+              "url": "https://www.ars.usda.gov/ARSUSERFILES/80600500/HDM_DATA/HDM_20251215.pdf",
+              "locator": "ManuelV4,§6.1 p.27,lignes644–645",
+              "result": "Masse de mille graines enregistrée en grammes.",
+              "sourceHash": "fbbdcae362453a670dfa2e483115609a23ec16accbc0dad7b9c9c1feb678d454",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Définitions de descripteurs uniquement ; pas résultats variétaux ni instructions culturales ou d’extraction."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "literal_measure_repetition",
+              "field": "prompt/options",
+              "reason": "Masse de mille graines est reformulée en masse d’un même nombre ; aucune connaissance de la mesure n’est nécessaire.",
+              "requestedChange": "Supprimer cette variante ou l’intégrer à la comparaison nombre fixé/volume fixé de q27, avec un concept réellement demandé."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-grin-test-weight-kg-hectoliter-not-tsw",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "40439329eb3216df58c52fdd967592749be2f891f27f93643149de8e5a822937",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-grindescriptors",
+              "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+              "locator": "GRIN,GENSTOCK135 etPRODUCTION176",
+              "result": "TSW en grammes pour mille graines ; TEST_WEIGHT en kilogrammes par hectolitre.",
+              "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "unit_distractors_and_level",
+              "field": "options/level",
+              "reason": "Deux couples donnent millimètres/pourcentages à des mesures nommées masses ; l’élimination dimensionnelle suffit. Niveau3 surestimé.",
+              "requestedChange": "Distinguer nombre fixé et volume fixé avec des mesures/normalisations plausibles ; réévaluer niveau2 et éviter le doublon simpliste avec q26."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-grin-seed-circularity-hundred-circle",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "2174a9bdeaf151440422713db2524580e1f525ebf629b3be1d19cffe48886fde",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-grindescriptors",
+              "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+              "locator": "GRIN,GENSTOCK131",
+              "result": "Circularité sans unité,0–100 ;100 correspond au cercle parfait dans ce référentiel.",
+              "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Longueur,effectif et germination sont d’autres grandeurs ; seul un choix parle de forme.",
+              "requestedChange": "Proposer quatre contours/formes plausibles sur l’échelle, plutôt que quatre types de variables différents."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-grin-non-seed-fraction-sample-purity",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "123e507edf8f14154e3c8c3a224c83a1c52a04c246d5bd26db3d0f3d2ab7df78",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-grindescriptors",
+              "url": "https://npgsweb.ars-grin.gov/gringlobal/cropdetail?id=550&type=descriptor",
+              "locator": "GRIN,GENSTOCK128",
+              "result": "NON_SEED : pourcentage de matière autre que des graines dans l’échantillon.",
+              "sourceHash": "b0d58cf9c480ad7857ba475df773d3a439964434b0a708d7c1f1bc0c6f29d6f3",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Dictionnaire de variables, pas valeurs d’un cultivar ; date24février2025 retrouvée."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "nonseed_rephrasing",
+              "field": "prompt/options",
+              "reason": "Matière non graine est recopiée comme impuretés non constituées de graines.",
+              "requestedChange": "Réécrire autour de la différence pureté matérielle/viabilité ou composition réelle d’un lot, sans fournir déjà la définition à répéter ; sinon remplacer."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-nonflowering-recorded-missing-not-zero",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "52d5e7c5c9c56152a4c43438f9b3c66ba53cd0cce2eff0c07ea2f0b04bf24973",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Phenotypic measurements90",
+              "result": "Floraison non initiée pendant l’essai : temps de floraison et densité d’inflorescence enregistrés comme manquants.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "near_duplicate_distractors",
+              "field": "options",
+              "reason": "Floraison au jour zéro et floraison au premier jour représentent presque la même fausse imputation au début de l’essai.",
+              "requestedChange": "Garder le concept important manquant≠zéro, mais proposer quatre traitements distincts plausibles de l’observation non survenue."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-kompolti-two-ipk-accessions",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "aff6c440bccd4dcd272fb74bc005f6a0fbe446dea7b90494617e87c94ef2444e",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Plant growth83–85",
+              "result": "Kompolti CAN56 etCAN70 sont deux accessions obtenues d’IPK, sous un même nom de cultivar.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Marques d’huile et deux espèces sont trop éloignées d’un cas de codes d’échantillons homonymes.",
+              "requestedChange": "Proposer quatre interprétations de codes/échantillons comparables ; maintenir le contexte IPK, distinct de la politique NPGS."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-finola-height-less-variable-observed",
+          "status": "approved",
+          "comment": "Dispersion de hauteur observée explicitement bornée à l’essai ; minimum/maximum vérifiés. Aucune uniformité universelle de Finola affirmée.",
+          "contentHash": "ea715ad344ceebf381e642134dd771e9d00559ecdb37af2106c5467b8d6f7158",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Results127–129",
+              "result": "Finola plus homogène en hauteur dans ce petit essai ; individus110–132cm.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-korea-stem-area-greater-finola",
+          "status": "approved",
+          "comment": "Moyennes de section comparées correctement et bornées au petit essai. Comparaison distincte de hauteur ou de dispersion ; quatre bilans possibles,niveau2 cohérent.",
+          "contentHash": "b0d2ce5c93275960e7e54f59fa4c805696029c62c463700c12de5a6e74f8768a",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Results139",
+              "result": "Section moyenne de Korea2,24cm2 contreFinola0,81cm2 dans les plantes étudiées.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-felina32-sidebranch-largest-within-variation",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "4704d5d6cc64d47d5504afb0b7ed3b719bb84e044ea72d9d6414286fcf61049a",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Results140",
+              "result": "Plus forte variation interne de longueur de branche latérale rapportée pour Felina32.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "objective_not_tested",
+              "field": "prompt/editorial.learningObjective",
+              "reason": "Le choix du cultivar gagnant une dispersion dans un petit essai fait mémoriser un classement ; il ne teste pas la différence dispersion/moyenne annoncée comme objectif.",
+              "requestedChange": "Réécrire pour réellement distinguer variation interne et moyenne, sans simple comparaison numérique fournie ; ou sélectionner un autre fait utile du même corpus."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-same-cultivar-genetic-cluster-not-identical",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "17bbdbc7f26104b3f4b1a445790a87b05cd762cbf1bf342638b15b9d5ce937bc",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Results170–183",
+              "result": "Regroupements par cultivar et différences substantielles entre individus du même cultivar coexistent.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Deux choix « oui » confondent tous deux nom/groupe et identité clonale ; le dernier « exclut toute parenté » est manifestement extrême.",
+              "requestedChange": "Faire comparer des interprétations génétiques crédibles d’un regroupement, sans doublon de distracteur ni absolus."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-trubanova-greenhouse-position-randomization-bias",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "246a910990cc1ca062ae6c62d7f94cc115f59b7f84bcfa13c53f9f4f3b5476cb",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-trubanova2026",
+              "url": "https://link.springer.com/article/10.1007/s10722-025-02700-9",
+              "locator": "Trubanová2026,Plant growth87",
+              "result": "Positions randomisées puis réarrangements aléatoires pour limiter le biais d’emplacement en serre.",
+              "sourceHash": "54638396653aee8ec4808644c2fb5ec70e03b85096b1c98be57e001019b18d50",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "limitation": "Petit essai2019 publié2026 ; constats bornés aux plantes et au milieu étudiés. Aucun protocole repris ni tous suppléments prétendus relus."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Randomiser un emplacement ne donne pas un même génome,n’efface pas des différences et ne remplace pas des mesures.",
+              "requestedChange": "Proposer des sources de biais ou fonctions expérimentales plausibles ; l’objectif position×milieu reste utile."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-ipk-gbis-passport-phenotype-search-no-login",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "aa530b9e48887c84be25f3dc35de1a75df04627f37bd52f1887508823904ee21",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-gbis",
+              "url": "https://gbis.ipk-gatersleben.de/apex/f?p=GBIS2I_ORDERING_PORTAL:1",
+              "locator": "GBIS,Welcome17",
+              "result": "Passeports et données phénotypiques recherchables sans connexion ; commande séparée.",
+              "sourceHash": "8da950b877a7bef4705e623d9608862409bf6c4466234acc1aa3df047154e156",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Fonctionnalités observées16novembre2026 ; aucune commande ni disponibilité de matériel inférée."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "interface_fact_difficulty",
+              "field": "level/options",
+              "reason": "Connaître les fonctions sans connexion d’un portail précis n’est pas facile par seul vocabulaire ; les trois « seuls » simplifient l’élimination.",
+              "requestedChange": "Réestimer2 ou sélectionner un concept de données ouvertes plus utile ; proposer des ensembles de données scientifiques crédibles et borner la fonctionnalité au portail consulté en2026."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-ipk-gbis-quarterly-passport-snapshots-doi",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "8977a4c50a83f0eb3c885d7764aeb44f6963b52075ffd53680d68671db5ccbc6",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-gbis",
+              "url": "https://gbis.ipk-gatersleben.de/apex/f?p=GBIS2I_ORDERING_PORTAL:1",
+              "locator": "GBIS,Welcome18–19",
+              "result": "Instantanés trimestriels complets des passeports rendus citables avec DOI.",
+              "sourceHash": "8da950b877a7bef4705e623d9608862409bf6c4466234acc1aa3df047154e156",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Fonctionnalités observées16novembre2026 ; aucune commande ni disponibilité de matériel inférée."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Composition garantie,protection d’un cultivar et identité botanique sont sans rapport avec un DOI de données.",
+              "requestedChange": "Distinguer des fonctions documentaires plausibles : version identifiable,dernière version mouvante,identifiant matériel et autorisation d’accès."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-ipk-collection-exsitu-described",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "cfea36bcd0c718fafb1a63d8ac02592aea37100ab499a3a0717e4db49edd86c8",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-ipk",
+              "url": "https://www.ipk-gatersleben.de/en/services/genbank",
+              "locator": "IPK Genebank9",
+              "result": "Le portail décrit les ressources de la Federal Ex situ Collection.",
+              "sourceHash": "a3c8d5428fc806bd5f4ffcee51bbd3e7338ea3762d0b6d8ce4139b560d1cda43",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Présentation institutionnelle consultée16novembre2026 ; pas disponibilité d’une accession précise."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "technical_term_difficulty",
+              "field": "level/explanation",
+              "reason": "Ex situ est un terme de conservation spécialisé ; l’explication le répète sans définir hors du milieu d’origine.",
+              "requestedChange": "Réestimer2 et expliquer ex situ/hors milieu d’origine ; ne pas se contenter du libellé institutionnel."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "changes_requested",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-q2-b02-ipk-genebank-not-commercial-seed-supplier",
+          "status": "changes_requested",
+          "comment": "Passage source soutenant le fait retrouvé. Corrections éditoriales bloquantes détaillées ; vérification du fait ne vaut pas validation de la question.",
+          "contentHash": "a8881a8a802f3dfd9b9a007e6f954f933357fdb4cf6dc3ee5509e3fced1bf3c2",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-b02-ipk",
+              "url": "https://www.ipk-gatersleben.de/en/services/genbank",
+              "locator": "IPK Genebank10",
+              "result": "Petits échantillons pour échanges entre banques de gènes/jardins botaniques ; IPK se déclare non commercial.",
+              "sourceHash": "a3c8d5428fc806bd5f4ffcee51bbd3e7338ea3762d0b6d8ce4139b560d1cda43",
+              "status": "verified",
+              "accessObserved": "official-page",
+              "consultedOn": "2026-11-16",
+              "limitation": "Présentation institutionnelle consultée16novembre2026 ; pas disponibilité d’une accession précise."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_or_heterogeneous_distractors",
+              "field": "options",
+              "reason": "Mélanges alimentaires et distribution exclusive aux médicaments ne sont pas des cadres plausibles d’échanges d’une banque de gènes.",
+              "requestedChange": "Comparer des canaux scientifiques/conservatoires/commerciaux plausibles et ne pas présenter le canal mentionné comme exclusif de toute autre recherche."
+            }
+          ],
+          "checks": {
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndex": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -43,6 +43,8 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
   "BOTTE-040": "/app/kanab-quest/cards/botte-040-reglage-urgence-sylvain-v2.webp",
   "BOTTE-041": "/app/kanab-quest/cards/botte-041-equipe-recolte-sylvain-v2.webp",
   "BOTTE-042": "/app/kanab-quest/cards/botte-042-sechage-controle-sylvain-v2.webp",
+  // Preserve artwork for previously earned cards and cultures in progress.
+  "HERITAGE-004": "/app/kanab-quest/cards/heritage-004-climat-stable-producer-v2.webp",
   "HERITAGE-009": "/app/kanab-quest/cards/heritage-009-floraison-maitrisee-v1.webp",
   "HERITAGE-010": "/app/kanab-quest/cards/heritage-010-affinage-patient-v1.webp",
   "HERITAGE-011": "/app/kanab-quest/cards/heritage-011-canopy-legacy-v2.webp",
@@ -51,6 +53,7 @@ export const KQ_CARD_ILLUSTRATIONS: Readonly<Record<string, string>> = {
 };
 
 const KQ_CARD_FRONT_VERSION_OVERRIDES: Readonly<Record<string, number>> = {
+  "HERITAGE-004": 5,
   "HERITAGE-011": 4,
   "HERITAGE-012": 4,
 };

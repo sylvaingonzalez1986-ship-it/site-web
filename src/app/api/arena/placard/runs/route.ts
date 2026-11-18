@@ -10,7 +10,7 @@ import { getKqPlayerRunsSnapshot, readKqRunSelection, startKqPlayerRun } from "@
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET(request?: Request) {
+export async function GET(request: Request) {
   if (!await isKqPlayerRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }

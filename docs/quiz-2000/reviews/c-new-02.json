@@ -1,0 +1,974 @@
+{
+  "batchId": "c-new-02",
+  "reviewer": "e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture indépendante des 40 questions complètes, des quatre options, de l’explication, des métadonnées, des preuves et des faits voisins. Aucune écriture du lot auteur ni d’actifs.",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "factualResult": "All four initial requests resolved by author and finally approved by root after independent initial E review; prior36 approvals unchanged.",
+    "sourceResult": "18 objets sources couverts : 11 documents nouveaux effectivement ouverts et lus dans leurs passages utiles ; sept références réutilisées. Pour deux de ces dernières, les passages inchangés déjà lus pendant C-new-01 le 16 novembre sont réutilisés explicitement ; les nouveaux passages des cinq autres sont lus pendant cette revue. One additional source (Creux/Harmer2019) independently read by root for the circadian correction;19 source objects now covered.",
+    "levels": "Final levels1/2/3/4:16/16/8/0. Phytochrome and named Gill finding atlevel3; all other levels unchanged.",
+    "forms": "40 identifications assumées. Les exemples contextualisent des définitions sans créer artificiellement une déduction ; aucune exigence de quota de formes.",
+    "subjectKeys": "Regroupements cohérents pour embryon, membrane et expression génique avec C-new-01. Nouveaux objets écologiques et hormonaux distincts. Les propriétés du gravitropisme et des statolithes sont distinguées sans créer de faux doublon.",
+    "hempApplication": "Le chanvre sert de contexte à des propriétés générales des plantes à fleurs, des cellules et de l’écologie ; aucune n’est déclarée exclusive au cannabis. Les résultats Gill restent attribués à une expérience contrôlée, sans garantie au champ. L’hypothèse de caractères C3–C4 n’est pas présentée comme démontrée."
+  },
+  "sourceAudit": [
+    {
+      "sourceId": "q2-cn02-water",
+      "url": "https://openstax.org/books/biology-2e/pages/2-2-water",
+      "sourceHash": "0b90e8e8475586ecc4df2e913e52e224de4326ba6d17c0c2d46f921ff02227ee",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn01-ncsu-botany",
+      "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+      "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-imbibition",
+      "url": "https://propg.ifas.ufl.edu/04-seeds/03-germination/08-seedsgermination-imbibition.html",
+      "sourceHash": "fc4218641ad28c65981fe22dc5d90bef09edb5de312714283ed6b7dd7958f2eb",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "bf-reproduction-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-community",
+      "url": "https://openstax.org/books/biology-2e/pages/45-6-community-ecology",
+      "sourceHash": "160ac66ff3c7a1ed48858f6616a84a9e4cd57544543fd07fd46fecf788ebf8cd",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-ecosystems",
+      "url": "https://openstax.org/books/biology-2e/pages/46-1-ecology-of-ecosystems",
+      "sourceHash": "6f5c73d72c88c8610540e1034b3ef1a17252af60ac87d856f3c41c86ab060eee",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-ecology-scope",
+      "url": "https://openstax.org/books/biology-2e/pages/44-1-the-scope-of-ecology",
+      "sourceHash": "9eacc86a608a48fd7f9f3a08b98bb418b233d459bee813e237adee5cde106f44",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-sensory",
+      "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+      "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "revision-agro-openstax",
+      "url": "https://openstax.org/books/biology-2e/pages/31-1-nutritional-requirements-of-plants",
+      "sourceHash": "4fd3fd40336ba4468e39303ec378e949f473f9770d46ca844d4e1b5830577a6f",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-c02-openstax-reproduction",
+      "url": "https://openstax.org/books/biology-2e/pages/32-1-reproductive-development-and-structure",
+      "sourceHash": "43f0af66ed9c01a70ea7d58d5e411d608c54f2981527ba98adf611c4dd63025a",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-carbohydrates",
+      "url": "https://openstax.org/books/biology-2e/pages/3-2-carbohydrates",
+      "sourceHash": "9fc045bc98b24881058f23033772969c996fc47e0fd2cddfc1ea4c882f1c3c5e",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn01-light-reactions",
+      "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+      "sourceHash": "7c9576bdbf7c31797b047f9705e82b8c272ce1d8e0bbc37a45366767222c80a0",
+      "checkedAt": "2026-11-16",
+      "basis": "Passage inchangé réellement lu lors de C-new-01 le 16 novembre ; lecture réutilisée, pas nouvelle lecture déclarée."
+    },
+    {
+      "sourceId": "q2-cn02-membrane",
+      "url": "https://openstax.org/books/biology-2e/pages/5-1-components-and-structure",
+      "sourceHash": "dc23ead9104feabf4055f6018be9472cef4659bd02d4d2b60c2f97971cff7d25",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn01-gene-expression",
+      "url": "https://openstax.org/books/biology-2e/pages/16-1-regulation-of-gene-expression",
+      "sourceHash": "21a98c88bd8a4d29563ba8a0e499056886d7880f79867e9845ce9a94a76780b0",
+      "checkedAt": "2026-11-16",
+      "basis": "Passage inchangé réellement lu lors de C-new-01 le 16 novembre ; lecture réutilisée, pas nouvelle lecture déclarée."
+    },
+    {
+      "sourceId": "q2-cn02-gill-water-2025",
+      "url": "https://digital.library.adelaide.edu.au/server/api/core/bitstreams/c29a3560-ccfd-485a-9164-ac86e3858790/content",
+      "sourceHash": "51bd4354506d9a1ee04131d29a36e27a120f4ee7ce661ea757be095829cf3bd7",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-energy-flow",
+      "url": "https://openstax.org/books/biology-2e/pages/46-2-energy-flow-through-ecosystems",
+      "sourceHash": "c7b4c9f60be4dd9777d97cfbe61cb44fffacb6e98c1d86f54d4fffb33640299f",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "q2-cn02-calvin",
+      "url": "https://openstax.org/books/biology-2e/pages/8-3-using-light-energy-to-make-organic-molecules",
+      "sourceHash": "df913cf7985b54bccd2eb509d22b14624fa48a8b42c78d21264cfd1bb97b927f",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    },
+    {
+      "sourceId": "revision-agro-water",
+      "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+      "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+      "checkedAt": "2026-11-16",
+      "basis": "Document ouvert ; nouveaux passages utiles effectivement lus pendant cette revue."
+    }
+  ],
+  "duplicateCheck": {
+    "method": "Comparaison sémantique ciblée de fact-index.jsonl, de C-new-01 complet et des lots C/D/B/pilotes pour les faits voisins ; contrôle complémentaire des factKey de tous les lots.",
+    "result": "Aucun doublon de fait ou simple inversion retenu ; aucun factKey identique dans les autres lots.",
+    "arbitrations": [
+      "Respiration jour/nuit distincte de son organite mitochondrial et du besoin d’oxygène des racines.",
+      "Embryon jeune plante, protection du tégument et devenir ovule/graine sont distincts du nombre de cotylédons, du nombre de graines du chènevis, du nom péricarpe et de la radicule.",
+      "Herbivorie, compétition, parasitisme, mutualisme et réseaux détritiques testent leurs définitions fonctionnelles ; la mycorhize existante teste ses partenaires et le carbone fourni, la minéralisation teste le devenir de l’azote.",
+      "Une fleur hermaphrodite n’est pas la monoécie de fleurs séparées sur un plant. Gamétophyte pollen et tube pollinique diffèrent du stigmate, de l’anthère et du transport par le vent.",
+      "Membrane bicouche distincte de sélectivité ; ARN messager distinct d’assemblage par les ribosomes et d’expression différentielle.",
+      "Évaporation refroidissante, cohésion, moteur de tension du xylème et transport hydrominéral sont des propriétés distinctes. Signal gravitaire et organites perceptifs sont distincts.",
+      "Rubisco, sens de C3 et photoprotection caroténoïde ne répètent ni origine atmosphérique du carbone, ni origine hydrique du dioxygène, ni spectre de chlorophylle a."
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-q2-cn02-evaporation-can-cool-leaf-by-heat-consumption",
+      "status": "approved",
+      "comment": "Évaporation et absorption de chaleur correctement reliées ; la réserve « peut » évite de garantir une température foliaire.",
+      "contentHash": "947e52edd99646fef3d4f499abfdb3623c369320e8c04e35a8657df82ea3565b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-water",
+          "url": "https://openstax.org/books/biology-2e/pages/2-2-water",
+          "locator": "Water’s Heat of Vaporization, dernier paragraphe",
+          "result": "Absorption d’énergie et refroidissement lors de l’évaporation confirmés.",
+          "sourceHash": "0b90e8e8475586ecc4df2e913e52e224de4326ba6d17c0c2d46f921ff02227ee",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-plant-cellular-respiration-day-and-night",
+      "status": "approved",
+      "comment": "Respiration de jour et de nuit explicitement étayée ; distincte de l’identification de la mitochondrie.",
+      "contentHash": "fe6abe45949a0177097df72268778b65d95c6957f58bb7276f19e499912e1601",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-ncsu-botany",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+          "locator": "Environmental Factors That Affect Plant Growth, Temperature, Photosynthesis and Respiration",
+          "result": "Photosynthèse et respiration diurnes, respiration nocturne explicitement distinguées.",
+          "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-germination-starts-with-seed-water-uptake",
+      "status": "approved",
+      "comment": "Réhydratation et réserves sont distinguées ; notion initiale de germination accessible et utile.",
+      "contentHash": "1e7ddd5076db2e020551cd9dd6015109299fba22c754bd898c20a93ddaed3066",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-imbibition",
+          "url": "https://propg.ifas.ufl.edu/04-seeds/03-germination/08-seedsgermination-imbibition.html",
+          "locator": "Imbibition, premier paragraphe",
+          "result": "Réhydratation préalable à la germination confirmée.",
+          "sourceHash": "fc4218641ad28c65981fe22dc5d90bef09edb5de312714283ed6b7dd7958f2eb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-plant-tissue-group-of-cells",
+      "status": "approved",
+      "comment": "Les quatre niveaux d’organisation sont comparables ; tissu correctement distingué d’organe et d’organite.",
+      "contentHash": "fce7e40e95bd39a6c2626224561f068dc542ed745eb8d4844a2f42d9132a491f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-ncsu-botany",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+          "locator": "Anatomy and Morphology, Cells, dernier paragraphe",
+          "result": "Groupes de cellules fonctionnelles définis comme tissus.",
+          "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-flower-organ-sexual-reproduction",
+      "status": "approved",
+      "comment": "Fonction reproductive de la fleur utile même pour des fleurs discrètes ; aucune exclusivité du chanvre affirmée.",
+      "contentHash": "e67c2e8bb485819c81e268e65e594f94e6fff05e59f1a52c1ea080b8372302ae",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-ncsu-botany",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+          "locator": "Flowers, premier paragraphe",
+          "result": "Fonction sexuelle des fleurs explicitement indiquée.",
+          "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-seed-embryo-is-young-plant",
+      "status": "approved",
+      "comment": "Embryon, réserves et enveloppes sont distingués ; sens biologique accessible, distinct du nombre de cotylédons et de la radicule.",
+      "contentHash": "1d0db01ba85af35aaa831afa257475e5e9d1730cee8bbdc7a92b26963d8b577a",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Double Fertilization puis Development of the Seed",
+          "result": "Zygote se développant en embryon confirmé.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-leaf-eating-animal-herbivory",
+      "status": "approved",
+      "comment": "Consommation de végétaux identifiée sans assimiler herbivorie et destruction obligatoire de la plante entière.",
+      "contentHash": "9591d587829fb3c07d86521a53f1059026a882a7fd41ebb601c9f7858c14df0c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-community",
+          "url": "https://openstax.org/books/biology-2e/pages/45-6-community-ecology",
+          "locator": "Predation and Herbivory, définition de herbivory",
+          "result": "Herbivorie définie comme consommation de plantes par des animaux.",
+          "sourceHash": "160ac66ff3c7a1ed48858f6616a84a9e4cd57544543fd07fd46fecf788ebf8cd",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-neighbouring-plants-limited-resource-competition",
+      "status": "approved",
+      "comment": "Situation concrète de ressource limitée ; distincte de l’absorption racinaire et de l’hydrologie du sol.",
+      "contentHash": "4620b9462b5319dc330be0858598a4f0ead5b6181334988c2b65550431fc9785",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-ecosystems",
+          "url": "https://openstax.org/books/biology-2e/pages/46-1-ecology-of-ecosystems",
+          "locator": "Introduction, compétition pour les ressources limitées",
+          "result": "Compétition intra- et interspécifique pour des ressources limitées confirmée.",
+          "sourceHash": "6f5c73d72c88c8610540e1034b3ef1a17252af60ac87d856f3c41c86ab060eee",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-ecosystem-includes-living-and-abiotic-environment",
+      "status": "approved",
+      "comment": "Le vivant et le milieu physique sont réunis ; niveau 1 approprié à la notion d’écosystème.",
+      "contentHash": "6227ee37fde1e50414b48b972684ebb0bfdfb6bde2b47c6c9a917d63c85ac582",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-ecosystems",
+          "url": "https://openstax.org/books/biology-2e/pages/46-1-ecology-of-ecosystems",
+          "locator": "Introduction, définition de ecosystem",
+          "result": "Communauté vivante et interactions avec milieu abiotique confirmées.",
+          "sourceHash": "6f5c73d72c88c8610540e1034b3ef1a17252af60ac87d856f3c41c86ab060eee",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-population-conspecific-plants-same-area",
+      "status": "approved",
+      "comment": "Population, communauté, écosystème et biome sont de vrais niveaux voisins ; réponse unique.",
+      "contentHash": "32efbd10f4aa8f35c21ff42c95ce8be82e5d782d52e7e5c2c723c4645ef825d5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-ecology-scope",
+          "url": "https://openstax.org/books/biology-2e/pages/44-1-the-scope-of-ecology",
+          "locator": "Population Ecology, premier paragraphe",
+          "result": "Même espèce, même aire et même moment confirmés.",
+          "sourceHash": "9eacc86a608a48fd7f9f3a08b98bb418b233d459bee813e237adee5cde106f44",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-decomposers-feed-on-dead-organic-matter",
+      "status": "approved",
+      "comment": "Final root review: the prompt now asks the defining resource of the decomposer role in a detrital web. Dead organic matter is uniquely correct among the four resources. Initial E evidence supports this role; no broader exclusive diet is asserted.",
+      "contentHash": "d309e8df746dbaa829fd9082675e695bbbf66bdc5ff0a258fbbdf37c41eeb16f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-ecosystems",
+          "url": "https://openstax.org/books/biology-2e/pages/46-1-ecology-of-ecosystems",
+          "locator": "Food Chains and Food Webs, réseau détritique",
+          "result": "Réseau détritique fondé sur matière morte confirmé ; exclusivité alimentaire non établie.",
+          "sourceHash": "6f5c73d72c88c8610540e1034b3ef1a17252af60ac87d856f3c41c86ab060eee",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn02-biotic-factor-living-organism-environment",
+      "status": "approved",
+      "comment": "Exemple vivant et trois conditions physiques correctement distingués ; différent de la définition de l’écosystème entier.",
+      "contentHash": "61a6f8271cc58fbc16c3aa90214e9c996469347c95224f4b1c403d5d6bc11c3f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-ecology-scope",
+          "url": "https://openstax.org/books/biology-2e/pages/44-1-the-scope-of-ecology",
+          "locator": "Ecosystem Ecology, composantes biotiques/abiotiques (ligne 62) ; Levels of Ecological Study, figure 44.2",
+          "result": "Composantes biotiques vivantes et abiotiques non vivantes distinguées.",
+          "sourceHash": "9eacc86a608a48fd7f9f3a08b98bb418b233d459bee813e237adee5cde106f44",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-fertilization-fusion-of-male-female-gametes",
+      "status": "approved",
+      "comment": "Fécondation distinguée du transport et de la libération du pollen ; niveau 1 utile.",
+      "contentHash": "b65d697e328ba959eb17f48cb13d6b1307f81ef05651f624dcc8d072d432e2dd",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Double Fertilization, fusion sperm and egg",
+          "result": "Fusion gamète mâle–oosphère formant le zygote confirmée.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-seed-dispersal-can-reduce-parent-competition",
+      "status": "approved",
+      "comment": "Avantage possible de dispersion correctement borné ; aucune garantie de survie ou mode de dispersion propre au chanvre inventé.",
+      "contentHash": "6fc5e3f1006ee2f2a11996b5dcc0d4e5cd3ec1fd5b57180e74719193c2969fdb",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Fruit and Seed Dispersal, premier paragraphe",
+          "result": "Éloignement des graines et moindre compétition possibles confirmés.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-water-cohesion-attraction-between-water-molecules",
+      "status": "approved",
+      "comment": "Attraction eau-eau distincte de l’adhésion, de l’évaporation et de l’osmose ; niveau 2 cohérent.",
+      "contentHash": "bc115530a653e02bf1017faaf55a535723f3804f76db52b115a98d59c360dfbe",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-water",
+          "url": "https://openstax.org/books/biology-2e/pages/2-2-water",
+          "locator": "Water’s Cohesive and Adhesive Properties",
+          "result": "Cohésion entre molécules et adhésion à d’autres surfaces distinguées.",
+          "sourceHash": "0b90e8e8475586ecc4df2e913e52e224de4326ba6d17c0c2d46f921ff02227ee",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-root-downward-growth-response-gravity",
+      "status": "approved",
+      "comment": "Orientation dans l’obscurité et stimulus gravitaire correctement reliés ; distinct du mécanisme des statolithes.",
+      "contentHash": "60e09ca4021732b3b78f7b0ff4cad95a020ac91573a39522665ee6b5fcc0f6c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "Plant Responses to Gravity, premier paragraphe",
+          "result": "Croissance racinaire vers le bas, même dans l’obscurité, confirmée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-chlorosis-means-leaf-yellowing",
+      "status": "approved",
+      "comment": "Chlorose correctement traitée comme symptôme et non comme diagnostic ; niveau 2 terminologique acceptable.",
+      "contentHash": "8737f5985fc48fe86acf4c48e128152fdabb1673072b7fc8fdba62e4ef0dc824",
+      "sourceChecks": [
+        {
+          "sourceId": "revision-agro-openstax",
+          "url": "https://openstax.org/books/biology-2e/pages/31-1-nutritional-requirements-of-plants",
+          "locator": "Essential Nutrients, nutrient deficiencies, Figure 31.4",
+          "result": "Chlorose explicitement définie comme jaunissement foliaire.",
+          "sourceHash": "4fd3fd40336ba4468e39303ec378e949f473f9770d46ca844d4e1b5830577a6f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-seed-coat-protects-seed-contents",
+      "status": "approved",
+      "comment": "Fonction du tégument distinguée des réserves et de l’embryon ; explication préserve la différence entre graine et fruit.",
+      "contentHash": "e634b4bfce73b4c434db1d69b355098a11ea5fcc4c39f2f5e0c75a4e01c5f542",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Development of the Seed, paragraphe seed coat",
+          "result": "Tégument protecteur issu des enveloppes de l’ovule confirmé.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-phototropism-directional-growth-light",
+      "status": "approved",
+      "comment": "Plusieurs tropismes comparables ; direction vers la lumière et phototropisme positif correctement associés.",
+      "contentHash": "41111b06cee2857f9b224bfc0f89f1e2753387d74febceacbef1b6899f252471",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "The Blue Light Responses, définition de positive phototropism",
+          "result": "Phototropisme positif vers la lumière confirmé.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-mutualism-both-partners-benefit",
+      "status": "approved",
+      "comment": "Bilan réciproque des partenaires distinct de l’identité racine-champignon d’une mycorhize ; relation générale sans exclusivité du chanvre.",
+      "contentHash": "54af744255d650bbc93dac954097bfeb723d15d1c7c2f1c158c66ddf156554a9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-community",
+          "url": "https://openstax.org/books/biology-2e/pages/45-6-community-ecology",
+          "locator": "Mutualism, premier paragraphe",
+          "result": "Bénéfice des deux espèces défini comme mutualisme.",
+          "sourceHash": "160ac66ff3c7a1ed48858f6616a84a9e4cd57544543fd07fd46fecf788ebf8cd",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-parasitism-benefits-parasite-harms-living-host",
+      "status": "approved",
+      "comment": "Le dommage à un hôte vivant et le bénéfice du parasite sont explicités ; distinct de la parasitoïdie déjà couverte.",
+      "contentHash": "b97080f89499ab91eca102fa799d74f4b7661b5f537f1bf1e5074d820aa6bc46",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-community",
+          "url": "https://openstax.org/books/biology-2e/pages/45-6-community-ecology",
+          "locator": "Parasitism, premier paragraphe",
+          "result": "Bénéfice du parasite et dommage de l’hôte vivant confirmés.",
+          "sourceHash": "160ac66ff3c7a1ed48858f6616a84a9e4cd57544543fd07fd46fecf788ebf8cd",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-ovule-seed-ovary-fruit-development",
+      "status": "approved",
+      "comment": "Devenir de l’ovule et de l’ovaire correctement associé ; distinct du nom péricarpe et du nombre de graines du chènevis.",
+      "contentHash": "61fbbab4de57ea6f1de0af0cea7a31d573470ab7353d227390e14c067aeb7f87",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Double Fertilization, dernier paragraphe",
+          "result": "Ovule vers graine et tissus de l’ovaire vers fruit confirmés.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-pollen-tube-delivers-male-gametes-to-ovule",
+      "status": "approved",
+      "comment": "Tube pollinique distinct du vecteur du pollen et du stigmate ; niveau 2 reproductif cohérent.",
+      "contentHash": "e9f7a73b2a65e50895b9090f49b40ae053de554254e21a76e5160504f54d9038",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Double Fertilization, deux premiers paragraphes",
+          "result": "Tube transportant la lignée génératrice et les gamètes mâles confirmé.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-hermaphrodite-flower-male-female-organs-same-flower",
+      "status": "approved",
+      "comment": "L’unité fleur est explicite et distingue l’hermaphrodisme de la monoécie du plant ; aucune fréquence propre au chanvre avancée.",
+      "contentHash": "1f2b4704484bd03665a188b8bbae1a17429b8aad20c9aec9d71496fb1bc71574",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-openstax-reproduction",
+          "url": "https://openstax.org/books/biology-2e/pages/32-1-reproductive-development-and-structure",
+          "locator": "Flower Structure, perfect or hermaphrodite flowers",
+          "result": "Fleur avec androcée et gynécée définie comme hermaphrodite.",
+          "sourceHash": "43f0af66ed9c01a70ea7d58d5e411d608c54f2981527ba98adf611c4dd63025a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-starch-plant-carbohydrate-storage",
+      "status": "approved",
+      "comment": "Amidon de réserve distingué des polymères structuraux et protecteurs ; contenu non spécifique au chanvre.",
+      "contentHash": "07cd81247f7386ddfa053aabee462d8509eba092820fce3e079738e183b97acb",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-carbohydrates",
+          "url": "https://openstax.org/books/biology-2e/pages/3-2-carbohydrates",
+          "locator": "Polysaccharides, paragraphe de l’amidon",
+          "result": "Stockage végétal des sucres excédentaires en amidon confirmé.",
+          "sourceHash": "9fc045bc98b24881058f23033772969c996fc47e0fd2cddfc1ea4c882f1c3c5e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-carotenoids-dissipate-excess-light-energy",
+      "status": "approved",
+      "comment": "Photoprotection par dissipation distincte du spectre de chlorophylle a et du dégagement d’O2 ; niveau 2 physiologique acceptable.",
+      "contentHash": "72f87f9976f05220705544b0dc5f9c9e4037eb29fa9becf8a792b9140c290410",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-light-reactions",
+          "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+          "locator": "Absorption of Light, carotenoids",
+          "result": "Énergie excédentaire absorbée et dissipée en chaleur confirmée.",
+          "sourceHash": "7c9576bdbf7c31797b047f9705e82b8c272ce1d8e0bbc37a45366767222c80a0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre lors de C-new-01 réutilisée ; passage et objet source inchangés."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-phytochrome-perceives-red-far-red-signals",
+      "status": "approved",
+      "comment": "Final root review: level3 and its rationale now describe specialized recall of photoreceptor families, as requested by E. Previously verified wording, answer and source are unchanged.",
+      "proposedLevel": 3,
+      "contentHash": "9ab6b8dde3cf44cef8ab2b75ce002305ea9f6075e562da2786cc8f72ad2d5d11",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "The Phytochrome System and the Red/Far-Red Response, premier paragraphe",
+          "result": "Interconversion des phytochromes par rouge et rouge lointain confirmée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn02-ethylene-is-gaseous-plant-hormone",
+      "status": "approved",
+      "comment": "Hormone gazeuse distinguée des autres hormones ; niveau 2 acceptable pour une propriété fondamentale de l’éthylène.",
+      "contentHash": "620e7a0009a2a988dbfd0b4a41f2d50e9217c945ddac3c46231ef3424d1b8e14",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "Ethylene, premier paragraphe",
+          "result": "Nature gazeuse volatile de l’éthylène confirmée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-abscisic-acid-promotes-stomatal-closure-drought",
+      "status": "approved",
+      "comment": "Signal ABA distinct des ions potassium et des cellules de garde ; fait correctement appliqué à une plante comme le chanvre.",
+      "contentHash": "2ca557e283ab8bacf19bcd836cbc27c2233a101bba9c52e539ca123689b17d9b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-ncsu-botany",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/3-botany",
+          "locator": "Plant Growth Regulators, Abscisic acid",
+          "result": "ABA induisant la fermeture stomatique en stress confirmé.",
+          "sourceHash": "344d4c48279745b3c47e60e267c3b4a6be05a1dc45445f6312e657e124941578",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-plasma-membrane-phospholipid-bilayer",
+      "status": "approved",
+      "comment": "Bicouche distinguée de monocouche et d’autres matériaux ; nouveau fait structural, distinct de la sélectivité membranaire.",
+      "contentHash": "0be503e2baec1d46e07b7cb666d0db4c62f1fcb2d814a8ca5f655d102cbd9b1e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-membrane",
+          "url": "https://openstax.org/books/biology-2e/pages/5-1-components-and-structure",
+          "locator": "Phospholipids, paragraphe de la lipid bilayer et Figure 5.4",
+          "result": "Bicouche, têtes vers eau et queues face à face confirmées.",
+          "sourceHash": "dc23ead9104feabf4055f6018be9472cef4659bd02d4d2b60c2f97971cff7d25",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-messenger-rna-carries-coding-information-to-ribosomes",
+      "status": "approved",
+      "comment": "Les rôles des ARN sont distingués ; fait distinct du lieu d’assemblage ribosomal et de l’expression différentielle.",
+      "contentHash": "98ef44acf06760f7621605b5a2ae6470dc11c283eac4116245cd678c6cfa462c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-gene-expression",
+          "url": "https://openstax.org/books/biology-2e/pages/16-1-regulation-of-gene-expression",
+          "locator": "Regulation of Gene Expression, eukaryotic cells et Figure 16.3",
+          "result": "ARN messager exporté puis traduit par les ribosomes confirmé.",
+          "sourceHash": "21a98c88bd8a4d29563ba8a0e499056886d7880f79867e9845ce9a94a76780b0",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture du 16 novembre lors de C-new-01 réutilisée ; passage et objet source inchangés."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-gill-2025-water-conservation-carbon-cost",
+      "status": "approved",
+      "comment": "Final root review: level3 and rationale correctly describe recall of a named experimental finding, as requested by E. No observation is misleadingly presented as supplied for deduction; the verified factual content is unchanged.",
+      "proposedLevel": 3,
+      "contentHash": "635ed8bc47094a54c0d32f5313ae6e001f2c45a22910a27c899e443232f91a2f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-gill-water-2025",
+          "url": "https://digital.library.adelaide.edu.au/server/api/core/bitstreams/c29a3560-ccfd-485a-9164-ac86e3858790/content",
+          "locator": "Résumé p. 1 ; Conclusion p. 9–10, lignes 867–879 du PDF",
+          "result": "Réduction des pertes hydriques au prix de l’assimilation et biomasse confirmée.",
+          "sourceHash": "51bd4354506d9a1ee04131d29a36e27a120f4ee7ce661ea757be095829cf3bd7",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn02-circadian-rhythm-endogenous-near-daily-clock",
+      "status": "approved",
+      "comment": "Final root review: the added Creux/Harmer source was independently opened by root. Introduction paragraphs2-4 explicitly support an internal timing mechanism, a roughly24h oscillator without input and environmental resetting. The general plant framing remains accurate.",
+      "contentHash": "01f25e6e616320426b5c2cee31ad06c248b90acac3756a212f7d5651ffd76a2b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "The Blue Light Responses, paragraphe Cryptochromes (ligne 72 de la page consultée) : cycle de 24 h et signaux bleus",
+          "result": "Cycle de 24 h et signaux bleus confirmés ; endogénéité non explicitée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn02-creux-circadian-2019",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6719598/",
+          "locator": "Abstract and Introduction paragraphs2-4, rendered lines69 and73-77",
+          "result": "Root independently opened the article on2026-11-16 and read these passages: internal timing mechanism, persistent roughly24h oscillator without input, and light/temperature resetting. General plant physiology, no cannabis-specific measured period claimed.",
+          "sourceHash": "8d953ccd7f6568310370eb0ac8c049f58672945d167e41ac0cf2cbb60296a63a",
+          "checkedAt": "2026-11-16",
+          "reader": "root",
+          "consultationBasis": "New targeted reading for final arbitration after independent initial review by e_engine_audit."
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn02-trophic-energy-transfer-dissipates-heat",
+      "status": "approved",
+      "comment": "Transfert incomplet correctement expliqué sans pourcentage universel ; bilan qualitatif de niveau 2.",
+      "contentHash": "437b1e6dc78e1728980cc2cb70b00aaf4621020efcd7dc116ef1328232768e65",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-energy-flow",
+          "url": "https://openstax.org/books/biology-2e/pages/46-2-energy-flow-through-ecosystems",
+          "locator": "Ecological Efficiency: The Transfer of Energy between Trophic Levels",
+          "result": "Chaleur métabolique, ingestion incomplète et déchets confirmés.",
+          "sourceHash": "c7b4c9f60be4dd9777d97cfbe61cb44fffacb6e98c1d86f54d4fffb33640299f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-rubisco-catalyses-calvin-carbon-fixation",
+      "status": "approved",
+      "comment": "Enzyme du cycle de Calvin identifiée sans confusion avec capture lumineuse ; niveau 3 cohérent.",
+      "contentHash": "fa070456b067f7bd640a1932aa92b12d7805299aa3362553d0894826c96fd8f4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-calvin",
+          "url": "https://openstax.org/books/biology-2e/pages/8-3-using-light-energy-to-make-organic-molecules",
+          "locator": "Stage 1: Fixation, premier paragraphe et Figure 8.19",
+          "result": "Rubisco catalysant CO2 avec RuBP confirmée.",
+          "sourceHash": "df913cf7985b54bccd2eb509d22b14624fa48a8b42c78d21264cfd1bb97b927f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-c3-first-stable-carbon-fixation-product-three-carbons",
+      "status": "approved",
+      "comment": "Nombre de carbones du premier produit stable correctement distingué du substrat accepteur ; prudence C3–C4 préservée.",
+      "contentHash": "5380fda428941acc4d54dc40765bd3e2a29faeb3a78aee2b7e718ababec2af78",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-gill-water-2025",
+          "url": "https://digital.library.adelaide.edu.au/server/api/core/bitstreams/c29a3560-ccfd-485a-9164-ac86e3858790/content",
+          "locator": "Discussion p. 9, lignes 858–865 : hypothèse d’efficacité C3 et caractères intermédiaires à tester",
+          "result": "Chanvre situé dans le cadre C3 ; hypothèse intermédiaire laissée ouverte.",
+          "sourceHash": "51bd4354506d9a1ee04131d29a36e27a120f4ee7ce661ea757be095829cf3bd7",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-cn02-calvin",
+          "url": "https://openstax.org/books/biology-2e/pages/8-3-using-light-energy-to-make-organic-molecules",
+          "locator": "Stage 1: Fixation et Figure 8.19",
+          "result": "Deux produits 3-PGA à trois carbones confirmés.",
+          "sourceHash": "df913cf7985b54bccd2eb509d22b14624fa48a8b42c78d21264cfd1bb97b927f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-amyloplast-statoliths-gravity-sensing-root-cap",
+      "status": "approved",
+      "comment": "Amyloplastes de la coiffe distincts des autres organites ; lien de mécanisme distinct du simple stimulus gravitaire.",
+      "contentHash": "347b800a7cc4318c57d66a41cd618f41f84da128bdf378d56b7438961104bea7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "Plant Responses to Gravity, deuxième paragraphe",
+          "result": "Sédimentation des amyloplastes dans la coiffe confirmée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-leaf-evaporation-tension-pulls-xylem-water",
+      "status": "approved",
+      "comment": "Évaporation, tension et colonne d’eau correctement reliées ; distinct du nom transpiration et de la fonction du xylème.",
+      "contentHash": "944816841026bbfbe834dcfd37de2465c4b70a8fb452aa115f2d45aae0912b88",
+      "sourceChecks": [
+        {
+          "sourceId": "revision-agro-water",
+          "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+          "locator": "Movement of Water and Minerals in the Xylem, Transpiration",
+          "result": "Évaporation créant une tension tirant l’eau du xylème confirmée.",
+          "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-angiosperm-pollen-haploid-gametophyte",
+      "status": "approved",
+      "comment": "Pollen gamétophyte distinct du gamète isolé et du sporophyte visible ; niveau 3 cohérent.",
+      "contentHash": "38371ea8a436315b221baa3deff40c2f15c38a37dda81774ce35c587760af5f2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c02-openstax-reproduction",
+          "url": "https://openstax.org/books/biology-2e/pages/32-1-reproductive-development-and-structure",
+          "locator": "Sexual Reproduction in Angiosperms et Development of the Male Gametophyte",
+          "result": "Pollen correspondant au gamétophyte mâle haploïde confirmé.",
+          "sourceHash": "43f0af66ed9c01a70ea7d58d5e411d608c54f2981527ba98adf611c4dd63025a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-double-fertilization-zygote-and-endosperm",
+      "status": "approved",
+      "comment": "Deux fusions et deux devenirs distincts correctement expliqués ; ne répète pas la seule définition de fécondation.",
+      "contentHash": "55204491f3847429040c7a574af8cd549cc38ed2369662f6e8f71a4ea5389e8a",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "Double Fertilization, deuxième paragraphe et Figure 32.18",
+          "result": "Zygote et endosperme issus des deux fusions confirmés.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    }
+  ],
+  "initialRequestsBeforeFinalArbitration": [
+    {
+      "id": "hemp-q2-cn02-decomposers-feed-on-dead-organic-matter",
+      "status": "changes_requested",
+      "comment": "La définition du rôle décomposeur est étayée, mais « se nourrissent-ils notamment » interroge trop largement tous les aliments possibles. La source n’exclut pas l’utilisation d’exsudats par les mêmes microorganismes.",
+      "requestedChanges": [
+        "Demander quelle ressource caractérise le rôle de décomposeur dans le réseau détritique, plutôt que tout ce dont les organismes se nourrissent « notamment ». Conserver le fait matière organique morte, les quatre options et le niveau 1 si la nouvelle formulation assure leur unicité."
+      ],
+      "contentHash": "29dfbc7e9cec3ead85cdd2b920b7ddbd4ca76f17727fcbf9597be1d567198fc1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-ecosystems",
+          "url": "https://openstax.org/books/biology-2e/pages/46-1-ecology-of-ecosystems",
+          "locator": "Food Chains and Food Webs, réseau détritique",
+          "result": "Réseau détritique fondé sur matière morte confirmé ; exclusivité alimentaire non établie.",
+          "sourceHash": "6f5c73d72c88c8610540e1034b3ef1a17252af60ac87d856f3c41c86ab060eee",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-phytochrome-perceives-red-far-red-signals",
+      "status": "changes_requested",
+      "comment": "Fait confirmé, mais le rappel d’une famille parmi quatre photorécepteurs spécialisés est de niveau 3. La formulation simple ne rend pas cette connaissance intermédiaire.",
+      "requestedChanges": [
+        "Passer au niveau 3 et adapter difficultyRationale : rappel spécialisé de la correspondance famille de photorécepteurs / spectre, parmi quatre familles plausibles. Fait, formulation et choix approuvés."
+      ],
+      "proposedLevel": 3,
+      "contentHash": "2fd964b5c1b837d6e6750f2ced3422183607535394be2e4dd50983e6838f91a3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "The Phytochrome System and the Red/Far-Red Response, premier paragraphe",
+          "result": "Interconversion des phytochromes par rouge et rouge lointain confirmée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-gill-2025-water-conservation-carbon-cost",
+      "status": "changes_requested",
+      "comment": "Résultat exact et portée expérimentale correctement bornée. Sans résultat donné dans l’énoncé, répondre exige un rappel de la publication ; la justification « lecture d’un résultat » ne décrit pas la tâche. Niveau 3 requis pour cette version.",
+      "requestedChanges": [
+        "Passer cette version au niveau 3 et remplacer la justification de lecture par celle d’un résultat expérimental spécialisé à rappeler. Autre possibilité : fournir une observation permettant une interprétation réelle, sans donner simplement la réponse à recopier ; nouvelle version à relire."
+      ],
+      "proposedLevel": 3,
+      "contentHash": "aad6085fa3747cbae64cebfe5e354e2119a8b193636615ea2ff70abbdfe42ec7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-gill-water-2025",
+          "url": "https://digital.library.adelaide.edu.au/server/api/core/bitstreams/c29a3560-ccfd-485a-9164-ac86e3858790/content",
+          "locator": "Résumé p. 1 ; Conclusion p. 9–10, lignes 867–879 du PDF",
+          "result": "Réduction des pertes hydriques au prix de l’assimilation et biomasse confirmée.",
+          "sourceHash": "51bd4354506d9a1ee04131d29a36e27a120f4ee7ce661ea757be095829cf3bd7",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-cn02-circadian-rhythm-endogenous-near-daily-clock",
+      "status": "changes_requested",
+      "comment": "Le passage cité établit le cycle d’activité de 24 h et le rôle des signaux bleus. Il n’explicite pas le caractère interne/endogène ni la synchronisation d’une horloge indépendante : compléter la preuve ou borner le contenu.",
+      "requestedChanges": [
+        "Ajouter un passage réellement lu étayant la composante interne/endogène et la synchronisation du rythme végétal, avec sourceEvidence précise et objet source complet si nouvelle référence. Ou limiter réponse/explication au cycle d’activité d’environ 24 h établi par la référence actuelle. Niveau 2 acceptable, fait non déclaré faux."
+      ],
+      "contentHash": "9a84b71d45dec86911aa2a70b0efc25be926001be7d9794ba9e6be9420afa2d7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn02-sensory",
+          "url": "https://openstax.org/books/biology-2e/pages/30-6-plant-sensory-systems-and-responses",
+          "locator": "The Blue Light Responses, paragraphe Cryptochromes (ligne 72 de la page consultée) : cycle de 24 h et signaux bleus",
+          "result": "Cycle de 24 h et signaux bleus confirmés ; endogénéité non explicitée.",
+          "sourceHash": "d5369787be9a20db54f667b2c84d35b12dc5b19b33ab60bfc27cd626ca1e6258",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    }
+  ],
+  "finalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "scope": "Four author corrections after independent initial E review. The36 prior approved items are unchanged. Root read all four corrected full question objects; one new source was opened, existing E checks remain attributed to E.",
+    "ids": [
+      "hemp-q2-cn02-decomposers-feed-on-dead-organic-matter",
+      "hemp-q2-cn02-phytochrome-perceives-red-far-red-signals",
+      "hemp-q2-cn02-gill-2025-water-conservation-carbon-cost",
+      "hemp-q2-cn02-circadian-rhythm-endogenous-near-daily-clock"
+    ],
+    "newSourceCheck": {
+      "sourceId": "q2-cn02-creux-circadian-2019",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6719598/",
+      "locator": "Abstract and Introduction paragraphs2-4, rendered lines69 and73-77",
+      "result": "Root independently opened the article on2026-11-16 and read these passages: internal timing mechanism, persistent roughly24h oscillator without input, and light/temperature resetting. General plant physiology, no cannabis-specific measured period claimed.",
+      "sourceHash": "8d953ccd7f6568310370eb0ac8c049f58672945d167e41ac0cf2cbb60296a63a",
+      "checkedAt": "2026-11-16",
+      "reader": "root",
+      "consultationBasis": "New targeted reading for final arbitration after independent initial review by e_engine_audit."
+    }
+  }
+}

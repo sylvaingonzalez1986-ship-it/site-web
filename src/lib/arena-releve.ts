@@ -42,7 +42,7 @@ export type ArenaReleveMeeting = {
 
 export const ARENA_RELEVE_LETTER = [
   "Je te lègue la maison et sa grange. Les bêtes l’ont quittée depuis un moment, mais elle peut encore servir. Tu trouveras mon vieux registre sur place. Il reste beaucoup de pages blanches.",
-  "Tout l’intérieur de la grange est à refaire. Transforme-la en ferme indoor : une chambre de culture, de la place pour sécher et de quoi ranger tes récoltes. Si tu as besoin d’un coup de main, Sylvain connaît le chemin.",
+  "Tout l’intérieur de la grange est à refaire. Transforme-la en ferme indoor : une chambre de culture, de la place pour sécher et de quoi ranger tes récoltes. Si tu as besoin d’un coup de main, Loïc connaît le chemin.",
   "Prends soin de ce lieu. À toi d’écrire la suite. — Grand-père",
 ] as const;
 
@@ -86,7 +86,7 @@ export const ARENA_RELEVE_CHAPTERS: readonly ArenaReleveChapter[] = [
     action: "Lancer ma campagne d’essai", milestone: "Première campagne lancée",
   },
   {
-    id: "culture", stage: "culture", act: 2, title: "Sylvain laisse la main", scene: "culture",
+    id: "culture", stage: "culture", act: 2, title: "Loïc laisse la main", scene: "culture",
     description: "Observe les situations, joue tes cartes et accompagne les six étapes.",
     coach: "Regarde ce qui se passe avant d’agir. Consulter le suivi est gratuit. Choisis une réponse si elle t’aide, lance les dés, puis lis le résultat. Je reste là si tu bloques.",
     rationale: "Les effets, coûts et moments d’intervention sont ceux du jeu. Certains soins agissent au bilan suivant. Une aide d’essai ou une reprise est annoncée ; elle ne change jamais discrètement le résultat de tes dés.",

@@ -1,0 +1,984 @@
+{
+  "batchId": "r-actives-b-01",
+  "reviewer": "rebalance_products_sol",
+  "reviewedAt": "2026-11-17",
+  "items": [
+    {
+      "id": "hemp-q2-rb01-glande-sessile-precurseur",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Développement glandulaire floral distinct de la simple morphologie pédonculée déjà présente dans l’index.",
+      "contentHash": "8139a506e63314c123cd2d8b6e89f338ee7c49b2006df5b8604799741f85e7c6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-livingston20",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+          "locator": "Discussion et Figure 8 ; résultats, Figure 5",
+          "result": "Texte original Wiley ouvert. Le modèle fait dériver les glandes pédonculées de précurseurs d’aspect sessile ; profil floral dominé par les monoterpènes.",
+          "sourceHash": "04a2073a00dd34b8b11bed37e15d52a6b4265a971f1414bf2548af9a3d4a6973"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-monoterpenes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Thème corrigé vers Arômes et terpènes ; fait, choix et preuve inchangés.",
+      "contentHash": "8731c4d93b1c17ec6f002a8c119d787d664355542bad9fd66ddf5dd6ee0a4e2a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-livingston20",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+          "locator": "Discussion et Figure 8 ; résultats, Figure 5",
+          "result": "Texte original Wiley ouvert. Le modèle fait dériver les glandes pédonculées de précurseurs d’aspect sessile ; profil floral dominé par les monoterpènes.",
+          "sourceHash": "04a2073a00dd34b8b11bed37e15d52a6b4265a971f1414bf2548af9a3d4a6973"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-glandes-monoterpenes",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Fait soutenu et réellement actif, mais topicId doit être molecules (thème affiché « Arômes et terpènes »), et non evidence (« Cannabinoïdes »). Ne pas changer le fait pour cette correction.",
+          "contentHash": "95520b0957021c0919cd5c570863dcf697d15b608ce5a0eabd899832041f5ed4",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-livingston20",
+              "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+              "locator": "Discussion et Figure 8 ; résultats, Figure 5",
+              "result": "Texte original Wiley ouvert. Le modèle fait dériver les glandes pédonculées de précurseurs d’aspect sessile ; profil floral dominé par les monoterpènes.",
+              "sourceHash": "04a2073a00dd34b8b11bed37e15d52a6b4265a971f1414bf2548af9a3d4a6973"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-fleurs-solitaires-jours-longs",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Distinction biologique utile entre fleurs solitaires et inflorescence compacte, bornée aux trois cultivars observés ; aucun réglage de culture proposé.",
+      "contentHash": "a1d285f623342c626bf945ecd9a9ebb3fa09dbd049939d69189e3a1c78307a95",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-spitzer19",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "locator": "Results: Growth and Development Under Long Photoperiod ; Plant and Inflorescence Architecture, Figures 2 et 5–6",
+          "result": "Texte original Frontiers ouvert. Les trois cultivars ont des fleurs solitaires sous jours longs ; les unités de l’inflorescence ont des feuilles réduites.",
+          "sourceHash": "fc24448dc2165d18a6891b3095b9686a3d5f40a57b7a98058644a8e8f5e0024b"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-petites-feuilles-florales",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Morphologie concrète d’une inflorescence résineuse ; les quatre états de feuilles sont comparables.",
+      "contentHash": "84e64eef9bbfb76ec071e8cfaae6c09bbbaf36388a90a2c92ec501764321fb78",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-spitzer19",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "locator": "Results: Growth and Development Under Long Photoperiod ; Plant and Inflorescence Architecture, Figures 2 et 5–6",
+          "result": "Texte original Frontiers ouvert. Les trois cultivars ont des fleurs solitaires sous jours longs ; les unités de l’inflorescence ont des feuilles réduites.",
+          "sourceHash": "fc24448dc2165d18a6891b3095b9686a3d5f40a57b7a98058644a8e8f5e0024b"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-fecondation-concentrations",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Relation fécondation/composition des fleurs, sous forme qualitative délimitée ; aucun protocole d’augmentation de production.",
+      "contentHash": "d4fb5f779ee800ea040818e2aad5290a5ceef54128b099dc70184ebdf5189128",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-lipson21",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8602813/",
+          "locator": "Discussion, trois premiers paragraphes ; résultats terpénoïdes, Figures 5–6",
+          "result": "Texte intégral PMC ouvert. Baisse générale des cannabinoïdes après fécondation, profils relatifs principalement conservés, réponses des sesquiterpénoïdes diverses.",
+          "sourceHash": "d2e5ed1eccb74eb2dc2e86ee75da0aa2388e2d2333d2e42d4671ec4bff70d9f9"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-fecondation-rapports",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Proportions cannabinoïdes distinctes de leur concentration après fécondation ; source et portée concordent.",
+      "contentHash": "a91b8c7b4b2b4dbbf509d26de157012163182b5e55bcc9ed76190d42c586d28a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-lipson21",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8602813/",
+          "locator": "Discussion, trois premiers paragraphes ; résultats terpénoïdes, Figures 5–6",
+          "result": "Texte intégral PMC ouvert. Baisse générale des cannabinoïdes après fécondation, profils relatifs principalement conservés, réponses des sesquiterpénoïdes diverses.",
+          "sourceHash": "d2e5ed1eccb74eb2dc2e86ee75da0aa2388e2d2333d2e42d4671ec4bff70d9f9"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-fecondation-sesquiterpenes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Thème corrigé vers Arômes et terpènes ; restriction à cet essai conservée.",
+      "contentHash": "38a509ed0a9a4eace1bb8fa6b9c66264b241ee823dcb8ce58bbbcedf4e253f1f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-lipson21",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8602813/",
+          "locator": "Discussion, trois premiers paragraphes ; résultats terpénoïdes, Figures 5–6",
+          "result": "Texte intégral PMC ouvert. Baisse générale des cannabinoïdes après fécondation, profils relatifs principalement conservés, réponses des sesquiterpénoïdes diverses.",
+          "sourceHash": "d2e5ed1eccb74eb2dc2e86ee75da0aa2388e2d2333d2e42d4671ec4bff70d9f9"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-fecondation-sesquiterpenes",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Fait soutenu et délimité à cet essai. Corriger topicId en molecules : la propriété testée concerne les sesquiterpénoïdes, pas les cannabinoïdes.",
+          "contentHash": "664f416bd22cf3cf6124c23df10ac3bf4aa967e451a8ec2c1efb65885d8d18c0",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-lipson21",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8602813/",
+              "locator": "Discussion, trois premiers paragraphes ; résultats terpénoïdes, Figures 5–6",
+              "result": "Texte intégral PMC ouvert. Baisse générale des cannabinoïdes après fécondation, profils relatifs principalement conservés, réponses des sesquiterpénoïdes diverses.",
+              "sourceHash": "d2e5ed1eccb74eb2dc2e86ee75da0aa2388e2d2333d2e42d4671ec4bff70d9f9"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-pollen-hermaphrodite-fonctionnel",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Quatre observations reproductrices comparables ; disparition du choix Oui unique ; niveau 2 cohérent.",
+      "contentHash": "b95ec8e21a3564127afd35f2a2a2eb7a41b8dabf1bde95bf253e1da580570f1a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-punja20",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.00718/full",
+          "locator": "Discussion, pollen germination ; PCR and Sequence Analysis ; Figure 10D–F",
+          "result": "Texte original Frontiers ouvert. Pollen d’inflorescences hermaphrodites germé et descendants étudiés portant le profil PCR femelle. Pas de généralisation à tous les croisements.",
+          "sourceHash": "a6805d6de3394d130b3864322ca4cf39be0a04183b097245ad89d5f217b9da68"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-pollen-hermaphrodite-fonctionnel",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Conserver le fait, refaire les quatre choix : trois réponses commencent par Non et une seule par Oui ; deux négations absolues servent d’indices. Proposer quatre observations reproductrices de même nature. Niveau 2 recommandé : viabilité observée de ce pollen, qui n’est pas rendue accessible par la brièveté du oui/non.",
+          "contentHash": "35a36ddd8f20dffd9e7678c4a73958b92e8b6e5db9a071eb5bc50c28315812eb",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja20",
+              "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.00718/full",
+              "locator": "Discussion, pollen germination ; PCR and Sequence Analysis ; Figure 10D–F",
+              "result": "Texte original Frontiers ouvert. Pollen d’inflorescences hermaphrodites germé et descendants étudiés portant le profil PCR femelle. Pas de généralisation à tous les croisements.",
+              "sourceHash": "a6805d6de3394d130b3864322ca4cf39be0a04183b097245ad89d5f217b9da68"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-descendance-hermaphrodite-femelle",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Niveau 2 et justification corrigés ; fait limité à la descendance étudiée, sans changement de preuve.",
+      "contentHash": "5f25d12eaad54d9ddaf9ae0146efa87dd718c137f6b466ab0f38429ac072f971",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-punja20",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.00718/full",
+          "locator": "Discussion, pollen germination ; PCR and Sequence Analysis ; Figure 10D–F",
+          "result": "Texte original Frontiers ouvert. Pollen d’inflorescences hermaphrodites germé et descendants étudiés portant le profil PCR femelle. Pas de généralisation à tous les croisements.",
+          "sourceHash": "a6805d6de3394d130b3864322ca4cf39be0a04183b097245ad89d5f217b9da68"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-descendance-hermaphrodite-femelle",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Fait soutenu, mais passer au niveau 2 et adapter difficultyRationale. Le sexe génétique d’une descendance issue de ces inflorescences demande un résultat spécialisé ou un raisonnement génétique ; les réponses courtes ne justifient pas le niveau 1. Maintenir la restriction à la descendance effectivement étudiée.",
+          "contentHash": "9421e209ae8a9179d59606c5dcd7063d347bc61b2650d8e6eb393ad1969a75b1",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja20",
+              "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.00718/full",
+              "locator": "Discussion, pollen germination ; PCR and Sequence Analysis ; Figure 10D–F",
+              "result": "Texte original Frontiers ouvert. Pollen d’inflorescences hermaphrodites germé et descendants étudiés portant le profil PCR femelle. Pas de généralisation à tous les croisements.",
+              "sourceHash": "a6805d6de3394d130b3864322ca4cf39be0a04183b097245ad89d5f217b9da68"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-maturation-asynchrone",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Quatre organisations des stades remplacent les Oui/Non ; distinction réelle entre développement simultané et asynchrone.",
+      "contentHash": "c3081237527abef5045b1ed3322d02c5e1ca474196de0f2a289df35405433360",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-punja23",
+          "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+          "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+          "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+          "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-glandes-maturation-asynchrone",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Conserver le fait ; refaire prompt/choix sans une seule option Non nuancée face à trois Oui absolus. Demander l’organisation des stades observés avec quatre organisations plausibles. Le résultat doit rester l’asynchronie des glandes, pas le simple rejet de nécessairement/toujours/exactement.",
+          "contentHash": "39a3f1a8ca8f26411c4dfa39c212aebd9fadd605dbf06674efef203eb42e7789",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja23",
+              "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+              "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+              "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+              "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-gouttes-resine-tetes-collees",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Quatre aspects microscopiques plausibles remplacent les transformations fantaisistes. Le lien précis entre gouttes résineuses et agglutination des têtes reste celui déjà vérifié dans la source.",
+      "contentHash": "ddf4ea880437b7b37aecd65cce7553a96bc324a141032185a6c6515670fbdc93",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-punja23",
+          "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+          "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+          "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+          "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-gouttes-resine-tetes-collees",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Soutien source précis. Refaire les distracteurs : exclusivement, toujours et systématiquement les rendent éliminables sans connaître les glandes. Comparer quatre conséquences physiques plausibles des sécrétions ; aucune méthode de manipulation ou d’extraction.",
+          "contentHash": "5d0cb37131a5f700f58ab11639562d2a585a91acddcb4aa50c416c7b80cf4f5d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja23",
+              "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+              "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+              "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+              "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-rb01-gouttes-resine-tetes-collees",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Les pieds enroulés, gonflés en sphères ou les têtes en écailles restent des distracteurs fantaisistes. Comparer des conséquences physiques plausibles de la sécrétion, ou remplacer le fait si les quatre choix restent triviaux.",
+          "contentHash": "8794d0ed1a1b8569631d21bb80144617433450895242b7ef8697d8e944144983",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja23",
+              "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+              "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+              "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+              "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+            }
+          ],
+          "finalReviewer": "root",
+          "finalReviewedAt": "2026-11-17",
+          "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-fragilite-manipulation",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Les choix portent désormais sur des altérations anatomiques après récolte, sans nouvelle croissance. Les têtes rompues ou absentes restent le fait contrôlé dans le passage source.",
+      "contentHash": "1acec1b601a2f96211f81bb15c7637c478174f394d1a62639289bbf912ac3417",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-punja23",
+          "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+          "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+          "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+          "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-glandes-fragilite-manipulation",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Conserver la fragilité des têtes après récolte, mais refaire les choix : trois Non, dont deux absolus, face à un seul Oui détaillé. Tester l’altération précise observée par quatre évolutions anatomiques plausibles, pas la proposition générale qu’une manipulation peut abîmer un objet.",
+          "contentHash": "75ea41706bbee01762f4c63f824c933daf98ed9a3e8a0e771c40e5f6679efc72",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja23",
+              "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+              "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+              "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+              "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+            }
+          ]
+        },
+        {
+          "id": "hemp-q2-rb01-glandes-fragilite-manipulation",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Trois distracteurs impliquent une nouvelle croissance ou une transformation peu plausible après récolte. La réponse est encore trouvable sans connaître les glandes. Proposer des altérations anatomiques plausibles et non ambiguës, ou un autre fait soutenu.",
+          "contentHash": "403744d6c80d649fe493c76ba695fc2ca12c9f6ede1fab66c49f3dbf9db08052",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-punja23",
+              "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+              "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+              "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+              "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+            }
+          ],
+          "finalReviewer": "root",
+          "finalReviewedAt": "2026-11-17",
+          "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-brunes-senescence",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Observation anatomique liée à la sénescence des glandes, sans en faire un indicateur universel de récolte.",
+      "contentHash": "b7fe37dc94792df9a371e6d6325013b3cec81dbf1c38ecca2c8ed133498118e8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-punja23",
+          "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+          "locator": "Abstract: Results et Conclusion ; Resin exudation from trichomes and senescence ; Figures 8–12",
+          "result": "Texte original Springer ouvert. Stades asynchrones, gouttes adhésives et agrégats de têtes, sénescence et altérations après récolte sont décrits.",
+          "sourceHash": "65464d4c5b7e5ead0e33d309184343476dcb3b2d798ff90e45f0dd5144f9c871"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-stigmates-brun-rouge",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Évolution visible d’organes floraux dans le cultivar suivi ; explication distingue stigmates et glandes.",
+      "contentHash": "a5336c9c2a2c9aa18e14521fa671f2625ddc93d90cd28ac6fc63b96a4f0dc4b8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-hesami23",
+          "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+          "locator": "Results: Flower development, avant Figure 9 ; Discussion",
+          "result": "Texte original MDPI ouvert. Le suivi White Widow décrit des glandes avant l’allongement des stigmates et une évolution blanc-jaune vers brun rougeâtre.",
+          "sourceHash": "6a747b550050c3c06217f1c49c6b583ada33452f8f37337aebbbaab162c0ae2d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-avant-stigmates",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Ordre de mise en place des glandes de la bractée effectivement décrit avant l’allongement des stigmates.",
+      "contentHash": "6a31f721528401110e09f11fbb3143eff389fd970dbd46029d6d9825c67a8b32",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-hesami23",
+          "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+          "locator": "Results: Flower development, avant Figure 9 ; Discussion",
+          "result": "Texte original MDPI ouvert. Le suivi White Widow décrit des glandes avant l’allongement des stigmates et une évolution blanc-jaune vers brun rougeâtre.",
+          "sourceHash": "6a747b550050c3c06217f1c49c6b583ada33452f8f37337aebbbaab162c0ae2d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-disque-secreteur-sans-chlorophylle",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Compartimentation propre aux glandes résineuses observées ; source et absence de fluorescence sont correctement délimitées.",
+      "contentHash": "e6c6ba5daedc27c43990864c36d6473e2dea0b8adf2f29fa87ed2dd0470fd325",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-conneely21",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8016307/",
+          "locator": "Abstract ; Figure 1B et 1D ; Discussion et modèle Figure 8",
+          "result": "Texte intégral PMC ouvert. Fluorescence chlorophyllienne dans le pédoncule et les cellules de soutien, absente du disque. Apport floral de sucres présenté comme modèle suggéré.",
+          "sourceHash": "83df6f3d5afcfd4fbe3baa6b317ffc23c0d08a3a154a911bd5608716306ddb0d"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-fleur-apport-sucres-glandes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Les distracteurs sont désormais des tissus sources candidats ; la réponse garde son statut de modèle proposé.",
+      "contentHash": "ddede3c8ce26023b5e98d2bf30166d6cd0c81e4762105251a104b838404d992d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-conneely21",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8016307/",
+          "locator": "Abstract ; Figure 1B et 1D ; Discussion et modèle Figure 8",
+          "result": "Texte intégral PMC ouvert. Fluorescence chlorophyllienne dans le pédoncule et les cellules de soutien, absente du disque. Apport floral de sucres présenté comme modèle suggéré.",
+          "sourceHash": "83df6f3d5afcfd4fbe3baa6b317ffc23c0d08a3a154a911bd5608716306ddb0d"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-fleur-apport-sucres-glandes",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Le modèle et sa réserve sont correctement rapportés. Remplacer pollen extérieur et graines mûres par de vrais tissus sources candidats plausibles ; les trois distracteurs actuels sont trop éloignés du trajet carboné étudié. Garder explicitement le statut de modèle suggéré.",
+          "contentHash": "3dcc351887f815dadfed531cf3a6c859cf1777abd5ce21220a565999508222da",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-conneely21",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8016307/",
+              "locator": "Abstract ; Figure 1B et 1D ; Discussion et modèle Figure 8",
+              "result": "Texte intégral PMC ouvert. Fluorescence chlorophyllienne dans le pédoncule et les cellules de soutien, absente du disque. Apport floral de sucres présenté comme modèle suggéré.",
+              "sourceHash": "83df6f3d5afcfd4fbe3baa6b317ffc23c0d08a3a154a911bd5608716306ddb0d"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-thcas-cbdas-genes-distincts",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Organisation de gènes déterminant directement le profil THC/CBD ; distinct de la localisation chromosomique déjà testée.",
+      "contentHash": "6c7c6edad803fba72f9acc9bfff433264f385564c97fe5b989f7184b48171afe",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-allen26",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+          "locator": "Abstract ; §1.4–1.5 ; Discussion §3.1 et §3.3",
+          "result": "Texte intégral PMC ouvert. THCAS et CBDAS sont des gènes distincts liés ; locus de type supergène à recombinaison réduite ; enzymes testées surtout productrices de CBCA.",
+          "sourceHash": "28dd2eee2b6967d4c6f3c4a20ef6e76b92a503b86fd2099b0e115d605f3d3012"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-locus-b-recombinaison-reduite",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Le fait vise l’architecture du locus cannabinoïde B et la transmission des chimotypes, pas une définition générale de recombinaison.",
+      "contentHash": "d3f83ba463d8b4482b59fd39ce95ef95b8f29e96352359c984aad4e15a7a1985",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-allen26",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+          "locator": "Abstract ; §1.4–1.5 ; Discussion §3.1 et §3.3",
+          "result": "Texte intégral PMC ouvert. THCAS et CBDAS sont des gènes distincts liés ; locus de type supergène à recombinaison réduite ; enzymes testées surtout productrices de CBCA.",
+          "sourceHash": "28dd2eee2b6967d4c6f3c4a20ef6e76b92a503b86fd2099b0e115d605f3d3012"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-cbdas-sous-produit-thca",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Directement lié à la biosynthèse et à la coexistence de THCA dans des profils à dominante CBD.",
+      "comment": "Nouveau fait recevable : origine probable du THCA résiduel dans des profils CBD sans THCAS fonctionnelle. Le prompt attribue l’interprétation à Allen et l’explication conserve la portée enzymatique. Niveau 3 cohérent ; pas de protocole ni garantie de teneur.",
+      "contentHash": "7304cf392c87b864bdba7febcdeaa4f3fbc7b6100fd2a3fec60cae532c7770a5",
+      "reviewer": "rebalance_products_sol",
+      "reviewedAt": "2026-11-17",
+      "revisionHistory": [
+        {
+          "replacedId": "hemp-q2-rb01-oxidocyclases-cbca",
+          "previousStatus": "changes_requested",
+          "previousContentHash": "ead5a891ad8ebe9e224dabc019e7771b40f0dde433ba6fd1e93beea5c186b501",
+          "reason": "Nouvelle lecture Sol du fait de remplacement et de ses preuves originales."
+        }
+      ],
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-allen26-sideproduct",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+          "locator": "Discussion §3.1, paragraphes The origin of THCA et The most likely source of THCA",
+          "result": "Passage original PMC rouvert et lu. Les auteurs présentent CBDAS comme source la plus probable du THCA dans les cultivars CBD sans THCAS fonctionnelle, en lien avec une activité secondaire documentée. Le fait ne prétend pas que toute la teneur de chaque produit a cette origine.",
+          "sourceHash": "c7ed2b910b9523eb5c2d0fa6bc5793de6c76fd49e71bf8a5831eb411c9194f3f"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-bractees-unite-comparaison",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "La recommandation propre aux structures florales riches en cannabinoïdes est attribuée aux auteurs de la synthèse.",
+      "contentHash": "8dfb73d76374f8917cb500f6d71b540c61412f0f531958e6bb2c4dc153fc143c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-alberti25",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+          "locator": "Abstract ; Introduction §1.3–1.4 ; passages trichome density alone et frosty appearance",
+          "result": "Synthèse originale PMC ouverte. Recommande les bractées comme unité cohérente ; densité seule insuffisante pour prédire les teneurs ; aspect givré lié aux glandes.",
+          "sourceHash": "cd6f2a021d506e9886716ec5b0c50be6e239b992fc4b5a7f41d961441ddf802e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-densite-glandes-pas-dosage",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "La question teste une propriété des glandes ; les autres choix sont des confusions de localisation ou de fonction, sans réponse Non prudente unique.",
+      "contentHash": "cb0463adc58bd48d2bb7b22230bcfe39305c497651319867c284607d645378ee",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-alberti25",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+          "locator": "Abstract ; Introduction §1.3–1.4 ; passages trichome density alone et frosty appearance",
+          "result": "Synthèse originale PMC ouverte. Recommande les bractées comme unité cohérente ; densité seule insuffisante pour prédire les teneurs ; aspect givré lié aux glandes.",
+          "sourceHash": "cd6f2a021d506e9886716ec5b0c50be6e239b992fc4b5a7f41d961441ddf802e"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-densite-glandes-pas-dosage",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Conserver la limite entre aspect résineux et teneur mesurée. Refaire les choix : une seule réponse Non nuancée face à trois Oui conditionnels donne la réponse prudente. Quatre explications positives de même nature doivent tester les propriétés des glandes qui empêchent l’équivalence.",
+          "contentHash": "4cb4791a81a4ca40cfd816779fb679b20e81d3e8ea172ac4a577b5e8f6ac41cf",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-alberti25",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+              "locator": "Abstract ; Introduction §1.3–1.4 ; passages trichome density alone et frosty appearance",
+              "result": "Synthèse originale PMC ouverte. Recommande les bractées comme unité cohérente ; densité seule insuffisante pour prédire les teneurs ; aspect givré lié aux glandes.",
+              "sourceHash": "cd6f2a021d506e9886716ec5b0c50be6e239b992fc4b5a7f41d961441ddf802e"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    },
+    {
+      "id": "hemp-q2-rb01-chimotype-iv-cbg",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Identification claire d’une classe chimique CBG dominante ; distincte des profils variétaux commerciaux et du type V.",
+      "contentHash": "dd027e90b7f049567fe01120e0054b237e9f680c6f51d3354925d8f150c6bec1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-salamone22",
+          "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+          "locator": "Introduction, paragraphes chimotypes et témoins ; tableau 1 ; Results and Discussion, premier paragraphe",
+          "result": "Texte original MDPI ouvert. Type IV à dominante CBG, type V largement dépourvu de cannabinoïdes mais traces mesurées ; intérêt sensoriel de témoins pauvres en cannabinoïdes.",
+          "sourceHash": "7981cbbac8d687ca952ebd33d1540b3aef3b6620ff948ba17bbb8ae9f12ba513"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-chimotype-v-traces",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Définition correctement nuancée ; traces acides du matériel étudié concordantes avec le texte.",
+      "contentHash": "5bce49a291d7ab0cc7a8a389623e81245d70d581bfce4b8090317b894ee11407",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-salamone22",
+          "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+          "locator": "Introduction, paragraphes chimotypes et témoins ; tableau 1 ; Results and Discussion, premier paragraphe",
+          "result": "Texte original MDPI ouvert. Type IV à dominante CBG, type V largement dépourvu de cannabinoïdes mais traces mesurées ; intérêt sensoriel de témoins pauvres en cannabinoïdes.",
+          "sourceHash": "7981cbbac8d687ca952ebd33d1540b3aef3b6620ff948ba17bbb8ae9f12ba513"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-cannabinoides-toxicite-cellules-plante",
+      "status": "approved",
+      "reviewer": "rebalance_products_sol",
+      "reviewedAt": "2026-11-17",
+      "domain": "active",
+      "domainComment": "Effet de cannabinoïdes de la résine sur les cellules de la plante qui les produit ; le cannabis est nécessaire au fait.",
+      "comment": "Résumé scientifique original ouvert et lu sur le portail des auteurs. THCA/CBCA induisent une mort cellulaire dans le cannabis exposé en laboratoire. L’explication distingue ce résultat de l’intérêt protecteur du compartimentage, présenté comme une possibilité. Quatre effets cellulaires comparables, niveau 2 cohérent, aucun doublon trouvé.",
+      "contentHash": "bb76ec8adf51400337b3393a8f167f97563ca0467943439f0a038be11f117bd4",
+      "revisionHistory": [
+        {
+          "replacedId": "hemp-q2-rb01-fleur-terminale-meristeme",
+          "previousStatus": "changes_requested",
+          "previousContentHash": "94c4dea6738267599eab9e6492eeeb79dd64803a30ee9a146e93f675c4f1b27a",
+          "reason": "Nouvelle lecture Sol du fait de remplacement et de ses preuves originales."
+        },
+        {
+          "replacedId": "hemp-q2-rb01-poils-glandulaires-resine",
+          "previousStatus": "changes_requested",
+          "previousContentHash": "5315e2aae9fa89f1845f60d2819e9e72709a4b7c4241a0fa3d2d7cbd4dc61ea7",
+          "reason": "Le fait précédent doublonnait hemp-plant-trichome ; la nouvelle autotoxicité est un fait distinct."
+        }
+      ],
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-morimoto07",
+          "url": "https://kyushu-u.elsevierpure.com/en/publications/identification-and-characterization-of-cannabinoids-that-induce-c/",
+          "locator": "Abstract intégral du portail Kyushu, paragraphes 1–4 ; Publication status",
+          "result": "Résumé original effectivement ouvert : la résine, puis THCA/CBCA identifiés, entraînent la mort de cellules foliaires ou cultivées de Cannabis sativa ; effets mitochondriaux et baisse d’ATP décrits. Publication datée du 13 juillet 2007. Lecture limitée au résumé, comme déclaré par l’auteur.",
+          "sourceHash": "4255c1889d694cf675c3855fa0c3b539b3e6713352edc59cf7f4dcacbe1b99f6"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-aspect-givre-glandes",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Vocabulaire concret de l’aspect résineux des fleurs ; aucune teneur déduite de l’aspect.",
+      "contentHash": "c26cbd2ac4adbe24d8a56925abec1149579a715d701c79c6c7114034a4f3517c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-alberti25",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+          "locator": "Abstract ; Introduction §1.3–1.4 ; passages trichome density alone et frosty appearance",
+          "result": "Synthèse originale PMC ouverte. Recommande les bractées comme unité cohérente ; densité seule insuffisante pour prédire les teneurs ; aspect givré lié aux glandes.",
+          "sourceHash": "cd6f2a021d506e9886716ec5b0c50be6e239b992fc4b5a7f41d961441ddf802e"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-supercellule-ponts",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "Organisation spécialisée des cellules sécrétrices soutenue par le résumé original indexé ; niveau 3 approprié.",
+      "contentHash": "b657f0feff7add528cd2699b056f2f8308023ff556ad8e325e8becd4352ed667",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-livingston22",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35917819/",
+          "locator": "Abstract PubMed, extrait indexé ; phrases cytoplasmic bridges et final step ... cell-surface wall facing the extracellular storage cavity",
+          "result": "L’ouverture directe PubMed ne restitue pas le résumé. Recherche du titre exact et du PMID : extrait original PubMed effectivement lu, confirmant ponts cytoplasmiques et étape THCA extracellulaire. Aucune lecture intégrale revendiquée.",
+          "sourceHash": "8a87e16916173e31ea524b47f5fc183a326fe9e4590d762ce5b42ed4ba5094ea"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-thca-synthese-extracellulaire",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Localisation de l’étape finale de THCA distincte du stockage sous-cuticulaire déjà testé ; résumé original suffisant et accès limité déclaré.",
+      "contentHash": "ebb083ced9fde557e865146a4e33eda84f7ff259c3da6a17d46936e3979b423b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-livingston22",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35917819/",
+          "locator": "Abstract PubMed, extrait indexé ; phrases cytoplasmic bridges et final step ... cell-surface wall facing the extracellular storage cavity",
+          "result": "L’ouverture directe PubMed ne restitue pas le résumé. Recherche du titre exact et du PMID : extrait original PubMed effectivement lu, confirmant ponts cytoplasmiques et étape THCA extracellulaire. Aucune lecture intégrale revendiquée.",
+          "sourceHash": "8a87e16916173e31ea524b47f5fc183a326fe9e4590d762ce5b42ed4ba5094ea"
+        }
+      ]
+    },
+    {
+      "id": "hemp-q2-rb01-cannabinoides-defense-directe",
+      "status": "approved",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Bioessai artificiel isolant l’action des cannabinoïdes, distinct de la comparaison de génotypes sur feuilles déjà présente dans a-01.",
+      "contentHash": "5de188c182b5671964acad8ce798289e775dda9146e87e0177a88bd26d5c376c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-stack23",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10681003/",
+          "locator": "Results: Increasing concentrations of CBDA and CBGA in artificial diet decreased larval growth and survival ; Discussion",
+          "result": "Texte intégral PMC ouvert. Bioessais sur alimentation artificielle isolent la contribution du CBDA/CBGA : baisse de croissance et de survie larvaires.",
+          "sourceHash": "2a18f0404da5ee23c68df34a60f080256015fec0e978720e59d86ba331466207"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "readQuestions": 30,
+    "approved": 27,
+    "changesRequested": 3,
+    "rejected": 0,
+    "sourcesRead": 13,
+    "fullTextSources": 12,
+    "excerptSources": 1,
+    "method": "Lecture des 30 objets complets, de leurs quatre options, explications et preuves ; ouverture des 13 sources, puis recherche des passages cités. Hashes Node natif de JSON.stringify des objets réellement lus.",
+    "sourceLimitations": "Livingston 2022 : ouverture PubMed directe incomplète, résumé original obtenu par recherche titre/PMID ; source explicitement excerpt. Les autres passages sont dans les textes intégralement accessibles. Les résultats expérimentaux restent délimités aux matériels et essais décrits.",
+    "scope": "Le lot contient des connaissances réellement liées aux fleurs résineuses et cannabinoïdes. Item 26 insuffisant en l’état. Un noyau de questions très centrées sur les résultats de publications doit être équilibré par des sujets plus largement connus dans les lots suivants, sans abaisser artificiellement les niveaux.",
+    "difficulty": "Niveau 2 demandé explicitement pour les items 8 et 9 ; les niveaux 1 acceptés visent des observations concrètes et qualitatives. Un prompt court ne suffit pas à déterminer le niveau.",
+    "duplicateCheck": {
+      "index": "docs/quiz-2000/fact-index.jsonl",
+      "searched": [
+        "trichome",
+        "sessile",
+        "chimotype",
+        "chemotype",
+        "hermaphrodite",
+        "fécondation",
+        "pollinisation",
+        "terminal",
+        "densité",
+        "givre",
+        "supercellule",
+        "XX"
+      ],
+      "nearNeighbours": [
+        {
+          "id": "hemp-en-1-13",
+          "resolution": "Morphologie tête/pied déjà testée ; rb01-1 vise le stade de développement qui précède."
+        },
+        {
+          "id": "hemp-q2-c-trichomes-disques-cellules",
+          "resolution": "Nombre de cellules déjà testé ; rb01-2 vise le profil terpénique."
+        },
+        {
+          "id": "hemp-q2-c-trichome-cavite-sous-cuticule",
+          "resolution": "Stockage déjà testé ; rb01-29 vise le lieu d’une réaction terminale de biosynthèse."
+        },
+        {
+          "id": "hemp-q2-cn02-hermaphrodite-flower-male-female-organs-same-flower",
+          "resolution": "Définition d’une fleur hermaphrodite déjà testée ; rb01-8/9 visent viabilité du pollen et descendance réellement observées."
+        },
+        {
+          "id": "hemp-q2-a01-csp1-femelles-monoeciques",
+          "resolution": "Marqueur et phénotype d’individus parentaux ; rb01-9 concerne une descendance issue d’inflorescences déterminées."
+        },
+        {
+          "id": "hemp-q2-a01-chimotype-rapport-versus-total",
+          "resolution": "Pouvoir explicatif d’un groupe de marqueurs ; rb01-6 concerne un changement physiologique après fécondation."
+        },
+        {
+          "id": "hemp-q2-a01-cbd-feuilles-herbivorie",
+          "resolution": "Comparaison de génotypes sur feuilles ; rb01-30 utilise un régime artificiel pour isoler une contribution directe de cannabinoïdes."
+        }
+      ],
+      "conclusion": "Aucun doublon exact de fait établi ; aucune ancienne leçon générale exclue réintroduite comme nouvel ajout approuvé."
+    },
+    "sourceIdentityNotes": [
+      {
+        "sourceId": "q2-rb01-livingston20",
+        "sameUrlHistoricalId": "q2-c-livingston-trichomes-2020",
+        "note": "Nouvelle consultation et passages documentés ; pas de redéfinition du même ID. Harmonisation éventuelle non bloquante selon le coordinateur."
+      },
+      {
+        "sourceId": "q2-rb01-hesami23",
+        "sameUrlHistoricalId": "q2-c-hesami-morphology-2023",
+        "note": "Même publication ; source exacte fournie lue et hashée pour cette revue."
+      },
+      {
+        "sourceId": "q2-rb01-stack23",
+        "sameUrlHistoricalId": "q2-a01-stack-herbivores",
+        "note": "Même publication ; passage régime artificiel différent de la question historique sur feuilles."
+      }
+    ],
+    "replacementFollowup": {
+      "reviewer": "rebalance_products_sol",
+      "date": "2026-11-17",
+      "readReplacementQuestions": 2,
+      "retainedOtherDecisions": 28,
+      "approvedReplacement": "hemp-q2-rb01-cbdas-sous-produit-thca",
+      "unresolvedReplacement": "hemp-q2-rb01-poils-glandulaires-resine",
+      "duplicateNeighbour": "hemp-plant-trichome",
+      "note": "Les 28 autres décisions sont conservées exactement, y compris leurs hashes initiaux. Les 10 corrections ciblées sont réservées à l’arbitrage du coordinateur ; ce suivi ne les approuve pas implicitement."
+    },
+    "autotoxicityFollowup": {
+      "date": "2026-11-17",
+      "reviewer": "rebalance_products_sol",
+      "newId": "hemp-q2-rb01-cannabinoides-toxicite-cellules-plante",
+      "status": "approved",
+      "otherDecisionsUnchanged": 29,
+      "neighbours": [
+        "hemp-plant-trichome : production/stockage, pas autotoxicité",
+        "hemp-q2-c-trichome-cavite-sous-cuticule : lieu de stockage, pas effet sur les cellules",
+        "hemp-q2-rb01-thca-synthese-extracellulaire : localisation d’enzyme, pas autotoxicité"
+      ],
+      "note": "Les autres décisions ne sont pas réévaluées par cette reprise ; le coordinateur traite les corrections ciblées restantes."
+    }
+  },
+  "supersededItems": [
+    {
+      "id": "hemp-q2-rb01-oxidocyclases-cbca",
+      "status": "changes_requested",
+      "domain": "active",
+      "domainComment": "Le fait concerne directement un profil, une synthèse, une transmission ou une fonction des cannabinoïdes.",
+      "comment": "Source exacte, mais le rappel « trois oxidocyclases nouvellement caractérisées dans Allen 2026 » est un résultat isolé difficile à relier à une connaissance utile sans lire l’article. Remplacer ou reformuler autour d’une conséquence cannabinoïde intelligible de cette caractérisation, avec les enzymes/branches précisées ; ne pas simplement demander de mémoriser CBCA pour trois enzymes anonymes.",
+      "contentHash": "ead5a891ad8ebe9e224dabc019e7771b40f0dde433ba6fd1e93beea5c186b501",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-allen26",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+          "locator": "Abstract ; §1.4–1.5 ; Discussion §3.1 et §3.3",
+          "result": "Texte intégral PMC ouvert. THCAS et CBDAS sont des gènes distincts liés ; locus de type supergène à recombinaison réduite ; enzymes testées surtout productrices de CBCA.",
+          "sourceHash": "28dd2eee2b6967d4c6f3c4a20ef6e76b92a503b86fd2099b0e115d605f3d3012"
+        }
+      ],
+      "supersededBy": "hemp-q2-rb01-cbdas-sous-produit-thca",
+      "supersededAt": "2026-11-17",
+      "reason": "Auteur remplace le fait après la première revue indépendante."
+    },
+    {
+      "id": "hemp-q2-rb01-fleur-terminale-meristeme",
+      "status": "changes_requested",
+      "domain": "active",
+      "domainComment": "Candidat active à remplacer : le fait actuel est une définition tautologique de botanique générale.",
+      "comment": "Remplacer : l’énoncé annonce la formation d’une fleur terminale, et la réponse dit que l’extrémité devient cette fleur. L’explication définit ensuite un méristème de façon générale. Le cannabis n’est pas nécessaire pour résoudre ce fait ; choisir une propriété réellement spécifique de sa florogenèse et non une inversion de cette définition.",
+      "contentHash": "94c4dea6738267599eab9e6492eeeb79dd64803a30ee9a146e93f675c4f1b27a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-steel23",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2023.1227898/full",
+          "locator": "Florogenesis ; Figure 4 et paragraphes précédents",
+          "result": "Synthèse originale Frontiers ouverte. Le modèle de florogenèse distingue l’induction solitaire, la formation des groupes et la transition du méristème apical en fleur terminale.",
+          "sourceHash": "45a7b1ade31cf9e99b232743ec78144fdc21b29ce35e74f02244de2ee1b64692"
+        }
+      ],
+      "supersededBy": "hemp-q2-rb01-poils-glandulaires-resine",
+      "supersededAt": "2026-11-17",
+      "reason": "Auteur remplace le fait après la première revue indépendante."
+    },
+    {
+      "id": "hemp-q2-rb01-poils-glandulaires-resine",
+      "status": "changes_requested",
+      "domain": "active",
+      "domainComment": "Le domaine active est correct, mais ce fait glandulaire est déjà couvert dans la banque.",
+      "comment": "Source correcte, domaine réellement actif et choix mieux formés, mais doublon exact de hemp-plant-trichome : l’ancien item demande déjà quelles structures produisent et accumulent cannabinoïdes et terpènes, réponse trichomes glandulaires. Les distracteurs cystolithiques et le nouveau factKey ne changent pas le fait. Remplacer par un autre fait ; une inversion « quels poils ne produisent pas » ne suffira pas.",
+      "contentHash": "5315e2aae9fa89f1845f60d2819e9e72709a4b7c4241a0fa3d2d7cbd4dc61ea7",
+      "reviewer": "rebalance_products_sol",
+      "reviewedAt": "2026-11-17",
+      "revisionHistory": [
+        {
+          "replacedId": "hemp-q2-rb01-fleur-terminale-meristeme",
+          "previousStatus": "changes_requested",
+          "previousContentHash": "94c4dea6738267599eab9e6492eeeb79dd64803a30ee9a146e93f675c4f1b27a",
+          "reason": "Nouvelle lecture Sol du fait de remplacement et de ses preuves originales."
+        }
+      ],
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-alberti25",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+          "locator": "Introduction §1.2, synthèse/stockage dans les glandes et dernier paragraphe sur les poils cystolithiques",
+          "result": "Passage original PMC rouvert et lu. Les glandes synthétisent et stockent les cannabinoïdes/terpènes, contrairement aux structures cystolithiques. Ce soutien ne lève pas le doublon pédagogique déjà présent.",
+          "sourceHash": "cd6f2a021d506e9886716ec5b0c50be6e239b992fc4b5a7f41d961441ddf802e"
+        }
+      ],
+      "supersededBy": "hemp-q2-rb01-cannabinoides-toxicite-cellules-plante",
+      "supersededAt": "2026-11-17",
+      "reason": "Remplacement du doublon glandulaire après seconde demande indépendante."
+    },
+    {
+      "id": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+      "status": "rejected",
+      "domain": "active",
+      "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+      "comment": "La dernière version teste une propriété générale de l’aveugle expérimental. Le cannabis reste décoratif pour résoudre le QCM. Retrait sans remplissage ; une question distincte sera ajoutée au lot rb06 (32 au lieu de31).",
+      "contentHash": "89dbf89d887415ff5b7e03a124e1d82b7495513735010fabbe7febbb8ce6b99d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-rb01-salamone22",
+          "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+          "locator": "Introduction, paragraphes chimotypes et témoins ; tableau 1 ; Results and Discussion, premier paragraphe",
+          "result": "Texte original MDPI ouvert. Type IV à dominante CBG, type V largement dépourvu de cannabinoïdes mais traces mesurées ; intérêt sensoriel de témoins pauvres en cannabinoïdes.",
+          "sourceHash": "7981cbbac8d687ca952ebd33d1540b3aef3b6620ff948ba17bbb8ae9f12ba513"
+        }
+      ],
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-17",
+      "coordinatorHistory": [
+        {
+          "id": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+          "status": "changes_requested",
+          "domain": "active",
+          "domainComment": "Le fait porte sur les glandes résineuses, leur fonctionnement ou l’anatomie des fleurs productrices d’actifs.",
+          "comment": "Le fait des témoins sensoriels de cannabis est recevable. Refaire les distracteurs : remplacer la randomisation, supprimer l’analyse et garantir seul la sécurité sont trois objectifs méthodologiques manifestement incorrects. Comparer quatre rôles plausibles d’une préparation témoin ou quatre propriétés sensorielles/chimiques comparables.",
+          "contentHash": "600bbe1d23f9f03b40487c2a60519f99c4486a6c48d3bc3bf09454e39488114d",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-rb01-salamone22",
+              "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+              "locator": "Introduction, paragraphes chimotypes et témoins ; tableau 1 ; Results and Discussion, premier paragraphe",
+              "result": "Texte original MDPI ouvert. Type IV à dominante CBG, type V largement dépourvu de cannabinoïdes mais traces mesurées ; intérêt sensoriel de témoins pauvres en cannabinoïdes.",
+              "sourceHash": "7981cbbac8d687ca952ebd33d1540b3aef3b6620ff948ba17bbb8ae9f12ba513"
+            }
+          ]
+        }
+      ],
+      "coordinatorScope": "Lecture des quatre choix, réponse, explication et différences entre versions. Les passages sources déjà contrôlés par le premier relecteur Sol sont inchangés ; aucune nouvelle consultation revendiquée."
+    }
+  ],
+  "revisionHistory": [
+    {
+      "date": "2026-11-17",
+      "reviewer": "root",
+      "removedId": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+      "reason": "La dernière version teste une propriété générale de l’aveugle expérimental. Le cannabis reste décoratif pour résoudre le QCM. Retrait sans remplissage ; une question distincte sera ajoutée au lot rb06 (32 au lieu de31)."
+    }
+  ]
+}

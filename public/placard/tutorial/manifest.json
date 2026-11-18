@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "provenance": "docs/bete-de-concours/tutorial-sylvain-art-provenance.json",
+  "portraits": {
+    "culture": {
+      "src": "/placard/tutorial/sylvain-culture-v1.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 38058,
+      "hasAlpha": true
+    },
+    "atelier": {
+      "src": "/placard/tutorial/sylvain-atelier-v1.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 34632,
+      "hasAlpha": true
+    },
+    "savoir": {
+      "src": "/placard/tutorial/sylvain-savoir-v1.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 30340,
+      "hasAlpha": true
+    },
+    "defi": {
+      "src": "/placard/tutorial/sylvain-defi-v1.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 34258,
+      "hasAlpha": true
+    }
+  }
+}

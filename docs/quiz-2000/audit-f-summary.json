@@ -1,0 +1,177 @@
+{
+  "audit": "F-existing-bank",
+  "date": "2026-11-16",
+  "status": "editorial-triage-complete-factual-validation-partial",
+  "scope": "Lecture exhaustive des 360 énoncés, 1440 choix et 360 corrigés actifs ; contrôle source ciblé pour 13 IDs seulement. Aucune rédaction de remplacement ni modification active.",
+  "activeCount": 360,
+  "rawModuleCounts": {
+    "biology": 80,
+    "uses": 100,
+    "history-culture": 60,
+    "history-science": 60,
+    "expansion-nature": 60
+  },
+  "reviewedCount": 360,
+  "overrides": "360 révisions correspondent aux 360 entrées. Spread original puis révision : tout champ peut être remplacé sauf id et level réimposés. Le tableau reviewed ne peut ajouter ni retirer un ID. Tous les modules bruts restent actifs, avec contenu écrasé.",
+  "retirement": "Aucun filtre retired/deleted dans la banque actuelle ; retirer du JSON reviewed réactive l’ancienne version. Pour archiver, retirer explicitement de la composition active ou ajouter un mécanisme de retrait explicite en respectant les plans de tournoi déjà enregistrés.",
+  "optionsRuntime": "Les choix sont triés par hash seed+ID+option au moment de createKqSchoolChallengePlan : le biais de position en fichier ne prouve pas un biais affiché.",
+  "counts": {
+    "actions": {
+      "conserver": 257,
+      "corriger": 90,
+      "remplacer": 6,
+      "retirer": 7
+    },
+    "factualStatus": {
+      "a-verifier-registre-historique-seulement": 347,
+      "appui-cible-consulte-cette-session": 13
+    },
+    "publicationValidated": 0,
+    "topics": {
+      "plant": 40,
+      "genetics": 20,
+      "molecules": 40,
+      "evidence": 50,
+      "seeds": 20,
+      "profiles": 40,
+      "uses": 20,
+      "biodiversity": 20,
+      "prevention": 20,
+      "history": 90
+    },
+    "levels": {
+      "1": 90,
+      "2": 90,
+      "3": 90,
+      "4": 90
+    },
+    "storedAnswerPositions": [
+      213,
+      53,
+      48,
+      46
+    ],
+    "uniqueSourceIds": 146,
+    "sourceAccessHistorical": {
+      "excerpt": 74,
+      "official-page": 23,
+      "full-text": 26,
+      "abstract": 16,
+      "catalogue": 7
+    },
+    "exactPromptDuplicates": 0,
+    "strongSemanticClusters": 7,
+    "relatedConceptClusters": 35,
+    "longestCorrectOption": 117
+  },
+  "limits": [
+    "La catégorisation est éditoriale et non une mesure psychométrique. Aucun échantillon de joueurs ni indice empirique de difficulté/discrimination.",
+    "Aucun score de similarité lexical ne suffit à conclure à un doublon : les 35 groupes R sont des notions proches à surveiller, sans retrait automatique.",
+    "Les décisions conserver ne sont pas des validations factuelles. Les 13 appuis ciblés ne constituent pas davantage une validation complète pour publication.",
+    "Pas d’extrapolation d’efficacité médicale, de sécurité ou de réglementation actuelle à partir d’un document historique."
+  ],
+  "targetedEvidence": [
+    {
+      "id": "F-W01",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12286863/",
+      "access": "full-text-targeted",
+      "consultedAt": "2026-11-16",
+      "passage": "Domesticated cannabinoid pathway, lignes extraites 394–408, figure 4 et paragraphes chr. 7.",
+      "supports": [
+        "hemp-genetics-synthases-chromosome"
+      ],
+      "scope": "Emplacement sur chr. 7 des synthases, dans le pangénome décrit ; pas une validation des autres questions génétiques.",
+      "limits": "Ouverture Nature directe bloquée par redirection cookies ; texte intégral ciblé lu via PMC."
+    },
+    {
+      "id": "F-W02",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+      "access": "abstract",
+      "consultedAt": "2026-11-16",
+      "passage": "Résumé Howlett 2002, lignes extraites 242–244 : CB1 1990, CB2 1993, 48 %, neurones et cellules immunitaires.",
+      "supports": [
+        "hemp-hs-sci-cb1",
+        "hemp-hs-sci-cb2",
+        "hemp-hs-sci-cb1-brain",
+        "hemp-hs-sci-cb2-tissue",
+        "hemp-hs-sci-cb1-cb2-sequence",
+        "hemp-hs-sci-cb1-discovery-v-clone",
+        "hemp-hs-sci-cb-receptors-contrast"
+      ],
+      "scope": "Informations explicitement attribuées à cette classification historique ; aucun effet clinique validé.",
+      "limits": "Résumé lu ; texte intégral non lu. La question 287 devrait citer la classification et son périmètre."
+    },
+    {
+      "id": "F-W03",
+      "url": "https://www.sandiego.gov/sites/default/files/narcoticsmethodmanualjul2017-oct2017.pdf",
+      "access": "official-manual-excerpt",
+      "consultedAt": "2026-11-16",
+      "passage": "PDF archivé, p.24 (index 23), lignes extraites 666–669 : dépôt de carbonate de calcium à la base des poils cystolithiques.",
+      "supports": [
+        "hemp-en-1-14"
+      ],
+      "scope": "Nature et position du dépôt minéral seulement.",
+      "limits": "Document de laboratoire original archivé 2017 ; aucune instruction analytique ou chimique reprise dans le quiz."
+    },
+    {
+      "id": "F-W04",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=e/2020/28/add.1&t=pdf",
+      "access": "official-report-excerpt",
+      "consultedAt": "2026-11-16",
+      "passage": "Rapport CND E/2020/28/Add.1, décision 63/17, p.5 imprimée (PDF index 12), lignes 369–382 ; décision 63/20, lignes 432–437.",
+      "supports": [
+        "hemp-hs-hist-vote",
+        "hemp-hs-hist-un2020-schedule",
+        "hemp-hs-hist-vote-numbers",
+        "hemp-hs-hist-two-treaties"
+      ],
+      "scope": "Organe, date, retrait tableau IV, décompte 27/25/1 ; absence de suppression du contrôle au tableau I.",
+      "limits": "Sections ciblées seulement. Ne valide aucune règle nationale actuelle. URL UNODC essayée 404 et miroir UN Digital Library 403 ; rapport via documents.un.org lu."
+    }
+  ],
+  "nextBoundedTask": "Croiser la matrice de nouvelles questions avec les sept clusters forts, corriger d’abord les ambiguïtés et les distracteurs hors catégorie, puis vérifier les passages des sources avant tout statut validé.",
+  "inputHashes": [
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-biology.ts",
+      "sha256": "85779e32c26d64fba929dd20aa93c74c67ff8302ff2c7889b3111a9d6a490dfa"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-uses.ts",
+      "sha256": "fb676de2929b32c6ccd18132784b418c64ea0d917e988e7d7c0176abc189afed"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-history-culture.ts",
+      "sha256": "ae3143ddd3201b054cb745a76384eb08f682d91f244a530c57e84b4b134761af"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-history-science.ts",
+      "sha256": "34e055965c4f068a8f6442210ef4cfa9cd4adcba02a8df8375f022f5dc89c789"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-expansion-nature.ts",
+      "sha256": "dcd700832fdf0024343b1f8cb952dd5f9f31315302c6a929ab9df6a0adf0f75b"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-bank.ts",
+      "sha256": "9fa0f49cb52ee34ea1d9cc20554fcbda825c94f750d23273601c7e71c6a9f9ad"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-reviewed.json",
+      "sha256": "c96bebcd95eb492ad311e50e8271d4fd7afec9e47364e20cc56dcb7ad5502a6b"
+    },
+    {
+      "path": "src/lib/kanab-quest-hemp-quiz-meta.ts",
+      "sha256": "912c416a215390feda989deb881a98d9bfcb84621483b44bac98f2191e3b30c9"
+    },
+    {
+      "path": "src/lib/kanab-quest-school-challenge-server.ts",
+      "sha256": "f4628d03da5c4f9e9676457fa5d18dd6ffc07db8256bf3d4c0ac6156d91a24dd"
+    },
+    {
+      "path": "docs/encyclopedia-revision/bibliography.json",
+      "sha256": "b618a488134deb0709834be6b813b6db7a69f6f638f32aa6a4de1b9ab27901c8"
+    }
+  ],
+  "historicalSnapshot": true,
+  "currentValidation": "The initial triage below is preserved as historical evidence. All360 original IDs have since been individually adjudicated:148 retained,205 corrected or replaced,7 retired. Current approved objects and counts are in legacy-validation.json, integration.json and progress.json."
+}

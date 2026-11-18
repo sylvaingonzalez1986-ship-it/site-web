@@ -16,7 +16,7 @@ export const ARENA_MAP_SCENE = {
   width: 1536,
   height: 1024,
   image: "/contest/map/arena-roman-sylvain-v7.webp",
-  alt: "Vu de dos, Sylvain se tient en hauteur dans les gradins de l’arène romaine. À sa droite, son téléphone affiche le carnet de dégustation ; à sa gauche se trouve le panneau des classements. En contrebas, au centre de l’arène, une estrade porte une table où le plan du village est posé à plat sous une bulle de verre.",
+  alt: "Vu de dos, Loïc se tient en hauteur dans les gradins de l’arène romaine. À sa droite, son téléphone affiche le carnet de dégustation ; à sa gauche se trouve le panneau des classements. En contrebas, au centre de l’arène, une estrade porte une table où le plan du village est posé à plat sous une bulle de verre.",
 } as const;
 
 export const ARENA_MAP_PLACE_IDS = ["carnet", "jouer", "classement", "profil"] as const satisfies readonly ArenaMapPlaceId[];
@@ -65,7 +65,7 @@ export const ARENA_MAP_SHAPES: Record<ArenaMapPlaceId, ArenaMapPlaceShape> = {
     focusPoint: [220,550], labelPoint: [250,695], groundPoint: [20,285],
   },
   profil: {
-    // Sylvain seen from behind, including his right hand around the separate phone.
+    // Loïc seen from behind, including his right hand around the separate phone.
     outline: [
       [251,1024],[264,976],[282,926],[306,878],[336,838],
       [370,808],[407,785],[450,767],[497,756],[499,741],

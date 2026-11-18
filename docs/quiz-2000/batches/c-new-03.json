@@ -1,0 +1,1910 @@
+{
+  "batchId": "c-new-03",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-cn03-dna-carries-hereditary-instructions",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quelle molécule porte les instructions héréditaires du chanvre, comme celles des autres plantes ?",
+      "options": [
+        "L’ADN",
+        "La cellulose",
+        "La chlorophylle",
+        "L’amidon"
+      ],
+      "answer": 0,
+      "explanation": "L’ADN porte l’information génétique transmise entre générations. Les autres molécules proposées ont des rôles structuraux, photosynthétiques ou de réserve.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-facts"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ADN et hérédité",
+        "subjectKey": "adn",
+        "property": "Support moléculaire de l’information héréditaire",
+        "expectedAnswer": "L’ADN",
+        "learningObjective": "Identifier le support matériel de l’information génétique.",
+        "factKey": "dna-carries-hereditary-instructions",
+        "form": "identification",
+        "difficultyRationale": "Connaissance fondamentale du vivant.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-facts",
+            "locator": "Introduction",
+            "support": "L’ADN contient des instructions biologiques et se transmet aux descendants lors de la reproduction."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-french-name-deoxyribonucleic-acid",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Que signifie le sigle ADN, utilisé pour décrire le matériel génétique du chanvre ?",
+      "options": [
+        "Adénosine triphosphate",
+        "Acide désoxyribonucléique",
+        "Acide ribonucléique",
+        "Adénosine diphosphate"
+      ],
+      "answer": 1,
+      "explanation": "ADN signifie acide désoxyribonucléique. L’ARN est un autre acide nucléique ; ADP et ATP désignent des molécules impliquées notamment dans les transferts d’énergie.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-facts"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Nom de l’ADN",
+        "subjectKey": "adn",
+        "property": "Développement du sigle ADN",
+        "expectedAnswer": "Acide désoxyribonucléique",
+        "learningObjective": "Comprendre un sigle scientifique très courant.",
+        "factKey": "dna-french-name-deoxyribonucleic-acid",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire scientifique de base, distinct de la fonction de la molécule.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-facts",
+            "locator": "Titre et Introduction",
+            "support": "La fiche nomme la molécule deoxyribonucleic acid, soit acide désoxyribonucléique en français."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-double-helix-two-strands",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quelle forme décrit l’organisation habituelle de l’ADN nucléaire du chanvre ?",
+      "options": [
+        "Deux brins enroulés en double hélice",
+        "Deux brins droits qui ne s’enroulent pas",
+        "Un seul brin en hélice sans brin complémentaire",
+        "Trois brins enroulés en triple hélice"
+      ],
+      "answer": 0,
+      "explanation": "L’ADN nucléaire est habituellement formé de deux brins complémentaires en double hélice. Cette structure générale ne distingue pas le cannabis des autres plantes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-structure"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Double hélice de l’ADN",
+        "subjectKey": "adn",
+        "property": "Organisation habituelle en deux brins",
+        "expectedAnswer": "Deux brins enroulés en double hélice",
+        "learningObjective": "Reconnaître l’architecture générale de l’ADN.",
+        "factKey": "dna-double-helix-two-strands",
+        "form": "identification",
+        "difficultyRationale": "Image scientifique familière de la double hélice.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-structure",
+            "locator": "Paragraphe du modèle de Watson et Crick",
+            "support": "Deux brins d’ADN s’enroulent l’un autour de l’autre en une double hélice."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-four-canonical-bases-acgt",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quelles quatre lettres représentent les bases habituelles de l’ADN d’un chanvre ?",
+      "options": [
+        "A, C, G et U",
+        "A, C, T et U",
+        "A, G, T et U",
+        "A, C, G et T"
+      ],
+      "answer": 3,
+      "explanation": "A, C, G et T désignent l’adénine, la cytosine, la guanine et la thymine. L’uracile, noté U, appartient normalement à l’alphabet de l’ARN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-facts"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Bases de l’ADN",
+        "subjectKey": "adn",
+        "property": "Alphabet des quatre bases canoniques",
+        "expectedAnswer": "A, C, G et T",
+        "learningObjective": "Reconnaître les lettres employées dans une séquence d’ADN.",
+        "factKey": "dna-four-canonical-bases-acgt",
+        "form": "identification",
+        "difficultyRationale": "Alphabet moléculaire de base, sans séquence précise à retenir.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-facts",
+            "locator": "What is DNA made of?",
+            "support": "Les quatre bases des nucléotides d’ADN sont l’adénine, la thymine, la guanine et la cytosine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-complementary-base-pairs-at-gc",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quels appariements relient habituellement les bases des deux brins de l’ADN du chanvre ?",
+      "options": [
+        "A avec T, et G avec C",
+        "A avec G, et T avec C",
+        "A avec C, et G avec T",
+        "A avec A, et G avec G"
+      ],
+      "answer": 0,
+      "explanation": "L’adénine s’apparie à la thymine, et la guanine à la cytosine. Cette complémentarité permet notamment d’utiliser un brin comme modèle pour en copier un autre.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-structure"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Complémentarité des bases",
+        "subjectKey": "adn",
+        "property": "Paires A–T et G–C",
+        "expectedAnswer": "A avec T, et G avec C",
+        "learningObjective": "Comprendre la règle d’appariement entre brins d’ADN.",
+        "factKey": "dna-complementary-base-pairs-at-gc",
+        "form": "identification",
+        "difficultyRationale": "Règle scolaire simple portant sur deux paires. ",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-structure",
+            "locator": "Double hélice, paragraphe base pairing",
+            "support": "Les appariements complémentaires sont adénine-thymine et guanine-cytosine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-base-order-encodes-information",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quelle caractéristique de l’ADN permet de coder différents messages génétiques chez le chanvre ?",
+      "options": [
+        "La nature du sucre de chaque nucléotide",
+        "L’ordre des bases le long du brin",
+        "Le diamètre habituel de la double hélice",
+        "Le sens des deux brins l’un par rapport à l’autre"
+      ],
+      "answer": 1,
+      "explanation": "Deux fragments peuvent employer les mêmes quatre bases dans des ordres différents. C’est cette succession, et pas une couleur ou une forme de prélèvement, qui constitue la séquence d’information.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-facts"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Séquence d’ADN",
+        "subjectKey": "adn",
+        "property": "Ordre des bases et information",
+        "expectedAnswer": "L’ordre des bases le long du brin",
+        "learningObjective": "Distinguer l’alphabet moléculaire de l’ordre qui forme le message.",
+        "factKey": "dna-base-order-encodes-information",
+        "form": "identification",
+        "difficultyRationale": "Principe intuitif d’un message construit par une suite de lettres.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-facts",
+            "locator": "What is DNA made of?",
+            "support": "L’ordre, ou séquence, des bases détermine les instructions biologiques portées par un brin d’ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-gene-functional-dna-region",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "À quelle sorte de structure correspond un gène du chanvre ?",
+      "options": [
+        "Une copie d’ARN produite à partir d’un ADN",
+        "Une chaîne d’acides aminés constituant une protéine",
+        "Une région d’ADN portant une information fonctionnelle",
+        "La totalité de l’ADN d’un chromosome entier"
+      ],
+      "answer": 2,
+      "explanation": "Un gène est une région d’ADN dont l’information permet de produire un ARN fonctionnel, souvent utilisé pour fabriquer une protéine. Un gène n’est donc pas la protéine qu’il contribue à produire.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-gene"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Nature d’un gène",
+        "subjectKey": "gene",
+        "property": "Région fonctionnelle d’ADN",
+        "expectedAnswer": "Une région d’ADN portant une information fonctionnelle",
+        "learningObjective": "Distinguer un gène de son produit et d’un organe.",
+        "factKey": "gene-functional-dna-region",
+        "form": "identification",
+        "difficultyRationale": "Définition fondamentale du vocabulaire génétique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-gene",
+            "locator": "Definition et Narration, définition élargie",
+            "support": "Un gène constitue une unité d’hérédité ; il encode une protéine ou un ARN fonctionnel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genome-entire-dna-set",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Que désigne le génome d’un chanvre ?",
+      "options": [
+        "L’ensemble des protéines de ses feuilles",
+        "L’ensemble des ARN exprimés à un instant",
+        "L’ensemble des molécules odorantes produites",
+        "L’ensemble de son ADN"
+      ],
+      "answer": 3,
+      "explanation": "Le génome comprend l’ensemble des séquences codantes et non codantes de l’ADN. Il constitue un patrimoine d’information dont toutes les régions ne sont pas utilisées en même temps dans chaque cellule.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genome"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Génome du chanvre",
+        "subjectKey": "genome",
+        "property": "Ensemble de l’ADN",
+        "expectedAnswer": "L’ensemble de son ADN",
+        "learningObjective": "Séparer le contenu du génome des molécules produites à partir de celui-ci.",
+        "factKey": "genome-entire-dna-set",
+        "form": "identification",
+        "difficultyRationale": "Notion centrale et accessible de la génétique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genome",
+            "locator": "Definition",
+            "support": "Le génome est l’ensemble des instructions d’ADN d’une cellule ou d’un organisme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-chromosome-dna-associated-proteins",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "De quoi un chromosome nucléaire du chanvre est-il principalement constitué ?",
+      "options": [
+        "De l’ADN associé à des protéines",
+        "De l’ADN sans protéines associées",
+        "De l’ARN associé à des protéines",
+        "De l’ARN sans protéines associées"
+      ],
+      "answer": 0,
+      "explanation": "Un chromosome organise une longue molécule d’ADN avec des protéines. Cette association permet de compacter le matériel génétique tout en conservant la possibilité d’utiliser ses informations.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-chromosome"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Composition d’un chromosome",
+        "subjectKey": "chromosome",
+        "property": "ADN associé à des protéines",
+        "expectedAnswer": "De l’ADN associé à des protéines",
+        "learningObjective": "Relier chromosome et molécule d’ADN sans les confondre avec un gène isolé.",
+        "factKey": "chromosome-dna-associated-proteins",
+        "form": "identification",
+        "difficultyRationale": "Connaissance structurale générale accessible.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-chromosome",
+            "locator": "Definition et Narration",
+            "support": "Un chromosome est constitué d’une molécule d’ADN et de protéines qui contribuent à son empaquetage."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-rna-usually-single-stranded",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Dans les cellules du chanvre, combien de brins constituent le plus souvent une molécule d’ARN ?",
+      "options": [
+        "Quatre brins",
+        "Un seul brin",
+        "Deux brins",
+        "Trois brins"
+      ],
+      "answer": 1,
+      "explanation": "L’ARN est le plus souvent simple brin, même s’il peut se replier et former des zones appariées. Cette description générale n’interdit pas l’existence de structures particulières.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-rna"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Structure usuelle de l’ARN",
+        "subjectKey": "arn",
+        "property": "Organisation généralement simple brin",
+        "expectedAnswer": "Un seul brin",
+        "learningObjective": "Distinguer les architectures usuelles de deux acides nucléiques.",
+        "factKey": "rna-usually-single-stranded",
+        "form": "identification",
+        "difficultyRationale": "Différence structurale de base présentée sans exception à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-rna",
+            "locator": "Definition",
+            "support": "L’ARN est le plus souvent simple brin, contrairement à l’ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-many-genes-per-chromosome",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Dans le génome nucléaire du chanvre, comment se comparent généralement les nombres de gènes et de chromosomes ?",
+      "options": [
+        "Il y a exactement un gène pour chaque paire de chromosomes",
+        "Il y a bien plus de chromosomes que de gènes",
+        "Il y a bien plus de gènes que de chromosomes",
+        "Il y a exactement un gène pour chaque chromosome"
+      ],
+      "answer": 2,
+      "explanation": "Un chromosome est une longue structure qui porte de nombreux gènes. Il ne faut donc pas confondre le nombre de gènes avec le nombre de chromosomes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-linkage"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Gènes par chromosome",
+        "subjectKey": "chromosome",
+        "property": "De nombreux gènes sur chaque chromosome",
+        "expectedAnswer": "Il y a bien plus de gènes que de chromosomes",
+        "learningObjective": "Comprendre les niveaux gène et chromosome sans mémoriser un effectif génomique.",
+        "factKey": "many-genes-per-chromosome",
+        "form": "identification",
+        "difficultyRationale": "Relation simple de contenant à contenu.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-linkage",
+            "locator": "Genetic Linkage and Distances, premier paragraphe",
+            "support": "Chaque chromosome peut porter de nombreux gènes, ce qui explique qu’il y ait plus de caractères héréditaires que de chromosomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-repair-can-correct-damage",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Une base incorrecte est insérée lors de la copie de l’ADN d’un chanvre. Quel mécanisme cellulaire peut limiter sa persistance ?",
+      "options": [
+        "La condensation du chromosome avant la division",
+        "La transcription de cette région en ARN",
+        "La traduction d’un message provenant de cette région",
+        "Le retrait du nucléotide incorrect puis son remplacement"
+      ],
+      "answer": 3,
+      "explanation": "Les cellules possèdent des mécanismes qui repèrent et corrigent certaines anomalies de l’ADN. Cette réparation limite les erreurs persistantes, mais n’est pas infaillible.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-repair"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Réparation de l’ADN",
+        "subjectKey": "reparation-adn",
+        "property": "Correction d’erreurs ou lésions",
+        "expectedAnswer": "Le retrait du nucléotide incorrect puis son remplacement",
+        "learningObjective": "Comprendre que l’ADN n’est pas laissé sans entretien dans la cellule.",
+        "factKey": "dna-repair-can-correct-damage",
+        "form": "situation",
+        "difficultyRationale": "Distinguer une correction de séquence des processus qui utilisent ou compactent l’information, à partir d’une erreur de copie.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-repair",
+            "locator": "Proofreading, premiers paragraphes après l’introduction",
+            "support": "Une ADN polymérase peut retirer un nucléotide incorrect puis le remplacer par le nucléotide approprié."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genetic-variants-can-have-no-observable-effect",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Selon le variant et le milieu, quels effets une variation d’ADN peut-elle avoir sur le succès biologique d’un chanvre ?",
+      "options": [
+        "Amélioration, dégradation ou absence d’effet détectable",
+        "Amélioration ou dégradation, sans effet neutre",
+        "Dégradation ou effet neutre, sans amélioration",
+        "Amélioration ou effet neutre, sans dégradation"
+      ],
+      "answer": 0,
+      "explanation": "Des différences d’ADN peuvent modifier une fonction, mais d’autres sont sans effet biologique détectable dans les conditions considérées. Une variation n’est donc pas automatiquement un défaut.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-variation",
+        "q2-cn04-evolution"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Effets des variants",
+        "subjectKey": "variation-genomique",
+        "property": "Existence de variants sans effet biologique",
+        "expectedAnswer": "Amélioration, dégradation ou absence d’effet détectable",
+        "learningObjective": "Éviter de confondre variation génétique et anomalie nuisible.",
+        "factKey": "genetic-variants-can-have-no-observable-effect",
+        "form": "identification",
+        "difficultyRationale": "Correction accessible d’une idée reçue courante.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-variation",
+            "locator": "Definition",
+            "support": "Certains variants influencent une fonction biologique ; d’autres n’ont pas d’effet biologique."
+          },
+          {
+            "sourceId": "q2-cn04-evolution",
+            "locator": "Processes and Patterns of Evolution, paragraphes sur mutation et fitness",
+            "support": "Des mutations peuvent avoir un effet défavorable, favorable ou neutre sur la valeur sélective, avec des ampleurs variables."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-offspring-nuclear-genome-from-both-parents",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Lors d’une reproduction sexuée normale entre deux chanvres diploïdes, d’où viennent les chromosomes nucléaires du nouvel embryon ?",
+      "options": [
+        "Un jeu du parent femelle et deux du parent mâle",
+        "Un jeu de chaque parent",
+        "Les deux jeux du parent qui porte la graine",
+        "Les deux jeux du parent qui fournit le pollen"
+      ],
+      "answer": 1,
+      "explanation": "Chaque gamète apporte un jeu de chromosomes au futur embryon. La plante qui porte la graine ne fournit donc pas, à elle seule, tout le génome nucléaire de son descendant.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-cell-division"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Contribution des parents",
+        "subjectKey": "heredite-biparentale",
+        "property": "Un jeu nucléaire transmis par chaque parent",
+        "expectedAnswer": "Un jeu de chaque parent",
+        "learningObjective": "Distinguer origine physique de la graine et contribution génétique des parents.",
+        "factKey": "offspring-nuclear-genome-from-both-parents",
+        "form": "identification",
+        "difficultyRationale": "Principe fondamental d’hérédité sexuée, avec diploïdie précisée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-cell-division",
+            "locator": "Genomic DNA, fertilization and homologous pairs",
+            "support": "La fécondation réunit un jeu de chromosomes de chacun des deux parents en une cellule diploïde."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-mendel-garden-pea-model-for-inheritance",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Sur quelle plante Mendel a-t-il surtout étudié les règles de transmission utilisées en génétique végétale, y compris du chanvre ?",
+      "options": [
+        "Le maïs",
+        "Le tournesol",
+        "Le pois",
+        "Le blé"
+      ],
+      "answer": 2,
+      "explanation": "Mendel a utilisé le pois comme organisme modèle. Ses résultats ont posé les bases de la génétique, même si tous les caractères végétaux ne suivent pas ses modèles les plus simples.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-mendel"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Modèle végétal de Mendel",
+        "subjectKey": "mendel",
+        "property": "Pois comme modèle d’hérédité",
+        "expectedAnswer": "Le pois",
+        "learningObjective": "Situer l’origine expérimentale des règles mendéliennes.",
+        "factKey": "mendel-garden-pea-model-for-inheritance",
+        "form": "identification",
+        "difficultyRationale": "Repère scientifique général très répandu, sans date précise.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-mendel",
+            "locator": "Introduction et Mendel’s Model System",
+            "support": "Le pois de jardin, Pisum sativum, est le principal modèle des expériences de Mendel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genetic-diversity-dna-differences-within-species",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Quelle observation illustre directement une diversité génétique au sein d’une population de chanvre ?",
+      "options": [
+        "Deux plantes ont des hauteurs différentes",
+        "Deux plantes ont des feuilles plus ou moins flétries",
+        "Deux plantes ont des feuilles d’âges différents",
+        "Deux plantes ont des séquences d’ADN différentes"
+      ],
+      "answer": 3,
+      "explanation": "Des séquences d’ADN distinctes entre individus établissent une variation génétique. Une différence d’aspect peut avoir plusieurs origines et ne suffit pas, seule, à établir une différence d’ADN.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-variation"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Diversité génétique",
+        "subjectKey": "variation-genomique",
+        "property": "Différences de séquence entre individus",
+        "expectedAnswer": "Deux plantes ont des séquences d’ADN différentes",
+        "learningObjective": "Reconnaître une variation génétique plutôt qu’une simple différence de situation.",
+        "factKey": "genetic-diversity-dna-differences-within-species",
+        "form": "identification",
+        "difficultyRationale": "Distinction accessible entre différence moléculaire et différence d’observation.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-variation",
+            "locator": "Definition",
+            "support": "La variation génomique correspond à des différences de séquence d’ADN entre individus ou populations."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genome-size-not-simple-complexity-scale",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle relation générale existe entre la taille du génome et la complexité biologique, chez les plantes et les autres organismes ?",
+      "options": [
+        "La taille du génome ne fournit pas un classement simple de complexité",
+        "La complexité augmente proportionnellement à la taille du génome",
+        "La complexité diminue proportionnellement à la taille du génome",
+        "Une même taille de génome correspond à une même complexité"
+      ],
+      "answer": 0,
+      "explanation": "La quantité d’ADN n’est pas une échelle simple de complexité. Les génomes contiennent notamment des séquences répétées et non codantes, et leur taille varie fortement entre espèces.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genome"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Taille et complexité des génomes",
+        "subjectKey": "genome",
+        "property": "Absence de relation simple taille-complexité",
+        "expectedAnswer": "La taille du génome ne fournit pas un classement simple de complexité",
+        "learningObjective": "Éviter une interprétation intuitive mais erronée d’une quantité d’ADN.",
+        "factKey": "genome-size-not-simple-complexity-scale",
+        "form": "identification",
+        "difficultyRationale": "Rappel intermédiaire de l’absence de relation générale simple entre quantité d’ADN et complexité ; les choix opposent des modèles explicites.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genome",
+            "locator": "Narration, comparaison des tailles de génomes",
+            "support": "Il n’existe pas de corrélation cohérente simple entre complexité biologique et taille du génome."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-mendelian-alleles-not-irreversibly-blended",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une hérédité mendélienne simple du chanvre, que deviennent les allèles parentaux chez les descendants ?",
+      "options": [
+        "Ils sont transmis ensemble dans chacun des gamètes",
+        "Ils restent des unités transmissibles distinctes",
+        "Ils se fondent toujours en un nouvel allèle moyen",
+        "L’un disparaît dès qu’il est masqué par l’autre"
+      ],
+      "answer": 1,
+      "explanation": "Les allèles ne se diluent pas comme deux couleurs de peinture. Un allèle peut être masqué dans le phénotype et rester présent, puis être transmis à la génération suivante.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-mendel"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Hérédité particulaire",
+        "subjectKey": "heredite-mendelienne",
+        "property": "Transmission sans fusion irréversible des allèles",
+        "expectedAnswer": "Ils restent des unités transmissibles distinctes",
+        "learningObjective": "Comprendre pourquoi un caractère masqué peut rester héréditaire.",
+        "factKey": "mendelian-alleles-not-irreversibly-blended",
+        "form": "identification",
+        "difficultyRationale": "Distinguer transmission des allèles et masquage phénotypique suppose les notions d’allèle et de dominance, au-delà du sens courant d’hérédité.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-mendel",
+            "locator": "Introduction, blending theory of inheritance",
+            "support": "Les facteurs héréditaires ne se mélangent pas irréversiblement ; ils conservent leur identité et peuvent être retransmis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-nucleotide-building-block-dna",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Comment appelle-t-on une unité formée d’un sucre, d’un phosphate et d’une base dans l’ADN du chanvre ?",
+      "options": [
+        "Un acide gras",
+        "Un monosaccharide",
+        "Un nucléotide",
+        "Un acide aminé"
+      ],
+      "answer": 2,
+      "explanation": "Les nucléotides s’enchaînent pour former l’ADN. Leurs bases portent les lettres de la séquence ; les sucres et phosphates constituent le squelette du brin.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-structure"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Nucléotide d’ADN",
+        "subjectKey": "nucleotide",
+        "property": "Unité sucre-phosphate-base",
+        "expectedAnswer": "Un nucléotide",
+        "learningObjective": "Identifier le constituant élémentaire d’un acide nucléique.",
+        "factKey": "nucleotide-building-block-dna",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire moléculaire intermédiaire, comparé à d’autres unités biologiques.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-structure",
+            "locator": "Premier paragraphe et structure des nucléotides",
+            "support": "Le nucléotide comprend une base azotée, un sucre à cinq carbones et un phosphate."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-sugar-is-deoxyribose",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel sucre entre dans la composition des nucléotides de l’ADN du chanvre ?",
+      "options": [
+        "Le ribose",
+        "Le glucose",
+        "Le saccharose",
+        "Le désoxyribose"
+      ],
+      "answer": 3,
+      "explanation": "Le sucre de l’ADN est le désoxyribose. Il participe au squelette du brin ; il ne faut pas le confondre avec les sucres utilisés comme réserves ou transportés dans la plante.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-structure"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Sucre de l’ADN",
+        "subjectKey": "adn",
+        "property": "Présence de désoxyribose",
+        "expectedAnswer": "Le désoxyribose",
+        "learningObjective": "Associer l’ADN à son sucre constitutif.",
+        "factKey": "dna-sugar-is-deoxyribose",
+        "form": "identification",
+        "difficultyRationale": "Chimie structurale intermédiaire parmi quatre sucres réels.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-structure",
+            "locator": "Paragraphe The sugar is deoxyribose",
+            "support": "L’ADN contient du désoxyribose, tandis que l’ARN contient du ribose."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-locus-physical-genomic-position",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans la description du génome du chanvre, que désigne un locus ?",
+      "options": [
+        "Une position physique dans le génome",
+        "Une version particulière d’une séquence",
+        "Une molécule d’ARN transcrite",
+        "Une paire entière de chromosomes"
+      ],
+      "answer": 0,
+      "explanation": "Un locus est un emplacement dans le génome, comparable à une adresse. Les allèles sont des versions de séquence que l’on peut rencontrer à cet emplacement.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-locus"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Locus génomique",
+        "subjectKey": "cannabis-allele",
+        "property": "Emplacement physique dans le génome",
+        "expectedAnswer": "Une position physique dans le génome",
+        "learningObjective": "Distinguer position génomique et variante présente à cette position.",
+        "factKey": "locus-physical-genomic-position",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire de description du génome.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-locus",
+            "locator": "Definition et Narration",
+            "support": "Un locus est un site physique du génome, comme l’emplacement d’un gène ou d’un segment d’intérêt."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-homologous-chromosomes-same-gene-loci",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Pour une paire d’autosomes homologues d’un chanvre diploïde, quelle description est correcte ?",
+      "options": [
+        "Deux copies forcément identiques de tout l’ADN",
+        "Deux copies d’un chromosome déjà répliqué",
+        "Des ensembles de loci sans correspondance",
+        "Mêmes loci de gènes, mais allèles éventuellement différents"
+      ],
+      "answer": 3,
+      "explanation": "Les homologues portent des gènes aux mêmes emplacements correspondants. Ils proviennent normalement de parents différents et peuvent porter des allèles distincts.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-cell-division"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Autosomes homologues",
+        "subjectKey": "chromosomes-homologues",
+        "property": "Même ordre de loci et différences alléliques possibles",
+        "expectedAnswer": "Mêmes loci de gènes, mais allèles éventuellement différents",
+        "learningObjective": "Distinguer homologie et identité complète de séquence.",
+        "factKey": "homologous-chromosomes-same-gene-loci",
+        "form": "identification",
+        "difficultyRationale": "Relation chromosomique intermédiaire, limitée aux autosomes pour éviter le cas X/Y.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-cell-division",
+            "locator": "Genomic DNA, homologous chromosomes",
+            "support": "Les chromosomes homologues ont les gènes aux mêmes loci, mais les allèles hérités de chaque parent peuvent différer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-sister-chromatids-replicated-chromosome-copies",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que sont les chromatides sœurs d’un chromosome de chanvre venant d’être répliqué ?",
+      "options": [
+        "Les deux brins d’une même double hélice",
+        "Deux ARN copiés à partir d’un même gène",
+        "Les deux copies issues de sa réplication",
+        "Les deux chromosomes hérités de parents différents"
+      ],
+      "answer": 2,
+      "explanation": "Après réplication, un chromosome comporte deux chromatides sœurs, normalement identiques hors erreur ou modification. Chaque chromatide contient une double hélice d’ADN, et non un seul de ses brins.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-chromatid"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Chromatides sœurs",
+        "subjectKey": "chromatides-soeurs",
+        "property": "Copies d’un chromosome répliqué",
+        "expectedAnswer": "Les deux copies issues de sa réplication",
+        "learningObjective": "Distinguer chromatide, chromosome homologue et brin d’ADN.",
+        "factKey": "sister-chromatids-replicated-chromosome-copies",
+        "form": "identification",
+        "difficultyRationale": "Trois niveaux d’organisation du matériel génétique doivent être séparés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-chromatid",
+            "locator": "Definition",
+            "support": "Les chromatides sœurs sont les deux moitiés identiques d’un chromosome répliqué en préparation de la division."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-polymerase-builds-new-dna-strand",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle enzyme allonge un nouveau brin d’ADN lors de sa copie dans une cellule de chanvre ?",
+      "options": [
+        "Une ARN polymérase",
+        "Une ADN ligase",
+        "Une hélicase",
+        "Une ADN polymérase"
+      ],
+      "answer": 3,
+      "explanation": "Les ADN polymérases ajoutent des nucléotides au brin en cours de synthèse en utilisant un brin modèle. Leur activité copie une séquence ; elle ne consiste pas à fabriquer une protéine.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-euk-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ADN polymérase",
+        "subjectKey": "replication-adn",
+        "property": "Synthèse d’un nouveau brin d’ADN",
+        "expectedAnswer": "Une ADN polymérase",
+        "learningObjective": "Identifier une enzyme centrale de la copie de l’ADN dans la cellule.",
+        "factKey": "dna-polymerase-builds-new-dna-strand",
+        "form": "identification",
+        "difficultyRationale": "Fonction moléculaire intermédiaire parmi plusieurs enzymes réelles.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-euk-replication",
+            "locator": "Réplication eucaryote, paragraphes DNA polymerases et elongation",
+            "support": "Les ADN polymérases assurent l’allongement des nouveaux brins pendant la réplication."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-transcription-dna-to-rna-process",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Comment appelle-t-on la synthèse d’un ARN à partir d’un modèle d’ADN dans une cellule de chanvre ?",
+      "options": [
+        "La transcription",
+        "La réplication",
+        "La traduction",
+        "La recombinaison"
+      ],
+      "answer": 0,
+      "explanation": "La transcription produit une molécule d’ARN à partir d’un modèle d’ADN. La réplication copie l’ADN en ADN ; la traduction utilise un ARN messager pour assembler une protéine.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genetic-code"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Transcription",
+        "subjectKey": "expression-genique",
+        "property": "Synthèse d’ARN à partir d’ADN",
+        "expectedAnswer": "La transcription",
+        "learningObjective": "Nommer une étape du fonctionnement des gènes et la distinguer des autres transferts.",
+        "factKey": "transcription-dna-to-rna-process",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire intermédiaire des processus moléculaires.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genetic-code",
+            "locator": "Introduction et Central Dogma",
+            "support": "La transcription génère un ARN messager à partir de l’information d’un gène d’ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-codon-three-rna-nucleotides",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans un ARN messager du chanvre, qu’appelle-t-on un codon ?",
+      "options": [
+        "Un groupe de trois gènes voisins sur un chromosome",
+        "Une série de trois acides aminés dans une protéine",
+        "Un groupe de trois nucléotides lu pour la synthèse protéique",
+        "Un assemblage de trois ribosomes sur un ARN"
+      ],
+      "answer": 2,
+      "explanation": "Un codon comprend trois nucléotides de l’ARN messager. Il correspond à un acide aminé ou à un signal de terminaison de la synthèse protéique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genetic-code"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Codon",
+        "subjectKey": "code-genetique",
+        "property": "Triplet de nucléotides de l’ARN messager",
+        "expectedAnswer": "Un groupe de trois nucléotides lu pour la synthèse protéique",
+        "learningObjective": "Comprendre l’unité de lecture du message utilisé pour une protéine.",
+        "factKey": "codon-three-rna-nucleotides",
+        "form": "identification",
+        "difficultyRationale": "Organisation intermédiaire du code génétique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genetic-code",
+            "locator": "The Genetic Code Is Degenerate and Universal",
+            "support": "Un codon est un triplet de nucléotides de l’ARN qui spécifie un acide aminé ou la terminaison."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le code génétique standard utilisé par le chanvre, que provoque le triplet UAG lorsqu’il est lu en cours de traduction ?",
+      "options": [
+        "Ajouter une méthionine puis poursuivre la chaîne",
+        "Ajouter une leucine puis poursuivre la chaîne",
+        "Libérer la chaîne en cours sans ajouter d’acide aminé",
+        "Ajouter une sérine puis poursuivre la chaîne"
+      ],
+      "answer": 2,
+      "explanation": "UAG est l’un des trois codons de terminaison du code standard. Il ne désigne pas un acide aminé à ajouter : sa reconnaissance permet la fin de la traduction et la libération de la chaîne.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genetic-code",
+        "q2-cn03-stop-codon"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Signal UAG du code génétique standard",
+        "subjectKey": "code-genetique",
+        "property": "UAG ne code pas un acide aminé et termine la traduction",
+        "expectedAnswer": "Libérer la chaîne en cours sans ajouter d’acide aminé",
+        "learningObjective": "Identifier l’issue moléculaire associée à un triplet précis du code génétique standard.",
+        "factKey": "uag-standard-code-translation-termination",
+        "form": "identification",
+        "difficultyRationale": "Rappel d’un triplet précis et de son issue de traduction parmi quatre issues comparables, sans donner le nom du signal dans l’énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genetic-code",
+            "locator": "Paragraphe de terminaison après le tableau du code génétique",
+            "support": "Les codons de terminaison interrompent la synthèse et libèrent la chaîne protéique de la machinerie de traduction."
+          },
+          {
+            "sourceId": "q2-cn03-stop-codon",
+            "locator": "Definition, seconde phrase",
+            "support": "Le code standard compte trois codons de terminaison, dont UAG, distincts des codons spécifiant un acide aminé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-genetic-code-several-codons-same-amino-acid",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle propriété du code génétique permet à plusieurs codons différents de correspondre à un même acide aminé ?",
+      "options": [
+        "Sa redondance",
+        "Son caractère non chevauchant",
+        "Son ordre de lecture orienté",
+        "Sa quasi-universalité"
+      ],
+      "answer": 0,
+      "explanation": "Le code est dit redondant ou dégénéré : plusieurs codons peuvent désigner le même acide aminé. Cela ne signifie pas qu’un codon change arbitrairement de sens à chaque lecture.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genetic-code"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Redondance du code génétique",
+        "subjectKey": "code-genetique",
+        "property": "Plusieurs codons pour un acide aminé",
+        "expectedAnswer": "Sa redondance",
+        "learningObjective": "Comprendre la relation plusieurs-pour-un entre codons et acides aminés.",
+        "factKey": "genetic-code-several-codons-same-amino-acid",
+        "form": "identification",
+        "difficultyRationale": "Propriété conceptuelle intermédiaire, sans tableau complet à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genetic-code",
+            "locator": "The Genetic Code Is Degenerate and Universal",
+            "support": "Un acide aminé peut être spécifié par plusieurs triplets différents, ce qui définit la dégénérescence du code."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-transfer-rna-delivers-amino-acids",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une cellule de chanvre, quel type d’ARN apporte les acides aminés correspondant aux codons lus par le ribosome ?",
+      "options": [
+        "Un ARN de transfert",
+        "Un ARN messager",
+        "Un ARN ribosomique",
+        "Un ARN pré-messager"
+      ],
+      "answer": 0,
+      "explanation": "L’ARN de transfert sert d’adaptateur : il reconnaît un codon du message et apporte l’acide aminé correspondant. Il se distingue de l’ARN messager, qui porte la suite d’instructions.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-trna"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "ARN de transfert",
+        "subjectKey": "arn-de-transfert",
+        "property": "Apport des acides aminés lors de la traduction",
+        "expectedAnswer": "Un ARN de transfert",
+        "learningObjective": "Distinguer la fonction d’adaptateur de l’ARN de transfert de celle du message et du ribosome.",
+        "factKey": "transfer-rna-delivers-amino-acids",
+        "form": "identification",
+        "difficultyRationale": "Rôle moléculaire intermédiaire parmi quatre types d’ARN comparables.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-trna",
+            "locator": "Definition et Narration",
+            "support": "L’ARN de transfert associe la reconnaissance d’un codon et l’apport de l’acide aminé approprié à la chaîne en synthèse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-missense-substitution-changes-amino-acid",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle conséquence définit une mutation faux-sens dans un gène de chanvre ?",
+      "options": [
+        "Le maintien de l’acide aminé malgré un changement de codon",
+        "Le remplacement d’un acide aminé par un autre",
+        "La création d’un signal de fin prématuré",
+        "Le décalage des triplets après une insertion de base"
+      ],
+      "answer": 1,
+      "explanation": "Une mutation faux-sens change l’acide aminé codé à une position. Son effet dépend du remplacement et de sa place dans la protéine ; il n’est pas nécessairement catastrophique.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-repair"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Mutation faux-sens",
+        "subjectKey": "mutations-codantes",
+        "property": "Remplacement d’un acide aminé",
+        "expectedAnswer": "Le remplacement d’un acide aminé par un autre",
+        "learningObjective": "Reconnaître une conséquence précise d’une substitution codante.",
+        "factKey": "missense-substitution-changes-amino-acid",
+        "form": "identification",
+        "difficultyRationale": "Distinction intermédiaire entre classes de variants codants.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-repair",
+            "locator": "Mutations, paragraphe amino acid replacement et schéma des classes",
+            "support": "Une mutation faux-sens substitue un acide aminé à un autre dans la protéine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-rna-splicing-removes-introns-joins-exons",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une cellule de chanvre, que fait l’épissage d’un ARN pré-messager contenant des introns ?",
+      "options": [
+        "Il retire les exons et conserve les introns",
+        "Il copie l’ARN entier en une molécule d’ADN",
+        "Il retire les introns et relie les exons",
+        "Il relie les introns d’ARN provenant de plusieurs gènes"
+      ],
+      "answer": 2,
+      "explanation": "L’épissage est une étape de maturation de nombreux ARN pré-messagers. Il élimine des segments internes, les introns, puis rassemble les exons conservés dans l’ARN mature.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-rna-processing"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Épissage de l’ARN",
+        "subjectKey": "epissage-arn",
+        "property": "Retrait des introns et jonction des exons",
+        "expectedAnswer": "Il retire les introns et relie les exons",
+        "learningObjective": "Comprendre une étape du traitement cellulaire d’un message génétique.",
+        "factKey": "rna-splicing-removes-introns-joins-exons",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire et mécanisme intermédiaires de maturation de l’ARN.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-rna-processing",
+            "locator": "mRNA Processing, premiers paragraphes",
+            "support": "Les introns sont retirés et les exons sont joints pour former l’ARN messager mature."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-epigenetic-regulation-without-dna-sequence-change",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel type de changement peut modifier durablement l’activité des gènes du chanvre sans changer l’ordre des bases de l’ADN ?",
+      "options": [
+        "Une substitution de nucléotide",
+        "Une délétion de gène",
+        "Une inversion chromosomique",
+        "Une modification épigénétique"
+      ],
+      "answer": 3,
+      "explanation": "Des modifications épigénétiques influencent l’utilisation de l’ADN sans en changer la séquence. Elles peuvent concerner l’ADN ou les protéines associées ; leur stabilité et leur transmission varient.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-epigenetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Régulation épigénétique",
+        "subjectKey": "epigenetique",
+        "property": "Activité génique modifiée sans changement de séquence",
+        "expectedAnswer": "Une modification épigénétique",
+        "learningObjective": "Distinguer régulation épigénétique et modification de la séquence d’ADN.",
+        "factKey": "epigenetic-regulation-without-dna-sequence-change",
+        "form": "identification",
+        "difficultyRationale": "Distinction conceptuelle intermédiaire, sans promesse de transmission systématique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-epigenetics",
+            "locator": "Introduction",
+            "support": "Des changements épigénétiques de l’expression ne résultent pas d’un changement de séquence de l’ADN."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-transposable-element-mobile-dna",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne un élément transposable, présent notamment dans le génome du cannabis ?",
+      "options": [
+        "Une séquence d’ADN pouvant changer de position génomique",
+        "Une région d’ADN toujours située à une extrémité du chromosome",
+        "Une séquence d’ARN servant de modèle direct à une protéine",
+        "Une région d’ADN où commence toute transcription"
+      ],
+      "answer": 0,
+      "explanation": "Les éléments transposables sont des séquences mobiles d’ADN. Leurs copies actives et leurs vestiges contribuent à l’organisation des génomes ; leur présence ne signifie pas que toutes leurs copies bougent encore.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-transposon",
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Éléments transposables",
+        "subjectKey": "elements-transposables",
+        "property": "Mobilité de certaines séquences d’ADN",
+        "expectedAnswer": "Une séquence d’ADN pouvant changer de position génomique",
+        "learningObjective": "Comprendre le sens de l’expression « ADN mobile » dans un génome.",
+        "factKey": "transposable-element-mobile-dna",
+        "form": "identification",
+        "difficultyRationale": "Une notion intermédiaire de dynamique génomique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-transposon",
+            "locator": "Définition principale",
+            "support": "Un élément transposable est un fragment mobile d’ADN capable de changer de position dans un génome."
+          },
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Introduction et section sur les éléments transposables",
+            "support": "L’étude décrit une forte présence d’éléments transposables et une activité de certaines familles dans le cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-duplication-additional-segment-copy",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans un génome de chanvre, qu’est-ce qu’une duplication d’un segment d’ADN ?",
+      "options": [
+        "Le remplacement d’une base par une autre",
+        "La présence d’une copie supplémentaire de ce segment",
+        "La perte complète de ce segment",
+        "Le retournement de ce segment sans nouvelle copie"
+      ],
+      "answer": 1,
+      "explanation": "Une duplication ajoute une ou plusieurs copies d’une région d’ADN. Elle peut concerner un gène ou un segment plus vaste et fournir du matériel à l’évolution du génome.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-duplication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Duplication génomique",
+        "subjectKey": "duplication-adn",
+        "property": "Copie supplémentaire d’un segment",
+        "expectedAnswer": "La présence d’une copie supplémentaire de ce segment",
+        "learningObjective": "Distinguer gain de copie, perte, inversion et substitution.",
+        "factKey": "dna-duplication-additional-segment-copy",
+        "form": "identification",
+        "difficultyRationale": "Classification intermédiaire d’un changement de structure génomique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-duplication",
+            "locator": "Definition",
+            "support": "Une duplication produit une ou plusieurs copies d’un segment d’ADN, de tailles très variables."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-nucleosome-dna-wrapped-around-histones",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le noyau d’une cellule de chanvre, qu’est-ce qu’un nucléosome ?",
+      "options": [
+        "Deux chromosomes homologues réunis pendant la méiose",
+        "Une protéine formant un pore de l’enveloppe nucléaire",
+        "De l’ADN enroulé autour d’un ensemble d’histones",
+        "De l’ARN enroulé autour d’un ribosome"
+      ],
+      "answer": 2,
+      "explanation": "Un nucléosome associe un segment d’ADN et un cœur de protéines histones. Cette organisation compacte l’ADN et participe au contrôle de son accessibilité.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-epigenetics"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Nucléosome",
+        "subjectKey": "nucleosome",
+        "property": "ADN enroulé autour d’histones",
+        "expectedAnswer": "De l’ADN enroulé autour d’un ensemble d’histones",
+        "learningObjective": "Relier l’organisation physique de la chromatine à ses constituants.",
+        "factKey": "nucleosome-dna-wrapped-around-histones",
+        "form": "identification",
+        "difficultyRationale": "Structure subcellulaire spécialisée de la chromatine.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-epigenetics",
+            "locator": "Epigenetic Control, premiers paragraphes",
+            "support": "L’ADN s’enroule autour des histones pour constituer des complexes appelés nucléosomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-strands-antiparallel-orientation",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Que signifie l’orientation « antiparallèle » des deux brins de l’ADN du chanvre ?",
+      "options": [
+        "Leurs sens chimiques 5′–3′ sont opposés",
+        "Leurs sens chimiques 5′–3′ sont identiques",
+        "Leurs deux extrémités chimiques portent le même numéro",
+        "Leurs orientations chimiques alternent à chaque paire de bases"
+      ],
+      "answer": 0,
+      "explanation": "Les extrémités 5′ et 3′ décrivent l’orientation chimique d’un brin. Dans la double hélice, un brin va de 5′ vers 3′ tandis que le brin voisin se présente dans le sens opposé.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-structure"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Orientation des brins d’ADN",
+        "subjectKey": "adn",
+        "property": "Sens 5′–3′ opposés",
+        "expectedAnswer": "Leurs sens chimiques 5′–3′ sont opposés",
+        "learningObjective": "Comprendre un qualificatif structural utilisé pour la double hélice.",
+        "factKey": "dna-strands-antiparallel-orientation",
+        "form": "identification",
+        "difficultyRationale": "Orientation chimique spécialisée, distincte de la simple forme de l’hélice.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-structure",
+            "locator": "Paragraphe suivant base pairing",
+            "support": "Les brins sont antiparallèles : l’extrémité 3′ de l’un fait face à l’extrémité 5′ de l’autre."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-replication-semiconservative-old-new-strand",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Après une réplication normale de l’ADN du chanvre, de quels brins chaque nouvelle double hélice est-elle constituée ?",
+      "options": [
+        "D’un ancien brin et d’un brin nouvellement synthétisé",
+        "De deux anciens brins assemblés sans synthèse",
+        "De deux brins entièrement nouveaux",
+        "De deux brins mêlant chacun fragments anciens et nouveaux"
+      ],
+      "answer": 0,
+      "explanation": "La réplication est semi-conservative : chaque brin parental sert de modèle à un nouveau brin complémentaire. Chaque double hélice obtenue conserve donc un des deux brins de départ.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-dna-replication"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Réplication semi-conservative",
+        "subjectKey": "replication-adn",
+        "property": "Un brin parental et un brin nouveau par double hélice",
+        "expectedAnswer": "D’un ancien brin et d’un brin nouvellement synthétisé",
+        "learningObjective": "Comprendre ce qui est conservé lors de la copie de l’ADN.",
+        "factKey": "dna-replication-semiconservative-old-new-strand",
+        "form": "identification",
+        "difficultyRationale": "Modèle moléculaire spécialisé, au-delà du résultat cellulaire de la division.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-dna-replication",
+            "locator": "Paragraphe décrivant la réplication semi-conservative",
+            "support": "Chaque double hélice répliquée comporte un brin parental et un brin nouveau."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-coding-insertion-one-base-shifts-reading-frame",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans une région codante d’un gène de chanvre, quel effet l’ajout d’un nucléotide peut-il avoir sur la lecture des codons en aval ?",
+      "options": [
+        "Ajouter seulement un acide aminé sans décaler les suivants",
+        "Décaler le regroupement des bases en triplets",
+        "Remplacer uniquement le premier acide aminé de la protéine",
+        "Inverser le sens de lecture de tous les codons"
+      ],
+      "answer": 1,
+      "explanation": "Une insertion d’un nucléotide décale le cadre de lecture des triplets. Les codons en aval peuvent donc changer ; ce mécanisme diffère d’une insertion de trois nucléotides qui préserve normalement le cadre.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-genetic-code"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Décalage du cadre de lecture",
+        "subjectKey": "cadre-lecture",
+        "property": "Effet d’une insertion non multiple de trois",
+        "expectedAnswer": "Décaler le regroupement des bases en triplets",
+        "learningObjective": "Relier une modification de séquence à l’unité de lecture de l’ARN codant.",
+        "factKey": "coding-insertion-one-base-shifts-reading-frame",
+        "form": "identification",
+        "difficultyRationale": "Mécanisme spécialisé exigeant de raisonner sur des groupes de trois.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-genetic-code",
+            "locator": "Genetic Code Is Degenerate and Universal, insertions de un, deux ou trois nucléotides",
+            "support": "L’insertion d’un ou deux nucléotides modifie le cadre de lecture des triplets en aval."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-alternative-splicing-one-gene-different-transcripts",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle modification du pré-ARN messager caractérise l’épissage alternatif d’un même gène végétal ?",
+      "options": [
+        "Ajouter une coiffe protectrice à l’extrémité 5′",
+        "Allonger la queue poly(A) à l’extrémité 3′",
+        "Changer la combinaison d’exons conservés dans l’ARN mature",
+        "Modifier chimiquement certaines bases de l’ARN"
+      ],
+      "answer": 2,
+      "explanation": "L’épissage alternatif conserve différentes combinaisons d’exons d’un même gène. Il peut ainsi produire plusieurs messages et, selon les cas, plusieurs formes de protéines, sans ajouter un nouveau gène.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-alternative-splicing"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Épissage alternatif",
+        "subjectKey": "epissage-arn",
+        "property": "Combinaisons d’exons et transcrits différents",
+        "expectedAnswer": "Changer la combinaison d’exons conservés dans l’ARN mature",
+        "learningObjective": "Comprendre comment la diversité des messages dépasse le simple nombre de gènes.",
+        "factKey": "alternative-splicing-one-gene-different-transcripts",
+        "form": "identification",
+        "difficultyRationale": "Distinguer le changement de composition en exons d’autres opérations de maturation crédibles de l’ARN, sans invoquer de modification d’ADN.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-alternative-splicing",
+            "locator": "Definition",
+            "support": "Les exons d’un même gène sont joints selon différentes combinaisons et produisent des transcrits apparentés distincts."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-cn03-dna-methylation-adds-methyl-groups",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "En quoi consiste la méthylation de l’ADN, une marque épigénétique étudiée notamment chez le cannabis ?",
+      "options": [
+        "L’ajout de groupes acétyle aux protéines histones",
+        "Le remplacement d’une cytosine par une thymine",
+        "La suppression d’un nucléotide de la séquence",
+        "L’ajout de groupes méthyle sur certaines bases de l’ADN"
+      ],
+      "answer": 3,
+      "explanation": "La méthylation ajoute des marques chimiques à certaines bases sans remplacer leur ordre dans la séquence. Elle peut participer au contrôle de l’expression et à la répression d’éléments transposables.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-cn03-epigenetics",
+        "q2-cfix-lynch-pangenome-2025"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Méthylation de l’ADN",
+        "subjectKey": "methylation-adn",
+        "property": "Ajout de groupes méthyle sur les bases",
+        "expectedAnswer": "L’ajout de groupes méthyle sur certaines bases de l’ADN",
+        "learningObjective": "Distinguer modification chimique de l’ADN et changement de sa séquence.",
+        "factKey": "dna-methylation-adds-methyl-groups",
+        "form": "identification",
+        "difficultyRationale": "Nature chimique précise d’une marque épigénétique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-cn03-epigenetics",
+            "locator": "Derniers paragraphes, DNA methylation",
+            "support": "La méthylation ajoute un groupe méthyle à une base de l’ADN."
+          },
+          {
+            "sourceId": "q2-cfix-lynch-pangenome-2025",
+            "locator": "Section sur les éléments transposables, paragraphes DNA methylation",
+            "support": "Des profils de méthylation sont décrits dans le génome du cannabis, notamment en relation avec les éléments transposables."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-cn03-dna-facts",
+      "title": "Deoxyribonucleic Acid (DNA) Fact Sheet",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., fiche institutionnelle évolutive",
+      "passage": "Introduction ; What is DNA made of? ; What does DNA do? ; Where is DNA found?",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; What is DNA made of? ; What does DNA do? ; Where is DNA found?",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-gene",
+      "title": "Gene — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Gene",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition ; Narration, définition élargie aux gènes d’ARN",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration, définition élargie aux gènes d’ARN",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-genome",
+      "title": "Genome — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Genome",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition ; Narration, taille du génome et complexité biologique",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration, taille du génome et complexité biologique",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-chromosome",
+      "title": "Chromosome — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Chromosome",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition ; Narration, ADN et protéines histones",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition ; Narration, ADN et protéines histones",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-rna",
+      "title": "Ribonucleic Acid (RNA) — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Ribonucleic-Acid-RNA",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition, simple brin et bases de l’ARN",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, simple brin et bases de l’ARN",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-variation",
+      "title": "Genomic Variation — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Genomic-Variation",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition, différences de séquence et effets variables",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, différences de séquence et effets variables",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-locus",
+      "title": "Locus — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Locus",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition et Narration, localisation physique dans le génome",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition et Narration, localisation physique dans le génome",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-chromatid",
+      "title": "Chromatid — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Chromatid",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition, copies sœurs d’un chromosome répliqué",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, copies sœurs d’un chromosome répliqué",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-duplication",
+      "title": "Duplication — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Duplication",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition, production de copies supplémentaires d’un segment d’ADN",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, production de copies supplémentaires d’un segment d’ADN",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-alternative-splicing",
+      "title": "Alternative Splicing — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Alternative-Splicing",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition, combinaisons d’exons et transcrits apparentés",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, combinaisons d’exons et transcrits apparentés",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-dna-structure",
+      "title": "Biology 2e — 14.2 DNA Structure and Sequencing",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Structure des nucléotides ; désoxyribose ; appariements et orientation antiparallèle",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Structure des nucléotides ; désoxyribose ; appariements et orientation antiparallèle",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-dna-replication",
+      "title": "Biology 2e — 14.3 Basics of DNA Replication",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/14-3-basics-of-dna-replication",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Modèles de réplication, paragraphe de la réplication semi-conservative",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Modèles de réplication, paragraphe de la réplication semi-conservative",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-euk-replication",
+      "title": "Biology 2e — 14.5 DNA Replication in Eukaryotes",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Début de la réplication et rôle des ADN polymérases",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Début de la réplication et rôle des ADN polymérases",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-dna-repair",
+      "title": "Biology 2e — 14.6 DNA Repair",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/14-6-dna-repair",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction, mécanismes de correction ; paragraphes et schéma des mutations",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, mécanismes de correction ; paragraphes et schéma des mutations",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-rna-processing",
+      "title": "Biology 2e — 15.4 RNA Processing in Eukaryotes",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/15-4-rna-processing-in-eukaryotes",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "mRNA Processing, retrait des introns et jonction des exons",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "mRNA Processing, retrait des introns et jonction des exons",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-genetic-code",
+      "title": "Biology 2e — 15.1 The Genetic Code",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Central Dogma ; Genetic Code Is Degenerate and Universal ; codons stop et cadre de lecture",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Central Dogma ; Genetic Code Is Degenerate and Universal ; codons stop et cadre de lecture",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-epigenetics",
+      "title": "Biology 2e — 16.3 Eukaryotic Epigenetic Gene Regulation",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/16-3-eukaryotic-epigenetic-gene-regulation",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction ; nucléosomes et histones ; méthylation de l’ADN",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction ; nucléosomes et histones ; méthylation de l’ADN",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-mendel",
+      "title": "Biology 2e — 12.1 Mendel’s Experiments and the Laws of Probability",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/12-1-mendels-experiments-and-the-laws-of-probability",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Introduction, pois comme modèle ; réfutation de l’hérédité par mélange irréversible",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, pois comme modèle ; réfutation de l’hérédité par mélange irréversible",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-cell-division",
+      "title": "Biology 2e — 10.1 Cell Division",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/10-1-cell-division",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Genomic DNA, chromosomes homologues ; Eukaryotic Chromosomal Structure and Compaction",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Genomic DNA, chromosomes homologues ; Eukaryotic Chromosomal Structure and Compaction",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-transposon",
+      "title": "Transposable element / transposon — Scitable",
+      "organization": "Nature Education",
+      "url": "https://www.nature.com/scitable/definition/transposable-element-transposon-dna-transposon-jumping-gene-52/",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction Nature Education",
+      "published": "s.d., page archivée",
+      "passage": "Définition du fragment mobile d’ADN",
+      "access": "official-page",
+      "documentKind": "Glossaire scientifique pédagogique",
+      "limitation": "Définition générale lue ; le document primaire de Lynch établit séparément la présence de ces éléments dans le cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Définition du fragment mobile d’ADN",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-linkage",
+      "title": "Biology 2e — 13.1 Chromosomal Theory and Genetic Linkage",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/13-1-chromosomal-theory-and-genetic-linkage",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "published": "2018-03-28",
+      "passage": "Chromosomal Theory of Inheritance ; Genetic Linkage and Distances ; Genetic Maps",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Principes généraux de génétique applicables au chanvre ; les expériences sur drosophile ne sont pas présentées comme des observations sur cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Genetic Linkage and Distances, premier paragraphe ; théorie chromosomique",
+        "result": "Passages lus sur la présence de nombreux gènes par chromosome, leur transmission et la liaison génétique."
+      }
+    },
+    {
+      "id": "q2-cn03-trna",
+      "title": "Transfer RNA (tRNA) — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Transfer-RNA-tRNA",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition et Narration, adaptateur et apport d’acides aminés lors de la synthèse protéique",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Notion générale de génétique applicable au chanvre ; les exemples humains ne servent pas de données propres au cannabis.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition et Narration, adaptateur et apport d’acides aminés lors de la synthèse protéique",
+        "result": "Passage utile ouvert et lu ; soutien précis paraphrasé dans les questions."
+      }
+    },
+    {
+      "id": "q2-cn03-stop-codon",
+      "title": "Stop Codon — Talking Glossary",
+      "organization": "NHGRI, National Institutes of Health",
+      "url": "https://www.genome.gov/genetics-glossary/Stop-Codon",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction scientifique du NHGRI ; narration de Prabarna Ganguly",
+      "published": "s.d., glossaire évolutif",
+      "passage": "Definition, distinction entre codons d’acides aminés et codons UAA, UAG, UGA",
+      "access": "official-page",
+      "documentKind": "Ressource institutionnelle de génétique",
+      "limitation": "Code génétique standard ; pas de procédure de modification génétique ni de généralisation à tous les codes mitochondriaux.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Definition, lignes 14–16 de la version consultée",
+        "result": "Passage ouvert et lu : UAG est explicitement énuméré parmi les trois codons de terminaison."
+      }
+    }
+  ]
+}

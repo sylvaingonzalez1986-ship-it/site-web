@@ -1,0 +1,3004 @@
+{
+  "batchId": "d-legacy-02",
+  "reviewer": "f_existing_audit",
+  "reviewedAt": "2026-11-16T20:37:17Z",
+  "reviewScope": "Revue finale : les30objets et21sources ont été contrôlés à la première passe ; les7versions corrigées sont relues intégralement. Les23approbations inchangées sont conservées exactement après contrôle SHA. Aucune source rouverte : les faits et passages précis n’ont pas changé.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière) ; sourceHash de JSON.stringify(objet source complet dans son registre originel, sans ajouter le chemin du registre à cet objet.",
+  "sourceTiming": "Consultations le16novembre2026 ;19URLs ouvertes dans cette passe. Réemploi sans réouverture de ma lecture Flora/piloteC et Cerema/legacy avec hashes sources identiques. Les12autres références déjà lues sont complétées sur de nouveaux passages ; une référence enregistrée (Ribeiro) est nouvelle pour ce reviewer. Heures exactes d’ouverture non reconstituées ; reviewedAt date la consignation. Revalidation finale le16novembre2026 :7objets modifiés relus,21objets sources inchangés, zéro réouverture.",
+  "sourceConsultations": [
+    {
+      "sourceId": "q2-dlegacy02-acma-composites",
+      "url": "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf",
+      "sourceHash": "f0167e851045401f985c3277c14ec43340d1b42cbc18b9cb8f3d52f0f1273141",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Guide, p.15 lignes364–366 ; annexeD p.71 lignes2166–2194 ; glossaire MATRIX p.59",
+      "result": "La résine forme une matrice entourant les fibres et transfère les efforts vers le renfort.",
+      "limitation": "Concepts généraux de composite ; guide2016 non utilisé comme norme actuelle ni prescription de construction.",
+      "readingForThisReview": "new-source-targeted-reading",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-chenevis-lexicon",
+      "url": "https://www.cnrtl.fr/definition/ch%C3%A8nevis",
+      "sourceHash": "ca7b37df7ffb6fbe74ddbe6c2f0d7818711e98e3650623a1fe190a53b3e39a06",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "catalogue-or-official-page",
+      "locator": "Entrée CHÈNEVIS, ligne90",
+      "result": "Le TLFi définit chènevis comme graine du chanvre.",
+      "limitation": "Notice lexicale ; ne prouve pas à elle seule la précision botanique akène.",
+      "readingForThisReview": "new-source-targeted-reading",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-openstax-proteins",
+      "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+      "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Amino Acids, lignes50–55 ; fig3.25, lignes84–85 ; Quaternary Structure, lignes111–112",
+      "result": "Acides aminés comme monomères ; cystéines formant des pontsS–S ; interaction de plusieurs sous-unités définissant l’organisation quaternaire.",
+      "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine.",
+      "readingForThisReview": "new-source-targeted-reading",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-dehulling-2026",
+      "url": "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2026.1825902/full",
+      "sourceHash": "6b4dd53131f1110bafa2f94ab16b250f0b4dd49a821093abd34e7e8e69764179",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction, ligne340",
+      "result": "Hulling défini comme retrait de la coque dure des graines.",
+      "limitation": "Seule définition matérielle retenue ; affirmations sanitaires/cannabinoïdes de l’introduction non adoptées.",
+      "readingForThisReview": "new-source-targeted-reading",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-edestin-structure",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8289257/",
+      "sourceHash": "14aee1be7e37f54708a2d6904d28589de5d0a33571e56f0a6dd8683cf405650c",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "abstract",
+      "locator": "PubMed Abstract, ligne244",
+      "result": "Patel,Cudney etMcPherson décrivent une protéine d’édestine à six sous-unités identiques et un assemblage hexamérique.",
+      "limitation": "Résumé original lu, pas données cristallographiques intégrales ; aucune généralisation à chaque variant.",
+      "readingForThisReview": "new-source-targeted-reading",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dlegacy02-carbonation-2020",
+      "url": "https://nationalhempassociation.org/wp-content/uploads/CarbonStorageHempcrete.pdf",
+      "sourceHash": "cffef95ebe30cf5c7d2d278bcbcdb1c9bd49a3ad5d7dcc4043c846139754df3e",
+      "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF couverture, lignes8–12 ; introduction52 ; §2.1.4, lignes312–316",
+      "result": "Disponible en ligne29avril2020 ; chènevotte et liant à base de chaux ; Ca(OH)2+CO2→CaCO3+H2O.",
+      "limitation": "Réaction et constituants, pas bilan carbone universel ni conseils de dimensionnement.",
+      "readingForThisReview": "new-source-targeted-reading",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-c-flora-china-cannabaceae-2003",
+      "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+      "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c",
+      "sourceRegistry": "docs/quiz-2000/batches/pilot-c.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Lecture F piloteC : PDF p.74–75, ovaire et fruit Cannabis",
+      "result": "Fruit décrit comme un akène, ovule solitaire.",
+      "limitation": "Réemploi de ma lecture du16novembre2026, hashsource identique ; pas origine du nom français chènevis.",
+      "readingForThisReview": "unchanged-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dnext01-eckhardt-2024",
+      "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+      "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+      "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF introductionp.2 ligne72 ; §3.4.1 p.7, lignes639–656,670–674",
+      "result": "Tourteau déshuilé moulu ; globulines11Sédestine/7Svicilin et albumines2S ; édestine et agrégats liés par pontsdisulfure, profils différents en réduction.",
+      "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "bf-reproduction-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Development of the Fruit, lignes132–139",
+      "result": "Fruit issu de l’ovaire ; couches de sa paroi constituant le péricarpe.",
+      "limitation": "Botanique générale ; ne nomme pas le fruit du chanvre spécifiquement.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "products-tool-seed-protein",
+      "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+      "sourceHash": "74aa8b5be9d73df8ca7939bb8a202f4ec3da32e0272b1aac5ec822520adb953b",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Lecture F antérieure tableaucomposition ; nouvelle lecture Protein recovery, lignes234–236",
+      "result": "Tourteau composé de protéines,fibres etlipides résiduels ; minimum de solubilité près du pI.",
+      "limitation": "Erreur « edestin(albumin) » de la page connue et non utilisée ; classement vérifié séparément chez Patel/Eckhardt.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "products-tool-seed-oil",
+      "url": "https://www.mdpi.com/2076-3921/11/3/490",
+      "sourceHash": "21aa0b153adcce3afc11b203424018ee3823aee3b086c17334925d8e1a9a423e",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction, lignes193–199 ; lectureF antérieure résultats/hexanal",
+      "result": "Chlorophylles parmi les pigments de l’huile ; hexanal classé parmi les aldéhydes volatils d’oxydation.",
+      "limitation": "Aucun taux universel ni indicateur unique de qualité ; anciennes lectures complètent le nouveau passage pigments.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-culture-pci",
+      "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+      "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+      "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+      "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-nature-hurd-tissue-paper",
+      "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+      "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introductionp.2 lignes66–75 ; résultatsMorphology p.6 lignes251–260",
+      "result": "Rouissage retirant les substances pectiques de liaison ; SEM décrivant un réseau de fibres consolidées dans les feuilles expérimentales.",
+      "limitation": "Lecture du texte et de sa description des micrographies, pas nouvelle mesure visuelle ; pas de rendement généralisé.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-nature-composite-review",
+      "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+      "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+      "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+      "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-dnext01-collet-pretot-2014",
+      "url": "https://arxiv.org/pdf/1406.3310",
+      "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+      "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Introduction, p.2, lignes51–56 ; lectureF antérieure §§2et4",
+      "result": "Fibres pour panneaux isolants, chènevotte comme granulat ; caractérisation thermique de matériaux d’enveloppe.",
+      "limitation": "Nouveau passage introductif lu ; ne confond pas panneau fibreux et béton de chanvre expérimental.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "products-tool-hempcrete",
+      "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+      "sourceHash": "6927c052eebb3c988db1921685c2ba144601fc2cee1099c69d80972c16ad032a",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Lecture F antérieure Ceremap.1 lignes9–12",
+      "result": "Matériau de remplissage d’une structure porteuse.",
+      "limitation": "Hashsource inchangé ; pas prescription réglementaire ni calcul structurel actuel.",
+      "readingForThisReview": "unchanged-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "products-tool-materials",
+      "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+      "sourceHash": "974732b6a9c3281d5111f3c1116e32e68540b5a90c8bca63bdd5defe8a528e12",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "PDF p.14, lignes323–330",
+      "result": "Fines désigne la poussière issue du défibrage des tiges.",
+      "limitation": "Fraction de tige, pas résine/kief ni seuil granulométrique universel.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "products-primary-retting-2015",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25575888/",
+      "sourceHash": "d56caf73a7b0895bba4829a7e2b506b65a0c22a2422b31a3e8caf414217a599c",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "abstract",
+      "locator": "PubMed Abstract, lignes266–268",
+      "result": "Bactéries et champignons quantifiés parPCR, proportions variables entre échantillons.",
+      "limitation": "Résumé lu ; présence/abondance ne prouve pas la fonction de chaque espèce.",
+      "readingForThisReview": "newly-read-existing-reference",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-hemp-victory",
+      "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+      "sourceHash": "ccd0d1fce11e0fbf6baa22e129eea90bb946b0b0c97f14ea76365d5825a5c1a1",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "catalogue-or-official-page",
+      "locator": "Notice NAL, Creator, lignes35–37",
+      "result": "Creator : United States.Department of Agriculture.",
+      "limitation": "Attribution institutionnelle du catalogue, pas lecture de tout le film ni auteur individuel supposé.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-canada",
+      "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+      "sourceHash": "57f9b168b84205e714eae6cef5343b9909829da736199fa7efb86d5db736c4bc",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "SantéCanada, introduction, ligne50",
+      "result": "Section151.1 impose un examen puis rapport aux deux chambres du Parlement.",
+      "limitation": "Disposition historique de2018, pas description d’un droit actuel ni évaluation de résultats sanitaires.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "qh-hist-un-treaties",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+      "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "full-text-targeted",
+      "locator": "Compilation ONU, article44,p.47–48 PDF,lignes1099–1120 ; titres des instruments déjà lus",
+      "result": "La Convention unique de1961 termine/remplace certains traités antérieurs entre parties lors de son entrée en vigueur.",
+      "limitation": "Contexte historique et conditions conventionnelles ; pas règle individuelle de droit actuel.",
+      "readingForThisReview": "new-passages-and-prior-reading",
+      "earlierReadingReused": true,
+      "timePrecision": "day"
+    }
+  ],
+  "duplicateReview": {
+    "index": "docs/quiz-2000/fact-index.jsonl",
+    "comparedBatches": [
+      "d-01.json",
+      "d-legacy-01.json",
+      "pilot-c.json"
+    ],
+    "scope": "Lecture des propriétés voisines et distinction des statuts approuvés, candidats et anciens. Aucun ID réutilisé considéré à lui seul comme fait nouveau.",
+    "pairs": [
+      {
+        "ids": [
+          "hemp-seeds-edestine",
+          "hemp-seeds-fractions-proteines",
+          "hemp-q2-d01-gouttes-et-depot"
+        ],
+        "decision": "distinct",
+        "reason": "Assemblage cristallographique à six sous-unités, familles protéiques de réserve et sédimentation de protéines dispersées sont trois propriétés différentes. L’ancienne identification inversée « édéstine=protéine » n’est plus testée. La famille est vérifiée chez Eckhardt/Patel, sans reprendre la coquille edestin(albumin) de Cabral.",
+        "commonSubjectKey": "hemp-seed-storage-proteins"
+      },
+      {
+        "ids": [
+          "hemp-seeds-chenevis",
+          "hemp-seeds-pericarpe",
+          "hemp-q2-c-chenevis-une-graine",
+          "hemp-seeds-reserves"
+        ],
+        "decision": "distinct-same-recurring-fruit",
+        "reason": "Nom commun, paroi d’origine ovarienne, nombre de graines et réserves sont distincts ; plusieurs prompts donnent néanmoins le mot chènevis.",
+        "metadataProposal": {
+          "commonSubjectKey": "chenevis",
+          "existingApprovedIdsToHarmonize": [
+            "hemp-q2-c-chenevis-une-graine"
+          ],
+          "existingSubjectKey": "hemp-achene-seed-number",
+          "scope": "Proposition seulement, aucune édition du pilote.",
+          "status": "reported-applied-by-coordinator-with-trace"
+        }
+      },
+      {
+        "ids": [
+          "hemp-seeds-acides-amines",
+          "hemp-q2-cn01-ribosome-direct-protein-assembly",
+          "hemp-seeds-ponts"
+        ],
+        "decision": "distinct-with-answer-leakage-neighbour",
+        "reason": "Unités monomères, structure qui assemble ces unités et pontS–S entre cystéines sont distincts. C-new-01/ribosome est désormais approuvé dans l’index ; son prompt fournit les unités demandées ici, fuite de réponse conceptuelle consignée sans confondre les propriétés."
+      },
+      {
+        "ids": [
+          "hemp-seeds-tourteau-fractions",
+          "hemp-seeds-tourteau",
+          "hemp-seeds-farine",
+          "hemp-q2-d01-isolat-purete-rendement"
+        ],
+        "decision": "distinct",
+        "reason": "Composition du résidu, nom du résidu, réduction granulométrique et distinction rendement/pureté d’isolat ne sont pas des variantes d’une même propriété. Tourteau/fractions partagent déjà une clé."
+      },
+      {
+        "ids": [
+          "hemp-seeds-solubilite",
+          "hemp-q2-d01-isolats-milieu-acide"
+        ],
+        "decision": "distinct-general-principle-versus-measured-comparison",
+        "reason": "Minimum généralement proche du point isoélectrique d’un mélange versus comparaison expérimentale3,2/7. Aucun seuil arbitraire nouveau ; le principe n’est pas présenté comme invariant de tout produit."
+      },
+      {
+        "ids": [
+          "hemp-seeds-pigment-huile",
+          "hemp-q2-d01-chlorophylles-lumiere",
+          "hemp-seeds-hexanal",
+          "hemp-prevention-hydroperoxydes",
+          "hemp-prevention-bris-graines"
+        ],
+        "decision": "distinct",
+        "reason": "Pigments verts, photosensibilisation, famille aldéhyde d’un volatil, produits primaires et décomposition vers produits secondaires sont des propriétés différentes. Les deux derniers et hexanal partagent le contexte d’oxydation."
+      },
+      {
+        "ids": [
+          "hemp-profiles-chenevotte",
+          "hemp-profiles-teillage",
+          "hemp-profiles-fines"
+        ],
+        "decision": "distinct",
+        "reason": "Origine anatomique de la fraction ligneuse, opération séparant bois/fibres et fraction poussiéreuse du défibrage sont distinctes. Chènevotte/fines partagent la clé de fractionnement."
+      },
+      {
+        "ids": [
+          "hemp-profiles-tissage",
+          "hemp-profiles-papier",
+          "hemp-profiles-filature"
+        ],
+        "decision": "distinct",
+        "reason": "Entrecroisement de fils, réseau de fibres en feuille et fabrication d’un fil correspondent à trois organisations ou étapes ; pas deux formulations d’une même réponse."
+      },
+      {
+        "ids": [
+          "hemp-profiles-renfort",
+          "hemp-profiles-matrice",
+          "hemp-q2-d01-composite-temoin-matrice"
+        ],
+        "decision": "distinct",
+        "reason": "Contribution mécanique des fibres, phase continue et attribution d’une émission via témoin sont distinctes. Renfort/matrice partagent la clé du composite générique ; l’expérienceBadji conserve sa portée spécifique."
+      },
+      {
+        "ids": [
+          "hemp-profiles-beton",
+          "hemp-profiles-remplissage",
+          "hemp-profiles-carbonatation",
+          "hemp-profiles-hygroscopie",
+          "hemp-en-3-01",
+          "hemp-q2-d01-beton-densite-chaleur",
+          "hemp-q2-d01-beton-humidite-isolation"
+        ],
+        "decision": "distinct-properties-current-beton-item-weak",
+        "reason": "Constituants, fonction de remplissage, réaction de liant et sorption de vapeur ne reproduisent pas les effets expérimentaux densité/humidité. Le prompt de l’ancienne question eau fournit chènevotte/liant ; clé chanvre-chaux commune avec composition/remplissage déjà appliquée. Le choix de composition reste toutefois à corriger car il donne sa propre chaux."
+      },
+      {
+        "ids": [
+          "hemp-profiles-peignage",
+          "hemp-hc-040"
+        ],
+        "decision": "distinct-contexts-and-properties",
+        "reason": "Parallélisation du ruban en fin de préparation industrielle, décrite au paragraphe cardage, versus outil retirant les derniers fragments de bois dans une chaîne manuelle bretonne. Même opération générale, résultat et contexte distincts ; ne pas remplacer alignement par simple retrait des résidus."
+      },
+      {
+        "ids": [
+          "hemp-profiles-pectines",
+          "hemp-profiles-rouissage-organismes",
+          "hemp-en-3-18",
+          "hemp-q2-d01-adn-rouissage"
+        ],
+        "decision": "distinct",
+        "reason": "Substances de liaison, groupes microbiens mesurés, localisation anatomique et hydrolyse d’ADN sont des propriétés différentes. D03/lamelle moyenne a maintenant une revueF favorable ; l’indice pectines entre questions est consigné dans D03."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-single",
+          "hemp-hs-hist-un1961-into-force",
+          "hemp-hs-hist-single-1972"
+        ],
+        "decision": "distinct",
+        "reason": "Identité/effet de rassemblement du traité, année d’entrée en vigueur et protocole d’amendement sont distincts ; clé convention1961 déjà partagée."
+      }
+    ],
+    "exactExternalDuplicateEstablished": false,
+    "neighbourReadFromIndex": "hemp-q2-cn01-ribosome-direct-protein-assembly : propriété, prompt, réponse et statut consultés dans l’index ; aucune lecture complète d’un lot C-new revendiquée. Statut actualisé : le candidatC-new-01 sur le ribosome est désormais approuvé dans l’index."
+  },
+  "focusedChecks": {
+    "hempForVictory": "Creator de la noticeNAL directement lu : United States.Department of Agriculture.",
+    "canada": "Clause151.1 directement lue dans la présentation SantéCanada ; mécanisme historique réel, distracteurs à corriger.",
+    "edestin": "Abstract primairePatel directement lu : six sous-unités ; structure quaternaire corroborée par OpenStax. Aucune inversion de la famille de réserve.",
+    "sourceCaution": "La coquille edestin(albumin) dans Cabral n’est pas utilisée pour la classification ; Eckhardt etPatel fournissent la preuve distincte. Les nombreuses généralisations de rendement/santé/carbone des sources ne sont pas transférées aux questions."
+  },
+  "items": [
+    {
+      "id": "hemp-seeds-chenevis",
+      "status": "approved",
+      "comment": "TLFi et Flora ont désormais chacun leur locator/support : nom français d’une part, précision botanique akène d’autre part.",
+      "contentHash": "702b5146a181842f734ae6ed7dd3af3356929bb1fae4673216707ce1d76b7447",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-chenevis-lexicon",
+          "url": "https://www.cnrtl.fr/definition/ch%C3%A8nevis",
+          "locator": "TLFi, entrée CHÈNEVIS, définition",
+          "result": "Le TLFi donne chènevis comme nom français de la graine du chanvre.",
+          "sourceHash": "ca7b37df7ffb6fbe74ddbe6c2f0d7818711e98e3650623a1fe190a53b3e39a06",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "catalogue-or-official-page",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Notice lexicale ; ne prouve pas à elle seule la précision botanique akène."
+        },
+        {
+          "sourceId": "q2-c-flora-china-cannabaceae-2003",
+          "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+          "locator": "Flora of China, Cannabaceae, genre Cannabis, description du fruit, p. 74–75",
+          "result": "La flore décrit le fruit de Cannabis comme un akène, ce qui soutient la précision botanique de l'explication.",
+          "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-c.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Réemploi de ma lecture du16novembre2026, hashsource identique ; pas origine du nom français chènevis."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "4d736011890684c28458f5501bd8653f3275fd4c103c22e35d63d2b2029a7ff7",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "merged_reference_roles"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-seeds-decorticage",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "2ef704b96346d9787c261b1e30454c7d5b8e1b73afe3dbf80f23b4a3b17de7be",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-dehulling-2026",
+          "url": "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2026.1825902/full",
+          "locator": "Introduction, ligne340",
+          "result": "Hulling défini comme retrait de la coque dure des graines.",
+          "sourceHash": "6b4dd53131f1110bafa2f94ab16b250f0b4dd49a821093abd34e7e8e69764179",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "limitation": "Seule définition matérielle retenue ; affirmations sanitaires/cannabinoïdes de l’introduction non adoptées."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-farine",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "e0ddc9660ac914a05ddf6ce3786552ab521850f798ee8a787c436e2fec25196e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "locator": "PDF introductionp.2 ligne72 ; §3.4.1 p.7, lignes639–656,670–674",
+          "result": "Tourteau déshuilé moulu ; globulines11Sédestine/7Svicilin et albumines2S ; édestine et agrégats liés par pontsdisulfure, profils différents en réduction.",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-acides-amines",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "53b22453b6ad7c041a26ac9b1e6f6e624597542863d8c0f7b9c3822b4f0a7325",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-openstax-proteins",
+          "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+          "locator": "Amino Acids, lignes50–55 ; fig3.25, lignes84–85 ; Quaternary Structure, lignes111–112",
+          "result": "Acides aminés comme monomères ; cystéines formant des pontsS–S ; interaction de plusieurs sous-unités définissant l’organisation quaternaire.",
+          "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-pericarpe",
+      "status": "approved",
+      "comment": "OpenStax établit l’origine ovarienne/péricarpe ; Flora situe le fruit du chanvre comme akène. Les deux rôles sont séparés sans changer le fait.",
+      "contentHash": "d5107161dd0c95264fa4565d7444675e521d6addb386ca095b03b51b05023367",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "locator": "OpenStax Biology 2e, §32.2, Development of the Fruit",
+          "result": "Le fruit provient de l'ovaire et sa paroi forme le péricarpe ; cette source établit l'origine ovarienne de la paroi du fruit.",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Botanique générale ; ne nomme pas le fruit du chanvre spécifiquement."
+        },
+        {
+          "sourceId": "q2-c-flora-china-cannabaceae-2003",
+          "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+          "locator": "Flora of China, Cannabaceae, genre Cannabis, description du fruit, p. 74–75",
+          "result": "La flore décrit le fruit du chanvre comme un akène ; elle situe le cas botanique auquel la définition générale du péricarpe est appliquée.",
+          "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c",
+          "sourceRegistry": "docs/quiz-2000/batches/pilot-c.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Réemploi de ma lecture du16novembre2026, hashsource identique ; pas origine du nom français chènevis."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "2ba2e0945d68c90847a003f584eec8c51a97f361d108adf5c00fd510aca5d8dc",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "merged_reference_roles"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-seeds-tourteau-fractions",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "07ad02c3646dbd505b3de5586012147b5fe4a8e030699ab3d6dc1e51a0cd7b3e",
+      "sourceChecks": [
+        {
+          "sourceId": "products-tool-seed-protein",
+          "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+          "locator": "Lecture F antérieure tableaucomposition ; nouvelle lecture Protein recovery, lignes234–236",
+          "result": "Tourteau composé de protéines,fibres etlipides résiduels ; minimum de solubilité près du pI.",
+          "sourceHash": "74aa8b5be9d73df8ca7939bb8a202f4ec3da32e0272b1aac5ec822520adb953b",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Erreur « edestin(albumin) » de la page connue et non utilisée ; classement vérifié séparément chez Patel/Eckhardt."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-edestine",
+      "status": "approved",
+      "comment": "Patel prouve les six sous-unités ; OpenStax définit l’organisation quaternaire sans prétendre dénombrer l’édestine. Attribution corrigée, fait inchangé.",
+      "contentHash": "daaf45ecc78b34c4c56940327aa4c915d12ef3624aa0c7898520237b46474c55",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-edestin-structure",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8289257/",
+          "locator": "Patel, Cudney et McPherson, 1994, Abstract",
+          "result": "Le résumé de l'étude cristallographique décrit l'édestine étudiée comme un assemblage hexamérique de six sous-unités identiques.",
+          "sourceHash": "14aee1be7e37f54708a2d6904d28589de5d0a33571e56f0a6dd8683cf405650c",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Résumé original lu, pas données cristallographiques intégrales ; aucune généralisation à chaque variant."
+        },
+        {
+          "sourceId": "q2-dlegacy02-openstax-proteins",
+          "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+          "locator": "OpenStax Biology 2e, §3.4, Quaternary Structure",
+          "result": "L'interaction de plusieurs sous-unités polypeptidiques définit la structure quaternaire ; ce passage explique le terme employé dans le corrigé, sans dénombrer les sous-unités d'édestine.",
+          "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "862ed4bb8a5f66095aed534b14ddcb252194a222ea33f4db2cc21638754d8b5c",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "merged_reference_roles"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-seeds-pigment-huile",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "0a3a2cd8ef4f4603ded2c26b8ada2b399af73db982752a37e8205106bb42dda8",
+      "sourceChecks": [
+        {
+          "sourceId": "products-tool-seed-oil",
+          "url": "https://www.mdpi.com/2076-3921/11/3/490",
+          "locator": "Introduction, lignes193–199 ; lectureF antérieure résultats/hexanal",
+          "result": "Chlorophylles parmi les pigments de l’huile ; hexanal classé parmi les aldéhydes volatils d’oxydation.",
+          "sourceHash": "21aa0b153adcce3afc11b203424018ee3823aee3b086c17334925d8e1a9a423e",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Aucun taux universel ni indicateur unique de qualité ; anciennes lectures complètent le nouveau passage pigments."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-fractions-proteines",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "4e446b5006ce9c5667808c79b1a6119d3635d9d6c342debc0b3a510bb73e5d94",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "locator": "PDF introductionp.2 ligne72 ; §3.4.1 p.7, lignes639–656,670–674",
+          "result": "Tourteau déshuilé moulu ; globulines11Sédestine/7Svicilin et albumines2S ; édestine et agrégats liés par pontsdisulfure, profils différents en réduction.",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-solubilite",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "f42f441aabbb4793ca970bcbc605ab37366530af297feb2fec65aed24294448b",
+      "sourceChecks": [
+        {
+          "sourceId": "products-tool-seed-protein",
+          "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+          "locator": "Lecture F antérieure tableaucomposition ; nouvelle lecture Protein recovery, lignes234–236",
+          "result": "Tourteau composé de protéines,fibres etlipides résiduels ; minimum de solubilité près du pI.",
+          "sourceHash": "74aa8b5be9d73df8ca7939bb8a202f4ec3da32e0272b1aac5ec822520adb953b",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Erreur « edestin(albumin) » de la page connue et non utilisée ; classement vérifié séparément chez Patel/Eckhardt."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-seeds-ponts",
+      "status": "approved",
+      "comment": "OpenStax explique cystéines et pontS–S ; Eckhardt corrobore les ponts et profils réducteurs des protéines de chanvre. Rôles précis et distincts.",
+      "contentHash": "bdc90397db27b512c878f7896ae929af48c9caf491ee009e2db0c1fc34a4418c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-openstax-proteins",
+          "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+          "locator": "OpenStax Biology 2e, §3.4, Tertiary Structure et figure 3.25",
+          "result": "Le texte et la figure expliquent la formation de ponts disulfure entre les groupes soufrés de deux cystéines.",
+          "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine."
+        },
+        {
+          "sourceId": "q2-dnext01-eckhardt-2024",
+          "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+          "locator": "Eckhardt et al., §3.4.1, PDF p. 7, profils électrophorétiques en conditions réductrices et non réductrices",
+          "result": "L'étude spécifique du chanvre décrit des assemblages d'édestine et des agrégats liés par des ponts disulfure, ainsi que des profils modifiés en conditions réductrices.",
+          "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+          "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "d3f75cce77f33363336022590d2e04cf833facd05f2531e0d0d06910280b07b9",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "merged_reference_roles"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-seeds-hexanal",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "802a734ec5bc1b4b4526f94841bd44a207c50822eb51a9c611803662431ba93b",
+      "sourceChecks": [
+        {
+          "sourceId": "products-tool-seed-oil",
+          "url": "https://www.mdpi.com/2076-3921/11/3/490",
+          "locator": "Introduction, lignes193–199 ; lectureF antérieure résultats/hexanal",
+          "result": "Chlorophylles parmi les pigments de l’huile ; hexanal classé parmi les aldéhydes volatils d’oxydation.",
+          "sourceHash": "21aa0b153adcce3afc11b203424018ee3823aee3b086c17334925d8e1a9a423e",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Aucun taux universel ni indicateur unique de qualité ; anciennes lectures complètent le nouveau passage pigments."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-chenevotte",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "39c152492ca0889433925871ea157ead33a9f2fb849ffdfa5fe1479fb5960dc8",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-culture-pci",
+          "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+          "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+          "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+          "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-beton",
+      "status": "approved",
+      "comment": "Le prompt ne donne plus la chaux ; les quatre couples végétal/minéral exigent de connaître le mélange chènevotte–chaux. Portée limitée au béton de chanvre décrit.",
+      "contentHash": "4e6535b2535729dfbc03de1ac651de3ef6b09345a8f49bdbaf0be58f1f1081dd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-carbonation-2020",
+          "url": "https://nationalhempassociation.org/wp-content/uploads/CarbonStorageHempcrete.pdf",
+          "locator": "Abstract et Introduction, composition du hempcrete",
+          "result": "Le matériau est composé de chènevotte et d'un liant à base de chaux.",
+          "sourceHash": "cffef95ebe30cf5c7d2d278bcbcdb1c9bd49a3ad5d7dcc4043c846139754df3e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Réaction et constituants, pas bilan carbone universel ni conseils de dimensionnement."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "3bebaeac8061387a37a15153105b9aa1d491f7eab712b8a904acab8dc7df06cd",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "answer_given_by_material_in_stem"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-profiles-litiere",
+      "status": "approved",
+      "comment": "Les quatre propriétés sont matérielles et plausibles ; le contexte d’humidité rend l’absorption directement pertinente sans fausse garantie désinfectante.",
+      "contentHash": "1a5ac44cdc4b4da470ef79aece58f75ade2ddeec1d141cab99e02998029c4d17",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-culture-pci",
+          "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+          "locator": "PDF p. 6, débouchés des résidus et capacité d'absorption",
+          "result": "La fiche associe chènevotte, emploi en litière et capacité d'absorption d'eau.",
+          "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "5022abdf4636a656c82279c49aa56812339f7e1b4a2292701d759992becdab0c",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "implausible_material_functions"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-profiles-tissage",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "07726d722651e0e25e765cd67f342f8e3aef6dce4a5a3bbafb2fc85f946f4c3a",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-culture-pci",
+          "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+          "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+          "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+          "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-papier",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "2f4b1b4d5041c0ad02c331650b8cc72e797c16295ca6f74c3e3cad78727be5f6",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Introductionp.2 lignes66–75 ; résultatsMorphology p.6 lignes251–260",
+          "result": "Rouissage retirant les substances pectiques de liaison ; SEM décrivant un réseau de fibres consolidées dans les feuilles expérimentales.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Lecture du texte et de sa description des micrographies, pas nouvelle mesure visuelle ; pas de rendement généralisé."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-renfort",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "371d9b7e169ac8d5547b4b774f5a58b56c982ee73f04cac1450661661cd4acca",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+          "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-isolation",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "1d9353c3fcac754aedb4c595c44dcc6e825823e2bc5d726b10e94dad0c741dde",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dnext01-collet-pretot-2014",
+          "url": "https://arxiv.org/pdf/1406.3310",
+          "locator": "Introduction, p.2, lignes51–56 ; lectureF antérieure §§2et4",
+          "result": "Fibres pour panneaux isolants, chènevotte comme granulat ; caractérisation thermique de matériaux d’enveloppe.",
+          "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+          "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Nouveau passage introductif lu ; ne confond pas panneau fibreux et béton de chanvre expérimental."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-peignage",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "419a105f7980a6b4ffbc36a447c3594d74e0c58d2fb789f37a085439aae81a18",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-culture-pci",
+          "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+          "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+          "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+          "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-pectines",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "66a2fc75c81f21b7ac6392487c57ce9e6259ddf6648f2ab899c4bdb6671abf3f",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-culture-pci",
+          "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+          "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+          "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+          "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+        },
+        {
+          "sourceId": "qh-nature-hurd-tissue-paper",
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "locator": "Introductionp.2 lignes66–75 ; résultatsMorphology p.6 lignes251–260",
+          "result": "Rouissage retirant les substances pectiques de liaison ; SEM décrivant un réseau de fibres consolidées dans les feuilles expérimentales.",
+          "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Lecture du texte et de sa description des micrographies, pas nouvelle mesure visuelle ; pas de rendement généralisé."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-remplissage",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "0d1d4992c605bc7205d78ffd287dbd72e72975164246aab737f471f311cc4369",
+      "sourceChecks": [
+        {
+          "sourceId": "products-tool-hempcrete",
+          "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+          "locator": "Lecture F antérieure Ceremap.1 lignes9–12",
+          "result": "Matériau de remplissage d’une structure porteuse.",
+          "sourceHash": "6927c052eebb3c988db1921685c2ba144601fc2cee1099c69d80972c16ad032a",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-prior-reading",
+          "limitation": "Hashsource inchangé ; pas prescription réglementaire ni calcul structurel actuel."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-carbonatation",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "174b981dd1bff316054be3f1f56e2e0a7ca4da2ab1163ef08da1d43d57890bee",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-dlegacy02-carbonation-2020",
+          "url": "https://nationalhempassociation.org/wp-content/uploads/CarbonStorageHempcrete.pdf",
+          "locator": "PDF couverture, lignes8–12 ; introduction52 ; §2.1.4, lignes312–316",
+          "result": "Disponible en ligne29avril2020 ; chènevotte et liant à base de chaux ; Ca(OH)2+CO2→CaCO3+H2O.",
+          "sourceHash": "cffef95ebe30cf5c7d2d278bcbcdb1c9bd49a3ad5d7dcc4043c846139754df3e",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "limitation": "Réaction et constituants, pas bilan carbone universel ni conseils de dimensionnement."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-hygroscopie",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "0702a6947bab6cfdf1a72af1205d9c10f523290c8d2d4818bfbae07d1885a998",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+          "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-fines",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "985fd97c07c8a2d6f8510cfa34bb06a8e3ef9ece15800eadffe3e2f3ac7f70b5",
+      "sourceChecks": [
+        {
+          "sourceId": "products-tool-materials",
+          "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+          "locator": "PDF p.14, lignes323–330",
+          "result": "Fines désigne la poussière issue du défibrage des tiges.",
+          "sourceHash": "974732b6a9c3281d5111f3c1116e32e68540b5a90c8bca63bdd5defe8a528e12",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Fraction de tige, pas résine/kief ni seuil granulométrique universel."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-matrice",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "eed5c98139155e7cdc4e1b7a5d0915bc89ab09f8a39d39518ef5790a470c0d73",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-composite-review",
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+          "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+          "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris."
+        },
+        {
+          "sourceId": "q2-dlegacy02-acma-composites",
+          "url": "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf",
+          "locator": "Guide, p.15 lignes364–366 ; annexeD p.71 lignes2166–2194 ; glossaire MATRIX p.59",
+          "result": "La résine forme une matrice entourant les fibres et transfère les efforts vers le renfort.",
+          "sourceHash": "f0167e851045401f985c3277c14ec43340d1b42cbc18b9cb8f3d52f0f1273141",
+          "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "new-source-targeted-reading",
+          "limitation": "Concepts généraux de composite ; guide2016 non utilisé comme norme actuelle ni prescription de construction."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-profiles-rouissage-organismes",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "c1ebe7a1b10ce92fe6bfd12f95c20c5a6f131b70285395c7584283db0360db41",
+      "sourceChecks": [
+        {
+          "sourceId": "products-primary-retting-2015",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25575888/",
+          "locator": "PubMed Abstract, lignes266–268",
+          "result": "Bactéries et champignons quantifiés parPCR, proportions variables entre échantillons.",
+          "sourceHash": "d56caf73a7b0895bba4829a7e2b506b65a0c22a2422b31a3e8caf414217a599c",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "abstract",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": false,
+          "readingForThisReview": "newly-read-existing-reference",
+          "limitation": "Résumé lu ; présence/abondance ne prouve pas la fonction de chaque espèce."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-hempfilm",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "eca73398bd3bb81ea1a3bd8272ccdc06b0f29422a6b9400a0fd49b3a4591809e",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-hemp-victory",
+          "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+          "locator": "Notice NAL, Creator, lignes35–37",
+          "result": "Creator : United States.Department of Agriculture.",
+          "sourceHash": "ccd0d1fce11e0fbf6baa22e129eea90bb946b0b0c97f14ea76365d5825a5c1a1",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "catalogue-or-official-page",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Attribution institutionnelle du catalogue, pas lecture de tout le film ni auteur individuel supposé."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    },
+    {
+      "id": "hemp-hs-hist-canada-date",
+      "status": "approved",
+      "comment": "Les quatre mécanismes institutionnels sont crédibles. L’examen législatif et le rapport parlementaire sont bien ceux de la disposition historique, distincts d’une clause d’expiration ou d’un audit.",
+      "contentHash": "fec97100ba33719f6ecd5dbca559128d957b997c8961ec721e9b897ef0026b0b",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-canada",
+          "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+          "locator": "Introduction, article 151.1 et rapport aux deux chambres",
+          "result": "La loi impose un examen et un rapport exposant conclusions ou recommandations au Parlement.",
+          "sourceHash": "57f9b168b84205e714eae6cef5343b9909829da736199fa7efb86d5db736c4bc",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "unchanged-passage-prior-reading-revalidation",
+          "limitation": "Disposition historique de2018, pas description d’un droit actuel ni évaluation de résultats sanitaires."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      },
+      "revalidation": {
+        "previousReviewAt": "2026-11-16T20:12:13Z",
+        "previousContentHash": "bc4b0f326676c0a865d44dd3150ee4bee2a34d96babd5d05db91d30bdc9db615",
+        "previousStatus": "changes_requested",
+        "resolvedIssueCodes": [
+          "implausible_institutional_mechanisms"
+        ],
+        "fullModifiedObjectRead": true
+      }
+    },
+    {
+      "id": "hemp-hs-hist-single",
+      "status": "approved",
+      "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+      "contentHash": "1541147b942e44b2a8708fb99d0f188ca8d7262b37fc433ac20c49013cecd9ac",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-hist-un-treaties",
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+          "locator": "Compilation ONU, article44,p.47–48 PDF,lignes1099–1120 ; titres des instruments déjà lus",
+          "result": "La Convention unique de1961 termine/remplace certains traités antérieurs entre parties lors de son entrée en vigueur.",
+          "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "status": "verified",
+          "accessObserved": "full-text-targeted",
+          "consultedOn": "2026-11-16",
+          "earlierReadingReused": true,
+          "readingForThisReview": "new-passages-and-prior-reading",
+          "limitation": "Contexte historique et conditions conventionnelles ; pas règle individuelle de droit actuel."
+        }
+      ],
+      "blockingIssues": [],
+      "checks": {
+        "questionAndFourOptions": "read",
+        "explanationAndEditorial": "read",
+        "factualSupport": "supported",
+        "fourOptions": "reviewed",
+        "difficulty": "reviewed",
+        "pedagogicalInterest": "reviewed",
+        "factIndexAndNeighbourBatches": "checked",
+        "attributionAndVersion": "reviewed"
+      }
+    }
+  ],
+  "summary": {
+    "total": 30,
+    "approved": 30,
+    "changes_requested": 0,
+    "rejected": 0,
+    "metadataOnlyRequests": 0,
+    "substantiveRequests": 0,
+    "sourceObjectsChecked": 21,
+    "newSourceObjectsInBatch": 6,
+    "newSourcesToThisReviewer": 7,
+    "sourceUrlsOpenedForThisReview": 19,
+    "priorOnlySourcesReused": 2,
+    "previouslyReadSourcesExtended": 12,
+    "unavailableSources": 0,
+    "establishedFactualContradictions": 0,
+    "submittedLevels": {
+      "1": 9,
+      "2": 19,
+      "3": 2,
+      "4": 0
+    },
+    "approvedLevels": {
+      "1": 9,
+      "2": 19,
+      "3": 2,
+      "4": 0
+    },
+    "forms": {
+      "identification": 30
+    },
+    "note": "Les3reprises de choix/prompt et4séparations de rôles des références sont résolues. Les23approbations antérieures sont intactes. Aucun fait ni source nouvelle n’a été introduit pendant la correction."
+  },
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-11-16T20:12:13Z",
+      "reviewScope": "Relecture indépendante complète des30questions corrigées : énoncés, quatre options, réponse unique, explications, niveaux, motifs et déduplication ;21sources nécessaires contrôlées. Aucun lot auteur, fichier actif ou registre historique modifié.",
+      "summary": {
+        "total": 30,
+        "approved": 23,
+        "changes_requested": 7,
+        "rejected": 0,
+        "metadataOnlyRequests": 4,
+        "substantiveRequests": 3,
+        "sourceObjectsChecked": 21,
+        "newSourceObjectsInBatch": 6,
+        "newSourcesToThisReviewer": 7,
+        "sourceUrlsOpenedForThisReview": 19,
+        "priorOnlySourcesReused": 2,
+        "previouslyReadSourcesExtended": 12,
+        "unavailableSources": 0,
+        "establishedFactualContradictions": 0,
+        "submittedLevels": {
+          "1": 9,
+          "2": 19,
+          "3": 2,
+          "4": 0
+        },
+        "approvedLevels": {
+          "1": 6,
+          "2": 16,
+          "3": 1,
+          "4": 0
+        },
+        "forms": {
+          "identification": 30
+        },
+        "note": "Faits centraux soutenus. Trois exercices doivent perdre leurs indices/distracteurs faibles ; quatre objets demandent seulement une attribution sourceEvidence précise. Les connaissances accessibles sur les matières et procédés restent autorisées lorsqu’elles distinguent un concept réel ; aucun quota de niveau imposé."
+      },
+      "duplicateReview": {
+        "index": "docs/quiz-2000/fact-index.jsonl",
+        "comparedBatches": [
+          "d-01.json",
+          "d-legacy-01.json",
+          "pilot-c.json"
+        ],
+        "scope": "Lecture des propriétés voisines et distinction des statuts approuvés, candidats et anciens. Aucun ID réutilisé considéré à lui seul comme fait nouveau.",
+        "pairs": [
+          {
+            "ids": [
+              "hemp-seeds-edestine",
+              "hemp-seeds-fractions-proteines",
+              "hemp-q2-d01-gouttes-et-depot"
+            ],
+            "decision": "distinct",
+            "reason": "Assemblage cristallographique à six sous-unités, familles protéiques de réserve et sédimentation de protéines dispersées sont trois propriétés différentes. L’ancienne identification inversée « édéstine=protéine » n’est plus testée. La famille est vérifiée chez Eckhardt/Patel, sans reprendre la coquille edestin(albumin) de Cabral.",
+            "commonSubjectKey": "hemp-seed-storage-proteins"
+          },
+          {
+            "ids": [
+              "hemp-seeds-chenevis",
+              "hemp-seeds-pericarpe",
+              "hemp-q2-c-chenevis-une-graine",
+              "hemp-seeds-reserves"
+            ],
+            "decision": "distinct-same-recurring-fruit",
+            "reason": "Nom commun, paroi d’origine ovarienne, nombre de graines et réserves sont distincts ; plusieurs prompts donnent néanmoins le mot chènevis.",
+            "metadataProposal": {
+              "commonSubjectKey": "chenevis",
+              "existingApprovedIdsToHarmonize": [
+                "hemp-q2-c-chenevis-une-graine"
+              ],
+              "existingSubjectKey": "hemp-achene-seed-number",
+              "scope": "Proposition seulement, aucune édition du pilote.",
+              "status": "reported-applied-by-coordinator-with-trace"
+            }
+          },
+          {
+            "ids": [
+              "hemp-seeds-acides-amines",
+              "hemp-q2-cn01-ribosome-direct-protein-assembly",
+              "hemp-seeds-ponts"
+            ],
+            "decision": "distinct-with-answer-leakage-neighbour",
+            "reason": "Unités monomères, structure qui assemble ces unités et pontS–S entre cystéines sont distincts. C-new-01/ribosome est désormais approuvé dans l’index ; son prompt fournit les unités demandées ici, fuite de réponse conceptuelle consignée sans confondre les propriétés."
+          },
+          {
+            "ids": [
+              "hemp-seeds-tourteau-fractions",
+              "hemp-seeds-tourteau",
+              "hemp-seeds-farine",
+              "hemp-q2-d01-isolat-purete-rendement"
+            ],
+            "decision": "distinct",
+            "reason": "Composition du résidu, nom du résidu, réduction granulométrique et distinction rendement/pureté d’isolat ne sont pas des variantes d’une même propriété. Tourteau/fractions partagent déjà une clé."
+          },
+          {
+            "ids": [
+              "hemp-seeds-solubilite",
+              "hemp-q2-d01-isolats-milieu-acide"
+            ],
+            "decision": "distinct-general-principle-versus-measured-comparison",
+            "reason": "Minimum généralement proche du point isoélectrique d’un mélange versus comparaison expérimentale3,2/7. Aucun seuil arbitraire nouveau ; le principe n’est pas présenté comme invariant de tout produit."
+          },
+          {
+            "ids": [
+              "hemp-seeds-pigment-huile",
+              "hemp-q2-d01-chlorophylles-lumiere",
+              "hemp-seeds-hexanal",
+              "hemp-prevention-hydroperoxydes",
+              "hemp-prevention-bris-graines"
+            ],
+            "decision": "distinct",
+            "reason": "Pigments verts, photosensibilisation, famille aldéhyde d’un volatil, produits primaires et décomposition vers produits secondaires sont des propriétés différentes. Les deux derniers et hexanal partagent le contexte d’oxydation."
+          },
+          {
+            "ids": [
+              "hemp-profiles-chenevotte",
+              "hemp-profiles-teillage",
+              "hemp-profiles-fines"
+            ],
+            "decision": "distinct",
+            "reason": "Origine anatomique de la fraction ligneuse, opération séparant bois/fibres et fraction poussiéreuse du défibrage sont distinctes. Chènevotte/fines partagent la clé de fractionnement."
+          },
+          {
+            "ids": [
+              "hemp-profiles-tissage",
+              "hemp-profiles-papier",
+              "hemp-profiles-filature"
+            ],
+            "decision": "distinct",
+            "reason": "Entrecroisement de fils, réseau de fibres en feuille et fabrication d’un fil correspondent à trois organisations ou étapes ; pas deux formulations d’une même réponse."
+          },
+          {
+            "ids": [
+              "hemp-profiles-renfort",
+              "hemp-profiles-matrice",
+              "hemp-q2-d01-composite-temoin-matrice"
+            ],
+            "decision": "distinct",
+            "reason": "Contribution mécanique des fibres, phase continue et attribution d’une émission via témoin sont distinctes. Renfort/matrice partagent la clé du composite générique ; l’expérienceBadji conserve sa portée spécifique."
+          },
+          {
+            "ids": [
+              "hemp-profiles-beton",
+              "hemp-profiles-remplissage",
+              "hemp-profiles-carbonatation",
+              "hemp-profiles-hygroscopie",
+              "hemp-en-3-01",
+              "hemp-q2-d01-beton-densite-chaleur",
+              "hemp-q2-d01-beton-humidite-isolation"
+            ],
+            "decision": "distinct-properties-current-beton-item-weak",
+            "reason": "Constituants, fonction de remplissage, réaction de liant et sorption de vapeur ne reproduisent pas les effets expérimentaux densité/humidité. Le prompt de l’ancienne question eau fournit chènevotte/liant ; clé chanvre-chaux commune avec composition/remplissage déjà appliquée. Le choix de composition reste toutefois à corriger car il donne sa propre chaux."
+          },
+          {
+            "ids": [
+              "hemp-profiles-peignage",
+              "hemp-hc-040"
+            ],
+            "decision": "distinct-contexts-and-properties",
+            "reason": "Parallélisation du ruban en fin de préparation industrielle, décrite au paragraphe cardage, versus outil retirant les derniers fragments de bois dans une chaîne manuelle bretonne. Même opération générale, résultat et contexte distincts ; ne pas remplacer alignement par simple retrait des résidus."
+          },
+          {
+            "ids": [
+              "hemp-profiles-pectines",
+              "hemp-profiles-rouissage-organismes",
+              "hemp-en-3-18",
+              "hemp-q2-d01-adn-rouissage"
+            ],
+            "decision": "distinct",
+            "reason": "Substances de liaison, groupes microbiens mesurés, localisation anatomique et hydrolyse d’ADN sont des propriétés différentes. D03/lamelle moyenne a maintenant une revueF favorable ; l’indice pectines entre questions est consigné dans D03."
+          },
+          {
+            "ids": [
+              "hemp-hs-hist-single",
+              "hemp-hs-hist-un1961-into-force",
+              "hemp-hs-hist-single-1972"
+            ],
+            "decision": "distinct",
+            "reason": "Identité/effet de rassemblement du traité, année d’entrée en vigueur et protocole d’amendement sont distincts ; clé convention1961 déjà partagée."
+          }
+        ],
+        "exactExternalDuplicateEstablished": false,
+        "neighbourReadFromIndex": "hemp-q2-cn01-ribosome-direct-protein-assembly : propriété, prompt, réponse et statut consultés dans l’index ; aucune lecture complète d’un lot C-new revendiquée. Statut actualisé : le candidatC-new-01 sur le ribosome est désormais approuvé dans l’index."
+      },
+      "items": [
+        {
+          "id": "hemp-seeds-chenevis",
+          "status": "changes_requested",
+          "comment": "Fait et quatre choix soutenus ; séparer les rôles précis des références dans les métadonnées.",
+          "contentHash": "4d736011890684c28458f5501bd8653f3275fd4c103c22e35d63d2b2029a7ff7",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-chenevis-lexicon",
+              "url": "https://www.cnrtl.fr/definition/ch%C3%A8nevis",
+              "locator": "Entrée CHÈNEVIS, ligne90",
+              "result": "Le TLFi définit chènevis comme graine du chanvre.",
+              "sourceHash": "ca7b37df7ffb6fbe74ddbe6c2f0d7818711e98e3650623a1fe190a53b3e39a06",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "catalogue-or-official-page",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Notice lexicale ; ne prouve pas à elle seule la précision botanique akène."
+            },
+            {
+              "sourceId": "q2-c-flora-china-cannabaceae-2003",
+              "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+              "locator": "Lecture F piloteC : PDF p.74–75, ovaire et fruit Cannabis",
+              "result": "Fruit décrit comme un akène, ovule solitaire.",
+              "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c",
+              "sourceRegistry": "docs/quiz-2000/batches/pilot-c.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "unchanged-prior-reading",
+              "limitation": "Réemploi de ma lecture du16novembre2026, hashsource identique ; pas origine du nom français chènevis."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "merged_reference_roles",
+              "field": "editorial.sourceEvidence",
+              "kind": "metadata",
+              "reason": "Deux objets sourceEvidence recopient un locator/support commun réunissant ce que prouvent deux références différentes. Chaque source semble ainsi soutenir tout le bloc, alors que ses rôles sont distincts.",
+              "requestedChange": "Séparer locator et support propres à chaque source : TLFi=nom français / Flora=akène ; OpenStax=origine du péricarpe / Flora=fruit du chanvre ; Patel=six sous-unités / OpenStax=structure quaternaire ; OpenStax=cystéines etSS / Eckhardt=ponts et profils réducteurs du chanvre. Aucun changement de fait ni nouvelle source nécessaire."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "source-evidence-roles-need-separation"
+          }
+        },
+        {
+          "id": "hemp-seeds-decorticage",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "2ef704b96346d9787c261b1e30454c7d5b8e1b73afe3dbf80f23b4a3b17de7be",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-dehulling-2026",
+              "url": "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2026.1825902/full",
+              "locator": "Introduction, ligne340",
+              "result": "Hulling défini comme retrait de la coque dure des graines.",
+              "sourceHash": "6b4dd53131f1110bafa2f94ab16b250f0b4dd49a821093abd34e7e8e69764179",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Seule définition matérielle retenue ; affirmations sanitaires/cannabinoïdes de l’introduction non adoptées."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-farine",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "e0ddc9660ac914a05ddf6ce3786552ab521850f798ee8a787c436e2fec25196e",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "locator": "PDF introductionp.2 ligne72 ; §3.4.1 p.7, lignes639–656,670–674",
+              "result": "Tourteau déshuilé moulu ; globulines11Sédestine/7Svicilin et albumines2S ; édestine et agrégats liés par pontsdisulfure, profils différents en réduction.",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-acides-amines",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "53b22453b6ad7c041a26ac9b1e6f6e624597542863d8c0f7b9c3822b4f0a7325",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-openstax-proteins",
+              "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+              "locator": "Amino Acids, lignes50–55 ; fig3.25, lignes84–85 ; Quaternary Structure, lignes111–112",
+              "result": "Acides aminés comme monomères ; cystéines formant des pontsS–S ; interaction de plusieurs sous-unités définissant l’organisation quaternaire.",
+              "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-pericarpe",
+          "status": "changes_requested",
+          "comment": "Fait et quatre choix soutenus ; séparer les rôles précis des références dans les métadonnées.",
+          "contentHash": "2ba2e0945d68c90847a003f584eec8c51a97f361d108adf5c00fd510aca5d8dc",
+          "sourceChecks": [
+            {
+              "sourceId": "bf-reproduction-2018",
+              "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+              "locator": "Development of the Fruit, lignes132–139",
+              "result": "Fruit issu de l’ovaire ; couches de sa paroi constituant le péricarpe.",
+              "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Botanique générale ; ne nomme pas le fruit du chanvre spécifiquement."
+            },
+            {
+              "sourceId": "q2-c-flora-china-cannabaceae-2003",
+              "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+              "locator": "Lecture F piloteC : PDF p.74–75, ovaire et fruit Cannabis",
+              "result": "Fruit décrit comme un akène, ovule solitaire.",
+              "sourceHash": "9c05c25632e6a93fd68f14a940bf291086d51092b10090f06f67362ea90f962c",
+              "sourceRegistry": "docs/quiz-2000/batches/pilot-c.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "unchanged-prior-reading",
+              "limitation": "Réemploi de ma lecture du16novembre2026, hashsource identique ; pas origine du nom français chènevis."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "merged_reference_roles",
+              "field": "editorial.sourceEvidence",
+              "kind": "metadata",
+              "reason": "Deux objets sourceEvidence recopient un locator/support commun réunissant ce que prouvent deux références différentes. Chaque source semble ainsi soutenir tout le bloc, alors que ses rôles sont distincts.",
+              "requestedChange": "Séparer locator et support propres à chaque source : TLFi=nom français / Flora=akène ; OpenStax=origine du péricarpe / Flora=fruit du chanvre ; Patel=six sous-unités / OpenStax=structure quaternaire ; OpenStax=cystéines etSS / Eckhardt=ponts et profils réducteurs du chanvre. Aucun changement de fait ni nouvelle source nécessaire."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "source-evidence-roles-need-separation"
+          }
+        },
+        {
+          "id": "hemp-seeds-tourteau-fractions",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "07ad02c3646dbd505b3de5586012147b5fe4a8e030699ab3d6dc1e51a0cd7b3e",
+          "sourceChecks": [
+            {
+              "sourceId": "products-tool-seed-protein",
+              "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+              "locator": "Lecture F antérieure tableaucomposition ; nouvelle lecture Protein recovery, lignes234–236",
+              "result": "Tourteau composé de protéines,fibres etlipides résiduels ; minimum de solubilité près du pI.",
+              "sourceHash": "74aa8b5be9d73df8ca7939bb8a202f4ec3da32e0272b1aac5ec822520adb953b",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Erreur « edestin(albumin) » de la page connue et non utilisée ; classement vérifié séparément chez Patel/Eckhardt."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-edestine",
+          "status": "changes_requested",
+          "comment": "Fait et quatre choix soutenus ; séparer les rôles précis des références dans les métadonnées.",
+          "contentHash": "862ed4bb8a5f66095aed534b14ddcb252194a222ea33f4db2cc21638754d8b5c",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-edestin-structure",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/8289257/",
+              "locator": "PubMed Abstract, ligne244",
+              "result": "Patel,Cudney etMcPherson décrivent une protéine d’édestine à six sous-unités identiques et un assemblage hexamérique.",
+              "sourceHash": "14aee1be7e37f54708a2d6904d28589de5d0a33571e56f0a6dd8683cf405650c",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Résumé original lu, pas données cristallographiques intégrales ; aucune généralisation à chaque variant."
+            },
+            {
+              "sourceId": "q2-dlegacy02-openstax-proteins",
+              "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+              "locator": "Amino Acids, lignes50–55 ; fig3.25, lignes84–85 ; Quaternary Structure, lignes111–112",
+              "result": "Acides aminés comme monomères ; cystéines formant des pontsS–S ; interaction de plusieurs sous-unités définissant l’organisation quaternaire.",
+              "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "merged_reference_roles",
+              "field": "editorial.sourceEvidence",
+              "kind": "metadata",
+              "reason": "Deux objets sourceEvidence recopient un locator/support commun réunissant ce que prouvent deux références différentes. Chaque source semble ainsi soutenir tout le bloc, alors que ses rôles sont distincts.",
+              "requestedChange": "Séparer locator et support propres à chaque source : TLFi=nom français / Flora=akène ; OpenStax=origine du péricarpe / Flora=fruit du chanvre ; Patel=six sous-unités / OpenStax=structure quaternaire ; OpenStax=cystéines etSS / Eckhardt=ponts et profils réducteurs du chanvre. Aucun changement de fait ni nouvelle source nécessaire."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "source-evidence-roles-need-separation"
+          }
+        },
+        {
+          "id": "hemp-seeds-pigment-huile",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "0a3a2cd8ef4f4603ded2c26b8ada2b399af73db982752a37e8205106bb42dda8",
+          "sourceChecks": [
+            {
+              "sourceId": "products-tool-seed-oil",
+              "url": "https://www.mdpi.com/2076-3921/11/3/490",
+              "locator": "Introduction, lignes193–199 ; lectureF antérieure résultats/hexanal",
+              "result": "Chlorophylles parmi les pigments de l’huile ; hexanal classé parmi les aldéhydes volatils d’oxydation.",
+              "sourceHash": "21aa0b153adcce3afc11b203424018ee3823aee3b086c17334925d8e1a9a423e",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Aucun taux universel ni indicateur unique de qualité ; anciennes lectures complètent le nouveau passage pigments."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-fractions-proteines",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "4e446b5006ce9c5667808c79b1a6119d3635d9d6c342debc0b3a510bb73e5d94",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "locator": "PDF introductionp.2 ligne72 ; §3.4.1 p.7, lignes639–656,670–674",
+              "result": "Tourteau déshuilé moulu ; globulines11Sédestine/7Svicilin et albumines2S ; édestine et agrégats liés par pontsdisulfure, profils différents en réduction.",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-solubilite",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "f42f441aabbb4793ca970bcbc605ab37366530af297feb2fec65aed24294448b",
+          "sourceChecks": [
+            {
+              "sourceId": "products-tool-seed-protein",
+              "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+              "locator": "Lecture F antérieure tableaucomposition ; nouvelle lecture Protein recovery, lignes234–236",
+              "result": "Tourteau composé de protéines,fibres etlipides résiduels ; minimum de solubilité près du pI.",
+              "sourceHash": "74aa8b5be9d73df8ca7939bb8a202f4ec3da32e0272b1aac5ec822520adb953b",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Erreur « edestin(albumin) » de la page connue et non utilisée ; classement vérifié séparément chez Patel/Eckhardt."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-seeds-ponts",
+          "status": "changes_requested",
+          "comment": "Fait et quatre choix soutenus ; séparer les rôles précis des références dans les métadonnées.",
+          "contentHash": "d3f75cce77f33363336022590d2e04cf833facd05f2531e0d0d06910280b07b9",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-openstax-proteins",
+              "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+              "locator": "Amino Acids, lignes50–55 ; fig3.25, lignes84–85 ; Quaternary Structure, lignes111–112",
+              "result": "Acides aminés comme monomères ; cystéines formant des pontsS–S ; interaction de plusieurs sous-unités définissant l’organisation quaternaire.",
+              "sourceHash": "50fe7ed3eefa1d1e5b5ecbe00c7b735f662a1efcb6fd023ee95d73b49672ef73",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Biochimie générale ; ne décrit pas directement le nombre de sous-unités d’édestine."
+            },
+            {
+              "sourceId": "q2-dnext01-eckhardt-2024",
+              "url": "https://ppic.cfans.umn.edu/sites/ppic.cfans.umn.edu/files/2024-04/lauras_hemp_protein_impact_of_extraction_method_and_cultivar_on_structure_function_and_nutritional_quality.pdf",
+              "locator": "PDF introductionp.2 ligne72 ; §3.4.1 p.7, lignes639–656,670–674",
+              "result": "Tourteau déshuilé moulu ; globulines11Sédestine/7Svicilin et albumines2S ; édestine et agrégats liés par pontsdisulfure, profils différents en réduction.",
+              "sourceHash": "33fac60f6f1d8ec05ee9f6a2d2aaa78947886a86dcc8d59fe35b2ec9b4961e6c",
+              "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Passages nouveaux réellement ouverts ; l’erreur de famille édéstine/albumin de Cabral n’est pas reprise."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "merged_reference_roles",
+              "field": "editorial.sourceEvidence",
+              "kind": "metadata",
+              "reason": "Deux objets sourceEvidence recopient un locator/support commun réunissant ce que prouvent deux références différentes. Chaque source semble ainsi soutenir tout le bloc, alors que ses rôles sont distincts.",
+              "requestedChange": "Séparer locator et support propres à chaque source : TLFi=nom français / Flora=akène ; OpenStax=origine du péricarpe / Flora=fruit du chanvre ; Patel=six sous-unités / OpenStax=structure quaternaire ; OpenStax=cystéines etSS / Eckhardt=ponts et profils réducteurs du chanvre. Aucun changement de fait ni nouvelle source nécessaire."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "source-evidence-roles-need-separation"
+          }
+        },
+        {
+          "id": "hemp-seeds-hexanal",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "802a734ec5bc1b4b4526f94841bd44a207c50822eb51a9c611803662431ba93b",
+          "sourceChecks": [
+            {
+              "sourceId": "products-tool-seed-oil",
+              "url": "https://www.mdpi.com/2076-3921/11/3/490",
+              "locator": "Introduction, lignes193–199 ; lectureF antérieure résultats/hexanal",
+              "result": "Chlorophylles parmi les pigments de l’huile ; hexanal classé parmi les aldéhydes volatils d’oxydation.",
+              "sourceHash": "21aa0b153adcce3afc11b203424018ee3823aee3b086c17334925d8e1a9a423e",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Aucun taux universel ni indicateur unique de qualité ; anciennes lectures complètent le nouveau passage pigments."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-chenevotte",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "39c152492ca0889433925871ea157ead33a9f2fb849ffdfa5fe1479fb5960dc8",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-culture-pci",
+              "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+              "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+              "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+              "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-beton",
+          "status": "changes_requested",
+          "comment": "Fait soutenu ; correction des choix ou de l’indice fourni par le prompt nécessaire.",
+          "contentHash": "3bebaeac8061387a37a15153105b9aa1d491f7eab712b8a904acab8dc7df06cd",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-carbonation-2020",
+              "url": "https://nationalhempassociation.org/wp-content/uploads/CarbonStorageHempcrete.pdf",
+              "locator": "PDF couverture, lignes8–12 ; introduction52 ; §2.1.4, lignes312–316",
+              "result": "Disponible en ligne29avril2020 ; chènevotte et liant à base de chaux ; Ca(OH)2+CO2→CaCO3+H2O.",
+              "sourceHash": "cffef95ebe30cf5c7d2d278bcbcdb1c9bd49a3ad5d7dcc4043c846139754df3e",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Réaction et constituants, pas bilan carbone universel ni conseils de dimensionnement."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "answer_given_by_material_in_stem",
+              "field": "prompt/options",
+              "kind": "substantive",
+              "reason": "Le prompt donne « à base de chaux » et un seul choix contient de la chaux. On peut donc choisir sans connaître la fraction végétale utilisée.",
+              "requestedChange": "Réécrire le prompt ou les quatre couples pour que le liant explicitement fourni ne désigne pas à lui seul la réponse ; garder un véritable choix de matière végétale ou de composition."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-litiere",
+          "status": "changes_requested",
+          "comment": "Fait soutenu ; correction des choix ou de l’indice fourni par le prompt nécessaire.",
+          "contentHash": "5022abdf4636a656c82279c49aa56812339f7e1b4a2292701d759992becdab0c",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-culture-pci",
+              "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+              "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+              "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+              "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_material_functions",
+              "field": "options",
+              "kind": "substantive",
+              "reason": "Former un film étanche, neutraliser les sels dissous et lubrifier ne sont pas trois propriétés crédibles de la chènevotte brute comme litière.",
+              "requestedChange": "Comparer quatre propriétés matérielles plausibles, ou quatre fonctions pertinentes, avec une seule liée à l’absorption d’humidité décrite dans la source."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-tissage",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "07726d722651e0e25e765cd67f342f8e3aef6dce4a5a3bbafb2fc85f946f4c3a",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-culture-pci",
+              "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+              "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+              "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+              "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-papier",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "2f4b1b4d5041c0ad02c331650b8cc72e797c16295ca6f74c3e3cad78727be5f6",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-nature-hurd-tissue-paper",
+              "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+              "locator": "Introductionp.2 lignes66–75 ; résultatsMorphology p.6 lignes251–260",
+              "result": "Rouissage retirant les substances pectiques de liaison ; SEM décrivant un réseau de fibres consolidées dans les feuilles expérimentales.",
+              "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Lecture du texte et de sa description des micrographies, pas nouvelle mesure visuelle ; pas de rendement généralisé."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-renfort",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "371d9b7e169ac8d5547b4b774f5a58b56c982ee73f04cac1450661661cd4acca",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-nature-composite-review",
+              "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+              "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+              "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+              "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-isolation",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "1d9353c3fcac754aedb4c595c44dcc6e825823e2bc5d726b10e94dad0c741dde",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dnext01-collet-pretot-2014",
+              "url": "https://arxiv.org/pdf/1406.3310",
+              "locator": "Introduction, p.2, lignes51–56 ; lectureF antérieure §§2et4",
+              "result": "Fibres pour panneaux isolants, chènevotte comme granulat ; caractérisation thermique de matériaux d’enveloppe.",
+              "sourceHash": "1fa1e4158d78c7ada786849cfc9735cc17b50b44a99c7aa46e7920bbf5ff9396",
+              "sourceRegistry": "docs/quiz-2000/batches/d-01.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Nouveau passage introductif lu ; ne confond pas panneau fibreux et béton de chanvre expérimental."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-peignage",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "419a105f7980a6b4ffbc36a447c3594d74e0c58d2fb789f37a085439aae81a18",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-culture-pci",
+              "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+              "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+              "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+              "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-pectines",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "66a2fc75c81f21b7ac6392487c57ce9e6259ddf6648f2ab899c4bdb6671abf3f",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-culture-pci",
+              "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+              "locator": "PDF p.6 lignes227,237–242 ; p.7 lignes253–261 ; p.8 lignes325–328",
+              "result": "Pectines cimentant les fibres ; cœur ligneux chènevotte ; litière et absorption ; peignage parallélisant ; entrecroisement chaîne/trame au tissage.",
+              "sourceHash": "f537f5d26ea8370c1ad47fb68dda1358e1e5586ee240d3de942b19ff707fb176",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Inventaire patrimonial ciblé ; aucun chiffre d’absorption universel ni conseil pratique de culture repris."
+            },
+            {
+              "sourceId": "qh-nature-hurd-tissue-paper",
+              "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+              "locator": "Introductionp.2 lignes66–75 ; résultatsMorphology p.6 lignes251–260",
+              "result": "Rouissage retirant les substances pectiques de liaison ; SEM décrivant un réseau de fibres consolidées dans les feuilles expérimentales.",
+              "sourceHash": "556f55a3740c7271b12c621afabc36934c268372584a6ba6d76a0b58d5b9c17d",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Lecture du texte et de sa description des micrographies, pas nouvelle mesure visuelle ; pas de rendement généralisé."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-remplissage",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "0d1d4992c605bc7205d78ffd287dbd72e72975164246aab737f471f311cc4369",
+          "sourceChecks": [
+            {
+              "sourceId": "products-tool-hempcrete",
+              "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+              "locator": "Lecture F antérieure Ceremap.1 lignes9–12",
+              "result": "Matériau de remplissage d’une structure porteuse.",
+              "sourceHash": "6927c052eebb3c988db1921685c2ba144601fc2cee1099c69d80972c16ad032a",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "unchanged-prior-reading",
+              "limitation": "Hashsource inchangé ; pas prescription réglementaire ni calcul structurel actuel."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-carbonatation",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "174b981dd1bff316054be3f1f56e2e0a7ca4da2ab1163ef08da1d43d57890bee",
+          "sourceChecks": [
+            {
+              "sourceId": "q2-dlegacy02-carbonation-2020",
+              "url": "https://nationalhempassociation.org/wp-content/uploads/CarbonStorageHempcrete.pdf",
+              "locator": "PDF couverture, lignes8–12 ; introduction52 ; §2.1.4, lignes312–316",
+              "result": "Disponible en ligne29avril2020 ; chènevotte et liant à base de chaux ; Ca(OH)2+CO2→CaCO3+H2O.",
+              "sourceHash": "cffef95ebe30cf5c7d2d278bcbcdb1c9bd49a3ad5d7dcc4043c846139754df3e",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Réaction et constituants, pas bilan carbone universel ni conseils de dimensionnement."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-hygroscopie",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "0702a6947bab6cfdf1a72af1205d9c10f523290c8d2d4818bfbae07d1885a998",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-nature-composite-review",
+              "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+              "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+              "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+              "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-fines",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "985fd97c07c8a2d6f8510cfa34bb06a8e3ef9ece15800eadffe3e2f3ac7f70b5",
+          "sourceChecks": [
+            {
+              "sourceId": "products-tool-materials",
+              "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+              "locator": "PDF p.14, lignes323–330",
+              "result": "Fines désigne la poussière issue du défibrage des tiges.",
+              "sourceHash": "974732b6a9c3281d5111f3c1116e32e68540b5a90c8bca63bdd5defe8a528e12",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Fraction de tige, pas résine/kief ni seuil granulométrique universel."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-matrice",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "eed5c98139155e7cdc4e1b7a5d0915bc89ab09f8a39d39518ef5790a470c0d73",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-nature-composite-review",
+              "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+              "locator": "§2, lignes239–251 ; §3, lignes284–291 ; introduction181–186",
+              "result": "Échange d’humidité/eau dans parois/lumen ; fibres comme renfort ; interface gouvernant les interactions avec la matrice.",
+              "sourceHash": "eed05520c4dc68df681639dcf30817657c81e47c40a985470ef881237a89a088",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Revue technique, pas preuve d’un bilan carbone universel ; traitements et optimisations non repris."
+            },
+            {
+              "sourceId": "q2-dlegacy02-acma-composites",
+              "url": "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf",
+              "locator": "Guide, p.15 lignes364–366 ; annexeD p.71 lignes2166–2194 ; glossaire MATRIX p.59",
+              "result": "La résine forme une matrice entourant les fibres et transfère les efforts vers le renfort.",
+              "sourceHash": "f0167e851045401f985c3277c14ec43340d1b42cbc18b9cb8f3d52f0f1273141",
+              "sourceRegistry": "docs/quiz-2000/batches/d-legacy-02.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "new-source-targeted-reading",
+              "limitation": "Concepts généraux de composite ; guide2016 non utilisé comme norme actuelle ni prescription de construction."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-profiles-rouissage-organismes",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "c1ebe7a1b10ce92fe6bfd12f95c20c5a6f131b70285395c7584283db0360db41",
+          "sourceChecks": [
+            {
+              "sourceId": "products-primary-retting-2015",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/25575888/",
+              "locator": "PubMed Abstract, lignes266–268",
+              "result": "Bactéries et champignons quantifiés parPCR, proportions variables entre échantillons.",
+              "sourceHash": "d56caf73a7b0895bba4829a7e2b506b65a0c22a2422b31a3e8caf414217a599c",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "abstract",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": false,
+              "readingForThisReview": "newly-read-existing-reference",
+              "limitation": "Résumé lu ; présence/abondance ne prouve pas la fonction de chaque espèce."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-hs-hist-hempfilm",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "eca73398bd3bb81ea1a3bd8272ccdc06b0f29422a6b9400a0fd49b3a4591809e",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-hist-hemp-victory",
+              "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+              "locator": "Notice NAL, Creator, lignes35–37",
+              "result": "Creator : United States.Department of Agriculture.",
+              "sourceHash": "ccd0d1fce11e0fbf6baa22e129eea90bb946b0b0c97f14ea76365d5825a5c1a1",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "catalogue-or-official-page",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Attribution institutionnelle du catalogue, pas lecture de tout le film ni auteur individuel supposé."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-hs-hist-canada-date",
+          "status": "changes_requested",
+          "comment": "Fait soutenu ; correction des choix ou de l’indice fourni par le prompt nécessaire.",
+          "contentHash": "bc4b0f326676c0a865d44dd3150ee4bee2a34d96babd5d05db91d30bdc9db615",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-hist-canada",
+              "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+              "locator": "SantéCanada, introduction, ligne50",
+              "result": "Section151.1 impose un examen puis rapport aux deux chambres du Parlement.",
+              "sourceHash": "57f9b168b84205e714eae6cef5343b9909829da736199fa7efb86d5db736c4bc",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Disposition historique de2018, pas description d’un droit actuel ni évaluation de résultats sanitaires."
+            }
+          ],
+          "blockingIssues": [
+            {
+              "code": "implausible_institutional_mechanisms",
+              "field": "options",
+              "kind": "substantive",
+              "reason": "Référendum national sur chaque règlement, réautorisation annuelle provinciale et préalable judiciaire à toute évaluation sont trois dispositifs extraordinaires ; seule la bonne réponse ressemble à un mécanisme ordinaire d’examen législatif.",
+              "requestedChange": "Proposer quatre mécanismes institutionnels crédibles et comparables. Garder la portée historique de2018 et le rapport aux deux chambres, sans transformer cette question en conseil de droit actuel."
+            }
+          ],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "changes_requested",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "changes_requested",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        },
+        {
+          "id": "hemp-hs-hist-single",
+          "status": "approved",
+          "comment": "Énoncé, quatre choix, explication, niveau et propriété distincte contrôlés ; soutien limité aux passages indiqués, sans extrapolation de santé, de réglementation ou de performance universelle.",
+          "contentHash": "1541147b942e44b2a8708fb99d0f188ca8d7262b37fc433ac20c49013cecd9ac",
+          "sourceChecks": [
+            {
+              "sourceId": "qh-hist-un-treaties",
+              "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+              "locator": "Compilation ONU, article44,p.47–48 PDF,lignes1099–1120 ; titres des instruments déjà lus",
+              "result": "La Convention unique de1961 termine/remplace certains traités antérieurs entre parties lors de son entrée en vigueur.",
+              "sourceHash": "f23846cf9973495f3d93ffead77f115e21e46f3ce07b61ca208c21e372e7eeed",
+              "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+              "status": "verified",
+              "accessObserved": "full-text-targeted",
+              "consultedOn": "2026-11-16",
+              "earlierReadingReused": true,
+              "readingForThisReview": "new-passages-and-prior-reading",
+              "limitation": "Contexte historique et conditions conventionnelles ; pas règle individuelle de droit actuel."
+            }
+          ],
+          "blockingIssues": [],
+          "checks": {
+            "questionAndFourOptions": "read",
+            "explanationAndEditorial": "read",
+            "factualSupport": "supported",
+            "fourOptions": "reviewed",
+            "difficulty": "reviewed",
+            "pedagogicalInterest": "reviewed",
+            "factIndexAndNeighbourBatches": "checked",
+            "attributionAndVersion": "reviewed"
+          }
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "previousReviewAt": "2026-11-16T20:12:13Z",
+    "changedObjectsRead": 7,
+    "unchangedApprovedObjectsCarriedForward": 23,
+    "sourceObjectsUnchanged": 21,
+    "sourceUrlsReopened": 0,
+    "resolvedIds": [
+      "hemp-seeds-chenevis",
+      "hemp-seeds-pericarpe",
+      "hemp-seeds-edestine",
+      "hemp-seeds-ponts",
+      "hemp-profiles-beton",
+      "hemp-profiles-litiere",
+      "hemp-hs-hist-canada-date"
+    ],
+    "noAuthorFileEdited": true
+  }
+}

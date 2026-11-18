@@ -1,0 +1,1035 @@
+{
+  "batchId": "r-actives-a-01",
+  "author": "rebalance_classify_a",
+  "status": "submitted-for-independent-review",
+  "draftRows": [
+    [
+      "thc-main-intoxicating-constituent",
+      1,
+      "evidence",
+      "ref-thc",
+      "THC",
+      "thc",
+      "Principal constituant intoxicant",
+      "about",
+      "THC, paragraphe principal",
+      "Lequel de ces constituants est le principal responsable de l’ivresse du cannabis ?",
+      [
+        "Le delta-9-THC",
+        "Le CBD",
+        "Le limonène",
+        "Le linalol"
+      ],
+      0,
+      "Le delta-9-THC est le principal cannabinoïde responsable du « high ». Les autres constituants ne reproduisent pas cette ivresse simplement parce qu’ils sont présents dans la même plante."
+    ],
+    [
+      "cbd-no-high-brain-effects-distinct",
+      1,
+      "evidence",
+      "ref-cbd",
+      "CBD et intoxication",
+      "cbd",
+      "Absence de high distincte d’une absence d’action",
+      "about",
+      "CBD",
+      "Quelle différence fondamentale distingue le CBD du THC ?",
+      [
+        "Le CBD provoque une ivresse plus intense que le THC",
+        "Le CBD ne produit pas le high caractéristique du THC",
+        "Le CBD provoque la même ivresse, mais plus brièvement",
+        "Le CBD provoque la même ivresse, mais plus tardivement"
+      ],
+      1,
+      "Le CBD ne produit pas l’ivresse caractéristique du THC. Cela ne signifie pas qu’il soit sans action sur le cerveau ou l’organisme, ni que tous les produits vendus comme CBD aient la même composition."
+    ],
+    [
+      "cbd-poor-aqueous-solubility",
+      1,
+      "evidence",
+      "ref-cbd",
+      "Solubilité du CBD",
+      "cbd",
+      "Faible solubilité dans l’eau",
+      "who-cbd",
+      "§4.B Pharmacokinetics, p.11–12",
+      "Quelle propriété du CBD explique l’emploi de formulations spéciales dans certaines boissons ?",
+      [
+        "Sa forte solubilité dans l’eau",
+        "Sa faible affinité pour les matières grasses",
+        "Sa faible solubilité dans l’eau",
+        "Sa forte volatilité à température ambiante"
+      ],
+      2,
+      "Le CBD est peu soluble dans l’eau. Une formulation liquide peut employer des supports ou des systèmes de dispersion : un liquide transparent n’est pas la preuve que du CBD pur se dissout facilement dans l’eau."
+    ],
+    [
+      "thc-itself-odorless",
+      1,
+      "molecules",
+      "ref-odeur-cannabis",
+      "THC et odeur",
+      "thc",
+      "Absence d’odeur propre du THC",
+      "gilbert",
+      "Discussion, paragraphe smell-based consumer perceptions",
+      "Quelle odeur caractéristique permet de reconnaître le THC lui-même ?",
+      [
+        "Une odeur de pin",
+        "Une odeur d’agrumes",
+        "Une odeur de skunk",
+        "Le THC lui-même est inodore"
+      ],
+      3,
+      "Le THC est inodore et peu volatil. Le bouquet d’une fleur vient d’autres constituants odorants : sentir du cannabis ne revient pas à sentir directement son THC."
+    ],
+    [
+      "odor-potency-impression-not-thc-content",
+      1,
+      "molecules",
+      "ref-odeur-cannabis",
+      "Odeur et impression de puissance",
+      "cannabis-odor-potency",
+      "Impression olfactive distincte de la teneur réelle en THC",
+      "gilbert",
+      "Discussion, résultats de puissance perçue et teneurs mesurées",
+      "Chez Gilbert et DiVerdi (2018), une fleur jugée plus puissante au nez était-elle forcément plus riche en THC ?",
+      [
+        "Les impressions ne correspondaient pas aux teneurs mesurées",
+        "Les fleurs jugées fortes contenaient toujours davantage de THC",
+        "Les notes d’agrumes prédisaient seules les teneurs en THC",
+        "Les notes terreuses prédisaient seules les teneurs en THC"
+      ],
+      0,
+      "Les odeurs modifiaient l’impression de puissance, sans correspondre aux teneurs en THC mesurées dans ce corpus. Un bouquet intense ou agréable ne remplace donc pas une information de composition."
+    ],
+    [
+      "terpenes-contribute-cannabis-smell",
+      1,
+      "molecules",
+      "ref-aromes-chanvre",
+      "Rôle olfactif des terpènes",
+      "cannabis-terpenes",
+      "Contribution au bouquet du cannabis",
+      "about",
+      "Terpenes",
+      "Quelle famille contribue directement au parfum caractéristique des fleurs de cannabis ?",
+      [
+        "Les protéines de réserve",
+        "Les terpènes",
+        "Les amidons",
+        "Les sels minéraux"
+      ],
+      1,
+      "Les terpènes participent au bouquet des fleurs de cannabis. Leur profil fait partie de la composition aromatique de la plante, distincte de sa teneur en THC ou en CBD."
+    ],
+    [
+      "cannabis-terpenes-not-species-exclusive",
+      1,
+      "molecules",
+      "ref-terpenes-terpenoides",
+      "Origine des terpènes du cannabis",
+      "cannabis-terpenes",
+      "Présence des terpènes dans d’autres plantes",
+      "who-extracts",
+      "Section1, §3.2.4.3 Essential oil, p.23",
+      "Les terpènes identifiés dans le cannabis sont-ils réservés à cette plante ?",
+      [
+        "Ils sont réservés aux cannabis riches en THC",
+        "Ils sont réservés aux chanvres riches en CBD",
+        "Ils existent aussi chez d’autres plantes",
+        "Ils sont uniquement ajoutés après extraction"
+      ],
+      2,
+      "Les terpènes décrits dans le cannabis existent aussi dans d’autres plantes. Retrouver une même molécule odorante n’impose toutefois ni les mêmes proportions ni les mêmes effets à deux végétaux."
+    ],
+    [
+      "harvest-aroma-monoterpene-evaporation",
+      2,
+      "molecules",
+      "ref-aromes-chanvre",
+      "Évolution du bouquet après récolte",
+      "cannabis-aroma-after-harvest",
+      "Perte préférentielle de monoterpènes volatils",
+      "who-resin",
+      "Section1, §1.6.1.1 Smell",
+      "Quel changement contribue au bouquet d’un cannabis récolté, selon la section « Smell » du rapport de l’OMS ?",
+      [
+        "Une évaporation plus rapide des sesquiterpènes",
+        "Une augmentation relative de la fraction monoterpénique",
+        "Une disparition préférentielle des composés peu volatils",
+        "Une évaporation plus rapide de certains monoterpènes"
+      ],
+      3,
+      "Les monoterpènes sont relativement volatils et peuvent se perdre plus vite que d’autres constituants. Le bouquet change donc avec leur équilibre, sans que cela permette de déduire une teneur en THC."
+    ],
+    [
+      "entourage-hypothesis-compound-interaction",
+      1,
+      "molecules",
+      "ref-terpenes-terpenoides",
+      "Hypothèse d’entourage",
+      "cannabis-entourage",
+      "Interactions entre constituants proposées par l’hypothèse",
+      "santiago",
+      "Introduction, définition de entourage",
+      "Dans la recherche sur le cannabis, que propose l’hypothèse d’un « effet d’entourage » ?",
+      [
+        "Des interactions entre plusieurs constituants de la plante",
+        "Des effets déterminés uniquement par la quantité de THC",
+        "Des effets identiques pour tous les mélanges de cannabinoïdes",
+        "Une annulation des effets du THC par tout terpène présent"
+      ],
+      0,
+      "L’hypothèse concerne des interactions entre constituants. Elle ne garantit pas qu’un mélange soit supérieur ou plus sûr : chaque association et chaque effet demandent des preuves."
+    ],
+    [
+      "oral-cbd-no-detected-thc-bioconversion",
+      2,
+      "evidence",
+      "ref-cbd",
+      "CBD ingéré et THC",
+      "cbd",
+      "Absence de bioconversion en THC dans l’étude humaine",
+      "crippa",
+      "Abstract, Results et Conclusions",
+      "Après du CBD oral, quel résultat sanguin Crippa et collègues (2020) ont-ils obtenu pour les deux THC recherchés ?",
+      [
+        "Du delta-9-THC détecté sans delta-8-THC",
+        "Pas de delta-8-THC ni de delta-9-THC détecté",
+        "Du delta-8-THC détecté sans delta-9-THC",
+        "Du delta-8-THC et du delta-9-THC détectés"
+      ],
+      1,
+      "Cette étude humaine n’a pas retrouvé de conversion du CBD oral en delta-8 ou delta-9-THC. Une transformation obtenue dans un système de laboratoire ne décrit pas automatiquement ce qui arrive dans l’organisme."
+    ],
+    [
+      "11-hydroxy-thc-active-metabolite",
+      2,
+      "evidence",
+      "ref-thc",
+      "11-hydroxy-THC",
+      "11-hydroxy-thc",
+      "Métabolite du THC conservant une activité psychoactive",
+      "hc-pharmacology",
+      "§2.2.3 Metabolism, principaux métabolites",
+      "Quel métabolite du THC conserve une activité psychoactive importante ?",
+      [
+        "Le THC-COOH",
+        "Le CBDA",
+        "Le 11-hydroxy-THC",
+        "Le CBGA"
+      ],
+      2,
+      "Le 11-hydroxy-THC est un métabolite actif du THC. Métaboliser une substance ne signifie donc pas toujours la rendre immédiatement inactive."
+    ],
+    [
+      "thc-cooh-nonpsychoactive-metabolite",
+      2,
+      "evidence",
+      "ref-thc",
+      "THC-COOH",
+      "thc-cooh",
+      "Métabolite carboxylique non psychoactif",
+      "hc-pharmacology",
+      "§2.2.3 Metabolism et §2.2.4 Excretion",
+      "Quel profil d’activité décrit le THC-COOH, métabolite recherché dans certaines analyses ?",
+      [
+        "Une activité intoxicante comparable à celle du THC",
+        "Une activité intoxicante supérieure à celle du THC",
+        "Une activité intoxicante apparaissant avec le CBD",
+        "Un profil non psychoactif"
+      ],
+      3,
+      "Le THC-COOH est un métabolite non psychoactif. Sa présence renseigne sur une exposition au THC ; elle ne signifie pas que cette molécule provoque elle-même l’ivresse."
+    ],
+    [
+      "liver-main-cannabinoid-metabolism-site",
+      1,
+      "evidence",
+      "ref-thc",
+      "Métabolisme des cannabinoïdes",
+      "cannabinoid-metabolism",
+      "Rôle principal du foie dans le métabolisme",
+      "hc-pharmacology",
+      "§2.2.3 Metabolism, première phrase",
+      "Quel organe assure l’essentiel du métabolisme du THC et d’autres cannabinoïdes ?",
+      [
+        "Le foie",
+        "La rate",
+        "Le pancréas",
+        "La thyroïde"
+      ],
+      0,
+      "Une grande partie du métabolisme des cannabinoïdes se déroule dans le foie. Les transformations peuvent donner des molécules actives ou inactives ; l’élimination est une étape distincte."
+    ],
+    [
+      "oral-thc-more-11-hydroxy-than-inhaled",
+      2,
+      "evidence",
+      "ref-thc",
+      "Voie d’entrée et métabolite du THC",
+      "11-hydroxy-thc",
+      "Formation accrue de 11-hydroxy-THC après ingestion",
+      "hc-pharmacology",
+      "§2.2.3.2 Oral",
+      "Quelle voie favorise davantage la formation de 11-hydroxy-THC que la voie inhalée ?",
+      [
+        "La voie intraveineuse",
+        "L’ingestion",
+        "L’application transdermique",
+        "L’inhalation pulmonaire"
+      ],
+      1,
+      "Après ingestion, le premier passage par le foie forme proportionnellement davantage de 11-hydroxy-THC actif. La voie d’entrée peut donc changer le profil des molécules auxquelles l’organisme est exposé."
+    ],
+    [
+      "plant-thca-distinct-human-thc-cooh",
+      2,
+      "evidence",
+      "ref-formes-acides-neutres",
+      "THCA et THC-COOH",
+      "thca-versus-thc-cooh",
+      "Précurseur végétal distinct du métabolite humain",
+      "thca",
+      "Abstract, Introduction ; complété par hc-pharmacology §2.2.3",
+      "Quelle distinction entre THCA et THC-COOH est correcte ?",
+      [
+        "Ce sont tous deux des précurseurs fabriqués par la plante",
+        "Le THCA est humain ; le THC-COOH est végétal",
+        "Le THCA est végétal ; le THC-COOH est un métabolite du THC",
+        "Ce sont tous deux des métabolites formés chez l’humain"
+      ],
+      2,
+      "Le THCA est fabriqué par la plante. Le THC-COOH est formé lors du métabolisme du THC dans l’organisme. Leurs noms proches et leur caractère acide ne les rendent pas identiques."
+    ],
+    [
+      "cannabis-memory-hippocampus",
+      1,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Cannabis et hippocampe",
+      "cannabis-hippocampus",
+      "Région liée à la mémoire perturbée par le cannabis",
+      "brain",
+      "Thinking, planning and decision-making",
+      "Quelle région liée à la mémoire aide à comprendre les difficultés à retenir de nouvelles informations sous cannabis ?",
+      [
+        "Le cervelet",
+        "Le bulbe rachidien",
+        "Le cortex visuel",
+        "L’hippocampe"
+      ],
+      3,
+      "L’hippocampe participe à l’enregistrement des souvenirs. Le cannabis peut perturber ces fonctions, ce qui aide à comprendre certaines difficultés d’apprentissage pendant ses effets."
+    ],
+    [
+      "cannabis-coordination-cerebellum",
+      1,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Cannabis et cervelet",
+      "cannabis-cerebellum",
+      "Région liée à la coordination perturbée par le cannabis",
+      "brain",
+      "Movement and coordination",
+      "Quelle région cérébrale liée à la coordination est concernée par les pertes d’équilibre sous cannabis ?",
+      [
+        "Le cervelet",
+        "L’hippocampe",
+        "Le cortex auditif",
+        "Le cortex visuel"
+      ],
+      0,
+      "Le cervelet intervient dans la coordination des mouvements. Le cannabis peut perturber ce fonctionnement : se sentir capable d’un geste ne garantit pas une coordination intacte."
+    ],
+    [
+      "cb1-blockade-reduces-human-high",
+      2,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Rôle de CB1 dans l’intoxication",
+      "cb1-thc-intoxication",
+      "Réduction de l’intoxication par blocage sélectif CB1",
+      "huestis",
+      "Abstract, Results et Conclusions",
+      "Chez Huestis et al. (2001), bloquer sélectivement CB1 avant du cannabis a eu quel effet sur l’ivresse ressentie ?",
+      [
+        "Elle a été augmentée",
+        "Elle a été réduite",
+        "Elle est restée inchangée",
+        "Elle a été prolongée sans changement d’intensité"
+      ],
+      1,
+      "Le blocage de CB1 a réduit l’intoxication ressentie dans cette expérience humaine. Cela soutient le rôle de ce récepteur dans les effets du THC ; ce résultat n’est pas un conseil d’automédication."
+    ],
+    [
+      "thc-partial-cannabinoid-receptor-agonist",
+      2,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Action du THC aux récepteurs",
+      "thc",
+      "Agonisme partiel aux récepteurs cannabinoïdes",
+      "hc-pharmacology",
+      "§1.1.2, Pharmacodynamics of major phytocannabinoids",
+      "Le THC peut activer CB1 et CB2 : comment son action est-elle généralement décrite ?",
+      [
+        "Comme celle d’un antagoniste pur",
+        "Comme celle d’un agoniste inverse",
+        "Comme celle d’un agoniste partiel",
+        "Comme celle d’un agoniste complet"
+      ],
+      2,
+      "Le THC est un agoniste partiel des récepteurs cannabinoïdes. Il peut les activer, mais son efficacité maximale ne correspond pas nécessairement à celle d’un agoniste complet dans un système donné."
+    ],
+    [
+      "cb1-activation-limits-neurotransmitter-release",
+      2,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Signalisation présynaptique CB1",
+      "endocannabinoid-synaptic-signaling",
+      "Frein sur la libération de neurotransmetteurs",
+      "hc-pharmacology",
+      "§1.1.1, Genetics and signaling ; figure1, points2–4",
+      "Dans une terminaison nerveuse, l’activation de CB1 par le THC tend à faire quoi ?",
+      [
+        "Accélérer la recapture des neurotransmetteurs",
+        "Accélérer leur dégradation dans la synapse",
+        "Freiner leur synthèse dans la terminaison",
+        "Freiner leur libération depuis la terminaison"
+      ],
+      3,
+      "CB1 est notamment présent sur des terminaisons présynaptiques. Son activation peut freiner la libération de messagers chimiques : les effets finaux dépendent des circuits concernés."
+    ],
+    [
+      "endocannabinoid-retrograde-synaptic-feedback",
+      2,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Signal rétrograde endocannabinoïde",
+      "endocannabinoid-synaptic-signaling",
+      "Retour du signal vers la terminaison présynaptique",
+      "hc-pharmacology",
+      "§1.1.1, inhibition of neurotransmitter release et figure1",
+      "Dans le signal rétrograde endocannabinoïde, les messagers reviennent principalement vers quelle structure ?",
+      [
+        "La terminaison présynaptique du neurone émetteur",
+        "La terminaison postsynaptique du neurone récepteur",
+        "Le noyau du neurone postsynaptique",
+        "La circulation sanguine avant un retour au cerveau"
+      ],
+      0,
+      "Des endocannabinoïdes produits du côté postsynaptique peuvent revenir vers CB1 sur la terminaison présynaptique. Ce retour régule la transmission ; le THC agit sur certains de ces mêmes récepteurs."
+    ],
+    [
+      "cbd-low-orthosteric-cb1-affinity",
+      2,
+      "evidence",
+      "ref-cbd",
+      "CBD et liaison CB1",
+      "cbd",
+      "Faible affinité pour le site classique de CB1",
+      "who-cbd",
+      "§4.C Pharmacodynamics, CBD does not appear to act directly",
+      "Comment se compare la liaison du CBD au site classique de CB1 avec celle attendue d’un puissant agoniste ?",
+      [
+        "Son affinité est nettement supérieure à celle du THC",
+        "Son affinité pour ce site est faible",
+        "Son affinité est identique à celle du THC",
+        "Son affinité est identique à celle du 2-AG"
+      ],
+      1,
+      "Le CBD a une faible affinité pour le site classique de CB1. Sa pharmacologie ne se résume donc pas à une copie moins concentrée de celle du THC."
+    ],
+    [
+      "cbd-negative-cb1-modulation-in-cells",
+      2,
+      "evidence",
+      "ref-cbd",
+      "Modulation de CB1 par le CBD",
+      "cbd",
+      "Réduction de la signalisation du THC observée en cellules",
+      "laprairie",
+      "Abstract, Key Results et Conclusions ; Discussion",
+      "Dans les cellules étudiées par Laprairie (2015), comment le CBD a-t-il modifié certaines réponses de CB1 au THC ?",
+      [
+        "Des réponses plus fortes au THC",
+        "Des réponses plus prolongées au THC",
+        "Des réponses plus faibles au THC",
+        "Des réponses plus rapides au THC"
+      ],
+      2,
+      "Dans ces modèles cellulaires, le CBD a réduit certaines réponses de CB1 au THC par modulation allostérique. Ce mécanisme de laboratoire ne garantit pas une réduction de l’ivresse chez chaque consommateur."
+    ],
+    [
+      "thca-weaker-cb1-affinity-than-thc",
+      2,
+      "evidence",
+      "ref-formes-acides-neutres",
+      "THCA et récepteur CB1",
+      "thca",
+      "Faible affinité CB1 comparée au THC dans l’étude",
+      "thca",
+      "Abstract, Results et Discussion",
+      "Dans l’étude de McPartland (2017), comment le THCA-A se liait-il à CB1 par rapport au THC ?",
+      [
+        "Beaucoup plus fortement",
+        "Avec une affinité identique",
+        "Plus fortement que le THC, mais moins que le CBD",
+        "Beaucoup plus faiblement"
+      ],
+      3,
+      "Le THCA-A montrait une faible liaison à CB1 comparée au THC dans cet essai. Les auteurs signalent aussi des traces de THC dans le standard, limitant l’interprétation du faible signal attribué au THCA."
+    ],
+    [
+      "beta-caryophyllene-cb2-selective-binding",
+      2,
+      "molecules",
+      "record-terpene-beta-caryophyllene",
+      "Bêta-caryophyllène et CB2",
+      "beta-caryophyllene",
+      "Liaison sélective à CB2 rapportée en2008",
+      "gertsch",
+      "Abstract et Results, binding assays",
+      "Quel récepteur cannabinoïde le bêta-caryophyllène ciblait-il sélectivement dans les essais de Gertsch (2008) ?",
+      [
+        "CB2",
+        "CB1",
+        "CB1 et CB2 avec une affinité identique",
+        "Aucun des deux dans les essais de liaison"
+      ],
+      0,
+      "Les essais de Gertsch ont montré une liaison sélective du bêta-caryophyllène à CB2. Une interaction de laboratoire avec un récepteur ne démontre pas, à elle seule, un bénéfice clinique de ce terpène."
+    ],
+    [
+      "common-terpenes-no-direct-cb-activation-assay",
+      3,
+      "molecules",
+      "ref-terpenes-terpenoides",
+      "Terpènes et récepteurs cannabinoïdes",
+      "cannabis-entourage",
+      "Absence d’activation directe dans l’essai fonctionnel étudié",
+      "santiago",
+      "Abstract, Results et Discussion",
+      "Chez Santiago (2019), six terpènes courants ont-ils directement activé CB1 ou CB2 dans l’essai fonctionnel utilisé ?",
+      [
+        "Oui, les six ont activé les deux",
+        "Une activation directe n’a pas été détectée",
+        "Oui, uniquement le limonène a activé les deux",
+        "Oui, uniquement les deux pinènes ont activé CB1"
+      ],
+      1,
+      "Aucune activation directe n’a été détectée dans cet essai fondé sur les canaux potassiques. Ce résultat borné au modèle n’exclut ni d’autres cibles ni toute interaction possible entre terpènes et cannabinoïdes."
+    ],
+    [
+      "d-limonene-human-thc-anxiety-trial",
+      2,
+      "molecules",
+      "record-terpene-limonene",
+      "D-limonène associé au THC",
+      "d-limonene-thc-trial",
+      "Réduction de certains ressentis anxieux dans un essai humain",
+      "spindle",
+      "Abstract, Results ; Discussion",
+      "Dans l’essai humain de Spindle (2024), quel effet du THC le d-limonène a-t-il atténué dans certaines conditions ?",
+      [
+        "L’augmentation de l’appétit",
+        "Le ralentissement psychomoteur",
+        "Les ressentis d’anxiété et de paranoïa",
+        "Les difficultés de mémoire"
+      ],
+      2,
+      "Le d-limonène a atténué certains ressentis anxieux liés au THC dans cet essai. Ce résultat ne prouve ni une protection générale contre le THC ni l’efficacité d’une simple odeur d’agrume."
+    ],
+    [
+      "cbn-insomnia-primary-wake-result-2026",
+      3,
+      "evidence",
+      "ref-cannabinoides-mineurs",
+      "CBN et sommeil",
+      "cbn-sleep-evidence",
+      "Absence de changement du temps éveillé après endormissement",
+      "lavender",
+      "Abstract, primary outcome WASO",
+      "Dans l’essai de Lavender (2026), quel effet du CBN sur le temps éveillé après l’endormissement a été établi ?",
+      [
+        "Une réduction avec chacune des deux conditions au CBN",
+        "Une augmentation avec chacune des deux conditions au CBN",
+        "Une diminution pour l’une, une augmentation pour l’autre",
+        "Pas de différence significative avec le placebo"
+      ],
+      3,
+      "Le critère principal n’a pas montré de différence nette dans ce petit essai d’une nuit. Certains critères secondaires ont évolué ; cela ne suffit pas à établir un traitement durable de l’insomnie par le CBN."
+    ],
+    [
+      "endocannabinoids-made-on-demand",
+      2,
+      "evidence",
+      "ref-systeme-endocannabinoide",
+      "Production des endocannabinoïdes",
+      "endocannabinoid-synaptic-signaling",
+      "Synthèse à la demande à partir de précurseurs membranaires",
+      "hc-pharmacology",
+      "§1.1.1 Endocannabinoid synthesis",
+      "Comment l’organisme fournit-il notamment les endocannabinoïdes qui régulent ses synapses ?",
+      [
+        "Par synthèse à la demande depuis des précurseurs membranaires",
+        "Par libération depuis de grands stocks vésiculaires",
+        "Par apport alimentaire uniquement",
+        "Par une production continue sans régulation locale"
+      ],
+      0,
+      "Des endocannabinoïdes sont fabriqués à la demande à partir de lipides membranaires. Le système ciblé par le THC possède ainsi ses propres messagers, dont la production est régulée localement."
+    ],
+    [
+      "oral-cbd-not-guaranteed-thc-high-reduction",
+      2,
+      "evidence",
+      "ref-cbd",
+      "CBD associé au THC",
+      "cbd-thc-interaction",
+      "Absence d’atténuation des effets subjectifs dans l’essai Haney",
+      "haney",
+      "Abstract ; Discussion",
+      "Dans l’essai de Haney (2016), prendre du CBD oral avant du cannabis fumé a-t-il réduit l’ivresse ressentie ?",
+      [
+        "Une ivresse moins intense et de durée comparable",
+        "Une ivresse plus intense et moins prolongée",
+        "Pas de réduction de l’ivresse mise en évidence",
+        "Une ivresse moins prolongée et d’intensité comparable"
+      ],
+      2,
+      "Dans cet essai, le CBD oral n’a pas atténué les effets subjectifs du cannabis fumé. Ajouter du CBD ne constitue donc pas une garantie universelle de neutralisation des effets du THC."
+    ]
+  ],
+  "duplicateCheck": "Index et baseline consultés individuellement sur cannabinoïdes, molécules, récepteurs et prévention ; aucun doublon de fait identifié. Les autres auteurs réservent les produits et la prévention pratique.",
+  "sources": [
+    {
+      "id": "q2-ra01-about",
+      "title": "About cannabis",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non précisée dans les passages utilisés",
+      "passage": "La page distingue intoxication du THC, absence de high du CBD et rôle olfactif des terpènes.",
+      "access": "official-page",
+      "documentKind": "official-page",
+      "limitation": "Seules ces distinctions chimiques générales sont retenues ; ni chiffres de teneur ni règles actuelles.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "THC, CBD et Terpenes",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-who-cbd",
+      "title": "Cannabidiol (CBD): Critical Review Report",
+      "organization": "WHO Expert Committee on Drug Dependence",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/whocbdreportmay2018-2.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "WHO Secretariat",
+      "published": "2018-06",
+      "passage": "Le rapport décrit la faible solubilité aqueuse du CBD et sa faible affinité pour les récepteurs cannabinoïdes classiques.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Rapport historique ; aucune affirmation de statut commercial ou d’innocuité générale de2018 n’est reprise.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§4.B et §4.C, p.11–13",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-gilbert",
+      "title": "Consumer perceptions of strain differences in Cannabis aroma",
+      "organization": "PLOS ONE",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0192247",
+      "verifiedAt": "2026-11-17",
+      "author": "Avery N. Gilbert et Joseph A. DiVerdi",
+      "published": "2018-02-05",
+      "passage": "Les jugements olfactifs de puissance ne correspondaient pas aux teneurs mesurées ; le texte rappelle le caractère inodore et non volatil du THC.",
+      "access": "full-text",
+      "documentKind": "original-research",
+      "limitation": "Corpus limité ; ne prédit pas la relation de chaque odeur avec toute composition possible.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Discussion, paragraphes puissance perçue et THC mesuré",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-who-extracts",
+      "title": "Extracts and tinctures of cannabis: Critical Review, Section1 Chemistry",
+      "organization": "WHO Expert Committee on Drug Dependence",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Giuseppe Cannazza et Cinzia Citti, section chimie",
+      "published": "2018",
+      "passage": "La section décrit les terpènes du cannabis comme présents également dans d’autres espèces végétales.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Avis d’experts préparatoire ; seuls les constats descriptifs aromatiques sont utilisés, sans instructions de fabrication.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§3.2.4.3 Essential oil, p.22–23",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-who-resin",
+      "title": "Cannabis and cannabis resin: Critical Review, Section1 Chemistry",
+      "organization": "WHO Expert Committee on Drug Dependence",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/cannabis-and-cannabis-resin.pdf?download=true",
+      "verifiedAt": "2026-11-17",
+      "author": "Giuseppe Cannazza et Cinzia Citti, section chimie",
+      "published": "2018",
+      "passage": "Les monoterpènes s’évaporent relativement vite et le bouquet de la plante récoltée peut différer de celui de la plante fraîche.",
+      "access": "full-text",
+      "documentKind": "institutional-report",
+      "limitation": "Constat qualitatif ; aucun conseil de conservation ou de fabrication optimisée.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§1.6.1.1 Smell",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-crippa",
+      "title": "Oral Cannabidiol Does Not Convert to Δ8-THC or Δ9-THC in Humans: A Pharmacokinetic Study in Healthy Subjects",
+      "organization": "Cannabis and Cannabinoid Research / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32322680/",
+      "verifiedAt": "2026-11-17",
+      "author": "José Alexandre S. Crippa et collègues",
+      "published": "2020-02-27",
+      "passage": "Aucun THC détecté dans le plasma après CBD oral dans les conditions étudiées, à jeun ou après alimentation.",
+      "access": "abstract",
+      "documentKind": "original-human-study",
+      "limitation": "Lecture du résumé PubMed ; résultat borné à la formulation et au protocole étudiés. Aucun conseil de dose.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, Results et Conclusions",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-hc-pharmacology",
+      "title": "For health care professionals: Cannabis and cannabinoids",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/information-medical-practitioners/information-health-care-professionals-cannabis-cannabinoids.html?wbdisable=true",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non précisée dans les passages utilisés",
+      "passage": "Synthèse des mécanismes CB1, de la synthèse endocannabinoïde et du métabolisme hépatique, dont 11-OH-THC actif et THC-COOH inactif.",
+      "access": "official-page",
+      "documentKind": "institutional-scientific-summary",
+      "limitation": "Synthèse historique non systématique, explicitement annoncée comme telle. Les recommandations thérapeutiques et les seuils ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "§1.1.1–1.1.2 et §2.2.3–2.2.4 ; texte de la figure1",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-thca",
+      "title": "Affinity and Efficacy Studies of Tetrahydrocannabinolic Acid A at Cannabinoid Receptor Types One and Two",
+      "organization": "Cannabis and Cannabinoid Research / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28861508/",
+      "verifiedAt": "2026-11-17",
+      "author": "John M. McPartland, Christa MacDonald, Michelle Young, Phillip S. Grant, Daniel P. Furkert et Michelle Glass",
+      "published": "2017-05-01",
+      "passage": "Le THCA-A est un précurseur végétal et présente une faible liaison à CB1 comparé au THC ; le standard contenait des traces de THC.",
+      "access": "abstract",
+      "documentKind": "original-in-vitro-research",
+      "limitation": "Résumé PubMed et extrait de recherche lus ; la contamination limite les mesures. Aucun bénéfice clinique du THCA déduit.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, Introduction, Results et Discussion",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-brain",
+      "title": "Cannabis and the brain: Know the facts",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/resources/cannabis-brain-know-facts.html",
+      "verifiedAt": "2026-11-17",
+      "author": "Health Canada",
+      "published": "Date non précisée dans les passages utilisés",
+      "passage": "Le document relie cannabis et perturbations de fonctions impliquant hippocampe et cervelet.",
+      "access": "official-page",
+      "documentKind": "official-page",
+      "limitation": "Vulgarisation institutionnelle ; descriptions de fonctions et effets, pas de diagnostic individuel.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Movement and coordination ; Thinking, planning and decision-making",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-huestis",
+      "title": "Blockade of effects of smoked marijuana by the CB1-selective cannabinoid receptor antagonist SR141716",
+      "organization": "Archives of General Psychiatry / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11296091/",
+      "verifiedAt": "2026-11-17",
+      "author": "Marilyn A. Huestis et collègues",
+      "published": "2001-04",
+      "passage": "Un antagoniste sélectif CB1 a réduit l’intoxication ressentie provoquée par le cannabis dans cette expérience humaine.",
+      "access": "abstract",
+      "documentKind": "randomized-human-study",
+      "limitation": "Résumé lu. Étude expérimentale historique, pas une recommandation de traitement ni une méthode de neutralisation à pratiquer.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, Results et Conclusions",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-laprairie",
+      "title": "Cannabidiol is a negative allosteric modulator of the cannabinoid CB1 receptor",
+      "organization": "British Journal of Pharmacology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4621983/",
+      "verifiedAt": "2026-11-17",
+      "author": "R. B. Laprairie, A. M. Bagher, M. E. M. Kelly et E. M. Denovan-Wright",
+      "published": "2015-10",
+      "passage": "Le CBD a réduit certaines réponses de CB1 au THC et au2-AG par modulation allostérique négative dans des cellules.",
+      "access": "full-text",
+      "documentKind": "original-in-vitro-research",
+      "limitation": "Des mécanismes cellulaires ne garantissent pas une atténuation clinique de l’ivresse.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, Key Results ; Introduction et Discussion sur sites allostériques",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-gertsch",
+      "title": "Beta-caryophyllene is a dietary cannabinoid",
+      "organization": "Proceedings of the National Academy of Sciences",
+      "url": "https://www.for926.uni-bonn.de/kunden/for926/content/e229/e709/e1294/2008-Gertsch-PNAS.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Jürg Gertsch et collègues",
+      "published": "2008-07-01",
+      "passage": "Les essais rapportent une liaison sélective du bêta-caryophyllène à CB2 et une activité agoniste dans les modèles testés.",
+      "access": "full-text",
+      "documentKind": "original-preclinical-research",
+      "limitation": "Pharmacologie préclinique. Les résultats de liaison sont distingués des essais fonctionnels d’autres articles et des effets cliniques.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract ; essais de liaison CB2",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-santiago",
+      "title": "Absence of Entourage: Terpenoids Commonly Found in Cannabis sativa Do Not Modulate the Functional Activity of Δ9-THC at Human CB1 and CB2 Receptors",
+      "organization": "Cannabis and Cannabinoid Research",
+      "url": "https://diverdi.colostate.edu/C442/references/pharmacology/cann_and_cann_res_2019_v4_p165.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Marina Santiago, Shivani Sachdev, Jonathon C. Arnold, Iain S. McGregor et Mark Connor",
+      "published": "2019",
+      "passage": "L’article définit l’hypothèse d’entourage ; six terpènes n’ont pas activé directement CB1/CB2 dans l’essai fonctionnel utilisé.",
+      "access": "full-text",
+      "documentKind": "original-in-vitro-research",
+      "limitation": "Résultat limité à la voie fonctionnelle mesurée ; il n’exclut pas toute cible ou interaction possible.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Introduction ; Abstract Results et Discussion",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-spindle",
+      "title": "Vaporized D-Limonene Selectively Mitigates the Acute Anxiogenic Effects of Δ9-Tetrahydrocannabinol in Healthy Adults Who Intermittently Use Cannabis",
+      "organization": "Drug and Alcohol Dependence",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11031290/",
+      "verifiedAt": "2026-11-17",
+      "author": "Tory R. Spindle et collègues",
+      "published": "2024-04-01",
+      "passage": "L’association expérimentale a réduit certains ressentis d’anxiété et de paranoïa liés au THC.",
+      "access": "full-text",
+      "documentKind": "randomized-human-study",
+      "limitation": "Petit essai aigu ; aucune inférence sur respirer un agrume, sur les produits commerciaux ou sur une protection générale. Aucun protocole repris.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract Results ; §4 Discussion",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-lavender",
+      "title": "Cannabinol for Acute Treatment of Insomnia Disorder in a Randomized Placebo-Controlled Crossover Trial",
+      "organization": "Journal of Sleep Research / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41698831/",
+      "verifiedAt": "2026-11-17",
+      "author": "Isobel G. Lavender et collègues",
+      "published": "2026-02-16 (publication en ligne)",
+      "passage": "L’essai n’a pas montré de changement significatif du critère principal temps éveillé après l’endormissement ; certains résultats secondaires ont changé.",
+      "access": "abstract",
+      "documentKind": "randomized-human-study",
+      "limitation": "Vingt adultes, une nuit par condition ; résumé lu, pas une validation durable d’un traitement de l’insomnie.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, primary outcome WASO",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    },
+    {
+      "id": "q2-ra01-haney",
+      "title": "Oral Cannabidiol does not Alter the Subjective, Reinforcing or Cardiovascular Effects of Smoked Cannabis",
+      "organization": "Neuropsychopharmacology",
+      "url": "https://ww2.uthscsa.edu/artt/AddictionJC/2018-07-10-Haney.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Margaret Haney et collègues",
+      "published": "2016-07",
+      "passage": "Le CBD oral préalable n’a pas réduit les effets subjectifs positifs et l’intoxication ressentie du cannabis fumé dans cet essai.",
+      "access": "full-text",
+      "documentKind": "randomized-human-study",
+      "limitation": "Résultat limité aux participants, voies et conditions de cette étude. Ne nie pas toute interaction possible et ne propose aucune dose.",
+      "consultation": {
+        "reader": "rebalance_classify_a",
+        "date": "2026-11-17",
+        "locator": "Abstract, p.1974 ; Discussion",
+        "result": "Passages indiqués effectivement ouverts et lus ; preuve paraphrasée, sans prétendre relire les sources citées par la synthèse."
+      }
+    }
+  ],
+  "questionsCount": 30,
+  "levels": {
+    "1": 14,
+    "2": 14,
+    "3": 2
+  },
+  "sourceChecks": "16 sources ouvertes et passages pertinents lus ; résumés explicitement identifiés quand seuls leurs abstracts ont été utilisés.",
+  "scopeNotes": [
+    "Aucun produit commercial, variété du site, dosage ou protocole de préparation.",
+    "Les faits de physiologie concernent le système ciblé par THC/CBD ou leurs métabolites, pas un cours générique d’organites.",
+    "Les études cellulaires sont séparées des résultats humains ; aucune interaction n’est présentée comme garantie universelle."
+  ],
+  "closePairsChecked": [
+    "THC inodore versus absence de relation entre impression olfactive et teneur mesurée : propriété de molécule et résultat empirique distincts.",
+    "CBD modulation cellulaire versus résultat humain Haney : mécanisme et réponse humaine ne sont pas interchangeables.",
+    "11-OH-THC actif versus THC-COOH inactif : deux métabolites distincts ; pas deux formulations inversées du même composé."
+  ],
+  "selfCheck": {
+    "questions": 30,
+    "sources": 16,
+    "levels": {
+      "1": 11,
+      "2": 17,
+      "3": 2
+    },
+    "constraints": "Longueurs, unicité des choix, réponses et références vérifiées ; faits proches de l’index confrontés ; pas d’auto-approbation."
+  },
+  "revisionAfterIndependentReview": {
+    "reviewFile": "docs/quiz-2000/reviews/r-actives-a-01.json",
+    "changedItems": [
+      {
+        "id": "hemp-q2-ra01-terpenes-contribute-cannabis-smell",
+        "previousContentHash": "c4da6fb8c8dde6f8aefcff6e6a1bd7e87d6f23a20c57a4caedd303ea0c8ce5e2",
+        "newContentHash": "9396fa9c1a929f4a07af04d5ce4f500337a575e7291db4195367454d6b6a91ff",
+        "changedFields": [
+          "explanation"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-harvest-aroma-monoterpene-evaporation",
+        "previousContentHash": "df0a0c070421f6b99383f2354f1e85547c0bf2af9ed84a823e33d37fd2068bee",
+        "newContentHash": "3b285202d6006d3090cea4f9be9460ade0067299d06d4def5bf7cbefb71bb312",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-oral-cbd-no-detected-thc-bioconversion",
+        "previousContentHash": "5ed624e466a111098f7d0caf7b07c57eebe7d085e242053d8e0c5d9962c5bac1",
+        "newContentHash": "38463826b2d8064cedf38cd0257722d81df214e8645e4ca3e12c8ca07bec7cdc",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-thc-cooh-nonpsychoactive-metabolite",
+        "previousContentHash": "1d502238ebc948b4f7d2cad75573a741b953d39fc792ecae34735e65841aa5eb",
+        "newContentHash": "003cd96d584326967aca42fe0ef3290fdb9f00909892f9e3783095bc121f0e91",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-cb1-activation-limits-neurotransmitter-release",
+        "previousContentHash": "fd6e5bf9850a2d6f6a27ca99a5df478730ecded41a4555c903c3e409856d7e13",
+        "newContentHash": "69d32efaa462b5c12f3e1a3ba6ffb40a1afbc55c5c65b10dcbc582bd14274a32",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-cbd-negative-cb1-modulation-in-cells",
+        "previousContentHash": "195225d43eb0e8fc7072e3a53da4468dcb4d4ef933f95c7f881e246dcd4e747d",
+        "newContentHash": "7d4959314bf69ef928c9632ca43a5e910ff0dec4f2e1fee341d9acd155ea6fde",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-cbn-insomnia-primary-wake-result-2026",
+        "previousContentHash": "b853c4ea471b0df48c38b77371cf13c102e5831c5356879c7e5d8edfc7e378e0",
+        "newContentHash": "e7ebfc37e579c154563e3f692e9912363d1d81545d43ade4f57acd41eb0977c3",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      },
+      {
+        "id": "hemp-q2-ra01-oral-cbd-not-guaranteed-thc-high-reduction",
+        "previousContentHash": "34409b5beec4aadca2cb1cd68e95c995665f8224ae59048cb2c5b8446ad7b86f",
+        "newContentHash": "6f9647b1662edeb3d506be0958c9fd7b438b84dbf2a6919169db8c49b66ac5b6",
+        "changedFields": [
+          "prompt",
+          "options",
+          "editorial.expectedAnswer",
+          "level et rationale si concernés"
+        ]
+      }
+    ],
+    "unchangedQuestions": 22,
+    "sourcesChanged": false,
+    "newFactsAdded": false,
+    "note": "Complément soufré retiré de l’explication 6 ; choix rééquilibrés et trois niveaux remontés à 2. Pas de nouvelle source ni de nouveau fait."
+  }
+}

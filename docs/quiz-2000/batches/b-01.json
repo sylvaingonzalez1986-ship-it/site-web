@@ -1,0 +1,1774 @@
+{
+  "batchId": "b-01",
+  "author": "b_external_varieties",
+  "role": "B — variétés, obtenteurs, lignées et profils issus de recherches externes",
+  "questions": [
+    {
+      "id": "hemp-q2-b01-finola-developed-finland",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans quel pays l'obtenteur situe-t-il le développement de FINOLA ?",
+      "options": [
+        "La Finlande",
+        "La France",
+        "La Pologne",
+        "La Hongrie"
+      ],
+      "answer": 0,
+      "explanation": "Le document Finola de 2018 situe en Finlande le développement de cette variété oléagineuse.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2018"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA",
+        "subjectKey": "finola",
+        "property": "Pays de développement",
+        "expectedAnswer": "La Finlande",
+        "learningObjective": "Situer FINOLA d'après le document de l'obtenteur.",
+        "factKey": "finola-developed-finland",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2018",
+            "locator": "p. 1, General information, premier paragraphe",
+            "support": "La variété oléagineuse FINOLA a été développée en Finlande."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-finola-former-breeder-code-fin314",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Une archive mentionne FIN-314. Quel lien avec FINOLA établit le document de son obtenteur de 2018 ?",
+      "options": [
+        "FIN-314 est un parent distinct croisé avec FINOLA",
+        "FIN-314 est l'ancien code de sélection de FINOLA",
+        "FIN-314 est un lot commercial de graines alimentaires",
+        "FIN-314 désigne une analyse chimique sans identité variétale"
+      ],
+      "answer": 1,
+      "explanation": "FIN-314 est le code de sélection mentionné pour le travail commencé en 1995, avant l'emploi du nom FINOLA.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2018"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA",
+        "subjectKey": "finola",
+        "property": "Ancien code de sélection",
+        "expectedAnswer": "FIN-314 est l'ancien code de sélection de FINOLA",
+        "learningObjective": "Rapprocher un code présent dans une archive et la dénomination variétale donnée par l'obtenteur.",
+        "factKey": "finola-former-breeder-code-fin314",
+        "form": "situation",
+        "difficultyRationale": "Interprétation d'une correspondance documentaire précise, utile pour relier une archive à la variété décrite.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2018",
+            "locator": "p. 1, General information, premier paragraphe",
+            "support": "Le travail commence en 1995 sous le code FIN-314."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-finola-first-oilseed-registration-claim",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Selon son document de 2018, comme quel type de culture FINOLA fut-elle la première variété de chanvre industriel enregistrée ?",
+      "options": [
+        "Une culture destinée aux fibres longues",
+        "Une culture destinée aux arômes floraux",
+        "Une culture oléagineuse",
+        "Une culture destinée aux matériaux d'isolation"
+      ],
+      "answer": 2,
+      "explanation": "Le document de l'obtenteur présente FINOLA comme la première variété de chanvre industriel enregistrée comme culture oléagineuse. C'est une affirmation historique attribuée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2018"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA dans le récit historique de l'obtenteur",
+        "subjectKey": "finola",
+        "property": "Type de culture de la première inscription revendiquée",
+        "expectedAnswer": "Une culture oléagineuse",
+        "learningObjective": "Identifier l'innovation de classement agricole revendiquée pour une variété de chanvre.",
+        "factKey": "finola-first-oilseed-registration-claim",
+        "form": "identification",
+        "difficultyRationale": "Connaissance historique spécifique, explicitement attribuée au document de l'obtenteur.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2018",
+            "locator": "p. 1, General information, fin du premier paragraphe",
+            "support": "Le document décrit FINOLA comme la première variété de chanvre industriel enregistrée comme culture oléagineuse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-finola-cultivar-versus-food-trademark",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Que distingue le document Finola de 2018 entre FINOLA et Finola® ?",
+      "options": [
+        "Une espèce botanique et son genre",
+        "Une population locale et sa sous-espèce",
+        "Deux générations successives du même hybride",
+        "Une variété et une marque de produits alimentaires"
+      ],
+      "answer": 3,
+      "explanation": "FINOLA est la variété. Finola® est une marque réservée aux produits alimentaires issus de celle-ci, selon ce document.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2018"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA et Finola®",
+        "subjectKey": "finola-brand",
+        "property": "Statut distinct de la variété et de la marque",
+        "expectedAnswer": "Une variété et une marque de produits alimentaires",
+        "learningObjective": "Séparer dénomination variétale et marque commerciale.",
+        "factKey": "finola-cultivar-versus-food-trademark",
+        "form": "comparaison",
+        "difficultyRationale": "Croisement d'informations et distinction entre statuts de données proches.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2018",
+            "locator": "p. 2, paragraphes Finola Oy et Finola®",
+            "support": "Le document distingue la variété maintenue par Finola Oy et la marque alimentaire Finola®."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-finola2-seeds-larger-than-finola",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Selon l'obtenteur, comment les graines de FINOLA2 se comparent-elles à celles de FINOLA ?",
+      "options": [
+        "Elles sont plus grosses",
+        "Elles sont plus petites",
+        "Elles ont la même taille moyenne",
+        "La fiche ne compare pas leur taille"
+      ],
+      "answer": 0,
+      "explanation": "Finola Oy présente des graines significativement plus grosses pour FINOLA2 ; il s'agit d'une comparaison de l'obtenteur.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA2",
+        "subjectKey": "finola2",
+        "property": "Taille des graines comparée",
+        "expectedAnswer": "Elles sont plus grosses",
+        "learningObjective": "Identifier un caractère distinctif annoncé entre deux variétés proches.",
+        "factKey": "finola2-seeds-larger-than-finola",
+        "form": "comparaison",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2",
+            "locator": "Some history on the FINOLA varieties, paragraphe FINOLA2",
+            "support": "Le texte indique une taille de graine significativement supérieure chez FINOLA2."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-finola2-slightly-taller-than-finola",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Par rapport à FINOLA, quel port est annoncé pour FINOLA2 par Finola Oy ?",
+      "options": [
+        "Un peu plus bas",
+        "Un peu plus haut",
+        "De hauteur similaire",
+        "Beaucoup plus haut"
+      ],
+      "answer": 1,
+      "explanation": "L'obtenteur décrit FINOLA2 comme légèrement plus haute que FINOLA. Ce caractère annoncé n'est pas une mesure de tout lot.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA2",
+        "subjectKey": "finola2",
+        "property": "Hauteur relative annoncée",
+        "expectedAnswer": "Un peu plus haut",
+        "learningObjective": "Lire une comparaison de morphologie sans en faire une valeur universelle.",
+        "factKey": "finola2-slightly-taller-than-finola",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2",
+            "locator": "Some history on the FINOLA varieties, premier paragraphe FINOLA2",
+            "support": "FINOLA2 est décrite comme légèrement plus haute que FINOLA."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-autoduck-webbed-leaf-mutation",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel caractère foliaire Dutch Passion décrit-il chez Auto Duck ?",
+      "options": [
+        "Des feuilles étroites aux folioles bien séparées",
+        "De grandes folioles larges sans palmure",
+        "Des feuilles aux folioles reliées en « patte de canard »",
+        "De petites feuilles simples au bord peu denté"
+      ],
+      "answer": 2,
+      "explanation": "Dutch Passion décrit une mutation foliaire naturelle stabilisée produisant une forme palmée aux folioles reliées, comparée à une empreinte de canard.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b01-autoduck"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Auto Duck",
+        "subjectKey": "auto-duck",
+        "property": "Morphologie foliaire décrite",
+        "expectedAnswer": "Des feuilles aux folioles reliées en « patte de canard »",
+        "learningObjective": "Reconnaître une particularité morphologique d'un cultivar.",
+        "factKey": "autoduck-webbed-leaf-mutation",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-autoduck",
+            "locator": "Auto Duck is a very robust cannabis strain, premier paragraphe",
+            "support": "La fiche décrit une mutation naturelle stabilisée et des feuilles rappelant une patte de canard."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-autoduck-frisianduck-auto-whitewidow",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel croisement Dutch Passion revendique-t-il pour Auto Duck ?",
+      "options": [
+        "Frisian Dew × Auto Blueberry",
+        "DucksFoot × Auto Northern Lights",
+        "White Widow × Auto Frisian Dew",
+        "Frisian Duck × Auto White Widow"
+      ],
+      "answer": 3,
+      "explanation": "La fiche Auto Duck revendique Frisian Duck croisée avec Auto White Widow ; le nom seul ne prouve pas ce pedigree.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-autoduck"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Auto Duck",
+        "subjectKey": "auto-duck",
+        "property": "Parenté annoncée",
+        "expectedAnswer": "Frisian Duck × Auto White Widow",
+        "learningObjective": "Retrouver un pedigree dans la déclaration de son obtenteur.",
+        "factKey": "autoduck-frisianduck-auto-whitewidow",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-autoduck",
+            "locator": "What kind of genetics does Auto Duck contain?",
+            "support": "Dutch Passion dit avoir croisé Frisian Duck avec sa propre Auto White Widow."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-frisianduck-frisiandew-ducksfoot",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "D'après Dutch Passion, quelles lignées entrent dans Frisian Duck ?",
+      "options": [
+        "Frisian Dew et DucksFoot",
+        "Auto Frisian Dew et DucksFoot",
+        "Frisian Dew et Auto Duck",
+        "Auto Frisian Dew et Auto Duck"
+      ],
+      "answer": 0,
+      "explanation": "La fiche Frisian Duck annonce Frisian Dew × DucksFoot. Cette attribution concerne la version de Dutch Passion.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-frisianduck"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Frisian Duck",
+        "subjectKey": "frisian-duck",
+        "property": "Parenté annoncée",
+        "expectedAnswer": "Frisian Dew et DucksFoot",
+        "learningObjective": "Identifier deux lignées revendiquées sans les inférer du nom.",
+        "factKey": "frisianduck-frisiandew-ducksfoot",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre versions photopériodiques et automatiques de parents aux noms proches ; le seul nom du descendant ne permet pas de trancher.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-frisianduck",
+            "locator": "En-tête Frisian Duck ; croisement affiché",
+            "support": "La fiche affiche Frisian Dew × DucksFoot."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-frisianduck-upper-leaves-can-revert-common-shape",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Que précise Dutch Passion sur certaines feuilles supérieures de Frisian Duck pendant la floraison ?",
+      "options": [
+        "Elles deviennent rondes et sans denture",
+        "Elles peuvent retrouver une forme plus habituelle",
+        "Elles forment des lobes plus profondément découpés",
+        "Elles gardent leur forme initiale sans modification"
+      ],
+      "answer": 1,
+      "explanation": "La forme inhabituelle des feuilles n'est pas présentée comme constante : certaines feuilles supérieures peuvent avoir une forme plus habituelle.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b01-frisianduck"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Frisian Duck",
+        "subjectKey": "frisian-duck",
+        "property": "Variation foliaire au cours du développement",
+        "expectedAnswer": "Elles peuvent retrouver une forme plus habituelle",
+        "learningObjective": "Ne pas transformer un caractère variétal fréquent en caractère absolu.",
+        "factKey": "frisianduck-upper-leaves-can-revert-common-shape",
+        "form": "situation",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-frisianduck",
+            "locator": "A top-choice for the outdoor urban home grower, premier paragraphe",
+            "support": "Pendant la floraison, certaines feuilles supérieures peuvent montrer une forme traditionnelle de cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-ak47-claimed-creator-serious-seeds",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle maison revendique la création de sa lignée AK-47 sur sa fiche officielle ?",
+      "options": [
+        "ACE Seeds",
+        "Dutch Passion",
+        "Serious Seeds",
+        "Sensi Seeds"
+      ],
+      "answer": 2,
+      "explanation": "La page de Serious Seeds présente sa version d'AK-47 comme créée par cette maison ; les homonymes ne sont pas ainsi authentifiés.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-ak47"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "AK-47 de Serious Seeds",
+        "subjectKey": "ak-47-serious",
+        "property": "Attribution à la maison",
+        "expectedAnswer": "Serious Seeds",
+        "learningObjective": "Distinguer une attribution documentée d'une simple présence chez un revendeur.",
+        "factKey": "ak47-claimed-creator-serious-seeds",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-ak47",
+            "locator": "Titre AK-47 Strain Created by Serious Seeds",
+            "support": "Le titre attribue la création de la version présentée à Serious Seeds."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-ak47-claimed-colombian-mexican-thai-afghan",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "Quel ensemble d'ascendances Serious Seeds cite-t-il pour AK-47 ?",
+      "options": [
+        "Colombienne, jamaïcaine, népalaise et indienne",
+        "Brésilienne, mexicaine, thaïe et pakistanaise",
+        "Panaméenne, mexicaine, laotienne et afghane",
+        "Colombienne, mexicaine, thaïe et afghane"
+      ],
+      "answer": 3,
+      "explanation": "Serious Seeds cite des matériels colombien, mexicain, thaï et afghan. C'est une ascendance revendiquée, pas une vérification indépendante.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-ak47"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "AK-47 de Serious Seeds",
+        "subjectKey": "ak-47-serious",
+        "property": "Ensemble des ascendances revendiquées",
+        "expectedAnswer": "Colombienne, mexicaine, thaïe et afghane",
+        "learningObjective": "Reconnaître la composition d'un récit de sélection sans certifier un pedigree.",
+        "factKey": "ak47-claimed-colombian-mexican-thai-afghan",
+        "form": "identification",
+        "difficultyRationale": "Croisement d'informations et distinction entre statuts de données proches.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-ak47",
+            "locator": "Strain Description > Genetics",
+            "support": "Le paragraphe énumère Colombian, Mexican, Thai et Afghan."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bubblegum-serious-history-indiana",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans le récit de Serious Seeds, de quel État américain vient le matériel initial de Bubble Gum ?",
+      "options": [
+        "L'Indiana",
+        "L'Oregon",
+        "Le Colorado",
+        "La Californie"
+      ],
+      "answer": 0,
+      "explanation": "Serious Seeds situe le matériel initial chez des cultivateurs de l'Indiana. La maison reconnaît plusieurs versions et une histoire controversée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bubblegum"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Bubble Gum de Serious Seeds",
+        "subjectKey": "bubble-gum-serious",
+        "property": "Origine rapportée du matériel initial",
+        "expectedAnswer": "L'Indiana",
+        "learningObjective": "Lire une origine comme récit attribué lorsque plusieurs versions existent.",
+        "factKey": "bubblegum-serious-history-indiana",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bubblegum",
+            "locator": "Genetics, premier paragraphe ; A bit of history",
+            "support": "Le matériel est décrit comme développé à l'origine par des cultivateurs de l'Indiana."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bubblegum-serious-ibl-not-f1",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelle catégorie Serious Seeds donne-t-il à sa version de Bubble Gum ?",
+      "options": [
+        "Un hybride de première génération (F1)",
+        "Une lignée consanguine stabilisée (IBL)",
+        "Une seconde génération après croisement (F2)",
+        "Un simple mélange de lignées parentales"
+      ],
+      "answer": 1,
+      "explanation": "La fiche la désigne IBL, pour inbred line, une lignée consanguine, et précise qu'elle n'est pas un hybride F1. Cela décrit la version Serious Seeds.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b01-bubblegum"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Bubble Gum de Serious Seeds",
+        "subjectKey": "bubble-gum-serious",
+        "property": "Catégorie de lignée annoncée",
+        "expectedAnswer": "Une lignée consanguine stabilisée (IBL)",
+        "learningObjective": "Distinguer une lignée consanguine annoncée d'un hybride F1.",
+        "factKey": "bubblegum-serious-ibl-not-f1",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bubblegum",
+            "locator": "Sous-titre IBL et Genetics, mention not an F1 hybrid",
+            "support": "La version est classée IBL, et explicitement non F1."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-whiterussian-serious-ak47-whitewidow",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quels parents Serious Seeds annonce-t-il pour White Russian ?",
+      "options": [
+        "Bubble Gum et un clone de Kali Mist",
+        "AK-47 et un clone de Northern Lights",
+        "AK-47 et un clone de White Widow",
+        "Chronic et un clone de White Widow"
+      ],
+      "answer": 2,
+      "explanation": "Serious Seeds revendique son AK-47 et un clone White Widow des années 1990 pour sa version de White Russian.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-whiterussian"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "White Russian de Serious Seeds",
+        "subjectKey": "white-russian-serious",
+        "property": "Parents revendiqués",
+        "expectedAnswer": "AK-47 et un clone de White Widow",
+        "learningObjective": "Retrouver le croisement précisément annoncé par une maison.",
+        "factKey": "whiterussian-serious-ak47-whitewidow",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-whiterussian",
+            "locator": "Présentation et Strain Description > Genetics",
+            "support": "La fiche décrit AK-47 de Serious Seeds croisée avec le clone White Widow."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-zamal-ace-reunion-island",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "À quelle île ACE Seeds rattache-t-il le Zamal utilisé dans son récit de création de Zamaldelica ?",
+      "options": [
+        "La Jamaïque",
+        "La Corse",
+        "La Crète",
+        "La Réunion"
+      ],
+      "answer": 3,
+      "explanation": "ACE situe ce Zamal à La Réunion, près de Madagascar. La question porte sur l'origine rapportée par cet obtenteur.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-zamaldelica"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Zamal dans le récit ACE",
+        "subjectKey": "zamal-ace",
+        "property": "Origine insulaire attribuée",
+        "expectedAnswer": "La Réunion",
+        "learningObjective": "Situer une population citée par un obtenteur en conservant l'attribution.",
+        "factKey": "zamal-ace-reunion-island",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-zamaldelica",
+            "locator": "Description, premier paragraphe",
+            "support": "ACE décrit Zamal comme un matériel de La Réunion."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-zamal-mother-goldentiger-pollen",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le récit ACE de Zamaldelica, quel rôle est attribué au Zamal et à Golden Tiger ?",
+      "options": [
+        "Zamal est la mère ; Golden Tiger apporte le pollen",
+        "Golden Tiger est la mère ; Zamal apporte le pollen",
+        "Les deux sont décrits uniquement comme parents femelles",
+        "Les deux sont décrits uniquement comme donneurs de pollen"
+      ],
+      "answer": 0,
+      "explanation": "ACE décrit une mère Zamal sélectionnée puis pollinisée par Golden Tiger. Les rôles viennent du texte, pas de l'ordre d'un nom commercial.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b01-zamaldelica"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Zamaldelica féminisée d'ACE",
+        "subjectKey": "zamaldelica-ace",
+        "property": "Rôles parentaux revendiqués",
+        "expectedAnswer": "Zamal est la mère ; Golden Tiger apporte le pollen",
+        "learningObjective": "Distinguer les rôles parentaux d'après un récit explicite.",
+        "factKey": "zamaldelica-zamal-mother-goldentiger-pollen",
+        "form": "identification",
+        "difficultyRationale": "Les rôles parentaux doivent être connus dans le récit précis de l'obtenteur ; ils ne sont pas fournis dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-zamaldelica",
+            "locator": "Description, second paragraphe",
+            "support": "Une mère Zamal sélectionnée est décrite comme pollinisée par Golden Tiger."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-feminized-f3-semistabilized",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel stade ACE affiche-t-il pour Zamaldelica féminisée dans la rubrique « Type » ?",
+      "options": [
+        "Hybride F1, première génération filiale",
+        "Hybride F3 semi-stabilisé, troisième génération filiale",
+        "Hybride F8 semi-stabilisé, huitième génération filiale",
+        "Lignée IBL stabilisée, issue de consanguinité"
+      ],
+      "answer": 1,
+      "explanation": "La fiche classe cette version comme hybride F3 semi-stabilisé. F3 désigne la troisième génération filiale ; cette étiquette ne s'étend pas aux homonymes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-b01-zamaldelica"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Zamaldelica féminisée d'ACE",
+        "subjectKey": "zamaldelica-ace",
+        "property": "Stade de sélection annoncé",
+        "expectedAnswer": "Hybride F3 semi-stabilisé, troisième génération filiale",
+        "learningObjective": "Lire une génération annoncée sans l'étendre aux versions homonymes.",
+        "factKey": "zamaldelica-feminized-f3-semistabilized",
+        "form": "identification",
+        "difficultyRationale": "Étiquette de version précise à connaître, sans contexte permettant de la déduire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-zamaldelica",
+            "locator": "Additional information > Type",
+            "support": "La rubrique Type affiche F3 SEMI STABILIZED HYBRID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-three-panamanian-lines",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Comment ACE décrit-il l'ascendance de Panama féminisée ?",
+      "options": [
+        "Une lignée panaméenne sans hybridation",
+        "Une lignée panaméenne croisée avec une thaïe",
+        "Un hybride de trois lignées panaméennes",
+        "Une lignée panaméenne croisée avec une afghane"
+      ],
+      "answer": 2,
+      "explanation": "La fiche indique trois lignées panaméennes. La ressemblance évoquée avec Colombia Punto Rojo n'établit pas une parenté avec celle-ci.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-panama"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Panama féminisée d'ACE",
+        "subjectKey": "panama-ace",
+        "property": "Composition annoncée de l'hybride",
+        "expectedAnswer": "Un hybride de trois lignées panaméennes",
+        "learningObjective": "Distinguer l'ascendance affichée d'une ressemblance narrative.",
+        "factKey": "panama-ace-three-panamanian-lines",
+        "form": "identification",
+        "difficultyRationale": "La présence de Panama dans plusieurs propositions exige de connaître la composition annoncée, pas de déduire un pays du nom.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-panama",
+            "locator": "Description et Additional information > Genetics",
+            "support": "Le texte et la rubrique Genetics parlent de trois lignées sativa panaméennes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-reddish-pinkish-pistils",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelles parties ACE décrit-il comme souvent rougeâtres ou roses chez Panama ?",
+      "options": [
+        "Les racines secondaires",
+        "Les cotylédons des graines",
+        "Les grains de pollen",
+        "Les pistils des fleurs"
+      ],
+      "answer": 3,
+      "explanation": "ACE décrit des pistils souvent rougeâtres ou roses. Cette observation descriptive ne signifie pas que chaque plante aura ces couleurs.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b01-panama"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Panama féminisée d'ACE",
+        "subjectKey": "panama-ace",
+        "property": "Parties florales colorées décrites",
+        "expectedAnswer": "Les pistils des fleurs",
+        "learningObjective": "Associer une couleur variétale à l'organe effectivement décrit.",
+        "factKey": "panama-ace-reddish-pinkish-pistils",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-panama",
+            "locator": "Description, deuxième paragraphe",
+            "support": "La fiche évoque des pistils rougeâtres et rosés pendant la floraison."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-guawi-ace-oldmalawikiller-tikal-f5",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel croisement ACE revendique-t-il pour sa Guawi féminisée recréée ?",
+      "options": [
+        "Old Malawi Killer × Tikal F5",
+        "Old Malawi Killer × Panama F5",
+        "Zamal × Tikal F5",
+        "Golden Tiger × Panama F5"
+      ],
+      "answer": 0,
+      "explanation": "La version de Guawi présentée est attribuée à Old Malawi Killer et à une sélection Tikal F5 au profil fruité et encensé.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-guawi"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Guawi féminisée d'ACE",
+        "subjectKey": "guawi-ace",
+        "property": "Croisement annoncé pour la version recréée",
+        "expectedAnswer": "Old Malawi Killer × Tikal F5",
+        "learningObjective": "Identifier une version de croisement en tenant compte du stade du parent.",
+        "factKey": "guawi-ace-oldmalawikiller-tikal-f5",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-guawi",
+            "locator": "Description ; Additional information > Genetics",
+            "support": "La fiche indique Old Malawi Killer × Tikal F5."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-guawi-ace-bouquet-not-terpene-analysis",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "ACE décrit des arômes fruités pour Guawi mais dit son profil terpénique non analysé. Que sait-on alors ?",
+      "options": [
+        "Un dosage établissant le limonène comme composé majoritaire",
+        "Une description sensorielle, sans profil terpénique mesuré",
+        "Une preuve d'absence de tous les monoterpènes",
+        "Un profil moléculaire identique à celui de Tikal"
+      ],
+      "answer": 1,
+      "explanation": "La rubrique Bouquet donne des notes aromatiques ; la rubrique Terpene profile indique qu'aucune analyse n'a encore été faite.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b01-guawi"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Guawi féminisée d'ACE",
+        "subjectKey": "guawi-ace",
+        "property": "Statut de la description aromatique",
+        "expectedAnswer": "Une description sensorielle, sans profil terpénique mesuré",
+        "learningObjective": "Séparer arôme annoncé et composition moléculaire mesurée.",
+        "factKey": "guawi-ace-bouquet-not-terpene-analysis",
+        "form": "deduction",
+        "difficultyRationale": "Interprétation directe de prémisses fournies : distinguer nature et portée des informations présentées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-guawi",
+            "locator": "Additional information > Bouquet et Terpene profile",
+            "support": "Un bouquet est décrit mais le profil terpénique est explicitement non analysé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bediol-brand-elida-chemovar",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans le tableau de Bedrocan, quel chemovar porte la marque Bediol® ?",
+      "options": [
+        "Afina",
+        "Talea",
+        "Elida",
+        "Rensina"
+      ],
+      "answer": 2,
+      "explanation": "Le tableau distingue la marque Bediol® du chemovar Elida. Les deux noms n'ont donc pas le même rôle.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Bediol et Elida",
+        "subjectKey": "bediol-elida",
+        "property": "Correspondance marque et chemovar",
+        "expectedAnswer": "Elida",
+        "learningObjective": "Distinguer nom de produit et nom du matériel végétal.",
+        "factKey": "bediol-brand-elida-chemovar",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Cannabis flowers, ligne Bediol",
+            "support": "La ligne Bediol place Elida dans la colonne Chemovar."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-chemovar-chemical-variant",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Que désigne « chemovar » dans la présentation des fleurs de Bedrocan ?",
+      "options": [
+        "Un nom de marque réservé à un pays",
+        "Un rang botanique supérieur à l'espèce",
+        "Une forme de conditionnement commercial",
+        "Un variant défini par son profil chimique"
+      ],
+      "answer": 3,
+      "explanation": "Bedrocan définit le chemovar par un profil chimique particulier, notamment en cannabinoïdes et terpènes.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Chemovar dans la présentation Bedrocan",
+        "subjectKey": "chemovar-bedrocan",
+        "property": "Critère définissant le terme chemovar",
+        "expectedAnswer": "Un variant défini par son profil chimique",
+        "learningObjective": "Séparer classification chimique, taxonomie et marque.",
+        "factKey": "bedrocan-chemovar-chemical-variant",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Why chemovar?",
+            "support": "Le terme est défini comme un variant chimique caractérisé en particulier par cannabinoïdes et terpènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bedrolite-bedrocan-cbd-dominant-profile",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans le tableau de Bedrocan, quel produit est classé à dominante CBD ?",
+      "options": [
+        "Bedrolite®",
+        "Bedrobinol®",
+        "Bedica®",
+        "Bedrocan®"
+      ],
+      "answer": 0,
+      "explanation": "Bedrolite est classé à dominante CBD. Le tableau décrit un profil de composition, sans en déduire un effet médical.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Bedrolite",
+        "subjectKey": "bedrolite-rensina",
+        "property": "Classe de profil cannabinoïde publiée",
+        "expectedAnswer": "Bedrolite®",
+        "learningObjective": "Lire une dominante chimique dans une gamme documentée.",
+        "factKey": "bedrolite-bedrocan-cbd-dominant-profile",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Cannabis flowers, ligne Bedrolite et légende CBD dominant",
+            "support": "Bedrolite est classé CBD dominant."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bediol-bedrocan-balanced-profile",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel produit Bedrocan est classé « Balanced », avec du THC et du CBD en proportions voisines ?",
+      "options": [
+        "Bedica®",
+        "Bediol®",
+        "Bedrobinol®",
+        "Bedrocan® forte"
+      ],
+      "answer": 1,
+      "explanation": "Bediol est la référence classée équilibrée dans le tableau. Équilibré ne signifie pas que les deux valeurs sont exactement égales.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Bediol",
+        "subjectKey": "bediol-elida",
+        "property": "Profil équilibré publié",
+        "expectedAnswer": "Bediol®",
+        "learningObjective": "Comprendre qu'un profil équilibré peut avoir des valeurs proches mais différentes.",
+        "factKey": "bediol-bedrocan-balanced-profile",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Cannabis flowers, ligne Bediol et légende Balanced",
+            "support": "Bediol est classé Balanced et affiche 6,3 % de THC et 8,8 % de CBD."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-afina-shared-bedrocan-forte-products",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel chemovar est commun aux références Bedrocan® et Bedrocan® forte dans le tableau du fabricant ?",
+      "options": [
+        "Elida",
+        "Ludina",
+        "Afina",
+        "Janna"
+      ],
+      "answer": 2,
+      "explanation": "Les deux références sont rattachées à Afina, avec des valeurs moyennes de THC différentes dans le tableau.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Afina",
+        "subjectKey": "afina-bedrocan",
+        "property": "Chemovar partagé entre deux références",
+        "expectedAnswer": "Afina",
+        "learningObjective": "Ne pas confondre deux références commerciales et deux chemovars distincts.",
+        "factKey": "afina-shared-bedrocan-forte-products",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Cannabis flowers, lignes Bedrocan forte et Bedrocan",
+            "support": "Afina figure dans la colonne Chemovar pour les deux marques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-average-versus-batch-coa",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Bedrocan publie des teneurs moyennes. Quel document renseigne les pourcentages réels d'un lot précis ?",
+      "options": [
+        "Le tableau moyen de toute la gamme",
+        "Le nom de son chemovar",
+        "Son étiquette sativa ou indica",
+        "Son certificat d'analyse"
+      ],
+      "answer": 3,
+      "explanation": "Le fabricant précise que son tableau donne des moyennes de plusieurs lots et renvoie au certificat d'analyse pour chaque lot.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Teneurs moyennes et valeurs de lot Bedrocan",
+        "subjectKey": "bedrocan-batch-analysis",
+        "property": "Document apportant les valeurs d'un lot",
+        "expectedAnswer": "Son certificat d'analyse",
+        "learningObjective": "Distinguer une moyenne de produit d'une donnée analytique propre au lot.",
+        "factKey": "bedrocan-average-versus-batch-coa",
+        "form": "situation",
+        "difficultyRationale": "Interprétation directe de prémisses fournies : distinguer nature et portée des informations présentées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Note sous le tableau Cannabis flowers",
+            "support": "La note oppose moyennes de plusieurs lots et valeurs réelles au certificat d'analyse de chaque lot."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-flos-whole-dried-flower",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Que désigne la forme « flos » dans la présentation de Bedrocan ?",
+      "options": [
+        "La fleur entière séchée",
+        "La graine entière séchée",
+        "La feuille entière séchée",
+        "La tige entière séchée"
+      ],
+      "answer": 0,
+      "explanation": "Le fabricant définit flos comme la fleur entière séchée du cannabis. C'est une forme du matériel végétal.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Flos",
+        "subjectKey": "flos-bedrocan",
+        "property": "Organe et forme du produit",
+        "expectedAnswer": "La fleur entière séchée",
+        "learningObjective": "Associer un terme de présentation à l'organe végétal concerné.",
+        "factKey": "bedrocan-flos-whole-dried-flower",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Supplied product forms > Flos",
+            "support": "Cannabis flos est défini comme la fleur entière séchée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bedrocan-cutflos-reduced-not-powder",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle différence Bedrocan fait-il entre « cut flos » et la fleur entière ?",
+      "options": [
+        "Une réduction de taille jusqu'à la poudre fine",
+        "Une réduction de taille sans mise en poudre",
+        "Un décorticage des graines de la fleur",
+        "Un mélange de fleurs et de fibres de tiges"
+      ],
+      "answer": 1,
+      "explanation": "Cut flos correspond aux fleurs réduites en taille, sans être pulvérisées, selon la définition du fabricant.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-bedrocan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Cut flos",
+        "subjectKey": "cut-flos-bedrocan",
+        "property": "État physique de la fleur",
+        "expectedAnswer": "Une réduction de taille sans mise en poudre",
+        "learningObjective": "Distinguer fleur fragmentée et poudre sans décrire un procédé d'extraction.",
+        "factKey": "bedrocan-cutflos-reduced-not-powder",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bedrocan",
+            "locator": "Supplied product forms > Cut flos",
+            "support": "La forme est définie par une réduction de taille autre que la pulvérisation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-polish-four-varieties-institute-breeder",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel organisme présente Białobrzeskie, Tygra, Henola et Rajan comme ses obtentions ?",
+      "options": [
+        "L'Institut Vavilov des ressources phytogénétiques",
+        "L'Institut agronomique hongrois de Kompolt",
+        "L'Institut des fibres naturelles et plantes médicinales",
+        "L'Institut national français INRAE"
+      ],
+      "answer": 2,
+      "explanation": "Le Polish Hemp Program attribue les quatre variétés à l'Institute of Natural Fibres and Medicinal Plants, en Pologne.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-polishinstitute"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Białobrzeskie, Tygra, Henola et Rajan",
+        "subjectKey": "polish-institute-hemp",
+        "property": "Organisme obtenteur commun",
+        "expectedAnswer": "L'Institut des fibres naturelles et plantes médicinales",
+        "learningObjective": "Identifier un organisme de sélection à partir de son programme officiel.",
+        "factKey": "polish-four-varieties-institute-breeder",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-polishinstitute",
+            "locator": "Hemp varieties",
+            "support": "La page dit que les quatre variétés ont été sélectionnées à cet institut."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-bialobrzeskie-monoecious-fibre-variety",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quel caractère sexuel l'Institut polonais attribue-t-il à Białobrzeskie ?",
+      "options": [
+        "Dioïque",
+        "Uniquement mâle",
+        "Uniquement femelle",
+        "Monoïque"
+      ],
+      "answer": 3,
+      "explanation": "L'Institut décrit Białobrzeskie comme un chanvre à fibres monoïque, portant les fleurs mâles et femelles sur une même plante.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "q2-b01-bialobrzeskie"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Białobrzeskie",
+        "subjectKey": "bialobrzeskie",
+        "property": "Organisation sexuelle annoncée",
+        "expectedAnswer": "Monoïque",
+        "learningObjective": "Identifier le système sexuel décrit pour une variété de chanvre.",
+        "factKey": "bialobrzeskie-monoecious-fibre-variety",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-bialobrzeskie",
+            "locator": "Paragraphe introductif",
+            "support": "La variété est décrite comme monoecious fibrous hemp."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-henola-grain-oil-destination",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle destination l'Institut polonais met-il en avant pour Henola ?",
+      "options": [
+        "Le grain et l'huile de graines",
+        "La fibre textile longue",
+        "La chènevotte de construction",
+        "Les fibres de cordage"
+      ],
+      "answer": 0,
+      "explanation": "La fiche Henola la présente comme une variété grain/huile. Il s'agit de sa destination de sélection mise en avant.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-henola"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Henola",
+        "subjectKey": "henola",
+        "property": "Destination de sélection annoncée",
+        "expectedAnswer": "Le grain et l'huile de graines",
+        "learningObjective": "Reconnaître la spécialisation annoncée d'un cultivar de chanvre.",
+        "factKey": "henola-grain-oil-destination",
+        "form": "identification",
+        "difficultyRationale": "Rappel d'une attribution, d'un caractère ou d'un terme spécialisé sans données permettant de le reconstruire dans l'énoncé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-henola",
+            "locator": "Paragraphe introductif, grain/oil variety",
+            "support": "Henola est décrite comme une variété grain/oil."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-henola-shorter-cycle-than-bialobrzeskie",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Par rapport à Białobrzeskie, quel cycle végétatif l'Institut annonce-t-il pour Henola ?",
+      "options": [
+        "Plus long",
+        "Plus court",
+        "De même durée",
+        "Non comparé dans cette fiche"
+      ],
+      "answer": 1,
+      "explanation": "L'Institut décrit un cycle plus court pour Henola que pour Białobrzeskie. La comparaison vient de sa fiche variétale.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-henola"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Henola et Białobrzeskie",
+        "subjectKey": "henola",
+        "property": "Cycle végétatif comparé",
+        "expectedAnswer": "Plus court",
+        "learningObjective": "Lire un caractère de précocité relatif entre deux variétés.",
+        "factKey": "henola-shorter-cycle-than-bialobrzeskie",
+        "form": "comparaison",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-henola",
+            "locator": "Paragraphe introductif",
+            "support": "Le cycle de Henola est décrit comme plus court que celui de Białobrzeskie."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-tygra-fibre-technical-uses",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Pour quel débouché la fibre de Tygra est-elle particulièrement présentée par l'Institut polonais ?",
+      "options": [
+        "Les étoffes fines d'habillement",
+        "Les voiles d'ameublement",
+        "Les usages techniques",
+        "Les tricots de lingerie"
+      ],
+      "answer": 2,
+      "explanation": "La description de Tygra met particulièrement en avant les usages techniques de sa fibre, sans limiter toute la plante à ce débouché.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-tygra"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Tygra",
+        "subjectKey": "tygra",
+        "property": "Destination de la fibre annoncée",
+        "expectedAnswer": "Les usages techniques",
+        "learningObjective": "Associer le caractère sélectionné à la partie de plante valorisée.",
+        "factKey": "tygra-fibre-technical-uses",
+        "form": "identification",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-tygra",
+            "locator": "Paragraphe descriptif",
+            "support": "La bonne qualité de fibre est décrite comme utilisée particulièrement à des fins techniques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-rajan-maturity-context-polish-conditions",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "À quel contexte la fiche Rajan rattache-t-elle sa maturité de fin septembre ou début octobre ?",
+      "options": [
+        "Aux conditions finlandaises",
+        "Aux conditions australiennes",
+        "Aux conditions méditerranéennes",
+        "Aux conditions polonaises"
+      ],
+      "answer": 3,
+      "explanation": "La fiche précise les conditions polonaises. Cette observation n'est donc pas une date de maturité valable partout.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-rajan"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Rajan",
+        "subjectKey": "rajan",
+        "property": "Contexte géographique de maturité décrit",
+        "expectedAnswer": "Aux conditions polonaises",
+        "learningObjective": "Conserver le contexte d'un caractère phénologique annoncé.",
+        "factKey": "rajan-maturity-context-polish-conditions",
+        "form": "situation",
+        "difficultyRationale": "Connaissance d'une version précise ou interprétation d'une description attribuée.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-rajan",
+            "locator": "Paragraphe introductif, In Polish conditions",
+            "support": "La maturité biologique est située en fin septembre ou début octobre dans les conditions polonaises."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-coboru-bialobrzeskie-earliest-entry-compared",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "COBORU donne Białobrzeskie 1967, Tygra 2007, Wielkopolskie 2009 et Henola 2017. Quelle entrée est la plus ancienne ?",
+      "options": [
+        "Białobrzeskie",
+        "Tygra",
+        "Wielkopolskie",
+        "Henola"
+      ],
+      "answer": 0,
+      "explanation": "COBORU indique 1967 pour Białobrzeskie, avant Tygra (2007), Wielkopolskie (2009) et Henola (2017). Ce sont des dates d'entrée au registre.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-coboru"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Dates d'entrée au registre polonais",
+        "subjectKey": "coboru-hemp-entry-dates",
+        "property": "Ordre des premières inscriptions parmi quatre variétés",
+        "expectedAnswer": "Białobrzeskie",
+        "learningObjective": "Distinguer ancienneté d'inscription et ancienneté d'une origine supposée.",
+        "factKey": "coboru-bialobrzeskie-earliest-entry-compared",
+        "form": "chronologie",
+        "difficultyRationale": "Les dates sont fournies ; une comparaison chronologique élémentaire permet de répondre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-coboru",
+            "locator": "Tableau Hemp, Entry date, lignes Białobrzeskie, Tygra, Wielkopolskie et Henola",
+            "support": "Les dates d'entrée sont 1967, 2007, 2009 et 2017 respectivement."
+          }
+        ],
+        "jurisdiction": "Pologne ; comparaison historique des dates d'entrée au registre COBORU consulté le 16 novembre 2026",
+        "reviewAfter": "2027-11-16"
+      }
+    },
+    {
+      "id": "hemp-q2-b01-zamaldelica-ace-leading-monoterpenes",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quels sont les deux monoterpènes les plus abondants dans le profil de Zamaldelica publié par ACE ?",
+      "options": [
+        "Linalol et limonène",
+        "Terpinolène et β-myrcène",
+        "α-Pinène et β-pinène",
+        "β-Ocimène et γ-terpinène"
+      ],
+      "answer": 1,
+      "explanation": "Le profil publié pour cette version place le terpinolène et le β-myrcène en tête des monoterpènes ; cela ne certifie pas chaque lot.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b01-zamaldelica"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Profil publié de Zamaldelica féminisée",
+        "subjectKey": "zamaldelica-ace",
+        "property": "Deux monoterpènes annoncés les plus abondants",
+        "expectedAnswer": "Terpinolène et β-myrcène",
+        "learningObjective": "Lire les constituants dominants d'un profil attribué sans le généraliser.",
+        "factKey": "zamaldelica-ace-leading-monoterpenes",
+        "form": "comparaison",
+        "difficultyRationale": "Croisement d'informations et distinction entre statuts de données proches.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-zamaldelica",
+            "locator": "Additional information > Terpene profile",
+            "support": "La fiche cite 23 % de terpinolène et 22 % de bêta-myrcène, devant les autres monoterpènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-panama-ace-terpinolene-nearly-half-profile",
+      "topicId": "molecules",
+      "level": 3,
+      "prompt": "Quel composé approche la moitié du profil terpénique de Panama publié par ACE ?",
+      "options": [
+        "Le limonène",
+        "Le linalol",
+        "Le terpinolène",
+        "Le β-caryophyllène"
+      ],
+      "answer": 2,
+      "explanation": "ACE annonce presque 50 % de terpinolène dans ce profil terpénique. Ce n'est pas une teneur de 50 % de la masse de la plante.",
+      "articleId": "ref-profils-aromatiques",
+      "sourceIds": [
+        "q2-b01-panama"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "Profil publié de Panama féminisée",
+        "subjectKey": "panama-ace",
+        "property": "Composé dominant annoncé et dénominateur",
+        "expectedAnswer": "Le terpinolène",
+        "learningObjective": "Interpréter une proportion relative au profil terpénique sans changer son dénominateur.",
+        "factKey": "panama-ace-terpinolene-nearly-half-profile",
+        "form": "identification",
+        "difficultyRationale": "Croisement d'informations et distinction entre statuts de données proches.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-panama",
+            "locator": "Additional information > Terpene profile",
+            "support": "La fiche annonce une proportion de terpinolène presque égale à 50 % dans le profil terpénique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-b01-finola-canada-list-before-europe-2018-account",
+      "topicId": "profiles",
+      "level": 3,
+      "prompt": "D'après le document Finola de 2018, quelle admission de FINOLA précède l'autre ?",
+      "options": [
+        "La liste de l'UE précède la liste canadienne",
+        "Les deux admissions se font la même année",
+        "Les deux précèdent le début de la sélection en 1995",
+        "La liste canadienne précède la liste de l'UE"
+      ],
+      "answer": 3,
+      "explanation": "Le récit de 2018 situe l'admission canadienne en 1998 et l'admission à la liste européenne en 2003. Il ne décrit pas le droit actuel.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-b01-finola2018"
+      ],
+      "editorial": {
+        "category": "varieties",
+        "subject": "FINOLA dans le document de 2018",
+        "subjectKey": "finola-historical-listing",
+        "property": "Ordre de deux admissions historiques",
+        "expectedAnswer": "La liste canadienne précède la liste de l'UE",
+        "learningObjective": "Comparer deux jalons documentés sans les confondre avec le début de la sélection.",
+        "factKey": "finola-canada-list-before-europe-2018-account",
+        "form": "chronologie",
+        "difficultyRationale": "Croisement d'informations et distinction entre statuts de données proches.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-b01-finola2018",
+            "locator": "p. 1, General information, premier paragraphe",
+            "support": "Le document place l'admission canadienne en 1998 et l'admission européenne en 2003."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-b01-finola2018",
+      "title": "Some general information about FINOLA",
+      "organization": "Finola Oy",
+      "url": "https://finola.fi/wp-content/uploads/2018/09/Some_basic_things_to_know_about_FINOLA_2018.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Finola Oy",
+      "published": "2018 (nom du document et chemin daté)",
+      "passage": "Le document situe le développement de FINOLA en Finlande, sous FIN-314 en 1995. Il décrit une variété dioïque destinée au grain. Il distingue la variété FINOLA et la marque Finola® réservée aux produits alimentaires. Il place l'admission canadienne en 1998 avant l'admission européenne de 2003.",
+      "access": "full-text",
+      "documentKind": "Document descriptif de l'obtenteur",
+      "limitation": "Document de l'obtenteur daté de 2018 ; ne vaut pas état réglementaire actuel. Les affirmations nutritionnelles et sanitaires du document ne sont pas utilisées.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "p. 1, General information et Crop Description ; p. 2, présentation de Finola Oy et de Finola®",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-finola2",
+      "title": "News & Info — Some history on the FINOLA varieties",
+      "organization": "Finola Oy",
+      "url": "https://finola.fi/news-info/",
+      "verifiedAt": "2026-11-16",
+      "author": "Finola Oy",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "FINOLA2 est présentée comme un nouveau chanvre oléagineux dioïque et autofleurissant ; par rapport à FINOLA, ses graines sont plus grosses et ses plantes un peu plus hautes.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Comparaisons annoncées par l'obtenteur, sans protocole comparatif fourni ici. Ne pas utiliser les passages juridiques ou les rendements.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Some history on the FINOLA varieties, paragraphes FINOLA2 (lignes 57–59 du rendu)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-autoduck",
+      "title": "Auto Duck® — Product info",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/auto-duck",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "La fiche décrit des feuilles palmées en empreinte de canard issues d'une mutation naturelle stabilisée. Elle revendique Frisian Duck croisée avec Auto White Widow pour Auto Duck.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Description commerciale attribuée à Dutch Passion ; aucune filiation déduite du nom, aucun protocole de culture utilisé.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Auto Duck is a very robust cannabis strain ; What kind of genetics does Auto Duck contain? (lignes 424–430)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-frisianduck",
+      "title": "Frisian Duck® — Product info",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/frisian-duck",
+      "verifiedAt": "2026-11-16",
+      "author": "Dutch Passion",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Le croisement annoncé est Frisian Dew × DucksFoot. La fiche indique que certaines feuilles supérieures peuvent retrouver une forme de cannabis plus habituelle durant la floraison.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Déclarations de l'obtenteur, sans analyse génétique indépendante fournie sur cette page ; la morphologie peut varier.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "En-tête et A top-choice for the outdoor urban home grower (lignes 288–290 et 459)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-ak47",
+      "title": "AK-47 Strain Created by Serious Seeds",
+      "organization": "Serious Seeds",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/ak-47",
+      "verifiedAt": "2026-11-16",
+      "author": "Serious Seeds",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Serious Seeds revendique la création d'AK-47 et décrit une sélection puis un croisement de matériels colombien, mexicain, thaï et afghan.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Attribution et ascendance rapportées par l'obtenteur ; ce récit n'établit pas un pedigree génomique vérifié de tous les produits homonymes.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Titre et Strain Description > Genetics (lignes 44 et 160–162)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-bubblegum",
+      "title": "Bubble Gum Strain Created by Serious Seeds",
+      "organization": "Serious Seeds",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/bubble-gum",
+      "verifiedAt": "2026-11-16",
+      "author": "Serious Seeds",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "La version Serious Seeds est présentée comme IBL et non comme hybride F1. Le récit de la maison situe le matériel initial chez des cultivateurs de l'Indiana, puis décrit des sélections divergentes par plusieurs breeders.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "La page signale elle-même une histoire controversée et plusieurs versions ; toute attribution est limitée au récit et à la version Serious Seeds.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Sous-titre IBL et Genetics (lignes 46, 133–137) ; A bit of history (lignes 172–177)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-whiterussian",
+      "title": "White Russian Strain Created by Serious Seeds",
+      "organization": "Serious Seeds",
+      "url": "https://www.seriousseeds.com/cannabis-seeds/white-russian",
+      "verifiedAt": "2026-11-16",
+      "author": "Serious Seeds",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Serious Seeds décrit White Russian comme le croisement de son AK-47 avec le clone White Widow des années 1990.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Pedigree annoncé par la maison pour sa propre version ; ne pas généraliser aux homonymes.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Présentation et Strain Description > Genetics (lignes 63 et 114–116)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-zamaldelica",
+      "title": "Zamaldelica Feminized",
+      "organization": "ACE Seeds",
+      "url": "https://www.aceseeds.org/en/seeds/zamaldelica-feminized-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "ACE Seeds",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "ACE situe son Zamal à La Réunion et décrit une mère Zamal pollinisée par Golden Tiger. Zamaldelica féminisée est classée F3 semi-stabilisée. Dans le profil terpénique publié, terpinolène et bêta-myrcène sont les deux monoterpènes annoncés les plus abondants.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Version féminisée consultée le 16 novembre 2026 ; récit de l'obtenteur et profil publié sur sa fiche, sans garantie de composition de tous les lots.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Description (lignes 57–59) ; Additional information > Type, Genetics, Terpene profile (lignes 81, 97 et 101)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-panama",
+      "title": "Panama Feminized",
+      "organization": "ACE Seeds",
+      "url": "https://www.aceseeds.org/en/seeds/panama-feminized-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "ACE Seeds",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "La fiche revendique une hybridation de trois lignées panaméennes, décrit des pistils souvent rougeâtres ou roses et annonce un profil terpénique où le terpinolène approche la moitié du total.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Descriptions et profil attribués à ACE, pas règle sur toutes les plantes portant un nom voisin. La ressemblance avec Colombia Punto Rojo n'est pas traitée comme preuve de filiation.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Description (lignes 57–59) ; Additional information > Genetics et Terpene profile (lignes 97 et 101)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-guawi",
+      "title": "Guawi Feminized",
+      "organization": "ACE Seeds",
+      "url": "https://www.aceseeds.org/en/seeds/guawi-feminized-seeds/",
+      "verifiedAt": "2026-11-16",
+      "author": "ACE Seeds",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "ACE annonce Old Malawi Killer × Tikal F5 pour Guawi. La fiche fournit un bouquet descriptif mais précise que son profil terpénique n'a pas encore été analysé.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "La fiche comporte des qualifications sativa incohérentes entre texte et tableau ; elles ne sont pas utilisées. Les arômes annoncés ne sont pas des dosages moléculaires.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Description (ligne 57) ; Additional information > Genetics, Bouquet, Terpene profile (lignes 84–88)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-bedrocan",
+      "title": "Cannabis flowers — Brand name, Chemovar, Form",
+      "organization": "Bedrocan",
+      "url": "https://bedrocan.com/cannabis-products/cannabis-flowers/",
+      "verifiedAt": "2026-11-16",
+      "author": "Bedrocan",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Le tableau distingue marques et chemovars : Bediol/Elida, Bedrolite/Rensina, Bedrocan et Bedrocan forte/Afina. Bediol est classé équilibré, Bedrolite dominant CBD. Les pourcentages sont des moyennes de lots ; les valeurs réelles figurent au certificat d'analyse. Chemovar désigne un variant chimique ; flos est la fleur entière séchée, cut flos la fleur réduite en taille sans mise en poudre.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Page du fabricant consultée en 2026 ; données descriptives de produits, sans indication thérapeutique ni conseil de consommation. Les valeurs moyennes ne sont pas celles d'un lot précis.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Tableau Cannabis flowers (lignes 83–111) ; Why chemovar? (ligne 114) ; Supplied product forms (lignes 123–131)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-polishinstitute",
+      "title": "Polish Hemp Program — Hemp varieties",
+      "organization": "Institute of Natural Fibres and Medicinal Plants",
+      "url": "https://www.polishhempprogram.com/",
+      "verifiedAt": "2026-11-16",
+      "author": "Institute of Natural Fibres and Medicinal Plants",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Le programme de l'Institut indique que Białobrzeskie, Tygra, Henola et Rajan ont toutes été obtenues dans cet institut polonais.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Présentation de l'institut obtenteur ; aucune promesse de rendement ou recommandation de culture reprise.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Hemp varieties (lignes 35–37 et 162–164) ; coordonnées de l'Institut (lignes 270–275)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-bialobrzeskie",
+      "title": "Polish Hemp Program — Białobrzeskie",
+      "organization": "Institute of Natural Fibres and Medicinal Plants",
+      "url": "https://www.polishhempprogram.com/polish-hemp-program---bialobrzeskie.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Institute of Natural Fibres and Medicinal Plants",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Białobrzeskie est décrite comme une variété de chanvre à fibres monoïque, sélectionnée à l'Institut.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Description de l'obtenteur ; état d'inscription et rendements exclus de la question.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Paragraphe introductif (ligne 3)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-henola",
+      "title": "Polish Hemp Program — Henola",
+      "organization": "Institute of Natural Fibres and Medicinal Plants",
+      "url": "https://www.polishhempprogram.com/polish-hemp-program---henola.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Institute of Natural Fibres and Medicinal Plants",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "Henola est présentée comme une variété pour le grain et l'huile, de cycle végétatif plus court que Białobrzeskie.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Comparaison annoncée par l'institut, sans généralisation à tout milieu ; les tableaux mal alignés en fin de page ne sont pas utilisés.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Paragraphe introductif (ligne 3)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-tygra",
+      "title": "Polish Hemp Program — Tygra",
+      "organization": "Institute of Natural Fibres and Medicinal Plants",
+      "url": "https://www.polishhempprogram.com/polish-hemp-program---tygra.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Institute of Natural Fibres and Medicinal Plants",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "La description attribue à Tygra une fibre destinée particulièrement aux usages techniques.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "Le tableau numérique est désordonné dans le rendu et n'est pas utilisé. Description de destination annoncée par l'obtenteur.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Paragraphe descriptif (lignes 27–29)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-rajan",
+      "title": "Polish Hemp Program — Rajan",
+      "organization": "Institute of Natural Fibres and Medicinal Plants",
+      "url": "https://www.polishhempprogram.com/polish-hemp-program---rajan.html",
+      "verifiedAt": "2026-11-16",
+      "author": "Institute of Natural Fibres and Medicinal Plants",
+      "published": "Sans date affichée sur la page consultée",
+      "passage": "La fiche décrit Rajan comme la variété la plus tardive du programme ; elle situe sa maturité biologique en fin septembre ou début octobre dans les conditions polonaises.",
+      "access": "official-page",
+      "documentKind": "Fiche officielle de l'obtenteur",
+      "limitation": "La maturité concerne expressément les conditions polonaises ; ni recommandation de culture ni calendrier universel.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Paragraphe introductif (ligne 4)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    },
+    {
+      "id": "q2-b01-coboru",
+      "title": "Varieties admitted to the Polish National List — Hemp",
+      "organization": "COBORU",
+      "url": "https://www.coboru.gov.pl/en/nli/nli_varieties?kodgatunku=KOP",
+      "verifiedAt": "2026-11-16",
+      "author": "COBORU",
+      "published": "Registre dynamique consulté le 16 novembre 2026",
+      "passage": "Les dates d'entrée indiquées sont 1967 pour Białobrzeskie, 2007 pour Tygra, 2009 pour Wielkopolskie et 2017 pour Henola.",
+      "access": "official-page",
+      "documentKind": "Registre officiel",
+      "limitation": "On compare des dates d'entrée au registre, pas des dates de création ni une autorisation hors de Pologne.",
+      "consultation": {
+        "reader": "b_external_varieties",
+        "date": "2026-11-16",
+        "locator": "Tableau Hemp, colonne Entry date (lignes 12–20)",
+        "result": "Page ouverte et passages indiqués lus ; faits descriptifs uniquement, sans reprendre les conseils de culture ni les promesses d'effet."
+      }
+    }
+  ]
+}

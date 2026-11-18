@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-15",
+  "status": "applied_and_verified_live",
+  "appliedResult": {
+    "recordedAtUtc": "2026-11-15T17:32:12.338219+00:00",
+    "durationMs": 56510,
+    "walletsReset": 39,
+    "pioneersRestored": 6,
+    "normalStartingCashCents": 100000,
+    "pioneerStartingCashCents": 600000,
+    "gameCardsRemoved": 667,
+    "gameBoostersRemoved": 101,
+    "protectedCardsPreserved": 3649,
+    "freshWelcomePacks": 72,
+    "reviewsPreserved": 12,
+    "notebookPointRowsPreserved": 17,
+    "protectedTablesVerifiedUnchanged": 125,
+    "archivedRows": 264372,
+    "retiredRequestKeys": 7902,
+    "installedRequestGuards": 25,
+    "privateArchive": "game_reset_20261115",
+    "postCommitVerified": true,
+    "temporaryCopyDeleted": true
+  },
+  "validation": {
+    "isolatedPostgres": "Restauration dans un conteneur distinct sans réseau ni port publié ; aucune identité authentifiée exportée au-delà des UUID nécessaires aux FK, sessions et journaux sensibles exclus.",
+    "rollback": "Reset exécuté sur la copie puis annulé ; absence de l’archive après rollback vérifiée.",
+    "commitAndReplay": "Commit local réussi ; seconde application rejetée avant toute suppression.",
+    "concurrency": "Verrous des tables affectées acquis avant le premier snapshot REPEATABLE READ. Écriture Carnet concurrente conservée ; verrou d’écriture sur orders acquis sans attente pendant le reset local.",
+    "oldCommands": "Anciens reçus réinsérés pour 24 tables contenant de l’historique : tous rejetés. Nouveau request_key accepté.",
+    "permissions": "Archive, fonction et schéma privés inaccessibles à anon, authenticated et service_role ; vérification répétée sur la base réelle après commit.",
+    "live": "Transaction réelle validée, métadonnées relues après COMMIT, 12 avis/17 écritures Carnet/39 portefeuilles/6 Pionniers confirmés ; aucune culture en cours au contrôle final.",
+    "cleanup": "Conteneur et volume de test supprimés ; export SQL contenant les données et fichier temporaire d’UUID supprimés. Seuls les scripts, métadonnées de schéma et rapports agrégés locaux restent dans output."
+  },
+  "request": "Remettre la progression du jeu à zéro pour tous ; conserver les points de dégustation du Carnet et les avis ; rétablir les avantages de départ des Pionniers.",
+  "confirmedScope": {
+    "reset": [
+      "Cultures, récoltes, stocks, transformations et contrats",
+      "Équipements, bâtiments, commerce, personnel et carrière",
+      "Argent fictif, prêts, placements et ordres en attente",
+      "Défis, succès, expérience, duels et classements du jeu",
+      "Progression de l’école, QuizzShow et réseaux sociaux fictifs"
+    ],
+    "preserve": [
+      "Comptes clients et authentification",
+      "Commandes, paiements, factures et droits liés aux achats réels",
+      "Avis, notes, votes, badges et points du Carnet",
+      "Crédits de transition dégustation kq_arena_tasting_transition_credits",
+      "Boîte aux lettres, signalements et récompenses de contribution",
+      "Preuves d’attribution et droit au pack Pionnier",
+      "Catalogues, règles, saisons et paramètres du jeu"
+    ]
+  },
+  "pioneer": {
+    "normalStartingCashCents": 100000,
+    "currentPackCashCents": 500000,
+    "packCount": 10,
+    "cards": "Un Buddie gold/epic et la carte souvenir Pionnier.",
+    "handling": "Préserver les preuves d’achat et d’attribution. Ne pas supprimer les grants pour rappeler claim : cela peut reroller le Buddie, doubler des cartes et modifier l’éligibilité. Distinguer restauration du cash, inventaire existant et boosters ouverts.",
+    "legacy": "Certains anciens grants peuvent porter 100000 centimes ; contrôler avant de fixer les montants de restauration."
+  },
+  "inventoryDecision": "Confirmé par l’utilisateur : réinitialiser les gains du jeu, conserver les cartes et boosters liés aux achats.",
+  "manualGiftDecision": "Confirmé par l’utilisateur : conserver les 145 anciennes attributions manuelles non identifiées, représentant encore 280 cartes.",
+  "connection": "Connexion administrateur déjà enregistrée, fonctionnelle hors sandbox. Le précédent diagnostic de connexion absente était incorrect.",
+  "localCloneAuthorization": "L’utilisateur autorise explicitement la copie locale temporaire nécessaire à la vérification, hors sessions/journaux sensibles, dans un PostgreSQL isolé sans réseau ni port publié.",
+  "inventoryPolicy": {
+    "removeGameBoosterSources": ["arena_streak", "season_reward", "pvp_win", "mission", "achievement"],
+    "preserveBoosterSources": ["points_purchase", "notebook_badge", "notebook_flower", "contest_bundle", "arena_feedback"],
+    "pointsPurchaseReason": "Ces boosters dépensent les points de fidélité de profiles, pas une monnaie du jeu : conserver aussi les reçus et loyalty_points_spent, sans remboursement ni nouvelle distribution.",
+    "pioneer": "Conserver les 60 droits de boosters et les cartes déjà tirées, sans rouvrir les boosters consommés ni refaire le tirage gold/epic. Rétablir le bonus de cash du pack une seule fois après remise du portefeuille au budget de départ. Préserver les grants et leur montant historique.",
+    "welcome": "Réinitialiser les cadeaux de bienvenue du jeu puis rétablir le départ standard. Ne pas supprimer les éventuels bons commerciaux déjà attribués via un ticket.",
+    "tickets": "Conserver les tickets rattachés à une commande et leurs cartes ; identifier les tickets de bienvenue par leur lien explicite. Toute provenance de ticket restante doit être examinée, jamais assimilée automatiquement à un gain du jeu.",
+    "cards": "Supprimer les cartes reliées uniquement aux entitlements de jeu supprimés, source_bot_battle_id ou game_mission_reward_id. Conserver les liens achats, producteur, fidélité, Carnet, contributions et Pionnier. Une carte avec plusieurs provenances incompatibles bloque l’opération pour examen.",
+    "heritage": "Conserver les tirages liés aux achats et au Carnet ; distinguer les fabrications du jeu. Recalculer l’état dérivé à partir des tirages conservés, sans redistribuer les récompenses d’achat.",
+    "unknownSources": "Arrêt avant toute suppression si une provenance n’est pas classée."
+  },
+  "readOnlyObservation": {
+    "equipmentWallets": 39,
+    "pioneerGrants": 6,
+    "reviews": 12,
+    "notebookPointRows": 17,
+    "cardInstances": 4320,
+    "note": "Comptages REST exacts, pas une sauvegarde. Aucune donnée individuelle exportée."
+  },
+  "executionRequirements": [
+    "Accès PostgreSQL administrateur vérifié avec la session CLI existante et validation du certificat TLS Supabase.",
+    "Sauvegarde récupérable avant suppression et fenêtre sans écritures de jeu.",
+    "Plan explicite par table et par provenance, contrôle de toutes les dépendances FK et triggers ; aucune suppression générique par préfixe ni CASCADE implicite.",
+    "Une transaction unique avec archive privée, identifiant de reset et protection contre une seconde exécution.",
+    "Validation avant commit des données conservées, du nouveau départ et des avantages Pionnier ; ne pas appliquer les autres migrations locales par inadvertance.",
+    "Invalider les caches de classement et les commandes locales en récupération afin de ne pas rejouer une opération de l’ancien jeu."
+  ],
+  "inventoryCommand": "node scripts/preview-game-reset.mjs",
+  "preparedFiles": [
+    "scripts/lib/game-reset-20261115-scope.json",
+    "scripts/prepare-game-reset.mjs",
+    "scripts/sql/reset-game-progress-2026-11-15.sql"
+  ],
+  "transaction": "132 tables de progression réinitialisées ; 125 tables protégées par empreinte ; inventaires mixtes filtrés par provenance. Archive privée transactionnelle game_reset_20261115, conservation de tous les triggers existants, gardes sur 25 tables de commandes pour rejeter les anciens request_key. SQL généré terminé par ROLLBACK par défaut ; exécution réelle effectuée une seule fois avec COMMIT sur la version dont le SHA-256 correspond au test isolé validé.",
+  "nextBoundedTask": "Reset terminé. Ne pas réexécuter ni supprimer l’archive privée sans nouvelle demande. Aucun déploiement applicatif ni application des autres migrations locales pendant cette opération."
+}

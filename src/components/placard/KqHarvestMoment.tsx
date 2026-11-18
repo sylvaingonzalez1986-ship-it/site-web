@@ -37,7 +37,7 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
     : "—";
   const illustration = artwork ?? {
     src: lost ? "/app/kanab-quest/reactions/stages-v3/recolte-dead.webp" : "/app/kanab-quest/stages/sylvain-recolte-v1.webp",
-    alt: lost ? "" : "Sylvain présente la récolte",
+    alt: lost ? "" : "Loïc présente la récolte",
   };
   const reserveConfirmed = alive && result.confirmedFlowers === result.rows.length;
   const description = lost

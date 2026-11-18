@@ -1,11 +1,13 @@
 import { CHANVRIER_CLOTHES, CHANVRIER_SKINS, getChanvrierAppearance, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { CHANVRIER_BODY_SKIN, createChanvrierBodySkinMask } from "./chanvrier-body-registration";
+import { CHANVRIER_FRAME } from "./chanvrier-composition";
 
 type Profile = Pick<ChanvrierProfile, "gender" | "clothing" | "skin" | "appearance">;
 type Rgb = readonly [number, number, number];
-type Layer = { name: string; color: string; source: Rgb; skinSource?: Rgb };
+type Layer = { name: string; color: string; source: Rgb };
 
-const WIDTH = 768;
-const HEIGHT = 1280;
+const WIDTH = CHANVRIER_FRAME.width;
+const HEIGHT = CHANVRIER_FRAME.height;
 const ROOT = "/contest/avatars/chanvrier-body-v6/";
 const OCHRE: Rgb = [200, 149, 54];
 const TEAL: Rgb = [8, 127, 124];
@@ -14,6 +16,7 @@ const PEACH: Rgb = [232, 160, 141];
 const images = new Map<string, Promise<HTMLImageElement>>();
 const rendered = new Map<string, HTMLCanvasElement>();
 const pending = new Map<string, Promise<HTMLCanvasElement>>();
+const skinMasks = new WeakMap<HTMLImageElement, Uint8Array>();
 
 function load(name: string): Promise<HTMLImageElement> {
   const cached = images.get(name);
@@ -48,13 +51,6 @@ function canvas(): HTMLCanvasElement {
 const rgb = (hex: string): Rgb => [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
 const luminance = (r: number, g: number, b: number) => .2126 * r + .7152 * g + .0722 * b;
 
-function exposesSkin(name: string, x: number, y: number): boolean {
-  if (name === "legs-shorts") return true;
-  if (name === "legs-skirt") return y >= 1110;
-  return (name === "top-tee" || name === "top-shirt" || name === "top-apron")
-    && y >= 550 && y <= 735 && (x < 285 || x > 525);
-}
-
 /** Tint the garment's saturated fill, retaining black ink and cream details. */
 function tint(image: HTMLImageElement, layer: Layer, skin: Rgb, result: HTMLCanvasElement): HTMLCanvasElement {
   const context = result.getContext("2d", { willReadFrequently: true })!;
@@ -64,24 +60,30 @@ function tint(image: HTMLImageElement, layer: Layer, skin: Rgb, result: HTMLCanv
   const data = pixels.data;
   const garmentColor = rgb(layer.color);
   const sourceLight = luminance(...layer.source);
-  const skinLight = luminance(...(layer.skinSource ?? PEACH));
+  const skinSource = CHANVRIER_BODY_SKIN[layer.name]?.source;
+  let skinMask = skinMasks.get(image);
+  if (skinSource && !skinMask) {
+    skinMask = createChanvrierBodySkinMask(layer.name, data, WIDTH, HEIGHT);
+    if (skinMask) skinMasks.set(image, skinMask);
+  }
   for (let i = 0; i < data.length; i += 4) {
     if (data[i + 3] < 8) continue;
     const r = data[i], g = data[i + 1], b = data[i + 2];
     const garment = layer.source === TEAL
       ? g > r * 1.6 && b > r * 1.4 && g > 25
       : layer.source === OCHRE && r > g * 1.14 && g > b * 1.35 && r > 45;
-    const pixel = i / 4;
-    // Painted peach highlights are much less saturated than the former flat
-    // swatch. Their rose chroma still separates them from ochre and ivory;
-    // the exposed-skin regions also protect gloves, soles and dark stockings.
-    const bareSkin = exposesSkin(layer.name, pixel % WIDTH, Math.floor(pixel / WIDTH))
-      && r > 75 && r > g + 4 && g > b + 3 && r - g > (g - b) * .75
-      && (layer.name.startsWith("legs-") || g < b * 1.55);
+    // Registered regions follow the sleeve hems, keeping their warm cream
+    // shadows and the work gloves out of the skin palette.
+    const bareSkin = skinSource && skinMask?.[i / 4];
     if (!garment && !bareSkin) continue;
-    const target = bareSkin ? skin : garmentColor;
-    const shade = Math.min(1.4, luminance(r, g, b) / (bareSkin ? skinLight : sourceLight));
-    for (let channel = 0; channel < 3; channel++) data[i + channel] = Math.min(255, Math.round(target[channel] * shade));
+    if (bareSkin) {
+      // Per-channel ratios retain the painted warm shadows and grain. A single
+      // luminance multiplier used to bleach light skin and flatten dark skin.
+      for (let channel = 0; channel < 3; channel++) data[i + channel] = Math.min(255, Math.round(skin[channel] * data[i + channel] / skinSource[channel]));
+    } else {
+      const shade = Math.min(1.4, luminance(r, g, b) / sourceLight);
+      for (let channel = 0; channel < 3; channel++) data[i + channel] = Math.min(255, Math.round(garmentColor[channel] * shade));
+    }
   }
   context.putImageData(pixels, 0, 0);
   return result;
@@ -93,8 +95,7 @@ async function render(profile: Profile): Promise<HTMLCanvasElement> {
   const skinColor = CHANVRIER_SKINS.find(option => option.code === profile.skin)!.color;
   const skirt = appearance.bottom === "skirt";
   const layers: Layer[] = [
-    // These two edits have a lighter peach fill than the master's bare forearms.
-    { name: `legs-${skirt ? "skirt" : "shorts"}`, color: skinColor, source: PEACH, skinSource: skirt ? [240, 168, 140] : [251, 184, 151] },
+    { name: `legs-${skirt ? "skirt" : "shorts"}`, color: skinColor, source: PEACH },
     { name: `shoes-${appearance.shoes}`, color: color(appearance.shoeColor), source: OCHRE },
     { name: `bottom-${appearance.bottom}`, color: color(appearance.bottomColor), source: TEAL },
     { name: `top-${appearance.top}`, color: color(profile.clothing), source: OCHRE },

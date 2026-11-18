@@ -1,0 +1,546 @@
+{
+  "batchId": "pilot-c",
+  "author": "c_science_pilot",
+  "role": "C",
+  "questions": [
+    {
+      "id": "hemp-q2-c-abeilles-ressource-pollen",
+      "topicId": "biodiversity",
+      "level": 1,
+      "prompt": "Quelle ressource les abeilles viennent-elles surtout récolter sur les fleurs mâles du chanvre ?",
+      "options": [
+        "Le nectar",
+        "La résine",
+        "Le pollen",
+        "La sève"
+      ],
+      "answer": 2,
+      "explanation": "Le chanvre ne produit pas de nectar floral. Son pollen peut pourtant nourrir des abeilles : une plante pollinisée par le vent peut aussi fournir une ressource aux insectes.",
+      "articleId": "ref-ravageurs-auxiliaires",
+      "sourceIds": [
+        "q2-c-flicker-bees-2020"
+      ],
+      "editorial": {
+        "category": "agronomy",
+        "subject": "Abeilles visitant les fleurs de chanvre",
+        "subjectKey": "hemp-bee-floral-resource",
+        "property": "Ressource alimentaire florale",
+        "expectedAnswer": "Le pollen",
+        "learningObjective": "Distinguer la ressource offerte aux abeilles du mode de pollinisation du chanvre.",
+        "factKey": "hemp-bees-collect-pollen-no-floral-nectar",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire courant et interaction écologique concrète, sans connaissance de classement scientifique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-flicker-bees-2020",
+            "locator": "Abstract, deux premières phrases",
+            "support": "Le chanvre ne fournit pas de nectar ; sa production abondante de pollen attire plusieurs espèces d'abeilles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-fleur-male-cinq-etamines",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Combien d'étamines porte normalement une fleur mâle de chanvre ?",
+      "options": [
+        "Trois",
+        "Quatre",
+        "Cinq",
+        "Six"
+      ],
+      "answer": 2,
+      "explanation": "Une fleur mâle porte normalement cinq étamines, disposées en face des cinq sépales. Chaque étamine comprend un filet et une anthère contenant le pollen.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-c-flora-china-cannabaceae-2003"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Fleur staminale de Cannabis sativa",
+        "subjectKey": "cannabis-staminate-flower",
+        "property": "Nombre normal d'étamines",
+        "expectedAnswer": "Cinq",
+        "learningObjective": "Reconnaître l'organisation à cinq étamines de la fleur mâle.",
+        "factKey": "cannabis-male-flower-five-stamens",
+        "form": "identification",
+        "difficultyRationale": "Connaître le nombre et l'organisation des organes reproducteurs d'une fleur mâle de chanvre.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-flora-china-cannabaceae-2003",
+            "locator": "p. 74, description des fleurs mâles des Cannabaceae ; p. 75, genre Cannabis",
+            "support": "La description familiale applicable à Cannabis indique cinq étamines opposées aux cinq sépales."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-chenevis-une-graine",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Combien de graines contient normalement un chènevis, le petit fruit sec du chanvre ?",
+      "options": [
+        "Une",
+        "Deux",
+        "Trois",
+        "Quatre"
+      ],
+      "answer": 0,
+      "explanation": "Le chènevis est un fruit à une seule graine. La fleur possède un ovaire contenant un unique ovule, à l'origine de cette graine après fécondation.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-c-flora-china-cannabaceae-2003"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Chènevis entier",
+        "subjectKey": "chenevis",
+        "property": "Nombre de graines par fruit",
+        "expectedAnswer": "Une",
+        "learningObjective": "Comprendre qu'un fruit entier de chanvre contient une graine unique.",
+        "factKey": "cannabis-achene-single-seed-from-solitary-ovule",
+        "form": "identification",
+        "difficultyRationale": "Caractère simple d'un objet alimentaire familier ; aucune terminologie à deviner.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-flora-china-cannabaceae-2003",
+            "locator": "p. 74, fleurs femelles : ovaire uniloculaire et ovule solitaire ; p. 75, fruit de Cannabis",
+            "support": "Le traitement décrit un ovule solitaire par ovaire et un fruit sec contenant l'embryon : le chènevis est monosperme."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-cannflavines-flavonoides",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "À quelle famille de molécules végétales appartiennent les cannflavines A et B du cannabis ?",
+      "options": [
+        "Aux alcaloïdes",
+        "Aux cannabinoïdes",
+        "Aux stérols",
+        "Aux flavonoïdes"
+      ],
+      "answer": 3,
+      "explanation": "Les cannflavines A et B sont des flavonoïdes prénylés. Le nom d'une molécule contenant « cann- » n'en fait donc pas automatiquement un cannabinoïde.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "q2-c-rea-cannflavins-2019"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "Cannflavines A et B",
+        "subjectKey": "cannflavins-a-b",
+        "property": "Famille chimique",
+        "expectedAnswer": "Aux flavonoïdes",
+        "learningObjective": "Identifier une famille de constituants du cannabis distincte des cannabinoïdes.",
+        "factKey": "cannflavins-a-b-prenylated-flavonoids",
+        "form": "identification",
+        "difficultyRationale": "Nécessite de connaître des constituants moins célèbres et de résister à la ressemblance des noms.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-rea-cannflavins-2019",
+            "locator": "Abstract, phrases 2 et 3",
+            "support": "Les auteurs identifient explicitement les cannflavines A et B comme des flavonoïdes prénylés présents dans Cannabis sativa."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-trichome-cavite-sous-cuticule",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans une tête de trichome glandulaire de cannabis, où se trouve la principale réserve de sécrétions résineuses ?",
+      "options": [
+        "À l'intérieur des cellules du disque sécréteur",
+        "Dans une cavité sous la cuticule",
+        "Dans les cellules du pédoncule de la glande",
+        "Dans l'épaisseur de la cuticule elle-même"
+      ],
+      "answer": 1,
+      "explanation": "La tête contient des cellules sécrétrices et une cavité de stockage située sous la cuticule. La résine s'accumule dans cet espace, au-dessus du disque de cellules.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-c-livingston-trichomes-2020"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Tête des trichomes glandulaires du cannabis",
+        "subjectKey": "cannabis-glandular-trichome-head",
+        "property": "Compartiment de stockage des sécrétions",
+        "expectedAnswer": "Dans une cavité sous la cuticule",
+        "learningObjective": "Situer la réserve de résine à l'intérieur de la tête glandulaire.",
+        "factKey": "cannabis-trichome-metabolites-stored-subcuticular-cavity",
+        "form": "identification",
+        "difficultyRationale": "Demande de distinguer plusieurs compartiments et tissus végétaux.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-livingston-trichomes-2020",
+            "locator": "Introduction, paragraphe décrivant les têtes sessiles ; Figure 1",
+            "support": "La tête comprend un disque sécréteur et une cavité sous-cuticulaire de stockage des métabolites."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-premieres-feuilles-une-foliole",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Après les cotylédons, les premières vraies feuilles d'une plantule de cannabis ont généralement chacune…",
+      "options": [
+        "Une seule foliole",
+        "Trois folioles",
+        "Cinq folioles",
+        "Sept folioles"
+      ],
+      "answer": 0,
+      "explanation": "Les premières vraies feuilles sont simples, à une seule foliole dentée. La silhouette palmée à plusieurs folioles apparaît ensuite : toutes les feuilles d'un plant ne se ressemblent pas.",
+      "articleId": "ref-cycle-vie",
+      "sourceIds": [
+        "q2-c-hesami-morphology-2023"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Premières vraies feuilles de la plantule de cannabis",
+        "subjectKey": "cannabis-first-true-leaf",
+        "property": "Nombre de folioles au début du développement",
+        "expectedAnswer": "Une seule foliole",
+        "learningObjective": "Reconnaître une jeune feuille de cannabis avant l'apparition de la forme palmée.",
+        "factKey": "cannabis-first-true-leaves-single-serrated-leaflet",
+        "form": "identification",
+        "difficultyRationale": "L'image familière de la feuille palmée doit être replacée dans le développement de la plantule.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-hesami-morphology-2023",
+            "locator": "Résultats 2.1 Leaf Morphology, premier paragraphe après la Figure 1",
+            "support": "Après l'expansion des cotylédons, les premières vraies feuilles observées sont chacune formées d'une seule foliole dentée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-chanvre-divergence-genome",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "À quelle échelle Sawler et al. (2015) observent-ils une différenciation génétique entre chanvre et cannabis de type drogue ?",
+      "options": [
+        "À l'échelle des gènes de synthèse du THC",
+        "À l'échelle des chromosomes sexuels",
+        "À l'échelle de l'ensemble du génome",
+        "À l'échelle de l'ADN chloroplastique"
+      ],
+      "answer": 2,
+      "explanation": "L'étude de 124 échantillons trouve une différenciation génétique à l'échelle du génome. Dans cet ensemble, la distinction dépasse les seuls gènes de production du THC.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-c-sawler-genetic-structure-2015"
+      ],
+      "editorial": {
+        "category": "genetics",
+        "subject": "Populations de chanvre et de cannabis de type drogue étudiées en 2015",
+        "subjectKey": "sawler-2015-hemp-drug-populations",
+        "property": "Étendue génomique de la différenciation observée",
+        "expectedAnswer": "À l'échelle de l'ensemble du génome",
+        "learningObjective": "Comprendre que des sélections pour des usages différents ont laissé des différences au-delà de la seule voie du THC.",
+        "factKey": "sawler-2015-hemp-drug-genomewide-differentiation",
+        "form": "comparaison",
+        "difficultyRationale": "Demande de distinguer un caractère chimique connu d'une différenciation observée à l'échelle génomique.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-sawler-genetic-structure-2015",
+            "locator": "Abstract ; Results and Discussion, premier paragraphe et discussion suivant la Figure 1",
+            "support": "Les 14 031 marqueurs de 81 cannabis de type drogue et 43 chanvres révèlent une différenciation génomique non limitée aux gènes de synthèse du THC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-graines-thc-contamination",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Selon le BfR, quelle origine explique le THC parfois mesuré dans des graines de chanvre alimentaires ?",
+      "options": [
+        "Une absorption de THC depuis le sol",
+        "Le contact avec d'autres parties de la plante",
+        "Une synthèse du THC dans les tissus de la graine",
+        "Une confusion analytique avec des composés de l'huile"
+      ],
+      "answer": 1,
+      "explanation": "Le BfR attribue ces teneurs à une contamination par contact avec des parties de la plante contenant du THC, pendant la récolte ou la transformation. Les graines n'ont pas de poils glandulaires.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-c-bfr-hemp-food-2022"
+      ],
+      "editorial": {
+        "category": "quality",
+        "subject": "THC mesuré dans les graines de chanvre alimentaires",
+        "subjectKey": "hemp-seed-thc-contact-contamination",
+        "property": "Origine de la présence de THC",
+        "expectedAnswer": "Le contact avec d'autres parties de la plante",
+        "learningObjective": "Distinguer la composition intrinsèque de la graine d'une contamination lors de sa préparation.",
+        "factKey": "hemp-food-seed-thc-from-contact-contamination",
+        "form": "identification",
+        "difficultyRationale": "Nécessite de relier la répartition des structures glandulaires à l'origine d'un composé mesuré.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-bfr-hemp-food-2022",
+            "locator": "FAQ What are the ingredients in hemp?, deux derniers paragraphes",
+            "support": "Le BfR explique l'absence de cannabinoïdes comme constituants de la graine par l'absence de poils glandulaires et attribue le THC mesuré au contact lors de la récolte ou de la transformation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-trichomes-disques-cellules",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans Livingston et al. (2020), combien de cellules sécrétrices possèdent typiquement les grands trichomes pédonculés du cannabis ?",
+      "options": [
+        "2 à 4",
+        "6 à 8",
+        "12 à 16",
+        "24 à 32"
+      ],
+      "answer": 2,
+      "explanation": "Les grands trichomes pédonculés étudiés ont typiquement 12 à 16 cellules dans leur disque sécréteur, contre huit pour les trichomes sessiles. Il s'agit des observations de cette étude.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-c-livingston-trichomes-2020"
+      ],
+      "editorial": {
+        "category": "botany",
+        "subject": "Disque sécréteur des grands trichomes pédonculés étudiés par Livingston",
+        "subjectKey": "cannabis-glandular-trichome-head",
+        "property": "Nombre typique de cellules sécrétrices",
+        "expectedAnswer": "12 à 16",
+        "learningObjective": "Connaître une différence cellulaire mesurée entre types de glandes.",
+        "factKey": "livingston-2020-stalked-trichome-disc-12-16-cells",
+        "form": "identification",
+        "difficultyRationale": "Résultat microscopique spécialisé, explicitement rattaché à une étude.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-livingston-trichomes-2020",
+            "locator": "Results, Figure 3, paragraphe suivant le comptage des trichomes sessiles",
+            "support": "Les grands trichomes pédonculés floraux possèdent typiquement 12 à 16 cellules sécrétrices."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-c-thcas-cofacteur-fad",
+      "topicId": "evidence",
+      "level": 4,
+      "prompt": "Quel cofacteur est lié de façon covalente à la THCA synthase du cannabis ?",
+      "options": [
+        "Le NADP, nicotinamide adénine dinucléotide phosphate",
+        "Le PLP, phosphate de pyridoxal",
+        "La biotine, vitamine B8",
+        "Le FAD, flavine adénine dinucléotide"
+      ],
+      "answer": 3,
+      "explanation": "La THCA synthase est une flavoprotéine. La structure cristallographique montre un FAD lié à deux résidus, His114 et Cys176 ; ce cofacteur participe à la réaction enzymatique.",
+      "articleId": "ref-biosynthese-cannabinoides",
+      "sourceIds": [
+        "q2-c-pdb-3vte-2012",
+        "q2-c-iubmb-thcas"
+      ],
+      "editorial": {
+        "category": "constituents",
+        "subject": "THCA synthase de Cannabis sativa",
+        "subjectKey": "cannabis-thca-synthase",
+        "property": "Identité du cofacteur covalent",
+        "expectedAnswer": "Le FAD, flavine adénine dinucléotide",
+        "learningObjective": "Identifier le cofacteur d'une enzyme de biosynthèse des cannabinoïdes.",
+        "factKey": "cannabis-thca-synthase-covalent-fad-cofactor",
+        "form": "identification",
+        "difficultyRationale": "Biochimie structurale avancée ; quatre cofacteurs enzymatiques réels sont proposés.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-c-pdb-3vte-2012",
+            "locator": "Literature, résumé de Shoyama et al. ; Small Molecules, ligand FAD",
+            "support": "Le modèle cristallographique contient un FAD ; le résumé précise sa liaison covalente aux résidus His114 et Cys176."
+          },
+          {
+            "sourceId": "q2-c-iubmb-thcas",
+            "locator": "EC 1.21.3.7, Comments",
+            "support": "La nomenclature enzymatique décrit la THCA synthase comme une flavoprotéine à FAD covalent."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-c-flicker-bees-2020",
+      "title": "The Bee Community of Cannabis sativa and Corresponding Effects of Landscape Composition",
+      "organization": "Cornell University ; Environmental Entomology ; notice PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31789341/",
+      "verifiedAt": "2026-11-16",
+      "author": "Nathaniel Ryan Flicker, Katja Poveda, Heather Grab",
+      "published": "2020-02-17",
+      "passage": "Le résumé décrit le pollen du chanvre comme une ressource visitée par des abeilles malgré l'absence de nectar.",
+      "access": "abstract",
+      "documentKind": "Article de recherche primaire, résumé bibliographique",
+      "limitation": "Résumé consulté ; ne permet pas de généraliser les inventaires locaux d'abeilles à tous les pays.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "PubMed, Abstract, ouverture puis lecture ciblée des premières phrases",
+        "result": "Absence de nectar et ressource pollen vérifiées dans le résumé accessible."
+      }
+    },
+    {
+      "id": "q2-c-flora-china-cannabaceae-2003",
+      "title": "Cannabaceae — Flora of China 5: 74–75",
+      "organization": "Chinese Academy of Sciences ; California Academy of Sciences ; Flora of China",
+      "url": "https://www.iplant.cn/foc/pdf/Cannabaceae.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Zhou Zhekun, Bruce Bartholomew",
+      "published": "2003",
+      "passage": "Le traitement décrit cinq étamines par fleur mâle, un ovule solitaire par ovaire et l'akène du genre Cannabis.",
+      "access": "full-text",
+      "documentKind": "Traitement botanique de référence institutionnel",
+      "limitation": "La morphologie normale est décrite ; les anomalies florales individuelles ne sont pas exclues.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "PDF, pages botaniques 74–75, description familiale et genre Cannabis",
+        "result": "Comptage des étamines et ovule solitaire vérifiés ; description du fruit lue dans le traitement de Cannabis."
+      }
+    },
+    {
+      "id": "q2-c-rea-cannflavins-2019",
+      "title": "Biosynthesis of cannflavins A and B from Cannabis sativa L.",
+      "organization": "University of Guelph ; Phytochemistry ; notice PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31151063/",
+      "verifiedAt": "2026-11-16",
+      "author": "Kevin A. Rea, José A. Casaretto, M. Sameer Al-Abdul-Wahid, Arjun Sukumaran, Jennifer Geddes-McAlister, Steven J. Rothstein, Tariq A. Akhtar",
+      "published": "2019-08",
+      "passage": "L'introduction du résumé classe les cannflavines A et B parmi les flavonoïdes prénylés.",
+      "access": "abstract",
+      "documentKind": "Article de recherche primaire, résumé bibliographique",
+      "limitation": "Classification chimique seulement ; aucune extrapolation médicale des expériences cellulaires.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "PubMed, Abstract, premières phrases",
+        "result": "Famille chimique confirmée par lecture du résumé ouvert."
+      }
+    },
+    {
+      "id": "q2-c-livingston-trichomes-2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "organization": "University of British Columbia ; The Plant Journal",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+      "verifiedAt": "2026-11-16",
+      "author": "Samuel J. Livingston et al.",
+      "published": "2020-01",
+      "passage": "Introduction : cavité sous-cuticulaire. Résultats et Figure 3 : typiquement 12 à 16 cellules dans le disque des grands trichomes pédonculés étudiés.",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire en anatomie végétale",
+      "limitation": "Les comptages concernent les échantillons étudiés ; ce ne sont pas des constantes universelles de tous les cultivars.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, description des glandes ; Results, Figure 3 et paragraphes adjacents",
+        "result": "Compartiment de stockage et comptages cellulaires lus dans le texte intégral accessible."
+      }
+    },
+    {
+      "id": "q2-c-hesami-morphology-2023",
+      "title": "Morphological Characterization of Cannabis sativa L. Throughout Its Complete Life Cycle",
+      "organization": "University of Guelph ; Plants",
+      "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+      "verifiedAt": "2026-11-16",
+      "author": "Mohsen Hesami, Marco Pepe, Andrew Maxwell Phineas Jones",
+      "published": "2023-10-22",
+      "passage": "La section 2.1 décrit les premières vraies feuilles comme des feuilles à une seule foliole dentée après les cotylédons.",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire en morphologie végétale",
+      "limitation": "Description détaillée du cultivar White Widow ; les numéros des nœuds ultérieurs ne sont pas généralisés.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Résultats 2.1, premier paragraphe après Figure 1",
+        "result": "Une foliole par première vraie feuille vérifiée dans le texte intégral."
+      }
+    },
+    {
+      "id": "q2-c-sawler-genetic-structure-2015",
+      "title": "The Genetic Structure of Marijuana and Hemp",
+      "organization": "Dalhousie University et partenaires ; PLOS ONE",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0133292",
+      "verifiedAt": "2026-11-16",
+      "author": "Jason Sawler, Jake M. Stout, Kyle M. Gardner, Darryl Hudson, John Vidmar, Laura Butler, Jonathan E. Page, Sean Myles",
+      "published": "2015-08-26",
+      "passage": "Le résumé et les résultats décrivent une différenciation à l'échelle du génome entre les groupes étudiés, au-delà des seuls gènes impliqués dans le THC.",
+      "access": "full-text",
+      "documentKind": "Article de recherche primaire en génétique des populations",
+      "limitation": "Résultat circonscrit à 81 échantillons de type drogue et 43 chanvres ; aucune frontière taxonomique universelle n'est déduite.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Results and Discussion, texte entourant Figure 1",
+        "result": "Portée génomique de la différenciation vérifiée dans le texte intégral de l'éditeur."
+      }
+    },
+    {
+      "id": "q2-c-bfr-hemp-food-2022",
+      "title": "Questions and answers on the health risks of food and feed containing hemp",
+      "organization": "Bundesinstitut für Risikobewertung (BfR)",
+      "url": "https://www.bfr.bund.de/en/service/frequently-asked-questions/topic/questions-and-answers-on-the-health-risks-of-food-and-feed-containing-hemp/",
+      "verifiedAt": "2026-11-16",
+      "author": "German Federal Institute for Risk Assessment",
+      "published": "2022-11-15",
+      "passage": "La FAQ attribue le THC mesuré dans les graines au contact avec d'autres parties de la plante lors de la récolte ou de la transformation.",
+      "access": "official-page",
+      "documentKind": "FAQ scientifique institutionnelle",
+      "limitation": "Seul le mécanisme de contamination est utilisé ; les seuils juridiques et appréciations sanitaires de 2022 ne sont pas repris.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "What are the ingredients in hemp?, paragraphes sur les poils glandulaires et les graines",
+        "result": "Absence de poils glandulaires sur les graines et origine par contact du THC mesuré vérifiées sur la page ouverte."
+      }
+    },
+    {
+      "id": "q2-c-pdb-3vte-2012",
+      "title": "3VTE — Crystal structure of tetrahydrocannabinolic acid synthase from Cannabis sativa",
+      "organization": "RCSB Protein Data Bank ; Japan Atomic Energy Agency et partenaires",
+      "url": "https://www.rcsb.org/structure/3VTE",
+      "verifiedAt": "2026-11-16",
+      "author": "Yoshinari Shoyama, Taro Tamada, Kazuo Kurihara, Ayako Takeuchi, Futoshi Taura, Shigeki Arai, Michael Blaber, Yukihiro Shoyama, Satoshi Morimoto, Ryota Kuroki",
+      "published": "2012-07-25",
+      "passage": "Le dépôt contient le ligand FAD ; le résumé de la publication associée le décrit lié de façon covalente à His114 et Cys176.",
+      "access": "catalogue",
+      "documentKind": "Dépôt primaire de structure cristallographique avec résumé de la publication",
+      "limitation": "Notice structurale et résumé consultés ; la publication complète du Journal of Molecular Biology n'a pas été obtenue.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Literature, PubMed Abstract ; Small Molecules, FAD",
+        "result": "Présence du FAD et liaisons covalentes vérifiées dans la notice primaire ouverte."
+      }
+    },
+    {
+      "id": "q2-c-iubmb-thcas",
+      "title": "EC 1.21.3.7 — tetrahydrocannabinolic acid synthase",
+      "organization": "International Union of Biochemistry and Molecular Biology ; Queen Mary University of London",
+      "url": "https://iubmb.qmul.ac.uk/enzyme/EC1/21/3/7.html",
+      "verifiedAt": "2026-11-16",
+      "author": "IUBMB Enzyme Nomenclature",
+      "published": "2012 (création de l'entrée EC ; date de mise à jour non affichée)",
+      "passage": "La rubrique Comments classe l'enzyme parmi les flavoprotéines à FAD et précise que le cofacteur est lié de façon covalente.",
+      "access": "official-page",
+      "documentKind": "Nomenclature enzymatique institutionnelle",
+      "limitation": "Notice de référence corroborant le dépôt primaire ; pas un nouvel essai expérimental.",
+      "consultation": {
+        "reader": "c_science_pilot",
+        "date": "2026-11-16",
+        "locator": "Comments ; note de création de l'entrée en 2012",
+        "result": "Identité FAD et liaison covalente confirmées dans la notice ouverte."
+      }
+    }
+  ]
+}

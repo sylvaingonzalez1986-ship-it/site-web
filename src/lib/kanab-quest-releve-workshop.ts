@@ -16,7 +16,7 @@ export function createKqReleveWorkshop(): KqReleveWorkshopState {
   const trial = createKqWorkshop('market');
   const game = { ...trial.game!, harvestGrams: 200, warehouse: getKqWarehouseRunSnapshot(createKqWarehouseStarter()) };
   let commerce = createReleveCommerce({ cashCents: 500_000, clock: trial.clock, harvests: [{ zoneId: 'workshop', game, battle: trial.battle }] });
-  commerce.lots[0].name = 'Lot de démonstration de Sylvain · prêt de 200 g';
+  commerce.lots[0].name = 'Lot de démonstration de Loïc · prêt de 200 g';
   commerce.lots[0].assistance = true;
   Object.assign(commerce.operations.shared, {
     ownedCodes: ['SIFT-TRAY'], purchasedCodes: [], equippedCodes: ['SIFT-TRAY'], levels: { 'SIFT-TRAY': 1 },

@@ -164,7 +164,7 @@ export function KqSupportRecovery({ inventory, onReturnToCards, onOpenDestinatio
         <p className={styles.optional}>Tu peux aussi cultiver sans soutien. Les nouvelles cartes ne sont pas ajoutées automatiquement à ta sélection.</p>
       </div>
     </aside> : null}
-    {pack ? <KqSupportPackOpening cards={cards} cardCount={pack.cardCount} busy={operation === "pack" || boosters === undefined && cards.length === 0 && Boolean(packError)} error={openingError}
+    {pack ? <KqSupportPackOpening confirmed={true} cards={cards} cardCount={pack.cardCount} busy={operation === "pack" || boosters === undefined && cards.length === 0 && Boolean(packError)} error={openingError}
       busyLabel={operation === "pack" ? "Ouverture de ton pack…" : "Vérification du statut de ce pack…"}
       canRetry={operation === null && cards.length === 0 && (!packStatusKnown || Boolean(packStillAvailable))}
       onRetry={() => { if (packStillAvailable) void openPack(pack); else { setBoosters(undefined); refresh(); } }} retryLabel={packStillAvailable ? "Réessayer l’ouverture" : "Actualiser le statut"}

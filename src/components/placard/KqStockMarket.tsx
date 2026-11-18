@@ -1,6 +1,10 @@
 "use client";
 
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqFinanceRecoveryNotice, useKqFinanceRecovery } from "./KqFinanceRecovery";
+import { readFinanceResponse } from "@/lib/kanab-quest-finance-recovery";
+import { isKqQueuedReceipt } from "@/lib/kanab-quest-market-queue";
+import { KqMarketQueue } from "./KqMarketQueue";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -47,6 +51,7 @@ function StockQuote({ asset, now }: { asset: KqStockAsset | undefined; now: numb
 
 export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => void } = {}) {
   const api = useKqTutorialApi();
+ const recovery = useKqFinanceRecovery("stocks"); const { requireLogin } = recovery;
   const [data, setData] = useState<KqStockSnapshot | null>(null);
   const [tab, setTab] = useState<StockTab>("cac40");
   const [search, setSearch] = useState("");
@@ -85,7 +90,8 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
     try {
       const query = `?${new URLSearchParams({ ids: requestedIds })}`;
       const response = await api.request(`/api/arena/placard/stocks${query}`, { cache: "no-store", signal });
-      const body: unknown = await response.json();
+      if (response.status === 401) { if (!signal?.aborted) requireLogin(); return; }
+   const body: unknown = await response.json();
       if (!response.ok || !isKqStockSnapshot(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Le comptoir boursier ne répond pas. Réessaie dans un instant.");
       if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) {
         const cashChanged = cashCentsRef.current !== null && cashCentsRef.current !== body.cashCents;
@@ -99,7 +105,7 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
       }
     } catch (cause) { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setError(cause instanceof Error ? cause.message : "Le comptoir boursier est indisponible."); }
     finally { if (!signal?.aborted && version === loadVersion.current && !mutationInFlight.current) setLoading(false); }
-  }, [api, requestedIds]);
+  }, [api, requestedIds, requireLogin]);
   useEffect(() => {
     const timeout = window.setTimeout(() => { setDebouncedSearch(search); setPage(0); }, 300);
     return () => window.clearTimeout(timeout);
@@ -143,6 +149,7 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
   const positionFor = (assetId: string) => data?.positions.find(position => position.assetId === assetId);
   const assetFor = (assetId: string) => data?.assets.find(asset => asset.id === assetId);
   function select(asset: KqStockAsset, side: "buy" | "sell", trigger: HTMLButtonElement) {
+    if (recovery.blocked) return;
     orderTrigger.current = trigger; setSelected({ asset, side }); setOrder(null); setOrderError(""); setConfirmAttempted(false); setQuantity(positionFor(asset.id)?.quantity ?? "");
   }
   function closeOrder() {
@@ -150,40 +157,45 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
     setSelected(null); setOrder(null); setConfirmAttempted(false); setOrderError("");
   }
   async function preview() {
-    if (!selected || mutationInFlight.current) return;
+    if (!selected || mutationInFlight.current || recovery.blocked) return;
     const amountCents = parseKqStockEuros(amount);
     if (selected.side === "buy" && amountCents === null) { setOrderError("Entre un montant valide en euros de jeu, avec deux décimales au maximum."); return; }
     mutationInFlight.current = true; ++loadVersion.current; setLoading(false); setBusy(true); setOrderError("");
     try {
-      const response = await api.request("/api/arena/placard/stocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }) });
-      const body: unknown = await response.json();
+      const {response, body} = await readFinanceResponse(api.request, "stocks", { action: "preview", side: selected.side, assetId: selected.asset.id, ...(selected.side === "buy" ? { amountCents } : { quantity: quantity.replace(",", ".") }) }, new AbortController().signal);
+   if (response.status === 401) { requireLogin(); setSelected(null); return; }
       if (!response.ok || !isKqStockOrder(body)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "L’offre n’a pas pu être préparée. Actualise les cours et réessaie.");
       setOrder(body); setConfirmAttempted(false);
     } catch (cause) { setOrderError(cause instanceof Error ? cause.message : "L’offre n’a pas pu être préparée."); }
     finally { mutationInFlight.current = false; setBusy(false); }
   }
   async function confirm() {
-    if (!order || mutationInFlight.current) return;
-    mutationInFlight.current = true; ++loadVersion.current; setLoading(false); setBusy(true); setConfirmAttempted(true); setOrderError("");
-    try {
-      const response = await api.request("/api/arena/placard/stocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "confirm", orderId: order.orderId }) });
-      const body: unknown = await response.json();
-      if (!response.ok || !isRecord(body) || !isKqStockTrade(body.trade)) throw new Error(isRecord(body) && typeof body.error === "string" ? body.error : "Confirmation non reçue. Réessaie cet ordre pour vérifier son exécution.");
-      setNotice(`${body.trade.side === "buy" ? "Achat" : "Vente"} enregistré : ${euros(body.trade.amountCents)} de jeu.`);
-      setOrder(null); setSelected(null); setConfirmAttempted(false); cashCentsRef.current = body.trade.cashAfterCents;
-      api.notify("kq:equipment-updated"); api.notify("kq:treasury-updated"); onWalletRefresh?.();
-      mutationInFlight.current = false; await reload();
-    } catch (cause) { setOrderError(cause instanceof Error ? cause.message : "Confirmation non reçue. Réessaie le même ordre."); }
-    finally { mutationInFlight.current = false; setBusy(false); }
-  }
-  const totalValue = data?.positions.every(position => position.valueCents !== null) ? data.positions.reduce((sum, position) => sum + (position.valueCents ?? 0), 0) : null;
+  const command = recovery.saved?.command ?? (order ? { action: "confirm", orderId: order.orderId, executionPolicy: "next-publication" } : null);
+  if (!command || mutationInFlight.current) return;
+  mutationInFlight.current = true; ++loadVersion.current; setLoading(false); setBusy(true); setConfirmAttempted(true); setOrderError("");
+  try {
+   const body = await recovery.send(command, recovery.saved?.summary ?? (order ? (order.side === "buy" ? "Achat · budget " + euros(order.amountCents) : "Vente · " + order.quantity + " unités") + " · " + (selected?.asset.name ?? order.assetId) + " · prochain cours publié" : "Ordre financier"), value => isKqQueuedReceipt(value) || isRecord(value) && isKqStockTrade(value.trade));
+   setOrder(null); setSelected(null); setConfirmAttempted(false);
+   if (!body) return;
+   if (isKqQueuedReceipt(body)) {
+    setNotice(body.queuedOrder.status === "pending" ? "Ordre transmis. Consulte son état et les derniers mouvements." : "Ordre rejeté. Consulte sa raison dans les ordres transmis.");
+   } else if (isRecord(body) && isKqStockTrade(body.trade)) {
+    setNotice("Échange enregistré : " + euros(body.trade.amountCents) + " de jeu."); cashCentsRef.current = body.trade.cashAfterCents;
+   }
+   api.notify("kq:equipment-updated"); api.notify("kq:treasury-updated"); onWalletRefresh?.();
+   mutationInFlight.current = false; await reload();
+  } finally { mutationInFlight.current = false; setBusy(false); }
+ }
+ const totalValue = data?.positions.every(position => position.valueCents !== null) ? data.positions.reduce((sum, position) => sum + (position.valueCents ?? 0), 0) : null;
   const secondsLeft = order ? Math.max(0, Math.ceil((Date.parse(order.expiresAt) - now) / 1000)) : 0;
   const indexAsset = index ? assetFor(index.id) : undefined;
   function changeTab(next: StockTab) { setTab(next); setPage(0); }
   return <section className={styles.market} aria-label="Comptoir boursier" data-testid="stocks-market">
+  <KqFinanceRecoveryNotice recovery={recovery} resume={() => void confirm()} />
+  <KqMarketQueue orders={data?.queuedOrders} label={id => data?.assets.find(asset => String(asset.id) === id)?.name ?? id} />
     <header className={styles.header}><div className={styles.icon}><ChartNoAxesCombined size={36} aria-hidden="true" /></div><div><h3>Le comptoir boursier</h3><p>Paris, New York. Ton portefeuille de jeu.</p></div><span className={styles.stamp}>CAC 40<br />S&amp;P 500</span></header>
     <p className={styles.disclaimer}>Actions et indices virtuels · euros de jeu · cours pouvant être différés.</p>
-    <div className={styles.status}><span><Clock3 size={16} aria-hidden="true" />{loading ? "Actualisation des cours…" : "Cours datés, prix confirmés avant l’ordre"}<small>État du marché au dernier relevé. Les titres américains sont convertis en euros au taux de change du marché.</small></span><button type="button" disabled={loading || busy} aria-label="Actualiser les cours boursiers" onClick={() => void reload()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></div>
+    <div className={styles.status}><span><Clock3 size={16} aria-hidden="true" />{loading ? "Actualisation des cours…" : "Cours indicatifs · exécution au prochain relevé"}<small>État du marché au dernier relevé. Les titres américains sont convertis en euros au taux de change du marché.</small></span><button type="button" disabled={loading || busy} aria-label="Actualiser les cours boursiers" onClick={() => void reload()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></div>
     {error ? <p className={styles.error} role="alert">{error}</p> : null}
     {notice ? <p className={styles.success} role="status">{notice}</p> : null}
     <div className={styles.summary}><div><small>Disponible</small><strong>{data ? euros(data.cashCents) : "—"}</strong></div><div><small>Valeur du portefeuille</small><strong>{totalValue === null ? "Cours à actualiser" : euros(totalValue)}</strong></div><div><small>Montant investi</small><strong>{data ? euros(data.positions.reduce((sum, position) => sum + position.costBasisCents, 0)) : "—"}</strong></div></div>
@@ -207,18 +219,20 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
         return <article key={position.assetId} className={styles.position}><header><div className={styles.asset}>{instrument ? <StockBadge instrument={instrument} /> : null}<span><strong>{instrument?.name ?? position.assetId}</strong><small>{formatKqStockQuantity(position.quantity)} {instrument?.symbol ?? position.assetId}{instrument?.kind === "index" ? " · parts virtuelles d’indice" : " · actions virtuelles"}</small></span></div><button type="button" disabled={busy || !asset || !canTradeKqStockAsset(asset, now)} aria-label={`Vendre ${instrument?.name ?? position.assetId}`} onClick={event => { if (asset) select(asset, "sell", event.currentTarget); }}><ArrowUpRight size={16} aria-hidden="true" /> Vendre</button></header><dl><div><dt>Coût d’achat</dt><dd>{euros(position.costBasisCents)}</dd></div><div><dt>Valeur actuelle</dt><dd>{position.valueCents === null ? "Cours à actualiser" : euros(position.valueCents)}</dd></div><div><dt>Gain / perte latent</dt><dd data-positive={(pnl ?? 0) >= 0}>{pnl === null ? "—" : `${pnl > 0 ? "+" : ""}${euros(pnl)}`}</dd></div></dl><StockQuote asset={asset} now={now} /></article>;
       }) : <p className={styles.empty}>Ton portefeuille boursier est vide. Choisis une action ou un indice pour préparer ton premier placement.</p>}{positionPages > 1 ? <nav className={styles.pagination} aria-label="Pages du portefeuille"><button type="button" disabled={page <= 0} onClick={() => setPage(value => value - 1)}>Précédent</button><span>{Math.min(page + 1, positionPages)} / {positionPages}</span><button type="button" disabled={page >= positionPages - 1} onClick={() => setPage(value => value + 1)}>Suivant</button></nav> : null}</div>}
     </div>
-    {selected && data ? <dialog ref={dialog} className={styles.order} id="stock-order-dialog" aria-labelledby="stock-order-title" aria-describedby="stock-order-description" tabIndex={-1} onCancel={event => { event.preventDefault(); closeOrder(); }} onKeyDown={event => {
+    {selected && data ? <dialog ref={dialog} className={styles.order} id="stock-order-dialog" data-tutorial-observation="banking-stocks" aria-labelledby="stock-order-title" aria-describedby="stock-order-description" tabIndex={-1} onCancel={event => { event.preventDefault(); closeOrder(); }} onKeyDown={event => {
       if (event.key !== "Tab") return;
       const focusable = [...event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),a[href],[tabindex="0"]')].filter(element => element.getClientRects().length > 0);
       const first = focusable[0], last = focusable.at(-1);
       if (!first) { event.preventDefault(); event.currentTarget.focus({ preventScroll: true }); }
       else if (event.shiftKey && (document.activeElement === first || document.activeElement === event.currentTarget)) { event.preventDefault(); last?.focus({ preventScroll: true }); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus({ preventScroll: true }); }
-    }}><header className={styles.orderHeader}><div className={styles.orderIdentity}><StockBadge instrument={selected.asset} /><div><small>{order ? "02 / Confirmer le placement" : "01 / Préparer le placement"}</small><h4 id="stock-order-title">{selected.side === "buy" ? "Acheter" : "Vendre"} {selected.asset.name}</h4></div></div><button type="button" className={styles.close} aria-label="Fermer la fenêtre boursière" disabled={busy} onClick={closeOrder}><X size={22} aria-hidden="true" /></button></header><div className={styles.orderBody} aria-busy={busy}>
+    }}><header className={styles.orderHeader}><div className={styles.orderIdentity}><StockBadge instrument={selected.asset} /><div><small>{order ? "02 / Transmettre l’ordre" : "01 / Préparer le placement"}</small><h4 id="stock-order-title">{selected.side === "buy" ? "Acheter" : "Vendre"} {selected.asset.name}</h4></div></div><button type="button" className={styles.close} aria-label="Fermer la fenêtre boursière" disabled={busy} onClick={closeOrder}><X size={22} aria-hidden="true" /></button></header><div className={styles.orderBody} aria-busy={busy}>
+      <div data-farm-guide-host />
       <p id="stock-order-description">{selected.asset.kind === "index" ? "Indice · parts virtuelles. " : "Actions virtuelles. "}{selected.side === "buy" ? "Ton placement utilise uniquement tes euros de jeu." : "La vente revient dans ta trésorerie de jeu."}</p>
       <div className={styles.nativeQuote}><StockQuote asset={selected.asset} now={now} />{selected.asset.currency === "USD" && selected.asset.fxRate ? <p>Change : 1 EUR = {Number(selected.asset.fxRate).toLocaleString("fr-FR", { maximumFractionDigits: 6 })} USD{selected.asset.fxQuotedAt ? ` · relevé du ${date(selected.asset.fxQuotedAt)}` : ""}.</p> : null}</div>
-      {orderError ? <p className={styles.error} role="alert">{orderError}</p> : null}
-      {!order ? <form onSubmit={event => { event.preventDefault(); void preview(); }}><div className={styles.orderContext}><span>Prix indicatif en euros<strong>{selected.asset.priceEur ? price(selected.asset.priceEur) : "Cours à actualiser"}</strong></span><span>{selected.side === "buy" ? "Disponible" : "Ta position"}<strong>{selected.side === "buy" ? euros(data.cashCents) : `${formatKqStockQuantity(positionFor(selected.asset.id)?.quantity ?? "0")} ${selected.asset.symbol}`}</strong></span></div><label htmlFor="stock-order-amount">{selected.side === "buy" ? "Montant en euros de jeu" : "Quantité à vendre"}<div className={styles.amountField}><input id="stock-order-amount" inputMode="decimal" value={selected.side === "buy" ? amount : quantity} onChange={event => selected.side === "buy" ? setAmount(event.target.value) : setQuantity(event.target.value)} disabled={busy} aria-describedby="stock-amount-help" /><span aria-hidden="true">{selected.side === "buy" ? "€" : selected.asset.symbol}</span></div></label><small id="stock-amount-help">Vérifie le prix et le total en euros avant de confirmer.</small><div className={styles.actions}><button type="submit" disabled={busy}>{busy ? "Préparation…" : "Préparer l’offre"}</button><button type="button" disabled={busy} onClick={closeOrder}>Annuler</button></div></form> : <div><dl className={styles.orderTotals}><div><dt>Quantité</dt><dd>{formatKqStockQuantity(order.quantity)} {selected.asset.symbol}</dd></div><div><dt>Prix bloqué en euros</dt><dd>{price(order.priceEur)}</dd></div><div className={styles.orderTotal}><dt>{order.side === "buy" ? "À débiter" : "À recevoir"}</dt><dd>{euros(order.amountCents)}<small>euros de jeu</small></dd></div></dl><p className={styles.expiry} data-expired={secondsLeft === 0}>Cours du {date(order.quotedAt)}.<br />{secondsLeft > 0 ? `Offre valable encore ${secondsLeft} s. Le montant confirmé sera exactement celui affiché.` : "Offre expirée : prépare une nouvelle offre."}</p><div className={styles.actions}><button type="button" data-stock-confirm disabled={busy || (secondsLeft === 0 && !confirmAttempted)} onClick={() => void confirm()}>{busy ? "Confirmation…" : confirmAttempted ? "Vérifier / réessayer cet ordre" : `Confirmer ${order.side === "buy" ? "l’achat" : "la vente"}`}</button><button type="button" disabled={busy} onClick={() => { setOrder(null); setConfirmAttempted(false); setOrderError(""); }}>Modifier l’ordre</button></div>{confirmAttempted ? <small>Si la réponse se perd, réessaie cet ordre : il ne sera exécuté qu’une seule fois.</small> : null}</div>}
+      <p>Exécution au premier cours admissible postérieur à l’envoi pendant une séance ouverte, avec un nouveau taux de change si nécessaire. Fonds et titres non réservés : si leur solde est insuffisant, l’ordre sera rejeté. Sans nouveau cours sous sept jours, aucun échange.</p>
+     {orderError ? <p className={styles.error} role="alert">{orderError}</p> : null}
+      {!order ? <form onSubmit={event => { event.preventDefault(); void preview(); }}><div className={styles.orderContext}><span>Prix indicatif en euros<strong>{selected.asset.priceEur ? price(selected.asset.priceEur) : "Cours à actualiser"}</strong></span><span>{selected.side === "buy" ? "Disponible" : "Ta position"}<strong>{selected.side === "buy" ? euros(data.cashCents) : `${formatKqStockQuantity(positionFor(selected.asset.id)?.quantity ?? "0")} ${selected.asset.symbol}`}</strong></span></div><label htmlFor="stock-order-amount">{selected.side === "buy" ? "Montant en euros de jeu" : "Quantité à vendre"}<div className={styles.amountField}><input id="stock-order-amount" inputMode="decimal" value={selected.side === "buy" ? amount : quantity} onChange={event => selected.side === "buy" ? setAmount(event.target.value) : setQuantity(event.target.value)} disabled={busy} aria-describedby="stock-amount-help" /><span aria-hidden="true">{selected.side === "buy" ? "€" : selected.asset.symbol}</span></div></label><small id="stock-amount-help">Le prochain cours et, si nécessaire, le prochain change détermineront le prix. Fonds et titres non réservés.</small><div className={styles.actions}><button type="submit" disabled={busy}>{busy ? "Préparation…" : "Préparer l’offre"}</button><button type="button" disabled={busy} onClick={closeOrder}>Annuler</button></div></form> : <div><dl className={styles.orderTotals}><div><dt>{order.side === "buy" ? "Quantité estimée" : "Quantité à vendre"}</dt><dd>{formatKqStockQuantity(order.quantity)} {selected.asset.symbol}</dd></div><div><dt>Prix indicatif en euros</dt><dd>{price(order.priceEur)}</dd></div><div className={styles.orderTotal}><dt>{order.side === "buy" ? "Budget à débiter" : "Recette estimée"}</dt><dd>{euros(order.amountCents)}<small>euros de jeu</small></dd></div></dl><p className={styles.expiry} data-expired={secondsLeft === 0}>Cours du {date(order.quotedAt)}.<br />{secondsLeft > 0 ? `Offre valable encore ${secondsLeft} s. L’ordre sera exécuté au prochain cours publié, qui peut être différent.` : "Offre expirée : prépare une nouvelle offre."}</p><div className={styles.actions}><button type="button" data-stock-confirm disabled={busy || (secondsLeft === 0 && !confirmAttempted)} onClick={() => void confirm()}>{busy ? "Confirmation…" : confirmAttempted ? "Vérifier / réessayer cet ordre" : `Confirmer ${order.side === "buy" ? "l’achat" : "la vente"}`}</button><button type="button" disabled={busy} onClick={() => { setOrder(null); setConfirmAttempted(false); setOrderError(""); }}>Modifier l’ordre</button></div>{confirmAttempted ? <small>Si la réponse se perd, réessaie cet ordre : il ne sera exécuté qu’une seule fois.</small> : null}</div>}
     </div></dialog> : null}
     {data?.recentTrades.length ? <details className={styles.history}><summary>Les derniers mouvements ({data.recentTrades.length})</summary>{data.recentTrades.map(trade => <div key={trade.orderId}><span>{trade.side === "buy" ? "Achat" : "Vente"} {KQ_STOCK_INSTRUMENTS.find(instrument => instrument.id === trade.assetId)?.symbol ?? trade.assetId}<small>{date(trade.createdAt)}</small></span><strong>{euros(trade.amountCents)}</strong></div>)}</details> : null}
     {!api.isTutorial ? <footer className={styles.source}><p>Cours et change fournis par <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer">Yahoo Finance</a>. Tous les placements sont virtuels et suivent uniquement les prix ; les dividendes ne sont pas versés. Les gains et pertes réalisés rejoignent ta comptabilité.</p><p>{cacSource ? <>Composition CAC 40 : <a href={cacSource.url} target="_blank" rel="noreferrer">Euronext</a>. </> : null}{usSource ? <>Univers S&amp;P 500 : actions cotées du portefeuille <a href={usSource.url} target="_blank" rel="noreferrer">iShares IVV</a>, relevé du {new Date(usSource.asOf).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}.</> : null}</p></footer> : null}

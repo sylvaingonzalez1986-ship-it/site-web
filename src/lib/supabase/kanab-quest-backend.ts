@@ -1661,7 +1661,7 @@ export async function getKqAdminBotBattleDashboard() {
 }
 
 const KQ_TRAINING_BOTS = [
-  { code: "bot-sylvain", name: "Sylvain · Jardin d’essai", variety: "Harlequin", salt: 11 },
+  { code: "bot-sylvain", name: "Loïc · Jardin d’essai", variety: "Harlequin", salt: 11 },
   { code: "bot-charles", name: "Charles · Serre du club", variety: "Cannatonic", salt: 37 },
   { code: "bot-maya", name: "Maya · Atelier botanique", variety: "Sour Tsunami", salt: 71 },
 ] as const;

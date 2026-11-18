@@ -38,17 +38,17 @@ export function ArenaReleveJournal({ chapter, chapterIndex, completed, onPause, 
     setPanel(null);
     action();
   };
-  const title = panel === "notebook" ? "Le carnet de Sylvain" : panel === "journey" ? "Ton parcours" : "Options de la partie";
+  const title = panel === "notebook" ? "Le carnet de Loïc" : panel === "journey" ? "Ton parcours" : "Options de la partie";
   return <>
     <div className={styles.tools} role="group" aria-label="Carnet de l’aventure" data-releve-journal-toolbar>
-      <button type="button" aria-label="Ouvrir le carnet de Sylvain" title="Carnet" aria-haspopup="dialog" data-releve-journal="carnet" onClick={() => setPanel("notebook")}><BookOpen size={18} aria-hidden="true" /><span>Carnet</span></button>
+      <button type="button" aria-label="Ouvrir le carnet de Loïc" title="Carnet" aria-haspopup="dialog" data-releve-journal="carnet" onClick={() => setPanel("notebook")}><BookOpen size={18} aria-hidden="true" /><span>Carnet</span></button>
       <button type="button" aria-label="Voir mon parcours" title="Parcours" aria-haspopup="dialog" data-releve-journal="parcours" onClick={() => setPanel("journey")}><Map size={18} aria-hidden="true" /><span>Parcours</span></button>
       <button type="button" aria-label="Ouvrir les options de la partie" title="Options" aria-haspopup="dialog" data-releve-journal="options" onClick={() => setPanel("options")}><Settings size={18} aria-hidden="true" /><span>Options</span></button>
     </div>
     {panel ? createPortal(<AppDialog open onClose={() => setPanel(null)} title={title} closeLabel={`Fermer : ${title}`} className={styles.dialog} bodyClassName={styles.body} dialogProps={{ "data-releve-journal-panel": panel }}>
       {panel === "notebook" ? <article className={styles.notebook}>
-        <div className={styles.scene}><Image src={ARENA_RELEVE_SCENES[chapter.scene]} alt="Sylvain accompagne cette étape de l’aventure." width={900} height={600} sizes="(max-width:700px) 92vw, 700px" /><span>Chapitre {chapterIndex + 1}</span></div>
-        <div className={styles.notes}><h2>{chapter.title}</h2><p className={styles.coach}>{chapter.coach}</p><details><summary>Le conseil de Sylvain</summary><p>{chapter.hint}</p><p>{chapter.rationale}</p></details>
+        <div className={styles.scene}><Image src={ARENA_RELEVE_SCENES[chapter.scene]} alt="Loïc accompagne cette étape de l’aventure." width={900} height={600} sizes="(max-width:700px) 92vw, 700px" /><span>Chapitre {chapterIndex + 1}</span></div>
+        <div className={styles.notes}><h2>{chapter.title}</h2><p className={styles.coach}>{chapter.coach}</p><details><summary>Le conseil de Loïc</summary><p>{chapter.hint}</p><p>{chapter.rationale}</p></details>
           {chapter.stage === "arrival" ? <details className={styles.letter}><summary><BookOpen size={17} aria-hidden="true" />La lettre de Grand-père</summary>{ARENA_RELEVE_LETTER.map(line => <p key={line}>{line}</p>)}</details> : null}
         </div>
       </article> : null}

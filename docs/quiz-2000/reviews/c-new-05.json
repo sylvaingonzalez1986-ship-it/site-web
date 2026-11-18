@@ -1,0 +1,2026 @@
+{
+  "batchId": "c-new-05",
+  "reviewer": "f_existing_audit",
+  "model": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-16T22:13:00.200Z",
+  "scope": "Lecture indépendante des40objets complets, quatre choix, réponses, explications, portée, niveaux et formes. Vingt-cinq objets sources contrôlés sur passages réellement ouverts, incluant18nouveaux et7références communes. Comparaison ciblée de l’index, des faitsC01–C04/legacy et des candidatsC06, sans audit global. Aucun lot auteur ni fichier actif modifié.",
+  "hashMethod": "SHA-256 UTF-8 de JSON.stringify(question entière) ; sourceHash de JSON.stringify(objet source complet dans son registre originel).",
+  "sourceTiming": "Passages réellement ouverts le16novembre2026 pour cette revue, y compris les références communes sur leurs nouveaux passages. Pas de lecture intégrale revendiquée des ouvrages ou de la thèse. Heure précise de chaque ouverture non reconstituée ; reviewedAt date le scellement.",
+  "sourceConsultations": [
+    {
+      "sourceId": "bf-reproduction-2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+      "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§32.2 DoubleFertilization/DevelopmentoftheSeed, lignes88–92,101–116",
+      "result": "Albumen triploïde issu de deux noyaux polaires et d’un spermatozoïde ; tégument issu des enveloppes de l’ovule.",
+      "limitation": "Modèle typique des angiospermes ; légende approximative disant ovary à la place d’ovule écartée au profit du texte.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-houston-2018",
+      "url": "https://www.ojp.gov/pdffiles1/nij/grants/254756.pdf",
+      "sourceHash": "677f548f5c94ab66db8d327fdf449451d4aa6b3899443395e82012f0ae546efe",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "thesis-pdf-targeted",
+      "locator": "PDFp.52(lignes1171–1179) ; passage répétéPDFp.153(lignes3377–3384)",
+      "result": "Transmission maternelle des ADN mitochondrial et chloroplastique deC.sativa explicitement décrite.",
+      "limitation": "Affirmation bibliographique de la thèse, pas expérience nouvelle de transmission ; pas position officielle duDOJ ou universalité sans exception.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-eukaryotic-origins",
+      "url": "https://openstax.org/books/biology-2e/pages/23-1-eukaryotic-origins",
+      "sourceHash": "96fcff6d00413a173ec8c450a26a69b24a6d4cdad5a4ed8e0989d8e0f0d2f434",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§23.1 Endosymbiosis/Mitochondria/Plastids, lignes57–67,80–87",
+      "result": "Origines bactériennes distinctes ; nombreux gènes mitochondriaux transférés au noyau.",
+      "limitation": "Principes généraux seulement ; nombres, ancêtres hôtes hypothétiques et exceptions eucaryotes ne deviennent pas propriétés du cannabis.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn01-cells",
+      "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+      "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§4.3 TheNuclearEnvelope/ChromatinandChromosomes, lignes60–72",
+      "result": "Pores contrôlant les échanges d’ARN ; condensation des chromosomes variant avec le cycle.",
+      "limitation": "Exemples humains et cellules animales exclus des propriétés végétales testées.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn01-cell-cycle",
+      "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+      "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§10.2, lignes31–43,mitose/anaphase,cytocinèse88–96",
+      "result": "G0 hors préparation de division ; copie enS ; microtubules du fuseau ; plaque cellulaire végétale.",
+      "limitation": "Centrioles/centrosomes animaux non attribués aux cellules végétales ; G0 ni mort ni irréversibilité universelle.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-centromere",
+      "url": "https://www.genome.gov/genetics-glossary/Centromere",
+      "sourceHash": "02fe6c3ae58e32f47277d3c8694d234c8928ec5d894872a4ae1c03271d15cfb3",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes15,20",
+      "result": "Centromère région d’attache au fuseau, pas nécessairement médiane.",
+      "limitation": "Le terme kinétochore est corroboré par §11.1 du manuel déjà lu, sans ajouter une séquence humaine au modèle végétal.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-telomere",
+      "url": "https://www.genome.gov/genetics-glossary/Telomere",
+      "sourceHash": "d9a45833ff1e98fed5397a79dd56e6c3b463f07bf5eadafb13f3c4953a0b7237",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes15,21",
+      "result": "Extrémités protégées contre perte et jonction anormale.",
+      "limitation": "Raccourcissement/télomérase/vieillissement somatique humain du glossaire non généralisés aux plantes.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-euk-replication",
+      "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+      "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§14.5, lignes29–49,53–56 ettable14.2",
+      "result": "Origines multiples, hélicase, ligase, fragments d’Okazaki du brin retardé et matriceARN de télomérase.",
+      "limitation": "Nouveaux passages ciblés relus ; durées, vitesses et supposée inactivité somatique de télomérase chez l’humain exclus.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn04-meiosis",
+      "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+      "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§11.1, lignes37–50,60–75,89–90",
+      "result": "Une copie/deux divisions ; orientation indépendante ; crossing-over en prophaseI ; gamètes végétaux par mitose.",
+      "limitation": "Texte distingue plantes/animaux malgré des légendes simplifiées génériques ; pas d’assimilation des gamètes végétaux au produit immédiat de la méiose.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-chromosome-errors",
+      "url": "https://openstax.org/books/biology-2e/pages/13-2-chromosomal-basis-of-inherited-disorders",
+      "sourceHash": "ca4a328f4601450daeea928dfcb81bb3e989cfc3cec99b0b0dbef13060dcff0f",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§13.2 Nondisjunction/Aneuploidy/Polyploidy, lignes48–50,61–70",
+      "result": "Échec de séparation ; gain/perte de chromosomes individuels distinct des jeux complets.",
+      "limitation": "Pathologies, âge parental et stérilité animale non transposés au chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-mosaicism",
+      "url": "https://www.genome.gov/genetics-glossary/Mosaicism",
+      "sourceHash": "42de88032aa0e48e79a2180fe27e0886b9f916bf89d1223e9ccf756449856f88",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-page-targeted",
+      "locator": "Definition/Narration, lignes15,18",
+      "result": "Génomes distincts entre cellules issues d’un même zygote ; chimère distincte.",
+      "limitation": "Notion générale, sans risque médical humain imputé à la plante.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-somatic-mutations-2025",
+      "url": "https://academic.oup.com/jeb/article/38/5/630/8098494",
+      "sourceHash": "4034133edfe629cc20a658633b3d645a4a6da46f881451b2eb1558dae21dcc54",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "primary-research-targeted",
+      "locator": "Résumé/Introduction, lignes134–155",
+      "result": "Lignées méristématiques pouvant générer des gamètes et transmettre certaines mutations somatiques.",
+      "limitation": "Expérience surMimulus, pas cannabis ; germline végétale discutée et transmission possible, pas systématique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-totipotency",
+      "url": "https://extension.oregonstate.edu/catalog/em-9898-internal-plant-parts",
+      "sourceHash": "e48845d3d028277402f8e33cfaec26db655eaddaff0e75146a706f12907300cf",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Cells, lignes13–17 ; auteur/date lignes29–35",
+      "result": "Potentiel de développement complet d’une cellule végétale défini.",
+      "limitation": "Source pédagogique simplifie presque toutes cellules ; question correctement bornée au potentiel et aux conditions, sans régénération universelle spontanée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-grafts",
+      "url": "https://open.lib.umn.edu/horticulture/chapter/10-1-grafts-and-wounds/",
+      "sourceHash": "e59dee0bac440957beb79a48c935c023d67a7a7520611422d843b645580fbe23",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "Grafting, lignes151–156",
+      "result": "Plante composite conservant génotype du greffon et du porte-greffe.",
+      "limitation": "Modèle horticole classique, sans nier la recherche spécialisée sur transferts exceptionnels à une jonction ; aucune manipulation proposée.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-posttranscriptional",
+      "url": "https://openstax.org/books/biology-2e/pages/16-5-eukaryotic-post-transcriptional-gene-regulation",
+      "sourceHash": "bb0ed7dcea901e65c0d913849bbdfbfcf00a65f0ec31b12091dc75af7a16dd5f",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§16.5, lignes51–61",
+      "result": "Poly(A) protégeant des exonucleases ; microARN/RISC s’appariant aux messages et réprimant traduction/stabilité.",
+      "limitation": "Mécanisme général ; aucune longueur, efficacité ou cible expérimentale attribuée au cannabis.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-plant-rna-editing",
+      "url": "https://www.genetik.uni-hannover.de/en/research/sections/plant-proteomics/plant-organellar-rna-editing",
+      "sourceHash": "aa9031160a08c41028cb273f045af095212c8c604e7ce73fe095769db2b350e9",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-research-page-targeted",
+      "locator": "Introduction/figure1, lignes54–59",
+      "result": "Édition organellaire végétale majoritairementC→U.",
+      "limitation": "Nombres de sites et protéomesArabidopsis non transférés au cannabis ; pas d’objectif d’édition arbitrairement affirmé.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-ribosomes",
+      "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+      "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§15.5 Ribosomes, lignes30,41,79",
+      "result": "ARN ribosomique catalytique ; peptidyltransférase à baseARN impliquée dans liaison peptidique.",
+      "limitation": "Détails bactériens50S non attribués aux ribosomes cytosoliques végétaux ; principe catalytique conservé seulement.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-gene-homology",
+      "url": "https://www.ebi.ac.uk/training/online/courses/proteins-domains/mechanisms-of-domain-repertoire-expansion/domain-duplication-and-divergence/",
+      "sourceHash": "4dbd928f71df7b0e8fe9f9b88bb0c340f4cbf9a23581dde5a79cb643832bb7c5",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "institutional-training-page-targeted",
+      "locator": "Domain duplication and divergence, lignes55–67",
+      "result": "Paralogues par duplication ; orthologues par spéciation.",
+      "limitation": "Pas d’identité de fonction obligatoire déduite de l’homologie ; aucune définition par tissu ou position chromosomique.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-photo-51",
+      "url": "https://www.kcl.ac.uk/the-story-behind-photograph-51",
+      "sourceHash": "b1978edf5caef7a1437a16782db08b56eb485c1abdc7d62f598c5b67de7f14b7",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-history-page-targeted",
+      "locator": "Introduction, lignes33–38",
+      "result": "Franklin etGosling associés à l’image obtenue enmai1952 auKing’sCollege.",
+      "limitation": "Crédit de cette image précise, pas appropriation de toute la découverte ; dates de prise/publication distinguées.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-dna-1953",
+      "url": "https://www.genome.gov/25520255/online-education-kit-1953-dna-double-helix",
+      "sourceHash": "b688d7d05f6d650340fd0bc02e226d059918acd5a0135937ac6903ef95058b25",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "official-history-page-targeted",
+      "locator": "1953:DNADoubleHelix, lignes9–14,26",
+      "result": "Modèle publié parWatson/Crick en1953, apports deChargaff/Franklin/Wilkins reconnus.",
+      "limitation": "Pas découverte solitaire ni assimilation de publication et expérience d’imagerie.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-mcclintock",
+      "url": "https://www.maizegenetics.org/awards/mcclintock-biography",
+      "sourceHash": "056a5286d911173b4d86fdba9347f8b408540822134a9f5d91daf617ca8c9d86",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "scientific-society-history-page-targeted",
+      "locator": "BarbaraMcClintock:Life&Work, ligne116 etpassage128–131",
+      "result": "Travaux pionniers sur les éléments transposables du maïs.",
+      "limitation": "Biographie de chercheuse, pas origine exclusive de tous les éléments mobiles.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn04-evolution",
+      "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+      "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§18.1, lignes38–43,50",
+      "result": "Darwin etWallace développent indépendamment la sélection naturelle ; présentation1858.",
+      "limitation": "Nouvelle lecture de la section historique ; les paragraphes de sélection ne sont pas présentés comme recherche propre au cannabis.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-arabidopsis",
+      "url": "https://prl.natsci.msu.edu/about/history/arabidopsis/what-is-arabidopsis-thaliana.aspx",
+      "sourceHash": "5037ad99a0f324bee285112d071e559c31856402cf6fd17e9c72e5c2005e4948",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "university-page-targeted",
+      "locator": "Introduction/ModelOrganism, lignes85,97–100",
+      "result": "Arabidopsis petite plante à fleurs modèle de biologie et génétique végétales.",
+      "limitation": "Pas de résultat mesuré surArabidopsis transposé au chanvre.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn03-genetic-code",
+      "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+      "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§15.1, lignes52–55",
+      "result": "Quasi-universalité du code, avec exceptions.",
+      "limitation": "Sens partagé des codons ne signifie pas mêmes gènes/protéines ni aucune exception organellaire.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    },
+    {
+      "sourceId": "q2-cn05-cell-control",
+      "url": "https://openstax.org/books/biology-2e/pages/10-3-control-of-the-cell-cycle",
+      "sourceHash": "f4dc6bf4379f020bdefc28d88d03830f77bc8fdec364b9fc923b442da14d1752",
+      "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+      "reader": "f_existing_audit",
+      "consultedOn": "2026-11-16",
+      "status": "consulted",
+      "accessObserved": "textbook-targeted",
+      "locator": "§10.3 InternalCheckpoints/G2, lignes38–48",
+      "result": "Points de contrôle pouvant interrompre progression si copie/integritéADN insuffisante.",
+      "limitation": "Ni conseil médical ni intervention sur cycle ; modèle général eucaryote.",
+      "earlierReadingReused": false,
+      "timePrecision": "day"
+    }
+  ],
+  "items": [
+    {
+      "id": "hemp-q2-cn05-seed-coat-maternal-tissue-genotype",
+      "status": "approved",
+      "comment": "Tissu maternel de la graine distinct du rôle protecteur déjà testé ; formulation porte bien sur son origine.",
+      "contentHash": "d14d657b565fa553d152a23743e92c22808bc680fcfde803bbda8ae2c564e20b",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§32.2 DoubleFertilization/DevelopmentoftheSeed, lignes88–92,101–116 ; preuvequestion : Development of the Seed",
+          "result": "Tégument issu des enveloppes de l’ovule, tissu du parent portant l’ovule.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-endosperm-two-maternal-one-paternal-genome",
+      "status": "approved",
+      "comment": "Rapport parental typique précis, distinct des deux produits de double fécondation déjà testés ; niveau spécialisé.",
+      "contentHash": "70ad38bb88dd7cde3f11ba03b7ed0739ee90f1fc9821d934807831b9bfe16c6b",
+      "sourceChecks": [
+        {
+          "sourceId": "bf-reproduction-2018",
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "sourceRegistry": "docs/encyclopedia-revision/bibliography.json",
+          "sourceHash": "57499d55a05c28b9b7a44a26f7b1569c22f4a41fe8a58a397b797acece56efc5",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§32.2 DoubleFertilization/DevelopmentoftheSeed, lignes88–92,101–116 ; preuvequestion : Double Fertilization",
+          "result": "Deux noyaux polaires et spermatozoïde donnent albumen triploïde, contribution maternelle double.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-cannabis-organelle-dna-maternal-lineage",
+      "status": "approved",
+      "comment": "Fait propre au cannabis attribué à la thèse ; habituellement maintient une portée non absolue.",
+      "contentHash": "0c42f1c294adc7f7b1c57133d883ced27e5590a326c51bcc2cd923ecc8c6e105",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-houston-2018",
+          "url": "https://www.ojp.gov/pdffiles1/nij/grants/254756.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "677f548f5c94ab66db8d327fdf449451d4aa6b3899443395e82012f0ae546efe",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "thesis-pdf-targeted",
+          "locator": "PDFp.52(lignes1171–1179) ; passage répétéPDFp.153(lignes3377–3384) ; preuvequestion : Chloroplast DNA ; Origin determination, p. 50–52",
+          "result": "Transmission maternelle des deux génomes organellaires du cannabis explicitement décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mitochondria-plastids-endosymbiotic-bacterial-origin",
+      "status": "approved",
+      "comment": "Origine évolutive distincte du rôle physiologique des deux organites ; quatre hypothèses biologiques comparables.",
+      "contentHash": "19e0bfce0fa71691cb6d747c3ce566c4fe429459dc99bbc0bd4591e4b1f9ad13",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-eukaryotic-origins",
+          "url": "https://openstax.org/books/biology-2e/pages/23-1-eukaryotic-origins",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "96fcff6d00413a173ec8c450a26a69b24a6d4cdad5a4ed8e0989d8e0f0d2f434",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§23.1 Endosymbiosis/Mitochondria/Plastids, lignes57–67,80–87 ; preuvequestion : Endosymbiosis ; Mitochondria ; Plastids",
+          "result": "Ancêtres bactériens des mitochondries/plastes décrits, avec lignées distinctes.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-organelle-proteins-nuclear-gene-dependence",
+      "status": "approved",
+      "comment": "Dépendance organite/noyau correctement expliquée par transfert évolutif ; pas d’autonomie supposée à partir du seul ADN propre.",
+      "contentHash": "afc394014cc9f9978887d9c9e57a2412852dc6f1bf5b60ce62f977f86aea0985",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-eukaryotic-origins",
+          "url": "https://openstax.org/books/biology-2e/pages/23-1-eukaryotic-origins",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "96fcff6d00413a173ec8c450a26a69b24a6d4cdad5a4ed8e0989d8e0f0d2f434",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§23.1 Endosymbiosis/Mitochondria/Plastids, lignes57–67,80–87 ; preuvequestion : Mitochondria",
+          "result": "Nombreux gènes de protéines respiratoires transférés vers le génome nucléaire.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-nuclear-pores-control-rna-exchange",
+      "status": "approved",
+      "comment": "Structure des échanges ARN correctement identifiée ; pas de noyau hermétique supposé.",
+      "contentHash": "13e3e642cd82c966453e2c9a13e4ac1fd3ef398c12b9bc94a8e91a4233d92920",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§4.3 TheNuclearEnvelope/ChromatinandChromosomes, lignes60–72 ; preuvequestion : The Nuclear Envelope",
+          "result": "Pores contrôlant le passage de molécules etARN entre nucléoplasme et cytoplasme.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-cytokinesis-cell-plate-partition",
+      "status": "approved",
+      "comment": "Plaque et cloison végétales distinguées des structures nucléaires et du sillon animal ; unicité réelle.",
+      "contentHash": "c3a6495573ee97f56dcb92483f71b4213170d990ff83e39bbe87a98bec83dcfd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-cycle",
+          "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.2, lignes31–43,mitose/anaphase,cytocinèse88–96 ; preuvequestion : Cytokinesis, figure 10.9",
+          "result": "Plaque cellulaire végétale issue de fusion de vésicules et s’étendant vers la périphérie.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-g-zero-living-cell-outside-division-cycle",
+      "status": "approved",
+      "comment": "G0 ne signifie pas mort ; autres états du cycle correctement distingués.",
+      "contentHash": "e12534afb99599b1ad76110c169d4c6bd23fc6033ae3f55e8069bb3743efa5e1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-cycle",
+          "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.2, lignes31–43,mitose/anaphase,cytocinèse88–96 ; preuvequestion : G0 Phase",
+          "result": "G0 état hors cycle, sans préparation active à division, parfois temporaire.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-s-phase-chromosome-dna-replication",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The prompt no longer gives a temporal shortcut; S/G1/G2/M are four comparable cell-cycle phases. Previously verified S-phase replication fact retained.",
+      "contentHash": "ed47bb3d15e76d8fa235795bcfc0a58b8ccbe4efcd20b1efeb149a1dea517a7d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-cycle",
+          "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.2, lignes31–43,mitose/anaphase,cytocinèse88–96 ; preuvequestion : S Phase ; figure 10.5",
+          "result": "Réplication chromosomique pendant la phaseS explicitement décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "temporal_answer_cue",
+          "reason": "L’énoncé précise avant la division ; seule réponse d’interphase face à trois étapes pendant/après mitose. La lettreS peut être ignorée.",
+          "requestedChange": "Comparer quatre phases de granularité comparable, ou demander réellement le rôle deS avec des processus voisins, sans cette élimination temporelle triviale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn05-chromosome-x-shape-not-permanent",
+      "status": "approved",
+      "comment": "Correction d’une représentation scolaire utile ; copie/condensation du chromosome correctement précisées.",
+      "contentHash": "bd1dcf0308ce5019f04a0a8d43f242536d05110265a235630989aded9a9bcce8",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cells",
+          "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "d18706527baa85fd22b719c045bcd5bd6d992d2022229e5db8d0a1be88471e9c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§4.3 TheNuclearEnvelope/ChromatinandChromosomes, lignes60–72 ; preuvequestion : Chromatin and Chromosomes",
+          "result": "Condensation variable au cycle et chromatides réunies après copie étayées.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-spindle-microtubules-distribute-chromosomes",
+      "status": "approved",
+      "comment": "Polymères du cytosquelette concurrents ; rôle des microtubules exact et nouveau.",
+      "contentHash": "83799e4165c495803b6e4f17173751bf63cd9f4a1d3758a040c769e8d429667a",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-cycle",
+          "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.2, lignes31–43,mitose/anaphase,cytocinèse88–96 ; preuvequestion : The Mitotic Phase ; Anaphase",
+          "result": "Microtubules du fuseau participant au mouvement chromosomique décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-centromere-spindle-attachment-region",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Only the requested grouping under fuseau-division changed, preventing the explanation from disclosing the microtubule answer in the same game. Body and evidence unchanged.",
+      "contentHash": "49e65bb1ea844259d8cf0307ac6ff36a762d801126bf100b07218ba91499584d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-centromere",
+          "url": "https://www.genome.gov/genetics-glossary/Centromere",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "02fe6c3ae58e32f47277d3c8694d234c8928ec5d894872a4ae1c03271d15cfb3",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Definition/Narration, lignes15,20 ; preuvequestion : Definition ; Narration",
+          "result": "Centromère région d’attache au fuseau ; position non nécessairement centrale.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "subject_key_answer_leak",
+          "reason": "L’explication identifie les microtubules du fuseau, réponse de l’item11, mais les clés centromere/fuseau-division permettent leur rencontre.",
+          "requestedChange": "Regrouper ces deux faits sous une clé commune du même appareil, ou retirer cette information hors fait de l’explication. Les propriétés région d’attache/composant mobile sont distinctes et restent conservables."
+        }
+      ],
+      "supportingReadings": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "locator": "§11.1 PrometaphaseI, lignes60–61",
+          "reader": "f_existing_audit",
+          "readOn": "2026-11-16",
+          "result": "Corroboration du kinétochore protéique liant microtubules et centromère, en complément du glossaire simplifié."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn05-telomeres-protect-linear-chromosome-ends",
+      "status": "approved",
+      "comment": "Protection d’extrémités distincte de région d’attache ; aucune extrapolation du vieillissement humain.",
+      "contentHash": "b76c1b8b7b643d8cd404ff993270b83b3a01b7bd19c568203793e05264d302b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-telomere",
+          "url": "https://www.genome.gov/genetics-glossary/Telomere",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "d9a45833ff1e98fed5397a79dd56e6c3b463f07bf5eadafb13f3c4953a0b7237",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Definition/Narration, lignes15,21 ; preuvequestion : Definition ; Narration",
+          "result": "Télomères protégeant les extrémités contre perte et jonctions anormales.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-telomerase-built-in-rna-template",
+      "status": "approved",
+      "comment": "Matrice interneARN exacte ; exception pertinente au schéma simplifié ADN→ARN, niveau spécialisé.",
+      "contentHash": "822844322faa1797f560b23a71e94d6ca245ce1752f6587d52d4a57ac1b961bf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§14.5, lignes29–49,53–56 ettable14.2 ; preuvequestion : Telomere Replication",
+          "result": "Télomérase portant matriceARN pour extension d’ADN télomérique.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-meiosis-one-replication-two-nuclear-divisions",
+      "status": "approved",
+      "comment": "Chronologie réelle d’événements biologiques, distincte de l’ordre de séparation déjà testé dansC04.",
+      "contentHash": "1690c1017bf580477d0033662048cd234b28442328e49c285958927e961f39cf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§11.1, lignes37–50,60–75,89–90 ; preuvequestion : Introduction ; Meiosis I",
+          "result": "Une réplication chromosomique suivie de deux divisions décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-independent-orientation-homologous-pairs-meiosis",
+      "status": "approved",
+      "comment": "Brassage interchromosomique distinct du crossing-over, mécanisme aléatoire correctement décrit.",
+      "contentHash": "0fc57d5679150823f2da8fd0144765a036e1b44f2df2fbd2974b6042d3348eb7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§11.1, lignes37–50,60–75,89–90 ; preuvequestion : Metaphase I, figure 11.5",
+          "result": "Orientation indépendante des paires à métaphaseI explicitement décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-crossing-over-occurs-prophase-one",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Only the common cannabis-crossing-over subject key changed, as requested. The distinct timing property and its previously read source remain unchanged.",
+      "contentHash": "71f8dd67eadf401ebd37c14a04add95257749de408d722fe878c634477fcde31",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§11.1, lignes37–50,60–75,89–90 ; preuvequestion : Prophase I",
+          "result": "Crossing-over entre non-sœurs en prophaseI et chiasmas décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "subject_key_normalization",
+          "reason": "Même phénomène récurrent que hemp-genetics-recombinaison, déjà sous cannabis-crossing-over ; le fait nouveau porte sur la phase, pas sur un autre crossing-over.",
+          "requestedChange": "Réutiliser la clé commune cannabis-crossing-over, ou faire arbitrer une clé canonique commune parroot, sans changer le fait déjà sourcé."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn05-nondisjunction-chromosomes-fail-to-separate",
+      "status": "approved",
+      "comment": "Anomalie de ségrégation distincte des substitutions/réarrangements ; explication apprend la conséquence de nombre.",
+      "contentHash": "e9c7e7a2c86280ffd0f8db1f9234a8d6e495ed1657d46c0c18d6cb3f12e02841",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-chromosome-errors",
+          "url": "https://openstax.org/books/biology-2e/pages/13-2-chromosomal-basis-of-inherited-disorders",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "ca4a328f4601450daeea928dfcb81bb3e989cfc3cec99b0b0dbef13060dcff0f",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§13.2 Nondisjunction/Aneuploidy/Polyploidy, lignes48–50,61–70 ; preuvequestion : Nondisjunction",
+          "result": "Non-disjonction des homologues ou chromatides et répartition inégale décrites.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-aneuploidy-single-chromosome-gain-loss",
+      "status": "approved",
+      "comment": "Cas individuel sans jeu complet, correctement distingué des changements de ploïdie et d’orientation.",
+      "contentHash": "24b8769bf11d6e68dd7a4dfd939951001515cb01f25ee6eb7de4a49f86223cb2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-chromosome-errors",
+          "url": "https://openstax.org/books/biology-2e/pages/13-2-chromosomal-basis-of-inherited-disorders",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "ca4a328f4601450daeea928dfcb81bb3e989cfc3cec99b0b0dbef13060dcff0f",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§13.2 Nondisjunction/Aneuploidy/Polyploidy, lignes48–50,61–70 ; preuvequestion : Aneuploidy ; Polyploidy",
+          "result": "Aneuploïdie individuelle distincte d’ajout de jeux complets.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mosaicism-genetically-different-cell-lineages-one-zygote",
+      "status": "approved",
+      "comment": "Variation de lignées cellulaires d’un même zygote distincte d’une différenciation de fonctions ; pas de maladie végétale inventée.",
+      "contentHash": "77c42d9218fa915ad3937bbc4f660555b4599c25b2d3c49f6eb5174cfce73585",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-mosaicism",
+          "url": "https://www.genome.gov/genetics-glossary/Mosaicism",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "42de88032aa0e48e79a2180fe27e0886b9f916bf89d1223e9ccf756449856f88",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Definition/Narration, lignes15,18 ; preuvequestion : Definition ; Narration",
+          "result": "Génomes cellulaires différents après même zygote définissant mosaïcisme.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-meristem-somatic-mutations-can-enter-gametes",
+      "status": "approved",
+      "comment": "Transmission seulement possible et certaines mutations ; mécanisme général non transformé en résultat sur le cannabis.",
+      "contentHash": "6a10d24dd096b9acea133e2fcec90b3201742b004ab56512f0b5f753808f4073",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-somatic-mutations-2025",
+          "url": "https://academic.oup.com/jeb/article/38/5/630/8098494",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "4034133edfe629cc20a658633b3d645a4a6da46f881451b2eb1558dae21dcc54",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "primary-research-targeted",
+          "locator": "Résumé/Introduction, lignes134–155 ; preuvequestion : Abstract ; Introduction",
+          "result": "Cellules méristématiques pouvant produire gamètes et transmettre certaines mutations.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-cell-totipotency-whole-plant-capacity",
+      "status": "approved",
+      "comment": "Potentiel complet qualifié par conditions et type cellulaire ; pas de protocole de régénération.",
+      "contentHash": "d3f666fdc7f9608a026adc55addc711c00ffaf99f5be935848138736270e0e12",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-totipotency",
+          "url": "https://extension.oregonstate.edu/catalog/em-9898-internal-plant-parts",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "e48845d3d028277402f8e33cfaec26db655eaddaff0e75146a706f12907300cf",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "locator": "Cells, lignes13–17 ; auteur/date lignes29–35 ; preuvequestion : Cells",
+          "result": "Capacité potentielle de développer une plante complète définie.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-graft-composite-plant-retains-two-genotypes",
+      "status": "approved",
+      "comment": "Situation horticole classique distinguant greffe et fécondation ; deux tissus conservant leurs identités.",
+      "contentHash": "59449bcc7b0cacee3b4f6f0a8160e7f8f27104bf099e6b3720b750725b5b862e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-grafts",
+          "url": "https://open.lib.umn.edu/horticulture/chapter/10-1-grafts-and-wounds/",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "e59dee0bac440957beb79a48c935c023d67a7a7520611422d843b645580fbe23",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "Grafting, lignes151–156 ; preuvequestion : Grafting, exemple du pommier",
+          "result": "Pommier composite avec génotype des racines et du greffon distincts décrit.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-helicase-separates-dna-strands",
+      "status": "approved",
+      "comment": "Enzymes réelles de réplication, hélicase distincte des fonctions déjà testées d’ADN polymérase.",
+      "contentHash": "fa00a4901ee4ea7b80625365a37a97e1ad4ae09e5a142f053d460a2c6d7d865e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§14.5, lignes29–49,53–56 ettable14.2 ; preuvequestion : Paragraphe après le tableau 14.2",
+          "result": "Hélicase ouvrant la double hélice avec énergieATP décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-dna-ligase-seals-backbone-breaks",
+      "status": "approved",
+      "comment": "Continuité du squelette après copie, distincte de synthèse des bases ; quatre enzymes plausibles.",
+      "contentHash": "92463eb6c95a1c85a6f01d3e775071038c565520c38722bbdb828c72fa599e7d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§14.5, lignes29–49,53–56 ettable14.2 ; preuvequestion : Paragraphe sur les fragments d’Okazaki",
+          "result": "Ligase scellant les interruptions par liaison phosphodiester décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-eukaryotic-chromosomes-multiple-replication-origins",
+      "status": "approved",
+      "comment": "Organisation des origines multiples, distincte de l’identité de l’enzyme et du modèle semi-conservatif.",
+      "contentHash": "fa4c78ecd98c5e1821a3183b994236e99dcb5be6619381fe5a409a0cd0f500e5",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§14.5, lignes29–49,53–56 ettable14.2 ; preuvequestion : Tableau 14.2, Origin of replication",
+          "result": "Origines multiples de réplication eucaryote décrites.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-lagging-strand-okazaki-fragments",
+      "status": "approved",
+      "comment": "Organisation discontinue d’un brin correctement limitée à la fourche ; nom spécialisé justifie niveau3.",
+      "contentHash": "f1d34cad998c9e02ae8918951aedc1e7c065a38e0644754000c2a16cd503c78f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-euk-replication",
+          "url": "https://openstax.org/books/biology-2e/pages/14-5-dna-replication-in-eukaryotes",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "sourceHash": "4c6d3475a08c2476a92db04ef285eaa03f31ff3b19a2d66af98cee9f71ca8896",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§14.5, lignes29–49,53–56 ettable14.2 ; preuvequestion : Paragraphes sur leading strand et lagging strand",
+          "result": "Fragments d’Okazaki associés au brin retardé et ensuite joints.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-microrna-complementarity-represses-target-message",
+      "status": "approved",
+      "comment": "Régulation post-transcriptionnelle ciblée, sans mutation du gène ou promesse d’universalité de cible.",
+      "contentHash": "46e0bb2c66ca5ee27b7f5469d78f7696e2581607b358f06f3aee7271a1446990",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-posttranscriptional",
+          "url": "https://openstax.org/books/biology-2e/pages/16-5-eukaryotic-post-transcriptional-gene-regulation",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "bb0ed7dcea901e65c0d913849bbdfbfcf00a65f0ec31b12091dc75af7a16dd5f",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§16.5, lignes51–61 ; preuvequestion : RNA Stability and microRNAs",
+          "result": "microARN/RISC s’appariant au message et réprimant traduction/stabilité.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-plant-organellar-rna-editing-c-to-u",
+      "status": "approved",
+      "comment": "Conversions de bases du transcrit correctement distinguées d’autres maturations ; pas de performance attribuée au cannabis.",
+      "contentHash": "79094d815e648a1048d5ac29b7529af4810707f0ec3014ad39424cbaee460c93",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-plant-rna-editing",
+          "url": "https://www.genetik.uni-hannover.de/en/research/sections/plant-proteomics/plant-organellar-rna-editing",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "aa9031160a08c41028cb273f045af095212c8c604e7ce73fe095769db2b350e9",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-research-page-targeted",
+          "locator": "Introduction/figure1, lignes54–59 ; preuvequestion : Introduction ; figure 1",
+          "result": "Édition organellaire végétale principalementC→U décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-poly-a-tail-protects-messenger-rna",
+      "status": "approved",
+      "comment": "Fonction de protection de nombreuxARNm, sans prétendre que toutARN porte cette queue.",
+      "contentHash": "cc07e67e73091ac1b9d2e0c7c67bbb8c5d7ecf1866786d89a493640b49d800b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-posttranscriptional",
+          "url": "https://openstax.org/books/biology-2e/pages/16-5-eukaryotic-post-transcriptional-gene-regulation",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "bb0ed7dcea901e65c0d913849bbdfbfcf00a65f0ec31b12091dc75af7a16dd5f",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§16.5, lignes51–61 ; preuvequestion : Control of RNA Stability",
+          "result": "Queuepoly(A) protégeant l’extrémité3′ contre exonucleases décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-ribosomal-rna-catalytic-role",
+      "status": "approved",
+      "comment": "Nature du catalyseurARNr distincte de la fonction générale du ribosome et de l’ARNt.",
+      "contentHash": "f417460c558e2eca7276655ad7de84f93a530d1636ec629b6beae7f12328c407",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-ribosomes",
+          "url": "https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "d15ec23bd60dfd74615fdb7eaa2fa6f37b50aa4d7d69ec8ef7873eea1032192e",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§15.5 Ribosomes, lignes30,41,79 ; preuvequestion : Ribosomes",
+          "result": "ARNr catalytique et peptidyltransférase à baseARN décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-ortholog-speciation-paralog-duplication",
+      "status": "approved",
+      "comment": "Histoires duplication/spéciation distinctes ; pas de fonction obligatoirement identique déduite de l’homologie.",
+      "contentHash": "3e28f76b09b170a1e90058d2021a0e42b717a8b48115b5129e6c0d2e283fa168",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-gene-homology",
+          "url": "https://www.ebi.ac.uk/training/online/courses/proteins-domains/mechanisms-of-domain-repertoire-expansion/domain-duplication-and-divergence/",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "4dbd928f71df7b0e8fe9f9b88bb0c340f4cbf9a23581dde5a79cb643832bb7c5",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "institutional-training-page-targeted",
+          "locator": "Domain duplication and divergence, lignes55–67 ; preuvequestion : Définitions de paralogous genes et orthologous genes",
+          "result": "Orthologues issus de spéciation, paralogues de duplication confirmés.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-franklin-gosling-photograph-51",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Level2 and rationale now reflect specific historical recall of both credited researchers, as requested by F. Factual body and source unchanged.",
+      "contentHash": "9a06e66017f7f18bb838721697632dd0160665b610704743277928ac9982c4f4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-photo-51",
+          "url": "https://www.kcl.ac.uk/the-story-behind-photograph-51",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "b1978edf5caef7a1437a16782db08b56eb485c1abdc7d62f598c5b67de7f14b7",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-history-page-targeted",
+          "locator": "Introduction, lignes33–38 ; preuvequestion : Introduction, image obtenue en mai 1952",
+          "result": "Franklin/Gosling crédités dePhotograph51 obtenue enmai1952.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Attribuer précisément Photograph51 à Franklin/Gosling exige une connaissance historique spécifique ; célèbre et sans prérequis technique ne justifient pas à eux seuls niveau1.",
+          "requestedChange": "Passer au niveau2 ou fournir une justification concrète de l’accessibilité de la tâche ; aucun quota n’oblige ce fait à rester facile."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn05-watson-crick-dna-double-helix-model-1953",
+      "status": "approved",
+      "comment": "Repère historique fréquent, contributions expérimentales correctement reconnues ; niveau1 défendable.",
+      "contentHash": "ba9d39b1400e39fac3af68928a43a2bf4bf815c4b6986e38004d856427a50d84",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-dna-1953",
+          "url": "https://www.genome.gov/25520255/online-education-kit-1953-dna-double-helix",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "b688d7d05f6d650340fd0bc02e226d059918acd5a0135937ac6903ef95058b25",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-history-page-targeted",
+          "locator": "1953:DNADoubleHelix, lignes9–14,26 ; preuvequestion : Introduction ; publication dans Nature le 25 avril 1953",
+          "result": "Watson/Crick, modèle1953 et données des autres chercheurs confirmés.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mcclintock-mobile-elements-studied-in-maize",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: Level2 and rationale now reflect historical recall of McClintock research organism, as requested by F. Factual body and source unchanged.",
+      "contentHash": "7b3508b6da5681d7c8a6348083c4fc0ed7b3a2bb6c8acbc9b5cad02e1d0510fa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-mcclintock",
+          "url": "https://www.maizegenetics.org/awards/mcclintock-biography",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "056a5286d911173b4d86fdba9347f8b408540822134a9f5d91daf617ca8c9d86",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "scientific-society-history-page-targeted",
+          "locator": "BarbaraMcClintock:Life&Work, ligne116 etpassage128–131 ; preuvequestion : Premier paragraphe de Barbara McClintock: Life & Work",
+          "result": "Recherches pionnières deMcClintock sur transposons du maïs confirmées.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Relier McClintock au maïs pour les éléments mobiles est une connaissance spécialisée d’histoire de la génétique, pas automatiquement accessible parce que la réponse est une plante familière.",
+          "requestedChange": "Réévaluer en niveau2 et justifier la connaissance de chercheuse/organisme, ou proposer une tâche réellement accessible sans livrer la réponse."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-q2-cn05-darwin-wallace-independent-natural-selection-formulation",
+      "status": "approved",
+      "comment": "Contribution deWallace explicitement reconnue ; aucun récit de découverte solitaire.",
+      "contentHash": "df07d2f6c2507e19bb2343f1a3bb0324e3557a128d0b98f10e2a2c2413ac2d23",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-evolution",
+          "url": "https://openstax.org/books/biology-2e/pages/18-1-understanding-evolution",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "sourceHash": "15da7211b325db22a7a8807a6697db3f6bf074029976a9003349fce2676b51c8",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§18.1, lignes38–43,50 ; preuvequestion : Darwin and Natural Selection",
+          "result": "Conceptions indépendantesDarwin/Wallace et présentation1858 confirmées.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-arabidopsis-thaliana-plant-genetics-model",
+      "status": "approved",
+      "comment": "Rôle de plante modèle correctement identifié ; aucun résultat surArabidopsis imputé au chanvre.",
+      "contentHash": "3fa8aea692c8123da535c2e066635812582050ef66fd0bc1504d96a2fb6d09cc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-arabidopsis",
+          "url": "https://prl.natsci.msu.edu/about/history/arabidopsis/what-is-arabidopsis-thaliana.aspx",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "5037ad99a0f324bee285112d071e559c31856402cf6fd17e9c72e5c2005e4948",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-page-targeted",
+          "locator": "Introduction/ModelOrganism, lignes85,97–100 ; preuvequestion : Introduction ; emergence as a model plant",
+          "result": "Arabidopsis modèle majeur de biologie et génétique végétales confirmé.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-genetic-code-nearly-universal-across-species",
+      "status": "approved",
+      "comment": "Quasi-universalité correctement nuancée et distincte de l’identité des séquences ou des espèces.",
+      "contentHash": "851eda5a1d7e968902a5c4b05509fedba0b77bf7792c3c74373c9e0dd852214b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn03-genetic-code",
+          "url": "https://openstax.org/books/biology-2e/pages/15-1-the-genetic-code",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-03.json",
+          "sourceHash": "6438e98dd9d00df8b64a8fb3f96b3cf0375e48a5ad267a96bea5caa3dc9d7e1f",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§15.1, lignes52–55 ; preuvequestion : The Genetic Code Is Degenerate and Universal, paragraphe nearly universal",
+          "result": "Code génétique presque universel, avec exceptions, explicitement décrit.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-flowering-plant-meiosis-directly-produces-spores",
+      "status": "approved",
+      "comment": "Spores haploïdes distinguées des gamètes végétaux produits par mitose ; ne pas transférer directement le schéma animal.",
+      "contentHash": "545093d4fd06c08a1800e348b026aae7913bf32fba49b60422d876a5d0f193e9",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§11.1, lignes37–50,60–75,89–90 ; preuvequestion : Introduction, paragraphe sur sporophytes et gametophytes ; Metaphase I",
+          "result": "Intro distingue mitose des gamètes végétaux et réduction haploïde de méiose ; texte/légende parlent de variation dans les spores.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-cell-cycle-checkpoints-can-pause-progression",
+      "status": "approved",
+      "comment": "Root final arbitration after independent F review: The task now distinguishes G2 criteria from spindle attachment, cytokinesis and meiotic pairing. F original sourceCheck explicitly covered Internal Checkpoints/G2 and its verification criteria; the approved-source object is unchanged. The new G2 factKey describes the actual tested property.",
+      "contentHash": "af6f3b164f4affbbc70489c69f234c111a81c0c6a5700559c507f6112c4a89a0",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-cell-control",
+          "url": "https://openstax.org/books/biology-2e/pages/10-3-control-of-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "f4dc6bf4379f020bdefc28d88d03830f77bc8fdec364b9fc923b442da14d1752",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.3 InternalCheckpoints/G2, lignes38–48 ; preuvequestion : Regulation at Internal Checkpoints ; The G2 Checkpoint",
+          "result": "Possibilité de suspendre progression du cycle et vérificationsG2 décrites.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "prudence_gives_answer",
+          "reason": "Trois actions poursuivent/divisent/répliquent avant vérification face à la seule suspension prudente. Aucune connaissance d’un point de contrôle n’est nécessaire.",
+          "requestedChange": "Tester une distinction cellulaire réelle de surveillance/progression avec des actions biologiques plausibles, sans réduire à continuer contre suspendre face à un problème. La source contient des critèresG1/G2/M utilisables sans chiffre arbitraire."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "finalReviewer": "root",
+      "finalReviewedAt": "2026-11-16"
+    }
+  ],
+  "deduplication": [
+    {
+      "ids": [
+        "hemp-q2-cn05-seed-coat-maternal-tissue-genotype",
+        "hemp-q2-cn02-seed-coat-protects-seed-contents"
+      ],
+      "decision": "distinct",
+      "reason": "Origine génétique maternelle versus fonction protectrice ; objet tégument correctement regroupé."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-endosperm-two-maternal-one-paternal-genome",
+        "hemp-q2-cn02-double-fertilization-zygote-and-endosperm"
+      ],
+      "decision": "distinct",
+      "reason": "Rapport parental2:1 versus identification de deux produits de fécondation ; clé double-fecondation commune."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-cannabis-organelle-dna-maternal-lineage",
+        "hemp-q2-cn03-offspring-nuclear-genome-from-both-parents"
+      ],
+      "decision": "distinct",
+      "reason": "Génomes organellaires et nucléaires ne suivent pas le même mode de transmission ; question nouvelle explicitement limitée aux organites."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-mitochondria-plastids-endosymbiotic-bacterial-origin",
+        "hemp-q2-cn05-organelle-proteins-nuclear-gene-dependence"
+      ],
+      "decision": "distinct_shared_subject",
+      "reason": "Origine des organites versus dépendance nucléaire après transfert de gènes ; clé commune pertinente."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-spindle-microtubules-distribute-chromosomes",
+        "hemp-q2-cn05-centromere-spindle-attachment-region"
+      ],
+      "decision": "distinct_answer_leak_subject_fix_requested",
+      "reason": "Composant du fuseau et région d’attache distincts ; explication du centromère renseigne le composant, clés à regrouper."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-meiosis-one-replication-two-nuclear-divisions",
+        "hemp-q2-cn04-meiosis-one-homologs-two-sister-chromatids",
+        "hemp-q2-cn04-meiosis-reduces-chromosome-set-number"
+      ],
+      "decision": "distinct_shared_subject",
+      "reason": "Nombre de copies/divisions, ordre des structures séparées et réduction du nombre de jeux sont trois propriétés distinctes ; clé meiose commune."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-crossing-over-occurs-prophase-one",
+        "hemp-genetics-recombinaison"
+      ],
+      "decision": "distinct_subject_fix_requested",
+      "reason": "Phase de l’événement versus conséquence de nouvelles associations alléliques ; même phénomène, clé canoniquecannabis-crossing-over recommandée."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-mosaicism-genetically-different-cell-lineages-one-zygote",
+        "hemp-q2-cn01-different-cell-functions-differential-gene-expression",
+        "hemp-q2-cn06-heteroplasmy-multiple-mitochondrial-sequences-one-individual"
+      ],
+      "decision": "distinct",
+      "reason": "Génomes de lignées cellulaires, expression entre types cellulaires et coexistence de variantes mitochondriales diffèrent par objet et propriété."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-plant-meristem-somatic-mutations-can-enter-gametes",
+        "hemp-genetics-mutation-clonale"
+      ],
+      "decision": "distinct",
+      "reason": "Transmission possible d’une mutation somatique par méristème/gamètes versus cause d’une variation d’ADN dans un clone."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-plant-cell-totipotency-whole-plant-capacity",
+        "hemp-q2-cn01-different-cell-functions-differential-gene-expression"
+      ],
+      "decision": "distinct",
+      "reason": "Potentiel complet de développement versus explication de fonctions différentes malgré mêmeADN."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-ribosomal-rna-catalytic-role",
+        "hemp-q2-cn01-ribosome-direct-protein-assembly",
+        "hemp-q2-cn03-transfer-rna-delivers-amino-acids"
+      ],
+      "decision": "distinct",
+      "reason": "NatureARN du catalyseur, identité du complexe assemblant les protéines et fonction adaptatriceARNt distinctes ; clé ribosome commune aux deux premiers."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-mcclintock-mobile-elements-studied-in-maize",
+        "hemp-q2-cn03-transposable-element-mobile-dna"
+      ],
+      "decision": "distinct",
+      "reason": "Organisme de recherche historique versus définition d’une classe de séquences mobiles."
+    },
+    {
+      "ids": [
+        "hemp-q2-cn05-flowering-plant-meiosis-directly-produces-spores",
+        "hemp-q2-cn04-meiosis-reduces-chromosome-set-number"
+      ],
+      "decision": "distinct",
+      "reason": "Identité des cellules produites dans le cycle végétal versus changement de nombre de jeux ; pas un autre libellé de réduction de ploïdie."
+    }
+  ],
+  "editorialAssessment": {
+    "interest": "Mécanismes distincts de cellules, chromosomes et expression ; pas de déclinaison artificielle d’une donnée chiffrée d’étude. Les anecdotes historiques reconnaissent les contributions réelles sans héroïsation solitaire.",
+    "difficulty": "Pas de ratio imposé. Deux rappels historiques précis sont demandés au niveau2 ; noms familiers de plantes ou absence de calcul ne rendent pas un fait connu. Les mécanismesOkazaki,ARNr,édition et somatique/gamètes justifient un niveau spécialisé. Les définitions intermédiaires restent appréciées sur la connaissance requise, sans exiger de lire l’étude citée.",
+    "forms": "Chronologie de copie/divisions et comparaisonorthologie/paralogie correspondent à de vraies tâches distinctes ; situations de greffe/aneuploïdie sont correctement décrites. Les deux tâches à indice temporel/prudent demandent reprise.",
+    "sourceLimits": "Principes généraux explicitement distingués des résultats propres au cannabis. Houston apporte un passage bibliographique sur Cannabis ; Mimulus,Arabidopsis et pommier ne sont pas présentés comme études du chanvre. Exemples humains médicaux des manuels exclus."
+  },
+  "summary": {
+    "total": 40,
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "sourceObjects": 25,
+    "sourceChecks": 40,
+    "finalLevels": {
+      "1": 5,
+      "2": 26,
+      "3": 9,
+      "4": 0
+    },
+    "decision": "All40 final versions approved after six author corrections and root final arbitration on the original F source evidence.",
+    "sourceReadingScope": "Distinct source IDs and checks in the final approved items. Actual readers, targeted passages, earlier readings and supplemental consultations remain recorded in the individual proof objects; these counts do not claim full-book reading or a fresh opening of every source."
+  },
+  "beforeRootFinalArbitration": [
+    {
+      "id": "hemp-q2-cn05-s-phase-chromosome-dna-replication",
+      "status": "changes_requested",
+      "comment": "Fait exact, mais temporalité de l’énoncé permet répondre sans identifierS.",
+      "contentHash": "fa5d3b4a660673e608f09af728f2eecfadb8fbfb1dab18a8d78cf027462aa281",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn01-cell-cycle",
+          "url": "https://openstax.org/books/biology-2e/pages/10-2-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-01.json",
+          "sourceHash": "e34d5e2613711757d9da926b5a7b9ce28d9683a32cff6ceb3d5d9bbeff3a087c",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.2, lignes31–43,mitose/anaphase,cytocinèse88–96 ; preuvequestion : S Phase ; figure 10.5",
+          "result": "Réplication chromosomique pendant la phaseS explicitement décrite.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "temporal_answer_cue",
+          "reason": "L’énoncé précise avant la division ; seule réponse d’interphase face à trois étapes pendant/après mitose. La lettreS peut être ignorée.",
+          "requestedChange": "Comparer quatre phases de granularité comparable, ou demander réellement le rôle deS avec des processus voisins, sans cette élimination temporelle triviale."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-centromere-spindle-attachment-region",
+      "status": "changes_requested",
+      "comment": "Région d’attache correcte et kinétochore exact ; regroupement avec microtubules nécessaire pour l’explication.",
+      "contentHash": "d983097c7daa68d54c0f92ce04d7c83471a13b4f210d16a52228f6645b740d5f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-centromere",
+          "url": "https://www.genome.gov/genetics-glossary/Centromere",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "02fe6c3ae58e32f47277d3c8694d234c8928ec5d894872a4ae1c03271d15cfb3",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Definition/Narration, lignes15,20 ; preuvequestion : Definition ; Narration",
+          "result": "Centromère région d’attache au fuseau ; position non nécessairement centrale.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "subject_key_answer_leak",
+          "reason": "L’explication identifie les microtubules du fuseau, réponse de l’item11, mais les clés centromere/fuseau-division permettent leur rencontre.",
+          "requestedChange": "Regrouper ces deux faits sous une clé commune du même appareil, ou retirer cette information hors fait de l’explication. Les propriétés région d’attache/composant mobile sont distinctes et restent conservables."
+        }
+      ],
+      "supportingReadings": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "locator": "§11.1 PrometaphaseI, lignes60–61",
+          "reader": "f_existing_audit",
+          "readOn": "2026-11-16",
+          "result": "Corroboration du kinétochore protéique liant microtubules et centromère, en complément du glossaire simplifié."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-crossing-over-occurs-prophase-one",
+      "status": "changes_requested",
+      "comment": "Phase de crossing-over exacte ; seule harmonisation de clé avec l’existant demandée.",
+      "contentHash": "bd85ed341b25cd973608d9a6d53d1e67e5ce2ea8f46aacbff75fe9027989519d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn04-meiosis",
+          "url": "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-04.json",
+          "sourceHash": "81d0695c06ed6845d343a2adf8e504ddd0041affe065e090634b8bc5a197ef08",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§11.1, lignes37–50,60–75,89–90 ; preuvequestion : Prophase I",
+          "result": "Crossing-over entre non-sœurs en prophaseI et chiasmas décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "subject_key_normalization",
+          "reason": "Même phénomène récurrent que hemp-genetics-recombinaison, déjà sous cannabis-crossing-over ; le fait nouveau porte sur la phase, pas sur un autre crossing-over.",
+          "requestedChange": "Réutiliser la clé commune cannabis-crossing-over, ou faire arbitrer une clé canonique commune parroot, sans changer le fait déjà sourcé."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-franklin-gosling-photograph-51",
+      "status": "changes_requested",
+      "comment": "Attribution collective exacte ; niveau historique précis à réévaluer.",
+      "contentHash": "4d2bbb0b296d9a96b6336dbf4b5ee41d4f25589925c551cd3f5c6543c08b4b72",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-photo-51",
+          "url": "https://www.kcl.ac.uk/the-story-behind-photograph-51",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "b1978edf5caef7a1437a16782db08b56eb485c1abdc7d62f598c5b67de7f14b7",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "university-history-page-targeted",
+          "locator": "Introduction, lignes33–38 ; preuvequestion : Introduction, image obtenue en mai 1952",
+          "result": "Franklin/Gosling crédités dePhotograph51 obtenue enmai1952.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Attribuer précisément Photograph51 à Franklin/Gosling exige une connaissance historique spécifique ; célèbre et sans prérequis technique ne justifient pas à eux seuls niveau1.",
+          "requestedChange": "Passer au niveau2 ou fournir une justification concrète de l’accessibilité de la tâche ; aucun quota n’oblige ce fait à rester facile."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-mcclintock-mobile-elements-studied-in-maize",
+      "status": "changes_requested",
+      "comment": "Plante étudiée exacte, mais recherche deMcClintock/maïs constitue un rappel historique spécifique à classer niveau2.",
+      "contentHash": "946e0312b63d9b2e2fab6973386b88af94dc7a3592ea121243300bf71b87988e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-mcclintock",
+          "url": "https://www.maizegenetics.org/awards/mcclintock-biography",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "056a5286d911173b4d86fdba9347f8b408540822134a9f5d91daf617ca8c9d86",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "scientific-society-history-page-targeted",
+          "locator": "BarbaraMcClintock:Life&Work, ligne116 etpassage128–131 ; preuvequestion : Premier paragraphe de Barbara McClintock: Life & Work",
+          "result": "Recherches pionnières deMcClintock sur transposons du maïs confirmées.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "difficulty",
+          "reason": "Relier McClintock au maïs pour les éléments mobiles est une connaissance spécialisée d’histoire de la génétique, pas automatiquement accessible parce que la réponse est une plante familière.",
+          "requestedChange": "Réévaluer en niveau2 et justifier la connaissance de chercheuse/organisme, ou proposer une tâche réellement accessible sans livrer la réponse."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-cn05-cell-cycle-checkpoints-can-pause-progression",
+      "status": "changes_requested",
+      "comment": "Fait exact mais seule suspension prudente face à trois poursuites sans vérification ; reprise de tâche nécessaire.",
+      "contentHash": "53ea7b76b6d364af14affadf44828e7c0918864bf356d03e2f3a5897a4f1f500",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-cn05-cell-control",
+          "url": "https://openstax.org/books/biology-2e/pages/10-3-control-of-the-cell-cycle",
+          "sourceRegistry": "docs/quiz-2000/batches/c-new-05.json",
+          "sourceHash": "f4dc6bf4379f020bdefc28d88d03830f77bc8fdec364b9fc923b442da14d1752",
+          "reader": "f_existing_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "textbook-targeted",
+          "locator": "§10.3 InternalCheckpoints/G2, lignes38–48 ; preuvequestion : Regulation at Internal Checkpoints ; The G2 Checkpoint",
+          "result": "Possibilité de suspendre progression du cycle et vérificationsG2 décrites.",
+          "supportStatus": "supported"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "blocking",
+          "code": "prudence_gives_answer",
+          "reason": "Trois actions poursuivent/divisent/répliquent avant vérification face à la seule suspension prudente. Aucune connaissance d’un point de contrôle n’est nécessaire.",
+          "requestedChange": "Tester une distinction cellulaire réelle de surveillance/progression avec des actions biologiques plausibles, sans réduire à continuer contre suspendre face à un problème. La source contient des critèresG1/G2/M utilisables sans chiffre arbitraire."
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    }
+  ],
+  "rootFinalArbitration": {
+    "reviewer": "root",
+    "date": "2026-11-16",
+    "ids": [
+      "hemp-q2-cn05-s-phase-chromosome-dna-replication",
+      "hemp-q2-cn05-centromere-spindle-attachment-region",
+      "hemp-q2-cn05-crossing-over-occurs-prophase-one",
+      "hemp-q2-cn05-franklin-gosling-photograph-51",
+      "hemp-q2-cn05-mcclintock-mobile-elements-studied-in-maize",
+      "hemp-q2-cn05-cell-cycle-checkpoints-can-pause-progression"
+    ],
+    "scope": "Six corrected full question objects read.34 prior approvals and all source objects unchanged. Existing F source reading, including G2 criteria, is reused with its actual attribution; no new root source consultation claimed."
+  },
+  "summaryBeforeDeliveryNormalization": {
+    "historicalContext": true,
+    "record": {
+      "total": 40,
+      "approved": 40,
+      "changes_requested": 0,
+      "rejected": 0,
+      "sourceObjects": 25,
+      "newSources": 18,
+      "reusedSources": 7,
+      "sourceChecks": 40,
+      "supplementalSupportingReadings": 1,
+      "sourceAccessBlocked": 0,
+      "unverifiedSourceObjects": 0,
+      "exactDuplicateConfirmed": 0,
+      "blockingFactualContradictionConfirmed": 0,
+      "declaredLevels": {
+        "1": 7,
+        "2": 24,
+        "3": 9,
+        "4": 0
+      },
+      "decisions": "Six demandes ciblées : deux tâches, deux regroupements de sujets, deux niveaux historiques. Faits étayés, aucune correction substantielle de fait imposée par une contradiction de source.",
+      "finalNote": "All40 approved after six targeted author corrections and final root arbitration."
+    }
+  }
+}

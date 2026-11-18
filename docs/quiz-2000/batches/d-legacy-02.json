@@ -1,0 +1,1707 @@
+{
+  "batchId": "d-legacy-02",
+  "author": "d_history_food_pilot",
+  "role": "D",
+  "status": "awaiting-independent-review",
+  "sourceReuse": {
+    "registry": "docs/encyclopedia-revision/bibliography.json et sources des lots déjà produits",
+    "rule": "Références par ID sans redéfinition des objets enregistrés. Les consultations du présent lot sont datées séparément.",
+    "sourceIds": [
+      "q2-c-flora-china-cannabaceae-2003",
+      "q2-dnext01-eckhardt-2024",
+      "bf-reproduction-2018",
+      "products-tool-seed-protein",
+      "products-tool-seed-oil",
+      "qh-culture-pci",
+      "qh-nature-hurd-tissue-paper",
+      "qh-nature-composite-review",
+      "q2-dnext01-collet-pretot-2014",
+      "products-tool-hempcrete",
+      "products-tool-materials",
+      "products-primary-retting-2015",
+      "qh-hist-hemp-victory",
+      "qh-hist-canada",
+      "qh-hist-un-treaties"
+    ]
+  },
+  "deduplication": {
+    "comparedWith": [
+      "docs/quiz-2000/fact-index.jsonl",
+      "docs/quiz-2000/audit-f-active-snapshot.json#entries",
+      "docs/quiz-2000/batches/d-01.json",
+      "docs/quiz-2000/batches/d-legacy-01.json"
+    ],
+    "method": "Recherche ciblée des propriétés, réponses et mots techniques dans l'index ; distinction des étapes, matières et mesures, puis lecture des passages originaux. Les trente IDs réservés sont des versions de remplacement, pas trente ajouts.",
+    "nearExistingFacts": [
+      {
+        "ids": [
+          "hemp-seeds-chenevis",
+          "hemp-seeds-decorticage",
+          "hemp-seeds-pericarpe"
+        ],
+        "existing": [
+          "hemp-q2-c-chenevis-une-graine",
+          "hemp-seeds-reserves"
+        ],
+        "distinction": "Nom usuel, retrait de l'enveloppe et origine ovarienne de la paroi sont distincts du nombre de graines et de leur contenu de réserve. Les items de vocabulaire du chènevis partagent une clé ; le décorticage a sa propre transformation explicite."
+      },
+      {
+        "ids": [
+          "hemp-seeds-edestine",
+          "hemp-seeds-fractions-proteines"
+        ],
+        "existing": [
+          "hemp-q2-d01-gouttes-et-depot"
+        ],
+        "distinction": "Structure de l'assemblage d'édestine et familles de réserve sont distinctes. L'ancienne identification générique protéine est remplacée pour éviter la déclinaison inverse ; la sédimentation d'édestine reste un autre phénomène. Clé commune hemp-seed-storage-proteins."
+      },
+      {
+        "ids": [
+          "hemp-seeds-tourteau-fractions",
+          "hemp-seeds-farine"
+        ],
+        "existing": [
+          "hemp-seeds-tourteau",
+          "hemp-q2-d01-isolat-purete-rendement"
+        ],
+        "distinction": "Composition mesurée et réduction granulométrique distinctes du nom du résidu de pressage et de la distinction rendement/pureté d'un isolat. Aucun nouveau chiffre de récupération à mémoriser."
+      },
+      {
+        "ids": [
+          "hemp-seeds-solubilite"
+        ],
+        "existing": [
+          "hemp-q2-d01-isolats-milieu-acide"
+        ],
+        "distinction": "Minimum de solubilité lié au point isoélectrique distinct du résultat expérimental pH 3,2 versus 7. Aucun nouveau seuil arbitraire ; la règle est qualifiée pour les mélanges."
+      },
+      {
+        "ids": [
+          "hemp-seeds-pigment-huile",
+          "hemp-seeds-hexanal"
+        ],
+        "existing": [
+          "hemp-q2-d01-chlorophylles-lumiere",
+          "hemp-prevention-hydroperoxydes"
+        ],
+        "distinction": "Famille de pigment et famille chimique d'un volatil distinctes de la photosensibilisation et des produits primaires d'oxydation. Les explications n'exigent pas un taux universel."
+      },
+      {
+        "ids": [
+          "hemp-profiles-renfort",
+          "hemp-profiles-matrice"
+        ],
+        "existing": [
+          "hemp-q2-d01-composite-temoin-matrice"
+        ],
+        "distinction": "Rôle des fibres et définition de la phase continue sont deux constituants distincts, non deux formulations d'une même réponse. La question de témoin PP concerne l'origine d'une émission. Clé commune hemp-fibre-composite pour les concepts de constitution."
+      },
+      {
+        "ids": [
+          "hemp-profiles-beton",
+          "hemp-profiles-remplissage",
+          "hemp-profiles-isolation",
+          "hemp-profiles-hygroscopie",
+          "hemp-profiles-carbonatation"
+        ],
+        "existing": [
+          "hemp-en-3-01",
+          "hemp-q2-d01-beton-densite-chaleur",
+          "hemp-q2-d01-beton-humidite-isolation"
+        ],
+        "distinction": "Composition, rôle constructif, fonction thermique, échange de vapeur et réaction minérale sont cinq propriétés distinctes. Les deux questions chanvre-chaux de composition et de remplissage partagent la clé existante ; aucun effet expérimental densité/humidité n'est redemandé."
+      },
+      {
+        "ids": [
+          "hemp-profiles-pectines",
+          "hemp-profiles-rouissage-organismes"
+        ],
+        "existing": [
+          "hemp-q2-d01-adn-rouissage",
+          "hemp-en-3-18"
+        ],
+        "distinction": "Substrats de cohésion et communautés biologiques sont distincts de l'altération hydrolytique de l'ADN et de la couche anatomique de lamelle moyenne. Clé commune hemp-retting pour limiter la répétition du processus."
+      },
+      {
+        "ids": [
+          "hemp-hs-hist-hempfilm",
+          "hemp-hs-hist-canada-date"
+        ],
+        "existing": [
+          "hemp-hs-hist-canada-scope"
+        ],
+        "distinction": "Créateur institutionnel du film et obligation d'évaluation de la loi sont des faits nouveaux remplaçant titre/date. La portée historique de la loi canadienne sera traitée séparément dans d-legacy-03, sous la même clé de loi."
+      }
+    ],
+    "requiresIndependentReview": true
+  },
+  "sources": [
+    {
+      "id": "q2-dlegacy02-acma-composites",
+      "title": "Guidelines and Recommended Practices for Fiber-Reinforced-Polymer (FRP) Architectural Products",
+      "organization": "American Composites Manufacturers Association ; copie Composites UK",
+      "url": "https://compositesuk.co.uk/wp-content/uploads/2021/11/ACMA-Guidelines-and-Recommended-Practices-FRP-Architectural-Products.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "ACMA Architectural Division, Architectural Guidelines and Specifications Committee",
+      "published": "2016",
+      "passage": "Annexe D : la résine forme la matrice entourant les fibres porteuses ; transfert des efforts entre fibres. Glossaire : matrice et module d'élasticité.",
+      "access": "full-text",
+      "documentKind": "Guide technique original d'une association professionnelle",
+      "limitation": "Seuls les concepts généraux de composite sont utilisés ; ce guide daté ne sert pas de prescription de construction ni de norme actuelle. Le cas du chanvre est corroboré séparément.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Annexe D, p. 58 (PDF p. 72), D.2 ; glossaire MATRIX",
+        "result": "Matrice entourant le renfort et transmission des efforts relues dans le guide."
+      }
+    },
+    {
+      "id": "q2-dlegacy02-chenevis-lexicon",
+      "title": "Chènevis — Trésor de la langue française informatisé",
+      "organization": "CNRTL / ATILF, CNRS et Université de Lorraine",
+      "url": "https://www.cnrtl.fr/definition/ch%C3%A8nevis",
+      "verifiedAt": "2026-11-16",
+      "author": "Rédaction du Trésor de la langue française",
+      "published": "TLF 1960–1990 ; notice numérique non datée",
+      "passage": "Définition botanique : graine du chanvre ; attestations du nom français.",
+      "access": "official-page",
+      "documentKind": "Notice lexicographique institutionnelle",
+      "limitation": "La définition lexicale emploie graine ; la précision botanique akène vient de Flora of China, pas de cette notice.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Entrée CHÈNEVIS, définition et histoire",
+        "result": "Nom français des graines de chanvre lu directement."
+      }
+    },
+    {
+      "id": "q2-dlegacy02-openstax-proteins",
+      "title": "Biology 2e, 3.4 Proteins",
+      "organization": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/3-4-proteins",
+      "verifiedAt": "2026-11-16",
+      "author": "Mary Ann Clark ; Matthew Douglas ; Jung Choi",
+      "published": "2018 ; édition numérique Biology 2e",
+      "passage": "Acides aminés comme monomères ; liaisons peptidiques ; groupes sulfhydryle de cystéines formant des ponts disulfure.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire ouvert",
+      "limitation": "Biochimie générale appliquée aux protéines de graines ; les particularités du chanvre sont corroborées par Eckhardt et collègues.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Amino Acids ; Primary Structure, figure 3.25 et paragraphe cysteine",
+        "result": "Monomères et liaison S–S des cystéines relus ; aucune recommandation sanitaire reprise."
+      }
+    },
+    {
+      "id": "q2-dlegacy02-dehulling-2026",
+      "title": "Assessment of nutritional and functional profile of whole, hulled and germinated hemp (Cannabis sativa L.) seeds",
+      "organization": "University of Oradea / Frontiers in Nutrition",
+      "url": "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2026.1825902/full",
+      "verifiedAt": "2026-11-16",
+      "author": "Daniel Mierlita",
+      "published": "2026-04-22",
+      "passage": "Le décorticage consiste à retirer l'enveloppe dure des graines ; distinction entre graines entières et décortiquées.",
+      "access": "full-text",
+      "documentKind": "Recherche expérimentale originale",
+      "limitation": "Seule la définition matérielle du décorticage est retenue. Ni allégations de santé, ni dosages, ni propos de l'introduction sur les cannabinoïdes de l'enveloppe ne sont utilisés.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Introduction, hulled/removing the hard shell ; Results and discussion, seed-hulling process",
+        "result": "Retrait des enveloppes et maintien de la partie intérieure vérifiés dans l'article."
+      }
+    },
+    {
+      "id": "q2-dlegacy02-edestin-structure",
+      "title": "Crystallographic characterization and molecular symmetry of edestin, a legumin from hemp",
+      "organization": "University of California Riverside / Journal of Molecular Biology ; PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8289257/",
+      "verifiedAt": "2026-11-16",
+      "author": "S. Patel ; R. Cudney ; A. McPherson",
+      "published": "1994-01-07",
+      "passage": "L'édestine de graines de chanvre est une protéine de réserve à six sous-unités, caractérisée par diffraction des rayons X.",
+      "access": "abstract",
+      "documentKind": "Résumé d'une étude cristallographique originale",
+      "limitation": "Résumé lu ; pas de prétention à une lecture des données cristallographiques complètes ni de tous les variants de la protéine.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract, première phrase et protéine hexamérique",
+        "result": "Assemblage en six sous-unités vérifié sans reprendre les paramètres de cristallisation."
+      }
+    },
+    {
+      "id": "q2-dlegacy02-carbonation-2020",
+      "title": "On the theoretical carbon storage and carbon sequestration potential of hempcrete",
+      "organization": "University of Colorado Boulder / Journal of Cleaner Production",
+      "url": "https://nationalhempassociation.org/wp-content/uploads/CarbonStorageHempcrete.pdf",
+      "verifiedAt": "2026-11-16",
+      "author": "Jay H. Arehart ; William S. Nelson ; Wil V. Srubar III",
+      "published": "2020-04-29",
+      "passage": "Composition chènevotte-liant à base de chaux ; §2.1.4, réaction Ca(OH)2 + CO2 → CaCO3 + H2O.",
+      "access": "full-text",
+      "documentKind": "Recherche originale de modélisation chimique et d'analyse de cycle de vie",
+      "limitation": "La réaction de carbonatation ne permet pas de déclarer tous les bétons de chanvre négatifs en carbone ; la formulation et le périmètre de calcul comptent.",
+      "consultation": {
+        "reader": "d_history_food_pilot",
+        "date": "2026-11-16",
+        "locator": "Abstract ; Introduction ; §2.1.4 Carbonation reactions, équation 7",
+        "result": "Nature du mélange et réaction de la chaux avec CO2 relues ; aucun bilan chiffré universel avancé."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "hemp-seeds-chenevis",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quel nom français désigne couramment les graines de chanvre ?",
+      "options": [
+        "Le chènevis",
+        "La filasse",
+        "La chènevotte",
+        "Les étoupes"
+      ],
+      "answer": 0,
+      "explanation": "Chènevis est le nom courant des graines de chanvre. En botanique, ce que l'on appelle ainsi est un petit fruit sec, un akène, qui contient la graine.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-chenevis-lexicon",
+        "q2-c-flora-china-cannabaceae-2003"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "chenevis",
+        "subjectKey": "chenevis",
+        "property": "nom courant de la fraction récoltée pour ses graines",
+        "expectedAnswer": "Le chènevis",
+        "learningObjective": "Savoir expliquer : nom courant de la fraction récoltée pour ses graines.",
+        "factKey": "chenevis--french-name-hemp-seed",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire courant de la plante : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-chenevis-lexicon",
+            "locator": "TLFi, entrée CHÈNEVIS, définition",
+            "support": "Le TLFi donne chènevis comme nom français de la graine du chanvre."
+          },
+          {
+            "sourceId": "q2-c-flora-china-cannabaceae-2003",
+            "locator": "Flora of China, Cannabaceae, genre Cannabis, description du fruit, p. 74–75",
+            "support": "La flore décrit le fruit de Cannabis comme un akène, ce qui soutient la précision botanique de l'explication."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quel nom désigne couramment les graines de chanvre ?",
+          "finalFact": "chenevis--french-name-hemp-seed",
+          "reason": "Fait conservé, deux preuves lexicales et botaniques attachées."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-decorticage",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Que retire-t-on principalement pour obtenir du chènevis décortiqué ?",
+      "options": [
+        "La matière grasse par pressage",
+        "L'enveloppe extérieure dure",
+        "La partie intérieure riche en huile",
+        "Le germe seul"
+      ],
+      "answer": 1,
+      "explanation": "Le décorticage retire l'enveloppe dure et conserve la partie intérieure. Il se distingue du pressage, qui vise à séparer une huile d'une matière solide.",
+      "articleId": "record-product-products-chenevis",
+      "sourceIds": [
+        "q2-dlegacy02-dehulling-2026"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hempseed dehulling",
+        "subjectKey": "hempseed-dehulling",
+        "property": "partie retirée par décorticage",
+        "expectedAnswer": "L'enveloppe extérieure dure",
+        "learningObjective": "Savoir expliquer : partie retirée par décorticage.",
+        "factKey": "hempseed-dehulling--hard-outer-hull-removal",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance accessible d'une transformation alimentaire : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-dehulling-2026",
+            "locator": "Introduction et discussion, définition du hulling",
+            "support": "Le décorticage est défini comme le retrait de la coque dure."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Que retire-t-on pour obtenir du chènevis décortiqué ?",
+          "finalFact": "hempseed-dehulling--hard-outer-hull-removal",
+          "reason": "Renvoi à une photo supprimé ; choix matériels sans absolus."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-farine",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "Quelle opération réduit un tourteau de graines de chanvre en farine ?",
+      "options": [
+        "La décantation",
+        "La filtration",
+        "Le broyage",
+        "Le pressage"
+      ],
+      "answer": 2,
+      "explanation": "Le broyage réduit le tourteau en particules plus petites. La farine conserve plusieurs constituants du tourteau ; ce changement de taille ne constitue pas à lui seul une purification des protéines.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-dnext01-eckhardt-2024"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hempseed milling",
+        "subjectKey": "hempseed-milling",
+        "property": "opération de réduction en farine",
+        "expectedAnswer": "Le broyage",
+        "learningObjective": "Savoir expliquer : opération de réduction en farine.",
+        "factKey": "hempseed-meal--milling-to-flour",
+        "form": "identification",
+        "difficultyRationale": "Quatre procédés alimentaires familiers : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dnext01-eckhardt-2024",
+            "locator": "Introduction, début p. 2, Milled into flour",
+            "support": "Le tourteau déshuilé peut être moulu en farine alimentaire."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle opération transforme une matière issue des graines de chanvre en farine ?",
+          "finalFact": "hempseed-meal--milling-to-flour",
+          "reason": "Fait conservé, choix issus des procédés alimentaires."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-acides-amines",
+      "topicId": "seeds",
+      "level": 1,
+      "prompt": "De quelles unités sont formées les chaînes des protéines du chènevis ?",
+      "options": [
+        "D'acides gras",
+        "De monosaccharides",
+        "De nucléotides",
+        "D'acides aminés"
+      ],
+      "answer": 3,
+      "explanation": "Les protéines sont des chaînes d'acides aminés reliés par des liaisons peptidiques. La quantité de protéines et les proportions des différents acides aminés sont deux informations distinctes.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-openstax-proteins"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hemp seed protein structure",
+        "subjectKey": "hemp-seed-protein-structure",
+        "property": "unités moléculaires des protéines",
+        "expectedAnswer": "D'acides aminés",
+        "learningObjective": "Savoir expliquer : unités moléculaires des protéines.",
+        "factKey": "hemp-protein--amino-acid-chain-units",
+        "form": "identification",
+        "difficultyRationale": "Connaissance de base de biochimie, avec quatre unités moléculaires : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-openstax-proteins",
+            "locator": "Amino Acids, monomères et liaisons peptidiques",
+            "support": "Les acides aminés sont les monomères qui composent les protéines."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "De quelles unités les protéines du chènevis sont-elles constituées ?",
+          "finalFact": "hemp-protein--amino-acid-chain-units",
+          "reason": "Pollen et silice remplacés par des unités moléculaires comparables."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-pericarpe",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Comment appelle-t-on la paroi du petit fruit sec de chanvre, issue de la paroi de l'ovaire ?",
+      "options": [
+        "Le péricarpe",
+        "Le tégument séminal",
+        "L'endosperme",
+        "Le cotylédon"
+      ],
+      "answer": 0,
+      "explanation": "Le péricarpe vient de la paroi de l'ovaire ; il entoure la graine. Le tégument séminal est, lui, une enveloppe de la graine : les deux niveaux anatomiques se distinguent.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "bf-reproduction-2018",
+        "q2-c-flora-china-cannabaceae-2003"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "botany",
+        "subject": "chenevis",
+        "subjectKey": "chenevis",
+        "property": "nom et origine de la paroi du fruit",
+        "expectedAnswer": "Le péricarpe",
+        "learningObjective": "Savoir expliquer : nom et origine de la paroi du fruit.",
+        "factKey": "hemp-achene--pericarp-fruit-wall-ovary-origin",
+        "form": "identification",
+        "difficultyRationale": "Quatre termes anatomiques plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "bf-reproduction-2018",
+            "locator": "OpenStax Biology 2e, §32.2, Development of the Fruit",
+            "support": "Le fruit provient de l'ovaire et sa paroi forme le péricarpe ; cette source établit l'origine ovarienne de la paroi du fruit."
+          },
+          {
+            "sourceId": "q2-c-flora-china-cannabaceae-2003",
+            "locator": "Flora of China, Cannabaceae, genre Cannabis, description du fruit, p. 74–75",
+            "support": "La flore décrit le fruit du chanvre comme un akène ; elle situe le cas botanique auquel la définition générale du péricarpe est appliquée."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Comment nomme-t-on la paroi du petit fruit sec qui entoure la graine de chanvre ?",
+          "finalFact": "hemp-achene--pericarp-fruit-wall-ovary-origin",
+          "reason": "Origine ovarienne soutenue par la source botanique générale et le cas du chanvre."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-tourteau-fractions",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans le tableau de composition du tourteau de chanvre de Cabral, quelles fractions sont mesurées en plus des protéines ?",
+      "options": [
+        "Phospholipides et stérols",
+        "Fibres et lipides résiduels",
+        "Amidon et sucres solubles",
+        "Pectines et gommes"
+      ],
+      "answer": 1,
+      "explanation": "Le tableau de composition mesure notamment protéines, fibres et lipides résiduels. Un tourteau est donc une matière composée, différente d'un isolat protéique purifié.",
+      "articleId": "record-product-products-press-cake",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "tourteau chanvre",
+        "subjectKey": "tourteau-chanvre",
+        "property": "composition du tourteau au-delà des protéines",
+        "expectedAnswer": "Fibres et lipides résiduels",
+        "learningObjective": "Savoir expliquer : composition du tourteau au-delà des protéines.",
+        "factKey": "hempseed-cake--residual-oil-and-fibre-besides-protein",
+        "form": "identification",
+        "difficultyRationale": "Composition d'un ingrédient alimentaire : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-tool-seed-protein",
+            "locator": "Results, Proximate composition analysis, tableau 1",
+            "support": "Le tourteau analysé contient des fibres et des lipides en plus des protéines."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "En plus des protéines, que contient encore un tourteau de chanvre ?",
+          "finalFact": "hempseed-cake--residual-oil-and-fibre-besides-protein",
+          "reason": "Absolus retirés ; ensembles de constituants alimentaires comparés."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-edestine",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Combien de sous-unités possède l'assemblage d'édestine du chènevis caractérisé par cristallographie ?",
+      "options": [
+        "Trois",
+        "Quatre",
+        "Six",
+        "Deux"
+      ],
+      "answer": 2,
+      "explanation": "L'étude cristallographique décrit une protéine à six sous-unités. Cet assemblage, dit hexamérique, correspond à son organisation quaternaire, au-delà de la chaîne d'acides aminés.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-edestin-structure",
+        "q2-dlegacy02-openstax-proteins"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hemp seed storage proteins",
+        "subjectKey": "hemp-seed-storage-proteins",
+        "property": "assemblage de sous-unités de l'édestine",
+        "expectedAnswer": "Six",
+        "learningObjective": "Savoir expliquer : assemblage de sous-unités de l'édestine.",
+        "factKey": "edestin--six-subunit-crystallographic-assembly",
+        "form": "identification",
+        "difficultyRationale": "Propriété structurale spécifique d'une protéine : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-edestin-structure",
+            "locator": "Patel, Cudney et McPherson, 1994, Abstract",
+            "support": "Le résumé de l'étude cristallographique décrit l'édestine étudiée comme un assemblage hexamérique de six sous-unités identiques."
+          },
+          {
+            "sourceId": "q2-dlegacy02-openstax-proteins",
+            "locator": "OpenStax Biology 2e, §3.4, Quaternary Structure",
+            "support": "L'interaction de plusieurs sous-unités polypeptidiques définit la structure quaternaire ; ce passage explique le terme employé dans le corrigé, sans dénombrer les sous-unités d'édestine."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "L’édestine présente dans le chènevis est…",
+          "finalFact": "edestin--six-subunit-crystallographic-assembly",
+          "reason": "Remplace l'identification générique protéine pour éviter l'inversion avec les fractions de réserve."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-pigment-huile",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quels pigments contribuent à la couleur verte de certaines huiles de chènevis ?",
+      "options": [
+        "Les caroténoïdes",
+        "Les anthocyanes",
+        "Les bétalaïnes",
+        "Les chlorophylles"
+      ],
+      "answer": 3,
+      "explanation": "Les chlorophylles peuvent accompagner l'huile et contribuer à sa teinte verte. Une couleur visible ne renseigne pas, à elle seule, sur l'ensemble des marqueurs de qualité de l'huile.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hempseed oil pigments",
+        "subjectKey": "hempseed-oil-pigments",
+        "property": "pigments de la teinte verte de l'huile",
+        "expectedAnswer": "Les chlorophylles",
+        "learningObjective": "Savoir expliquer : pigments de la teinte verte de l'huile.",
+        "factKey": "hempseed-oil--green-colour-chlorophylls",
+        "form": "identification",
+        "difficultyRationale": "Quatre familles de pigments végétaux : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-tool-seed-oil",
+            "locator": "Introduction, pigments et chlorophylles de l'huile",
+            "support": "L'article décrit les chlorophylles parmi les composés accompagnant l'huile de graines de chanvre."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quel pigment contribue à la couleur verte de certaines huiles de chènevis ?",
+          "finalFact": "hempseed-oil--green-colour-chlorophylls",
+          "reason": "Pigments animaux et cyanobactériens remplacés ; niveau réestimé."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-fractions-proteines",
+      "topicId": "seeds",
+      "level": 3,
+      "prompt": "Quelles familles regroupent les principales protéines de réserve du chènevis ?",
+      "options": [
+        "Globulines et albumines",
+        "Prolamines et glutélines",
+        "Globulines et prolamines",
+        "Albumines et glutélines"
+      ],
+      "answer": 0,
+      "explanation": "L'analyse distingue notamment les globulines de réserve et les albumines. Ces familles se différencient de celles souvent dominantes dans d'autres graines ; les proportions dépendent de la matière étudiée.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-dnext01-eckhardt-2024"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hemp seed storage proteins",
+        "subjectKey": "hemp-seed-storage-proteins",
+        "property": "principales familles des protéines de réserve",
+        "expectedAnswer": "Globulines et albumines",
+        "learningObjective": "Savoir expliquer : principales familles des protéines de réserve.",
+        "factKey": "hempseed-storage-proteins--globulins-albumins-major-families",
+        "form": "identification",
+        "difficultyRationale": "Quatre couples de familles protéiques végétales plausibles : niveau 3.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dnext01-eckhardt-2024",
+            "locator": "§3.4, SDS-PAGE, globulines et albumines ; figure 2",
+            "support": "Les profils montrent des globulines 11S/7S et des albumines 2S."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelles familles regroupent les principales protéines de réserve du chènevis ?",
+          "finalFact": "hempseed-storage-proteins--globulins-albumins-major-families",
+          "reason": "Familles animales remplacées et confusion éditoriale edestin/albumin de Cabral évitée."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-solubilite",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Dans une courbe solubilité-pH, où se trouve souvent le minimum des protéines de chanvre ?",
+      "options": [
+        "Dans les pH fortement alcalins",
+        "Près de leur point isoélectrique",
+        "Près de la neutralité, à pH 7",
+        "Dans les pH fortement acides"
+      ],
+      "answer": 1,
+      "explanation": "La solubilité est souvent la plus faible près du point isoélectrique. Les protéines du chanvre forment un mélange : leurs courbes dépendent aussi du milieu, et non d'un pH universel applicable à tout produit.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hemp protein solubility",
+        "subjectKey": "hemp-protein-solubility",
+        "property": "position générale du minimum de solubilité",
+        "expectedAnswer": "Près de leur point isoélectrique",
+        "learningObjective": "Savoir expliquer : position générale du minimum de solubilité.",
+        "factKey": "hemp-protein-solubility--minimum-near-isoelectric-point",
+        "form": "identification",
+        "difficultyRationale": "Principe de solubilité alimentaire et repères de pH : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-tool-seed-protein",
+            "locator": "Protein recovery, paragraphe Proteins display the lowest solubility",
+            "support": "La solubilité minimale est liée au pH égal au point isoélectrique ; les protéines du tourteau ont un pI voisin de 4–5."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quand la solubilité des protéines de chanvre est-elle généralement la plus faible ?",
+          "finalFact": "hemp-protein-solubility--minimum-near-isoelectric-point",
+          "reason": "Comportement qualifié ; choix comparant des régions de pH."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-ponts",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "Quelle liaison covalente peut se former entre deux cystéines d'une protéine de chanvre ?",
+      "options": [
+        "Une liaison phosphodiester",
+        "Une liaison ester",
+        "Un pont disulfure",
+        "Une liaison glycosidique"
+      ],
+      "answer": 2,
+      "explanation": "Les groupes soufrés de deux cystéines peuvent former un pont –S–S–. Il peut stabiliser le repliement d'une même chaîne ou relier des chaînes protéiques différentes.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "q2-dlegacy02-openstax-proteins",
+        "q2-dnext01-eckhardt-2024"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hemp seed protein structure",
+        "subjectKey": "hemp-seed-protein-structure",
+        "property": "liaison covalente impliquant les cystéines",
+        "expectedAnswer": "Un pont disulfure",
+        "learningObjective": "Savoir expliquer : liaison covalente impliquant les cystéines.",
+        "factKey": "hemp-protein--cysteine-disulfide-crosslink",
+        "form": "identification",
+        "difficultyRationale": "Quatre types de liaisons biologiques ; connaissance intermédiaire.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-openstax-proteins",
+            "locator": "OpenStax Biology 2e, §3.4, Tertiary Structure et figure 3.25",
+            "support": "Le texte et la figure expliquent la formation de ponts disulfure entre les groupes soufrés de deux cystéines."
+          },
+          {
+            "sourceId": "q2-dnext01-eckhardt-2024",
+            "locator": "Eckhardt et al., §3.4.1, PDF p. 7, profils électrophorétiques en conditions réductrices et non réductrices",
+            "support": "L'étude spécifique du chanvre décrit des assemblages d'édestine et des agrégats liés par des ponts disulfure, ainsi que des profils modifiés en conditions réductrices."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle liaison entre deux atomes de soufre peut relier des protéines de chanvre ?",
+          "finalFact": "hemp-protein--cysteine-disulfide-crosslink",
+          "reason": "Suppression de la répétition soufre/disulfure dans le prompt ; niveau corrigé."
+        }
+      }
+    },
+    {
+      "id": "hemp-seeds-hexanal",
+      "topicId": "seeds",
+      "level": 2,
+      "prompt": "À quelle famille chimique appartient l'hexanal suivi dans les études d'oxydation de l'huile de chènevis ?",
+      "options": [
+        "Aux cétones",
+        "Aux alcools",
+        "Aux esters",
+        "Aux aldéhydes"
+      ],
+      "answer": 3,
+      "explanation": "L'hexanal est un aldéhyde volatil qui peut augmenter pendant l'oxydation de l'huile. Il appartient aux produits secondaires suivis pour compléter les mesures des premiers produits d'oxydation.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "food",
+        "subject": "hempseed oil oxidation",
+        "subjectKey": "hempseed-oil-oxidation",
+        "property": "famille chimique d'un composé volatil d'oxydation",
+        "expectedAnswer": "Aux aldéhydes",
+        "learningObjective": "Savoir expliquer : famille chimique d'un composé volatil d'oxydation.",
+        "factKey": "hempseed-oil-hexanal--aldehyde-oxidation-volatile",
+        "form": "identification",
+        "difficultyRationale": "Quatre fonctions organiques plausibles, au lieu de macromolécules : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-tool-seed-oil",
+            "locator": "Abstract, liste des aldehydes ; Introduction, produits d'oxydation",
+            "support": "L'hexanal figure dans les aldéhydes qui augmentent lors du vieillissement étudié."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "À quelle famille appartient l’hexanal formé lors de l’oxydation d’huile de chènevis ?",
+          "finalFact": "hempseed-oil-hexanal--aldehyde-oxidation-volatile",
+          "reason": "Choix de même nature et difficulté corrigés."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-chenevotte",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quelle fraction de la tige de chanvre provient du cœur ligneux, plutôt que des fibres périphériques ?",
+      "options": [
+        "La chènevotte",
+        "La filasse longue",
+        "Les étoupes de filature",
+        "La fibre peignée"
+      ],
+      "answer": 0,
+      "explanation": "La chènevotte est le bois fragmenté du cœur de la tige. Les faisceaux fibreux périphériques fournissent une autre matière première, notamment destinée aux usages textiles.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "qh-culture-pci"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp stem fractionation",
+        "subjectKey": "hemp-stem-fractionation",
+        "property": "nom de la fraction ligneuse centrale",
+        "expectedAnswer": "La chènevotte",
+        "learningObjective": "Savoir expliquer : nom de la fraction ligneuse centrale.",
+        "factKey": "hemp-stem-core--chenevotte-woody-fraction",
+        "form": "identification",
+        "difficultyRationale": "Vocabulaire de base des fractions du chanvre : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "PDF p. 6, De la paille à la filasse, broyage et cœur de la tige",
+            "support": "La chènevotte se trouve au centre de la tige et est séparée des fibres."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle matière provient de la partie ligneuse intérieure de la tige de chanvre ?",
+          "finalFact": "hemp-stem-core--chenevotte-woody-fraction",
+          "reason": "Preuve anatomique explicite attachée ; choix limités aux matières de tige."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-beton",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quel couple végétal-minéral est à la base d'un béton de chanvre ?",
+      "options": [
+        "Paille de céréales et argile",
+        "Chènevotte et liant à base de chaux",
+        "Fibres longues et plâtre",
+        "Sciure de bois et ciment Portland"
+      ],
+      "answer": 1,
+      "explanation": "Le mélange associe chènevotte et liant à base de chaux. L'eau participe aussi à sa mise en œuvre ; le mot béton ne signifie pas que tous ces mélanges sont porteurs.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-dlegacy02-carbonation-2020"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "chanvre chaux",
+        "subjectKey": "chanvre-chaux",
+        "property": "couple granulat végétal-liant minéral",
+        "expectedAnswer": "Chènevotte et liant à base de chaux",
+        "learningObjective": "Savoir expliquer : couple granulat végétal-liant minéral.",
+        "factKey": "hemp-lime-concrete--shiv-lime-binder-components",
+        "form": "identification",
+        "difficultyRationale": "Reconnaissance de matériaux de base : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-carbonation-2020",
+            "locator": "Abstract et Introduction, composition du hempcrete",
+            "support": "Le matériau est composé de chènevotte et d'un liant à base de chaux."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quels ingrédients végétal et minéral composent un béton de chanvre à la chaux ?",
+          "finalFact": "hemp-lime-concrete--shiv-lime-binder-components",
+          "reason": "Preuve sur le liant à base de chaux ; quatre couples végétal-minéral."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-litiere",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quelle propriété de la chènevotte est directement utile pour gérer l'humidité d'une litière animale ?",
+      "options": [
+        "Sa faible densité en vrac",
+        "Sa capacité à isoler du froid",
+        "Sa capacité à absorber de l'eau",
+        "Sa capacité à amortir les appuis"
+      ],
+      "answer": 2,
+      "explanation": "La chènevotte peut absorber de l'humidité. Cette propriété matérielle ne suffit pas à démontrer une action désinfectante ou antiparasitaire d'une litière.",
+      "articleId": "record-product-products-bedding",
+      "sourceIds": [
+        "qh-culture-pci"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp shiv bedding",
+        "subjectKey": "hemp-shiv-bedding",
+        "property": "propriété utile pour une litière",
+        "expectedAnswer": "Sa capacité à absorber de l'eau",
+        "learningObjective": "Savoir expliquer : propriété utile pour une litière.",
+        "factKey": "hemp-shiv-bedding--water-absorption",
+        "form": "identification",
+        "difficultyRationale": "Relation familière entre litière et humidité : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "PDF p. 6, débouchés des résidus et capacité d'absorption",
+            "support": "La fiche associe chènevotte, emploi en litière et capacité d'absorption d'eau."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle propriété rend la chènevotte utile comme litière animale ?",
+          "finalFact": "hemp-shiv-bedding--water-absorption",
+          "reason": "Preuve précise attachée ; aucun chiffre universel d'absorption repris."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-tissage",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Par quel assemblage le tissage forme-t-il une étoffe de chanvre ?",
+      "options": [
+        "Par entrelacement de boucles de fil",
+        "Par liaison de fibres sans passage en fil",
+        "Par torsion de torons en un câble",
+        "Par entrecroisement de fils de chaîne et de trame"
+      ],
+      "answer": 3,
+      "explanation": "Le tissage croise chaîne et trame. Le tricot emploie des boucles, tandis qu'un non-tissé assemble des fibres ; ces constructions peuvent employer des matières proches mais donnent des structures différentes.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "qh-culture-pci"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp textile assembly",
+        "subjectKey": "hemp-textile-assembly",
+        "property": "mode d'assemblage d'une étoffe tissée",
+        "expectedAnswer": "Par entrecroisement de fils de chaîne et de trame",
+        "learningObjective": "Savoir expliquer : mode d'assemblage d'une étoffe tissée.",
+        "factKey": "hemp-weaving--warp-weft-crossing",
+        "form": "identification",
+        "difficultyRationale": "Quatre modes d'assemblage concrets ; vocabulaire accessible : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "PDF p. 8, Le tissage, première phrase",
+            "support": "Chaîne et trame s'entrecroisent pour former l'étoffe."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Comment le tissage forme-t-il une étoffe de chanvre ?",
+          "finalFact": "hemp-weaving--warp-weft-crossing",
+          "reason": "Choix textiles comparables à la place de procédés sur graines et tiges."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-papier",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quelle organisation caractérise les feuilles de papier contenant des fibres de chanvre, plutôt qu'une étoffe tissée ?",
+      "options": [
+        "Un réseau de fibres consolidées en feuille",
+        "Des fils de chaîne croisés avec une trame",
+        "Des boucles de fils entrelacées",
+        "Des torons torsadés en plusieurs couches"
+      ],
+      "answer": 0,
+      "explanation": "Les micrographies des feuilles expérimentales montrent un réseau de fibres consolidées. La formation de la feuille ne nécessite pas de fabriquer des fils puis de les tisser.",
+      "articleId": "record-product-products-paper",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp papermaking",
+        "subjectKey": "hemp-papermaking",
+        "property": "organisation fibreuse d'une feuille de papier",
+        "expectedAnswer": "Un réseau de fibres consolidées en feuille",
+        "learningObjective": "Savoir expliquer : organisation fibreuse d'une feuille de papier.",
+        "factKey": "hemp-paper--sheet-fibre-network-not-yarn-weave",
+        "form": "identification",
+        "difficultyRationale": "Quatre structures fibreuses comparables : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-hurd-tissue-paper",
+            "locator": "Morphology, SEM et figure 2, réseau des tissue handsheets",
+            "support": "Les micrographies décrivent un réseau de fibres dans les feuilles de papier."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle organisation des fibres de chanvre obtient-on en papeterie ?",
+          "finalFact": "hemp-paper--sheet-fibre-network-not-yarn-weave",
+          "reason": "Preuve papetière primaire ajoutée en remplacement du seul inventaire de débouchés."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-renfort",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans un composite, quel rôle mécanique recherche-t-on en ajoutant des fibres de chanvre ?",
+      "options": [
+        "Servir d'agent de démoulage à la surface",
+        "Reprendre une partie des efforts comme renfort",
+        "Former la phase continue qui enrobe les constituants",
+        "Provoquer la prise du liant comme catalyseur"
+      ],
+      "answer": 1,
+      "explanation": "Les fibres peuvent contribuer à la reprise des efforts. Leur longueur, leur orientation et leur adhésion au matériau environnant influencent l'efficacité du renforcement.",
+      "articleId": "record-product-products-composite",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp fibre composite",
+        "subjectKey": "hemp-fibre-composite",
+        "property": "rôle mécanique de la phase fibreuse",
+        "expectedAnswer": "Reprendre une partie des efforts comme renfort",
+        "learningObjective": "Savoir expliquer : rôle mécanique de la phase fibreuse.",
+        "factKey": "hemp-composite--fibres-load-bearing-reinforcement-role",
+        "form": "identification",
+        "difficultyRationale": "Quatre fonctions réelles dans la conception ou fabrication d'un composite : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "Abstract ; §3, interface et transfert d'efforts",
+            "support": "Les fibres de chanvre sont employées comme renfort ; les caractéristiques de l'interface gouvernent le transfert des efforts."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quel rôle peuvent jouer les fibres de chanvre dans une pièce composite ?",
+          "finalFact": "hemp-composite--fibres-load-bearing-reinforcement-role",
+          "reason": "Rôles de composite comparables ; suppression de carburant et pigment liquide."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-isolation",
+      "topicId": "profiles",
+      "level": 1,
+      "prompt": "Quelle fonction une laine de chanvre remplit-elle principalement comme isolant dans un mur ?",
+      "options": [
+        "Transmettre les charges de la toiture",
+        "Assurer le parement décoratif intérieur",
+        "Limiter les transferts de chaleur",
+        "Empêcher la pluie de traverser la façade"
+      ],
+      "answer": 2,
+      "explanation": "L'isolant réduit les transferts thermiques. La résistance à la pluie, la reprise des charges et le parement relèvent d'autres fonctions de la paroi ; le mur associe plusieurs couches.",
+      "articleId": "record-product-products-insulation",
+      "sourceIds": [
+        "q2-dnext01-collet-pretot-2014"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp insulating fibre panel",
+        "subjectKey": "hemp-insulating-fibre-panel",
+        "property": "fonction thermique d'un isolant fibreux",
+        "expectedAnswer": "Limiter les transferts de chaleur",
+        "learningObjective": "Savoir expliquer : fonction thermique d'un isolant fibreux.",
+        "factKey": "hemp-insulation--reduces-heat-transfer",
+        "form": "identification",
+        "difficultyRationale": "Quatre fonctions courantes d'une paroi : niveau 1.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dnext01-collet-pretot-2014",
+            "locator": "Introduction, fibres pour panneaux isolants ; enveloppe et propriétés thermiques",
+            "support": "Les fibres servent aux panneaux isolants et le comportement thermique de l'enveloppe dépend des matériaux."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle est la fonction principale d’une laine isolante de chanvre dans un mur ?",
+          "finalFact": "hemp-insulation--reduces-heat-transfer",
+          "reason": "Choix constructifs sans absolus ; preuve thermique scientifique attachée."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-peignage",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel effet recherche le peignage des fibres de chanvre avant la filature ?",
+      "options": [
+        "Les enchevêtrer en un feutre",
+        "Les torsader en un fil achevé",
+        "Les croiser en une armure de tissu",
+        "Les rendre plus parallèles"
+      ],
+      "answer": 3,
+      "explanation": "Le peignage aide à nettoyer la matière et à paralléliser les fibres. Former le fil par torsion, puis construire une étoffe, correspond à d'autres étapes de la chaîne textile.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "qh-culture-pci"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp textile preparation",
+        "subjectKey": "hemp-textile-preparation",
+        "property": "effet du peignage sur l'organisation des fibres",
+        "expectedAnswer": "Les rendre plus parallèles",
+        "learningObjective": "Savoir expliquer : effet du peignage sur l'organisation des fibres.",
+        "factKey": "hemp-combing--parallel-fibre-alignment",
+        "form": "identification",
+        "difficultyRationale": "Quatre effets textiles plausibles à des étapes différentes : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "PDF p. 7, Le cardage des étoupes, fin du paragraphe",
+            "support": "Le dernier peignage élimine des impuretés et parallélise les fibres."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quel effet le peignage recherche-t-il sur les fibres de chanvre ?",
+          "finalFact": "hemp-combing--parallel-fibre-alignment",
+          "reason": "Choix remplacés par des transformations fibreuses réelles ; niveau réestimé."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-pectines",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quels constituants de cohésion sont notamment dégradés pendant le rouissage du chanvre pour faciliter la séparation des fibres ?",
+      "options": [
+        "Les pectines",
+        "La cellulose cristalline",
+        "Les cires de surface",
+        "Les réserves d'amidon"
+      ],
+      "answer": 0,
+      "explanation": "Les pectines participent au ciment entre tissus. Leur dégradation facilite la libération des faisceaux ; le travail mécanique assure ensuite la séparation et le nettoyage des fibres.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "qh-culture-pci",
+        "qh-nature-hurd-tissue-paper"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp retting",
+        "subjectKey": "hemp-retting",
+        "property": "constituants de cohésion visés par le rouissage",
+        "expectedAnswer": "Les pectines",
+        "learningObjective": "Savoir expliquer : constituants de cohésion visés par le rouissage.",
+        "factKey": "hemp-retting--pectic-binding-substances-degradation",
+        "form": "identification",
+        "difficultyRationale": "Quatre constituants végétaux plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-culture-pci",
+            "locator": "Fiche PCI p. 6, pectines ; Naithani, Introduction, pectic binding substances",
+            "support": "Le rouissage élimine des substances pectiques de liaison entre les fibres."
+          },
+          {
+            "sourceId": "qh-nature-hurd-tissue-paper",
+            "locator": "Fiche PCI p. 6, pectines ; Naithani, Introduction, pectic binding substances",
+            "support": "Le rouissage élimine des substances pectiques de liaison entre les fibres."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelles substances qui unissent les tissus sont dégradées pendant le rouissage du chanvre ?",
+          "finalFact": "hemp-retting--pectic-binding-substances-degradation",
+          "reason": "Passage explicitant les pectines retrouvé ; aucune durée ou optimisation agricole reprise."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-remplissage",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans une construction à ossature bois, quel rôle est habituellement attribué au béton de chanvre entre les montants ?",
+      "options": [
+        "Un chaînage assurant la liaison des murs",
+        "Un remplissage isolant",
+        "Un contreventement structurel principal",
+        "Une fondation répartissant les charges"
+      ],
+      "answer": 1,
+      "explanation": "Le Cerema décrit le béton de chanvre comme remplissage d'une structure porteuse. Dans ce système, l'ossature reprend les charges ; le mélange assure surtout des fonctions d'enveloppe et d'isolation.",
+      "articleId": "record-product-products-hempcrete",
+      "sourceIds": [
+        "products-tool-hempcrete"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "chanvre chaux",
+        "subjectKey": "chanvre-chaux",
+        "property": "fonction d'un remplissage dans une ossature",
+        "expectedAnswer": "Un remplissage isolant",
+        "learningObjective": "Savoir expliquer : fonction d'un remplissage dans une ossature.",
+        "factKey": "hemp-concrete--insulating-infill-in-bearing-frame",
+        "form": "identification",
+        "difficultyRationale": "Quatre fonctions constructives plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-tool-hempcrete",
+            "locator": "PDF p. 1, définition du matériau",
+            "support": "Le béton de chanvre est utilisé comme matériau de remplissage d'une structure porteuse."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Dans une ossature bois, quel rôle joue couramment le béton de chanvre ?",
+          "finalFact": "hemp-concrete--insulating-infill-in-bearing-frame",
+          "reason": "Fonctions de bâtiment comparables et niveau corrigé."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-carbonatation",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quel gaz réagit avec la chaux hydratée lors de la carbonatation d'un béton de chanvre ?",
+      "options": [
+        "Le diazote",
+        "Le dihydrogène",
+        "Le dioxyde de carbone",
+        "Le dioxygène"
+      ],
+      "answer": 2,
+      "explanation": "La chaux hydratée réagit avec le CO2 pour former du carbonate de calcium et de l'eau. Cette réaction ne suffit pas à établir le bilan carbone complet d'une construction.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "q2-dlegacy02-carbonation-2020"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp lime binder",
+        "subjectKey": "hemp-lime-binder",
+        "property": "gaz consommé par la carbonatation de la chaux",
+        "expectedAnswer": "Le dioxyde de carbone",
+        "learningObjective": "Savoir expliquer : gaz consommé par la carbonatation de la chaux.",
+        "factKey": "hemp-lime-carbonation--co2-to-calcium-carbonate",
+        "form": "identification",
+        "difficultyRationale": "Quatre gaz simples à distinguer dans une réaction de matériau : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-dlegacy02-carbonation-2020",
+            "locator": "§2.1.4 Carbonation reactions, équation 7",
+            "support": "Ca(OH)2 consomme du CO2 et forme CaCO3 ainsi que de l'eau."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quel gaz réagit avec la chaux lors de la carbonatation d’un béton de chanvre ?",
+          "finalFact": "hemp-lime-carbonation--co2-to-calcium-carbonate",
+          "reason": "Équation primaire attachée ; niveau 4 abandonné."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-hygroscopie",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Un matériau de chanvre hygroscopique adsorbe puis restitue principalement quelle substance de l'air ?",
+      "options": [
+        "Du dioxyde de carbone",
+        "Du dioxygène",
+        "Du diazote",
+        "De la vapeur d'eau"
+      ],
+      "answer": 3,
+      "explanation": "L'hygroscopie concerne l'humidité reçue et restituée à l'air. Elle ne signifie ni étanchéité à l'eau liquide ni absorption chimique de tous les gaz présents.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp moisture sorption",
+        "subjectKey": "hemp-moisture-sorption",
+        "property": "substance échangée par sorption avec l'air",
+        "expectedAnswer": "De la vapeur d'eau",
+        "learningObjective": "Savoir expliquer : substance échangée par sorption avec l'air.",
+        "factKey": "hemp-hygroscopic-material--water-vapour-exchange",
+        "form": "identification",
+        "difficultyRationale": "Quatre constituants gazeux plausibles de l'air : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§2, interactions de la fibre avec l'eau et humidité ; §3, moisture",
+            "support": "La fibre échange de l'humidité avec l'environnement ; l'eau est retenue dans les parois et la vapeur occupe le lumen."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Un matériau de chanvre hygroscopique échange principalement quoi avec l’air ?",
+          "finalFact": "hemp-hygroscopic-material--water-vapour-exchange",
+          "reason": "Distinguer les substances plutôt que des objets solides hors sujet."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-fines",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans le défibrage industriel des tiges de chanvre, que désigne la fraction appelée « fines » ?",
+      "options": [
+        "Les petites particules et poussières de tige",
+        "Les faisceaux longs conservés pour le textile",
+        "Les rubans de filasse déjà peignés",
+        "Les fils courts récupérés après tissage"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport de filière désigne comme fines la poussière issue du défibrage. Ces petits fragments de tige se distinguent des rubans de fibres et des fils obtenus à des étapes ultérieures.",
+      "articleId": "record-product-products-fines",
+      "sourceIds": [
+        "products-tool-materials"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp stem fractionation",
+        "subjectKey": "hemp-stem-fractionation",
+        "property": "fraction fine du défibrage industriel",
+        "expectedAnswer": "Les petites particules et poussières de tige",
+        "learningObjective": "Savoir expliquer : fraction fine du défibrage industriel.",
+        "factKey": "hemp-decortication--fines-stem-dust-fraction",
+        "form": "identification",
+        "difficultyRationale": "Quatre fractions ou produits fibreux plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-tool-materials",
+            "locator": "PDF p. 14, poussière de chanvre appelée fines",
+            "support": "Les fines sont la poussière provenant de l'opération de défibrage des tiges."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Que sont les « fines » recueillies lors du défibrage des tiges de chanvre ?",
+          "finalFact": "hemp-decortication--fines-stem-dust-fraction",
+          "reason": "Kief et fractions sans lien avec la tige écartés ; choix cohérents avec la filière."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-matrice",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Dans un composite à fibres de chanvre, que désigne la matrice ?",
+      "options": [
+        "La couche de démoulant appliquée à l'outil",
+        "La phase continue qui enrobe les fibres",
+        "L'ensemble des fibres orientées de renfort",
+        "La zone de contact entre fibre et liant"
+      ],
+      "answer": 1,
+      "explanation": "La matrice entoure les fibres et contribue au transfert des efforts entre elles. L'interface est la zone de contact fibre-matrice ; elle ne se confond pas avec la matrice elle-même.",
+      "articleId": "record-product-products-composite",
+      "sourceIds": [
+        "qh-nature-composite-review",
+        "q2-dlegacy02-acma-composites"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp fibre composite",
+        "subjectKey": "hemp-fibre-composite",
+        "property": "définition de la phase continue du composite",
+        "expectedAnswer": "La phase continue qui enrobe les fibres",
+        "learningObjective": "Savoir expliquer : définition de la phase continue du composite.",
+        "factKey": "hemp-composite--continuous-embedding-matrix",
+        "form": "identification",
+        "difficultyRationale": "Quatre constituants ou zones d'un système composite : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-nature-composite-review",
+            "locator": "§3, fibre-matrix interface, adhésion et transfert d'efforts",
+            "support": "La matrice entourant les fibres et les propriétés de l'interface sont distinguées dans les composites."
+          },
+          {
+            "sourceId": "q2-dlegacy02-acma-composites",
+            "locator": "Appendix D, introduction and D.2, printed p.58 / PDF p.72",
+            "support": "La matrice de résine entoure les fibres de renfort et transmet les efforts entre elles."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Dans un composite à fibres de chanvre, qu’appelle-t-on la matrice ?",
+          "finalFact": "hemp-composite--continuous-embedding-matrix",
+          "reason": "Choix de conception de composite plutôt que champ, pollen ou machine."
+        }
+      }
+    },
+    {
+      "id": "hemp-profiles-rouissage-organismes",
+      "topicId": "profiles",
+      "level": 2,
+      "prompt": "Quels groupes d'organismes l'étude de Ribeiro et collègues analyse-t-elle sur les tiges pendant le rouissage du chanvre ?",
+      "options": [
+        "Des nématodes et des acariens",
+        "Des mousses et des lichens",
+        "Des bactéries et des champignons",
+        "Des algues et des protozoaires"
+      ],
+      "answer": 2,
+      "explanation": "L'étude quantifie et caractérise des communautés bactériennes et fongiques. Leurs proportions varient selon les échantillons ; leur présence ne démontre pas la fonction de chaque espèce isolément.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-primary-retting-2015"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "hemp-uses",
+        "subject": "hemp retting",
+        "subjectKey": "hemp-retting",
+        "property": "groupes biologiques associés au rouissage",
+        "expectedAnswer": "Des bactéries et des champignons",
+        "learningObjective": "Savoir expliquer : groupes biologiques associés au rouissage.",
+        "factKey": "hemp-retting--bacterial-fungal-communities",
+        "form": "identification",
+        "difficultyRationale": "Quatre groupes de communautés plausibles ; niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "products-primary-retting-2015",
+            "locator": "Abstract, quantification par PCR et groupes microbiens",
+            "support": "L'étude quantifie bactéries et champignons associés aux tiges et décrit la diversité des communautés."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quels organismes participent au rouissage biologique des pailles de chanvre ?",
+          "finalFact": "hemp-retting--bacterial-fungal-communities",
+          "reason": "Groupes biologiques crédibles et attribution à l'étude ; niveau 4 abandonné."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-hempfilm",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel ministère américain le catalogue d'archives donne-t-il comme créateur du film Hemp for Victory ?",
+      "options": [
+        "Le département de la Guerre",
+        "Le département du Trésor",
+        "Le département de la Marine",
+        "Le département de l'Agriculture"
+      ],
+      "answer": 3,
+      "explanation": "La notice de la National Agricultural Library crédite l'USDA. Elle décrit des fibres et tissus destinés aux besoins militaires ; le film n'est pas présenté ici comme une lecture du droit actuel.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-hemp-victory"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "hemp for victory",
+        "subjectKey": "hemp-for-victory",
+        "property": "organisme créateur du film d'archives",
+        "expectedAnswer": "Le département de l'Agriculture",
+        "learningObjective": "Savoir expliquer : organisme créateur du film d'archives.",
+        "factKey": "hemp-for-victory--usda-credited-creator",
+        "form": "identification",
+        "difficultyRationale": "Quatre départements fédéraux historiques plausibles : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-hemp-victory",
+            "locator": "Notice, Creator ; Scope and Contents",
+            "support": "Le créateur répertorié est le United States Department of Agriculture."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quel film de l’USDA, daté d’environ 1942, encourageait la culture du chanvre pendant la guerre ?",
+          "finalFact": "hemp-for-victory--usda-credited-creator",
+          "reason": "Remplace l'identification du titre et ses faux films distracteurs par une attribution institutionnelle étayée."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-canada-date",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel mécanisme la Loi sur le cannabis canadienne de 2018 prévoyait-elle pour évaluer ses effets après sa mise en œuvre ?",
+      "options": [
+        "Un examen législatif avec rapport au Parlement",
+        "Une clause d'expiration imposant une nouvelle adoption de la loi",
+        "Un audit des comptes par le vérificateur général",
+        "Une commission d'enquête publique distincte du Parlement"
+      ],
+      "answer": 0,
+      "explanation": "Le bilan de Santé Canada rappelle l'examen prévu à l'article 151.1 et un rapport aux deux chambres. C'est une disposition du cadre historique de 2018, distincte d'une mesure de ses résultats.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-canada"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "cannabis act canada",
+        "subjectKey": "cannabis-act-canada",
+        "property": "mécanisme d'évaluation prévu par la loi historique",
+        "expectedAnswer": "Un examen législatif avec rapport au Parlement",
+        "learningObjective": "Savoir expliquer : mécanisme d'évaluation prévu par la loi historique.",
+        "factKey": "canada-cannabis-act--mandatory-legislative-review",
+        "form": "identification",
+        "difficultyRationale": "Quatre mécanismes institutionnels comparables : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-canada",
+            "locator": "Introduction, article 151.1 et rapport aux deux chambres",
+            "support": "La loi impose un examen et un rapport exposant conclusions ou recommandations au Parlement."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "À quelle date la Cannabis Act canadienne est-elle entrée en vigueur ?",
+          "finalFact": "canada-cannabis-act--mandatory-legislative-review",
+          "reason": "Remplace le jour exact d'entrée en vigueur par un mécanisme d'évaluation intéressant."
+        }
+      }
+    },
+    {
+      "id": "hemp-hs-hist-single",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel traité adopté en 1961 rassemble et remplace plusieurs instruments antérieurs du contrôle international des stupéfiants ?",
+      "options": [
+        "La Convention internationale de l'opium de 1925",
+        "La Convention unique sur les stupéfiants",
+        "La Convention sur les substances psychotropes",
+        "La Convention contre le trafic illicite"
+      ],
+      "answer": 1,
+      "explanation": "Il s'agit de la Convention unique de 1961. Elle est distincte de la convention sur les psychotropes de 1971 et de celle de 1988 contre le trafic illicite ; les trois instruments ont des fonctions complémentaires.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ],
+      "editorial": {
+        "legacyAction": "correct",
+        "category": "history",
+        "subject": "convention1961",
+        "subjectKey": "convention1961",
+        "property": "nom de l'instrument conventionnel de 1961",
+        "expectedAnswer": "La Convention unique sur les stupéfiants",
+        "learningObjective": "Savoir expliquer : nom de l'instrument conventionnel de 1961.",
+        "factKey": "single-convention-1961--identity-unified-drug-control-treaty",
+        "form": "identification",
+        "difficultyRationale": "Quatre conventions internationales réelles et proches par objet : niveau 2.",
+        "sourceEvidence": [
+          {
+            "sourceId": "qh-hist-un-treaties",
+            "locator": "Introduction ; Part One, article 44, Termination of previous international treaties",
+            "support": "La compilation distingue la Convention unique de 1961 des instruments de 1971 et 1988."
+          }
+        ],
+        "legacyRevision": {
+          "originalPrompt": "Quelle convention internationale de 1961 a unifié plusieurs traités sur les stupéfiants ?",
+          "finalFact": "single-convention-1961--identity-unified-drug-control-treaty",
+          "reason": "Niveau corrigé ; aucune date d'entrée en vigueur non nécessaire dans l'explication."
+        }
+      }
+    }
+  ],
+  "consultations": [
+    {
+      "sourceId": "q2-dlegacy02-chenevis-lexicon",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "TLFi, entrée Chènevis ; Flora of China, Cannabaceae, fruit",
+      "result": "Le TLFi définit le chènevis comme graine du chanvre ; la flore décrit le fruit comme un akène."
+    },
+    {
+      "sourceId": "q2-c-flora-china-cannabaceae-2003",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "TLFi, entrée Chènevis ; Flora of China, Cannabaceae, fruit ; OpenStax, Development of Fruit and Fruit Types ; flore, fruit en akène",
+      "result": "Le TLFi définit le chènevis comme graine du chanvre ; la flore décrit le fruit comme un akène. La paroi ovarienne devient péricarpe ; le fruit du chanvre est un akène."
+    },
+    {
+      "sourceId": "q2-dlegacy02-dehulling-2026",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction et discussion, définition du hulling",
+      "result": "Le décorticage est défini comme le retrait de la coque dure."
+    },
+    {
+      "sourceId": "q2-dnext01-eckhardt-2024",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, début p. 2, Milled into flour ; §3.4, SDS-PAGE, globulines et albumines ; figure 2 ; OpenStax, Primary/Tertiary Structure ; Eckhardt §3.4",
+      "result": "Le tourteau déshuilé peut être moulu en farine alimentaire. Les profils montrent des globulines 11S/7S et des albumines 2S. Les cystéines forment des liaisons disulfure ; les profils du chanvre changent en conditions réductrices."
+    },
+    {
+      "sourceId": "q2-dlegacy02-openstax-proteins",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Amino Acids, monomères et liaisons peptidiques ; Patel et al., Abstract ; OpenStax, Quaternary Structure ; OpenStax, Primary/Tertiary Structure ; Eckhardt §3.4",
+      "result": "Les acides aminés sont les monomères qui composent les protéines. L'édestine étudiée possède six sous-unités ; l'assemblage de sous-unités définit la structure quaternaire. Les cystéines forment des liaisons disulfure ; les profils du chanvre changent en conditions réductrices."
+    },
+    {
+      "sourceId": "bf-reproduction-2018",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "OpenStax, Development of Fruit and Fruit Types ; flore, fruit en akène",
+      "result": "La paroi ovarienne devient péricarpe ; le fruit du chanvre est un akène."
+    },
+    {
+      "sourceId": "products-tool-seed-protein",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Results, Proximate composition analysis, tableau 1 ; Protein recovery, paragraphe Proteins display the lowest solubility",
+      "result": "Le tourteau analysé contient des fibres et des lipides en plus des protéines. La solubilité minimale est liée au pH égal au point isoélectrique ; les protéines du tourteau ont un pI voisin de 4–5."
+    },
+    {
+      "sourceId": "q2-dlegacy02-edestin-structure",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Patel et al., Abstract ; OpenStax, Quaternary Structure",
+      "result": "L'édestine étudiée possède six sous-unités ; l'assemblage de sous-unités définit la structure quaternaire."
+    },
+    {
+      "sourceId": "products-tool-seed-oil",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, pigments et chlorophylles de l'huile ; Abstract, liste des aldehydes ; Introduction, produits d'oxydation",
+      "result": "L'article décrit les chlorophylles parmi les composés accompagnant l'huile de graines de chanvre. L'hexanal figure dans les aldéhydes qui augmentent lors du vieillissement étudié."
+    },
+    {
+      "sourceId": "qh-culture-pci",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "PDF p. 6, De la paille à la filasse, broyage et cœur de la tige ; PDF p. 6, débouchés des résidus et capacité d'absorption ; PDF p. 8, Le tissage, première phrase ; PDF p. 7, Le cardage des étoupes, fin du paragraphe ; Fiche PCI p. 6, pectines ; Naithani, Introduction, pectic binding substances",
+      "result": "La chènevotte se trouve au centre de la tige et est séparée des fibres. La fiche associe chènevotte, emploi en litière et capacité d'absorption d'eau. Chaîne et trame s'entrecroisent pour former l'étoffe. Le dernier peignage élimine des impuretés et parallélise les fibres. Le rouissage élimine des substances pectiques de liaison entre les fibres."
+    },
+    {
+      "sourceId": "q2-dlegacy02-carbonation-2020",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Abstract et Introduction, composition du hempcrete ; §2.1.4 Carbonation reactions, équation 7",
+      "result": "Le matériau est composé de chènevotte et d'un liant à base de chaux. Ca(OH)2 consomme du CO2 et forme CaCO3 ainsi que de l'eau."
+    },
+    {
+      "sourceId": "qh-nature-hurd-tissue-paper",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Morphology, SEM et figure 2, réseau des tissue handsheets ; Fiche PCI p. 6, pectines ; Naithani, Introduction, pectic binding substances",
+      "result": "Les micrographies décrivent un réseau de fibres dans les feuilles de papier. Le rouissage élimine des substances pectiques de liaison entre les fibres."
+    },
+    {
+      "sourceId": "qh-nature-composite-review",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Abstract ; §3, interface et transfert d'efforts ; §2, interactions de la fibre avec l'eau et humidité ; §3, moisture ; §3, fibre-matrix interface, adhésion et transfert d'efforts",
+      "result": "Les fibres de chanvre sont employées comme renfort ; les caractéristiques de l'interface gouvernent le transfert des efforts. La fibre échange de l'humidité avec l'environnement ; l'eau est retenue dans les parois et la vapeur occupe le lumen. La matrice entourant les fibres et les propriétés de l'interface sont distinguées dans les composites."
+    },
+    {
+      "sourceId": "q2-dnext01-collet-pretot-2014",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, fibres pour panneaux isolants ; enveloppe et propriétés thermiques",
+      "result": "Les fibres servent aux panneaux isolants et le comportement thermique de l'enveloppe dépend des matériaux."
+    },
+    {
+      "sourceId": "products-tool-hempcrete",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "PDF p. 1, définition du matériau",
+      "result": "Le béton de chanvre est utilisé comme matériau de remplissage d'une structure porteuse."
+    },
+    {
+      "sourceId": "products-tool-materials",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "PDF p. 14, poussière de chanvre appelée fines",
+      "result": "Les fines sont la poussière provenant de l'opération de défibrage des tiges."
+    },
+    {
+      "sourceId": "products-primary-retting-2015",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Abstract, quantification par PCR et groupes microbiens",
+      "result": "L'étude quantifie bactéries et champignons associés aux tiges et décrit la diversité des communautés."
+    },
+    {
+      "sourceId": "qh-hist-hemp-victory",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Notice, Creator ; Scope and Contents",
+      "result": "Le créateur répertorié est le United States Department of Agriculture."
+    },
+    {
+      "sourceId": "qh-hist-canada",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction, article 151.1 et rapport aux deux chambres",
+      "result": "La loi impose un examen et un rapport exposant conclusions ou recommandations au Parlement."
+    },
+    {
+      "sourceId": "qh-hist-un-treaties",
+      "reader": "d_history_food_pilot",
+      "date": "2026-11-16",
+      "locator": "Introduction ; Part One, intitulé et clauses finales",
+      "result": "La compilation distingue la Convention unique de 1961 des instruments de 1971 et 1988."
+    }
+  ],
+  "authoringSummary": {
+    "reservedEntries": 30,
+    "submittedQuestions": 30,
+    "levels": {
+      "1": 9,
+      "2": 19,
+      "3": 2
+    },
+    "forms": {
+      "identification": 30
+    },
+    "reviewStatus": "Independent review required; no approval claimed"
+  }
+}

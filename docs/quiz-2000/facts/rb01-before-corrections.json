@@ -1,0 +1,1426 @@
+{
+  "batchId": "r-actives-b-01",
+  "author": "rebalance_classify_b",
+  "role": "active-flower-botany-genetics",
+  "questions": [
+    {
+      "id": "hemp-q2-rb01-glande-sessile-precurseur",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "D’où proviennent les glandes pédonculées au cours du développement des fleurs de cannabis étudiées par Livingston ?",
+      "options": [
+        "De jeunes glandes d’aspect sessile",
+        "De poils non glandulaires adultes",
+        "De la fusion de glandes bulbeuses",
+        "De nouvelles glandes sans stade sessile"
+      ],
+      "answer": 0,
+      "explanation": "Les observations soutiennent une maturation de glandes d’abord proches de la surface vers des glandes pédonculées. Une forme sans long pied peut donc être un stade précoce.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-livingston20"
+      ],
+      "subjectKey": "cannabis-stalked-trichome-development",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Origine développementale des glandes pédonculées",
+        "subjectKey": "cannabis-stalked-trichome-development",
+        "property": "Origine développementale des glandes pédonculées",
+        "expectedAnswer": "De jeunes glandes d’aspect sessile",
+        "learningObjective": "Comprendre : origine développementale des glandes pédonculées.",
+        "factKey": "cannabis-stalked-trichome-development",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-livingston20",
+            "locator": "Discussion; Figure 8",
+            "support": "Les glandes pédonculées florales dérivent de précurseurs d’aspect sessile."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-monoterpenes",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans les glandes pédonculées des fleurs étudiées par Livingston, quelle famille domine le profil terpénique ?",
+      "options": [
+        "Les triterpènes",
+        "Les monoterpènes",
+        "Les sesquiterpènes",
+        "Les diterpènes"
+      ],
+      "answer": 1,
+      "explanation": "Les glandes pédonculées étudiées ont un profil fortement dominé par les monoterpènes. Les glandes sessiles des feuilles ont, en comparaison, une plus grande part de sesquiterpènes.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-livingston20"
+      ],
+      "subjectKey": "cannabis-stalked-trichome-chemistry",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Famille terpénique dominante dans les glandes pédonculées",
+        "subjectKey": "cannabis-stalked-trichome-chemistry",
+        "property": "Famille terpénique dominante dans les glandes pédonculées",
+        "expectedAnswer": "Les monoterpènes",
+        "learningObjective": "Comprendre : famille terpénique dominante dans les glandes pédonculées.",
+        "factKey": "cannabis-stalked-trichome-chemistry",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-livingston20",
+            "locator": "Discussion; Figure 8",
+            "support": "Le profil terpénique des glandes pédonculées est dominé par les monoterpènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-fleurs-solitaires-jours-longs",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans l’étude de Spitzer-Rimon sur le cannabis, qu’observe-t-on déjà sous des jours longs ?",
+      "options": [
+        "Des inflorescences déjà toutes compactes",
+        "Aucune structure florale",
+        "Des fleurs solitaires",
+        "Seulement des fleurs terminales"
+      ],
+      "answer": 2,
+      "explanation": "Des fleurs solitaires apparaissent dans les trois cultivars étudiés, même sous jours longs. L’apparition d’une fleur isolée et la constitution d’une inflorescence compacte sont deux événements.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rb01-spitzer19"
+      ],
+      "subjectKey": "cannabis-solitary-flower-initiation",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Présence de fleurs solitaires avant l’inflorescence compacte",
+        "subjectKey": "cannabis-solitary-flower-initiation",
+        "property": "Présence de fleurs solitaires avant l’inflorescence compacte",
+        "expectedAnswer": "Des fleurs solitaires",
+        "learningObjective": "Comprendre : présence de fleurs solitaires avant l’inflorescence compacte.",
+        "factKey": "cannabis-solitary-flower-initiation",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-spitzer19",
+            "locator": "Results: Growth and Development Under Long Photoperiod",
+            "support": "Les trois cultivars présentent des fleurs solitaires sous photopériode longue."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-petites-feuilles-florales",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans l’inflorescence compacte du cannabis, comment sont les feuilles par rapport aux grandes feuilles palmées ?",
+      "options": [
+        "Plus larges que les feuilles de végétation",
+        "De taille globalement inchangée",
+        "Réduites au seul pétiole sans limbe",
+        "Fortement réduites"
+      ],
+      "answer": 3,
+      "explanation": "Les unités répétées de l’inflorescence portent des feuilles réduites, parfois à une seule foliole. Elles accompagnent les petites branches et les fleurs serrées.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rb01-spitzer19"
+      ],
+      "subjectKey": "cannabis-inflorescence-reduced-leaves",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Réduction des feuilles au sein de l’inflorescence",
+        "subjectKey": "cannabis-inflorescence-reduced-leaves",
+        "property": "Réduction des feuilles au sein de l’inflorescence",
+        "expectedAnswer": "Fortement réduites",
+        "learningObjective": "Comprendre : réduction des feuilles au sein de l’inflorescence.",
+        "factKey": "cannabis-inflorescence-reduced-leaves",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-spitzer19",
+            "locator": "Results: Figure 5 et Figure 6",
+            "support": "Les phytomères de l’inflorescence comprennent une feuille réduite."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-fecondation-concentrations",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans l’essai de Lipson Feder, que devient globalement la concentration en cannabinoïdes des fleurs après fécondation ?",
+      "options": [
+        "Elle diminue",
+        "Elle augmente",
+        "Elle reste globalement stable",
+        "Elle augmente seulement chez le type CBD"
+      ],
+      "answer": 0,
+      "explanation": "La fécondation diminue nettement les concentrations de presque tous les cannabinoïdes mesurés. Ce résultat décrit les plantes de l’essai et ne fournit aucun protocole de culture.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-lipson21"
+      ],
+      "subjectKey": "cannabis-fertilization-cannabinoid-concentration",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Variation des concentrations cannabinoïdes après fécondation",
+        "subjectKey": "cannabis-fertilization-cannabinoid-concentration",
+        "property": "Variation des concentrations cannabinoïdes après fécondation",
+        "expectedAnswer": "Elle diminue",
+        "learningObjective": "Comprendre : variation des concentrations cannabinoïdes après fécondation.",
+        "factKey": "cannabis-fertilization-cannabinoid-concentration",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-lipson21",
+            "locator": "Discussion, premier paragraphe",
+            "support": "Une baisse générale des phytocannabinoïdes est observée après fécondation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-fecondation-rapports",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Malgré la baisse des cannabinoïdes après fécondation, quel aspect reste principalement préservé dans l’essai de Lipson Feder ?",
+      "options": [
+        "Le nombre de graines par fleur",
+        "Leurs proportions relatives",
+        "Leur quantité totale par fleur",
+        "La masse de chaque inflorescence"
+      ],
+      "answer": 1,
+      "explanation": "Les concentrations diminuent mais les rapports entre cannabinoïdes restent principalement conservés. Une quantité plus faible ne signifie donc pas forcément un nouveau profil de proportions.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-lipson21"
+      ],
+      "subjectKey": "cannabis-fertilization-cannabinoid-ratios",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Conservation du profil relatif lors d’une baisse de concentration",
+        "subjectKey": "cannabis-fertilization-cannabinoid-ratios",
+        "property": "Conservation du profil relatif lors d’une baisse de concentration",
+        "expectedAnswer": "Leurs proportions relatives",
+        "learningObjective": "Comprendre : conservation du profil relatif lors d’une baisse de concentration.",
+        "factKey": "cannabis-fertilization-cannabinoid-ratios",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-lipson21",
+            "locator": "Discussion, deuxième paragraphe",
+            "support": "Les rapports et le profil cannabinoïde restent principalement inchangés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-fecondation-sesquiterpenes",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Après fécondation du cannabis, quelle réponse des sesquiterpénoïdes l’étude de Lipson Feder décrit-elle ?",
+      "options": [
+        "Une hausse comparable de tous les composés",
+        "Une stabilité de chaque composé",
+        "Des hausses et des baisses selon le composé",
+        "Une baisse comparable de tous les composés"
+      ],
+      "answer": 2,
+      "explanation": "Les monoterpénoïdes diminuent globalement comme les cannabinoïdes. Les sesquiterpénoïdes répondent de façon plus diverse : certains augmentent et d’autres baissent dans cet essai.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-lipson21"
+      ],
+      "subjectKey": "cannabis-fertilization-sesquiterpenoids",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Réponse distincte des familles terpéniques à la fécondation",
+        "subjectKey": "cannabis-fertilization-sesquiterpenoids",
+        "property": "Réponse distincte des familles terpéniques à la fécondation",
+        "expectedAnswer": "Des hausses et des baisses selon le composé",
+        "learningObjective": "Comprendre : réponse distincte des familles terpéniques à la fécondation.",
+        "factKey": "cannabis-fertilization-sesquiterpenoids",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-lipson21",
+            "locator": "Discussion, troisième paragraphe",
+            "support": "Les concentrations des sesquiterpénoïdes présentent des réponses diverses à la fécondation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-pollen-hermaphrodite-fonctionnel",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Le pollen des inflorescences hermaphrodites de cannabis étudiées par Punja et Holmes pouvait-il germer ?",
+      "options": [
+        "Non, le pollen observé était toujours stérile",
+        "Non, seules les anthères ont été observées",
+        "Non, il a seulement gonflé sans germer",
+        "Oui, une germination a été observée"
+      ],
+      "answer": 3,
+      "explanation": "Du pollen provenant de ces inflorescences a germé et formé un tube. La présence d’anthères dans une inflorescence femelle peut donc avoir des conséquences reproductrices réelles.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-punja20"
+      ],
+      "subjectKey": "cannabis-hermaphrodite-pollen-viability",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Viabilité reproductive du pollen d’inflorescences hermaphrodites",
+        "subjectKey": "cannabis-hermaphrodite-pollen-viability",
+        "property": "Viabilité reproductive du pollen d’inflorescences hermaphrodites",
+        "expectedAnswer": "Oui, une germination a été observée",
+        "learningObjective": "Comprendre : viabilité reproductive du pollen d’inflorescences hermaphrodites.",
+        "factKey": "cannabis-hermaphrodite-pollen-viability",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-punja20",
+            "locator": "Discussion, paragraphe pollen germination and germ tube growth",
+            "support": "Une germination du pollen d’inflorescences hermaphrodites est observée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-descendance-hermaphrodite-femelle",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Dans l’étude de Punja et Holmes, quelle composition génétique ont les descendants des inflorescences hermaphrodites étudiées ?",
+      "options": [
+        "Femelle",
+        "Mâle",
+        "Autant mâle que femelle",
+        "Majoritairement mâle"
+      ],
+      "answer": 0,
+      "explanation": "Les plantules issues de ces graines étaient génétiquement femelles dans l’étude. Le sexe génétique doit être distingué des organes floraux effectivement apparus sur un plant.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb01-punja20"
+      ],
+      "subjectKey": "cannabis-hermaphrodite-seed-progeny",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "Sexe génétique des descendants observés",
+        "subjectKey": "cannabis-hermaphrodite-seed-progeny",
+        "property": "Sexe génétique des descendants observés",
+        "expectedAnswer": "Femelle",
+        "learningObjective": "Comprendre : sexe génétique des descendants observés.",
+        "factKey": "cannabis-hermaphrodite-seed-progeny",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-punja20",
+            "locator": "Abstract; PCR and Sequence Analysis",
+            "support": "Les descendants issus des graines hermaphrodites présentent une composition génétique femelle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-maturation-asynchrone",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Sur une même bractée de cannabis, toutes les glandes résineuses sont-elles nécessairement au même stade ?",
+      "options": [
+        "Oui, elles ont toutes exactement la même taille",
+        "Non, plusieurs stades peuvent coexister",
+        "Oui, elles mûrissent toutes simultanément",
+        "Oui, leur couleur est toujours identique"
+      ],
+      "answer": 1,
+      "explanation": "La formation des trichomes est asynchrone : des glandes à différents stades coexistent sur les bractées étudiées. Une inflorescence n’est pas un ensemble de glandes toutes identiques.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-punja23"
+      ],
+      "subjectKey": "cannabis-trichome-asynchronous-maturation",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Coexistence de stades de maturation glandulaire",
+        "subjectKey": "cannabis-trichome-asynchronous-maturation",
+        "property": "Coexistence de stades de maturation glandulaire",
+        "expectedAnswer": "Non, plusieurs stades peuvent coexister",
+        "learningObjective": "Comprendre : coexistence de stades de maturation glandulaire.",
+        "factKey": "cannabis-trichome-asynchronous-maturation",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-punja23",
+            "locator": "Abstract: Conclusion",
+            "support": "La formation asynchrone entraîne plusieurs stades de maturation sur les bractées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-gouttes-resine-tetes-collees",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Chez Punja et collègues, que provoquent certaines gouttes de résine à la surface des glandes de cannabis ?",
+      "options": [
+        "Elles restent exclusivement à l’intérieur des têtes",
+        "Elles détachent toujours les têtes sans les coller",
+        "Elles peuvent coller des têtes entre elles",
+        "Elles font systématiquement tomber les pieds"
+      ],
+      "answer": 2,
+      "explanation": "Des sécrétions résineuses sont observées en gouttelettes sur la cuticule. Elles peuvent faire adhérer plusieurs têtes glandulaires ; l’aspect de surface n’est donc pas seulement une question de nombre.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-punja23"
+      ],
+      "subjectKey": "cannabis-resin-droplets-head-adhesion",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Adhésion de têtes glandulaires par des sécrétions résineuses",
+        "subjectKey": "cannabis-resin-droplets-head-adhesion",
+        "property": "Adhésion de têtes glandulaires par des sécrétions résineuses",
+        "expectedAnswer": "Elles peuvent coller des têtes entre elles",
+        "learningObjective": "Comprendre : adhésion de têtes glandulaires par des sécrétions résineuses.",
+        "factKey": "cannabis-resin-droplets-head-adhesion",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-punja23",
+            "locator": "Abstract: Results; Resin exudation from trichome heads",
+            "support": "Du matériel résineux sécrété peut faire adhérer les têtes entre elles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-fragilite-manipulation",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Les glandes d’une fleur de cannabis peuvent-elles être altérées après la récolte par les manipulations ?",
+      "options": [
+        "Non, seule la couleur des stigmates peut changer",
+        "Non, la cuticule garde toujours sa forme initiale",
+        "Non, la morphologie est fixée dès la fin de floraison",
+        "Oui, des têtes peuvent être endommagées ou détachées"
+      ],
+      "answer": 3,
+      "explanation": "L’étude observe une modification de l’intégrité des trichomes avec les opérations après récolte. La forme des glandes d’un produit séché ne reflète donc pas seulement leur développement sur la plante.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-punja23"
+      ],
+      "subjectKey": "cannabis-trichome-postharvest-integrity",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Sensibilité des glandes aux manipulations après récolte",
+        "subjectKey": "cannabis-trichome-postharvest-integrity",
+        "property": "Sensibilité des glandes aux manipulations après récolte",
+        "expectedAnswer": "Oui, des têtes peuvent être endommagées ou détachées",
+        "learningObjective": "Comprendre : sensibilité des glandes aux manipulations après récolte.",
+        "factKey": "cannabis-trichome-postharvest-integrity",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-punja23",
+            "locator": "Abstract: Conclusion; Trichome morphology on dried samples",
+            "support": "La manutention après récolte et le séchage affectent la morphologie des trichomes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-brunes-senescence",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans les observations de Punja et collègues, le brunissement de certaines têtes résineuses accompagne quel phénomène ?",
+      "options": [
+        "Le vieillissement et la sénescence des glandes",
+        "La formation initiale de leur cavité",
+        "Le début de l’allongement de leur pédoncule",
+        "Les premières divisions du disque sécréteur"
+      ],
+      "answer": 0,
+      "explanation": "Le brunissement est associé à la maturation puis à la sénescence des têtes glandulaires. Cette observation anatomique ne définit pas un moment universel de récolte.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-punja23"
+      ],
+      "subjectKey": "cannabis-trichome-browning-senescence",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Brunissement associé au vieillissement des têtes glandulaires",
+        "subjectKey": "cannabis-trichome-browning-senescence",
+        "property": "Brunissement associé au vieillissement des têtes glandulaires",
+        "expectedAnswer": "Le vieillissement et la sénescence des glandes",
+        "learningObjective": "Comprendre : brunissement associé au vieillissement des têtes glandulaires.",
+        "factKey": "cannabis-trichome-browning-senescence",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-punja23",
+            "locator": "Abstract: Results",
+            "support": "La coloration brune accompagne la sénescence et la déhiscence des têtes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-stigmates-brun-rouge",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Dans le suivi de White Widow par Hesami et collègues, comment évolue la couleur des stigmates en vieillissant ?",
+      "options": [
+        "Du rouge vif au vert sombre",
+        "Du blanc-jaune au brun rougeâtre",
+        "Du brun rougeâtre au blanc-jaune",
+        "Du vert au blanc sans changement ultérieur"
+      ],
+      "answer": 1,
+      "explanation": "Les stigmates passent d’une teinte blanchâtre ou jaune à une teinte brun rougeâtre dans ce suivi. Ils sont des organes floraux, distincts des têtes résineuses dont la couleur peut aussi évoluer.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rb01-hesami23"
+      ],
+      "subjectKey": "white-widow-stigma-color-development",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Évolution de couleur des stigmates dans le suivi floral",
+        "subjectKey": "white-widow-stigma-color-development",
+        "property": "Évolution de couleur des stigmates dans le suivi floral",
+        "expectedAnswer": "Du blanc-jaune au brun rougeâtre",
+        "learningObjective": "Comprendre : évolution de couleur des stigmates dans le suivi floral.",
+        "factKey": "white-widow-stigma-color-development",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-hesami23",
+            "locator": "Results: Figure 9; Discussion",
+            "support": "Les stigmates passent du blanc-jaune au brun rougeâtre au cours de la maturation/sénescence."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-glandes-avant-stigmates",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans le suivi floral de White Widow, quelle structure apparaît abondamment avant l’allongement des stigmates ?",
+      "options": [
+        "Le péricarpe autour d’un fruit mûr",
+        "Les cotylédons de l’embryon dans l’ovule",
+        "Les trichomes glandulaires de la bractée",
+        "Les premiers grains de pollen dans des anthères"
+      ],
+      "answer": 2,
+      "explanation": "Une profusion de glandes apparaît sur la bractée qui entoure l’ovaire avant l’allongement des stigmates. La mise en place des structures résineuses précède ainsi ce signe floral dans l’étude.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rb01-hesami23"
+      ],
+      "subjectKey": "white-widow-glands-stigma-development",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Ordre d’apparition des glandes et d’allongement des stigmates",
+        "subjectKey": "white-widow-glands-stigma-development",
+        "property": "Ordre d’apparition des glandes et d’allongement des stigmates",
+        "expectedAnswer": "Les trichomes glandulaires de la bractée",
+        "learningObjective": "Comprendre : ordre d’apparition des glandes et d’allongement des stigmates.",
+        "factKey": "white-widow-glands-stigma-development",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-hesami23",
+            "locator": "Results: flower development, paragraphe avant Figure 9",
+            "support": "Les trichomes glandulaires émergent avant l’allongement des stigmates."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-disque-secreteur-sans-chlorophylle",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans les glandes de cannabis observées par Conneely, quelles cellules ne montrent pas la fluorescence de la chlorophylle ?",
+      "options": [
+        "Les cellules du pédoncule",
+        "Les cellules de soutien sous le disque",
+        "Les cellules du pédoncule et du soutien réunies",
+        "Les cellules du disque sécréteur"
+      ],
+      "answer": 3,
+      "explanation": "La chlorophylle est détectée dans le pédoncule et les cellules de soutien, mais pas dans le disque sécréteur. Fabriquer la résine et capter directement la lumière sont des fonctions distinctes.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-conneely21"
+      ],
+      "subjectKey": "cannabis-secretory-disc-chlorophyll",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Absence de chlorophylle détectée dans le disque sécréteur",
+        "subjectKey": "cannabis-secretory-disc-chlorophyll",
+        "property": "Absence de chlorophylle détectée dans le disque sécréteur",
+        "expectedAnswer": "Les cellules du disque sécréteur",
+        "learningObjective": "Comprendre : absence de chlorophylle détectée dans le disque sécréteur.",
+        "factKey": "cannabis-secretory-disc-chlorophyll",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-conneely21",
+            "locator": "Figure 1B; Discussion, secretory cells",
+            "support": "Le disque sécréteur ne présente pas de fluorescence chlorophyllienne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-fleur-apport-sucres-glandes",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans le modèle de Conneely, quel tissu apporte une grande part des sucres alimentant les têtes résineuses du cannabis ?",
+      "options": [
+        "Les tissus de la fleur",
+        "Le cœur ligneux de la tige principalement",
+        "Les graines mûres présentes dans la fleur",
+        "Le pollen extérieur déposé sur les glandes"
+      ],
+      "answer": 0,
+      "explanation": "Les résultats suggèrent que les tissus floraux fournissent carbone et énergie aux têtes glandulaires. Ces sucres soutiennent la synthèse de métabolites spécialisés ; il s’agit d’un modèle discuté dans l’étude.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-conneely21"
+      ],
+      "subjectKey": "cannabis-floral-tissue-trichome-carbon",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Apport de carbone aux têtes résineuses dans le modèle proposé",
+        "subjectKey": "cannabis-floral-tissue-trichome-carbon",
+        "property": "Apport de carbone aux têtes résineuses dans le modèle proposé",
+        "expectedAnswer": "Les tissus de la fleur",
+        "learningObjective": "Comprendre : apport de carbone aux têtes résineuses dans le modèle proposé.",
+        "factKey": "cannabis-floral-tissue-trichome-carbon",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-conneely21",
+            "locator": "Abstract, dernière partie",
+            "support": "Les tissus floraux sont proposés comme source majeure de sucres pour les têtes glandulaires."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-thcas-cbdas-genes-distincts",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Selon Allen et collègues (2026), quelle organisation explique mieux les profils THC/CBD qu’un unique gène à deux versions ?",
+      "options": [
+        "Un seul gène actif exclusivement dans les graines",
+        "Deux gènes distincts étroitement liés",
+        "Un seul gène dont une version remplace l’autre",
+        "Deux gènes indépendants sur des chromosomes différents"
+      ],
+      "answer": 1,
+      "explanation": "Le modèle distingue THCAS et CBDAS, deux gènes proches. Leur liaison peut produire une transmission qui ressemble à celle d’un seul locus, sans que les deux enzymes soient les versions d’un unique gène.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb01-allen26"
+      ],
+      "subjectKey": "cannabis-b-locus-distinct-synthases",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "Deux gènes liés plutôt qu’un unique gène biallélique",
+        "subjectKey": "cannabis-b-locus-distinct-synthases",
+        "property": "Deux gènes liés plutôt qu’un unique gène biallélique",
+        "expectedAnswer": "Deux gènes distincts étroitement liés",
+        "learningObjective": "Comprendre : deux gènes liés plutôt qu’un unique gène biallélique.",
+        "factKey": "cannabis-b-locus-distinct-synthases",
+        "form": "identification",
+        "difficultyRationale": "Organisation cellulaire ou génomique précise, nécessitant des connaissances spécialisées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-allen26",
+            "locator": "Abstract, deux premières phrases",
+            "support": "Les gènes THCAS et CBDAS sont distincts et étroitement liés."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-locus-b-recombinaison-reduite",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans le locus B associé aux profils THC/CBD, quel mécanisme aide plusieurs éléments génétiques à se transmettre ensemble ?",
+      "options": [
+        "Le déplacement régulier sur des chromosomes distincts",
+        "La disparition des gènes CBDAS à chaque génération",
+        "Une recombinaison fortement réduite",
+        "Une recombinaison renforcée dans toute la région"
+      ],
+      "answer": 2,
+      "explanation": "Allen et collègues décrivent le locus B comme un supergène : une recombinaison limitée maintient ensemble plusieurs éléments. Cela éclaire l’hérédité de profils cannabinoïdes distincts.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb01-allen26"
+      ],
+      "subjectKey": "cannabis-b-locus-supergene",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "Recombinaison réduite maintenant le locus de chimotype",
+        "subjectKey": "cannabis-b-locus-supergene",
+        "property": "Recombinaison réduite maintenant le locus de chimotype",
+        "expectedAnswer": "Une recombinaison fortement réduite",
+        "learningObjective": "Comprendre : recombinaison réduite maintenant le locus de chimotype.",
+        "factKey": "cannabis-b-locus-supergene",
+        "form": "identification",
+        "difficultyRationale": "Organisation cellulaire ou génomique précise, nécessitant des connaissances spécialisées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-allen26",
+            "locator": "Section 1.5; Discussion 3.3",
+            "support": "La suppression de recombinaison favorise la transmission des éléments du locus comme une unité."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-oxidocyclases-cbca",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans l’étude d’Allen (2026), quel acide cannabinoïde produisent principalement trois oxidocyclases nouvellement caractérisées ?",
+      "options": [
+        "Le CBDA",
+        "Le THCA",
+        "Le CBGVA",
+        "Le CBCA"
+      ],
+      "answer": 3,
+      "explanation": "Les enzymes testées produisent principalement de l’acide cannabichroménique, ou CBCA. Une séquence apparentée aux synthases connues n’a donc pas automatiquement la même activité.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb01-allen26"
+      ],
+      "subjectKey": "cannabis-bbe-new-oxidocyclases-cbca",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "Produit dominant de nouvelles oxidocyclases caractérisées",
+        "subjectKey": "cannabis-bbe-new-oxidocyclases-cbca",
+        "property": "Produit dominant de nouvelles oxidocyclases caractérisées",
+        "expectedAnswer": "Le CBCA",
+        "learningObjective": "Comprendre : produit dominant de nouvelles oxidocyclases caractérisées.",
+        "factKey": "cannabis-bbe-new-oxidocyclases-cbca",
+        "form": "identification",
+        "difficultyRationale": "Organisation cellulaire ou génomique précise, nécessitant des connaissances spécialisées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-allen26",
+            "locator": "Abstract, troisième paragraphe",
+            "support": "Les trois enzymes caractérisées catalysent principalement la production de CBCA."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-bractees-unite-comparaison",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Pour comparer les glandes de fleurs de cannabis, quelle petite structure Alberti et collègues jugent-ils particulièrement cohérente ?",
+      "options": [
+        "La bractée florale",
+        "La grande feuille de végétation",
+        "L’ensemble de la tête sans distinguer ses organes",
+        "La tige nue sous l’inflorescence"
+      ],
+      "answer": 0,
+      "explanation": "La synthèse propose les bractées comme unités homogènes et riches en cannabinoïdes pour comparer les glandes. Une « tête » entière réunit plusieurs structures et peut être moins comparable.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-alberti25"
+      ],
+      "subjectKey": "cannabis-bract-trichome-comparison-unit",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Pertinence de la bractée pour comparer la surface glandulaire",
+        "subjectKey": "cannabis-bract-trichome-comparison-unit",
+        "property": "Pertinence de la bractée pour comparer la surface glandulaire",
+        "expectedAnswer": "La bractée florale",
+        "learningObjective": "Comprendre : pertinence de la bractée pour comparer la surface glandulaire.",
+        "factKey": "cannabis-bract-trichome-comparison-unit",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-alberti25",
+            "locator": "Abstract, deuxième phrase du deuxième paragraphe",
+            "support": "Les bractées sont proposées comme unité de prélèvement cohérente."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-densite-glandes-pas-dosage",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Deux fleurs ont visuellement autant de glandes. Peut-on en déduire qu’elles ont exactement la même teneur en THC ?",
+      "options": [
+        "Oui, si leur diamètre global est identique",
+        "Non, la taille et la maturité des glandes comptent aussi",
+        "Oui, si les fleurs ont la même couleur",
+        "Oui, si elles portent le même nom de cultivar"
+      ],
+      "answer": 1,
+      "explanation": "La densité ne remplace pas l’analyse chimique. Taille, forme et maturité des glandes interviennent aussi ; un comptage égal n’établit pas des teneurs identiques.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-alberti25"
+      ],
+      "subjectKey": "cannabis-trichome-density-not-potency",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "Densité glandulaire distincte d’une teneur mesurée en THC",
+        "subjectKey": "cannabis-trichome-density-not-potency",
+        "property": "Densité glandulaire distincte d’une teneur mesurée en THC",
+        "expectedAnswer": "Non, la taille et la maturité des glandes comptent aussi",
+        "learningObjective": "Comprendre : densité glandulaire distincte d’une teneur mesurée en thc.",
+        "factKey": "cannabis-trichome-density-not-potency",
+        "form": "situation",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-alberti25",
+            "locator": "Introduction, paragraphe trichome density alone",
+            "support": "La densité seule ne permet pas de déduire directement le contenu cannabinoïde."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-chimotype-iv-cbg",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans la classification en cinq chimotypes, quel cannabinoïde domine dans le type IV ?",
+      "options": [
+        "Le CBD",
+        "Le CBN",
+        "Le CBG",
+        "Le THC"
+      ],
+      "answer": 2,
+      "explanation": "Le type IV regroupe des plantes dont le CBG est le cannabinoïde principal. Les numéros de chimotype décrivent ici une composition, et non un classement d’intensité d’effet.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-salamone22"
+      ],
+      "subjectKey": "cannabis-chemotype-iv",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Cannabinoïde dominant du chimotype IV",
+        "subjectKey": "cannabis-chemotype-iv",
+        "property": "Cannabinoïde dominant du chimotype IV",
+        "expectedAnswer": "Le CBG",
+        "learningObjective": "Comprendre : cannabinoïde dominant du chimotype iv.",
+        "factKey": "cannabis-chemotype-iv",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-salamone22",
+            "locator": "Introduction; Table 1",
+            "support": "Le chimotype IV est à dominante cannabigérol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-chimotype-v-traces",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Que caractérise le chimotype V dans la classification du cannabis présentée par Salamone et collègues ?",
+      "options": [
+        "Une nette dominance du THC",
+        "Une nette dominance du CBD",
+        "Une nette dominance du CBG",
+        "Des cannabinoïdes presque absents"
+      ],
+      "answer": 3,
+      "explanation": "Le type V est largement dépourvu de cannabinoïdes. « Presque absent » reste plus précis qu’une absence absolue : l’étude détecte de faibles traces de formes acides dans son matériel.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-salamone22"
+      ],
+      "subjectKey": "cannabis-chemotype-v",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Très faible présence de cannabinoïdes dans le chimotype V",
+        "subjectKey": "cannabis-chemotype-v",
+        "property": "Très faible présence de cannabinoïdes dans le chimotype V",
+        "expectedAnswer": "Des cannabinoïdes presque absents",
+        "learningObjective": "Comprendre : très faible présence de cannabinoïdes dans le chimotype v.",
+        "factKey": "cannabis-chemotype-v",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-salamone22",
+            "locator": "Abstract; Introduction; Results, premier paragraphe",
+            "support": "Le type V est presque dépourvu de cannabinoïdes ; des traces sont détectées dans Ermo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-sans-cannabinoides-autres-phenols",
+      "topicId": "evidence",
+      "level": 1,
+      "prompt": "Pourquoi des cannabis très pauvres en cannabinoïdes peuvent-ils servir de témoins dans certaines études contrôlées ?",
+      "options": [
+        "Pour imiter l’aspect et l’odeur sans les mêmes cannabinoïdes",
+        "Pour remplacer le tirage au sort des participants",
+        "Pour supprimer tout besoin d’analyse chimique",
+        "Pour garantir à eux seuls la sécurité de l’essai"
+      ],
+      "answer": 0,
+      "explanation": "Des plantes pauvres en cannabinoïdes peuvent imiter des propriétés sensorielles du cannabis. Elles aident à préserver l’aveugle, sans prouver que toutes leurs autres molécules sont inactives.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-salamone22"
+      ],
+      "subjectKey": "cannabis-low-cannabinoid-sensory-control",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Utilité sensorielle de plantes pauvres en cannabinoïdes pour les témoins",
+        "subjectKey": "cannabis-low-cannabinoid-sensory-control",
+        "property": "Utilité sensorielle de plantes pauvres en cannabinoïdes pour les témoins",
+        "expectedAnswer": "Pour imiter l’aspect et l’odeur sans les mêmes cannabinoïdes",
+        "learningObjective": "Comprendre : utilité sensorielle de plantes pauvres en cannabinoïdes pour les témoins.",
+        "factKey": "cannabis-low-cannabinoid-sensory-control",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-salamone22",
+            "locator": "Introduction, paragraphe cannabinoid-free strains are necessary for controlled studies",
+            "support": "Des plantes sans cannabinoïdes sont utiles pour imiter les propriétés sensorielles et préserver l’aveugle dans des études contrôlées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-fleur-terminale-meristeme",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans la floraison du cannabis, que devient l’extrémité de croissance lors de la formation d’une fleur terminale ?",
+      "options": [
+        "Elle forme directement un fruit sans organe floral",
+        "Elle se différencie en cette fleur",
+        "Elle conserve indéfiniment sa croissance végétative",
+        "Elle redevient exclusivement un bourgeon foliaire"
+      ],
+      "answer": 1,
+      "explanation": "La floraison terminale correspond à la transformation du méristème apical en fleur. Tous les génotypes ne terminent pas leur inflorescence de la même façon.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rb01-steel23"
+      ],
+      "subjectKey": "cannabis-terminal-flower-meristem",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Transformation de l’apex lors de la floraison terminale",
+        "subjectKey": "cannabis-terminal-flower-meristem",
+        "property": "Transformation de l’apex lors de la floraison terminale",
+        "expectedAnswer": "Elle se différencie en cette fleur",
+        "learningObjective": "Comprendre : transformation de l’apex lors de la floraison terminale.",
+        "factKey": "cannabis-terminal-flower-meristem",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-steel23",
+            "locator": "Florogenesis; Figure 4D",
+            "support": "La floraison terminale correspond à la différenciation du méristème apical en fleur terminale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-aspect-givre-glandes",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "D’où vient l’aspect souvent décrit comme « givré » à la surface d’une fleur de cannabis résineuse ?",
+      "options": [
+        "D’une couche cireuse continue sans glandes",
+        "D’un feutrage de poils dépourvus de tête sécrétrice",
+        "D’une couverture de trichomes glandulaires",
+        "D’une accumulation de pollen sur les bractées"
+      ],
+      "answer": 2,
+      "explanation": "De nombreuses petites glandes donnent cet aspect visuel. Le mot « givré » décrit une surface ; il n’indique pas à lui seul la teneur exacte en cannabinoïdes.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-alberti25"
+      ],
+      "subjectKey": "cannabis-frosty-flower-appearance",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Origine glandulaire de l’aspect givré des fleurs",
+        "subjectKey": "cannabis-frosty-flower-appearance",
+        "property": "Origine glandulaire de l’aspect givré des fleurs",
+        "expectedAnswer": "D’une couverture de trichomes glandulaires",
+        "learningObjective": "Comprendre : origine glandulaire de l’aspect givré des fleurs.",
+        "factKey": "cannabis-frosty-flower-appearance",
+        "form": "identification",
+        "difficultyRationale": "Observation ou conséquence concrète, avec vocabulaire courant et sans valeur d’article à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-alberti25",
+            "locator": "Introduction, paragraphe frosty appearance; Figure 2",
+            "support": "Une couverture dense de trichomes glandulaires donne aux fleurs une apparence givrée."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-supercellule-ponts",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Dans les glandes de cannabis décrites par Livingston (2022), qu’est-ce qui relie largement les cellules de la « supercellule » ?",
+      "options": [
+        "Des tubes criblés du phloème",
+        "Des vaisseaux de xylème",
+        "Des parois sans connexion cytoplasmique",
+        "Des ponts cytoplasmiques"
+      ],
+      "answer": 3,
+      "explanation": "Le résumé décrit de larges continuités du cytoplasme entre cellules sécrétrices. Cette organisation coordonnée participe au modèle cellulaire de production des métabolites de la résine.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-livingston22"
+      ],
+      "subjectKey": "cannabis-trichome-supercell-bridges",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Connexions des cellules sécrétrices dans le modèle de supercellule",
+        "subjectKey": "cannabis-trichome-supercell-bridges",
+        "property": "Connexions des cellules sécrétrices dans le modèle de supercellule",
+        "expectedAnswer": "Des ponts cytoplasmiques",
+        "learningObjective": "Comprendre : connexions des cellules sécrétrices dans le modèle de supercellule.",
+        "factKey": "cannabis-trichome-supercell-bridges",
+        "form": "identification",
+        "difficultyRationale": "Organisation cellulaire ou génomique précise, nécessitant des connaissances spécialisées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-livingston22",
+            "locator": "Abstract, extrait indexé",
+            "support": "Les cellules métaboliquement actives possèdent de nombreux ponts cytoplasmiques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-thca-synthese-extracellulaire",
+      "topicId": "evidence",
+      "level": 3,
+      "prompt": "Dans le modèle cellulaire de Livingston (2022), où se déroule la dernière étape de biosynthèse du THCA ?",
+      "options": [
+        "À l’extérieur des cellules sécrétrices",
+        "Dans le noyau de ces cellules",
+        "Dans les mitochondries de la glande",
+        "Dans les chloroplastes du pédoncule"
+      ],
+      "answer": 0,
+      "explanation": "Le modèle met en avant une biosynthèse extracellulaire du THCA, dans la zone de sécrétion de la glande. Les étapes de fabrication d’un cannabinoïde ne sont donc pas toutes au même endroit.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb01-livingston22"
+      ],
+      "subjectKey": "cannabis-thca-extracellular-biosynthesis",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "Étape finale extracellulaire de formation du THCA",
+        "subjectKey": "cannabis-thca-extracellular-biosynthesis",
+        "property": "Étape finale extracellulaire de formation du THCA",
+        "expectedAnswer": "À l’extérieur des cellules sécrétrices",
+        "learningObjective": "Comprendre : étape finale extracellulaire de formation du thca.",
+        "factKey": "cannabis-thca-extracellular-biosynthesis",
+        "form": "identification",
+        "difficultyRationale": "Organisation cellulaire ou génomique précise, nécessitant des connaissances spécialisées.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-livingston22",
+            "locator": "Abstract, dernière phrase de description du modèle",
+            "support": "Le modèle proposé met l’accent sur une biosynthèse extracellulaire du THCA."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb01-cannabinoides-defense-directe",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans l’essai de Stack, ajouter des cannabinoïdes à une nourriture artificielle pour chenilles produit quel résultat ?",
+      "options": [
+        "Davantage de croissance, mais moins de survie",
+        "Moins de croissance et de survie larvaires",
+        "Davantage de croissance et de survie larvaires",
+        "Moins de croissance, mais davantage de survie"
+      ],
+      "answer": 1,
+      "explanation": "Ce test distingue l’action des cannabinoïdes des autres caractéristiques de la feuille. Les larves grandissent moins et survivent moins ; le résultat soutient un rôle défensif sans garantir un insecticide universel.",
+      "articleId": "ref-ravageurs-auxiliaires",
+      "sourceIds": [
+        "q2-rb01-stack23"
+      ],
+      "subjectKey": "cannabis-cannabinoid-artificial-diet-defense",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "Contribution défensive directe des cannabinoïdes dans un bioessai",
+        "subjectKey": "cannabis-cannabinoid-artificial-diet-defense",
+        "property": "Contribution défensive directe des cannabinoïdes dans un bioessai",
+        "expectedAnswer": "Moins de croissance et de survie larvaires",
+        "learningObjective": "Comprendre : contribution défensive directe des cannabinoïdes dans un bioessai.",
+        "factKey": "cannabis-cannabinoid-artificial-diet-defense",
+        "form": "identification",
+        "difficultyRationale": "Distinction entre structures florales, profils ou événements biologiques du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb01-stack23",
+            "locator": "Abstract, deux dernières phrases; Discussion",
+            "support": "L’ajout de cannabinoïdes à la nourriture artificielle réduit croissance et survie larvaires."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rb01-livingston20",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "organization": "The Plant Journal / University of British Columbia",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+      "verifiedAt": "2026-11-17",
+      "author": "Livingston, Quilichini, Booth et al.",
+      "published": "2019-08-30",
+      "passage": "Les glandes florales pédonculées dérivent de précurseurs sessiles et leur profil terpénique est dominé par les monoterpènes.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Discussion; Figure 8",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-spitzer19",
+      "title": "Architecture and Florogenesis in Female Cannabis sativa Plants",
+      "organization": "Frontiers in Plant Science / Volcani Center",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+      "verifiedAt": "2026-11-17",
+      "author": "Spitzer-Rimon, Duchin, Bernstein et Kamenetsky",
+      "published": "2019-04-02",
+      "passage": "Des fleurs solitaires existent en jours longs. Les unités florales portent des feuilles réduites ; la terminaison des inflorescences varie entre cultivars.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Results: Growth and Development; Figures 5–7",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-lipson21",
+      "title": "Fertilization Following Pollination Predominantly Decreases Phytocannabinoids Accumulation and Alters the Accumulation of Terpenoids in Cannabis Inflorescences",
+      "organization": "Frontiers in Plant Science / Technion et Volcani Center",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8602813/",
+      "verifiedAt": "2026-11-17",
+      "author": "Lipson Feder, Cohen, Shapira et al.",
+      "published": "2021-11-05",
+      "passage": "Dans cet essai, la fécondation diminue les concentrations cannabinoïdes en préservant principalement leurs rapports ; les sesquiterpénoïdes ont des réponses plus diverses.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Discussion, trois premiers paragraphes",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-punja20",
+      "title": "Hermaphroditism in Marijuana Inflorescences: Impact on Floral Morphology, Seed Formation, Progeny Sex Ratios, and Genetic Variation",
+      "organization": "Frontiers in Plant Science / Simon Fraser University",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.00718/full",
+      "verifiedAt": "2026-11-17",
+      "author": "Punja et Holmes",
+      "published": "2020-06-25",
+      "passage": "Du pollen d’inflorescences hermaphrodites germe. Les descendants issus de ces inflorescences étudiées présentent une composition génétique femelle.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract; Discussion, pollen germination; PCR and Sequence Analysis",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-punja23",
+      "title": "Glandular trichome development, morphology, and maturation are influenced by plant age and genotype in high THC-containing cannabis inflorescences",
+      "organization": "Journal of Cannabis Research / Simon Fraser University",
+      "url": "https://link.springer.com/article/10.1186/s42238-023-00178-9",
+      "verifiedAt": "2026-11-17",
+      "author": "Punja, Sutton et Kim",
+      "published": "2023-04-04",
+      "passage": "Les glandes ne mûrissent pas simultanément. Leur brunissement accompagne la sénescence ; des gouttes résineuses peuvent coller les têtes. La manutention affecte leur intégrité.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract: Results et Conclusion; Results: resin exudation",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-hesami23",
+      "title": "Morphological Characterization of Cannabis sativa L. Throughout Its Complete Life Cycle",
+      "organization": "Plants / University of Guelph",
+      "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+      "verifiedAt": "2026-11-17",
+      "author": "Hesami, Pepe et Jones",
+      "published": "2023-10-22",
+      "passage": "Chez White Widow étudiée, des glandes apparaissent avant l’allongement des stigmates ; ceux-ci passent du blanc-jaune au brun rougeâtre.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Results: flower development, Figure 9",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-conneely21",
+      "title": "Characterization of the Cannabis sativa glandular trichome proteome",
+      "organization": "PLOS ONE / Southern Cross University",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8016307/",
+      "verifiedAt": "2026-11-17",
+      "author": "Conneely, Mauleon, Mieog et Barkla",
+      "published": "2021-04-01",
+      "passage": "La chlorophylle est détectée dans le pédoncule et les cellules de soutien, pas dans le disque sécréteur ; le modèle attribue aux tissus floraux un apport de sucres aux têtes.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract; Figure 1; Discussion",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-allen26",
+      "title": "The Structure of the Chemotype Determining Locus in Cannabis sativa",
+      "organization": "Plant Direct / Cannabis Research Institute, University of Illinois",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+      "verifiedAt": "2026-11-17",
+      "author": "Allen, Torres et Gaudino",
+      "published": "2026-05",
+      "passage": "THCAS et CBDAS sont des gènes distincts étroitement liés. La recombinaison réduite caractérise le supergène B ; les nouvelles oxidocyclases testées produisent surtout du CBCA.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract; sections 1.5 et 2.1; Discussion 3.3",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-alberti25",
+      "title": "Bracts, Buds, and Biases: Uncovering Gaps in Trichome Density Quantification and Cannabinoid Concentration in Cannabis sativa L.",
+      "organization": "Plants / Southern Illinois University et partenaires",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12300688/",
+      "verifiedAt": "2026-11-17",
+      "author": "Alberti et al.",
+      "published": "2025-07-18",
+      "passage": "Les bractées sont proposées comme unité homogène de comparaison ; l’apparence givrée vient des glandes et leur densité seule ne mesure pas la concentration en cannabinoïdes.",
+      "access": "full-text",
+      "documentKind": "scientific-review",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract; Introduction, paragraphes trichome density et frosty appearance",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-salamone22",
+      "title": "Phytochemical Characterization of Cannabis sativa L. Chemotype V Reveals Three New Dihydrophenanthrenoids",
+      "organization": "Plants / Universités du Piémont oriental et d’Innsbruck",
+      "url": "https://www.mdpi.com/2223-7747/11/16/2130",
+      "verifiedAt": "2026-11-17",
+      "author": "Salamone, Waltl, Pompignan et al.",
+      "published": "2022-08-16",
+      "passage": "Le type IV est à dominante CBG. Le type V est presque dépourvu de cannabinoïdes ; l’étude y identifie néanmoins des composés phénoliques non cannabinoïdes.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction, Table 1; Results and Discussion, premier paragraphe",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-steel23",
+      "title": "Comparative genomics of flowering behavior in Cannabis sativa",
+      "organization": "Frontiers in Plant Science / La Trobe University",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2023.1227898/full",
+      "verifiedAt": "2026-11-17",
+      "author": "Steel, Welling, Ristevski, Johnson et Gendall",
+      "published": "2023-07-27",
+      "passage": "Le stade de floraison terminale correspond à la différenciation du méristème apical en fleur terminale ; tous les génotypes ne le présentent pas.",
+      "access": "full-text",
+      "documentKind": "scientific-review",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Florogenesis, Figure 4 et paragraphe précédent",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    },
+    {
+      "id": "q2-rb01-livingston22",
+      "title": "A polarized supercell produces specialized metabolites in cannabis trichomes",
+      "organization": "Current Biology / University of British Columbia",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35917819/",
+      "verifiedAt": "2026-11-17",
+      "author": "Livingston, Rensing, Page et Samuels",
+      "published": "2022-08-01",
+      "passage": "Le résumé décrit des ponts cytoplasmiques entre cellules sécrétrices et un modèle comprenant une biosynthèse extracellulaire de THCA.",
+      "access": "excerpt",
+      "documentKind": "research-article",
+      "limitation": "Résumé indexé consulté ; ouverture directe PubMed bloquée. Aucune lecture intégrale revendiquée.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract, extrait indexé PubMed consulté par recherche du titre exact",
+        "result": "Extrait du résumé effectivement consulté ; soutien limité aux deux observations citées."
+      }
+    },
+    {
+      "id": "q2-rb01-stack23",
+      "title": "Cannabinoids function in defense against chewing herbivores in Cannabis sativa L.",
+      "organization": "Horticulture Research / Cornell University",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10681003/",
+      "verifiedAt": "2026-11-17",
+      "author": "Stack, Snyder et al.",
+      "published": "2023-10-13",
+      "passage": "L’ajout de cannabinoïdes à une nourriture artificielle réduit croissance et survie larvaires, ce qui isole leur contribution des autres caractères de la feuille.",
+      "access": "full-text",
+      "documentKind": "research-article",
+      "limitation": "Observations et portée de la publication ; aucun protocole de culture ou de fabrication n’est repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract, trois dernières phrases; Discussion",
+        "result": "Passages indiqués effectivement ouverts et lus ; soutien aux faits distincts du lot."
+      }
+    }
+  ]
+}

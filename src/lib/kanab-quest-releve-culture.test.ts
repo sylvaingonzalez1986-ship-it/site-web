@@ -5,6 +5,7 @@ import { isKqCultureDead } from "./kanab-quest-game";
 import { getKqCarePricing, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
 import { getKqHarvestRows } from "./kanab-quest-harvests";
 import { getKqRemoteCareShop } from "./kanab-quest-api";
+import { createArenaReleveState, restoreArenaReleveState } from "./arena-releve-session";
 
 function fixture(count: 1 | 2 = 1) {
   let state = createKqReleveProduction();
@@ -104,6 +105,45 @@ describe("native culture transport for La relève", () => {
     expect(sandbox.get().careAreaInventory?.[product.code]).toBe(units * 2);
   });
 
+  it.each(["CARE-APHIDIUS", "CARE-VERMICOMPOST"])("quotes the campaign surface, spends one square metre of %s per application and remembers its target after reopening the lesson", async code => {
+    const initial = act(fixture(2), { type: "launch" });
+    const first = { zoneId: "culture-1", x: 0, y: 0 }, second = { ...first, zoneId: "culture-2" };
+    initial.game!.care!.problems = [{ code: "APHIDS", severity: 2, status: "confirmed", trend: "stable", appearedAt: 0, variant: 0,
+      plants: [first, second].map(target => ({ ...target, slot: 0, severity: 2 })) }];
+    const sandbox = port(initial);
+    const request = { productCode: code, requestKey: "purchase-1", quantity: 1, expectedPriceCents: KQ_CARE_PRODUCTS.find(product => product.code === code)!.priceCents * 2 };
+    const purchase = await sandbox.post("/care", request);
+    expect(purchase.cashCents).toBe(initial.cashCents - request.expectedPriceCents);
+    expect(purchase.inventory).toContainEqual({ productCode: code, quantity: 2, areaQuantity: 2, legacyQuantity: 0 });
+    const path = `/runs/${initial.game!.campaign!.leaderRunId}/care`;
+    const command = { productCode: code, requestKey: "cell-1", target: first };
+    const rejected = async (session: ReturnType<typeof port>, body: object) => {
+      const response = await session.request(`/api/arena/placard${path}`, { method: "POST", body: JSON.stringify(body) });
+      expect(response.ok).toBe(false);
+    };
+    const before = structuredClone(sandbox.get());
+    await rejected(sandbox, { productCode: code });
+    await rejected(sandbox, { ...command, target: { ...first, x: -1 } });
+    await rejected(sandbox, { ...command, target: { ...first, zoneId: "storage" } });
+    expect(sandbox.get()).toEqual(before);
+    const applied = await sandbox.post(path, command);
+    expect(applied.inventory).toContainEqual({ productCode: code, quantity: 1, areaQuantity: 1, legacyQuantity: 0 });
+    const saved = JSON.parse(JSON.stringify({ ...createArenaReleveState(), production: sandbox.get() }));
+    const restored = restoreArenaReleveState(saved);
+    expect(restored?.production).toEqual(sandbox.get());
+    expect(restoreArenaReleveState({ ...saved, production: { ...saved.production, careReceipts: "illisible" } })).toBeNull();
+    const resumed = port(restored!.production);
+    expect((await resumed.post("/care", request)).replayed).toBe(true);
+    expect((await resumed.post(path, command)).replayed).toBe(true);
+    await rejected(resumed, { ...command, target: second });
+    await rejected(resumed, { ...command, requestKey: "new-key-same-cell" });
+    expect(resumed.get().careAreaInventory?.[code]).toBe(1);
+    const next = await resumed.post(path, { ...command, requestKey: "cell-2", target: second });
+    expect(next.inventory).toContainEqual({ productCode: code, quantity: 0, areaQuantity: 0, legacyQuantity: 0 });
+    expect(next.cashCents).toBe(purchase.cashCents);
+    expect((await resumed.post(path, command)).state.care.applications).toEqual(next.state.care.applications);
+  });
+
   it("keeps harvest invoices and the native reserve, jury receipt and reward after six turns", async () => {
     const sandbox = port(act(fixture(), { type: "launch" }));
     const runId = sandbox.get().game!.campaign!.leaderRunId;
@@ -124,7 +164,7 @@ describe("native culture transport for La relève", () => {
     sandbox.set(act(sandbox.get(), { type: "mature" }));
     const result = await sandbox.post("/bot-battles", { flowerId: flower.id });
     expect(result.status).toBe("verdict"); expect(result.rounds).toHaveLength(3);
-    expect(result.opponentFlower.ownerName).toContain("Sylvain");
+    expect(result.opponentFlower.ownerName).toContain("Loïc");
     expect(getReleveNativeFlowers(sandbox.get())[0].status).toBe("burned");
     const after = structuredClone(sandbox.get());
     await sandbox.post("/bot-battles", { flowerId: flower.id });

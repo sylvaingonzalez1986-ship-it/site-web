@@ -326,7 +326,7 @@ try {
   await db.exec(await migration("20261108000900_kq_care_surface_and_purchase_register.sql"));
   check("old receipts retain their recorded amount",await scalar("SELECT total_price_cents FROM kq_care_purchases WHERE user_id=$1",[surfaceOwner]),historical[0].total_price_cents);
   check("old full-treatment reserve is not diluted",await scalar("SELECT quantity FROM kq_care_inventory WHERE user_id=$1",[surfaceOwner]),2);
-  const surfaceState={...startKqGame(551),warehouse:{activeAreaM2:25}};
+  const surfaceState={...startKqGame(551),warehouse:{activeAreaM2:25,zones:[]}};
   surfaceState.care.problems=[{code:"THRIPS",severity:2,status:"confirmed",trend:"stable",appearedAt:0,variant:0}];
   const surfaceRun=await createRun(surfaceOwner,surfaceState);
   const shop=await scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[surfaceOwner,surfaceRun.id]);
@@ -343,7 +343,7 @@ try {
   check("retry never charges twice",await snapshot(surfaceOwner),once);
   check("retry never spends work twice",await scalar("SELECT hours FROM fixture_work WHERE user_id=$1",[surfaceOwner]),workOnce);
   await reject("same receipt cannot change quantity",()=>purchaseV2("CARE-ORIUS",2,firstKey,90000),"kq_care_request_mismatch");
-  const larger=await createRun(surfaceOwner,{...surfaceState,warehouse:{activeAreaM2:30}});
+  const larger=await createRun(surfaceOwner,{...surfaceState,warehouse:{activeAreaM2:30,zones:[]}});
   await reject("small reserve cannot cover larger surface",()=>apply(surfaceOwner,larger,applyKqCareProduct(larger.state,"CARE-ORIUS"),"CARE-ORIUS"),"kq_care_stock_unavailable");
   const used=await apply(surfaceOwner,surfaceRun,applyKqCareProduct(surfaceRun.state,"CARE-ORIUS"),"CARE-ORIUS");
   check("applying consumes square metres without a new money charge",[used.chargedCents,used.inventory.find(item=>item.productCode==="CARE-ORIUS").areaQuantity],[0,0]);
@@ -352,7 +352,7 @@ try {
   const paid=await apply(surfaceOwner,current,performKqBasicCare(current.state),null,basicKey,current.updated_at,12500);
   check("basic care bills exact cultivated area",paid.chargedCents,12500);
   check("basic-care replay remains recorded at actual cost",(await apply(surfaceOwner,current,performKqBasicCare(current.state),null,basicKey,current.updated_at,500)).chargedCents,12500);
-  const legacyUse={...startKqGame(552),warehouse:{activeAreaM2:40}};legacyUse.care.problems=[{code:"HEAT",severity:1,status:"confirmed",trend:"stable",appearedAt:0,variant:0}];
+  const legacyUse={...startKqGame(552),warehouse:{activeAreaM2:40,zones:[]}};legacyUse.care.problems=[{code:"HEAT",severity:1,status:"confirmed",trend:"stable",appearedAt:0,variant:0}];
   const legacyRun=await createRun(surfaceOwner,legacyUse);
   await apply(surfaceOwner,legacyRun,applyKqCareProduct(legacyUse,"CARE-SEAWEED"),"CARE-SEAWEED");
   check("old full charge remains usable without supplementary debit",await scalar("SELECT quantity FROM kq_care_inventory WHERE user_id=$1 AND product_code='CARE-SEAWEED'",[surfaceOwner]),1);
@@ -385,6 +385,236 @@ try {
     check(`${role} cannot bypass quoted purchase`,await scalar("SELECT has_function_privilege($1,'rpc_kq_purchase_care(uuid,text,integer,uuid)','EXECUTE')",[role]),false);
     check(`${role} cannot mutate or read raw receipts`,await scalar("SELECT has_table_privilege($1,'kq_care_purchases','SELECT,INSERT,UPDATE,DELETE')",[role]),false);
   }
+  const captureSQL=await readFile(path.resolve("scripts/sql/capture-kq-care-version.sql"),"utf8");
+  const captureCare=async ()=>(await db.exec(captureSQL)).at(-1).rows[0].script;
+  const restorePassages=await captureCare();
+  await db.exec(await migration("20261118000100_kq_care_sectors.sql"));
+  const restoreSectors=await captureCare();
+  const sectorOwner=await player(), stockCode="CARE-ORIUS";
+  const zone={id:"est",active:true,x:2,y:1,width:2,height:3,rotation:90};
+  const warehouse={zoneId:zone.id,activeAreaM2:6,zones:[zone]};
+  const sectorState={...surfaceState,warehouse};
+  const sectorRun=await createRun(sectorOwner,sectorState);
+  const firstCell={zoneId:zone.id,x:1,y:2},secondCell={zoneId:zone.id,x:0,y:2};
+  await query("INSERT INTO kq_care_inventory(user_id,product_code,quantity,area_quantity) VALUES($1,$2,1,1)",[sectorOwner,stockCode]);
+  const scopedShop=async run=>(await scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[sectorOwner,run.id]));
+  const row=result=>result.inventory.find(item=>item.productCode===stockCode);
+  const spatialShop=await scopedShop(sectorRun);
+  check("sector reserve includes every remaining square metre and old full passage", row(spatialShop),{productCode:stockCode,quantity:7,areaQuantity:1,legacyQuantity:1});
+  check("purchase keeps the full surface quote",spatialShop.prices[stockCode],10800);
+  const nextCell=applyKqCareProduct(sectorState,stockCode,firstCell),sectorKey=randomUUID();
+  const substitute=(next,target)=>{
+    const copy=structuredClone(next);
+    for(const entry of [copy.care.applications.at(-1),copy.care.interventions.at(-1)]) {
+      if(target===undefined) delete entry.target;
+      else entry.target=target;
+    }
+    return copy;
+  };
+  const beforeCells=await snapshot(sectorOwner);
+  for(const target of [undefined,{...firstCell,x:2},{...firstCell,y:3},{...firstCell,y:1.5},{...firstCell,x:-1},
+    {...firstCell,zoneId:"another-zone"},{...firstCell,slot:1}]) {
+    await reject("missing, malformed or out-of-plan target is rejected",()=>apply(sectorOwner,sectorRun,substitute(nextCell,target),stockCode),"kq_care_invalid_target");
+  }
+  const changedIntervention=structuredClone(nextCell);
+  changedIntervention.care.interventions[0].target=secondCell;
+  await reject("application and pending intervention must describe the same cell",()=>apply(sectorOwner,sectorRun,changedIntervention,stockCode),"kq_care_invalid_request");
+  check("target validation is atomic",await snapshot(sectorOwner),beforeCells);
+  const firstCellReceipt=await apply(sectorOwner,sectorRun,nextCell,stockCode,sectorKey);
+  check("partial stock is debited before the legacy charge",row(firstCellReceipt),{productCode:stockCode,quantity:6,areaQuantity:0,legacyQuantity:1});
+  check("first cell receipt records one square metre", (await query("SELECT target,area_m2,pricing_units,charged_cents FROM kq_care_interventions WHERE user_id=$1 AND request_key=$2",[sectorOwner,sectorKey])).rows[0],{target:firstCell,area_m2:1,pricing_units:1,charged_cents:0});
+  check("repeat cell after commit returns the original receipt", (await apply(sectorOwner,sectorRun,nextCell,stockCode,sectorKey)).replayed,true);
+  const cellReceipt=target=>scalar("SELECT rpc_kq_care_intervention_receipt($1,$2,$3,$4,$5)",[sectorOwner,sectorRun.id,sectorKey,stockCode,JSON.stringify(target)]);
+  await reject("different cell cannot reuse a committed key",()=>apply(sectorOwner,sectorRun,substitute(nextCell,secondCell),stockCode,sectorKey),"kq_care_request_mismatch");
+  await reject("receipt preflight detects a changed cell",()=>cellReceipt(secondCell),"kq_care_request_mismatch");
+  await reject("old client cannot replay a targeted key without its target",()=>scalar("SELECT rpc_kq_care_intervention_receipt($1,$2,$3,$4)",[sectorOwner,sectorRun.id,sectorKey,stockCode]),"kq_care_request_mismatch");
+  check("receipt lookup on the same cell returns current scoped reserve",row(await cellReceipt(firstCell)),row(firstCellReceipt));
+  let nextRun=await runRow(sectorRun.id);
+  const nextOther=applyKqCareProduct(nextRun.state,stockCode,secondCell);
+  await reject("new key cannot repeat the same sector on the same stage",()=>apply(sectorOwner,nextRun,substitute(nextOther,firstCell),stockCode),"kq_care_invalid_request");
+  const secondResult=await apply(sectorOwner,nextRun,nextOther,stockCode);
+  check("same product on another cell opens a full passage and carries the remainder",row(secondResult),{productCode:stockCode,quantity:5,areaQuantity:5,legacyQuantity:0});
+  check("only two committed cells spend player work",Number(await scalar("SELECT hours FROM fixture_work WHERE user_id=$1",[sectorOwner])),1);
+  nextRun=await runRow(sectorRun.id);
+  const thirdCell={zoneId:zone.id,x:0,y:1},thirdNext=applyKqCareProduct(nextRun.state,stockCode,thirdCell);
+  await query("UPDATE fixture_work SET hours=12 WHERE user_id=$1",[sectorOwner]);
+  const rollbackBefore=await snapshot(sectorOwner);
+  await reject("workday rejection rolls back targeted care",()=>apply(sectorOwner,nextRun,thirdNext,stockCode),"player_work_exhausted");
+  check("no stock or receipt is lost on late work rejection",await snapshot(sectorOwner),rollbackBefore);
+  check("failed cell leaves save and timestamp intact",await runRow(sectorRun.id),nextRun);
+  await query("UPDATE fixture_work SET hours=0 WHERE user_id=$1",[sectorOwner]);
+  const sectorBuyKey=randomUUID();
+  const spatialBuy=()=>scalar("SELECT rpc_kq_purchase_care_v2($1,$2,1,$3,$4,10800)",[sectorOwner,stockCode,sectorBuyKey,sectorRun.id]);
+  check("scoped purchase receipt adds the complete surface as cells",row(await spatialBuy()).quantity,11);
+  check("purchase replay also quotes cells",row(await spatialBuy()).quantity,11);
+  const leader=await createRun(sectorOwner,sectorState);
+  const secondZone={...zone,id:"ouest",x:5,width:3,height:1};
+  const outsider={...zone,id:"autre",x:0};
+  const campaignState={...sectorState,campaign:{leaderRunId:leader.id,members:[
+    {zoneId:zone.id,warehouse},{zoneId:secondZone.id,warehouse:{zoneId:secondZone.id,activeAreaM2:3,zones:[secondZone]}}]},
+    warehouse:{activeAreaM2:6,zones:[zone,outsider]}};
+  await query("UPDATE kq_runs SET state=$2 WHERE id=$1",[leader.id,JSON.stringify(campaignState)]);
+  const leaderRun=await runRow(leader.id),memberCell={zoneId:secondZone.id,x:2,y:0};
+  const memberNext=applyKqCareProduct(leaderRun.state,stockCode,memberCell);
+  await reject("campaign cannot target a nonmember in the source plan",()=>apply(sectorOwner,leaderRun,substitute(memberNext,{...memberCell,zoneId:outsider.id}),stockCode),"kq_care_invalid_target");
+  const followerRun=await createRun(sectorOwner,leaderRun.state);
+  await reject("follower cannot apply to the shared campaign",()=>apply(sectorOwner,followerRun,memberNext,stockCode),"kq_campaign_action_required");
+  check("leader can protect a cell of the other participant",row(await apply(sectorOwner,leaderRun,memberNext,stockCode)).areaQuantity,10);
+  const plain=await createRun(sectorOwner,{...surfaceState,warehouse:{zones:[],activeAreaM2:4}});
+  check("historical PBI reserve is quoted in complete passages",row(await scopedShop(plain)).quantity,2);
+  const oldNext=applyKqCareProduct(plain.state,stockCode);
+  await reject("an unplanned run cannot invent a sector",()=>apply(sectorOwner,plain,substitute(oldNext,firstCell),stockCode),"kq_care_invalid_target");
+  check("PBI on unplanned run still costs a complete passage",row(await apply(sectorOwner,plain,oldNext,stockCode)).areaQuantity,6);
+  check("old untargeted receipt still replays",(await scalar("SELECT rpc_kq_care_intervention_receipt($1,$2,$3,NULL)",[surfaceOwner,surfaceRun.id,basicKey])).chargedCents,12500);
+  const capped=structuredClone(sectorState);
+  for(const [x,y] of [[0,0],[1,0],[0,1],[1,1]]){
+    capped.care=applyKqCareProduct(capped,stockCode,{zoneId:zone.id,x,y}).care;
+  }
+  const forgeAppend=state=>({...state,care:{...state.care,
+    applications:[...state.care.applications,nextCell.care.applications.at(-1)],
+    interventions:[...state.care.interventions,nextCell.care.interventions.at(-1)]}});
+  const fourActive=await createRun(sectorOwner,capped);
+  await reject("SQL rejects a fifth simultaneous targeted intervention",()=>apply(sectorOwner,fourActive,forgeAppend(capped),stockCode),"kq_care_invalid_request");
+  const twelve=structuredClone(capped);
+  twelve.care.interventions=[];
+  twelve.care.applications=[0,1,2].flatMap(stageIndex=>capped.care.applications.map(a=>({...a,stageIndex})));
+  const twelveApplied=await createRun(sectorOwner,twelve);
+  await reject("SQL rejects a thirteenth application across distinct cells",()=>apply(sectorOwner,twelveApplied,forgeAppend(twelve),stockCode),"kq_care_invalid_request");
+  const noCellStock=await createRun(stranger,sectorState);
+  const emptyBefore=await snapshot(stranger);
+  await reject("zero reserve refuses targeted PBI",()=>apply(stranger,noCellStock,nextCell,stockCode),"kq_care_stock_unavailable");
+  check("out-of-stock sector leaves receipts and wallet untouched",await snapshot(stranger),emptyBefore);
+  check("out-of-stock sector leaves run timestamp and save untouched",await runRow(noCellStock.id),noCellStock);
+  for(const role of ["anon","authenticated","service_role"]){
+    check(`${role} sector receipt execute privilege`,await scalar("SELECT has_function_privilege($1,'rpc_kq_care_intervention_receipt(uuid,uuid,uuid,text,jsonb)','EXECUTE')",[role]),role==="service_role");
+    check(`${role} cannot bypass the workday wrapper`,await scalar("SELECT has_function_privilege($1,'kq_work_inner_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)','EXECUTE')",[role]),false);
+  }
+  // Both restore scripts run against a populated database. Only the fixture
+  // marks runs terminal to simulate the end of play before switching versions.
+  const persisted=async ()=>Object.fromEntries(await Promise.all([
+    "kq_runs","kq_care_inventory","kq_care_purchases","kq_care_interventions",
+    "kq_equipment_wallets","kq_treasury_journal","kq_treasury_balances","fixture_work",
+  ].map(async table=>[table,await scalar(`SELECT jsonb_agg(to_jsonb(r) ORDER BY to_jsonb(r)) FROM ${table} r`)])));
+  await reject("rollback waits for spatial culture and campaign saves",()=>db.exec(restorePassages),"kq_care_active_spatial_runs");
+  await db.exec("ROLLBACK");
+  check("refused rollback leaves the scoped receipt callable",row(await cellReceipt(firstCell)).quantity,6);
+  const plantsOnly=structuredClone(sectorState);
+  plantsOnly.care.problems[0].plants=[{...firstCell,slot:0,severity:2}];
+  const plantRun=await createRun(sectorOwner,plantsOnly);
+  await query("UPDATE kq_runs SET status='abandoned' WHERE state @? '$.care.applications[*].target' AND status='active'");
+  await reject("an untreated active plant outbreak also blocks rollback",()=>db.exec(restorePassages),"kq_care_active_spatial_runs");
+  await db.exec("ROLLBACK");
+  await query("UPDATE kq_runs SET status='abandoned' WHERE id=$1",[plantRun.id]);
+  const beforeRestore=await persisted();
+  await db.exec(restorePassages);
+  check("function rollback preserves all saves, receipts, money, work and stock",await persisted(),beforeRestore);
+  const restoredShop=await scopedShop(sectorRun);
+  check("old scoped quote advertises complete passages after rollback",row(restoredShop),{productCode:stockCode,quantity:1,areaQuantity:6,legacyQuantity:0});
+  await reject("old API cannot reuse a targeted historical receipt",()=>scalar("SELECT rpc_kq_care_intervention_receipt($1,$2,$3,$4)",[sectorOwner,sectorRun.id,sectorKey,stockCode]),"kq_care_request_mismatch");
+  const oldMode=await createRun(sectorOwner,sectorState);
+  const nextFull=structuredClone(nextCell);
+  for(const entry of [nextFull.care.applications.at(-1),nextFull.care.interventions.at(-1)]) delete entry.target;
+  const fullKey=randomUUID();
+  const fullResult=await apply(sectorOwner,oldMode,nextFull,stockCode,fullKey);
+  check("legacy engine consumes one full passage after rollback",row(fullResult).areaQuantity,0);
+  const afterLegacy=await persisted();
+  await db.exec(restoreSectors);
+  check("forward restoration retains records made by both versions",await persisted(),afterLegacy);
+  check("sector receipt replays after restoring the new functions",(await cellReceipt(firstCell)).replayed,true);
+  check("restored functions replay full applications made during rollback",
+    (await scalar("SELECT rpc_kq_care_intervention_receipt($1,$2,$3,$4)",[sectorOwner,oldMode.id,fullKey,stockCode])).replayed,true);
+  check("restored scoped purchase can replenish individual square metres",row(await scalar(
+    "SELECT rpc_kq_purchase_care_v2($1,$2,1,$3,$4,10800)",[sectorOwner,stockCode,randomUUID(),oldMode.id])).quantity,6);
+  const resumedRun=await createRun(sectorOwner,sectorState);
+  check("sector play resumes with the exact remaining stock",row(await apply(sectorOwner,resumedRun,nextCell,stockCode)).quantity,5);
+
+  await db.exec(await migration("20261118000400_kq_care_input_sectors.sql"));
+  const restoreInputs=await captureCare();
+  const inputOwner=await player();
+  const inputCodes=KQ_CARE_PRODUCTS.filter(product=>product.kind==="input").map(product=>product.code);
+  const reserve=(result,code)=>result.inventory.find(item=>item.productCode===code);
+  const inputShop=run=>scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[inputOwner,run.id]);
+  for(const code of inputCodes) {
+    const run=await createRun(inputOwner,sectorState);
+    const quote=await inputShop(run);
+    const lotKey=randomUUID(),applicationKey=randomUUID();
+    const buyLot=()=>scalar("SELECT rpc_kq_purchase_care_v2($1,$2,1,$3,$4,$5)",
+      [inputOwner,code,lotKey,run.id,quote.prices[code]]);
+    const purchasedLot=await buyLot();
+    check(`${code} buys the quoted six square metres`,
+      [purchasedLot.cashCents,purchasedLot.totalPriceCents,reserve(purchasedLot,code).quantity],
+      [quote.cashCents-quote.prices[code],KQ_CARE_PRODUCTS.find(p=>p.code===code).priceCents*6,6]);
+    check(`${code} purchase replay preserves cash and stock`,await buyLot(),{...purchasedLot,replayed:true});
+    const next=applyKqCareProduct(run.state,code,firstCell);
+    const beforeInput=await snapshot(inputOwner);
+    for(const invalid of [undefined,{...firstCell,x:2}]) {
+      await reject(`${code} requires a cultivated cell`,()=>apply(inputOwner,run,substitute(next,invalid),code),"kq_care_invalid_target");
+    }
+    check(`${code} invalid target preserves balance, reserve and receipts`,await snapshot(inputOwner),beforeInput);
+    const treated=await apply(inputOwner,run,next,code,applicationKey);
+    check(`${code} commits the cell and spends exactly one square metre`,
+      [treated.state.care.applications.at(-1).target,reserve(treated,code).quantity,treated.chargedCents,treated.cashCents],
+      [firstCell,5,0,purchasedLot.cashCents]);
+    check(`${code} receipt records one m²`,(await query("SELECT target,area_m2,pricing_units FROM kq_care_interventions WHERE user_id=$1 AND request_key=$2",[inputOwner,applicationKey])).rows[0],
+      {target:firstCell,area_m2:1,pricing_units:1});
+    check(`${code} replay is bound to its cell`,(await apply(inputOwner,run,next,code,applicationKey)).replayed,true);
+    await reject(`${code} cannot replay on another cell`,()=>apply(inputOwner,run,substitute(next,secondCell),code,applicationKey),"kq_care_request_mismatch");
+  }
+  const vermi="CARE-VERMICOMPOST";
+  await query("UPDATE kq_care_inventory SET quantity=1,area_quantity=0 WHERE user_id=$1 AND product_code=$2",[inputOwner,vermi]);
+  let distributed=await createRun(inputOwner,sectorState);
+  const sixCells=[0,1,2,3,4,5].map(i=>({zoneId:zone.id,x:i%2,y:Math.floor(i/2)}));
+  check("one historical input charge covers six individually applicable square metres",reserve(await inputShop(distributed),vermi).quantity,6);
+  for(const [index,target] of sixCells.entries()) {
+    const next=applyKqCareProduct(distributed.state,vermi,target);
+    const treated=await apply(inputOwner,distributed,next,vermi);
+    check(`one lombricompost apport covers cell ${index+1} and keeps the exact remainder`,reserve(treated,vermi),
+      {productCode:vermi,areaQuantity:5-index,legacyQuantity:0,quantity:5-index});
+    distributed=await runRow(distributed.id);
+  }
+  const forceInput=(state,productCode,target)=>{
+    const app={productCode,stageIndex:state.stageIndex,...(target?{target}:{})};
+    return {...state,care:{...state.care,applications:[...state.care.applications,app],
+      interventions:[...state.care.interventions,{...app,status:"installing",remainingSteps:productCode===vermi?2:1}]}};
+  };
+  const badInput=async (name,run,code,target)=>reject(name,()=>apply(inputOwner,run,forceInput(run.state,code,target),code),"kq_care_invalid_request");
+  await badInput("a treated square metre cannot be billed again",distributed,vermi,sixCells[0]);
+  await badInput("a second input at the same stage is refused even on a different cell",distributed,"CARE-SEAWEED",secondCell);
+  const later=await createRun(inputOwner,{...distributed.state,stageIndex:1,care:{...distributed.state.care,interventions:[]}});
+  await badInput("same input cannot start another apport at a different stage",later,vermi,firstCell);
+  await apply(inputOwner,later,applyKqCareProduct(later.state,"CARE-SEAWEED",secondCell),"CARE-SEAWEED");
+  const secondStage=(await runRow(later.id)).state;
+  const thirdStage=await createRun(inputOwner,{...secondStage,stageIndex:2,care:{...secondStage.care,interventions:[]}});
+  await badInput("two distinct apports per culture remain the limit",thirdStage,"CARE-COMPOST-TEA",firstCell);
+  const saltState={...sectorState,care:{...sectorState.care,problems:[{...sectorState.care.problems[0],code:"SALTS"}]}};
+  const salty=await createRun(inputOwner,saltState);
+  await badInput("organic feed still rejects saline stress",salty,"CARE-ORGANIC-FEED",firstCell);
+  const datedRun=await createRun(inputOwner,{...sectorState,warehouse:{zones:[],activeAreaM2:4}});
+  const datedCode="CARE-COMPOST-TEA";
+  const dated=await apply(inputOwner,datedRun,applyKqCareProduct(datedRun.state,datedCode),datedCode);
+  check("an old planless tent uses a full four-m² input passage",reserve(dated,datedCode),
+    {productCode:datedCode,quantity:0,legacyQuantity:0,areaQuantity:1});
+  const basicRun=await createRun(inputOwner,sectorState);
+  const basicQuote=await inputShop(basicRun);
+  const generalCare=await apply(inputOwner,basicRun,performKqBasicCare(basicRun.state),null,randomUUID(),basicRun.updated_at,basicQuote.basicCarePriceCents);
+  check("paid care still covers the entire spatial tent at its exact quote",generalCare.chargedCents,6*KQ_BASIC_CARE_PRICE_CENTS);
+
+  // The intermediate engine understands PBI sectors but reads inputs globally.
+  await reject("a PBI-only rollback waits for targeted input applications",()=>db.exec(restoreSectors),"kq_care_active_input_sectors");
+  await db.exec("ROLLBACK");
+  await query("UPDATE kq_runs SET status='abandoned' WHERE user_id=$1 AND status='active'",[inputOwner]);
+  const roots=structuredClone(sectorState);
+  roots.care.problems=[{...roots.care.problems[0],code:"ROOTS",plants:[{...firstCell,slot:0,severity:2}]}];
+  const rootsRun=await createRun(inputOwner,roots);
+  await reject("spatial non-pest observations also prevent incompatible rollback",()=>db.exec(restoreSectors),"kq_care_active_input_sectors");
+  await db.exec("ROLLBACK");
+  await query("UPDATE kq_runs SET status='abandoned' WHERE id=$1",[rootsRun.id]);
+  const beforeInputRestore=await persisted();
+  await db.exec(restoreSectors);
+  check("PBI-only restore quotes complete input passages",reserve(await inputShop(rootsRun),"CARE-SEAWEED").quantity,0);
+  await db.exec(restoreInputs);
+  check("restored input version quotes the exact sector stock",reserve(await inputShop(rootsRun),"CARE-SEAWEED").quantity,4);
+  check("input version round trip preserves money, hours, stock and all receipts",await persisted(),beforeInputRestore);
   console.log(JSON.stringify({result:"passed",checks:checks.length,details:checks,engine:"PGlite isolated PostgreSQL",concurrency:"Retry calls submitted together; PGlite serializes on one connection. CAS and row/advisory locks are explicitly verified."},null,2));
 } catch(error) {
   console.error(error.message, error.where ?? "", error.detail ?? "");

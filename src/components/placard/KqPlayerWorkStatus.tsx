@@ -1,15 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getKqPlayerSkills, getKqPlayerWorkday, type KqPlayerWorkAvailability } from "@/lib/kanab-quest-player-work";
+import { getKqPlayerSkills, getKqPlayerWorkday, KQ_WORK_EVENTS, type KqPlayerWorkAvailability } from "@/lib/kanab-quest-player-work";
 import type { KqStaffSnapshot } from "@/lib/kanab-quest-staff-types";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqProgressMeter } from "./KqVisuals";
 import { KqPlayerWorkDetails } from "./KqPlayerWorkDetails";
 import styles from "./KqPlayerWorkStatus.module.css";
 
-const events = ["kq:staff-updated", "kq:player-work-updated", "arena:progress-updated", "kq:equipment-updated", "kq:market-updated", "kq:commerce-updated", "kq:storage-updated", "kq:social-updated", "kq:treasury-updated", "kq:collection-updated"];
 const hours = (value: number) => `${value.toLocaleString("fr-FR")} h`;
+
+/** The Quartier and its help use the same team read, including its reserved hours. */
+export function KqQuarterWorkHelp({ availability }: { availability: KqPlayerWorkAvailability }) {
+  const workday = availability.status === "ready" ? availability.workday : null;
+  return <aside className={styles.status} aria-label="Ta réserve de travail" data-player-work-status data-tutorial-ready={!!workday}>
+    <details><summary>Temps des activités et prochaine journée</summary>
+      {workday && <KqProgressMeter label="Temps libre aujourd’hui" value={workday.remainingHours} max={workday.dailyHours} valueLabel={`${hours(workday.remainingHours)} / ${hours(workday.dailyHours)}`} />}
+      <KqPlayerWorkDetails view="hub" workday={workday} skills={availability.status === "ready" ? availability.skills ?? null : null} />
+    </details>
+  </aside>;
+}
 
 /** One server-owned allowance, displayed across destinations without client-side resets. */
 export function KqPlayerWorkStatus({ view, onOpenPersonal, onAvailabilityChange }: { view: string; onOpenPersonal: () => void; onAvailabilityChange?: (value: KqPlayerWorkAvailability) => void }) {
@@ -51,14 +61,14 @@ export function KqPlayerWorkStatus({ view, onOpenPersonal, onAvailabilityChange 
       queued = setTimeout(() => { void load(); }, 180);
     }
     void load();
-    const unsubscribe = api.subscribe(events, schedule);
+    const unsubscribe = api.subscribe(KQ_WORK_EVENTS, schedule);
     document.addEventListener("visibilitychange", schedule);
     window.addEventListener("focus", schedule);
     return () => { cancelled = true; controller?.abort(); clearTimeout(timer); clearTimeout(queued); unsubscribe(); document.removeEventListener("visibilitychange", schedule); window.removeEventListener("focus", schedule); };
   }, [api, refresh, onAvailabilityChange, view]);
   const workday = snapshot ? getKqPlayerWorkday(snapshot) : null;
   const skills = snapshot && !error ? getKqPlayerSkills(snapshot.state) : null;
-  return <aside className={styles.status} aria-label="Ta réserve de travail" data-player-work-status>
+  return <aside className={styles.status} aria-label="Ta réserve de travail" data-player-work-status data-tutorial-ready={!!workday && !error}>
     <div className={styles.top}>
       {workday && !error ? <KqProgressMeter label="Temps restant aujourd’hui" value={workday.remainingHours} max={workday.dailyHours}
         valueLabel={`${hours(workday.remainingHours)} / ${hours(workday.dailyHours)}`} tone={workday.remainingHours ? "teal" : "red"} />

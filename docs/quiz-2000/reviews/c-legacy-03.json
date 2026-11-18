@@ -1,0 +1,1072 @@
+{
+  "batchId": "c-legacy-03",
+  "reviewer": "e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture indépendante des38 questions complètes, de leurs quatre choix, des appuis et de l’unicité des faits ; aucune écriture active.",
+  "summary": {
+    "approved": 38,
+    "changes_requested": 0,
+    "rejected": 0,
+    "factualResult": "Les trois corrections sont approuvées : choix parallèles sur les nuages, niveau2 pour andain et noms des deux précurseurs développés. Faits et sources inchangés.",
+    "sourceResult": "27 références couvertes. Affiliation CBD 1963 : lecture du16 novembre réutilisée. Le même PDF Terres Inovia sert à deux notices enregistrées. Autres passages référencés effectivement ouverts ; lecture ciblée, pas lecture intégrale déclarée de tous les documents.",
+    "levels": "Répartition finale1/2/3/4 :8/20/9/1. Le niveau4 du squelette du bêta-caryophyllène reste approuvé.",
+    "forms": "Les identifications restent nommées identification. Les déductions sur charges, humidité relative et devenir des peroxydes s’appuient sur une situation ou sur des observations données.",
+    "advisory": [
+      "Développer GOT dans une formulation ou une explication accessible aiderait la lecture, sans confondre cette enzyme avec une aminotransférase homonyme.",
+      "Développer MEP dans l’explication sur l’acétyl-CoA aiderait à identifier l’autre voie évoquée."
+    ]
+  },
+  "sourceAudit": [
+    {
+      "sourceId": "soil-lesson-physical",
+      "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+      "sourceHash": "4c3c48a4cfd398a6feb572990f65d6daff2b3512c538e9ffb5e20c7fabe04743",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "soil-lesson-rhizosphere",
+      "url": "https://www.wsl.ch/fr/foret/sol-et-cycles/racines-et-rhizosphere/",
+      "sourceHash": "353d2c29e84ffce42ff6df96ca13eec69f753b7f8a66fb3678568dcef888fabb",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "soil-lesson-living",
+      "url": "https://extension.colostate.edu/resource/the-living-soil/",
+      "sourceHash": "fc85daae86cc8692eb703e1b56bc2a7938f30c4c30567244398d204792f16c4f",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-mycorrhiza-hemp-2022",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.845794/full",
+      "sourceHash": "f212fff3772365884c35186f4a62b2fb00fb82807a136fb4b2f1e9128136b25a",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "soil-lesson-nitrogen",
+      "url": "https://swroc.cfans.umn.edu/research/soil-water/nitrogen-cycle",
+      "sourceHash": "51909679a6e8932dc194e0edd3e3f14e22cfcc57907c23baf3752064dc140839",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-usgs-runoff",
+      "url": "https://www.usgs.gov/water-science-school/science/surface-runoff-and-water-cycle?qt-science_center_objects=0",
+      "sourceHash": "ee2b511f3f39ac08b323bd8bb0971113c3f6a3103b5d6154aa08953f3679c713",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "cultivation-lesson-coverings",
+      "url": "https://www.dpird.nsw.gov.au/agriculture/horticulture/greenhouse/structures-and-technology/covers",
+      "sourceHash": "9c9ea5c631202fa7f4cb1abb7f9d758df9d02138bb718b5b4c1f4f2d54fde700",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-fao-grain-drying",
+      "url": "https://www.fao.org/4/s1250e/S1250E0u.htm",
+      "sourceHash": "c10a3e187fef1415e5fb4e0a9364c26968f39f8730a223ff2566423843a05b18",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "harvest-lesson-hemp",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "cultivation-lesson-light",
+      "url": "https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-238-w.html",
+      "sourceHash": "8210367f8acb66ba03de3da2120b105823c21a3958ab9bf7e2590d3b36f62f12",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "revision-agro-water",
+      "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+      "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "cultivation-lesson-hemp2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "sourceHash": "80f229710f48b5f1e29a0b1b41c0ccd5bef0a806359ef8a4e61be4404ce79593",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-fao-threshing",
+      "url": "https://www.fao.org/4/t0522e/t0522e07.htm",
+      "sourceHash": "a8ea2ec3a73673d98b582e3ee0bc0c24ce921d8259f77072d164f1597b000084",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-okstate-soilless-media",
+      "url": "https://extension.okstate.edu/fact-sheets/soilless-growing-mediums",
+      "sourceHash": "6c9232beef2ead4960e278ec8d3ee82b6831e4cc2dcb8ec5dc00fb88f4b4d72c",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "harvest-lesson-oil",
+      "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+      "sourceHash": "a5c4b3522649545703258772fffb9c16f37e6b59fa64296e4f2e584bfb75abb2",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-noaa-dewpoint",
+      "url": "https://forecast.weather.gov/glossary.php?word=DEW+POINT",
+      "sourceHash": "9e0bdf7758235407c6544b9aecb76f2cb8bac79d28b02f465a610b515aee9f3e",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-noaa-relative-humidity",
+      "url": "https://www.weather.gov/lmk/humidity",
+      "sourceHash": "7d9ba06ddf6f47db34fab491991fb33b7ba14b8e5b9e6850b3323c57d12aa1e1",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "qh-sci-cbga",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+      "sourceHash": "361300ad51276e59469358aec19c5f8b19facdc0fdbba900512e8600f8190333",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "qh-sci-cbd-structure",
+      "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+      "sourceHash": "3d4026b785f82ca4953309a4a0bd5d0244e3fae772743ed24d7ff7181f9d8146",
+      "checkedAt": "2026-11-16",
+      "basis": "Réemploi honnête de la lecture p.2073 du16 novembre ; empreinte inchangée."
+    },
+    {
+      "sourceId": "qh-nature-canada",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "sourceHash": "b081663f7168f12c381be26c4d8f17443aa63db040bc64208c132f857204fd6b",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-chebi-phellandrene",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:48741",
+      "sourceHash": "7c4d43bda9ecc4ed90cddbadc7c618311c798640a2ea5edad3789a1fbf07a61c",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "terpenes-lesson-booth2017",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "sourceHash": "6a2f5e0134cfb1c781937d0cfb0cb0fd1be9bef5a5f21e83053e17641765de05",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "qh-nature-aroma-key-compounds",
+      "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+      "sourceHash": "d130df0aef548eb1562abf07a7a8bc9b29f2b7960832605bb38c9762f109d32e",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-chebi-methional",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:49017",
+      "sourceHash": "a30d0dc73f00d5c08033387fb26e0fed531fdb6421b3156a2059796e818967cd",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-chebi-caryophyllene",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:63191",
+      "sourceHash": "27ee2f9ff422d412b906544f555951ffbcfa0917a11563f81c65210ffd6daac7",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-chebi-ipp",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:128769",
+      "sourceHash": "f353e12c8d9cdfbc5c04c89963f10f0787b50e7530d7a9b3b54690b3a4021e5f",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    },
+    {
+      "sourceId": "q2-c03-chebi-dmapp",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:57623",
+      "sourceHash": "dc9e9efd05c27ebd5580bb93ca06f4e1c02d4c3c2c00de436352a78a8f26b28b",
+      "checkedAt": "2026-11-16",
+      "basis": "Passages utiles réellement ouverts et lus ; locators précis dans chaque sourceChecks."
+    }
+  ],
+  "additionalDistractorChecks": [
+    {
+      "id": "hemp-en-2-18",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:49263",
+      "locator": "Formula ; SMILES ; IUPAC Names, cyclohexene",
+      "result": "Bêta-bisabolène : squelette cycliqueC15 sans les deux cycles fusionnés demandés.",
+      "checkedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-en-2-18",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:49045",
+      "locator": "Formula ; SMILES ; synonyme IUPAC cyclodeca-1,6-diene",
+      "result": "GermacrèneD : cycle à dix membres, distinct du système demandé.",
+      "checkedAt": "2026-11-16"
+    },
+    {
+      "id": "hemp-en-2-18",
+      "url": "https://www.ebi.ac.uk/chebi/CHEBI:5768",
+      "locator": "IUPAC Name cycloundeca-1,4,8-triene",
+      "result": "Alpha-humulène : cycle à onze membres ; notice déjà lue le16 novembre pour C-legacy-02.",
+      "checkedAt": "2026-11-16",
+      "basis": "Lecture inchangée réutilisée."
+    }
+  ],
+  "duplicateCheck": {
+    "method": "Comparaison sémantique ciblée dans fact-index.jsonl, puis lecture des entrées voisines des lots C/D/B ; les changements d’ID ou de mots ne suffisent pas à distinguer un fait.",
+    "result": "Aucun doublon actif non résolu relevé.",
+    "arbitrations": [
+      {
+        "ids": [
+          "hemp-uses-mineralisation",
+          "hemp-uses-immobilisation"
+        ],
+        "decision": "Conversion organique→ions minéraux et réduction nitrate→gaz sont distinctes. L’immobilisation inverse n’est plus testée."
+      },
+      {
+        "ids": [
+          "hemp-uses-mycorhize",
+          "hemp-uses-echange-mycorhize",
+          "hemp-uses-exsudats"
+        ],
+        "decision": "Partenaires de la symbiose, ressource carbonée fournie au champignon et exsudation vers le sol sont distincts."
+      },
+      {
+        "ids": [
+          "hemp-prevention-fanage",
+          "hemp-prevention-andain",
+          "hemp-prevention-battage"
+        ],
+        "decision": "Aération par fanage, forme spatiale d’un andain et détachement du chènevis sont trois opérations ou objets différents."
+      },
+      {
+        "ids": [
+          "hemp-prevention-huile-rance",
+          "hemp-prevention-hydroperoxydes",
+          "hemp-prevention-bris-graines",
+          "hemp-q2-d01-acidite-peroxydes",
+          "hemp-q2-d01-chlorophylles-lumiere",
+          "hemp-q2-d01-huile-filtration-oxydation"
+        ],
+        "decision": "Réaction oxydative, classe primaire, devenir de ce marqueur, suivi hydrolytique, photosensibilisation et bilan d’un essai de filtration testent des propriétés différentes."
+      },
+      {
+        "ids": [
+          "hemp-hs-sci-2ag-study-assay",
+          "hemp-hs-sci-cb-receptor-gprotein",
+          "hemp-evidence-branches"
+        ],
+        "decision": "Classe fonctionnelle de la transférase, produit des deux substrats et origine hybride des voies biosynthétiques sont distincts."
+      },
+      {
+        "ids": [
+          "hemp-hs-sci-cbd-mn-vs-indian",
+          "hemp-hs-sci-mechoulam-country",
+          "hemp-hs-sci-cbd-structure-date"
+        ],
+        "decision": "Institut d’affiliation, pays et nature de l’avancée publiée sont des propriétés documentaires distinctes."
+      },
+      {
+        "ids": [
+          "hemp-en-2-15",
+          "hemp-en-2-04"
+        ],
+        "decision": "Fonction aldéhyde du méthional distincte de son association sensorielle."
+      },
+      {
+        "ids": [
+          "hemp-en-2-18",
+          "hemp-molecules-caryophyllene-arome",
+          "hemp-molecules-caryophyllene-oxyde",
+          "hemp-en-2-08"
+        ],
+        "decision": "Architecture du sesquiterpène, odeur, époxyde d’un dérivé et pluralité de produits d’une synthase sont distincts."
+      },
+      {
+        "ids": [
+          "hemp-en-2-19",
+          "hemp-evidence-cbd-thc-isomeres",
+          "hemp-molecules-pinenes-isomeres"
+        ],
+        "decision": "La relation IPP/DMAPP porte sur deux précurseurs précis et leur position de liaison ; elle ne redemande pas la définition générique d’isomère à partir de prémisses identiques."
+      },
+      {
+        "ids": [
+          "hemp-en-2-20",
+          "hemp-en-2-17",
+          "hemp-molecules-gpp"
+        ],
+        "decision": "Substrat initial du mévalonate, localisation de sa voie et précurseur des monoterpènes sont distincts."
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "hemp-uses-pores",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "bf2be4c5da88300e401b262ec592848af2870286c083c703061c64d4858181c4",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-physical",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+          "locator": "Introduction, What Is Soil ; figures 1-1a à 1-1c",
+          "result": "Pores occupés par air et eau distingués.",
+          "sourceHash": "4c3c48a4cfd398a6feb572990f65d6daff2b3512c538e9ffb5e20c7fabe04743",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-matiere-organique",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "76ebd4aa6223257e5025b93bd48ced98b7b408b5f62004294ef14da2abd7b0ff",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-physical",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+          "locator": "Introduction, What Is Soil ; Organic Matter, première phrase",
+          "result": "Résidus végétaux distingués de la fraction minérale.",
+          "sourceHash": "4c3c48a4cfd398a6feb572990f65d6daff2b3512c538e9ffb5e20c7fabe04743",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-vers-terre",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "c09ad3a33b0871df9bc5da7a83bbdcbfc8f0e9515da0c32e7ea48326d3d72897",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-physical",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+          "locator": "The Biology of Soil, premier paragraphe et passage Soil-dwellers move through the soil",
+          "result": "Animaux fouisseurs et canaux d’aération décrits.",
+          "sourceHash": "4c3c48a4cfd398a6feb572990f65d6daff2b3512c538e9ffb5e20c7fabe04743",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-paillis",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "29643d34c2d54049dc509373fc81c41157dacd3758e96ffbf46cb2e2d3929833",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-physical",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+          "locator": "Organic Matter, passage organic mulch or compost to the soil surface ; figure 1-17",
+          "result": "Couverture organique déposée sur la surface décrite.",
+          "sourceHash": "4c3c48a4cfd398a6feb572990f65d6daff2b3512c538e9ffb5e20c7fabe04743",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-exsudats",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "0758e7269ff52fc0affb2fb177dedf9ee5dc55c359cc0e6a759f5fc8649a517d",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-rhizosphere",
+          "url": "https://www.wsl.ch/fr/foret/sol-et-cycles/racines-et-rhizosphere/",
+          "locator": "Rhizosphère, deux premiers paragraphes",
+          "result": "Libération racinaire de substances organiques décrite.",
+          "sourceHash": "353d2c29e84ffce42ff6df96ca13eec69f753b7f8a66fb3678568dcef888fabb",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-mycorhize",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "723f0c5cd924891ae0a53851d022e57ed52b43e7877bda21e0d113a4e3002b93",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-living",
+          "url": "https://extension.colostate.edu/resource/the-living-soil/",
+          "locator": "Directly Beneficial Soil Organisms, définition des mycorhizes",
+          "result": "Association champignon–racine explicitement définie.",
+          "sourceHash": "fc85daae86cc8692eb703e1b56bc2a7938f30c4c30567244398d204792f16c4f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c03-mycorrhiza-hemp-2022",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.845794/full",
+          "locator": "Results, Root traits and mycorrhizal colonization ; micrographies",
+          "result": "Structures mycorhiziennes observées dans les racines.",
+          "sourceHash": "f212fff3772365884c35186f4a62b2fb00fb82807a136fb4b2f1e9128136b25a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-mineralisation",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "1ca2a1839ae7bab6aaaf205fa2bafed86b4e3443db529c548265bf207dba9d04",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-nitrogen",
+          "url": "https://swroc.cfans.umn.edu/research/soil-water/nitrogen-cycle",
+          "locator": "Mineralization, paragraphe de définition",
+          "result": "Conversion de l’azote organique en ions minéraux définie.",
+          "sourceHash": "51909679a6e8932dc194e0edd3e3f14e22cfcc57907c23baf3752064dc140839",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-echange-cations",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "7fd569694988b8cd95d350482d26b2a3430f510f58bc787fb40ab1a9abcd47db",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-physical",
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+          "locator": "Cation Exchange Capacity, deux premiers paragraphes",
+          "result": "Rétention de cations par charges négatives expliquée.",
+          "sourceHash": "4c3c48a4cfd398a6feb572990f65d6daff2b3512c538e9ffb5e20c7fabe04743",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-immobilisation",
+      "status": "approved",
+      "comment": "Dénitrification étayée, distincte de la minéralisation et de son ancienne inversion. Quatre processus du même cycle, niveau3 défendable.",
+      "contentHash": "95543fc0e5971caf652cc8a959c465e254e6c77371c0c58299c11b773a067e81",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-nitrogen",
+          "url": "https://swroc.cfans.umn.edu/research/soil-water/nitrogen-cycle",
+          "locator": "Denitrification, paragraphe de définition",
+          "result": "Réduction microbienne des nitrates en gaz décrite.",
+          "sourceHash": "51909679a6e8932dc194e0edd3e3f14e22cfcc57907c23baf3752064dc140839",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-uses-echange-mycorhize",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "4e947590f2259ee0ad031e234e9d2b29c85f62bfca5a48254c99c99ca9f1609c",
+      "sourceChecks": [
+        {
+          "sourceId": "soil-lesson-living",
+          "url": "https://extension.colostate.edu/resource/the-living-soil/",
+          "locator": "Directly Beneficial Soil Organisms, In exchange, the fungus receives",
+          "result": "Apport racinaire de sucres au champignon décrit.",
+          "sourceHash": "fc85daae86cc8692eb703e1b56bc2a7938f30c4c30567244398d204792f16c4f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c03-mycorrhiza-hemp-2022",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.845794/full",
+          "locator": "Introduction, définition des AMF ; Results, colonisation racinaire",
+          "result": "Association chez Cannabis documentée ; aucune performance généralisée.",
+          "sourceHash": "f212fff3772365884c35186f4a62b2fb00fb82807a136fb4b2f1e9128136b25a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-plein-champ",
+      "status": "approved",
+      "comment": "Situation autonome et réponse hydrologique unique ; niveau1 cohérent pour un phénomène courant.",
+      "contentHash": "fc011440d051b46920b1199c86e3a4d38adc0af8e91b9fc04814d390446bcd53",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-usgs-runoff",
+          "url": "https://www.usgs.gov/water-science-school/science/surface-runoff-and-water-cycle?qt-science_center_objects=0",
+          "locator": "Surface runoff is precipitation that runs off the landscape, premiers paragraphes",
+          "result": "Écoulement de surface distingué de l’entrée dans le sol.",
+          "sourceHash": "ee2b511f3f39ac08b323bd8bb0971113c3f6a3103b5d6154aa08953f3679c713",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-serre",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "44968503005b2a5f07f11f97def6d71325924a500f6e5bfa3c825f67cd6a2421",
+      "sourceChecks": [
+        {
+          "sourceId": "cultivation-lesson-coverings",
+          "url": "https://www.dpird.nsw.gov.au/agriculture/horticulture/greenhouse/structures-and-technology/covers",
+          "locator": "Introduction ; Glass, caractéristiques de transmission du PAR",
+          "result": "Transmission lumineuse par les couvertures décrite.",
+          "sourceHash": "9c9ea5c631202fa7f4cb1abb7f9d758df9d02138bb718b5b4c1f4f2d54fde700",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-sechage",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "a34d4c37946351a6fe130b0f84d1ef073804a0dba4794b923ab7882db929e40e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-fao-grain-drying",
+          "url": "https://www.fao.org/4/s1250e/S1250E0u.htm",
+          "locator": "Grain Drying ; Moisture Content, définition et bilan eau–matière sèche",
+          "result": "Eau et matière sèche distinguées.",
+          "sourceHash": "c10a3e187fef1415e5fb4e0a9364c26968f39f8730a223ff2566423843a05b18",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.23, Conservation du chènevis",
+          "result": "Réduction de l’humidité du chènevis décrite.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-paille",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "81f15d2d2e6b25a3c4246d8d3490d8f0bb476871eba4e2a3a17b806c449d48f4",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.22, Récolte en mode non battu roui ; p.23, Fanage, andainage et pressage",
+          "result": "Paille récoltée et mise en balles décrites.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-nuages",
+      "status": "approved",
+      "comment": "Les quatre choix comparent désormais les mêmes grandeurs. La réponse durée inchangée et rayonnement moindre est unique ; niveau1 cohérent.",
+      "contentHash": "c1ab4c9430452a2a9bc50952a748b330cb6933fca5aa65f261df0721444517de",
+      "sourceChecks": [
+        {
+          "sourceId": "cultivation-lesson-light",
+          "url": "https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-238-w.html",
+          "locator": "Measuring Light ; paragraphe des cartes de DLI et Fig.1",
+          "result": "Nébulosité et quantité quotidienne reçue distinguées de la photopériode.",
+          "sourceHash": "8210367f8acb66ba03de3da2120b105823c21a3958ab9bf7e2590d3b36f62f12",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-transpiration",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "36a819e46c474e06f9267cf4309407f05adc841b10318fcb1bb7b5e83180d39e",
+      "sourceChecks": [
+        {
+          "sourceId": "revision-agro-water",
+          "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+          "locator": "Water and Solute Transportation, évaporation du mésophylle ; définition de Transpiration avant Control of Transpiration",
+          "result": "Évaporation puis perte de vapeur par stomates décrites.",
+          "sourceHash": "df1e3d84ce08479b569c3522968c916dd74715ad5e0778eb8446d1d5db577d08",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-gel-plantule",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "162ca6e7dea04a9ff7a7905d2ecb88e05827391722b702feee3471075acab18a",
+      "sourceChecks": [
+        {
+          "sourceId": "cultivation-lesson-hemp2026",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.14, Sensibilité au gel",
+          "result": "Fragilité maximale à la sortie de terre indiquée.",
+          "sourceHash": "80f229710f48b5f1e29a0b1b41c0ccd5bef0a806359ef8a4e61be4404ce79593",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-echauffement",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "433aba6163770e59dcadac4c1c837a06f85e3d121b0c7450f17d35325b912d0b",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.23, Conservation du chènevis, premier paragraphe",
+          "result": "Risque d’échauffement et d’altération signalé.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c03-fao-grain-drying",
+          "url": "https://www.fao.org/4/s1250e/S1250E0u.htm",
+          "locator": "Grain Drying, paragraphes sur la respiration et les hot spots",
+          "result": "Respiration et points chauds du grain décrits.",
+          "sourceHash": "c10a3e187fef1415e5fb4e0a9364c26968f39f8730a223ff2566423843a05b18",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-fanage",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "36eaa2e0f019ceb14f91621ad05524a14531e68f5893e7381cda62c700671a92",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.23, Fanage, andainage et pressage, trois puces",
+          "result": "Étalement et aération de la paille décrits.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-andain",
+      "status": "approved",
+      "comment": "Niveau2 et justification corrigés pour ce vocabulaire agricole ; quatre dispositions comparables conservées.",
+      "contentHash": "605744ca517fe069004c3cbe4481aac3677f48c318e56da742572fb24e6760e3",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.23, Fanage, andainage et pressage, puce Andainer",
+          "result": "Rassemblement en lignes explicitement défini.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-battage",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "542c46eaf3b0a6bd4ca1b2e334e0570fa6ebcbdcea075c19c7859f97559ea2a6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-fao-threshing",
+          "url": "https://www.fao.org/4/t0522e/t0522e07.htm",
+          "locator": "Definition, première phrase",
+          "result": "Séparation du grain de son support définie.",
+          "sourceHash": "a8ea2ec3a73673d98b582e3ee0bc0c24ce921d8259f77072d164f1597b000084",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.22, Récolte en mode battu",
+          "result": "Récolte de graine avec battage décrite.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-hors-sol",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "7241d17878c39e41cb977794fe06803ac3c4fdd48d47e16a85197b92842d655e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-okstate-soilless-media",
+          "url": "https://extension.okstate.edu/fact-sheets/soilless-growing-mediums",
+          "locator": "Introduction ; Characteristics of Growing Mediums ; Coconut Coir",
+          "result": "Coco classée comme support hors-sol organique.",
+          "sourceHash": "6c9232beef2ead4960e278ec8d3ee82b6831e4cc2dcb8ec5dc00fb88f4b4d72c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-huile-rance",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "cbfea923167aaa14fdfe4e87264cec8901227eccfbd90ccc9f29c4a428f80f21",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-oil",
+          "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+          "locator": "Introduction, paragraphes sur oxidative and photo-oxidative degradation ; §2.2",
+          "result": "Dégradation oxydative sensorielle explicitement décrite.",
+          "sourceHash": "a5c4b3522649545703258772fffb9c16f37e6b59fa64296e4f2e584bfb75abb2",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-point-rosee",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "7662614921bb2d23eda9c599c922aa568e860516d1f1eb034f10b7e80864a400",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-noaa-dewpoint",
+          "url": "https://forecast.weather.gov/glossary.php?word=DEW+POINT",
+          "locator": "Dew Point, première définition",
+          "result": "Température de saturation et conditions fixées définies.",
+          "sourceHash": "9e0bdf7758235407c6544b9aecb76f2cb8bac79d28b02f465a610b515aee9f3e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-humidite-relative",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "ab57e1603a468270e5e16a2c779ca52a1a845ad6fc0591fb9aad4b86aff20fe4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-noaa-relative-humidity",
+          "url": "https://www.weather.gov/lmk/humidity",
+          "locator": "Relative Humidity, deux paragraphes",
+          "result": "À vapeur inchangée, réchauffement et humidité relative moindre reliés.",
+          "sourceHash": "7d9ba06ddf6f47db34fab491991fb33b7ba14b8e5b9e6850b3323c57d12aa1e1",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-bris-graines",
+      "status": "approved",
+      "comment": "Les deux tendances analytiques fournies appellent un mécanisme ; interprétation utile, bornée aux marqueurs d’oxydation.",
+      "contentHash": "4e8f80a60b65cd33815581255c92c751eadbc1027397b44ca68fa2badd4b1ed0",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-oil",
+          "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+          "locator": "§2.2, paragraphes sur PV et développement de produits secondaires",
+          "result": "Décomposition et baisse possible du marqueur primaire expliquées.",
+          "sourceHash": "a5c4b3522649545703258772fffb9c16f37e6b59fa64296e4f2e584bfb75abb2",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-hydroperoxydes",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "f1cf78bc8770dbdd39b9c2bf97fc7eb4ca685329eb1cfcd43be986aea4539821",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-oil",
+          "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+          "locator": "Introduction, Peroxides and hydroperoxides are primary reaction products ; §2.2",
+          "result": "Hydroperoxydes identifiés comme produits primaires.",
+          "sourceHash": "a5c4b3522649545703258772fffb9c16f37e6b59fa64296e4f2e584bfb75abb2",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-prevention-maturite",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "62b58d8d53fd810fb3208feaf88e2d0b65b94b03da0649566d5e0f75c719f3bf",
+      "sourceChecks": [
+        {
+          "sourceId": "harvest-lesson-hemp",
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "locator": "p.22, Récolte en mode battu, description des fruits inférieurs et supérieurs",
+          "result": "Maturité inférieure plus avancée décrite.",
+          "sourceHash": "f173717bc753ec7969c5ec5131f6792e6232eb53339e33f236cf551ddc9cff3a",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-study-assay",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "db924ce8f738baa3ce7729a9f3f41e4968be1e45c44697720fd637ddb3073b1f",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-sci-cbga",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+          "locator": "Abstract, nom complet de GOT et cosubstrat GPP ; titre de l’article",
+          "result": "Transfert géranylique vers l’olivétolate décrit.",
+          "sourceHash": "361300ad51276e59469358aec19c5f8b19facdc0fdbba900512e8600f8190333",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-mn-vs-indian",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "9151551213725ccb535f4e6c93f649d1a1329d1dbbb6c008adecc3d4f9f1183b",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-sci-cbd-structure",
+          "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+          "locator": "p.2073, en-tête sous les auteurs",
+          "result": "Affiliation Weizmann donnée sous les auteurs.",
+          "sourceHash": "3d4026b785f82ca4953309a4a0bd5d0244e3fae772743ed24d7ff7181f9d8146",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Lecture p.2073 du 2026-11-16 réutilisée de C-legacy-02 ; source inchangée, pas de nouvelle ouverture prétendue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-1-05",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "fdbd76f343deadddded0bdc281aef4a8116cd534b0eb9529d88cb6044e8740c4",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-canada",
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "locator": "§2.6 General description, paragraphe des feuilles et pétioles",
+          "result": "Feuilles opposées en bas, alternes au sommet décrites.",
+          "sourceHash": "b081663f7168f12c381be26c4d8f17443aa63db040bc64208c132f857204fd6b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-10",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "0192e687b5d684457447fa483977ad37240cdd415fb83f120c2f6161f856e7bf",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-chebi-phellandrene",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:48741",
+          "locator": "Definition ; Formula",
+          "result": "Classe monoterpénique explicitement donnée.",
+          "sourceHash": "7c4d43bda9ecc4ed90cddbadc7c618311c798640a2ea5edad3789a1fbf07a61c",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "terpenes-lesson-booth2017",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "locator": "Fig.4, pic l ; Functional characterization of CsTPSFN TPS-b subfamily members",
+          "result": "Profil floral et produit bêta-phellandrène identifiés.",
+          "sourceHash": "6a2f5e0134cfb1c781937d0cfb0cb0fd1be9bef5a5f21e83053e17641765de05",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-12",
+      "status": "approved",
+      "comment": "Association aromatique correctement bornée à l’étude et explicitement provisoire ; quatre odeurs comparables.",
+      "contentHash": "33284b7782838e8a76c58a61dc2099b9ff36b4bded0e51857b538dba749b7e59",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-aroma-key-compounds",
+          "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+          "locator": "Table 1, ligne 30 ; note b sous le tableau",
+          "result": "Ligne30 : cannelle et identification provisoireb confirmées.",
+          "sourceHash": "d130df0aef548eb1562abf07a7a8bc9b29f2b7960832605bb38c9762f109d32e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-13",
+      "status": "approved",
+      "comment": "Une seule molécule parmi les choix correspond à la note demandée ; la réserve sur son identité est conservée.",
+      "contentHash": "1452f6efc18508805d9d394da203560c7b1251630bae42aa6a7889007b4aae55",
+      "sourceChecks": [
+        {
+          "sourceId": "qh-nature-aroma-key-compounds",
+          "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+          "locator": "Table 1, ligne 8 et note b ; lignes 3,15,24 pour les alternatives",
+          "result": "Ligne8 : champignon et identification provisoireb confirmées.",
+          "sourceHash": "d130df0aef548eb1562abf07a7a8bc9b29f2b7960832605bb38c9762f109d32e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-15",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "8a6af101af742168bbb7f4f50f042a0f93dd6e7e7ec3ea53a08b6c34e0af636f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-chebi-methional",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:49017",
+          "locator": "SMILES ; InChI ; IUPAC Name et synonymes",
+          "result": "Carbonyle terminal et nom propanal confirmés.",
+          "sourceHash": "a30d0dc73f00d5c08033387fb26e0fed531fdb6421b3156a2059796e818967cd",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "qh-nature-aroma-key-compounds",
+          "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+          "locator": "Table 1, ligne 15",
+          "result": "Ligne15 : méthional confirmé dans les fleurs étudiées.",
+          "sourceHash": "d130df0aef548eb1562abf07a7a8bc9b29f2b7960832605bb38c9762f109d32e",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-18",
+      "status": "approved",
+      "comment": "Niveau4 défendable : architecture cyclique précise parmi quatre sesquiterpènes cycliques ; réponse unique vérifiée.",
+      "contentHash": "a397bd76cba79d91c8cca76ffd538d785569e583ef282433cf733438d9cefaff",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-c03-chebi-caryophyllene",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:63191",
+          "locator": "Definition, première phrase ; structure et IUPAC Name",
+          "result": "Architecture fusionnée4+9 explicitement définie.",
+          "sourceHash": "27ee2f9ff422d412b906544f555951ffbcfa0917a11563f81c65210ffd6daac7",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "terpenes-lesson-booth2017",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "locator": "Introduction ; profil floral, Table 1 et caractérisation des synthases",
+          "result": "Bêta-caryophyllène documenté dans le profil de cannabis.",
+          "sourceHash": "6a2f5e0134cfb1c781937d0cfb0cb0fd1be9bef5a5f21e83053e17641765de05",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-19",
+      "status": "approved",
+      "comment": "Les deux noms chimiques sont écrits avant les choix. Relation structurale et niveau3 conservés, avec une réponse unique.",
+      "contentHash": "33ddbc2d7ed81393bdfe53f388f55b060424af9fe2dba1e0ecfc498a98ca0e2d",
+      "sourceChecks": [
+        {
+          "sourceId": "terpenes-lesson-booth2017",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "locator": "Introduction, paragraphes des voies MEP et MEV",
+          "result": "Isomérisation IPP–DMAPP et unitésC5 décrites.",
+          "sourceHash": "6a2f5e0134cfb1c781937d0cfb0cb0fd1be9bef5a5f21e83053e17641765de05",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c03-chebi-ipp",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:128769",
+          "locator": "Formula ; SMILES ; IUPAC Name",
+          "result": "FormuleC5 et position3 de la double liaison confirmées.",
+          "sourceHash": "f353e12c8d9cdfbc5c04c89963f10f0787b50e7530d7a9b3b54690b3a4021e5f",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        },
+        {
+          "sourceId": "q2-c03-chebi-dmapp",
+          "url": "https://www.ebi.ac.uk/chebi/CHEBI:57623",
+          "locator": "Formula ; SMILES ; IUPAC Name ; synonymes",
+          "result": "Même formule et double liaison en position2 confirmées.",
+          "sourceHash": "dc9e9efd05c27ebd5580bb93ca06f4e1c02d4c3c2c00de436352a78a8f26b28b",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    },
+    {
+      "id": "hemp-en-2-20",
+      "status": "approved",
+      "comment": "Réponse unique étayée ; choix comparables, explication utile et niveau acceptable.",
+      "contentHash": "50dd29bd19a3b8eff591ba37a9a807ac34bca82943c009fd34782feba82b9080",
+      "sourceChecks": [
+        {
+          "sourceId": "terpenes-lesson-booth2017",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "locator": "Introduction, paragraphes MEP et MEV ; Fig.2A",
+          "result": "Début de la voieMEV à partir d’acétyl-CoA décrit.",
+          "sourceHash": "6a2f5e0134cfb1c781937d0cfb0cb0fd1be9bef5a5f21e83053e17641765de05",
+          "checkedAt": "2026-11-16",
+          "consultationBasis": "Passage utile effectivement ouvert et lu pendant cette revue."
+        }
+      ]
+    }
+  ],
+  "revalidation": {
+    "date": "2026-11-16",
+    "correctedApprovals": 3,
+    "unchangedApprovals": 35,
+    "unchangedSources": 27,
+    "scope": "Lecture des trois versions corrigées uniquement ; sources inchangées et consultations antérieures conservées, sans nouvelle recherche.",
+    "previousQuestionHashes": {
+      "hemp-prevention-nuages": "acdec00b18ffb9a028bab1263c32f463edbd720407c3e56d3a6a00089bc29411",
+      "hemp-prevention-andain": "74e92a14dbada8bf4afe3e776b3db620d514cd8245a3a2bfe2b2959ea22e246f",
+      "hemp-en-2-19": "2252ae6ea0c886bc66c31156108d70acd48e5b6609b7dd8a1f3af3b6aa3ffb8a"
+    }
+  }
+}

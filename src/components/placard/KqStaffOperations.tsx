@@ -8,6 +8,7 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_STAFF_SKILLS, parseKqStaffCommand } from "@/lib/kanab-quest-staff";
 import { clearKqStaffRecovery, kqStaffRecoveryKey, readKqStaffConfirmation, readKqStaffRecovery, saveKqStaffRecovery, type KqStaffConfirmation, type KqStaffRecovery } from "@/lib/kanab-quest-staff-recovery";
 import { getKqStaffAuthProblem, getKqStaffReconnectHref, type KqStaffAuthProblem } from "@/lib/kanab-quest-staff-reauth";
+import { KQ_WORK_EVENTS } from "@/lib/kanab-quest-player-work";
 import { KQ_PROSPECTING_DEPARTMENTS } from "@/lib/kanab-quest-prospecting";
 import type { KqStaffCommand, KqStaffSnapshot, KqStaffTask } from "@/lib/kanab-quest-staff-types";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
@@ -16,6 +17,27 @@ import styles from "./KqStaffDesk.module.css";
 
 const money = formatKqCash;
 const dateTime = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+
+function nextTeamChange(snapshot: KqStaffSnapshot) {
+  const now = Date.parse(snapshot.serverNow);
+  let next = Date.parse(snapshot.calendar.nextDayAt);
+  function consider(at: string) {
+    const boundary = Date.parse(at);
+    if (boundary > now && boundary < next) next = boundary;
+  }
+  for (const task of snapshot.state.tasks) if (task.status === "running") {
+    consider(task.startedAt);
+    consider(task.completesAt);
+  }
+  for (const receipt of snapshot.context.teamWork ?? []) {
+    consider(receipt.startedAt);
+    consider(receipt.completesAt);
+  }
+  for (const lot of snapshot.state.production?.lots ?? []) if (lot.stage === "drying") consider(lot.readyAt);
+  for (const batch of snapshot.context.processingBatches ?? []) consider(batch.readyAt);
+  for (const job of snapshot.context.processingJobs ?? []) if (job.status === "passive" && job.finalReadyAt) consider(job.finalReadyAt);
+  return next - now;
+}
 export type { KqStaffConfirmation } from "@/lib/kanab-quest-staff-recovery";
 export type KqStaffConfirmationDraft = Omit<KqStaffConfirmation, "requestKey">;
 export type KqStaffConfirmedReceipt = { snapshot: KqStaffSnapshot; previousSnapshot: KqStaffSnapshot | null; requestKey: string };
@@ -24,13 +46,15 @@ export function isKqStaffSnapshot(value: unknown): value is KqStaffSnapshot {
   if (!value || typeof value !== "object") return false;
   const data = value as Partial<KqStaffSnapshot>;
   return !!data.state && Array.isArray(data.state.employees) && Array.isArray(data.state.tasks) && Array.isArray(data.state.payroll)
-    && Array.isArray(data.candidates) && !!data.calendar && !!data.context && typeof data.cashCents === "number"
+    && Array.isArray(data.candidates) && !!data.calendar && Number.isSafeInteger(data.calendar.day) && data.calendar.day >= 1
+    && !!data.context && Array.isArray(data.context.activeRuns) && Array.isArray(data.context.processingBatches) && typeof data.cashCents === "number"
     && typeof data.outstandingCents === "number" && typeof data.monthlyEmployerCostCents === "number" && typeof data.serverNow === "string"
-    && Number.isFinite(Date.parse(data.serverNow)) && Number.isSafeInteger(data.revision) && Number(data.revision) >= 0;
+    && Number.isFinite(Date.parse(data.serverNow)) && Date.parse(data.calendar.nextDayAt) > Date.parse(data.serverNow)
+    && Number.isSafeInteger(data.revision) && Number(data.revision) >= 0;
 }
 
 /** Personnel and workshop use the same authoritative snapshot and receipt lifecycle. */
-export function useKqStaffOperations(label: string, onConfirmed?: (command: KqStaffCommand, receipt: KqStaffConfirmedReceipt) => void, { refreshRecruitment = false }: { refreshRecruitment?: boolean } = {}) {
+export function useKqStaffOperations(label: string, onConfirmed?: (command: KqStaffCommand, receipt: KqStaffConfirmedReceipt) => void, { refreshRecruitment = false, refreshTeamDay = false }: { refreshRecruitment?: boolean; refreshTeamDay?: boolean } = {}) {
   const api = useKqTutorialApi();
   const accountOwner = useKqStaffRecoveryOwner();
   const ownerId = api.isTutorial ? "lesson" : accountOwner;
@@ -124,19 +148,46 @@ export function useKqStaffOperations(label: string, onConfirmed?: (command: KqSt
   }, [api, label, requireLogin]);
   useEffect(() => { const controller = new AbortController(); void load(controller.signal); return () => { controller.abort(); generation.current += 1; }; }, [load, ownerId]);
   useEffect(() => {
+    const controller = new AbortController();
+    let queued: ReturnType<typeof setTimeout> | undefined;
     const refresh = () => {
       if (document.hidden || busyRef.current || authProblemRef.current) return;
-      if (pending) { if (refreshRecruitment) deferredRefresh.current = true; return; }
+      if (pendingRef.current) { if (refreshRecruitment || refreshTeamDay) deferredRefresh.current = true; return; }
       deferredRefresh.current = false;
-      void load();
+      void load(controller.signal);
     };
-    if (deferredRefresh.current && !pending) refresh();
-    const timer = window.setInterval(refresh, 60000);
-    const unsubscribe = api.subscribe(["kq:staff-updated"], refresh);
-    document.addEventListener("visibilitychange", refresh);
-    if (refreshRecruitment) window.addEventListener("focus", refresh);
-    return () => { window.clearInterval(timer); unsubscribe(); document.removeEventListener("visibilitychange", refresh); window.removeEventListener("focus", refresh); };
-  }, [api, load, pending, refreshRecruitment]);
+    // A single action can notify several buildings and the player ledger together.
+    const schedule = () => {
+      if (document.hidden || busyRef.current) return;
+      clearTimeout(queued);
+      queued = setTimeout(refresh, 150);
+    };
+    const refreshOnEvent = refreshTeamDay ? schedule : refresh;
+    if (deferredRefresh.current && !pending && !busy) refresh();
+    const timer = window.setInterval(refreshOnEvent, refreshTeamDay ? 120000 : 60000);
+    const unsubscribe = api.subscribe(refreshTeamDay ? KQ_WORK_EVENTS : ["kq:staff-updated"], refreshOnEvent);
+    const receiptChanged = (event: StorageEvent) => {
+      if (ownerId && event.key === kqStaffRecoveryKey(ownerId) && event.newValue === null) schedule();
+    };
+    document.addEventListener("visibilitychange", refreshOnEvent);
+    if (refreshRecruitment || refreshTeamDay) window.addEventListener("focus", refreshOnEvent);
+    if (refreshTeamDay && !api.isTutorial) window.addEventListener("storage", receiptChanged);
+    return () => {
+      controller.abort(); clearTimeout(queued); window.clearInterval(timer); unsubscribe();
+      document.removeEventListener("visibilitychange", refreshOnEvent); window.removeEventListener("focus", refreshOnEvent);
+      window.removeEventListener("storage", receiptChanged);
+    };
+  }, [api, load, ownerId, pending, busy, refreshRecruitment, refreshTeamDay]);
+  useEffect(() => {
+    if (!refreshTeamDay || !snapshot || pending || busy) return;
+    const delay = nextTeamChange(snapshot) - (performance.now() - receivedAt.current);
+    if (!Number.isFinite(delay)) return;
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      if (!document.hidden && !pendingRef.current && !busyRef.current) void load(controller.signal);
+    }, Math.max(250, delay + 100));
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [snapshot, refreshTeamDay, pending, busy, load]);
   useEffect(() => {
     if (!refreshRecruitment || !snapshot?.recruitment || pending || busy) return;
     // Only schedule a GET: the server alone decides which offers can be signed.
@@ -200,6 +251,7 @@ export function useKqStaffOperations(label: string, onConfirmed?: (command: KqSt
           // A first explicit rejection has no unresolved earlier invocation. A later
           // rejection cannot prove that a previously lost request will not commit.
           if (response.status === 400 && message && !wasUncertain) {
+            if (refreshTeamDay) deferredRefresh.current = true;
             clearKqStaffRecovery(kqStaffRecoveryStorage(api), ownerId, pending.requestKey);
             setRecovery(null); api.notify("kq:staff-confirmation-updated");
           }
@@ -207,13 +259,19 @@ export function useKqStaffOperations(label: string, onConfirmed?: (command: KqSt
         }
         try { clearKqStaffRecovery(kqStaffRecoveryStorage(api), ownerId, pending.requestKey); setRecovery(null); setRecoveryError(""); }
         catch { setRecoveryError("Le résultat est confirmé, mais sa copie locale n’a pas pu être effacée. Elle pourra être vérifiée à nouveau sans répéter l’action."); }
-        receivedAt.current = performance.now(); deferredRefresh.current = false;
+        receivedAt.current = performance.now(); deferredRefresh.current = refreshTeamDay && wasUncertain;
         setSnapshotReceivedAt(receivedAt.current);
         latestSnapshot.current = { api, value: payload }; pendingRef.current = false;
         setSnapshot(payload); setError(""); setPending(null);
-        setNotice(pending.command.action === "set-administration-rules" ? pending.command.enabled ? "Règles enregistrées. Les prochaines missions Administration pourront régler les documents autorisés, dans tes limites. Aucun débit immédiat." : "Paiements délégués désactivés. Les missions continuent à négocier les remises." : pending.command.action === "renew-contract" ? "Contrat prolongé. La date d’embauche, les congés et les compétences sont conservés. Aucun débit immédiat." : pending.command.action === "convert-cdi" ? "Passage en CDI confirmé, sans date de fin. Ancienneté, congés et compétences conservés, sans prime de fin de CDD ni débit immédiat." : pending.command.action === "rehire" ? "Réembauche confirmée. Compétences conservées ; nouvelle paie et nouveaux congés. La semaine type est à reprogrammer. Aucun débit immédiat." : pending.command.action === "set-weekly-plan" ? pending.command.enabled ? "Semaine type enregistrée et active dès le prochain jour du jeu. Aucun frais débité maintenant." : "Semaine type enregistrée en pause. Les tâches déjà réservées continuent." : pending.command.action === "hire" ? "Contrat signé. Retrouve ton nouvel employé dans l’équipe." : pending.command.action === "payroll" ? "Les salaires ont été réglés." : pending.command.action === "extra-hours" ? "Les heures sont disponibles et ajoutées à la paie." : pending.command.action === "pay-invoice" ? "La facture fournisseur a été réglée." : pending.command.action === "leave" ? "Les congés payés sont enregistrés dans le planning." : pending.command.action === "cancel-leave" ? "Les congés sont annulés et les droits sont disponibles." : pending.command.action === "buy-trimmer" ? "La trimeuse est disponible pour toute la ferme." : pending.command.action === "trim" ? "Créneau réservé dans l’Atelier. La progression sera confirmée au fil du travail." : "Travail enregistré. Le résultat apparaîtra à la fin de la tâche.");
+        const action = pending.command.action;
+        if (action === "save-day-plan") setNotice("Planning enregistré. Les heures sont réservées pour le jour prévu.");
+        else if (action === "remove-day-plan") setNotice("Réservation retirée. Les heures sont de nouveau disponibles.");
+        else {
+          setNotice(pending.command.action === "set-administration-rules" ? pending.command.enabled ? "Règles enregistrées. Les prochaines missions Administration pourront régler les documents autorisés, dans tes limites. Aucun débit immédiat." : "Paiements délégués désactivés. Les missions continuent à négocier les remises." : pending.command.action === "renew-contract" ? "Contrat prolongé. La date d’embauche, les congés et les compétences sont conservés. Aucun débit immédiat." : pending.command.action === "convert-cdi" ? "Passage en CDI confirmé, sans date de fin. Ancienneté, congés et compétences conservés, sans prime de fin de CDD ni débit immédiat." : pending.command.action === "rehire" ? "Réembauche confirmée. Compétences conservées ; nouvelle paie et nouveaux congés. La semaine type est à reprogrammer. Aucun débit immédiat." : pending.command.action === "set-weekly-plan" ? pending.command.enabled ? "Semaine type enregistrée et active dès le prochain jour du jeu. Aucun frais débité maintenant." : "Semaine type enregistrée en pause. Les tâches déjà réservées continuent." : pending.command.action === "hire" ? "Contrat signé. Retrouve ton nouvel employé dans l’équipe." : pending.command.action === "payroll" ? "Les salaires ont été réglés." : pending.command.action === "extra-hours" ? "Les heures sont disponibles et ajoutées à la paie." : pending.command.action === "pay-invoice" ? "La facture fournisseur a été réglée." : pending.command.action === "leave" ? "Les congés payés sont enregistrés dans le planning." : pending.command.action === "cancel-leave" ? "Les congés sont annulés et les droits sont disponibles." : pending.command.action === "buy-trimmer" ? "La trimeuse est disponible pour toute la ferme." : pending.command.action === "trim" ? "Créneau réservé dans l’Atelier. La progression sera confirmée au fil du travail." : "Travail enregistré. Le résultat apparaîtra à la fin de la tâche.");
+          api.notify("kq:treasury-updated"); api.notify("kq:equipment-updated");
+        }
         onConfirmed?.(pending.command, { snapshot: payload, previousSnapshot: snapshot, requestKey: pending.requestKey });
-        api.notify("kq:treasury-updated"); api.notify("kq:equipment-updated"); api.notify("kq:staff-updated"); api.notify("kq:staff-confirmation-updated");
+        api.notify("kq:staff-updated"); api.notify("kq:staff-confirmation-updated");
       };
       if (api.isTutorial) await submit();
       else {

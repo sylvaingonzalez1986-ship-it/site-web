@@ -1,0 +1,1579 @@
+{
+  "batchId": "r-actives-b-03",
+  "author": "rebalance_classify_b",
+  "role": "Rédaction externe indépendante, cannabis récréatif, CBD et chanvre à actifs",
+  "questions": [
+    {
+      "id": "hemp-q2-rb03-types-i-ii-iii-comparaison",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "À quels profils correspondent respectivement les types I, II et III de cannabis fondés sur le rapport THC/CBD ?",
+      "options": [
+        "THC dominant ; équilibré ; CBD dominant",
+        "CBD dominant ; THC dominant ; équilibré",
+        "Équilibré ; CBD dominant ; THC dominant",
+        "CBG dominant ; THC dominant ; CBD dominant"
+      ],
+      "answer": 0,
+      "explanation": "Les trois premiers types distinguent dominante THC, équilibre THC/CBD et dominante CBD. Ce classement décrit les proportions relatives, pas un taux identique pour toutes les fleurs d’un type.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb03-smith22"
+      ],
+      "subjectKey": "cannabis-thc-cbd-chemotypes",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "cannabis-thc-cbd-chemotypes",
+        "subjectKey": "cannabis-thc-cbd-chemotypes",
+        "property": "Correspondance des trois grands profils THC/CBD",
+        "expectedAnswer": "THC dominant ; équilibré ; CBD dominant",
+        "learningObjective": "Correspondance des trois grands profils THC/CBD.",
+        "factKey": "types-i-ii-iii-comparaison",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-smith22",
+            "locator": "Results: cannabinoid composition, terpene diversity, commercial labels ; Discussion",
+            "support": "Le texte distingue type I THC-dominant, type II balanced et type III CBD-dominant."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-fleurs-femelles-richesse-glandulaire",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Pourquoi les fleurs femelles occupent-elles une place centrale parmi les fleurs de cannabis utilisées pour leurs actifs ?",
+      "options": [
+        "Leur ovaire sécrète directement la plus grande part de résine",
+        "Elles portent davantage de glandes résineuses que les fleurs mâles",
+        "Leurs stigmates contiennent l’essentiel des cannabinoïdes",
+        "Leurs graines concentrent les cannabinoïdes après fécondation"
+      ],
+      "answer": 1,
+      "explanation": "Les glandes résineuses sont abondantes sur les fleurs femelles. Les fleurs mâles en portent beaucoup moins ; cela n’implique pas une absence absolue de cannabinoïdes chez les mâles.",
+      "articleId": "ref-trichomes",
+      "sourceIds": [
+        "q2-rb03-livingston20"
+      ],
+      "subjectKey": "fleur-femelle-chanvre",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "botany",
+        "subject": "fleur-femelle-chanvre",
+        "subjectKey": "fleur-femelle-chanvre",
+        "property": "Richesse glandulaire des fleurs femelles par rapport aux mâles",
+        "expectedAnswer": "Elles portent davantage de glandes résineuses que les fleurs mâles",
+        "learningObjective": "Richesse glandulaire des fleurs femelles par rapport aux mâles.",
+        "factKey": "fleurs-femelles-richesse-glandulaire",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-livingston20",
+            "locator": "Introduction, premier paragraphe sur fleurs mâles et femelles",
+            "support": "L’introduction relie leur usage aux glandes abondantes et décrit leur rareté sur les fleurs mâles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-indica-sativa-profils-chimiques",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Dans les grandes analyses américaines de fleurs, que valent les catégories commerciales Indica, Hybrid et Sativa ?",
+      "options": [
+        "Une séparation surtout fondée sur le rapport entre THC et CBD",
+        "Une séparation surtout fondée sur les familles de terpènes dominants",
+        "Un gradient de THC croissant d’Indica vers Sativa",
+        "Une forte superposition des profils entre les trois catégories"
+      ],
+      "answer": 3,
+      "explanation": "Dans le corpus de Smith et collègues, les profils se recouvrent largement entre ces étiquettes. Ce système commercial ne constitue donc pas une classification chimique fiable des fleurs.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb03-smith22"
+      ],
+      "subjectKey": "cannabis-commercial-category-labels",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "cannabis-commercial-category-labels",
+        "subjectKey": "cannabis-commercial-category-labels",
+        "property": "Faible correspondance entre catégories commerciales et chimie",
+        "expectedAnswer": "Une forte superposition des profils entre les trois catégories",
+        "learningObjective": "Faible correspondance entre catégories commerciales et chimie.",
+        "factKey": "indica-sativa-profils-chimiques",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-smith22",
+            "locator": "Results: cannabinoid composition, terpene diversity, commercial labels ; Discussion",
+            "support": "Les groupes étiquetés Indica/Hybrid/Sativa sont fortement mêlés et discriminent mal leurs profils terpéniques."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-meme-nom-composition-variable",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans l’étude de Smith (2022), comment les profils des fleurs vendues sous un même nom se comparent-ils ?",
+      "options": [
+        "Souvent plus cohérents que le hasard, mais variables selon le nom",
+        "Aussi dispersés qu’un classement aléatoire, quel que soit le nom",
+        "Chimiquement identiques pour les produits partageant un nom",
+        "Moins semblables sous un même nom que sous des noms différents"
+      ],
+      "answer": 0,
+      "explanation": "Les profils de même nom sont souvent plus proches qu’après mélange aléatoire des noms, mais leur cohérence varie. Un nom commercial ne garantit donc pas une composition identique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb03-smith22"
+      ],
+      "subjectKey": "cannabis-commercial-strain-names",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "cannabis-commercial-strain-names",
+        "subjectKey": "cannabis-commercial-strain-names",
+        "property": "Variabilité de composition entre produits de même nom",
+        "expectedAnswer": "Souvent plus cohérents que le hasard, mais variables selon le nom",
+        "learningObjective": "Variabilité de composition entre produits de même nom.",
+        "factKey": "meme-nom-composition-variable",
+        "form": "identification",
+        "difficultyRationale": "Comparaison du profil des noms commerciaux avec une attribution aléatoire dans une analyse de fleurs.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-smith22",
+            "locator": "Results, Commercial strain names display differential levels of chemical consistency ; Figure8C–D et discussion Figure9",
+            "support": "La majorité des noms regroupe des profils plus proches qu’après mélange aléatoire, avec une forte variabilité de cohérence selon les noms."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-dominante-thc-diversite-terpenes",
+      "topicId": "molecules",
+      "level": 1,
+      "prompt": "Que montre l’analyse des fleurs à dominante THC concernant leurs profils terpéniques ?",
+      "options": [
+        "Les profils se résument à un même monoterpène dominant",
+        "Plusieurs grands profils distincts existent parmi ces fleurs",
+        "Les profils sont dominés par les seuls sesquiterpènes",
+        "Les profils diffèrent seulement par leur quantité totale"
+      ],
+      "answer": 1,
+      "explanation": "L’analyse distingue plusieurs groupes terpéniques parmi les fleurs à dominante THC. Le profil des principaux cannabinoïdes ne décrit donc pas à lui seul la diversité des constituants aromatiques.",
+      "articleId": "ref-terpenes-terpenoides",
+      "sourceIds": [
+        "q2-rb03-smith22"
+      ],
+      "subjectKey": "cannabis-thc-dominant-terpene-diversity",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "constituents",
+        "subject": "cannabis-thc-dominant-terpene-diversity",
+        "subjectKey": "cannabis-thc-dominant-terpene-diversity",
+        "property": "Diversité terpénique à l’intérieur du profil THC dominant",
+        "expectedAnswer": "Plusieurs grands profils distincts existent parmi ces fleurs",
+        "learningObjective": "Diversité terpénique à l’intérieur du profil THC dominant.",
+        "factKey": "dominante-thc-diversite-terpenes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-smith22",
+            "locator": "Results: cannabinoid composition, terpene diversity, commercial labels ; Discussion",
+            "support": "Plusieurs groupes de terpènes sont observés parmi des échantillons à dominante THC et aux distributions THC proches."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-croisement-cbd-thc-f1-mixte",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Chez de Meijer (2003), quel profil ont les premiers hybrides entre lignées à dominante CBD et lignées à dominante THC ?",
+      "options": [
+        "Un profil presque sans cannabinoïdes",
+        "Un profil à très forte dominante CBD",
+        "Un profil mixte CBD-THC",
+        "Un profil à forte dominante CBG"
+      ],
+      "answer": 2,
+      "explanation": "Les F1 étudiés présentent tous un profil mixte. Cela montre qu’un croisement de profils ne se résume pas à la disparition de l’un des deux principaux cannabinoïdes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb03-demeijer03"
+      ],
+      "subjectKey": "cannabis-cbd-thc-inheritance-demeijer2003",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "cannabis-cbd-thc-inheritance-demeijer2003",
+        "subjectKey": "cannabis-cbd-thc-inheritance-demeijer2003",
+        "property": "Profil mixte des premiers hybrides étudiés",
+        "expectedAnswer": "Un profil mixte CBD-THC",
+        "learningObjective": "Profil mixte des premiers hybrides étudiés.",
+        "factKey": "croisement-cbd-thc-f1-mixte",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-demeijer03",
+            "locator": "Abstract ; Results, F1 hybrids et F2 inbreds",
+            "support": "Les quatre croisements entre lignées de profils purs donnent des F1 à profil mixte CBD-THC."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-cbdas-pseudogenes-thc",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans certains cannabis à dominante THC, que sont les copies proches de CBDAS décrites par Allen et collègues ?",
+      "options": [
+        "Des copies interrompues ne codant pas une CBDAS intacte",
+        "Des copies codant chacune une CBDAS intacte très active",
+        "Des copies de THCAS classées à tort comme CBDAS",
+        "Des copies présentes seulement dans l’ADN chloroplastique"
+      ],
+      "answer": 0,
+      "explanation": "Des pseudogènes apparentés à CBDAS portent des interruptions de lecture. Leur présence ne permet pas de conclure à une CBDA synthase fonctionnelle ni à une fleur riche en CBD.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "q2-rb03-allen26"
+      ],
+      "subjectKey": "cannabis-b-locus",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "cannabis-b-locus",
+        "subjectKey": "cannabis-b-locus",
+        "property": "Pseudogènes apparentés à CBDAS dans des cannabis THC",
+        "expectedAnswer": "Des copies interrompues ne codant pas une CBDAS intacte",
+        "learningObjective": "Pseudogènes apparentés à CBDAS dans des cannabis THC.",
+        "factKey": "cbdas-pseudogenes-thc",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-allen26",
+            "locator": "§2.13 Clade B2 Pseudogenes ; Discussion §3.3",
+            "support": "Les copies du clade B2 comportent décalages de lecture et codons stop ; aucune n’a de cadre de lecture intact."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-position-fleurs-composition",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans l’étude de Namdar (2018), comment les teneurs florales en cannabinoïdes et terpénoïdes variaient-elles le long de la tige ?",
+      "options": [
+        "Elles étaient maximales seulement à mi-hauteur",
+        "Elles diminuaient globalement du haut vers le bas",
+        "Elles augmentaient globalement du haut vers le bas",
+        "Elles étaient identiques à toutes les hauteurs"
+      ],
+      "answer": 1,
+      "explanation": "Dans ces plantes, cannabinoïdes et terpénoïdes étaient plus abondants dans les inflorescences hautes. Des fleurs provenant d’une même plante ne formaient donc pas un ensemble chimiquement uniforme.",
+      "articleId": "ref-fleurs-fruits-graines",
+      "sourceIds": [
+        "q2-rb03-namdar18"
+      ],
+      "subjectKey": "cannabis-inflorescence-position-chemistry",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "cannabis-inflorescence-position-chemistry",
+        "subjectKey": "cannabis-inflorescence-position-chemistry",
+        "property": "Variation chimique entre positions florales sur la tige",
+        "expectedAnswer": "Elles diminuaient globalement du haut vers le bas",
+        "learningObjective": "Variation chimique entre positions florales sur la tige.",
+        "factKey": "position-fleurs-composition",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-namdar18",
+            "locator": "Abstract, diminution du haut vers le bas ; Conclusions",
+            "support": "Quel que soit le mode d’analyse étudié, les teneurs diminuent du haut vers le bas de la tige florale."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-toklas-livre-recettes",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel type de livre a lié le nom d’Alice B. Toklas à l’histoire culturelle des préparations au cannabis ?",
+      "options": [
+        "Un recueil de partitions de jazz",
+        "Un roman policier sur la prohibition",
+        "Un livre mêlant souvenirs et recettes de cuisine",
+        "Un traité de botanique médicale"
+      ],
+      "answer": 2,
+      "explanation": "Son livre de cuisine et de souvenirs comprend une contribution historique au haschisch. Ce repère littéraire n’est pas une recette de brownies ni un conseil de préparation.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-gysin"
+      ],
+      "subjectKey": "alice-b-toklas-cookbook",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "alice-b-toklas-cookbook",
+        "subjectKey": "alice-b-toklas-cookbook",
+        "property": "Nature du livre associé à une contribution au haschisch",
+        "expectedAnswer": "Un livre mêlant souvenirs et recettes de cuisine",
+        "learningObjective": "Nature du livre associé à une contribution au haschisch.",
+        "factKey": "toklas-livre-recettes",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-gysin",
+            "locator": "Room 3, page PDF 8, contribution au livre d’Alice B. Toklas et Kif Notes",
+            "support": "Le guide décrit le livre de Toklas comme memoir/cookbook et signale la contribution de Gysin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-gysin-contribution-toklas",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Qui a fourni la contribution au haschisch devenue célèbre dans le livre de cuisine d’Alice B. Toklas ?",
+      "options": [
+        "William S. Burroughs",
+        "Paul Bowles",
+        "Allen Ginsberg",
+        "Brion Gysin"
+      ],
+      "answer": 3,
+      "explanation": "L’artiste Brion Gysin a contribué ce texte au livre de Toklas. L’association au nom de l’autrice du livre ne signifie donc pas qu’elle en soit elle-même à l’origine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-gysin"
+      ],
+      "subjectKey": "alice-b-toklas-cookbook",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "alice-b-toklas-cookbook",
+        "subjectKey": "alice-b-toklas-cookbook",
+        "property": "Auteur de la contribution historique au haschisch",
+        "expectedAnswer": "Brion Gysin",
+        "learningObjective": "Auteur de la contribution historique au haschisch.",
+        "factKey": "gysin-contribution-toklas",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-gysin",
+            "locator": "Room 3, page PDF 8, contribution au livre d’Alice B. Toklas et Kif Notes",
+            "support": "Le guide de l’exposition attribue la contribution de 1954 à Brion Gysin."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-beatles-annonce-reforme",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle cause défendait l’annonce du Times de 1967 signée notamment par les Beatles ?",
+      "options": [
+        "L’assouplissement des lois sur le cannabis",
+        "Le durcissement des peines pour usage privé",
+        "La réservation du cannabis aux seules prescriptions",
+        "L’ouverture immédiate de la vente en supermarché"
+      ],
+      "answer": 0,
+      "explanation": "L’annonce appelait à réformer les lois, autoriser l’usage privé et soutenir la recherche. Elle témoigne de l’implication d’artistes dans le débat public sur le cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-times"
+      ],
+      "subjectKey": "times-cannabis-advert-1967",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "times-cannabis-advert-1967",
+        "subjectKey": "times-cannabis-advert-1967",
+        "property": "Objet politique de l’annonce soutenue par les Beatles",
+        "expectedAnswer": "L’assouplissement des lois sur le cannabis",
+        "learningObjective": "Objet politique de l’annonce soutenue par les Beatles.",
+        "factKey": "beatles-annonce-reforme",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-times",
+            "locator": "Ownership note, annonce du 24 juillet 1967",
+            "support": "La notice décrit les demandes de recherche, d’usage en privé et d’assouplissement des lois."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-mccartney-financement-annonce",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel membre des Beatles a financé l’annonce du Times de 1967 en faveur d’une réforme des lois sur le cannabis ?",
+      "options": [
+        "Ringo Starr",
+        "Paul McCartney",
+        "John Lennon",
+        "George Harrison"
+      ],
+      "answer": 1,
+      "explanation": "La notice des archives de Stephen Abrams attribue le financement à Paul McCartney. Les autres Beatles figurent parmi les signataires de cette mobilisation publique.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-times"
+      ],
+      "subjectKey": "times-cannabis-advert-1967",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "times-cannabis-advert-1967",
+        "subjectKey": "times-cannabis-advert-1967",
+        "property": "Financement de l’annonce par Paul McCartney",
+        "expectedAnswer": "Paul McCartney",
+        "learningObjective": "Financement de l’annonce par Paul McCartney.",
+        "factKey": "mccartney-financement-annonce",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-times",
+            "locator": "Ownership note, annonce du 24 juillet 1967",
+            "support": "Wellcome Collection indique que l’annonce a été payée par Paul McCartney et signée notamment par les autres Beatles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-weeds-nancy-commerce",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Au début de « Weeds », quelle activité Nancy Botwin entreprend-elle après la mort de son mari ?",
+      "options": [
+        "Travailler dans un laboratoire de cannabinoïdes",
+        "Conseiller les patients d’une pharmacie",
+        "Vendre du cannabis pour faire vivre sa famille",
+        "Infiltrer un réseau de cannabis pour la police"
+      ],
+      "answer": 2,
+      "explanation": "La série construit son récit autour d’une mère de famille de banlieue devenue vendeuse de marijuana. Ce point de départ sert à une comédie dramatique sur la famille et le commerce clandestin.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-weeds"
+      ],
+      "subjectKey": "weeds-series",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "weeds-series",
+        "subjectKey": "weeds-series",
+        "property": "Point de départ cannabique de la trajectoire de Nancy Botwin",
+        "expectedAnswer": "Vendre du cannabis pour faire vivre sa famille",
+        "learningObjective": "Point de départ cannabique de la trajectoire de Nancy Botwin.",
+        "factKey": "weeds-nancy-commerce",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-weeds",
+            "locator": "About Weeds Season 2, Nancy Botwin après la mort de son mari",
+            "support": "Le synopsis officiel décrit Nancy comme une mère de famille apprenant à vendre de la marijuana après la mort de son mari."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-disjointed-dispensaire",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans quel lieu lié au cannabis se déroule l’essentiel de la comédie « Disjointed », avec Kathy Bates ?",
+      "options": [
+        "Un tribunal spécialisé dans les affaires de stupéfiants",
+        "Un laboratoire de recherche sur les cannabinoïdes",
+        "Un centre de soins pour les dépendances",
+        "Un dispensaire de cannabis de la région de Los Angeles"
+      ],
+      "answer": 3,
+      "explanation": "Kathy Bates y joue une militante devenue propriétaire d’un dispensaire. La fiction s’appuie sur le fonctionnement d’un lieu de travail et les relations de son équipe.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-disjointed"
+      ],
+      "subjectKey": "disjointed-series",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "disjointed-series",
+        "subjectKey": "disjointed-series",
+        "property": "Cadre cannabique de la série",
+        "expectedAnswer": "Un dispensaire de cannabis de la région de Los Angeles",
+        "learningObjective": "Cadre cannabique de la série.",
+        "factKey": "disjointed-dispensaire",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-disjointed",
+            "locator": "Synopsis",
+            "support": "Le synopsis de Netflix présente une workplace comedy située dans un cannabis dispensary de la région de Los Angeles."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-high-maintenance-livreur",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel lien unit « The Guy » aux personnages qu’il rencontre dans la série « High Maintenance » ?",
+      "options": [
+        "Il leur livre du cannabis à New York",
+        "Il enquête sur eux pour la police de New York",
+        "Il recrute des volontaires pour des essais de cannabinoïdes",
+        "Il leur livre des médicaments délivrés sur ordonnance"
+      ],
+      "answer": 0,
+      "explanation": "Les livraisons de cannabis du personnage relient des histoires de New-Yorkais très différents. Le cannabis sert de fil conducteur à cette série de portraits.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-maintenance"
+      ],
+      "subjectKey": "high-maintenance-series",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "high-maintenance-series",
+        "subjectKey": "high-maintenance-series",
+        "property": "Rôle du livreur de cannabis comme lien narratif",
+        "expectedAnswer": "Il leur livre du cannabis à New York",
+        "learningObjective": "Rôle du livreur de cannabis comme lien narratif.",
+        "factKey": "high-maintenance-livreur",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-maintenance",
+            "locator": "About High Maintenance, The Guy et ses livraisons",
+            "support": "HBO décrit The Guy comme un livreur de marijuana rencontrant une clientèle diverse à New York."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-cannabis-arte-trafic",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la série « Cannabis » d’ARTE, quelles trajectoires le récit du trafic privilégie-t-il ?",
+      "options": [
+        "Celles de magistrats préparant les procès",
+        "Celles de trafiquants et de leur entourage",
+        "Celles de policiers infiltrés dans un réseau",
+        "Celles de médecins prescrivant des cannabinoïdes"
+      ],
+      "answer": 1,
+      "explanation": "La série de Lucie Borleteau explore les trajectoires de personnages pris dans le trafic et leurs liens familiaux. Le cannabis constitue le cadre de cette fiction, entre France et Espagne.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-arte"
+      ],
+      "subjectKey": "cannabis-arte-series",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "cannabis-arte-series",
+        "subjectKey": "cannabis-arte-series",
+        "property": "Sujet cannabique de la fiction franco-espagnole",
+        "expectedAnswer": "Celles de trafiquants et de leur entourage",
+        "learningObjective": "Sujet cannabique de la fiction franco-espagnole.",
+        "factKey": "cannabis-arte-trafic",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-arte",
+            "locator": "Entretien Lucie Borleteau, PDF p.4 ; portraits Anna, El Feo, Shams, Morphée, PDF p.5",
+            "support": "La présentation d’ARTE décrit une plongée dans l’univers du trafic et l’intimité de ses personnages entre France et Espagne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-friday-smokey-dette",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans « Friday », pourquoi Smokey a-t-il une dette envers son fournisseur Big Worm ?",
+      "options": [
+        "Il a payé une amende avec l’argent du fournisseur",
+        "Il a vendu du cannabis sans encaisser les clients",
+        "Il a fumé du cannabis qu’il devait vendre",
+        "Il a détruit la récolte de son fournisseur"
+      ],
+      "answer": 2,
+      "explanation": "Les ennuis de Smokey viennent du cannabis destiné à la vente qu’il a consommé. Ce conflit lance les péripéties de cette comédie de quartier avec Craig.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-friday"
+      ],
+      "subjectKey": "friday-film",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "friday-film",
+        "subjectKey": "friday-film",
+        "property": "Origine cannabique de la dette de Smokey dans la fiction",
+        "expectedAnswer": "Il a fumé du cannabis qu’il devait vendre",
+        "learningObjective": "Origine cannabique de la dette de Smokey dans la fiction.",
+        "factKey": "friday-smokey-dette",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-friday",
+            "locator": "Synopsis du film, Smokey et Big Worm",
+            "support": "Le synopsis précise que Smokey a davantage fumé que vendu et que Big Worm réclame son argent."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-pineapple-consommateur-dealer",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans « Pineapple Express », quel lien unit les personnages joués par Seth Rogen et James Franco ?",
+      "options": [
+        "Deux inspecteurs spécialisés dans les stupéfiants",
+        "Un médecin et son patient sous cannabinoïdes",
+        "Deux chercheurs brevetant une molécule",
+        "Un consommateur et son vendeur de cannabis"
+      ],
+      "answer": 3,
+      "explanation": "Le film associe un consommateur et son dealer dans une aventure mêlant cannabis, poursuite et comédie. Le synopsis ne décrit pas un produit réel ni une méthode de fabrication.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-pineapple"
+      ],
+      "subjectKey": "pineapple-express-film",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "pineapple-express-film",
+        "subjectKey": "pineapple-express-film",
+        "property": "Relation cannabique entre les deux protagonistes",
+        "expectedAnswer": "Un consommateur et son vendeur de cannabis",
+        "learningObjective": "Relation cannabique entre les deux protagonistes.",
+        "factKey": "pineapple-consommateur-dealer",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-pineapple",
+            "locator": "About, protagoniste joué par Seth Rogen et dealer joué par James Franco",
+            "support": "Le synopsis officiel présente le personnage de Rogen comme consommateur et celui de Franco comme son dealer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-mr-nice-howard-marks",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "De quelle figure du commerce clandestin du cannabis l’autobiographie « Mr Nice » et son adaptation racontent-elles la vie ?",
+      "options": [
+        "Howard Marks",
+        "John Sinclair",
+        "Dennis Peron",
+        "Jack Herer"
+      ],
+      "answer": 0,
+      "explanation": "Mr Nice adapte l’autobiographie de Howard Marks, devenu une figure de la contre-culture britannique après son parcours dans le trafic de cannabis. Le récit conserve son point de vue personnel.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-nice"
+      ],
+      "subjectKey": "howard-marks-mr-nice",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "howard-marks-mr-nice",
+        "subjectKey": "howard-marks-mr-nice",
+        "property": "Personnage réel à l’origine de Mr Nice",
+        "expectedAnswer": "Howard Marks",
+        "learningObjective": "Personnage réel à l’origine de Mr Nice.",
+        "factKey": "mr-nice-howard-marks",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-nice",
+            "locator": "Synopsis, PDF p.5 ; entretien avec Bernard Rose, PDF p.6",
+            "support": "Le dossier de presse identifie Howard Marks, son surnom Mr Nice et l’adaptation de son autobiographie."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-norml-mission",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle cause l’association américaine NORML défend-elle principalement ?",
+      "options": [
+        "La défense des producteurs agricoles de chanvre industriel",
+        "La réforme des lois sur l’usage adulte du cannabis",
+        "Le financement d’essais cliniques sur les cannabinoïdes",
+        "L’aide au sevrage des consommateurs dépendants au cannabis"
+      ],
+      "answer": 1,
+      "explanation": "NORML est une association militante qui défend les consommateurs et la réforme des lois sur le cannabis. Elle ne constitue pas une autorité publique délivrant des autorisations.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-norml"
+      ],
+      "subjectKey": "norml",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "norml",
+        "subjectKey": "norml",
+        "property": "Mission de réforme des lois sur le cannabis",
+        "expectedAnswer": "La réforme des lois sur l’usage adulte du cannabis",
+        "learningObjective": "Mission de réforme des lois sur le cannabis.",
+        "factKey": "norml-mission",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-norml",
+            "locator": "Mission statement ; A Voice for Responsible Marijuana Consumers",
+            "support": "La mission officielle vise la légalisation d’un usage adulte responsable et la défense des consommateurs de marijuana."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-high-times-magazine",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel rôle a joué « High Times » dans la culture du cannabis aux États-Unis ?",
+      "options": [
+        "Un bulletin officiel du gouvernement sur les stupéfiants",
+        "Un catalogue professionnel consacré au chanvre textile",
+        "Un magazine de culture cannabique et de défense de ses usagers",
+        "Une revue médicale spécialisée à comité de lecture"
+      ],
+      "answer": 2,
+      "explanation": "High Times a donné une visibilité médiatique à la culture du cannabis et aux mouvements pour la légalisation. Le témoignage de Keith Stroup décrit notamment ses liens avec NORML.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-hightimes"
+      ],
+      "subjectKey": "high-times-magazine",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "high-times-magazine",
+        "subjectKey": "high-times-magazine",
+        "property": "Rôle médiatique du magazine dans la culture cannabique",
+        "expectedAnswer": "Un magazine de culture cannabique et de défense de ses usagers",
+        "learningObjective": "Rôle médiatique du magazine dans la culture cannabique.",
+        "factKey": "high-times-magazine",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-hightimes",
+            "locator": "Passage High Times, pro-pot magazine fondé en 1974",
+            "support": "Keith Stroup décrit High Times comme un magazine pro-cannabis soutenant et couvrant le mouvement de légalisation."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-ginsberg-marijuana-hoax",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel écrivain de la Beat Generation a signé « The Great Marijuana Hoax » ?",
+      "options": [
+        "Jack Kerouac",
+        "William S. Burroughs",
+        "Gregory Corso",
+        "Allen Ginsberg"
+      ],
+      "answer": 3,
+      "explanation": "La notice des archives de Tod Mikuriya attribue ce texte à Allen Ginsberg. Il illustre la participation d’une figure littéraire de la Beat Generation au débat sur le cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-ginsberg"
+      ],
+      "subjectKey": "allen-ginsberg-marijuana-hoax",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "allen-ginsberg-marijuana-hoax",
+        "subjectKey": "allen-ginsberg-marijuana-hoax",
+        "property": "Auteur du texte de culture cannabique",
+        "expectedAnswer": "Allen Ginsberg",
+        "learningObjective": "Auteur du texte de culture cannabique.",
+        "factKey": "ginsberg-marijuana-hoax",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-ginsberg",
+            "locator": "Titre et identification du dossier, Tod Mikuriya Papers, Box 44 Folder 101",
+            "support": "La notice de la National Library of Medicine donne Ginsberg, Allen, comme auteur du dossier The great marijuana hoax."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-shafer-usage-personnel",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle orientation la commission Shafer recommande-t-elle en 1972 pour la possession de cannabis à usage personnel ?",
+      "options": [
+        "Retirer les sanctions pénales pour cet usage personnel",
+        "Ouvrir la vente commerciale dans les supermarchés",
+        "Conserver des sanctions pénales pour toute possession privée",
+        "Créer un réseau public de pharmacies pour la vente adulte"
+      ],
+      "answer": 0,
+      "explanation": "La commission proposait une dépénalisation de l’usage personnel, tout en rejetant alors la légalisation d’un marché. Une recommandation de commission ne devient pas automatiquement une loi.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb03-shafer"
+      ],
+      "subjectKey": "shafer-commission-1972",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "shafer-commission-1972",
+        "subjectKey": "shafer-commission-1972",
+        "property": "Recommandation historique de dépénalisation personnelle",
+        "expectedAnswer": "Retirer les sanctions pénales pour cet usage personnel",
+        "learningObjective": "Recommandation historique de dépénalisation personnelle.",
+        "factKey": "shafer-usage-personnel",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-shafer",
+            "locator": "Key Reports and Studies, C. The Schafer Commission — 1972",
+            "support": "L’analyse parlementaire décrit la dépénalisation de l’usage personnel recommandée et le rejet de la légalisation à ce moment-là."
+          }
+        ],
+        "jurisdiction": "États-Unis, recommandation historique de 1972",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-laguardia-criminalite-rapport",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle conclusion le rapport LaGuardia de 1944 tirait-il sur le cannabis et les crimes graves à New York ?",
+      "options": [
+        "Il l’associait directement aux vols violents",
+        "Il n’en faisait pas un facteur déterminant",
+        "Il en faisait la cause principale des homicides",
+        "Il en faisait un facteur déterminant des crimes sexuels"
+      ],
+      "answer": 1,
+      "explanation": "Le rapport ne retenait pas le cannabis comme facteur déterminant des crimes graves. Cette conclusion historique, tirée d’un contexte précis, contraste avec les discours alarmistes de l’époque.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-laguardia"
+      ],
+      "subjectKey": "laguardia-report-1944",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "laguardia-report-1944",
+        "subjectKey": "laguardia-report-1944",
+        "property": "Conclusion historique sur cannabis et crimes graves",
+        "expectedAnswer": "Il n’en faisait pas un facteur déterminant",
+        "learningObjective": "Conclusion historique sur cannabis et crimes graves.",
+        "factKey": "laguardia-criminalite-rapport",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-laguardia",
+            "locator": "Sociological study, tea-pads p.PDF11 ; Conclusions p.PDF22, point10",
+            "support": "La conclusion10 du volet sociologique indique que la marijuana n’est pas le facteur déterminant dans les crimes graves."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-tea-pads-lieux-sociaux",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans le New York décrit par le rapport LaGuardia, qu’était un « tea-pad » ?",
+      "options": [
+        "Un laboratoire où se tenaient les essais de cannabinoïdes",
+        "Un lieu de vente d’aliments infusés à la marijuana",
+        "Un appartement où l’on se réunissait pour fumer du cannabis",
+        "Une boutique où la marijuana se vendait sans consommation"
+      ],
+      "answer": 2,
+      "explanation": "Le rapport décrit ces lieux, notamment à Harlem, comme des espaces de rencontre et de consommation de marijuana. Le mot tea s’inscrivait ici dans un vocabulaire lié au cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-laguardia"
+      ],
+      "subjectKey": "laguardia-report-1944",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "laguardia-report-1944",
+        "subjectKey": "laguardia-report-1944",
+        "property": "Nature des lieux de sociabilité appelés tea-pads",
+        "expectedAnswer": "Un appartement où l’on se réunissait pour fumer du cannabis",
+        "learningObjective": "Nature des lieux de sociabilité appelés tea-pads.",
+        "factKey": "tea-pads-lieux-sociaux",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-laguardia",
+            "locator": "Sociological study, tea-pads p.PDF11 ; Conclusions p.PDF22, point10",
+            "support": "Le volet sociologique définit le tea-pad comme une pièce ou un appartement où des personnes se réunissent pour fumer de la marijuana."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-ludlow-recit-personnel",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Que raconte principalement Fitz Hugh Ludlow dans « The Hasheesh Eater » ?",
+      "options": [
+        "Les expériences fictives d’un personnage de roman",
+        "Les observations cliniques de ses patients sous cannabis",
+        "Les témoignages recueillis auprès d’autres consommateurs",
+        "Ses propres expériences et visions liées au cannabis"
+      ],
+      "answer": 3,
+      "explanation": "Ludlow raconte ses expériences et les réflexions qu’elles lui inspirent. Le livre appartient à la littérature des expériences de drogues ; ce n’est pas une étude clinique contrôlée.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-ludlow"
+      ],
+      "subjectKey": "the-hasheesh-eater",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "the-hasheesh-eater",
+        "subjectKey": "the-hasheesh-eater",
+        "property": "Dimension personnelle du récit de Ludlow",
+        "expectedAnswer": "Ses propres expériences et visions liées au cannabis",
+        "learningObjective": "Dimension personnelle du récit de Ludlow.",
+        "factKey": "ludlow-recit-personnel",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-ludlow",
+            "locator": "Description, expériences de Fitz Hugh Ludlow et réception de l’ouvrage",
+            "support": "L’éditeur décrit les visions, expériences, aventures et réflexions de Ludlow liées au haschisch."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-dumas-franz-haschisch",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans quel roman d’Alexandre Dumas Franz d’Épinay raconte-t-il un souper au haschisch dans une grotte ?",
+      "options": [
+        "Le Comte de Monte-Cristo",
+        "Les Trois Mousquetaires",
+        "La Reine Margot",
+        "La Dame de Monsoreau"
+      ],
+      "answer": 0,
+      "explanation": "Dans Le Comte de Monte-Cristo, Franz relate à Albert son expérience dans la grotte et le souper au haschisch. C’est un épisode de fiction dans l’imaginaire littéraire du cannabis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-dumas"
+      ],
+      "subjectKey": "monte-cristo-hashish-scene",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "monte-cristo-hashish-scene",
+        "subjectKey": "monte-cristo-hashish-scene",
+        "property": "Roman contenant l’épisode de Franz au haschisch",
+        "expectedAnswer": "Le Comte de Monte-Cristo",
+        "learningObjective": "Roman contenant l’épisode de Franz au haschisch.",
+        "factKey": "dumas-franz-haschisch",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-dumas",
+            "locator": "Récit de Franz à Albert, souper au haschisch dans la grotte",
+            "support": "Le chapitre XXXVIII du Comte de Monte-Cristo fait raconter par Franz à Albert le souper et le haschisch dans la grotte."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-benjamin-notes-haschisch",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle est la nature du recueil « On Hashish » associé à Walter Benjamin ?",
+      "options": [
+        "Une enquête statistique sur les consommateurs européens",
+        "Des notes d’expériences et des textes sur le haschisch",
+        "Un roman mettant en scène des consommateurs de haschisch",
+        "Une série d’entretiens avec des consommateurs anonymes"
+      ],
+      "answer": 1,
+      "explanation": "Le volume rassemble des notes et des textes liés aux expériences de Benjamin. Il relève de l’histoire intellectuelle et littéraire du cannabis, avec une réflexion sur les perceptions.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-benjamin"
+      ],
+      "subjectKey": "walter-benjamin-on-hashish",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "walter-benjamin-on-hashish",
+        "subjectKey": "walter-benjamin-on-hashish",
+        "property": "Composition du recueil de Benjamin",
+        "expectedAnswer": "Des notes d’expériences et des textes sur le haschisch",
+        "learningObjective": "Composition du recueil de Benjamin.",
+        "factKey": "benjamin-notes-haschisch",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-benjamin",
+            "locator": "Premier paragraphe, notes d’expériences et textes rassemblés",
+            "support": "Le compte rendu universitaire décrit des protocoles d’expériences, courts textes publiés et fragments réunis dans le volume."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb03-freak-brothers-bd",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel trio de bande dessinée underground est particulièrement associé à la culture de la marijuana ?",
+      "options": [
+        "Les Rapetou",
+        "Les frères Dalton",
+        "Les Fabulous Furry Freak Brothers",
+        "Les Pieds Nickelés"
+      ],
+      "answer": 2,
+      "explanation": "Les Freak Brothers de Gilbert Shelton sont un repère de la bande dessinée underground et de la culture cannabique. La marijuana occupe une place centrale dans leurs aventures.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb03-freak"
+      ],
+      "subjectKey": "fabulous-furry-freak-brothers",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "fabulous-furry-freak-brothers",
+        "subjectKey": "fabulous-furry-freak-brothers",
+        "property": "Repère de bande dessinée underground cannabique",
+        "expectedAnswer": "Les Fabulous Furry Freak Brothers",
+        "learningObjective": "Repère de bande dessinée underground cannabique.",
+        "factKey": "freak-brothers-bd",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb03-freak",
+            "locator": "Présentation de la bande dessinée originale et place de la marijuana",
+            "support": "La présentation officielle de l’œuvre d’origine décrit des personnages dont les aventures tournent notamment autour de la marijuana."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rb03-smith22",
+      "title": "The phytochemical diversity of commercial Cannabis in the United States",
+      "organization": "PLOS ONE / University of Colorado Boulder et partenaires",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+      "verifiedAt": "2026-11-17",
+      "author": "Christiana J. Smith, Daniela Vergara, Brian Keegan et Nick Jikomes",
+      "published": "2022-05-19",
+      "passage": "Results: cannabinoid composition, terpene diversity, commercial labels ; Discussion",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Données de marchés de six États américains, pas garantie universelle sur chaque produit ni essai d’effets chez des personnes.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Results: cannabinoid composition, terpene diversity, commercial labels ; Discussion",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-livingston20",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "organization": "The Plant Journal / University of British Columbia",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14516",
+      "verifiedAt": "2026-11-17",
+      "author": "Livingston, Quilichini, Booth et al.",
+      "published": "2019-08-30",
+      "passage": "Introduction, premier paragraphe sur fleurs mâles et femelles",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Différence générale de richesse glandulaire, pas absence absolue de cannabinoïdes chez les mâles.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction, premier paragraphe sur fleurs mâles et femelles",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-demeijer03",
+      "title": "The Inheritance of Chemical Phenotype in Cannabis sativa L.",
+      "organization": "Genetics / HortaPharm et Istituto Sperimentale per le Colture Industriali",
+      "url": "https://3402974.fs1.hubspotusercontent-na1.net/hubfs/3402974/MGC%20Website%20PDFs/The-inheritence-of-Phenotype-in.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Etienne P. M. de Meijer et al.",
+      "published": "2003-01",
+      "passage": "Abstract ; Results, F1 hybrids et F2 inbreds",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Copie du papier original. Seules les observations de profils sont retenues ; le modèle initial d’un gène à deux allèles n’est pas présenté comme le modèle moléculaire actuel. Aucun protocole de croisement.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract ; Results, F1 hybrids et F2 inbreds",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-allen26",
+      "title": "The Structure of the Chemotype Determining Locus in Cannabis sativa",
+      "organization": "Plant Direct / Cannabis Research Institute, University of Illinois",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13128303/",
+      "verifiedAt": "2026-11-17",
+      "author": "Keith Allen, Anthony Torres et Reginald Gaudino",
+      "published": "2026-05",
+      "passage": "§2.13 Clade B2 Pseudogenes ; Discussion §3.3",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Les copies proches de CBDAS étudiées sont interrompues ; ne pas généraliser toute annotation CBDAS à un pseudogène.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "§2.13 Clade B2 Pseudogenes ; Discussion §3.3",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-namdar18",
+      "title": "Variation in the compositions of cannabinoid and terpenoids in Cannabis sativa derived from inflorescence position along the stem and extraction methods",
+      "organization": "Industrial Crops & Products / Volcani Center",
+      "url": "https://diverdi.colostate.edu/C442/references/analysis/profiling/indust_crops_prods_2018_v113_p376.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Dvory Namdar, Moran Mazuz, Aurel Ion et Hinanit Koltai",
+      "published": "2018",
+      "passage": "Abstract, diminution du haut vers le bas ; Conclusions",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Résultat borné aux plantes de l’étude ; aucun réglage ou conseil de culture, aucune méthode d’extraction repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract, diminution du haut vers le bas ; Conclusions",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-gysin",
+      "title": "Brion Gysin — Dream Machine, exhibition guide",
+      "organization": "Institut d’art contemporain, Villeurbanne/Rhône-Alpes",
+      "url": "https://i-ac.eu/downloads/gv_gysin_en_print.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Institut d’art contemporain, guide d’exposition",
+      "published": "2010",
+      "passage": "Room 3, page PDF 8, contribution au livre d’Alice B. Toklas et Kif Notes",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Repère d’histoire littéraire ; aucune recette, aucun ingrédient ni procédé de préparation reproduit.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Room 3, page PDF 8, contribution au livre d’Alice B. Toklas et Kif Notes",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-times",
+      "title": "The Times advert files, Stephen Abrams archive",
+      "organization": "Wellcome Collection",
+      "url": "https://wellcomecollection.org/works/mkxnu96j",
+      "verifiedAt": "2026-11-17",
+      "author": "Wellcome Collection",
+      "published": "s.d.",
+      "passage": "Ownership note, annonce du 24 juillet 1967",
+      "access": "catalogue",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Les demandes de 1967 ne décrivent pas les règles britanniques actuelles.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Ownership note, annonce du 24 juillet 1967",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-weeds",
+      "title": "Weeds — Season 2",
+      "organization": "Lionsgate",
+      "url": "https://www.lionsgate.com/shows/weeds/weeds-season-2",
+      "verifiedAt": "2026-11-17",
+      "author": "Lionsgate",
+      "published": "s.d.",
+      "passage": "About Weeds Season 2, Nancy Botwin après la mort de son mari",
+      "access": "excerpt",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Synopsis officiel indexé réellement lu ; page directe sans texte exploitable, pas de visionnage revendiqué.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "About Weeds Season 2, Nancy Botwin après la mort de son mari",
+        "result": "Extrait textuel indexé effectivement lu ; accès direct incomplet, aucune lecture intégrale revendiquée."
+      }
+    },
+    {
+      "id": "q2-rb03-disjointed",
+      "title": "Disjointed — Synopsis",
+      "organization": "Netflix Media Center",
+      "url": "https://media.netflix.com/en/only-on-netflix/80117694",
+      "verifiedAt": "2026-11-17",
+      "author": "Netflix",
+      "published": "s.d.",
+      "passage": "Synopsis",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Synopsis d’une fiction ; ne décrit pas les pratiques réelles de dispensaires.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-maintenance",
+      "title": "High Maintenance — About",
+      "organization": "HBO / Warner Bros. Discovery Pressroom",
+      "url": "https://press.wbd.com/na/property/high-maintenance",
+      "verifiedAt": "2026-11-17",
+      "author": "HBO",
+      "published": "s.d.",
+      "passage": "About High Maintenance, The Guy et ses livraisons",
+      "access": "excerpt",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Synopsis officiel indexé effectivement consulté ; ouverture directe refusée 403, aucun visionnage revendiqué.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "About High Maintenance, The Guy et ses livraisons",
+        "result": "Extrait textuel indexé effectivement lu ; accès direct incomplet, aucune lecture intégrale revendiquée."
+      }
+    },
+    {
+      "id": "q2-rb03-arte",
+      "title": "Cannabis — ARTE Magazine 49/2016",
+      "organization": "ARTE France",
+      "url": "https://artefrance-webmag.arte.tv/webmag/magazine/49-2016.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "ARTE France / Jonathan Lennuyeux-Comnène, entretien",
+      "published": "2016-12",
+      "passage": "Entretien Lucie Borleteau, PDF p.4 ; portraits Anna, El Feo, Shams, Morphée, PDF p.5",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "PDF officiel réellement ouvert. Portraits et entretien lus ; aucune disponibilité actuelle de diffusion ni modalité de trafic testée.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Entretien Lucie Borleteau, PDF p.4 ; portraits Anna, El Feo, Shams, Morphée, PDF p.5",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-friday",
+      "title": "Friday (1995)",
+      "organization": "American Humane Society",
+      "url": "https://www.americanhumane.org/production/friday/",
+      "verifiedAt": "2026-11-17",
+      "author": "American Humane Society",
+      "published": "s.d.",
+      "passage": "Synopsis du film, Smokey et Big Worm",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Compte rendu de fiction associé au suivi du tournage ; pas une explication des comportements réels sous cannabis.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis du film, Smokey et Big Worm",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-pineapple",
+      "title": "Pineapple Express",
+      "organization": "Sony Pictures Entertainment",
+      "url": "https://www.sonypictures.com/movies/pineappleexpress",
+      "verifiedAt": "2026-11-17",
+      "author": "Sony Pictures Entertainment",
+      "published": "s.d.",
+      "passage": "About, protagoniste joué par Seth Rogen et dealer joué par James Franco",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Synopsis du film ; aucun effet ni produit réel déduit de la fiction.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "About, protagoniste joué par Seth Rogen et dealer joué par James Franco",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-nice",
+      "title": "Mr Nice — dossier de presse",
+      "organization": "UFO Distribution",
+      "url": "https://www.ufo-distribution.com/UFO2018/downloads/mr-nice/dossier%20de%20presse/mn_dp.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "UFO Distribution / Bernard Rose",
+      "published": "2011",
+      "passage": "Synopsis, PDF p.5 ; entretien avec Bernard Rose, PDF p.6",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Le film adapte une autobiographie et adopte un point de vue ; aucun chiffre de trafic ni récit personnel disputable n’est testé.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis, PDF p.5 ; entretien avec Bernard Rose, PDF p.6",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-norml",
+      "title": "About NORML",
+      "organization": "NORML",
+      "url": "https://norml.org/about-norml/",
+      "verifiedAt": "2026-11-17",
+      "author": "NORML Board of Directors",
+      "published": "2013-06-29",
+      "passage": "Mission statement ; A Voice for Responsible Marijuana Consumers",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Présentation de ses propres objectifs par une association militante, sans adoption de ses positions comme conclusion scientifique.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Mission statement ; A Voice for Responsible Marijuana Consumers",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-hightimes",
+      "title": "A Founder Looks at 50: Tom Forcade, Michael J. Kennedy and High Times Magazine",
+      "organization": "NORML",
+      "url": "https://norml.org/blog/2020/05/29/a-founder-looks-at-50-high-times/",
+      "verifiedAt": "2026-11-17",
+      "author": "Keith Stroup",
+      "published": "2020-05-29",
+      "passage": "Passage High Times, pro-pot magazine fondé en 1974",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Témoignage personnel d’un acteur du mouvement ; seul le rôle médiatique du magazine est testé.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Passage High Times, pro-pot magazine fondé en 1974",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-ginsberg",
+      "title": "Ginsberg, Allen — The great marijuana hoax, late 1960s",
+      "organization": "National Library of Medicine, History of Medicine Finding Aids",
+      "url": "https://findingaids.nlm.nih.gov/repositories/4/archival_objects/230709",
+      "verifiedAt": "2026-11-17",
+      "author": "National Library of Medicine",
+      "published": "s.d.",
+      "passage": "Titre et identification du dossier, Tod Mikuriya Papers, Box 44 Folder 101",
+      "access": "catalogue",
+      "documentKind": "Page ou notice externe",
+      "limitation": "La notice soutient l’auteur et le titre ; elle n’est pas utilisée pour valider les arguments médicaux de l’essai.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Titre et identification du dossier, Tod Mikuriya Papers, Box 44 Folder 101",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-shafer",
+      "title": "National Drug Policy: United States of America",
+      "organization": "Library of Parliament / Senate of Canada",
+      "url": "https://sencanada.ca/en/content/sen/committee/371/ille/library/dolin2-e",
+      "verifiedAt": "2026-11-17",
+      "author": "Benjamin Dolin",
+      "published": "2001-07-24",
+      "passage": "Key Reports and Studies, C. The Schafer Commission — 1972",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Analyse parlementaire historique du rapport ; ne présente pas la recommandation comme une loi adoptée ou comme le droit actuel.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Key Reports and Studies, C. The Schafer Commission — 1972",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-laguardia",
+      "title": "The Marihuana Problem in the City of New York",
+      "organization": "Mayor’s Committee on Marihuana / New York Academy of Medicine",
+      "url": "https://www.mediwietsite.nl/wp-content/uploads/2018/11/La-Guardia-report-1944.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Mayor’s Committee on Marihuana",
+      "published": "1944",
+      "passage": "Sociological study, tea-pads p.PDF11 ; Conclusions p.PDF22, point10",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Copie du rapport historique intégral. Constats datés et situés ; pas une évaluation actuelle universelle des risques.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Sociological study, tea-pads p.PDF11 ; Conclusions p.PDF22, point10",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-ludlow",
+      "title": "The Hasheesh Eater — description de l’édition critique",
+      "organization": "Rutgers University Press",
+      "url": "https://www.rutgersuniversitypress.org/the-hasheesh-eater/9780813541143",
+      "verifiedAt": "2026-11-17",
+      "author": "Rutgers University Press / Stephen Rachman, édition critique",
+      "published": "s.d. (notice de l’édition critique Rutgers)",
+      "passage": "Description, expériences de Fitz Hugh Ludlow et réception de l’ouvrage",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Présentation éditoriale d’un récit personnel ; ne valide ni ses visions ni ses usages comme résultats cliniques.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Description, expériences de Fitz Hugh Ludlow et réception de l’ouvrage",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-dumas",
+      "title": "Le Comte de Monte-Cristo, chapitre XXXVIII : Le rendez-vous",
+      "organization": "Société des Amis d’Alexandre Dumas",
+      "url": "https://www.dumaspere.com/pages/bibliotheque/chapitre.php?cid=38&lid=r14",
+      "verifiedAt": "2026-11-17",
+      "author": "Alexandre Dumas",
+      "published": "1844–1846",
+      "passage": "Récit de Franz à Albert, souper au haschisch dans la grotte",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Texte littéraire original ; les scènes d’ivresse restent des éléments de fiction, pas de pharmacologie.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Récit de Franz à Albert, souper au haschisch dans la grotte",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-benjamin",
+      "title": "Profane Illuminations — review of Walter Benjamin, On Hashish",
+      "organization": "H-Net / Virginia Tech Department of History",
+      "url": "https://rmtrain.h-net.org/reviews/showrev.php?id=14786",
+      "verifiedAt": "2026-11-17",
+      "author": "Robert P. Stephens",
+      "published": "2008-07",
+      "passage": "Premier paragraphe, notes d’expériences et textes rassemblés",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Compte rendu universitaire décrivant la composition du recueil, pas une source clinique sur le cannabis.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Premier paragraphe, notes d’expériences et textes rassemblés",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb03-freak",
+      "title": "The Fabulous Furry Freak Brothers — The Show",
+      "organization": "The Freak Brothers, site officiel de l’adaptation",
+      "url": "https://thefreakbrothers.com/pages/the-show-old",
+      "verifiedAt": "2026-11-17",
+      "author": "The Freak Brothers",
+      "published": "s.d.",
+      "passage": "Présentation de la bande dessinée originale et place de la marijuana",
+      "access": "excerpt",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Présentation officielle indexée effectivement lue ; accès direct refusé 402. Seul le repère culturel de la BD originale est testé.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation de la bande dessinée originale et place de la marijuana",
+        "result": "Extrait textuel indexé effectivement lu ; accès direct incomplet, aucune lecture intégrale revendiquée."
+      }
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+{
+  "batchId": "pilot-30-editorial",
+  "reviewer": "E / e_engine_audit",
+  "reviewedAt": "2026-11-16",
+  "scope": "Relecture éditoriale indépendante des30items. Aucun lot ni reviewF modifié ; aucun contrôle moteur ni nouvelle recherche de source.",
+  "sourceBatches": [
+    "docs/quiz-2000/batches/pilot-ab.json",
+    "docs/quiz-2000/batches/pilot-c.json",
+    "docs/quiz-2000/batches/pilot-d.json"
+  ],
+  "counts": {
+    "changes_requested": 15,
+    "approved": 15
+  },
+  "currentLevels": {
+    "1": 10,
+    "2": 14,
+    "3": 3,
+    "4": 3
+  },
+  "recommendedLevels": {
+    "1": 4,
+    "2": 18,
+    "3": 6,
+    "4": 2
+  },
+  "formsReportedByAuthors": {
+    "identification": 22,
+    "chronologie": 1,
+    "comparaison": 2,
+    "deduction": 1,
+    "anecdote": 4
+  },
+  "overall": {
+    "verdict": "Pilote intéressant et majoritairement clair ; corriger calibrage et distracteurs avant validation finale. Une approbation E est éditoriale et ne remplace pas la vérification factuelleF.",
+    "pleasure": "Arôme d’oignon, abeilles, premières feuilles, aliments et textiles donnent des images concrètes. Les questions de pedigree sont davantage plaisantes pour un public déjà initié ; sept associations commerciales ou généalogiques rapprochées produiraient un effet catalogue.",
+    "learning": "La plupart des corrections ajoutent une distinction utile. Les comptages ultra précis apprennent moins lorsque leur fonction manque ; conserver le contexte morphologique ou textile plutôt que multiplier les chiffres rares.",
+    "difficulty": "Évaluer la connaissance requise avant de regarder la longueur des mots. Chiffres petits, vocabulaire courant et association à un objet quotidien ne rendent pas connue une donnée commerciale, anatomique ou patrimoniale. Dérogation au ratio pilote préférable à un faux niveau1.",
+    "formDiversity": "Presque tous les items demandent de restituer un fait. Cannatonic est un rappel daté, Lifter un pedigree restitué, Berry Blossom une ascendance non fournie : leurs étiquettes chronologie/comparaison/deduction surestiment la variété cognitive. Les anecdotes peuvent rester des identifications plaisantes ; ne pas les rebaptiser déductions.",
+    "nextLots": "Ajouter de vraies comparaisons de données documentées, chronologies ordonnées et situations d’interprétation, sans décliner un même fait ni glisser vers des conseils de culture psychoactive. Un contexte narratif seul ne suffit pas à transformer une identification en déduction.",
+    "inventoryNumbers": "Aucun des30items ne demande de restituer un numéro d’inventaire. Le n°2007.68.2 de la jupe hmong encombre le prompt ; le Met demande une catégorie d’objet. Le problème Met est la connaissance de sa notice et la portée de la question, pas la mémorisation d’un numéro.",
+    "proposalLimits": "Les variantes préservent le fait correct du lot ; les nouveaux choix faux sont des distracteurs proposés, pas des faits ni des pedigrees certifiés. Toute adoption modifie le hash et nécessite une nouvelle revue. Les propositions de support visuel exigent un vrai support, absent du pilote actuel."
+  },
+  "items": [
+    {
+      "id": "hemp-q2-ab-sweet-sour-widow-oignon",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Anecdote mémorable et attribution claire, mais connaître la note précise d’un catalogue reste une connaissance spécialisée. Le vocabulaire quotidien ne justifie pas facile. Quatre arômes de même nature, sans défaut bloquant.",
+      "proposedLevel": 2,
+      "proposedForm": "identification",
+      "suggestedRationale": "Connaître la description sensorielle publiée d’une sélection CBD précise ; aucune analyse chimique n’est déduite de cet arôme.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "a3e51443cb5ce3987c190f86efdef0382e83f130c52e4d09b37c027dae6bd9b0",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-kanadea-pyrenees-botanic",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Distinction marque/entreprise utile, choix cohérents. L’association commerciale n’est pas accessible par le seul sens des mots : niveau1 sous-estimé.",
+      "proposedLevel": 2,
+      "suggestedRationale": "Connaître l’identité de la marque exploitée par une entreprise agricole précise.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "404e0cfe9a881b38d0f7052ec3807d473665cb1ddd933829dbb019523054f603",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-cannatonic-correction-2015",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Correction historique intéressante ; quatre parentés plausibles. Retrouver un pedigree corrigé à une date donnée est spécialisé et reste un rappel, pas une tâche de chronologie.",
+      "proposedLevel": 3,
+      "proposedForm": "identification",
+      "suggestedRationale": "Distinguer un pedigree corrigé de son ancienne attribution parmi des lignées CBD proches.",
+      "currentLevel": 2,
+      "currentForm": "chronologie",
+      "contentHash": "c26dbde37bdb7f869158e75b094dedfc66e1fecf12eeb0df331d2c625fbb56c8",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-hawaiian-haze-obtenteur",
+      "batchId": "pilot-ab",
+      "status": "approved",
+      "reason": "Niveau2 cohérent : attribution spécialisée mais lisible. Quatre obtenteurs comparables. L’explication apporte la distinction concrète entre créateur et cultivateur.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "a4540adae32242dc845b3277f40de86c4ad1097674e1fd969da0061a454f0e48",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-lifter-gtr-catalogue-2026",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Version et date correctement bornées. Les sigles et couples proches imposent une mémoire de catalogue spécialisée ; ce n’est pas une comparaison effectuée avec des données fournies.",
+      "proposedLevel": 3,
+      "proposedForm": "identification",
+      "suggestedRationale": "Reconnaître le pedigree d’une version datée parmi des couples aux sigles proches.",
+      "currentLevel": 2,
+      "currentForm": "comparaison",
+      "contentHash": "db59a09e6f502d81331203ba9068b8ef8435929ca8a00d617a684cfb6fa91a76",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-berry-blossom-chardonnay",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Fait distinct et explication qui montre deux générations. Aucun pedigree n’est fourni avant la réponse : le joueur restitue une ascendance, il ne la déduit pas. Niveau3 défendable.",
+      "proposedLevel": 3,
+      "proposedForm": "identification",
+      "suggestedPrompt": "Dans le pedigree de Berry Blossom décrit par AOSCA, quels sont les deux parents de la lignée Chardonnay ?",
+      "suggestedRationale": "Connaître l’ascendance d’un parent dans un pedigree CBD à deux générations.",
+      "currentLevel": 3,
+      "currentForm": "deduction",
+      "contentHash": "a22cb1dbb34d1264371195cc77e031a6f6a807423c7ef85b2de0239254efbccd",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-jack-herer-hommage",
+      "batchId": "pilot-ab",
+      "status": "approved",
+      "reason": "Entrée culturelle accueillante et bonne explication. Niveau1 acceptable comme personnalité emblématique du domaine, sans affirmer que phrase simple signifie fait connu. Les professions concurrentes restent crédibles.",
+      "currentLevel": 1,
+      "currentForm": "anecdote",
+      "contentHash": "6a148f01c270d42aa8613f036b743131b53a7b5da9f259830ba36ad55e31480b",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-blueberry-dj-short",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Question nette, quatre créateurs comparables, distinction obtenteur/distributeur utile. L’identité d’un obtenteur historique n’est pas une connaissance grand public ; reclassement2 recommandé.",
+      "proposedLevel": 2,
+      "suggestedRationale": "Associer une lignée historique à son créateur, en le distinguant du catalogue qui la reprend.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "99dfd632c381ac03fc77b3a581f5301f0309fc7de4602921f5a16e1b667f51e7",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-pineapple-express-barneys",
+      "batchId": "pilot-ab",
+      "status": "approved",
+      "reason": "Attribution à une version commerciale claire, quatre croisements comparables. Niveau2 acceptable pour une lignée connue ; l’explication prévient utilement la généralisation aux homonymes CBD.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "cbaf7fcbc8d567a5ef2072cf92a65550fad7461628b2ca31d1a39a1c93dbea89",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-ab-trikoma-widow-bilbo-bcn",
+      "batchId": "pilot-ab",
+      "status": "changes_requested",
+      "reason": "Le choix correct est seul à contenir Widow, repris dans le nom demandé : un novice peut réussir par appariement. Cela contredit le niveau expert. Le fait peut rester spécialisé après réparation des choix.",
+      "proposedLevel": 3,
+      "suggestedOptions": [
+        "Widow Bilbo × Widow BCN",
+        "Widow Bilbo × NYCD",
+        "Widow BCN × Dancehall #654",
+        "Widow Bilbo × Skunk #1"
+      ],
+      "suggestedAnswer": 0,
+      "proposalNote": "Les trois combinaisons fausses proposées sont des distracteurs de QCM, pas de nouveaux pedigrees affirmés. F doit maintenir la vérification de l’unique bonne réponse. Un mélange à l’affichage ne corrige pas l’indice lexical des choix originaux.",
+      "currentLevel": 4,
+      "currentForm": "identification",
+      "contentHash": "136c734bd70b0055df273757967da7518d163ca9ac0e473b63fcbad169a371f6",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-abeilles-ressource-pollen",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Bon fait écologique, réponse accessible par la fonction d’une fleur mâle. Le nectar est un vrai concurrent intuitif. L’explication enseigne la coexistence pollinisation par le vent/ressource pour insectes. Niveau1 cohérent.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "84c02d6f0d96bb3fb90e6f59645d65ccfc37d5c6728b4d7a973178b615fb9175",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-fleur-male-cinq-etamines",
+      "batchId": "pilot-c",
+      "status": "changes_requested",
+      "reason": "Connaître exactement cinq étamines est un repère d’anatomie spécialisée, même parmi quatre petits nombres. L’explication ajoute une organisation utile ; aucun changement du fait n’est nécessaire.",
+      "proposedLevel": 2,
+      "suggestedRationale": "Connaître le nombre et l’organisation des organes reproducteurs d’une fleur mâle de chanvre.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "df62364739da9efe2013ddcedc30bde886752ec3a565ea325ccea8f22bb3a74a",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-chenevis-une-graine",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Bonne entrée1 sur un objet alimentaire familier, à condition d’assumer que l’on apprend ici fruit versus graine. La formulation définit le chènevis et l’explication relie fruit, ovule et graine ; elle apporte plus qu’un nombre.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "102f8d14e172b50bc36e505a32a11026eaa591c44f073b50c7e55a2680d6db3e",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-cannflavines-flavonoides",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Niveau2 raisonnable, familles chimiques homogènes. L’indice cann- est précisément expliqué comme insuffisant pour classer la molécule. Terme technique réel et utile ; pas de confusion entre difficulté et longueur du nom.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "68e41bade8a5209eb7005f5152fe842dc3a6ec4b1fec52d8f2954bd67ab21ad1",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-trichome-cavite-sous-cuticule",
+      "batchId": "pilot-c",
+      "status": "changes_requested",
+      "reason": "Le compartiment de stockage est intéressant. Noyau, xylème et chloroplastes du pédoncule s’éliminent trop facilement face à une cavité de stockage : distracteurs anatomiques trop éloignés de la fonction.",
+      "proposedLevel": 2,
+      "suggestedOptions": [
+        "À l’intérieur des cellules du disque sécréteur",
+        "Dans une cavité sous la cuticule",
+        "Dans les cellules du pédoncule de la glande",
+        "Dans l’épaisseur de la cuticule elle-même"
+      ],
+      "suggestedAnswer": 1,
+      "proposalNote": "Garder un compartiment sécréteur ou voisin par choix, puis confirmer avec F qu’une seule localisation correspond à l’accumulation visée.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "99ab8f324d39c07645fd311df18a1796d67f8921d5ac858ecebc8851f24f2e0c",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-premieres-feuilles-une-foliole",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Très bon contraste avec l’image familière de la feuille palmée. Niveau2 justifié par le stade de développement. Les nombres correspondent à des silhouettes végétales crédibles.",
+      "optionalVariation": {
+        "form": "situation",
+        "prompt": "Une plantule déploie ses premières vraies feuilles après les cotylédons. Combien de folioles portent-elles généralement chacune ?"
+      },
+      "variationNote": "Cette mise en situation conserve le même fait. Elle ne crée pas à elle seule une tâche de déduction.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "b3f6970c61950f702f0cc7f25408627c616865f2dc9344cfecb0959425c987de",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-chanvre-divergence-genome",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Comparaison réelle entre une différence chimique intuitive et la portée génomique mesurée. Les niveaux biologiques concurrents sont crédibles. Attribution à l’étude et limite de l’échantillon bien expliquées ; niveau2 cohérent.",
+      "currentLevel": 2,
+      "currentForm": "comparaison",
+      "contentHash": "dc962cdb7bc5585fcf9f7df50bfe3f1db99bbf0e8d17ef7ccc0feae4ea09a5c0",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-graines-thc-contamination",
+      "batchId": "pilot-c",
+      "status": "changes_requested",
+      "reason": "Fait utile contre une confusion fréquente. Transformation spontanée de l’huile et des protéines en THC : deux distracteurs trop faibles et redondants. Préférer quatre origines biologiques ou contaminations comparables ; ne pas simplifier la bonne réponse en la rendant seule sensée.",
+      "proposedLevel": 2,
+      "suggestedPrompt": "Selon le BfR, comment du THC peut-il se retrouver dans des graines de chanvre alimentaires ?",
+      "revisionInstruction": "Conserver la réponse contact avec d’autres parties de la plante. Faire proposer et relire trois hypothèses concurrentes plausibles d’origine du composé, sans inventer une allégation positive. Le simple renommage des deux transformations ne suffit pas.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "92f8d29a7d2b5b2e92a15ee2544f11e38e2aff2f51866783aade0e01c1601de1",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-trichomes-disques-cellules",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Détail microscopique précis, clairement rattaché à son étude : niveau3 défendable. Le seul comptage apporte peu de compréhension ; la correction compare heureusement deux types de glandes.",
+      "optionalVariation": {
+        "prompt": "Dans Livingston et al. (2020), les trichomes sessiles ont huit cellules sécrétrices. Combien en ont typiquement les grands pédonculés ?"
+      },
+      "variationNote": "Le repère huit est déjà présent dans l’explication du lot. Cette comparaison améliore le sens du résultat sans changer la réponse12à16 ; vérifier la longueur contractuelle avant adoption.",
+      "currentLevel": 3,
+      "currentForm": "identification",
+      "contentHash": "9c088b4fc5eb1c35c54d12acdf6a3e12393abec21a1c5776a87961e66feb4c10",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-c-thcas-cofacteur-fad",
+      "batchId": "pilot-c",
+      "status": "approved",
+      "reason": "Vraie question experte de biochimie structurale. Quatre cofacteurs identifiés de manière comparable. Le FAD et sa liaison covalente constituent une connaissance, pas un piège de vocabulaire. L’explication donne un mécanisme ; niveau4 cohérent.",
+      "currentLevel": 4,
+      "currentForm": "identification",
+      "contentHash": "829a14a2565e372908d18b676f0b4fb3e233ef2816a93b6fdae771703a877529",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-chenevis-saveur-noix",
+      "batchId": "pilot-d",
+      "status": "approved",
+      "reason": "Entrée sensorielle concrète et accessible, quatre saveurs homogènes. Le rapprochement avec des aliments familiers soutient le niveau1 ; l’explication sépare utilement graines et fleurs.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "308da57b48ef5edbddf4fbcdcd714460e5cdfcb1da10c55b83716029ad2e061a",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-shichimi-condiment",
+      "batchId": "pilot-d",
+      "status": "changes_requested",
+      "reason": "Anecdote culinaire plaisante, composition variable correctement nuancée. Connaître cet ingrédient d’un condiment japonais dépasse la familiarité des mots : niveau2 préférable.",
+      "proposedLevel": 2,
+      "suggestedRationale": "Connaître un ingrédient traditionnel parfois présent dans un mélange d’épices japonais.",
+      "currentLevel": 1,
+      "currentForm": "identification",
+      "contentHash": "f6dbf6bf7f00afb69969171d310202b24d7b86f663ca0d56713f19b20472e2f9",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-met-accessoire-pieds",
+      "batchId": "pilot-d",
+      "status": "changes_requested",
+      "reason": "Objet concret et bon potentiel de découverte. Pourtant aucun indice visuel n’est fourni : le joueur doit connaître une notice de musée, pas reconnaître un accessoire quotidien. Le libellé global pourrait aussi admettre d’autres objets du même musée ; F doit vérifier l’univocité de cette portée.",
+      "proposedLevel": 2,
+      "suggestedPrompt": "Selon la notice du Met citée en source, quel accessoire japonais est fabriqué en chanvre ?",
+      "revisionInstruction": "Borner explicitement la question à la notice citée et classer2. Sans image, il s’agit d’un rappel de notice ; ne pas le justifier par la reconnaissance d’un objet quotidien. Un support visuel existant pourrait ultérieurement rendre le niveau1 défendable, mais aucun support n’est demandé pour ce pilote. Ne pas ajouter un numéro d’inventaire à mémoriser.",
+      "currentLevel": 1,
+      "currentForm": "anecdote",
+      "contentHash": "544cb2b8f6fd810ff9eb6e724f971cdafabfcf266a76e03063f54d08ebecc307",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-kanepju-sviests-lettonie",
+      "batchId": "pilot-d",
+      "status": "approved",
+      "reason": "Contexte suffisant malgré le nom étranger, cuisines de même famille géographique, explication qui situe usages et accompagnements. Niveau2 cohérent ; ne pas classer expert à cause des signes diacritiques.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "b6dc64d9a9aea71f08306c32191cfd00c067dafe9e5ddd62ce3f18f62e6846f8",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-siemieniotka-reveillon",
+      "batchId": "pilot-d",
+      "status": "approved",
+      "reason": "Bonne découverte culturelle avec des fêtes concurrentes cohérentes. La soupe est définie avant la question ; connaissance régionale nécessaire, donc niveau2 pertinent. Explication utile et limitée.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "bb82bf7b6ab3e5e2984c23c7470ecdd97af2333e776bb1d64bafa370b06d1b77",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-asanoha-voeu-enfant",
+      "batchId": "pilot-d",
+      "status": "changes_requested",
+      "reason": "La relation symbolique plante/enfant est excellente. Harmonie conjugale et examens sont des vœux lointains pour un bébé et affaiblissent les choix ; proposer quatre souhaits directement plausibles dans ce contexte.",
+      "proposedLevel": 2,
+      "suggestedOptions": [
+        "Un sommeil paisible",
+        "Une vie prospère",
+        "Une bonne croissance",
+        "Une mémoire vive"
+      ],
+      "suggestedAnswer": 2,
+      "proposalNote": "La connaissance culturelle reste le fait testé. Les propositions fausses sont des souhaits possibles, pas des symboliques attribuées à d’autres motifs.",
+      "currentLevel": 2,
+      "currentForm": "anecdote",
+      "contentHash": "a73938f432a9f312fbd324cde2daf22de47f90f483542ea9933b827eb4adda14",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-hmong-cire-reserve",
+      "batchId": "pilot-d",
+      "status": "changes_requested",
+      "reason": "Technique textile compréhensible et matière à un bon petit problème concret. Le numéro2007.68.2 est un repère documentaire sans utilité pour répondre et alourdit le mobile. Quatre matières concurrentes, niveau2 cohérent.",
+      "proposedLevel": 2,
+      "proposedForm": "situation",
+      "suggestedPrompt": "Sur une jupe hmong en chanvre du musée d’Auckland, quelle matière protège les motifs blancs pendant la teinture à l’indigo ?",
+      "revisionInstruction": "Conserver numéro et datation dans la provenance, pas dans le prompt. Cette mise en situation donne une fonction concrète sans modifier la réponse cire.",
+      "currentLevel": 2,
+      "currentForm": "anecdote",
+      "contentHash": "e7539ad92a2aadf36620b38ed502e9c23236de493f996699582d37a912d08f0c",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-sambe-rites-deuil",
+      "batchId": "pilot-d",
+      "status": "approved",
+      "reason": "Usage culturel distinct, quatre événements rituels comparables. Niveau2 cohérent pour une tradition précise ; le notamment de l’explication évite de réduire tous les usages du sambe au deuil.",
+      "currentLevel": 2,
+      "currentForm": "identification",
+      "contentHash": "eab618b00a2a8171288a6ebf3cb1f4c9c74bf9af0fdd81a0858be05a1521ea9e",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-rabelais-tiers-livre",
+      "batchId": "pilot-d",
+      "status": "approved",
+      "reason": "Culture littéraire précise, quatre œuvres du même auteur et récit qui apporte une image forte. Niveau3 pertinent. C’est une identification assumée, pas une déduction artificielle.",
+      "currentLevel": 3,
+      "currentForm": "identification",
+      "contentHash": "a3313ec3cd0c1129c4747314cdd2c0aa240bd4275b7e78c014026963d45c48dd",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    },
+    {
+      "id": "hemp-q2-d-andongpo-compte-ol",
+      "batchId": "pilot-d",
+      "status": "changes_requested",
+      "reason": "Une convention locale de comptage peut relever d’expert, mais réciter80 sans comprendre ce qui est compté apporte peu. Rendre explicite dans le prompt le lien entre comptage et finesse déjà fourni dans l’explication ; ne pas inventer une unité ou conversion absente.",
+      "proposedLevel": 4,
+      "suggestedPrompt": "Pour classer la finesse de l’Andongpo, la notice coréenne évoque les fils « ol ». Quel nombre de base indique-t-elle ?",
+      "revisionInstruction": "F doit confirmer la définition traduite de ce comptage. Si son sens reste indéterminé, conserver la notice en encyclopédie et différer ce QCM ; le niveau4 ne compense pas une unité incomprise.",
+      "currentLevel": 4,
+      "currentForm": "identification",
+      "contentHash": "3b48b2c4b633b87bbd2994420d0037e24817f5d10f3ba95dbfae97a8223b777c",
+      "sourceChecks": {
+        "status": "not_rechecked_in_this_editorial_review",
+        "scope": "Lecture de la question, des quatre choix, de la correction et des métadonnées auteur ; recherche et contrôle des passages réservés à F, en cours."
+      }
+    }
+  ]
+}

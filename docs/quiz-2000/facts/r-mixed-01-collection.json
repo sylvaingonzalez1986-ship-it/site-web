@@ -1,0 +1,16 @@
+{
+  "author": "rebalance_products_sol",
+  "date": "2026-11-17",
+  "status": "collecte intermédiaire hors schéma, aucune approbation",
+  "target": {"food": 19, "materials": 21},
+  "readings": [
+    {"url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5936671/","read":"Texte original Bhatia, Chen, Christiansen, 2018-02-02. Cas d'anaphylaxie après ingestion de graines dans yaourt, SPT positif graines, tolérance du yaourt et de la fumée avant/après ; pas d'estimation de prévalence. Discussion nsLTP hypothèse de réaction croisée, pas preuve définitive."},
+    {"url":"https://pubmed.ncbi.nlm.nih.gov/17090145/","read":"Résumé original Tang et al. 2006-11-15. Édestine composant majeur ; isolat de chanvre émulsification/stabilité/rétention d'eau inférieures au soja dans cet essai ; agrégation par ponts disulfure. Ne pas généraliser à tous produits ni reprendre hexamère déjà couvert."},
+    {"url":"https://zhuanti.mct.gov.cn/xczgshsh2023/syxj/detail_shi/3817.html","read":"Ministère chinois culture/tourisme, 2023-07-17. Rubrique cinq, spécialités de Bama Guangxi : huoma graines moulues, soupe huoma et tofu huoma. Les allégations longévité/santé touristiques ne sont pas reprises."},
+    {"url":"https://link.springer.com/article/10.1007/s10570-025-06557-0","read":"Mijas et al. 2025-05-10, introduction et résumé, méthodes matériaux et traitement mécanique. Cotonisation = séparation faisceaux techniques vers agrégats plus fins de fibres élémentaires pour machines coton ; lignine contribue raideur/rugosité ; retirer lignine adoucit. Éviter généralités promotionnelles sur antibactérien/UV/intrants."},
+    {"url":"https://link.springer.com/article/10.1186/1752-153X-6-122","read":"Mihoc et al., 2012-10-23, résumé et introduction. Mesures de cadmium dans graines issues de sols concernés : transfert vers graines possible, pas garantie de sécurité alimentaire des graines de phytoremédiation. Ne pas généraliser concentrations aux graines du commerce ni copier recommandations nutritionnelles contestables de l'introduction."},
+    {"url":"https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full","read":"Page originale ouverte : métadonnées Galasso et al. 2016-05-20 ; passages analytiques à lire avant emploi."},
+    {"url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC7400098/","read":"Revue Farinon et al. 2020-06-29 utilisée pour trouver originaux, non suffisante comme seule preuve originale. Sections protéines/acides aminés et antinutriments lues ; références Tang2006, Galasso2016, Russo2015, Mihoc2012 identifiées."}
+  ],
+  "accessFailures": ["UF/IFAS AG459 : boucle de redirection et URL en inaccessible ; aucun texte intégral lu.", "GRAS778 huile FDA media117791 : PDF 19MB trop volumineux pour outil, aucun texte intégral lu.", "UNCTAD2022 PDF :403 ; passages repérés en extrait seulement.", "UPC mémoire2022 :403 ; article original2025 accessible à sa place.", "SCIRP paperid52973 est un autre article : ne pas l'utiliser pour Russo2015."]
+}

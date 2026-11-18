@@ -1,4 +1,6 @@
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_CARE_PRODUCTS, performKqBasicCare } from "./kanab-quest-care";
+import { consumeKqCareStock, getKqCareInventoryRows } from "./kanab-quest-care-reserve";
+import { careApplicationKey, isKqCareSector, sameKqCareSector, type KqCareSector } from "./kanab-quest-care-spatial";
 import type { KqGameState } from "./kanab-quest-game";
 import { KQ_STARTING_CASH_CENTS } from "./kanab-quest-equipment";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
@@ -42,9 +44,7 @@ export function getKqLocalCareSnapshot(storage: KqCareStorage, state?: KqGameSta
   const wallet = loadKqLocalCare(storage);
   const pricing = getKqCarePricing(state);
   return { ...pricing, cashCents: wallet.cashCents,
-    inventory: KQ_CARE_PRODUCTS.map(product => ({ productCode: product.code,
-      legacyQuantity: wallet.inventory[product.code] ?? 0, areaQuantity: wallet.areaInventory?.[product.code] ?? 0,
-      quantity: (wallet.inventory[product.code] ?? 0) + Math.floor((wallet.areaInventory?.[product.code] ?? 0) / pricing.pricingUnits) })),
+    inventory: getKqCareInventoryRows(state, wallet.inventory, wallet.areaInventory),
     catalog: KQ_CARE_PRODUCTS.map(product => ({ ...product, priceCents: product.priceCents * pricing.pricingUnits })) };
 }
 
@@ -61,34 +61,35 @@ export function buyKqLocalCare(storage: KqCareStorage, productCode: string, stat
   return next;
 }
 
-export function applyKqLocalCare(storage: KqCareStorage, state: KqGameState, productCode?: string): KqGameState {
+export function applyKqLocalCare(storage: KqCareStorage, state: KqGameState, productCode?: string, target?: KqCareSector): KqGameState {
   const wallet = loadKqLocalCare(storage);
-  const permission = productCode ? canApplyKqCareProduct(state, productCode) : canPerformKqBasicCare(state);
+  if (target !== undefined && !isKqCareSector(target)) throw new Error("Case de culture invalide.");
+  if (!productCode && target !== undefined) throw new Error("L’entretien s’applique à toute la culture.");
+  const permission = productCode ? canApplyKqCareProduct(state, productCode, target) : canPerformKqBasicCare(state);
   if (!permission.allowed) throw new Error(permission.reason);
   const saved = parseKqGameSave(storage.getItem(gameKey));
   if (saved?.care && saved.seed === state.seed && saved.startedAt === state.startedAt && saved.varietyCode === state.varietyCode) {
     const stageIndex = state.stageIndex + Number(state.phase === "resolved");
     const alreadyApplied = productCode
-      ? saved.care.applications.some(item => item.productCode === productCode && item.stageIndex === stageIndex)
+      ? saved.care.applications.some(item => item.productCode === productCode && item.stageIndex === stageIndex && sameKqCareSector(item.target, target))
       : saved.care.lastBasicCareStage === stageIndex
         || saved.care.history.some(item => item.kind === "intervention" && !item.productCode && item.stageIndex === stageIndex);
     // A failed storage write can leave React on the pre-payment state. Recovery
     // above completed that transaction; return its current state, without a fee.
     if (alreadyApplied) return saved;
-    const missingApplication = saved.care.applications.some(item => !state.care?.applications.some(current => current.productCode === item.productCode && current.stageIndex === item.stageIndex));
+    const knownApplications = new Set(state.care?.applications.map(careApplicationKey));
+    const missingApplication = saved.care.applications.some(item => !knownApplications.has(careApplicationKey(item)));
     if (saved.stageIndex > state.stageIndex || saved.history.length > state.history.length || missingApplication
       || (saved.care.lastBasicCareStage ?? -1) > (state.care?.lastBasicCareStage ?? -1)) {
       throw new Error("Le suivi local a changé. Recharge la culture avant de payer une autre intervention.");
     }
   }
   const pricing = getKqCarePricing(state);
-  const legacyCharge = productCode ? (wallet.inventory[productCode] ?? 0) > 0 : false;
-  if (productCode && !legacyCharge && (wallet.areaInventory?.[productCode] ?? 0) < pricing.pricingUnits) throw new Error("Réserve insuffisante pour la surface cultivée.");
   if (!productCode && wallet.cashCents < pricing.basicCarePriceCents) throw new Error("Trésorerie de simulation insuffisante pour cet entretien.");
-  const next = productCode ? applyKqCareProduct(state, productCode) : performKqBasicCare(state);
+  const next = productCode ? applyKqCareProduct(state, productCode, target) : performKqBasicCare(state);
+  if (next === state) throw new Error("Choisis une case de culture pour appliquer ce produit.");
   const nextWallet = productCode
-    ? legacyCharge ? { ...wallet, inventory: { ...wallet.inventory, [productCode]: wallet.inventory[productCode] - 1 } }
-      : { ...wallet, areaInventory: { ...wallet.areaInventory, [productCode]: (wallet.areaInventory?.[productCode] ?? 0) - pricing.pricingUnits } }
+    ? { ...wallet, ...consumeKqCareStock(wallet.inventory, wallet.areaInventory, productCode, pricing.pricingUnits, !!target) }
     : { ...wallet, cashCents: wallet.cashCents - pricing.basicCarePriceCents };
   // Recovery completes both writes before the next session can be loaded.
   storage.setItem(journalKey, JSON.stringify({ game: JSON.parse(encodeKqSave(next)), wallet: nextWallet }));

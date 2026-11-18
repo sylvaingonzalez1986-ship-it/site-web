@@ -1,0 +1,3509 @@
+{
+    "reviewer":  "rebalance_classify_b",
+    "range":  [
+                  500,
+                  999
+              ],
+    "items":  [
+                  {
+                      "id":  "hemp-q2-c-premieres-feuilles-une-foliole",
+                      "domain":  "offscope",
+                      "focus":  "Feuilles de plantule",
+                      "reason":  "Nombre de folioles sans lien avec fleurs ou résine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-c-thcas-cofacteur-fad",
+                      "domain":  "active",
+                      "focus":  "Biosynthèse du THCA",
+                      "reason":  "Cofacteur de l’enzyme produisant le THCA.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-c-trichome-cavite-sous-cuticule",
+                      "domain":  "active",
+                      "focus":  "Stockage de résine",
+                      "reason":  "Localisation de la résine dans une glande de cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-c-trichomes-disques-cellules",
+                      "domain":  "active",
+                      "focus":  "Anatomie des trichomes",
+                      "reason":  "Cellules des glandes résineuses, détail étroit d’une étude.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-apical-meristems-dividing-cells-at-tips",
+                      "domain":  "offscope",
+                      "focus":  "Méristèmes apicaux",
+                      "reason":  "Localisation générale des zones de croissance végétale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-casparian-strip-forces-membrane-crossing",
+                      "domain":  "offscope",
+                      "focus":  "Bande de Caspary",
+                      "reason":  "Transport racinaire général sans rapport aux actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-cell-elongation-length-increase-without-division",
+                      "domain":  "offscope",
+                      "focus":  "Élongation cellulaire",
+                      "reason":  "Principe général de croissance des racines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-chlorophyll-a-absorbs-blue-and-red-light",
+                      "domain":  "offscope",
+                      "focus":  "Chlorophylle",
+                      "reason":  "Spectre d’absorption commun aux plantes vertes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-chloroplast-photosynthesis-site",
+                      "domain":  "offscope",
+                      "focus":  "Chloroplaste",
+                      "reason":  "Organite de photosynthèse sans spécificité cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-companion-cells-support-enucleate-sieve-elements",
+                      "domain":  "offscope",
+                      "focus":  "Cellules compagnes",
+                      "reason":  "Fonction générale des cellules du phloème.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-compound-leaf-axillary-bud-at-whole-leaf-base",
+                      "domain":  "offscope",
+                      "focus":  "Feuille composée",
+                      "reason":  "Critère botanique général sans lien fleurs/résine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-different-cell-functions-differential-gene-expression",
+                      "domain":  "offscope",
+                      "focus":  "Expression génique",
+                      "reason":  "Spécialisation cellulaire générique habillée de chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-embryonic-radicle-develops-root-system",
+                      "domain":  "offscope",
+                      "focus":  "Embryon végétal",
+                      "reason":  "Devenir général de la radicule dans une graine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-growing-tissue-imports-sugars-is-sink",
+                      "domain":  "offscope",
+                      "focus":  "Relations source-puits",
+                      "reason":  "Distribution générale des sucres végétaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-guard-cell-pair-controls-stomatal-aperture",
+                      "domain":  "offscope",
+                      "focus":  "Stomates",
+                      "reason":  "Rôle général des cellules de garde.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-hemp-vascular-cambium-secondary-thickening",
+                      "domain":  "offscope",
+                      "focus":  "Cambium",
+                      "reason":  "Croissance en épaisseur sans application fleurs ou résine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-lateral-roots-originate-in-pericycle",
+                      "domain":  "offscope",
+                      "focus":  "Péricycle",
+                      "reason":  "Origine générale des racines latérales.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-leaf-cuticle-reduces-water-loss",
+                      "domain":  "offscope",
+                      "focus":  "Cuticule foliaire",
+                      "reason":  "Protection hydrique générique des feuilles.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-leaf-epidermis-outer-cellular-tissue",
+                      "domain":  "offscope",
+                      "focus":  "Épiderme foliaire",
+                      "reason":  "Anatomie générale d’une feuille.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-leaflet-lamina-flat-expanded-part",
+                      "domain":  "offscope",
+                      "focus":  "Limbe foliaire",
+                      "reason":  "Vocabulaire botanique sans lien utile aux actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-light-dependent-photosystems-thylakoid-membrane",
+                      "domain":  "offscope",
+                      "focus":  "Photosystèmes",
+                      "reason":  "Localisation cellulaire générale de la photosynthèse.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-mature-xylem-vessel-elements-dead-functional",
+                      "domain":  "offscope",
+                      "focus":  "Vaisseaux du xylème",
+                      "reason":  "État des cellules conductrices commun aux plantes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-mitochondria-respiration-atp-production",
+                      "domain":  "offscope",
+                      "focus":  "Respiration cellulaire",
+                      "reason":  "Fonction générale de la mitochondrie.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-mitotic-division-conserves-chromosome-information",
+                      "domain":  "offscope",
+                      "focus":  "Mitose",
+                      "reason":  "Transmission des chromosomes sans génétique du cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-osmosis-net-water-selective-membrane",
+                      "domain":  "offscope",
+                      "focus":  "Osmose",
+                      "reason":  "Définition générale d’un mouvement d’eau.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-palisade-mesophyll-packed-columnar-cells",
+                      "domain":  "offscope",
+                      "focus":  "Parenchyme palissadique",
+                      "reason":  "Anatomie foliaire générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-phloem-transports-photosynthetic-sugars",
+                      "domain":  "offscope",
+                      "focus":  "Phloème",
+                      "reason":  "Transport général des sucres végétaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-photosynthesis-releases-molecular-oxygen",
+                      "domain":  "offscope",
+                      "focus":  "Photosynthèse",
+                      "reason":  "Gaz libéré par toutes les plantes vertes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-photosynthetic-biomass-carbon-from-air-co2",
+                      "domain":  "offscope",
+                      "focus":  "Carbone végétal",
+                      "reason":  "Origine du carbone de la biomasse sans lien aux actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-photosynthetic-oxygen-originates-from-water",
+                      "domain":  "offscope",
+                      "focus":  "Réactions lumineuses",
+                      "reason":  "Origine de l’oxygène photosynthétique générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-plant-cell-central-vacuole-water-compartment",
+                      "domain":  "offscope",
+                      "focus":  "Vacuole",
+                      "reason":  "Compartiment commun aux cellules végétales.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-plant-cell-most-dna-in-nucleus",
+                      "domain":  "offscope",
+                      "focus":  "Noyau",
+                      "reason":  "Localisation générique de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-plant-cell-wall-shape-mechanical-support",
+                      "domain":  "offscope",
+                      "focus":  "Paroi cellulaire",
+                      "reason":  "Fonction mécanique générale de la paroi.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-plasma-membrane-selective-cell-exchanges",
+                      "domain":  "offscope",
+                      "focus":  "Membrane plasmique",
+                      "reason":  "Échanges cellulaires génériques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-plasmodesmata-connect-plant-cell-cytoplasms",
+                      "domain":  "offscope",
+                      "focus":  "Plasmodesmes",
+                      "reason":  "Communication générale entre cellules végétales.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-ribosome-direct-protein-assembly",
+                      "domain":  "offscope",
+                      "focus":  "Ribosomes",
+                      "reason":  "Synthèse protéique commune aux organismes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-root-cap-protects-growing-tip",
+                      "domain":  "offscope",
+                      "focus":  "Coiffe racinaire",
+                      "reason":  "Protection générale de la pointe des racines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-root-hairs-increase-absorbing-surface",
+                      "domain":  "offscope",
+                      "focus":  "Poils absorbants",
+                      "reason":  "Surface d’absorption racinaire générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-roots-anchor-plant-in-soil",
+                      "domain":  "offscope",
+                      "focus":  "Ancrage racinaire",
+                      "reason":  "Fonction des racines sans lien aux actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-seedling-uses-seed-reserves-before-photosynthesis",
+                      "domain":  "offscope",
+                      "focus":  "Réserves germinatives",
+                      "reason":  "Nutrition initiale générale des plantules.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-spongy-mesophyll-air-spaces-gas-exchange",
+                      "domain":  "offscope",
+                      "focus":  "Parenchyme spongieux",
+                      "reason":  "Échanges gazeux généraux de la feuille.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-stem-supports-leaves-and-flowers",
+                      "domain":  "offscope",
+                      "focus":  "Support de la tige",
+                      "reason":  "Fonction mécanique commune aux tiges.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-stomata-co2-entry-for-photosynthesis",
+                      "domain":  "offscope",
+                      "focus":  "Entrée du CO2",
+                      "reason":  "Échanges gazeux foliaires génériques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn01-xylem-transports-water-mineral-ions",
+                      "domain":  "offscope",
+                      "focus":  "Xylème",
+                      "reason":  "Transport général de sève brute.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-abscisic-acid-promotes-stomatal-closure-drought",
+                      "domain":  "offscope",
+                      "focus":  "Acide abscissique",
+                      "reason":  "Réponse hormonale générale au manque d’eau.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-amyloplast-statoliths-gravity-sensing-root-cap",
+                      "domain":  "offscope",
+                      "focus":  "Gravitropisme",
+                      "reason":  "Perception de la gravité dans les racines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-angiosperm-pollen-haploid-gametophyte",
+                      "domain":  "offscope",
+                      "focus":  "Cycle des angiospermes",
+                      "reason":  "Ploïdie du pollen sans spécificité cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-biotic-factor-living-organism-environment",
+                      "domain":  "offscope",
+                      "focus":  "Facteurs biotiques",
+                      "reason":  "Définition écologique générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-c3-first-stable-carbon-fixation-product-three-carbons",
+                      "domain":  "offscope",
+                      "focus":  "Photosynthèse C3",
+                      "reason":  "Classe photosynthétique sans lien aux actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-carotenoids-dissipate-excess-light-energy",
+                      "domain":  "offscope",
+                      "focus":  "Caroténoïdes",
+                      "reason":  "Photoprotection générale des feuilles.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-chlorosis-means-leaf-yellowing",
+                      "domain":  "offscope",
+                      "focus":  "Chlorose",
+                      "reason":  "Définition d’un symptôme végétal général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-circadian-rhythm-endogenous-near-daily-clock",
+                      "domain":  "offscope",
+                      "focus":  "Rythme circadien",
+                      "reason":  "Horloge biologique générale des plantes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-decomposers-feed-on-dead-organic-matter",
+                      "domain":  "offscope",
+                      "focus":  "Décomposeurs",
+                      "reason":  "Réseau détritique général d’un sol agricole.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-double-fertilization-zygote-and-endosperm",
+                      "domain":  "offscope",
+                      "focus":  "Double fécondation",
+                      "reason":  "Mécanisme général des angiospermes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-ecosystem-includes-living-and-abiotic-environment",
+                      "domain":  "offscope",
+                      "focus":  "Écosystème",
+                      "reason":  "Définition écologique sans spécificité cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-ethylene-is-gaseous-plant-hormone",
+                      "domain":  "offscope",
+                      "focus":  "Éthylène",
+                      "reason":  "Nature d’une hormone sans lien testé aux fleurs/résine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-evaporation-can-cool-leaf-by-heat-consumption",
+                      "domain":  "offscope",
+                      "focus":  "Évaporation",
+                      "reason":  "Principe thermique général appliqué à une feuille.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-fertilization-fusion-of-male-female-gametes",
+                      "domain":  "offscope",
+                      "focus":  "Fécondation",
+                      "reason":  "Définition générale de la fusion des gamètes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-flower-organ-sexual-reproduction",
+                      "domain":  "offscope",
+                      "focus":  "Fonction de la fleur",
+                      "reason":  "Fonction universelle des fleurs, sans anatomie spécifique cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-germination-starts-with-seed-water-uptake",
+                      "domain":  "offscope",
+                      "focus":  "Imbibition",
+                      "reason":  "Réhydratation générale des graines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-gill-2025-water-conservation-carbon-cost",
+                      "domain":  "offscope",
+                      "focus":  "Stress hydrique industriel",
+                      "reason":  "Étude de biomasse du chanvre industriel sans actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-hermaphrodite-flower-male-female-organs-same-flower",
+                      "domain":  "active",
+                      "focus":  "Hermaphrodisme floral",
+                      "reason":  "Cas limite : anatomie sexuelle des fleurs de cannabis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-leaf-eating-animal-herbivory",
+                      "domain":  "offscope",
+                      "focus":  "Herbivorie",
+                      "reason":  "Nom général d’une interaction alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-leaf-evaporation-tension-pulls-xylem-water",
+                      "domain":  "offscope",
+                      "focus":  "Cohésion-tension",
+                      "reason":  "Moteur général de l’ascension de la sève.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-messenger-rna-carries-coding-information-to-ribosomes",
+                      "domain":  "offscope",
+                      "focus":  "ARN messager",
+                      "reason":  "Information génétique générale sans application cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-mutualism-both-partners-benefit",
+                      "domain":  "offscope",
+                      "focus":  "Mutualisme",
+                      "reason":  "Définition écologique d’un bénéfice réciproque.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-neighbouring-plants-limited-resource-competition",
+                      "domain":  "offscope",
+                      "focus":  "Compétition",
+                      "reason":  "Relation générale entre plantes pour l’eau.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-ovule-seed-ovary-fruit-development",
+                      "domain":  "offscope",
+                      "focus":  "Ovule et ovaire",
+                      "reason":  "Formation générale graine/fruit, sans usage alimentaire ni actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-parasitism-benefits-parasite-harms-living-host",
+                      "domain":  "offscope",
+                      "focus":  "Parasitisme",
+                      "reason":  "Définition générale d’une interaction biologique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-phototropism-directional-growth-light",
+                      "domain":  "offscope",
+                      "focus":  "Phototropisme",
+                      "reason":  "Orientation générale des tiges par la lumière.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-phytochrome-perceives-red-far-red-signals",
+                      "domain":  "offscope",
+                      "focus":  "Phytochromes",
+                      "reason":  "Photorécepteurs généraux sans lien testé à la floraison du cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-plant-cellular-respiration-day-and-night",
+                      "domain":  "offscope",
+                      "focus":  "Respiration végétale",
+                      "reason":  "Fonctionnement général de jour et de nuit.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-plant-tissue-group-of-cells",
+                      "domain":  "offscope",
+                      "focus":  "Tissu végétal",
+                      "reason":  "Niveaux d’organisation cellulaire génériques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-plasma-membrane-phospholipid-bilayer",
+                      "domain":  "offscope",
+                      "focus":  "Membrane plasmique",
+                      "reason":  "Bicouche lipidique commune aux cellules.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-pollen-tube-delivers-male-gametes-to-ovule",
+                      "domain":  "offscope",
+                      "focus":  "Tube pollinique",
+                      "reason":  "Transport des gamètes commun aux plantes à fleurs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-population-conspecific-plants-same-area",
+                      "domain":  "offscope",
+                      "focus":  "Population écologique",
+                      "reason":  "Définition générale des niveaux écologiques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-root-downward-growth-response-gravity",
+                      "domain":  "offscope",
+                      "focus":  "Gravitropisme",
+                      "reason":  "Orientation racinaire générique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-rubisco-catalyses-calvin-carbon-fixation",
+                      "domain":  "offscope",
+                      "focus":  "Rubisco",
+                      "reason":  "Enzyme générale de fixation du carbone.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-seed-coat-protects-seed-contents",
+                      "domain":  "offscope",
+                      "focus":  "Tégument",
+                      "reason":  "Protection anatomique générale de la graine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-seed-dispersal-can-reduce-parent-competition",
+                      "domain":  "offscope",
+                      "focus":  "Dispersion",
+                      "reason":  "Intérêt écologique général de la dispersion des graines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-seed-embryo-is-young-plant",
+                      "domain":  "offscope",
+                      "focus":  "Embryon",
+                      "reason":  "Définition générale d’une jeune plante dans la graine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-starch-plant-carbohydrate-storage",
+                      "domain":  "offscope",
+                      "focus":  "Amidon végétal",
+                      "reason":  "Réserve cellulaire générale, pas nutrition du chènevis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-trophic-energy-transfer-dissipates-heat",
+                      "domain":  "offscope",
+                      "focus":  "Énergie trophique",
+                      "reason":  "Rendement énergétique général des chaînes alimentaires.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn02-water-cohesion-attraction-between-water-molecules",
+                      "domain":  "offscope",
+                      "focus":  "Cohésion de l’eau",
+                      "reason":  "Propriété physique générale de l’eau.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-alternative-splicing-one-gene-different-transcripts",
+                      "domain":  "offscope",
+                      "focus":  "Épissage alternatif",
+                      "reason":  "Maturation générique de l’ARN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-chromosome-dna-associated-proteins",
+                      "domain":  "offscope",
+                      "focus":  "Chromosome",
+                      "reason":  "Composition générale ADN-protéines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-coding-insertion-one-base-shifts-reading-frame",
+                      "domain":  "offscope",
+                      "focus":  "Cadre de lecture",
+                      "reason":  "Mutation générique d’une séquence codante.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-codon-three-rna-nucleotides",
+                      "domain":  "offscope",
+                      "focus":  "Codon",
+                      "reason":  "Unité générale de lecture de l’ARN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-base-order-encodes-information",
+                      "domain":  "offscope",
+                      "focus":  "Séquence d’ADN",
+                      "reason":  "Encodage général de l’information génétique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-carries-hereditary-instructions",
+                      "domain":  "offscope",
+                      "focus":  "ADN et hérédité",
+                      "reason":  "Support universel de l’hérédité végétale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-complementary-base-pairs-at-gc",
+                      "domain":  "offscope",
+                      "focus":  "Paires de bases",
+                      "reason":  "Complémentarité générale de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-double-helix-two-strands",
+                      "domain":  "offscope",
+                      "focus":  "Double hélice",
+                      "reason":  "Architecture générale de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-duplication-additional-segment-copy",
+                      "domain":  "offscope",
+                      "focus":  "Duplication génomique",
+                      "reason":  "Définition générale d’un gain de copie.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-four-canonical-bases-acgt",
+                      "domain":  "offscope",
+                      "focus":  "Bases de l’ADN",
+                      "reason":  "Alphabet moléculaire générique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-french-name-deoxyribonucleic-acid",
+                      "domain":  "offscope",
+                      "focus":  "Sigle ADN",
+                      "reason":  "Développement d’un sigle scientifique général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-methylation-adds-methyl-groups",
+                      "domain":  "offscope",
+                      "focus":  "Méthylation",
+                      "reason":  "Marque épigénétique sans résultat spécifique cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-polymerase-builds-new-dna-strand",
+                      "domain":  "offscope",
+                      "focus":  "ADN polymérase",
+                      "reason":  "Réplication générale de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-repair-can-correct-damage",
+                      "domain":  "offscope",
+                      "focus":  "Réparation de l’ADN",
+                      "reason":  "Correction générique d’erreurs de copie.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-replication-semiconservative-old-new-strand",
+                      "domain":  "offscope",
+                      "focus":  "Réplication",
+                      "reason":  "Conservation générale des brins parentaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-strands-antiparallel-orientation",
+                      "domain":  "offscope",
+                      "focus":  "Brins antiparallèles",
+                      "reason":  "Orientation chimique générale de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-dna-sugar-is-deoxyribose",
+                      "domain":  "offscope",
+                      "focus":  "Désoxyribose",
+                      "reason":  "Composition chimique générale de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-epigenetic-regulation-without-dna-sequence-change",
+                      "domain":  "offscope",
+                      "focus":  "Épigénétique",
+                      "reason":  "Définition sans caractère ni résultat cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-gene-functional-dna-region",
+                      "domain":  "offscope",
+                      "focus":  "Gène",
+                      "reason":  "Définition générale d’une région fonctionnelle d’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-genetic-code-several-codons-same-amino-acid",
+                      "domain":  "offscope",
+                      "focus":  "Code génétique",
+                      "reason":  "Redondance des codons commune aux organismes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-genetic-diversity-dna-differences-within-species",
+                      "domain":  "offscope",
+                      "focus":  "Diversité génétique",
+                      "reason":  "Principe général de variation des séquences.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-genetic-variants-can-have-no-observable-effect",
+                      "domain":  "offscope",
+                      "focus":  "Effets des variants",
+                      "reason":  "Conséquences générales d’une variation d’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-genome-entire-dna-set",
+                      "domain":  "offscope",
+                      "focus":  "Génome",
+                      "reason":  "Définition générale de l’ensemble de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-genome-size-not-simple-complexity-scale",
+                      "domain":  "offscope",
+                      "focus":  "Taille du génome",
+                      "reason":  "Comparaison générale taille-complexité biologique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-homologous-chromosomes-same-gene-loci",
+                      "domain":  "offscope",
+                      "focus":  "Chromosomes homologues",
+                      "reason":  "Organisation générale des loci et allèles.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-locus-physical-genomic-position",
+                      "domain":  "offscope",
+                      "focus":  "Locus",
+                      "reason":  "Vocabulaire génomique général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-many-genes-per-chromosome",
+                      "domain":  "offscope",
+                      "focus":  "Gènes par chromosome",
+                      "reason":  "Relation générale entre gènes et chromosomes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-mendel-garden-pea-model-for-inheritance",
+                      "domain":  "offscope",
+                      "focus":  "Mendel et le pois",
+                      "reason":  "Histoire de la génétique sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-mendelian-alleles-not-irreversibly-blended",
+                      "domain":  "offscope",
+                      "focus":  "Hérédité mendélienne",
+                      "reason":  "Transmission générique d’allèles distincts.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-missense-substitution-changes-amino-acid",
+                      "domain":  "offscope",
+                      "focus":  "Mutation faux-sens",
+                      "reason":  "Conséquence générale d’une substitution codante.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-nucleosome-dna-wrapped-around-histones",
+                      "domain":  "offscope",
+                      "focus":  "Nucléosome",
+                      "reason":  "Organisation générale de la chromatine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-nucleotide-building-block-dna",
+                      "domain":  "offscope",
+                      "focus":  "Nucléotide",
+                      "reason":  "Constituant général de l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-offspring-nuclear-genome-from-both-parents",
+                      "domain":  "offscope",
+                      "focus":  "Hérédité nucléaire",
+                      "reason":  "Contribution biparentale générale sans trait cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-rna-splicing-removes-introns-joins-exons",
+                      "domain":  "offscope",
+                      "focus":  "Épissage",
+                      "reason":  "Maturation générale de l’ARN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-rna-usually-single-stranded",
+                      "domain":  "offscope",
+                      "focus":  "ARN simple brin",
+                      "reason":  "Structure générale d’un acide nucléique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-sister-chromatids-replicated-chromosome-copies",
+                      "domain":  "offscope",
+                      "focus":  "Chromatides sœurs",
+                      "reason":  "Copies chromosomiques sans spécificité cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-stop-codon-terminates-polypeptide-synthesis",
+                      "domain":  "offscope",
+                      "focus":  "Codon stop",
+                      "reason":  "Signal UAG du code génétique standard.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-transcription-dna-to-rna-process",
+                      "domain":  "offscope",
+                      "focus":  "Transcription",
+                      "reason":  "Synthèse générique d’ARN à partir d’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-transfer-rna-delivers-amino-acids",
+                      "domain":  "offscope",
+                      "focus":  "ARN de transfert",
+                      "reason":  "Fonction générale d’adaptateur de traduction.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn03-transposable-element-mobile-dna",
+                      "domain":  "offscope",
+                      "focus":  "Éléments transposables",
+                      "reason":  "Définition générale de l’ADN mobile.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-aa-by-aa-homozygous-parents-all-heterozygous",
+                      "domain":  "offscope",
+                      "focus":  "Croisement mendélien",
+                      "reason":  "Exercice théorique AA/aa sans caractère cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-allele-advantage-depends-on-environment",
+                      "domain":  "offscope",
+                      "focus":  "Avantage sélectif",
+                      "reason":  "Relation générale entre allèle et environnement.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-allele-frequency-copies-denominator",
+                      "domain":  "offscope",
+                      "focus":  "Fréquence allélique",
+                      "reason":  "Calcul génétique fictif sans réalité cannabis actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-artificial-selection-human-choice-parents",
+                      "domain":  "offscope",
+                      "focus":  "Sélection artificielle",
+                      "reason":  "Définition générale appliquée au chanvre industriel.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-bottleneck-population-reduction-loss-diversity",
+                      "domain":  "offscope",
+                      "focus":  "Goulot d’étranglement",
+                      "reason":  "Effet démographique général sur les allèles.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-cannabis-genome-majority-transposable-derived-sequences",
+                      "domain":  "offscope",
+                      "focus":  "ADN répétitif du cannabis",
+                      "reason":  "Composition globale du génome sans lien aux actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-chromosomal-inversion-reverses-segment-orientation",
+                      "domain":  "offscope",
+                      "focus":  "Inversion chromosomique",
+                      "reason":  "Définition générale d’une variation structurale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-codominance-both-allelic-products-detectable",
+                      "domain":  "offscope",
+                      "focus":  "Codominance",
+                      "reason":  "Modèle génétique fictif sans trait cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-complete-dominance-heterozygote-phenotype",
+                      "domain":  "offscope",
+                      "focus":  "Dominance complète",
+                      "reason":  "Relations théoriques AA/Aa sans trait cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-evolution-populations-across-generations-not-growth",
+                      "domain":  "offscope",
+                      "focus":  "Évolution génétique",
+                      "reason":  "Définition générale du changement entre générations.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-evolutionary-fitness-relative-reproductive-contribution",
+                      "domain":  "offscope",
+                      "focus":  "Valeur sélective",
+                      "reason":  "Notion générale de succès reproducteur.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-founder-effect-few-colonists-biased-alleles",
+                      "domain":  "offscope",
+                      "focus":  "Effet fondateur",
+                      "reason":  "Modèle général d’échantillonnage d’allèles.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-gene-pool-all-alleles-population",
+                      "domain":  "offscope",
+                      "focus":  "Pool génétique",
+                      "reason":  "Définition générale des allèles d’une population.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-genetic-drift-random-frequency-change",
+                      "domain":  "offscope",
+                      "focus":  "Dérive génétique",
+                      "reason":  "Variation aléatoire générale des fréquences.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-heterosis-performance-above-midparent",
+                      "domain":  "offscope",
+                      "focus":  "Hétérosis",
+                      "reason":  "Performance hybride générale sans lignée à résine ni actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-heterozygote-segregates-two-alleles-equally",
+                      "domain":  "offscope",
+                      "focus":  "Ségrégation allélique",
+                      "reason":  "Probabilités mendéliennes générales.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-inbreeding-depression-recessive-deleterious-expression",
+                      "domain":  "offscope",
+                      "focus":  "Dépression de consanguinité",
+                      "reason":  "Mécanisme génétique général étudié sur le chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-inbreeding-mating-related-individuals",
+                      "domain":  "offscope",
+                      "focus":  "Consanguinité",
+                      "reason":  "Définition générale de la parenté des reproducteurs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-incomplete-dominance-intermediate-heterozygote",
+                      "domain":  "offscope",
+                      "focus":  "Dominance incomplète",
+                      "reason":  "Modèle fictif d’hétérozygote sans caractère cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-lynch-cannabis-local-duplications-not-recent-wgd",
+                      "domain":  "offscope",
+                      "focus":  "Duplications du génome",
+                      "reason":  "Évolution globale du génome sans caractère actif testé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-lynch-y-sdr-gene-poor-high-methylation",
+                      "domain":  "offscope",
+                      "focus":  "Région Y du cannabis",
+                      "reason":  "Cas limite : paysage épigénétique obscur, sans fleurs ni actifs testés.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-meiosis-one-homologs-two-sister-chromatids",
+                      "domain":  "offscope",
+                      "focus":  "Divisions méiotiques",
+                      "reason":  "Séparation chromosomique générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-meiosis-reduces-chromosome-set-number",
+                      "domain":  "offscope",
+                      "focus":  "Réduction méiotique",
+                      "reason":  "Nombre de jeux chromosomiques général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-microsatellite-short-dna-motif-tandem-repeats",
+                      "domain":  "offscope",
+                      "focus":  "Microsatellites",
+                      "reason":  "Définition générale d’un motif d’ADN répété.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-mutations-not-directed-by-organism-needs",
+                      "domain":  "offscope",
+                      "focus":  "Mutation et sélection",
+                      "reason":  "Principe général d’évolution non intentionnelle.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-natural-selection-heritable-differential-reproduction",
+                      "domain":  "offscope",
+                      "focus":  "Sélection naturelle",
+                      "reason":  "Mécanisme général de succès reproducteur différentiel.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-nearby-loci-lower-recombination-usually",
+                      "domain":  "offscope",
+                      "focus":  "Liaison génétique",
+                      "reason":  "Relation générale entre distance et recombinaison.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-noncoding-rna-can-regulate-gene-expression",
+                      "domain":  "offscope",
+                      "focus":  "ARN non codant",
+                      "reason":  "Fonction générale de régulation génique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-pleiotropy-one-gene-multiple-traits",
+                      "domain":  "offscope",
+                      "focus":  "Pléiotropie",
+                      "reason":  "Définition génétique sans caractère du cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-polygenic-trait-influenced-by-several-genes",
+                      "domain":  "offscope",
+                      "focus":  "Polygénie",
+                      "reason":  "Architecture génétique générale sans actif étudié.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-population-can-have-more-than-two-alleles-per-locus",
+                      "domain":  "offscope",
+                      "focus":  "Allèles d’une population",
+                      "reason":  "Distinction générale individu/population.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-promoter-region-initiates-transcription",
+                      "domain":  "offscope",
+                      "focus":  "Promoteur génique",
+                      "reason":  "Début général de la transcription.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-pseudogene-resembles-gene-lost-coding-capacity",
+                      "domain":  "offscope",
+                      "focus":  "Pseudogène",
+                      "reason":  "Définition génétique sans enzyme cannabinoïde testée.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-repeated-selfing-increases-homozygosity",
+                      "domain":  "offscope",
+                      "focus":  "Autofécondation répétée",
+                      "reason":  "Tendance générale à l’homozygotie végétale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-selection-response-requires-heritable-variation",
+                      "domain":  "offscope",
+                      "focus":  "Épistasie",
+                      "reason":  "Modèle génétique général sans caractère cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-self-fertilization-gametes-same-individual",
+                      "domain":  "offscope",
+                      "focus":  "Autofécondation",
+                      "reason":  "Définition générale de l’origine des gamètes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-snp-variant-at-one-base-position",
+                      "domain":  "offscope",
+                      "focus":  "SNP",
+                      "reason":  "Vocabulaire génomique général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-stabilizing-selection-favours-intermediate-phenotypes",
+                      "domain":  "offscope",
+                      "focus":  "Sélection stabilisante",
+                      "reason":  "Exemple fictif de tailles sans cannabis à actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-transcriptome-set-of-rna-transcripts",
+                      "domain":  "offscope",
+                      "focus":  "Transcriptome",
+                      "reason":  "Définition générale de l’ensemble des ARN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn04-ultraviolet-can-damage-dna-bases",
+                      "domain":  "offscope",
+                      "focus":  "Lésions UV",
+                      "reason":  "Dommages génériques à l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-aneuploidy-single-chromosome-gain-loss",
+                      "domain":  "offscope",
+                      "focus":  "Aneuploïdie",
+                      "reason":  "Nombre de chromosomes sans lien cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-arabidopsis-thaliana-plant-genetics-model",
+                      "domain":  "offscope",
+                      "focus":  "Arabidopsis",
+                      "reason":  "Plante modèle extérieure au sujet cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-cannabis-organelle-dna-maternal-lineage",
+                      "domain":  "offscope",
+                      "focus":  "ADN d’organites",
+                      "reason":  "Hérédité générale des organites du cannabis sans actif ni lignée décrite.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-cell-cycle-checkpoints-can-pause-progression",
+                      "domain":  "offscope",
+                      "focus":  "Point de contrôle G2",
+                      "reason":  "Surveillance générale du cycle cellulaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-centromere-spindle-attachment-region",
+                      "domain":  "offscope",
+                      "focus":  "Centromère",
+                      "reason":  "Attache générique du fuseau de division.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-chromosome-x-shape-not-permanent",
+                      "domain":  "offscope",
+                      "focus":  "Condensation chromosomique",
+                      "reason":  "Forme générale du chromosome au cours du cycle.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-crossing-over-occurs-prophase-one",
+                      "domain":  "offscope",
+                      "focus":  "Crossing-over",
+                      "reason":  "Étape générale des échanges méiotiques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-darwin-wallace-independent-natural-selection-formulation",
+                      "domain":  "offscope",
+                      "focus":  "Darwin et Wallace",
+                      "reason":  "Histoire de la biologie sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-dna-ligase-seals-backbone-breaks",
+                      "domain":  "offscope",
+                      "focus":  "ADN ligase",
+                      "reason":  "Enzyme générale de réplication.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-endosperm-two-maternal-one-paternal-genome",
+                      "domain":  "offscope",
+                      "focus":  "Albumen triploïde",
+                      "reason":  "Génétique générale des angiospermes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-eukaryotic-chromosomes-multiple-replication-origins",
+                      "domain":  "offscope",
+                      "focus":  "Origines de réplication",
+                      "reason":  "Copie générale des chromosomes eucaryotes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-flowering-plant-meiosis-directly-produces-spores",
+                      "domain":  "offscope",
+                      "focus":  "Spores méiotiques",
+                      "reason":  "Cycle général de reproduction des plantes à fleurs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-franklin-gosling-photograph-51",
+                      "domain":  "offscope",
+                      "focus":  "Photograph 51",
+                      "reason":  "Histoire de l’ADN sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-g-zero-living-cell-outside-division-cycle",
+                      "domain":  "offscope",
+                      "focus":  "Phase G0",
+                      "reason":  "État général du cycle cellulaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-genetic-code-nearly-universal-across-species",
+                      "domain":  "offscope",
+                      "focus":  "Code quasi universel",
+                      "reason":  "Principe général commun aux espèces.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-graft-composite-plant-retains-two-genotypes",
+                      "domain":  "offscope",
+                      "focus":  "Greffe du pommier",
+                      "reason":  "Question explicitement consacrée au pommier.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-helicase-separates-dna-strands",
+                      "domain":  "offscope",
+                      "focus":  "Hélicase",
+                      "reason":  "Enzyme générale ouvrant l’ADN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-independent-orientation-homologous-pairs-meiosis",
+                      "domain":  "offscope",
+                      "focus":  "Brassage interchromosomique",
+                      "reason":  "Orientation générale des homologues en méiose.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-lagging-strand-okazaki-fragments",
+                      "domain":  "offscope",
+                      "focus":  "Fragments d’Okazaki",
+                      "reason":  "Réplication moléculaire générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-mcclintock-mobile-elements-studied-in-maize",
+                      "domain":  "offscope",
+                      "focus":  "McClintock et le maïs",
+                      "reason":  "Histoire de la recherche sur le maïs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-meiosis-one-replication-two-nuclear-divisions",
+                      "domain":  "offscope",
+                      "focus":  "Organisation de la méiose",
+                      "reason":  "Chronologie générale réplication/divisions.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-microrna-complementarity-represses-target-message",
+                      "domain":  "offscope",
+                      "focus":  "MicroARN",
+                      "reason":  "Régulation générale des messages génétiques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-mitochondria-plastids-endosymbiotic-bacterial-origin",
+                      "domain":  "offscope",
+                      "focus":  "Endosymbiose",
+                      "reason":  "Origine générale des organites végétaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-mosaicism-genetically-different-cell-lineages-one-zygote",
+                      "domain":  "offscope",
+                      "focus":  "Mosaïcisme",
+                      "reason":  "Définition générale de lignées cellulaires distinctes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-nondisjunction-chromosomes-fail-to-separate",
+                      "domain":  "offscope",
+                      "focus":  "Non-disjonction",
+                      "reason":  "Erreur générale de répartition chromosomique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-nuclear-pores-control-rna-exchange",
+                      "domain":  "offscope",
+                      "focus":  "Pores nucléaires",
+                      "reason":  "Échanges cellulaires généraux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-organelle-proteins-nuclear-gene-dependence",
+                      "domain":  "offscope",
+                      "focus":  "Gènes mitochondriaux",
+                      "reason":  "Dépendance générale des organites envers le noyau.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-ortholog-speciation-paralog-duplication",
+                      "domain":  "offscope",
+                      "focus":  "Orthologues et paralogues",
+                      "reason":  "Vocabulaire général de l’évolution des gènes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-plant-cell-totipotency-whole-plant-capacity",
+                      "domain":  "offscope",
+                      "focus":  "Totipotence",
+                      "reason":  "Potentiel général des cellules végétales.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-plant-cytokinesis-cell-plate-partition",
+                      "domain":  "offscope",
+                      "focus":  "Cytocinèse végétale",
+                      "reason":  "Division cellulaire générale par plaque.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-plant-meristem-somatic-mutations-can-enter-gametes",
+                      "domain":  "offscope",
+                      "focus":  "Mutations somatiques",
+                      "reason":  "Transmission générale via les méristèmes végétaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-plant-organellar-rna-editing-c-to-u",
+                      "domain":  "offscope",
+                      "focus":  "Édition des ARN",
+                      "reason":  "Modification moléculaire générale des organites.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-poly-a-tail-protects-messenger-rna",
+                      "domain":  "offscope",
+                      "focus":  "Queue poly(A)",
+                      "reason":  "Protection générale de l’ARN messager.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-ribosomal-rna-catalytic-role",
+                      "domain":  "offscope",
+                      "focus":  "ARN ribosomique",
+                      "reason":  "Catalyse générale des liaisons peptidiques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-s-phase-chromosome-dna-replication",
+                      "domain":  "offscope",
+                      "focus":  "Phase S",
+                      "reason":  "Réplication générale du cycle cellulaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-seed-coat-maternal-tissue-genotype",
+                      "domain":  "offscope",
+                      "focus":  "Tégument maternel",
+                      "reason":  "Origine génétique générale de l’enveloppe de graine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-spindle-microtubules-distribute-chromosomes",
+                      "domain":  "offscope",
+                      "focus":  "Fuseau de division",
+                      "reason":  "Déplacement générique des chromosomes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-telomerase-built-in-rna-template",
+                      "domain":  "offscope",
+                      "focus":  "Télomérase",
+                      "reason":  "Matrice d’ARN dans une enzyme générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-telomeres-protect-linear-chromosome-ends",
+                      "domain":  "offscope",
+                      "focus":  "Télomères",
+                      "reason":  "Protection générale des extrémités chromosomiques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn05-watson-crick-dna-double-helix-model-1953",
+                      "domain":  "offscope",
+                      "focus":  "Watson et Crick",
+                      "reason":  "Histoire de l’ADN sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-agrobacterium-can-transfer-dna-into-plant-genome",
+                      "domain":  "offscope",
+                      "focus":  "Agrobacterium",
+                      "reason":  "Transfert bactérien d’ADN sans cannabis à actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-allele-fixation-frequency-one",
+                      "domain":  "offscope",
+                      "focus":  "Fixation allélique",
+                      "reason":  "Définition générale d’une fréquence de un.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-allopolyploid-combines-chromosome-sets-species",
+                      "domain":  "offscope",
+                      "focus":  "Origines de polyploïdie",
+                      "reason":  "Distinction générale allo/autopolyploïdie.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-aminoacyl-trna-synthetase-matches-amino-acid-trna",
+                      "domain":  "offscope",
+                      "focus":  "Charge des ARNt",
+                      "reason":  "Fidélité générale de la traduction.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-apomixis-seed-embryo-without-fertilization",
+                      "domain":  "offscope",
+                      "focus":  "Apomixie",
+                      "reason":  "Mécanisme non présenté comme habituel du cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-autosomes-chromosomes-other-than-sex-chromosomes",
+                      "domain":  "offscope",
+                      "focus":  "Autosome",
+                      "reason":  "Définition générale d’une catégorie chromosomique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-biological-species-fertile-viable-offspring",
+                      "domain":  "offscope",
+                      "focus":  "Concept d’espèce",
+                      "reason":  "Critère biologique général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-clade-common-ancestor-all-descendants",
+                      "domain":  "offscope",
+                      "focus":  "Clade",
+                      "reason":  "Définition générale d’ascendance monophylétique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-convergent-evolution-independent-similar-adaptations",
+                      "domain":  "offscope",
+                      "focus":  "Convergence évolutive",
+                      "reason":  "Ressemblances générales entre lignées.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-crispr-cas-natural-antiviral-defense",
+                      "domain":  "offscope",
+                      "focus":  "CRISPR-Cas",
+                      "reason":  "Défense bactérienne sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-directional-selection-favors-one-phenotypic-extreme",
+                      "domain":  "offscope",
+                      "focus":  "Sélection directionnelle",
+                      "reason":  "Exemple fictif de tailles de plantes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-dna-polymerase-replication-needs-primer",
+                      "domain":  "offscope",
+                      "focus":  "Amorce de réplication",
+                      "reason":  "Mécanisme général des polymérases.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-effective-population-size-differs-census",
+                      "domain":  "offscope",
+                      "focus":  "Taille efficace",
+                      "reason":  "Statistique générale des populations.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-endoreduplication-dna-replication-without-mitosis",
+                      "domain":  "offscope",
+                      "focus":  "Endoréplication",
+                      "reason":  "Variante générale du cycle cellulaire végétal.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-enhancer-can-regulate-transcription-from-distance",
+                      "domain":  "offscope",
+                      "focus":  "Enhancer",
+                      "reason":  "Régulation générique de la transcription.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-flowering-time-temporal-reproductive-isolation",
+                      "domain":  "offscope",
+                      "focus":  "Isolement temporel",
+                      "reason":  "Exemple général de barrière reproductive, sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-fusion-gene-parts-two-previously-separate-genes",
+                      "domain":  "offscope",
+                      "focus":  "Gène de fusion",
+                      "reason":  "Organisation génique générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-genomic-imprinting-parent-origin-allele-expression",
+                      "domain":  "offscope",
+                      "focus":  "Empreinte génomique",
+                      "reason":  "Expression parentale générale sans trait cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-genotype-environment-interaction-different-responses",
+                      "domain":  "offscope",
+                      "focus":  "Interaction génotype-milieu",
+                      "reason":  "Exercice numérique fictif sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-hardy-weinberg-heterozygote-frequency-two-p-q",
+                      "domain":  "offscope",
+                      "focus":  "Hardy-Weinberg",
+                      "reason":  "Formule générale de génétique des populations.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-heritability-population-variance-not-individual-percentage",
+                      "domain":  "offscope",
+                      "focus":  "Héritabilité",
+                      "reason":  "Interprétation statistique générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-heteroplasmy-multiple-mitochondrial-sequences-one-individual",
+                      "domain":  "offscope",
+                      "focus":  "Hétéroplasmie",
+                      "reason":  "Diversité générale des ADN mitochondriaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-heterozygote-advantage-maintains-two-alleles",
+                      "domain":  "offscope",
+                      "focus":  "Avantage hétérozygote",
+                      "reason":  "Modèle général de polymorphisme équilibré.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-histone-acetylation-generally-loosens-dna-binding",
+                      "domain":  "offscope",
+                      "focus":  "Acétylation des histones",
+                      "reason":  "Régulation générale de la chromatine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-johannsen-coined-word-gene",
+                      "domain":  "offscope",
+                      "focus":  "Origine du mot gène",
+                      "reason":  "Histoire générale du vocabulaire scientifique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-miescher-first-isolated-dna-nuclein",
+                      "domain":  "offscope",
+                      "focus":  "Miescher et la nucléine",
+                      "reason":  "Découverte de l’ADN sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-morgan-fruit-fly-classical-genetics-model",
+                      "domain":  "offscope",
+                      "focus":  "Morgan et la drosophile",
+                      "reason":  "Histoire de la génétique animale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-negative-frequency-dependent-selection-rare-advantage",
+                      "domain":  "offscope",
+                      "focus":  "Sélection et rareté",
+                      "reason":  "Modèle général dépendant de la fréquence.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-nucleolus-ribosomal-subunit-assembly",
+                      "domain":  "offscope",
+                      "focus":  "Nucléole",
+                      "reason":  "Assemblage générique des ribosomes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-operon-adjacent-genes-common-rna",
+                      "domain":  "offscope",
+                      "focus":  "Opéron bactérien",
+                      "reason":  "Organisation explicitement bactérienne.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-parthenocarpy-fruit-development-without-fertilization",
+                      "domain":  "offscope",
+                      "focus":  "Parthénocarpie",
+                      "reason":  "Développement général de fruits sans cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-phylogenetic-branch-point-common-ancestral-lineage",
+                      "domain":  "offscope",
+                      "focus":  "Arbre phylogénétique",
+                      "reason":  "Lecture générale des points de branchement.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-plant-rddm-small-rnas-guide-dna-methylation",
+                      "domain":  "offscope",
+                      "focus":  "RdDM",
+                      "reason":  "Méthylation végétale sans actif cannabis étudié.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-polyembryony-more-than-one-embryo-one-seed",
+                      "domain":  "offscope",
+                      "focus":  "Polyembryonie",
+                      "reason":  "Embryons végétaux sans lien spécifique cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-polysome-many-ribosomes-one-message",
+                      "domain":  "offscope",
+                      "focus":  "Polysome",
+                      "reason":  "Traduction générale des protéines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-reciprocal-translocation-nonhomologous-segment-exchange",
+                      "domain":  "offscope",
+                      "focus":  "Translocation",
+                      "reason":  "Remaniement chromosomique général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-retrotransposon-rna-intermediate-reverse-transcription",
+                      "domain":  "offscope",
+                      "focus":  "Rétrotransposon",
+                      "reason":  "Mobilité génomique générale via un ARN.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-sexual-selection-access-to-mates",
+                      "domain":  "offscope",
+                      "focus":  "Sélection sexuelle",
+                      "reason":  "Accès aux partenaires sans lien cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-transcription-factors-sequence-specific-regulatory-proteins",
+                      "domain":  "offscope",
+                      "focus":  "Facteur de transcription",
+                      "reason":  "Régulateurs généraux sans actif cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-cn06-ubiquitin-chain-proteasome-degradation-signal",
+                      "domain":  "offscope",
+                      "focus":  "Ubiquitine",
+                      "reason":  "Dégradation générale des protéines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d-asanoha-voeu-enfant",
+                      "domain":  "materials",
+                      "focus":  "Motif asanoha",
+                      "reason":  "Symbolique du chanvre sur les vêtements japonais.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d-chenevis-saveur-noix",
+                      "domain":  "food",
+                      "focus":  "Saveur du chènevis",
+                      "reason":  "Caractéristique gustative utile des graines alimentaires.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d-hmong-cire-reserve",
+                      "domain":  "materials",
+                      "focus":  "Teinture hmong",
+                      "reason":  "Technique textile du chanvre sur une pièce muséale.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d-kanepju-sviests-lettonie",
+                      "domain":  "food",
+                      "focus":  "Kaņepju sviests",
+                      "reason":  "Préparation culinaire traditionnelle lettone de chènevis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d-met-accessoire-pieds",
+                      "domain":  "materials",
+                      "focus":  "Sandales japonaises",
+                      "reason":  "Objet textile historique, rappel de catalogue assez étroit.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d-pain-proteines-elasticite",
+                      "domain":  "food",
+                      "focus":  "Pain à la farine de chanvre",
+                      "reason":  "Compromis entre enrichissement protéique et mie élastique.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d-rabelais-tiers-livre",
+                      "domain":  "materials",
+                      "focus":  "Pantagruélion de Rabelais",
+                      "reason":  "Histoire littéraire explicitement centrée sur les fibres.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d-sambe-rites-deuil",
+                      "domain":  "materials",
+                      "focus":  "Sambe et deuil",
+                      "reason":  "Usage rituel des vêtements de chanvre coréens.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d-shichimi-condiment",
+                      "domain":  "food",
+                      "focus":  "Shichimi",
+                      "reason":  "Usage culinaire identifiable des graines de chanvre.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d-siemieniotka-reveillon",
+                      "domain":  "food",
+                      "focus":  "Siemieniotka",
+                      "reason":  "Patrimoine culinaire silésien de graines de chanvre.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-abaca-eau-salee",
+                      "domain":  "offscope",
+                      "focus":  "Abaca maritime",
+                      "reason":  "Propriété de Musa textilis, pas de Cannabis sativa.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-acidite-peroxydes",
+                      "domain":  "food",
+                      "focus":  "Altération de l’huile",
+                      "reason":  "Mesures de conservation d’une huile alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-adn-rouissage",
+                      "domain":  "materials",
+                      "focus":  "ADN de fibres anciennes",
+                      "reason":  "Conservation génétique lors du rouissage textile, détail spécialisé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-antioxydants-compromis",
+                      "domain":  "food",
+                      "focus":  "Tocophérols et filtration",
+                      "reason":  "Résultat étroit de stockage d’une huile alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-beton-densite-chaleur",
+                      "domain":  "materials",
+                      "focus":  "Densité du béton de chanvre",
+                      "reason":  "Relation utile entre densité et isolation du matériau.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-beton-grands-pores",
+                      "domain":  "materials",
+                      "focus":  "Porosité du béton",
+                      "reason":  "Détail d’architecture poreuse d’une étude de matériau.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-beton-humidite-isolation",
+                      "domain":  "materials",
+                      "focus":  "Humidité et isolation",
+                      "reason":  "Effet de l’eau sur le pouvoir isolant du béton de chanvre.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-beton-projection",
+                      "domain":  "materials",
+                      "focus":  "Projection du béton",
+                      "reason":  "Reconnaissance d’un procédé de construction au chanvre.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-boisson-poudre-atomisation",
+                      "domain":  "food",
+                      "focus":  "Boisson de chènevis en poudre",
+                      "reason":  "Procédé précis d’un article alimentaire, peu prioritaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-chlorophylles-lumiere",
+                      "domain":  "food",
+                      "focus":  "Photooxydation de l’huile",
+                      "reason":  "Rôle des pigments dans la conservation de l’huile alimentaire.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-colorimetrie-clarte",
+                      "domain":  "offscope",
+                      "focus":  "Colorimétrie CIELAB",
+                      "reason":  "Sens générique de L*, le chanvre ne sert que d’exemple.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-composite-emissions-surface",
+                      "domain":  "materials",
+                      "focus":  "Émissions de composites",
+                      "reason":  "Mesure spécialisée d’un composite à fibres de chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-composite-profils-volatils",
+                      "domain":  "materials",
+                      "focus":  "Vieillissement chimique",
+                      "reason":  "Profil de furannes d’une étude de composites, rappel obscur.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-composite-sous-verre",
+                      "domain":  "materials",
+                      "focus":  "Composites automobiles",
+                      "reason":  "Milieu d’essai spécifique aux matériaux pour habitacle.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-composite-temoin-matrice",
+                      "domain":  "offscope",
+                      "focus":  "Interprétation d’un témoin",
+                      "reason":  "Raisonnement expérimental générique sans savoir propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-cordier-recul",
+                      "domain":  "materials",
+                      "focus":  "Atelier de corderie",
+                      "reason":  "Organisation concrète d’une corderie historique de chanvre.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-corps-lipidiques-emulsion",
+                      "domain":  "offscope",
+                      "focus":  "Émulsion de chènevis",
+                      "reason":  "Définition générique des phases huile/eau, aucun comportement propre au chènevis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-coton-emballage",
+                      "domain":  "materials",
+                      "focus":  "Emballage du coton",
+                      "reason":  "Débouché historique des toiles et cordages de chanvre.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-fibrilles-z-s",
+                      "domain":  "materials",
+                      "focus":  "Identification microscopique",
+                      "reason":  "Orientation fibrillaire chanvre/lin, détail très technique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-gel-synerese",
+                      "domain":  "offscope",
+                      "focus":  "Synérèse des gels",
+                      "reason":  "Définition générale de la synérèse, sans propriété propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-gouttes-coalescence",
+                      "domain":  "offscope",
+                      "focus":  "Coalescence des gouttes",
+                      "reason":  "Définition générale de la coalescence, sans résultat propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-gouttes-et-depot",
+                      "domain":  "food",
+                      "focus":  "Dépôt d’édestine",
+                      "reason":  "Résultat étroit d’une étude de boisson de graines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-huile-elements-icpms",
+                      "domain":  "food",
+                      "focus":  "Analyse élémentaire d’huile",
+                      "reason":  "Technique d’un article d’huile alimentaire, rappel instrumental.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-huile-filtration-oxydation",
+                      "domain":  "food",
+                      "focus":  "Filtration et conservation",
+                      "reason":  "Bilan particulier de stockage d’huile de chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-isolat-purete-rendement",
+                      "domain":  "offscope",
+                      "focus":  "Isolat protéique",
+                      "reason":  "Dénominateurs génériques de pureté/rendement, sans composition propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-isolats-milieu-acide",
+                      "domain":  "food",
+                      "focus":  "Solubilité des isolats",
+                      "reason":  "Résultat chiffré d’un article de formulation alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-kentucky-travail-asservi",
+                      "domain":  "materials",
+                      "focus":  "Esclavage au Kentucky",
+                      "reason":  "Histoire sociale de la production de fibres et cordages.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-lysine-limitante",
+                      "domain":  "food",
+                      "focus":  "Lysine limitante",
+                      "reason":  "Qualité nutritionnelle des protéines du chanvre.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-machine-annonce-adoption",
+                      "domain":  "materials",
+                      "focus":  "Machines à chanvre historiques",
+                      "reason":  "Diffusion réelle d’inventions textiles, thème spécialisé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-manille-abaca",
+                      "domain":  "offscope",
+                      "focus":  "Chanvre de Manille",
+                      "reason":  "Identification de l’abaca, une autre plante.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-oleosome-monocouche",
+                      "domain":  "food",
+                      "focus":  "Oléosomes du chènevis",
+                      "reason":  "Microstructure de l’huile de graine, détail spécialisé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-pollen-preuve-textile",
+                      "domain":  "materials",
+                      "focus":  "Preuve archéologique textile",
+                      "reason":  "Limite des indices de fabrication textile ancienne.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-poudres-moussage",
+                      "domain":  "offscope",
+                      "focus":  "Significativité statistique",
+                      "reason":  "Interprétation universelle de p supérieur à 0,05.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-proteines-dosage-azote",
+                      "domain":  "offscope",
+                      "focus":  "Dosage des protéines",
+                      "reason":  "Principe général du dosage Dumas, sans composition propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-proteines-interface-emulsion",
+                      "domain":  "offscope",
+                      "focus":  "Protéines émulsifiantes",
+                      "reason":  "Mécanisme général des protéines émulsifiantes, chanvre simple support.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d01-textiles-fins-scandinaves",
+                      "domain":  "materials",
+                      "focus":  "Étoffes fines scandinaves",
+                      "reason":  "Diversité historique des textiles de chanvre, fait parlant.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-beverage-controlled-fermentation-starter",
+                      "domain":  "offscope",
+                      "focus":  "Ferment alimentaire",
+                      "reason":  "Définition générique d’une culture de départ.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-beverage-fermentation-acids-lower-ph",
+                      "domain":  "offscope",
+                      "focus":  "Acidification et pH",
+                      "reason":  "Relation chimique générale, chanvre décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-beverage-nutrition-panel-not-name",
+                      "domain":  "offscope",
+                      "focus":  "Lecture nutritionnelle",
+                      "reason":  "Choix universel du tableau nutritionnel pour comparer des produits.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-bread-maillard-reducing-sugar-amino",
+                      "domain":  "offscope",
+                      "focus":  "Réaction de Maillard",
+                      "reason":  "Réactifs généraux du brunissement, sans particularité chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-bread-staling-starch-retrogradation",
+                      "domain":  "offscope",
+                      "focus":  "Rassissement du pain",
+                      "reason":  "Rétrogradation de l’amidon des céréales, pas fait chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-corn-extrudate-expansion-diameter-ratio",
+                      "domain":  "offscope",
+                      "focus":  "Expansion des snacks",
+                      "reason":  "Définition géométrique d’un indice expérimental, sans composition propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-dehulling-fibre-down-protein-concentrated",
+                      "domain":  "food",
+                      "focus":  "Décorticage et nutriments",
+                      "reason":  "Différences de composition utiles entre formes alimentaires du chènevis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-food-glycerol-humectant-moisture",
+                      "domain":  "offscope",
+                      "focus":  "Glycérol humectant",
+                      "reason":  "Fonction générique d’un additif alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-food-powder-silica-anticaking",
+                      "domain":  "offscope",
+                      "focus":  "Silice antiagglomérante",
+                      "reason":  "Fonction générique d’un additif de poudre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-oil-finishing-rather-than-frying",
+                      "domain":  "food",
+                      "focus":  "Usage de l’huile de chènevis",
+                      "reason":  "Choix culinaire concret pour une huile non raffinée.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-oil-phytosterols-unsaponifiable-fraction",
+                      "domain":  "food",
+                      "focus":  "Phytostérols de l’huile",
+                      "reason":  "Constituants propres de l’huile de chanvre étudiée.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-pasta-cooking-endpoint-white-core",
+                      "domain":  "food",
+                      "focus":  "Cuisson de pâtes au chanvre",
+                      "reason":  "Repère précis d’une étude alimentaire, faible intérêt prioritaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-pasta-cooking-loss-dry-solids",
+                      "domain":  "offscope",
+                      "focus":  "Pertes à la cuisson",
+                      "reason":  "Définition générique d’une mesure pour toutes les pâtes.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-pasta-hedonic-test-consumer-liking",
+                      "domain":  "offscope",
+                      "focus":  "Échelle hédonique",
+                      "reason":  "Définition générale de l’appréciation sensorielle.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-pasta-stickiness-amylose-leaching",
+                      "domain":  "offscope",
+                      "focus":  "Amylose des pâtes",
+                      "reason":  "Fait sur l’amidon de la céréale, pas sur le chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-seed-coating-instead-wheat-breadcrumbs",
+                      "domain":  "food",
+                      "focus":  "Graines en enrobage",
+                      "reason":  "Usage culinaire concret des graines de chanvre.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-snack-equal-mass-larger-volume-lower-density",
+                      "domain":  "offscope",
+                      "focus":  "Masse volumique",
+                      "reason":  "Exercice universel masse/volume, chanvre décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-wheat-bread-gluten-gas-retention",
+                      "domain":  "offscope",
+                      "focus":  "Réseau de gluten",
+                      "reason":  "Fonction du gluten du blé sans fait propre au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-hemp-wheat-partial-substitution-still-gluten",
+                      "domain":  "food",
+                      "focus":  "Chanvre et gluten",
+                      "reason":  "Absence de gluten du chanvre et limites d’un mélange au blé.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-himalayan-bhang-bhangeera-distinct-seeds",
+                      "domain":  "food",
+                      "focus":  "Chutneys himalayens",
+                      "reason":  "Différenciation de préparations locales chanvre/périlla.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kaddu-meethi-hemp-pumpkin-chutney",
+                      "domain":  "food",
+                      "focus":  "Chutney chanvre-courge",
+                      "reason":  "Composition d’un plat traditionnel, détail d’enquête.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kanapiu-rasalas-hemp-milk-herring-onion",
+                      "domain":  "food",
+                      "focus":  "Kanapių rasalas",
+                      "reason":  "Association traditionnelle du chanvre et du hareng.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kanepju-sviests-butter-name-spreadable-use",
+                      "domain":  "food",
+                      "focus":  "Nom de kaņepju sviests",
+                      "reason":  "Consistance de la pâte de chanvre, sujet déjà très décliné.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kanepju-sviests-historical-butter-substitute",
+                      "domain":  "food",
+                      "focus":  "Substitut rural du beurre",
+                      "reason":  "Rôle historique alimentaire de la pâte de chènevis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kanepju-sviests-interwar-poverty-association",
+                      "domain":  "food",
+                      "focus":  "Image sociale de la pâte",
+                      "reason":  "Histoire alimentaire lettone, détail secondaire du même plat.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kanepju-sviests-portable-work-provision",
+                      "domain":  "food",
+                      "focus":  "Pâte de chanvre à emporter",
+                      "reason":  "Usage rural de la pâte, variante secondaire du même sujet.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-kanepju-sviests-traditional-mortar-pestle",
+                      "domain":  "food",
+                      "focus":  "Pilonnage traditionnel",
+                      "reason":  "Fabrication d’une pâte de graines, détail du même plat.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-nimbu-saani-hemp-curd-ingredient",
+                      "domain":  "food",
+                      "focus":  "Nimbu ke saani",
+                      "reason":  "Ingrédient laitier d’une recette au chanvre, rappel étroit.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-opened-hemp-seeds-airtight-cold-storage",
+                      "domain":  "food",
+                      "focus":  "Conservation des graines",
+                      "reason":  "Rangement utile des graines alimentaires après ouverture.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-samogitia-hemp-food-regional-heritage",
+                      "domain":  "food",
+                      "focus":  "Patrimoine samogitien",
+                      "reason":  "Origine régionale des plats au chanvre lituaniens.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-siemieniotka-grey-dark-seed-flecks",
+                      "domain":  "food",
+                      "focus":  "Aspect de la siemieniotka",
+                      "reason":  "Détail visuel d’une soupe déjà très déclinée.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-siemieniotka-sieve-keeps-hemp-liquid",
+                      "domain":  "food",
+                      "focus":  "Tamisage de la soupe",
+                      "reason":  "Geste culinaire d’une recette déjà très déclinée.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-siemieniotka-thickened-ground-millet",
+                      "domain":  "food",
+                      "focus":  "Millet de la siemieniotka",
+                      "reason":  "Ingrédient secondaire d’une recette de soupe de chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-spirgyne-dry-fast-excluded-dairy",
+                      "domain":  "food",
+                      "focus":  "Jeûne et spirgynė",
+                      "reason":  "Contexte historique de consommation d’un plat au chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-spirgyne-linseed-alternative-to-hempseed",
+                      "domain":  "food",
+                      "focus":  "Variante au lin",
+                      "reason":  "Autre graine dans une recette, intérêt chanvre indirect.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-spirgyne-served-with-skin-on-potatoes",
+                      "domain":  "food",
+                      "focus":  "Spirgynė et pommes de terre",
+                      "reason":  "Association culinaire traditionnelle de graines de chanvre.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-traditional-shichimi-whole-unhulled-hempseed",
+                      "domain":  "food",
+                      "focus":  "Chanvre du shichimi",
+                      "reason":  "Forme entière des graines dans un condiment identifié.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-us-hemp-bar-honey-counts-added-sugars",
+                      "domain":  "offscope",
+                      "focus":  "Étiquetage du miel",
+                      "reason":  "Règle sur les sucres du miel sans particularité chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-us-ingredient-list-descending-mass-hemp-drink",
+                      "domain":  "offscope",
+                      "focus":  "Ordre des ingrédients",
+                      "reason":  "Exercice fictif d’étiquetage américain, sans fait chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d04-wheat-hemp-dough-damaged-starch-water-binding",
+                      "domain":  "offscope",
+                      "focus":  "Amidon de blé endommagé",
+                      "reason":  "Question explicite sur l’amidon du blé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-amylase-breaks-down-starch",
+                      "domain":  "offscope",
+                      "focus":  "Amylase",
+                      "reason":  "Cible enzymatique générale de l’amidon des céréales.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+                      "domain":  "offscope",
+                      "focus":  "Poudre à lever",
+                      "reason":  "Réaction acide-bicarbonate générique en pâtisserie.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-baking-soda-leavening-rise",
+                      "domain":  "offscope",
+                      "focus":  "Bicarbonate",
+                      "reason":  "Fonction générale d’un agent levant.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-bread-yeast-fermentation-carbon-dioxide",
+                      "domain":  "offscope",
+                      "focus":  "Levure boulangère",
+                      "reason":  "Production générique de CO2 par fermentation.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+                      "domain":  "offscope",
+                      "focus":  "Caramélisation",
+                      "reason":  "Transformation générale du sucre de l’enrobage.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-cold-pressed-hemp-oil-mechanical-no-added-heat",
+                      "domain":  "food",
+                      "focus":  "Pressage à froid",
+                      "reason":  "Principe de fabrication de l’huile alimentaire de chanvre.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-cold-pressed-oil-may-be-filtered",
+                      "domain":  "food",
+                      "focus":  "Huile filtrée",
+                      "reason":  "Distinction utile entre pressage à froid et filtration.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-edible-oil-bleaching-adsorbent-clays",
+                      "domain":  "offscope",
+                      "focus":  "Décoloration des huiles",
+                      "reason":  "Raffinage générique sans chanvre dans le fait testé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-edible-oil-degumming-phospholipids",
+                      "domain":  "offscope",
+                      "focus":  "Dégommage",
+                      "reason":  "Fraction visée dans toutes les huiles de graines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-edible-oil-deodorization-steam-stripping",
+                      "domain":  "offscope",
+                      "focus":  "Désodorisation",
+                      "reason":  "Mécanisme générique de raffinage alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-edible-oil-winterization-removes-cold-crystals",
+                      "domain":  "offscope",
+                      "focus":  "Winterisation",
+                      "reason":  "Séparation générale des cires, aucun fait chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-essential-amino-acids-dietary-supply",
+                      "domain":  "offscope",
+                      "focus":  "Acides aminés essentiels",
+                      "reason":  "Définition nutritionnelle générale sans profil du chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-fat-higher-energy-per-gram-protein-carbohydrate",
+                      "domain":  "offscope",
+                      "focus":  "Énergie des macronutriments",
+                      "reason":  "Facteurs caloriques génériques, chanvre décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-food-texture-chewiness-work-to-swallow",
+                      "domain":  "offscope",
+                      "focus":  "Mâchabilité",
+                      "reason":  "Définition d’une propriété générale de texture.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-food-texture-springiness-recovery",
+                      "domain":  "offscope",
+                      "focus":  "Élasticité alimentaire",
+                      "reason":  "Définition générique de la reprise de forme.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-freeze-drying-ice-directly-to-vapour",
+                      "domain":  "offscope",
+                      "focus":  "Lyophilisation",
+                      "reason":  "Changement d’état de l’eau sans chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hemp-cake-tempeh-filamentous-fungus",
+                      "domain":  "food",
+                      "focus":  "Tourteau fermenté",
+                      "reason":  "Microorganisme d’une étude sur un aliment de chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hemp-gnocchi-potato-base",
+                      "domain":  "offscope",
+                      "focus":  "Gnocchis au chanvre",
+                      "reason":  "Base de pomme de terre des gnocchis, pas un fait sur le chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+                      "domain":  "offscope",
+                      "focus":  "Cuisson des gnocchis",
+                      "reason":  "Repère générique de cuisson des gnocchis, sans effet testé du chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hemp-pesto-herbs-seeds-oil-sauce",
+                      "domain":  "food",
+                      "focus":  "Pesto au chènevis",
+                      "reason":  "Usage culinaire identifiable des graines dans une sauce.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hemp-pesto-parmesan-not-vegan",
+                      "domain":  "offscope",
+                      "focus":  "Parmesan non végétalien",
+                      "reason":  "Origine animale du fromage, chanvre décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hemp-tofu-like-gel-protein-network",
+                      "domain":  "food",
+                      "focus":  "Tofu de chanvre",
+                      "reason":  "Nature protéique d’un produit alimentaire de graines.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-hempseed-magnesium-mineral-nutrient",
+                      "domain":  "offscope",
+                      "focus":  "Magnésium minéral",
+                      "reason":  "Classement général d’un nutriment, sans teneur du chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-high-moisture-extrusion-fibrous-food-structure",
+                      "domain":  "food",
+                      "focus":  "Substitut de viande",
+                      "reason":  "Transformation de protéines chanvre-soja en texture fibreuse.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-ice-cream-water-forms-ice-crystals",
+                      "domain":  "offscope",
+                      "focus":  "Cristaux de glace",
+                      "reason":  "L’eau gèle : fait universel sans chanvre utile.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-ice-cream-whipping-incorporates-air",
+                      "domain":  "offscope",
+                      "focus":  "Foisonnement",
+                      "reason":  "Définition générale d’incorporation d’air.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-oleogel-liquid-oil-immobilized-network",
+                      "domain":  "food",
+                      "focus":  "Oléogel de chènevis",
+                      "reason":  "Forme structurée d’une huile alimentaire, sujet technique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-pasteurization-targets-pathogenic-microorganisms",
+                      "domain":  "offscope",
+                      "focus":  "Pasteurisation",
+                      "reason":  "Objectif sanitaire général sans spécificité chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-potassium-sorbate-antimicrobial-function",
+                      "domain":  "offscope",
+                      "focus":  "Sorbate",
+                      "reason":  "Fonction générique d’un conservateur alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-protease-cuts-proteins-peptides",
+                      "domain":  "offscope",
+                      "focus":  "Protéase",
+                      "reason":  "Définition enzymatique générale, chanvre simple support.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-protein-denaturation-shape-not-primary-sequence",
+                      "domain":  "offscope",
+                      "focus":  "Dénaturation protéique",
+                      "reason":  "Transformation générale des protéines par chauffage.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-rancid-hemp-seeds-discard",
+                      "domain":  "food",
+                      "focus":  "Graines rances",
+                      "reason":  "Qualité et geste de conservation alimentaires concrets.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-seed-cleaning-before-oil-extraction",
+                      "domain":  "food",
+                      "focus":  "Nettoyage des graines",
+                      "reason":  "Étape de préparation du chènevis avant pressage, assez générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-starch-gelatinization-water-and-heat",
+                      "domain":  "offscope",
+                      "focus":  "Gélatinisation de l’amidon",
+                      "reason":  "Transformation céréalière générale dans un mélange au blé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-traditional-tempeh-soybean-base",
+                      "domain":  "offscope",
+                      "focus":  "Tempeh de soja",
+                      "reason":  "Ingrédient traditionnel du soja, pas un fait chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-triacylglycerol-glycerol-three-fatty-acids",
+                      "domain":  "offscope",
+                      "focus":  "Triglycéride",
+                      "reason":  "Structure chimique générale des lipides de graines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-viscosity-resistance-to-flow",
+                      "domain":  "offscope",
+                      "focus":  "Viscosité",
+                      "reason":  "Définition physique générale de l’écoulement.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-vitamin-e-fat-soluble",
+                      "domain":  "offscope",
+                      "focus":  "Vitamine E liposoluble",
+                      "reason":  "Classement général d’une vitamine, sans profil chanvre testé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-water-activity-not-total-moisture",
+                      "domain":  "offscope",
+                      "focus":  "Activité de l’eau",
+                      "reason":  "Notion générale d’hygiène alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-d05-xanthan-thickener-food-texture",
+                      "domain":  "offscope",
+                      "focus":  "Xanthane",
+                      "reason":  "Fonction générale d’un épaississant.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-accreditation-specific-scope-competence",
+                      "domain":  "offscope",
+                      "focus":  "Accréditation",
+                      "reason":  "Statut général d’un laboratoire, aucun composé cannabis testé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-analytical-selectivity-interfering-components",
+                      "domain":  "offscope",
+                      "focus":  "Sélectivité analytique",
+                      "reason":  "Définition générale d’une performance de méthode.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-barcode-prefix-not-country-of-manufacture",
+                      "domain":  "offscope",
+                      "focus":  "Préfixe GS1",
+                      "reason":  "Code-barres et origine géographique génériques.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-below-quantification-not-zero",
+                      "domain":  "offscope",
+                      "focus":  "Limite de quantification",
+                      "reason":  "Lecture analytique générale sans contaminant propre au cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-best-before-quality-date",
+                      "domain":  "offscope",
+                      "focus":  "DDM",
+                      "reason":  "Signification générale d’une date alimentaire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-biosourced-material-from-biomass",
+                      "domain":  "offscope",
+                      "focus":  "Biosourcé",
+                      "reason":  "Définition générale de l’origine de matière, sans propriété chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-bold-ingredient-highlights-allergen",
+                      "domain":  "offscope",
+                      "focus":  "Allergène lait",
+                      "reason":  "Règle d’étiquetage du lait, pas du chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-calibration-relates-response-to-analyte",
+                      "domain":  "offscope",
+                      "focus":  "Étalonnage",
+                      "reason":  "Relation générale signal-concentration.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-chromatographic-retention-time-peak-maximum",
+                      "domain":  "offscope",
+                      "focus":  "Temps de rétention",
+                      "reason":  "Définition instrumentale générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-colony-forming-units-culturable-microorganisms",
+                      "domain":  "offscope",
+                      "focus":  "UFC",
+                      "reason":  "Définition générale du dénombrement microbiologique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-cosmetic-pao-open-jar-months",
+                      "domain":  "offscope",
+                      "focus":  "Pot ouvert cosmétique",
+                      "reason":  "Pictogramme générique, huile de graine sans actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-e-number-identifies-food-additive",
+                      "domain":  "offscope",
+                      "focus":  "Numéro E",
+                      "reason":  "Nomenclature générale des additifs alimentaires.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-emark-batch-average-quantity",
+                      "domain":  "offscope",
+                      "focus":  "Signe ℮",
+                      "reason":  "Régime générique des quantités préemballées.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-freezing-not-sterilisation",
+                      "domain":  "offscope",
+                      "focus":  "Congélation",
+                      "reason":  "Survie bactérienne générale des aliments.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-glass-fork-food-contact-not-universal-heat",
+                      "domain":  "offscope",
+                      "focus":  "Verre et fourchette",
+                      "reason":  "Pictogramme de contact alimentaire générique.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-inci-common-ingredient-names",
+                      "domain":  "offscope",
+                      "focus":  "INCI",
+                      "reason":  "Nomenclature cosmétique générale sans composé actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-industrial-compost-not-home-conditions",
+                      "domain":  "offscope",
+                      "focus":  "Compostage industriel",
+                      "reason":  "Conditions générales de compostage, chanvre décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-label-salt-calculated-from-total-sodium",
+                      "domain":  "offscope",
+                      "focus":  "Sel et sodium",
+                      "reason":  "Calcul nutritionnel réglementaire général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-lot-code-traces-manufacturing-batch",
+                      "domain":  "offscope",
+                      "focus":  "Numéro de lot",
+                      "reason":  "Traçabilité générale d’un produit.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-mass-analysis-ions-mass-to-charge",
+                      "domain":  "offscope",
+                      "focus":  "Spectrométrie de masse",
+                      "reason":  "Principe général de séparation des ions.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-mass-percent-grams-per-hundred-grams",
+                      "domain":  "offscope",
+                      "focus":  "Pourcentage massique",
+                      "reason":  "Exercice arithmétique élémentaire sans savoir chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-matrix-effect-other-sample-components",
+                      "domain":  "offscope",
+                      "focus":  "Effet de matrice",
+                      "reason":  "Interférence analytique générale sans cannabinoïde ciblé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-may-contain-unintended-allergen-contact",
+                      "domain":  "offscope",
+                      "focus":  "Traces de lait",
+                      "reason":  "Étiquetage générique d’un allergène extérieur.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-method-blank-detects-procedure-contamination",
+                      "domain":  "offscope",
+                      "focus":  "Blanc analytique",
+                      "reason":  "Contrôle expérimental général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-millilitres-measure-product-volume",
+                      "domain":  "offscope",
+                      "focus":  "Unité millilitre",
+                      "reason":  "Unité universelle de volume, pas fait cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-mycotoxins-produced-by-fungi",
+                      "domain":  "offscope",
+                      "focus":  "Mycotoxines",
+                      "reason":  "Définition générale de contaminants sans lien propre au cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-net-content-excludes-packaging",
+                      "domain":  "offscope",
+                      "focus":  "Masse nette",
+                      "reason":  "Lecture générique du poids d’emballage.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-nutriscore-nutrition-not-processing",
+                      "domain":  "offscope",
+                      "focus":  "Nutri-Score",
+                      "reason":  "Portée générale d’un logo nutritionnel.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-nutrition-energy-kj-kcal-same-quantity",
+                      "domain":  "offscope",
+                      "focus":  "Unités d’énergie",
+                      "reason":  "Relation générique kJ/kcal, chanvre décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-opened-food-secondary-shelf-life",
+                      "domain":  "offscope",
+                      "focus":  "Conservation après ouverture",
+                      "reason":  "Consigne générale d’un aliment ouvert.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-per-100g-nutrient-comparison",
+                      "domain":  "offscope",
+                      "focus":  "Comparaison pour 100 g",
+                      "reason":  "Méthode générale de lecture nutritionnelle.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-plastic-resin-code-identifies-material",
+                      "domain":  "offscope",
+                      "focus":  "Code PET",
+                      "reason":  "Résine plastique du flacon, pas matériau de chanvre.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-precision-distinct-from-trueness",
+                      "domain":  "offscope",
+                      "focus":  "Fidélité et justesse",
+                      "reason":  "Métrologie générale, aucun analyte cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-proficiency-test-compares-laboratories",
+                      "domain":  "offscope",
+                      "focus":  "Essai interlaboratoires",
+                      "reason":  "Évaluation générique des performances de laboratoire.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-reference-material-checks-measurements",
+                      "domain":  "offscope",
+                      "focus":  "Matériau de référence",
+                      "reason":  "Usage métrologique général, pas de teneur cannabinoïde testée.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-repeatability-same-measurement-conditions",
+                      "domain":  "offscope",
+                      "focus":  "Répétabilité",
+                      "reason":  "Conditions générales de répétition de mesure.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-representative-sampling-heterogeneous-lot",
+                      "domain":  "offscope",
+                      "focus":  "Échantillonnage",
+                      "reason":  "Représentativité générale d’un lot agricole.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-spike-recovery-analytical-check",
+                      "domain":  "offscope",
+                      "focus":  "Récupération analytique",
+                      "reason":  "Calcul fictif d’un pourcentage de récupération.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-tamper-evident-seal-signals-opening",
+                      "domain":  "offscope",
+                      "focus":  "Bague de première ouverture",
+                      "reason":  "Fonction générique d’un emballage.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en01-unit-price-compares-package-sizes",
+                      "domain":  "offscope",
+                      "focus":  "Prix au kilogramme",
+                      "reason":  "Comparaison commerciale générale de formats.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-adverse-event-reporting-portal",
+                      "domain":  "active",
+                      "focus":  "Vigilance CBD",
+                      "reason":  "Signalement d’effets indésirables de produits CBD en France.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-alcohol-cannabis-impairment",
+                      "domain":  "active",
+                      "focus":  "Cannabis et alcool",
+                      "reason":  "Altération accrue des capacités par l’association.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-breastmilk-persistent-exposure",
+                      "domain":  "active",
+                      "focus":  "THC et allaitement",
+                      "reason":  "Réservoir lipidique et persistance d’exposition au THC.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-canada-border-domestic-legal",
+                      "domain":  "active",
+                      "focus":  "Frontière canadienne",
+                      "reason":  "Limites de circulation du cannabis récréatif acheté légalement.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cannabinoid-hyperemesis",
+                      "domain":  "active",
+                      "focus":  "Hyperémèse cannabinoïde",
+                      "reason":  "Syndrome spécifiquement lié à l’usage de cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cannabinoid-supportive-care",
+                      "domain":  "active",
+                      "focus":  "Médicaments cannabinoïdes",
+                      "reason":  "Indication de soins de support du dronabinol/nabilone.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cbd-adulterated-substances",
+                      "domain":  "active",
+                      "focus":  "CBD adultéré",
+                      "reason":  "Alerte sur des cannabinoïdes non déclarés dans des produits CBD.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cbd-liver-risk",
+                      "domain":  "active",
+                      "focus":  "CBD et foie",
+                      "reason":  "Risque hépatique documenté du cannabidiol.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cbd-medication-review",
+                      "domain":  "active",
+                      "focus":  "Interactions du CBD",
+                      "reason":  "Vérification professionnelle d’une association médicamenteuse.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cell-study-not-cancer-cure",
+                      "domain":  "active",
+                      "focus":  "Cannabinoïdes et cancer",
+                      "reason":  "Limites des promesses anticancer fondées sur des cellules.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-cjc-parents-alone",
+                      "domain":  "active",
+                      "focus":  "Aide aux proches",
+                      "reason":  "Accès des parents à une consultation pour un jeune consommateur.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-csapa-multidisciplinary",
+                      "domain":  "active",
+                      "focus":  "Accompagnement du cannabis",
+                      "reason":  "Cas limite : équipe d’addictologie commune aux substances, utile à l’aide cannabis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-driving-reaction",
+                      "domain":  "active",
+                      "focus":  "Effets sur la conduite",
+                      "reason":  "Réactions et décisions altérées par le cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-drug-helpline-anonymous-free",
+                      "domain":  "active",
+                      "focus":  "Écoute pour consommation",
+                      "reason":  "Cas limite : service multistupéfiants, orientation concrète d’un usager cannabis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-early-frequent-psychosis-association",
+                      "domain":  "active",
+                      "focus":  "Risque psychotique",
+                      "reason":  "Association cannabis-schizophrénie selon âge et fréquence.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-edible-onset-duration",
+                      "domain":  "active",
+                      "focus":  "Effets des edibles THC",
+                      "reason":  "Délai et durée propres au cannabis ingéré.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-events-versus-cases",
+                      "domain":  "active",
+                      "focus":  "Vigilance du cannabis",
+                      "reason":  "Cas limite : comptage cas/symptômes d’un bilan cannabis, intérêt méthodologique étroit.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-fda-approved-cbd-product-type",
+                      "domain":  "active",
+                      "focus":  "CBD pharmaceutique",
+                      "reason":  "Indications autorisées d’un médicament au cannabidiol.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-france-accompanying-driver",
+                      "domain":  "active",
+                      "focus":  "Cannabis et conduite accompagnée",
+                      "reason":  "Cas limite : règle commune aux stupéfiants applicable à l’accompagnateur.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-france-cbd-driving-no-exemption",
+                      "domain":  "active",
+                      "focus":  "CBD et contrôle routier",
+                      "reason":  "Vente autorisée de CBD sans exemption de l’infraction THC.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-france-emergency-unconsciousness",
+                      "domain":  "active",
+                      "focus":  "Intoxication CBD",
+                      "reason":  "Conduite d’urgence précisée dans l’alerte CBD des autorités.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-france-screening-confirmation",
+                      "domain":  "active",
+                      "focus":  "Vérification routière",
+                      "reason":  "Procédure du dépistage de stupéfiants pertinente au cannabis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-france-vaping-under18",
+                      "domain":  "active",
+                      "focus":  "CBD vapoté et mineurs",
+                      "reason":  "Règle de vente et d’offre des produits de vapotage CBD.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-higher-thc-poisoning-risk",
+                      "domain":  "active",
+                      "focus":  "Puissance et intoxication",
+                      "reason":  "Lien entre teneur en THC et effets indésirables.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-keep-suspect-product-for-analysis",
+                      "domain":  "active",
+                      "focus":  "Analyse d’un CBD suspect",
+                      "reason":  "Conservation du produit impliqué dans un effet indésirable.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-learning-memory-impairment",
+                      "domain":  "active",
+                      "focus":  "Cognition sous cannabis",
+                      "reason":  "Altération de l’apprentissage et de la mémorisation.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-locked-storage-children",
+                      "domain":  "active",
+                      "focus":  "Edibles et enfants",
+                      "reason":  "Rangement spécifique contre l’ingestion accidentelle de THC.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-loss-control-seek-help",
+                      "domain":  "active",
+                      "focus":  "Usage problématique",
+                      "reason":  "Signes de perte de contrôle de l’usage du cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-occupational-medical-confidentiality",
+                      "domain":  "offscope",
+                      "focus":  "Secret médical professionnel",
+                      "reason":  "Principe général de confidentialité, aucun fait spécifique cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-pregnancy-ingestion-not-safe-route",
+                      "domain":  "active",
+                      "focus":  "Grossesse et THC ingéré",
+                      "reason":  "Exposition du bébé malgré l’absence de fumée.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-psychosis-meaning",
+                      "domain":  "active",
+                      "focus":  "Risque psychotique",
+                      "reason":  "Sens d’un risque mental associé au cannabis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-recall-already-sold",
+                      "domain":  "offscope",
+                      "focus":  "Rappel de cosmétique",
+                      "reason":  "Distinction retrait/rappel générique, aucun produit actif identifié.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-secondhand-thc-exposure",
+                      "domain":  "active",
+                      "focus":  "Fumée secondaire",
+                      "reason":  "Exposition passive au THC documentée chez les enfants.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-smoke-toxic-compounds",
+                      "domain":  "active",
+                      "focus":  "Toxicité de la fumée",
+                      "reason":  "Composés nocifs de la combustion du cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-sober-return-driver",
+                      "domain":  "active",
+                      "focus":  "Retour après consommation",
+                      "reason":  "Organisation d’un retour sans conducteur sous cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-thc-level-not-driving-score",
+                      "domain":  "active",
+                      "focus":  "THC et conduite",
+                      "reason":  "Taux biologique distinct des capacités individuelles.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-tolerance-meaning",
+                      "domain":  "active",
+                      "focus":  "Tolérance au cannabis",
+                      "reason":  "Diminution d’effet lors d’expositions répétées.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-vigilance-reports-not-incidence",
+                      "domain":  "active",
+                      "focus":  "Notifications cannabis",
+                      "reason":  "Cas limite : limites statistiques d’un bilan de risques cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-wada-2026-cbd-exception",
+                      "domain":  "active",
+                      "focus":  "Cannabinoïdes et antidopage",
+                      "reason":  "Exception CBD dans la liste 2026 en compétition.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-en02-withdrawal-sleep-irritability",
+                      "domain":  "active",
+                      "focus":  "Sevrage du cannabis",
+                      "reason":  "Manifestations lors de l’arrêt d’un usage fréquent.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-anthranilate-methyle-raisin",
+                      "domain":  "active",
+                      "focus":  "Arôme de raisin",
+                      "reason":  "Odorant non terpénique détecté dans des extraits de cannabis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-f2-rapport-mixte",
+                      "domain":  "active",
+                      "focus":  "Hérédité CBD/THC",
+                      "reason":  "Modèle de ségrégation de profils cannabinoïdes réel.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-indole-concentration-odeur",
+                      "domain":  "active",
+                      "focus":  "Indole et arôme",
+                      "reason":  "Contribution aromatique du cannabis dépendante de concentration.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-mercaptohexanol-notes-correlation",
+                      "domain":  "active",
+                      "focus":  "Odorant d’agrumes",
+                      "reason":  "Associations mesurées entre 3-mercaptohexanol et arômes du cannabis.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-pangenome-core-classe",
+                      "domain":  "offscope",
+                      "focus":  "Gènes core",
+                      "reason":  "Catégorie générale de pangénomique, sans actif ou lignée étudié.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-skatole-profil-olfactif",
+                      "domain":  "active",
+                      "focus":  "Skatole du cannabis",
+                      "reason":  "Composé non terpénique associé au profil chimique/ammoniacal.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-tetraploides-stomates",
+                      "domain":  "offscope",
+                      "focus":  "Stomates tétraploïdes",
+                      "reason":  "Anatomie expérimentale sans lien aux fleurs/résine/actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-triploide-trois-jeux",
+                      "domain":  "offscope",
+                      "focus":  "Triploïdie et chromosomes",
+                      "reason":  "Calcul de jeux chromosomiques sans caractère actif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-triploides-fertilite-residuelle",
+                      "domain":  "active",
+                      "focus":  "Triploïdie et fertilité",
+                      "reason":  "Cas limite : fertilité des fleurs de cannabis, pas stérilité absolue.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-q2-ext-y-par-sdr-recombinaison",
+                      "domain":  "offscope",
+                      "focus":  "Régions du chromosome Y",
+                      "reason":  "Recombinaison génomique spécialisée sans fleurs/résine testées.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-acides-amines",
+                      "domain":  "offscope",
+                      "focus":  "Unités des protéines",
+                      "reason":  "Composition générale des protéines, chènevis décoratif.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-chenevis",
+                      "domain":  "food",
+                      "focus":  "Nom du chènevis",
+                      "reason":  "Vocabulaire fondamental des graines alimentaires.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-decorticage",
+                      "domain":  "food",
+                      "focus":  "Décorticage",
+                      "reason":  "Partie retirée pour obtenir les graines alimentaires décortiquées.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-edestine",
+                      "domain":  "food",
+                      "focus":  "Assemblage de l’édestine",
+                      "reason":  "Détail cristallographique d’une protéine de graine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-farine",
+                      "domain":  "food",
+                      "focus":  "Farine de chanvre",
+                      "reason":  "Transformation du tourteau en ingrédient alimentaire.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-seeds-fractions-proteines",
+                      "domain":  "food",
+                      "focus":  "Protéines de réserve",
+                      "reason":  "Familles protéiques caractéristiques du chènevis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-seeds-hexanal",
+                      "domain":  "offscope",
+                      "focus":  "Famille de l’hexanal",
+                      "reason":  "Classement chimique général, huile de chanvre simple décor.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-huile",
+                      "domain":  "food",
+                      "focus":  "Origine de l’huile",
+                      "reason":  "Distinction fondamentale huile de graines/résine.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-insaturation",
+                      "domain":  "food",
+                      "focus":  "Polyinsaturés",
+                      "reason":  "Profil dominant des acides gras de l’huile alimentaire.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-linoleique",
+                      "domain":  "food",
+                      "focus":  "Acide linoléique",
+                      "reason":  "Acide gras majoritaire de l’huile de chènevis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-omega-trois",
+                      "domain":  "food",
+                      "focus":  "Oméga-3 ALA",
+                      "reason":  "Identification de l’oméga-3 naturel de l’huile alimentaire.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-pericarpe",
+                      "domain":  "offscope",
+                      "focus":  "Péricarpe",
+                      "reason":  "Anatomie générale du fruit sec sans usage alimentaire testé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-pigment-huile",
+                      "domain":  "food",
+                      "focus":  "Huile verte",
+                      "reason":  "Pigments contribuant à l’aspect d’une huile alimentaire de chanvre.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-seeds-ponts",
+                      "domain":  "offscope",
+                      "focus":  "Pont disulfure",
+                      "reason":  "Liaison générale entre cystéines de toute protéine.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-reserves",
+                      "domain":  "food",
+                      "focus":  "Réserves des graines",
+                      "reason":  "Profil nutritionnel fondamental lipides-protéines du chènevis.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-solubilite",
+                      "domain":  "food",
+                      "focus":  "Solubilité protéique",
+                      "reason":  "Comportement d’un ingrédient de chanvre, principe très général.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-stearidonique",
+                      "domain":  "food",
+                      "focus":  "Acide stéaridonique",
+                      "reason":  "Acide gras minoritaire de l’huile de chanvre, détail spécialisé.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-seeds-tocopherol",
+                      "domain":  "food",
+                      "focus":  "Gamma-tocophérol",
+                      "reason":  "Profil de tocophérols de l’huile de chènevis.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-seeds-tourteau",
+                      "domain":  "food",
+                      "focus":  "Tourteau",
+                      "reason":  "Nom de la fraction solide issue du pressage des graines.",
+                      "retainPriority":  "high"
+                  },
+                  {
+                      "id":  "hemp-seeds-tourteau-fractions",
+                      "domain":  "food",
+                      "focus":  "Composition du tourteau",
+                      "reason":  "Fibres et huile résiduelle dans un coproduit alimentaire.",
+                      "retainPriority":  "medium"
+                  },
+                  {
+                      "id":  "hemp-uses-azote",
+                      "domain":  "offscope",
+                      "focus":  "Azote et acides aminés",
+                      "reason":  "Nutrition minérale générale des végétaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-calcium",
+                      "domain":  "offscope",
+                      "focus":  "Calcium pariétal",
+                      "reason":  "Fonctions cellulaires générales du calcium.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-echange-cations",
+                      "domain":  "offscope",
+                      "focus":  "Échange de cations",
+                      "reason":  "Électrostatique générale de la rétention du sol.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-echange-mycorhize",
+                      "domain":  "offscope",
+                      "focus":  "Échange mycorhizien",
+                      "reason":  "Flux générique de carbone vers le champignon.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-exsudats",
+                      "domain":  "offscope",
+                      "focus":  "Exsudation racinaire",
+                      "reason":  "Définition générale des flux racine-sol.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-immobilisation",
+                      "domain":  "offscope",
+                      "focus":  "Dénitrification",
+                      "reason":  "Cycle général de l’azote du sol.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-magnesium",
+                      "domain":  "offscope",
+                      "focus":  "Magnésium de chlorophylle",
+                      "reason":  "Composition générale d’un pigment végétal.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-matiere-organique",
+                      "domain":  "offscope",
+                      "focus":  "Matière organique",
+                      "reason":  "Classement général des constituants du sol.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-mineralisation",
+                      "domain":  "offscope",
+                      "focus":  "Minéralisation",
+                      "reason":  "Transformation générale de l’azote des résidus.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-mycorhize",
+                      "domain":  "offscope",
+                      "focus":  "Mycorhize",
+                      "reason":  "Définition générale d’une association racine-champignon.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-nitrification",
+                      "domain":  "offscope",
+                      "focus":  "Nitrification",
+                      "reason":  "Transformation microbienne générale de l’azote.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-paillis",
+                      "domain":  "offscope",
+                      "focus":  "Paillis",
+                      "reason":  "Définition d’une pratique agricole générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-phosphore",
+                      "domain":  "offscope",
+                      "focus":  "Phosphore et ATP",
+                      "reason":  "Constitution cellulaire générale des végétaux.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-pores",
+                      "domain":  "offscope",
+                      "focus":  "Air et eau des pores",
+                      "reason":  "Physique générale du sol après pluie.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-potassium",
+                      "domain":  "offscope",
+                      "focus":  "Potassium et stomates",
+                      "reason":  "Physiologie végétale générale sans actifs.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-respiration-racines",
+                      "domain":  "offscope",
+                      "focus":  "Respiration racinaire",
+                      "reason":  "Besoin général de dioxygène des racines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-rhizosphere",
+                      "domain":  "offscope",
+                      "focus":  "Rhizosphère",
+                      "reason":  "Vocabulaire général du sol influencé par les racines.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-soufre",
+                      "domain":  "offscope",
+                      "focus":  "Soufre protéique",
+                      "reason":  "Élément général de deux acides aminés.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-texture",
+                      "domain":  "offscope",
+                      "focus":  "Texture du sol",
+                      "reason":  "Granulométrie agricole générale.",
+                      "retainPriority":  "low"
+                  },
+                  {
+                      "id":  "hemp-uses-vers-terre",
+                      "domain":  "offscope",
+                      "focus":  "Vers de terre",
+                      "reason":  "Action générale des galeries dans un sol.",
+                      "retainPriority":  "low"
+                  }
+              ]
+}

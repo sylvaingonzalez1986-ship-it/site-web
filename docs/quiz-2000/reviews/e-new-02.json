@@ -1,0 +1,1519 @@
+{
+  "batchId": "e-new-02",
+  "reviewer": "e_engine_audit",
+  "reviewerModel": "gpt-6.1-sol",
+  "reviewedAt": "2026-11-17",
+  "summary": {
+    "approved": 40,
+    "changes_requested": 0,
+    "rejected": 0,
+    "documentsConsulted": 22
+  },
+  "scope": "Lecture indépendante initiale des 40 objets et des passages utiles des 22 documents le 16 novembre 2026. Revalidation des 14 versions corrigées le 17 novembre ; les 26 autres approbations sont conservées exactement. Les consultations du 16 novembre sont explicitement réutilisées, sans nouvelle ouverture annoncée. Aucun lot auteur ni actif modifié.",
+  "metadataChecks": {
+    "jurisdictionsAndReviewDates": "Présents pour les 40 questions. Les informations sanitaires générales sont distinguées des règles françaises et des autorisations américaines.",
+    "wada2026": "Millésime 2026 dans l’énoncé ; entrée en vigueur vérifiée ; reviewAfter 2026-12-31 cohérent avec une reprise avant 2027.",
+    "datedSources": "Dates affichées consultées pour CDC, Santé Canada, Mildeca, Anses, Ameli, NCI, Service Public, INRS et Bercy. L’ancienneté du NCI et de l’INRS est bornée aux passages utilisés.",
+    "authorSourceObjects": "Empreintes prises sur les 22 objets sources complets du lot, avec auteur distinct du reviewer."
+  },
+  "deduplication": {
+    "method": "Index compact ciblé sur conduite, pharmacologie, addiction, grossesse/allaitement, mémoire, psychose, vigilance, soins, frontières et antidopage ; recherche des explications proches dans les lots existants. Pas de doublon externe confirmé pour les faits proposés.",
+    "nearFacts": [
+      {
+        "proposed": "hemp-q2-en02-cell-study-not-cancer-cure",
+        "existing": "hemp-q2-b03-crea-snp-discrimination-studied-corpus-scope",
+        "decision": "Distinct : passage préclinique→bénéfice clinique, plutôt que discrimination d’un génotype non testé."
+      },
+      {
+        "proposed": "hemp-q2-en02-vigilance-reports-not-incidence",
+        "existing": "hemp-q2-ext-mercaptohexanol-notes-correlation",
+        "decision": "Distinct : dénominateur et biais de notification, plutôt que sens d’une corrélation ; la version du 17 novembre interroge les données manquantes et résout la tautologie initiale."
+      },
+      {
+        "withinBatch": [
+          "hemp-q2-en02-events-versus-cases",
+          "hemp-q2-en02-vigilance-reports-not-incidence"
+        ],
+        "decision": "Unités cas/événements et impossibilité d’estimer le risque populationnel sont deux faits distincts ; clé commune de vigilance conservée."
+      },
+      {
+        "withinBatch": [
+          "hemp-q2-en02-driving-reaction",
+          "hemp-q2-en02-thc-level-not-driving-score",
+          "hemp-q2-en02-france-cbd-driving-no-exemption"
+        ],
+        "decision": "Effet sur une capacité, limite d’un taux biologique et règle juridique distincts ; aucune équivalence taux→conduite ajoutée."
+      }
+    ],
+    "explanationLeaks": "Pas de réponse exacte d’un autre fait médical E02 retrouvée dans les explications des lots voisins ciblés ; les réserves générales ne sont pas comptées comme de nouveaux faits."
+  },
+  "items": [
+    {
+      "id": "hemp-q2-en02-edible-onset-duration",
+      "status": "approved",
+      "comment": "Comparaison des effets ingérés/fumés soutenue par la rubrique CDC ; combinaisons délai/durée parallèles, niveau accessible et absence de délai personnel bien conservés.",
+      "contentHash": "f2564ee35660831c5d2a804b15d9c42a31de72ab0361daa1446bd7f53fe293ac",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-poison",
+          "url": "https://www.cdc.gov/cannabis/health-effects/poisoning.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "e5814b973fdbc401e712c3075d36b9f776b8f1bbd6e2347f95cd24be874d23c9",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Effects of edible cannabis, lignes 35–42",
+          "result": "Début retardé, effets prolongés et rangement verrouillé hors de portée et de vue sont explicitement décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-locked-storage-children",
+      "status": "approved",
+      "comment": "Mesure de rangement concrète conforme au passage CDC ; les autres emplacements sont des alternatives domestiques identifiables et la protection des enfants est correctement bornée.",
+      "contentHash": "d540154d42f2ddff79323388e1a353aae29dff29ece41faf903473fe675a3285",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-poison",
+          "url": "https://www.cdc.gov/cannabis/health-effects/poisoning.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "e5814b973fdbc401e712c3075d36b9f776b8f1bbd6e2347f95cd24be874d23c9",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Effects of edible cannabis, lignes 35–42",
+          "result": "Début retardé, effets prolongés et rangement verrouillé hors de portée et de vue sont explicitement décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-screening-confirmation",
+      "status": "approved",
+      "comment": "Dépistage rapide et vérification analytique correctement distingués dans la procédure française ; ordre des étapes et niveau 2 cohérents.",
+      "contentHash": "31e5e73f975638183774496f1b747786b0c3ab13d7be207ad9c6fce4899958c4",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-service-public-driving",
+          "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2886",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "c23c17ea674bf99a0abb7747a21d4474f2266636a079524e0ae0971a2c1b076f",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Fiche vérifiée le 27 août 2026, lignes 44–55 ; Vérification, lignes 80–88",
+          "result": "Accompagnateur inclus ; prélèvement puis analyse par laboratoire ou expert agréé après dépistage positif.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-driving-reaction",
+      "status": "approved",
+      "comment": "Quatre combinaisons réaction/décision de structure parallèle ; la question ne révèle plus le sens de l’effet. Réaction et décision ralenties sont décrites au passage CDC déjà lu.",
+      "contentHash": "e7e873d281567899d74a77ec4e8c941700f177b173b8974a4112ea212ee5a58c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-driving",
+          "url": "https://www.cdc.gov/cannabis/health-effects/driving.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "7539a5dad0e0d2263e74b4de2751f642f21033a34c4c48c82a451c94288092cd",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "What you need to know, lignes 33–38 ; What you can do, lignes 47–50",
+          "result": "Réaction/coordination, association alcool, limite du taux de THC et conducteur sans consommation sont décrits.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "L’énoncé demande ce qui peut compliquer la conduite ; trois choix sont des améliorations, et le seul effet défavorable est la réponse. « Temps de réaction ralenti » est en outre moins précis que « réaction ralentie » ou « temps de réaction allongé ».",
+          "contentHash": "146d4511564d8df7b10292d760bbaaa5d70e624e31d35c85fded94101b978759",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "stem_polarity_and_distractors",
+              "reason": "L’énoncé demande ce qui peut compliquer la conduite ; trois choix sont des améliorations, et le seul effet défavorable est la réponse. « Temps de réaction ralenti » est en outre moins précis que « réaction ralentie » ou « temps de réaction allongé ».",
+              "requestedChange": "Comparer quatre effets ou relations plausibles de portée parallèle, sans trois améliorations éliminées par « compliquer ». Employer une formulation temporelle précise."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-alcohol-cannabis-impairment",
+      "status": "approved",
+      "comment": "Les quatre hypothèses portent maintenant sur l’altération lors de l’association, sans trois améliorations opposées au seul risque. La réponse reste un risque accru, sans ratio de doses ni mécanisme inventé.",
+      "contentHash": "62474b8604df2cd532b39d9667adb8d4f37519783023705ee4cc534da654d402",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-driving",
+          "url": "https://www.cdc.gov/cannabis/health-effects/driving.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "7539a5dad0e0d2263e74b4de2751f642f21033a34c4c48c82a451c94288092cd",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "What you need to know, lignes 33–38 ; What you can do, lignes 47–50",
+          "result": "Réaction/coordination, association alcool, limite du taux de THC et conducteur sans consommation sont décrits.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "Trois options décrivent une amélioration ou une compensation ; la réponse est le seul effet défavorable. Le joueur peut sélectionner le message de prévention sans distinguer l’effet de l’association.",
+          "contentHash": "37ebda4f5ffccd026228f4a5c92b4d042b1d8c508c93b76f43bac8f64173a380",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "one_harm_against_three_improvements",
+              "reason": "Trois options décrivent une amélioration ou une compensation ; la réponse est le seul effet défavorable. Le joueur peut sélectionner le message de prévention sans distinguer l’effet de l’association.",
+              "requestedChange": "Garder le risque accru, mais comparer des hypothèses plausibles sur l’association, avec une construction parallèle et sans trois bénéfices manifestement attendus comme faux. Ne pas inventer de mécanisme ni d’équivalence de doses."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-thc-level-not-driving-score",
+      "status": "approved",
+      "comment": "Quatre lectures du marqueur sont comparées ; l’exposition est distinguée des capacités, de la tolérance et de la récupération de vigilance. Portée CDC respectée et forme identification corrigée.",
+      "contentHash": "b8779926015039befcf7e5f00d77a63f71211d900073a970a240a361063cd389",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-driving",
+          "url": "https://www.cdc.gov/cannabis/health-effects/driving.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "7539a5dad0e0d2263e74b4de2751f642f21033a34c4c48c82a451c94288092cd",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "What you need to know, lignes 33–38 ; What you can do, lignes 47–50",
+          "result": "Réaction/coordination, association alcool, limite du taux de THC et conducteur sans consommation sont décrits.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La seule réponse prudente s’oppose à trois prédictions exactes : délai personnel, réaction exacte et équivalence précise avec l’alcool. Cette asymétrie donne la solution. La tâche est un rappel direct, pas une déduction à partir de données.",
+          "contentHash": "d23448a4f53d49c8872f5f852a9198fc5278cdefb2b18b10632dc0f3f096cbdc",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "one_caveat_against_three_exact_predictions",
+              "reason": "La seule réponse prudente s’oppose à trois prédictions exactes : délai personnel, réaction exacte et équivalence précise avec l’alcool. Cette asymétrie donne la solution. La tâche est un rappel direct, pas une déduction à partir de données.",
+              "requestedChange": "Reprendre les quatre interprétations pour qu’elles aient une portée et un degré de certitude comparables, tout en distinguant résultat biologique et capacité de conduite. Classer la forme en identification ou situation si aucune inférence réelle n’est ajoutée."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-sober-return-driver",
+      "status": "approved",
+      "comment": "Choix d’un conducteur abstinent conforme au passage CDC ; la connaissance de l’itinéraire, la fatigue ressentie ou un repas ne répondent pas à ce besoin de prévention.",
+      "contentHash": "c960a7189d4a935b12566662f6c5e30edfc2140e87e00863f719ee9af802b057",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-driving",
+          "url": "https://www.cdc.gov/cannabis/health-effects/driving.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "7539a5dad0e0d2263e74b4de2751f642f21033a34c4c48c82a451c94288092cd",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "What you need to know, lignes 33–38 ; What you can do, lignes 47–50",
+          "result": "Réaction/coordination, association alcool, limite du taux de THC et conducteur sans consommation sont décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-pregnancy-ingestion-not-safe-route",
+      "status": "approved",
+      "comment": "Le devenir des substances est comparé entre quatre hypothèses, sans opposition oui/non ou garantie alimentaire. Le passage maternel vers le bébé est soutenu ; le risque n’est pas limité à la fumée.",
+      "contentHash": "1816f9f880f6306cc5f7476a379b23e8bc1e2e943dd8fc18d3542629fa1dfee7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-pregnancy",
+          "url": "https://www.cdc.gov/cannabis/health-effects/pregnancy.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "04f3e5237110bb2cc4ef81f8cd5637216f60387f13a8a60325cd3ddfcf69248f",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Key points et effets de grossesse, lignes 29–36 ; Breastfeeding, ligne 47",
+          "result": "Les risques concernent diverses voies ; le passage vers le bébé et le réservoir graisseux sont explicités.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La seule réponse non/peuvent fait face à trois garanties de sécurité fondées sur alimentaire, sans fumée ou végétal. Cette construction rend la prudence gagnante sans tester le passage des substances vers le bébé.",
+          "contentHash": "13bba0d99eb94454d3a8ce075f0505589ffc14d9236345cdbcf0d99899614646",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "one_cautious_no_against_three_safety_guarantees",
+              "reason": "La seule réponse non/peuvent fait face à trois garanties de sécurité fondées sur alimentaire, sans fumée ou végétal. Cette construction rend la prudence gagnante sans tester le passage des substances vers le bébé.",
+              "requestedChange": "Conserver le fait sanitaire mais interroger le devenir de l’exposition ou comparer des voies/mécanismes plausibles. Donner quatre choix de portée parallèle ; ne pas laisser une seule réponse nuancée contre trois garanties."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-breastmilk-persistent-exposure",
+      "status": "approved",
+      "comment": "Stockage dans les graisses et libération progressive explicitement décrits par les CDC ; pas de durée d’élimination ni de garantie individuelle introduite.",
+      "contentHash": "40ab715f53a104a2514e509a21810dcdaa06b0f347ef0b668bdb7892e6e3553e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-pregnancy",
+          "url": "https://www.cdc.gov/cannabis/health-effects/pregnancy.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "04f3e5237110bb2cc4ef81f8cd5637216f60387f13a8a60325cd3ddfcf69248f",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Key points et effets de grossesse, lignes 29–36 ; Breastfeeding, ligne 47",
+          "result": "Les risques concernent diverses voies ; le passage vers le bébé et le réservoir graisseux sont explicités.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-events-versus-cases",
+      "status": "approved",
+      "comment": "Les quatre choix sont des conventions plausibles de décompte. Plusieurs symptômes dans un cas correspondent au rapport déjà lu ; forme identification et niveau 2 justifiés par la lecture de vigilance.",
+      "contentHash": "bf1aeb066cd9e2a9e574eef753bc191d87ebacde784a813859d38b5cfb8386b7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-vigilance",
+          "url": "https://www.canada.ca/en/health-canada/services/publications/drugs-health-products/data-cannabis-adverse-reactions-2023-annual-report.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "e9ab39ad57b8ece28f129662dc0c8483e53ed448ee6f91bfed4d776177a5e27a",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Considerations, lignes 133–156 ; figures 10–11, Caveats, lignes 407 et 447",
+          "result": "Plusieurs événements par cas et impossibilité d’estimer incidence/prévalence par notifications spontanées sont explicités.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "L’exclusion des adultes et le nombre de produits vendus sont sans lien avec les unités annoncées ; « chaque événement = nouvelle personne » contredit déjà le rapport événements/cas. Le choix correct est ainsi la seule explication recevable.",
+          "contentHash": "57362fe05aaa11d21c9f8dab94a57043e59587e640459c27b71fb7107a073c3d",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "incomparable_reporting_distractors",
+              "reason": "L’exclusion des adultes et le nombre de produits vendus sont sans lien avec les unités annoncées ; « chaque événement = nouvelle personne » contredit déjà le rapport événements/cas. Le choix correct est ainsi la seule explication recevable.",
+              "requestedChange": "Comparer quatre explications plausibles relevant du décompte des cas, symptômes et déclarations, sans changer le fait « plusieurs événements dans un cas ». Réévaluer le niveau si la version finale ne demande qu’une inférence élémentaire."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-psychosis-meaning",
+      "status": "approved",
+      "comment": "Définition clinique correctement bornée au rapport au réel, avec réserve diagnostique ; les choix distinguent plusieurs types de perturbations.",
+      "contentHash": "cc609caf00b497ade99506a9d2b103e960ac9a55a207a1e5a69bd2315a1821b3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-mental",
+          "url": "https://www.cdc.gov/cannabis/health-effects/mental-health.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "bcbcdaf541e15696fe8b9cf7a077e5e6076967a3e8f004725d909fda5b4fa6de",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Mental health, lignes 32–34",
+          "result": "Le texte définit la psychose et décrit l’association plus forte avec début précoce et fréquence.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-early-frequent-psychosis-association",
+      "status": "approved",
+      "comment": "Association plus forte pour début précoce et usage fréquent fidèlement décrite ; les quatre combinaisons sont parallèles, sans causalité individuelle affirmée.",
+      "contentHash": "36be72c21265a29f0d8a7df1951be0ad9707d1079453c111d885831e0fc1c162",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-mental",
+          "url": "https://www.cdc.gov/cannabis/health-effects/mental-health.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "bcbcdaf541e15696fe8b9cf7a077e5e6076967a3e8f004725d909fda5b4fa6de",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Mental health, lignes 32–34",
+          "result": "Le texte définit la psychose et décrit l’association plus forte avec début précoce et fréquence.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-loss-control-seek-help",
+      "status": "approved",
+      "comment": "Les choix distinguent maintenant difficulté de contrôle, préférence ordinaire, gêne passive et effet aigu. L’échec de réduction malgré des problèmes correspond aux signes CDC ; aucune auto-identification diagnostique n’est proposée.",
+      "contentHash": "26080d3436f1d8291c0dd1ee5723cee3ce1af059d43c077507aafc1be2833efa",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-disorder",
+          "url": "https://www.cdc.gov/cannabis/health-effects/cannabis-use-disorder.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "1eb5028f4f3363b48b65a051553de2da130c43a1cba081834bbeef837f964e80",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Key points et Signs, lignes 29 et 38–48",
+          "result": "Difficulté d’arrêt et poursuite malgré des conséquences figurent parmi les signes décrits.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "Une difficulté de contrôle avec conséquences s’oppose à trois décisions de prévention manifestement favorables. La question teste l’opposition problème/bon comportement plutôt que le repérage d’un usage problématique.",
+          "contentHash": "7e73c7cc9f25cd24ee9bebdab6f8b110053590dac0059791f1eb59e0bca1d2ee",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "one_problem_against_three_protective_behaviours",
+              "reason": "Une difficulté de contrôle avec conséquences s’oppose à trois décisions de prévention manifestement favorables. La question teste l’opposition problème/bon comportement plutôt que le repérage d’un usage problématique.",
+              "requestedChange": "Comparer des situations ou comportements liés à l’usage qui exigent de reconnaître la difficulté de contrôle, sans trois gestes de prévention donnés comme distracteurs. Conserver la réserve sur le diagnostic individuel."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-tolerance-meaning",
+      "status": "approved",
+      "comment": "Le sens de la tolérance est soutenu par le passage sur la diminution des effets ; terme distingué de sensibilisation, intoxication et sevrage, sans conseil d’augmentation de consommation.",
+      "contentHash": "aff022ec07f8ec2c98680ee2f7319f363fe282f25e6ac17312d22ff24dc80c2c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-side-effects",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "7c7553ae153b846346f30989352847dc8dcaf578898782034bdee1fa972d9c0b",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Side effects, lignes 102–105 ; Long-term use, lignes 165–187",
+          "result": "Le texte décrit diminution des effets/tolérance et épisodes de nausées, vomissements intenses et douleurs abdominales.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-withdrawal-sleep-irritability",
+      "status": "approved",
+      "comment": "Les quatre tableaux psychiques/comportementaux sont comparables. Irritabilité, anxiété et troubles du sommeil sont ceux du passage Santé Canada ; le niveau 2 et la réserve diagnostique conviennent.",
+      "contentHash": "fe2dbf12c45cb00dad678e9f431b7d36d12eb55dd138cf3151f27f90ba3e257b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-addiction",
+          "url": "https://www.canada.ca/en/health-canada/services/publications/drugs-health-products/cannabis-addictive.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "5737ed165c2f3a26a456d6a5c4ad9c5f25af60eb7817b84c6bdc20f8d736e0fc",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Withdrawal symptoms, lignes 73–88 ; date de publication ligne 34",
+          "result": "Irritabilité, anxiété et difficultés de sommeil sont décrites après l’arrêt ; publication 3 octobre 2018 vérifiée.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La seule paire psychique et liée au sommeil s’oppose à des associations auditives, dentaires, articulaires ou de saignements sans plausibilité comparable pour cette question sur le sevrage.",
+          "contentHash": "e51605f1459ae511a994d8f1753d9f4604d3679a2a5e36845922d846162b9dcb",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "unrelated_symptom_pairs",
+              "reason": "La seule paire psychique et liée au sommeil s’oppose à des associations auditives, dentaires, articulaires ou de saignements sans plausibilité comparable pour cette question sur le sevrage.",
+              "requestedChange": "Construire quatre tableaux symptomatiques plausibles à départager, de structure comparable, plutôt que trois paires étrangères au sevrage. Garder les manifestations réellement décrites et ne pas en faire un diagnostic."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-smoke-toxic-compounds",
+      "status": "approved",
+      "comment": "Présence de nombreux toxiques communs, sans affirmer des concentrations ni des risques quantitatifs identiques ; portée du passage CDC respectée.",
+      "contentHash": "8ff7db8c930bbd9e6b7adcdd61815fb3e3483d67a1ece1991d1ca37caf9cdef2",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-lungs",
+          "url": "https://www.cdc.gov/cannabis/health-effects/lung-health.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "8c403a25b812d92830519421d55fb366bd127679ec48966175f39ed222eaecfd",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Lung health and smoking cannabis, lignes 42–44",
+          "result": "La fumée contient des toxiques, irritants et cancérogènes également présents dans celle du tabac.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-secondhand-thc-exposure",
+      "status": "approved",
+      "comment": "Passage du THC par la fumée secondaire explicitement décrit ; aucune intensité d’exposition ou prédiction individuelle n’est déduite.",
+      "contentHash": "5c33e171a6de2af92990e96c8ca0f80503c11861e81f5246b9ced12a5051fa09",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cdc-secondhand",
+          "url": "https://www.cdc.gov/cannabis/health-effects/secondhand-smoke.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "dda756371284a65c0c1638df96d250747319e07de3e5c471826303ed8ddd1f13",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Exposure to cannabis smoke, lignes 31–39",
+          "result": "THC dans la fumée secondaire et niveaux détectables chez des enfants exposés sont décrits.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-learning-memory-impairment",
+      "status": "approved",
+      "comment": "La tâche relie une activité verbale à la capacité cognitive concernée, parmi quatre domaines de fonctions. L’opposition à trois améliorations a disparu ; ce rapprochement simple reste cohérent avec le niveau 1 et l’objectif d’application quotidienne.",
+      "contentHash": "1776a095e48ebaeb01de5223875d508249bd4ebb0edc0a131411b8743e1edaec",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-health",
+          "url": "https://www.canada.ca/en/services/health/campaigns/cannabis/health-effects.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "1c46e731f2e613898f21aac6d2f684484e473a18acc9ebed9079defff02aee20",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Short-term effects, lignes 33–40 ; Cannabis poisoning, lignes 141–153",
+          "result": "Apprentissage/mémoire peuvent être gênés ; probabilité d’effets indésirables accrue avec une teneur élevée en THC.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La réponse est la seule difficulté cognitive, face à trois améliorations de mémoire ou d’attention. Le contexte de prévention permet l’élimination sans connaître l’effet sur l’apprentissage.",
+          "contentHash": "5133a30c31ae05b212c73018aa25adaf866afefdffcce471dc1e5b116881bdae",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "one_impairment_against_three_cognitive_improvements",
+              "reason": "La réponse est la seule difficulté cognitive, face à trois améliorations de mémoire ou d’attention. Le contexte de prévention permet l’élimination sans connaître l’effet sur l’apprentissage.",
+              "requestedChange": "Comparer quatre effets cognitifs plausibles ou une relation précise entre tâche et capacité, sans trois améliorations opposées au seul effet défavorable."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-higher-thc-poisoning-risk",
+      "status": "approved",
+      "comment": "Direction du risque avec une teneur élevée fidèlement rapportée ; information de prévention générale, sans seuil personnel ou recommandation de produit.",
+      "contentHash": "442bb2ca7c4373a7aa870c6694e382f610390dddb8ca88938d5ede1484bc798b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-health",
+          "url": "https://www.canada.ca/en/services/health/campaigns/cannabis/health-effects.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "1c46e731f2e613898f21aac6d2f684484e473a18acc9ebed9079defff02aee20",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Short-term effects, lignes 33–40 ; Cannabis poisoning, lignes 141–153",
+          "result": "Apprentissage/mémoire peuvent être gênés ; probabilité d’effets indésirables accrue avec une teneur élevée en THC.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cbd-adulterated-substances",
+      "status": "approved",
+      "comment": "Nature des substances non déclarées correctement attribuée au document Mildeca d’octobre 2026 ; autres familles de contaminants distinctes.",
+      "contentHash": "2b4ea4e9aae3477fe72c94c1a1a35f8b801029ad5a54ca168197109e9399fafd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-mildeca-2026",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "58d44f1135fcb638faa327769fc423669235f62a3365bf5e190d24df365f725b",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Page 1, lignes 7–10 et 56–71 ; page 2, lignes 102–110 ; datation ligne 125",
+          "result": "Le document décrit les cannabinoïdes non déclarés et interdit vente/offre gratuite de vapotage aux moins de 18 ans.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cbd-medication-review",
+      "status": "approved",
+      "comment": "Risque d’interactions et intérêt d’un échange professionnel soutenus par la FDA ; les alternatives correspondent à des démarches d’autogestion qui ne remplacent pas cette vérification.",
+      "contentHash": "dfde4ef30bab4981db7f37d88f197ceff95981a8e7b3bfe9c1fb2143e1c35bc3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-fda-cbd",
+          "url": "https://www.fda.gov/consumers/consumer-updates/what-you-need-know-and-what-were-working-find-out-about-products-containing-cannabis-or-cannabis",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "be84749b107d5aa4d32a1b6d5cffb713b00badd0709a992055b2c3c79f5223f8",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Liste initiale, ligne 77 ; Liver Injury, lignes 109–112 ; Drug Interactions, lignes 113–114",
+          "result": "Le texte distingue médicament autorisé pour certaines épilepsies, risque hépatique et interactions ; usage professionnel discuté.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-emergency-unconsciousness",
+      "status": "approved",
+      "comment": "Le numéro 15 est précisément celui du communiqué pour la détresse vitale en France ; distinction entre urgence et signalement maintenue.",
+      "contentHash": "6fe8010c5087d9b9800a9f2f1b7abd9fbe5fd5912f728b56b3d0467bb66fe53b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-anses-alert",
+          "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "5ec0f5b445765e5c15b37f653b8b6d1b5a88d81f2322e01a5dca91774b1736fe",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Communiqué du 19 juin 2025, pages 2–3, lignes 52–72",
+          "result": "Appel au 15 en détresse vitale, portail de signalement et conservation du produit restant sont explicitement demandés.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-keep-suspect-product-for-analysis",
+      "status": "approved",
+      "comment": "Conservation d’un reste pour analyse conforme au communiqué ; exemple concret et absence de protocole de consommation ou d’analyse.",
+      "contentHash": "18d170fe85aa7a4253b4e4e07bf1ea763f5bd4862d2e5b9c9038b71dcc9043e3",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-anses-alert",
+          "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "5ec0f5b445765e5c15b37f653b8b6d1b5a88d81f2322e01a5dca91774b1736fe",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Communiqué du 19 juin 2025, pages 2–3, lignes 52–72",
+          "result": "Appel au 15 en détresse vitale, portail de signalement et conservation du produit restant sont explicitement demandés.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-adverse-event-reporting-portal",
+      "status": "approved",
+      "comment": "Portail sanitaire correctement distingué des dispositifs de signalement consommateur ou de contenus ; juridiction et date de révision présentes.",
+      "contentHash": "0cb6802cba9e4003e2f602151ed2b9ba9358d16934b5d2daa61f187d5da82d96",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-anses-alert",
+          "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "5ec0f5b445765e5c15b37f653b8b6d1b5a88d81f2322e01a5dca91774b1736fe",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Communiqué du 19 juin 2025, pages 2–3, lignes 52–72",
+          "result": "Appel au 15 en détresse vitale, portail de signalement et conservation du produit restant sont explicitement demandés.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cannabinoid-hyperemesis",
+      "status": "approved",
+      "comment": "Tableau digestif de l’hyperémèse fidèle au document Santé Canada ; terme clinique de niveau intermédiaire et réserve diagnostique appropriés.",
+      "contentHash": "0b4be7fb2ed2adbdbdfb8535d60e8c6abfd45fc7c0d9107d5fc88843ee178468",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-side-effects",
+          "url": "https://www.canada.ca/en/health-canada/topics/accessing-cannabis-for-medical-purposes/cannabis-medical-purposes/side-effects.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "7c7553ae153b846346f30989352847dc8dcaf578898782034bdee1fa972d9c0b",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Side effects, lignes 102–105 ; Long-term use, lignes 165–187",
+          "result": "Le texte décrit diminution des effets/tolérance et épisodes de nausées, vomissements intenses et douleurs abdominales.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cjc-parents-alone",
+      "status": "approved",
+      "comment": "Niveau 2 appliqué, avec justification liée à la règle précise d’accueil. L’accueil des parents sans l’adolescent reste conforme au passage Ameli déjà lu.",
+      "contentHash": "4b29e6d9f25c7208507485be5c7736822a99092e5556d028f48041c5308f56d1",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-ameli-help",
+          "url": "https://www.ameli.fr/assure/sante/themes/addictions/suivi",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "8df3ab4e98564900876cf9d854767d2b4e77d12a42fdb1ee49f86e69d0d04c69",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Écoute téléphonique, lignes 106–117 ; CSAPA, lignes 124–133 ; CJC, lignes 141–148",
+          "result": "Ameli décrit anonymat/gratuité, équipes pluridisciplinaires et accueil possible des parents sans leur enfant.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La réponse requiert de connaître une règle d’accueil d’un dispositif français précis, non déductible de l’expression « consultation jeunes consommateurs ». La simplicité de la phrase ne justifie pas à elle seule le niveau 1.",
+          "contentHash": "bf59a7accceffe453b3412fd8539ed1f8540869894eadd0a5c7370bca4904e5f",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "level_specific_admission_rule",
+              "reason": "La réponse requiert de connaître une règle d’accueil d’un dispositif français précis, non déductible de l’expression « consultation jeunes consommateurs ». La simplicité de la phrase ne justifie pas à elle seule le niveau 1.",
+              "requestedChange": "Passer au niveau 2 avec une justification propre à cette règle d’accès, ou concevoir une tâche accessible qui ne demande pas le rappel de cette règle non fournie."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-csapa-multidisciplinary",
+      "status": "approved",
+      "comment": "Composition médicale, psychologique et socio-éducative de l’équipe conforme à Ameli ; sigle contextualisé et fonction d’accompagnement accessible.",
+      "contentHash": "ce55bdce3b6646150297dfa9a5e2a252146c234e463133e21ea43aeb47c57ffc",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-ameli-help",
+          "url": "https://www.ameli.fr/assure/sante/themes/addictions/suivi",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "8df3ab4e98564900876cf9d854767d2b4e77d12a42fdb1ee49f86e69d0d04c69",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Écoute téléphonique, lignes 106–117 ; CSAPA, lignes 124–133 ; CJC, lignes 141–148",
+          "result": "Ameli décrit anonymat/gratuité, équipes pluridisciplinaires et accueil possible des parents sans leur enfant.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-drug-helpline-anonymous-free",
+      "status": "approved",
+      "comment": "Anonymat et gratuité explicitement décrits ; les quatre combinaisons restent possibles indépendamment du souhait de confidentialité du personnage.",
+      "contentHash": "cdbaf93b1b7391e6f71ce8610e63b9ec4a7b12952f276571449f02c3cab799fd",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-ameli-help",
+          "url": "https://www.ameli.fr/assure/sante/themes/addictions/suivi",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "8df3ab4e98564900876cf9d854767d2b4e77d12a42fdb1ee49f86e69d0d04c69",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Écoute téléphonique, lignes 106–117 ; CSAPA, lignes 124–133 ; CJC, lignes 141–148",
+          "result": "Ameli décrit anonymat/gratuité, équipes pluridisciplinaires et accueil possible des parents sans leur enfant.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cbd-liver-risk",
+      "status": "approved",
+      "comment": "Risque hépatique et repérage possible par analyses avant des signes perçus soutenus par la FDA ; aucun risque individuel chiffré ou promesse de produit.",
+      "contentHash": "8a222aaf679e154241f25cd7996089af8c34af5bae6c389fa59dac2c02d1af1c",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-fda-cbd",
+          "url": "https://www.fda.gov/consumers/consumer-updates/what-you-need-know-and-what-were-working-find-out-about-products-containing-cannabis-or-cannabis",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "be84749b107d5aa4d32a1b6d5cffb713b00badd0709a992055b2c3c79f5223f8",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Liste initiale, ligne 77 ; Liver Injury, lignes 109–112 ; Drug Interactions, lignes 113–114",
+          "result": "Le texte distingue médicament autorisé pour certaines épilepsies, risque hépatique et interactions ; usage professionnel discuté.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-fda-approved-cbd-product-type",
+      "status": "approved",
+      "comment": "Les quatre choix sont désormais des indications médicales comparables. Les crises d’épilepsie associées à certaines maladies correspondent au passage FDA ; aucune extension aux autres usages du CBD n’est affirmée.",
+      "contentHash": "3aaf4271f8cbb58e8b1104ff06f734314d01ab986d002111a45a49a99f1b222e",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-fda-cbd",
+          "url": "https://www.fda.gov/consumers/consumer-updates/what-you-need-know-and-what-were-working-find-out-about-products-containing-cannabis-or-cannabis",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "be84749b107d5aa4d32a1b6d5cffb713b00badd0709a992055b2c3c79f5223f8",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Liste initiale, ligne 77 ; Liver Injury, lignes 109–112 ; Drug Interactions, lignes 113–114",
+          "result": "Le texte distingue médicament autorisé pour certaines épilepsies, risque hépatique et interactions ; usage professionnel discuté.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La question demande ce qui est autorisé « comme médicament » ; une seule option est désignée comme médicament de prescription, les trois autres étant cosmétiques, compléments ou huiles de bien-être.",
+          "contentHash": "bd3d455e8d89140e766926ed1783cc262c7e6cc0be0b0c28a972efda31a35ea0",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "category_cue_only_medicine",
+              "reason": "La question demande ce qui est autorisé « comme médicament » ; une seule option est désignée comme médicament de prescription, les trois autres étant cosmétiques, compléments ou huiles de bien-être.",
+              "requestedChange": "Tester réellement l’indication autorisée, par exemple parmi quatre indications médicales comparables. Éviter que seule la bonne option appartienne à la catégorie « médicament » déjà annoncée."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-cell-study-not-cancer-cure",
+      "status": "approved",
+      "comment": "Différence entre preuve préclinique et évaluation chez l’humain correctement utilisée ; pas de doublon confirmé avec les autres faits de portée expérimentale.",
+      "contentHash": "3af87a91f7bfa3620fde1a294387d9ba0f388d46bd60b3c5464a1b4aec70e440",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-nci-cancer",
+          "url": "https://www.cancer.gov/about-cancer/treatment/cam/patient/cannabis-pdq",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "9c6a6fac2f011ea5931cbc11a881040f2c46281b6e3c2555a2b1bff97a061907",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Overview, lignes 23–25 ; questions 5–6, lignes 51–67 ; mise à jour ligne 239",
+          "result": "La page distingue préclinique/humain et autorisation contre certaines nausées/vomissements de chimiothérapie ; date 15 août 2023 vérifiée.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-cannabinoid-supportive-care",
+      "status": "approved",
+      "comment": "Indication de soins de support correctement attribuée au NCI et à la juridiction américaine ; ne transforme pas l’autorisation antiémétique en traitement antitumoral.",
+      "contentHash": "11628acd9d094a8c5a184e63d9afd1f612c14c9d9eb18119c0073de09a0df622",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-nci-cancer",
+          "url": "https://www.cancer.gov/about-cancer/treatment/cam/patient/cannabis-pdq",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "9c6a6fac2f011ea5931cbc11a881040f2c46281b6e3c2555a2b1bff97a061907",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Overview, lignes 23–25 ; questions 5–6, lignes 51–67 ; mise à jour ligne 239",
+          "result": "La page distingue préclinique/humain et autorisation contre certaines nausées/vomissements de chimiothérapie ; date 15 août 2023 vérifiée.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-cbd-driving-no-exemption",
+      "status": "approved",
+      "comment": "Portée de l’arrêt du 21 juin 2023 correctement restituée ; distinction entre autorisation de vente et infraction liée au THC, sans classer le CBD lui-même comme stupéfiant.",
+      "contentHash": "0f9ccfd47c54bed01ab8e7dfc7497d0b8efcddbd103fe20f9bb65fdbe93be74f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-cassation-cbd",
+          "url": "https://www.legifrance.gouv.fr/juri/id/JURITEXT000047738124",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "870dab5b54655c7e01ee19d27cdb418a70e69d76e61157d4d1ad9f1c545a41ae",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Arrêt du 21 juin 2023, points 6–10, lignes 120–125 ; analyse, ligne 138",
+          "result": "L’autorisation de vente n’écarte pas l’infraction après usage de THC ; le point 10 le dit expressément.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-accompanying-driver",
+      "status": "approved",
+      "comment": "Extension à l’accompagnateur explicitement présente dans la fiche française ; règle précise de niveau 2 et absence de délai d’élimination.",
+      "contentHash": "66fa48989a8cdcb30d1b1704ae2c70b4fb30af7e08fc8b352c51fe1ce56bdf2f",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-service-public-driving",
+          "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2886",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "c23c17ea674bf99a0abb7747a21d4474f2266636a079524e0ae0971a2c1b076f",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Fiche vérifiée le 27 août 2026, lignes 44–55 ; Vérification, lignes 80–88",
+          "result": "Accompagnateur inclus ; prélèvement puis analyse par laboratoire ou expert agréé après dépistage positif.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-occupational-medical-confidentiality",
+      "status": "approved",
+      "comment": "Secret médical correctement appliqué à l’entretien avec le médecin du travail, sans extension aux contrôles pratiqués par l’employeur.",
+      "contentHash": "82e6daa3bdd98fa5a9f0c4cc835e8860661fc1cedb2f7d2aa01c6a117da88e1b",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-inrs-work",
+          "url": "https://www.inrs.fr/risques/addictions/reglementation",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "c784d96aa0bdf19493051ef020000da110b79c657b1d4ebbcede9aee987949d2",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Mis à jour le 29/11/2021, ligne 33 ; médecin du travail, lignes 64–66",
+          "result": "L’indépendance du médecin et le secret médical sont explicitement rappelés ; aucune généralisation aux tests employeur.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-france-vaping-under18",
+      "status": "approved",
+      "comment": "Quatre combinaisons vente/offre gratuite remplacent les pseudo-exceptions. L’interdiction des deux actes aux moins de 18 ans en commerce est explicitement soutenue par la Mildeca.",
+      "contentHash": "10aedc49e2e691effbe474b00998f865b884f40fc36d480ca773c601dc502f69",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-mildeca-2026",
+          "url": "https://www.drogues.gouv.fr/sites/default/files/2026-10/CBD_flyer_2026.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "58d44f1135fcb638faa327769fc423669235f62a3365bf5e190d24df365f725b",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Page 1, lignes 7–10 et 56–71 ; page 2, lignes 102–110 ; datation ligne 125",
+          "result": "Le document décrit les cannabinoïdes non déclarés et interdit vente/offre gratuite de vapotage aux moins de 18 ans.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La carte scolaire et le flacon scellé n’offrent pas de régimes juridiques plausibles pour autoriser l’offre à un mineur. Le seul non rassemble la règle, face à trois oui dont deux conditions hors de la distinction vente/offre.",
+          "contentHash": "c822fffdc80657302548f3aed610f33013f3ba226bcb28999fdb2e9c5f22d346",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "three_weak_yes_exceptions",
+              "reason": "La carte scolaire et le flacon scellé n’offrent pas de régimes juridiques plausibles pour autoriser l’offre à un mineur. Le seul non rassemble la règle, face à trois oui dont deux conditions hors de la distinction vente/offre.",
+              "requestedChange": "Comparer quatre régimes ou actes de distribution plausibles et parallèles, pour tester précisément que l’offre gratuite est couverte, sans les pseudo-exceptions carte scolaire/flacon scellé."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-canada-border-domestic-legal",
+      "status": "approved",
+      "comment": "Le cas est explicitement récréatif et ne se confond plus avec les médicaments autorisés. La légalité locale ne suffit pas à franchir la frontière ; l’explication conserve le régime distinct des médicaments, conformément aux passages déjà lus.",
+      "contentHash": "1b569fbb81ec87a5ff8469d5f43bbec166fd77f811529bcc486220bff8a83e03",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-border",
+          "url": "https://travel.gc.ca/travelling/health-safety/drugs-alcohol",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "3d17c092123429817e5cc567276684adfe7d00473a2b1850c296c7ef69850a4e",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Cannabis and international borders, lignes 31–50 ; prescription drugs, lignes 45–47",
+          "result": "Le passage déjà lu distingue le régime général du cannabis récréatif des médicaments autorisés sous conditions ; le cas et l’explication corrigés respectent cette distinction.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "La source distingue les médicaments autorisés contenant du cannabis, transportables sous conditions réglementaires, des autres formes de cannabis médical nécessitant une exemption individuelle rare. Le cas et l’explication actuels englobent cannabis/CBD et prescription sans rendre cette distinction ; « sans autorisation spéciale » reste ambigu.",
+          "contentHash": "77a9393814dfae719e6e0f4f2f927ff5c74cb8c829c6a2cfb23b4339e53cc7d6",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "approved_prescription_medicines_scope",
+              "reason": "La source distingue les médicaments autorisés contenant du cannabis, transportables sous conditions réglementaires, des autres formes de cannabis médical nécessitant une exemption individuelle rare. Le cas et l’explication actuels englobent cannabis/CBD et prescription sans rendre cette distinction ; « sans autorisation spéciale » reste ambigu.",
+              "requestedChange": "Borner explicitement le cas au cannabis non médicamenteux ou exclure les médicaments autorisés, puis limiter l’explication à ce régime. Si les médicaments restent inclus, expliquer leur régime distinct sous conditions ; une prescription seule et une exemption individuelle ne sont pas interchangeables."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-wada-2026-cbd-exception",
+      "status": "approved",
+      "comment": "Exception du cannabidiol confirmée dans S8 ; la question est explicitement datée 2026 et reviewAfter=2026-12-31 impose une reprise avant 2027.",
+      "contentHash": "fb1bbd6e0f73259e2b4f7d90c6a04c7de063278ebcf1c38aa3a67a36fb7cd6a6",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-wada-2026",
+          "url": "https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "362a248af36a0436324bdfab44c9d483c466bf391d4e7460c7ab116beef9fe16",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "full-text-targeted",
+          "locator": "Page 18 du document (PDF p.17), S8, lignes 584–594 ; entrée en vigueur ligne 48",
+          "result": "S8 vise les cannabinoïdes naturels et synthétiques en compétition et excepte le cannabidiol ; liste effective le 1er janvier 2026.",
+          "supportStatus": "supported"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      }
+    },
+    {
+      "id": "hemp-q2-en02-vigilance-reports-not-incidence",
+      "status": "approved",
+      "comment": "La question porte maintenant sur le nombre total d’exposés et les cas non signalés, face à des caractéristiques de dossiers. Elle teste une limite de calcul de fréquence plutôt qu’une répétition de « notifications » ; forme identification appropriée.",
+      "contentHash": "c2f3a4b28e481593403689b7f9ae4f9c7ececa74f496b288b7ce352aa4f1ea8d",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-canada-vigilance",
+          "url": "https://www.canada.ca/en/health-canada/services/publications/drugs-health-products/data-cannabis-adverse-reactions-2023-annual-report.html",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "e9ab39ad57b8ece28f129662dc0c8483e53ed448ee6f91bfed4d776177a5e27a",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Considerations, lignes 133–156 ; figures 10–11, Caveats, lignes 407 et 447",
+          "result": "Plusieurs événements par cas et impossibilité d’estimer incidence/prévalence par notifications spontanées sont explicités.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "Les seules notifications peuvent décrire les événements notifiés : la réponse répète l’énoncé. Les trois autres choix sont des estimations de risque en population ; la limite de vigilance n’a pas à être comprise pour répondre.",
+          "contentHash": "a6a3e24e55c6fa70621eccc4a018903116a6ab2c34303892cee71a23bb8b1cf0",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "notifications_describe_notifications_tautology",
+              "reason": "Les seules notifications peuvent décrire les événements notifiés : la réponse répète l’énoncé. Les trois autres choix sont des estimations de risque en population ; la limite de vigilance n’a pas à être comprise pour répondre.",
+              "requestedChange": "Interroger le rôle des cas non notifiés ou du nombre de personnes exposées dans l’impossibilité d’estimer une incidence, avec quatre explications statistiques plausibles. Revoir la forme deduction si le nouvel item reste un rappel de définition."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    },
+    {
+      "id": "hemp-q2-en02-recall-already-sold",
+      "status": "approved",
+      "comment": "Le stade « déjà acheté » n’est plus livré dans l’énoncé. Les choix comparent quatre démarches ; le rappel touche les détenteurs de produits vendus, conformément à la fiche française.",
+      "contentHash": "b931cf09c99b75ac25bf4c46b2abb6dbc793a0c447e33ecb9d8e0612ca77f0c7",
+      "sourceChecks": [
+        {
+          "sourceId": "q2-en02-recall-france",
+          "url": "https://www.economie.gouv.fr/particuliers/mes-droits-conso/bien-consommer/retraits-et-rappels-de-produits-comment-signaler-et-sinformer-sur-les-produits-risque",
+          "sourceRegistry": "docs/quiz-2000/batches/e-new-02.json",
+          "sourceHash": "f8cfb8abb85be70afa509d837f5864b6e3cb16a577b442fdeff81e7d27e28583",
+          "reader": "e_engine_audit",
+          "consultedOn": "2026-11-16",
+          "accessObserved": "official-page-targeted",
+          "locator": "Article du 30 mars 2026, lignes 24 et 32–38 ; conduite à suivre, lignes 89–99",
+          "result": "Le retrait vise les produits non vendus, le rappel les produits déjà vendus ; avis officiel à consulter.",
+          "supportStatus": "supported",
+          "consultationReused": true,
+          "reusedForReviewOn": "2026-11-17"
+        }
+      ],
+      "checked": {
+        "entireQuestion": true,
+        "fourOptions": true,
+        "answerUniqueness": true,
+        "explanation": true,
+        "sourcePassages": true,
+        "levelsAndForms": true,
+        "nearbyFacts": true
+      },
+      "history": [
+        {
+          "reviewedAt": "2026-11-16",
+          "reviewer": "e_engine_audit",
+          "status": "changes_requested",
+          "comment": "« Déjà acheté » fournit le stade du produit, puis les trois mauvaises réponses sont limitées par « seulement » aux produits invendus ou avant commercialisation. L’énoncé élimine donc les distracteurs.",
+          "contentHash": "f9ce08fab06c7e3a0862c6344a2cb9952bfa91476ca10613d9f3fe95bb235d65",
+          "issues": [
+            {
+              "severity": "blocking",
+              "code": "already_bought_supplies_answer",
+              "reason": "« Déjà acheté » fournit le stade du produit, puis les trois mauvaises réponses sont limitées par « seulement » aux produits invendus ou avant commercialisation. L’énoncé élimine donc les distracteurs.",
+              "requestedChange": "Retirer ce renseignement révélateur ou concevoir une vraie situation de choix entre retrait et rappel. Comparer quatre périmètres ou démarches plausibles sans trois stocks invendus exclus d’avance."
+            }
+          ]
+        }
+      ],
+      "reviewedAt": "2026-11-17",
+      "finalReviewer": "e_engine_audit"
+    }
+  ],
+  "initialReviewedAt": "2026-11-16",
+  "finalRevalidation": {
+    "reviewer": "e_engine_audit",
+    "reviewerModel": "gpt-6.1-sol",
+    "reviewedAt": "2026-11-17",
+    "correctedQuestionsRead": 14,
+    "unchangedApprovalsPreserved": 26,
+    "sourceObjectsUnchanged": 22,
+    "sourceConsultedOn": "2026-11-16",
+    "newSourceConsultations": 0,
+    "initialRequestsPreserved": "Dans history de chacun des 14 items corrigés.",
+    "result": "40 versions approuvées ; aucune demande restante."
+  }
+}

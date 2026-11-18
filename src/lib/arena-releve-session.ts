@@ -1,5 +1,5 @@
 import { ARENA_RELEVE_CHAPTERS } from './arena-releve';
-import { createKqReleveProduction, getKqReleveHarvests, getKqReleveProductionProgress, type KqReleveProductionState } from './kanab-quest-releve-production';
+import { createKqReleveProduction, getKqReleveHarvests, getKqReleveProductionProgress, isKqReleveCareReserve, type KqReleveProductionState } from './kanab-quest-releve-production';
 import { createReleveCommerce, getReleveCommerceCash, getReleveCommerceProgress, getReleveCommerceSnapshot, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
 import { isKqWarehouseState } from './kanab-quest-warehouse';
 import { encodeKqSave, parseKqGameSave, parseKqBattleSave } from './kanab-quest-persistence';
@@ -63,6 +63,7 @@ function validCheckpoint(value: unknown): value is ArenaReleveCheckpoint {
   if (!isKqWarehouseState(p.warehouse) || !record(p.draftWarehouse) || !Array.isArray(p.draftWarehouse.zones) || !Array.isArray(p.draftWarehouse.equipment)) return false;
   if (!Array.isArray(p.ownedBuddies) || !Array.isArray(p.milestones) || !Array.isArray(p.ledger) || !record(p.battles) || !record(p.revealedRounds)) return false;
   if (!Array.isArray(p.recentBuddieCodes) || !record(p.supportInventory) || !record(p.careInventory) || !Array.isArray(p.deckCodes)) return false;
+  if (!isKqReleveCareReserve(p) || p.checkpoint != null && (!record(p.checkpoint) || !isKqReleveCareReserve(p.checkpoint))) return false;
   if (p.game !== null && !parseKqGameSave(encodeKqSave(p.game))) return false;
   if (Object.values(p.battles).some(battle => !parseKqBattleSave(encodeKqSave(battle)))) return false;
   if (Number(value.chapter) >= 6 && !record(value.commerce)) return false;

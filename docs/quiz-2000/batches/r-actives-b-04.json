@@ -1,0 +1,1646 @@
+{
+  "batchId": "r-actives-b-04",
+  "author": "rebalance_classify_b",
+  "role": "Rédaction externe indépendante, cannabis récréatif, CBD et chanvre à actifs",
+  "questions": [
+    {
+      "id": "hemp-q2-rb04-jack-herer-hommage",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "À quel type de personnalité Sensi Seeds rend-il hommage avec sa lignée Jack Herer ?",
+      "options": [
+        "À un auteur et militant de la cause du cannabis",
+        "À un musicien de jazz de l’époque de la prohibition",
+        "À un pharmacologue spécialiste des récepteurs CB1",
+        "À un botaniste du XIXe siècle décrivant le cannabis"
+      ],
+      "answer": 0,
+      "explanation": "Le nom honore Jack Herer, auteur de The Emperor Wears No Clothes et militant de la cause du cannabis. Sensi présente explicitement cette lignée comme un hommage à son engagement.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-herer"
+      ],
+      "subjectKey": "jack-herer-sensi",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "jack-herer-sensi",
+        "subjectKey": "jack-herer-sensi",
+        "property": "Hommage au militant et auteur",
+        "expectedAnswer": "À un auteur et militant de la cause du cannabis",
+        "learningObjective": "Hommage au militant et auteur.",
+        "factKey": "jack-herer-hommage",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-herer",
+            "locator": "Introduction avant Cultivating : hommage à l’auteur et militant Jack Herer",
+            "support": "Sensi relie explicitement le nom à l’auteur de The Emperor Wears No Clothes et à son militantisme cannabique."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-white-widow-parents",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelles origines Green House Seed Company annonce-t-il pour les parents de sa White Widow ?",
+      "options": [
+        "Jamaïque et Afrique du Sud",
+        "Brésil et sud de l’Inde",
+        "Afghanistan et Thaïlande",
+        "Mexique et Colombie"
+      ],
+      "answer": 1,
+      "explanation": "Green House donne Brazilian × South Indian pour sa version de White Widow. Son récit associe donc un matériel sud-américain à un matériel originaire d’Asie du Sud.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-widow"
+      ],
+      "subjectKey": "white-widow-ghsc",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "white-widow-ghsc",
+        "subjectKey": "white-widow-ghsc",
+        "property": "Origines parentales revendiquées",
+        "expectedAnswer": "Brésil et sud de l’Inde",
+        "learningObjective": "Origines parentales revendiquées.",
+        "factKey": "white-widow-parents",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-widow",
+            "locator": "Titre, Genetics : Brazilian x South Indian",
+            "support": "La fiche officielle donne Brazilian x South Indian."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-northern-lights-ascendances",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quelles ascendances Sensi Seeds met-il en avant pour sa Northern Lights Regular ?",
+      "options": [
+        "Indienne et brésilienne",
+        "Jamaïcaine et sud-africaine",
+        "Afghane et thaïe",
+        "Colombienne et mexicaine"
+      ],
+      "answer": 2,
+      "explanation": "Sensi met en avant des ascendances afghane et thaïe pour sa Northern Lights. Le fabricant décrit aussi le passage de matériels américains vers les Pays-Bas, tout en qualifiant cette origine historique.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-northern"
+      ],
+      "subjectKey": "northern-lights-sensi",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "northern-lights-sensi",
+        "subjectKey": "northern-lights-sensi",
+        "property": "Ascendances revendiquées",
+        "expectedAnswer": "Afghane et thaïe",
+        "learningObjective": "Ascendances revendiquées.",
+        "factKey": "northern-lights-ascendances",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-northern",
+            "locator": "Growth pattern of Northern Lights Regular, premier paragraphe",
+            "support": "Le paragraphe historique cite ses génétiques Afghani et Thai."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-blueberry-dj-short",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Quel breeder Dutch Passion associe-t-il au projet à l’origine de Blueberry ?",
+      "options": [
+        "Shantibaba",
+        "Nevil Schoenmakers",
+        "Sam the Skunkman",
+        "DJ Short"
+      ],
+      "answer": 3,
+      "explanation": "Dutch Passion attribue le projet à une collaboration avec DJ Short, visant notamment des arômes fruités. Le récit relie ainsi le travail de sélection de Blueberry à une recherche de bouquet.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-blueberry"
+      ],
+      "subjectKey": "blueberry-dutch-passion",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "blueberry-dutch-passion",
+        "subjectKey": "blueberry-dutch-passion",
+        "property": "Breeder associé au projet historique",
+        "expectedAnswer": "DJ Short",
+        "learningObjective": "Breeder associé au projet historique.",
+        "factKey": "blueberry-dj-short",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-blueberry",
+            "locator": "Blueberry : collaboration avec DJ Short",
+            "support": "Dutch Passion attribue le projet Blueberry à une collaboration avec DJ Short."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-durban-poison-afrique-sud",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "À quel pays Dutch Passion rattache-t-il l’origine de Durban Poison ?",
+      "options": [
+        "L’Afrique du Sud",
+        "La Jamaïque",
+        "La Thaïlande",
+        "La Colombie"
+      ],
+      "answer": 0,
+      "explanation": "Le récit de Dutch Passion rattache Durban Poison à l’Afrique du Sud, notamment à Durban. Cette provenance annoncée ne suffit pas à trancher la pureté ou toutes les étapes de la lignée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-durban"
+      ],
+      "subjectKey": "durban-poison-dp",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "durban-poison-dp",
+        "subjectKey": "durban-poison-dp",
+        "property": "Provenance géographique revendiquée",
+        "expectedAnswer": "L’Afrique du Sud",
+        "learningObjective": "Provenance géographique revendiquée.",
+        "factKey": "durban-poison-afrique-sud",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-durban",
+            "locator": "Description : origine sud-africaine et ville de Durban",
+            "support": "La fiche officielle décrit une origine sud-africaine, dans la région de Durban."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-skunk1-trois-ascendances",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel trio Sensi Seeds cite-t-il dans l’ascendance de Skunk #1 ?",
+      "options": [
+        "Blueberry, Durban Poison et G13",
+        "Acapulco Gold, Colombian Gold et Afghan",
+        "Haze, Northern Lights et Hindu Kush",
+        "White Widow, AK-47 et Bubble Gum"
+      ],
+      "answer": 1,
+      "explanation": "Sensi cite Acapulco Gold, Colombian Gold et des génétiques afghanes : deux composantes américaines et une asiatique dans son récit d’ascendance de Skunk #1.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-landrace"
+      ],
+      "subjectKey": "skunk1-sensi",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "skunk1-sensi",
+        "subjectKey": "skunk1-sensi",
+        "property": "Trois ascendances du récit de Skunk #1",
+        "expectedAnswer": "Acapulco Gold, Colombian Gold et Afghan",
+        "learningObjective": "Trois ascendances du récit de Skunk #1.",
+        "factKey": "skunk1-trois-ascendances",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-landrace",
+            "locator": "Landrace strains : Hindu Kush ; Popular hybrids : Skunk #1",
+            "support": "Le passage Skunk cite ces trois composantes dans Skunk #1."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-cannatonic-pedigree-corrige",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quelle parenté Resin Seeds a-t-il annoncée dans sa correction publique du pedigree de Cannatonic ?",
+      "options": [
+        "Harlequin × ACDC",
+        "Critical Mass × Skunk #1",
+        "Reina Madre × NYCD",
+        "MK-Ultra × G13"
+      ],
+      "answer": 2,
+      "explanation": "Resin Seeds a corrigé sa précédente hypothèse MK-Ultra × G13 en Reina Madre × NYCD. Une rectification du breeder doit être distinguée d’une analyse génétique indépendante.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-cannatonic"
+      ],
+      "subjectKey": "cannatonic-resin-seeds",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "cannatonic-resin-seeds",
+        "subjectKey": "cannatonic-resin-seeds",
+        "property": "Parenté corrigée publiquement par le breeder",
+        "expectedAnswer": "Reina Madre × NYCD",
+        "learningObjective": "Parenté corrigée publiquement par le breeder.",
+        "factKey": "cannatonic-pedigree-corrige",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-cannatonic",
+            "locator": "Paragraphe unique de rectification de la parenté",
+            "support": "L’annonce de2015 distingue explicitement l’ancienne hypothèse de Reina Madre x NYCD."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-hindu-kush-provenance",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans quel ensemble montagneux Sensi Seeds situe-t-il l’origine de sa lignée Hindu Kush ?",
+      "options": [
+        "L’Himalaya entre Népal et Bhoutan",
+        "Les montagnes de l’Atlas au Maroc",
+        "Les Andes entre Pérou et Bolivie",
+        "Le massif traversant Afghanistan et Pakistan"
+      ],
+      "answer": 3,
+      "explanation": "Sensi rattache Hindu Kush au massif d’Asie qui s’étend notamment en Afghanistan et au Pakistan. Le nom de cette lignée fait référence à une provenance, pas à une composition certifiée.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-landrace"
+      ],
+      "subjectKey": "hindu-kush-sensi",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "varieties",
+        "subject": "hindu-kush-sensi",
+        "subjectKey": "hindu-kush-sensi",
+        "property": "Massif d’origine revendiqué",
+        "expectedAnswer": "Le massif traversant Afghanistan et Pakistan",
+        "learningObjective": "Massif d’origine revendiqué.",
+        "factKey": "hindu-kush-provenance",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-landrace",
+            "locator": "Landrace strains : Hindu Kush ; Popular hybrids : Skunk #1",
+            "support": "Le passage Hindu Kush situe cette lignée dans les contreforts du massif traversant Afghanistan, Pakistan et Tadjikistan."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-appel18joint-revendication",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Que demandait principalement l’« Appel du 18 joint » publié en France en 1976 ?",
+      "options": [
+        "La dépénalisation de l’usage du cannabis",
+        "La vente de cannabis réservée aux pharmacies",
+        "Une interdiction renforcée de l’usage personnel",
+        "Un monopole des ventes pour les associations de malades"
+      ],
+      "answer": 0,
+      "explanation": "L’appel publié dans Libération défendait la dépénalisation de l’usage. L’OFDT le replace dans le développement d’une presse et d’un mouvement antiprohibitionnistes.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-presse"
+      ],
+      "subjectKey": "appel-18-joint",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "appel-18-joint",
+        "subjectKey": "appel-18-joint",
+        "property": "Revendication historique de dépénalisation",
+        "expectedAnswer": "La dépénalisation de l’usage du cannabis",
+        "learningObjective": "Revendication historique de dépénalisation.",
+        "factKey": "appel18joint-revendication",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-presse",
+            "locator": "Pages imprimées161–162, PDF index157–158 : Actuel et Appel du18joint",
+            "support": "Le chapitre rapporte un texte publié en1976 en faveur de la dépénalisation de l’usage du cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-actuel-presse-underground",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans quel courant de presse « Actuel » a-t-il porté le débat sur le cannabis en France au début des années 1970 ?",
+      "options": [
+        "La presse professionnelle du commerce du tabac",
+        "La presse underground et la contre-culture",
+        "La presse d’opinion conservatrice et prohibitionniste",
+        "La presse médicale centrée sur les prescriptions"
+      ],
+      "answer": 1,
+      "explanation": "L’OFDT décrit Actuel comme un fer de lance de la contre-culture. Ses numéros consacrés aux drogues puis à l’herbe participaient à la contestation de la prohibition.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-presse"
+      ],
+      "subjectKey": "actuel-cannabis-press",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "actuel-cannabis-press",
+        "subjectKey": "actuel-cannabis-press",
+        "property": "Rôle dans la presse de contre-culture",
+        "expectedAnswer": "La presse underground et la contre-culture",
+        "learningObjective": "Rôle dans la presse de contre-culture.",
+        "factKey": "actuel-presse-underground",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-presse",
+            "locator": "Pages imprimées161–162, PDF index157–158 : Actuel et Appel du18joint",
+            "support": "Les pages161–162 rattachent Actuel à la presse underground et à la contestation de la censure."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-reefer-man-calloway",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel chanteur de jazz est associé à « Reefer Man », un numéro de l’histoire musicale du cannabis ?",
+      "options": [
+        "Nat King Cole",
+        "Fats Waller",
+        "Cab Calloway",
+        "Louis Armstrong"
+      ],
+      "answer": 2,
+      "explanation": "Le Smithsonian attribue Reefer Man à Cab Calloway et ses Harlemanics. Ses archives le conservent notamment parmi des montages de films de jazz et de chansons évoquant les drogues.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-reefer"
+      ],
+      "subjectKey": "cab-calloway-reefer-man",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "cab-calloway-reefer-man",
+        "subjectKey": "cab-calloway-reefer-man",
+        "property": "Interprète du numéro historique",
+        "expectedAnswer": "Cab Calloway",
+        "learningObjective": "Interprète du numéro historique.",
+        "factKey": "reefer-man-calloway",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-reefer",
+            "locator": "Couverture ; p. 5 imprimée, Reel OF491.2-1, numéro 4 ; rubrique Drug Songs, Reefer Man",
+            "support": "L’inventaire donne Cab Calloway and His Harlemanics pour Reefer Man et confirme les parties vocales dans Drug Songs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-how-high-harvard",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle comédie suit deux consommateurs de cannabis qui se retrouvent étudiants à Harvard ?",
+      "options": [
+        "Up in Smoke",
+        "Harold & Kumar Go to White Castle",
+        "Half Baked",
+        "How High"
+      ],
+      "answer": 3,
+      "explanation": "How High place ses deux personnages dans l’univers de Harvard. Le classement québécois décrit cette aventure comme une comédie burlesque.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-howhigh"
+      ],
+      "subjectKey": "how-high-film",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "how-high-film",
+        "subjectKey": "how-high-film",
+        "property": "Identification d’une fiction cannabique universitaire",
+        "expectedAnswer": "How High",
+        "learningObjective": "Identification d’une fiction cannabique universitaire.",
+        "factKey": "how-high-harvard",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-howhigh",
+            "locator": "Synopsis et motifs de classement",
+            "support": "Le synopsis décrit deux fumeurs de cannabis devenant étudiants à Harvard."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-harold-kumar-quete",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel duo de comédie part chercher de la marijuana et un restaurant de fast-food au fil d’une nuit mouvementée ?",
+      "options": [
+        "Harold et Kumar",
+        "Cheech et Chong",
+        "Jay et Silent Bob",
+        "Craig et Smokey"
+      ],
+      "answer": 0,
+      "explanation": "Le premier Harold & Kumar construit une succession de mésaventures autour de cette recherche. Il appartient à la culture de la comédie cannabique, avec des personnages et effets fictionnels.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-harold"
+      ],
+      "subjectKey": "harold-kumar-white-castle",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "harold-kumar-white-castle",
+        "subjectKey": "harold-kumar-white-castle",
+        "property": "Quête cannabique au centre de la comédie",
+        "expectedAnswer": "Harold et Kumar",
+        "learningObjective": "Quête cannabique au centre de la comédie.",
+        "factKey": "harold-kumar-quete",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-harold",
+            "locator": "Synopsis, recherche de marijuana et restaurant de fast-food",
+            "support": "Le synopsis institutionnel décrit deux amis à la recherche de marijuana et de fast-food."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-saving-grace-dettes",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans « Saving Grace », pourquoi une veuve anglaise se lance-t-elle dans le commerce du cannabis ?",
+      "options": [
+        "Pour ouvrir un centre de soins avec son médecin",
+        "Pour faire face aux dettes laissées par son mari",
+        "Pour financer la campagne électorale de son fils",
+        "Pour racheter la pharmacie où elle travaillait"
+      ],
+      "answer": 1,
+      "explanation": "Grace risque de perdre sa maison après les dettes laissées par son mari. Avec son jardinier, elle se tourne vers le cannabis pour obtenir l’argent nécessaire : c’est le ressort économique de cette comédie.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-grace"
+      ],
+      "subjectKey": "saving-grace-film",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "saving-grace-film",
+        "subjectKey": "saving-grace-film",
+        "property": "Mobile économique du commerce cannabique dans la fiction",
+        "expectedAnswer": "Pour faire face aux dettes laissées par son mari",
+        "learningObjective": "Mobile économique du commerce cannabique dans la fiction.",
+        "factKey": "saving-grace-dettes",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-grace",
+            "locator": "Synopsis et Storyline",
+            "support": "Les producteurs décrivent une veuve menacée de saisie qui vend du cannabis afin d’obtenir l’argent nécessaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-grass-documentaire-histoire",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel est le sujet du documentaire « Grass » de Ron Mann ?",
+      "options": [
+        "Une compétition entre sélectionneurs de cannabis",
+        "La vie quotidienne d’une famille de vendeurs fictifs",
+        "L’histoire de la marijuana récréative et de sa répression",
+        "Le parcours médical de patients sous cannabidiol"
+      ],
+      "answer": 2,
+      "explanation": "Le documentaire de Ron Mann retrace les usages récréatifs et la répression de la marijuana au XXe siècle. Il s’appuie notamment sur des archives et une bande musicale liée à cette histoire.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-grass"
+      ],
+      "subjectKey": "grass-ron-mann",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "grass-ron-mann",
+        "subjectKey": "grass-ron-mann",
+        "property": "Objet historique du documentaire",
+        "expectedAnswer": "L’histoire de la marijuana récréative et de sa répression",
+        "learningObjective": "Objet historique du documentaire.",
+        "factKey": "grass-documentaire-histoire",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-grass",
+            "locator": "Présentation après Years in the making, histoire des usages récréatifs et de la répression",
+            "support": "La production présente une histoire de l’usage récréatif et de la criminalisation du cannabis au XXesiècle."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-family-business-boucherie",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Dans la série française « Family Business », quel commerce familial les personnages veulent-ils transformer en café à cannabis ?",
+      "options": [
+        "Une boulangerie",
+        "Un bar-tabac",
+        "Une épicerie",
+        "Une boucherie"
+      ],
+      "answer": 3,
+      "explanation": "La famille veut reconvertir sa boucherie en établissement lié au cannabis. L’annonce d’une légalisation fait partie de l’intrigue : la série ne décrit pas le droit français réel.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-family"
+      ],
+      "subjectKey": "family-business-series",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "family-business-series",
+        "subjectKey": "family-business-series",
+        "property": "Commerce familial reconverti dans la fiction",
+        "expectedAnswer": "Une boucherie",
+        "learningObjective": "Commerce familial reconverti dans la fiction.",
+        "factKey": "family-business-boucherie",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-family",
+            "locator": "Synopsis : transformation de la boucherie familiale en marijuana café",
+            "support": "Le synopsis Netflix indique la transformation de la butcher shop en marijuana café."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-paulette-retraitee",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quel personnage se lance dans la vente de cannabis dans la comédie française « Paulette » ?",
+      "options": [
+        "Une retraitée qui peine à vivre de sa pension",
+        "Une étudiante qui veut financer sa thèse",
+        "Une infirmière qui reprend une pharmacie",
+        "Une avocate qui quitte son cabinet"
+      ],
+      "answer": 0,
+      "explanation": "Paulette vit d’une maigre retraite dans une cité de la banlieue parisienne. Ancienne pâtissière, elle se lance dans le trafic ; la comédie relie cette activité à la précarité et à la mise à l’écart.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-paulette"
+      ],
+      "subjectKey": "paulette-film",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "paulette-film",
+        "subjectKey": "paulette-film",
+        "property": "Portrait social de la protagoniste du trafic",
+        "expectedAnswer": "Une retraitée qui peine à vivre de sa pension",
+        "learningObjective": "Portrait social de la protagoniste du trafic.",
+        "factKey": "paulette-retraitee",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-paulette",
+            "locator": "Synopsis, deux premiers paragraphes",
+            "support": "Le synopsis Gaumont décrit sa maigre retraite, son logement en cité et sa décision de vendre du cannabis."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-marijuana-stigmatisation1930",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Selon l’exposition de la NLM, quel rapprochement les campagnes américaines des années 1930 cherchaient-elles par le mot « marijuana » ?",
+      "options": [
+        "Valoriser les variétés américaines face aux importations",
+        "Associer le cannabis aux immigrés mexicains",
+        "Présenter le cannabis comme un remède européen traditionnel",
+        "Distinguer le cannabis cultivé dans l’Ouest américain"
+      ],
+      "answer": 1,
+      "explanation": "La NLM analyse l’usage politique du nom espagnol pour rapprocher le cannabis des immigrés mexicains. C’est un fait d’histoire de la stigmatisation, sans valider les préjugés de ces campagnes.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-nlm"
+      ],
+      "subjectKey": "marijuana-us-stigma1930",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "marijuana-us-stigma1930",
+        "subjectKey": "marijuana-us-stigma1930",
+        "property": "Usage politique et stigmatisant du nom",
+        "expectedAnswer": "Associer le cannabis aux immigrés mexicains",
+        "learningObjective": "Usage politique et stigmatisant du nom.",
+        "factKey": "marijuana-stigmatisation1930",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-nlm",
+            "locator": "Premier volet PDF index0, rubrique Marijuana : pharmacies XIXesiècle et usages politiques du nom dans les années1930",
+            "support": "Le volet Marijuana décrit l’emploi du nom espagnol par des responsables pour établir ce rapprochement dans les années1930."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-rif-resine-maroc",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "À quel pays est lié le Rif, grand foyer historique de résine de cannabis destinée au marché européen ?",
+      "options": [
+        "À l’Afghanistan",
+        "À l’Albanie",
+        "Au Maroc",
+        "Au Liban"
+      ],
+      "answer": 2,
+      "explanation": "L’analyse de marché européenne rattache le Rif au Maroc, principale provenance traditionnelle de la résine en Europe. Cela ne signifie pas que toute résine vendue en Europe en provient.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-resinmarkets"
+      ],
+      "subjectKey": "morocco-rif-cannabis-resin",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "morocco-rif-cannabis-resin",
+        "subjectKey": "morocco-rif-cannabis-resin",
+        "property": "Région et provenance historique de résine",
+        "expectedAnswer": "Au Maroc",
+        "learningObjective": "Région et provenance historique de résine.",
+        "factKey": "rif-resine-maroc",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-resinmarkets",
+            "locator": "Cannabis resin production in Morocco, paragraphes sur la source principale et les hybrides au Rif",
+            "support": "La section sur la production marocaine décrit les transformations du Rif et le Maroc comme principale source européenne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-resine-herbe-teneur-moyenne2024",
+      "topicId": "evidence",
+      "level": 2,
+      "prompt": "Dans les saisies européennes de 2024 rapportées par l’EUDA, comment les teneurs moyennes en THC de résine et d’herbe se comparaient-elles ?",
+      "options": [
+        "L’herbe était environ deux fois plus concentrée",
+        "Les deux formes avaient des moyennes très proches",
+        "L’herbe dépassait la résine d’environ un quart",
+        "La résine était environ deux fois plus concentrée"
+      ],
+      "answer": 3,
+      "explanation": "L’EUDA rapporte environ 24,6 % pour la résine contre 12 % pour l’herbe. Il s’agit de moyennes de saisies : elles ne prédisent pas la teneur d’un échantillon particulier.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rb04-euda26"
+      ],
+      "subjectKey": "europe-cannabis-potency-surveillance",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "europe-cannabis-potency-surveillance",
+        "subjectKey": "europe-cannabis-potency-surveillance",
+        "property": "Comparaison de teneurs moyennes de formes saisies",
+        "expectedAnswer": "La résine était environ deux fois plus concentrée",
+        "learningObjective": "Comparaison de teneurs moyennes de formes saisies.",
+        "factKey": "resine-herbe-teneur-moyenne2024",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-euda26",
+            "locator": "Introduction ; évolutions des origines ; Cannabis market data, teneurs2024",
+            "support": "Les données2024 donnent24,6 % de THC en résine et12 % en herbe, soit environ le double."
+          }
+        ],
+        "jurisdiction": "Union européenne, données de saisies2024 publiées2026",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-imports-amerique-nord-europe",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle origine d’herbe l’EUDA souligne-t-elle parmi les nouveaux flux vers le marché européen en 2026 ?",
+      "options": [
+        "Le Canada et les États-Unis",
+        "Le Maroc et l’Algérie",
+        "Le Liban et la Syrie",
+        "L’Afghanistan et le Pakistan"
+      ],
+      "answer": 0,
+      "explanation": "L’EUDA souligne les flux d’herbe venant notamment du Canada et des États-Unis. Ce constat complète l’histoire des approvisionnements européens ; il ne décrit pas l’origine de tous les produits.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-euda26"
+      ],
+      "subjectKey": "europe-cannabis-north-american-imports",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "europe-cannabis-north-american-imports",
+        "subjectKey": "europe-cannabis-north-american-imports",
+        "property": "Évolution des provenances de l’herbe en Europe",
+        "expectedAnswer": "Le Canada et les États-Unis",
+        "learningObjective": "Évolution des provenances de l’herbe en Europe.",
+        "factKey": "imports-amerique-nord-europe",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-euda26",
+            "locator": "Introduction ; évolutions des origines ; Cannabis market data, teneurs2024",
+            "support": "Le rapport2026 cite les envois du Canada et des États-Unis et l’alerte sur le cannabis nord-américain."
+          }
+        ],
+        "jurisdiction": "Europe, rapport EUDA2026",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-rif-hybrides-resine",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Selon l’analyse européenne de 2023, quelle évolution concerne les plantes destinées à la résine au Rif ?",
+      "options": [
+        "Les types à CBG remplacent progressivement les types mixtes",
+        "Des hybrides remplacent progressivement les types traditionnels",
+        "Les types traditionnels remplacent progressivement les hybrides",
+        "Les types à CBD remplacent progressivement les types à THC"
+      ],
+      "answer": 1,
+      "explanation": "L’EUDA décrit l’arrivée d’hybrides au potentiel plus élevé en résine et en THC. Ce changement de matériel végétal aide à comprendre l’évolution du marché.",
+      "articleId": "ref-noms-lignees",
+      "sourceIds": [
+        "q2-rb04-resinmarkets"
+      ],
+      "subjectKey": "morocco-rif-cannabis-resin",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "genetics",
+        "subject": "morocco-rif-cannabis-resin",
+        "subjectKey": "morocco-rif-cannabis-resin",
+        "property": "Transformation du matériel végétal de la filière résine",
+        "expectedAnswer": "Des hybrides remplacent progressivement les types traditionnels",
+        "learningObjective": "Transformation du matériel végétal de la filière résine.",
+        "factKey": "rif-hybrides-resine",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-resinmarkets",
+            "locator": "Cannabis resin production in Morocco, paragraphes sur la source principale et les hybrides au Rif",
+            "support": "La section décrit le remplacement progressif des variétés traditionnelles par des hybrides au potentiel de résine et THC plus élevé."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-europe-cannabis-premier-illicite",
+      "topicId": "history",
+      "level": 1,
+      "prompt": "Quelle drogue illicite reste la plus consommée en Europe selon le rapport EUDA2026 ?",
+      "options": [
+        "La MDMA",
+        "L’héroïne",
+        "Le cannabis",
+        "La cocaïne"
+      ],
+      "answer": 2,
+      "explanation": "Le cannabis reste la drogue illicite la plus consommée en Europe. Cette fréquence d’usage décrit une place sociale ; elle ne constitue ni une garantie de sécurité ni une autorisation juridique.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-euda26"
+      ],
+      "subjectKey": "europe-cannabis-use-prevalence",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "europe-cannabis-use-prevalence",
+        "subjectKey": "europe-cannabis-use-prevalence",
+        "property": "Place dans les usages de substances illicites",
+        "expectedAnswer": "Le cannabis",
+        "learningObjective": "Place dans les usages de substances illicites.",
+        "factKey": "europe-cannabis-premier-illicite",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-euda26",
+            "locator": "Introduction ; évolutions des origines ; Cannabis market data, teneurs2024",
+            "support": "L’introduction et la section de santé publique le désignent comme la substance illicite la plus consommée en Europe."
+          }
+        ],
+        "jurisdiction": "Europe, rapport EUDA2026",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-irradiation-but-microbien",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Pourquoi certaines fleurs de cannabis médical sont-elles soumises à une irradiation contrôlée ?",
+      "options": [
+        "Pour éliminer leurs résidus de pesticides",
+        "Pour enlever les métaux lourds accumulés",
+        "Pour neutraliser les cannabinoïdes présents",
+        "Pour réduire leur contamination microbienne"
+      ],
+      "answer": 3,
+      "explanation": "L’objectif est de réduire les microbes et spores présents dans les fleurs destinées aux patients. Ce traitement de qualité microbiologique ne constitue pas une méthode d’enrichissement en cannabinoïdes.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "q2-rb04-irradiation"
+      ],
+      "subjectKey": "medical-cannabis-irradiation",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "medical-cannabis-irradiation",
+        "subjectKey": "medical-cannabis-irradiation",
+        "property": "Objectif microbiologique d’un traitement de fleurs",
+        "expectedAnswer": "Pour réduire leur contamination microbienne",
+        "learningObjective": "Objectif microbiologique d’un traitement de fleurs.",
+        "factKey": "irradiation-but-microbien",
+        "form": "identification",
+        "difficultyRationale": "Connaissance concrète sur le cannabis ou repère culturel courant, sans résultat numérique ni date à mémoriser.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-irradiation",
+            "locator": "Abstract, Introduction et Discussion : objectif microbiologique et changements chimiques observés",
+            "support": "L’introduction et la discussion relient l’irradiation aux exigences de contamination microbienne des fleurs médicales."
+          }
+        ],
+        "jurisdiction": "Portée descriptive générale, source étude2016",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-irradiation-profil-chimique",
+      "topicId": "molecules",
+      "level": 2,
+      "prompt": "Dans l’étude de Hazekamp, quel contraste chimique a été observé après irradiation des fleurs médicales ?",
+      "options": [
+        "THC et CBD stables, mais baisse de certains terpènes",
+        "Hausse du THC et baisse du CBD, sans changement terpénique",
+        "Baisse du THC et hausse du CBD, avec hausse des terpènes",
+        "THC et CBD diminués, mais terpènes stables"
+      ],
+      "answer": 0,
+      "explanation": "Dans les quatre matériels étudiés, THC et CBD ne changent pas, mais certains terpènes diminuent. Ce résultat ne vaut pas pour toutes les techniques ni pour tous les produits irradiés.",
+      "articleId": "ref-resines-extraits",
+      "sourceIds": [
+        "q2-rb04-irradiation"
+      ],
+      "subjectKey": "medical-cannabis-irradiation",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "quality",
+        "subject": "medical-cannabis-irradiation",
+        "subjectKey": "medical-cannabis-irradiation",
+        "property": "Contraste entre cannabinoïdes majeurs et terpènes après traitement",
+        "expectedAnswer": "THC et CBD stables, mais baisse de certains terpènes",
+        "learningObjective": "Contraste entre cannabinoïdes majeurs et terpènes après traitement.",
+        "factKey": "irradiation-profil-chimique",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-irradiation",
+            "locator": "Abstract, Introduction et Discussion : objectif microbiologique et changements chimiques observés",
+            "support": "Le résumé et les résultats distinguent stabilité du THC/CBD et réduction de certains terpènes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-taxact1937-usage-medical",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Selon l’histoire de l’Institute of Medicine, quel régime le Marihuana Tax Act de 1937 laissait-il au cannabis médical ?",
+      "options": [
+        "Une délivrance médicale interdite par la loi fédérale",
+        "Un usage possible sous de fortes contraintes administratives",
+        "Une délivrance médicale exemptée des formalités fédérales",
+        "Une délivrance réservée aux établissements hospitaliers"
+      ],
+      "answer": 1,
+      "explanation": "Le texte laissait une place à l’usage médical, mais sa bureaucratie a freiné médecins et fabricants. Le recul des préparations pharmaceutiques ne se résume donc pas à une interdiction médicale immédiate.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "q2-rb04-iom"
+      ],
+      "subjectKey": "marihuana-tax-act",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "marihuana-tax-act",
+        "subjectKey": "marihuana-tax-act",
+        "property": "Contraintes administratives sur l’usage médical historique",
+        "expectedAnswer": "Un usage possible sous de fortes contraintes administratives",
+        "learningObjective": "Contraintes administratives sur l’usage médical historique.",
+        "factKey": "taxact1937-usage-medical",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-iom",
+            "locator": "Chapitre 11, p. 157–158 imprimées, contraintes du Tax Act",
+            "support": "Les pages157–158 expliquent que l’usage médical restait possible mais soumis à une bureaucratie dissuasive pour médecins et industriels."
+          }
+        ],
+        "jurisdiction": "États-Unis, régime historique de1937",
+        "reviewAfter": "2027-11-17"
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-medecine-variabilite-lots",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quel obstacle à des résultats médicaux constants la revue historique de Zuardi met-elle en avant pour les anciens extraits de cannabis ?",
+      "options": [
+        "Une conservation trop courte des solutions pendant le transport",
+        "Une absorption digestive trop lente pour une utilisation médicale",
+        "Des puissances différentes selon les lots de plante",
+        "Une incompatibilité chimique avec les excipients huileux"
+      ],
+      "answer": 2,
+      "explanation": "La revue historique décrit des résultats difficiles à reproduire avec des lots de puissances variables. Le problème concernait la constance des produits, avant la caractérisation précise de leurs constituants.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-zuardi"
+      ],
+      "subjectKey": "historical-cannabis-extract-standardization",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "historical-cannabis-extract-standardization",
+        "subjectKey": "historical-cannabis-extract-standardization",
+        "property": "Difficulté de standardisation des préparations anciennes",
+        "expectedAnswer": "Des puissances différentes selon les lots de plante",
+        "learningObjective": "Difficulté de standardisation des préparations anciennes.",
+        "factKey": "medecine-variabilite-lots",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-zuardi",
+            "locator": "Abstract, difficultés de constance entre lots de puissances différentes",
+            "support": "Le résumé attribue une part du recul médical aux résultats irréguliers avec des lots de puissances différentes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-commission-indienne-prohibition",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Quelle orientation l’Indian Hemp Drugs Commission de 1893–1894 a-t-elle retenue concernant une prohibition générale du cannabis ?",
+      "options": [
+        "Interdire les usages non médicaux",
+        "Réserver la distribution aux hôpitaux",
+        "Interdire la vente tout en tolérant l’usage",
+        "Écarter une prohibition générale"
+      ],
+      "answer": 3,
+      "explanation": "La commission s’est opposée à une prohibition générale tout en relevant les problèmes liés aux excès. Sa conclusion appartient à une enquête coloniale du XIXe siècle, pas à une évaluation actuelle de sécurité.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-iom"
+      ],
+      "subjectKey": "indian-hemp-drugs-commission",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "indian-hemp-drugs-commission",
+        "subjectKey": "indian-hemp-drugs-commission",
+        "property": "Position historique envers la prohibition générale",
+        "expectedAnswer": "Écarter une prohibition générale",
+        "learningObjective": "Position historique envers la prohibition générale.",
+        "factKey": "commission-indienne-prohibition",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-iom",
+            "locator": "Chapitre 2, p. 16 imprimée, commission1893–1894",
+            "support": "Le chapitre rapporte que la commission recommandait contre la prohibition tout en reconnaissant des dommages liés aux abus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-herba-indicae-resine1925",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans la définition pharmaceutique de 1925, quel état des sommités femelles était requis pour « Herba Cannabis Indicae » ?",
+      "options": [
+        "Elles devaient conserver leur résine",
+        "Elles devaient être débarrassées de leur résine",
+        "Elles devaient être débarrassées de leurs graines",
+        "Elles devaient avoir subi un vieillissement prolongé"
+      ],
+      "answer": 0,
+      "explanation": "La définition citée dans l’étude historique exige des sommités florales et fructifères femelles non privées de résine. Elle concerne une matière médicinale à actifs, sans décrire sa préparation.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-pharmahistory"
+      ],
+      "subjectKey": "historical-cannabis-pharmacopoeia1925",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "historical-cannabis-pharmacopoeia1925",
+        "subjectKey": "historical-cannabis-pharmacopoeia1925",
+        "property": "Résine conservée dans une définition pharmaceutique ancienne",
+        "expectedAnswer": "Elles devaient conserver leur résine",
+        "learningObjective": "Résine conservée dans une définition pharmaceutique ancienne.",
+        "factKey": "herba-indicae-resine1925",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-pharmahistory",
+            "locator": "§4 avant le titre §4.1, définition Herba Cannabis Indicae de1925",
+            "support": "L’article reproduit la définition1925 exigeant des sommités femelles non privées de résine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-cannabine-extrait-historique",
+      "topicId": "history",
+      "level": 3,
+      "prompt": "Dans la pharmacie du XIXe siècle étudiée à Barcelone, que désignaient « cannabine » et « haschischine » ?",
+      "options": [
+        "Du cannabinol chimiquement pur",
+        "Des extraits complexes de cannabis",
+        "Du delta-9-THC chimiquement pur",
+        "Du cannabidiol chimiquement pur"
+      ],
+      "answer": 1,
+      "explanation": "Ces noms ont servi à désigner des extraits, malgré les premières hypothèses d’un composé unique. Ils ne doivent pas être confondus avec un cannabinoïde pur identifié par la chimie moderne.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-pharmahistory"
+      ],
+      "subjectKey": "historical-cannabine-haschischine",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "historical-cannabine-haschischine",
+        "subjectKey": "historical-cannabine-haschischine",
+        "property": "Nature complexe de préparations anciennement nommées",
+        "expectedAnswer": "Des extraits complexes de cannabis",
+        "learningObjective": "Nature complexe de préparations anciennement nommées.",
+        "factKey": "cannabine-extrait-historique",
+        "form": "identification",
+        "difficultyRationale": "Résultat génétique ou document historique spécialisé, explicitement contextualisé.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-pharmahistory",
+            "locator": "§4.1, cannabine et haschischine comme noms d’extraits",
+            "support": "L’étude précise que ces termes sont restés des noms génériques d’extraits et que les affirmations d’un composé unique ont été écartées."
+          }
+        ]
+      }
+    },
+    {
+      "id": "hemp-q2-rb04-indian-hemp-appellation-pharmacie",
+      "topicId": "history",
+      "level": 2,
+      "prompt": "Dans l’usage pharmaceutique étudié à Barcelone, que pouvait signifier « Cannabis Indicae » ?",
+      "options": [
+        "Un grade d’extrait pharmaceutique sans provenance particulière",
+        "Une forme de préparation caractérisée par un affinage spécial",
+        "Une provenance commerciale associée au cannabis indien",
+        "Une espèce botanique strictement distincte du chanvre européen"
+      ],
+      "answer": 2,
+      "explanation": "L’étude rappelle un emploi géographique et pharmaceutique du terme, lié à des produits attendus riches en actifs. Il ne se superpose pas simplement aux catégories botaniques ou commerciales actuelles.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "q2-rb04-pharmahistory"
+      ],
+      "subjectKey": "historical-indian-hemp-trade-label",
+      "domain": "active",
+      "editorial": {
+        "domain": "active",
+        "category": "history",
+        "subject": "historical-indian-hemp-trade-label",
+        "subjectKey": "historical-indian-hemp-trade-label",
+        "property": "Sens commercial ancien d’une appellation de cannabis",
+        "expectedAnswer": "Une provenance commerciale associée au cannabis indien",
+        "learningObjective": "Sens commercial ancien d’une appellation de cannabis.",
+        "factKey": "indian-hemp-appellation-pharmacie",
+        "form": "identification",
+        "difficultyRationale": "Distinction de profil ou repère culturel demandant une connaissance précise du cannabis.",
+        "sourceEvidence": [
+          {
+            "sourceId": "q2-rb04-pharmahistory",
+            "locator": "§4 avant le titre §4.1, appellation Indian hemp / Cannabis Indicae",
+            "support": "Le passage en §4 distingue le terme pharmaceutique et géographique de la classification botanique."
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "q2-rb04-herer",
+      "title": "Cannabis Strain Focus: Jack Herer from Sensi Seeds",
+      "organization": "Sensi Seeds",
+      "url": "https://sensiseeds.com/en/blog/cannabis-strain-focus-jack-herer-from-sensi-seeds/",
+      "verifiedAt": "2026-11-17",
+      "author": "Sensi Seeds",
+      "published": "2020-07-23",
+      "passage": "Introduction avant Cultivating : hommage à l’auteur et militant Jack Herer",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Source du breeder, attribution de l’hommage seulement ; aucun superlatif, effet ou conseil de culture repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction avant Cultivating : hommage à l’auteur et militant Jack Herer",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-widow",
+      "title": "White Widow (Feminised)",
+      "organization": "Green House Seed Company / Strain Hunters USA",
+      "url": "https://shop.greenhouseseeds.us/feminised-cannabis-seeds/white-widow/",
+      "verifiedAt": "2026-11-17",
+      "author": "Green House Seed Company",
+      "published": "s.d.",
+      "passage": "Titre, Genetics : Brazilian x South Indian",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Parenté annoncée par cette maison pour sa version ; aucune priorité de création ni composition garantie.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Titre, Genetics : Brazilian x South Indian",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-northern",
+      "title": "Northern Lights Regular Seeds",
+      "organization": "Sensi Seeds",
+      "url": "https://sensiseeds.com/en/regular/northern-lights-3",
+      "verifiedAt": "2026-11-17",
+      "author": "Sensi Seeds",
+      "published": "s.d.",
+      "passage": "Growth pattern of Northern Lights Regular, premier paragraphe",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Ascendances revendiquées pour la version Sensi ; origine historique américaine qualifiée par le fabricant, non tranchée ici. Aucun conseil de culture.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Growth pattern of Northern Lights Regular, premier paragraphe",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-blueberry",
+      "title": "Top 5 Weed Strain Crosses Ever",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/blog/top-5-weed-strain-crosses-ever-n1021",
+      "verifiedAt": "2026-11-17",
+      "author": "Dutch Passion",
+      "published": "s.d.",
+      "passage": "Blueberry : collaboration avec DJ Short",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Récit du breeder ; seule l’attribution de collaboration est utilisée, sans effets, pays de naissance ou performances.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Blueberry : collaboration avec DJ Short",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-durban",
+      "title": "Durban Poison, fiche officielle",
+      "organization": "Dutch Passion",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/durban-poison",
+      "verifiedAt": "2026-11-17",
+      "author": "Dutch Passion",
+      "published": "s.d.",
+      "passage": "Description : origine sud-africaine et ville de Durban",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Origine géographique revendiquée ; les assertions contradictoires de pureté de lignée ne sont pas retenues. Aucun conseil de culture.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Description : origine sud-africaine et ville de Durban",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-landrace",
+      "title": "Landrace Strains: Ancient Genetics Shaping Cannabis Today",
+      "organization": "Sensi Seeds",
+      "url": "https://sensiseeds.com/en/blog/landrace-strains-the-founding-mothers-of-modern-cannabis/",
+      "verifiedAt": "2026-11-17",
+      "author": "Sensi Seeds",
+      "published": "2025-03-14",
+      "passage": "Landrace strains : Hindu Kush ; Popular hybrids : Skunk #1",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Récits de provenance et d’ascendance attribués ; ne pas confondre dénomination commerciale et validation génomique indépendante.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Landrace strains : Hindu Kush ; Popular hybrids : Skunk #1",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-cannatonic",
+      "title": "New Cannatonic Information!",
+      "organization": "Resin Seeds",
+      "url": "https://resinseeds.net/new-cannatonic-information/",
+      "verifiedAt": "2026-11-17",
+      "author": "Resin Seeds / resinadmin",
+      "published": "2015-11-10, modification 2016-01-17",
+      "passage": "Paragraphe unique de rectification de la parenté",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Correction publique du breeder, pas une confirmation génétique indépendante ; ancienne hypothèse distinguée de l’annonce corrigée.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Paragraphe unique de rectification de la parenté",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-presse",
+      "title": "Cannabis, données essentielles : Le cannabis dans le débat public et médiatique",
+      "organization": "OFDT",
+      "url": "https://www.ofdt.fr/BDD/publications/docs/cdemarch.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Ouvrage collectif sous la direction de Jean-Michel Costes",
+      "published": "2007",
+      "passage": "Pages imprimées161–162, PDF index157–158 : Actuel et Appel du18joint",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Analyse historique de la presse ; aucun état juridique ou indicateur sanitaire ancien repris comme actuel.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Pages imprimées161–162, PDF index157–158 : Actuel et Appel du18joint",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-reefer",
+      "title": "Ernie Smith Jazz Film Collection, finding aid NMAH.AC.0491",
+      "organization": "Smithsonian, National Museum of American History Archives Center",
+      "url": "https://sirismm.si.edu/EADpdfs/NMAH.AC.0491.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Ben Pubols, Franklin A. Robinson Jr. et Wendy Shay",
+      "published": "2001",
+      "passage": "Couverture ; p. 5 imprimée, Reel OF491.2-1, numéro 4 ; rubrique Drug Songs, Reefer Man",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Attribution de l’interprète de Reefer Man ; aucune parole de chanson reproduite ni message clinique inféré.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Couverture ; p. 5 imprimée, Reel OF491.2-1, numéro 4 ; rubrique Drug Songs, Reefer Man",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-howhigh",
+      "title": "Étudiants en Herbe, titre original How High!",
+      "organization": "Ministère de la Culture et des Communications, Québec",
+      "url": "https://repertoire.cinema.mcc.gouv.qc.ca/film/etudiants-en-herbe-180700/",
+      "verifiedAt": "2026-11-17",
+      "author": "Direction du classement des films",
+      "published": "Classement 2001-12-04",
+      "passage": "Synopsis et motifs de classement",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Fiction comique ; le synopsis institutionnel décrit les consommateurs de cannabis à Harvard, sans présenter les ressorts du récit comme des effets démontrés.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis et motifs de classement",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-harold",
+      "title": "Harold et Kumar chassent le burger",
+      "organization": "Ministère de la Culture et des Communications, Québec",
+      "url": "https://repertoire.cinema.mcc.gouv.qc.ca/film/harold-et-kumar-chassent-le-burger-234589/",
+      "verifiedAt": "2026-11-17",
+      "author": "Direction du classement des films",
+      "published": "Fiche du film2004, classement de version 2008-05-23",
+      "passage": "Synopsis, recherche de marijuana et restaurant de fast-food",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Fiction ; les titres français varient selon les territoires. Aucune conséquence médicale tirée des aventures.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis, recherche de marijuana et restaurant de fast-food",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-grace",
+      "title": "Saving Grace",
+      "organization": "Skyline Films",
+      "url": "https://www.skylinefilms.co.uk/saving-grace",
+      "verifiedAt": "2026-11-17",
+      "author": "Skyline Films, producteurs exécutifs",
+      "published": "s.d., film2000",
+      "passage": "Synopsis et Storyline",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Récit du film par ses producteurs ; seul le mobile économique du personnage est utilisé, aucun procédé ni conseil de culture.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis et Storyline",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-grass",
+      "title": "Grass",
+      "organization": "Sphinx Productions",
+      "url": "https://www.sphinxproductions.com/films/grass/",
+      "verifiedAt": "2026-11-17",
+      "author": "Sphinx Productions",
+      "published": "1999",
+      "passage": "Présentation après Years in the making, histoire des usages récréatifs et de la répression",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Source de production : genre et objet du documentaire seulement ; les jugements promotionnels sur l’innocuité ne sont pas repris.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Présentation après Years in the making, histoire des usages récréatifs et de la répression",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-family",
+      "title": "Family Business",
+      "organization": "Netflix",
+      "url": "https://www.netflix.com/title/81010818",
+      "verifiedAt": "2026-11-17",
+      "author": "Netflix",
+      "published": "s.d., notice de la série",
+      "passage": "Synopsis : transformation de la boucherie familiale en marijuana café",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "La légalisation annoncée appartient à la fiction ; ne décrit pas le droit français réel.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis : transformation de la boucherie familiale en marijuana café",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-paulette",
+      "title": "Paulette",
+      "organization": "Gaumont",
+      "url": "https://www.gaumont.com/fr/film/paulette",
+      "verifiedAt": "2026-11-17",
+      "author": "Gaumont",
+      "published": "Film2013, date de notice non indiquée",
+      "passage": "Synopsis, deux premiers paragraphes",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Portrait fictionnel d’une retraitée et trafic de cannabis ; aucune recette ni généralisation sur les retraités.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Synopsis, deux premiers paragraphes",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-nlm",
+      "title": "Pick Your Poison: Intoxicating Pleasures and Medical Prescriptions",
+      "organization": "U.S. National Library of Medicine / NIH",
+      "url": "https://www.nlm.nih.gov/hmd/about/exhibition/travelingexhibitions/pdf/PYPBrochure.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Manon Parry, commissaire scientifique ; National Library of Medicine",
+      "published": "s.d.",
+      "passage": "Premier volet PDF index0, rubrique Marijuana : pharmacies XIXesiècle et usages politiques du nom dans les années1930",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Interprétation historique de musée ; aucun jugement sanitaire ou droit actuel déduit des anciennes publicités.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Premier volet PDF index0, rubrique Marijuana : pharmacies XIXesiècle et usages politiques du nom dans les années1930",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-resinmarkets",
+      "title": "EU Drug Market: Cannabis — Production",
+      "organization": "EMCDDA and Europol, hébergé EUDA",
+      "url": "https://www.euda.europa.eu/publications/eu-drug-markets/cannabis/production_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EMCDDA and Europol",
+      "published": "2023-11-16",
+      "passage": "Cannabis resin production in Morocco, paragraphes sur la source principale et les hybrides au Rif",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Constats de marché datés ; pas de données de production précises à mémoriser ni de technique de culture ou transformation.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Cannabis resin production in Morocco, paragraphes sur la source principale et les hybrides au Rif",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-euda26",
+      "title": "Cannabis – the current situation in Europe, European Drug Report2026",
+      "organization": "European Union Drugs Agency",
+      "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/cannabis_en",
+      "verifiedAt": "2026-11-17",
+      "author": "EUDA",
+      "published": "2026-06-09",
+      "passage": "Introduction ; évolutions des origines ; Cannabis market data, teneurs2024",
+      "access": "official-page",
+      "documentKind": "Page ou notice externe",
+      "limitation": "Données agrégées et saisies : ne garantissent ni la composition d’un produit particulier ni la représentativité de tous les lots.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Introduction ; évolutions des origines ; Cannabis market data, teneurs2024",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-irradiation",
+      "title": "Evaluating the Effects of Gamma-Irradiation for Decontamination of Medicinal Cannabis",
+      "organization": "Frontiers in Pharmacology / Bedrocan International",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2016.00108/full",
+      "verifiedAt": "2026-11-17",
+      "author": "Arno Hazekamp",
+      "published": "2016-04-27",
+      "passage": "Abstract, Introduction et Discussion : objectif microbiologique et changements chimiques observés",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Étude sur quatre matériels ; auteur employé par le fournisseur Bedrocan. Pas de généralisation à toutes les techniques, pas de paramètres ni promesse d’innocuité.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract, Introduction et Discussion : objectif microbiologique et changements chimiques observés",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-zuardi",
+      "title": "History of cannabis as a medicine: a review",
+      "organization": "Revista Brasileira de Psiquiatria / Universidade de São Paulo",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16810401/",
+      "verifiedAt": "2026-11-17",
+      "author": "Antonio Waldo Zuardi",
+      "published": "2006-06",
+      "passage": "Abstract, difficultés de constance entre lots de puissances différentes",
+      "access": "abstract",
+      "documentKind": "Résumé original",
+      "limitation": "Résumé historique original ; aucun traitement ancien présenté comme validé par cette histoire.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Abstract, difficultés de constance entre lots de puissances différentes",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-iom",
+      "title": "Marijuana as Medicine? The Science Beyond the Controversy",
+      "organization": "Institute of Medicine / National Academies Press",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK224394/pdf/Bookshelf_NBK224394.pdf",
+      "verifiedAt": "2026-11-17",
+      "author": "Alison Mack et Janet Joy",
+      "published": "2000",
+      "passage": "Chapitre 2, p. 16 imprimée, commission1893–1894 ; chapitre 11, p. 157–158 imprimées, contraintes du Tax Act",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Ouvrage historique utilisé pour la commission1893–1894 et le régime médical du Tax Act1937 ; ses appréciations anciennes de sécurité ne sont pas présentées comme actuelles.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "Chapitre 2, p. 16 imprimée, commission1893–1894 ; chapitre 11, p. 157–158 imprimées, contraintes du Tax Act",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    },
+    {
+      "id": "q2-rb04-pharmahistory",
+      "title": "Hemp Extract (Extractum Cannabis) in the Treatment of Gastrointestinal Distress and Dyspepsia: Historical Insights from Barcelona, Spain",
+      "organization": "Pharmaceuticals, étude historique de sources primaires",
+      "url": "https://www.mdpi.com/1424-8247/17/12/1585",
+      "verifiedAt": "2026-11-17",
+      "author": "Kenzi Riboulet-Zemouli et Josep Allué Creus",
+      "published": "2024-11-25",
+      "passage": "§4 avant §4.1 : définition Herba Cannabis Indicae1925 et appellation Indian hemp ; §4.1 : cannabine et haschischine",
+      "access": "full-text",
+      "documentKind": "Document original intégral accessible ; passages ciblés consultés",
+      "limitation": "Recherche historique avec visée de reconnaissance d’un usage traditionnel ; seuls les documents et sens historiques sont testés, aucune efficacité ou procédure ancienne n’est validée.",
+      "consultation": {
+        "reader": "rebalance_classify_b",
+        "date": "2026-11-17",
+        "locator": "§4 avant §4.1 : définition Herba Cannabis Indicae1925 et appellation Indian hemp ; §4.1 : cannabine et haschischine",
+        "result": "Document ouvert ; passages indiqués réellement lus."
+      }
+    }
+  ]
+}

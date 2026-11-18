@@ -1,0 +1,154 @@
+{
+  "agent": "rebalance_classify_b",
+  "date": "2026-11-17",
+  "totalTarget": 185,
+  "approvedByRoot": {
+    "rb01": 29,
+    "rb02": 30,
+    "rb03": 29,
+    "rb04": 31
+  },
+  "frozenPendingIndependentReview": {
+    "rb05": {
+      "questions": 31,
+      "sources": 26,
+      "levels": [
+        12,
+        17,
+        2,
+        0
+      ],
+      "batch": "docs/quiz-2000/batches/r-actives-b-05.json",
+      "notes": "docs/quiz-2000/facts/r-actives-b-05.json",
+      "generator": "facts/rb05-author.mjs",
+      "status": "710singleobjectcorrectedonrootrequest;tracefacts/rb05-710-correction.json;rootarbitrationpending"
+    },
+    "rb06": {
+      "questions": 35,
+      "sources": 30,
+      "levels": [
+        15,
+        20,
+        0,
+        0
+      ],
+      "batch": "docs/quiz-2000/batches/r-actives-b-06.json",
+      "notes": "docs/quiz-2000/facts/r-actives-b-06.json",
+      "generator": "facts/rb06-author.mjs",
+      "status": "C first review31approved/4targeted requests;rootarbitrationpending;authorbatchintact"
+    }
+  },
+  "remainingAuthorship": {},
+  "newLineageQuestionsAuthored": 27,
+  "currentPriority": "Ra06 first independent review completed; root arbitrates five targeted corrections. No pending authorship or review currently assigned. All rp05 research contributions remain reserved to A independent review.",
+  "ra03Review": {
+    "batch": "docs/quiz-2000/batches/r-actives-a-03.json",
+    "facts": "docs/quiz-2000/facts/r-actives-a-03.json",
+    "output": "docs/quiz-2000/reviews/r-actives-a-03.json",
+    "objects": 30,
+    "sources": 25,
+    "rootFocus": "Check closePairs CBD oral vs THC PK / Haney smoked, do not blindly approve notes.",
+    "status": "Completed30objects/25sources;23approved7requests;rootfinalized29afterretiringCanadaexactduplicate."
+  },
+  "completedReviews": [
+    "r-actives-a-01",
+    "r-products-02",
+    "r-actives-a-02",
+    "r-actives-a-03",
+    "r-mixed-01",
+    "r-actives-a-04",
+    "r-mixed-02",
+    "r-actives-a-05",
+    "r-products-04",
+    "r-actives-a-06"
+  ],
+  "important": "Root has arbitrated and integrated rb01/rb02/rb03/ra01/ra02/rp01/rp02. Never rerun earlier review or correction generators over those current objects. Do not change reviews owned by others. Root may have changed targeted corrected objects. Rb04 now root approved after C26/5targeted corrections. Never rerun rb04 generator. Rb05 frozen, do not mutate pending review.",
+  "reservedElsewhere": "A current rules EU/Portugal/Spain/Switzerland/Quebec/US2026 and possibleUruguay3accessroutes; clinical/intrinsic ra03 then flower contaminants ra04-06 (moldsAspergillus,mycotoxins,pesticides,metals,adulteration). C product vocabulary/forms/routes/devicequality. B reserved irradiation2facts inrb04, lineage classics8, history/culture/markets. B rb06eightclassicsreserved; A12classicsseparate. C has no candidates on kif/headshop/budtender/710; those were used rb05.",
+  "sourcesForFuture": "Large institutional Wellcome witness seminar 2010 opened https://iiif.wellcomecollection.org/file/b17277243_Vol.%2040.pdf ; mostly intro read, rest notyet. Additional worthwhile historical pharmaceutical paper https://www.mdpi.com/1424-8247/17/12/1585 opened targetedsection4.1 andintro only; rb04 uses3facts thereof. EUDA2026 cannabis https://www.euda.europa.eu/publications/european-drug-report/2026/cannabis_en uses3macro marketfactsrb04; no currentlaw fromit.",
+  "mixed01Review": {
+    "batch": "docs/quiz-2000/batches/r-mixed-01.json",
+    "output": "docs/quiz-2000/reviews/r-mixed-01.json",
+    "focus": "GLAomega6 vs existing hemp-seeds-omega-trois (ALAomega3): examine complete old object, no automatic duplicate judgment.",
+    "status": "Completed25questions18sources;17approved8changes_requested. GLA/ALA distinct, MAPPoffscope; sharedCenCmetadata."
+  },
+  "ra04Review": {
+    "batch": "docs/quiz-2000/batches/r-actives-a-04.json",
+    "facts": "docs/quiz-2000/facts/r-actives-a-04.json",
+    "output": "docs/quiz-2000/reviews/r-actives-a-04.json",
+    "objectsRead": 25,
+    "externalSourcesRead": 23,
+    "status": "Completed25objects23sources;18approved7targetedrequests;rootinformed"
+  },
+  "rb06Reservations": [
+    "SuperLemonHaze",
+    "Chocolope",
+    "NYCDiesel(Soma)",
+    "AmnesiaHaze(Soma)",
+    "OrangeBud(DP)",
+    "PowerPlant(DP)",
+    "JackFlash(Sensi)",
+    "SensiStar(Paradise)"
+  ],
+  "aReservedLineages": [
+    "BlueDream",
+    "Trainwreck",
+    "Tangie",
+    "StrawberryCough",
+    "AcapulcoGold",
+    "MauiWowie",
+    "SuperSkunk",
+    "OGKush/SFVOG",
+    "DoSiDos",
+    "WeddingCake",
+    "Runtz",
+    "LAConfidential"
+  ],
+  "totalAuthored": 185,
+  "mixed02Review": {
+    "batch": "docs/quiz-2000/batches/r-mixed-02.json",
+    "output": "docs/quiz-2000/reviews/r-mixed-02.json",
+    "objects": 25,
+    "sources": 22,
+    "status": "21approved/4targeted requests, root will arbitrate, no new task for B."
+  },
+  "ra05Review": {
+    "batch": "docs/quiz-2000/batches/r-actives-a-05.json",
+    "facts": "docs/quiz-2000/facts/r-actives-a-05.json",
+    "output": "docs/quiz-2000/reviews/r-actives-a-05.json",
+    "objects": 34,
+    "sources": 32,
+    "status": "Completed34objects32sources;26approved8targeted requests;root/Ainformed;allfacts supported"
+  },
+  "ra06Review": {
+    "batch": "docs/quiz-2000/batches/r-actives-a-06.json",
+    "output": "docs/quiz-2000/reviews/r-actives-a-06.json",
+    "objects": 34,
+    "sources": 36,
+    "status": "29approved/5targeted requests;all34active;all34contentHashes and37sourceChecks exact;root/A informed;authorbatch unchanged",
+    "requests": [
+      11,
+      12,
+      25,
+      28,
+      32
+    ],
+    "access": "THCP same primary via PMC+UNIMORE after Sapienza timeout;NIDA primary PDF eventually rendered;EMA primary excerpt then official HTML;dental original+corrigendum read;ASRA primary mirror DOI checked"
+  },
+  "rp05Review": {
+    "status": "Second priority after ra06; C contacted for freeze, not read yet."
+  },
+  "rp04Review": {
+    "batch": "docs/quiz-2000/batches/r-products-04.json",
+    "output": "docs/quiz-2000/reviews/r-products-04.json",
+    "objects": 27,
+    "sources": 26,
+    "status": "16approved/11changes_requested;26active/1offscope;all27contentHashes and27sourceChecks exact;root/C informed;authorbatch unchanged",
+    "scope": "q16 chocolat/xylitol canine toxicity generic offscope confirmed root; replacement or retirement required",
+    "precision": "q21 primary manuscript UPenn confirms increased percent REM, reduced total sleep; correct proportion vs duration; exact additional evidence in review"
+  },
+  "rp04ReplacementReview": {
+    "output": "docs/quiz-2000/facts/rp04-replacement-independent-review.json",
+    "id": "hemp-q2-rp04-mellow-yellow-coffeeshop",
+    "status": "approved independently;original museum passage and seven full neighbors read;proposal and authorbatch unchanged"
+  }
+}

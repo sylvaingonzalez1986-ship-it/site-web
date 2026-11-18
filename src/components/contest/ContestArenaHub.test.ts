@@ -16,7 +16,7 @@ vi.mock("./ArenaJourneyEntry", () => ({ ArenaJourneyEntry: () => createElement("
 vi.mock("./ArenaPrelaunchCharacter", () => ({ ArenaPrelaunchCharacter: () => createElement("button", {}, "Créer mon personnage") }));
 
 describe("Arena home", () => {
-  it("maps three direct activity links and the profile without the neighborhood tutorial", () => {
+  it("maps three direct activities without exposing the character from the Arena", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub));
     for (const [id, mode] of Object.entries(ARENA_LOBBY_MODES)) {
       const link = html.match(new RegExp(`<a[^>]*data-arena-activity="${id}"[^>]*>`))?.[0];
@@ -24,12 +24,11 @@ describe("Arena home", () => {
       expect(html).toContain(id === "jouer" ? "JOUER" : mode.name);
     }
     expect(html.match(/data-arena-activity=/g)).toHaveLength(3);
-    expect(html.match(/data-arena-profile-trigger/g)).toHaveLength(1);
-    expect(html).toMatch(/<button[^>]*data-arena-profile-trigger/);
+    expect(html).not.toContain("data-arena-profile-trigger");
     expect(html).toContain("data-arena-map");
     expect(html).toContain('id="arena-map-viewport"');
     expect(html).toMatch(/<button[^>]*data-arena-map-zoom[^>]*aria-pressed="false"/);
-    expect(html).toContain("data-inline-account");
+    expect(html).not.toContain("data-inline-account");
     expect(html).not.toContain("La relève · Apprendre à jouer");
     expect(html).not.toContain("data-arena-learning-trigger");
     expect(html).not.toContain("data-arena-first-culture");
@@ -58,13 +57,13 @@ describe("Arena home", () => {
   it.each([false, true])("opens the notebook while the game waits for its opening date (notice %s)", initialNotice => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub, { activitiesLocked: true, initialNotice }));
     expect(html).toContain(ARENA_OPENING_MESSAGE);
-    expect(html).toContain("Créer mon personnage");
+    expect(html).not.toContain("Créer mon personnage");
     expect(html).not.toContain("La relève · Apprendre à jouer");
     expect(html).not.toContain("Ta première culture");
     expect(html).toContain("Le Carnet est ouvert");
     expect(html.match(/Bientôt/g)).toHaveLength(2);
     expect(html.match(/aria-disabled="true"/g)).toHaveLength(2);
-    expect(html.match(/data-arena-profile-trigger/g)).toHaveLength(1);
+    expect(html).not.toContain("data-arena-profile-trigger");
     expect(html.match(/<a /g)).toHaveLength(1);
     expect(html).toMatch(/<a[^>]*data-arena-activity="carnet"[^>]*href="\/arene\/carnet\/regular"/);
     expect(html).not.toContain('href="/arene/placard"');

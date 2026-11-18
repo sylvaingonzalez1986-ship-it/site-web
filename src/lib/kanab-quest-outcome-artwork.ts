@@ -39,10 +39,10 @@ function artwork(stage: KqStage, outcome: KqOutcome | "dead", alt: string): KqOu
 
 function stageOutcomes(stage: KqStage, subject: string): Record<KqOutcome, KqOutcomeArtwork> {
   return {
-    critical: artwork(stage, "critical", `Sylvain ravi devant ${subject}, en excellent état.`),
-    success: artwork(stage, "success", `Sylvain satisfait devant ${subject}, en bon état.`),
-    fragile: artwork(stage, "fragile", `Sylvain vigilant devant ${subject}, fragile mais encore viable.`),
-    failure: artwork(stage, "failure", `Sylvain préoccupé devant ${subject}, en difficulté mais encore viable.`),
+    critical: artwork(stage, "critical", `Loïc ravi devant ${subject}, en excellent état.`),
+    success: artwork(stage, "success", `Loïc satisfait devant ${subject}, en bon état.`),
+    fragile: artwork(stage, "fragile", `Loïc vigilant devant ${subject}, fragile mais encore viable.`),
+    failure: artwork(stage, "failure", `Loïc préoccupé devant ${subject}, en difficulté mais encore viable.`),
   };
 }
 
@@ -59,11 +59,11 @@ export const KQ_OUTCOME_ARTWORK: Record<KqStage, Record<KqOutcome, KqOutcomeArtw
 /** A full initial vitality bar cannot be exhausted by the first stage alone.
  * Historical two-zero rules likewise cannot end a culture in Germination. */
 export const KQ_DEAD_CULTURE_ARTWORK: Record<Exclude<KqStage, "Germination">, KqOutcomeArtwork> = {
-  Enracinement: artwork("Enracinement", "dead", "Sylvain attristé devant une petite plantule morte et ses racines desséchées."),
-  Croissance: artwork("Croissance", "dead", "Sylvain attristé devant une plante végétative morte, sans fleurs."),
-  Floraison: artwork("Floraison", "dead", "Sylvain attristé devant une plante fleurie morte."),
-  Récolte: artwork("Récolte", "dead", "Sylvain attristé devant des fleurs de récolte perdues, posées dans un plateau."),
-  "Séchage & affinage": artwork("Séchage & affinage", "dead", "Sylvain attristé devant un lot récolté perdu pendant le séchage."),
+  Enracinement: artwork("Enracinement", "dead", "Loïc attristé devant une petite plantule morte et ses racines desséchées."),
+  Croissance: artwork("Croissance", "dead", "Loïc attristé devant une plante végétative morte, sans fleurs."),
+  Floraison: artwork("Floraison", "dead", "Loïc attristé devant une plante fleurie morte."),
+  Récolte: artwork("Récolte", "dead", "Loïc attristé devant des fleurs de récolte perdues, posées dans un plateau."),
+  "Séchage & affinage": artwork("Séchage & affinage", "dead", "Loïc attristé devant un lot récolté perdu pendant le séchage."),
 };
 
 /** Stable stage / verdict order for the artwork review and production checks. */

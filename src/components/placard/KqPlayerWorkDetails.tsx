@@ -51,7 +51,7 @@ export function KqPlayerWorkDetails({ view, workday, skills }: {
         <KqPrintedArt kind="help-time" className={styles.dayArt} sizes="112px" />
         {workday ? <KqAllocationBar label={`Ta journée · jour ${workday.day}`} items={[
           { label: "Disponibles", value: workday.remainingHours, displayValue: hours(workday.remainingHours), tone: "teal" },
-          { label: "Utilisées ou réservées", value: workday.usedHours, displayValue: hours(workday.usedHours), tone: "gold" },
+          { label: "Utilisées ou réservées", value: workday.dailyHours - workday.remainingHours, displayValue: hours(workday.dailyHours - workday.remainingHours), tone: "gold" },
         ]} /> : <p>Ta journée est indisponible. Actualise pour retrouver tes heures.</p>}
       </section>
       <section className={styles.paper} aria-label="Renouvellement du temps">

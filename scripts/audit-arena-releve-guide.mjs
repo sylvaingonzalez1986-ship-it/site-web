@@ -148,7 +148,7 @@ async function follow(guide) {
     } else if (guide.type === 'checkbox' || guide.type === 'radio') {
       await handle.click();
     } else {
-      const value = guide.id === 'commerce-quantity' ? '10' : guide.id === 'commerce-brand' || /nom de marque|boutique/i.test(guide.label) ? 'La relève guidée' : /surnom|Sylvain29/i.test(guide.label) ? 'Apprenti29' : guide.value || '100';
+      const value = guide.id === 'commerce-quantity' ? '10' : guide.id === 'commerce-brand' || /nom de marque|boutique/i.test(guide.label) ? 'La relève guidée' : /surnom|Loic29/i.test(guide.label) ? 'Apprenti29' : guide.value || '100';
       await handle.click({ clickCount: 3 }); await page.keyboard.press('Backspace'); await handle.type(value); await page.keyboard.press('Tab');
     }
   } else if (guide.tag === 'SELECT') {

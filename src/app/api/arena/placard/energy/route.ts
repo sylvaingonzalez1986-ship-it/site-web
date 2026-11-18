@@ -12,13 +12,13 @@ function failure(error: unknown) {
   const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Électricité indisponible.");
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Service électrique momentanément indisponible." : message }, { status: message.startsWith("[supabase:") ? 503 : 400, headers });
 }
-export async function GET(request?: Request) {
+export async function GET(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
     const selection = readKqRunSelection(request);
-    const campaign = request && new URL(request.url).searchParams.get("campaign") === "true";
+    const campaign = new URL(request.url).searchParams.get("campaign") === "true";
     return NextResponse.json(await (campaign ? getKqEnergySnapshot(session.customerId, { ...selection, campaign: true })
       : Object.keys(selection).length ? getKqEnergySnapshot(session.customerId, selection) : getKqEnergySnapshot(session.customerId)), { headers });
   } catch (error) { return failure(error); }

@@ -15,11 +15,11 @@ function failure(error: unknown) {
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Service momentanément indisponible." : message }, { status: message.startsWith("[supabase:") ? 503 : 400 });
 }
 
-export async function GET(request?: Request) {
+export async function GET(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
-  try { return NextResponse.json(await getKqCareShopSnapshot(session.customerId, request ? new URL(request.url).searchParams.get("runId") ?? undefined : undefined), { headers }); }
+  try { return NextResponse.json(await getKqCareShopSnapshot(session.customerId, new URL(request.url).searchParams.get("runId") ?? undefined), { headers }); }
   catch (error) { return failure(error); }
 }
 

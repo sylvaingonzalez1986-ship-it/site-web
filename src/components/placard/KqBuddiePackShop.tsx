@@ -184,7 +184,7 @@ function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, u
     </div>
     <div className={styles.counter}>
       <div className={styles.summary}><span><small>Ta cagnotte</small><strong data-buddie-pack-points>{authLoading || loading ? "…" : ticketsLoaded ? loyalty.spendablePoints.toLocaleString("fr-FR") : "Indisponibles"} <small>points fidélité</small></strong></span><span><small>Dans ton album</small><strong>{loading ? "…" : `${inventory?.uniqueOwned ?? 0} / ${inventory?.totalCards || 52}`}</strong></span></div>
-      {authLoading || loading ? <p className={styles.notice} role="status">Sylvain retrouve tes packs…</p> : !isAuthenticated ? <Link className={styles.primary} href="/compte/connexion?next=/arene/placard%3Fview%3Dshop">Me connecter</Link> : <>
+      {authLoading || loading ? <p className={styles.notice} role="status">Loïc retrouve tes packs…</p> : !isAuthenticated ? <Link className={styles.primary} href="/compte/connexion?next=/arene/placard%3Fview%3Dshop">Me connecter</Link> : <>
         {!config?.isActive && <p className={styles.notice} role="status">Les packs Buddies sont momentanément indisponibles.</p>}
         {welcomeEligible && <div className={styles.welcomeOffer}>
           <div><strong>Ton départ offert</strong><p>3 Buddies communs différents, garantis dans ton pack de bienvenue, pour alterner tes cultures.</p></div>

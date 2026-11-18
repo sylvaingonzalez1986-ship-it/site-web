@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-17",
+  "status": "implemented-fixtures-verified-awaiting-classified-bank",
+  "privateClassification": "Optional HempQuizEntry.domain: active | food | materials. Any classified entry enables strict domain mode and requires the entire pool to be classified. Domain is never projected into the public question DTO.",
+  "quotas": {
+    "challenge20": {"active": 16, "food": 2, "materials": 2},
+    "tournament12": [[10, 1, 1], [10, 1, 1], [10, 1, 1], [9, 2, 1], [9, 1, 2]],
+    "tournamentRotation": "SHA256(seed + newline + domain-quota), first 32 bits modulo 5",
+    "levels": "Five questions per level in challenge; three per level in tournament. At most one secondary question per level; the first question of every level is active. Domain quotas take precedence over old ten-topic coverage."
+  },
+  "jointFeasibility": {
+    "algorithm": "Enumerate every permitted secondary-domain allocation over the four levels (at most 12). For each allocation, expand level/domain cell capacities into question slots and find a bipartite matching from slots to private subject identities using augmenting paths. Entries without subjectKey use their unique question ID as subject identity.",
+    "guarantee": "Every possible level/domain allocation is examined. Standard augmenting-path matching saturates all slots exactly when that allocation admits distinct subjects. Therefore a jointly feasible draw is found; separate level/domain/subject heuristics cannot invalidate it.",
+    "determinism": "Hash-ranked allocations and entries, stable per-level order with active entries first, and the existing seeded option shuffle. Four options and the original correct answer are preserved."
+  },
+  "errors": {
+    "partialOrInvalidDomain": "[challenge] incomplete hemp domain classification",
+    "infeasibleDomainLevelQuotas": "[challenge] impossible hemp domain quotas",
+    "infeasibleDistinctSubjects": "[challenge] domain quotas cannot provide distinct subjects",
+    "policy": "No silent relaxation or repeated-subject fallback for classified pools. Legacy fixtures with no domains keep the preexisting selection and least-repeated-subject fallback."
+  },
+  "validation": {
+    "fixtureCommand": "node node_modules/vitest/vitest.mjs run src/lib/kanab-quest-school-tournament-server.test.ts -t \"rotates|solves|declares|applies exact|recurring|narrow|scarce|early|two themes|earlier choice\" --reporter=json --outputFile=output/quiz-rebalance-engine-fixtures.json",
+    "fixtureReport": "output/quiz-rebalance-engine-fixtures.json",
+    "fixturePassed": 10,
+    "fixtureFailed": 0,
+    "fixtureSkipped": 2,
+    "nativeExitCode": 0,
+    "checks": ["20-question exact 16/2/2 quotas", "five deterministic 12-question rotations aggregate to 48/6/6", "one secondary maximum per level", "active first per level", "correct four-choice answer and private DTO projection", "joint rare subject/domain/level reservations", "partial classification rejection", "impossible domain/level distribution rejection", "distinct-subject impossibility rejection", "legacy no-domain behavior"],
+    "eslint": "All four final touched TypeScript files passed ESLint with exit 0.",
+    "integrationPending": "Final bank classification/replacement is owned by the coordinator. Real-bank tests now require domain quotas and should run after all 1000 entries are classified; their former ten-topic assertions have been removed. No completed real-bank quota validation is claimed yet."
+  },
+  "scope": "No content reclassification, question edits, SQL, UI, deployment, remote writes, server starts or interference with user port 3248."
+}

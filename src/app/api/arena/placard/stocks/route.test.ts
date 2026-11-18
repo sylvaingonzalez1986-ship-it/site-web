@@ -23,3 +23,9 @@ describe("stock API boundaries",()=>{
  it("does not leak non-database internal failures",async()=>{session.mockRejectedValue(new Error("private identity provider details"));const response=await GET(new Request(url));expect(response.status).toBe(503);expect(JSON.stringify(await response.json())).not.toContain("identity provider");});
  it("hides database failures and preserves safe business errors",async()=>{action.mockRejectedValueOnce(new Error("[supabase:stocks] private database detail"));const response=await POST(post({}));expect(response.status).toBe(503);expect(JSON.stringify(await response.json())).not.toContain("private database detail");action.mockRejectedValueOnce(new KqStockRequestError("This offer has expired."));expect((await POST(post({}))).status).toBe(400);});
 });
+
+it("rejects a persisted confirmation after the connected owner changes", async () => {
+ session.mockResolvedValue({customerId:"11111111-1111-4111-8111-111111111111",customer:{email:"test@example.test"}});
+ const response=await POST(post({action:"confirm",orderId:"22222222-2222-4222-8222-222222222222",expectedOwnerId:"33333333-3333-4333-8333-333333333333"}));
+ expect(response.status).toBe(409);expect((await response.json()).code).toBe("finance_owner_changed");expect(action).not.toHaveBeenCalled();
+});

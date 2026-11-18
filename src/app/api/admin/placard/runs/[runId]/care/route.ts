@@ -1,4 +1,5 @@
 import { readRequestBody } from "@/lib/body-size-guard";
+import { isKqCareSector } from "@/lib/kanab-quest-care-spatial";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { findKqUserIdByEmail } from "@/lib/supabase/kanab-quest-backend";
@@ -17,6 +18,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
     raw = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
   const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : {};
   if (typeof body.requestKey !== "string" || (body.action !== "basic" && typeof body.productCode !== "string")
+    || (body.target !== undefined && (body.action === "basic" || !isKqCareSector(body.target)))
     || (body.action !== undefined && body.action !== "basic") || (body.action === "basic" && body.productCode !== undefined)
     || (body.expectedUpdatedAt !== undefined && typeof body.expectedUpdatedAt !== "string")) {
     return NextResponse.json({ error: "Intervention invalide." }, { status: 400 });
@@ -32,6 +34,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
       userId, runId, requestKey: body.requestKey,
       ...(body.action === "basic" ? { action: "basic" as const, basicPriceCents: body.basicPriceCents as number } : { productCode: body.productCode as string }),
       ...(typeof body.expectedUpdatedAt === "string" ? { expectedUpdatedAt: body.expectedUpdatedAt } : {}),
+      ...(body.target !== undefined ? { target: body.target } : {}),
     }), { headers: { "Cache-Control": "private, no-store, max-age=0" } });
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Intervention impossible." }, { status: 409 }); }
 }

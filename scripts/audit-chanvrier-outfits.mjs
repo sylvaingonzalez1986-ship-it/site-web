@@ -9,8 +9,7 @@ import { createServer, transformWithOxc } from 'vite';
 
 const root = process.cwd();
 const phase = process.argv.includes('--before') ? 'before' : 'after';
-const output = resolve(root, 'output/chanvrier-outfit-audit', phase);
-const reference = resolve(root, 'output/imagegen/sylvain-outfits-v5/source/current-reference.png');
+const output = resolve(root, 'output/chanvrier-calibration/outfits', phase);
 const origin = 'http://127.0.0.1:3220';
 const errors = [];
 const entry = `
@@ -79,10 +78,6 @@ try {
       portrait.hash = createHash('sha256').update(portrait.image).digest('hex');
       if (mode === 'reference') {
         await writeFile(resolve(output, 'reference.png'), Buffer.from(portrait.image.split(',')[1], 'base64'));
-        if (phase === 'before') {
-          await mkdir(resolve(reference, '..'), { recursive: true });
-          await writeFile(reference, Buffer.from(portrait.image.split(',')[1], 'base64'));
-        }
       }
       delete portrait.image;
     }

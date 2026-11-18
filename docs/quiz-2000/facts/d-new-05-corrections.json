@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-16",
+  "review": "docs/quiz-2000/reviews/d-new-05.json",
+  "changedQuestionIds": [
+    "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+    "hemp-q2-d05-essential-amino-acids-dietary-supply",
+    "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+    "hemp-q2-d05-hemp-gnocchi-rise-to-surface",
+    "hemp-q2-d05-xanthan-thickener-food-texture",
+    "hemp-q2-d05-vitamin-e-fat-soluble",
+    "hemp-q2-d05-edible-oil-deodorization-steam-stripping"
+  ],
+  "replacements": [
+    {
+      "retiredId": "hemp-q2-d05-hemp-seed-mild-nutty-flavour",
+      "retiredFactKey": "hemp-seed-mild-nutty-flavour",
+      "newId": "hemp-q2-d05-caramel-coated-seeds-sugar-browning",
+      "newFactKey": "caramel-coated-seeds-sugar-browning",
+      "reason": "Le profil de noix était déjà testé dans le pilote. Le remplacement porte sur la transformation d'un enrobage sucré, et non sur le goût propre des graines."
+    },
+    {
+      "retiredId": "hemp-q2-d05-oilseed-meaning-oil-extraction",
+      "retiredFactKey": "oilseed-meaning-oil-extraction",
+      "newId": "hemp-q2-d05-baking-powder-acid-bicarbonate-reaction",
+      "newFactKey": "baking-powder-acid-bicarbonate-reaction",
+      "reason": "L'entrée reformulait l'origine de l'huile. Le remplacement teste une réaction de levée chimique, distincte de l'origine de l'huile et du simple rôle gonflant du bicarbonate."
+    }
+  ],
+  "sourceIdsAdded": [
+    "q2-d05-asb-caramelization",
+    "q2-d05-ifst-chemical-raising",
+    "q2-d05-medlineplus-vitamins"
+  ],
+  "status": "Corrections auteur livrées pour revalidation indépendante, aucune approbation revendiquée."
+}
