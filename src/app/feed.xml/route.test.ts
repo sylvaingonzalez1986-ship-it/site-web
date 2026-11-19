@@ -11,7 +11,7 @@ vi.mock("@/lib/data-backend", () => ({
   readPublicStoreByBackend: mocks.readPublicStoreByBackend,
 }));
 
-import { GET } from "@/app/feed.xml/route";
+import { GET, revalidate } from "@/app/feed.xml/route";
 
 describe("public Atom feed", () => {
   beforeEach(() => {
@@ -28,12 +28,17 @@ describe("public Atom feed", () => {
     mocks.readPublicStoreByBackend.mockResolvedValue({ products: [product] });
   });
 
+  it("generates the feed at request time so the build can run without Supabase", () => {
+    expect(revalidate).toBe(0);
+  });
+
   it("returns a public cacheable Atom document", async () => {
     const response = await GET();
     const xml = await response.text();
 
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toContain("application/atom+xml");
+    expect(response.headers.get("cache-control")).toContain("s-maxage=300");
     expect(response.headers.get("access-control-allow-origin")).toBe("*");
     expect(xml).toContain("https://www.leschanvriersbretons.com/cbd-naturel");
     expect(xml).toContain("https://www.leschanvriersbretons.com/boutique/fleurs-cbd/flower-1");

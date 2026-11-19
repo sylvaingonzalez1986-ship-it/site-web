@@ -2,7 +2,7 @@ import { getPublishedBlogPostsByBackend, readPublicStoreByBackend } from "@/lib/
 import { buildDiscoveryFeed } from "@/lib/discovery-feed";
 import { getSiteUrl } from "@/lib/site-url";
 
-export const revalidate = 300;
+export const revalidate = 0;
 
 export async function GET() {
   const [posts, store] = await Promise.all([
