@@ -2,29 +2,37 @@ import type { Metadata } from "next";
 import Link from "@/components/navigation/NavigationLink";
 import { BreadcrumbJsonLd, WebPageJsonLd } from "@/components/JsonLd";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
+import { readPublicStoreByBackend } from "@/lib/data-backend";
+import { isOwnProduct } from "@/lib/own-producer";
+import { normalizeAnalysisUrl } from "@/lib/product-analysis-url";
+import { isProductInStock } from "@/lib/product-stock";
 import { getSiteUrl } from "@/lib/site-url";
 
-const LAST_REVIEWED = "2026-08-22";
+const LAST_REVIEWED = "2026-11-19";
 
 export const metadata: Metadata = {
-  title: "À propos : identité, production et méthode éditoriale",
+  title: "Sylvain, producteur de chanvre en Ille-et-Vilaine",
   description:
-    "Qui publie Les Chanvriers Bretons, comment le catalogue distingue production bretonne et partenaires, et comment nos informations sont vérifiées.",
+    "Rencontrez Sylvain, producteur de chanvre en Ille-et-Vilaine, découvrez sa récolte et retrouvez les producteurs partenaires des Chanvriers Bretons.",
   alternates: {
     canonical: "https://www.leschanvriersbretons.com/a-propos",
   },
   openGraph: {
-    title: "À propos des Chanvriers Bretons",
+    title: "Sylvain et la ferme des Chanvriers Bretons",
     description:
-      "Identité de l'entreprise, traçabilité du catalogue et méthode de vérification des contenus.",
+      "La culture du chanvre en Ille-et-Vilaine, les récoltes de la ferme et les producteurs partenaires.",
     url: "https://www.leschanvriersbretons.com/a-propos",
     type: "website",
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/a-propos`;
+  const { products } = await readPublicStoreByBackend();
+  const ownFlowers = products.filter((product) => product.category === "fleurs" && isOwnProduct(product));
+  const availableFlower = ownFlowers.find(isProductInStock);
+  const documentedFlower = ownFlowers.find((product) => normalizeAnalysisUrl(product.analysisPdf));
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -35,8 +43,8 @@ export default function AboutPage() {
         ]}
       />
       <WebPageJsonLd
-        name="À propos des Chanvriers Bretons"
-        description="Identité de l'entreprise, distinction entre production propre et partenaires, et méthode éditoriale."
+        name="Sylvain et la ferme des Chanvriers Bretons"
+        description="La culture du chanvre en Ille-et-Vilaine, les récoltes de la ferme et les producteurs partenaires."
         url={pageUrl}
         about={["Les Chanvriers Bretons", "Traçabilité du CBD", "Méthode éditoriale"]}
         dateModified={LAST_REVIEWED}
@@ -52,18 +60,18 @@ export default function AboutPage() {
             <span className="font-bold text-ink">À propos</span>
           </nav>
 
-          <h1 className="section-title text-ink">Qui sommes-nous ?</h1>
+          <h1 className="section-title text-ink">Sylvain, producteur de chanvre en Ille-et-Vilaine</h1>
           <p className="mt-4 max-w-4xl text-lg leading-relaxed text-charcoal">
-            Les Chanvriers Bretons est une marque dédiée au chanvre et au CBD. Le site est édité par{" "}
-            {BUSINESS_IDENTITY.legalName} et publié sous la responsabilité de {BUSINESS_IDENTITY.president}. Notre
-            objectif est de rendre chaque référence compréhensible : qui la produit, d&apos;où elle vient, ce
-            qu&apos;elle contient et quelles preuves sont consultables.
+            Moi, c&apos;est Sylvain. Je cultive du chanvre en Ille-et-Vilaine, en Bretagne. Au Marché, vous
+            trouverez des fleurs de notre récolte et des fleurs choisies chez d&apos;autres producteurs. Sur la
+            fiche, vous pouvez voir qui les a cultivées et quelles informations sont disponibles sur le lot.
           </p>
           <p className="mt-4 text-sm text-charcoal">
-            Dernière vérification : <time dateTime={LAST_REVIEWED}>22 août 2026</time>
+            Présentation de la ferme mise à jour le <time dateTime={LAST_REVIEWED}>19 novembre 2026</time>
           </p>
+          <Link href="#notre-ferme" className="mt-4 inline-block text-sm font-bold text-ink underline underline-offset-4">Notre ferme et nos partenaires</Link>
 
-          <dl className="mt-8 grid gap-5 md:grid-cols-2">
+          <dl className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="cartoon-border-sm bg-white p-5">
               <dt className="font-display text-xl text-ink">Marque</dt>
               <dd className="mt-2 text-charcoal">{BUSINESS_IDENTITY.brandName}</dd>
@@ -81,12 +89,39 @@ export default function AboutPage() {
             <div className="cartoon-border-sm bg-white p-5">
               <dt className="font-display text-xl text-ink">Contact éditorial</dt>
               <dd className="mt-2 text-charcoal">
-                <a className="underline" href={`mailto:${BUSINESS_IDENTITY.email}`}>
+                <a className="underline [overflow-wrap:anywhere]" href={`mailto:${BUSINESS_IDENTITY.email}`}>
                   {BUSINESS_IDENTITY.email}
                 </a>
               </dd>
             </div>
           </dl>
+        </article>
+
+        <article id="notre-ferme" className="cartoon-border mt-8 scroll-mt-28 bg-white p-6 md:p-10">
+          <h2 className="font-display text-3xl text-ink">Notre ferme et les producteurs partenaires</h2>
+          <div className="mt-4 grid gap-4 leading-relaxed text-charcoal">
+            <p>
+              On cultive du chanvre en Bretagne. Quand une fiche indique que la fleur vient de notre récolte,
+              vous achetez directement au producteur. Vous trouverez aussi des références sous notre nom qui
+              relèvent de la sélection maison.
+            </p>
+            <p>
+              On choisit aussi des fleurs chez des collègues. Au Marché, ouvrez « Par région » pour découvrir
+              les producteurs, ou partez d&apos;une fiche pour voir qui a fourni la fleur. On prépare les commandes
+              en Bretagne, quel que soit le lieu de culture de la fleur.
+            </p>
+            <p>
+              Sur chaque fiche, lisez les informations déclarées sur la culture et la composition. Si un
+              rapport est publié, cherchez le numéro du lot. S&apos;il manque, demandez-nous de confirmer la correspondance avec votre sachet.
+            </p>
+          </div>
+          <nav aria-label="Découvrir les producteurs et les lots" className="mt-5 flex flex-wrap gap-3">
+            {availableFlower && <Link href={`/boutique/fleurs-cbd/${availableFlower.id}`} className="btn-cartoon btn-primary px-5 py-3 text-sm">Voir {availableFlower.name}, une fleur maison en stock</Link>}
+            {documentedFlower && documentedFlower.id !== availableFlower?.id && <Link href={`/boutique/fleurs-cbd/${documentedFlower.id}`} className="btn-cartoon btn-secondary px-5 py-3 text-sm">Voir {documentedFlower.name} et son analyse</Link>}
+            <Link href="/boutique#producteurs" className="btn-cartoon btn-primary px-5 py-3 text-sm">Découvrir les producteurs au Marché</Link>
+            <Link href="/boutique/fleurs-cbd" className="btn-cartoon btn-secondary px-5 py-3 text-sm">Voir les fleurs et les formats</Link>
+            <Link href="/cbd-naturel#cbd-naturel-en-bref" className="px-3 py-3 text-sm font-bold text-ink underline underline-offset-4">Vérifier l’origine et le lot</Link>
+          </nav>
         </article>
 
         <article className="cartoon-border mt-8 bg-yellow p-6 md:p-10">
@@ -139,30 +174,6 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
-        </article>
-
-        <article className="cartoon-border mt-8 bg-white p-6 md:p-10">
-          <h2 className="font-display text-3xl text-ink">Production propre et producteurs partenaires</h2>
-          <div className="mt-4 grid gap-4 leading-relaxed text-charcoal">
-            <p>
-              Le catalogue ne doit pas être lu comme si toutes les références avaient la même origine.
-              Les produits rattachés aux Chanvriers Bretons sont présentés comme notre production ou notre
-              sélection maison. Les autres portent le nom du producteur partenaire concerné.
-            </p>
-            <p>
-              Pour une information précise, la fiche produit prévaut sur les pages générales. Elle peut
-              indiquer l&apos;origine, le mode de culture, la composition, les formats et une analyse de
-              laboratoire lorsqu&apos;elle est disponible. Notre guide explique aussi{" "}
-              <Link className="underline" href="/analyse-laboratoire-cbd">comment lire ce document</Link>.
-              Une certification n&apos;est mentionnée que lorsqu&apos;elle
-              est attribuée au produit ou au producteur concerné.
-            </p>
-            <p>
-              Commencez par notre guide <Link className="underline" href="/cbd-naturel">CBD naturel</Link>,
-              puis consultez la <Link className="underline" href="/boutique">fiche de la référence</Link> qui
-              vous intéresse.
-            </p>
-          </div>
         </article>
 
         <article className="cartoon-border mt-8 bg-cream p-6 md:p-10">

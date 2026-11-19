@@ -120,6 +120,9 @@ export default async function CategoryPage({
             <Link href="/cbd-pas-cher" className="underline underline-offset-4">Comparer les prix du CBD</Link>
             <Link href="/cbd-naturel" className="underline underline-offset-4">Choisir un CBD naturel</Link>
             <Link href="/analyse-laboratoire-cbd" className="underline underline-offset-4">Lire une analyse de lot</Link>
+            {slug === "fleurs-cbd" && (
+              <Link href="/cbd-breton" className="underline underline-offset-4">Vérifier l’origine bretonne d’une fleur</Link>
+            )}
           </nav>
         </div>
 
@@ -177,11 +180,11 @@ type CategoryGuide = {
 const categoryGuides: Record<string, CategoryGuide> = {
   "fleurs-cbd": {
     description:
-      "Comparez les fleurs CBD selon leur origine, leur producteur, leur mode de culture, leurs formats et les analyses disponibles.",
-    title: "Comment comparer des fleurs CBD ?",
+      "Ici, on vend les fleurs de notre ferme bretonne et celles de producteurs partenaires. Sur chaque carte, retrouvez le producteur indiqué. Ouvrez la fiche pour choisir votre format et consulter l’analyse quand elle est publiée.",
+    title: "Comment vérifier l’origine d’une fleur de CBD française ?",
     paragraphs: [
-      "Vérifiez le producteur, l'origine du chanvre, le mode de culture déclaré, la composition et le numéro de lot. Une analyse récente doit pouvoir être rapprochée de la référence vendue lorsqu'elle est publiée.",
-      "Cette catégorie peut réunir notre production et des fleurs de producteurs partenaires. Le nom affiché sur chaque carte et chaque fiche permet de les distinguer.",
+      "Commencez par le nom de la ferme et le mode de culture indiqué sur la fiche. La région affichée est celle du producteur. Si vous cherchez le lieu de culture précis ou celui d’une transformation, demandez-nous le renseignement pour la référence et le lot qui vous intéressent.",
+      "Les Chanvriers Bretons vendent les fleurs présentées ici et expédient les commandes de Bretagne. Pour les fleurs d’un partenaire, son nom figure sur la fiche. Si une analyse est publiée, comparez l’échantillon et le lot avec les indications de votre sachet.",
     ],
   },
   "resines-cbd": {

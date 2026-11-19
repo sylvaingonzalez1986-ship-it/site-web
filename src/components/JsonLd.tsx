@@ -2,7 +2,9 @@ import { headers } from "next/headers";
 import type { Product } from "@/data/products";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { getSiteUrl } from "@/lib/site-url";
-import { isProductInStock, isVariantOptionPurchasable } from "@/lib/product-stock";
+import { normalizeAnalysisUrl } from "@/lib/product-analysis-url";
+import { isOwnProduct } from "@/lib/own-producer";
+import { getPublicVariantOptions, isProductInStock, isVariantOptionPurchasable } from "@/lib/product-stock";
 import type { Producer } from "@/types/store";
 
 type ArticleJsonLdProps = {
@@ -82,7 +84,6 @@ function getProductUrl(baseUrl: string, product: Pick<Product, "category" | "id"
 function buildProductOffers(product: Product, productUrl: string, baseUrl: string) {
   const seller = { "@id": organizationId(baseUrl) };
   const returnPolicy = { "@id": `${baseUrl}/#return-policy` };
-  const variants = product.variantOptions?.filter((option) => option.enabled !== false && Number.isFinite(option.price) && option.price >= 0) ?? [];
 
   if (!product.variantOptions?.length) {
     if (!Number.isFinite(product.price) || product.price < 0) return undefined;
@@ -98,7 +99,7 @@ function buildProductOffers(product: Product, productUrl: string, baseUrl: strin
     };
   }
 
-  return variants.map((option) => ({
+  return getPublicVariantOptions(product).map((option) => ({
     "@type": "Offer",
     sku: `${product.id}-${option.id}`,
     name: `${product.name} — ${option.label}`,
@@ -457,6 +458,7 @@ export async function ProductListJsonLd({
     numberOfItems: products.length,
     itemListElement: products.map((product, index) => {
       const productUrl = getProductUrl(baseUrl, product);
+      const brandName = isOwnProduct(product) ? BUSINESS_NAME : producerById.get(product.producerId ?? "")?.name;
 
       return {
         "@type": "ListItem",
@@ -470,13 +472,7 @@ export async function ProductListJsonLd({
           image: absoluteUrl(baseUrl, product.images?.[0] ?? product.image),
           url: productUrl,
           category: CATEGORY_NAMES[product.category],
-        brand: {
-          "@type": "Brand",
-          name:
-            (product.producerId
-              ? producerById.get(product.producerId)?.name
-              : undefined) ?? BUSINESS_NAME,
-        },
+          brand: brandName ? { "@type": "Brand", name: brandName } : undefined,
           offers: buildProductOffers(product, productUrl, baseUrl),
         },
       };
@@ -503,6 +499,8 @@ export async function ProductJsonLd({
   const baseUrl = getSiteUrl();
 
   const productUrl = getProductUrl(baseUrl, product);
+  const analysisUrl = normalizeAnalysisUrl(product.analysisPdf);
+  const brandName = producer?.name ?? (product.producerId ? undefined : BUSINESS_NAME);
   const productImages = (product.images?.length ? product.images : [product.image]).map((image) =>
     absoluteUrl(baseUrl, image),
   );
@@ -525,23 +523,23 @@ export async function ProductJsonLd({
     image: productImages,
     url: productUrl,
     category: CATEGORY_NAMES[product.category],
-    brand: {
+    brand: brandName ? {
       "@type": "Brand",
-      name: producer?.name ?? BUSINESS_NAME,
-    },
+      name: brandName,
+    } : undefined,
     manufacturer: producer
       ? {
           "@type": "Organization",
           "@id": `${baseUrl}/#producer-${encodeURIComponent(producer.id ?? product.producerId ?? producer.name)}`,
           name: producer.name,
         }
-      : { "@id": organizationId(baseUrl) },
+      : product.producerId ? undefined : { "@id": organizationId(baseUrl) },
     additionalProperty: additionalProperty.length > 0 ? additionalProperty : undefined,
-    subjectOf: product.analysisPdf
+    subjectOf: analysisUrl
       ? {
           "@type": "DigitalDocument",
           name: `Analyse laboratoire — ${product.name}`,
-          url: absoluteUrl(baseUrl, product.analysisPdf),
+          url: absoluteUrl(baseUrl, analysisUrl),
         }
       : undefined,
     ...(aggregateRating ? {

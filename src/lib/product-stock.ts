@@ -81,6 +81,12 @@ export function getSelectableVariantOptions(product: Product): ProductVariant[] 
   return product.variantOptions.filter(isVariantOptionPurchasable);
 }
 
+export function getPublicVariantOptions(product: Product): ProductVariant[] {
+  return product.variantOptions?.filter((option) =>
+    option.enabled !== false && Number.isFinite(option.price) && option.price >= 0,
+  ) ?? [];
+}
+
 export function getAvailableQuantity(
   product: Product,
   variantId: string,

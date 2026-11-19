@@ -196,6 +196,10 @@ export async function middleware(request: NextRequest) {
       response.headers.set("Cache-Control", "private, no-store, max-age=0");
       response.headers.set("Referrer-Policy", "no-referrer");
     }
+    if (response.status === 307 && response.headers.has("Location")
+      && (pathname === "/age-gate" || shouldEnforceAgeGate(pathname))) {
+      response.headers.set("Cache-Control", "private, no-store, max-age=0");
+    }
     return response;
   };
   const customerAuthenticated = hasCustomerSession(request);

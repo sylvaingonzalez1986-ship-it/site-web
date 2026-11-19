@@ -7,9 +7,11 @@ import { ProductImageGallery } from "@/components/boutique/ProductImageGallery";
 import { ProductTastingBadge, ProductTastingSection } from "@/components/boutique/ProductTastingSection";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
-import { getOwnProducer } from "@/lib/own-producer";
+import { getOwnProducer, isOwnProduct } from "@/lib/own-producer";
+import type { Producer } from "@/types/store";
 import { isProductTastingStorefrontEnabled, isProductTastingNotebookLinkEnabled } from "@/lib/product-tasting-feature";
 import { getSiteUrl } from "@/lib/site-url";
+import { formatPrice } from "@/lib/utils";
 import { buildProductMetaDescription } from "@/lib/product-discovery";
 import { hasActiveProductPromo } from "@/lib/product-promo";
 import { isRemoteImageUrl } from "@/lib/image-source";
@@ -43,7 +45,7 @@ type SiblingProduct = { id: string; name: string; category: string };
 
 type FindProductResult = {
   product: Product;
-  producer?: { name: string };
+  producer?: Producer;
   prevProduct: SiblingProduct | null;
   nextProduct: SiblingProduct | null;
   currentIndex: number;
@@ -58,9 +60,9 @@ async function findProduct(
   const product = store.products.find((p) => p.id === slug);
   if (!product) return null;
 
-  const producer = product.producerId
-    ? store.producers.find((pr) => pr.id === product.producerId)
-    : getOwnProducer(store.content.boutique);
+  const producer = isOwnProduct(product)
+    ? getOwnProducer(store.content.boutique)
+    : store.producers.find((pr) => pr.id === product.producerId);
 
   // Build same-category product list (deduplicated, stable order)
   const seen = new Set<string>();
@@ -131,9 +133,9 @@ export async function generateMetadata({
   const baseUrl = getSiteUrl();
   const catInfo = categorySlugMap[product.category];
   const canonicalUrl = `${baseUrl}/boutique/${catInfo?.slug ?? product.category}/${product.id}`;
-  const brandName = producer?.name ?? "Les Chanvriers Bretons";
+  const brandName = producer?.name;
 
-  const title = `${product.name} | ${catInfo?.label ?? "CBD"} — ${brandName}`;
+  const title = `${product.name} | ${catInfo?.label ?? "CBD"}${brandName ? ` — ${brandName}` : ""}`;
   const metaDescription = buildProductMetaDescription(product, brandName);
 
   const imageUrl = product.images?.[0] ?? product.image;
@@ -150,7 +152,7 @@ export async function generateMetadata({
       description: metaDescription.slice(0, 160),
       url: canonicalUrl,
       type: "website",
-      images: [{ url: ogImage, alt: `${product.name} — ${brandName}` }],
+      images: [{ url: ogImage, alt: product.name }],
     },
     twitter: {
       card: "summary_large_image",
@@ -196,9 +198,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
     : null;
 
   const allImages = product.images?.length ? product.images : [product.image];
-  const brandName = producer?.name ?? "Les Chanvriers Bretons";
+  const brandName = producer?.name;
   const showCultureBadge =
     isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
+  const flowerWeight = product.category === "fleurs" && !product.isPack ? product.weightGrams : undefined;
+  const formatLabel = flowerWeight && flowerWeight > 0
+    ? (flowerWeight === 1 ? " / g" : ` les ${flowerWeight.toLocaleString("fr-FR")} g`)
+    : "";
 
   return (
     <section data-ui-commerce="product-page" className={styles.page} data-world="market">
@@ -245,7 +251,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <ProductImageGallery
                 images={allImages}
                 videoUrl={product.videoUrl}
-                productName={`${product.name} — ${producer?.name ?? "Les Chanvriers Bretons"}`}
+                productName={product.name}
                 badge={product.badge}
                 bonusPoints={product.bonusPoints}
               />
@@ -262,7 +268,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className={styles.meta}>
                   {producer && (
                     <p className="text-xs font-black uppercase tracking-[0.08em] text-charcoal">
-                      Par{" "}
+                      {product.category === "fleurs"
+                        ? (isOwnProduct(product) ? "Référence maison · " : "Producteur partenaire · ")
+                        : "Par "}
                       <span className="text-ink">
                         {brandName}
                       </span>
@@ -277,22 +285,32 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               )}
 
-              <div className={styles.pricePanel}>
-                <span className={styles.price}>
-                  {product.price.toFixed(2)} €{product.category === "fleurs" && " / g"}
-                </span>
-                {product.originalPrice &&
-                  product.originalPrice > product.price && (
+              {product.category === "fleurs" && (
+                <p className="text-sm text-charcoal">
+                  {producer && (producer.location || producer.department || producer.region) && (
+                    <>Localisation du producteur · {producer.location || producer.department || producer.region}.{" "}</>
+                  )}
+                  Vendue par Les Chanvriers Bretons et expédiée de Bretagne.
+                </p>
+              )}
+
+              {!product.variantOptions?.length && (
+                <div className={styles.pricePanel}>
+                  <span className={styles.price}>
+                    {formatPrice(product.price)}{formatLabel}
+                  </span>
+                  {typeof product.originalPrice === "number" && product.originalPrice > product.price && (
                     <span className="text-lg font-bold text-charcoal line-through">
-                      {product.originalPrice.toFixed(2)} €{product.category === "fleurs" && " / g"}
+                      {formatPrice(product.originalPrice)}{formatLabel}
                     </span>
                   )}
-                {hasActiveProductPromo(product) && (
-                  <span className="border-2 border-ink bg-yellow px-2 py-1 text-xs font-black uppercase text-ink">
-                    -{product.promoPercent}%
-                  </span>
-                )}
-              </div>
+                  {hasActiveProductPromo(product) && (
+                    <span className="border-2 border-ink bg-yellow px-2 py-1 text-xs font-black uppercase text-ink">
+                      -{product.promoPercent}%
+                    </span>
+                  )}
+                </div>
+              )}
 
               <p className={styles.description}>
                 {product.description}

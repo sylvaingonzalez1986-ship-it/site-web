@@ -25,4 +25,15 @@ describe("product structured data availability", () => {
     expect((await data({ price: NaN })).offers).toBeUndefined();
     expect((await data({ variantOptions: [{ id: "bad", label: "1 g", price: Infinity }] })).offers).toEqual([]);
   });
+  it("does not attribute an unresolved partner product to the shop", async () => {
+    const result = await data({ producerId: "unknown-partner" });
+    expect(result.brand).toBeUndefined();
+    expect(result.manufacturer).toBeUndefined();
+    expect(result.offers.seller["@id"]).toContain("#organization");
+  });
+  it("publishes only a usable analysis link", async () => {
+    expect((await data({ analysisPdf: "/analyses/lot.pdf" })).subjectOf.url).toMatch(/\/analyses\/lot\.pdf$/);
+    expect((await data({ analysisPdf: "//other.example/lot.pdf" })).subjectOf).toBeUndefined();
+    expect((await data({ analysisPdf: "javascript:alert(1)" })).subjectOf).toBeUndefined();
+  });
 });

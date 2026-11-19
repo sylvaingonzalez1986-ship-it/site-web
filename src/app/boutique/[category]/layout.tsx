@@ -1,17 +1,16 @@
 ﻿import type { Metadata } from "next";
 import { getCatalogCategoryBySlug } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
-
-const BASE_URL = "https://www.leschanvriersbretons.com";
+import { getSiteUrl } from "@/lib/site-url";
 
 const categoryMeta: Record<
   string,
   { title: string; description: string; label: string }
 > = {
   "fleurs-cbd": {
-    title: "Fleurs CBD | Origine, culture et analyses disponibles",
+    title: "Fleurs de CBD de producteurs français | Les Chanvriers Bretons",
     description:
-      "Découvrez nos fleurs CBD : producteur ou marque, origine, mode de culture, formats et analyses disponibles indiqués sur chaque fiche.",
+      "Retrouvez les fleurs de notre ferme et celles de nos partenaires. Comparez le producteur, sa région, les formats en stock et les analyses publiées.",
     label: "Fleurs CBD",
   },
   "resines-cbd": {
@@ -77,6 +76,7 @@ export async function generateMetadata({
   }
 
   const canonicalCategory = category === "alimentaire-cbd" ? "tisane-cbd" : category;
+  const canonicalUrl = `${getSiteUrl()}/boutique/${canonicalCategory}`;
   const publicCategory = getCatalogCategoryBySlug(canonicalCategory);
   const store = await readPublicStoreByBackend();
   const hasPublishedProducts = Boolean(
@@ -87,7 +87,7 @@ export async function generateMetadata({
     title: meta.title,
     description: meta.description,
     alternates: {
-      canonical: `${BASE_URL}/boutique/${canonicalCategory}`,
+      canonical: canonicalUrl,
     },
     robots: hasPublishedProducts
       ? { index: true, follow: true }
@@ -95,7 +95,7 @@ export async function generateMetadata({
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `${BASE_URL}/boutique/${canonicalCategory}`,
+      url: canonicalUrl,
     },
   };
 }

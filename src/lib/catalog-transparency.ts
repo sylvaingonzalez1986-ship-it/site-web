@@ -9,6 +9,7 @@ import {
   isOwnProduct,
   resolveProductProducer,
 } from "@/lib/own-producer";
+import { normalizeAnalysisUrl } from "@/lib/product-analysis-url";
 import { mostRecentSeoDate } from "@/lib/seo-sitemap";
 import type { Producer } from "@/types/store";
 
@@ -74,7 +75,7 @@ export type CatalogTransparencyDocument = {
 };
 
 function hasPublishedAnalysis(product: Product): boolean {
-  return typeof product.analysisPdf === "string" && product.analysisPdf.trim().length > 0;
+  return Boolean(normalizeAnalysisUrl(product.analysisPdf));
 }
 
 function hasProducerOrigin(producer: Producer | undefined): boolean {
@@ -115,7 +116,7 @@ export function buildCatalogTransparencyObservations(
   return dedupeProducts(products).map((product) => {
     const producer = resolveProductProducer(product, producerById, ownProducer);
     const category = categoryByCode.get(product.category);
-    const analysisAvailable = hasPublishedAnalysis(product);
+    const analysisUrl = normalizeAnalysisUrl(product.analysisPdf);
 
     return {
       productId: product.id,
@@ -126,8 +127,8 @@ export function buildCatalogTransparencyObservations(
       producerName: producer?.name.trim() || null,
       relationship: isOwnProduct(product) ? "own" : "partner",
       origin: formatProducerOrigin(producer),
-      analysisAvailable,
-      analysisUrl: analysisAvailable ? absolutePublicUrl(product.analysisPdf!, baseUrl) : null,
+      analysisAvailable: Boolean(analysisUrl),
+      analysisUrl: analysisUrl ? absolutePublicUrl(analysisUrl, baseUrl) : null,
       lastUpdated: product.updatedAt ?? product.createdAt ?? null,
     };
   });

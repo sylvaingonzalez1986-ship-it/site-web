@@ -1,5 +1,6 @@
 import type { Product } from "@/data/products";
 import { dedupeProducts } from "@/lib/product-dedup";
+import { normalizeAnalysisUrl } from "@/lib/product-analysis-url";
 import { getSelectableVariantOptions, isProductInStock } from "@/lib/product-stock";
 
 export type PurchasableFormat = {
@@ -69,11 +70,12 @@ export function getFlowerPriceComparison(products: Product[], limit = 12) {
     .slice(0, limit);
 }
 
-export function buildProductMetaDescription(product: Product, producer: string): string {
+export function buildProductMetaDescription(product: Product, producer?: string): string {
   const format = getPurchasableFormats(product)[0];
   const price = format ? `Dès ${formatEuro(format.price)}${format.weightGrams ? ` les ${format.label}` : ""}.` : "Actuellement indisponible.";
   const culture = product.cultureMode ? ` Culture ${product.cultureMode}.` : "";
-  const analysis = product.analysisPdf ? " Analyse consultable." : "";
-  const text = `${product.name}. ${price} ${producer}.${culture}${analysis} Origine et formats sur la fiche.`;
+  const analysis = normalizeAnalysisUrl(product.analysisPdf) ? " Analyse consultable." : "";
+  const attribution = producer ? ` ${producer}.` : "";
+  const text = `${product.name}. ${price}${attribution}${culture}${analysis} Origine et formats sur la fiche.`;
   return text.length <= 160 ? text : `${text.slice(0, 157).replace(/\s+\S*$/, "")}…`;
 }

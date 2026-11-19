@@ -65,7 +65,7 @@ export function resolveProductProducer(
   producerById: ReadonlyMap<string, Producer>,
   ownProducer = DEFAULT_OWN_PRODUCER,
 ): Producer | undefined {
-  if (!product.producerId) {
+  if (!product.producerId || product.producerId === OWN_PRODUCER_ID) {
     return ownProducer;
   }
 

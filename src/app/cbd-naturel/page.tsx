@@ -25,7 +25,7 @@ import type { Producer } from "@/types/store";
 
 const PAGE_SLUG = "cbd-naturel";
 const FIRST_PUBLISHED = "2026-08-22";
-const LAST_REVIEWED = "2026-08-23";
+const LAST_REVIEWED = "2026-11-19";
 
 const PUBLIC_SOURCES = [
   {
@@ -237,6 +237,21 @@ export default async function CbdNaturelPage() {
   );
   const observationDate = formatCatalogObservationDate(transparencySnapshot.lastCatalogUpdate);
   const transparencyDataUrl = `${pageUrl}/catalogue-transparence.json`;
+  const inStockFlowerIds = new Set(store.products
+    .filter((product) => product.category === "fleurs" && isProductInStock(product))
+    .map(({ id }) => id));
+  const flowerObservations = transparencyObservations.filter(
+    (entry) => entry.category === "fleurs" && entry.producerName && entry.origin,
+  );
+  const originExamples = (["own", "partner"] as const).flatMap((relationship) => {
+    const candidates = flowerObservations.filter((entry) => entry.relationship === relationship);
+    const example = candidates.find((entry) => entry.productId === "product-1773870383362" && entry.analysisAvailable)
+      ?? candidates.find((entry) => inStockFlowerIds.has(entry.productId) && entry.analysisAvailable)
+      ?? candidates.find((entry) => inStockFlowerIds.has(entry.productId))
+      ?? candidates.find((entry) => entry.analysisAvailable)
+      ?? candidates[0];
+    return example ? [example] : [];
+  });
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
@@ -294,12 +309,12 @@ export default async function CbdNaturelPage() {
 
           <h1 className="section-title text-ink">CBD naturel : des producteurs identifiés</h1>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-charcoal">
-            Découvrez notre production bretonne et une sélection de producteurs partenaires. Comparez l’origine,
-            les formats et les prix, puis consultez la composition et les analyses disponibles sur chaque fiche.
+            On cultive du chanvre en Bretagne et on choisit aussi des fleurs chez des collègues. Pour chaque
+            référence, regardez qui la produit, ce que la fiche dit de sa composition et si un rapport est publié.
           </p>
           <nav aria-label="Choisir votre CBD naturel" className="mt-6 flex flex-wrap gap-3">
-            <Link href="#selection-cbd-naturel" className="btn-cartoon btn-primary px-5 py-3 text-sm">Voir la sélection en stock</Link>
-            <Link href="/cbd-pas-cher" className="btn-cartoon btn-secondary px-5 py-3 text-sm">Comparer les prix du CBD</Link>
+            {featuredProducts.length > 0 && <Link href="#selection-cbd-naturel" className="btn-cartoon btn-primary px-5 py-3 text-sm">Voir la sélection en stock</Link>}
+            <Link href="#cbd-naturel-en-bref" className="btn-cartoon btn-secondary px-5 py-3 text-sm">Vérifier l’origine et le lot</Link>
             {activeCategoryLinks.map(category => <Link key={category.href} href={category.href} className="px-3 py-3 text-sm font-bold text-ink underline underline-offset-4">{category.label}</Link>)}
           </nav>
           <p className="mt-4 text-sm text-charcoal">
@@ -307,19 +322,19 @@ export default async function CbdNaturelPage() {
             <Link href="/a-propos" className="underline hover:text-ink">
               Les Chanvriers Bretons
             </Link>{" "}
-            · <time dateTime={LAST_REVIEWED}>Vérifié le 23 août 2026</time>
+            · Parcours de traçabilité mis à jour le <time dateTime={LAST_REVIEWED}>19 novembre 2026</time>
           </p>
         </div>
 
         {/* Produits CBD naturel */}
         <div id="selection-cbd-naturel" className="cartoon-border mt-8 scroll-mt-28 bg-cream p-5 sm:p-8">
           <h2 className="mb-3 text-3xl font-display text-ink">
-            Une sélection de produits disponibles
+            Notre sélection en stock
           </h2>
-          <p className="mb-6 max-w-3xl text-charcoal">
-            Cette sélection réunit notre production et des références de producteurs partenaires.
-            L&apos;origine affichée sur chaque carte permet de les distinguer ; consultez ensuite la fiche
-            pour vérifier la composition et l&apos;analyse disponible.
+          <p className="max-w-3xl text-charcoal">
+            {featuredProducts.length > 0
+              ? "Vérifiez le producteur et le prix sur la carte, puis ouvrez la fiche pour voir les formats, la composition et les documents disponibles."
+              : "Aucune référence en stock dans cette sélection pour le moment."}
           </p>
         </div>
 
@@ -337,7 +352,7 @@ export default async function CbdNaturelPage() {
         </div>
 
         {/* Réponse courte, facilement extractible par les moteurs de réponse */}
-        <div className="cartoon-border mt-8 bg-white p-8" aria-labelledby="cbd-naturel-en-bref">
+        <div className="cartoon-border mt-8 scroll-mt-28 bg-white p-5 sm:p-8" aria-labelledby="cbd-naturel-en-bref">
           <h2 id="cbd-naturel-en-bref" className="mb-4 text-3xl font-display text-ink">
             Le CBD naturel en bref
           </h2>
@@ -347,15 +362,15 @@ export default async function CbdNaturelPage() {
           <dl className="mt-6 grid gap-4 md:grid-cols-3">
             <div>
               <dt className="font-bold text-ink">Origine</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Chanvre et producteur clairement identifiés.</dd>
+              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Commencez par le nom du producteur et le lieu de culture indiqué sur la fiche.</dd>
             </div>
             <div>
               <dt className="font-bold text-ink">Traçabilité</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Lot relié à une analyse consultable et datée.</dd>
+              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Quand un rapport est publié, cherchez sa date et son numéro de lot. Si ce numéro manque, demandez-nous de confirmer la correspondance avec votre sachet.</dd>
             </div>
             <div>
               <dt className="font-bold text-ink">Composition</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Ingrédients et cannabinoïdes ajoutés explicitement indiqués.</dd>
+              <dd className="mt-1 text-sm leading-relaxed text-charcoal">Lisez les ingrédients et les éventuels ajouts déclarés sur la fiche ou l’étiquette.</dd>
             </div>
           </dl>
           <p className="mt-6 text-sm leading-relaxed text-charcoal">
@@ -373,6 +388,24 @@ export default async function CbdNaturelPage() {
             </Link>.
           </p>
         </div>
+
+        {originExamples.length > 0 && (
+          <section className="cartoon-border mt-8 bg-cream p-5 sm:p-8" aria-labelledby="exemples-origine-title">
+            <h2 id="exemples-origine-title" className="font-display text-3xl text-ink">De la fleur au rapport de laboratoire</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {originExamples.map((entry) => (
+                <div key={entry.productId} className="cartoon-border-sm bg-white p-4 text-charcoal">
+                  <h3 className="font-bold text-ink"><Link href={new URL(entry.productUrl).pathname} className="underline underline-offset-4">{entry.name}</Link></h3>
+                  <p className="mt-2 text-sm">{entry.relationship === "own" ? "Référence maison" : "Référence partenaire"} · {entry.producerName}</p>
+                  <p className="mt-1 text-sm">Localisation du producteur · {entry.origin}</p>
+                  <p className="mt-2 text-sm">{entry.analysisAvailable
+                    ? "Ouvrez l’analyse depuis la fiche. Comparez le nom de l’échantillon et les mesures avec votre sachet. Si le lot manque, demandez-nous de confirmer la correspondance."
+                    : "Aucune analyse publiée sur cette fiche."}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="cartoon-border mt-8 bg-yellow p-6 md:p-8" aria-labelledby="observatoire-catalogue-cbd">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-charcoal">Données originales du catalogue</p>
@@ -474,7 +507,7 @@ export default async function CbdNaturelPage() {
                   {transparencyObservations.map((observation) => (
                     <tr key={observation.productUrl}>
                       <th scope="row" className="border border-ink p-3 font-bold text-ink">
-                        <Link href={observation.productUrl} className="underline hover:text-charcoal">
+                        <Link href={new URL(observation.productUrl).pathname} className="underline hover:text-charcoal">
                           {observation.name}
                         </Link>
                       </th>
@@ -612,22 +645,22 @@ export default async function CbdNaturelPage() {
         {/* Comment nous cultivons */}
         <div className="cartoon-border mt-8 bg-cream p-8">
           <h2 className="mb-4 text-3xl font-display text-ink">
-            Comment cultivons-nous notre chanvre en Bretagne ?
+            Qui a cultivé la fleur ?
           </h2>
           <div className="space-y-4 leading-relaxed text-charcoal">
             <p>
-              Notre production propre est cultivée en Bretagne. Cette présentation concerne uniquement
-              les produits rattachés aux Chanvriers Bretons ; les références partenaires suivent les méthodes
-              décrites sur leur fiche et portent le nom de leur producteur d&apos;origine.
+              Quand la fleur vient de notre récolte en Bretagne, vous achetez directement au producteur.
+              Quand elle vient d&apos;un collègue, on indique son nom sur la fiche. Une référence maison peut
+              aussi être une sélection. Regardez l&apos;origine déclarée pour connaître le parcours du produit.
             </p>
             <p>
-              Pour juger une méthode de culture, nous vous conseillons de rechercher des éléments précis :
-              localisation, type de culture, pratiques agricoles, certifications éventuelles, date de récolte
-              et analyse correspondant au lot. Ces informations sont plus fiables qu&apos;une promesse générale.
+              Retrouvez <Link href="/a-propos#notre-ferme" className="font-bold underline">notre ferme et nos partenaires</Link>,
+              puis ouvrez les <Link href="/boutique/fleurs-cbd" className="font-bold underline">fiches des fleurs</Link> pour comparer
+              l&apos;origine déclarée, le mode de culture et les formats disponibles.
             </p>
             <p>
-              Nous enrichissons progressivement les fiches avec ces preuves. Lorsqu&apos;une analyse est publiée,
-              un bouton permet de la consulter depuis le produit concerné.
+              La préparation et l&apos;expédition des commandes se font en Bretagne. Pour savoir où la fleur a poussé,
+              regardez sa fiche.
             </p>
           </div>
         </div>
@@ -792,7 +825,7 @@ export default async function CbdNaturelPage() {
             CBD naturel livré partout en Bretagne
           </h2>
           <p className="mb-4 text-sm leading-relaxed text-charcoal">
-            Notre CBD naturel est expédié depuis la Bretagne vers toute la France. Retrouvez
+            Les commandes sont expédiées depuis la Bretagne vers la France métropolitaine. Retrouvez
             nos pages locales pour chaque ville bretonne avec les modes de livraison proposés lors de la commande.
           </p>
           <div className="flex flex-wrap gap-2">

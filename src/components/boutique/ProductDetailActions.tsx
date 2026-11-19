@@ -9,11 +9,13 @@ import { NotebookQuantityBonusPreview } from "@/components/contest/NotebookQuant
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
+import { normalizeAnalysisUrl } from "@/lib/product-analysis-url";
 import type { Product } from "@/data/products";
 import {
   formatRemainingGrams,
-  getSelectableVariantOptions,
+  getPublicVariantOptions,
   getStockDisplayInfo,
+  isVariantOptionPurchasable,
 } from "@/lib/product-stock";
 import styles from "./ProductDetailActions.module.css";
 
@@ -46,13 +48,15 @@ export function ProductDetailActions({
   const variantId = useId();
   const closeAnalysis = useCallback(() => setAnalysisOpen(false), []);
 
-  const selectableVariants = getSelectableVariantOptions(product);
-  const hasVariants = selectableVariants.length > 0;
+  const hasVariants = Boolean(product.variantOptions?.length);
+  const publicVariants = getPublicVariantOptions(product);
+  const selectableVariants = publicVariants.filter(isVariantOptionPurchasable);
   const selectedVariant =
     selectableVariants.find((v) => v.id === selectedVariantId) ??
     selectableVariants[0];
   const stockInfo = getStockDisplayInfo(product, lowStockThresholdGrams, selectedVariant?.id);
-  const inStock = !stockInfo.isOutOfStock;
+  const inStock = hasVariants ? Boolean(selectedVariant) : !stockInfo.isOutOfStock;
+  const analysisUrl = normalizeAnalysisUrl(product.analysisPdf);
 
   useEffect(() => {
     if (!addButtonRef.current) return;
@@ -85,7 +89,7 @@ export function ProductDetailActions({
     <div data-ui-commerce="order-panel" data-ui-shape="panel" ref={panelRef} className={styles.panel}>
       <p className={styles.heading}>Choisir et commander</p>
       <div className="space-y-4">
-      {hasVariants && (
+      {publicVariants.length > 0 && (
         <div>
           <label htmlFor={variantId} className="mb-1 block text-sm font-bold text-charcoal">
             {product.variantLabel?.trim() || "Taille"}
@@ -94,17 +98,22 @@ export function ProductDetailActions({
             id={variantId}
             className={styles.select}
             value={selectedVariant?.id ?? ""}
+            disabled={!selectedVariant}
             onChange={(e) => {
               setSelectedVariantId(e.target.value);
               setQty(1);
               setStockError(null);
             }}
           >
-            {selectableVariants.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.label} — {option.price.toFixed(2)} €
-              </option>
-            ))}
+            {!selectedVariant && <option value="">Aucun format en stock</option>}
+            {publicVariants.map((option) => {
+              const available = isVariantOptionPurchasable(option);
+              return (
+                <option key={option.id} value={option.id} disabled={!available}>
+                  {option.label} — {formatPrice(option.price)}{available ? "" : " (rupture)"}
+                </option>
+              );
+            })}
           </select>
         </div>
       )}
@@ -145,15 +154,21 @@ export function ProductDetailActions({
           grams={qty * product.weightGrams}
         /> : null}
 
-      {product.analysisPdf && (
+      {analysisUrl ? (
         <>
-          <button data-ui-commerce="secondary" data-ui-shape="control"
-            type="button"
-            onClick={() => setAnalysisOpen(true)}
+          <a data-ui-commerce="secondary" data-ui-shape="control"
+            href={analysisUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => {
+              if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              setAnalysisOpen(true);
+            }}
             className={`btn-cartoon btn-secondary inline-flex min-h-11 items-center gap-2 px-4 text-xs ${styles.analysis}`}
           >
             📄 Voir l&apos;analyse laboratoire
-          </button>
+          </a>
           <Link
             href="/analyse-laboratoire-cbd"
             className="inline-flex min-h-11 items-center px-2 text-xs font-bold underline hover:text-ink"
@@ -163,11 +178,11 @@ export function ProductDetailActions({
           <ProductAnalysisModal
             open={analysisOpen}
             productName={product.name}
-            analysisUrl={product.analysisPdf}
+            analysisUrl={analysisUrl}
             onClose={closeAnalysis}
           />
         </>
-      )}
+      ) : <p className="text-sm text-charcoal">Aucune analyse de laboratoire publiée pour cette référence.</p>}
       </div>
       {showMobileAction && inStock && typeof document !== "undefined" && createPortal(
         <div data-ui-commerce="product-mobile" className={styles.mobileAction} aria-label="Commander ce produit">

@@ -231,7 +231,7 @@ export function BoutiquePageClient({
               </div>
               {boutique.description.trim() ? <p className={styles.heroDescription}>{boutique.description}</p> : null}
             </div>
-            <div className={styles.heroCatalogue}>
+            <div id="producteurs" className={`${styles.heroCatalogue} scroll-mt-28`}>
               <p className={styles.catalogueLabel}>Faites votre marché</p>
               <div className={styles.navigation} role="group" aria-label="Origine des produits">
                   <button data-ui-commerce="shop-tab" data-ui-shape="control"

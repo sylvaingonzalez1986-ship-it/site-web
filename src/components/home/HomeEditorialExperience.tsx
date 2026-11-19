@@ -309,18 +309,20 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
       <section className={styles.seoSection} aria-labelledby="seo-home-title">
         <div className="retro-container">
           <div className={styles.seoCard} data-ui-shape="panel">
-            <p className={styles.kicker}>De la graine à votre porte</p>
-            <h2 id="seo-home-title">CBD naturel direct producteur en Bretagne</h2>
+            <h2 id="seo-home-title">Les fleurs du Marché, de la récolte au sachet</h2>
             <div className={styles.seoColumns}>
               <p>{CBD_NATUREL_CANONICAL_ANSWER}</p>
               <p>
-                Les Chanvriers Bretons cultivent du chanvre en Bretagne et proposent aussi des références de
-                producteurs partenaires français. Chaque fiche distingue le producteur, l&apos;origine déclarée,
-                la composition et l&apos;analyse disponible pour le produit concerné.
+                On vous propose les fleurs de notre récolte en Bretagne et celles qu&apos;on choisit chez des
+                collègues. Ouvrez une fiche pour voir qui a cultivé la fleur, quels formats sont disponibles
+                et si un rapport est publié. On prépare ensuite vos commandes en Bretagne.
               </p>
             </div>
             <div className={styles.seoActions}>
-              <Link href="/cbd-naturel" data-ui-shape="control">Découvrir notre CBD naturel</Link>
+              <Link href="/boutique/fleurs-cbd" data-ui-shape="control">Voir les fleurs CBD</Link>
+              <Link href="/a-propos#notre-ferme" data-ui-shape="control">Rencontrer les producteurs</Link>
+              <Link href="/cbd-naturel" data-ui-shape="control">Vérifier l’origine et le lot</Link>
+              <Link href="/cbd-breton">Comprendre l’origine bretonne</Link>
               <Link href="/cbd-pas-cher" data-ui-shape="control">Comprendre notre prix juste</Link>
               <ContactEmailButton
                 label="Parler avec nous"
