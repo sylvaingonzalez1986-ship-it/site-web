@@ -115,7 +115,7 @@ function NativeReference(){
  return <KqTutorialApiProvider api={api}><div className={lesson==='notebook'?undefined:retro.surface+' '+shell.shell} data-fidelity-native-reference>
   <KqPlacardNavigation active={active} onNavigate={noop} onHighlight={noop} localNavigation/>
   <div className={shell.content}><header className={shell.sectionHeader}><button type="button">Quartier</button><h1>{title}</h1></header>
-   {meeting==='workshop'?(scenario==='workshop-catalog'?<KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenWorkshop={noop}/>:scenario==='workshop-counter'?<KqCommerceDesk mode="sales" initialFlowerId="releve-workshop" onOpenShop={noop} onOpenBusiness={noop} onOpenStorage={noop} onOpenTreasury={noop} onOpenCulture={noop}/>:<KqWarehouseEntry embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenShop={noop}/>):meeting==='bank'?<KqTreasuryBank embedded initialDesk={lesson==='investments'?'stocks':'loans'}/>:lesson==='specialties'?<ChanvrierProfileEditor profile={null} onClose={noop} onSaved={noop}/>:lesson==='missions'?<KqMissionCenter onOpen={noop}/>:lesson==='notebook'?<ContestTastingBook entries={[DISCOVERY_NOTEBOOK_ENTRY]} unlocks={[{entryId:DISCOVERY_NOTEBOOK_ENTRY.id,unlockedAt:DISCOVERY_TIME,source:'purchase'}]} viewerProfile={{pseudo:'Apprenti',createdAt:DISCOVERY_TIME,updatedAt:DISCOVERY_TIME}} badges={[]} isAuthenticated seasonLabel="Carnet d’entraînement · notes fictives" initialTrack="regular" initialCategory="indoor" initialEntryId={DISCOVERY_NOTEBOOK_ENTRY.id} onExitTutorial={noop}/>:lesson==='collection'?<NativeCollection api={api}/>:meeting==='business'?<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>:chapter<=2?<KqWarehouse embedded onClose={noop}/>:chapter<=5?<KanabQuestDicePrototype apiScope="player" showAdminOperations={false} showWarehouseNavigation={false} viewMode={chapter===5?'arena':'game'} initialCampaign initialPreparation={{deckCodes:currentProduction.deckCodes,heritageCode:currentProduction.heritageCode}} isolatedStorage={isolatedStorage} onOpenWarehouse={noop} onOpenArena={noop} onOpenGame={noop} onOpenMarket={noop} onOpenRun={noop}/>:chapter===8?<KqTreasuryDesk onOpenShop={noop}/>:<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>}
+   {meeting==='workshop'?(scenario==='workshop-catalog'?<KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenWorkshop={noop}/>:scenario==='workshop-counter'?<KqCommerceDesk mode="sales" initialFlowerId="releve-workshop" onOpenShop={noop} onOpenBusiness={noop} onOpenStorage={noop} onOpenTreasury={noop} onOpenCulture={noop}/>:<KqWarehouseEntry embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenShop={noop}/>):meeting==='bank'?<KqTreasuryBank desk={lesson==='investments'?'stocks':'loans'}/>:lesson==='specialties'?<ChanvrierProfileEditor profile={null} onClose={noop} onSaved={noop}/>:lesson==='missions'?<KqMissionCenter onOpen={noop}/>:lesson==='notebook'?<ContestTastingBook entries={[DISCOVERY_NOTEBOOK_ENTRY]} unlocks={[{entryId:DISCOVERY_NOTEBOOK_ENTRY.id,unlockedAt:DISCOVERY_TIME,source:'purchase'}]} viewerProfile={{pseudo:'Apprenti',createdAt:DISCOVERY_TIME,updatedAt:DISCOVERY_TIME}} badges={[]} isAuthenticated seasonLabel="Carnet d’entraînement · notes fictives" initialTrack="regular" initialCategory="indoor" initialEntryId={DISCOVERY_NOTEBOOK_ENTRY.id} onExitTutorial={noop}/>:lesson==='collection'?<NativeCollection api={api}/>:meeting==='business'?<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>:chapter<=2?<KqWarehouse embedded onClose={noop}/>:chapter<=5?<KanabQuestDicePrototype apiScope="player" showAdminOperations={false} showWarehouseNavigation={false} viewMode={chapter===5?'arena':'game'} initialCampaign initialPreparation={{deckCodes:currentProduction.deckCodes,heritageCode:currentProduction.heritageCode}} isolatedStorage={isolatedStorage} onOpenWarehouse={noop} onOpenArena={noop} onOpenGame={noop} onOpenMarket={noop} onOpenRun={noop}/>:chapter===8?<KqTreasuryDesk onOpenShop={noop}/>:<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>}
   </div>
  </div></KqTutorialApiProvider>;
 }
@@ -176,8 +176,8 @@ const scenarios = [
   {id:'workshop-machines',region:'[data-workshop-only][data-page]',ready:'[data-workshop-inventory-artwork]'},
   {id:'workshop-catalog',region:'[data-arena-tour-surface="catalog"]',ready:'[data-arena-tour-surface="catalog"]',tutorialBefore:['workshop-catalog']},
   {id:'workshop-counter',region:'main[data-screen]',ready:'main[data-screen]',tutorialBefore:['workshop-counter']},
-  {id:'bank-loans',lesson:'bank',region:'[data-treasury-bank]',ready:'[aria-label="Guichets de la banque"]'},
-  {id:'bank-investments',lesson:'investments',region:'[data-treasury-bank]',ready:'[aria-label="Guichets de la banque"]'},
+  {id:'bank-loans',lesson:'bank',region:'#bank-panel-loans > section',ready:'#bank-loans-title'},
+  {id:'bank-investments',lesson:'investments',region:'[data-testid="stocks-market"]',ready:'[data-testid="stocks-market"]'},
   {id:'community-profile',lesson:'specialties',region:'[data-chanvrier-profile]',ready:'[data-chanvrier-profile]'},
   {id:'community-missions',lesson:'missions',region:'main:has(>nav[aria-label="Parcours des missions"])',ready:'[aria-label="Parcours des missions"]'},
   {id:'notebook-book',lesson:'notebook',region:'[data-tasting-book][data-open]',ready:'[data-tasting-book][data-open]'},
@@ -243,7 +243,7 @@ async function perform(action){
  if(action==='reserve')return click('[data-care-reserve-toggle]');
  throw new Error(`Unknown setup action ${action}`);
 }
-async function capture(scenario,variant,width){
+async function capture(scenario,variant,width,bankServiceWidth){
  const beforeErrors=errors.length;
  await page.goto(`${origin}/?case=${scenario.id}&variant=${variant}`,{waitUntil:'networkidle0'});
  if(variant==='tutorial')await page.evaluate(()=>document.querySelector('[data-releve-guide-card] button[aria-label="Explorer librement"]')?.click());
@@ -253,6 +253,8 @@ async function capture(scenario,variant,width){
  if(variant==='tutorial')await page.evaluate(()=>document.querySelector('[data-releve-guide-card] button[aria-label="Explorer librement"]')?.click());
  for(const action of scenario.actions??[])await perform(action);
  await page.waitForSelector(scenario.region,{visible:true});
+ // The 3D room and the standalone lesson have different frames. Compare the service at the same available width.
+ if(bankServiceWidth)await page.$eval('[data-treasury-bank]',(bank,availableWidth)=>{bank.style.maxWidth=availableWidth+'px';},bankServiceWidth);
  await page.$eval(scenario.region,root=>root.querySelectorAll('img').forEach(image=>{image.loading='eager';}));
  await page.waitForFunction(selector=>[...document.querySelectorAll(selector+' img')].every(image=>!image.getClientRects().length||image.complete&&image.naturalWidth>0),{},scenario.region);
  await page.evaluate(async()=>{await document.fonts.ready;if(document.activeElement instanceof HTMLElement)document.activeElement.blur();});await page.mouse.move(0,0);
@@ -328,7 +330,13 @@ try{
   for(const scenario of scenarios){
    if(retryPairs&&!retryPairs.has(`${scenario.id}:${width}`))continue;
    attempted.push(`${scenario.id}:${width}`);
-   try{const reference=await capture(scenario,'reference',width),tutorial=await capture(scenario,'tutorial',width);const result={scenario:scenario.id,width,...compare(reference,tutorial)};recordResult(result);console.log(`${result.passed?'PASS':'DIFF'} ${scenario.id} ${width}px: ${result.differences.length} differences`);}
+   try{
+    const bankTutorial=scenario.id.startsWith('bank-') ? await capture(scenario,'tutorial',width) : null;
+    const reference=await capture(scenario,'reference',width,bankTutorial?.snapshot.root.width);
+    const tutorial=bankTutorial ?? await capture(scenario,'tutorial',width);
+    const result={scenario:scenario.id,width,...compare(reference,tutorial)};
+    recordResult(result);console.log(`${result.passed?'PASS':'DIFF'} ${scenario.id} ${width}px: ${result.differences.length} differences`);
+   }
    catch(error){recordResult({scenario:scenario.id,width,passed:false,error:String(error.stack??error)});console.error(`FAIL ${scenario.id} ${width}px: ${error.message}`);await page.screenshot({path:resolve(output,`${scenario.id}-${width}-failure.png`)}).catch(()=>{});}
    await report();
   }

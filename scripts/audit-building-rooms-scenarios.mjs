@@ -23,6 +23,20 @@ const roomSelector = id => `[data-building-room="${id}"]`;
 const link = query => `a[href="${path}?${query}"]`;
 const fromRoom = (id, query) => `${query}&fromRoom=${id}`;
 const liveCanvas = 'canvas[data-live="true"]';
+export const bankReturnLink = `${activityPanel} ${link(roomQuery('bank'))}`;
+
+export async function assertBankService(page, section) {
+  await page.waitForSelector('[data-treasury-bank]', {visible: true});
+  await page.waitForSelector(`#bank-panel-${section}[role="region"]`, {visible: true});
+  assert.deepEqual(await page.$$eval('[id^="bank-panel-"]', nodes => nodes.map(node => node.id)), [`bank-panel-${section}`]);
+  assert.equal(await page.$('[id^="bank-desk-"], [aria-label="Guichets de la banque"], img[src*="bureau-bank-"]'), null);
+  const shortcuts = `${activityPanel} a[href*="view=treasury"], button[aria-label="Ouvrir le menu du quartier"], button[aria-label="Revenir au village 3D"]`;
+  assert.deepEqual(await page.$$eval(shortcuts, nodes => nodes.filter(node => node.checkVisibility()).map(node => node.textContent)), []);
+  const headerControls = await page.$$eval(`${activityPanel} > header :is(a,button)`, nodes => nodes.filter(node => node.checkVisibility()).map(node => ({
+    label: node.textContent.trim(), name: node.getAttribute('aria-label') || node.textContent.trim(), href: node.getAttribute('href'),
+  })));
+  assert.deepEqual(headerControls, [{label: 'Retour à la banque', name: 'Retour à la banque', href: `${path}?${roomQuery('bank')}`}]);
+}
 
 export async function auditBuildingRooms({page, visit, click, assertNoOverflow, results, output, bankOfficeOnly = false}) {
   const rooms = Object.entries(roomActivities).filter(([id]) => !bankOfficeOnly || id === 'bank' || id === 'office');
@@ -44,9 +58,10 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
     await assertQuery(query);
     const section = new URLSearchParams(query).get('section') ?? 'overview';
     if (id === 'bank') {
-      await page.waitForSelector(`#bank-desk-${section}[aria-selected="true"]`, {visible: true});
+      await assertBankService(page, section);
       const content = {loans: '[data-bank-offer]', savings: 'button[aria-label="Actualiser le livret"]', stocks: '[data-stock-logo]', crypto: '[data-crypto-logo]'};
-      await page.waitForSelector(`#bank-panel-${section}[role="tabpanel"] ${content[section]}`, {visible: true});
+      await page.waitForSelector(`#bank-panel-${section} ${content[section]}`, {visible: true});
+      await assertNoOverflow(`bank service ${section}`);
     } else if (id === 'office' && section === 'accounting') {
       await page.waitForSelector('[data-staff-accounting] [data-guide-invoices-tab][aria-pressed="true"]', {visible: true});
       await page.waitForSelector('[data-staff-accounting] [data-guide-finances-ready]', {visible: true});
@@ -89,11 +104,25 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
     await keyActivate(`${activityBubble} ${link(roomQuery(id))}`);
     await assertQuery(roomQuery(id));
   };
-  const checkBackToRoom = async id => {
-    const back = `${activityPanel} ${link(roomQuery(id))}[aria-label]`;
-    await keyActivate(back);
+  const checkBackToRoom = async (id, input = 'keyboard') => {
+    const back = id === 'bank' ? bankReturnLink : `${activityPanel} ${link(roomQuery(id))}[aria-label]`;
+    if (input === 'touch') await page.tap(back);
+    else if (input === 'mouse') await click(back);
+    else if (id === 'bank') {
+      await page.focus(`${activityPanel} > header h1`);
+      await page.keyboard.down('Shift');
+      await page.keyboard.press('Tab');
+      await page.keyboard.up('Shift');
+      assert.equal(await page.$eval(back, node => node === document.activeElement && node.matches(':focus-visible')), true);
+      await page.keyboard.press('Enter');
+    } else await keyActivate(back);
     await assertQuery(roomQuery(id));
     await page.waitForSelector(roomSelector(id), {visible: true});
+    if (id === 'bank') {
+      const params = new URL(page.url()).searchParams;
+      params.delete('world');
+      assert.deepEqual(Object.fromEntries(params), {view: 'hub', room: 'bank'});
+    }
   };
   const exitRoom = async id => {
     await keyActivate(`${roomSelector(id)} ${link('view=hub')}`);
@@ -179,7 +208,7 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
       const params = new URL(page.url()).searchParams;
       params.delete('world');
       assert.deepEqual(Object.fromEntries(params), Object.fromEntries(new URLSearchParams(destination)), `${object} keeps its exact destination after the pointer event sequence`);
-      await checkBackToRoom(id);
+      await checkBackToRoom(id, id === 'bank' ? (touch ? 'touch' : 'mouse') : 'keyboard');
     }
     return Object.keys(points);
   };
@@ -188,21 +217,6 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
       const destination = fromRoom(id, query);
       await keyActivate(`${room} ${link(destination)}[data-building-object="${object}"]`, true);
       await assertActivity(id, destination);
-      if (page.viewport().width === 1440 && object === 'bank') {
-        await page.focus('#bank-desk-loans');
-        const scrollTop = await page.$eval(activityPanel, panel => {
-          panel.scrollTop = 40;
-          return panel.scrollTop;
-        });
-        assert(scrollTop > 0, 'The loan panel can be scrolled before changing desks');
-        for (const [key, desk, nextQuery] of [['ArrowRight', 'savings', activities.savings], ['ArrowLeft', 'loans', activities.bank]]) {
-          await page.keyboard.press(key);
-          await assertActivity(id, fromRoom(id, nextQuery));
-          assert.equal(await page.evaluate(() => document.activeElement.id), `bank-desk-${desk}`);
-          assert.equal(await page.$eval(activityPanel, panel => panel.scrollTop), scrollTop, `${desk} preserves the bank panel scroll`);
-        }
-        results.push({scenario: 'bank-keyboard-tabs', width: 1440, tabs: ['loans','savings','loans'], scrollTop});
-      }
       if (page.viewport().width === 1440 && object === 'accounts') {
         const department = name => `[data-staff-department="${name}"]`;
         await keyActivate(department('team'));
@@ -244,16 +258,14 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
     await checkRoom(id, activities);
     await page.goForward();
     await assertActivity(id, query);
+    await checkBackToRoom(id);
     if (id === 'bank') {
-      await click('button[aria-label="Revenir au village 3D"]');
-      await page.waitForSelector(activityPanel, {hidden: true});
+      await exitRoom(id);
       await click('button[aria-label="Ouvrir le menu du quartier"]');
       await click('dialog[open] [data-placard-nav="treasury"]');
-      await assertQuery('view=treasury');
+      await assertQuery(roomQuery(id));
       assert.equal(new URL(page.url()).searchParams.has('fromRoom'), false);
     }
-    await click(`${activityPanel} ${link(roomQuery(id))}`);
-    await assertQuery(roomQuery(id));
     await page.waitForSelector(`${room} ${liveCanvas}`, {visible: true});
     if (id === 'bank') {
       assert.equal(await page.$eval(`${room} ${liveCanvas}`, node => {
@@ -288,6 +300,17 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
       results.push({scenario: 'isometric-building-room', room: id, width, height, liveWebGL: true, furnitureTapped});
       await exitRoom(id);
     }
+  }
+
+  for (const width of [320, 1440]) {
+    await page.setViewport({width, height: width === 320 ? 568 : 1000, isMobile: width === 320, hasTouch: width === 320});
+    for (const query of Object.values(roomActivities.bank)) {
+      await visit('starter', query);
+      assert.equal(new URL(page.url()).searchParams.has('fromRoom'), false);
+      await assertActivity('bank', query);
+      await checkBackToRoom('bank', width === 320 ? 'touch' : 'keyboard');
+    }
+    results.push({scenario: 'bank-direct-services', width, services: ['loans', 'savings', 'stocks', 'crypto'], returnToBank: true});
   }
 
   const noWebGL = await page.evaluateOnNewDocument(() => {

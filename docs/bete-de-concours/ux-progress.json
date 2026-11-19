@@ -1,4 +1,13 @@
 {
+  "servicesBanqueDirects20261119": {
+    "date": "2026-11-19",
+    "panneaux": "Les quatre choix de la banque portent uniquement le nom du service et la flèche. Le menu du village reprend les mêmes libellés.",
+    "livraison": "Dans la banque 3D, le banquier ouvre les prêts, la tirelire l’épargne, le panneau CAC 40 la bourse et l’ordinateur BTC la crypto. Chaque service s’ouvre en haut de son écran. Son unique commande de navigation, « Retour à la banque », retrouve la pièce 3D. Le portrait 2D et les onglets entre services ont été retirés.",
+    "verification": "11 scénarios navigateur sur la banque et le personnel, avec les quatre objets, les liens directs des quatre services et le retour à la souris, au clavier et au toucher émulé. Les en-têtes ont été vérifiés à 320, 390 et 1440 px. TypeScript, ESLint ciblé et 140 tests unitaires validés.",
+    "evidence": ["output/placard-navigation/bank-office-report.json", "output/placard-navigation/building-rooms/bank-loans-320.png", "output/placard-treasury/report-headers.json", "output/clarity-lot27/service/report.json", "output/banque-comparaison-services/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Essayer les quatre objets puis le retour dans la pièce sur un téléphone physique à la prochaine recette."
+  },
   "titresSansVignette20261119": {
     "date": "2026-11-19",
     "livraison": "Retrait des petites illustrations décoratives des titres du site, dont Banque, les 32 usages du titre de chapitre et les en-têtes personnalisés du jeu, de l’accueil et des collections. Les titres et leurs actions occupent l’espace libéré.",

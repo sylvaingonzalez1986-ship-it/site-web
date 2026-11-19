@@ -2,10 +2,10 @@
 
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
-import Image from "next/image";
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { ChartNoAxesCombined, ChartCandlestick, Landmark, LockKeyhole, PiggyBank, RefreshCw } from "lucide-react";
 import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { KQ_BANK_DESK_LABELS, type KqBankDesk } from "@/lib/kanab-quest-bank-navigation";
 import { ChanvrierSavingsPanel } from "../contest/ChanvrierSavingsPanel";
 import { KqBankLoans } from "./KqBankLoans";
 import { KqCryptoMarket } from "./KqCryptoMarket";
@@ -14,16 +14,11 @@ import officeStyles from "./KqTreasuryDesk.module.css";
 import styles from "./KqTreasuryBank.module.css";
 
 const DESKS = [
-  { id: "loans", label: "Prêts", icon: Landmark },
-  { id: "savings", label: "Livret d’épargne", icon: PiggyBank },
-  { id: "stocks", label: "Bourse", icon: ChartCandlestick },
-  { id: "crypto", label: "Crypto", icon: ChartNoAxesCombined },
+  { id: "loans", icon: Landmark },
+  { id: "savings", icon: PiggyBank },
+  { id: "stocks", icon: ChartCandlestick },
+  { id: "crypto", icon: ChartNoAxesCombined },
 ] as const;
-export type KqBankDesk = typeof DESKS[number]["id"];
-
-export function isKqBankDesk(value: string | null): value is KqBankDesk {
-  return DESKS.some(desk => desk.id === value);
-}
 
 function SavingsDesk() {
   const api = useKqTutorialApi();
@@ -56,7 +51,22 @@ function SavingsDesk() {
   </div>;
 }
 
-export function KqTreasuryBank({ initialDesk = "loans", onDeskChange, embedded = false }: { initialDesk?: KqBankDesk; onDeskChange?: (desk: KqBankDesk) => void; embedded?: boolean } = {}) {
+function BankDeskContent({ desk }: { desk: KqBankDesk }) {
+  switch (desk) {
+    case "loans": return <KqBankLoans />;
+    case "savings": return <SavingsDesk />;
+    case "stocks": return <KqStockMarket />;
+    case "crypto": return <KqCryptoMarket />;
+  }
+}
+
+export function KqTreasuryBank({ desk }: { desk: KqBankDesk }) {
+  return <section id={`bank-panel-${desk}`} role="region" className={`${officeStyles.page} ${officeStyles.embedded} ${styles.bank}`} aria-label={KQ_BANK_DESK_LABELS[desk]} data-treasury-bank>
+    <BankDeskContent desk={desk} />
+  </section>;
+}
+
+export function KqTutorialBank({ initialDesk = "loans", onDeskChange }: { initialDesk?: KqBankDesk; onDeskChange?: (desk: KqBankDesk) => void }) {
   const [localDesk, setLocalDesk] = useState(initialDesk);
   const desk = onDeskChange ? initialDesk : localDesk;
   const selectDesk = onDeskChange ?? setLocalDesk;
@@ -65,22 +75,14 @@ export function KqTreasuryBank({ initialDesk = "loans", onDeskChange, embedded =
     if (target === null) return;
     event.preventDefault(); selectDesk(DESKS[target].id); document.getElementById(`bank-desk-${DESKS[target].id}`)?.focus();
   }
-  return <section className={`${officeStyles.page} ${styles.bank}`} aria-label="Banque" data-treasury-bank>
-    <header className={styles.lobby}>
-      <div className={styles.portrait}>
-        <Image src="/placard/bureau-bank-sylvain-v3.webp" alt="Le banquier tend un dossier, cigare à la main et pieds sur le bureau, devant le cours du CAC 40 et son coffre-fort." fill sizes="(max-width: 650px) calc(100vw - 64px), (max-width: 1280px) 46vw, 535px" preload />
-      </div>
-      <div className={styles.services}>
-        {!embedded ? <h1>Banque</h1> : null}
-        <nav className={styles.desks} role="tablist" aria-label="Guichets de la banque">
-          {DESKS.map((item, index) => <button type="button" role="tab" key={item.id} id={`bank-desk-${item.id}`} aria-controls={`bank-panel-${item.id}`} aria-selected={desk === item.id} tabIndex={desk === item.id ? 0 : -1} onClick={() => selectDesk(item.id)} onKeyDown={event => navigate(event, index)}>
-            <item.icon size={20} aria-hidden="true" /><span>{item.label}</span>
-          </button>)}
-        </nav>
-      </div>
-    </header>
+  return <section className={`${officeStyles.page} ${officeStyles.embedded} ${styles.bank}`} aria-label="Banque" data-treasury-bank>
+    <nav className={styles.desks} role="tablist" aria-label="Guichets de la banque">
+      {DESKS.map((item, index) => <button type="button" role="tab" key={item.id} id={`bank-desk-${item.id}`} aria-controls={`bank-panel-${item.id}`} aria-selected={desk === item.id} tabIndex={desk === item.id ? 0 : -1} onClick={() => selectDesk(item.id)} onKeyDown={event => navigate(event, index)}>
+        <item.icon size={20} aria-hidden="true" /><span>{KQ_BANK_DESK_LABELS[item.id]}</span>
+      </button>)}
+    </nav>
     <section id={`bank-panel-${desk}`} role="tabpanel" aria-labelledby={`bank-desk-${desk}`} tabIndex={0} className={styles.deskPanel}>
-      {desk === "loans" ? <KqBankLoans /> : desk === "crypto" ? <KqCryptoMarket /> : desk === "stocks" ? <KqStockMarket /> : <SavingsDesk />}
+      <BankDeskContent desk={desk} />
     </section>
   </section>;
 }

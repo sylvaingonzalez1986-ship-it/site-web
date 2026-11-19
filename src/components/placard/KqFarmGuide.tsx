@@ -38,7 +38,7 @@ function readFacts(scope: ParentNode, flowerId?: string): FarmGuideFacts {
     planDraft: !!visible("[data-warehouse-draft=true]", scope),
     album: attr("[data-collection-tab][aria-selected=true]", "data-collection-tab"), commerce: attr("[data-screen]", "data-screen"),
     social: attr("[data-social-view][aria-pressed=true]", "data-social-view"), business: attr("[data-shop-view][aria-selected=true]", "data-shop-view"),
-    bank: attr("[id^=bank-desk-][aria-selected=true]", "id")?.replace("bank-desk-", ""),
+    bank: attr("[id^=bank-panel-]", "id")?.replace("bank-panel-", ""),
     staffTab: attr("[data-staff-tab][aria-selected=true]", "data-staff-tab"),
     trimState: flowerId ? attr(`[data-guide-trim-flower-id="${flowerId}"]`, "data-guide-trim-state") ?? (visible('[data-guide-trim-ready="true"]', scope) && !scope.querySelector(`[data-guide-trim-flower-id="${flowerId}"]`) ? "not-required" : undefined) : undefined,
     storageEmpty: attr("[data-storage-lot-count]", "data-storage-lot-count") === "0",
@@ -158,7 +158,8 @@ export function KqFarmGuide({ ownerId, initialOpen = false, initialStep, destina
   const chapter = step ? farmStepChapter(step) : FARM_GUIDE_CHAPTERS[FARM_GUIDE_CHAPTERS.length - 1];
   const advice = step ? farmStepAdvice(step, facts, currentChapter.id) : { line: "La ferme est entre tes mains. Tu peux fermer ce guide et continuer ta partie. Les aides des écrans restent disponibles.", target: "[data-mission-summary]" };
   const portrait = ["school", "tournament", "school-ranking", "notebook"].includes(chapter.id) ? "savoir" : ["jury", "missions", "ranking"].includes(chapter.id) ? "defi" : ["warehouse", "processing", "accounts", "bank", "business", "staff"].includes(chapter.id) ? "atelier" : "culture";
-  const here = currentChapter.id === chapter.id && (step?.id !== "trim" || facts.room === "processing");
+  const here = currentChapter.id === chapter.id && (step?.chapter !== "bank" || step.bankDesk === (section ?? "loans"))
+    && (step?.id !== "trim" || facts.room === "processing");
   const targetFor = (progress: FarmProgress, fresh: FarmGuideFacts) => {
     const objective = getFarmStep(progress, evidence);
     if (!objective) return "[data-mission-summary]";

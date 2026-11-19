@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createKqTreasuryTutorial, type KqTreasuryTutorialLesson, type KqTreasuryTutorialProgress } from "@/lib/kanab-quest-treasury-tutorial";
 import { createKqTutorialApi, KqTutorialApiProvider } from "./KqTutorialApiContext";
 import { KqTreasuryDesk } from "./KqTreasuryDesk";
-import { KqTreasuryBank } from "./KqTreasuryBank";
+import { KqTutorialBank } from "./KqTreasuryBank";
 import { KqMarketDesk, type KqMarketSection } from "./KqMarketDesk";
 import styles from "./KqTreasuryTutorial.module.css";
 
@@ -34,7 +34,7 @@ export function KqTreasuryTutorial({ lesson, onProgress, onOpenShop }: {
         onOpenTreasury={() => setBusinessLocation("accounting")}
         onOpenStorage={() => setNotice("Retrouve tes contenants dans l’atelier Stockage & curing du didacticiel.")} />
         : lesson === "business" ? <KqTreasuryDesk onOpenShop={openShop} />
-        : <KqTreasuryBank key={lesson} embedded initialDesk={lesson === "investments" ? "stocks" : "loans"} />}
+        : <KqTutorialBank key={lesson} initialDesk={lesson === "investments" ? "stocks" : "loans"} />}
     </section>
   </KqTutorialApiProvider>;
 }

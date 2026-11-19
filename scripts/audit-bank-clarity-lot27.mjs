@@ -8,12 +8,15 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const before = process.argv.includes('--before');
-const root = process.cwd(), output = resolve(root, `output/clarity-lot27/${before ? 'before' : 'after'}`);
+const serviceOnly = !before && process.argv.includes('--service-only');
+const mode = serviceOnly ? 'service' : before ? 'before' : 'after';
+const root = process.cwd(), output = resolve(root, serviceOnly ? 'output/clarity-lot27/service' : `output/clarity-lot27/${before ? 'before' : 'after'}`);
 const port = Number(process.env.BANK_CLARITY_LOT27_PORT ?? 3597), origin = `http://127.0.0.1:${port}`;
 const entry = `
 import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
 import {KqBankLoans} from '/src/components/placard/KqBankLoans';
 import {KqTreasuryBank} from '/src/components/placard/KqTreasuryBank';
+import {KqStaffRecoveryProvider as ServiceOwner} from '/src/components/placard/KqStaffRecoveryContext';
 import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
 import {getKqBankTerms,isKqBankSnapshot,parseKqBankCommand,KQ_BANK_INSTALLMENT_MS,KQ_BANK_TERM_DAYS} from '/src/lib/kanab-quest-bank';
 import retro from '/src/components/contest/ArenaRetro.module.css';
@@ -46,7 +49,7 @@ const request=async(input,init={})=>{const path=new URL(String(input),location.o
 };
 const api=createKqTutorialApi(request),notify=api.notify;api.isTutorial=false;api.notify=(name,detail)=>{window.__events.push(name);notify(name,detail)};
 window.__notify=name=>api.notify(name);
-createRoot(document.getElementById('root')).render(<div className={retro.surface}><KqTutorialApiProvider api={api}>{new URLSearchParams(location.search).has('shell')?<KqTreasuryBank initialDesk="loans"/>:<KqBankLoans/>}</KqTutorialApiProvider></div>);
+createRoot(document.getElementById('root')).render(<div className={retro.surface}><KqTutorialApiProvider api={api}>{new URLSearchParams(location.search).has('shell')?<ServiceOwner ownerId="bank-service-fixture"><KqTreasuryBank desk="loans"/></ServiceOwner>:<KqBankLoans/>}</KqTutorialApiProvider></div>);
 `;
 const modules={entry,
  'next/image':`import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
@@ -56,7 +59,7 @@ const modules={entry,
 const fonts=`@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}#root{max-width:1200px;margin:auto;padding:12px;box-sizing:border-box}`;
 const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom','react-dom/client','lucide-react']},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom']},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'bank-lot27',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html; charset=utf-8');res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Banque · recette locale</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`);})}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null}});
 const results=[],errors=[],external=[],consoleErrors=[];
-const report={passed:false,mode:before?'before':'after',results,errors,external,consoleErrors,backend:'Actual bank UI; valid local snapshots and original command validator; no live writes.'};
+const report={passed:false,mode,results,errors,external,consoleErrors,backend:'Actual bank UI; valid local snapshots and original command validator; no live writes.'};
 let browser,page;
 try{
  await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],userDataDir:resolve(output,'chrome-profile-'+process.pid),headless:true,args:['--no-sandbox','--disable-gpu']});page=await browser.newPage();page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(90000);
@@ -66,15 +69,15 @@ try{
  async function shot(name,fullPage=false){await page.evaluate(()=>Promise.allSettled([...document.images].map(image=>image.decode())));await page.screenshot({path:resolve(output,name+'.png'),fullPage});}
  async function clickButton(label){const index=await page.evaluate(label=>[...document.querySelectorAll('button')].findIndex(button=>button.textContent.includes(label)),label);assert.ok(index>=0,'Button found: '+label);const button=(await page.$$('button'))[index];await button.evaluate(element=>element.scrollIntoView({block:'center',behavior:'instant'}));await button.focus();await page.keyboard.press('Enter');await frames();}
  async function metrics(){return page.evaluate(()=>{const position=element=>element?Math.round(element.getBoundingClientRect().top+scrollY):null;const buttons=[...document.querySelectorAll('button')],loan=document.querySelector('[data-bank-active-loan]')||document.querySelector('[class*="_loan_"]'),market=document.querySelector('[data-bank-market]')||document.querySelector('[class*="_market_"]');return{overflow:document.documentElement.scrollWidth>innerWidth+1,height:document.documentElement.scrollHeight,ctaTop:position(buttons.find(button=>/Examiner le contrat|Solder le prêt/.test(button.textContent))),loanTop:position(loan),marketTop:position(market),posts:window.__calls.filter(call=>call.method==='POST').length};});}
+ async function noOverflow(){const current=await metrics();assert.equal(current.overflow,false,'No horizontal page overflow');return current;}
  if(before){
   for(const [width,height] of [[320,844],[390,844],[1440,900]]){await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});for(const scenario of ['offer','active','overdue']){await open(scenario);const measurement=await metrics();assert.equal(measurement.overflow,false);assert.equal(measurement.posts,0);await shot(scenario+'-'+width);await shot(scenario+'-'+width+'-full',true);results.push({scenario,width,...measurement});}}
   await page.setViewport({width:320,height:422,isMobile:true,hasTouch:true});for(const scenario of ['offer','active']){await open(scenario);await clickButton(scenario==='offer'?'Examiner le contrat':'Solder le prêt');await page.waitForSelector('dialog[open]');const measurement=await page.$eval('dialog[open]',element=>{const rect=element.getBoundingClientRect(),buttons=[...element.querySelectorAll('button')];return{dialogTop:rect.top,dialogBottom:rect.bottom,scrollHeight:element.scrollHeight,clientHeight:element.clientHeight,buttons:buttons.map(button=>({text:button.textContent,top:button.getBoundingClientRect().top,bottom:button.getBoundingClientRect().bottom})),focused:document.activeElement?.textContent};});await shot(scenario+'-confirmation-320x422');results.push({scenario:scenario+' confirmation',width:320,height:422,...measurement});}
- }else{
+ }else if(!serviceOnly){
   const clean=value=>value.replace(/[\u00a0\u202f]/g,' ');
   const text=async selector=>clean(await page.$eval(selector,element=>element.innerText));
   const posts=()=>page.evaluate(()=>window.__calls.filter(call=>call.method==='POST'));
   async function enter(selector){await page.$eval(selector,element=>element.scrollIntoView({block:'center',behavior:'instant'}));await page.focus(selector);await page.keyboard.press('Enter');await frames();}
-  async function noOverflow(){const current=await metrics();assert.equal(current.overflow,false,'No horizontal page overflow');return current;}
   async function closed(selector){assert.equal(await page.$eval(selector,element=>element.open),false,selector+' is initially folded');}
   async function confirmation(action){await enter(action==='borrow'?'[data-bank-review]':'[data-bank-repay]');await page.waitForSelector('[data-bank-confirmation][open]');assert.equal((await posts()).length,0,'Reviewing never sends a bank mutation');await frames();}
   async function confirmationControls(){const geometry=await page.$eval('[data-bank-confirmation]',dialog=>({dialog:{top:dialog.getBoundingClientRect().top,bottom:dialog.getBoundingClientRect().bottom,width:dialog.getBoundingClientRect().width},buttons:[...dialog.querySelectorAll('[data-bank-confirm],[data-bank-cancel]')].map(button=>{const rect=button.getBoundingClientRect();return{text:button.textContent,top:rect.top,bottom:rect.bottom,height:rect.height,hit:button.contains(document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2))};})}));assert.ok(geometry.dialog.top>=0&&geometry.dialog.bottom<=page.viewport().height+1);for(const button of geometry.buttons){assert.ok(button.top>=0&&button.bottom<=page.viewport().height+1,'Both confirmation actions stay visible');assert.ok(button.height>=44,'Touch action target is at least 44px');assert.equal(button.hit,true,'Actions receive taps');}return geometry;}
@@ -102,7 +105,26 @@ try{
   await open('lost-response');await confirmation('borrow');await enter('[data-bank-confirm]');await page.waitForSelector('[data-bank-confirmation-error]');await confirmationControls();await enter('[data-bank-confirm]');await page.waitForFunction(()=>!document.querySelector('[data-bank-confirmation]'));const retries=await posts();assert.equal(retries.length,2);assert.deepEqual(retries[0].body,retries[1].body);assert.equal(await page.evaluate(()=>window.__snapshot.cashCents),300000);results.push({scenario:'lost confirmation retries same idempotency key',twoRequestsOneCredit:true});
   await open('repay-lost-response');await confirmation('repay');await enter('[data-bank-confirm]');await page.waitForSelector('[data-bank-confirmation-error]');assert.equal(await page.evaluate(()=>window.__snapshot.cashCents),0);await page.evaluate(()=>window.__notify('kq:equipment-updated'));await page.waitForFunction(()=>document.querySelector('[data-bank-repayment-cash]')?.textContent.startsWith('0,00'));assert.equal(await page.$eval('[data-bank-confirm]',button=>button.disabled),false,'A known request can be verified after its debit leaves insufficient cash');assert.match(await text('[data-bank-confirm]'),/Vérifier/);await confirmationControls();await shot('repay-lost-response-zero-cash-320x422');await enter('[data-bank-confirm]');await page.waitForFunction(()=>!document.querySelector('[data-bank-confirmation]'));const repayRetry=await posts();assert.equal(repayRetry.length,2);assert.deepEqual(repayRetry[0].body,repayRetry[1].body);assert.equal(await page.evaluate(()=>window.__snapshot.cashCents),0);assert.equal(await page.evaluate(()=>window.__snapshot.history.length),1);results.push({scenario:'lost repayment verified after refresh shows zero cash',twoRequestsOneDebit:true});
   await open('repay-failure');await confirmation('repay');await enter('[data-bank-confirm]');await page.waitForSelector('[data-bank-confirmation-error]');assert.match(await text('[data-bank-confirmation-error]'),/indisponible/);await confirmationControls();assert.equal(await page.evaluate(()=>window.__snapshot.cashCents),200000);await shot('repay-error-320x422');results.push({scenario:'repayment failure retains cash and visible actions',cashPreserved:true});
-  for(const width of [320,1440]){await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});await open('poor',true);await noOverflow();assert.equal(await page.$eval('#bank-desk-loans',element=>element.getAttribute('aria-selected')),'true');const material=await page.$eval('[data-bank-repay]',element=>{const css=getComputedStyle(element);return{background:css.backgroundColor,border:css.borderTopColor,art:css.borderImageSource,disabled:element.disabled}});assert.equal(material.disabled,true);assert.equal(material.background,'rgba(0, 0, 0, 0)','Integrated disabled control keeps transparent native background');assert.equal(material.border,'rgba(0, 0, 0, 0)');assert.notEqual(material.art,'none');await shot('integrated-poor-'+width);results.push({scenario:'real treasury shell disabled material',width,...material});}
+ }
+ if(!before){
+  for(const width of [320,1440]){
+   await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});
+   await open('poor',true);
+   const measurement=await noOverflow();
+   assert.equal(measurement.posts,0);
+   await page.waitForSelector('#bank-panel-loans[data-treasury-bank][role="region"] [data-bank-repay]',{visible:true});
+   assert.equal(await page.$('[aria-label="Guichets de la banque"], [data-finance-recovery] [role="alert"]'),null);
+   const material=await page.$eval('[data-bank-repay]',element=>{
+    const css=getComputedStyle(element);
+    return {background:css.backgroundColor,border:css.borderTopColor,art:css.borderImageSource,disabled:element.disabled};
+   });
+   assert.equal(material.disabled,true);
+   assert.equal(material.background,'rgba(0, 0, 0, 0)','Integrated disabled control keeps transparent native background');
+   assert.equal(material.border,'rgba(0, 0, 0, 0)');
+   assert.notEqual(material.art,'none');
+   await shot('integrated-poor-'+width);
+   results.push({scenario:'loan service disabled repayment material',width,noOverflow:true,noMutation:true,...material});
+  }
  }
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);assert.deepEqual(consoleErrors,[]);report.passed=true;console.log(JSON.stringify({mode:report.mode,cases:results.length,results}));
 }catch(error){report.failure=error.stack;if(page){report.failureState=await page.evaluate(()=>({url:location.href,focus:document.activeElement?.outerHTML,body:document.body.innerText.slice(-5000)})).catch(()=>null);await page.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});}throw error;}finally{await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2));await browser?.close();await server.close();}

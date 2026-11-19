@@ -26,7 +26,7 @@ const ACTIVITIES: Record<VillageBuildingKind, readonly Activity[]> = {
     { label: "Communiquer", detail: "Réseaux sociaux et partenariats", href: "/arene/placard?view=social", Icon: Megaphone },
   ],
   bank: [
-    { label: "Prêts", detail: "Parler au banquier", href: "/arene/placard?view=treasury&pole=bank&section=loans", Icon: Landmark },
+    { label: "Prêts", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=loans", Icon: Landmark },
     { label: "Épargne", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=savings", Icon: PiggyBank },
     { label: "Bourse", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=stocks", Icon: ChartCandlestick },
     { label: "Crypto", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=crypto", Icon: Bitcoin },

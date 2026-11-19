@@ -125,7 +125,7 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
       else if (selected) { event.stopPropagation(); closeActivities(); }
     }
   }}>
-    <header className={styles.header}>
+    {!(activityOpen && activeNav === "treasury") && <header className={styles.header}>
       <h1 className={styles.srOnly} hidden={activityOpen}>Mon quartier</h1>
       <div className={styles.headerActions}>
         <KqPlacardNavigation active={activeNav} onNavigate={navigate} onHighlight={highlight} drawerOnly triggerClassName={styles.control} />
@@ -154,7 +154,7 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
           </div>
         </details> : null}
       </div>
-    </header>
+    </header>}
 
     <section className={styles.stage} data-village-unavailable={unavailable || undefined} inert={activityOpen} aria-hidden={activityOpen || undefined} aria-label={unavailable ? "Activités du quartier" : "Vue 3D du quartier"}>
       {unavailable ? <p className={styles.notice} role="alert">La vue 3D est indisponible. Choisis un bâtiment pour accéder à ses activités.</p>

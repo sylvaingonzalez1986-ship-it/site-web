@@ -1,3 +1,4 @@
+import { KQ_BANK_DESK_LABELS } from "./kanab-quest-bank-navigation";
 import { FARM_GUIDE_CHAPTERS, parseFarmGuide, type FarmGuideChapterId, type FarmGuideFacts } from "./kanab-quest-farm-guide";
 
 import { FARM_GUIDE_STEPS } from "./kanab-quest-tutorial-content";
@@ -92,6 +93,7 @@ export function getFarmStepState(state: FarmProgress, id: FarmStepId, evidence?:
 }
 export const farmStepChapter = (step: FarmStep) => {
   const chapter = FARM_GUIDE_CHAPTERS.find(chapter => chapter.id === step.chapter)!;
+  if (step.chapter === "bank") return { ...chapter, section: step.bankDesk, tab: `Banque · ${KQ_BANK_DESK_LABELS[step.bankDesk]}` };
   return step.id === "trim" ? { ...chapter, tab: "Atelier · Trim", section: "processing" } : chapter;
 };
 export function followFarmHarvest(state: FarmProgress, flowerId: string): FarmProgress {

@@ -13,6 +13,7 @@
 .worldLoading { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: #159a9e; }
 .worldPanel { position: absolute; z-index: 6; top: 86px; bottom: 18px; left: 50%; translate: -50% 0; width: min(1240px, calc(100% - 48px)); overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; padding: 12px 16px 28px; border: 3px solid transparent; background: transparent; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / 24px / 0 stretch; }
 .worldPanel[hidden] { display: none; }
+.worldShell[data-placard-view="treasury"] .worldPanel { top: var(--hud-top); }
 .worldShell .worldPanel { top: calc(var(--hud-top) + 55px); bottom: max(12px, env(safe-area-inset-bottom)); max-width: calc(100% - 2 * max(8px, env(safe-area-inset-right), env(safe-area-inset-left))); }
 .worldPanel:not([hidden]) { animation: activityPanelArrival 240ms cubic-bezier(.22, .68, .2, 1); }
 @keyframes activityPanelArrival { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }

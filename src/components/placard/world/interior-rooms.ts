@@ -11,10 +11,10 @@ const obj = (id: string, kind: InteriorObject["kind"], label: string, x: number,
 
 const furniture: Record<Exclude<VillageBuildingKind, "warehouse">, InteriorObject[]> = {
   bank: [
-    obj("bank", "desk", "Prêts", 1.6, .3, 3.9, 2.45, "view=treasury&pole=bank&section=loans", "Parler au banquier"),
-    { ...obj("savings", "safe", "Épargne", 2.83, .97, 1.12, .79, "view=treasury&pole=bank&section=savings", "La tirelire sur le bureau"), elevation: 1.02 },
-    { ...obj("stocks", "board", "Bourse", -.16, -4.27, 3.9, .3, "view=treasury&pole=bank&section=stocks", "Le panneau du CAC 40"), elevation: 1.24 },
-    obj("crypto", "desk", "Crypto", -2.89, -.55, 2.52, 1.42, "view=treasury&pole=bank&section=crypto", "L’ordinateur au signe Bitcoin"),
+    obj("bank", "desk", "Prêts", 1.6, .3, 3.9, 2.45, "view=treasury&pole=bank&section=loans"),
+    { ...obj("savings", "safe", "Épargne", 2.83, .97, 1.12, .79, "view=treasury&pole=bank&section=savings"), elevation: 1.02 },
+    { ...obj("stocks", "board", "Bourse", -.16, -4.27, 3.9, .3, "view=treasury&pole=bank&section=stocks"), elevation: 1.24 },
+    obj("crypto", "desk", "Crypto", -2.89, -.55, 2.52, 1.42, "view=treasury&pole=bank&section=crypto"),
   ],
   office: [
     obj("team", "desk", "Bureau du personnel", 1.65, -1.65, 3.6, 1.35, "view=staff", "Journée de travail et suivi du personnel"),

@@ -11,7 +11,8 @@ import { KqMarketDesk, type KqMarketSection } from './KqMarketDesk';
 import { KqSocialNetworks } from './KqSocialNetworks';
 import { KqPrintedArt } from './KqPrintedArt';
 import { KqTreasuryDesk } from './KqTreasuryDesk';
-import { KqTreasuryBank, isKqBankDesk, type KqBankDesk } from './KqTreasuryBank';
+import { KqTutorialBank } from './KqTreasuryBank';
+import { isKqBankDesk, type KqBankDesk } from '@/lib/kanab-quest-bank-navigation';
 import { KqMissionCenter } from './KqMissionCenter';
 import { KqHarvests } from './KqHarvests';
 import { KqWarehouseEntry } from './KqWarehouseEntry';
@@ -133,7 +134,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
     {place === 'missions' ? <KqMissionCenter onOpen={() => setNotice('Les autres parcours se découvrent dans la rencontre Missions du quartier.')} />
       : place === 'social' ? <KqSocialNetworks busy={busy} initialTutorialResultId={chapter === 'social' ? socialLearning.pendingResultId : undefined} onTutorialResultRead={chapter === 'social' ? entryId => record('read-social-result', { entryId }) : undefined} onTutorialPartnershipRead={chapter === 'social' && !socialLearning.partnershipsRead && socialLearning.platforms.every(platform => platform.published && platform.read) ? sponsorId => record('read-social-partnerships', { sponsorId }) : undefined} />
       : place === 'accounts' ? <KqTreasuryDesk onOpenShop={openEquipment} />
-      : place === 'bank' ? <KqTreasuryBank embedded initialDesk={bankDesk} onDeskChange={setBankDesk} />
+      : place === 'bank' ? <KqTutorialBank initialDesk={bankDesk} onDeskChange={setBankDesk} />
         : place === 'equipment' ? <KqWarehouseEntry key={`${equipmentMode}:${equipmentCode ?? ''}`} embedded initialShopOpen={equipmentMode === 'catalog'} initialSection={equipmentMode === 'storage' ? 'storage' : 'equipment'} initialFlowerId={flowerId} initialEquipmentCode={equipmentCode} onOpenShop={openEquipment} onClose={() => setPlace(equipmentOrigin.current)}
           onOpenHarvests={id => { setFlowerId(id); openHarvests(); }} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} />
           : place === 'storage' ? <KqHarvests section={harvestSection} initialFlowerId={flowerId} onSectionChange={(next, id) => { setHarvestSection(next); setFlowerId(id); }} onOpenWarehouse={openStorageEquipment} onOpenArena={() => setNotice('Les verdicts de cette campagne sont terminés. Tes lots sont prêts pour la conservation et la vente.')} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} onOpenGame={() => setNotice('Reviens au quartier pour retrouver le parcours de culture.')} />

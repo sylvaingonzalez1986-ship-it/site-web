@@ -1,5 +1,6 @@
 /** Shared live shell and Three canvas, with read-only local destination/API fixtures. */
 import assert from 'node:assert/strict';
+import {bankReturnLink} from './audit-building-rooms-scenarios.mjs';
 
 export function world3dFixturePayload(path) {
   if (path === '/api/arena/tutorial') return {userId:'world-audit-player',chanvrier:{nickname:'VillageAudit',gender:'male',clothing:'teal',skin:'honey',strength:'green-thumb'}};
@@ -29,8 +30,20 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     assert.equal(await page.$('[data-enter-interior], [data-interior], [data-interior-scene]'),null,'Only the exterior village remains available');
     assert.equal(new URL(page.url()).searchParams.has('room'),false,'Obsolete room parameters are removed');
   };
-  const nav=async key=>{await click(menu);await page.waitForSelector(drawer);await click(`${drawer} [data-placard-nav="${key}"]`);await waitView(key);await sameCanvas();};
-  const close=async()=>{await click('button[aria-label="Revenir au village 3D"]');await waitView('hub');await sameCanvas();};
+  const bankRoom='[data-building-room="bank"]';
+  const nav=async key=>{
+    await click(menu);await page.waitForSelector(drawer);await click(`${drawer} [data-placard-nav="${key}"]`);
+    if(key==='treasury') await page.waitForSelector(bankRoom,{visible:true});
+    else await waitView(key);
+    await sameCanvas();
+  };
+  const close=async()=>{
+    if(await page.$('[data-placard-view="treasury"]')){
+      await click(bankReturnLink);await page.waitForSelector(bankRoom,{visible:true});
+      await click(`${bankRoom} a[href="/arene/placard?view=hub"]`);
+    }else await click('button[aria-label="Revenir au village 3D"]');
+    await waitView('hub');await sameCanvas();
+  };
   const chooseActivity=async(building,href)=>{
     await page.focus(`[data-village-building="${building}"]`);await page.keyboard.press('Enter');
     await page.waitForSelector('#village-building-activities');
@@ -91,7 +104,9 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     await page.focus(activity);await page.keyboard.press('Enter');
     await waitView('treasury');
     assert.equal(await page.$eval('[data-bank-desk]',node=>node.textContent),'loans');
-    await click('button[aria-label="Revenir au village 3D"]');
+    await page.focus(bankReturnLink);await page.keyboard.press('Enter');
+    await page.waitForSelector(bankRoom,{visible:true});
+    await click(`${bankRoom} a[href="/arene/placard?view=hub"]`);
     await waitView('hub');
     await page.waitForSelector(activity,{visible:true});
     await click('[aria-label="Fermer les activités du bâtiment"]');
@@ -199,7 +214,10 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
       await page.waitForFunction(()=>!new URLSearchParams(location.search).has('room'));
       assert.equal(new URL(page.url()).searchParams.get('view'),destination,'Old room-only links resolve to the corresponding existing activity');
       await rememberCanvas();await sameCanvas();await noInterior();
-      await close();await page.goBack();await waitView(destination);await sameCanvas();
+      await close();await page.goBack();
+      if(room==='bank') await page.waitForSelector(bankRoom,{visible:true});
+      else await waitView(destination);
+      await sameCanvas();
       await page.goForward();await waitView('hub');await sameCanvas();
     }
     const precise={view:'workshop',section:'storage',zone:'fixture-zone',flower:'fixture-flower'};

@@ -6,6 +6,7 @@ import {createServer} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
+import {assertBankService,bankReturnLink} from './audit-building-rooms-scenarios.mjs';
 const root=process.cwd(),output=resolve(root,'output/placard-treasury');
 // A deterministic 16 px PNG keeps logo rendering checks independent of the CDN.
 const logoFixture=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGklEQVR4nGN4tdvlPyWYYdSAUQNGDRguBgAAuJnoH154IecAAAAASUVORK5CYII=','base64');
@@ -66,10 +67,10 @@ const modules={
    else{if(!position||Number(order.quantity)>Number(position.quantity))throw new Error('Oversold crypto');costBasisCents=Math.round(position.costBasisCents*Number(order.quantity)/Number(position.quantity));setCash(commerce.cashCents+order.amountCents);if(position.quantity===order.quantity)cryptoMarket.positions=cryptoMarket.positions.filter(p=>p!==position);else{position.quantity=String(Number(position.quantity)-Number(order.quantity));position.costBasisCents-=costBasisCents;position.valueCents-=order.amountCents;}}
    const trade={orderId:order.orderId,assetId:order.assetId,side:order.side,quantity:order.quantity,priceEur:order.priceEur,amountCents:order.amountCents,costBasisCents,realizedPnlCents:order.side==='buy'?0:order.amountCents-costBasisCents,cashAfterCents:commerce.cashCents,createdAt:iso(Date.now())};if(!isKqCryptoTrade(trade))throw new Error('Invalid crypto trade fixture');cryptoMarket.recentTrades.unshift(trade);if(window.__cryptoConfirmResponseLost){window.__cryptoConfirmResponseLost=false;return new Response(JSON.stringify({error:'Confirmation non reçue. Vérifie cet ordre.'}),{status:503});}return new Response(JSON.stringify({trade,replayed:false}));}
   if(String(url).startsWith('/api/arena/placard/equipment'))return new Response(JSON.stringify({activeRun:false,readyLotCount:0,availableFlowerCount:0,productionUnits:1,ownedCodes:[],cashCents:commerce.cashCents}));
-  if(String(url).startsWith('/api/arena/chanvrier'))return new Response(JSON.stringify({profile:{strength:new URLSearchParams(location.search).has('non-treasurer')?'green-thumb':'treasurer'}}));
+  if(String(url).startsWith('/api/arena/chanvrier'))return new Response(JSON.stringify({profile:{strength:params.has('non-treasurer')?'green-thumb':'treasurer'}}));
   if(String(url).startsWith('/api/'))return new Response('{}');return realFetch(url,init);
  };
- createRoot(document.getElementById('root')).render(React.createElement(PlacardPlayerShell));`,
+ createRoot(document.getElementById('root')).render(React.createElement(PlacardPlayerShell,{draftOwnerId:'treasury-audit-player'}));`,
  './KqPlacardHud':`export function KqPlacardHud(){return null;}`,
  'next/image':`import React from 'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
  'next/link':`import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
@@ -78,11 +79,11 @@ const modules={
 };
 const browserDependencies = ['react', 'react/jsx-runtime', 'react-dom', 'react-dom/client', 'lucide-react', 'three', '@react-three/fiber',
  'three/addons/controls/OrbitControls.js', 'three/addons/utils/BufferGeometryUtils.js', 'three/addons/geometries/RoundedBoxGeometry.js'];
-const server=await createServer({root,cacheDir:resolve(output,'vite-cache'),optimizeDeps:{include:browserDependencies},configFile:false,envDir:false,publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom','three']},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'treasury-audit',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard Treasury</title><link rel="icon" href="data:,"><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Bold.woff2);font-weight:700}@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#003f30;font-family:var(--font-body)}</style><div id="root"></div><script type="module" src="/@id/__x00__treasury-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3218,strictPort:true,hmr:false,watch:null}});
+const server=await createServer({root,cacheDir:resolve(output,'vite-cache'),optimizeDeps:{include:browserDependencies},configFile:false,envDir:false,publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom','three']},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'treasury-audit',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(!['/', '/arene/placard'].includes(req.url?.split('?')[0]))return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard Treasury</title><link rel="icon" href="data:,"><style>@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Bold.woff2);font-weight:700}@font-face{font-family:AuditDisplay;src:url(/src/app/fonts/BarlowCondensed-Latin-Black.woff2);font-weight:900}@font-face{font-family:AuditBody;src:url(/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2);font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0;background:#003f30;font-family:var(--font-body)}</style><div id="root"></div><script type="module" src="/@id/__x00__treasury-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3218,strictPort:true,hmr:false,watch:null}});
 let browser;const errors=[],results=[];
 try{
  await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,userDataDir:resolve(output,'chrome-profile'),args:['--no-sandbox','--enable-unsafe-swiftshader']});
- const page=await browser.newPage();page.setDefaultNavigationTimeout(60000);page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});await page.setRequestInterception(true);page.on('request',request=>{const url=new URL(request.url());if(url.hostname==='s2.coinmarketcap.com'&&/^\/static\/img\/coins\/64x64\/[1-9]\d*\.png$/.test(url.pathname)){logoRequests.add(url.pathname);void request.respond({status:200,contentType:'image/png',body:logoFixture});}else if(url.protocol==='data:'||(url.hostname==='127.0.0.1'&&url.port==='3218'))void request.continue();else void request.abort();});
+ const page=await browser.newPage();page.setDefaultNavigationTimeout(60000);page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push([message.text(),message.location().url].filter(Boolean).join(' '));});await page.setRequestInterception(true);page.on('request',request=>{const url=new URL(request.url());if(url.hostname==='s2.coinmarketcap.com'&&/^\/static\/img\/coins\/64x64\/[1-9]\d*\.png$/.test(url.pathname)){logoRequests.add(url.pathname);void request.respond({status:200,contentType:'image/png',body:logoFixture});}else if(url.protocol==='data:'||(url.hostname==='127.0.0.1'&&url.port==='3218'))void request.continue();else void request.abort();});
  const click=async text=>{const handle=await page.evaluateHandle(t=>[...document.querySelectorAll('button')].find(el=>el.textContent.trim().startsWith(t)),text);const button=handle.asElement();assert(button,'Missing button '+text);await button.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await button.click();};
  const clickSelector=async selector=>{if(selector==='[aria-label="Navigation de Kanab Quest"] button'&&page.viewport().width<=1000)selector='[aria-label="Accès rapides de Kanab Quest"] button';await page.waitForSelector(selector);await page.$eval(selector,el=>el.scrollIntoView({block:'center',behavior:'instant'}));if(selector.startsWith('[data-map-building=')){const hit=await page.$eval(selector,el=>{const [x,y]=el.dataset.mapHitPoint.split(',').map(Number),rect=document.querySelector('#placard-map-viewport img').getBoundingClientRect();return{x:rect.left+rect.width*x/100,y:rect.top+rect.height*y/100};});await page.mouse.click(hit.x,hit.y);}else await page.click(selector);};
  const fill=async(selector,value)=>{await clickSelector(selector);await page.keyboard.down('Control');await page.keyboard.press('A');await page.keyboard.up('Control');await page.keyboard.type(value);};
@@ -92,15 +93,35 @@ try{
  const selectTab=async id=>{if(id==='invoices'){await click('Factures & disponible');}else{if(!await page.$('#treasury-dossier'))await click('Comptabilité détaillée');await page.select('#treasury-dossier',id);}await page.waitForSelector('#treasury-panel-'+id);};
  const assertBankSeparated = async () => {
   assert.equal(await page.$('[data-staff-accounting], #treasury-dossier, [data-guide-invoices-tab]'), null);
-  assert.deepEqual(await page.$$eval('[aria-label="Guichets de la banque"] [role="tab"]', tabs => tabs.map(tab => tab.id)), ['bank-desk-loans', 'bank-desk-savings', 'bank-desk-stocks', 'bank-desk-crypto']);
-  assert.deepEqual(await page.$$eval('[data-placard-view="treasury"] #placard-content h1', titles => titles.map(title => title.textContent)), ['Banque']);
+  await assertBankService(page, 'loans');
+ };
+ const bankRoom = '[data-building-room="bank"]';
+ const selectFromMenu = async destination => {
+  if (await page.$('[data-placard-view="treasury"]')) {
+   await clickSelector(bankReturnLink);
+   await page.waitForSelector(bankRoom, {visible:true});
+  }
+  await clickSelector('[aria-label="Ouvrir le menu du quartier"]');
+  await clickSelector(`dialog[open] [data-placard-nav="${destination}"]`);
+ };
+ const selectDesk = async id => {
+  if (!await page.$(bankRoom)) await clickSelector(bankReturnLink);
+  const object = id === 'loans' ? 'bank' : id;
+  const target = `${bankRoom} a[data-building-object="${object}"]`;
+  await page.waitForSelector(target, {visible:true});
+  await page.focus(target);
+  await page.keyboard.press('Enter');
+  await assertBankService(page, id);
+  assert.equal(new URL(page.url()).searchParams.get('section'), id);
  };
  const selectFinanceDestination = async destination => {
   const bank = destination === 'bank';
   const financeReads = await page.evaluate(() => window.__financeRequests.length);
-  await clickSelector('[aria-label="Ouvrir le menu du quartier"]');
-  await clickSelector(bank ? 'dialog[open] [data-placard-nav="treasury"]' : 'dialog[open] [data-placard-nav="staff"]');
-  if (!bank) await clickSelector('[data-staff-department="accounting"]');
+  await selectFromMenu(bank ? 'treasury' : 'staff');
+  if (bank) {
+   await page.waitForSelector(bankRoom, {visible:true});
+   await selectDesk('loans');
+  } else await clickSelector('[data-staff-department="accounting"]');
   await page.waitForSelector(bank ? '#bank-panel-loans' : '#treasury-panel-invoices');
   const params = new URL(page.url()).searchParams;
   assert.equal(params.get('view'), bank ? 'treasury' : 'staff');
@@ -109,11 +130,6 @@ try{
    await assertBankSeparated();
    assert.equal(await page.evaluate(() => window.__financeRequests.length), financeReads, 'Entering the bank does not fetch accounting data');
   }
- };
- const selectDesk = async id => {
-  await clickSelector('#bank-desk-' + id);
-  await page.waitForSelector('#bank-panel-' + id);
-  assert.equal(new URL(page.url()).searchParams.get('section'), id);
  };
  const assertCryptoLogo=async(container,id)=>{
   const selector=container+' [data-crypto-logo="'+id+'"]';await page.waitForSelector(selector+' img');
@@ -130,7 +146,7 @@ try{
   assert(Math.abs(modal.left+modal.width/2-modal.viewportWidth/2)<=3,'Crypto order is horizontally centered');
   assert(Math.abs(modal.top+modal.height/2-modal.viewportHeight/2)<=3,'Crypto order is vertically centered');
   assert(Math.abs(modal.scrollY-expectedScroll)<=1,'Opening/preparing an order keeps the page scroll position: '+JSON.stringify({expectedScroll,actualScroll:modal.scrollY}));assert.equal(modal.overflow,false,'Crypto order has no horizontal overflow');
-  await page.$eval('#bank-desk-savings',button=>button.focus());assert.equal(await page.$eval('#bank-desk-savings',button=>document.activeElement===button),false,'Background cannot receive focus while modal is open');assert.equal(await page.evaluate(()=>document.getElementById('crypto-order-dialog').contains(document.activeElement)),true,'Focus stays in the modal after its current step renders');
+  await page.$eval(bankReturnLink,link=>link.focus());assert.equal(await page.$eval(bankReturnLink,link=>document.activeElement===link),false,'Background cannot receive focus while modal is open');assert.equal(await page.evaluate(()=>document.getElementById('crypto-order-dialog').contains(document.activeElement)),true,'Focus stays in the modal after its current step renders');
  };
  const openCrypto=async selector=>{
   await page.$eval(selector,button=>button.scrollIntoView({block:'center',behavior:'instant'}));const before=await page.$eval(selector,button=>({y:scrollY,height:document.documentElement.scrollHeight,viewport:document.documentElement.clientHeight,buttonTop:button.getBoundingClientRect().top}));const y=before.y;await page.click(selector);await page.waitForSelector('#crypto-order-dialog[open]');const after=await page.$eval(selector,button=>({y:scrollY,height:document.documentElement.scrollHeight,viewport:document.documentElement.clientHeight,buttonTop:button.getBoundingClientRect().top}));if(Math.abs(before.y-after.y)>1)console.error('Crypto order scroll diagnostic:',{selector,before,after});await assertCryptoModal(y);
@@ -141,7 +157,7 @@ try{
 
  const auditCryptoAutomaticRecovery=async()=>{
   await page.emulateTimezone('America/New_York');
-  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await page.goto('http://127.0.0.1:3218/?view=treasury&crypto-retry=1',{waitUntil:'networkidle0'});await selectFinanceDestination('bank');await selectDesk('crypto');await page.waitForSelector('[aria-label="Acheter Bitcoin"]');
+  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await page.goto('http://127.0.0.1:3218/?view=treasury&pole=bank&section=crypto&crypto-retry=1',{waitUntil:'domcontentloaded'});await assertBankService(page,'crypto');await page.waitForSelector('[aria-label="Acheter Bitcoin"]');
   const marketText=await page.$eval('[data-testid="crypto-market"]',element=>element.textContent);assert(marketText.includes('Relevé chaque jour à 19 h (heure de Paris)'),'The daily Paris schedule is displayed');assert(/Prochain relevé le \d{2}\/\d{2}.*19:00/.test(marketText),'The next daily collection stays at 19:00 Paris in a foreign browser timezone');
   const pause=await page.$eval('[data-testid="crypto-market"] [role="status"]',element=>element.textContent);const deadline=await page.evaluate(()=>new Date(window.__cryptoRefreshAudit[0].refresh.nextAttemptAt).toLocaleString('fr-FR',{timeZone:'Europe/Paris',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}));assert(pause.includes('Le fournisseur demande une pause.'),'Rate limiting has a clear explanation');assert(pause.includes('Nouvelle tentative automatique le '+deadline),'The next automatic attempt is displayed');assert(pause.includes('reprendront automatiquement'),'The recovery message explains automatic trade resumption');
   assert.equal(await page.$eval('[aria-label="Acheter Bitcoin"]',button=>button.disabled),true,'Stale Bitcoin cannot be bought during a supplier pause');assert.equal(await page.$eval('[aria-label="Acheter Ethereum"]',button=>button.disabled),false,'A still-fresh asset remains tradable while another asset is stale');await clickSelector('#crypto-portfolio-tab');await page.waitForSelector('[aria-label="Vendre Bitcoin"]');assert.equal(await page.$eval('[aria-label="Vendre Bitcoin"]',button=>button.disabled),true,'Stale Bitcoin cannot be sold during a supplier pause');await noOverflow();await shot('crypto-rate-limited-390');
@@ -160,7 +176,7 @@ try{
    await selectFinanceDestination('accounting');await page.waitForSelector('[aria-label="Factures à régler"]');
    assert.equal(await page.$eval('[data-placard-view="staff"] #placard-content > header h1',title=>title.textContent),'Personnel');assert.equal(await page.$$eval('[id^="treasury-pole-"]',tabs=>tabs.length),0,'Office has no internal shortcut to the bank');assert.equal(await page.$('#bank-panel-loans'),null);await noOverflow();await shot('office-separated-'+width);
    await selectFinanceDestination('bank');
-   await clickSelector('[aria-label="Navigation de Kanab Quest"] button');await page.waitForSelector('[data-placard-lobby]');await clickSelector('[data-map-building="market"]');await clickSelector('[data-placard-activity="market"]');await page.waitForSelector('[data-placard-view="market"]');await page.waitForSelector('[aria-label="Mon commerce"]');
+   await selectFromMenu('market');await page.waitForSelector('[data-placard-view="market"]');await page.waitForSelector('[aria-label="Mon commerce"]');
    assert((await page.$eval('[aria-label="Mon commerce"] [aria-selected="true"]',tab=>tab.textContent)).includes('Demandes du moment'));assert.equal(await page.$('#kq-business-management'),null);
    assert.equal(await page.$$eval('[aria-label="Mon commerce"] [role="tab"]',tabs=>tabs.length),4,'Market has separate demand, sales, tracking and management tabs');
    await page.focus('[role="tab"][id$="-sales-tab"]');await page.keyboard.press('ArrowRight');await page.waitForSelector('[data-screen="dashboard"]');assert.equal(new URL(page.url()).searchParams.get('section'),'dashboard');
@@ -268,25 +284,14 @@ try{
    await page.evaluate(() => document.fonts.ready);
    const shell = '#placard-content > header';
    const title = await page.$eval(shell + ' h1', node => node.textContent);
-   assert.equal(title, pole === 'bank' ? 'Banque' : 'Personnel');
+   if (pole === 'bank') assert(title.trim());
+   else assert.equal(title, 'Personnel');
    assert.equal(await page.$(shell + ' img'), null);
-   await page.waitForSelector(shell + ' [data-placard-back]', {visible: true});
+   await page.waitForSelector(pole === 'bank' ? bankReturnLink : shell + ' [data-placard-back]', {visible: true});
    let layout;
    if (pole === 'bank') {
-    layout = await page.$eval('[data-treasury-bank] > header', async header => {
-     const image = header.querySelector('img');
-     await image.decode();
-     const scene = image.getBoundingClientRect();
-     const nav = header.querySelector('nav').getBoundingClientRect();
-     const sideBySide = nav.left >= scene.right || nav.right <= scene.left;
-     return {fit: getComputedStyle(image).objectFit, source: image.getAttribute('src'), artWidth: scene.width, artHeight: scene.height,
-      nativeWidth: image.naturalWidth, nativeHeight: image.naturalHeight, sideBySide, disjoint: sideBySide || nav.top >= scene.bottom || nav.bottom <= scene.top};
-    });
-    assert.equal(layout.fit, 'contain'); assert(layout.artWidth > 0 && layout.nativeWidth > 0 && layout.nativeHeight > 0);
-    assert(layout.disjoint, 'The desk tabs leave the bank scene visible');
-    assert(layout.source.includes('bureau-bank-sylvain-v3.webp')); assert(Math.abs(layout.artWidth / layout.artHeight - 1.5) < .01);
-    assert.equal(layout.sideBySide, width > 650);
     await assertBankSeparated();
+    layout = {title, service: 'loans', returnToBank: true};
    } else {
     const accounts = '[data-staff-accounting]';
     const refresh = 'button[aria-label="Actualiser les factures"]';
@@ -308,6 +313,8 @@ try{
    assert.equal(await page.evaluate(()=>window.__actions.length),0,'Header review does not perform an economic action');
    await page.screenshot({path:resolve(output,'header-'+pole+'-'+width+'.png'),fullPage:false});
    if (pole === 'bank') {
+    await clickSelector(bankReturnLink);
+    await page.waitForSelector(bankRoom, {visible:true});
     await clickSelector('[aria-label="Ouvrir le menu du quartier"]');
     const bankMenuImage = 'dialog[open] [data-placard-nav="treasury"] img';
     await page.waitForSelector(bankMenuImage, {visible: true});
@@ -346,7 +353,7 @@ try{
   const cancelY=await openCrypto(firstBuy);await click('Annuler');await assertCryptoClosed(firstBuy,cancelY);
   await clickSelector('[aria-label="Pages des cryptomonnaies"] button:last-child');assert((await text()).includes('2 / 10'));await fill('[aria-label="Rechercher une crypto"]','Bitcoin');assert.equal(await page.$$eval('#crypto-market-list button[aria-label^="Acheter "]',buttons=>buttons.length),1);
   const previewY=await openCrypto(firstBuy);await click('Préparer l’offre');await page.waitForFunction(()=>document.querySelector('#crypto-order-dialog')?.textContent.includes('Cours bloqué'));assert.equal(await page.evaluate(()=>window.__actions.filter(a=>a.action==='confirm').length),0);await assertCryptoModal(previewY);await noOverflow();await viewportShot('crypto-preview-'+width);await click('Modifier l’ordre');await page.waitForSelector('#crypto-order-amount');assert.equal(await page.evaluate(()=>document.activeElement?.id),'crypto-order-amount','Editing an offer returns focus to its amount');await assertCryptoModal(previewY);await page.keyboard.press('Escape');await assertCryptoClosed(firstBuy,previewY);assert.equal(await page.$('#treasury-pole-management'),null,'Management is no longer an office tab');
-  await clickSelector('[aria-label="Navigation de Kanab Quest"] button');await page.waitForSelector('[data-placard-lobby]');await clickSelector('[data-map-building="market"]');await clickSelector('[data-placard-activity="market"]');await page.waitForSelector('[data-placard-view="market"]');assert.equal(await page.$('#kq-business-management'),null);await clickSelector('[role="tab"][id$="-management-tab"]');await page.waitForSelector('#kq-business-management[open]');assert((await text()).includes('Publicité payante'));assert((await page.$eval('#kq-business-management',element=>element.textContent)).includes('Adresse extérieure'));await noOverflow();await shot('management-'+width);await clickSelector('[aria-label="Navigation de Kanab Quest"] button');await page.waitForSelector('[data-placard-lobby]');await selectFinanceDestination('accounting');assert.equal(await page.$eval('[data-placard-view="staff"] #placard-content > header h1',element=>element.textContent),'Personnel');await selectTab('overview');await page.waitForSelector('[aria-label="Évolution de la trésorerie"]');
+await selectFromMenu('market');await page.waitForSelector('[data-placard-view="market"]');assert.equal(await page.$('#kq-business-management'),null);await clickSelector('[role="tab"][id$="-management-tab"]');await page.waitForSelector('#kq-business-management[open]');assert((await text()).includes('Publicité payante'));assert((await page.$eval('#kq-business-management',element=>element.textContent)).includes('Adresse extérieure'));await noOverflow();await shot('management-'+width);await selectFinanceDestination('accounting');assert.equal(await page.$eval('[data-placard-view="staff"] #placard-content > header h1',element=>element.textContent),'Personnel');await selectTab('overview');await page.waitForSelector('[aria-label="Évolution de la trésorerie"]');
   results.push({width,deepLink:true,graphs:true,balance:true,journalPagination:true,previousPeriod:true,invoices:true,accountPlan:true,bank:true,bankContractPreview:true,savings:true,cryptoPagination:true,cryptoSearch:true,cryptoOrderPreview:true,cryptoLogosVisible:true,cryptoLogoFallback:true,cryptoCenteredDialog:true,cryptoScrollPreserved:true,cryptoFocusTrap:true,cryptoCloseRestoresFocus:true,management:true,marketLink:true,noOverflow:true});
  }
  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await page.goto('http://127.0.0.1:3218/',{waitUntil:'networkidle0'});await page.waitForSelector('[aria-label="Les bâtiments de Kanab Quest"]');assert.equal(await page.$$eval('[aria-label="Les bâtiments de Kanab Quest"] button',buttons=>buttons.length),8);await noOverflow();await shot('lobby-390');await selectFinanceDestination('accounting');
@@ -368,7 +375,7 @@ try{
  await page.evaluate(()=>{window.__cryptoConfirmResponseLost=true;});await click('Confirmer l’achat');await page.waitForFunction(()=>document.querySelector('#crypto-order-dialog [role="alert"]')?.textContent.includes('Confirmation non reçue'));await assertCryptoModal(lifecycleY);await click('Vérifier / réessayer cet ordre');await page.waitForFunction(()=>document.body.innerText.includes('Achat enregistré'));await assertCryptoClosed('[aria-label="Acheter Bitcoin"]',lifecycleY);assert.equal(await page.evaluate(()=>window.__actions.filter(action=>action.action==='confirm').length),2);assert.equal(await page.evaluate(()=>new Set(window.__actions.filter(action=>action.action==='confirm').map(action=>action.orderId)).size),1,'Lost response retries the same order');await clickSelector('#crypto-portfolio-tab');await page.waitForSelector('[aria-label="Vendre Bitcoin"]');assert((await text()).includes('0,002 BTC'));await assertCryptoLogo('#crypto-portfolio-list',1);await noOverflow();await shot('crypto-portfolio-390');
  await openCrypto('[aria-label="Vendre Bitcoin"]');await click('Préparer l’offre');await page.waitForFunction(()=>document.querySelector('#crypto-order-dialog')?.textContent.includes('À recevoir'));await click('Confirmer la vente');await page.waitForFunction(()=>document.body.innerText.includes('Vente enregistré'));await page.waitForSelector('#crypto-order-dialog',{hidden:true});assert.equal(await page.evaluate(()=>window.__actions.filter(action=>action.action==='confirm').length),3);assert((await text()).includes('Ton portefeuille est vide.'));assert.equal(await page.evaluate(()=>document.activeElement?.id),'crypto-portfolio-tab','Selling the final position restores focus to the portfolio tab');await noOverflow();await shot('crypto-sold-390');
  await page.evaluate(()=>{window.__cryptoBroken=true;});await clickSelector('[aria-label="Actualiser les cours crypto"]');await page.waitForFunction(()=>document.body.innerText.includes('Le marché crypto est indisponible'));await page.evaluate(()=>{window.__cryptoBroken=false;});await clickSelector('[aria-label="Actualiser les cours crypto"]');await page.waitForFunction(()=>!document.querySelector('[role="alert"]'));
- await page.focus('#bank-desk-crypto');await page.keyboard.press('Home');assert.equal(await page.$eval('#bank-desk-loans',button=>button.getAttribute('aria-selected')),'true');
+ await selectDesk('loans');
  await page.goto('http://127.0.0.1:3218/?view=treasury&low-reputation=1',{waitUntil:'networkidle0'});await selectFinanceDestination('bank');await page.waitForFunction(()=>document.body.innerText.includes('90 points ?'));assert.equal(await page.$('#bank-loan-amount'),null);assert((await text()).includes('reviens à 200'));await noOverflow();await shot('bank-reputation-refused-390');
  const highLoanResults=[];
  for(const width of [320,1280]){

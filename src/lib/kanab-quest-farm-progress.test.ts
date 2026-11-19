@@ -26,6 +26,13 @@ const cultureSteps: FarmStepId[] = ["launch", "roll", "resolve", "harvest"];
 const actionSteps: FarmStepId[] = ["zone", "assign", ...cultureSteps, "store", "trim", "cure", "jury", "sale", "pack-open", "card-play", "school-answer"];
 const staffSteps = ["staff-candidate", "staff-planning", "staff-development", "staff-payroll"] as const;
 
+it.each([
+  ["bank", "loans"], ["banking-savings", "savings"], ["banking-stocks", "stocks"], ["banking-crypto", "crypto"],
+] as const)("opens the bank service for guide step %s", (id, section) => {
+  const step = FARM_GUIDE_STEPS.find(step => step.id === id)!;
+  expect(farmStepChapter(step)).toMatchObject({ view: "treasury", section });
+});
+
 describe("trim before the jury", () => {
   const waiting = () => started({ flowerId: "flower-1", completed: FARM_GUIDE_STEPS.slice(0, FARM_GUIDE_STEPS.findIndex(step => step.id === "trim")).map(step => step.id) });
 
