@@ -8,7 +8,7 @@ import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer } from "@/lib/own-producer";
 import { getSiteUrl } from "@/lib/site-url";
 
-export const revalidate = 300;
+export const revalidate = 0;
 
 export async function GET() {
   const baseUrl = getSiteUrl();

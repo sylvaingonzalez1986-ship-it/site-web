@@ -9,6 +9,8 @@ import { getSiteUrl } from "@/lib/site-url";
 import { bretonCities, LOCAL_SEO_LAST_REVIEWED } from "@/lib/local-seo-data";
 import { mostRecentSeoDate, parseSeoDate } from "@/lib/seo-sitemap";
 
+export const revalidate = 0;
+
 const categorySlugs: Record<string, string> = {
   fleurs: "fleurs-cbd",
   resines: "resines-cbd",
