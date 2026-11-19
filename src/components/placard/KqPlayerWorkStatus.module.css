@@ -10,8 +10,6 @@
 .paper { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 18px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .paper:first-child { border-image-source: var(--game-panel-apricot, url('/placard/ui/panel-apricot-v1.webp')); }
 .paper > svg { color: #006f66; }
-.paper .dayArt { width: 112px; height: 112px; align-self: center; }
-.dayArt > img { height: 100%; object-fit: contain; }
 .paper h3, .costHeading h3 { margin: 0; font: 750 .88rem/1.4 var(--font-body), sans-serif; }
 .renewal { font: 800 1.2rem/1.35 var(--font-body), sans-serif; font-variant-numeric: tabular-nums; }
 .caption { display: block; margin-top: auto; font-size: .75rem; line-height: 1.5; color: #40594e; }

@@ -38,8 +38,7 @@
 @media (hover: hover) {
   .host :where(button, select):hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
 }
-.header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 0 0 10px; }
-.header .art { width: 48px; height: 48px; }
+.header { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 0 0 10px; }
 .header h2, .detail h3, .detail h4, .editor h4 { margin: 0; color: #213c31; font-family: var(--font-display), "Arial Narrow", sans-serif; font-weight: 800; }
 .header h2 { font-size: 1.48rem; line-height: 1.04; }
 .header p { margin: 4px 0 0; font-size: .77rem; }

@@ -3,8 +3,13 @@ import {mkdir} from 'node:fs/promises';
 import {resolve} from 'node:path';
 
 const roomActivities = {
-  bank: {accounts: 'view=treasury&pole=accounting', bank: 'view=treasury&pole=bank'},
-  office: {team: 'view=staff', 'team-register': 'view=staff&section=team', recruitment: 'view=staff&section=candidates'},
+  bank: {
+    bank: 'view=treasury&pole=bank&section=loans',
+    savings: 'view=treasury&pole=bank&section=savings',
+    stocks: 'view=treasury&pole=bank&section=stocks',
+    crypto: 'view=treasury&pole=bank&section=crypto',
+  },
+  office: {team: 'view=staff', 'team-register': 'view=staff&section=team', recruitment: 'view=staff&section=candidates', accounts: 'view=staff&section=accounting'},
   market: {sales: 'view=market&section=sales', stock: 'view=market&section=dashboard', business: 'view=market&section=management', communication: 'view=social'},
   missions: {missions: 'view=missions', community: 'view=missions&section=community'},
   arena: {jury: 'view=arena', 'arena-storage': 'view=harvests&section=storage'},
@@ -19,7 +24,8 @@ const link = query => `a[href="${path}?${query}"]`;
 const fromRoom = (id, query) => `${query}&fromRoom=${id}`;
 const liveCanvas = 'canvas[data-live="true"]';
 
-export async function auditBuildingRooms({page, visit, click, assertNoOverflow, results, output}) {
+export async function auditBuildingRooms({page, visit, click, assertNoOverflow, results, output, bankOfficeOnly = false}) {
+  const rooms = Object.entries(roomActivities).filter(([id]) => !bankOfficeOnly || id === 'bank' || id === 'office');
   const screenshotDir = resolve(output, 'building-rooms');
   await mkdir(screenshotDir, {recursive: true});
   const assertQuery = async query => {
@@ -33,6 +39,21 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
       throw new Error(`Expected ${query}, current URL is ${page.url()}`, {cause});
     }
     assert.equal(new URL(page.url()).pathname, path);
+  };
+  const assertActivity = async (id, query) => {
+    await assertQuery(query);
+    const section = new URLSearchParams(query).get('section') ?? 'overview';
+    if (id === 'bank') {
+      await page.waitForSelector(`#bank-desk-${section}[aria-selected="true"]`, {visible: true});
+      const content = {loans: '[data-bank-offer]', savings: 'button[aria-label="Actualiser le livret"]', stocks: '[data-stock-logo]', crypto: '[data-crypto-logo]'};
+      await page.waitForSelector(`#bank-panel-${section}[role="tabpanel"] ${content[section]}`, {visible: true});
+    } else if (id === 'office' && section === 'accounting') {
+      await page.waitForSelector('[data-staff-accounting] [data-guide-invoices-tab][aria-pressed="true"]', {visible: true});
+      await page.waitForSelector('[data-staff-accounting] [data-guide-finances-ready]', {visible: true});
+    } else if (id === 'office') {
+      await page.waitForSelector(`[data-staff-tab="${section}"][aria-selected="true"]`, {visible: true});
+      await page.waitForSelector(`[data-staff-panel="${section}"]`, {visible: true});
+    }
   };
   const keyActivate = async (selector, visibleFocus = false) => {
     await page.waitForSelector(selector, {visible: true});
@@ -57,6 +78,11 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
       href: node.getAttribute('href'),
       subtitle: Boolean(node.querySelector('small')),
     })), {label: 'Entrer', href: `${path}?${query}`, subtitle: false}, `${id}: the first link opens the building`);
+    if (id === 'bank' || id === 'office') {
+      const activities = roomActivities[id];
+      const shortcuts = id === 'bank' ? Object.values(activities) : [activities.team, activities.accounts];
+      assert.deepEqual(await page.$$eval(`${activityBubble} nav a`, nodes => nodes.map(node => node.search.slice(1))), [query, ...shortcuts]);
+    }
   };
   const enterFromVillage = async id => {
     await openVillageBuilding(id, roomQuery(id));
@@ -78,6 +104,7 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
     const room = roomSelector(id);
     await page.waitForSelector(room, {visible: true});
     await assertNoOverflow(`${id} room`);
+    assert.deepEqual(await page.$$eval(`${room} [data-building-object]`, nodes => nodes.map(node => node.dataset.buildingObject).sort()), Object.keys(activities).sort());
     for (const [object, query] of Object.entries(activities)) {
       const destination = `${room} ${link(fromRoom(id, query))}[data-building-object="${object}"]`;
       await page.waitForSelector(destination, {visible: true});
@@ -144,7 +171,10 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
       await page.waitForSelector(`${room} ${liveCanvas}`, {visible: true});
       await activateFurniture(room, object, points[object], touch);
       const destination = fromRoom(id, query);
-      await assertQuery(destination);
+      await assertActivity(id, destination);
+      if ((object === 'bank' || object === 'accounts') && [320,1440].includes(page.viewport().width)) {
+        await page.screenshot({path: resolve(screenshotDir, `${id}-${object === 'bank' ? 'loans' : 'accounting'}-${page.viewport().width}.png`)});
+      }
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       const params = new URL(page.url()).searchParams;
       params.delete('world');
@@ -157,7 +187,36 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
     for (const [object, query] of Object.entries(activities)) {
       const destination = fromRoom(id, query);
       await keyActivate(`${room} ${link(destination)}[data-building-object="${object}"]`, true);
-      await assertQuery(destination);
+      await assertActivity(id, destination);
+      if (page.viewport().width === 1440 && object === 'bank') {
+        await page.focus('#bank-desk-loans');
+        const scrollTop = await page.$eval(activityPanel, panel => {
+          panel.scrollTop = 40;
+          return panel.scrollTop;
+        });
+        assert(scrollTop > 0, 'The loan panel can be scrolled before changing desks');
+        for (const [key, desk, nextQuery] of [['ArrowRight', 'savings', activities.savings], ['ArrowLeft', 'loans', activities.bank]]) {
+          await page.keyboard.press(key);
+          await assertActivity(id, fromRoom(id, nextQuery));
+          assert.equal(await page.evaluate(() => document.activeElement.id), `bank-desk-${desk}`);
+          assert.equal(await page.$eval(activityPanel, panel => panel.scrollTop), scrollTop, `${desk} preserves the bank panel scroll`);
+        }
+        results.push({scenario: 'bank-keyboard-tabs', width: 1440, tabs: ['loans','savings','loans'], scrollTop});
+      }
+      if (page.viewport().width === 1440 && object === 'accounts') {
+        const department = name => `[data-staff-department="${name}"]`;
+        await keyActivate(department('team'));
+        await assertActivity(id, fromRoom(id, activities.team));
+        assert.equal(await page.$eval(department('team'), node => node.getAttribute('aria-pressed')), 'true');
+        await keyActivate(department('accounting'));
+        await assertActivity(id, destination);
+        await page.goBack();
+        await assertActivity(id, fromRoom(id, activities.team));
+        await page.goForward();
+        await assertActivity(id, destination);
+        assert.equal(await page.$eval(department('accounting'), node => node.getAttribute('aria-pressed')), 'true');
+        results.push({scenario: 'staff-department-history', width: 1440, sections: ['accounting','team','accounting'], backForward: true});
+      }
       await checkBackToRoom(id);
     }
     return Object.keys(activities);
@@ -166,23 +225,25 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
   await page.setViewport({width: 1440, height: 1000, deviceScaleFactor: 1});
   await visit('starter');
   await page.waitForSelector('canvas[data-village-ready="true"]');
-  await openVillageBuilding('warehouse', 'view=workshop');
-  await openVillageBuilding('collection', 'view=school');
-  for (const [id, activities] of Object.entries(roomActivities)) {
+  if (!bankOfficeOnly) {
+    await openVillageBuilding('warehouse', 'view=workshop');
+    await openVillageBuilding('collection', 'view=school');
+  }
+  for (const [id, activities] of rooms) {
     await enterFromVillage(id);
     const room = await checkRoom(id, activities);
     const canvas = await page.waitForSelector(`${room} ${liveCanvas}`, {visible: true});
     await canvas.screenshot({path: resolve(screenshotDir, `${id}.png`)});
     const query = fromRoom(id, Object.values(activities)[0]);
     await keyActivate(`${room} ${link(query)}`, true);
-    await assertQuery(query);
+    await assertActivity(id, query);
     await page.waitForSelector(activityPanel, {visible: true});
     assert.equal(new URL(page.url()).searchParams.has('room'), false);
     await page.goBack();
     await assertQuery(roomQuery(id));
     await checkRoom(id, activities);
     await page.goForward();
-    await assertQuery(query);
+    await assertActivity(id, query);
     if (id === 'bank') {
       await click('button[aria-label="Revenir au village 3D"]');
       await page.waitForSelector(activityPanel, {hidden: true});
@@ -216,12 +277,12 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
   for (const [width, height] of [[320, 568], [844, 390]]) {
     await page.setViewport({width, height, isMobile: true, hasTouch: true, deviceScaleFactor: 2});
     await visit('starter', roomQuery('bank'));
-    for (const [id, activities] of Object.entries(roomActivities)) {
+    for (const [id, activities] of rooms) {
       if (id !== 'bank') await enterFromVillage(id);
       const room = await checkRoom(id, activities);
       await page.waitForSelector(`${room} ${liveCanvas}`, {visible: true});
-      if (id === 'bank') {
-        await page.screenshot({path: resolve(screenshotDir, width === 320 ? 'bank-mobile-page.png' : 'bank-landscape-page.png')});
+      if (id === 'bank' || id === 'office') {
+        await page.screenshot({path: resolve(screenshotDir, `${id}-${width === 320 ? 'mobile' : 'landscape'}-page.png`)});
       }
       const furnitureTapped = await visitFurniture(id, room, activities, true);
       results.push({scenario: 'isometric-building-room', room: id, width, height, liveWebGL: true, furnitureTapped});
@@ -240,7 +301,7 @@ export async function auditBuildingRooms({page, visit, click, assertNoOverflow, 
     await page.setViewport({width: 320, height: 568, isMobile: true, hasTouch: true, deviceScaleFactor: 2});
     await visit('starter');
     await page.waitForSelector('[data-village-unavailable]', {visible: true});
-    for (const [id, activities] of Object.entries(roomActivities)) {
+    for (const [id, activities] of rooms) {
       await enterFromVillage(id);
       let room = await checkRoom(id, activities);
       if (id === 'bank') {

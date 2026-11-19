@@ -5,7 +5,6 @@ import { ArrowLeft, ArrowRight, FlaskConical, LayoutDashboard, Settings2, Shoppi
 import { KqCommerceDesk } from "./KqCommerceDesk";
 import { KqTreasuryManagement } from "./KqTreasuryManagement";
 import type { KqOnlineBusinessTab } from "./KqOnlineBusiness";
-import { KqPrintedArt } from "./KqPrintedArt";
 import type { KqCommerceReceipt } from "@/lib/kanab-quest-commerce";
 import styles from "./KqMarketHub.module.css";
 
@@ -70,7 +69,7 @@ export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenC
     <div className={styles.workspace}>
       <nav className={styles.navigation} aria-label="Commerce">
         <div className={styles.navigationHeading}>
-          <div className={styles.identity}><KqPrintedArt kind="commerce" className={styles.shopMark} /><strong>Commerce</strong></div>
+          <strong className={styles.identity}>Commerce</strong>
           <button type="button" className={styles.summaryLink} aria-current={activeSection === "overview" ? "page" : undefined} onClick={() => select("overview")}><LayoutDashboard size={16} aria-hidden="true" />Synthèse</button>
         </div>
         <div className={styles.tabs}>{sections.map(item => {

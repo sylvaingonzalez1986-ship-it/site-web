@@ -4,18 +4,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, DoorOpen, Pause, Play } from "lucide-react";
 import type { IsometricBuilding } from "@/lib/kanab-quest-world-mode";
 import { KqChapterHeading } from "../KqChapterHeading";
-import type { KqPrintedArtKind } from "../KqPrintedArt";
 import { createInteriorRoom } from "./interior-rooms";
 import type { createBuildingIsometricRenderer } from "./building-isometric-renderer";
 import styles from "./BuildingRoom.module.css";
 
-const ROOMS: Record<IsometricBuilding, { art: KqPrintedArtKind; description: string }> = {
-  bank: { art: "accounts", description: "Le banquier est installé près du coffre à roue de laiton. En face, le comptable travaille entre son registre et sa machine à calculer." },
-  office: { art: "staff", description: "Deux personnes travaillent au bureau du personnel, entourées de dossiers, du plan de travail et du panneau de recrutement." },
-  market: { art: "commerce", description: "Entre les herbes suspendues et les rayonnages de bocaux, Loïc prépare un colis. La réserve et le bureau de vente bordent son comptoir." },
-  missions: { art: "missions", description: "Deux tableaux à toit de bois présentent les défis et les missions de la communauté. Loïc accueille le joueur près du coffre aux packs." },
-  arena: { art: "achievements", description: "Sous les fanions et les lanternes du kiosque, le juge examine trois bocaux sur une nappe rayée. La caisse de Fleurs se trouve à droite de l’estrade." },
-  shop: { art: "card-shop", description: "Dans la boutique de Loïc, les packs et l’album ouvert entourent le comptoir, sous la fenêtre en arcade et le drapeau breton." },
+const ROOM_DESCRIPTIONS: Record<IsometricBuilding, string> = {
+  bank: "Le banquier reçoit les demandes de prêt. Une tirelire cochon repose sur son bureau, un panneau CAC 40 est accroché au mur et un ordinateur affiche le signe Bitcoin.",
+  office: "Le personnel dispose d’un bureau, d’un plan de travail et d’un panneau de recrutement. Le comptable tient son registre près de la machine à calculer.",
+  market: "Entre les herbes suspendues et les rayonnages de bocaux, Loïc prépare un colis. La réserve et le bureau de vente bordent son comptoir.",
+  missions: "Deux tableaux à toit de bois présentent les défis et les missions de la communauté. Loïc accueille le joueur près du coffre aux packs.",
+  arena: "Sous les fanions et les lanternes du kiosque, le juge examine trois bocaux sur une nappe rayée. La caisse de Fleurs se trouve à droite de l’estrade.",
+  shop: "Dans la boutique de Loïc, les packs et l’album ouvert entourent le comptoir, sous la fenêtre en arcade et le drapeau breton.",
 };
 const VILLAGE_HREF = "/arene/placard?view=hub";
 
@@ -66,9 +65,9 @@ export default function BuildingRoom({ id, onNavigate }: { id: IsometricBuilding
   }, [room, destinations, onNavigate]);
 
   return <section ref={entry} tabIndex={-1} aria-labelledby="building-room-title" data-building-room={id} className={styles.room}>
-    <KqChapterHeading title={room.name} titleId="building-room-title" art={ROOMS[id].art} level={1} />
+    <KqChapterHeading title={room.name} titleId="building-room-title" level={1} />
     <div className={styles.layout}>
-      <div className={styles.stage} role="img" aria-label={ROOMS[id].description}>
+      <div className={styles.stage} role="img" aria-label={ROOM_DESCRIPTIONS[id]}>
         <div className={styles.poster} style={{ backgroundImage: `url("/placard/building-rooms/${id}.webp")` }} />
         <canvas ref={canvas} aria-hidden="true" data-live="false" />
       </div>

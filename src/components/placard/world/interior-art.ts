@@ -13,7 +13,7 @@ const PAINT = {
   wood: "#af7849", honey: "#d6a15f", gold: "#efb63d", steel: "#acb9af",
   green: "#497a4e", leaf: "#6f9952", earth: "#514537", red: "#ba604b",
   skin: "#edbd89", hair: "#483c33", blue: "#386899", glass: "#a4d3c3",
-  apricot: "#e7ab72",
+  apricot: "#e7ab72", roseGlaze: "#f1939c",
   brass: "#d29b3e", bronze: "#8c5a27", iron: "#4e6267", forgedIron: "#293e43",
   velvet: "#185851", leather: "#93614a", walnut: "#835634", limestone: "#d4c1a0",
   windowGlass: "#b8ddcf", suit: "#20594a", silverHair: "#c4c3b3",
@@ -44,6 +44,7 @@ const finishByPaint: Partial<Record<Pigment, { surface: Surface; roughness: numb
   leather: { surface: "cloth", roughness: 0.72 },
   suit: { surface: "cloth", roughness: 0.88 },
   windowGlass: { surface: "glass", roughness: 0.27, metalness: 0.04 },
+  roseGlaze: { surface: "glass", roughness: 0.28 },
 };
 
 /** Tiny deterministic pigment fields; no image asset, browser canvas or network dependency. */

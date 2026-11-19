@@ -1,6 +1,5 @@
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowRight, CalendarDays, ShoppingBag } from "lucide-react";
-import { KqPrintedArt } from "@/components/placard/KqPrintedArt";
 import { ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import styles from "./HomeRewardsSection.module.css";
 
@@ -43,10 +42,7 @@ export function HomeRewardsSection({ arenaPrelaunch }: { arenaPrelaunch: boolean
 
         <div className={styles.activities}>
           <article className={styles.card} aria-labelledby="home-game-title">
-            <div className={styles.cardHeading}>
-              <div><p className={styles.eyebrow}>02 · Kanab Quest, le jeu du Quartier</p><h3 id="home-game-title">Cultive. Entreprends.<br />Fais-toi un nom.</h3></div>
-              <KqPrintedArt kind="quarter" className={styles.art} sizes="(max-width: 600px) 74px, 120px" />
-            </div>
+            <header><p className={styles.eyebrow}>02 · Kanab Quest, le jeu du Quartier</p><h3 id="home-game-title">Cultive. Entreprends.<br />Fais-toi un nom.</h3></header>
             <p>Cultive, récolte, vends et développe ton entreprise virtuelle. Tes dégustations, tes duels et ton activité font progresser ton classement.</p>
             <div className={styles.rewardLine}>
               <strong>Le Pot de la Canopée</strong>
@@ -65,10 +61,7 @@ export function HomeRewardsSection({ arenaPrelaunch }: { arenaPrelaunch: boolean
           </article>
 
           <article className={styles.card} aria-labelledby="home-album-title">
-            <div className={styles.cardHeading}>
-              <div><p className={styles.eyebrow}>03 · Mon Album, les boosters</p><h3 id="home-album-title">Collectionne les cartes.<br />Débloque des cadeaux.</h3></div>
-              <KqPrintedArt kind="collection" className={styles.art} sizes="(max-width: 600px) 74px, 120px" />
-            </div>
+            <header><p className={styles.eyebrow}>03 · Mon Album, les boosters</p><h3 id="home-album-title">Collectionne les cartes.<br />Débloque des cadeaux.</h3></header>
             <p>Tes commandes payées te donnent des boosters de <strong>3 cartes</strong>. Complète les pages de ton album ou recycle tes doublons pour obtenir des récompenses.</p>
             <div className={styles.rewardLine}>
               <strong>Page Légendaire complète : 600 € en bons d’achat</strong>

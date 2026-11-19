@@ -5,7 +5,7 @@
   color: var(--game-ink, #172923);
 }
 .room:focus { outline: none; }
-.room > header { grid-template-columns: minmax(0, 1fr) clamp(64px, 8vw, 104px); margin-bottom: 12px; }
+.room > header { margin-bottom: 12px; }
 .layout { display: grid; grid-template-columns: minmax(0, 2.35fr) minmax(200px, 1fr); align-items: center; gap: clamp(10px, 2vw, 28px); }
 .stage { position: relative; min-width: 0; aspect-ratio: 4 / 3; }
 .poster { position: absolute; inset: 0; background: center / contain no-repeat; pointer-events: none; }

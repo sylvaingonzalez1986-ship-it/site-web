@@ -40,8 +40,7 @@ const modules = {
     const api = createKqTutorialApi(request);
     window.__refreshCommerce = () => api.notify('kq:storage-updated');
     function App() {
-      const [pole,setPole] = React.useState('accounting');
-      return <KqTutorialApiProvider api={api}>{params.has('finance') ? <KqTreasuryDesk key={pole} initialPole={pole} onPoleChange={setPole} onOpenShop={()=>{}} /> : <KqMarketHub initialFlowerId={params.has('flower') ? params.get('flower')==='missing' ? 'missing' : flowerId : undefined} onOpenShop={()=>{}} />}</KqTutorialApiProvider>;
+      return <KqTutorialApiProvider api={api}>{params.has('finance') ? <KqTreasuryDesk onOpenShop={()=>{}} /> : <KqMarketHub initialFlowerId={params.has('flower') ? params.get('flower')==='missing' ? 'missing' : flowerId : undefined} onOpenShop={()=>{}} />}</KqTutorialApiProvider>;
     }
     createRoot(document.getElementById('root')).render(<App/>);`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,

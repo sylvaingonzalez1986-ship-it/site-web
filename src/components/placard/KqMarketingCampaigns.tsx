@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, ChevronDown, Target } from "lucide-react";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
@@ -90,7 +89,7 @@ export function KqMarketingCampaigns({ data, now, busy, onAsk, onOpenPricing, on
   const active = data.online.marketing?.active;
   const freeSlot = active === null;
   return <div className={styles.campaigns} data-marketing-campaigns>
-    <header className={styles.heading}><Image src="/placard/market-social-missions-sylvain-v3.webp" width={64} height={64} alt="" /><div><h3>Campagnes</h3><p>{active ? "Une campagne en cours · créneau occupé" : freeSlot ? "Un créneau disponible" : "Créneau à confirmer"}</p></div></header>
+    <header className={styles.heading}><h3>Campagnes</h3><p>{active ? "Une campagne en cours · créneau occupé" : freeSlot ? "Un créneau disponible" : "Créneau à confirmer"}</p></header>
     {active ? <KqMarketingStatus data={data} now={now} onOpenPricing={onOpenPricing} /> : freeSlot ? <CampaignPlanner data={data} busy={busy} onAsk={onAsk} onOpenPricing={onOpenPricing} onPrepareStock={onPrepareStock} /> : <p className={styles.notice}>L’état des campagnes est indisponible. Actualise la boutique avant de préparer un lancement.</p>}
     <KqMarketingHistory data={data} />
     {advertising}

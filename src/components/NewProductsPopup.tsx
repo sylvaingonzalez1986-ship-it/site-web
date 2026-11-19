@@ -158,7 +158,7 @@ function NewProductsPopupContent({ onDismiss }: { onDismiss: () => void }) {
     <AppDialog
       open={open}
       onClose={dismiss}
-      title={<KqChapterHeading art="commerce" title="Nouveautés du marché" compact />}
+      title={<KqChapterHeading title="Nouveautés du marché" compact />}
       className={styles.dialog}
       headerClassName={styles.header}
       bodyClassName={styles.body}

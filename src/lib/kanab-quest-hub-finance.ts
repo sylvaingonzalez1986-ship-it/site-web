@@ -60,8 +60,8 @@ export function getKqHubFinanceAttention(payload: unknown): KqHubAttentionResult
       description: `${label} : ${amount} restent à régler sur cette facture. Échéance ${overdue ? "atteinte" : "prévue"} le ${due} (heure de Paris).`,
       buttonLabel: "Voir mes factures",
       summary: overdue ? `Facture ${category} : ${amount} échus.` : `Facture ${category} : ${amount} le ${due} (Paris).`,
-      destination: "treasury",
-      options: { treasuryPole: "accounting" },
+      destination: "staff",
+      options: { staffSection: "accounting" },
     },
   };
 }

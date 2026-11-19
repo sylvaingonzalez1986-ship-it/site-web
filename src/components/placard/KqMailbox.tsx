@@ -104,7 +104,7 @@ export function KqMailbox({ onOpenPacks, onReveal, renderTrigger }: {
       <span className={styles.sign} data-map-label="mailbox"><Mail size={16} aria-hidden="true" /><span>Boîte aux lettres</span></span>
     </button>}
     {open ? createPortal(<AppDialog open={open} onClose={() => setOpen(false)} labelledBy={titleId} className={styles.dialog} bodyClassName={styles.body} closeLabel="Fermer la boîte aux lettres" dialogProps={{ "data-mailbox-dialog": true }}>
-      <KqChapterHeading art="mailbox" title="Boîte aux lettres" titleId={titleId} compact>
+      <KqChapterHeading title="Boîte aux lettres" titleId={titleId} compact>
         <p>Un bug ou une idée pour le quartier ? Écris à l’équipe.</p>
       </KqChapterHeading>
       <p className={styles.reward}><Gift size={22} aria-hidden="true" /><span>Les contributions utiles peuvent recevoir des <strong>packs Botte du Chanvrier</strong> après validation de l’équipe.</span></p>

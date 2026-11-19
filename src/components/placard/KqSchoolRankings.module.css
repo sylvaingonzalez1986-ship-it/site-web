@@ -1,6 +1,8 @@
 .rankings { min-width:0; color:var(--game-ink,#172923); line-height:1.5; }
 .opening { display:grid; grid-template-columns:minmax(180px, .7fr) minmax(0,1.3fr); gap:clamp(14px,3vw,32px); align-items:center; }
 .opening .actions { margin:12px 0 0; }
+.opening [data-kq-chapter] { margin: 0; padding: 0 0 12px; border-bottom: 1px solid #17292333; }
+.opening [data-kq-chapter] h2 { font-size: clamp(1.45rem, 3vw, 2.2rem); line-height: 1.2; text-transform: none; }
 @media(max-width:600px) { .opening { grid-template-columns:minmax(0,1fr); gap:10px; } .opening > :global([data-quizzshow-scene]) { max-width:280px; justify-self:center; } }
 .rankings * { box-sizing:border-box; }
 .rankings h3 { margin:0 0 14px; font:800 clamp(25px,3vw,32px)/1.15 var(--font-display),Impact,sans-serif; text-transform:none; }

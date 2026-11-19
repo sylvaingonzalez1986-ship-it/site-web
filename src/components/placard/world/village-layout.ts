@@ -27,8 +27,8 @@ type VillagePlace = {
 
 export const VILLAGE_PLACES: readonly VillagePlace[] = [
   { id: "warehouse", name: "La ferme", description: "La grange, les cultures, les récoltes et l’atelier.", href: "/arene/placard?view=workshop", scale: 1.3, depth: 3.8 },
-  { id: "bank", name: "Finances", description: "Le coffre, la banque et les comptes du quartier.", href: "/arene/placard?view=treasury", scale: 1, depth: 3.5 },
-  { id: "office", name: "Personnel", description: "Le bureau de ton équipe et de ta journée de travail.", href: "/arene/placard?view=staff", scale: 1.1, depth: 3.6 },
+  { id: "bank", name: "Banque", description: "Les prêts, l’épargne, la bourse et les cryptos du quartier.", href: "/arene/placard?view=treasury&pole=bank&section=loans", scale: 1, depth: 3.5 },
+  { id: "office", name: "Personnel", description: "Le bureau de ton équipe et de la comptabilité.", href: "/arene/placard?view=staff", scale: 1.1, depth: 3.6 },
   { id: "market", name: "Commerce", description: "Le marché et son étal de produits sous la toile dorée.", href: "/arene/placard?view=market", scale: 1.15, depth: 3.2 },
   { id: "missions", name: "Missions", description: "Le tableau des missions, au croisement des chemins.", href: "/arene/placard?view=missions", scale: 1.05, depth: 0.7 },
   { id: "arena", name: "Jury & duels", description: "Le kiosque du jury, sa coupe et ses guirlandes.", href: "/arene/placard?view=arena", scale: 1.15, depth: 3.8 },

@@ -12,12 +12,12 @@ import { KqMailbox } from "./KqMailbox";
 import styles from "./KqPlacardMap.module.css";
 
 export type PlacardMapView = "game" | "harvests" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop" | "staff" | "social" | "school";
-export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage" | "processing"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string; listingId?: string }) => void;
+export type PlacardMapOpen = (view: PlacardMapView, options?: { staffSection?: "accounting"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage" | "processing"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string; listingId?: string }) => void;
 
 const BUILDINGS = [
   { id: "warehouse", name: "La ferme", action: "Culture, récoltes et atelier", Icon: Warehouse },
-  { id: "bank", name: "Finances", action: "Factures, banque et comptabilité", Icon: Landmark },
-  { id: "office", name: "Personnel", action: "Ma journée, mon équipe et les recrutements", Icon: UsersRound },
+  { id: "bank", name: "Banque", action: "Prêts, épargne, bourse et crypto", Icon: Landmark },
+  { id: "office", name: "Personnel", action: "Ma journée, mon équipe et la comptabilité", Icon: UsersRound },
   { id: "market", name: "Commerce", action: "Vendre, développer ma boutique et communiquer", Icon: Store },
   { id: "shop", name: "Maison des cartes", action: "Ouvrir mes packs et parcourir ma collection", Icon: ShoppingBag },
   { id: "arena", name: "Jury & duels", action: "Présenter mes Fleurs et participer aux duels", Icon: Swords },
@@ -154,7 +154,7 @@ export function KqPlacardMap({ onOpen, activeRun, cashCents, readyLotCount, avai
       origin.focus({ preventScroll: true });
       onOpen("school");
     } else if (id === "bank") {
-      onOpen("treasury", { treasuryPole: "accounting" });
+      onOpen("treasury");
     } else if (id === "office") {
       onOpen("staff");
     } else onOpen(id);

@@ -11,6 +11,7 @@ import { KqMarketDesk, type KqMarketSection } from './KqMarketDesk';
 import { KqSocialNetworks } from './KqSocialNetworks';
 import { KqPrintedArt } from './KqPrintedArt';
 import { KqTreasuryDesk } from './KqTreasuryDesk';
+import { KqTreasuryBank, isKqBankDesk, type KqBankDesk } from './KqTreasuryBank';
 import { KqMissionCenter } from './KqMissionCenter';
 import { KqHarvests } from './KqHarvests';
 import { KqWarehouseEntry } from './KqWarehouseEntry';
@@ -34,6 +35,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
   const api = useMemo(() => createKqTutorialApi(createReleveCommerceTransport({ getState: () => current.current, setState: next => { current.current = next; change.current(next); } }), { nativeWarehouse: true, onOpenCulture: () => setNotice('Cette campagne est terminée. Reviens au quartier pour retrouver le parcours de culture.') }), []);
   const [section, setSection] = useState<KqMarketSection>(shopChapter || merchChapter ? 'management' : state.milestones.includes('delivered') ? 'sales' : 'overview');
   const [localPlace, setLocalPlace] = useState<KqReleveDestination>(initialDestination ?? (chapter === 'ledger' ? 'accounts' : chapter === 'social' ? 'social' : 'market'));
+  const [bankDesk, setBankDesk] = useState<KqBankDesk>('loans');
   const requestedPlace = destination ?? localPlace;
   const place = chapter === 'social' && !socialDestinations.includes(requestedPlace) ? 'social' : requestedPlace;
   const setPlace = useCallback((next: KqReleveDestination) => {
@@ -94,7 +96,12 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
     const url = new URL(target.href, window.location.href);
     if (!url.pathname.startsWith('/arene')) return;
     event.preventDefault(); event.stopPropagation();
-    if (url.searchParams.get('view') === 'treasury') setPlace(url.searchParams.get('pole') === 'bank' ? 'bank' : 'accounts');
+    if (url.searchParams.get('view') === 'staff' && url.searchParams.get('section') === 'accounting') setPlace('accounts');
+    else if (url.searchParams.get('view') === 'treasury') {
+      const next = url.searchParams.get('section');
+      if (url.searchParams.get('pole') === 'accounting') setPlace('accounts');
+      else { setBankDesk(isKqBankDesk(next) ? next : 'loans'); setPlace('bank'); }
+    }
     else if (url.searchParams.get('view') === 'harvests') openHarvests(url.searchParams.get('section') === 'storage' ? 'storage' : 'overview');
     else if (url.searchParams.get('view') === 'workshop' && url.searchParams.get('section') === 'storage') openStorageEquipment(url.searchParams.get('flower') ?? undefined);
     else if (url.searchParams.get('view') === 'workshop' || url.searchParams.get('view') === 'shop') openEquipment(url.searchParams.get('equipment') ?? undefined);
@@ -114,7 +121,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
         {shopChapter || merchChapter ? <button type="button" data-releve-guide="advance-sales" disabled={busy} onClick={() => void action('online', '/api/arena/placard/commerce', { command: 'advance-online-time', payload: { hours: 24 } })}><Clock3 size={20} aria-hidden="true" />Avancer de 24 h fictives</button> : null}
         {shopChapter && destination === undefined ? <button type="button" aria-pressed={place === 'social'} onClick={() => setPlace('social')}><span style={{ width: 28, flexShrink: 0 }}><KqPrintedArt kind="social" sizes="28px" /></span>Réseaux</button> : null}
         {chapter === 'social' ? <button type="button" data-releve-guide="advance-social-time" disabled={busy} onClick={() => void action('advance-social-time')}><Clock3 size={20} aria-hidden="true" /><span>Avancer de 5 min fictives<small>Récupération du mental uniquement</small></span></button> : null}
-        {chapter === 'ledger' ? <nav aria-label="Lieux de cette étape"><button type="button" aria-pressed={place === 'accounts'} onClick={() => setPlace('accounts')}>Le Bureau</button><button type="button" data-releve-guide="open-missions" aria-pressed={place === 'missions'} onClick={() => setPlace('missions')}>Les missions du quartier</button></nav> : null}
+        {chapter === 'ledger' ? <nav aria-label="Lieux de cette étape"><button type="button" aria-pressed={place === 'accounts'} onClick={() => setPlace('accounts')}>Personnel · Comptabilité</button><button type="button" data-releve-guide="open-missions" aria-pressed={place === 'missions'} onClick={() => setPlace('missions')}>Les missions du quartier</button></nav> : null}
         {place !== 'market' && chapter !== 'ledger' && chapter !== 'social' ? <button type="button" data-releve-guide="return-shop" onClick={() => setPlace('market')}><ArrowLeft size={17} aria-hidden="true" />Revenir à la boutique</button> : null}
         {chapter === 'social' && place !== 'social' ? <button type="button" data-releve-guide="return-social" onClick={() => setPlace('social')}>Revenir aux réseaux</button> : null}
       </div>
@@ -125,7 +132,8 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
     {notice ? <p className={styles.notice} role="status">{notice}<button type="button" aria-label="Fermer le message" onClick={() => setNotice('')}><X size={18} aria-hidden="true" /></button></p> : null}
     {place === 'missions' ? <KqMissionCenter onOpen={() => setNotice('Les autres parcours se découvrent dans la rencontre Missions du quartier.')} />
       : place === 'social' ? <KqSocialNetworks busy={busy} initialTutorialResultId={chapter === 'social' ? socialLearning.pendingResultId : undefined} onTutorialResultRead={chapter === 'social' ? entryId => record('read-social-result', { entryId }) : undefined} onTutorialPartnershipRead={chapter === 'social' && !socialLearning.partnershipsRead && socialLearning.platforms.every(platform => platform.published && platform.read) ? sponsorId => record('read-social-partnerships', { sponsorId }) : undefined} />
-      : place === 'accounts' || place === 'bank' ? <KqTreasuryDesk key={place} onOpenShop={openEquipment} initialPole={place === 'bank' ? 'bank' : 'accounting'} onPoleChange={pole => setPlace(pole === 'bank' ? 'bank' : 'accounts')} />
+      : place === 'accounts' ? <KqTreasuryDesk onOpenShop={openEquipment} />
+      : place === 'bank' ? <KqTreasuryBank embedded initialDesk={bankDesk} onDeskChange={setBankDesk} />
         : place === 'equipment' ? <KqWarehouseEntry key={`${equipmentMode}:${equipmentCode ?? ''}`} embedded initialShopOpen={equipmentMode === 'catalog'} initialSection={equipmentMode === 'storage' ? 'storage' : 'equipment'} initialFlowerId={flowerId} initialEquipmentCode={equipmentCode} onOpenShop={openEquipment} onClose={() => setPlace(equipmentOrigin.current)}
           onOpenHarvests={id => { setFlowerId(id); openHarvests(); }} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} />
           : place === 'storage' ? <KqHarvests section={harvestSection} initialFlowerId={flowerId} onSectionChange={(next, id) => { setHarvestSection(next); setFlowerId(id); }} onOpenWarehouse={openStorageEquipment} onOpenArena={() => setNotice('Les verdicts de cette campagne sont terminés. Tes lots sont prêts pour la conservation et la vente.')} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} onOpenGame={() => setNotice('Reviens au quartier pour retrouver le parcours de culture.')} />

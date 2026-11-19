@@ -12,8 +12,8 @@ function snapshot(state = createKqWarehouseStarter()): KqWarehouseViewSnapshot {
 }
 
 const cutawayDestinations = {
-  bank: ["view=treasury&pole=accounting", "view=treasury&pole=bank"],
-  office: ["view=staff", "view=staff&section=team", "view=staff&section=candidates"],
+  bank: ["view=treasury&pole=bank&section=loans", "view=treasury&pole=bank&section=savings", "view=treasury&pole=bank&section=stocks", "view=treasury&pole=bank&section=crypto"],
+  office: ["view=staff", "view=staff&section=team", "view=staff&section=candidates", "view=staff&section=accounting"],
   market: ["view=market&section=sales", "view=market&section=dashboard", "view=market&section=management", "view=social"],
   missions: ["view=missions", "view=missions&section=community"],
   arena: ["view=arena", "view=harvests&section=storage"],

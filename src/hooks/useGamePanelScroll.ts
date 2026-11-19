@@ -3,15 +3,17 @@
 import { useLayoutEffect, useRef } from "react";
 
 /** Activity windows keep their own scroll position when browser Back is used. */
-export function useGamePanelScroll(location: string) {
+export function useGamePanelScroll(location: string, scrollKey = location) {
   const ref = useRef<HTMLDivElement>(null);
   const positions = useRef(new Map<string, number>());
   const restoring = useRef(false);
   const currentLocation = useRef(location);
+  const currentScrollKey = useRef(scrollKey);
   const navigating = useRef(false);
+  useLayoutEffect(() => { currentLocation.current = location; }, [location]);
   useLayoutEffect(() => {
     const record = () => {
-      if (ref.current && !navigating.current) positions.current.set(currentLocation.current, ref.current.scrollTop);
+      if (ref.current && !navigating.current) positions.current.set(currentScrollKey.current, ref.current.scrollTop);
       navigating.current = true;
     };
     const back = () => {
@@ -28,10 +30,10 @@ export function useGamePanelScroll(location: string) {
   useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
-    currentLocation.current = location;
+    currentScrollKey.current = scrollKey;
     navigating.current = false;
     const storedPositions = positions.current;
-    const target = restoring.current ? storedPositions.get(location) ?? 0 : 0;
+    const target = restoring.current ? storedPositions.get(scrollKey) ?? 0 : 0;
     node.scrollTop = target;
     // Dynamic activities can load after the initial navigation commit.
     let pending = restoring.current;
@@ -40,7 +42,7 @@ export function useGamePanelScroll(location: string) {
     if (stage) observer.observe(stage);
     const interact = () => { pending = false; };
     const record = () => {
-      if (!navigating.current && (!pending || node.scrollTop >= target)) storedPositions.set(location, node.scrollTop);
+      if (!navigating.current && (!pending || node.scrollTop >= target)) storedPositions.set(scrollKey, node.scrollTop);
     };
     node.addEventListener("scroll", record, { passive: true });
     node.addEventListener("wheel", interact, { passive: true });
@@ -51,6 +53,6 @@ export function useGamePanelScroll(location: string) {
       node.removeEventListener("scroll", record);
       node.removeEventListener("wheel", interact); node.removeEventListener("touchstart", interact); node.removeEventListener("keydown", interact);
     };
-  }, [location]);
+  }, [scrollKey]);
   return ref;
 }

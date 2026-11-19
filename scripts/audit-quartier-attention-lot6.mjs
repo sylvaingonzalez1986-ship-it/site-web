@@ -137,7 +137,7 @@ else try{
    if(name==='mixed'){
     assert.match(metrics.text,/125 g sans contenant/);assert.equal(metrics.kind,'storage');
     const notices=await page.$$eval('[data-placard-next-action] > ul [data-resume-notice]',nodes=>nodes.map(e=>e.dataset.resumeNotice));assert.deepEqual(notices,['invoice-overdue','sales-suspended']);
-    for(const notice of notices){await enter(`[data-resume-notice="${notice}"]`);const route=await page.evaluate(()=>window.__navigation.at(-1));assert.equal(route.view,notice==='invoice-overdue'?'treasury':'market');assert.equal(route.options?.[notice==='invoice-overdue'?'treasuryPole':'marketSection'],notice==='invoice-overdue'?'accounting':'management');}
+    for(const notice of notices){await enter(`[data-resume-notice="${notice}"]`);const route=await page.evaluate(()=>window.__navigation.at(-1));assert.equal(route.view,notice==='invoice-overdue'?'staff':'market');assert.equal(route.options?.[notice==='invoice-overdue'?'staffSection':'marketSection'],notice==='invoice-overdue'?'accounting':'management');}
    }
    if(name==='upcoming-active'){assert.equal(metrics.kind,'culture');await enter('[data-resume-notice="invoice-upcoming"]');assert.equal(await page.evaluate(()=>window.__navigation.at(-1).view),'treasury');}
    if(['upcoming-waiting','upcoming-new'].includes(name)){assert.equal(metrics.kind,'finance');assert.equal(metrics.tone,'ready');}
@@ -150,7 +150,7 @@ else try{
    if(['paused','closed','sold-out','discarded','uncreated','healthy','far-future'].includes(name))assert.equal(metrics.kind,'culture');
    if(['overdue','low-cash','suspended','quality'].includes(name)){
     await enter(primary);const route=await page.evaluate(()=>window.__navigation.at(-1));
-    if(['overdue','low-cash'].includes(name)){assert.equal(route.view,'treasury');assert.equal(route.options?.treasuryPole,'accounting');}
+    if(['overdue','low-cash'].includes(name)){assert.equal(route.view,'staff');assert.equal(route.options?.staffSection,'accounting');}
     else{assert.equal(route.view,'market');if(name==='quality'){assert.equal(route.options?.marketSection,'dashboard');assert.equal(route.options?.listingId,'quality-listing');}else assert.equal(route.options?.marketSection,'management');}
    }
    assert.deepEqual(await page.evaluate(()=>window.__amounts()),await page.evaluate(()=>window.__fixtureAmounts),'Navigation never changes cash, invoice balances or packets');

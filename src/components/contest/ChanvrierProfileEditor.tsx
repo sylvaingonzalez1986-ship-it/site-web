@@ -99,7 +99,7 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, skipInherita
   const title = step === "inheritance" ? "La maison de Grand-père" : step === "look" ? "Atelier du personnage" : step === "strength" ? "Ton coup de pouce" : profile ? "Tes changements" : "Prêt à écrire la suite ?";
   const nextLabel = step === "inheritance" ? "Créer mon personnage" : step === "look" ? profile ? "Vérifier mes changements" : "Choisir ma spécialité" : step === "strength" ? "Vérifier mon départ" : profile ? "Enregistrer mon profil" : api.isTutorial ? "Créer mon personnage d’essai" : skipInheritance ? "Terminer mon personnage" : "Commencer mon histoire";
   const stepHeading = <div ref={heading} className={styles.stepHeading} tabIndex={-1}>
-    <KqChapterHeading art={step === "strength" ? "culture" : step === "review" ? "warehouse" : "quarter"} title={title} titleId={titleId}>
+    <KqChapterHeading title={title} titleId={titleId}>
       {step === "look" ? null : <p>{step === "inheritance" ? "Ton grand-père t’a légué sa maison et la grange qui l’accompagne. Tu reviens au Quartier pour y créer ta ferme indoor." : step === "strength" ? "Cultiver, gérer, vendre ou bricoler : choisis l’avantage qui t’aidera à faire vivre la ferme." : profile ? "Vérifie ton surnom et ton apparence avant d’enregistrer." : "Voici le personnage avec lequel tu vas commencer."}</p>}
     </KqChapterHeading>
   </div>;

@@ -41,7 +41,7 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
   const overdue = suppliers ? suppliers.overdueCents + lab.overdueCents : null;
   const paidLab = lab.invoices.filter(invoice => invoice.remainingCents === 0);
   return <div className={styles.desk}>
-    <KqChapterHeading art="accounts" title="Factures & échéances" compact actions={<button type="button" className={styles.secondary} disabled={busy} onClick={onRetry} aria-label="Actualiser les factures"><RefreshCw size={16} aria-hidden="true" /> Actualiser</button>} />
+    <KqChapterHeading title="Factures & échéances" compact actions={<button type="button" className={styles.secondary} disabled={busy} onClick={onRetry} aria-label="Actualiser les factures"><RefreshCw size={16} aria-hidden="true" /> Actualiser</button>} />
     <section className={styles.inbox} aria-label="Factures à régler">
       <dl className={styles.summary} aria-label="Situation avant règlement">
         <div data-priority><dt>Total à régler</dt><dd><strong>{canPayAll ? money(due) : "À actualiser"}</strong><span>Factures émises, toutes catégories</span></dd></div>

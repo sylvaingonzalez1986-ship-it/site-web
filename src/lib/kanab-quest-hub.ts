@@ -14,7 +14,7 @@ export type KqPlacardNextAction = {
 };
 
 type KqPlacardResumeAction = Omit<KqPlacardNextAction, "destination"> & {
-  destination: KqPlacardHubDestination | "treasury" | "staff";
+  destination: KqPlacardHubDestination | "staff";
   options?: KqHubAttentionNotice["options"];
 };
 
@@ -99,9 +99,9 @@ export type KqPlacardResume = {
   factActions: {
     id: string;
     summary: string;
-    destination: "game" | "arena" | "market" | "workshop" | "treasury";
+    destination: "game" | "arena" | "market" | "workshop" | "staff";
     href?: string;
-    options?: { marketSection?: "sales" | "dashboard" | "management"; treasuryPole?: "accounting"; listingId?: string; warehouseSection?: "storage" };
+    options?: { marketSection?: "sales" | "dashboard" | "management"; staffSection?: "accounting"; listingId?: string; warehouseSection?: "storage" };
   }[];
   attentionStatus: string | null;
   canRefreshAttention: boolean;
@@ -172,7 +172,7 @@ export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storag
     else if (finance && (kind === "new-culture" || tone === "waiting" || primary === null)) selectedNotice = finance;
   }
   if (selectedNotice) {
-    kind = selectedNotice.destination === "treasury" ? "finance" : "sales";
+    kind = selectedNotice === finance ? "finance" : "sales";
     tone = selectedNotice.severity === "upcoming" ? "ready" : "attention";
     primary = { destination: selectedNotice.destination, options: selectedNotice.options,
       eyebrow: selectedNotice.severity === "upcoming" ? "Échéance à préparer" : kind === "finance" ? "Échéance atteinte" : "Ventes à vérifier",

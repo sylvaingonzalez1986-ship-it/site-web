@@ -255,7 +255,7 @@ if (preview) {
     const farmPoint = await projectWorldPoint(farmPosition);
     await page.mouse.click(farmPoint.x, farmPoint.y);
     await page.waitForSelector('[data-building="warehouse"][data-positioned]');
-    const farmLinks = ['/arene/placard?view=game', '/arene/placard?view=workshop', '/arene/placard?view=workshop&section=processing', '/arene/placard?view=harvests'];
+    const farmLinks = ['/arene/placard?view=workshop', '/arene/placard?view=game', '/arene/placard?view=workshop&section=processing', '/arene/placard?view=harvests'];
     assert.deepEqual(await page.$$eval('[aria-label="Activités · La ferme"] a', nodes => nodes.map(node => node.getAttribute('href'))), farmLinks);
     await page.waitForFunction(() => document.querySelector('[aria-label="Lieu sélectionné : La ferme"] a') === document.activeElement);
     await settleBubble();
@@ -276,11 +276,11 @@ if (preview) {
     assert.equal(await page.$eval('[aria-label="Lieu sélectionné : La ferme"] a', node => node.getAttribute('href')), farmLinks[0]);
     await page.click('[aria-label="Fermer les activités du bâtiment"]');
     const expectedActions = [farmLinks,
-      ['/arene/placard?view=treasury&pole=accounting', '/arene/placard?view=treasury&pole=bank'],
-      ['/arene/placard?view=staff'],
-      ['/arene/placard?view=market&section=sales', '/arene/placard?view=market&section=dashboard', '/arene/placard?view=market&section=management', '/arene/placard?view=social'],
-      ['/arene/placard?view=missions'], ['/arene/placard?view=arena'], ['/arene/placard?view=school'],
-      ['/arene/placard?view=shop', '/arene/placard?view=shop&tab=collection']];
+      ['/arene/placard?view=hub&room=bank', ...['loans','savings','stocks','crypto'].map(section => `/arene/placard?view=treasury&pole=bank&section=${section}`)],
+      ['/arene/placard?view=hub&room=office', '/arene/placard?view=staff', '/arene/placard?view=staff&section=accounting'],
+      ['/arene/placard?view=hub&room=market', '/arene/placard?view=market&section=sales', '/arene/placard?view=market&section=dashboard', '/arene/placard?view=market&section=management', '/arene/placard?view=social'],
+      ['/arene/placard?view=hub&room=missions', '/arene/placard?view=missions'], ['/arene/placard?view=hub&room=arena', '/arene/placard?view=arena'], ['/arene/placard?view=school'],
+      ['/arene/placard?view=hub&room=shop', '/arene/placard?view=shop', '/arene/placard?view=shop&tab=collection']];
     for (let index = 0; index < expectedActions.length; index++) {
       await page.focus(`${destinations}:nth-child(${index + 1})`); await page.keyboard.press('Enter');
       await page.waitForFunction(() => document.querySelector('[data-building]')?.getAttribute('data-positioned') === 'true');
@@ -369,7 +369,7 @@ if (preview) {
     await page.waitForSelector('[data-building="market"][data-positioned]');
     await settleBubble();
     await page.screenshot({ path: resolve(output, 'mobile-commerce.png') });
-    assert.equal(await page.$$eval('[data-building="market"] a', nodes => nodes.length), 4);
+    assert.equal(await page.$$eval('[data-building="market"] a', nodes => nodes.length), expectedActions[3].length);
     await page.$eval('[data-building="market"] a:last-child', node => node.scrollIntoView({ block: 'nearest' }));
     assert.equal(await page.$eval('[data-building="market"] a:last-child', node => {
       const r = node.getBoundingClientRect(), parent = node.parentElement.getBoundingClientRect(); return r.top >= parent.top && r.bottom <= parent.bottom + 1;

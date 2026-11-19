@@ -511,7 +511,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
               || !isKqCommerceStockMature(stock, liveNow) || (stock.storage?.capacity?.overflowUnits ?? 0) > 0
               || getKqCommerceStockQuality(stock) < getKqCommerceMinimumQuality(stock.route, "online")!);
             return <article key={code} className={channelStyles.choice} data-sales-channel={code} data-unavailable={onlineBlocked ? "true" : undefined}>
-              <header className={channelStyles.heading}><Image src={KQ_CHANNELS.online.image} alt="" width={42} height={48} sizes="42px" /><div><h3>Ta boutique en ligne</h3><small>Ventes progressives, même hors connexion</small></div></header>
+              <header className={channelStyles.heading}><h3>Ta boutique en ligne</h3><small>Ventes progressives, même hors connexion</small></header>
               <div className={channelStyles.amount}><strong>Prix libres</strong><small>Paquets de 5 ou 10 g · emballages en supplément</small></div>
               <div className={channelStyles.notes}>
                 <p>{Number.isFinite(data.online.site.feePercent) ? `${data.online.site.feePercent.toLocaleString("fr-FR")} % de frais sur les ventes.` : "Frais de vente à confirmer."}</p>
@@ -525,7 +525,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
           }
           const proposal = quoteKqCommerce(data, stock, code, "advised", undefined, liveNow);
           return <article key={code} className={channelStyles.choice} data-sales-channel={code} data-unavailable={proposal.reason ? "true" : undefined}>
-            <header className={channelStyles.heading}><Image src={KQ_CHANNELS[code].image} alt="" width={42} height={48} sizes="42px" /><div><h3>{KQ_CHANNELS[code].name}</h3><small>Paiement immédiat à la vente</small></div></header>
+            <header className={channelStyles.heading}><h3>{KQ_CHANNELS[code].name}</h3><small>Paiement immédiat à la vente</small></header>
             <div className={channelStyles.amount}><strong>{proposal.reason ? "Indisponible" : formatKqCash(proposal.payoutCents)}</strong>{!proposal.reason ? <><span>TTC estimés</span><small>Pour {grams(proposal.units)} sur {grams(stock.remainingUnits)}<br />{formatKqCash(Math.round(proposal.unitCents))}/g{proposal.customerDemand && proposal.customerDemand.units < proposal.units ? " en moyenne" : ""}</small></> : null}</div>
             <div className={channelStyles.notes}>
               {proposal.customerDemand ? <p>Goûts demandés : +{proposal.customerDemand.bonusPercent.toLocaleString("fr-FR")} % sur {grams(proposal.customerDemand.units)}, déjà inclus.</p> : null}

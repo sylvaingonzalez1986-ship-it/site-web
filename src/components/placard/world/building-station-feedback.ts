@@ -31,7 +31,7 @@ export function createStationHalo(object: InteriorObject) {
   face.position.z = .002;
   group.add(rim, face);
   group.rotation.x = -Math.PI / 2;
-  group.position.set(object.x, .078, object.z);
+  group.position.set(object.x, .078 + (object.elevation ?? 0), object.z);
   group.visible = false;
   return group;
 }
@@ -53,7 +53,7 @@ function createContactShadowMaterial() {
 }
 
 export function addContactShadows(model: THREE.Group, objects: InteriorObject[]) {
-  const planes = objects.filter(object => object.href && object.kind !== "exit").map(object => (
+  const planes = objects.filter(object => object.href && object.kind !== "exit" && !object.elevation).map(object => (
     new THREE.PlaneGeometry(object.width * 1.6, object.depth * 1.63)
       .rotateX(-Math.PI / 2)
       .translate(object.x + .055, .024, object.z + .07)

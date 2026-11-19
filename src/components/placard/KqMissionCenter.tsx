@@ -14,23 +14,22 @@ import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDa
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqMissionFocusNotice, KqMissionPinButton } from "./KqPinnedMission";
 import { getKqMissionOverview, isKqMissionRewardUnavailable as isRewardUnavailable } from "@/lib/kanab-quest-mission-overview";
-import { KqPrintedArt, type KqPrintedArtKind } from "./KqPrintedArt";
 import { KqMissionRewardArtwork as RewardArtwork } from "./KqMissionRewardArtwork";
 import { KqMissionProgression } from "./KqMissionProgression";
 
-const TRACKS: Record<KqMissionTrack, { title: string; art: KqPrintedArtKind }> = {
-  culture: { title: "Culture & Buddies", art: "culture" },
-  quality: { title: "Qualité & savoir-faire", art: "harvest" },
-  preparation: { title: "Stockage & transformation", art: "warehouse" },
-  online: { title: "Vente en ligne", art: "commerce" },
-  shops: { title: "Boutiques partenaires", art: "commerce" },
-  trim: { title: "Trim", art: "warehouse" },
-  staff: { title: "Personnel", art: "staff" },
-  social: { title: "Réseaux", art: "social" },
-  collection: { title: "Collection", art: "collection" },
-  jury: { title: "Jury & duels", art: "achievements" },
-  finance: { title: "Finances", art: "accounts" },
-  prospecting: { title: "Prospection", art: "staff" },
+const TRACK_TITLES: Record<KqMissionTrack, string> = {
+  culture: "Culture & Buddies",
+  quality: "Qualité & savoir-faire",
+  preparation: "Stockage & transformation",
+  online: "Vente en ligne",
+  shops: "Boutiques partenaires",
+  trim: "Trim",
+  staff: "Personnel",
+  social: "Réseaux",
+  collection: "Collection",
+  jury: "Jury & duels",
+  finance: "Finances",
+  prospecting: "Prospection",
 };
 type RewardCode = KqMissionCode | KqLevelRewardCode;
 type MissionReceipt = KqMissionClaim & { code: RewardCode };
@@ -194,7 +193,7 @@ export function KqMissionCenter({ onOpen, initialSection = "challenges", initial
     : "";
 
   return <main className={styles.center}>
-    <KqChapterHeading art="missions" title="Mes défis" level={1} compact />
+    <KqChapterHeading title="Mes défis" level={1} compact />
     <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
     {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>
     {progression ? <KqMissionProgression progression={progression} disabled={loading || busy !== null || opening || !!error}
@@ -206,7 +205,7 @@ export function KqMissionCenter({ onOpen, initialSection = "challenges", initial
       <label className={styles.trackFilter}><select ref={trackFilter} aria-label="Filtrer les parcours" value={selectedTrack} disabled={!data} onChange={event => setSelectedTrack(event.target.value as typeof selectedTrack)}>
         <option value="all">Tous les parcours</option>
         <option value="ready">Récompenses prêtes{overview ? ` (${ready})` : ""}</option>
-        {KQ_MISSION_TRACKS.map(track => <option key={track} value={track}>{TRACKS[track].title}</option>)}
+        {KQ_MISSION_TRACKS.map(track => <option key={track} value={track}>{TRACK_TITLES[track]}</option>)}
       </select><ChevronDown size={18} aria-hidden="true" /></label>
       <button type="button" aria-label={loading ? "Actualisation des objectifs" : "Actualiser les objectifs"} disabled={loading || busy !== null || opening} onClick={() => void refresh()}><RefreshCw size={18} aria-hidden="true" /></button>
     </div>
@@ -214,13 +213,10 @@ export function KqMissionCenter({ onOpen, initialSection = "challenges", initial
     {error ? <div className={styles.error} role="alert"><p>{error}</p>{signedOut ? <Link href="/compte/connexion?next=%2Farene%2Fplacard%3Fview%3Dmissions">Me connecter</Link> : <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}>Réessayer</button>}</div> : null}
     {nextPack?.entitlementId && !(receiptPack && !rewardOpened) ? <div className={styles.packs} data-mission-packs><button type="button" disabled={opening || busy !== null || loading || !!error} onClick={() => void openPack({ entitlementId: nextPack.entitlementId!, cardCount: nextPack.cardCount, code: nextPack.code })}><Gift size={19} aria-hidden="true" />{availablePacks} pack{availablePacks > 1 ? "s" : ""} de mission à ouvrir<ArrowRight size={18} aria-hidden="true" /></button></div> : null}
     {reward && receivedReward ? <section className={styles.receipt} aria-label="Ta récompense et la suite" data-mission-receipt data-receipt-fresh={reward.replayed === false || undefined}>
-      <div className={styles.receiptHeader}>
-        <KqPrintedArt kind="mission-rewards" className={styles.receiptScene} sizes="(max-width: 600px) 80px, 120px" />
-        <div role="status"><h2 ref={receiptHeading} tabIndex={-1}>{rewardTitle}</h2><p>{receivedReward.kind === "cash" ? "Ta trésorerie du jeu est à jour." : receivedReward.kind === "buddie" ? "Ton Buddie est disponible dans ta collection." : receivedReward.kind === "card" ? "Ta carte rare est disponible dans ta collection." : rewardOpened ? "Tes cartes ont rejoint ta collection." : "Ton pack est prêt à ouvrir."}</p>{!reward.replayed && (reward.xpAwarded ?? 0) > 0 ? <strong>+{reward.xpAwarded} XP</strong> : null}</div>
-      </div>
+      <div role="status"><h2 ref={receiptHeading} tabIndex={-1}>{rewardTitle}</h2><p>{receivedReward.kind === "cash" ? "Ta trésorerie du jeu est à jour." : receivedReward.kind === "buddie" ? "Ton Buddie est disponible dans ta collection." : receivedReward.kind === "card" ? "Ta carte rare est disponible dans ta collection." : rewardOpened ? "Tes cartes ont rejoint ta collection." : "Ton pack est prêt à ouvrir."}</p>{!reward.replayed && (reward.xpAwarded ?? 0) > 0 ? <strong>+{reward.xpAwarded} XP</strong> : null}</div>
       {receiptPack && !rewardOpened ? <button type="button" disabled={opening || busy !== null} onClick={() => void openPack(receiptPack)}>Ouvrir mon pack<ArrowRight size={18} aria-hidden="true" /></button> : <div className={styles.continuation} data-mission-continuation>
         {!isKqMissionCode(reward.code) ? <><button type="button" onClick={chooseAnotherTrack}>Retrouver mes défis<ArrowRight size={18} aria-hidden="true" /></button></> : nextMission && nextCopy ? <>
-          <div className={styles.continuationHeading}><small>Ton prochain objectif · {TRACKS[nextMission.track].title}</small><h3>{nextCopy.title}</h3><p>{nextCopy.description}</p></div>
+          <div className={styles.continuationHeading}><small>Ton prochain objectif · {TRACK_TITLES[nextMission.track]}</small><h3>{nextCopy.title}</h3><p>{nextCopy.description}</p></div>
           <KqProgressMeter label={nextCopy.progressLabel} value={nextMission.progress} max={nextMission.target}
             valueLabel={`${nextMission.progress.toLocaleString("fr-FR")} / ${nextMission.target.toLocaleString("fr-FR")}`}
             tone={nextMission.claimable ? "gold" : "teal"} />
@@ -230,7 +226,7 @@ export function KqMissionCenter({ onOpen, initialSection = "challenges", initial
           <KqMissionPinButton mission={nextMission} disabled={busy !== null || opening || loading || !!error} />
           {nextMission.claimable && nextRewardUnavailable ? <p className={styles.unavailable}>Récompense temporairement indisponible. Ton objectif reste enregistré.</p> : null}
         </> : continuation.status === "complete" ? <>
-          <h3>{TRACKS[continuation.track].title} : parcours terminé !</h3>
+          <h3>{TRACK_TITLES[continuation.track]} : parcours terminé !</h3>
           <button type="button" onClick={chooseAnotherTrack}>Choisir un autre parcours<ArrowRight size={18} aria-hidden="true" /></button>
         </> : <><p role="status">{loading ? "Actualisation de ton prochain objectif…" : "Ta récompense est acquise. Actualise pour retrouver la suite de ton parcours."}</p>
           <button type="button" disabled={loading || busy !== null || opening} onClick={() => void refresh()}><RefreshCw size={17} aria-hidden="true" />Actualiser mes objectifs</button></>}
@@ -242,12 +238,12 @@ export function KqMissionCenter({ onOpen, initialSection = "challenges", initial
       {total === 0 ? <p className={styles.empty} data-mission-empty>Aucun défi disponible. Actualise tes objectifs.</p> : visibleTracks.length === 0 ? <div className={styles.empty} data-mission-empty-filter><p>{selectedTrack === "ready" ? "Aucune récompense prête à récupérer." : "Aucun défi disponible dans ce parcours."}</p><button type="button" onClick={chooseAnotherTrack}>Voir tous les parcours</button></div> : null}
       <div className={styles.tracks}>
         {visibleTracks.map(({ track, missions, current, state }) => {
-          const info = TRACKS[track];
+          const title = TRACK_TITLES[track];
           const copy = current ? KQ_MISSION_COPY[current.code] : null;
           const currentReward = current ? missionReward(current) : null;
           const rewardUnavailable = current ? isRewardUnavailable(current, data.collectionActive) : false;
-          return <section key={track} className={styles.track} aria-label={info.title} data-mission-track={track} data-ready={state === "ready" || undefined}>
-            <div className={styles.trackHeading}><KqPrintedArt kind={info.art} sizes="72px" /><span>{info.title}</span></div>
+          return <section key={track} className={styles.track} aria-label={title} data-mission-track={track} data-ready={state === "ready" || undefined}>
+            <div className={styles.trackHeading}>{title}</div>
             <div className={styles.body}>
               {current && copy && currentReward ? <>
                 <div className={styles.stepHeading}><span className={styles.eyebrow}>Étape {current.step} / {missions.length}</span><span className={styles.difficulty} data-level={copy.difficulty}>{typeof current.xp === "number" ? `+${current.xp} XP` : KQ_MISSION_DIFFICULTIES[copy.difficulty]}</span></div>

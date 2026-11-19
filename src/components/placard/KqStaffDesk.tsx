@@ -15,6 +15,7 @@ import { useKqSocialPlayer } from "./useKqSocialPlayer";
 import { KqStaffMoment, type KqStaffMoment as StaffMoment } from "./KqStaffMoment";
 import { KqStaffOperationsConfirmation, KqStaffOperationsStatus, KqStaffTaskList, useKqStaffOperations, type KqStaffConfirmationDraft } from "./KqStaffOperations";
 import { KqChapterHeading } from "./KqChapterHeading";
+import { KqTreasuryDesk } from "./KqTreasuryDesk";
 import { KqStaffHandbook } from "./KqStaffHandbook";
 import { KqStaffWorkPlan, type KqStaffStation } from "./KqStaffWorkPlan";
 import { KqStaffProspectingMap } from "./KqStaffProspectingMap";
@@ -189,7 +190,35 @@ function EmployeeWork({ employee, snapshot, prepare, disabled, fixedKind, onOpen
   </div>;
 }
 
-export function KqStaffDesk({ embedded = false, initialTab = "overview", onOpenTrim }: { embedded?: boolean; initialTab?: KqStaffPanelId; onOpenTrim?: (employeeId: string) => void } = {}) {
+type TeamDeskProps = { initialTab?: KqStaffPanelId; onOpenTrim?: (employeeId: string) => void };
+
+export function KqStaffDesk({ embedded = false, initialTab = "overview", onOpenTrim, onOpenShop, onAccountingChange }: {
+  embedded?: boolean;
+  initialTab?: KqStaffPanelId | "accounting";
+  onOpenTrim?: TeamDeskProps["onOpenTrim"];
+  onOpenShop?: (equipmentCode?: string) => void;
+  onAccountingChange?: (accounting: boolean) => void;
+} = {}) {
+  const router = useRouter();
+  const [localAccounting, setLocalAccounting] = useState(initialTab === "accounting");
+  const accounting = onAccountingChange ? initialTab === "accounting" : localAccounting;
+  const selectAccounting = onAccountingChange ?? setLocalAccounting;
+  const openShop = onOpenShop ?? ((code?: string) => {
+    const params = new URLSearchParams({ view: "workshop", catalog: "equipment" });
+    if (code) params.set("equipment", code);
+    router.push(`/arene/placard?${params}`);
+  });
+  return <main className={styles.page}>
+    {!embedded ? <KqChapterHeading title="Personnel" level={1} /> : null}
+    <nav className={`${styles.desk} ${styles.departments}`} aria-label="Rubriques du personnel">
+      <button type="button" data-staff-department="team" aria-pressed={!accounting} onClick={() => selectAccounting(false)}>Équipe</button>
+      <button type="button" data-staff-department="accounting" aria-pressed={accounting} onClick={() => selectAccounting(true)}>Comptabilité</button>
+    </nav>
+    {accounting ? <KqTreasuryDesk embedded onOpenShop={openShop} /> : <TeamDesk key={initialTab} initialTab={initialTab === "accounting" ? "overview" : initialTab} onOpenTrim={onOpenTrim} />}
+  </main>;
+}
+
+function TeamDesk({ initialTab = "overview", onOpenTrim }: TeamDeskProps) {
   const router = useRouter();
   const player = useKqSocialPlayer();
   const [planMotionPaused, setPlanMotionPaused] = useState(false);
@@ -354,11 +383,11 @@ export function KqStaffDesk({ embedded = false, initialTab = "overview", onOpenT
     </> },
   ] : [];
 
-  return <main className={styles.page}>{!embedded ? <KqChapterHeading art="staff" title="Personnel" level={1} /> : null}<div className={styles.desk} data-staff-desk data-guide-employee-count={snapshot && !loading && !error ? active.length : undefined} data-guide-staff-ready={!!snapshot && !locked}>
+  return <div className={styles.desk} data-staff-desk data-guide-employee-count={snapshot && !loading && !error ? active.length : undefined} data-guide-staff-ready={!!snapshot && !locked}>
     <div className={styles.overview} data-staff-overview><div className={styles.overviewStatus}><KqStaffOperationsStatus controller={controller} label="Personnel" disabled={!!controller.pending} suppressNotice={!!currentMoment} /></div></div>
     {currentMoment ? <KqStaffMoment key={currentMoment.id} moment={currentMoment} disabled={locked} onDismiss={() => dismissMoment()} onOpenEmployee={() => dismissMoment(true)} /> : null}
     {snapshot ? <KqStaffCarousel panels={panels} activeId={tab} onChange={setTab} disabled={locked || !!employeeSheet} /> : null}
     <KqStaffOperationsConfirmation controller={controller} />
     {employeeSheet && snapshot ? <KqStaffEmployeeSheet employee={snapshot.state.employees.find(employee => employee.id === employeeSheet.id)} employeeName={employeeSheet.name} snapshot={snapshot} origin={employeeSheet.origin} stale={!!error || !!controller.authProblem} planningDisabled={locked} onClose={() => setEmployeeSheet(null)} onOpenPlanning={() => openEmployeePlanning("day")} onOpenWeeklyPlanning={() => openEmployeePlanning("week")} onOpenContract={() => openContract(employeeSheet.id, active.some(employee => employee.id === employeeSheet.id) ? "manage" : "rehire")} onOpenPayroll={openPayroll} /> : null}
-  </div></main>;
+  </div>;
 }

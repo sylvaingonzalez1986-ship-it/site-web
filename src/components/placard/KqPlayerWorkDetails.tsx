@@ -48,19 +48,18 @@ export function KqPlayerWorkDetails({ view, workday, skills }: {
   return <KqHelpDashboard>
     <div className={styles.daySummary}>
       <section className={styles.paper} aria-label="Répartition de ta journée">
-        <KqPrintedArt kind="help-time" className={styles.dayArt} sizes="112px" />
         {workday ? <KqAllocationBar label={`Ta journée · jour ${workday.day}`} items={[
           { label: "Disponibles", value: workday.remainingHours, displayValue: hours(workday.remainingHours), tone: "teal" },
           { label: "Utilisées ou réservées", value: workday.dailyHours - workday.remainingHours, displayValue: hours(workday.dailyHours - workday.remainingHours), tone: "gold" },
         ]} /> : <p>Ta journée est indisponible. Actualise pour retrouver tes heures.</p>}
       </section>
       <section className={styles.paper} aria-label="Renouvellement du temps">
-        <KqPrintedArt kind="help-rest" className={styles.dayArt} sizes="112px" /><h3>Prochaine journée</h3>
+        <h3>Prochaine journée</h3>
         {workday ? <time className={styles.renewal} dateTime={workday.nextDayAt}>{new Date(workday.nextDayAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</time> : <strong>À confirmer</strong>}
         <span className={styles.caption}>Heure réelle · retour à 12 h, sans report</span>
       </section>
       <section className={styles.paper} aria-label="Effet des compétences sur le temps">
-        <KqPrintedArt kind="help-training" className={styles.dayArt} sizes="112px" /><h3>Jusqu’à 10 × plus rapide</h3>
+        <h3>Jusqu’à 10 × plus rapide</h3>
         <KqBarChart title="Pour un geste de base de 1 h" scaleMax={60} items={[
           { label: "Niveau 1", value: 60, displayValue: "60 min", tone: "ink" },
           { label: "Niveau 10", value: 6, displayValue: "6 min", tone: "teal" },

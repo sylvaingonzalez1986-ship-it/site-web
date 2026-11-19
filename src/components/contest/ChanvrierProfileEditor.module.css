@@ -42,7 +42,7 @@
 .sceneCaption { max-width: 30ch; margin: 16px auto 0; padding-top: 12px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; font-weight: 650; line-height: 1.6; text-align: center; }
 .controls { min-width: 0; padding: 22px 26px 26px; border-left: 1px solid var(--rule); }
 .stepHeading:focus { outline: none; }
-.stepHeading [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 93px; gap: 10px; margin-bottom: 16px; padding: 2px 0 12px; }
+.stepHeading [data-kq-chapter] { margin-bottom: 16px; padding: 2px 0 12px; }
 .stepHeading [data-kq-chapter] h2 { font-size: clamp(30px, 3.6vw, 42px); line-height: 1.06; text-transform: none; }
 .controls > p { margin: 12px 0; font-size: 13px; line-height: 1.65; color: var(--muted); }
 .letter { padding: 3px 0 8px; }
@@ -54,10 +54,8 @@
 .dialog[data-profile-step="look"][open] { display: flex; flex-direction: column; height: min(810px, 94dvh); overflow: hidden; }
 .layout[data-workshop="true"] { grid-template: "heading heading" auto "preview controls" minmax(0, 1fr) / minmax(0, .43fr) minmax(0, .57fr); flex: 1 1 auto; align-items: stretch; min-height: 0; }
 .layout[data-workshop="true"] .stepHeading { grid-area: heading; padding-inline: 13px; }
-.layout[data-workshop="true"] .stepHeading [data-kq-chapter] { --chapter-mark: 65px; grid-template-areas: none; grid-template-columns: minmax(0, 1fr) var(--chapter-mark); margin: 0; padding-block: 5px; border: 0; }
-.layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { grid-area: auto; align-self: center; font-size: clamp(29px, 4vw, 46px); }
-.layout[data-workshop="true"] .stepHeading [data-kq-chapter] > :last-child { grid-area: auto; width: var(--chapter-mark); }
-.layout[data-workshop="true"] .stepHeading [data-kq-chapter] img { max-height: var(--chapter-mark); }
+.layout[data-workshop="true"] .stepHeading [data-kq-chapter] { margin: 0; padding-block: 5px; border: 0; }
+.layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: clamp(29px, 4vw, 46px); }
 .layout[data-workshop="true"] .controls {
   grid-area: controls;
   overflow: auto;
@@ -240,13 +238,12 @@
   .sceneImage { width: min(100%, 430px); max-height: 200px; margin: auto; }
   .sceneCaption { max-width: 38ch; margin-top: 7px; padding-top: 7px; font-size: 11px; }
   .controls { padding: 12px 10px 15px; border-left: 0; }
-  .stepHeading [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 70px; margin-bottom: 10px; }
-  .stepHeading [data-kq-chapter] > :last-child { max-width: 70px; }
+  .stepHeading [data-kq-chapter] { margin-bottom: 10px; }
   .stepHeading [data-kq-chapter] h2 { font-size: clamp(25px, 6vw, 32px); }
   .letter p { margin-bottom: 12px; font-size: 14px; line-height: 1.7; }
   .workshopPreview { position: static; height: 184px; padding: 6px 8px; }
   .layout[data-workshop="true"] .stepHeading { padding-inline: 9px; }
-  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] { --chapter-mark: 41px; padding-block: 4px; }
+  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] { padding-block: 4px; }
   .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: clamp(24px, 6vw, 31px); }
   .layout[data-workshop="true"] .controls { padding-top: 5px; }
   .lookTabs button { padding-inline: 2px; font-size: 11px; }
@@ -288,7 +285,7 @@
   .dialog { max-height: 98dvh; padding-block: 4px; }
   .dialog[data-profile-step="look"][open] { height: 98dvh; }
   .topbar { padding-block: 0 2px; }
-  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] { --chapter-mark: 37px; padding-block: 1px; }
+  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] { padding-block: 1px; }
   .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: 27px; }
   .workshopPreview, .layout[data-workshop="true"] .workshopPreview { gap: 4px; padding-block: 3px 4px; }
   .stageHint { min-height: 0; }

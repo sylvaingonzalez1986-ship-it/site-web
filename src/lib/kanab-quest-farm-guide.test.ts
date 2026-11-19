@@ -30,7 +30,8 @@ describe("contextual story", () => {
   it("covers every main destination and distinguishes financial and commerce subpages", () => {
     for (const chapter of FARM_GUIDE_CHAPTERS) expect(getFarmGuideChapter(chapter)).toBe(chapter);
     expect(getFarmGuideChapter({ view: "market", section: "overview" }).id).toBe("sale");
-    expect(getFarmGuideChapter({ view: "treasury" }).id).toBe("accounts");
+    expect(getFarmGuideChapter({ view: "staff", section: "accounting" }).id).toBe("accounts");
+    expect(getFarmGuideChapter({ view: "treasury" }).id).toBe("bank");
   });
   it("keeps actual culture preparation ahead of any initial phase", () => {
     expect(getFarmGuideAdvice(getFarmGuideChapter({ view: "game" }), { preparation: true, phase: "prepare" }).title).toBe("Préparer avant de lancer");

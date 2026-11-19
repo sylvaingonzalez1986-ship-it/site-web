@@ -214,38 +214,132 @@ function windowScene(a: Art, x: number, w: number, detailed = false) {
   }
 }
 
+function vault(a: Art, w: number, d: number) {
+  const h = 2.29, y = 1.17, z = d * 0.485, r = w * 0.38;
+  a.bevelBox(w, 0.13, d, 0.035, 0, 0.072, 0, "forgedIron");
+  a.bevelBox(w * 0.96, h, d * 0.91, 0.085, 0, h / 2 + 0.09, 0, "forgedIron");
+  a.bevelBox(w * 0.88, h * 0.91, 0.16, 0.076, 0, y, z - 0.025, "iron");
+  a.bevelBox(0.075, h * 0.86, d * 0.75, 0.026, w * 0.482, y, -0.035, "iron");
+  a.rod([w * 0.489, 0.3, z - 0.05], [w * 0.489, h * 0.94, z - 0.05], 0.027, "steel");
+  a.frame(w * 0.831, h * 0.875, 0, y, z + 0.058, "bronze", 0.035);
+  a.cylinder(r, 0.12, 0, y + 0.03, z + 0.025, "bronze", r, [Math.PI / 2, 0, 0]);
+  a.torus(r * 0.92, 0.053, 0, y + 0.03, z + 0.086, "brass");
+  a.cylinder(r * 0.83, 0.12, 0, y + 0.03, z + 0.074, "iron", r * 0.83, [Math.PI / 2, 0, 0]);
+  a.torus(r * 0.75, 0.024, 0, y + 0.03, z + 0.137, "forgedIron");
+  const wheel = a.pivot("bank-vault-wheel", [0, y + 0.03, z + 0.263]);
+  wheel.torus(r * 0.42, 0.039, 0, 0, 0, "brass");
+  wheel.cylinder(0.106, 0.09, 0, 0, -0.022, "bronze", 0.106, [Math.PI / 2, 0, 0]);
+  wheel.sphere(0.072, 0, 0, 0.024, "brass", [1, 1, 0.58]);
+  for (let n = 0; n < 16; n++) {
+    const t = n * Math.PI / 8;
+    a.sphere(0.028, Math.sin(t) * r * 0.93, y + 0.03 + Math.cos(t) * r * 0.93, z + 0.136, "bronze", [1, 1, 0.6]);
+    if (n % 4 === 0) wheel.rod([0, 0, 0], [Math.sin(t) * r * 0.43, Math.cos(t) * r * 0.43, 0], 0.048, "brass");
+  }
+  for (const h of [0.7, 1.68]) {
+    a.bevelBox(w * 0.18, 0.16, 0.146, 0.026, w * 0.35, h, z + 0.087, "brass");
+    a.cylinder(0.063, 0.225, w * 0.42, h, z + 0.12, "bronze");
+  }
+}
+
+function piggyBank(a: Art) {
+  for (const x of [-.25, .2]) for (const z of [-.17, .17]) {
+    a.cylinder(.075, .16, x, .08, z, "roseGlaze", .095);
+  }
+  a.sphere(.32, -.06, .32, 0, "roseGlaze", [1.35, .94, .94]);
+  a.sphere(.24, .22, .36, .035, "roseGlaze", [1.03, 1.03, .99]);
+  a.sphere(.145, .407, .335, .113, "roseGlaze", [.95, .75, 1.12]);
+  for (const side of [-1, 1]) {
+    const z = .04 + side * .144;
+    a.cylinder(.105, .2, .237, .569, z, "roseGlaze", .012, [side * .28, 0, -.12]);
+    a.sphere(.032, .365, .442, .03 + side * .183, "ink");
+    a.sphere(.024, .524, .348, .103 + side * .062, "leather");
+  }
+  a.box(.21, .018, .035, -.1, .615, .005, "ink");
+  a.torus(.071, .022, -.474, .379, .039, "roseGlaze");
+  a.rod([-.484, .327, .039], [-.422, .284, 0], .039, "roseGlaze");
+}
+
+// Raised dot lettering, like the amber pixels of a stock-exchange display.
+const TICKER_LETTERS = {
+  C: ["0111", "1000", "1000", "1000", "1000", "1000", "0111"],
+  A: ["0110", "1001", "1001", "1111", "1001", "1001", "1001"],
+  "4": ["1001", "1001", "1001", "1111", "0001", "0001", "0001"],
+  "0": ["0110", "1001", "1001", "1001", "1001", "1001", "0110"],
+};
+
+function stockBoard(a: Art, w: number) {
+  const h = 1.24;
+  a.bevelBox(w, h, .16, .067, 0, h / 2, 0, "walnut");
+  a.frame(w - .1, h - .1, 0, h / 2, .09, "brass", .05);
+  a.bevelBox(w - .18, h - .18, .052, .04, 0, h / 2, .105, "ink");
+  const pitch = w / 31;
+  const letters = ["C", "A", "C", "4", "0"] as const;
+  for (const [index, letter] of letters.entries()) {
+    const start = index * 5.1 + (index >= 3 ? 1.8 : 0) - 13.1;
+    for (const [row, pixels] of TICKER_LETTERS[letter].entries()) {
+      for (let col = 0; col < pixels.length; col++) {
+        if (pixels[col] === "1") a.box(pitch * .92, .107, .014, (start + col) * pitch, h / 2 + (3 - row) * .119, .14, "paper");
+      }
+    }
+  }
+  for (const x of [-w * .473, w * .473]) {
+    for (const y of [.12, h - .12]) a.sphere(.036, x, y, .119, "brass", [1, 1, .4]);
+  }
+}
+
+function cryptoDesk(a: Art, w: number, d: number) {
+  desk(a, 0, 0, w, d, true);
+  const z = -.1;
+  a.bevelBox(.69, .07, .32, .024, 0, 1.015, z, "slate");
+  a.box(.16, .26, .12, 0, 1.14, z, "iron");
+  a.bevelBox(1.67, 1.08, .16, .064, 0, 1.76, z, "forgedIron");
+  a.bevelBox(1.52, .9, .047, .035, 0, 1.77, z + .085, "ink");
+  a.cylinder(.366, .027, 0, 1.77, z + .121, "apricot", .366, [Math.PI / 2, 0, 0]);
+  const symbol = a.pivot("bank-bitcoin-sign", [0, 1.77, z + .144]);
+  symbol.box(.08, .4, .02, -.084, 0, 0, "paper");
+  for (const y of [-.163, .012, .172]) symbol.box(.21, .066, .021, -.011, y, 0, "paper");
+  for (const y of [-.081, .093]) {
+    symbol.rod([.058, y - .067, 0], [.135, y - .031, 0], .067, "paper");
+    symbol.rod([.135, y - .031, 0], [.135, y + .034, 0], .067, "paper");
+    symbol.rod([.135, y + .034, 0], [.058, y + .066, 0], .067, "paper");
+  }
+  for (const x of [-.072, .005]) for (const y of [-.214, .219]) {
+    symbol.box(.033, .088, .023, x, y, 0, "paper");
+  }
+  a.bevelBox(1.05, .065, .32, .03, -.07, 1.027, d * .29, "forgedIron");
+  for (let row = 0; row < 3; row++) for (let key = 0; key < 9; key++) {
+    a.box(.077, .018, .053, -.48 + key * .102, 1.067, d * .29 + (row - 1) * .08, "steel");
+  }
+  a.sphere(.103, .66, 1.045, d * .29, "slate", [.7, .49, 1.18]);
+}
+
 export function furnishOfficeStation(a: Art, id: string, w: number, d: number): boolean {
   if (id === "bank") {
-    const h = 2.29, y = 1.17, z = d * 0.485, r = w * 0.38;
-    a.bevelBox(w, 0.13, d, 0.035, 0, 0.072, 0, "forgedIron");
-    a.bevelBox(w * 0.96, h, d * 0.91, 0.085, 0, h / 2 + 0.09, 0, "forgedIron");
-    a.bevelBox(w * 0.88, h * 0.91, 0.16, 0.076, 0, y, z - 0.025, "iron");
-    a.bevelBox(0.075, h * 0.86, d * 0.75, 0.026, w * 0.482, y, -0.035, "iron");
-    a.rod([w * 0.489, 0.3, z - 0.05], [w * 0.489, h * 0.94, z - 0.05], 0.027, "steel");
-    a.frame(w * 0.831, h * 0.875, 0, y, z + 0.058, "bronze", 0.035);
-    a.cylinder(r, 0.12, 0, y + 0.03, z + 0.025, "bronze", r, [Math.PI / 2, 0, 0]);
-    a.torus(r * 0.92, 0.053, 0, y + 0.03, z + 0.086, "brass");
-    a.cylinder(r * 0.83, 0.12, 0, y + 0.03, z + 0.074, "iron", r * 0.83, [Math.PI / 2, 0, 0]);
-    a.torus(r * 0.75, 0.024, 0, y + 0.03, z + 0.137, "forgedIron");
-    const wheel = a.pivot("bank-vault-wheel", [0, y + 0.03, z + 0.263]);
-    wheel.torus(r * 0.42, 0.039, 0, 0, 0, "brass");
-    wheel.cylinder(0.106, 0.09, 0, 0, -0.022, "bronze", 0.106, [Math.PI / 2, 0, 0]);
-    wheel.sphere(0.072, 0, 0, 0.024, "brass", [1, 1, 0.58]);
-    for (let n = 0; n < 16; n++) {
-      const t = n * Math.PI / 8;
-      a.sphere(0.028, Math.sin(t) * r * 0.93, y + 0.03 + Math.cos(t) * r * 0.93, z + 0.136, "bronze", [1, 1, 0.6]);
-      if (n % 4 === 0) wheel.rod([0, 0, 0], [Math.sin(t) * r * 0.43, Math.cos(t) * r * 0.43, 0], 0.048, "brass");
-    }
-    for (const h of [0.7, 1.68]) {
-      a.bevelBox(w * 0.18, 0.16, 0.146, 0.026, w * 0.35, h, z + 0.087, "brass");
-      a.cylinder(0.063, 0.225, w * 0.42, h, z + 0.12, "bronze");
-    }
+    bankDesk(a, 0, .46, w, 1.43);
+    chair(a, -.52, -.49, "leather");
+    banker(a, -.52, -.33);
+    lamp(a, -w * .38, .99, .43, "green");
+    a.box(.38, .057, .4, .3, 1.05, .74, "paper", [0, -.14, 0]);
+    return true;
+  }
+  if (id === "savings") {
+    piggyBank(a);
+    return true;
+  }
+  if (id === "stocks") {
+    stockBoard(a, w);
+    return true;
+  }
+  if (id === "crypto") {
+    cryptoDesk(a, w, d);
     return true;
   }
   if (id === "accounts") {
-    bankDesk(a, 0, 0, w, d);
-    lamp(a, -w * 0.34, 0.99, -d * 0.12, "brass");
-    ledger(a, -0.09, 1.037, 0, w * 0.42);
+    bankDesk(a, 0, .27, w, 1.15);
+    chair(a, -.1, -.56, "teal");
+    clerk(a, -.1, -.46, "apricot", "hair");
+    lamp(a, -w * 0.34, 0.99, -.06, "brass");
+    ledger(a, -0.09, 1.037, .27, w * .36);
     const x = w * 0.29;
     a.box(w * 0.25, 0.17, d * 0.48, x, 1.08, 0, "darkTeal", [-0.13, 0, 0]);
     a.cylinder(0.1, 0.15, x, 1.2, -d * 0.15, "paper", 0.1, [0, 0, Math.PI / 2]);
@@ -272,11 +366,11 @@ export function furnishOfficeStation(a: Art, id: string, w: number, d: number): 
 export function furnishOffice(a: Art, room: "bank" | "office") {
   const bank = room === "bank";
   windowScene(a, -3.58, 2.55, bank);
-  shelves(a, -0.75, -4.17, 1.85, !bank);
+  if (!bank) shelves(a, -0.75, -4.17, 1.85, true);
   shelves(a, 4.43, -4.16, 1.58);
   for (const [x, z, s] of [[-5, -2.35, 1.05], [-4.85, 2.25, 1.3], [4.9, -2.65, 0.9]]) foliage(a, x, 0, z, s);
   foliage(a, 4.45, 2.26, -4.09, 0.87, true);
-  foliage(a, -0.9, 2.26, -4.11, 0.7, true);
+  if (!bank) foliage(a, -0.9, 2.26, -4.11, 0.7, true);
   for (const side of [-1, 1]) {
     a.box(2.7, 0.024, bank ? 4.7 : 3.5, side * 2.35, 0.029, 0.9, bank ? "bronze" : "wood");
     a.box(2.55, 0.024, bank ? 4.56 : 3.36, side * 2.35, 0.043, 0.9, bank ? "velvet" : "apricot");
@@ -286,32 +380,19 @@ export function furnishOffice(a: Art, room: "bank" | "office") {
     a.rod([-5.35, 1.54, -2.18], [-5.18, 1.62, -2.18], 0.051, "brass");
     a.cylinder(0.113, 0.05, -5.18, 1.647, -2.18, "brass");
     a.sphere(0.107, -5.18, 1.755, -2.18, "paper", [0.87, 1.19, 0.87]);
-    chair(a, -3, -2.05, "teal");
-    clerk(a, -3, -1.94, "apricot", "hair");
-    bankDesk(a, 2.4, 0.72, 2.36, 1.25);
-    chair(a, 2.4, -0.16, "leather");
-    banker(a, 2.4, -0.02);
-    lamp(a, 3.2, 0.975, 0.7, "green");
-    chair(a, -3.15, 1.14, "teal", false);
-    chair(a, 3.55, 2.05, "teal", false);
-    for (let n = 0; n < 9; n++) a.cylinder(0.092, 0.032, 1.62 + (n % 3) * 0.22, 0.99 + Math.floor(n / 3) * 0.032, 0.86 - (n % 3) * 0.09, "gold");
-    a.box(0.35, 0.076, 0.41, 3.12, 1.018, 1.08, "paper", [0, -0.2, 0]);
+    vault(a.pivot("bank-vault", [2.75, .016, -2.96]), 1.87, 1.49);
+    chair(a, -3.4, .86, "teal", false);
+    chair(a, 1.0, 2.36, "teal", false);
   } else {
     windowScene(a, 2.0, 2.42);
     chair(a, 1.65, -2.54, "teal");
-    clerk(a, 1.65, -2.46, "apricot", "hair", true);
+    clerk(a, 1.65, -2.46, "cream", "wood", true);
     chair(a, 0.9, 0.14, "teal", false);
     chair(a, 2.48, 0.14, "red", false);
 
-    // The waiting bench and conversation table carry the wood and apron palette of the staff scenes.
+    // The waiting bench carries the wood and apron palette of the staff scenes.
     a.box(0.62, 0.14, 2.8, -4.91, 0.54, -0.98, "honey");
     a.box(0.12, 0.43, 2.8, -5.23, 0.79, -0.98, "teal");
     for (const z of [-2.16, 0.23]) a.box(0.63, 0.53, 0.1, -4.92, 0.28, z, "wood");
-    desk(a, 3.34, 1.88, 1.98, 1.07, true);
-    chair(a, 3.88, 1.09, "teal");
-    clerk(a, 3.9, 1.22, "cream", "wood");
-    ledger(a, 3.38, 1.016, 1.87, 0.47);
-    foliage(a, 4.08, 0.97, 1.93, 0.46);
-    for (const [x, z, paint] of [[2.66, 1.83, "teal"], [3.1, 2.19, "apricot"]] as const) a.box(0.31, 0.03, 0.25, x, 0.981, z, paint);
   }
 }

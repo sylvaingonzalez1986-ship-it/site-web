@@ -120,7 +120,7 @@ export function KqHarvests({ section, initialFlowerId, onSectionChange, onOpenAr
       { label: "Surplus à protéger", value: rows.filter(row => row.state === "overflow").length, tone: "red" as const },
   ].filter(item => item.value > 0);
   return <main ref={page} className={styles.page} data-placard-harvests>
-    <KqChapterHeading art="harvest" title="Mes récoltes" />
+    <KqChapterHeading title="Mes récoltes" />
     <nav className={styles.tabs} aria-label="Parcours des récoltes">
       <button type="button" data-harvest-overview aria-current={section === "overview" ? "page" : undefined} onClick={() => onSectionChange("overview", targetFlowerId)}>Toutes mes récoltes</button>
       <button type="button" aria-current={section === "storage" ? "page" : undefined} onClick={() => onSectionChange("storage", targetFlowerId)}>Stockage & affinage</button>

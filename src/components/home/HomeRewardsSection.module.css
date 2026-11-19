@@ -51,9 +51,6 @@
 .action > svg { flex-shrink: 0; }
 .activities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); margin-top: 1.5rem; }
 .card { display: flex; flex-direction: column; align-items: stretch; padding: clamp(1.15rem, 2.5vw, 2rem); }
-.cardHeading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
-.cardHeading > div { min-width: 0; }
-.cardHeading .art { width: clamp(74px, 8vw, 120px); }
 .card h3 { font-size: clamp(1.8rem, 2.6vw, 2.35rem); }
 .rewardLine { border-top: 1px solid #003f3033; padding-top: 1rem; margin: .2rem 0 1.2rem; }
 .rewardLine > strong { display: block; font-size: 1rem; line-height: 1.5; }
@@ -70,7 +67,6 @@
   .draw { grid-template-columns: minmax(180px, .7fr) minmax(0, 1.3fr); gap: 1.25rem; }
   .prize { padding: 1.5rem .8rem; }
   .activities { grid-template-columns: 1fr; }
-  .cardHeading .art { width: 100px; }
 }
 @media (max-width: 600px) {
   .draw { grid-template-columns: minmax(0, 1fr); }
@@ -84,13 +80,9 @@
   .calendar span { font-size: .72rem; }
   .steps { display: grid; gap: .2rem; margin-block: .7rem; }
   .section .action { width: 100%; }
-  .cardHeading { align-items: flex-start; }
-  .cardHeading .art { width: 74px; margin-top: 1.4rem; }
   .section h3 { overflow-wrap: anywhere; }
 }
 @media (max-width: 359px) {
   .prize { column-gap: .55rem; padding: 1rem .8rem; }
   .grams { font-size: 4.6rem; }
-  .cardHeading { flex-wrap: wrap; }
-  .cardHeading .art { order: -1; width: 66px; margin: 0; }
 }

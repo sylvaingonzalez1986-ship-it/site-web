@@ -3,9 +3,6 @@
 .school *, .school *::before, .school *::after { box-sizing: border-box; }
 .school h2, .school h3, .school h4, .school p { margin: 0; }
 .school h2, .school h3, .school h4 { line-height: 1.25; }
-.school :global([data-kq-chapter="school"]) { grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; margin: 0; padding: 0 0 12px; background: transparent; border-bottom: 1px solid #17292333; }
-.school :global([data-kq-chapter="school"]) h2 { font-size: clamp(1.45rem, 3vw, 2.2rem); line-height: 1.2; text-transform: none; }
-.school :global([data-kq-chapter="school"]) img { max-width: 96px; }
 .school p, .school li { line-height: 1.65; }
 .school button, .school input, .school select { font: inherit; }
 .school button, .school .buttonLink { min-height: 44px; padding: 11px 17px; display: inline-flex; gap: 8px; align-items: center; justify-content: center; font-weight: 750; cursor: pointer; text-align: center; color: #172923; background: transparent; box-shadow: none; border: 2px solid transparent; border-radius: 0; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
@@ -95,7 +92,6 @@
 @media (max-width:1000px) { .courseGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width:700px) { .workshopLayout { grid-template-columns: minmax(0,1fr); } .metrics { gap: 12px; } .school { gap: 16px; } .panel { padding: 16px; } .crossword { max-width: 420px; margin-inline: auto; } .journeyBar { gap: 14px; } .compactMetrics { gap: 9px 16px; } .courseGrid { gap: 24px 14px; } .cardActions { grid-template-columns: 1fr; } .feedback > summary { grid-template-columns: 65px minmax(0, 1fr) 12px; gap: 7px; } }
 @media (max-width:480px) { .courseGrid { grid-template-columns: minmax(0, 1fr); } .courseCard { gap: 12px; } .cardActions { grid-template-columns: 1fr 1fr; } .compactMetrics { width: 100%; justify-content: space-between; } .compactMetrics > div { display: grid; gap: 3px; } .journeyBar > button { width: 100%; } }
-@media (max-width:600px) { .school :global([data-kq-chapter="school"]) { grid-template-columns: minmax(0, 1fr) 64px; gap: 8px; padding: 0 0 12px; } .school :global([data-kq-chapter="school"]) img { max-width: 64px; } }
 @media (max-width:380px) { .metrics { grid-template-columns: minmax(0,1fr); } .metric { display: flex; justify-content: space-between; align-items: center; } .tabs { gap: 4px; } .tabs button { padding-inline: 8px; font-size: .88rem; } .questionNav button { padding-inline: 11px; } }
 @media (max-width:420px) { .tabs button { padding-inline: 5px; font-size: .86rem; } .tabs button svg { display: none; } }
 @media (max-width:700px) { .school nav[aria-label="Choisir un atelier"] { grid-template-columns: repeat(2, minmax(0,1fr)); } .school nav[aria-label="Choisir un atelier"] button { padding-inline: 10px; font-size: .85rem; } }

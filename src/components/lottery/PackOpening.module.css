@@ -6,9 +6,7 @@
 }
 .experience [hidden] { display: none !important; }
 .scenery { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(circle, #1729230b .7px, transparent 1px) 0 0 / 6px 6px; }
-.header { position: relative; z-index: 8; display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: max(.65rem, env(safe-area-inset-top)) 4.1rem .4rem 1rem; }
-.identity { display: flex; align-items: center; gap: .65rem; min-width: 0; }
-.headerArt { width: 56px; }
+.header { position: relative; z-index: 8; min-width: 0; padding: max(.65rem, env(safe-area-inset-top)) 4.1rem .4rem 1rem; }
 .header h1 { margin: 0; font: 800 clamp(1.3rem, 3vw, 1.8rem)/1.05 var(--font-display), Impact, sans-serif; }
 .packReference { position: relative; margin-top: .3rem; font-size: .65rem; color: #455748; }
 .packReference summary { cursor: pointer; }
@@ -155,8 +153,6 @@
 }
 @media (max-width: 600px) {
   .loot { gap: .65rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .headerArt { width: 42px; }
-  .identity { gap: .4rem; }
 }
 @media (max-width: 360px) {
   .controls { padding-inline: 0; }
@@ -173,7 +169,6 @@
   .stageHint { bottom: 12px; font-size: .6rem; }
   .experience[data-pack-phase='cards'] .stageHint { display: none; }
   .header { padding-top: .5rem; }
-  .headerArt { width: 36px; }
   .primary, .secondary { min-height: 44px; padding-block: .5rem; }
   .deskArt { display: none; }
 }

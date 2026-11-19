@@ -2,15 +2,12 @@
 
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowDownLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarClock, ChartNoAxesCombined, Check, ChevronLeft, ChevronRight, FileText, LoaderCircle, ReceiptText, RefreshCw, Search, Wallet } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqBusinessClock } from "@/lib/kanab-quest-business";
 import { KQ_TREASURY_ACCOUNTS, KQ_TREASURY_EXPENSE_ACCOUNTS, KQ_TREASURY_REVENUE_ACCOUNTS, KQ_TREASURY_PERIODS, getKqTreasuryEntryLabel, getKqTreasuryReport, isKqTreasurySnapshot, type KqTreasuryAccount, type KqTreasuryEntry, type KqTreasuryLine, type KqTreasuryPeriod, type KqTreasurySnapshot } from "@/lib/kanab-quest-treasury";
 import { KqTreasuryManagement } from "./KqTreasuryManagement";
-import { KqTreasuryBank } from "./KqTreasuryBank";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqAllocationBar, KqBarChart } from "./KqVisuals";
 import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
@@ -24,11 +21,6 @@ const TABS = [
   { id: "chartOfAccounts", label: "Plan comptable", icon: BookOpen },
 ] as const;
 type Tab = typeof TABS[number]["id"];
-type Pole = "accounting" | "bank";
-const OFFICE_ART: Record<Pole, { src: string; alt: string }> = {
-  accounting: { src: "/placard/bureau-accounting-sylvain-v2.webp", alt: "Au bureau comptable de Kanab Quest, les factures sont classées dans un grand registre" },
-  bank: { src: "/placard/bureau-bank-sylvain-v2.webp", alt: "Le banquier de Kanab Quest, cigare à la main et pieds sur son bureau, examine les dossiers" },
-};
 type Report = ReturnType<typeof getKqTreasuryReport>;
 const money = formatKqCash;
 const shortDate = (value: string) => new Date(value).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
@@ -153,13 +145,11 @@ function ChartOfAccounts({ data }: { data: KqTreasurySnapshot }) {
   </section>;
 }
 
-export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initialBankDesk, onPoleChange }: {
+export function KqTreasuryDesk({ onOpenShop, embedded = false }: {
   onOpenShop: (equipmentCode?: string) => void;
-  initialPole?: Pole; initialBankDesk?: "loans" | "savings" | "crypto" | "stocks";
-  onPoleChange?: (pole: Pole) => void;
+  embedded?: boolean;
 }) {
   const api = useKqTutorialApi();
-  const pole = initialPole;
   const [tab, setTab] = useState<Tab>("invoices");
   const [period, setPeriod] = useState<KqTreasuryPeriod>("current");
   const [offset, setOffset] = useState(0);
@@ -170,51 +160,36 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
   const data = matching ? state.data : null;
   const report = data ? getKqTreasuryReport(data) : null;
   useEffect(() => {
-    if (pole === "bank") return;
     const controller = new AbortController();
     async function load() {
       try {
         const response = await api.request(`/api/arena/placard/treasury?period=${period}&offset=${offset}&limit=25`, { cache: "no-store", signal: controller.signal });
         const payload: unknown = await response.json();
-        if (!response.ok) throw new Error(payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string" ? payload.error : "Le Bureau est momentanément indisponible.");
+        if (!response.ok) throw new Error(payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string" ? payload.error : "La comptabilité est momentanément indisponible.");
         if (!isKqTreasurySnapshot(payload)) throw new Error("Les données comptables sont incomplètes. Actualise les comptes.");
         getKqTreasuryReport(payload);
         if (!controller.signal.aborted) { setState({ key, data: payload, error: "" }); }
       } catch (failure) {
-        if (!controller.signal.aborted) setState({ key, data: null, error: failure instanceof Error ? failure.message : "Impossible de charger le Bureau." });
+        if (!controller.signal.aborted) setState({ key, data: null, error: failure instanceof Error ? failure.message : "Impossible de charger les comptes." });
       }
     }
     void load();
     return () => controller.abort();
-  }, [api, key, offset, period, pole]);
+  }, [api, key, offset, period]);
   useEffect(() => {
-    if (pole === "bank") return;
     const update = () => setRefresh(value => value + 1);
     const resume = () => { if (!document.hidden) update(); };
     const unsubscribe_kq_treasury_updated = api.subscribe(["kq:treasury-updated"], update);
     document.addEventListener("visibilitychange", resume);
     return () => { unsubscribe_kq_treasury_updated(); document.removeEventListener("visibilitychange", resume); };
-  }, [api, pole]);
+  }, [api]);
   function selectTab(next: Tab) { setTab(next); }
-  return <main className={styles.page}
-    >
-    {pole === "accounting" ? <KqChapterHeading art="accounts" title="Mes finances" /> : <header className={styles.header}>
-      <figure className={styles.officeArt}>
-        <div className={styles.welcome}>
-          <h1>{pole === "bank" ? "Banque & placements" : "Mes finances"}</h1>
-        </div>
-        <div className={styles.officeIllustration}>
-          <Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) calc(100vw - 64px), (max-width: 1280px) 53vw, 650px" preload />
-        </div>
-      </figure>
-    </header>}
-    <nav className={styles.financeNav} aria-label="Mes finances">
-      {pole === "accounting" ? <button type="button" data-guide-invoices-tab aria-pressed={tab === "invoices"} onClick={() => selectTab("invoices")}>Factures & disponible</button> : <Link href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("accounting"); } }}>Factures & disponible</Link>}
-      <Link href="/arene/placard?view=treasury&pole=bank" prefetch={false} aria-current={pole === "bank" ? "page" : undefined} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("bank"); } }}>Banque & placements</Link>
-      {pole === "accounting" ? <button type="button" aria-pressed={tab !== "invoices"} onClick={() => selectTab("overview")}>Comptabilité détaillée</button> : null}
+  return <section className={embedded ? `${styles.page} ${styles.embedded}` : styles.page} aria-label="Comptabilité du personnel" data-staff-accounting>
+    <KqChapterHeading title="Comptabilité" />
+    <nav className={styles.financeNav} aria-label="Dossiers comptables">
+      <button type="button" data-guide-invoices-tab aria-pressed={tab === "invoices"} onClick={() => selectTab("invoices")}>Factures & disponible</button>
+      <button type="button" aria-pressed={tab !== "invoices"} onClick={() => selectTab("overview")}>Comptabilité détaillée</button>
     </nav>
-    <section aria-label={pole === "bank" ? "Services bancaires" : "Comptabilité du Bureau"} className={styles.officePanel}>
-    {pole === "bank" ? <KqTreasuryBank initialDesk={initialBankDesk} /> : <>
     {tab !== "invoices" ? <label className={styles.dossierPicker} htmlFor="treasury-dossier"><span>Dossier comptable</span><select id="treasury-dossier" value={tab} onChange={event => selectTab(event.target.value as Tab)} aria-controls={`treasury-panel-${tab}`}>{TABS.filter(item => item.id !== "invoices").map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label> : null}
     <section id={`treasury-panel-${tab}`} aria-label={TABS.find(item => item.id === tab)?.label} className={styles.tabPanel}>
       {tab === "invoices" ? <KqTreasuryManagement key="invoices" onOpenShop={onOpenShop} section="invoices" /> : <>
@@ -242,7 +217,5 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
         </> : null}
       </>}
     </section>
-    </>}
-    </section>
-  </main>;
+  </section>;
 }

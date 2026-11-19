@@ -241,7 +241,10 @@ export function PackOpeningAnimation({ packNumber, onOpen, onContinue, disabled 
 
   return <div ref={root} className={styles.experience} data-pack-phase={phase} data-card-motion={motion} data-rarity={rarity} data-revealed={visible || undefined} data-compact={compact || undefined} style={{ "--rarity": REACTIONS[rarity].color } as CSSProperties}>
     <div className={styles.scenery} aria-hidden="true" />
-    <header className={styles.header}><div className={styles.identity}><KqPrintedArt kind="buddies-pack" className={styles.headerArt} sizes="56px" /><div><h1>Pack Buddies</h1><details className={styles.packReference}><summary>Référence du pack</summary><p>{packNumber}</p></details></div></div></header>
+    <header className={styles.header}>
+      <h1>Pack Buddies</h1>
+      <details className={styles.packReference}><summary>Référence du pack</summary><p>{packNumber}</p></details>
+    </header>
 
     <div className={styles.stage} hidden={phase === "recap"}>
       {phase === "cards" && <div className={styles.stageCount}>Carte <strong>{index + 1}</strong> / {total}</div>}
@@ -299,7 +302,7 @@ export function PackOpeningAnimation({ packNumber, onOpen, onContinue, disabled 
     </footer>
 
     {phase === "recap" && result && <div className={styles.recap}>
-      <div tabIndex={-1} data-recap-focus role="region" aria-labelledby="pack-recap-heading"><KqChapterHeading art="buddies-cards" title="Tes cartes" titleId="pack-recap-heading"><p>{newCards} nouvelle{newCards > 1 ? "s" : ""} · {duplicates} doublon{duplicates > 1 ? "s" : ""}{bonuses > 0 ? ` · ${bonuses} bonus` : ""}</p></KqChapterHeading></div>
+      <div tabIndex={-1} data-recap-focus role="region" aria-labelledby="pack-recap-heading"><KqChapterHeading title="Tes cartes" titleId="pack-recap-heading"><p>{newCards} nouvelle{newCards > 1 ? "s" : ""} · {duplicates} doublon{duplicates > 1 ? "s" : ""}{bonuses > 0 ? ` · ${bonuses} bonus` : ""}</p></KqChapterHeading></div>
       <div className={styles.loot}>{result.cards.map((card, i) => <button key={`${card.id}-${i}`} type="button" data-buddie={isBuddieCard(card) || undefined} style={{ "--rarity": REACTIONS[card.rarity].color, "--order": i } as CSSProperties} onClick={() => review(i)} aria-label={`Revoir ${card.name}${isBuddieCard(card) ? `, ${pullStatus(card)}` : ""}`}><CardFace card={card} /><span className={styles.lootStatus}>{card.isBonus ? "Bonus" : pullStatus(card)}</span></button>)}</div>
       {result.bonusPrize && <p className={styles.bonus}><Sparkles aria-hidden="true" /> Bonus gagné : {result.bonusPrize.title}</p>}
       {result.inventory.totalCards > 0 ? <div className={styles.collectionProgress}><KqProgressMeter label="Collection Buddies" value={result.inventory.uniqueOwned} max={result.inventory.totalCards} valueLabel={`${result.inventory.uniqueOwned} / ${result.inventory.totalCards} cartes`} /></div> : <p>Progression de la collection indisponible.</p>}

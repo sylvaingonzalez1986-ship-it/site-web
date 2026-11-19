@@ -65,7 +65,7 @@
   border-bottom: 2px solid #172923;
 }
 
-.navMasthead { display: flex; align-items: center; gap: 4px; padding-block: 4px 9px; }
+.navMasthead { padding-block: 4px 9px; }
 .navMasthead strong {
   display: block;
   flex: 1;
@@ -74,7 +74,6 @@
   letter-spacing: -.025em;
   text-shadow: 1px 1px 0 #efc451;
 }
-.navMasthead .brandArt { flex: 0 0 58px; width: 58px; }
 
 .navGroup { display: grid; gap: 4px; }
 .navGroup + .navGroup { margin-top: 12px; }
@@ -221,9 +220,8 @@
 .drawerBody { display: flex; flex-direction: column; padding: 12px 18px max(28px, env(safe-area-inset-bottom)); }
 .navDrawer[data-drawer-only] :is(.drawerHeader, .drawerBody) { padding-left: max(18px, env(safe-area-inset-left)); }
 .drawerBody .navBrand { margin-bottom: 14px; padding-bottom: 10px; }
-.drawerBody .navMasthead { justify-content: space-between; padding-block: 0 5px; }
+.drawerBody .navMasthead { padding-block: 0 5px; }
 .drawerBody .navMasthead strong { font-size: 34px; }
-.drawerBody .brandArt { flex-basis: 68px; width: 68px; }
 .drawerBody .navGroup { gap: 7px; }
 .drawerBody .navGroup + .navGroup { margin-top: 18px; }
 .drawerBody .navGroup button { min-height: 48px; }

@@ -93,7 +93,7 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
   if (typeof document === "undefined") return null;
   const content = <>
       <div className={styles.albumLayout}>
-        <KqChapterHeading art="collection" title="Collection" titleId="botte-collection-title" compact actions={!embedded ? <button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button> : undefined} />
+        <KqChapterHeading title="Collection" titleId="botte-collection-title" compact actions={!embedded ? <button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button> : undefined} />
         <div data-farm-guide-host />
         <div className={styles.albumTabs} role="tablist" aria-label="Choisir une collection">
           {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => selectAlbum(kind)} onKeyDown={event => {

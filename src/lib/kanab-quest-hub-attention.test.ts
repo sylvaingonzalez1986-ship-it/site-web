@@ -4,7 +4,7 @@ import type { KqHubAttentionNotice } from "./kanab-quest-hub-attention";
 
 const idle = { activeRun: false, readyLotCount: 0, availableFlowerCount: 0, curingFlowerCount: 0 };
 const emptyStorage: KqPlacardResumeStorage = { serverNow: "2026-10-29T12:00:00Z", lots: [] };
-const invoice: KqHubAttentionNotice = { id: "invoice-overdue", severity: "urgent", title: "Facture fournisseur échue", description: "75,80 € restent à régler.", summary: "Facture fournisseur : 75,80 € échus.", buttonLabel: "Voir mes factures", destination: "treasury", options: { treasuryPole: "accounting" } };
+const invoice: KqHubAttentionNotice = { id: "invoice-overdue", severity: "urgent", title: "Facture fournisseur échue", description: "75,80 € restent à régler.", summary: "Facture fournisseur : 75,80 € échus.", buttonLabel: "Voir mes factures", destination: "staff", options: { staffSection: "accounting" } };
 const sale: KqHubAttentionNotice = { id: "sales-quality", severity: "attention", title: "Vente bloquée", description: "La qualité du lot est insuffisante.", summary: "Orange sanguine : vente bloquée.", buttonLabel: "Vérifier cette annonce", destination: "market", options: { marketSection: "dashboard", listingId: "listing-exact" } };
 const upcoming: KqHubAttentionNotice = { ...invoice, id: "invoice-upcoming", severity: "upcoming", title: "Facture à prévoir", summary: "Facture fournisseur : demain, 75,80 €." };
 const attention = (finance: KqHubAttentionNotice | null = null, sales: KqHubAttentionNotice | null = null): KqPlacardResumeAttention => ({ finance: { notice: finance, complete: true }, sales: { notice: sales, complete: true }, loading: false });
@@ -35,13 +35,13 @@ describe("Quartier attention preserves priorities and exact destinations", () =>
     const result = getKqPlacardResume({ ...idle, activeRun: true }, storage, attention(invoice, sale));
     expect(result.kind).toBe("storage");
     expect(result.facts).toEqual([invoice.summary, sale.summary]);
-    expect(result.factActions.slice(0, 2).map(notice => notice.options)).toEqual([{ treasuryPole: "accounting" }, { marketSection: "dashboard", listingId: "listing-exact" }]);
+    expect(result.factActions.slice(0, 2).map(notice => notice.options)).toEqual([{ staffSection: "accounting" }, { marketSection: "dashboard", listingId: "listing-exact" }]);
     expect(result.additionalFacts).toContain("Ta culture est sauvegardée et prête à reprendre.");
   });
 
   it("shows a due invoice before blocked sales and keeps the saved culture discoverable", () => {
     const result = getKqPlacardResume({ ...idle, activeRun: true }, emptyStorage, attention(invoice, sale));
-    expect(result).toMatchObject({ kind: "finance", tone: "attention", primary: { destination: "treasury", options: { treasuryPole: "accounting" } } });
+    expect(result).toMatchObject({ kind: "finance", tone: "attention", primary: { destination: "staff", options: { staffSection: "accounting" } } });
     expect(result.facts).toEqual([sale.summary, expect.stringContaining("culture est sauvegardée")]);
   });
 

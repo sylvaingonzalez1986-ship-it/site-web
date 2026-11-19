@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Gift, Swords, Trophy } from "lucide-react";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
@@ -25,7 +24,6 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
   return <section id="placard-saison" data-kq-season-board className={styles.board} aria-labelledby="placard-season-title">
     <header className={styles.header}>
       <div><span className={styles.eyebrow}>{local ? "Simulation locale" : season ? `Saison ${season[2]} · ${season[1]}` : "Saison en cours"}</span><h2 id="placard-season-title">Le tableau<br /><em>du village.</em></h2><p>{local ? "Cet aperçu utilise des adversaires simulés." : "Débutants ou habitués, tous les chanvriers partagent ce classement. Fais-toi un nom avec tes cultures, tes duels et le développement de ton entreprise."}</p></div>
-      <Image className={styles.art} src="/contest/mascot/arena-scene-classement-v2.png" alt="" width={360} height={240} sizes="(max-width: 650px) 110px, 240px" />
     </header>
     <div className={styles.body}>
       <div className={styles.player}>

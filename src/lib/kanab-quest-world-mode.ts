@@ -22,7 +22,8 @@ export function normalizeKqVillageLocation(search: string): string {
   const params = new URLSearchParams(search);
   const worlds = params.getAll("world");
   const legacyWorld = worlds.length > 1 || (worlds.length === 1 && worlds[0] !== "3d");
-  if (!legacyWorld && !params.has("room")) return search;
+  const movedAccounts = params.get("view") === "treasury" && params.get("pole") === "accounting";
+  if (!legacyWorld && !params.has("room") && !movedAccounts) return search;
   if (legacyWorld) params.set("world", "3d");
   const room = params.get("room");
   if (params.get("view") === "hub" && isIsometricBuilding(room)) {
@@ -32,6 +33,12 @@ export function normalizeKqVillageLocation(search: string): string {
     const view = isIsometricBuilding(room) ? BUILDING_VIEWS[room] : room === "warehouse" ? "workshop" : room === "collection" ? "school" : undefined;
     params.delete("room");
     if (!params.has("view") && view) params.set("view", view);
+  }
+  if (params.get("view") === "treasury" && params.get("pole") === "accounting") {
+    params.set("view", "staff");
+    params.set("section", "accounting");
+    params.delete("pole");
+    if (params.get("fromRoom") === "bank") params.set("fromRoom", "office");
   }
   const next = params.toString();
   return next ? `?${next}` : "";

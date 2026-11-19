@@ -14,9 +14,7 @@
 .page button:disabled { cursor: not-allowed; opacity: .6; filter: saturate(.3); box-shadow: none; }
 .page :is(button,input,select,a,summary):focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 26px 30px; background: #149b8b; color: #172923; border-bottom: 3px solid #172923; }
-.workshopSign { display: flex; align-items: center; gap: 16px; min-width: 0; }
-.signMark { width: 45px; height: 48px; display: grid; place-items: center; flex-shrink: 0; border: 1px solid #172923; background: #efc451; color: #172923; border-radius: var(--game-panel-radius, 2px); box-shadow: var(--game-panel-shadow, none); transform: rotate(-4deg); }
-.workshopSign h2 { margin: 0; font-family: var(--font-display),Impact,sans-serif; font-size: 42px; line-height: 1.05; text-transform: uppercase; letter-spacing: .02em; font-weight: 900; text-shadow: 1px 2px 0 #fff1d670; }
+.workshopSign { min-width: 0; margin: 0; font-family: var(--font-display),Impact,sans-serif; font-size: 42px; line-height: 1.05; text-transform: uppercase; letter-spacing: .02em; font-weight: 900; }
 .headerActions { display: flex; align-items: center; gap: 12px; }
 .cash { display: grid; gap: 4px; text-align: right; margin-right: 12px; padding: 8px 12px; background: #fff1d6; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); box-shadow: var(--game-panel-shadow, none); }
 .cash small { font-size: 12px; color: #536058; }
@@ -257,8 +255,7 @@
   .headerActions { width: 100%; gap: 9px; flex-wrap: wrap; }
   .cash { flex-basis: 100%; min-width: 0; text-align: left; margin-right: 0; }
   .cash strong { font-size: 28px; white-space: nowrap; }
-  .workshopSign h2 { font-size: 36px; }
-  .signMark { width: 38px; height: 42px; }
+  .workshopSign { font-size: 36px; }
   .tabs { padding: 0 8px; gap: 4px; }
   .tab { --game-control-edge: 9px; flex: 1; min-width: 0; gap: 6px; padding: 12px 6px; font-size: 15px; flex-direction: column; }
   .cultureToolbar { flex-wrap: wrap; gap: 8px; }
@@ -286,9 +283,6 @@
 
 /* The warehouse reads as an illustrated place, with its ledger on paper. */
 .header { background: transparent; border-bottom: 0; }
-.signMark { width: 100px; height: 100px; border: 0; border-radius: 0; background: transparent; transform: none; box-shadow: none; }
-.signMark > span { width: 100%; height: 100%; }
-.workshopSign h2 { text-shadow: none; }
 .cash { padding: 13px 18px; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .tabs { background: transparent; border-bottom: 1px solid #17292340; padding-bottom: 10px; }
 .cultureToolbar > div { border: 0; border-radius: 0; background: transparent; box-shadow: none; gap: 6px; padding: 0; }
@@ -296,9 +290,7 @@
 .preparationAccess { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); background: transparent; }
 @media (max-width: 650px) {
   .header { padding: 16px 12px; gap: 12px; }
-  .signMark { width: 72px; height: 72px; }
-  .workshopSign { gap: 12px; }
-  .workshopSign h2 { font-size: 34px; }
+  .workshopSign { font-size: 34px; }
   .headerActions { gap: 8px; }
   .cash { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; }
   .cash strong { font-size: 28px; }

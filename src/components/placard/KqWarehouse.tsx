@@ -28,7 +28,6 @@ import type { KqGrowRoomWarehouseEditor } from "./KqGrowRoom";
 import { KqWarehouseCultureRoom } from "./KqWarehouseCultureRoom";
 import type { KqGrowRoomEvent } from "./KqGrowRoomModel";
 import { KqWarehouseCellMenu, type WarehouseCellKind } from "./KqWarehouseCellMenu";
-import { KqPrintedArt } from "./KqPrintedArt";
 import { KqWorkshopTrimDesk } from "./KqWorkshopTrimDesk";
 import { KqWarehousePostHarvest } from "./KqWarehousePostHarvest";
 import { KqHarvestStorage } from "./KqHarvestStorage";
@@ -893,7 +892,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       if (!event.shiftKey && document.activeElement === nodes.at(-1)) { event.preventDefault(); nodes[0]?.focus(); }
     }}>
       <header className={styles.header}>
-        <div className={styles.workshopSign}><KqPrintedArt kind="warehouse" className={styles.signMark} sizes="(max-width: 650px) 72px, 100px" /><h2 id={`${id}-title`} data-arena-tour="warehouse">Entrepôt</h2></div>
+        <h2 id={`${id}-title`} className={styles.workshopSign} data-arena-tour="warehouse">Entrepôt</h2>
         <div className={styles.headerActions}>
           <div className={styles.cash}><small>Trésorerie</small><strong>{snapshot ? formatKqCash(snapshot.cashCents) : "—"}</strong></div>
           <button className={styles.secondary} type="button" data-warehouse-action="reserve" aria-controls={`${id}-dashboard`} disabled={!installedSummary || loading} onClick={openReserve}><Package size={17} aria-hidden="true" />Ma réserve</button>

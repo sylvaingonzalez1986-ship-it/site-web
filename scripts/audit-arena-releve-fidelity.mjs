@@ -27,6 +27,7 @@ import{KqWarehouse}from'/src/components/placard/KqWarehouse';
 import{KanabQuestDicePrototype}from'/src/components/placard/KanabQuestDicePrototype';
 import{KqMarketHub}from'/src/components/placard/KqMarketHub';
 import{KqTreasuryDesk}from'/src/components/placard/KqTreasuryDesk';
+import{KqTreasuryBank}from'/src/components/placard/KqTreasuryBank';
 import{KqMissionCenter}from'/src/components/placard/KqMissionCenter';
 import{ChanvrierProfileEditor}from'/src/components/contest/ChanvrierProfileEditor';
 import{ContestTastingBook}from'/src/components/contest/ContestTastingBook';
@@ -108,13 +109,13 @@ function NativeReference(){
   const request=meeting==='bank'?createKqTreasuryTutorial().request:lesson?createDiscoveryTransport(lesson,noop).request:meeting==='business'||meeting==='workshop'?createReleveCommerceTransport({getState:()=>commerce.current,setState:next=>{commerce.current=next;setCommerce(next);}}):chapter<=2?factory(options):chapter<=5?createReleveCultureTransport(options):createReleveCommerceTransport({getState:()=>commerce.current,setState:next=>{commerce.current=next;setCommerce(next);}});
   return createKqTutorialApi(async(input,init)=>{const path=typeof input==='string'?input:input instanceof URL?input.pathname:input.url;window.__fidelity.requests.push({path,method:init?.method??'GET'});return request(input,init);});
  },[]);
- const active=chapter<=2?'workshop':chapter<=4?'game':chapter===5?'harvests':chapter===8?'treasury':'market';
- const title=chapter<=2?'L’entrepôt':chapter<=4?'Ma culture':chapter===5?'Jury & duels':chapter===8?'Mes finances':'Mon commerce';
+ const active=meeting==='bank'?'treasury':chapter<=2?'workshop':chapter<=4?'game':chapter===5?'harvests':chapter===8?'staff':'market';
+ const title=meeting==='bank'?'Banque':chapter<=2?'L’entrepôt':chapter<=4?'Ma culture':chapter===5?'Jury & duels':chapter===8?'Personnel':'Mon commerce';
  // The real Carnet route renders outside the game's shell and numeric font rules.
  return <KqTutorialApiProvider api={api}><div className={lesson==='notebook'?undefined:retro.surface+' '+shell.shell} data-fidelity-native-reference>
   <KqPlacardNavigation active={active} onNavigate={noop} onHighlight={noop} localNavigation/>
   <div className={shell.content}><header className={shell.sectionHeader}><button type="button">Quartier</button><h1>{title}</h1></header>
-   {meeting==='workshop'?(scenario==='workshop-catalog'?<KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenWorkshop={noop}/>:scenario==='workshop-counter'?<KqCommerceDesk mode="sales" initialFlowerId="releve-workshop" onOpenShop={noop} onOpenBusiness={noop} onOpenStorage={noop} onOpenTreasury={noop} onOpenCulture={noop}/>:<KqWarehouseEntry embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenShop={noop}/>):meeting==='bank'?<KqTreasuryDesk initialPole="bank" initialBankDesk={lesson==='investments'?'stocks':'loans'} onOpenShop={noop}/>:lesson==='specialties'?<ChanvrierProfileEditor profile={null} onClose={noop} onSaved={noop}/>:lesson==='missions'?<KqMissionCenter onOpen={noop}/>:lesson==='notebook'?<ContestTastingBook entries={[DISCOVERY_NOTEBOOK_ENTRY]} unlocks={[{entryId:DISCOVERY_NOTEBOOK_ENTRY.id,unlockedAt:DISCOVERY_TIME,source:'purchase'}]} viewerProfile={{pseudo:'Apprenti',createdAt:DISCOVERY_TIME,updatedAt:DISCOVERY_TIME}} badges={[]} isAuthenticated seasonLabel="Carnet d’entraînement · notes fictives" initialTrack="regular" initialCategory="indoor" initialEntryId={DISCOVERY_NOTEBOOK_ENTRY.id} onExitTutorial={noop}/>:lesson==='collection'?<NativeCollection api={api}/>:meeting==='business'?<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>:chapter<=2?<KqWarehouse embedded onClose={noop}/>:chapter<=5?<KanabQuestDicePrototype apiScope="player" showAdminOperations={false} showWarehouseNavigation={false} viewMode={chapter===5?'arena':'game'} initialCampaign initialPreparation={{deckCodes:currentProduction.deckCodes,heritageCode:currentProduction.heritageCode}} isolatedStorage={isolatedStorage} onOpenWarehouse={noop} onOpenArena={noop} onOpenGame={noop} onOpenMarket={noop} onOpenRun={noop}/>:chapter===8?<KqTreasuryDesk initialPole="accounting" onOpenShop={noop}/>:<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>}
+   {meeting==='workshop'?(scenario==='workshop-catalog'?<KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenWorkshop={noop}/>:scenario==='workshop-counter'?<KqCommerceDesk mode="sales" initialFlowerId="releve-workshop" onOpenShop={noop} onOpenBusiness={noop} onOpenStorage={noop} onOpenTreasury={noop} onOpenCulture={noop}/>:<KqWarehouseEntry embedded workshopOnly initialEquipmentCode="SIFT-TRAY" onClose={noop} onOpenShop={noop}/>):meeting==='bank'?<KqTreasuryBank embedded initialDesk={lesson==='investments'?'stocks':'loans'}/>:lesson==='specialties'?<ChanvrierProfileEditor profile={null} onClose={noop} onSaved={noop}/>:lesson==='missions'?<KqMissionCenter onOpen={noop}/>:lesson==='notebook'?<ContestTastingBook entries={[DISCOVERY_NOTEBOOK_ENTRY]} unlocks={[{entryId:DISCOVERY_NOTEBOOK_ENTRY.id,unlockedAt:DISCOVERY_TIME,source:'purchase'}]} viewerProfile={{pseudo:'Apprenti',createdAt:DISCOVERY_TIME,updatedAt:DISCOVERY_TIME}} badges={[]} isAuthenticated seasonLabel="Carnet d’entraînement · notes fictives" initialTrack="regular" initialCategory="indoor" initialEntryId={DISCOVERY_NOTEBOOK_ENTRY.id} onExitTutorial={noop}/>:lesson==='collection'?<NativeCollection api={api}/>:meeting==='business'?<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>:chapter<=2?<KqWarehouse embedded onClose={noop}/>:chapter<=5?<KanabQuestDicePrototype apiScope="player" showAdminOperations={false} showWarehouseNavigation={false} viewMode={chapter===5?'arena':'game'} initialCampaign initialPreparation={{deckCodes:currentProduction.deckCodes,heritageCode:currentProduction.heritageCode}} isolatedStorage={isolatedStorage} onOpenWarehouse={noop} onOpenArena={noop} onOpenGame={noop} onOpenMarket={noop} onOpenRun={noop}/>:chapter===8?<KqTreasuryDesk onOpenShop={noop}/>:<KqMarketHub section={section} onSectionChange={setSection} onOpenShop={noop} onOpenTreasury={noop} onOpenStorage={noop} onOpenCulture={noop}/>}
   </div>
  </div></KqTutorialApiProvider>;
 }
@@ -169,14 +170,14 @@ const scenarios = [
   {id:'jury-archive',region:'[data-archived-jury-recap]',ready:'[data-archived-jury-recap]',actions:['archive']},
   {id:'delivery',region:'div:has(>div>div>[aria-label="Ma boutique"])',ready:'div:has(>div>div>[aria-label="Ma boutique"])'},
   {id:'shop',region:'div:has(>div>div>[aria-label="Ma boutique"])',ready:'div:has(>div>div>[aria-label="Ma boutique"])'},
-  {id:'ledger',region:'main:has(>nav[aria-label="Mes finances"])',ready:'[aria-label="Mes finances"]'},
+  {id:'ledger',region:'[data-staff-accounting]',ready:'[data-guide-invoices-tab]'},
   {id:'expansion',region:'[data-warehouse-v4]',ready:'[data-warehouse-v4]'},
   {id:'business',region:'div:has(>div>div>[aria-label="Ma boutique"])',ready:'div:has(>div>div>[aria-label="Ma boutique"])'},
   {id:'workshop-machines',region:'[data-workshop-only][data-page]',ready:'[data-workshop-inventory-artwork]'},
   {id:'workshop-catalog',region:'[data-arena-tour-surface="catalog"]',ready:'[data-arena-tour-surface="catalog"]',tutorialBefore:['workshop-catalog']},
   {id:'workshop-counter',region:'main[data-screen]',ready:'main[data-screen]',tutorialBefore:['workshop-counter']},
-  {id:'bank-loans',lesson:'bank',region:'main:has(>nav[aria-label="Mes finances"])',ready:'[aria-label="Mes finances"]'},
-  {id:'bank-investments',lesson:'investments',region:'main:has(>nav[aria-label="Mes finances"])',ready:'[aria-label="Mes finances"]'},
+  {id:'bank-loans',lesson:'bank',region:'[data-treasury-bank]',ready:'[aria-label="Guichets de la banque"]'},
+  {id:'bank-investments',lesson:'investments',region:'[data-treasury-bank]',ready:'[aria-label="Guichets de la banque"]'},
   {id:'community-profile',lesson:'specialties',region:'[data-chanvrier-profile]',ready:'[data-chanvrier-profile]'},
   {id:'community-missions',lesson:'missions',region:'main:has(>nav[aria-label="Parcours des missions"])',ready:'[aria-label="Parcours des missions"]'},
   {id:'notebook-book',lesson:'notebook',region:'[data-tasting-book][data-open]',ready:'[data-tasting-book][data-open]'},
@@ -199,7 +200,7 @@ const coverage={
  expansion:{status:'planned',components:['KqWarehouse']},
  workshop:{status:'planned',components:['KqWarehouseEntry workshopOnly','KqEquipmentCatalogModal','KqCommerceDesk']},
  business:{status:'planned',components:['KqMarketHub','KqTreasuryManagement']},
- bank:{status:'planned',components:['KqTreasuryDesk','KqTreasuryBank loans and stocks']},
+ bank:{status:'planned',components:['KqTreasuryBank loans and stocks']},
  community:{status:'planned',components:['ChanvrierProfileEditor','KqMissionCenter']},
  notebook:{status:'planned',components:['ContestTastingBook','PackOpeningFlowModal','KqBotteCollection','KqBuddiesCollection']},
 };

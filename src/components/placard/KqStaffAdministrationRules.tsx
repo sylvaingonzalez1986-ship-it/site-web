@@ -4,7 +4,6 @@ import { useState, type FormEvent } from "react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import type { KqStaffSnapshot } from "@/lib/kanab-quest-staff-types";
 import type { KqStaffConfirmationDraft } from "./KqStaffOperations";
-import { KqPrintedArt } from "./KqPrintedArt";
 import styles from "./KqStaffAdministrationRules.module.css";
 
 type Props = { snapshot: KqStaffSnapshot; prepare: (draft: KqStaffConfirmationDraft) => void; disabled: boolean };
@@ -80,7 +79,7 @@ export function KqStaffAdministrationRules(props: Props) {
   const last = snapshot.benefits?.lastAdministration;
   const reasons = { "no-eligible-documents": "Aucun document à régler dans la période choisie.", "budget-or-reserve": "Des documents attendent : plafond quotidien ou solde minimum atteint.", "capacity-reached": "Créneau utilisé. Les documents restants attendent une prochaine mission." };
   return <details className={styles.panel} data-staff-admin-rules>
-    <summary><span className={styles.art} aria-hidden="true"><KqPrintedArt kind="help-accounts" /></span><span><strong>Paiements délégués</strong><small>{saved?.enabled ? employee ? `${employee.name} · ${formatKqCash(saved.maxDailyCents)} maximum / jour` : "Responsable à remplacer" : "Désactivés · à configurer"}</small></span></summary>
+    <summary><span><strong>Paiements délégués</strong><small>{saved?.enabled ? employee ? `${employee.name} · ${formatKqCash(saved.maxDailyCents)} maximum / jour` : "Responsable à remplacer" : "Désactivés · à configurer"}</small></span></summary>
     {last ? <div className={styles.lastResult} data-staff-admin-last-result><strong>{last.paidCount} document{last.paidCount === 1 ? "" : "s"} réglé{last.paidCount === 1 ? "" : "s"} · {formatKqCash(last.paidCents)}</strong><small>Dernier traitement : <time dateTime={last.at}>{new Date(last.at).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</time> (heure réelle)</small>{last.skippedReason ? <p>{reasons[last.skippedReason]}</p> : null}</div> : null}
     <RulesForm {...props} key={saved?.updatedAt ?? "unconfigured"} />
   </details>;

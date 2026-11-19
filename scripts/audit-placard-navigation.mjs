@@ -29,7 +29,8 @@ const coastCorner=process.argv.includes('--coast-corner');
 const coast=coastCorner||process.argv.includes('--coast');
 const coastBaseline=coast&&process.argv.includes('--baseline');
 const coastReport=`coast${coastCorner?'-corner':''}-${coastBaseline?'before':'after'}.json`;
-const buildingRooms=process.argv.includes('--building-rooms');
+const bankOfficeOnly=process.argv.includes('--bank-office');
+const buildingRooms=bankOfficeOnly||process.argv.includes('--building-rooms');
 const world3d=coast||quarterTeam||buildingRooms||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
 const focusOnly=process.argv.includes('--focus-only');
@@ -50,7 +51,7 @@ const schoolReal=process.argv.includes('--school-real')||schoolVisual||schoolHis
 const schoolFixture=schoolReal?await createSchoolFixture():null;
 const schoolPlayerFixtures=new Map([[1,Promise.resolve(schoolFixture)]]);
 let tournamentFixturePromise;
-const reportName=buildingRooms?'building-rooms-report.json':world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
+const reportName=bankOfficeOnly?'bank-office-report.json':buildingRooms?'building-rooms-report.json':world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
 const MAP_ASSET='/placard/map/placard-world-quizzshow-v9.webp';
 const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','missions','collection'];
 // Independently inspected landmarks in the 1536 x 1024 v6 painting. These do
@@ -104,7 +105,7 @@ async function previewApi(req,res,url){
   }
   if(req.method!=='GET')return json(405,{error:'Démo locale : cette action n’est pas simulée'});
   const scenario=new URL(req.headers.referer||origin,origin).searchParams.get('scenario')||(schoolReal?'cards':'starter');
-  const body=fixturePayload(url.pathname,scenario);
+  const body=await readFixture(url,scenario);
   return json(body?200:404,body||{error:'API non simulée'});
  }catch{
   if(!res.headersSent)json(400,{error:'Requête de démonstration invalide'});else res.end();
@@ -121,7 +122,7 @@ const destinations={
  './KanabQuestDicePrototype':stub('KanabQuestDicePrototype','<h1>{props.viewMode === "arena" ? "Jury & duels" : "La culture"}</h1>'),
  './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><p data-warehouse-section>{props.initialSection}</p><p data-warehouse-flower>{props.initialFlowerId}</p><p data-storage-configuration>{String(Boolean(props.initialStorageEquipmentOpen))}</p><p data-catalog>{props.initialShopOpen ? "Matériel" : "Plan"}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Préparer la vente</button>'),
  './KqMarketDesk':stub('KqMarketDesk','<h1>Ma boutique</h1><p data-market-section>{props.section}</p><p data-market-flower>{props.initialFlowerId}</p><p data-market-listing>{props.initialListingId}</p><button onClick={()=>props.onSectionChange("overview")}>Vue d’ensemble</button><button onClick={()=>props.onSectionChange("demands")}>Demandes clients</button><button onClick={()=>props.onSectionChange("sales")}>Vendre ma production</button><button onClick={()=>props.onSectionChange("dashboard")}>Mes ventes</button><button onClick={()=>props.onSectionChange("dashboard","fixture-listing")}>Voir l’annonce ciblée</button><button onClick={()=>props.onSectionChange("management")}>Développer ma boutique</button><button onClick={()=>props.onOpenShop("COMPUTER",props.initialFlowerId)}>Acheter un ordinateur</button>'),
- './KqTreasuryDesk':stub('KqTreasuryDesk','<h1>{props.initialPole === "bank" ? "La Banque" : "Le Bureau"}</h1><p data-treasury-pole>{props.initialPole}</p>'),
+ './KqTreasuryBank':stub('KqTreasuryBank','<h1>Banque</h1><p data-bank-desk>{props.initialDesk}</p>'),
  './KqStaffDesk':stub('KqStaffDesk','<h1>Personnel</h1><button onClick={()=>props.onOpenTrim("fixture-employee")}>Trim dans l’Atelier</button>'),
  './KqSocialNetworks':stub('KqSocialNetworks','<h1>Réseaux sociaux</h1>'),
  './KqSupportBoosterShop':stub('KqSupportBoosterShop','<h1>Boutique</h1><p data-catalog>Packs</p><p data-shop-section>{props.initialSection}</p><button onClick={()=>props.onSectionChange("buddies")}>Packs Buddies</button><button onClick={props.onExit}>Quitter la boutique</button><button data-open-shop-collection onClick={()=>props.onOpenCollection(props.initialSection)}>Collections</button>'),
@@ -129,9 +130,13 @@ const destinations={
 };
 if(schoolReal)delete destinations['./KqSchool'];
 if(world3d)destinations['./KqStaffDesk']=stub('KqStaffDesk','<h1>Personnel</h1><button onClick={()=>props.onOpenTrim("fixture-employee")}>Trim dans l’Atelier</button><ol>{Array.from({length:18},(_,i)=><li key={i} style={{padding:12}}>Affectation locale {i+1} · horaires et coût du travail simulés.</li>)}</ol><button data-world-panel-end onClick={()=>props.onOpenTrim("fixture-last-employee")}>Ouvrir la dernière affectation</button>');
+if(buildingRooms){
+ delete destinations['./KqTreasuryBank'];
+ delete destinations['./KqStaffDesk'];
+}
 const modules={
  'entry':`import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';import {PlacardPlayerShell} from '/src/components/placard/PlacardPlayerShell';${previewFetch}createRoot(document.getElementById('root')).render(<>${preview?`<p role="note" style={{margin:0,padding:"8px 16px",background:"#fffaf1",color:"#003f30",fontSize:12}}>${schoolReal?'Démo locale · progression et récompenses simulées.':'Prévisualisation locale du menu · données de démonstration. Les destinations sont simulées.'}</p>`:''}<PlacardPlayerShell/></>);`,
- 'next/image':`import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
+ 'next/image':`import React from 'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
  'next/link':`import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>}`,
  'next/navigation':`export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},back:()=>history.back(),forward:()=>history.forward(),refresh:()=>{}});`,
  'next/dynamic':`import React from 'react';export default function dynamic(loader,options={}){const Component=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=><React.Suspense fallback={options.loading?<options.loading/>:null}><Component {...props}/></React.Suspense>}`,
@@ -159,6 +164,13 @@ const server=await createServer({root,configFile:false,envDir:false,cacheDir:res
 ﻿let browser, scenario='starter', failed=false;
 const errors=[], requests=[], results=[];
 const staffEngine = await server.ssrLoadModule('/src/lib/kanab-quest-staff.ts');
+const roomFinance = buildingRooms ? (await server.ssrLoadModule('/src/lib/kanab-quest-treasury-tutorial.ts')).createKqTreasuryTutorial() : null;
+async function readFixture(url,scenario) {
+ const payload = fixturePayload(url.pathname,scenario);
+ if (payload || !roomFinance) return payload;
+ const response = await roomFinance.request(url.pathname + url.search);
+ return response.ok ? response.json() : null;
+}
 const baseStaffSnapshot = staffEngine.projectKqStaffSnapshot({
  state: null, revision: 0, serverNow: '2026-10-11T12:00:00.000Z', cashCents: 0,
  context: {businessStartedAt:'2026-10-11T10:00:00.000Z',reputation:0,instagramFollowers:0,shopPartners:0,activeRuns:[],processingBatches:[],supplierInvoices:[],dayPlanVersion:1,teamWork:[]},
@@ -178,7 +190,7 @@ else try {
  page.on('pageerror',error=>errors.push(error.message));
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
  await page.setRequestInterception(true);
- page.on('request',request=>{
+ page.on('request',async request=>{
   const url=new URL(request.url());
   if(url.protocol==='data:'||url.protocol==='blob:')return void request.continue();
   if(url.origin!==origin)return void request.abort();
@@ -188,7 +200,7 @@ else try {
   if(schoolFixture&&url.pathname.startsWith('/api/arena/placard/school'))return void schoolFixture.handle(request,url);
   if(request.method()!=='GET')return void request.respond({status:405,contentType:'application/json',body:'{"error":"Local audit is read-only"}'});
   if(world3d&&scenario==='world-signed-out'&&url.pathname==='/api/arena/tutorial')return void request.respond({status:401,contentType:'application/json',body:'{}'});
-  const payload=fixturePayload(url.pathname,scenario);
+  const payload=await readFixture(url,scenario);
   if(scenario==='error'&&!failed&&url.pathname==='/api/arena/placard/equipment') { failed=true; return void request.respond({status:503,contentType:'application/json',body:'{"error":"Essai local"}'}); }
   if(scenario==='overflow-equipment-error'&&url.pathname==='/api/arena/placard/equipment')return void request.respond({status:503,contentType:'application/json',body:'{"error":"Résumé indisponible"}'});
   void request.respond({status:payload?200:404,contentType:'application/json',body:JSON.stringify(payload??{error:'API non simulée'})});
@@ -356,7 +368,7 @@ else try {
    await auditQuarterTeam({page,visit,screenshot,assertNoOverflow,results,fixture:teamFixture});
  }else if(buildingRooms){
    const {auditBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
-   await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output});
+   await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output,bankOfficeOnly});
  }else if(world3d){
    await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin});
  }else if(schoolChallenge){
@@ -559,9 +571,9 @@ else try {
      const point=await mapPoint('bank');await page.mouse.move(point.x,point.y);await page.focus('[data-map-building="bank"]');await pause(800);
      const before=await sampleReaction('bank');await page.mouse.down();await pause(100);const pressed=await sampleReaction('bank');
      assert.notDeepEqual(pressed,before,'Pressing the bank gives a painted reaction before navigation');
-     await page.mouse.up();await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'accounting');
+     await page.mouse.up();await view('treasury');assert.equal(await page.$eval('[data-bank-desk]',node=>node.textContent),'loans');
      await pause(650);await page.goBack();await view('hub');await showScene();await pause(650);
-     record.press={building:'bank',before,pressed,destination:'treasury:accounting',returned:true};
+     record.press={building:'bank',before,pressed,destination:'treasury:loans',returned:true};
     }
    }finally{
     if(recorder){try {await recorder.stop();record.video.bytes=(await stat(record.video.path)).size;assert(record.video.bytes>1024,'The interaction recording contains video frames');}catch(error){record.video={unavailable:error.message};}}
@@ -702,7 +714,7 @@ else try {
   await page.waitForFunction(start=>document.querySelector('#placard-map-viewport')?.scrollLeft>start+10,{},panStart);await view('hub');
   results.at(-1).afterPanLayout=await page.evaluate(()=>({windowScroll:scrollY,scrollContainers:[...document.querySelectorAll('*')].filter(element=>element.scrollTop>0).map(element=>({tag:element.tagName,className:String(element.className),top:element.scrollTop,clientHeight:element.clientHeight,scrollHeight:element.scrollHeight})),panelChildren:[...document.querySelector('#placard-building-details').children].map(element=>({tag:element.tagName,text:element.textContent.slice(0,40),rect:element.getBoundingClientRect().toJSON(),overflow:getComputedStyle(element).overflow}))}));
   await screenshot(`quartier-zoom-${width}`);await clickMapZoom();await page.waitForSelector('[data-map-zoomed]',{hidden:true});
-  await click('[data-map-building="bank"]');await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'accounting');
+  await click('[data-map-building="bank"]');await view('treasury');assert.equal(await page.$eval('[data-bank-desk]',node=>node.textContent),'loans');
   await page.goBack();await view('hub');await click('[data-map-building="office"]');await view('staff');
   await clickText('Trim dans l’Atelier');await view('workshop');assert.equal(await page.$eval('[data-warehouse-section]',element=>element.textContent),'processing');assert.equal(new URL(page.url()).searchParams.get('employee'),'fixture-employee');
   await navTo('hub');await click('[data-map-building="warehouse"]');await click('[data-placard-activity="workshop"]');await view('workshop');assert.equal(await page.$eval('[data-warehouse-section]',element=>element.textContent),'processing','The farm opens the real Atelier');

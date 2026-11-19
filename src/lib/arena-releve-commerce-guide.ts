@@ -50,7 +50,7 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
       target('commerce-ledger-entry', 'Examine une opération', 'Ouvre une opération du journal : retrouve les comptes débités et crédités et le montant réellement disponible.', '#treasury-panel-journal details:not([open]) > summary', 'summary'),
       target('commerce-ledger', 'Retrouve les opérations de ta ferme', 'Choisis « Journal » dans le dossier comptable pour suivre tes dépenses et tes ventes.', '#treasury-dossier:not(:has(option[value="journal"]:checked))', 'select'),
       button('commerce-accounts', 'Ouvre le registre de grand-père', 'Choisis Comptabilité détaillée pour retrouver le bilan et le journal de ta campagne.', 'Comptabilité détaillée'),
-      button('commerce-back-accounts', 'Reviens au Bureau', 'Retrouve le journal de la ferme avant de récupérer ta récompense.', 'Le Bureau', '[data-releve-commerce-toolbar]'),
+      button('commerce-back-accounts', 'Reviens à la comptabilité', 'Retrouve le journal de la ferme avant de récupérer ta récompense.', 'Personnel · Comptabilité', '[data-releve-commerce-toolbar]'),
     );
     else if (!has('first-harvest')) steps.push(
       button('commerce-reward', 'Ta première récolte est reconnue', 'Récupère la récompense de la mission Ta première récolte. Ses 50 € fictifs rejoignent ton disponible.', 'Récupérer ma récompense', 'section[aria-label="Culture & Buddies"]'),

@@ -1,4 +1,21 @@
 {
+  "titresSansVignette20261119": {
+    "date": "2026-11-19",
+    "livraison": "Retrait des petites illustrations décoratives des titres du site, dont Banque, les 32 usages du titre de chapitre et les en-têtes personnalisés du jeu, de l’accueil et des collections. Les titres et leurs actions occupent l’espace libéré.",
+    "verification": "Banque, Personnel, Comptabilité et Factures & échéances vérifiés à 320, 390 et 1440 px. La fenêtre Nouveautés du marché a été vérifiée dans six formats et Pack Buddies à 320 et 1440 px, y compris au clavier. TypeScript et ESLint ciblé validés.",
+    "evidence": ["output/placard-treasury/report-headers.json", "output/new-products-popup/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Contrôle visuel des titres lors de la prochaine recette sur téléphone physique."
+  },
+  "banquePersonnel20261119": {
+    "date": "2026-11-19",
+    "livraison": "Personnel accueille le comptable, son registre et les factures. Le banquier reçoit seul pour les prêts. La tirelire sur son bureau ouvre l’épargne, le panneau mural CAC 40 la bourse et l’ordinateur Bitcoin les cryptos. Les liens comptables du marché, des missions, du guide et des alertes rejoignent Personnel.",
+    "compatibilite": "Les favoris avec pole=accounting ouvrent la comptabilité du personnel. Un ancien retour vers la banque depuis ce poste ramène au bureau du personnel.",
+    "verification": "10 scénarios navigateur sur données de démonstration. Les huit objets des deux pièces ouvrent leurs activités à la souris, au clavier et au toucher émulé, dont 320 × 568 et 844 × 390. Les flèches préservent le focus et le défilement entre les guichets. Précédent et Suivant restaurent la rubrique du personnel. Les images de repli proviennent des nouvelles scènes. TypeScript et ESLint ciblé validés.",
+    "evidence": ["public/placard/building-rooms/bank.webp", "public/placard/building-rooms/office.webp", "public/placard/bureau-bank-sylvain-v3.webp", "output/placard-navigation/bank-office-report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le toucher sur la tirelire et le retour au comptable sur téléphone physique à la prochaine recette."
+  },
   "finitionHuitInterieurs20261119": {
     "date": "2026-11-19",
     "livraison": "Finition des huit intérieurs locaux. L’entrée des huit menus porte le libellé « Entrer ». Les registres, stocks, réponses du tournoi et placements du joueur continuent de venir des écrans existants.",

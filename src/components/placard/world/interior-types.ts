@@ -12,6 +12,8 @@ export type InteriorObject = {
   z: number;
   width: number;
   depth: number;
+  /** Height of the supporting surface for a mounted or tabletop object, in metres. */
+  elevation?: number;
   rotation: InteriorRotation;
   href?: string;
   detail?: string;

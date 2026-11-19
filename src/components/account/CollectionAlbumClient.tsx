@@ -412,7 +412,6 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   </div> : null;
   const openAvailablePack = () => availableTickets[0] && setSelectedTicketId(availableTickets[0].id);
   const screenTitle = screen === "cards" ? "Mes cartes" : screen === "boosters" ? "Mes boosters" : "Mes récompenses";
-  const screenArt = ALBUM_DESTINATIONS.find(({ id }) => id === screen)?.art ?? "buddies-cards";
   const hasTicketData = isAlbumPreview || ticketsLoaded;
   const loadNotice = error ? <div className={arenaStyles.loadNotice} role="alert" data-album-load-error>
     <strong>{ticketsReady ? "Actualisation incomplète" : "Points et boosters indisponibles"}</strong>
@@ -430,7 +429,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       /> : <div className={arenaStyles.workspace}>
         <div className={arenaStyles.workspaceTop}>
           <button data-album-return type="button" className={arenaStyles.returnLink} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
-          <KqChapterHeading art={screenArt} title={screenTitle} level={1} />
+          <KqChapterHeading title={screenTitle} level={1} />
         </div>
         {loadNotice}
         <nav className={arenaStyles.workspaceNav} aria-label="Espaces de l’album">

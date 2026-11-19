@@ -7,7 +7,6 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqTeamDayBudget, getKqTeamWorkEntries } from "@/lib/kanab-quest-team-day-budget";
 import { getKqStaffTaskActivity } from "@/lib/kanab-quest-staff-activity";
 import type { KqStaffEmployee, KqStaffSnapshot, KqTeamDayPlan } from "@/lib/kanab-quest-staff-types";
-import { KqPrintedArt } from "./KqPrintedArt";
 import { KqQuarterTeamEditor, previewTeamCommand, teamPlanVersion } from "./KqQuarterTeamEditor";
 import { KqStaffOperationsConfirmation, KqStaffOperationsStatus, type KqStaffConfirmationDraft, type KqStaffOperationsController } from "./KqStaffOperations";
 import { KqStaffPortrait } from "./KqStaffPortrait";
@@ -173,7 +172,6 @@ export function KqQuarterTeamPanel({ controller, playerName, playerPortrait }: {
   }
   const content = <div className={styles.paper}>
     <header className={styles.header}>
-      <KqPrintedArt kind="staff" className={styles.art} sizes="54px" />
       <div><h2 id={title}>Mon équipe</h2>{snapshot && <p>{snapshot.calendar.label}</p>}</div>
       <button type="button" data-team-close aria-label={compact ? "Fermer mon équipe" : "Replier mon équipe"} title={compact ? "Fermer" : "Replier"} onClick={close}>
         {compact ? <X size={18} aria-hidden="true" /> : <PanelRightClose size={18} aria-hidden="true" />}

@@ -24,6 +24,13 @@ describe("village links", () => {
     expect(normalizeKqVillageLocation("?room=unknown")).toBe("");
   });
 
+  it("opens bookmarked accounts in Personnel and returns to the new office", () => {
+    const query = normalizeKqVillageLocation("?view=treasury&pole=accounting&fromRoom=bank&guide=1");
+    expect(Object.fromEntries(new URLSearchParams(query))).toEqual({ view: "staff", section: "accounting", fromRoom: "office", guide: "1" });
+    expect(normalizeKqVillageLocation(query)).toBe(query);
+    expect(normalizeKqVillageLocation("?room=bank&pole=accounting")).toBe("?view=staff&section=accounting");
+  });
+
   it.each(["world=2d", "world=3d&world=2d", "world=2d&world=3d", "world=", "world=unknown"])("replaces %s with a single 3D world and preserves activity context", world => {
     const params = new URLSearchParams(normalizeKqVillageLocation(`?view=game&${world}&zone=a%2Bb&zone=c`));
     expect(params.getAll("world")).toEqual(["3d"]);

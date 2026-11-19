@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { buildingRoomHref, isIsometricBuilding } from "@/lib/kanab-quest-world-mode";
 import { useEffect, type RefObject } from "react";
-import { ArrowRight, Boxes, DoorOpen, Landmark, Megaphone, PackageCheck, ShoppingBag, Sprout, Store, Swords, Target, UsersRound, Wallet, Warehouse, X, type LucideIcon } from "lucide-react";
+import { ArrowRight, Bitcoin, Boxes, ChartCandlestick, DoorOpen, Landmark, Megaphone, PackageCheck, PiggyBank, ShoppingBag, Sprout, Store, Swords, Target, UsersRound, Wallet, Warehouse, X, type LucideIcon } from "lucide-react";
 import type { VillageBuildingKind } from "./village-buildings";
 import { villageBuildingStatus, type VillageSnapshot } from "./useVillageActivity";
 import styles from "./VillagePrototype.module.css";
@@ -26,10 +26,15 @@ const ACTIVITIES: Record<VillageBuildingKind, readonly Activity[]> = {
     { label: "Communiquer", detail: "Réseaux sociaux et partenariats", href: "/arene/placard?view=social", Icon: Megaphone },
   ],
   bank: [
-    { label: "Ma comptabilité", detail: "Factures et comptes", href: "/arene/placard?view=treasury&pole=accounting", Icon: Wallet },
-    { label: "Ouvrir la banque", detail: "Épargne et financement", href: "/arene/placard?view=treasury&pole=bank", Icon: Landmark },
+    { label: "Prêts", detail: "Parler au banquier", href: "/arene/placard?view=treasury&pole=bank&section=loans", Icon: Landmark },
+    { label: "Épargne", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=savings", Icon: PiggyBank },
+    { label: "Bourse", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=stocks", Icon: ChartCandlestick },
+    { label: "Crypto", detail: "", href: "/arene/placard?view=treasury&pole=bank&section=crypto", Icon: Bitcoin },
   ],
-  office: [{ label: "Gérer mon équipe", detail: "Ma journée, personnel et recrutements", href: "/arene/placard?view=staff", Icon: UsersRound }],
+  office: [
+    { label: "Gérer mon équipe", detail: "Ma journée, personnel et recrutements", href: "/arene/placard?view=staff", Icon: UsersRound },
+    { label: "Ma comptabilité", detail: "Factures et comptes", href: "/arene/placard?view=staff&section=accounting", Icon: Wallet },
+  ],
   shop: [
     { label: "Mes packs", detail: "Packs et Maison des cartes", href: "/arene/placard?view=shop", Icon: ShoppingBag },
     { label: "Ma collection", detail: "Parcourir mon album", href: "/arene/placard?view=shop&tab=collection", Icon: Boxes },

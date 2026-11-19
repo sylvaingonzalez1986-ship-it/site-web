@@ -4,8 +4,7 @@
 .campaigns :where(button,select,input) { font:inherit; color:inherit; }
 .campaigns button,.campaigns summary { cursor:pointer; touch-action:manipulation; }
 .campaigns.campaigns button:disabled,.campaigns.campaigns select:disabled { cursor:not-allowed; opacity:1; color:#596358; --game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background:transparent; border-color:transparent; box-shadow:none; }
-.heading { display:flex; align-items:center; gap:13px; margin-bottom:16px; }
-.heading img { width:64px; height:64px; object-fit:cover; border-radius:8px; }
+.heading { margin-bottom:16px; }
 .campaigns .heading h3 { margin:0 0 5px; font:900 30px/1.1 var(--font-display),Impact,sans-serif; text-transform:none; }
 .campaigns .heading p { margin:0; font-size:13px; }
 .planner { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:0 28px; padding:20px; border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; --game-panel-art:var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image:var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }

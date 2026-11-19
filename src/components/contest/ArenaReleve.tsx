@@ -38,23 +38,23 @@ const RENOVATION_ACTIONS = {
 } as const;
 const LESSON_TITLES: Partial<Record<ArenaPlayableLessonId, string>> = { bank: 'Le guichet et le livret', investments: 'Le portefeuille fictif', specialties: 'Mon personnage et ses spécialités', missions: 'Mes défis et leurs récompenses', collection: 'Mon pack et mon album' };
 const LESSON_ARTWORK: Partial<Record<ArenaPlayableLessonId, string>> = {
-  bank: '/placard/bureau-bank-sylvain-v2.webp',
-  investments: '/placard/bureau-accounting-sylvain-v2.webp',
+  bank: '/placard/bureau-bank-sylvain-v3.webp',
+  investments: '/placard/bureau-bank-sylvain-v3.webp',
   specialties: '/app-character-cropped.png',
   missions: '/contest/mascot/arena-lobby-sylvain-v1.png',
   collection: '/app/lottery/sylvain-booster-presentation-v3.webp',
 };
 const CHAPTER_PLACES: Record<ArenaReleveStage, string> = {
   arrival: 'La ferme', plan: 'L’Entrepôt', buddies: 'L’Entrepôt', launch: 'Ma culture', culture: 'Ma culture',
-  jury: 'Jury & duels', delivery: 'Mon commerce', shop: 'Mon commerce · Boutique', ledger: 'Mes finances',
+  jury: 'Jury & duels', delivery: 'Mon commerce', shop: 'Mon commerce · Boutique', ledger: 'Personnel · Comptabilité',
 };
-const CHAPTER_NAV: Record<ArenaReleveStage, PlacardNavKey> = { arrival: 'hub', plan: 'workshop', buddies: 'workshop', launch: 'game', culture: 'game', jury: 'harvests', delivery: 'market', shop: 'market', ledger: 'treasury' };
+const CHAPTER_NAV: Record<ArenaReleveStage, PlacardNavKey> = { arrival: 'hub', plan: 'workshop', buddies: 'workshop', launch: 'game', culture: 'game', jury: 'harvests', delivery: 'market', shop: 'market', ledger: 'staff' };
 const NEXT_ACTIONS: Record<ArenaReleveStage, string> = { arrival: 'Aménager l’entrepôt', plan: 'Choisir mes Buddies', buddies: 'Préparer ma campagne', launch: 'Commencer la culture', culture: 'Rejoindre le jury', jury: 'Ouvrir Commerce', delivery: 'Ouvrir ma boutique', shop: 'Passer au bureau', ledger: 'Terminer l’aventure' };
 const NEXT_REPLIES: Record<ArenaReleveStage, string> = { arrival: 'La chambre est prête. Passons au plan !', plan: 'Matériel installé ! Choisissons les Buddies de tes zones.', buddies: 'Tes Buddies sont en place. Préparons leur campagne.', launch: 'Tout est prêt. À toi de cultiver !', culture: 'La récolte est là ! Le jury attend tes Fleurs.', jury: 'Verdict reçu ! Retrouvons ton lot au marché.', delivery: 'Première vente ! Donnons maintenant une enseigne à la ferme.', shop: 'La boutique est ouverte. Regardons ce qui reste en caisse.', ledger: 'Le registre se remplit. Tu peux faire vivre ta ferme.' };
 const NAV_KEYS: PlacardNavKey[] = ['hub', 'workshop', 'game', 'harvests', 'market', 'social', 'treasury', 'staff', 'collection', 'missions', 'shop', 'school'];
-const COMMERCE_NAV: Record<KqReleveDestination, PlacardNavKey> = { market: 'market', social: 'social', accounts: 'treasury', bank: 'treasury', missions: 'missions', storage: 'harvests', equipment: 'workshop' };
-const COMMERCE_PLACES: Record<KqReleveDestination, string> = { market: 'Mon commerce', social: 'Mes réseaux', accounts: 'Mes finances', bank: 'Mes finances · Banque', missions: 'Mes missions', storage: 'Mes récoltes · Stockage', equipment: 'L’Entrepôt' };
-const NAV_DESTINATIONS: Partial<Record<PlacardNavKey, KqReleveDestination>> = { market: 'market', social: 'social', treasury: 'accounts', missions: 'missions', harvests: 'storage', workshop: 'equipment' };
+const COMMERCE_NAV: Record<KqReleveDestination, PlacardNavKey> = { market: 'market', social: 'social', accounts: 'staff', bank: 'treasury', missions: 'missions', storage: 'harvests', equipment: 'workshop' };
+const COMMERCE_PLACES: Record<KqReleveDestination, string> = { market: 'Mon commerce', social: 'Mes réseaux', accounts: 'Personnel · Comptabilité', bank: 'Banque', missions: 'Mes missions', storage: 'Mes récoltes · Stockage', equipment: 'L’Entrepôt' };
+const NAV_DESTINATIONS: Partial<Record<PlacardNavKey, KqReleveDestination>> = { market: 'market', social: 'social', staff: 'accounts', treasury: 'bank', missions: 'missions', harvests: 'storage', workshop: 'equipment' };
 
 function StoryFrame({ title, onClose, children, coach, immersive = false, navigation, label = 'Aventure d’essai · La relève' }: {
   title: string; onClose: () => void; children: ReactNode; coach: ReactNode; immersive?: boolean; navigation?: ReactNode; label?: string;
@@ -97,7 +97,7 @@ export function ArenaReleve({ onClose, onCompleted, onExplore, onReady }: { onCl
   const cashCents = state.commerce ? getReleveCommerceCash(state.commerce) : state.production.cashCents;
   const commerceChapter = chapter.stage === 'delivery' || chapter.stage === 'shop' || chapter.stage === 'ledger';
   const currentNav = commerceChapter ? COMMERCE_NAV[commerceDestination] : CHAPTER_NAV[chapter.stage];
-  const commerceNavs: PlacardNavKey[] = commerceChapter ? ['market', 'harvests', 'workshop', 'treasury', ...(chapter.stage === 'shop' ? ['social' as const] : []), ...(chapter.stage === 'ledger' ? ['missions' as const] : [])] : [];
+  const commerceNavs: PlacardNavKey[] = commerceChapter ? ['market', 'harvests', 'workshop', 'staff', 'treasury', ...(chapter.stage === 'shop' ? ['social' as const] : []), ...(chapter.stage === 'ledger' ? ['missions' as const] : [])] : [];
   const canVisitWarehouse = chapter.stage === 'launch' || chapter.stage === 'culture';
   const place = warehouseVisit ? CHAPTER_PLACES.plan : commerceChapter ? COMMERCE_PLACES[commerceDestination] : CHAPTER_PLACES[chapter.stage];
   const nextChapter = ARENA_RELEVE_CHAPTERS[state.chapter + 1];
@@ -197,8 +197,8 @@ export function ArenaReleveMeeting({ meeting, onClose, onCompleted }: { meeting:
       : meeting === 'workshop' ? workshopComplete : definition.lessons.length > 0 && definition.lessons.every(id => completed.includes(id));
   const finish = () => { onCompleted?.(); onClose(); };
   const currentNav: PlacardNavKey = isCommerce ? COMMERCE_NAV[destination] : meeting === 'bank' ? 'treasury' : meeting === 'community' ? 'missions' : meeting === 'notebook' ? 'shop' : 'workshop';
-  const placeTitle = isCommerce ? COMMERCE_PLACES[destination] : meeting === 'bank' ? 'Mes finances' : meeting === 'community' ? 'Mes missions & personnage' : meeting === 'notebook' ? 'Maison des cartes · Collection' : 'L’Entrepôt';
-  const availableCommerce: PlacardNavKey[] = meeting === 'social' ? ['social', 'treasury'] : isCommerce ? ['market', 'social', 'treasury', 'harvests', 'workshop'] : [];
+  const placeTitle = isCommerce ? COMMERCE_PLACES[destination] : meeting === 'bank' ? 'Banque' : meeting === 'community' ? 'Mes missions & personnage' : meeting === 'notebook' ? 'Maison des cartes · Collection' : 'L’Entrepôt';
+  const availableCommerce: PlacardNavKey[] = meeting === 'social' ? ['social', 'staff', 'treasury'] : isCommerce ? ['market', 'social', 'staff', 'treasury', 'harvests', 'workshop'] : [];
   const unavailable = Object.fromEntries(NAV_KEYS.filter(key => key !== 'hub' && key !== currentNav && !availableCommerce.includes(key)).map(key => [key, 'Reviens aux rencontres pour choisir un autre exercice.'])) as Partial<Record<PlacardNavKey, string>>;
   const guide: ReleveGuideStep[] = complete ? [{ id: 'meeting-complete', selector: '[data-releve-finish-meeting]', title: 'Une nouvelle corde à ton arc', instruction: 'Tu as essayé les gestes de cette rencontre. Termine-la pour choisir un autre exercice.' }]
     : meeting === 'expansion' ? getReleveProductionGuide('expansion', production)

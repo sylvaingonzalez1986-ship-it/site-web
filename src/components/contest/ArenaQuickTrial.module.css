@@ -5,9 +5,8 @@
 .top > strong { font-size: 1rem; line-height: 1.4; }
 .top > button { flex-shrink: 0; width: 44px; padding: 8px; }
 .content { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 16px 24px 28px; }
-.content > [data-kq-chapter] { padding: 8px 0 12px; grid-template-columns: minmax(0,1fr) 72px; gap: 12px; background: transparent; }
+.content > [data-kq-chapter] { padding: 8px 0 12px; background: transparent; }
 .content > [data-kq-chapter] h2 { font-size: clamp(25px, 4vw, 34px); overflow-wrap: normal; }
-.content > [data-kq-chapter] > span { max-width: 72px; }
 .dialog p { margin: 16px 0; line-height: 1.55; font-size: 1rem; }
 .dialog p.notice { font-size: .875rem; margin: 0 0 12px; }
 .focusHeading { font-size: .875rem; line-height: 1.5; margin: 12px 0 18px; font-weight: 600; }

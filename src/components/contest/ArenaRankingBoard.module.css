@@ -37,9 +37,7 @@
 .heading > div { min-width: 0; }
 .board .heading h3 { font-family: var(--font-display), Impact, sans-serif; font-size: clamp(28px, 3.2vw, 43px); line-height: 1.02; font-weight: 900; text-transform: uppercase; letter-spacing: -.025em; color: var(--ink); }
 .board .intro { max-width: 62ch; margin-top: 11px; font-size: 12px; line-height: 1.6; font-weight: 600; }
-.seal { display: grid; justify-items: center; flex: 0 0 104px; text-align: center; background: transparent; border: 0; border-radius: 0; box-shadow: none; flex-basis: 150px; gap: 0; padding: 0; transform: none; }
-.seal strong { font-family: var(--font-display), Impact, sans-serif; font-size: 29px; line-height: 1; }
-.seal small { font-size: 9px; font-weight: 800; }
+.limit { flex: none; color: #00563f; font-size: 12px; font-weight: 800; }
 
 .modeSwitch { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; padding: 13px 0; }
 .modeSwitch button { display: flex; align-items: center; justify-content: center; gap: 11px; min-height: 66px; text-align: left; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; padding: 13px 17px; transition: transform .15s; }
@@ -188,12 +186,8 @@ a.row:hover { background: transparent; border-color: transparent; }
   .scoreGuide { margin-inline: 10px; }
   .board { padding: 7px; }
   .heading { align-items: flex-start; gap: 10px; padding: 19px 14px 17px; }
-  .board .heading h3 { max-width: 13ch; font-size: 29px; }
+  .board .heading h3 { font-size: 29px; }
   .board .intro { font-size: 11px; line-height: 1.6; }
-  .seal { flex-basis: 70px; margin-top: 5px; padding: 8px 4px; }
-  .seal svg { width: 19px; height: 19px; }
-  .seal strong { font-size: 21px; }
-  .seal small { font-size: 7px; }
   .modeSwitch { gap: 5px; padding: 10px 0; }
   .modeSwitch button { flex-direction: column; gap: 5px; min-height: 67px; padding: 9px 3px; text-align: center; }
   .modeSwitch button > svg { width: 19px; height: 19px; }
@@ -248,9 +242,7 @@ a.row:hover { background: transparent; border-color: transparent; }
   .board *, .board *::before, .board *::after { animation: none; transition: none; }
 }
 
-.illustration { width: 150px; height: 150px; }
 
-.seal small { margin-top: -4px; color: #00563f; font-size: 10px; }
 
 a.row:hover .playerName strong { text-decoration: underline; text-underline-offset: 3px; }
 
@@ -263,9 +255,6 @@ a.row:hover .playerName strong { text-decoration: underline; text-underline-offs
 @media (max-width: 560px) {
   .board { padding: 0; }
   .heading { padding: 8px 3px 16px; }
-  .seal { flex-basis: 82px; margin-top: 0; padding: 0; }
-  .illustration { width: 82px; height: 82px; }
-  .seal small { margin-top: 0; font-size: 8px; }
   .modeSwitch { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 16px 0; }
   .modeSwitch button { --game-control-edge: 11px; flex-direction: row; justify-content: flex-start; gap: 7px; min-height: 52px; padding: 12px 14px; text-align: left; }
   .modeSwitch strong { font-size: 18px; }

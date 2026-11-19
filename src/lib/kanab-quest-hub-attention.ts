@@ -6,10 +6,10 @@ export type KqHubAttentionNotice = {
   description: string;
   buttonLabel: string;
   summary: string;
-  destination: "treasury" | "market" | "workshop";
+  destination: "staff" | "market" | "workshop";
   href?: string;
   options: {
-    treasuryPole?: "accounting";
+    staffSection?: "accounting";
     marketSection?: "dashboard" | "management";
     listingId?: string;
   };

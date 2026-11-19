@@ -79,16 +79,8 @@
 .complete > svg { margin: auto; color: #172923; }
 .complete p { color: #172923; font-size: 13px; line-height: 1.6; }
 .receipt { display: grid; gap: 16px; min-width: 0; padding: 20px; margin-bottom: 22px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.receiptHeader { display: flex; align-items: center; gap: 14px; min-width: 0; }
-.receiptHeader > div { min-width: 0; }
-.receiptScene { width: 120px; }
-@media (max-width: 600px) { .receiptScene { width: 80px; } }
-.receiptHeader > img { flex-shrink: 0; object-fit: contain; }
 .receiptEyebrow { display: block; margin-bottom: 5px; color: #076c61; font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .receipt[data-receipt-fresh] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.receipt[data-receipt-fresh] .receiptHeader > :first-child { animation: mission-reward-arrives 400ms ease-out both; }
-@keyframes mission-reward-arrives { from { opacity: 0; transform: translateY(6px) scale(.94); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .receipt[data-receipt-fresh] .receiptHeader > :first-child { animation: none; } }
 .receipt h2 { margin: 0; font-size: 18px; line-height: 1.3; overflow-wrap: anywhere; }
 .receipt h3 { margin: 4px 0 0; font-size: 17px; line-height: 1.4; overflow-wrap: anywhere; }
 .continuation { display: grid; gap: 14px; min-width: 0; padding-top: 16px; border-top: 1px solid #17292340; }
@@ -135,7 +127,7 @@
 
 /* Decisions first; the full journey and global breakdown remain optional. */
 .center { padding: 16px clamp(16px, 3vw, 32px) 40px; }
-.center > [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 80px; padding: 8px 0 16px; background: transparent; margin-bottom: 16px; }
+.center > [data-kq-chapter] { padding: 8px 0 16px; background: transparent; margin-bottom: 16px; }
 .sections { margin-bottom: 16px; }
 .summary { margin: 0 0 12px; font-size: 14px; line-height: 1.5; }
 .summary strong { color: #076c61; }
@@ -147,9 +139,7 @@
 .trackFilter select:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .tracks { align-items: start; gap: 16px; }
 .track { overflow: visible; padding: 16px; }
-.trackHeading { display: flex; align-items: center; gap: 12px; min-width: 0; margin-bottom: 12px; }
-.trackHeading > img { width: 72px; height: 60px; flex: 0 0 auto; object-fit: cover; }
-.trackHeading > span { font-size: 14px; line-height: 1.4; font-weight: 700; }
+.trackHeading { min-width: 0; margin-bottom: 12px; font-size: 14px; line-height: 1.4; font-weight: 700; }
 .body { padding: 0; }
 .body h2 { margin: 8px 0; font-size: 26px; text-transform: none; overflow-wrap: anywhere; }
 .description { margin-bottom: 12px; font-size: 14px; line-height: 1.5; }
@@ -180,13 +170,10 @@
 .center .packs button:disabled { border-color: transparent; background: transparent; opacity: .6; }
 .center :is(.sections button,.toolbar button,.claim,.action,.packs button,.empty button):hover:not(:disabled),.trackFilter select:hover:not(:disabled) { color: #172923; --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
 .empty { margin: 16px 0; font-size: 14px; line-height: 1.6; }
-.trackHeading > span:first-child { width: 72px; height: 60px; flex: 0 0 72px; }
 .track { overflow: visible; }
-@media (max-width: 600px) { .center > [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 64px; } }
 @media (max-width: 760px) {
   .sections { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .sections button { padding: 8px 4px; flex-direction: column; gap: 4px; font-size: 13px; }
   .track { padding: 12px; }
   .trackHeading { margin-bottom: 8px; }
-  .trackHeading > img { width: 64px; height: 48px; }
 }

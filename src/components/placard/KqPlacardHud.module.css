@@ -35,9 +35,7 @@
 .cycle button { display: grid; gap: 7px; justify-items: start; min-height: 65px; padding: 10px 6px; border: 0; border-bottom: 1px solid #172923; color: var(--ink); background: transparent; text-align: left; }
 .cycle small { font-size: 10px; color: #536058; }
 .cycle strong { font-size: 13px; }
-.sectionIntro { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
-.sectionIntro > img { width: 75px; height: 95px; flex-shrink: 0; object-fit: contain; }
-.sectionIntro > div { min-width: 0; }
+.sectionIntro { min-width: 0; margin-bottom: 18px; }
 .sectionIntro h3 { margin: 0 0 7px; font: 900 25px/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .sectionIntro span { font-size: 12px; line-height: 1.6; }
 .equipmentList, .masteries { list-style: none; margin: 0; padding: 0; }
@@ -87,8 +85,6 @@
  .cycle { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
  .cycle small { font-size: 9px; }
  .cycle strong { font-size: 12px; }
- .sectionIntro { gap: 12px; }
- .sectionIntro > img { width: 58px; height: 80px; }
  .sectionIntro h3 { font-size: 22px; }
  .goal { padding: 14px; }
  .actions { flex-direction: column; }

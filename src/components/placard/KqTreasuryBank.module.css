@@ -1,8 +1,10 @@
 .bank { min-width: 0; color: #172923; background: #fff1d6; }
-.intro { margin-bottom: 16px; }
-.intro > small,.columns header small { color: #536058; font: 700 .6rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .065em; }
-.intro h2 { margin: 7px 0 0; font: 900 1.6rem/1.15 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
-.intro p { color: #536058; font-size: .8rem; line-height: 1.65; }
+.lobby { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); align-items: center; gap: clamp(14px,3vw,36px); margin-bottom: 22px; padding: clamp(14px,2vw,24px); color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.portrait { position: relative; aspect-ratio: 3 / 2; }
+.portrait img { object-fit: contain; }
+.services { display: grid; gap: 18px; min-width: 0; }
+.services h1 { margin: 0; color: #172923; font: 900 clamp(2rem,4vw,3.5rem)/1 var(--font-display),Impact,sans-serif; }
+.columns header small { color: #536058; font: 700 .6rem/1.5 ui-monospace,monospace; text-transform: uppercase; letter-spacing: .065em; }
 .columns { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
 .columns header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 .columns header > svg { color: #076c61; flex-shrink: 0; }
@@ -35,10 +37,10 @@
 @media(max-width: 760px) { .columns { grid-template-columns: 1fr; } }
 @media(max-width: 500px) { .savings,.reputation,.loans { padding: 20px 14px; } .locked { padding: 18px 12px; } }
 
-.desks { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 24px; }
+.desks { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
 .desks button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 54px; padding: 12px; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; font-size: .8rem; font-weight: 750; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .desks button[aria-selected="true"] { color: #fff1d6; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; }
 .deskPanel { min-width: 0; min-height: 300px; }
-.deskPanel:focus { outline: none; }
-@media(max-width: 600px) { .desks { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; } .desks button { flex-direction: column; padding: 10px 5px; font-size: .68rem; gap: 8px; } }
-.intro > small { color: #536058; }
+.deskPanel:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+@media(hover: hover) { .desks button:hover:not([aria-selected="true"]) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); } }
+@media(max-width: 650px) { .lobby { grid-template-columns: minmax(0,1fr); } .desks button { padding: 8px; font-size: .8rem; gap: 6px; } }

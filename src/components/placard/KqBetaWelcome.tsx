@@ -27,7 +27,7 @@ export function KqBetaWelcome({ ownerId, connectionKey, enabled = true }: { owne
   };
   if (!enabled || dismissed) return null;
   return createPortal(<AppDialog open onClose={close} labelledBy={titleId} closeLabel="Fermer l’accueil bêta" className={styles.dialog} bodyClassName={styles.body} dialogProps={{ "data-beta-welcome": true }}>
-    <KqChapterHeading art="mailbox" title="Le jeu est en bêta" titleId={titleId} compact />
+    <KqChapterHeading title="Le jeu est en bêta" titleId={titleId} compact />
     <p>Le quartier se construit avec toi. Un bug, une difficulté ou une idée ? <strong>Tes retours sont importants pour améliorer le jeu.</strong></p>
     <p>Sur la carte du quartier, ouvre la <strong>boîte aux lettres</strong> pour écrire à l’équipe.</p>
     <p className={styles.reward}><Gift size={24} aria-hidden="true" /><span>Les contributions utiles peuvent être récompensées par des <strong>packs Botte du Chanvrier</strong>, après validation de l’équipe.</span></p>

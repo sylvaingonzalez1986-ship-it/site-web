@@ -18,7 +18,7 @@ const primary = [
 ] as const;
 const mobilePrimary = primary.filter(({ key }) => key !== "workshop");
 const secondary = [
-  { key: "treasury", label: "Finances", art: "accounts", building: "bank" },
+  { key: "treasury", label: "Banque", art: "accounts", building: "bank" },
   { key: "staff", label: "Personnel", art: "staff", building: "office" },
   { key: "social", label: "Réseaux", art: "social", building: "market" },
   { key: "school", label: "QuizzShow", art: "school", building: "school" },
@@ -79,7 +79,6 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
     <div className={styles.navBrand}>
       <div className={styles.navMasthead}>
         <strong>KANAB<br />QUEST</strong>
-        <KqPrintedArt kind="quarter" className={styles.brandArt} />
       </div>
     </div>
     <nav aria-label={mobile ? "Toutes les activités de Kanab Quest" : "Navigation de Kanab Quest"}>

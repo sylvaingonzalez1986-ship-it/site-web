@@ -68,7 +68,7 @@ export function KqStaffProduction({ snapshot, disabled, prepare, onWeekly }: {
     requestAnimationFrame(() => workRef.current?.querySelector<HTMLSelectElement>("[data-production-assignment-employee]")?.focus());
   }
   return <section className={`${styles.panel} ${layout.production}`} aria-labelledby={titleId} data-staff-production>
-    <KqChapterHeading art="staff" title="Production autonome" titleId={titleId} compact />
+    <KqChapterHeading title="Production autonome" titleId={titleId} compact />
     <p>{settings?.enabled ? "Nouveaux cycles autorisés" : production?.lots.length ? "Nouveaux cycles suspendus · lots à terminer" : "Circuit en pause"}{production?.facility ? ` · ${production.facility.name}` : " · une zone de l’Entrepôt est nécessaire"}.</p>
     {stats ? <><dl className={styles.numbers}>
       <div><dt>Ventes encaissées après TVA</dt><dd>{formatKqCash(stats.salesCents - stats.vatCents)}</dd></div>

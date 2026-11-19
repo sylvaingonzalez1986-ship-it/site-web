@@ -273,14 +273,14 @@ export function KqPlacardHud({
           </> : null}
           {activeTab === "energy" ? <KqEnergyPanel productionUnits={productionUnits} /> : null}
           {activeTab === "equipment" ? <>
-            <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
+            <div className={styles.sectionIntro}><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div>
             {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name} · Niv. {snapshot?.levels?.[equipment.code] ?? 1}</span><small data-installed={equipment.equipped && !snapshot?.cultureWear?.[equipment.code]?.due}>{snapshot?.cultureWear?.[equipment.code]?.due ? "Hors service" : equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}
             {hiddenCount > 0 ? <p className={styles.hint}>Et {hiddenCount} autre{hiddenCount > 1 ? "s" : ""} dans ton inventaire.</p> : null}
             <p className={styles.hint}>Matériel de la tente {tentNumber} · {productionUnits} tente{productionUnits>1?"s":""} en service. Aménage chaque tente depuis l’inventaire.</p>
             <div className={styles.actions}><button type="button" className={styles.primary} onClick={() => setInventoryOpen(true)}><PackageCheck size={18} aria-hidden="true" /> Ouvrir l’Inventaire</button><button type="button" className={styles.secondary} onClick={() => onOpenShop()}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></div>
           </> : null}
           {activeTab === "goals" ? <>
-            <div className={styles.sectionIntro}><Image src="/contest/mascot/tasting/tasting-verdict.png" alt="" width={100} height={120} sizes="75px" /><div><h3>Ton prochain objectif</h3><span>{mode === "progression" ? "Machines de transformation. Le matériel de culture se choisit dans l’Entrepôt." : "Construis ton atelier à ton rythme."}</span></div></div>
+            <div className={styles.sectionIntro}><h3>Ton prochain objectif</h3><span>{mode === "progression" ? "Machines de transformation. Le matériel de culture se choisit dans l’Entrepôt." : "Construis ton atelier à ton rythme."}</span></div>
             <section className={styles.goal} aria-label="Prochain investissement">
               {routeGoalScenario && routeGoalProgress && snapshot?.routePlan ? <>
                 <p>Filière épinglée · objectif sauvegardé</p><h4>{routeGoalScenario.name}</h4><span>Jury ≥ {routeGoalScenario.minimumJuryScore.toFixed(1)}/10</span>

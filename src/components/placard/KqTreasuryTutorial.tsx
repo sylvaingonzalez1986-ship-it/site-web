@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createKqTreasuryTutorial, type KqTreasuryTutorialLesson, type KqTreasuryTutorialProgress } from "@/lib/kanab-quest-treasury-tutorial";
 import { createKqTutorialApi, KqTutorialApiProvider } from "./KqTutorialApiContext";
 import { KqTreasuryDesk } from "./KqTreasuryDesk";
+import { KqTreasuryBank } from "./KqTreasuryBank";
 import { KqMarketDesk, type KqMarketSection } from "./KqMarketDesk";
 import styles from "./KqTreasuryTutorial.module.css";
 
@@ -24,17 +25,16 @@ export function KqTreasuryTutorial({ lesson, onProgress, onOpenShop }: {
   }, [lesson, onProgress, sandbox]);
   const openShop = onOpenShop ?? (() => setNotice("L’ordinateur est déjà prêté. Retrouve les achats de matériel dans l’atelier Entrepôt du didacticiel."));
   const businessAtMarket = lesson === "business" && businessLocation === "market";
-  const locationName = lesson !== "business" ? "Banque" : businessAtMarket ? "Marché" : "Bureau";
+  const locationName = lesson !== "business" ? "Banque" : businessAtMarket ? "Marché" : "Personnel";
   return <KqTutorialApiProvider api={api}>
     <section data-treasury-tutorial={lesson} aria-label={`${locationName} du didacticiel`}>
-      {lesson === "business" ? <nav className={styles.navigation} aria-label="Espaces de cet essai de gestion"><button type="button" aria-pressed={businessAtMarket} onClick={() => { setBusinessLocation("market"); setMarketSection("management"); }}>Marché · Gérer mon activité</button><button type="button" aria-pressed={!businessAtMarket} onClick={() => setBusinessLocation("accounting")}>Bureau · Comptabilité</button></nav> : null}
+      {lesson === "business" ? <nav className={styles.navigation} aria-label="Espaces de cet essai de gestion"><button type="button" aria-pressed={businessAtMarket} onClick={() => { setBusinessLocation("market"); setMarketSection("management"); }}>Marché · Gérer mon activité</button><button type="button" aria-pressed={!businessAtMarket} onClick={() => setBusinessLocation("accounting")}>Personnel · Comptabilité</button></nav> : null}
       {notice ? <p role="status">{notice}</p> : null}
       {businessAtMarket ? <KqMarketDesk section={marketSection} onSectionChange={setMarketSection} onOpenShop={openShop}
         onOpenTreasury={() => setBusinessLocation("accounting")}
         onOpenStorage={() => setNotice("Retrouve tes contenants dans l’atelier Stockage & curing du didacticiel.")} />
-        : <KqTreasuryDesk key={`${lesson}-${businessLocation}`} initialPole={lesson === "business" ? "accounting" : "bank"}
-        initialBankDesk={lesson === "investments" ? "stocks" : "loans"}
-        onOpenShop={openShop} />}
+        : lesson === "business" ? <KqTreasuryDesk onOpenShop={openShop} />
+        : <KqTreasuryBank key={lesson} embedded initialDesk={lesson === "investments" ? "stocks" : "loans"} />}
     </section>
   </KqTutorialApiProvider>;
 }

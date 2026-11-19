@@ -113,8 +113,8 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "bank",
     title: "Le banquier et le livret",
     description: "Découvre les conditions d’un prêt et la réserve du Trésorier.",
-    location: "Kanab Quest → Bureau → Banque → Prêts ou Livret d’épargne",
-    href: "/arene/placard?view=treasury",
+    location: "Kanab Quest → Banque → Prêts ou Livret d’épargne",
+    href: "/arene/placard?view=treasury&pole=bank&section=loans",
     // Sources: kanab-quest-bank.ts; placard/KqBankLoans.tsx; KqTreasuryBank.tsx;
     // supabase/migrations/20260923000700_kq_bank_investment_limits.sql.
     features: [
@@ -134,8 +134,8 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "investments",
     title: "Bourse et crypto du jeu",
     description: "Lis un portefeuille et comprends ce qu’une vente change.",
-    location: "Kanab Quest → Bureau → Banque → Bourse ou Crypto",
-    href: "/arene/placard?view=treasury",
+    location: "Kanab Quest → Banque → Bourse ou Crypto",
+    href: "/arene/placard?view=treasury&pole=bank&section=stocks",
     // Sources: placard/KqStockMarket.tsx; placard/KqCryptoMarket.tsx;
     // kanab-quest-stocks.ts; kanab-quest-crypto.ts.
     features: [
@@ -166,7 +166,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
       "Dans Studio, améliore les photos, l’identité de marque et les fiches de tes produits. Chaque niveau affiche son coût, ses conditions et ses effets.",
       "Dans Promouvoir, prépare tes campagnes pour faire connaître ta boutique. Les visites ne garantissent pas une commande : le stock, la qualité et le prix restent déterminants.",
       "Prépare tes paquets et expose tes articles : les ventes en ligne se font automatiquement, même hors connexion, lorsque la boutique est active et qu’une offre trouve des clients.",
-      "Dans Finances, consulte et règle les factures. La TVA de jeu est réservée sur les ventes ; le journal comptable détaille les mouvements. Compare les recettes et les dépenses pour comprendre ton résultat.",
+      "Dans Personnel, ouvre Comptabilité pour consulter et régler les factures. La TVA de jeu est réservée sur les ventes ; le journal comptable détaille les mouvements. Compare les recettes et les dépenses pour comprendre ton résultat.",
     ],
     scenario: "Tu as acheté l’ordinateur, mais tu n’as jamais créé ton site. Tu veux vendre en ligne. Quelle est la prochaine étape ?",
     choices: [

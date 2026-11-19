@@ -1,5 +1,6 @@
 .page { composes: gameSurface from "../contest/ArenaRetro.module.css"; position: relative; isolation: isolate; min-height: 100svh; padding: 30px clamp(16px,4vw,56px) 48px; background: #fff1d6; color: #172923; }
 .page > * { max-width: 1180px; margin-inline: auto; }
+.page.embedded { min-height: 0; padding: 0; }
 .page > .scenery { position: absolute; z-index: -2; inset: 0 0 auto; height: 580px; max-width: none; overflow: hidden; pointer-events: none; }
 .scenery img { object-fit: cover; object-position: center 46%; opacity: .42; }
 .page button { cursor: pointer; touch-action: manipulation; font-family: inherit; }
@@ -143,25 +144,10 @@
 @media(max-width: 980px) { .chartColumns { grid-template-columns: 1fr; } .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .metrics article > small { min-height: 0; } .card { padding: 22px; } .accountColumns { gap: 24px; } .managementCallout { flex-wrap: wrap; } .managementCallout > button { margin-left: 44px; } }
 @media(max-width: 650px) { .page { padding: 22px 14px 32px; } .toolbar { padding: 14px 12px; gap: 12px; } .toolbar > label { flex: 1 1 170px; } .toolbar select { width: 100%; } .clock { flex-basis: 100%; margin: 0; padding-top: 10px; border-top: 1px solid #17292340; } .metrics { gap: 9px; } .metrics article { padding: 16px 12px; gap: 10px; } .metrics article > small { min-height: 3em; font-size: .57rem; } .metrics article > strong { font-size: 1.65rem; } .metrics article > span { font-size: .63rem; } .cashStrip { gap: 14px 24px; } .cashStrip > span:last-child { flex-basis: 100%; } .card { padding: 18px 13px; } .card h2 { font-size: 1.45rem; } .plot { grid-template-columns: 45px minmax(0,1fr); gap: 5px; height: 190px; } .axis { font-size: .57rem; } .plotLabels { padding-left: 50px; } .chartSummary strong { font-size: 1rem; } .accountColumns { grid-template-columns: 1fr; gap: 28px; } .accountLines > div { font-size: .7rem; gap: 10px; } .accountLines dd { font-size: .74rem; } .bottomResult { font-size: .77rem; } .managementCallout { padding: 19px 14px; gap: 12px; } .managementCallout > div { flex: 1 1 180px; } .managementCallout > button { margin-left: 0; width: 100%; } .journalEntry > summary { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; } .journalIcon { width: 30px; height: 34px; } .journalCash { grid-column: 2; justify-self: start; margin-left: 0; text-align: left; } .journalEntry .journalCash { display: flex !important; align-items: baseline; gap: 8px !important; flex-wrap: wrap; } .journalEntry strong { font-size: .76rem; } .postings { padding-left: 0; } .pagination { gap: 7px; flex-wrap: wrap; } .pagination > button { padding: 9px 7px; font-size: .66rem; } .pagination > span { font-size: .64rem; } .methods { padding-inline: 14px; } }
 @media(prefers-reduced-motion: reduce) { .spin { animation: none; } }
-.header { margin-bottom: 22px; }
-.officeArt { display: grid; grid-template-columns: minmax(0,.78fr) minmax(0,1.22fr); grid-template-rows: auto auto; grid-template-areas: "welcome illustration" "caption illustration"; gap: 0 24px; min-width: 0; margin: 0; padding: 16px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) 48 fill / 15px / 0 stretch; }
-.officeIllustration { grid-area: illustration; align-self: center; position: relative; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; }
-.officeIllustration img { object-fit: contain; object-position: center; }
-.welcome { grid-area: welcome; align-self: end; min-width: 0; padding: 24px 12px 0 20px; color: #172923; }
-.welcome h1 { margin: 14px 0 18px; font: 900 clamp(2.7rem,5.2vw,4.4rem)/.96 var(--font-display),Impact,sans-serif; color: #172923; text-transform: uppercase; text-shadow: none; text-wrap: balance; }
-.welcome p { margin: 0; max-width: 29ch; color: #172923; font-size: .88rem; line-height: 1.7; }
-.officeArt figcaption { grid-area: caption; align-self: start; max-width: 31ch; margin: 20px 12px 20px 20px; padding-top: 12px; border-top: 2px solid #172923; color: #536058; font-size: .72rem; line-height: 1.6; }
 @media(max-width: 650px) {
-  .header { margin-bottom: 18px; }
-  .officeArt { grid-template-columns: minmax(0,1fr); grid-template-rows: auto; grid-template-areas: "welcome" "illustration" "caption"; gap: 16px; padding: 16px; }
-  .welcome { padding: 5px 2px 0; }
-  .welcome h1 { font-size: clamp(2.4rem,8vw,3.5rem); margin-block: 10px; }
-  .welcome p { font-size: .8rem; line-height: 1.65; }
-  .officeArt figcaption { max-width: none; margin: 0 2px 3px; padding-top: 10px; font-size: .68rem; }
   .financeNav { gap: 6px; }
   .financeNav > a, .financeNav > button { flex: 1 1 120px; padding: 10px 12px; text-align: center; font-size: .875rem; }
 }
-.officePanel { min-width: 0; }
 .accountPlan h2 { margin: 6px 0 0; font: 900 1.8rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
 .accountSearch { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 12px; border: 1px solid #172923; background: #fffaf0; color: #172923; border-radius: var(--game-panel-radius, 2px); }
 .accountSearch input { width: 100%; min-width: 0; max-width: 250px; min-height: 44px; padding: 8px 0; font: inherit; font-size: .78rem; background: transparent; color: #172923; }

@@ -98,7 +98,7 @@ export function createBuildingIsometricRenderer(
     }
     for (const object of room.objects) {
       const furniture = createInteriorObjectArt(object, room.id);
-      furniture.position.set(object.x, .016, object.z);
+      furniture.position.set(object.x, .016 + (object.elevation ?? 0), object.z);
       model.add(furniture);
       if (object.href || object.kind === "exit") {
         furniture.traverseVisible(child => {

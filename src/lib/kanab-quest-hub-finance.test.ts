@@ -22,7 +22,7 @@ describe("Quartier financial attention", () => {
   it("puts the oldest unpaid due invoice before an upcoming invoice in the other category", () => {
     const data = snapshot(category(invoice("analysis", 1)), category(invoice("oldest", -3, 7_580), invoice("newer", -1, 2_000)));
     const result = getKqHubFinanceAttention(data);
-    expect(result).toMatchObject({ complete: true, notice: { id: "invoice-overdue", severity: "urgent", buttonLabel: "Voir mes factures", destination: "treasury", options: { treasuryPole: "accounting" } } });
+    expect(result).toMatchObject({ complete: true, notice: { id: "invoice-overdue", severity: "urgent", buttonLabel: "Voir mes factures", destination: "staff", options: { staffSection: "accounting" } } });
     expect(result.notice?.description).toContain("Fournisseur : 75,80");
     expect(result.notice?.description).toContain("10:00");
     expect(result.notice?.description).not.toContain("95,80");

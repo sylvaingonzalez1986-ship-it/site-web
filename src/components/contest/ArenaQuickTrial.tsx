@@ -40,7 +40,6 @@ export function ArenaQuickTrial({ onClose, onOpenQuarter, onContinueLearning, on
   const projection = state.storage ? projectKqStorageLot(state.storage, state.clock) : null;
   const stepLabel = getQuickTrialStepLabel(state);
   const phase = ['variety', 'culture'].includes(state.step) ? 0 : ['storage', 'curing'].includes(state.step) ? 1 : ['jury', 'verdict'].includes(state.step) ? 2 : complete ? 4 : 3;
-  const art = phase === 0 ? 'culture' : phase === 1 ? 'warehouse' : phase === 2 ? 'harvest' : 'commerce';
   const play = (action: ArenaQuickTrialAction) => session.play(action);
   useBodyScrollLock(true);
 
@@ -60,7 +59,7 @@ export function ArenaQuickTrial({ onClose, onOpenQuarter, onContinueLearning, on
       <p id={descriptionId} className={styles.notice}>Essai fictif · aucun achat ni gain sur ton compte.</p>
       {warning ? <p className={styles.warning} role="status">{warning}</p> : null}
       {error ? <p className={styles.warning} role="alert">{error}</p> : null}
-      <KqChapterHeading compact art={leaving ? 'quarter' : art} title={leaving ? complete ? 'Ta première vente est réussie' : 'Quitter l’essai ?' : state.step === 'culture' && game ? KQ_STAGES[game.stageIndex] : stepLabel} titleId={titleId} />
+      <KqChapterHeading compact title={leaving ? complete ? 'Ta première vente est réussie' : 'Quitter l’essai ?' : state.step === 'culture' && game ? KQ_STAGES[game.stageIndex] : stepLabel} titleId={titleId} />
       <h3 className={styles.focusHeading} ref={heading} tabIndex={-1}>{leaving ? 'Ton bilan d’essai' : `Étape ${Math.min(phase + 1, 4)} sur 4 · ${['Culture', 'Rangement et affinage', 'Jury', 'Première vente'][Math.min(phase, 3)]}`}</h3>
 
       {leaving ? <section data-quick-exit>

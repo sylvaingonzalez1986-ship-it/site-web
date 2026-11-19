@@ -105,10 +105,10 @@ export function KqSupportCampaign({ standalone = false }: { standalone?: boolean
   const confirmed = status?.state === "paid" || status?.state === "refunded";
   const waiting = status?.state === "uncertain" || status?.state === "creating" || status?.state === "review";
   const content = <>
+    {standalone && <h1 id={`${id}-title`}>Soutenir les producteurs</h1>}
     <div className={styles.overview}>
       <KqPrintedArt kind="producer-support" className={styles.art} sizes="(max-width: 600px) 150px, 220px" />
       <div className={styles.summary}>
-        {standalone && <h1 id={`${id}-title`}>Soutenir les producteurs</h1>}
         <p>Bon, on n’est pas là pour faire la manche… mais la tréso, ça ne pousse pas sous les lampes.</p>
         <p>Chez nous, dès qu’on parle de chanvre à actifs, les banques rangent le chéquier.
           Quand t’as les poches pleines, c’est plus facile de grandir.

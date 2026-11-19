@@ -10,11 +10,17 @@ const obj = (id: string, kind: InteriorObject["kind"], label: string, x: number,
 });
 
 const furniture: Record<Exclude<VillageBuildingKind, "warehouse">, InteriorObject[]> = {
-  bank: [obj("accounts", "desk", "Ma comptabilité", -3, -1, 2, 1.2, "view=treasury&pole=accounting", "Factures et comptes"), obj("bank", "safe", "Ouvrir la banque", 2.5, -2.8, 2, 1.6, "view=treasury&pole=bank", "Épargne et financement")],
+  bank: [
+    obj("bank", "desk", "Prêts", 1.6, .3, 3.9, 2.45, "view=treasury&pole=bank&section=loans", "Parler au banquier"),
+    { ...obj("savings", "safe", "Épargne", 2.83, .97, 1.12, .79, "view=treasury&pole=bank&section=savings", "La tirelire sur le bureau"), elevation: 1.02 },
+    { ...obj("stocks", "board", "Bourse", -.16, -4.27, 3.9, .3, "view=treasury&pole=bank&section=stocks", "Le panneau du CAC 40"), elevation: 1.24 },
+    obj("crypto", "desk", "Crypto", -2.89, -.55, 2.52, 1.42, "view=treasury&pole=bank&section=crypto", "L’ordinateur au signe Bitcoin"),
+  ],
   office: [
     obj("team", "desk", "Bureau du personnel", 1.65, -1.65, 3.6, 1.35, "view=staff", "Journée de travail et suivi du personnel"),
     obj("team-register", "bookshelf", "Plan de travail", -2.85, -2.5, 2, .85, "view=staff&section=team", "Journée et affectations de l’équipe"),
     obj("recruitment", "board", "Recruter", -2.95, .8, 2.35, .55, "view=staff&section=candidates", "Consulter les candidatures"),
+    obj("accounts", "desk", "Ma comptabilité", 3.34, 1.57, 2.35, 1.95, "view=staff&section=accounting", "Factures et comptes"),
   ],
   market: [obj("sales", "counter", "Préparer mes ventes", -3.1, -1.6, 2.8, 1.15, "view=market&section=sales", "Formats, prix et débouchés"), obj("stock", "storage", "Mon stock en vente", 2.7, -1.3, 2.2, 1.15, "view=market&section=dashboard", "Paquets, annonces et commandes"), obj("business", "desk", "Développer mon commerce", -2.9, 1.5, 2.1, 1, "view=market&section=management"), obj("communication", "board", "Communiquer", 2.7, -3.45, 2.3, .45, "view=social")],
   missions: [

@@ -2454,7 +2454,7 @@ function KqGameSession({
             <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
           </div> : null}
           {viewMode === "arena" ? (
-            <div className={styles.arenaModeHero}><KqChapterHeading art="harvest" title="Jury & duels" level={1} compact><p>Après l’affinage et le trim, fais juger ta Fleur d’Arène. Le stock récolté reste disponible pour la vente.</p></KqChapterHeading></div>
+            <div className={styles.arenaModeHero}><KqChapterHeading title="Jury & duels" level={1} compact><p>Après l’affinage et le trim, fais juger ta Fleur d’Arène. Le stock récolté reste disponible pour la vente.</p></KqChapterHeading></div>
           ) : null}
           {viewMode !== "arena" ? seasonBoard : null}
           <details className={styles.packFormat}>
@@ -2763,10 +2763,10 @@ function KqGameSession({
         {harvestMoment}
         {contractRun}
         <KqCultureCarousel activeId={cultureRecapPanel} onChange={setCultureRecapPanel} panels={[
-          { id: "harvest", label: "Récoltes", art: "help-quality", content: <div className={styles.cultureSheet}><KqChapterHeading art="help-quality" title="Les récoltes" compact /><KqCampaignSummary state={state} flowers={officialFlowers} /></div> },
-          { id: "journal", label: "Journal", art: "help-plan", content: <div className={styles.cultureSheet} data-culture-campaign-recap><KqChapterHeading art="help-plan" title="Journal de la campagne" compact /><KqCultureRecap state={state} /><HarvestScoreSheet state={state} /><p>{burnedCards.length} copie{burnedCards.length > 1 ? "s" : ""} brûlée{burnedCards.length > 1 ? "s" : ""} · {preservedCards.length} conservée{preservedCards.length > 1 ? "s" : ""}, pour l’ensemble de la campagne.</p></div> },
+          { id: "harvest", label: "Récoltes", art: "help-quality", content: <div className={styles.cultureSheet}><KqChapterHeading title="Les récoltes" compact /><KqCampaignSummary state={state} flowers={officialFlowers} /></div> },
+          { id: "journal", label: "Journal", art: "help-plan", content: <div className={styles.cultureSheet} data-culture-campaign-recap><KqChapterHeading title="Journal de la campagne" compact /><KqCultureRecap state={state} /><HarvestScoreSheet state={state} /><p>{burnedCards.length} copie{burnedCards.length > 1 ? "s" : ""} brûlée{burnedCards.length > 1 ? "s" : ""} · {preservedCards.length} conservée{preservedCards.length > 1 ? "s" : ""}, pour l’ensemble de la campagne.</p></div> },
           { id: "care", label: "Santé", art: "help-care", content: <div className={styles.cultureSheet}><KqCultureCarePanel compact presentation="carousel" active={cultureRecapPanel === "care"} state={state} request={remoteRequest} runId={state.campaign.leaderRunId} disabled onStateChange={setState} onBusyChange={setCareBusy} onOpenHarvest={openCultureQuality} />{!state.care ? <p>Aucun suivi de santé enregistré pour cette culture.</p> : null}</div> },
-          { id: "charges", label: "Charges", art: "help-accounts", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading art="help-accounts" title="Charges et factures" compact /><KqEnergyPanel campaign campaignMembers={state.campaign.members} runId={state.campaign.leaderRunId} /></div> },
+          { id: "charges", label: "Charges", art: "help-accounts", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading title="Charges et factures" compact /><KqEnergyPanel campaign campaignMembers={state.campaign.members} runId={state.campaign.leaderRunId} /></div> },
         ]} />
         <div className={styles.zoneNavigation}>{onOpenWarehouse ? <button type="button" onClick={() => onOpenWarehouse()}>Retour à l’entrepôt</button> : <Link href="/arene/placard?view=workshop">Retour à l’entrepôt</Link>}</div>
       </main>;
@@ -2803,7 +2803,7 @@ function KqGameSession({
           <KqCultureCarousel activeId={cultureRecapPanel} onChange={setCultureRecapPanel} panels={[
             { id: "journal", label: "Journal", art: "help-plan", content: (
           <section className={styles.traitsPanel}>
-            <KqChapterHeading art="help-plan" title="L’histoire de cette culture" compact /><KqCultureRecap state={state} />
+            <KqChapterHeading title="L’histoire de cette culture" compact /><KqCultureRecap state={state} />
             <ol className={styles.cultureDeathHistory} aria-label="Résultats des étapes validées">
               {state.history.map((entry, index) => (
                 <li key={entry.stage} data-zero={entry.total === 0 && !entry.rescued || undefined} data-rescued={entry.rescued || undefined}>
@@ -2841,7 +2841,7 @@ function KqGameSession({
           {contractRun}
           {hasHarvest ? <p className={styles.harvestNote}>Au jury, seule la Fleur d’Arène est consommée. Ta récolte reste disponible pour la vente après le verdict.</p> : null}
           <KqCultureCarousel activeId={cultureRecapPanel} onChange={setCultureRecapPanel} panels={[
-            { id: "harvest", label: "Fleur", art: "help-quality", content: <div className={styles.cultureSheet} data-harvest-flower><KqChapterHeading art="help-quality" title="Ma Fleur d’Arène" compact />
+            { id: "harvest", label: "Fleur", art: "help-quality", content: <div className={styles.cultureSheet} data-harvest-flower><KqChapterHeading title="Ma Fleur d’Arène" compact />
 
             {recordedFlower ? <>
             {harvestProjection.nextTier && harvestProjection.qualityToNextTier === 0 ? <p><KqHarvestTierProgress projection={harvestProjection} /></p> : null}
@@ -2861,7 +2861,7 @@ function KqGameSession({
             </section>
             </> : <p>La Fleur d’Arène de cette culture n’a pas encore été retrouvée. Consulte le stockage pour vérifier ce lot.</p>}
             </div> },
-            { id: "journal", label: "Journal", art: "help-plan", content: <div className={styles.cultureSheet} data-harvest-journal><KqChapterHeading art="help-plan" title="Journal et cartes" compact />
+            { id: "journal", label: "Journal", art: "help-plan", content: <div className={styles.cultureSheet} data-harvest-journal><KqChapterHeading title="Journal et cartes" compact />
 
             <div className={styles.cultureReceipt}>
               <article><Flame /><span><small>Copies consommées · {burnedCards.length}</small><div>{burnedCards.length > 0 ? burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune copie consommée</em>}</div></span></article>
@@ -2875,7 +2875,7 @@ function KqGameSession({
             <KqCultureCarePanel compact presentation="carousel" active={cultureRecapPanel === "care"} state={state} request={remoteRequest} storage={careStorage} runId={runId} disabled onStateChange={setState} onBusyChange={setCareBusy} />
             {!state.care ? <p>Aucun suivi de santé enregistré pour cette culture.</p> : null}
             </div> },
-            { id: "charges", label: "Charges", art: "help-accounts", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading art="help-accounts" title="Charges et factures" compact />
+            { id: "charges", label: "Charges", art: "help-accounts", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading title="Charges et factures" compact />
               {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedWarehouse={state.warehouse} lockedTents={state.equipment?.tents} lockedScope={state.equipment?.scope} productionUnits={state.equipment?.productionUnits} runId={runId} zoneId={initialZoneId} /> : <p>Aucun relevé d’énergie disponible pour cette culture.</p>}
             </div> },
           ]} />
@@ -3064,7 +3064,7 @@ function KqGameSession({
       data-guide-culture-started={isPlayerMode && remoteBurnsEnabled && !!remoteRunId && !api.isTutorial || undefined}
       data-guide-turn-resolved={isPlayerMode && remoteBurnsEnabled && !!remoteRunId && !api.isTutorial && state.history.length > 0 || undefined}>
       <header className={styles.topbar}>
-        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{tutorial ? "Culture d’essai" : isPlayerMode ? "Culture officielle" : "Prototype local"}</span><h1>{state.campaign ? "Ma campagne" : contextZoneLabel ?? "Ma culture"}</h1></div></div>
+        <div className={styles.gameBrand}><span>{tutorial ? "Culture d’essai" : isPlayerMode ? "Culture officielle" : "Prototype local"}</span><h1>{state.campaign ? "Ma campagne" : contextZoneLabel ?? "Ma culture"}</h1></div>
         <div className={styles.resources}><span><Zap />{cardRecovery ? "XP à vérifier" : `${state.xp} XP`}</span><span data-culture-quality><Star /> Qualité de culture · {runProjection.projectedQuality} pts estimés</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>
       </header>
 
@@ -3194,7 +3194,7 @@ function KqGameSession({
           <section className={styles.handDetails} data-culture-hand tabIndex={-1}>
 
             <section className={styles.deckPanel}>
-              <KqChapterHeading art="collection" title="Ta main" compact><p data-hand-capacity>{handCodes.length} / {KQ_HAND_SIZE} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}.</p></KqChapterHeading>
+              <KqChapterHeading title="Ta main" compact><p data-hand-capacity>{handCodes.length} / {KQ_HAND_SIZE} copie{handCodes.length > 1 ? "s" : ""} distribuée{handCodes.length > 1 ? "s" : ""} · {Math.max(0, supportDeckSize - burnedSupportCount)} copie{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""} non brûlée{Math.max(0, supportDeckSize - burnedSupportCount) > 1 ? "s" : ""}.</p></KqChapterHeading>
               {lastPlayedCard && !cardRecovery ? <div className={styles.playedCardReceipt} data-card-play-result role="status">
                 <strong>{lastPlayedCard.name} jouée</strong>
                 <span>{lastPlayedCard.xpCost} XP engagés · 1 copie détruite · {state.xp} XP restants</span>
@@ -3259,7 +3259,7 @@ function KqGameSession({
           ) },
           { id: "harvest", label: "Récolte", art: "help-quality", detail: `${displayedHarvestGrams.toLocaleString("fr-FR")} g estimés`, content: (
             <div className={styles.cultureSheet}>
-              <KqChapterHeading art="help-quality" title="Récolte estimée" compact />
+              <KqChapterHeading title="Récolte estimée" compact />
         {state.campaign && <section data-campaign-progress><KqCampaignSummary state={state} /></section>}
         <section hidden={!!state.campaign}>
 
@@ -3296,7 +3296,7 @@ function KqGameSession({
           ) },
           { id: "journal", label: "Journal", art: "help-plan", detail: `${state.history.length} étape${state.history.length > 1 ? "s" : ""}`, content: (
             <div className={styles.cultureSheet}>
-              <KqChapterHeading art="help-plan" title="Journal de culture" compact />
+              <KqChapterHeading title="Journal de culture" compact />
         <section className={styles.cultureSheet}>
 
           {state.history.length > 0 ? <ol className={styles.cultureHistory}>{state.history.map((entry, index) => <li key={entry.stage}><span><strong>{index + 1}. {getKqStageDisplayName(entry.stage)} · {KQ_OUTCOME_LABELS[entry.outcome]}{entry.rescued ? " · secours utilisé" : ""}</strong><small>{entry.situation} · dés {entry.dice.join("–")}</small></span><b>{entry.qualityDelta === undefined ? "Ancien reçu" : `${entry.qualityDelta > 0 ? "+" : ""}${entry.qualityDelta} qualité · +${entry.xpGain ?? 0} XP`}</b></li>)}</ol> : <p className={styles.cultureHelp}>Aucune étape validée pour le moment.</p>}
@@ -3313,7 +3313,7 @@ function KqGameSession({
           ) },
           { id: "rules", label: "Repères", art: "help-training", detail: "Règles et dés", content: (
             <div>
-              <KqChapterHeading art="help-training" title="Repères de culture" compact />
+              <KqChapterHeading title="Repères de culture" compact />
               {cultureWorkEnabled ? <KqCultureWorkStatus detailsOnly quote={cultureWork.quote} error={cultureWork.error} onRefresh={cultureWork.refresh} /> : null}
         <section className={styles.cultureSheet}>
 

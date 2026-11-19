@@ -102,12 +102,13 @@ try {
         closeVisible: close.top >= 0 && close.bottom <= innerHeight,
         controls: [...dialog.querySelectorAll('button,a[href]')].map(node => { const r = node.getBoundingClientRect(); return { label: node.getAttribute('aria-label'), width: r.width, height: r.height }; }),
         photosLoaded: [...dialog.querySelectorAll('[data-product-photo] img')].every(node => node.complete && node.naturalWidth > 0),
-        artLoaded: [...dialog.querySelectorAll('[data-kq-chapter] img')].every(node => node.complete && node.naturalWidth > 0),
+        title: dialog.querySelector('[data-kq-chapter] h2')?.textContent,
+        titleImages: dialog.querySelectorAll('[data-kq-chapter] img').length,
         panelMaterial: getComputedStyle(dialog).borderImageSource,
       };
     });
     assert.equal(metrics.documentOverflow, false); assert(metrics.dialogFits); assert(metrics.contentFits); assert(metrics.closeVisible);
-    assert(metrics.photosLoaded); assert(metrics.artLoaded); assert.equal(metrics.controls.length, 5);
+    assert(metrics.photosLoaded); assert.equal(metrics.title, 'Nouveautés du marché'); assert.equal(metrics.titleImages, 0); assert.equal(metrics.controls.length, 5);
     assert(metrics.controls.every(control => control.width >= 44 && control.height >= 44)); assert.match(metrics.panelMaterial, /panel-paper-v1/);
     await page.screenshot({ path: resolve(output, `popup-${width}x${height}.png`) });
     await page.$eval('[data-app-dialog-body]', element => { element.scrollTop = element.scrollHeight; });
@@ -151,7 +152,7 @@ try {
 } catch (error) {
   errors.push(error.stack || String(error)); process.exitCode = 1; console.error(error);
 } finally {
-  await writeFile(resolve(output, 'report.json'), JSON.stringify({ results, errors, scope: 'Real NewProductsPopup, AppDialog, overlay history, chapter artwork, globals.css and site-ui-preview.css; simulated CMS, consent and navigation; all external/API requests blocked.' }, null, 2));
+  await writeFile(resolve(output, 'report.json'), JSON.stringify({ results, errors, scope: 'Real NewProductsPopup, AppDialog, overlay history, chapter heading, globals.css and site-ui-preview.css; simulated CMS, consent and navigation; all external/API requests blocked.' }, null, 2));
   await browser?.close(); await server.close();
 }
 console.log(`New-products popup audit: ${results.length} checks passed, ${errors.length} errors.`);

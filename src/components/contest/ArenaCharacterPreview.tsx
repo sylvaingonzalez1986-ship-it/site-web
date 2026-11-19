@@ -38,7 +38,7 @@ export function ArenaCharacterPreview() {
   const [session, setSession] = useState(0);
   return <main className={styles.page} data-character-preview>
     <div className={styles.content}>
-      <KqChapterHeading art="quarter" title="Tester la création du personnage" level={1}>
+      <KqChapterHeading title="Tester la création du personnage" level={1}>
         <p>Session locale réservée à l’admin. Le parcours complet peut être recommencé autant de fois que tu veux.</p>
       </KqChapterHeading>
       <CharacterSession key={session} onReset={() => setSession(value => value + 1)} />

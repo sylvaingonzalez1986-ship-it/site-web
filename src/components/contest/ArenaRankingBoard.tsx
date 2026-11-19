@@ -6,7 +6,6 @@ import Link from "@/components/navigation/NavigationLink";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { LeaderboardAvatar } from "./LeaderboardAvatar";
 import { KqAllocationBar } from "../placard/KqVisuals";
-import { KqPrintedArt } from "../placard/KqPrintedArt";
 import styles from "./ArenaRankingBoard.module.css";
 
 export type ArenaRankingMode = "general" | "tasting" | "duels" | "business";
@@ -119,7 +118,7 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
   return <section id={id} className={styles.board} data-arena-ranking-board data-tutorial-ready={!loading && !unavailable} data-mode={mode} data-compact={compact || undefined} aria-labelledby={titleId}>
     <header className={styles.heading}>
       <div><h3 id={titleId}>{titles[mode]}</h3><p className={styles.intro}>{intros[mode]}</p></div>
-      <span className={styles.seal}><KqPrintedArt kind="achievements" className={styles.illustration} sizes="(max-width: 560px) 82px, 150px" /><small>Sans plafond</small></span>
+      <small className={styles.limit}>Sans plafond</small>
     </header>
 
     <div className={styles.modeSwitch} role="group" aria-label="Type de classement">

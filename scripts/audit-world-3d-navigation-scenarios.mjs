@@ -86,11 +86,11 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     assert.equal(await page.$(legacyPresentation),null);
     const bank=`${fallback} [data-village-building="bank"]`;
     await page.focus(bank);await page.keyboard.press('Enter');
-    const activity='#village-building-activities a[href="/arene/placard?view=treasury&pole=bank"]';
+    const activity='#village-building-activities a[href="/arene/placard?view=treasury&pole=bank&section=loans"]';
     await page.waitForSelector(activity,{visible:true});
     await page.focus(activity);await page.keyboard.press('Enter');
     await waitView('treasury');
-    assert.equal(await page.$eval('[data-treasury-pole]',node=>node.textContent),'bank');
+    assert.equal(await page.$eval('[data-bank-desk]',node=>node.textContent),'loans');
     await click('button[aria-label="Revenir au village 3D"]');
     await waitView('hub');
     await page.waitForSelector(activity,{visible:true});
@@ -115,8 +115,8 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     await screenshot(`world-3d-hub-${width}`);
     results.push({scenario:'world-3d-all-navigation',width,destinations:11,persistentCanvas:true,noDuplicateMap:true});
 
-    await chooseActivity('bank','/arene/placard?view=treasury&pole=bank');
-    assert.equal(await page.$eval('[data-treasury-pole]',node=>node.textContent),'bank');
+    await chooseActivity('bank','/arene/placard?view=treasury&pole=bank&section=stocks');
+    assert.equal(await page.$eval('[data-bank-desk]',node=>node.textContent),'stocks');
     await close();
     await chooseActivity('market','/arene/placard?view=market&section=management');
     assert.equal(await page.$eval('[data-market-section]',node=>node.textContent),'management');

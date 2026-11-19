@@ -1,6 +1,5 @@
 .dashboard { min-width:0; display:grid; gap:16px; padding:20px; color:var(--game-ink,#172923); background:transparent; border:2px solid transparent; box-shadow:none; border-image:var(--game-panel-paper,url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
-.heading { display:flex; align-items:center; gap:12px; min-width:0; }
-.heading > span { width:68px; height:68px; flex:0 0 68px; }
+.heading { min-width:0; }
 .heading h2 { margin:0; font:850 clamp(20px,2.4vw,28px)/1.2 var(--font-display),Impact,sans-serif; }
 .heading p { margin:5px 0 0; font-size:14px; color:#40594e; }
 .toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
@@ -61,5 +60,5 @@
 .bottom p { margin:0; flex:1 1 320px; color:#40594e; font-size:13px; line-height:1.5; }
 .dashboard .bottom button { display:flex; align-items:center; gap:8px; --game-control-art:var(--game-control-teal,url('/placard/ui/control-teal-v2.webp')); color:#fff1d6; }
 @media (hover:hover) { .dashboard :is(.modes,.people,.sectors) button:hover:not(:disabled),.rules > summary:hover { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); } }
-@media (max-width:700px) { .dashboard { padding:14px; gap:12px; } .summary { grid-template-columns:minmax(0,1fr); gap:14px; } .total { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; } .outcomes { grid-template-columns:minmax(0,1fr); } .panel { padding:14px; } .sectors { grid-auto-columns:120px; } .hourStates { grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; } .heading > span { width:52px; height:52px; flex-basis:52px; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .allocation ul { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 12px; } }
+@media (max-width:700px) { .dashboard { padding:14px; gap:12px; } .summary { grid-template-columns:minmax(0,1fr); gap:14px; } .total { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; } .outcomes { grid-template-columns:minmax(0,1fr); } .panel { padding:14px; } .sectors { grid-auto-columns:120px; } .hourStates { grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .allocation ul { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 12px; } }
 @media (max-width:380px) { .dashboard { padding:12px 10px; } .modes { gap:5px; } .dashboard .modes button { padding:10px; font-size:13px; } .metrics dd { font-size:18px; } }

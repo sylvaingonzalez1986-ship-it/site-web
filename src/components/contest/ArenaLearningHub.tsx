@@ -35,7 +35,7 @@ const MEETING_PLACES: Record<ArenaReleveMeetingId, { label: string; image: strin
   business: { label: "Commerce", image: "/placard/commerce-office-sylvain-v3.webp" },
   social: { label: "Réseaux", image: "/app/kanab-quest/social/scenes/producer-journal-v3.webp" },
   merch: { label: "Produits dérivés", image: "/placard/market-brand-studio-sylvain-v3.webp" },
-  bank: { label: "Banque", image: "/placard/bureau-bank-sylvain-v2.webp" },
+  bank: { label: "Banque", image: "/placard/bureau-bank-sylvain-v3.webp" },
   community: { label: "Missions & personnage", image: "/placard/market-social-missions-sylvain-v3.webp" },
   notebook: { label: "Collection", image: "/app/lottery/sylvain-booster-presentation-v3.webp" },
 };

@@ -96,7 +96,7 @@ function RankingsSession({ ownerId, onTournament }: Props) {
     <div className={styles.opening}>
       <KqQuizzShowScene mode="ranking" />
       <div>
-        <KqChapterHeading art="school" title="Classement">
+        <KqChapterHeading title="Classement">
           {snapshot ? <p>Édition du <time dateTime={snapshot.event.editionDate}>{editionDate(snapshot.event.editionDate)}</time>.</p>
             : <p>Les finales de la semaine et les titres remportés.</p>}
         </KqChapterHeading>

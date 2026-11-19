@@ -22,11 +22,7 @@
   border-right: 1px solid #17292345;
 }
 
-.identity { display: grid; justify-items: start; gap: 8px; padding: 0 6px 20px; }
-.identity .shopMark { width: 100px; margin: -8px 0 -2px; }
-.identity > span:last-child { display: grid; gap: 5px; }
-.identity strong { font: 900 1.3rem/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
-.identity small { color: #4e6359; font: 600 .65rem/1.4 var(--font-body), Arial, sans-serif; }
+.identity { display: block; padding: 0 6px 20px; font: 900 1.3rem/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .menuToggle { display: none; }
 .summaryLink { display: inline-flex; align-items: center; gap: 7px; padding: 8px 10px; margin-bottom: 14px; color: #172923; cursor: pointer; font: 750 .74rem/1.35 var(--font-body), Arial, sans-serif; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .summaryLink[aria-current="page"] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
@@ -82,10 +78,7 @@
   .navigation { padding: 0 0 14px; border-right: 0; border-bottom: 1px solid #17292350; }
   .navigationHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .summaryLink { margin-bottom: 0; }
-  .identity { display: flex; align-items: center; min-width: 0; gap: 11px; padding: 0; }
-  .identity > span:last-child { min-width: 0; }
-  .identity strong { font-size: 1.25rem; }
-  .identity .shopMark { width: 58px; margin: 0; }
+  .identity { padding: 0; font-size: 1.25rem; }
   .menuToggle { display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; padding: 9px 10px; border: 2px solid transparent; color: #172923; font: 800 .72rem/1.3 var(--font-body), Arial, sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
   .menuToggle[aria-expanded="true"] {
     --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
@@ -100,9 +93,7 @@
   .workspace { gap: 20px; padding: 12px 14px 30px; }
   .navigation { padding: 0 0 12px; }
   .navigationHeading { gap: 8px; }
-  .identity { gap: 8px; }
-  .identity strong { font-size: 1.1rem; }
-  .identity small { font-size: .62rem; }
+  .identity { font-size: 1.1rem; }
   .menuToggle { gap: 4px; padding-inline: 8px; font-size: .67rem; }
   .tabs button { flex-direction: column; gap: 5px; padding: 9px 6px; font-size: .7rem; }
   .tabs button > svg { width: 16px; height: 16px; }
