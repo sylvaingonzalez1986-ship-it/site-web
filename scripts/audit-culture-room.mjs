@@ -13,10 +13,11 @@ const serve = process.argv.includes("--serve");
 const previewOnly = process.argv.includes("--preview-only");
 if(previewOnly&&!serve)throw Error("--preview-only requires --serve.");
 const refreshVisuals=process.argv.includes("--refresh-visuals");
+const nativeGpu=process.argv.includes("--native-gpu");
 const group = process.argv.find(arg=>arg.startsWith("--check="))?.slice(8);
 if (group && !["warehouse","warehouse-services","campaign","orientation","parity","pbi","pbi-smoke"].includes(group)) throw Error("--check accepts warehouse, warehouse-services, campaign, orientation, parity, pbi or pbi-smoke.");
 if(refreshVisuals&&group)throw Error("--refresh-visuals runs the complete browser route with existing measured frame data.");
-const output = resolve(root, "output/culture-room", group || (serve ? "preview" : "."));
+const output = resolve(root, "output/culture-room", nativeGpu ? (group || "full")+"-native-gpu" : group || (serve ? "preview" : "."));
 const port = Number(process.env.CULTURE_ROOM_PORT ?? (serve ? 3693 : 3694));
 const origin = "http://127.0.0.1:" + port;
 await mkdir(output, {recursive:true});
@@ -268,12 +269,12 @@ async function audit(){
       await writeFile(backup,JSON.stringify(savedPerf,null,2)+"\n");
     }
   }
-  const browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:["--no-sandbox","--use-angle=swiftshader","--enable-unsafe-swiftshader"]});
+  const browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:["--no-sandbox",...(nativeGpu?["--enable-gpu"]:["--use-angle=swiftshader","--enable-unsafe-swiftshader"])]});
   const page=await browser.newPage();
   page.setDefaultTimeout(30000);page.setDefaultNavigationTimeout(90000);
   const checks=[],frames=[...(savedPerf?.frames??[])],errors=[],blocked=[];
   const screenshots=[];
-  const report={passed:false,checks,frames,errors,blocked,screenshots,checkedAt:new Date().toISOString(),source:"Player culture screen and warehouse room, local production transport and synthetic account. Chromium touch emulation."};
+  const report={passed:false,checks,frames,errors,blocked,screenshots,walks:[],gpuMode:nativeGpu?"native":"swiftshader",checkedAt:new Date().toISOString(),source:"Player culture screen and warehouse room, local production transport and synthetic account. Chromium touch emulation."};
   if(savedPerf)report.frameEvidence={file:"frames-before-visual-fix.json",capturedBy:savedPerf.capturedBy,note:savedPerf.note};
   page.on("pageerror",e=>errors.push(e.message));
   await page.setRequestInterception(true);
@@ -366,6 +367,11 @@ async function audit(){
   }
   async function geometry(plan){
     await page.waitForSelector("[data-grow-isometric]");await page.waitForSelector('[data-grow-camera][data-renderer="webgl"]');
+    report.webglRenderer??=await page.$eval("[data-grow-canvas]",canvas=>{
+      const gl=canvas.getContext("webgl2");
+      const info=gl?.getExtension("WEBGL_debug_renderer_info");
+      return info?gl.getParameter(info.UNMASKED_RENDERER_WEBGL):null;
+    });
     const expected=rectangles(plan);
     const actual=await page.$$eval("[data-grow-footprint]",nodes=>nodes.map(n=>({
       id:n.dataset.growFootprint,kind:n.dataset.kind,x:Number(n.dataset.worldX),z:Number(n.dataset.worldZ),
@@ -463,12 +469,16 @@ async function audit(){
     return changed;
   }
   const visibleRoomIfReduced=async()=>{await reveal(room);await page.waitForSelector('[data-grow-motion="reduced"]');};
+  // The production actor caps each simulation step; software WebGL may deliver
+  // fewer than three frames per second. Other selector deadlines stay unchanged.
+  const walkTimeout=nativeGpu?30000:90000;
   async function walk(id,obstacles,expectInspection=false){
-    const poses=await page.evaluate(async({id,obstacles,expectInspection})=>{
+    const poses=await page.evaluate(async({id,obstacles,expectInspection,walkTimeout})=>{
       const start=performance.now(),positions=new Set(),collisions=[],states=new Set(),facings=new Set();
-      let last=null,travel=0,maxStep=0;
+      let last=null,travel=0,maxStep=0,lastFrame=start,maxFrameMs=0;
       await new Promise(done=>{
         function tick(){
+          const now=performance.now();maxFrameMs=Math.max(maxFrameMs,now-lastFrame);lastFrame=now;
           const actor=document.querySelector("[data-grow-actor]");
           const x=Number(actor?.dataset.worldX),z=Number(actor?.dataset.worldZ),pose=actor?.dataset.actorState;
           if(Number.isFinite(x)&&Number.isFinite(z)){
@@ -480,15 +490,17 @@ async function audit(){
               if(Math.abs(x-ob.x)<ob.w/2+.218&&Math.abs(z-ob.z)<ob.d/2+.218&&collisions.length<8)collisions.push({id:ob.id,x,z,pose});
             }
           }
-          if(performance.now()-start>30000 || (positions.size>3&&actor?.dataset.actorTarget===id&&pose==="idle"&&(!expectInspection||states.has("inspect"))))done();
+          if(now-start>walkTimeout || (positions.size>3&&actor?.dataset.actorTarget===id&&pose==="idle"&&(!expectInspection||states.has("inspect"))))done();
           else requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
       });
       const a=document.querySelector("[data-grow-actor]");
-      return {samples:positions.size,states:[...states],collisions,target:a?.dataset.actorTarget,pose:a?.dataset.actorState,
+      return {samples:positions.size,states:[...states],collisions,target:a?.dataset.actorTarget,pose:a?.dataset.actorState,position:last,
+        elapsedMs:Math.round(lastFrame-start),maxFrameMs:Math.round(maxFrameMs),motion:document.querySelector("[data-grow-room]")?.dataset.growMotion,
         travelM:+travel.toFixed(2),maxStepM:+maxStep.toFixed(3),directions:facings.size};
-    },{id,obstacles,expectInspection});
+    },{id,obstacles,expectInspection,walkTimeout});
+    report.walks.push({id,...poses});
     assert.deepEqual(poses.collisions,[],"Actor radius stays clear of fixture rectangles during walk");
     assert.ok(poses.samples>=4&&poses.states.includes("walking"),"Measured distinct world positions along the route");
     assert.equal(poses.target,id);assert.equal(poses.pose,"idle");
@@ -653,7 +665,7 @@ async function audit(){
     await selectOnFloor("culture-2");
     const reachingCrop=walk("culture-2",obstacles,true);
     try {
-      await page.waitForSelector(actor("inspect")+'[data-actor-target="culture-2"]');
+      await page.waitForSelector(actor("inspect")+'[data-actor-target="culture-2"]',{timeout:walkTimeout});
       await shot("inspection-arrival-390");
     } catch(error) { await reachingCrop.catch(()=>{});throw error; }
     const cropSteps=await reachingCrop;
@@ -663,7 +675,9 @@ async function audit(){
     pass("Feet clear physical zones and partitions on two inspected routes",{storage:storageSteps,culture:cropSteps,radiusM:.22});
     pass("Arrived and inspected the selected growing crop without a game action",{target:"culture-2",states:cropSteps.states});
     await page.emulateMediaFeatures([{name:"prefers-reduced-motion",value:"reduce"}]);await page.waitForSelector('[data-grow-motion="reduced"]');
-    await selectOnFloor("culture-3");pass("Reduced motion preserves inspection");
+    await selectOnFloor("culture-3");
+    await page.waitForSelector('[data-grow-actor][data-actor-target="culture-3"]');
+    pass("Reduced motion preserves inspection of the new selection");
     await visit("empty");await page.waitForSelector("[data-grow-pick]",{hidden:true});await page.waitForFunction(()=>window.inspectFixture?.().calls.some(c=>c.path.includes("/warehouse")&&c.status===200));
     assert.equal((await page.$$("[data-grow-pick]")).length,0);pass("Empty warehouse has no invented crops");
     }
@@ -683,11 +697,11 @@ async function audit(){
       pass("Real WebGL output changes when a full storage station turns 180° inside the same footprint",{rotatedPixels,comparisonPixels:16800});
     }
     assert.deepEqual(errors,[]);assert.deepEqual(blocked,[]);report.passed=true;
-  }catch(error){report.failure=String(error.stack||error);report.diagnostic=await page.evaluate(()=>({text:document.body.innerText.slice(0,800),actor:document.querySelector("[data-grow-actor]")?.outerHTML.slice(0,120),last:window.inspectFixture?.().calls.slice(-4)})).catch(()=>null);await page.screenshot({path:resolve(output,"failure.png")}).catch(()=>{});throw error;}
+  }catch(error){report.failure=String(error.stack||error);report.diagnostic=await page.evaluate(()=>({text:document.body.innerText.slice(0,800),actor:{...document.querySelector("[data-grow-actor]")?.dataset},last:window.inspectFixture?.().calls.slice(-4)})).catch(()=>null);await page.screenshot({path:resolve(output,"failure.png")}).catch(()=>{});throw error;}
   finally{
     const json=JSON.stringify(report,null,2);
     await writeFile(resolve(output,"report.json"),json);
-    if(serve&&!group){
+    if(serve&&!group&&!nativeGpu){
       if(report.passed)await Promise.all(screenshots.map(file=>copyFile(resolve(output,file),resolve(root,"output/culture-room",file))));
       await writeFile(resolve(root,"output/culture-room/report.json"),json);
     }

@@ -4,7 +4,7 @@ import { RoomBatch, type Metal, type Point3, type RoomResources } from "./KqGrow
 import { getGrowRoomShellRegistration, type ShellLandmark } from "./KqGrowRoomShellRegistration";
 
 const PAINT = {
-  resin: "#c6cdd0", panels: "#e6e2d3", seam: "#a7ada5", gasket: "#394849",
+  resin: "#b6c2c6", panels: "#e1ded0", seam: "#969e99", gasket: "#344749",
   turquoise: "#087d82", bracket: "#188d91", bright: "#bfd0ca", metal: "#899a99", black: "#354345",
   yellow: "#eca92e",
 };
@@ -80,6 +80,7 @@ export function makeGrowBuilding(res: RoomResources, layout: WarehouseSpatialLay
   const vf = fixtureFace(a, "north", vent.x, vent.z);
   const vw = px(95), vh = .63;
   vf.panel(0, ductY - .06, 0, vw, vh, .31, metal);
+  vf.panel(0, ductY - .06, .14, vw*.95, vh*.91, .09, "#c4cabb");
   vf.panel(0, ductY - .055, .17, vw * .84, vh * .73, .035, gasket, "plastic");
   for (let i = 0; i < 7; i++) vf.panel(0, ductY - .26 + i * .061, .202, vw * .77, .026, .045, "#8a9c9b");
   for (const u of [-1, 1]) for (const v of [-1, 1]) vf.bolt(u * vw * .455, ductY - .055 + v * vh * .42, .163);
@@ -93,6 +94,9 @@ export function makeGrowBuilding(res: RoomResources, layout: WarehouseSpatialLay
     f.panel(0, py + .045, .04, w * .98, .096, .22, bright);
     f.panel(0, py - .013, .15, w * .93, .071, .045, "#fff3c8", "light");
     f.panel(0, py - .062, .03, w * .90, .014, .155, "#f6e7bc", "light");
+    a.part("disk","wash","#ffedbe",[pt.x,.016,pt.z + .70],[w*1.75,1,2.85]);
+    a.part("disk","wash","#fff3d2",[pt.x,py-.41,z(36)+.093],[w*1.36,1,1.06],[Math.PI/2,0,0]);
+    for (const sign of [-1,1]) f.panel(sign*w*.455,py,.11,w*.035,.16,.17,"#526563");
   }
   sideServices(a, s, "west");
   sideServices(a, s, "east");
@@ -137,6 +141,15 @@ function walls(a: RoomBatch, s: Registration) {
       f.panel(0, y, .16, w * 1.50, .26, .12, bracket);
       for (const side of [-1, 1]) f.bolt(w * .46 * side, y, .229, .021);
     }
+  }
+  // Folded sheet-metal kick plates and panel laps follow the registered service walls.
+  for (const [left,right] of [[38,312],[312,506],[506,711],[711,986]]) {
+    const from=x(left), to=x(right), center=(from+to)/2, span=to-from-.22;
+    a.box("steel","#758b88",center,.22,north+.091,span,.19,.033);
+    a.box("steel","#b3b9a8",center,.33,north+.106,span,.024,.046);
+    const joint=fixtureFace(a,"north",center,north);
+    joint.panel(0,h*.53,.078,.022,h*.83,.018,"#abae9f");
+    for (const side of [-1,1]) joint.bolt(span*.45*side,.22,.116,.023);
   }
   for (const side of ["west", "east"] as const) {
     const high = side === "west";
@@ -204,6 +217,7 @@ function sideServices(a: RoomBatch, s: Registration, side: "west" | "east") {
   const id: ShellLandmark = west ? "west-lamp" : "east-lamp";
   const p = s.landmark(id), f = fixtureFace(a, side, p.x, p.z);
   const y = 1.50;
+  a.part("disk","wash","#ffdfad",[p.x+(west?.54:-.54),.017,p.z],[2.70,1,1.82]);
   f.panel(0, y, -.03, .30, .46, .15, PAINT.gasket);
   f.panel(0, y, .075, .225, .375, .11, "#f7edba", "light");
   for (const u of [-.12, 0, .12]) f.rod(u, y - .205, .14, u, y + .205, .14, .012, PAINT.metal);
@@ -239,5 +253,7 @@ function southDoor(a: RoomBatch, s: Registration) {
     const xx = pt.x + sign * width * .51;
     a.rod("steel", PAINT.yellow, [xx, .036, pt.z + .15], [xx, .65, pt.z + .15], .064);
     a.rod("plastic", PAINT.gasket, [xx, .07, pt.z + .15], [xx, .12, pt.z + .15], .070);
+    // Black rubber grip rings on the existing yellow entrance bollards.
+    for (const y of [.39,.51]) a.rod("plastic",PAINT.gasket,[xx,y,pt.z+.15],[xx,y+.045,pt.z+.15],.065);
   }
 }

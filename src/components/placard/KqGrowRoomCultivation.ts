@@ -101,7 +101,7 @@ function lightFixture(a: RoomBatch, y: number, code: string, powered: boolean, d
     a.part("tube", "steel", "#dfaa48", [x, y + .046, z], [.023, .012, .023]);
 }
 
-function extractor(a: RoomBatch, y: number, detailed: boolean) {
+function extractor(a: RoomBatch, y: number, detailed: boolean, running: boolean) {
   // The angled circular intake and its elbow can both be read from above and in three-quarter view.
   const tilt = .94, c = Math.cos(tilt), s = Math.sin(tilt), radius = .133;
   const plane = (x: number, z: number, height: number): Point3 => [x, y + c * height - s * z, s * height + c * z];
@@ -109,11 +109,7 @@ function extractor(a: RoomBatch, y: number, detailed: boolean) {
   a.part("tube", "plastic", tealDark, plane(0, 0, -.009), [.275, .110, .275], [tilt, 0, 0]);
   a.part("tube", "plastic", teal, [0, y, 0], [radius * 2, .117, radius * 2], [tilt, 0, 0], "air");
   a.part("tube", "plastic", "#262e30", plane(0, 0, .061), [.197, .015, .197], [tilt, 0, 0]);
-  for (let blade = 0; blade < 4; blade++) {
-    const angle = blade * Math.PI / 2 + .32;
-    a.part("oval", "plastic", "#596264", plane(Math.sin(angle) * .053, Math.cos(angle) * .053, .076),
-      [.046, .021, .087], [tilt, angle + .48, 0]);
-  }
+  a.part("rotor", "steel", "#96a5a1", plane(0,0,.076), [1,1,1], [tilt,0,0], running ? "rotor-running" : "rotor-still");
   a.part("tube", "steel", "#dbac4c", plane(0, 0, .08), [.049, .019, .049], [tilt, 0, 0]);
   a.part("tube", "plastic", tealDark, plane(0, 0, .094), [.035, .011, .035], [tilt, 0, 0]);
   if (detailed) for (const x of [-.078, .078]) for (const z of [-.079, .079])
@@ -206,7 +202,7 @@ export function cultivation(a: RoomBatch, w: number, d: number, zone: KqGrowRoom
   }
   if (zone.airCode) for (const point of getKqWarehouseFixturePositions(w, d, "air", zone.airCode)) {
     a.at(point.x - w / 2, point.z - d / 2);
-    extractor(a, 1.13, detailedFixtures);
+    extractor(a, 1.13, detailedFixtures, powered);
   }
   options(a, w, d, zone, deck);
 }

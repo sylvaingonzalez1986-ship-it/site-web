@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { buildingRoomHref, isIsometricBuilding } from "@/lib/kanab-quest-world-mode";
 import { useEffect, type RefObject } from "react";
-import { ArrowRight, BookOpen, Boxes, Landmark, Megaphone, PackageCheck, ShoppingBag, Sprout, Store, Swords, Target, UsersRound, Wallet, Warehouse, X, type LucideIcon } from "lucide-react";
+import { ArrowRight, Boxes, DoorOpen, Landmark, Megaphone, PackageCheck, ShoppingBag, Sprout, Store, Swords, Target, UsersRound, Wallet, Warehouse, X, type LucideIcon } from "lucide-react";
 import type { VillageBuildingKind } from "./village-buildings";
 import { villageBuildingStatus, type VillageSnapshot } from "./useVillageActivity";
 import styles from "./VillagePrototype.module.css";
@@ -13,8 +14,8 @@ type Activity = { label: string; detail: string; href: string; Icon: LucideIcon 
 // Unknown player state keeps neutral wording until the shared snapshot arrives.
 const ACTIVITIES: Record<VillageBuildingKind, readonly Activity[]> = {
   warehouse: [
+    { label: "Entrer", detail: "", href: "/arene/placard?view=workshop", Icon: DoorOpen },
     { label: "Ma culture", detail: "Cultiver et récolter", href: "/arene/placard?view=game", Icon: Sprout },
-    { label: "Aménager l’entrepôt", detail: "Plan, zones et équipements", href: "/arene/placard?view=workshop", Icon: Boxes },
     { label: "Ouvrir l’Atelier", detail: "Trim et machines", href: "/arene/placard?view=workshop&section=processing", Icon: Warehouse },
     { label: "Mes récoltes", detail: "Stockage, affinage et jury", href: "/arene/placard?view=harvests", Icon: PackageCheck },
   ],
@@ -35,7 +36,7 @@ const ACTIVITIES: Record<VillageBuildingKind, readonly Activity[]> = {
   ],
   arena: [{ label: "Jury & duels", detail: "Présenter mes Fleurs et participer aux duels", href: "/arene/placard?view=arena", Icon: Swords }],
   missions: [{ label: "Mes missions", detail: "Défis et récompenses", href: "/arene/placard?view=missions", Icon: Target }],
-  collection: [{ label: "Ouvrir QuizzShow", detail: "Encyclopédie et tournoi du chanvre", href: "/arene/placard?view=school", Icon: BookOpen }],
+  collection: [{ label: "Entrer", detail: "", href: "/arene/placard?view=school", Icon: DoorOpen }],
 };
 
 export function VillageActivities({ id, name, nodeRef, fallback, onClose, snapshot, onNavigate }: {
@@ -48,6 +49,9 @@ export function VillageActivities({ id, name, nodeRef, fallback, onClose, snapsh
   onNavigate?: (href: string) => void;
 }) {
   useEffect(() => { nodeRef.current?.querySelector<HTMLAnchorElement>("a")?.focus({ preventScroll: true }); }, [id, nodeRef]);
+  const activities = isIsometricBuilding(id)
+    ? [{ label: "Entrer", detail: "", href: buildingRoomHref(id), Icon: DoorOpen }, ...ACTIVITIES[id]]
+    : ACTIVITIES[id];
   return <aside ref={nodeRef} id="village-building-activities" className={styles.bubble} data-building={id} data-fallback={fallback || undefined}
     aria-label={`Lieu sélectionné : ${name}`}>
     <div className={styles.bubbleSheet}>
@@ -57,11 +61,11 @@ export function VillageActivities({ id, name, nodeRef, fallback, onClose, snapsh
       </div>
       {villageBuildingStatus(id, snapshot) ? <p className={styles.activityStatus}>{villageBuildingStatus(id, snapshot)}</p> : null}
       <nav className={styles.activities} aria-label={`Activités · ${name}`}>
-        {ACTIVITIES[id].map(({ label, detail, href, Icon }) => <Link className={styles.activity} href={href} key={href} prefetch={false} onClick={event => {
+        {activities.map(({ label, detail, href, Icon }) => <Link className={styles.activity} href={href} key={href} prefetch={false} onClick={event => {
           if (!onNavigate || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
           event.preventDefault(); onNavigate(href);
         }}>
-          <Icon size={21} aria-hidden="true" /><span>{href === "/arene/placard?view=game" && snapshot ? snapshot.activeRun ? "Reprendre ma culture" : "Commencer une culture" : label}<small>{href.endsWith("section=sales") && snapshot?.readyLotCount ? `${snapshot.readyLotCount} lot${snapshot.readyLotCount > 1 ? "s" : ""} à valoriser` : detail}</small></span><ArrowRight size={16} aria-hidden="true" />
+          <Icon size={21} aria-hidden="true" /><span>{href === "/arene/placard?view=game" && snapshot ? snapshot.activeRun ? "Reprendre ma culture" : "Commencer une culture" : label}{detail && <small>{href.endsWith("section=sales") && snapshot?.readyLotCount ? `${snapshot.readyLotCount} lot${snapshot.readyLotCount > 1 ? "s" : ""} à valoriser` : detail}</small>}</span><ArrowRight size={16} aria-hidden="true" />
         </Link>)}
       </nav>
     </div>

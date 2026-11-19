@@ -104,7 +104,9 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
       time = null;
       return false;
     }
-    const dt = time === null ? 0 : THREE.MathUtils.clamp((now - time) / 1000, 0, .05);
+    // Keep a slow renderer's walking speed close to wall time. Each step is
+    // bounded by the next waypoint, and resuming a hidden scene resets time.
+    const dt = time === null ? 0 : THREE.MathUtils.clamp((now - time) / 1000, 0, .18);
     time = now;
     poseTime += dt;
     while (waypoint < route.length && Math.hypot(route[waypoint].x - pos.x, route[waypoint].z - pos.z) < .001) waypoint++;

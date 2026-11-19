@@ -189,11 +189,11 @@ function EmployeeWork({ employee, snapshot, prepare, disabled, fixedKind, onOpen
   </div>;
 }
 
-export function KqStaffDesk({ embedded = false, onOpenTrim }: { embedded?: boolean; onOpenTrim?: (employeeId: string) => void } = {}) {
+export function KqStaffDesk({ embedded = false, initialTab = "overview", onOpenTrim }: { embedded?: boolean; initialTab?: KqStaffPanelId; onOpenTrim?: (employeeId: string) => void } = {}) {
   const router = useRouter();
   const player = useKqSocialPlayer();
   const [planMotionPaused, setPlanMotionPaused] = useState(false);
-  const [tab, setTab] = useState<KqStaffPanelId>("overview");
+  const [tab, setTab] = useState<KqStaffPanelId>(initialTab);
   const [candidateCode, setCandidateCode] = useState<string | null>(null);
   const [employeeId, setEmployeeId] = useState<string | null>(null);
   const [planningMode, setPlanningMode] = useState<"day" | "week">("week");

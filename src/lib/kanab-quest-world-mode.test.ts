@@ -1,7 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { normalizeKqVillageLocation } from "./kanab-quest-world-mode";
+import { buildingForActivity, buildingRoomHref, normalizeKqVillageLocation } from "./kanab-quest-world-mode";
 
 describe("village links", () => {
+  it("opens the six isometric rooms and keeps activity bookmarks precise", () => {
+    for (const view of ["treasury", "staff", "market", "social", "missions", "arena", "shop"]) {
+      const id = buildingForActivity(view)!;
+      const { search } = new URL(buildingRoomHref(id), "https://example.test");
+      expect(normalizeKqVillageLocation(search)).toBe(`?view=hub&room=${id}`);
+      expect(normalizeKqVillageLocation(`${search}&world=2d`)).toBe(`${search}&world=3d`);
+      expect(normalizeKqVillageLocation(`?view=${view}&room=${id}&section=test`)).toBe(`?view=${view}&section=test`);
+    }
+    expect(buildingForActivity("game")).toBeUndefined();
+    expect(normalizeKqVillageLocation("?view=hub&room=unknown")).toBe("?view=hub");
+  });
   it("resumes old room bookmarks at their activity", () => {
     const destinations = { warehouse: "workshop", bank: "treasury", office: "staff", market: "market", missions: "missions", arena: "arena", collection: "school", shop: "shop" };
     for (const [room, view] of Object.entries(destinations)) {

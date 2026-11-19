@@ -2,12 +2,64 @@ import { describe, expect, it } from "vitest";
 import { createKqWarehouseStarter } from "@/lib/kanab-quest-warehouse";
 import type { KqWarehouseViewSnapshot } from "../KqWarehouse";
 import { createInteriorRoom } from "./interior-rooms";
+import { createInteriorObjectArt, createInteriorRoomArt, disposeInteriorArt } from "./interior-art";
+import { Mesh } from "three";
 import { interiorPositionIsFree } from "./interior-movement";
 import { VILLAGE_PLACES } from "./village-layout";
 
 function snapshot(state = createKqWarehouseStarter()): KqWarehouseViewSnapshot {
   return { state, revision: 1, cashCents: 100_000, activeRun: false, legacyActiveRun: false, migrationCreditCents: 0, stockGrams: null, salesGramsPerDay: null };
 }
+
+const cutawayDestinations = {
+  bank: ["view=treasury&pole=accounting", "view=treasury&pole=bank"],
+  office: ["view=staff", "view=staff&section=team", "view=staff&section=candidates"],
+  market: ["view=market&section=sales", "view=market&section=dashboard", "view=market&section=management", "view=social"],
+  missions: ["view=missions", "view=missions&section=community"],
+  arena: ["view=arena", "view=harvests&section=storage"],
+  shop: ["view=shop", "view=shop&tab=collection", "view=shop&section=buddies"],
+} as const;
+
+describe("public cutaway rooms", () => {
+  it.each(Object.entries(cutawayDestinations))("%s draws its open foreground and links its activity furniture", (id, queries) => {
+    const room = createInteriorRoom(id as keyof typeof cutawayDestinations);
+    const objects = room.objects.filter(object => object.kind !== "exit");
+    expect(objects.map(object => object.href)).toEqual(queries.map(query => `/arene/placard?${query}`));
+    const art = createInteriorRoomArt(room, { cutaway: true });
+    const enclosed = createInteriorRoomArt(room);
+    try {
+      expect(art.children.some(child => child.userData.interiorRoof)).toBe(false);
+      expect(enclosed.children.some(child => child.userData.interiorRoof)).toBe(true);
+      let hasBackWall = false;
+      for (const child of art.children) {
+        if (!(child instanceof Mesh)) continue;
+        const positions = child.geometry.getAttribute("position");
+        for (let i = 0; i < positions.count; i++) {
+          if (positions.getY(i) < 0.7) continue;
+          const x = positions.getX(i), z = positions.getZ(i);
+          if (z < -room.depth / 2 + 0.2) hasBackWall = true;
+          const inFrontOfRearWall = z > -room.depth / 2 + 0.35;
+          const rightOfLeftWall = x > -room.width / 2 + 0.35;
+          if ((inFrontOfRearWall && x > room.width / 2 - 0.05) || (rightOfLeftWall && z > room.depth / 2 - 0.05)) {
+            throw new Error(`Foreground architecture obscures the ${id} cutaway`);
+          }
+        }
+      }
+      expect(hasBackWall).toBe(true);
+      for (const object of objects) {
+        const furniture = createInteriorObjectArt(object, room.id);
+        try {
+          expect(furniture.children.length).toBeGreaterThan(0);
+        } finally {
+          disposeInteriorArt(furniture);
+        }
+      }
+    } finally {
+      disposeInteriorArt(art);
+      disposeInteriorArt(enclosed);
+    }
+  });
+});
 
 describe("interiors connected to the shared game", () => {
   it.each(VILLAGE_PLACES)("$id has a free entry, enclosed furniture and real destinations", place => {

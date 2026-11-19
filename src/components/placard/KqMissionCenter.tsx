@@ -41,9 +41,9 @@ function missionReward(mission: { reward?: KqMissionReward; cardCount: number })
   return mission.reward ?? { kind: "pack", cardCount: mission.cardCount };
 }
 
-export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrack = false }: { onOpen: (view: KqMissionDestination, missionCode?: KqMissionCode) => void; initialTrack?: KqMissionTrack | "all"; focusInitialTrack?: boolean }) {
+export function KqMissionCenter({ onOpen, initialSection = "challenges", initialTrack = "all", focusInitialTrack = false }: { onOpen: (view: KqMissionDestination, missionCode?: KqMissionCode) => void; initialSection?: "community" | "challenges"; initialTrack?: KqMissionTrack | "all"; focusInitialTrack?: boolean }) {
   const api = useKqTutorialApi();
-  const [section, setSection] = useState<"community" | "challenges">("challenges");
+  const [section, setSection] = useState(initialSection);
   const [selectedTrack, setSelectedTrack] = useState<KqMissionTrack | "all" | "ready">(initialTrack);
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);

@@ -6,8 +6,8 @@ export type Point3 = [
   number,
   number
 ];
-export type Metal = "steel" | "wood" | "plastic" | "soil" | "leaf" | "flower" | "stone" | "glass" | "light" | "shadow" | "wall" | "floor" | "net" | "jar";
-type Shape = "box" | "tube" | "pot" | "drum" | "ring" | "disk" | "oval" | "fan" | "crown" | "cola" | "sleeve";
+export type Metal = "steel" | "wood" | "plastic" | "soil" | "leaf" | "flower" | "stone" | "glass" | "light" | "shadow" | "wall" | "floor" | "net" | "jar" | "wash";
+type Shape = "box" | "tube" | "pot" | "drum" | "ring" | "disk" | "oval" | "fan" | "crown" | "cola" | "sleeve" | "rotor";
 const up = new THREE.Vector3(0, 1, 0);
 const identity = new THREE.Quaternion();
 export function randomFrom(seed: number) {
@@ -66,7 +66,7 @@ function flowerColumn() {
   parts.forEach(part => part.dispose());
   return shape;
 }
-function texture(kind: "wood" | "wall" | "floor" | "shadow" | "net") {
+function texture(kind: "wood" | "wall" | "floor" | "shadow" | "net" | "wash") {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = 256;
   const ctx = canvas.getContext("2d")!, rng = randomFrom(kind === "wood" ? 82 : kind === "wall" ? 9 : 47);
@@ -86,7 +86,13 @@ function texture(kind: "wood" | "wall" | "floor" | "shadow" | "net") {
       ctx.stroke();
     }
   }
-  else if (kind === "shadow") {
+  else if (kind === "wash") {
+    const grad = ctx.createRadialGradient(128,128,8,128,128,126);
+    grad.addColorStop(0, "rgba(255,242,191,.65)");
+    grad.addColorStop(.46, "rgba(255,238,187,.34)");
+    grad.addColorStop(1, "rgba(255,235,180,0)");
+    ctx.fillStyle = grad; ctx.fillRect(0,0,256,256);
+  } else if (kind === "shadow") {
     const grad = ctx.createRadialGradient(128, 128, 3, 128, 128, 123);
     grad.addColorStop(0, "rgba(36,43,35,.46)");
     grad.addColorStop(.55, "rgba(42,46,34,.24)");
@@ -133,25 +139,31 @@ function texture(kind: "wood" | "wall" | "floor" | "shadow" | "net") {
   return tex;
 }
 export function createRoomResources() {
-  const floor = texture("floor"), timber = texture("wood"), plaster = texture("wall"), contact = texture("shadow"), net = texture("net");
+  const floor = texture("floor"), timber = texture("wood"), plaster = texture("wall"), contact = texture("shadow"), net = texture("net"), pool = texture("wash");
   const standard = (props: THREE.MeshStandardMaterialParameters) => new THREE.MeshStandardMaterial({ roughness: .79, ...props });
   const materials: Record<Metal, THREE.Material> = {
-    steel: standard({ metalness: .38, roughness: .48 }), wood: standard({ map: timber, roughness: .88 }), plastic: standard({ roughness: .59 }),
+    steel: standard({ metalness: .48, roughness: .34 }), wood: standard({ map: timber, roughness: .83 }), plastic: standard({ roughness: .55 }),
     soil: standard({ roughness: 1 }), leaf: standard({ side: THREE.DoubleSide, vertexColors: true, roughness: .74 }),
     flower: standard({ vertexColors: true, roughness: 1 }), stone: standard({ roughness: .95 }), wall: standard({ map: plaster, roughness: .96 }),
-    floor: standard({ map: floor, roughness: .94 }), glass: standard({ metalness: .18, roughness: .23 }), light: new THREE.MeshBasicMaterial({ color: "#fff6ca" }),
+    floor: standard({ map: floor, roughness: .63 }), glass: standard({ metalness: .18, roughness: .23 }), light: new THREE.MeshBasicMaterial({ color: "#fff2c7", toneMapped:false }),
+    wash: new THREE.MeshBasicMaterial({map:pool, transparent:true, depthWrite:false, toneMapped:false}),
     net: standard({ side: THREE.DoubleSide, alphaMap: net, transparent: true, opacity: .53, depthWrite: false }),
     jar: standard({ side: THREE.FrontSide, transparent: true, opacity: .30, roughness: .16, metalness: .14, depthWrite: false }),
     shadow: new THREE.MeshBasicMaterial({ map: contact, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1 }),
   };
+  const blades = Array.from({length:4}, (_,i) => new THREE.SphereGeometry(1,8,4)
+    .scale(.027,.010,.048).rotateY(.42).translate(0,0,.051).rotateY(i*Math.PI/2));
+  const rotor = mergeGeometries(blades)!;
+  blades.forEach(blade => blade.dispose());
   const shapes: Record<Shape, THREE.BufferGeometry> = {
+    rotor,
     box: new THREE.BoxGeometry(1, 1, 1), tube: new THREE.CylinderGeometry(.5, .5, 1, 12),
     pot: new THREE.CylinderGeometry(.52, .39, 1, 16), drum: new THREE.CylinderGeometry(.48, .46, 1, 18),
     ring: new THREE.TorusGeometry(.5, .035, 5, 20).rotateX(Math.PI / 2), disk: new THREE.CircleGeometry(.5, 20).rotateX(-Math.PI / 2),
     oval: new THREE.IcosahedronGeometry(.5, 1), fan: leafFan(), crown: makeDistantPlantCrown(), cola: flowerColumn(), sleeve: new THREE.CylinderGeometry(.5, .5, 1, 24, 1, true)
   };
   const shadowPlane = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
-  return { materials, shapes, floor, shadowPlane, dispose() { Object.values(shapes).forEach(g => g.dispose()); Object.values(materials).forEach(m => m.dispose()); [floor, timber, plaster, contact, net].forEach(t => t.dispose()); shadowPlane.dispose(); } };
+  return { materials, shapes, floor, shadowPlane, dispose() { Object.values(shapes).forEach(g => g.dispose()); Object.values(materials).forEach(m => m.dispose()); [floor, timber, plaster, contact, net, pool].forEach(t => t.dispose()); shadowPlane.dispose(); } };
 }
 export type RoomResources = ReturnType<typeof createRoomResources>;
 /** Static parts share geometry, material and per-instance pigment. Changes to one station leave its neighbours intact. */
@@ -189,11 +201,13 @@ export class RoomBatch {
     const group = new THREE.Group();
     for (const batch of this.batches.values()) {
       const shade = batch.material === "shadow";
-      const mesh = new THREE.InstancedMesh(shade ? this.res.shadowPlane : this.res.shapes[batch.shape], this.res.materials[batch.material], batch.matrices.length);
+      const pool = batch.material === "wash";
+      const mesh = new THREE.InstancedMesh(shade || pool ? this.res.shadowPlane : this.res.shapes[batch.shape], this.res.materials[batch.material], batch.matrices.length);
       mesh.name = batch.feature ?? "";
       batch.matrices.forEach((matrix, i) => { mesh.setMatrixAt(i, matrix); mesh.setColorAt(i, batch.colors[i]); });
-      mesh.castShadow = !shade && batch.material !== "glass" && batch.material !== "light";
-      mesh.receiveShadow = !shade;
+      mesh.castShadow = !shade && !pool && batch.shape !== "rotor" && batch.material !== "glass" && batch.material !== "light";
+      mesh.receiveShadow = !shade && !pool;
+      if (pool) mesh.raycast = () => {};
       mesh.renderOrder = shade ? 1 : 0;
       group.add(mesh);
     }

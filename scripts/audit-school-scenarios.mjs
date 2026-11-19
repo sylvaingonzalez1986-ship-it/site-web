@@ -62,10 +62,18 @@ export async function createSchoolFixture(ownerId='00000000-0000-4000-8000-00000
  reset();
  const learningSnapshot=version=>({version:1,ownerId:snapshot.ownerId,contentVersion:version,lessonIds:[],checkpointIds:[],activityIds:[],resumeLessonId:null,revision:0,updatedAt:null,resumeConflict:false});
  const resetLearning=()=>{historySnapshot=learningSnapshot(history.VERSION);botanySnapshot=learningSnapshot(botany.VERSION);terpenesSnapshot=learningSnapshot(terpenes.VERSION);cannabinoidsSnapshot=learningSnapshot(cannabinoids.CANNABINOID_VERSION);cultivationSnapshot=learningSnapshot(cultivation.VERSION);healthSnapshot=learningSnapshot(health.VERSION);soilSnapshot=learningSnapshot(soil.VERSION);productsSnapshot=learningSnapshot(products.VERSION);harvestSnapshot=learningSnapshot(harvest.VERSION);harvestSequence=0;harvestSubmissions=[];lostHarvest=false;productsSequence=0;productsSubmissions=[];lostProducts=false;soilSequence=0;soilSubmissions=[];lostSoil=false;healthSequence=0;healthSubmissions=[];lostHealth=false;cultivationSequence=0;cultivationSubmissions=[];lostCultivation=false;cannabinoidsSequence=0;cannabinoidsSubmissions=[];lostCannabinoids=false;selections=new Map();receiptCommands=new Map();historySequence=0;botanySequence=0;terpenesSequence=0;botanySubmissions=[];terpenesSubmissions=[];lostBotany=false;lostTerpenes=false;};resetLearning();
+ const visualTournament=visualAudit
+  ? await import('./school-tournament-fixture.mjs').then(({createTournamentFixture})=>createTournamentFixture())
+  : null;
  const handle=async(request,url)=>{
   const json=body=>request.respond({status:200,contentType:'application/json',body:JSON.stringify(body)});
   const fail=(status,error,code)=>request.respond({status,contentType:'application/json',body:JSON.stringify({error,...(code?{code}:{})})});
   const ownerHeader=request.headers?.()['x-kq-school-owner'];
+  if(visualTournament&&url.pathname.endsWith('/tournament')){
+   if(request.method()!=='GET')return fail(405,'Read-only visual audit');
+   const outcome=await visualTournament.request('GET',null,snapshot.ownerId);
+   return request.respond({status:outcome.status,contentType:'application/json',body:JSON.stringify(outcome.body)});
+  }
   if(request.method()==='POST'&&ownerHeader&&ownerHeader!==snapshot.ownerId)return fail(409,'Le compte a changé.','school_owner_changed');
   if(url.pathname.endsWith('/challenge')){const outcome=challenge.request(request.method(),request.method()==='GET'?null:JSON.parse(request.postData()),snapshot.ownerId);if(outcome.aborted)return request.abort('failed');return request.respond({status:outcome.status,contentType:'application/json',body:JSON.stringify(outcome.body)});}
   if(url.pathname.endsWith('/history')||url.pathname.endsWith('/botany')||url.pathname.endsWith('/terpenes')||url.pathname.endsWith('/cannabinoids')||url.pathname.endsWith('/cultivation')||url.pathname.endsWith('/health')||url.pathname.endsWith('/soil')||url.pathname.endsWith('/products')||url.pathname.endsWith('/harvest')){
@@ -213,21 +221,88 @@ export async function auditSchool({page,visit,view,click,screenshot,assertNoOver
  const fill=async(selector,text)=>{await page.focus(selector);await page.keyboard.down('Control');await page.keyboard.press('A');await page.keyboard.up('Control');await page.keyboard.sendCharacter(text);};
  const schoolTab=async label=>{const buttons=await page.$$('nav[aria-label="L’école"] button');let clicked=false;for(const button of buttons)if((await button.evaluate(el=>el.textContent)).trim()===label){await button.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await button.click();clicked=true;break;}assert(clicked,`School tab ${label} is available`);};
  const capture=async name=>{const outputName=visualAudit?name.replace(/^school-/,'school-visual-'):name;await page.waitForFunction(()=>!document.querySelector('[role=status]')?.textContent.includes('Ouverture de'));await page.evaluate(()=>window.scrollTo(0,0));await screenshot(outputName);await page.screenshot({path:resolve('output/placard-navigation',`${outputName}-viewport.png`)});};
- async function checkInterior(width){
-  await page.waitForSelector('[data-school-interior]');await page.waitForFunction(()=>[...document.querySelectorAll('[data-school-interior] img')].every(img=>img.complete&&img.naturalWidth>0));
-  await page.waitForSelector('[data-school-sprite-layer][data-ready=true]');assert.equal(await page.$$eval('[data-school-sprite]',els=>els.length),2,'Two real illustration sprites are loaded');
-  const sizes=await page.$$eval('[data-school-destination]',els=>els.map(el=>{const r=el.getBoundingClientRect();return {width:r.width,height:r.height};}));assert(sizes.every(size=>size.width>=44&&size.height>=44),'All scene destinations have usable touch targets');
-  await page.$eval('[data-school-interior]',el=>el.scrollIntoView({block:'center'}));await page.waitForSelector('[data-school-interior][data-motion-state=reduced]');
-  const transforms=()=>page.$$eval('[data-school-sprite]',els=>els.map(el=>getComputedStyle(el).transform));
-  const still=await transforms();await new Promise(resolve=>setTimeout(resolve,180));assert.deepEqual(await transforms(),still,'Reduced motion starts with stationary art');
-  await click('button[aria-label="Animer l’école"]');await page.waitForSelector('[data-school-interior][data-motion-state=running]');const moving=await transforms();await new Promise(resolve=>setTimeout(resolve,230));assert.notDeepEqual(await transforms(),moving,'Actual lamp/book illustration transforms advance');
-  await page.screenshot({path:resolve('output/placard-navigation',`school-visual-motion-${width}-a.png`)});await new Promise(resolve=>setTimeout(resolve,230));await page.screenshot({path:resolve('output/placard-navigation',`school-visual-motion-${width}-b.png`)});
-  await click('button[aria-label="Mettre les animations de l’école en pause"]');await page.waitForSelector('[data-school-interior][data-motion-state=paused]');const paused=await transforms();await new Promise(resolve=>setTimeout(resolve,180));assert.deepEqual(await transforms(),paused,'Pause stops the real artwork');
-  await click('button[aria-label="Animer l’école"]');await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForSelector('[data-school-interior][data-motion-state=offscreen]');
-  await page.$eval('[data-school-interior]',el=>el.scrollIntoView({block:'center'}));await page.waitForSelector('[data-school-interior][data-motion-state=running]');
-  const other=await page.browser().newPage();try{await other.goto('about:blank');await other.bringToFront();await page.waitForSelector('[data-school-interior][data-motion-state=hidden]');}finally{await other.close();await page.bringToFront();}await page.waitForSelector('[data-school-interior][data-motion-state=running]');
-  await click('button[aria-label="Mettre les animations de l’école en pause"]');await page.focus('[data-school-destination=learn]');await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('data-school-destination')),'quiz','Keyboard can reach each destination');
-  results.push({scenario:'illustrated-interior-motion',width,sprites:2,reduced:true,pause:true,offscreen:true,hiddenTab:true});
+ if(visualAudit){
+  const sceneSelector=mode=>`[data-quizzshow-scene="${mode}"]`;
+  async function scene(mode){
+   const selector=sceneSelector(mode);
+   await page.waitForSelector(selector);
+   await page.$eval(selector,element=>element.scrollIntoView({block:'center',behavior:'instant'}));
+   await page.waitForSelector(`${selector} canvas[data-live="true"]`);
+   await assertNoOverflow(`QuizzShow ${mode}`);
+  }
+  async function openHallObject(id){
+   // Project the authored anchor independently from the canvas picking implementation.
+   const hit=await page.evaluate(async id=>{
+    const canvas=document.querySelector('[data-quizzshow-scene=hall] canvas');
+    const {QUIZZSHOW_ANCHORS,QUIZZSHOW_VIEWS:{hall}}=await import('/src/components/placard/world/quizzshow-set.ts');
+    const bounds=canvas.getBoundingClientRect();
+    const span=Math.max(hall.height,hall.width*bounds.height/bounds.width);
+    const [x,y,z]=QUIZZSHOW_ANCHORS[id].map((value,index)=>value-hall.target[index]);
+    const point=[bounds.left+bounds.width/2+(x-z)/Math.sqrt(2)*bounds.height/span,
+      bounds.top+bounds.height/2-(-x+2*y-z)/Math.sqrt(6)*bounds.height/span];
+    const target=document.elementFromPoint(...point);
+    return {point,onCanvas:target===canvas,target:target?.tagName??null};
+   },id);
+   if(hit.onCanvas){
+    await page.mouse.click(...hit.point);
+    await page.waitForFunction(section=>new URLSearchParams(location.search).get('section')===section,{timeout:10000},id)
+     .catch(error=>{throw new Error(`QuizzShow canvas click at ${hit.point.join(', ')} did not open ${id}; current URL is ${page.url()}`,{cause:error});});
+   }
+   return hit;
+  }
+  async function pressEnter(selector){
+   await page.focus(selector);
+   await page.keyboard.press('Enter');
+  }
+  async function keyboardReturn(){
+   await pressEnter('[data-school-home-return]');
+   await scene('hall');
+  }
+  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
+  try{
+   for(const width of (process.env.SCHOOL_AUDIT_WIDTHS||'320,1440').split(',').map(Number)){
+    setWidth(width);fixture.reset();
+    await page.setViewport({width,height:width<700?740:900,deviceScaleFactor:1});
+    await visit('cards','view=school');await view('school');
+    await page.evaluate(()=>sessionStorage.clear());
+    await scene('hall');
+    const targets=await page.$$eval('[data-school-destination]',elements=>elements.map(element=>{
+     const {width,height}=element.getBoundingClientRect();
+     return {width,height};
+    }));
+    assert.equal(targets.length,3,'Three QuizzShow destinations');
+    assert(targets.every(size=>size.width>=44&&size.height>=44),'Scene destinations have usable touch targets');
+    await capture(`school-home-${width}`);
+
+    await scene('hall');
+    const libraryHit=await openHallObject('learn');
+    assert(libraryHit.onCanvas,`The library anchor is visible on the hall canvas, got ${libraryHit.target}`);
+    await scene('library');
+    await page.waitForSelector('[data-reference-topic="botany"]');
+    assert.equal(await page.$$eval('[data-reference-topic]',elements=>elements.length),9,'Nine topics in the encyclopedia');
+    await capture(`school-library-${width}`);
+    await click('[data-reference-topic="botany"]');
+    const article=await page.waitForSelector('[data-reference-entry]');
+    const title=(await article.evaluate(element=>element.textContent)).trim();
+    await article.click();
+    await page.waitForFunction(()=>new URLSearchParams(location.search).has('passage')&&document.querySelector('[data-cannabis-article]'));
+    await assertNoOverflow('QuizzShow encyclopedia article');await capture(`school-article-${width}`);
+
+    await keyboardReturn();
+    if(width<700)assert((await openHallObject('ranking')).onCanvas,'The ranking anchor is visible on the hall canvas');
+    else await click('[data-school-destination="ranking"]');
+    await scene('ranking');
+    await page.waitForSelector('[data-school-weekly-ranking]');
+    await capture(`school-ranking-${width}`);
+
+    await keyboardReturn();await pressEnter('[data-school-destination=tournament]');await scene('tournament');
+    await page.waitForSelector('[data-tournament-seat]');
+    assert.equal(await page.$$eval('[data-tournament-seat]',elements=>elements.length),4,'Four tournament podiums');
+    await capture(`school-tournament-${width}`);
+    results.push({scenario:'quizzshow-visual-navigation',width,hall:true,library:true,libraryInput:'scene',article:title,ranking:true,podiums:4});
+   }
+  }finally{await page.emulateMediaFeatures([]);}
+  return;
  }
  async function solve(quizId,score){
   const lesson=fixture.content.KQ_SCHOOL_MODULES.find(item=>item.id===quizId);
@@ -253,7 +328,7 @@ export async function auditSchool({page,visit,view,click,screenshot,assertNoOver
    await assertNoOverflow('Final lesson layout');await capture(`school-course-${width}`);
    await click('button[aria-label="Séquence suivante"]');await clickText('Passer au quiz');await page.waitForSelector('input[name="plant-q01"]');await assertNoOverflow('Final quiz layout');await capture(`school-quiz-${width}`);results.push({scenario:'final-visual-layout',width,threeTabs:true});continue;
   }
-  if(visualAudit){await checkInterior(width);await click('[data-school-destination=learn]');await click('[data-school-course=plant] button');}else await clickText('Commencer');
+  await clickText('Commencer');
   await page.waitForSelector('#school-plant-plant-identity, [id^="school-plant-"]');
   if(visualAudit){
    await page.waitForFunction(()=>{const img=document.querySelector('[data-school-lesson=plant] figure img');return img?.complete&&img.naturalWidth>0;});

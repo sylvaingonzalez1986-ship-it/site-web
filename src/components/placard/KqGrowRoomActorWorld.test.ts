@@ -14,6 +14,16 @@ const layout: WarehouseSpatialLayout = {
 };
 const base = { layout, stage: 1, motion: true, visible: true, profile: { gender: "female" as const, skin: "brown" as const, clothing: "berry" as const } };
 describe("player in the shared grow room renderer", () => {
+  it("reaches the service counter when the renderer can only deliver five frames per second", () => {
+    const actor = createGrowRoomActor(new THREE.Group(), () => {});
+    try {
+      actor.update({ ...base, targetId: "sechoir" });
+      let moving = true;
+      for (let t = 0; moving && t <= 14000; t += 200) moving = actor.tick(t);
+      expect(moving).toBe(false);
+      expect(actor.getPose().state).toBe("idle");
+    } finally { actor.dispose(); }
+  });
   it.each(["pbi", "spread", "pour"] as const)("finishes the accepted %s on the aisle facing the selected cell", gesture => {
     const actor = createGrowRoomActor(new THREE.Group(), () => {});
     const bed = { ...layout.items[0], width: 3, depth: 3 };

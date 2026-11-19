@@ -18,17 +18,19 @@ type Props = {
   mode: QuizzShowMode;
   seats?: readonly (KqTournamentPlayer | null)[];
   motion?: boolean;
+  focus?: QuizzShowDestination | null;
   onChoose?: (destination: QuizzShowDestination) => void;
 };
 
-export function KqQuizzShowScene({ mode, seats = emptySeats, motion = true, onChoose }: Props) {
+export function KqQuizzShowScene({ mode, seats = emptySeats, motion = true, focus = null, onChoose }: Props) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const runtime = useRef<ReturnType<typeof createQuizzShowRenderer> | null>(null);
-  const latest = useRef({ seats, motion, onChoose });
+  const latest = useRef({ seats, motion, onChoose, focus });
   useEffect(() => {
-    latest.current = { seats, motion, onChoose };
+    latest.current = { seats, motion, onChoose, focus };
     runtime.current?.update(seats, motion);
-  }, [seats, motion, onChoose]);
+    runtime.current?.focus(focus);
+  }, [seats, motion, onChoose, focus]);
 
   useEffect(() => {
     const node = canvas.current;
@@ -45,6 +47,7 @@ export function KqQuizzShowScene({ mode, seats = emptySeats, motion = true, onCh
           unavailable,
         });
         runtime.current.update(latest.current.seats, latest.current.motion);
+        runtime.current.focus(latest.current.focus);
       } catch {
         unavailable();
       }

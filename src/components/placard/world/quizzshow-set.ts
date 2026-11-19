@@ -30,7 +30,7 @@ export const QUIZZSHOW_VIEWS: Record<QuizzShowMode, View> = {
 };
 export const QUIZZSHOW_ANCHORS: Record<"tournament" | "learn" | "ranking", Point> = {
   tournament: world(-3.6, .43, 1.33),
-  learn: world(4.35, 1.33, -.77),
+  learn: world(4.38, .92, .48),
   ranking: world(1.24, 1.93, -1.43),
 };
 
@@ -146,7 +146,7 @@ function spotlight(a: Assembly, x: number, y: number, z: number) {
 function sideCurtain(a: Assembly, edge: number, sign: number) {
   const segments = 28, rows = 16;
   const positions: number[] = [], colors: number[] = [], indices: number[] = [];
-  const shadow = new THREE.Color("#702f40"), light = new THREE.Color("#bf6251"), tone = new THREE.Color();
+  const shadow = new THREE.Color("#572237"), light = new THREE.Color("#c5564b"), tone = new THREE.Color();
   for (let row = 0; row <= rows; row++) {
     const v = row / rows;
     const pinch = Math.exp(-((v - .4) ** 2) / .019);
@@ -189,7 +189,6 @@ function stage(a: Assembly) {
     a.box([bx,1.52,-1.417],[.023,2.82,.026],"#3e7773");
   }
   for (const sign of [-1,1]) {
-    sideCurtain(a,x + sign * 3.44,sign);
     a.box([x+sign*3.51,1.54,-1.54],[.15,3.07,.35],p.darkWood);
     a.box([x+sign*3.51,1.55,-1.33],[.082,3.07,.08],p.copper);
   }
@@ -241,6 +240,7 @@ function bookcase(a: Assembly, x: number, section: number) {
     a.box([x+dx,2.85,z-.13],[.149,.13,.63],p.copper);
   }
   for (let shelf=0;shelf<5;shelf++) {
+    if (section === 1 && shelf >= 3) continue;
     const y = .24+shelf*.516;
     a.box([x,y,z-.14],[1.34,.093,.65],p.wood);
     a.box([x,y-.028,z+.196],[1.34,.035,.035],p.brass);
@@ -284,6 +284,22 @@ function library(a: Assembly) {
     a.box([center+dx,1.85,backside+.26],[.072,3.57,.04],p.copper);
   }
   for (let i=0;i<3;i++) bookcase(a,center+(i-1)*1.43,i);
+  // The arched study window and botanical folio survive from the illustrated school.
+  const windowArch = (width: number, sill: number, spring: number, rise: number) => {
+    const outline = [[-width,sill],[width,sill]];
+    for (let j=0;j<=16;j++) {
+      const angle = Math.PI*j/16;
+      outline.push([Math.cos(angle)*width,spring+Math.sin(angle)*rise]);
+    }
+    return outline;
+  };
+  relief(a,windowArch(.62,1.62,2.65,.58),.105,[center,0,-1.79],"#d5b382");
+  relief(a,windowArch(.51,1.74,2.63,.48),.045,[center,0,-1.675],"#497d80");
+  relief(a,windowArch(.455,1.80,2.62,.43),.020,[center,0,-1.622],"#a5d7d1");
+  relief(a,[[-.45,1.81],[-.45,2.16],[-.24,2.32],[.03,2.15],[.26,2.25],[.45,2.16],[.45,1.81]],.014,[center,0,-1.598],"#5e9372");
+  a.box([center,2.41,-1.56],[.048,1.28,.06],p.deep);
+  a.box([center,2.59,-1.56],[.93,.05,.06],p.deep);
+  a.box([center,1.70,-1.59],[1.30,.09,.36],"#edd3a0");
   pedestal(a,[center,3.58,backside+.04],4.76,.40,.1,.10,p.darkWood);
   pedestal(a,[center,3.68,backside+.04],4.84,.42,.064,.105,p.brass);
   // Rolling ladder on a long brass rail.
@@ -314,7 +330,13 @@ function library(a: Assembly) {
     a.add(new THREE.BoxGeometry(.4,.044,.48).rotateZ(tilt),p.darkRed,[px,.852,tz+.063]);
     a.add(new THREE.BoxGeometry(.374,.052,.447).rotateZ(tilt),p.chalk,[px,.895,tz+.063]);
     for(let i=0;i<5;i++)
-      a.add(new THREE.BoxGeometry(i===4?.19:.255,.005,.009).rotateZ(tilt),"#afac92",[px,.924,tz-.075+i*.06]);
+      if (side < 0) a.add(new THREE.BoxGeometry(i===4?.19:.255,.005,.009).rotateZ(tilt),"#afac92",[px,.924,tz-.075+i*.06]);
+    if (side > 0) {
+      a.rod([px-.103,.923,tz+.20],[px+.076,.945,tz-.083],.009,"#597150");
+      for (const sign of [-1,1]) for (let i=0;i<3;i++)
+        a.add(new THREE.SphereGeometry(1,9,5).scale(.033,.005,.057).rotateY(sign*.73),i===1?"#73965e":"#477e61",
+          [px-.065+i*.045+sign*.028,.936+i*.003,tz+.147-i*.077]);
+    }
   }
   const lampX = tx+.64, lampZ = tz-.15;
   turned(a,[lampX,.817,lampZ],[[.125,0],[.13,.036],[.052,.09],[.028,.105],[.028,.38],[.057,.40]],p.brass);
@@ -322,12 +344,18 @@ function library(a: Assembly) {
   a.add(new THREE.CylinderGeometry(.175,.175,.018,16).scale(1,1,.76),p.paleGold,[lampX,1.211,lampZ]);
   const gx = 6.04, gz = -.55;
   turned(a,[gx,.018,gz],[[.29,0],[.31,.05],[.24,.102],[.086,.16],[.065,.63],[.12,.69]],p.wood);
-  a.ball([gx,.995,gz],.305,"#79a7a1");
-  for(const [dx,dy,dz,w,h,r] of [[-.12,.07,.234,.117,.087,-.3],[.105,.115,.236,.087,.095,.28],[-.042,-.084,.282,.048,.096,-.26],[.222,.024,.17,.062,.11,-.35]]) {
-    a.add(new THREE.SphereGeometry(1,9,6).scale(w,h,.027).rotateZ(r).rotateY(Math.atan2(dx,dz)),p.brass,[gx+dx,.995+dy,gz+dz]);
-  }
   a.add(new THREE.TorusGeometry(.329,.017,6,36).rotateY(.6).rotateZ(.28),p.gold,[gx,.995,gz]);
   a.rod([gx-.10,.68,gz],[gx+.10,1.32,gz],.021,p.brass);
+}
+function globe(a: Assembly) {
+  a.ball(zero,.305,"#549e9b");
+  for(const [dx,dy,dz,w,h,r] of [[-.12,.07,.234,.117,.087,-.3],[.105,.115,.236,.087,.095,.28],[-.042,-.084,.282,.048,.096,-.26],[.222,.024,.17,.062,.11,-.35]]) {
+    a.add(new THREE.SphereGeometry(1,9,6).scale(w,h,.027).rotateZ(r).rotateY(Math.atan2(dx,dz)),p.brass,[dx,dy,dz]);
+  }
+  for (const lat of [-.13,0,.13]) {
+    const radius = Math.sqrt(.305 ** 2 - lat ** 2);
+    a.add(new THREE.TorusGeometry(radius,.004,4,32).rotateX(Math.PI/2),"#a9d1bb",[0,lat,0]);
+  }
 }
 
 function ranking(a: Assembly) {
@@ -376,8 +404,14 @@ export function makeQuizzShowSet(mode: QuizzShowMode): THREE.Group {
   }
   if (mode === "hall" || mode === "tournament") {
     destination(paint("plateau",set,material,zero,stage),"tournament");
+    const velvet = new THREE.MeshStandardMaterial({vertexColors:true, roughness:1});
+    paint("rideaux-de-velours",set,velvet,zero,a => {
+      for(const side of [-1,1]) sideCurtain(a,-2.75 + side*3.44,side);
+    });
+    const lacquer = new THREE.MeshStandardMaterial({vertexColors:true, roughness:.34, metalness:.19});
+    lacquer.userData.highlightable = true;
     stations.forEach((station,i) => {
-      const desk = paint(`pupitre-${i+1}`,set,material,[station.x,deck,station.z],a => lectern(a,i),station.yaw);
+      const desk = paint(`pupitre-${i+1}`,set,lacquer,[station.x,deck,station.z],a => lectern(a,i),station.yaw);
       destination(desk,"tournament");
       if (mode === "tournament") {
         const light = new THREE.Mesh(new THREE.RingGeometry(.16,.215,36), new THREE.MeshBasicMaterial({color:p.paleGold}));
@@ -389,7 +423,16 @@ export function makeQuizzShowSet(mode: QuizzShowMode): THREE.Group {
       }
     });
   }
-  if (mode === "hall" || mode === "library") destination(paint("grande-bibliotheque",set,material,zero,library),"learn");
-  if (mode === "hall" || mode === "ranking") destination(paint("tableau-du-classement",set,material,zero,ranking),"ranking");
+  if (mode === "hall" || mode === "library") {
+    destination(paint("grande-bibliotheque",set,material,zero,library),"learn");
+    const enamel = new THREE.MeshStandardMaterial({vertexColors:true,roughness:.29,metalness:.25});
+    enamel.userData.highlightable = true;
+    destination(paint("globe-de-lecture",set,enamel,[6.04,.995,-.55],globe),"learn");
+  }
+  if (mode === "hall" || mode === "ranking") {
+    const gilt = new THREE.MeshStandardMaterial({vertexColors:true,roughness:.48,metalness:.23});
+    gilt.userData.highlightable = true;
+    destination(paint("tableau-du-classement",set,gilt,zero,ranking),"ranking");
+  }
   return set;
 }

@@ -695,7 +695,10 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       selectZone(planZones.find(zone => zone.id === id));
       return;
     }
-    setRoomEvent(null);
+    // The room remounts when returning from a service tab. Carry the explicit
+    // floor selection so the actor can inspect on arrival after that remount.
+    const growingRun = !station && activeRuns.find(run => run.zoneId === id && run.stageIndex < 5);
+    setRoomEvent(growingRun ? { id: `inspect:${growingRun.runId}`, zoneId: id, gesture: "inspect" } : null);
     setSelectedId(id);
     setRoom(station?.kind ?? "culture");
     if (!station) setManaging(false);
@@ -865,7 +868,8 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   };
   const warehouseScene = snapshot && draft ? <KqWarehouseCultureRoom
     plan={room === "culture" ? draft : snapshot.state} runs={activeRuns}
-    reservedZoneId={reservation?.zoneId} stockGrams={stock} event={roomEvent}
+    reservedZoneId={reservation?.zoneId} stockGrams={stock}
+    event={roomEvent?.gesture !== "inspect" || roomEvent.zoneId === selectedId ? roomEvent : null}
     onSelect={inspectRoomStation} warehouseEditor={warehouseEditor}
   /> : null;
 

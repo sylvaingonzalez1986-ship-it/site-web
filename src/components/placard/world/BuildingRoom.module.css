@@ -1,0 +1,37 @@
+.room {
+  max-width: 1110px;
+  margin-inline: auto;
+  padding: clamp(8px, 2.4vw, 30px);
+  color: var(--game-ink, #172923);
+}
+.room:focus { outline: none; }
+.room > header { grid-template-columns: minmax(0, 1fr) clamp(64px, 8vw, 104px); margin-bottom: 12px; }
+.layout { display: grid; grid-template-columns: minmax(0, 2.35fr) minmax(200px, 1fr); align-items: center; gap: clamp(10px, 2vw, 28px); }
+.stage { position: relative; min-width: 0; aspect-ratio: 4 / 3; }
+.poster { position: absolute; inset: 0; background: center / contain no-repeat; pointer-events: none; }
+.stage canvas { position: relative; display: block; width: 100%; height: 100%; opacity: 0; touch-action: pan-y pinch-zoom; }
+.stage canvas[data-live="true"] { opacity: 1; }
+.stage:has(canvas[data-live="true"]) .poster { visibility: hidden; }
+.signs { display: grid; gap: 6px; min-width: 0; }
+.room .sign, .room .exit {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 13px 16px;
+  background: transparent; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; box-shadow: none;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  color: inherit; text-decoration: none;
+}
+.room .sign { justify-content: space-between; }
+.sign svg, .exit svg { flex-shrink: 0; }
+.sign strong { display: block; font: 800 clamp(17px, 1.75vw, 23px)/1.1 var(--font-display), sans-serif; }
+.sign small { display: block; font-size: .82rem; line-height: 1.35; margin-top: .25rem; }
+.room .exit { justify-self: start; margin-top: 5px; font-weight: 650; }
+.room :is(a, button):is(:hover, :focus-visible, [data-highlighted], [aria-pressed="true"]) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.room :is(a, button):focus-visible { outline: 3px solid #00685e; outline-offset: 2px; }
+.room .motion { font-size: .82rem; cursor: pointer; margin-top: 0; }
+.room:not(:has(canvas[data-live="true"])) .motion { display: none; }
+@media (prefers-reduced-motion: reduce) { .room .motion { display: none; } }
+@media (max-width: 680px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .room > header { margin-bottom: 2px; padding-bottom: 4px; }
+  .room .sign { padding-block: 9px; }
+}

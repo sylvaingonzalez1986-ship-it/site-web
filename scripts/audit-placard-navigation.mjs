@@ -29,7 +29,8 @@ const coastCorner=process.argv.includes('--coast-corner');
 const coast=coastCorner||process.argv.includes('--coast');
 const coastBaseline=coast&&process.argv.includes('--baseline');
 const coastReport=`coast${coastCorner?'-corner':''}-${coastBaseline?'before':'after'}.json`;
-const world3d=coast||quarterTeam||process.argv.includes('--world-3d');
+const buildingRooms=process.argv.includes('--building-rooms');
+const world3d=coast||quarterTeam||buildingRooms||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
 const focusOnly=process.argv.includes('--focus-only');
 const cardsOnly=process.argv.includes('--cards-only');
@@ -49,7 +50,7 @@ const schoolReal=process.argv.includes('--school-real')||schoolVisual||schoolHis
 const schoolFixture=schoolReal?await createSchoolFixture():null;
 const schoolPlayerFixtures=new Map([[1,Promise.resolve(schoolFixture)]]);
 let tournamentFixturePromise;
-const reportName=world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
+const reportName=buildingRooms?'building-rooms-report.json':world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
 const MAP_ASSET='/placard/map/placard-world-quizzshow-v9.webp';
 const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','missions','collection'];
 // Independently inspected landmarks in the 1536 x 1024 v6 painting. These do
@@ -144,7 +145,7 @@ modules['navigation-consent']='export const useCookieConsent=()=>({showBanner:fa
 const fonts=`@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#003f30}button{cursor:pointer}`;
 // This isolated navigation fixture has no hosting environment or payment destination.
 modules['entry'] = `window.process={env:{NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL:''}};${modules['entry']}`;
-const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,world3d?'vite-cache-world-3d':'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom','react-dom/client','lucide-react',...(world3d?['react/jsx-runtime','three','@react-three/fiber','three/addons/controls/OrbitControls.js','three/addons/utils/BufferGeometryUtils.js']:[])]},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom',...(world3d?['three']:[])]},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'placard-clarity',enforce:'pre',resolveId(id,importer){if(id.replaceAll('\\','/').endsWith('/CookieConsentProvider'))return '\0navigation-consent';if(importer?.replaceAll('\\','/').endsWith('/PlacardPlayerShell.tsx')&&id in destinations)return '\0destination:'+id;if(id in modules)return '\0'+id;},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{
+const server=await createServer({root,configFile:false,envDir:false,cacheDir:resolve(output,world3d?'vite-cache-world-3d':'vite-cache'),publicDir:resolve(root,'public'),optimizeDeps:{include:['react','react-dom','react-dom/client','lucide-react',...(world3d||schoolReal?['react/jsx-runtime','three','@react-three/fiber','three/addons/controls/OrbitControls.js','three/addons/utils/BufferGeometryUtils.js','three/addons/geometries/RoundedBoxGeometry.js']:[])]},resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom',...(world3d?['three']:[])]},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'placard-clarity',enforce:'pre',resolveId(id,importer){if(id.replaceAll('\\','/').endsWith('/CookieConsentProvider'))return '\0navigation-consent';if(importer?.replaceAll('\\','/').endsWith('/PlacardPlayerShell.tsx')&&id in destinations)return '\0destination:'+id;if(id in modules)return '\0'+id;},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return(await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{
  const url=new URL(req.url||'/',origin);
  const path=decodeURIComponent(url.pathname).replaceAll('\\','/');
  const privateOutput=/\/output(?:\/|$)/i.test(path)&&!/\/output\/placard-navigation\/vite-cache(?:-world-3d)?\//i.test(path);
@@ -353,6 +354,9 @@ else try {
    await auditVillageCoast({page,visit,results,baseline:coastBaseline,output,corner:coastCorner});
  }else if(quarterTeam){
    await auditQuarterTeam({page,visit,screenshot,assertNoOverflow,results,fixture:teamFixture});
+ }else if(buildingRooms){
+   const {auditBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
+   await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output});
  }else if(world3d){
    await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin});
  }else if(schoolChallenge){
@@ -812,6 +816,6 @@ else try {
  await writeFile(resolve(output,coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests},null,2));
  console.log(JSON.stringify({success:true,output,widths:results.filter(result=>result.width).map(result=>result.width),scenarios:results.filter(result=>result.scenario).length,errors:errors.length},null,2));
 }catch(error){
- if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,quarterTeam?'quarter-team-failure.png':world3d?'world-3d-failure.png':motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
+ if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,buildingRooms?'building-rooms-failure.png':quarterTeam?'quarter-team-failure.png':world3d?'world-3d-failure.png':motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
  await writeFile(resolve(output,coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
 }finally{if(!preview){await browser?.close();await server.close();}}

@@ -25,6 +25,7 @@ type Station = {
   key: string;
   box: THREE.Box3;
   ghost: boolean;
+  rotor?: { mesh: THREE.InstancedMesh; rests: THREE.Matrix4[] };
   serviceFaces: THREE.Object3D[] | null;
   lastProbe?: {
     x: number;
@@ -41,10 +42,10 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
   renderer.shadowMap.autoUpdate = false;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.02;
+  renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene(), camera = new THREE.OrthographicCamera(-8, 8, 8, -8, .1, 230);
-  scene.add(new THREE.HemisphereLight("#f4f8fa", "#839295", 1.66));
-  const key = new THREE.DirectionalLight("#fff9ec", 2.55);
+  scene.add(new THREE.HemisphereLight("#deedf5", "#81908b", 1.26));
+  const key = new THREE.DirectionalLight("#fff0ce", 2.23);
   key.position.set(-6, 13, 6);
   key.castShadow = true;
   key.shadow.mapSize.set(1024, 1024);
@@ -52,12 +53,14 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
   key.shadow.normalBias = .018;
   key.shadow.radius = 2.5;
   scene.add(key, key.target);
-  const fill = new THREE.DirectionalLight("#d6eae7", .81);
-  fill.position.set(7, 5, -7);
+  const fill = new THREE.DirectionalLight("#c8e6ee", 1.00);
+  fill.position.set(4, 5, 8);
   scene.add(fill);
   const res = createRoomResources(), stations = new Map<string, Station>(), ghosts = new Map<THREE.Material, THREE.Material>();
   let building: THREE.Group | null = null, lastFloor = "", lastSignature = "", frame = 0, disposed = false, latest: WorldInput | null = null;
   let prevWidth = 0, prevHeight = 0;
+  let ventTimer = 0, ventPhase = 0, lastVentDraw = -Infinity;
+  const turn = new THREE.Matrix4(), bladeMatrix = new THREE.Matrix4();
   const actorWorld = new THREE.Group();
   scene.add(actorWorld);
   const actor = createGrowRoomActor(actorWorld, requestFrame);
@@ -133,9 +136,31 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
       const hideActor = pose.visible && obstruction(s.box, pose.x, .99, pose.z) && (s !== focus || serviceCoversWorker(s, pose.x, pose.z));
       fade(s, hideActor || Boolean(focus && s !== focus && obstruction(s.box, cx, .44, cz)));
     }
+    // Ventilation cycles briefly. Between cycles the camera and the entire room sleep.
+    const rotors = latest.motion && Array.from(stations.values()).some(station => station.rotor);
+    if (rotors && time >= lastVentDraw + 90) {
+      const t = Math.max(0, (time-ventPhase)/1450);
+      if (t < 1) {
+        const phase = 2*Math.PI*(t-Math.sin(t*2*Math.PI)/(2*Math.PI));
+        turn.makeRotationY(phase);
+        for (const s of stations.values()) if (s.rotor) {
+          s.rotor.rests.forEach((rest,i) => s.rotor!.mesh.setMatrixAt(i,bladeMatrix.multiplyMatrices(rest,turn)));
+          s.rotor.mesh.instanceMatrix.needsUpdate = true;
+        }
+      }
+      lastVentDraw=time;
+    }
     renderer.render(scene, camera);
     if (moving)
       requestFrame();
+    if (rotors && !ventTimer) {
+      const resting = time-ventPhase >= 1450;
+      ventTimer = window.setTimeout(() => {
+        ventTimer=0;
+        if (resting) ventPhase=performance.now();
+        requestFrame();
+      }, resting ? 4700 : 110);
+    }
   }
   function update(input: WorldInput) {
     const previous = latest;
@@ -166,7 +191,7 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
       lastFloor = floorKey;
       const reach = Math.hypot(layout.width + 3, layout.depth + 3) * .58;
       Object.assign(key.shadow.camera, { left: -reach, right: reach, top: reach, bottom: -reach, far: reach * 4 + 40 });
-      key.position.set(-reach * .67, reach * 1.60, reach * .72);
+      key.position.set(-reach * .61, reach * 1.28, -reach * .54);
       key.shadow.camera.updateProjectionMatrix();
       renderer.shadowMap.needsUpdate = true;
     }
@@ -190,7 +215,11 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
         scene.add(group);
         const serviceFaces = item.kind === "drying" || item.kind === "storage" ? group.children.filter(child => child instanceof THREE.Mesh &&
           child.material !== res.materials.net && child.material !== res.materials.jar && child.material !== res.materials.shadow) : null;
-        stations.set(item.id, { group, key, box: new THREE.Box3().setFromObject(group), ghost: false, serviceFaces });
+        const blades=group.getObjectByName("rotor-running");
+        const rotor = blades instanceof THREE.InstancedMesh ? {mesh:blades,rests:Array.from({length:blades.count},(_,i)=>{
+          const rest=new THREE.Matrix4(); blades.getMatrixAt(i,rest); return rest;
+        })} : undefined;
+        stations.set(item.id, { group, key, box: new THREE.Box3().setFromObject(group), ghost: false, serviceFaces, rotor });
       }
       for (const [id, station] of stations)
         if (!active.has(id)) {
@@ -209,6 +238,8 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
     }
     const targetId = input.event?.zoneId ?? input.selected, activeZone = input.zones.find(z => z.id === targetId);
     actor.update({ layout, targetId, stage: activeZone?.stageIndex ?? null, event: input.event, profile: input.profile, motion: input.motion, visible: input.visible });
+    if (!input.visible || !input.motion) { clearTimeout(ventTimer); ventTimer=0; }
+    else if (!previous?.visible || !previous.motion) ventPhase=performance.now();
     if (!input.visible && frame) {
       cancelAnimationFrame(frame);
       frame = 0;
@@ -228,7 +259,7 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
     }
     return null;
   }
-  function dispose() { disposed = true; cancelAnimationFrame(frame); actor.dispose(); if (building)
+  function dispose() { disposed = true; clearTimeout(ventTimer); cancelAnimationFrame(frame); actor.dispose(); if (building)
     releaseStation(building); stations.forEach(s => releaseStation(s.group)); ghosts.forEach(m => m.dispose()); rail.dispose(); ringMaterial.dispose(); key.shadow.dispose(); res.dispose(); renderer.dispose(); renderer.forceContextLoss(); }
   return { update, pick, dispose };
 }

@@ -11,12 +11,19 @@ const obj = (id: string, kind: InteriorObject["kind"], label: string, x: number,
 
 const furniture: Record<Exclude<VillageBuildingKind, "warehouse">, InteriorObject[]> = {
   bank: [obj("accounts", "desk", "Ma comptabilité", -3, -1, 2, 1.2, "view=treasury&pole=accounting", "Factures et comptes"), obj("bank", "safe", "Ouvrir la banque", 2.5, -2.8, 2, 1.6, "view=treasury&pole=bank", "Épargne et financement")],
-  office: [obj("team", "desk", "Gérer mon équipe", -2.5, -1, 2.2, 1.3, "view=staff", "Journée de travail, personnel et recrutements"), obj("register", "bookshelf", "Consulter le registre", 3, -3, 1.8, .7, "view=staff")],
-  market: [obj("sales", "counter", "Préparer mes ventes", -3.3, -1.6, 2.5, 1.1, "view=market&section=sales", "Formats, prix et débouchés"), obj("stock", "storage", "Mon stock en vente", 3.1, -2, 1.8, 1.1, "view=market&section=dashboard", "Paquets, annonces et commandes"), obj("business", "desk", "Développer mon commerce", -3.4, 1.4, 2, 1, "view=market&section=management"), obj("communication", "board", "Communiquer", 2.5, -3.6, 2.4, .4, "view=social")],
-  missions: [obj("missions", "board", "Mes missions", 0, -2, 3.2, .65, "view=missions", "Défis, objectifs et récompenses")],
-  arena: [obj("jury", "podium", "Jury & duels", 0, -2.3, 3.6, 1.5, "view=arena", "Présenter mes Fleurs et participer aux duels")],
+  office: [
+    obj("team", "desk", "Bureau du personnel", 1.65, -1.65, 3.6, 1.35, "view=staff", "Journée de travail et suivi du personnel"),
+    obj("team-register", "bookshelf", "Plan de travail", -2.85, -2.5, 2, .85, "view=staff&section=team", "Journée et affectations de l’équipe"),
+    obj("recruitment", "board", "Recruter", -2.95, .8, 2.35, .55, "view=staff&section=candidates", "Consulter les candidatures"),
+  ],
+  market: [obj("sales", "counter", "Préparer mes ventes", -3.1, -1.6, 2.8, 1.15, "view=market&section=sales", "Formats, prix et débouchés"), obj("stock", "storage", "Mon stock en vente", 2.7, -1.3, 2.2, 1.15, "view=market&section=dashboard", "Paquets, annonces et commandes"), obj("business", "desk", "Développer mon commerce", -2.9, 1.5, 2.1, 1, "view=market&section=management"), obj("communication", "board", "Communiquer", 2.7, -3.45, 2.3, .45, "view=social")],
+  missions: [
+    obj("missions", "board", "Mes défis", -2.2, -2.1, 4, .65, "view=missions", "Objectifs et récompenses"),
+    obj("community", "board", "Missions de la communauté", 2.6, -.85, 3.35, .65, "view=missions&section=community", "Retrouver les missions collectives"),
+  ],
+  arena: [obj("jury", "podium", "Jury & duels", -.65, -1.45, 3.4, 1.45, "view=arena", "Présenter mes Fleurs et participer aux duels"), obj("arena-storage", "storage", "Préparer mes Fleurs", 3.65, -.9, 1.6, 1.05, "view=harvests&section=storage", "Vérifier l’affinage des récoltes")],
   collection: [obj("quiz", "podium", "Jouer à QuizzShow", 0, -2.4, 3.6, 1.3, "view=school"), obj("library", "bookshelf", "Lire l’encyclopédie", -3.8, -.7, 1.4, .65, "view=school&section=learn", "Les connaissances et leurs sources")],
-  shop: [obj("packs", "counter", "Mes packs", -2.8, -1.5, 2.5, 1.2, "view=shop"), obj("collection", "cards", "Ma collection", 2.8, -1.8, 2.2, 1.2, "view=shop&tab=collection", "Cartes, album et Buddies")],
+  shop: [obj("packs", "cards", "Packs Botte du Chanvrier", -2.65, -2.15, 2.45, 1.25, "view=shop"), obj("collection", "cards", "Ma collection", -.65, 1.2, 2.5, 1.65, "view=shop&tab=collection", "Cartes et albums"), obj("buddies", "cards", "Packs Buddies", 2.75, -2.15, 2.3, 1.25, "view=shop&section=buddies")],
 };
 
 export function createInteriorRoom(id: VillageBuildingKind, snapshot: KqWarehouseViewSnapshot | null = null): InteriorRoom {
@@ -45,7 +52,7 @@ export function createInteriorRoom(id: VillageBuildingKind, snapshot: KqWarehous
       obj("harvests", "board", "Mes récoltes", -width / 2 + .5, -workArea.depth / 2 - .6, .7, .35, "view=harvests", "Stockage, affinage et jury"));
   } else {
     objects = furniture[id].map(object => ({ ...object }));
-    objects.push({ id: "host", kind: "character", label: "Accueil", x: 3.7, z: 1.5, width: .65, depth: .65, rotation: 0, href: objects[0].href, detail: "Retrouver les activités de ce lieu" });
+    if (id === "collection") objects.push({ id: "host", kind: "character", label: "Accueil", x: 3.7, z: 1.5, width: .65, depth: .65, rotation: 0, href: objects[0].href, detail: "Retrouver les activités de ce lieu" });
   }
   objects.push({ id: "exit", kind: "exit", label: "Sortir au village", x: 0, z: depth / 2 - .3, width: 1.7, depth: .3, rotation: 0, solid: false });
   return { id, name, width, depth, height: id === "warehouse" ? 4.6 : 4, spawn: [0, depth / 2 - 1.2], objects, workArea };

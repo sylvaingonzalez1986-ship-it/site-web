@@ -135,7 +135,7 @@
   background: #fff1d6;
 }
 
-.sectionHeader button, .exitHeader a {
+.sectionHeader button, .sectionHeader .roomLink, .exitHeader a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -163,6 +163,14 @@
   font: 900 30px/1.05 var(--font-display), Impact, sans-serif;
   outline: none;
   overflow-wrap: anywhere;
+}
+.sectionHeader .roomLink { text-decoration: none; }
+.sectionHeader h1 + .roomLink { margin-left: auto; }
+.sectionHeader .roomLink:is(:hover, :focus-visible) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.sectionHeader .roomLink:focus-visible { outline: 3px solid #00685e; outline-offset: 2px; }
+@media (max-width: 520px) {
+  .sectionHeader:has(.roomLink) { flex-wrap: wrap; }
+  .sectionHeader:has(.roomLink) h1 { flex: 1; }
 }
 .exitHeader a { white-space: nowrap; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .exitHeader > span { min-width: 0; font-size: 12px; font-weight: 750; }

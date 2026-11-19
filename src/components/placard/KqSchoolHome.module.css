@@ -13,6 +13,9 @@
 .sign strong, .sign small { display: block; }
 .sign strong { font: 850 clamp(1.05rem,2.25vw,1.65rem)/1.1 var(--font-display),sans-serif; }
 .sign small { margin-top: 3px; font-size: .78rem; line-height: 1.25; font-weight: 550; }
+.home .motion { margin: 8px auto 0; flex-direction: row; min-height: 44px; padding: 8px 15px; font-size: .82rem; }
+.home:not(:has(canvas[data-live="true"])) .motion { display: none; }
+@media (prefers-reduced-motion: reduce) { .home .motion { display: none; } }
 @media (max-width: 580px) {
   .signs { margin: 3px 0 0; gap: 3px; }
   .home .sign { flex-direction: column; gap: 3px; padding: 7px 2px; text-align: center; }

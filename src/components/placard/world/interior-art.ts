@@ -1,5 +1,9 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { furnishCivic, furnishCivicStation } from "./building-civic-decor";
+import { furnishOffice, furnishOfficeStation } from "./building-office-decor";
+import { furnishMarket, furnishMarketStation } from "./building-market-decor";
 import type { InteriorObject, InteriorRoom } from "./interior-types";
 
 /** The same pigments as the painted Quartier; all detail below is generated geometry. */
@@ -9,26 +13,73 @@ const PAINT = {
   wood: "#af7849", honey: "#d6a15f", gold: "#efb63d", steel: "#acb9af",
   green: "#497a4e", leaf: "#6f9952", earth: "#514537", red: "#ba604b",
   skin: "#edbd89", hair: "#483c33", blue: "#386899", glass: "#a4d3c3",
+  apricot: "#e7ab72",
+  brass: "#d29b3e", bronze: "#8c5a27", iron: "#4e6267", forgedIron: "#293e43",
+  velvet: "#185851", leather: "#93614a", walnut: "#835634", limestone: "#d4c1a0",
+  windowGlass: "#b8ddcf", suit: "#20594a", silverHair: "#c4c3b3",
 } as const;
 type Pigment = keyof typeof PAINT;
 type V3 = readonly [number, number, number];
 const ZERO: V3 = [0, 0, 0];
-type Surface = "timber" | "plaster" | "granite";
+type Surface = "timber" | "plaster" | "granite" | "paper" | "cloth" | "metal" | "glass";
+
+const finishByPaint: Partial<Record<Pigment, { surface: Surface; roughness: number; metalness?: number }>> = {
+  wood: { surface: "timber", roughness: 0.76 },
+  honey: { surface: "timber", roughness: 0.76 },
+  walnut: { surface: "timber", roughness: 0.76 },
+  teal: { surface: "timber", roughness: 0.76 },
+  darkTeal: { surface: "timber", roughness: 0.76 },
+  cream: { surface: "plaster", roughness: 0.95 },
+  plaster: { surface: "plaster", roughness: 0.95 },
+  paper: { surface: "paper", roughness: 0.94 },
+  stone: { surface: "granite", roughness: 0.89 },
+  limestone: { surface: "granite", roughness: 0.89 },
+  iron: { surface: "metal", roughness: 0.49, metalness: 0.45 },
+  forgedIron: { surface: "metal", roughness: 0.65, metalness: 0.36 },
+  brass: { surface: "metal", roughness: 0.35, metalness: 0.55 },
+  bronze: { surface: "metal", roughness: 0.54, metalness: 0.47 },
+  gold: { surface: "metal", roughness: 0.43, metalness: 0.36 },
+  steel: { surface: "metal", roughness: 0.51, metalness: 0.4 },
+  velvet: { surface: "cloth", roughness: 0.99 },
+  leather: { surface: "cloth", roughness: 0.72 },
+  suit: { surface: "cloth", roughness: 0.88 },
+  windowGlass: { surface: "glass", roughness: 0.27, metalness: 0.04 },
+};
 
 /** Tiny deterministic pigment fields; no image asset, browser canvas or network dependency. */
-function pigmentTexture(surface: Surface) {
+function pigmentTexture(surface: Surface, detailed: boolean) {
   const size = 128, pixels = new Uint8Array(size * size * 4);
   let seed = hash(surface);
   for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
     const noise = seed / 4294967296;
     let value: number;
-    if (surface === "timber") {
+    if (detailed && surface === "timber") {
+      const bend = Math.sin(y * 0.049) * 2.8 + Math.sin(y * 0.106 + x * 0.043) * 1.1;
+      const grain = Math.sin(x * 0.32 + bend);
+      const pores = Math.sin(x * 1.39 + bend * 1.45);
+      value = 243 + grain * 7 + pores * 3 - noise * 5;
+      if (grain > 0.92) value -= 9 + pores * 3;
+    } else if (surface === "timber") {
       const grain = Math.sin(x * 0.48 + Math.sin(y * 0.065) * 1.9 + Math.sin(y * 0.017) * 3.4);
       value = 244 + grain * 6 - noise * 7;
       if (Math.sin(x * 0.14 + Math.sin(y * 0.018) * 1.1) > 0.985) value -= 15;
+    } else if (detailed && surface === "plaster") {
+      value = 248 + Math.sin(x * 0.16 + Math.sin(y * 0.11)) * Math.cos(y * 0.18) * 5 - noise * 5;
+      if (noise < 0.068) value -= 17;
     } else if (surface === "plaster") {
       value = noise < 0.045 ? 240 + noise * 160 : 251 + noise * 4;
+    } else if (surface === "cloth") {
+      value = 251 - noise * 6 - Math.pow(Math.sin(x * Math.PI / 4) * Math.sin(y * Math.PI / 4), 2) * 21;
+    } else if (surface === "paper") {
+      value = 253 - noise * 11 - (noise < 0.07 ? 11 : 0);
+    } else if (surface === "metal") {
+      value = 247 + Math.sin(x * 1.9 + Math.sin(y * 0.06)) * 3 - noise * 6;
+    } else if (surface === "glass") {
+      value = 242 + Math.sin((x + y) * 0.1) * 5 - noise * 4;
+    } else if (detailed) {
+      value = 247 + Math.sin(x * 0.08 + y * 0.09) * 6 - noise * 12;
+      if (noise < 0.072) value -= 12;
     } else {
       value = 228 + noise * 27;
       if (noise < 0.08) value -= 26;
@@ -48,17 +99,37 @@ function pigmentTexture(surface: Surface) {
   return texture;
 }
 
+function mergeParts(parts: THREE.BufferGeometry[], name: string) {
+  if (parts.length === 1) return parts[0];
+  const merged = mergeGeometries(parts, false);
+  parts.forEach(part => part.dispose());
+  if (!merged) throw new Error(`Cannot merge interior art: ${name}`);
+  return merged;
+}
+
 /** Source geometries are consumed immediately and merged by pigment (no per-plank meshes). */
-class Art {
+export class Art {
   private paints = new Map<Pigment, THREE.BufferGeometry[]>();
+  private pivots: { name: string; at: V3; art: Art }[] = [];
   private sourceCount = 0;
+
+  constructor(private readonly detailed = false) {}
+
+  pivot(name: string, at: V3) {
+    const art = new Art(this.detailed);
+    this.pivots.push({ name, at, art });
+    return art;
+  }
 
   add(geometry: THREE.BufferGeometry, paint: Pigment, at: V3, rotation: V3 = ZERO, tone = 1) {
     geometry.applyMatrix4(new THREE.Matrix4().compose(
       new THREE.Vector3(...at), new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)), new THREE.Vector3(1, 1, 1),
     ));
     const colors = new Float32Array(geometry.getAttribute("position").count * 3);
-    colors.fill(tone);
+    if (this.detailed) {
+      const tint = new THREE.Color(PAINT[paint]).multiplyScalar(tone);
+      for (let i = 0; i < colors.length; i += 3) tint.toArray(colors, i);
+    } else colors.fill(tone);
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
     const flat = geometry.index ? geometry.toNonIndexed() : geometry;
     if (flat !== geometry) geometry.dispose();
@@ -70,6 +141,10 @@ class Art {
 
   box(w: number, h: number, d: number, x: number, y: number, z: number, paint: Pigment, rotation: V3 = ZERO, tone = 1) {
     this.add(new THREE.BoxGeometry(w, h, d), paint, [x, y, z], rotation, tone);
+  }
+
+  bevelBox(w: number, h: number, d: number, radius: number, x: number, y: number, z: number, paint: Pigment, rotation: V3 = ZERO) {
+    this.add(new RoundedBoxGeometry(w, h, d, 1, radius), paint, [x, y, z], rotation);
   }
 
   cylinder(r: number, h: number, x: number, y: number, z: number, paint: Pigment, top = r, rotation: V3 = ZERO) {
@@ -100,38 +175,67 @@ class Art {
     this.box(thickness, h, thickness, x + w / 2, y, z, paint);
   }
 
-  finish(name: string) {
+  finish(name: string): THREE.Group {
+    return this.merge(name, new Map(), new Map());
+  }
+
+  private merge(name: string, textures: Map<Surface, THREE.DataTexture>, materials: Map<string, THREE.MeshStandardMaterial>): THREE.Group {
     const group = new THREE.Group();
-    const textures = new Map<Surface, THREE.DataTexture>();
+    const meshes = new Map<string, { material: THREE.MeshStandardMaterial; parts: THREE.BufferGeometry[] }>();
+    const strokes = new Map<number, THREE.BufferGeometry[]>();
     group.name = name;
     group.userData.sourcePieces = this.sourceCount;
     for (const [paint, geometries] of this.paints) {
-      const geometry = mergeGeometries(geometries, false);
-      geometries.forEach((part) => part.dispose());
-      if (!geometry) throw new Error(`Cannot merge interior pigment ${paint}`);
-      const surface: Surface | null = paint === "wood" || paint === "honey" ? "timber"
+      const geometry = mergeParts(geometries, paint);
+      const finish = this.detailed ? finishByPaint[paint] : undefined;
+      const legacySurface: Surface | null = paint === "wood" || paint === "honey" ? "timber"
         : paint === "cream" || paint === "plaster" || paint === "paper" ? "plaster"
           : paint === "stone" ? "granite" : null;
-      if (surface && !textures.has(surface)) textures.set(surface, pigmentTexture(surface));
-      const material = new THREE.MeshStandardMaterial({
-        color: PAINT[paint], roughness: paint === "steel" ? 0.63 : 0.95,
-        metalness: paint === "steel" ? 0.28 : 0,
-        vertexColors: true, flatShading: true, map: surface ? textures.get(surface)! : null,
-        ...(paint === "gold" ? { emissive: PAINT.gold, emissiveIntensity: 0.035 } : {}),
-      });
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.name = `${name}-${paint}`;
+      const surface = finish?.surface ?? legacySurface;
+      if (surface && !textures.has(surface)) textures.set(surface, pigmentTexture(surface, this.detailed));
+      const roughness = finish?.roughness ?? (paint === "steel" ? 0.63 : 0.95);
+      const metalness = finish?.metalness ?? (paint === "steel" ? 0.28 : 0);
+      const key = this.detailed && paint !== "gold" ? `${surface ?? "painted"}-${roughness}-${metalness}` : paint;
+      let material = materials.get(key);
+      if (!material) {
+        material = new THREE.MeshStandardMaterial({
+          color: this.detailed ? "#ffffff" : PAINT[paint], roughness, metalness,
+          vertexColors: true, flatShading: !this.detailed, map: surface ? textures.get(surface)! : null,
+          ...(paint === "gold" ? { emissive: PAINT.gold, emissiveIntensity: 0.035 } : {}),
+        });
+        materials.set(key, material);
+      }
+      const batch = meshes.get(key) ?? { material, parts: [] };
+      batch.parts.push(geometry);
+      meshes.set(key, batch);
+      // Structural ink strokes, as in the 2D drawing; foliage and skin keep their soft silhouette.
+      if (!["leaf", "green", "skin", "hair", "glass", "windowGlass", "silverHair", "velvet", "leather", "suit"].includes(paint)) {
+        const edges = new THREE.EdgesGeometry(geometry, this.detailed ? 43 : 35);
+        const opacity = this.detailed ? (surface === "plaster" || surface === "granite" ? 0.1 : 0.22) : 0.37;
+        const batch = strokes.get(opacity) ?? [];
+        batch.push(edges);
+        strokes.set(opacity, batch);
+      }
+    }
+    for (const [key, { material, parts }] of meshes) {
+      const mesh = new THREE.Mesh(mergeParts(parts, key), material);
+      mesh.name = `${name}-${key}`;
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       group.add(mesh);
-      // Structural ink strokes, as in the 2D drawing; foliage and skin keep their soft silhouette.
-      if (!["leaf", "green", "skin", "hair", "glass"].includes(paint)) {
-        const edges = new THREE.EdgesGeometry(geometry, 35);
-        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: PAINT.ink, transparent: true, opacity: 0.37 }));
-        line.name = `${name}-${paint}-ink`;
-        group.add(line);
-      }
     }
+    for (const [opacity, parts] of strokes) {
+      const line = new THREE.LineSegments(mergeParts(parts, "ink"), new THREE.LineBasicMaterial({ color: PAINT.ink, transparent: true, opacity }));
+      line.name = `${name}-ink`;
+      group.add(line);
+    }
+    for (const pivot of this.pivots) {
+      const child = pivot.art.merge(pivot.name, textures, materials);
+      child.position.set(...pivot.at);
+      group.add(child);
+      group.userData.sourcePieces += child.userData.sourcePieces;
+    }
+    this.pivots.length = 0;
     this.paints.clear();
     return group;
   }
@@ -369,13 +473,16 @@ function character(a: Art, object: InteriorObject) {
 }
 
 /** Local origin at the footprint centre, feet at y=0; final dimensions already include yaw. */
-export function createInteriorObjectArt(object: InteriorObject): THREE.Group {
+export function createInteriorObjectArt(object: InteriorObject, room?: InteriorRoom["id"]): THREE.Group {
   const quarterTurn = object.rotation === 90 || object.rotation === 270;
   const inset = object.kind === "partition" ? 1 : 0.94;
   const w = (quarterTurn ? object.depth : object.width) * inset;
   const d = (quarterTurn ? object.width : object.depth) * inset;
-  const a = new Art();
-  switch (object.kind) {
+  const a = new Art(room !== undefined && Boolean(cutawayPalettes[room]));
+  const furnished = room === "bank" || room === "office" ? furnishOfficeStation(a, object.id, w, d)
+    : room === "market" || room === "shop" ? furnishMarketStation(a, object.id, w, d)
+      : room === "arena" || room === "missions" ? furnishCivicStation(a, object.id, w, d) : false;
+  if (!furnished) switch (object.kind) {
     case "partition": {
       const alongX = w >= d, length = Math.max(w, d), thickness = Math.min(w, d);
       const panel = (span: number, height: number, edge: number, offset: number, y: number, pigment: Pigment) =>
@@ -459,7 +566,11 @@ export function createInteriorObjectArt(object: InteriorObject): THREE.Group {
   const group = a.finish(`interior-object-${object.id}`);
   const localBounds = new THREE.Box3().setFromObject(group);
   const localCenter = localBounds.getCenter(new THREE.Vector3());
-  for (const child of group.children) child.position.set(-localCenter.x, -Math.min(0, localBounds.min.y), -localCenter.z);
+  for (const child of group.children) {
+    child.position.x -= localCenter.x;
+    child.position.y -= Math.min(0, localBounds.min.y);
+    child.position.z -= localCenter.z;
+  }
   group.rotation.y = object.rotation * Math.PI / 180;
   group.updateMatrixWorld(true);
   const bounds = new THREE.Box3().setFromObject(group), size = bounds.getSize(new THREE.Vector3());
@@ -520,8 +631,78 @@ function roomInsignia(a: Art, room: InteriorRoom) {
   }
 }
 
+const cutawayPalettes: Partial<Record<InteriorRoom["id"], {
+  wall: Pigment;
+  trim: Pigment;
+  floor: readonly [Pigment, Pigment];
+  tiles: boolean;
+}>> = {
+  bank: { wall: "cream", trim: "darkTeal", floor: ["limestone", "stone"], tiles: true },
+  office: { wall: "cream", trim: "darkTeal", floor: ["honey", "wood"], tiles: false },
+  market: { wall: "apricot", trim: "darkTeal", floor: ["honey", "apricot"], tiles: false },
+  missions: { wall: "plaster", trim: "blue", floor: ["cream", "plaster"], tiles: true },
+  arena: { wall: "wood", trim: "darkTeal", floor: ["honey", "wood"], tiles: false },
+  shop: { wall: "cream", trim: "darkTeal", floor: ["cream", "apricot"], tiles: true },
+};
+
+function makeCutaway(room: InteriorRoom, palette: NonNullable<(typeof cutawayPalettes)[InteriorRoom["id"]]>) {
+  const bank = room.id === "bank";
+  const a = new Art(true), { width: w, depth: d } = room;
+  const h = room.id === "shop" || room.id === "market" ? 3.85 : 2.75;
+  const left = -w / 2, rear = -d / 2;
+  a.box(w + 0.24, 0.2, d + 0.24, 0, -0.125, 0, palette.trim);
+  a.box(w + 0.13, 0.085, d + 0.13, 0, -0.236, 0, "wood");
+  const tileSize = bank ? 1.12 : 0.82;
+  const nx = Math.ceil(w / (palette.tiles ? tileSize : 0.4)), nz = Math.ceil(d / (palette.tiles ? tileSize : 2.9));
+  const tw = w / nx, td = d / nz;
+  for (let ix = 0; ix < nx; ix++) for (let iz = 0; iz < nz; iz++) {
+    const tone = 0.94 + ((ix * 7 + iz * 3) % 5) * 0.013;
+    const accent = room.id === "shop" ? (ix + iz) % 2 : Number((ix * 3 + iz) % 7 === 0);
+    const seam = bank ? 0.008 : 0.015;
+    a.box(tw - seam, 0.025, td - seam, left + (ix + 0.5) * tw, 0, rear + (iz + 0.5) * td, palette.floor[accent], ZERO, tone);
+  }
+  const sideHeight = room.id === "market" || room.id === "arena" ? 1.15 : 2.12;
+  a.box(w + 0.16, h, 0.16, 0, h / 2, rear - 0.02, palette.wall);
+  a.box(0.16, sideHeight, d, left - 0.02, sideHeight / 2, 0, palette.wall);
+  a.box(w + 0.23, 0.13, 0.28, 0, h, rear - 0.02, palette.trim);
+  a.box(0.28, 0.13, d + 0.14, left - 0.02, sideHeight, 0, palette.trim);
+  const rail = bank ? 0.82 : 0.65;
+  a.box(w, rail, 0.06, 0, rail / 2, rear + 0.072, palette.trim);
+  a.box(0.06, rail, d, left + 0.075, rail / 2, 0, palette.trim);
+  a.box(w, 0.07, 0.12, 0, rail, rear + 0.085, "honey");
+  a.box(0.12, 0.07, d, left + 0.085, rail, 0, "honey");
+  if (bank) {
+    for (let n = 0; n < 10; n++) {
+      const x = left + (n + 0.5) * w / 10;
+      a.box(w / 10 - 0.12, 0.52, 0.028, x, 0.42, rear + 0.111, "teal");
+      a.frame(w / 10 - 0.21, 0.43, x, 0.42, rear + 0.13, "darkTeal", 0.031);
+    }
+    for (let n = 0; n < 8; n++) {
+      const z = rear + (n + 0.5) * d / 8;
+      a.box(0.028, 0.52, d / 8 - 0.12, left + 0.111, 0.42, z, "teal");
+    }
+    for (const x of [-4.9, -1.98, 0.37, 3.65, 5.25]) {
+      a.box(0.105, 1.82, 0.13, x, 1.74, rear + 0.08, "darkTeal");
+      for (const y of [0.88, 2.59]) a.box(0.19, 0.105, 0.18, x, y, rear + 0.1, "teal");
+    }
+  } else {
+    for (let n = 0; n < Math.ceil(w / 0.55); n++) {
+      a.box(0.02, 0.61, 0.018, left + 0.16 + n * 0.55, 0.325, rear + 0.105, "wood");
+    }
+  }
+  a.box(w * 0.17, 0.12, 0.33, 0, -0.058, d / 2 + 0.16, "stone");
+  if (room.id === "bank" || room.id === "office") furnishOffice(a, room.id);
+  else if (room.id === "market" || room.id === "shop") furnishMarket(a, room.id);
+  else if (room.id === "arena" || room.id === "missions") furnishCivic(a, room.id);
+  const group = a.finish(`interior-cutaway-${room.id}`);
+  group.userData.generated = true;
+  return group;
+}
+
 /** Architecture only. Furniture and gameplay state belong exclusively to object art. */
-export function createInteriorRoomArt(room: InteriorRoom): THREE.Group {
+export function createInteriorRoomArt(room: InteriorRoom, { cutaway = false }: { cutaway?: boolean } = {}): THREE.Group {
+  const palette = cutawayPalettes[room.id];
+  if (cutaway && palette) return makeCutaway(room, palette);
   const a = new Art(), w = room.width, d = room.depth, h = room.height;
   const roof = new Art();
   const open = ["market", "missions", "arena"].includes(room.id), warehouse = room.id === "warehouse";
