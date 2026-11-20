@@ -1,17 +1,26 @@
 import assert from 'node:assert/strict';
-import {mkdir,mkdtemp,writeFile} from 'node:fs/promises';
+import {mkdir,mkdtemp,readFile,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import puppeteer from 'puppeteer-core';
 import {Launcher} from 'chrome-launcher';
 import {authorModule} from './audit-school-scenarios.mjs';
 import {createTournamentFixture,tournamentFixtureOwner} from './school-tournament-fixture.mjs';
-const out=process.argv.includes('--rebalance')?'output/quiz-rebalance-2026-11-17/ui':'output/quiz-2000/ui'; await mkdir(out,{recursive:true});
-const fixture=await createTournamentFixture(),owner=tournamentFixtureOwner(1),checks=[],errors=[];
+const editorialAudit=process.argv.includes('--editorial-audit');
+const out=editorialAudit?'output/quiz-audit-2026-11-19/ui':process.argv.includes('--rebalance')?'output/quiz-rebalance-2026-11-17/ui':'output/quiz-2000/ui'; await mkdir(out,{recursive:true});
+const fixture=await createTournamentFixture({now:'2026-11-22T12:00:00+01:00'}),owner=tournamentFixtureOwner(1),checks=[],errors=[];
 const {createKqSchoolTournamentPlan}=await authorModule('kanab-quest-school-tournament-server.ts');
 const {HEMP_QUIZ_BANK_SIZE}=await authorModule('kanab-quest-hemp-quiz-meta.ts');
 let plan;
 const prefix=process.argv.includes('--rebalance')?'hemp-q2-r':process.argv.includes('--external')?'hemp-q2-ext-':'hemp-q2-';
-for(let seed=0;seed<2000;seed++){const candidate=createKqSchoolTournamentPlan('quiz-2000-ui-'+seed);if(candidate.questions[0].question.id.startsWith(prefix)){plan=candidate;break;}}
+const audited=new Map();
+if(editorialAudit){
+ const content=await readFile('docs/quiz-audit-2026-11-19/prevention.jsonl','utf8');
+ for(const row of content.trim().split(/\r?\n/).map(JSON.parse)) if(row.patch.prompt&&row.patch.options&&row.after===1)audited.set(row.id,row.patch);
+}
+for(let seed=0;seed<2000;seed++){
+ const candidate=createKqSchoolTournamentPlan('quiz-2000-ui-'+seed),first=candidate.questions[0].question;
+ if(editorialAudit?audited.has(first.id):first.id.startsWith(prefix)){plan=candidate;break;}
+}
 assert(plan,'An independently reviewed new question must be reachable in the opening stage');
 let browser;
 try{
@@ -44,6 +53,13 @@ try{
  assert.equal(snapshot.room.players.filter(p=>p.isBot).length,3);
  assert(!JSON.stringify(snapshot).includes('correctOptionId'));
  checks.push('Actual SQL tournament draws a reviewed new question with three bots; answer remains private');
+ if(editorialAudit){
+  const patch=audited.get(snapshot.room.question.id);
+  assert.equal(await page.$eval('[data-tournament-question] h3',el=>el.textContent),patch.prompt);
+  const labels=await page.$$eval('[data-tournament-answer] > span:last-child',els=>els.map(el=>el.textContent));
+  assert.deepEqual(labels.sort(),[...patch.options].sort());
+  checks.push('The question and choices shown match the editorial audit');
+ }
  for(const width of [1440,390,320]){
   await page.setViewport({width,height:1000});
   await page.$eval('[data-tournament-question]',el=>el.scrollIntoView({block:'center',behavior:'instant'}));
@@ -60,13 +76,13 @@ try{
  const score=correctState.room.players.find(p=>p.userId===owner).score;
  assert(score>0);
  assert((await page.$eval('[data-tournament-reveal]',el=>el.textContent)).includes(plan.questions[0].answer.explanation));
- await fixture.db.query("UPDATE kq_school_tournament_rooms SET next_at=clock_timestamp()+interval '90 seconds' WHERE id=$1",[correctState.room.id]);
+ await fixture.db.query("UPDATE kq_school_tournament_rooms SET next_at=public.kq_school_tournament_now()+interval '90 seconds' WHERE id=$1",[correctState.room.id]);
  await page.reload({waitUntil:'networkidle0'});
  await page.waitForSelector('[data-tournament-reveal]');
  assert.equal((await fixture.request('GET',null,owner)).body.room.players.find(p=>p.userId===owner).score,score);
  await page.screenshot({path:out+'/correction-320.png'});
  checks.push('Keyboard answer, matching explanation, SQL score and reload without double scoring');
- await fixture.db.query("UPDATE kq_school_tournament_rooms SET next_at=clock_timestamp()-interval '1 millisecond' WHERE id=$1",[correctState.room.id]);
+ await fixture.db.query("UPDATE kq_school_tournament_rooms SET next_at=public.kq_school_tournament_now()-interval '1 millisecond' WHERE id=$1",[correctState.room.id]);
  await page.waitForSelector('[data-tournament-question="'+plan.questions[1].question.id+'"]');
  const wrong=plan.questions[1].question.options.find(option=>option.id!==plan.questions[1].answer.correctOptionId).id;
  await page.$eval(`[data-tournament-answer="${wrong}"]`,el=>el.click());

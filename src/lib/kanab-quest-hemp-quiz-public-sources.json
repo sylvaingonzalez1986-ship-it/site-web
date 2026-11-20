@@ -8572,7 +8572,6 @@
       "q2-a01-barneys-potion",
       "q2-a01-cornell-trial",
       "q2-a01-stack-herbivores",
-      "q2-a01-toth-stress",
       "q2-b01-finola2018",
       "q2-b01-finola2",
       "q2-b01-autoduck",
@@ -8743,6 +8742,24 @@
       "q2-b01-frisianduck",
       "q2-b01-panama",
       "q2-b03-cpvo2026"
+    ],
+    "ref-fibres-chanvre": [
+      "q2-b03-rutgersfibres",
+      "q2-dnext01-patrick-kentucky",
+      "q2-dnext01-skoglund-2013",
+      "qh-culture-pci",
+      "qh-nature-hurd-tissue-paper",
+      "products-primary-retting-2015",
+      "q2-d-auckland-hmong-skirt",
+      "q2-d-hwang-hemp-korea",
+      "q2-rm01-mijas25-cottonization",
+      "q2-rm01-sankari00-bast",
+      "q2-rm01-rissanen23-recycling",
+      "q2-rm01-kyoto-katabira",
+      "q2-rm02-defra-green-decortication",
+      "q2-rm02-mazian-over-retting",
+      "q2-rm02-refashion-hemp-textiles",
+      "products-tool-textile"
     ],
     "ref-huile-graines": [
       "q2-b04-bielecka2014",
@@ -8952,6 +8969,9 @@
       "q2-c03-fao-grain-drying",
       "harvest-lesson-oil"
     ],
+    "ref-biosynthese-terpenes": [
+      "terpenes-lesson-booth2017"
+    ],
     "ref-histoire-culture": [
       "q2-dnext01-patrick-kentucky",
       "q2-dnext01-skoglund-2013",
@@ -9082,23 +9102,6 @@
       "qh-culture-bretagne-fibres",
       "qh-culture-ludlow",
       "qh-culture-jirzankal"
-    ],
-    "ref-fibres-chanvre": [
-      "q2-dnext01-patrick-kentucky",
-      "q2-dnext01-skoglund-2013",
-      "qh-culture-pci",
-      "qh-nature-hurd-tissue-paper",
-      "products-primary-retting-2015",
-      "q2-d-auckland-hmong-skirt",
-      "q2-d-hwang-hemp-korea",
-      "q2-rm01-mijas25-cottonization",
-      "q2-rm01-sankari00-bast",
-      "q2-rm01-rissanen23-recycling",
-      "q2-rm01-kyoto-katabira",
-      "q2-rm02-defra-green-decortication",
-      "q2-rm02-mazian-over-retting",
-      "q2-rm02-refashion-hemp-textiles",
-      "products-tool-textile"
     ],
     "ref-proteines-chanvre": [
       "q2-dnext01-eckhardt-2024",
@@ -9238,7 +9241,7 @@
       "qh-nature-composite-review"
     ],
     "record-product-products-insulation": [
-      "q2-dnext01-collet-pretot-2014"
+      "q2-rm01-dreal-fibre-excerpt"
     ],
     "record-product-products-hempcrete": [
       "products-tool-hempcrete"
@@ -9396,9 +9399,6 @@
       "q2-rp01-euda-products-2023",
       "q2-rp01-fda-delta8",
       "q2-rp04-bfr-hhc-mixture"
-    ],
-    "ref-biosynthese-terpenes": [
-      "terpenes-lesson-booth2017"
     ],
     "ref-photoperiode": [
       "botany-diversity-cfia",

@@ -1,0 +1,30 @@
+{
+  "baselineRevision": "2026-11-17.hemp1000.5fe7f2039c81",
+  "baselineHash": "e09b4758e301ea30fbf37c78bc263826f1aad0a5e8ad7b2a8b4d3d2707e98222",
+  "lots": [
+    {
+      "file": "history-materials.jsonl",
+      "count": 296,
+      "reviewer": "Histoire et matériaux",
+      "model": "gpt-6.2-sol"
+    },
+    {
+      "file": "molecules-evidence.jsonl",
+      "count": 261,
+      "reviewer": "Terpènes et cannabinoïdes",
+      "model": "gpt-6.2-sol"
+    },
+    {
+      "file": "plant-genetics-food.jsonl",
+      "count": 253,
+      "reviewer": "Botanique, génétique et alimentation",
+      "model": "gpt-6.2-sol"
+    },
+    {
+      "file": "prevention.jsonl",
+      "count": 190,
+      "reviewer": "Coordination, culture et prévention",
+      "counterReview": ["Terpènes et cannabinoïdes", "Botanique, génétique et alimentation"]
+    }
+  ]
+}

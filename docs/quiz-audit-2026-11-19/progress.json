@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-19",
+  "status": "Intégré et vérifié localement",
+  "revision": "2026-11-19.hemp1000.21707ee3fee6",
+  "inventaire": {
+    "questionsActives": 1000,
+    "relues": 1000,
+    "conservées": 430,
+    "corrigées": 570,
+    "contenuModifié": 385,
+    "niveauModifié": 307,
+    "thèmeModifié": 9,
+    "indiceDansUneRéférence": 104,
+    "dontRéférenceSeule": 62,
+    "vérificationDocumentaireConsignée": 142,
+    "supprimées": 0,
+    "àArbitrer": 0
+  },
+  "niveaux": {
+    "avant": [279, 530, 170, 21],
+    "après": [210, 470, 306, 14],
+    "grille": [
+      "Reconnaître un repère fondamental",
+      "Distinguer des notions voisines ou appliquer un repère",
+      "Mobiliser un savoir spécialisé ou interpréter une étude située",
+      "Combiner des notions spécialisées ou raisonner sur des mesures"
+    ],
+    "limite": "Estimation éditoriale. Aucune statistique de tentatives agrégée exploitable trouvée dans le dépôt."
+  },
+  "preuveÉditoriale": {
+    "lots": "manifest.json",
+    "contreRelecture": "32 lectures ciblées en prévention par deux agents Sol 6.2, avec recoupements possibles. Arbitrages de sources et cas ambigus repris à l’intégration.",
+    "pairesProches": "MEP et mévalonate ciblent deux voies et deux compartiments. GLA et ALA contrôlent la distinction oméga-6 et oméga-3. Pinènes et THC portent sur deux familles différentes. Poivron et champignon ont des composés distincts.",
+    "références": "Les liens modifiés sont régénérés avec la banque. L’index historique du 17 novembre reste rattaché à sa version approuvée."
+  },
+  "tournoi": {
+    "questionsParManche": 3,
+    "manches": 4,
+    "score": "100 points par bonne réponse, jusqu’à 50 points de rapidité. Le niveau détermine la manche de tirage.",
+    "projection": "Les citations sont transmises avec la correction. Les choix reçoivent leurs identifiants publics après mélange.",
+    "tirages": "Sur 1 000 graines locales, les 1 000 identifiants ont été tirés et chaque position de bonne réponse représente environ 25 %. Les questions expertes apparaissent en moyenne 214 fois par question contre 143 auparavant.",
+    "rapportTirages": "output/quiz-audit-2026-11-19/draws.json"
+  },
+  "vérification": {
+    "release": "npm.cmd run check:quiz",
+    "preuveRelease": "output/quiz-2000/check.json",
+    "vitest": 41,
+    "preuvesÉditorialesNode": 6,
+    "sqlLocal": 140,
+    "typeScriptEtLint": "Réussis",
+    "navigateur": "8 contrôles à 320, 390 et 1 440 px. Question corrigée, clavier, bonne et mauvaise réponse, score, reprise, encyclopédie et blocage des fichiers privés.",
+    "preuveNavigateur": "output/quiz-audit-2026-11-19/ui/report.json"
+  },
+  "fichiers": {
+    "banqueEtBibliographie": [
+      "src/lib/kanab-quest-hemp-quiz-additions.json",
+      "src/lib/kanab-quest-hemp-quiz-public-sources.json",
+      "src/lib/kanab-quest-hemp-quiz-release.json"
+    ],
+    "jeu": [
+      "src/lib/kanab-quest-school-challenge-server.ts",
+      "src/lib/kanab-quest-school-challenge-server.test.ts",
+      "src/lib/kanab-quest-school-tournament-server.test.ts",
+      "src/lib/supabase/kanab-quest-school-tournament-backend.ts",
+      "src/lib/supabase/kanab-quest-school-tournament-backend.test.ts"
+    ],
+    "intégrationEtRecette": [
+      "scripts/lib/quiz-audit.mjs",
+      "scripts/integrate-quiz-2000.mjs",
+      "scripts/check-quiz-2000.mjs",
+      "scripts/audit-quiz-2000-ui.mjs",
+      "docs/quiz-2000/integration.json"
+    ],
+    "suivi": [
+      "docs/bete-de-concours/ux-progress.json",
+      "docs/quiz-audit-2026-11-19/manifest.json",
+      "docs/quiz-audit-2026-11-19/progress.json",
+      "docs/quiz-audit-2026-11-19/history-materials.jsonl",
+      "docs/quiz-audit-2026-11-19/molecules-evidence.jsonl",
+      "docs/quiz-audit-2026-11-19/plant-genetics-food.jsonl",
+      "docs/quiz-audit-2026-11-19/prevention.jsonl"
+    ]
+  },
+  "déploiement": false,
+  "prochaineTâcheBornée": "Lors d’une prochaine recette avec des joueurs, comparer les taux de réussite par niveau et mesurer la répétition ressentie au fauteuil."
+}

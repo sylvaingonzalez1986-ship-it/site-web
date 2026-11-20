@@ -82,14 +82,18 @@ function publicQuestion(item: HempQuizEntry, rank: (id: string) => string, sourc
     return { id, title, organization, url, verifiedAt };
   });
   if (!sources.length) throw new Error('[challenge] missing hemp source');
+  const optionOrder = item.options.map((_, index) => index)
+    .sort((a, b) => rank(item.id + ':' + String.fromCharCode(97 + a)).localeCompare(rank(item.id + ':' + String.fromCharCode(97 + b))));
+  // Assign public IDs after shuffling so they carry no information about the authoring order.
+  const options = optionOrder.map((index, position) => ({ id: String.fromCharCode(97 + position), text: item.options[index] }));
   // Explicit projection keeps domain, subject identity and answer off the public DTO.
   const question: KqSchoolChallengeQuestion = {
     id: item.id, prompt: item.prompt,
-    options: item.options.map((text, option) => ({ id: String.fromCharCode(97 + option), text })).sort((a, b) => rank(item.id + ':' + a.id).localeCompare(rank(item.id + ':' + b.id))),
+    options,
     difficulty: item.level === 1 ? 'easy' : 'medium', lessonId: 'reference', sectionId: item.articleId,
     sources, themeId: item.topicId, level: item.level,
   };
-  return { question, answer: { correctOptionId: String.fromCharCode(97 + item.answer), explanation: item.explanation } };
+  return { question, answer: { correctOptionId: options[optionOrder.indexOf(item.answer)].id, explanation: item.explanation } };
 }
 /** Only the server can turn authoring data into a private round plan. */
 export function createKqSchoolChallengePlan(seed: string = randomUUID()): KqSchoolChallengePlan {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createKqSchoolChallengePlan } from "./kanab-quest-school-challenge-server";
+import { createKqSchoolChallengePlan, createKqSchoolQuestionPlan } from "./kanab-quest-school-challenge-server";
 import { HEMP_QUIZ_BANK } from "./kanab-quest-hemp-quiz-bank";
 describe("private20-question challenge plan", () => {
   it("draws 16 active, 2 food and 2 materials questions, with five questions per editorial level", () => {
@@ -30,7 +30,12 @@ describe("private20-question challenge plan", () => {
   it("keeps question and option ordering stable for the stored seed and varies fresh plans", () => {
     expect(createKqSchoolChallengePlan("same-seed")).toEqual(createKqSchoolChallengePlan("same-seed"));
     expect(createKqSchoolChallengePlan("other-seed")).not.toEqual(createKqSchoolChallengePlan("same-seed"));
-    const arrangements = new Set(Array.from({ length: 12 }, (_, index) => createKqSchoolChallengePlan(String(index)).questions[0].question.options.map(o => o.id).join("")));
+    const pool = [1, 2, 3, 4].flatMap(level => HEMP_QUIZ_BANK.filter(entry => entry.level === level).slice(0, 5))
+      .map(entry => ({ ...entry, domain: undefined, subjectKey: entry.id }));
+    const arrangements = new Set(Array.from({ length: 12 }, (_, index) => {
+      const plan = createKqSchoolQuestionPlan(String(index), 5, pool);
+      return plan.questions.find(item => item.question.id === pool[0].id)!.question.options.map(option => option.text).join("|");
+    }));
     expect(arrangements.size).toBeGreaterThan(1);
   });
 });

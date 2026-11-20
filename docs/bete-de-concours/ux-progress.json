@@ -1,4 +1,12 @@
 {
+  "quizEditorialAudit20261119": {
+    "date": "2026-11-19",
+    "livraison": "1 000 questions actives relues, 570 corrigées dont 307 reclassées, aucun identifiant retiré. Les références arrivent au corrigé et les identifiants de choix suivent le mélange.",
+    "verification": "Contrôle strict, tirages des 1 000 questions, 41 tests Vitest, 6 contrôles de preuves, 140 contrôles SQL et 8 contrôles navigateur en local.",
+    "evidence": "docs/quiz-audit-2026-11-19/progress.json",
+    "deployed": false,
+    "nextBoundedTask": "Comparer les niveaux et la répétition au fauteuil lors de la prochaine recette avec des joueurs."
+  },
   "servicesBanqueDirects20261119": {
     "date": "2026-11-19",
     "panneaux": "Les quatre choix de la banque portent uniquement le nom du service et la flèche. Le menu du village reprend les mêmes libellés.",

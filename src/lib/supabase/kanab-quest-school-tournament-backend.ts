@@ -107,7 +107,11 @@ function snapshot(value: unknown, ownerId: string): KqTournamentSnapshot {
     if (!players.some(player => player.userId === ownerId) || new Set(players.map(player => player.userId)).size !== players.length
       || new Set(players.map(player => player.seat)).size !== players.length) return invalid();
     if (players.some(player => player.isReplay !== (player.replayRecordedAt !== null) || (player.userId === ownerId && (player.isReplay || player.isBot)))) return invalid();
-    const publicQuestion = raw.question === null ? null : question(raw.question);
+    const currentQuestion = raw.question === null ? null : question(raw.question);
+    // Citation titles and URLs can name the correct choice before the round closes.
+    const publicQuestion = currentQuestion && raw.status === 'question'
+      ? { ...currentQuestion, sources: [] }
+      : currentQuestion;
     let reveal: KqTournamentRoom['reveal'] = null;
     if (raw.reveal !== null) {
       // An answered player's correction must never disclose the answer to players still deciding.

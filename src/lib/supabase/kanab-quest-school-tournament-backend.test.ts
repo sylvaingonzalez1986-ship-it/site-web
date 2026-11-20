@@ -20,6 +20,9 @@ const playing = (): KqTournamentSnapshot => ({ ...base(), room: {
   question: entry.question, openedAt: serverNow, closesAt: '2026-11-14T12:00:20.000Z', nextAt: null, ownAnswerId: null,
   reveal: null, championTarget: null, winnerId: null, eliminatedIds: [], titleWon: false, reason: null,
 } });
+const publicPlaying = (value: KqTournamentSnapshot) => ({
+  ...value, room: { ...value.room!, question: { ...value.room!.question!, sources: [] } },
+});
 beforeEach(() => { vi.clearAllMocks(); rpc.mockResolvedValue({ data: base(), error: null }); avatars.mockResolvedValue(new Map()); });
 
 describe('tournament service-role boundary', () => {
@@ -50,7 +53,7 @@ describe('tournament service-role boundary', () => {
       seat: 2, isBot: true, botCode: 'mila', connected: false });
     rpc.mockResolvedValue({ data: { ...value, room: { ...value.room, players: value.room!.players.map(p => ({ ...p, bot_performance: ['private'] })) } }, error: null });
     const command = { action: 'fill_opponents', requestKey: owner, roomId } as const;
-    expect(await getKqSchoolTournament(owner, command)).toEqual(value);
+    expect(await getKqSchoolTournament(owner, command)).toEqual(publicPlaying(value));
     expect(avatars).toHaveBeenCalledExactlyOnceWith([owner]);
     expect(rpc.mock.calls[0][1]).toMatchObject({ p_command: command, p_plan: null });
   });
@@ -88,7 +91,18 @@ describe('tournament service-role boundary', () => {
       room: { ...value.room!, plan: 'private', question: { ...entry.question, correctOptionId: 'a', explanation: 'private' },
         players: value.room!.players.map(player => ({ ...player, avatar: { email: 'private@example.test' }, email: 'private@example.test' })) } };
     rpc.mockResolvedValue({ data: privateValue, error: null });
-    expect(await getKqSchoolTournament(owner)).toEqual(value);
+    expect(await getKqSchoolTournament(owner)).toEqual(publicPlaying(value));
+  });
+  it('withholds citations through the answer window and includes them with the correction', async () => {
+    const value = playing();
+    const citation = { ...entry.question.sources[0], title: 'A title that names the correct choice' };
+    value.room!.question = { ...entry.question, sources: [citation] };
+    value.room!.ownAnswerId = entry.answer.correctOptionId;
+    rpc.mockResolvedValue({ data: value, error: null });
+    expect(await getKqSchoolTournament(owner)).toEqual(publicPlaying(value));
+    value.room!.status = 'reveal';
+    value.room!.reveal = { question: value.room!.question, ...entry.answer, answers: [] };
+    expect((await getKqSchoolTournament(owner)).room?.reveal?.question.sources).toEqual([citation]);
   });
   it('refuses premature corrections, cross-owner rooms and inconsistent values', async () => {
     const early = playing();
@@ -147,7 +161,7 @@ describe('tournament service-role boundary', () => {
     value.room!.players.push({ ...value.room!.players[0], userId: roomId, seat: 2, displayName: 'Ancien joueur',
       isReplay: true, replayRecordedAt: serverNow, connected: false });
     rpc.mockResolvedValue({ data: value, error: null });
-    expect(await getKqSchoolTournament(owner)).toEqual(value);
+    expect(await getKqSchoolTournament(owner)).toEqual(publicPlaying(value));
     const noDate = structuredClone(value); noDate.room!.players[1].replayRecordedAt = null;
     const negative = structuredClone(value); negative.room!.availableReplays = -1;
     const ownerReplay = structuredClone(value); ownerReplay.room!.players[0].isReplay = true; ownerReplay.room!.players[0].replayRecordedAt = serverNow;

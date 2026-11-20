@@ -40,6 +40,7 @@ describe('private tournament draw', () => {
       expect([[10, 1, 1], [9, 2, 1], [9, 1, 2]]).toContainEqual(counts);
       plan.questions.forEach(({ question, answer }, position) => {
         expect(question.level).toBe(Math.floor(position / 3) + 1);
+        expect(question.options.map(choice => choice.id)).toEqual(['a', 'b', 'c', 'd']);
         expect(question.options.some(choice => choice.id === answer.correctOptionId)).toBe(true);
         const original = HEMP_QUIZ_BANK.find(item => item.id === question.id)!;
         expect(question.options.find(choice => choice.id === answer.correctOptionId)?.text).toBe(original.options[original.answer]);

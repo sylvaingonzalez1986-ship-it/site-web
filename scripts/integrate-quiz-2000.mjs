@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {finalQuizReviewer, loadQuizEditorialBatches, loadQuizReleaseSelection} from './lib/quiz-editorial-input.mjs';
+import {applyQuizAudit} from './lib/quiz-audit.mjs';
 
 if (existsSync('docs/quiz-2000/release-selection.json')) await import('./select-quiz-2000.mjs');
 await import('./check-quiz-2000.mjs');
@@ -20,7 +21,7 @@ const batches = await loadQuizEditorialBatches(root);
 const selection = await loadQuizReleaseSelection(root);
 const sources = new Map((await read('docs/encyclopedia-revision/bibliography.json')).map(source => [source.id,source]));
 for (const batch of batches) for (const source of batch.sources) sources.set(source.id,source);
-const entries = [], metadata = [];
+const approvedEntries = [], metadata = [];
 for (const batch of batches) {
   const path = `${root}/reviews/${batch.batchId}.json`;
   if (!batch.retainedReview && !existsSync(path)) continue;
@@ -36,10 +37,13 @@ for (const batch of batches) {
     assert.equal(item.contentHash, hash(question), `${question.id}: review is stale`);
     const {id,topicId,level,prompt,options,answer,explanation,articleId,sourceIds,editorial} = question;
     if (scope) assert.equal(scope.contentHash,item.contentHash,`${id}: scope decision is stale`);
-    entries.push({id,topicId,level,prompt,options,answer,explanation,articleId,sourceIds,subjectKey:editorial.subjectKey,...(scope ? {domain:scope.domain} : {})});
+    approvedEntries.push({id,topicId,level,prompt,options,answer,explanation,articleId,sourceIds,subjectKey:editorial.subjectKey,...(scope ? {domain:scope.domain} : {})});
     metadata.push({...editorial,id,batchId:batch.batchId,author:batch.author,initialReviewer:item.initialReviewer ?? review.reviewer,...(item.initialReviewRecord ? {initialReviewRecord:item.initialReviewRecord} : {}),reviewer,reviewRecord:batch.retainedReview ? `${root}/legacy-review-f.json` : path,contentHash:item.contentHash,...(scope ? {domain:scope.domain,classificationRecord:scope.classificationRecord,classifiedBy:scope.classifiedBy,domainReviewedBy:scope.reviewedBy} : {})});
   }
 }
+const catalog = await read('docs/encyclopedia-revision/baseline-catalog.json');
+const articleIds = new Set([...catalog.articles, ...catalog.records].map(article => article.id));
+const entries = await applyQuizAudit(approvedEntries, sources, articleIds);
 if (process.argv.includes('--pilot')) assert.equal(entries.filter(entry => batches.filter(batch=>batch.batchId.startsWith('pilot-')).some(batch=>batch.questions.some(question=>question.id===entry.id))).length,30,'All 30 pilot questions require independent approval');
 const articleSourceIds = {};
 for (const entry of entries) articleSourceIds[entry.articleId] = [...new Set([...(articleSourceIds[entry.articleId] ?? []), ...entry.sourceIds])];
@@ -64,7 +68,8 @@ assert(entries.every(entry=>!retiredIds.includes(entry.id)), 'A retired question
 if (selection) assert.equal(entries.length,selection.selected.length,'Every selected question must have an unchanged independent approval');
 const activeCount = selection ? entries.length : initial.length - retiredIds.length + additions.length;
 assert(activeCount <= target, `Integration would exceed the requested ${target} questions`);
-const revision = `2026-11-17.hemp${activeCount}.${hash({entries,retiredIds,publicSources}).slice(0,12)}`;
+const revisionDate = entries === approvedEntries ? '2026-11-17' : '2026-11-19';
+const revision = `${revisionDate}.hemp${activeCount}.${hash({entries,retiredIds,publicSources}).slice(0,12)}`;
 const validatedActive = additions.length + revisions.length;
 const countBy = key => Object.fromEntries([...new Set(metadata.map(item=>item[key]))].sort().map(value=>[value,metadata.filter(item=>item[key]===value).length]));
 const levelCounts = Object.fromEntries([1,2,3,4].map(level=>[level,entries.filter(entry=>entry.level===level).length]));
@@ -76,7 +81,7 @@ await save('src/lib/kanab-quest-hemp-quiz-additions.json', {questions:additions,
 await save('src/lib/kanab-quest-hemp-quiz-public-sources.json', {sources:publicSources,articleSourceIds});
 await save('src/lib/kanab-quest-hemp-quiz-release.json', {activeCount,revision});
 await save(`${root}/integrated-editorial.json`,metadata);
-await save(`${root}/legacy-validation.json`,revisions.map(entry=>({id:entry.id,status:'approved',runtimeHash:runtimeHash(entry),reviewer:metadata.find(item=>item.id===entry.id).reviewer})));
+await save(`${root}/legacy-validation.json`,approvedEntries.filter(entry=>legacyIds.has(entry.id)).map(entry=>({id:entry.id,status:'approved',runtimeHash:runtimeHash(entry),reviewer:metadata.find(item=>item.id===entry.id).reviewer})));
 await save(`${root}/integration.json`,{target,activeCount,validatedActive,approvedAdditions:additions.length,validatedLegacy:revisions.length,retained,corrected,retired:retiredIds.length,legacyAwaitingValidation,remainingValidatedToTarget:target-validatedActive,validatedCategoryCounts:countBy('category'),validatedLevelCounts:levelCounts,...scopeReport,legacyValidation:'See legacy-validation.json; historical membership does not imply fresh validation.',revision,deployed:false,remoteDatabaseWritten:false});
 const checkpointPath = `${root}/progress.json`;
 if (existsSync(checkpointPath)) {
@@ -85,7 +90,7 @@ if (existsSync(checkpointPath)) {
 }
 const auditPath = `${root}/audit-f-index.json`;
 const scopeCheckpoint='docs/quiz-rebalance-2026-11-17/progress.json';
-if (selection && existsSync(scopeCheckpoint)) {
+if (entries === approvedEntries && selection && existsSync(scopeCheckpoint)) {
   const checkpoint=await read(scopeCheckpoint);
   const previousIds=new Set((await read('docs/quiz-rebalance-2026-11-17/baseline.json')).entries.map(item=>item.id));
   const retainedFromPrevious=entries.filter(item=>previousIds.has(item.id)).length;

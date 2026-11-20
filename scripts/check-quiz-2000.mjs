@@ -5,6 +5,7 @@ import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {authorModule} from './audit-school-scenarios.mjs';
 import {finalQuizReviewer, loadQuizEditorialBatches, loadQuizReleaseSelection} from './lib/quiz-editorial-input.mjs';
+import {applyQuizAudit} from './lib/quiz-audit.mjs';
 
 const root = 'docs/quiz-2000';
 const json = async path => JSON.parse(await readFile(path, 'utf8'));
@@ -132,6 +133,8 @@ if (selection) {
 }
 const reviewedRuntime = question => ({...question,subjectKey:question.editorial.subjectKey,
   ...(selection?.byId.has(question.id) ? {domain:selection.byId.get(question.id).domain} : {})});
+const audited = await applyQuizAudit(selectedApproved.map(reviewedRuntime), sources, articleIds);
+const auditedById = new Map(audited.map(question => [question.id, question]));
 
 // Cheap candidate selection. A high score only asks for review, never proves a duplicate.
 const stop = new Set('de du des le la les un une et en dans pour quel quelle quels quelles selon que est au aux par sur avec son sa ses ce cette ces qui il elle comment pourquoi'.split(' '));
@@ -171,11 +174,11 @@ if (process.argv.includes('--release') || process.argv.includes('--active')) {
     check(legacyIds.has(question.id) || accepted.has(question.id), `${question.id}: active without independent approval`);
     if (!legacyIds.has(question.id) && approvedById.has(question.id)) {
       const candidate = approvedById.get(question.id);
-      check(runtimeHash(question) === runtimeHash(reviewedRuntime(candidate)), `${question.id}: runtime differs from reviewed content`);
+      check(runtimeHash(question) === runtimeHash(auditedById.get(candidate.id)), `${question.id}: runtime differs from the editorial audit`);
     }
     if (legacyIds.has(question.id)) {
       const original = legacyById.get(question.id), candidate = approvedById.get(question.id);
-      check((!selection && runtimeHash(question) === runtimeHash(original)) || (candidate && runtimeHash(question) === runtimeHash(reviewedRuntime(candidate))), `${question.id}: legacy runtime differs from the reviewed release`);
+      check((!selection && runtimeHash(question) === runtimeHash(original)) || (candidate && runtimeHash(question) === runtimeHash(auditedById.get(candidate.id))), `${question.id}: legacy runtime differs from the editorial audit`);
     }
   }
   if (process.argv.includes('--release')) {
@@ -189,7 +192,10 @@ if (process.argv.includes('--release') || process.argv.includes('--active')) {
     const decisionsPath = `${root}/legacy-validation.json`;
     const decisions = existsSync(decisionsPath) ? await json(decisionsPath) : [];
     const validatedLegacy = new Map(decisions.filter(item => item.status === 'approved').map(item => [item.id,item]));
-    for (const question of active.filter(question => legacyIds.has(question.id))) check(validatedLegacy.get(question.id)?.runtimeHash === runtimeHash(question), `${question.id}: legacy not independently validated at release`);
+    for (const question of active.filter(question => legacyIds.has(question.id))) {
+      const candidate = approvedById.get(question.id);
+      check(candidate && validatedLegacy.get(question.id)?.runtimeHash === runtimeHash(reviewedRuntime(candidate)), `${question.id}: legacy baseline lacks independent validation`);
+    }
     const resolutionPath = `${root}/semantic-resolutions.json`;
     const resolutions = existsSync(resolutionPath) ? await json(resolutionPath) : [];
     const currentQuestions = new Map([...effectiveLegacy,...questions].map(question=>[question.id,question]));
@@ -200,7 +206,7 @@ if (process.argv.includes('--release') || process.argv.includes('--active')) {
   }
 }
 const distribution = key => Object.fromEntries([...new Set(selectedApproved.map(key))].sort().map(value => [value,selectedApproved.filter(question => key(question) === value).length]));
-const report = {target,baseline:legacy.length,candidates:questions.filter(question=>!excluded.has(question.id)).length,independentlyApproved:selectedApproved.length,reviewedAcrossArchive:approved.length,excludedByScope:excluded.size,pending:relevantPending.length,active:active?.length ?? null,domainQuotas:domainQuotas ?? null,domainCounts:selection ? distribution(question=>selection.byId.get(question.id).domain) : null,categoryCounts:distribution(question=>question.editorial.category),levelCounts:distribution(question=>question.level),issues,pendingQuestions:relevantPending,semanticCandidates:near};
+const report = {target,baseline:legacy.length,candidates:questions.filter(question=>!excluded.has(question.id)).length,independentlyApproved:selectedApproved.length,reviewedAcrossArchive:approved.length,excludedByScope:excluded.size,pending:relevantPending.length,active:active?.length ?? null,domainQuotas:domainQuotas ?? null,domainCounts:selection ? distribution(question=>selection.byId.get(question.id).domain) : null,categoryCounts:distribution(question=>question.editorial.category),levelCounts:distribution(question=>auditedById.get(question.id).level),issues,pendingQuestions:relevantPending,semanticCandidates:near};
 await mkdir('output/quiz-2000',{recursive:true});
 await writeFile('output/quiz-2000/check.json', JSON.stringify(report,null,2)+'\n');
 const approvedIds = new Set(approved.map(question=>question.id));

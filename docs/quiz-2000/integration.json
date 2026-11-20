@@ -22,10 +22,10 @@
     "varieties": 138
   },
   "validatedLevelCounts": {
-    "1": 279,
-    "2": 530,
-    "3": 170,
-    "4": 21
+    "1": 210,
+    "2": 470,
+    "3": 306,
+    "4": 14
   },
   "selectionRevision": "2026-11-17.scope.26a494744199",
   "domainQuotas": {
@@ -40,7 +40,7 @@
   },
   "excludedByScope": 564,
   "legacyValidation": "See legacy-validation.json; historical membership does not imply fresh validation.",
-  "revision": "2026-11-17.hemp1000.5fe7f2039c81",
+  "revision": "2026-11-19.hemp1000.21707ee3fee6",
   "deployed": false,
   "remoteDatabaseWritten": false
 }
