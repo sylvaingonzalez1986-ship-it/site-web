@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState, type ClipboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type ClipboardEvent } from "react";
 import dynamic from "next/dynamic";
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowUpRight, LogOut, RefreshCw, Save, Settings2 } from "lucide-react";
@@ -33,9 +33,11 @@ import {
   type VatRate,
 } from "@/data/products";
 import { handleAdminTextPaste } from "@/lib/admin-text-input";
+import { buildBitcoinPaymentsCsv, escapeOrderCsvCell } from "@/lib/admin-orders-csv";
 import { BLOG_CATEGORY_LABELS } from "@/lib/blog-categories";
 import { canArchiveIncompleteOrder } from "@/lib/order-lifecycle";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
+import type { SwissBitcoinPaymentSummary } from "@/lib/swiss-bitcoin-pay-types";
 import {
   BLOG_CATEGORY_OPTIONS,
   ORDER_STATUS_OPTIONS,
@@ -273,9 +275,12 @@ export function AdminPanel() {
   const [orderDateTo, setOrderDateTo] = useState("");
   const [exportingMr, setExportingMr] = useState(false);
   const [exportMrError, setExportMrError] = useState<string | null>(null);
+  const [bitcoinPayments, setBitcoinPayments] = useState<Record<string, SwissBitcoinPaymentSummary[]> | null>(null);
+  const [loadingBitcoinPayments, setLoadingBitcoinPayments] = useState(true);
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
   const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const closeOrderDetail = useCallback(() => setSelectedOrderId(null), []);
   const [activeTab, setActiveTab] = useState<AdminTab>("commandes");
 
   const updatedLabel = useMemo(() => {
@@ -387,8 +392,35 @@ export function AdminPanel() {
     [ownProducer],
   );
 
-  const loadStore = async () => {
+  const loadPaymentHistory = useCallback(async (refreshOrderId?: string) => {
+    setLoadingBitcoinPayments(true);
+    try {
+      const response = await fetch("/api/admin/orders", { cache: "no-store" });
+      if (!response.ok) throw new Error("Historique indisponible");
+      const data = await response.json() as {
+        orders: CmsOrder[];
+        bitcoinPayments?: Record<string, SwissBitcoinPaymentSummary[]> | null;
+      };
+      setBitcoinPayments(data.bitcoinPayments ?? null);
+      if (refreshOrderId) {
+        const updatedOrder = data.orders.find((order) => order.id === refreshOrderId);
+        if (updatedOrder) {
+          setDraft((current) => ({
+            ...current,
+            orders: current.orders.map((order) => order.id === refreshOrderId ? updatedOrder : order),
+          }));
+        }
+      }
+    } catch {
+      setBitcoinPayments(null);
+    } finally {
+      setLoadingBitcoinPayments(false);
+    }
+  }, []);
+
+  const loadStore = useCallback(async () => {
     setStatus("Chargement...");
+    void loadPaymentHistory();
     const response = await fetch("/api/admin/store", { cache: "no-store" });
 
     if (!response.ok) {
@@ -406,7 +438,7 @@ export function AdminPanel() {
       return data.blog[0]?.id ?? null;
     });
     setStatus("Données chargées.");
-  };
+  }, [loadPaymentHistory]);
 
   const handlePasteCapture = (event: ClipboardEvent<HTMLElement>) => {
     handleAdminTextPaste(event, (replacementCount) => {
@@ -419,7 +451,7 @@ export function AdminPanel() {
 
   useEffect(() => {
     void loadStore();
-  }, []);
+  }, [loadStore]);
 
   useEffect(() => {
     if (draft.blog.length === 0) {
@@ -618,10 +650,20 @@ export function AdminPanel() {
     }
   };
 
-  const exportOrdersCsv = () => {
-    const escapeCell = (value: string | number) =>
-      `"${String(value).replaceAll("\"", "\"\"")}"`;
+  const downloadCsv = (csv: string, prefix: string) => {
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${prefix}-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  };
 
+  const exportOrdersCsv = () => {
+    const escapeCell = escapeOrderCsvCell;
     const rows = [
       [
         "order_id",
@@ -634,6 +676,7 @@ export function AdminPanel() {
         "items_count",
         "total_amount",
         "items",
+        "payment_provider",
       ].join(","),
       ...filteredOrders.map((order) =>
         [
@@ -649,22 +692,12 @@ export function AdminPanel() {
           escapeCell(
             order.items.map((item) => `${item.quantity}x ${item.name}`).join(" | "),
           ),
+          escapeCell(order.paymentProvider),
         ].join(","),
       ),
     ];
 
-    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.setAttribute(
-      "download",
-      `orders-${new Date().toISOString().slice(0, 10)}.csv`,
-    );
-    document.body.append(anchor);
-    anchor.click();
-    anchor.remove();
-    URL.revokeObjectURL(url);
+    downloadCsv(rows.join("\n"), "orders");
   };
 
   const updateMondialRelayConfig = (
@@ -1444,6 +1477,16 @@ export function AdminPanel() {
             </button>
             <button
               type="button"
+              className="btn-cartoon btn-secondary"
+              onClick={() => bitcoinPayments && downloadCsv(
+                buildBitcoinPaymentsCsv(filteredOrders, bitcoinPayments), "paiements-bitcoin",
+              )}
+              disabled={loadingBitcoinPayments || !filteredOrders.some((order) => bitcoinPayments?.[order.id]?.length)}
+            >
+              Export paiements Bitcoin (CSV)
+            </button>
+            <button
+              type="button"
               className="btn-cartoon btn-primary"
               onClick={exportMondialRelayCsv}
               disabled={filteredOrders.length === 0 || exportingMr}
@@ -1452,6 +1495,11 @@ export function AdminPanel() {
             </button>
             </div>
           </div>
+          {!loadingBitcoinPayments && !bitcoinPayments && (
+            <p role="status" className="mt-2 text-sm font-semibold text-red-700">
+              L’historique Bitcoin est momentanément indisponible. Recharge les données pour réessayer.
+            </p>
+          )}
 
           <div className={styles.filters}>
             <label>
@@ -1570,7 +1618,7 @@ export function AdminPanel() {
                         {orderStatusLabels[order.status]}
                       </span>
                       <span className={`pill-cartoon px-3 py-1 ${getPaymentStateColorClass(order.paymentState)}`}>
-                        Paiement : {({ pending: "En attente", paid: "Payé", failed: "Échec", not_configured: "Validation manuelle" })[order.paymentState]}
+                        {order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : {({ pending: "En attente", paid: "Payé", failed: "Échec", not_configured: "Validation manuelle" })[order.paymentState]}
                       </span>
                     </div>
                     {order.trackingNumber && (
@@ -1617,7 +1665,7 @@ export function AdminPanel() {
                     >
                       {updatingOrderId === order.id ? "..." : "Mettre à jour"}
                     </button>
-                    <button
+                    {order.paymentProvider !== "swiss_bitcoin_pay" && !order.swissBitcoinCardStartedAt && <button
                       type="button"
                       onClick={() => markOrderAsPaid(order.id)}
                       disabled={updatingOrderId === order.id || order.paymentState === "paid"}
@@ -1628,7 +1676,7 @@ export function AdminPanel() {
                         : order.paymentState === "paid"
                           ? "Déjà payée"
                           : "Marquer payée"}
-                    </button>
+                    </button>}
                     {canArchiveIncompleteOrder(order) && (
                       <button
                         type="button"
@@ -2763,8 +2811,12 @@ export function AdminPanel() {
         </div>
         {selectedOrder && (
           <AdminOrderDetailModal
+            key={selectedOrder.id}
             order={selectedOrder}
-            onClose={() => setSelectedOrderId(null)}
+            bitcoinPayments={bitcoinPayments?.[selectedOrder.id] ?? []}
+            bitcoinHistoryUnavailable={!loadingBitcoinPayments && !bitcoinPayments}
+            onBitcoinHistoryRefresh={() => loadPaymentHistory(selectedOrder.id)}
+            onClose={closeOrderDetail}
           />
         )}
       </div>

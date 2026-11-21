@@ -8,6 +8,9 @@ const {
   completeCheckoutAttempt,
   appendOrderByBackend,
   createVivaCheckoutOrder,
+  findRecordedSwissBitcoinCheckout,
+  isSwissBitcoinPayEnabled,
+  prepareSwissBitcoinPayment,
 } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
   readPublicStoreByBackend: vi.fn(),
@@ -15,6 +18,9 @@ const {
   completeCheckoutAttempt: vi.fn(),
   appendOrderByBackend: vi.fn(),
   createVivaCheckoutOrder: vi.fn(),
+  findRecordedSwissBitcoinCheckout: vi.fn(),
+  isSwissBitcoinPayEnabled: vi.fn(),
+  prepareSwissBitcoinPayment: vi.fn(),
 }));
 
 vi.mock("@/lib/customer-backend", () => ({
@@ -28,7 +34,11 @@ vi.mock("@/lib/checkout-attempt", () => ({
   completeCheckoutAttempt,
   createCheckoutFingerprint: vi.fn(() => "cart-fingerprint"),
   failCheckoutAttempt: vi.fn(),
+  findRecordedSwissBitcoinCheckout,
+  swissBitcoinOrderPath: (orderId: string) => `/checkout/bitcoin/${orderId}`,
 }));
+vi.mock("@/lib/swiss-bitcoin-pay", () => ({ isSwissBitcoinPayEnabled }));
+vi.mock("@/lib/swiss-bitcoin-pay-service", () => ({ prepareSwissBitcoinPayment }));
 vi.mock("@/lib/order-backend", () => ({
   appendOrderByBackend,
   archiveIncompleteOrderByBackend: vi.fn(),
@@ -144,6 +154,9 @@ describe("POST /api/checkout/viva delivery details", () => {
       }],
     });
     beginCheckoutAttempt.mockResolvedValue({ action: "create" });
+    findRecordedSwissBitcoinCheckout.mockResolvedValue(null);
+    isSwissBitcoinPayEnabled.mockReturnValue(false);
+    prepareSwissBitcoinPayment.mockResolvedValue(undefined);
     completeCheckoutAttempt.mockResolvedValue(undefined);
     createVivaCheckoutOrder.mockResolvedValue("viva-order-1");
     appendOrderByBackend.mockResolvedValue({ id: "order-1" });
@@ -172,6 +185,99 @@ describe("POST /api/checkout/viva delivery details", () => {
       totalAmount: 26.9,
     }));
     expect(createVivaCheckoutOrder).toHaveBeenCalledWith(expect.objectContaining({ amount: 26.9 }));
+  });
+
+  it("records the server-calculated EUR total before starting one Lightning invoice", async () => {
+    isSwissBitcoinPayEnabled.mockReturnValue(true);
+    const response = await checkout({ ...homeDelivery, paymentMethod: "bitcoin_lightning" });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ orderId: "order-1", redirectUrl: "/checkout/bitcoin/order-1" });
+    expect(appendOrderByBackend).toHaveBeenCalledOnce();
+    expect(appendOrderByBackend).toHaveBeenCalledWith(expect.objectContaining({
+      totalAmount: 26.9,
+      paymentState: "pending",
+      bitcoinCheckout: { attemptId: "12345678-1234-4123-8123-123456789012", rewardClaimId: undefined },
+    }));
+    expect(prepareSwissBitcoinPayment).toHaveBeenCalledExactlyOnceWith("order-1");
+    expect(appendOrderByBackend.mock.invocationCallOrder[0]).toBeLessThan(prepareSwissBitcoinPayment.mock.invocationCallOrder[0]);
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+  });
+
+  it("resumes the same Lightning order even when new invoices are disabled", async () => {
+    findRecordedSwissBitcoinCheckout.mockResolvedValue({ orderId: "order-1", checkoutUrl: "/checkout/bitcoin/order-1" });
+    const response = await checkout({ ...homeDelivery, paymentMethod: "bitcoin_lightning" });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ orderId: "order-1", redirectUrl: "/checkout/bitcoin/order-1", resumed: true });
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+    expect(prepareSwissBitcoinPayment).not.toHaveBeenCalled();
+  });
+
+  it("offers explicit Lightning resumption when the current choice is card", async () => {
+    findRecordedSwissBitcoinCheckout.mockResolvedValue({ orderId: "order-1", checkoutUrl: "/checkout/bitcoin/order-1" });
+    const response = await checkout({ ...homeDelivery, paymentMethod: "card" });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      code: "checkout_method_conflict",
+      orderId: "order-1",
+      resumeUrl: "/checkout/bitcoin/order-1",
+      error: expect.any(String),
+    });
+    expect(beginCheckoutAttempt).not.toHaveBeenCalled();
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+    expect(prepareSwissBitcoinPayment).not.toHaveBeenCalled();
+  });
+
+  it("detects a Lightning session recorded between lookup and the card checkout claim", async () => {
+    beginCheckoutAttempt.mockResolvedValue({ action: "resume", orderId: "order-1", checkoutUrl: "/checkout/bitcoin/order-1" });
+    const response = await checkout({ ...homeDelivery, paymentMethod: "card" });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      code: "checkout_method_conflict",
+      orderId: "order-1",
+      resumeUrl: "/checkout/bitcoin/order-1",
+    });
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+  });
+
+  it("offers explicit Viva resumption when the current choice is Lightning", async () => {
+    isSwissBitcoinPayEnabled.mockReturnValue(true);
+    beginCheckoutAttempt.mockResolvedValue({ action: "resume", orderId: "order-1", checkoutUrl: "https://payment.example.test/checkout" });
+    const response = await checkout({ ...homeDelivery, paymentMethod: "bitcoin_lightning" });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      code: "checkout_method_conflict",
+      orderId: "order-1",
+      resumeUrl: "/api/account/orders/order-1/resume-payment",
+      error: expect.any(String),
+    });
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+    expect(prepareSwissBitcoinPayment).not.toHaveBeenCalled();
+  });
+
+  it("resumes the same Viva session when the current choice is card", async () => {
+    beginCheckoutAttempt.mockResolvedValue({ action: "resume", orderId: "order-1", checkoutUrl: "https://payment.example.test/checkout" });
+    const response = await checkout({ ...homeDelivery, paymentMethod: "card" });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      orderId: "order-1",
+      redirectUrl: "https://payment.example.test/checkout",
+      resumed: true,
+    });
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+    expect(prepareSwissBitcoinPayment).not.toHaveBeenCalled();
+  });
+
+  it("offers card when new Lightning payments are disabled and keeps Viva's checkout available", async () => {
+    const unavailable = await checkout({ ...homeDelivery, paymentMethod: "bitcoin_lightning" });
+    expect(unavailable.status).toBe(503);
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect((await checkout({ ...homeDelivery, paymentMethod: "card" })).status).toBe(200);
+    expect(createVivaCheckoutOrder).toHaveBeenCalledOnce();
   });
 
   it("allows a complete relay and contact details without asking for a personal address, city or postcode", async () => {

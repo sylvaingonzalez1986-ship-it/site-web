@@ -117,6 +117,7 @@ export function buildVivaCheckoutUrl(orderCode: string, config = getVivaConfig()
 export async function getVivaAccessToken(
   config: VivaConfig,
   endpoint = config.endpoint,
+  signal?: AbortSignal,
 ): Promise<string> {
   if (!config.isConfigured) {
     throw new Error(config.configurationError ?? "Configuration Viva invalide.");
@@ -131,6 +132,7 @@ export async function getVivaAccessToken(
     },
     body: "grant_type=client_credentials",
     cache: "no-store",
+    ...(signal ? { signal } : {}),
   });
 
   if (!response.ok) {
@@ -156,6 +158,7 @@ export async function createVivaCheckoutOrder(input: {
   customerTrns: string;
   tags?: string[];
   exactEuroAmount?: boolean;
+  signal?: AbortSignal;
 }): Promise<string> {
   const amountInMinorUnits = Math.round(input.amount * 100);
   if (!Number.isSafeInteger(amountInMinorUnits) || amountInMinorUnits <= 0) {
@@ -186,6 +189,7 @@ export async function createVivaCheckoutOrder(input: {
       },
     }),
     cache: "no-store",
+    ...(input.signal ? { signal: input.signal } : {}),
   });
   const rawBody = await response.text();
   if (!response.ok) {

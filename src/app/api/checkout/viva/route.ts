@@ -5,6 +5,8 @@ import {
   completeCheckoutAttempt,
   createCheckoutFingerprint,
   failCheckoutAttempt,
+  findRecordedSwissBitcoinCheckout,
+  swissBitcoinOrderPath,
 } from "@/lib/checkout-attempt";
 import {
   getCurrentCustomerSessionByBackend,
@@ -30,6 +32,7 @@ import {
   archiveIncompleteOrderByBackend,
   getCustomerOrdersForLoyaltyByBackend,
 } from "@/lib/order-backend";
+import type { AppendOrderInput } from "@/lib/orders-types";
 import { getAvailableQuantity } from "@/lib/product-stock";
 import {
   computeReferralFirstOrderDiscountAmount,
@@ -46,6 +49,8 @@ import {
 import { normalizeShippingCountryCode } from "@/lib/shipping-country";
 import { normalizeShippingPhone } from "@/lib/shipping-phone";
 import { applyDiscountOnLines, computeFromTtc, computeOrderTaxTotals, distributePackDiscount, sanitizeOrderVatRate } from "@/lib/tax";
+import { isSwissBitcoinPayEnabled } from "@/lib/swiss-bitcoin-pay";
+import { prepareSwissBitcoinPayment } from "@/lib/swiss-bitcoin-pay-service";
 import {
   buildVivaCheckoutUrl,
   createVivaCheckoutOrder,
@@ -61,8 +66,21 @@ type CheckoutItemPayload = {
   price?: number;
 };
 
+function checkoutMethodConflict(orderId: string, recordedBitcoin: boolean) {
+  const resumeUrl = recordedBitcoin
+    ? swissBitcoinOrderPath(orderId)
+    : `/api/account/orders/${encodeURIComponent(orderId)}/resume-payment`;
+  return NextResponse.json({
+    code: "checkout_method_conflict",
+    orderId,
+    resumeUrl,
+    error: "Une session est déjà ouverte avec un autre moyen de paiement.",
+  }, { status: 409 });
+}
+
 type CheckoutPayload = {
   action?: "checkout" | "validate_promo" | "validate_reward_claim";
+  paymentMethod?: "card" | "bitcoin_lightning";
   amount?: number;
   itemsCount?: number;
   items?: CheckoutItemPayload[];
@@ -330,6 +348,9 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 });
   }
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 });
+  }
   const action = payload.action ?? "checkout";
   if (action !== "checkout" && action !== "validate_promo" && action !== "validate_reward_claim") {
     return NextResponse.json({ error: "Action checkout invalide." }, { status: 400 });
@@ -548,6 +569,29 @@ export async function POST(request: Request) {
     );
   }
 
+  const paymentMethod = payload.paymentMethod ?? "card";
+  if (paymentMethod !== "card" && paymentMethod !== "bitcoin_lightning") {
+    return NextResponse.json({ error: "Moyen de paiement invalide." }, { status: 400 });
+  }
+  const wantsBitcoin = paymentMethod === "bitcoin_lightning";
+  const bitcoinEnabled = isSwissBitcoinPayEnabled();
+  try {
+    const saved = await findRecordedSwissBitcoinCheckout(checkoutAttemptId, customerId);
+    if (saved) {
+      return wantsBitcoin
+        ? NextResponse.json({ orderId: saved.orderId, redirectUrl: saved.checkoutUrl, resumed: true })
+        : checkoutMethodConflict(saved.orderId, true);
+    }
+  } catch {
+    return NextResponse.json({ error: "Session de paiement temporairement indisponible." }, { status: 503 });
+  }
+  if (wantsBitcoin && !bitcoinEnabled) {
+    return NextResponse.json(
+      { error: "Le paiement Bitcoin est indisponible. Tu peux régler ta commande par carte." },
+      { status: 503 },
+    );
+  }
+
   const store = await readPublicStoreByBackend();
 
   let resolvedItems: ResolvedCheckoutItem[];
@@ -679,12 +723,12 @@ export async function POST(request: Request) {
   const shippingAddress =
     requestedDeliveryMethod === "relay" ? relayAddress : shippingAddressInput;
 
-  const config = getVivaConfig();
+  const config = wantsBitcoin ? null : getVivaConfig();
   const basicAuthConfigured = Boolean(
     process.env.VIVA_MERCHANT_ID?.trim() && process.env.VIVA_API_KEY?.trim(),
   );
 
-  if (!config.isConfigured) {
+  if (config && !config.isConfigured) {
     const message = basicAuthConfigured
       ? "Les identifiants Merchant/API Viva servent a l'annulation mais ne suffisent pas au paiement. Configure aussi VIVA_CLIENT_ID, VIVA_CLIENT_SECRET et VIVA_SOURCE_CODE."
       : "Paiement carte temporairement indisponible: configuration securisee incomplete.";
@@ -842,6 +886,9 @@ export async function POST(request: Request) {
     badgeHomeFeeEur: badgeHomeDeliveryFeeEur,
   });
   const totalAmount = Number((itemsTotalAmount + shippingFee).toFixed(2));
+  if (wantsBitcoin && totalAmount <= 0) {
+    return NextResponse.json({ error: "Le montant à payer en Bitcoin doit être supérieur à zéro." }, { status: 400 });
+  }
   const lotteryConfig = await getLotteryConfigByBackend();
   const ticketBreakdown = computeLotteryTicketBreakdown({
     orderAmount: totalAmount,
@@ -957,6 +1004,8 @@ export async function POST(request: Request) {
   }
 
   if (attempt.action === "resume") {
+    const recordedBitcoin = attempt.checkoutUrl === swissBitcoinOrderPath(attempt.orderId);
+    if (recordedBitcoin !== wantsBitcoin) return checkoutMethodConflict(attempt.orderId, recordedBitcoin);
     return NextResponse.json({
       message: "Reprise de la session de paiement existante.",
       orderId: attempt.orderId,
@@ -980,29 +1029,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let createdOrderId = "";
-  try {
-    const vivaSummary = buildVivaItemSummary(
-      finalizedItemsWithTax.map((item) => ({ name: item.name, quantity: item.quantity })),
-    );
-    const accessToken = await getVivaAccessToken(config);
-    const orderCode = await createVivaCheckoutOrder({
-      config,
-      accessToken,
-      amount: totalAmount,
-      customerName: shippingName,
-      customerEmail: shippingEmail,
-      customerPhone: shippingPhone,
-      customerCountryCode: shippingCountryCode,
-      merchantTrns: `${vivaSummary.merchantTrns} - tentative ${checkoutAttemptId}`.slice(0, 512),
-      customerTrns: vivaSummary.customerTrns,
-    });
-    const checkoutUrl = buildVivaCheckoutUrl(orderCode, config);
-    if (!checkoutUrl) {
-      throw new Error("URL de paiement Viva invalide.");
-    }
-
-    const order = await appendOrderByBackend({
+  const orderInput: AppendOrderInput = {
       items: finalizedItemsWithTax.map((item) => ({
         productId: item.id,
         name: item.name,
@@ -1054,10 +1081,55 @@ export async function POST(request: Request) {
         badgeId: loyaltySummary.currentBadge.id,
         extraLotteryTickets: ticketBreakdown.bonusTickets,
       },
-      viva: {
-        orderCode,
-      },
+  };
+
+  if (!config) {
+    let orderId: string;
+    try {
+      const order = await appendOrderByBackend({
+        ...orderInput,
+        bitcoinCheckout: { attemptId: checkoutAttemptId, rewardClaimId: appliedRewardClaim?.claimId },
+      });
+      orderId = order.id;
+    } catch {
+      // The commit may have succeeded even if its response was interrupted.
+      // Only the checkout lease may be retried, and no invoice has been asked for here.
+      const saved = await findRecordedSwissBitcoinCheckout(checkoutAttemptId, customerId).catch(() => null);
+      if (!saved) {
+        return NextResponse.json({ error: "La commande n’a pas pu être préparée. Ton panier est conservé." }, { status: 503 });
+      }
+      orderId = saved.orderId;
+    }
+    try {
+      await prepareSwissBitcoinPayment(orderId);
+    } catch {
+      console.warn("[swiss-bitcoin-pay] Préparation à reprendre", orderId);
+    }
+    return NextResponse.json({ orderId, redirectUrl: swissBitcoinOrderPath(orderId), resumed: false });
+  }
+
+  let createdOrderId = "";
+  try {
+    const vivaSummary = buildVivaItemSummary(
+      finalizedItemsWithTax.map((item) => ({ name: item.name, quantity: item.quantity })),
+    );
+    const accessToken = await getVivaAccessToken(config);
+    const orderCode = await createVivaCheckoutOrder({
+      config,
+      accessToken,
+      amount: totalAmount,
+      customerName: shippingName,
+      customerEmail: shippingEmail,
+      customerPhone: shippingPhone,
+      customerCountryCode: shippingCountryCode,
+      merchantTrns: `${vivaSummary.merchantTrns} - tentative ${checkoutAttemptId}`.slice(0, 512),
+      customerTrns: vivaSummary.customerTrns,
     });
+    const checkoutUrl = buildVivaCheckoutUrl(orderCode, config);
+    if (!checkoutUrl) {
+      throw new Error("URL de paiement Viva invalide.");
+    }
+    const order = await appendOrderByBackend({ ...orderInput, viva: { orderCode } });
     createdOrderId = order.id;
 
     if (appliedRewardClaim && customerId) {

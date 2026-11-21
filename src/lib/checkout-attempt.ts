@@ -7,7 +7,7 @@ type CheckoutAttemptAction =
   | { action: "create" }
   | { action: "busy" }
   | { action: "completed" }
-  | { action: "resume"; orderId: string; orderCode: string; checkoutUrl: string };
+  | { action: "resume"; orderId: string; checkoutUrl: string };
 
 function asRecord(value: unknown): Record<string, unknown> {
   return typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
@@ -19,6 +19,24 @@ function asText(value: unknown): string {
 
 export function createCheckoutFingerprint(value: unknown): string {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+export function swissBitcoinOrderPath(orderId: string): string {
+  return `/checkout/bitcoin/${encodeURIComponent(orderId)}`;
+}
+
+export async function findRecordedSwissBitcoinCheckout(attemptId: string, customerId: string) {
+  const { data, error } = await createSupabaseServiceClient()
+    .from("checkout_attempts")
+    .select("order_id,checkout_url")
+    .eq("attempt_id", attemptId)
+    .eq("customer_id", customerId)
+    .in("state", ["ready", "completed"])
+    .maybeSingle();
+  if (error) throw new Error("Session de paiement inaccessible.");
+  const orderId = asText(data?.order_id);
+  const checkoutUrl = asText(data?.checkout_url);
+  return orderId && checkoutUrl === swissBitcoinOrderPath(orderId) ? { orderId, checkoutUrl } : null;
 }
 
 export async function beginCheckoutAttempt(input: {
@@ -45,10 +63,10 @@ export async function beginCheckoutAttempt(input: {
     const orderId = asText(payload.order_id);
     const orderCode = asText(payload.order_code);
     const checkoutUrl = asText(payload.checkout_url);
-    if (!orderId || !orderCode || !checkoutUrl) {
+    if (!orderId || !checkoutUrl || (!orderCode && checkoutUrl !== swissBitcoinOrderPath(orderId))) {
       throw new Error("Tentative de paiement incomplete.");
     }
-    return { action, orderId, orderCode, checkoutUrl };
+    return { action, orderId, checkoutUrl };
   }
   throw new Error("Etat de tentative de paiement inconnu.");
 }

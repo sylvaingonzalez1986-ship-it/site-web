@@ -15,7 +15,7 @@ import puppeteer from "puppeteer-core";
 const root = process.cwd();
 const output = resolve(root, "output/checkout-continuity");
 const port = 3262;
-const widths = [390, 1440];
+const widths = [320, 1440];
 const modules = {
   "next/navigation": `export const usePathname=()=>'/boutique';`,
   "next/image": `import React from 'react'; export default function Image({priority,fill,unoptimized,...props}){return React.createElement('img',props);}`,
@@ -24,8 +24,8 @@ const modules = {
   "@/components/navigation/NavigationLink": `import React from 'react'; export default function Link(props){return React.createElement('a',props);}`,
   "@/hooks/useCmsStore": `import {defaultStore} from '/src/data/default-store'; export const useCmsStore=()=>({store:defaultStore,loading:false});`,
   "@/components/cookies/CookieConsentProvider": `export const useCookieConsent=()=>({hasConsent:()=>false});`,
-  "@/components/checkout/OrderCashReward": `export const OrderCashRewardPreview=()=>null;`,
-  "@/components/checkout/ContestBundleReward": `export const ContestBundleRewardPreview=()=>null;`,
+  "@/components/checkout/OrderCashReward": `export const OrderCashRewardPreview=()=>null; export const OrderCashRewardReceipt=()=>null;`,
+  "@/components/checkout/ContestBundleReward": `export const ContestBundleRewardPreview=()=>null; export const ContestBundleRewardReceipt=()=>null;`,
 };
 const entry = `
 import React,{useState} from 'react';
@@ -35,16 +35,18 @@ import {CartProvider,useCart} from '/src/context/CartContext';
 import {CartDrawer} from '/src/components/CartDrawer';
 import {AccountRegisterForm} from '/src/components/account/AccountRegisterForm';
 import {AccountLoginForm} from '/src/components/account/AccountLoginForm';
+import {BitcoinPaymentPage} from '/src/components/checkout/BitcoinPaymentPage';
 
 const scenario=new URLSearchParams(location.search).get('scenario');
+const bitcoinPage=location.pathname==='/checkout/bitcoin/AUDIT-BITCOIN';
 const nextUrl='/boutique?panier=1';
 const initialUser={id:'customer-a',email:'camille@example.test',firstName:'Camille',lastName:'Exemple',dateOfBirth:'1990-01-01',phone:'',address:'',city:'',postalCode:'',country:'France',loyaltyPoints:0,loyaltyPointsSpent:0,contestBetaEnabled:false,promoCodes:[],createdAt:'2026-01-01T00:00:00Z'};
 const secondUser={...initialUser,id:'customer-b',email:'alex@example.test',firstName:'Alex'};
 const product={id:'audit-product',name:'Produit de démonstration',category:'fleurs',price:14.9,image:'',description:'Produit fictif pour audit local',trackStock:false};
 const relay={id:'AUDIT-RELAY',name:'Relais de démonstration',address:'8 rue du Test',city:'Rennes',postalCode:'35000',country:'FR'};
 const belgianRelay={id:'AUDIT-RELAY-BE',name:'Relais belge de démonstration',address:'12 rue du Test',city:'Bruxelles',postalCode:'1000',country:'BE'};
-localStorage.clear();sessionStorage.clear();
-window.__fixture={user:scenario?null:initialUser,requests:[],unexpected:[],navigation:[],relay,meMode:'ready',releaseMe:null};
+if(!bitcoinPage){localStorage.clear();sessionStorage.clear();}
+window.__fixture={user:['register','login'].includes(scenario)?null:initialUser,requests:[],unexpected:[],navigation:[],relay,meMode:'ready',releaseMe:null,bitcoinState:'pending',releaseBitcoin:null,conflict:false};
 const nativeFetch=window.fetch.bind(window);
 window.fetch=async(input,init={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.href);
@@ -66,7 +68,30 @@ window.fetch=async(input,init={})=>{
  if(url.pathname==='/api/account/tickets')return Response.json({tickets:[],inventory:null,config:null});
  if(url.pathname==='/api/account/welcome-pack')return Response.json({eligible:false});
  if(url.pathname==='/api/relay/points')return Response.json({points:[relay,belgianRelay].filter(point=>point.country===url.searchParams.get('country')&&point.postalCode===url.searchParams.get('postalCode'))});
- if(url.pathname==='/api/checkout/viva'&&method==='POST')return Response.json({error:'Paiement fictif arrêté par le harnais.'},{status:503});
+ if(url.pathname==='/api/checkout/bitcoin'){
+  if(scenario==='bitcoin-error')return Response.json({error:'Disponibilité fictive inaccessible.'},{status:503});
+  if(scenario==='bitcoin')return new Promise(resolve=>{state.releaseBitcoin=()=>resolve(Response.json({enabled:true}));});
+  return Response.json({enabled:false});
+ }
+ if(url.pathname==='/api/checkout/bitcoin/AUDIT-BITCOIN'){
+  return Response.json({orderId:'AUDIT-BITCOIN',totalAmount:19.9,state:state.bitcoinState,canRetry:false,canPayByCard:false,
+   ...(state.bitcoinState==='pending'?{checkoutUrl:'https://checkout.example.test/fake-invoice'}:{})});
+ }
+ if(url.pathname==='/api/checkout/viva'&&method==='POST'&&body.paymentMethod==='bitcoin_lightning'){
+  if(state.conflict){
+   return Response.json({code:'checkout_method_conflict',error:'Un paiement est déjà en cours avec l’autre moyen de paiement.',orderId:'AUDIT-CARD',
+    resumeUrl:'/api/account/orders/AUDIT-CARD/resume-payment'},{status:409});
+  }
+  sessionStorage.setItem('audit:bitcoin-attempt',body.checkoutAttemptId);
+  return Response.json({orderId:'AUDIT-BITCOIN',redirectUrl:'/checkout/bitcoin/AUDIT-BITCOIN',resumed:false});
+ }
+ if(url.pathname==='/api/checkout/viva'&&method==='POST'){
+  if(state.conflict==='bitcoin'){
+   return Response.json({code:'checkout_method_conflict',orderId:'AUDIT-BITCOIN',
+    resumeUrl:'/checkout/bitcoin/AUDIT-BITCOIN'},{status:409});
+  }
+  return Response.json({error:'Paiement fictif arrêté par le harnais.'},{status:503});
+ }
  state.unexpected.push({path:url.pathname,method});
  return Response.json({error:'Unexpected fixture API'},{status:503});
 };
@@ -89,6 +114,7 @@ function Harness(){
   el('output',{id:'fixture-state','data-ready':!cart.authLoading&&!cart.cartLoading,'data-user':cart.user?.id||'','data-email':cart.user?.email||'','data-count':cart.totalItems,'data-refreshed':refreshCount}),
   scenario==='register'?el('section',{id:'fixture-register'},el(AccountRegisterForm,{nextUrl})):null,
   scenario==='login'?el('section',{id:'fixture-login'},el(AccountLoginForm,{nextUrl})):null,
+  bitcoinPage?el(BitcoinPaymentPage,{orderId:'AUDIT-BITCOIN'}):null,
   el(CartDrawer,{key:generation,open,onClose:()=>setOpen(false)}));
 }
 createRoot(document.getElementById('root')).render(React.createElement(CartProvider,null,React.createElement(Harness)));
@@ -117,7 +143,7 @@ const server = await createServer({
     },
     configureServer(vite) {
       vite.middlewares.use((req, res, next) => {
-        if (req.url?.split("?")[0] !== "/") return next();
+        if (!["/", "/checkout/bitcoin/AUDIT-BITCOIN"].includes(req.url?.split("?")[0])) return next();
         res.setHeader("Content-Type", "text/html; charset=utf-8");
         res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit local du panier</title><style>@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#003f30}#fixture-controls{display:flex;flex-wrap:wrap;gap:12px}#fixture-controls button{background:#fffaf1;padding:8px}</style><div id="root"></div><script type="module" src="/@id/__x00__checkout-entry.tsx"></script></html>`);
       });
@@ -159,10 +185,17 @@ try {
     for (const enteredValue of ['Camille Livraison', 'livraison@example.test', '0612345678', '+32470123456', '12 rue de la Commande', 'AUDIT-RELAY']) assert.equal(persisted.includes(enteredValue), false, 'Order draft must stay in memory: ' + enteredValue);
   };
   const valueOf = label => page.$eval(`input[aria-label="${label}"]`, input => input.value);
-  const waitPayment = disabled => page.waitForFunction(expected => {
-    const button = [...document.querySelectorAll("dialog[open] button")].find(item => item.textContent.trim().startsWith("Payer "));
-    return button && button.disabled === expected;
-  }, {}, disabled);
+  const selectPayment = value => trigger(`dialog[open] [data-checkout-payment-methods] input[value="${value}"]`);
+  const waitPayment = async (disabled, chooseCardIfUnset = true) => {
+    if (!disabled && chooseCardIfUnset) {
+      const selected = await page.$('dialog[open] [data-checkout-payment-methods] input:checked');
+      if (!selected) await selectPayment("card");
+    }
+    await page.waitForFunction(expected => {
+      const button = [...document.querySelectorAll("dialog[open] button")].find(item => item.textContent.trim().startsWith("Payer "));
+      return button && button.disabled === expected;
+    }, {}, disabled);
+  };
   const record = (name, width) => { results.push({ name, width, passed: true }); console.log(`PASS ${name} ${width}`); };
   const refresh = async () => {
     const previous = await page.$eval('#fixture-state', state => Number(state.dataset.refreshed));
@@ -193,7 +226,15 @@ try {
     assert.equal(await valueOf("Téléphone"), "");
     assert.equal(await valueOf("Adresse de livraison"), "");
     await waitPayment(true);
-    await fillOrder(); await waitPayment(false);
+    await fillOrder();
+    await waitPayment(true);
+    const disabledBitcoin = 'dialog[open] input[value="bitcoin_lightning"]:disabled';
+    await page.waitForSelector(disabledBitcoin, { visible: true });
+    assert.equal(await page.$eval(disabledBitcoin, input => document.getElementById(input.getAttribute("aria-describedby")).textContent.trim()),
+      "Le paiement Bitcoin est actuellement désactivé.");
+    assert.equal(await page.$('dialog[open] [data-checkout-payment-methods] input:checked'), null);
+    await selectPayment("card"); await waitPayment(false);
+    record("both-methods-visible-explicit-selection-required-when-bitcoin-disabled", width);
     assert.equal(await page.$$eval("dialog[open] button", buttons => buttons.some(button => button.textContent.includes("Compléter mon profil"))), false);
     record("adult-without-profile-address-can-complete-home-checkout", width);
 
@@ -397,6 +438,88 @@ try {
     assert.equal(await valueOf('Nom complet'), 'Camille Exemple');
     unexpectedApis.push(...await page.evaluate(() => window.__fixture.unexpected));
     record("login-immediately-updates-cart-and-keeps-checkout-return", width);
+
+    await page.goto(`http://127.0.0.1:${port}/?scenario=bitcoin`, { waitUntil: "networkidle0" });
+    await page.waitForSelector('#fixture-state[data-ready="true"]');
+    await trigger("#fixture-add");
+    await trigger("#fixture-open");
+    await page.waitForSelector('dialog[open] input[aria-label="Nom complet"]');
+    if (width === 320) {
+      await page.waitForSelector('[data-ui-commerce="cart-mobile"] button', { visible: true });
+      await trigger('[data-ui-commerce="cart-mobile"] button');
+      assert.equal(await page.evaluate(() => document.activeElement.closest("[data-checkout-payment-methods]") !== null), true);
+      record("mobile-summary-focuses-payment-methods", width);
+    }
+    await fillOrder();
+    await waitPayment(true);
+    await page.waitForSelector(disabledBitcoin, { visible: true });
+    await page.waitForFunction(() => Boolean(window.__fixture.releaseBitcoin));
+    assert.equal(await page.$eval(disabledBitcoin, input => document.getElementById(input.getAttribute("aria-describedby")).textContent.trim()),
+      "Vérification de la disponibilité de Bitcoin…");
+    await selectPayment("card");
+    await waitPayment(false, false);
+    await clickButton("Payer ");
+    await page.waitForFunction(() => document.querySelector('dialog[open] [role="alert"]')?.textContent.includes("Paiement fictif"));
+    const cardAttempt = await page.evaluate(() => window.__fixture.requests.find(request =>
+      request.path === "/api/checkout/viva").body);
+    assert.equal(cardAttempt.paymentMethod, "card");
+    record("card-remains-usable-while-bitcoin-availability-is-checked", width);
+    await page.evaluate(() => { window.__fixture.conflict = "bitcoin"; });
+    await clickButton("Payer ");
+    const bitcoinResumeLink = 'dialog[open] a[href="/checkout/bitcoin/AUDIT-BITCOIN"]';
+    await page.waitForSelector(bitcoinResumeLink, { visible: true });
+    assert.equal(await page.$eval(bitcoinResumeLink, link => link.textContent.trim()), "Reprendre le paiement Bitcoin");
+    assert.equal(new URL(page.url()).searchParams.get("scenario"), "bitcoin");
+    assert.equal(await page.evaluate(() => sessionStorage.getItem("checkout:bitcoin:cart:AUDIT-BITCOIN")), null);
+    record("existing-bitcoin-checkout-offers-explicit-resume-without-snapshot", width);
+
+    await page.evaluate(() => { window.__fixture.releaseBitcoin(); window.__fixture.conflict = true; });
+    await page.waitForSelector('dialog[open] input[value="bitcoin_lightning"]:enabled');
+    await selectPayment("bitcoin_lightning");
+    await clickButton("Payer ");
+    const resumeLink = 'dialog[open] a[href="/api/account/orders/AUDIT-CARD/resume-payment"]';
+    await page.waitForSelector(resumeLink, { visible: true });
+    assert.equal(await page.$eval(resumeLink, link => link.textContent.trim()), "Reprendre le paiement par carte");
+    assert.equal(new URL(page.url()).searchParams.get("scenario"), "bitcoin");
+    assert.equal(await page.$eval("#fixture-state", state => state.dataset.count), "1");
+    assert.equal(await page.evaluate(() => sessionStorage.getItem("checkout:viva:pending-payment")), null);
+    record("method-conflict-offers-explicit-resume-without-redirect", width);
+    await page.evaluate(() => { window.__fixture.conflict = false; });
+    await Promise.all([page.waitForNavigation(), clickButton("Payer ")]);
+    await page.waitForSelector('a[href="https://checkout.example.test/fake-invoice"]');
+    assert.equal(await page.evaluate(() => sessionStorage.getItem("audit:bitcoin-attempt")), cardAttempt.checkoutAttemptId);
+    assert.equal(await page.evaluate(() => sessionStorage.getItem("checkout:viva:pending-payment")), null);
+    assert.equal(await page.$eval("#fixture-state", state => state.dataset.count), "1");
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+    record("bitcoin-and-card-share-attempt-and-bitcoin-payment-fits-viewport", width);
+
+    // A changed cart must survive even after the original order is confirmed.
+    if (width === 320) {
+      await trigger("#fixture-add");
+      await page.waitForSelector('#fixture-state[data-count="2"]');
+    }
+    await page.evaluate(() => {
+      window.__fixture.bitcoinState = "paid";
+      [...document.querySelectorAll("button")].find(button => button.textContent.trim() === "Actualiser le statut").click();
+    });
+    await page.waitForFunction(() => document.querySelector('section [role="status"]')?.textContent.includes("Paiement confirmé"));
+    await page.waitForSelector(`#fixture-state[data-count="${width === 320 ? 2 : 0}"]`);
+    unexpectedApis.push(...await page.evaluate(() => window.__fixture.unexpected));
+    record(width === 320 ? "confirmed-bitcoin-keeps-changed-cart" : "confirmed-bitcoin-clears-matching-cart", width);
+
+    await page.goto(`http://127.0.0.1:${port}/?scenario=bitcoin-error`, { waitUntil: "networkidle0" });
+    await page.waitForSelector('#fixture-state[data-ready="true"]');
+    await trigger("#fixture-add");
+    await trigger("#fixture-open");
+    await page.waitForSelector(disabledBitcoin, { visible: true });
+    assert.equal(await page.$eval(disabledBitcoin, input => document.getElementById(input.getAttribute("aria-describedby")).textContent.trim()),
+      "La disponibilité de Bitcoin n’a pas pu être vérifiée.");
+    await fillOrder();
+    await waitPayment(true);
+    await selectPayment("card");
+    await waitPayment(false, false);
+    unexpectedApis.push(...await page.evaluate(() => window.__fixture.unexpected));
+    record("card-remains-usable-when-bitcoin-availability-fails", width);
   }
   assert.deepEqual(errors, []);
   assert.deepEqual(blockedRequests, []);

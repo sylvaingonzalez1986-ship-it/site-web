@@ -3,6 +3,7 @@ import type { CmsOrder, OrderStatus } from "@/types/store";
 
 export type AppendOrderInput = {
   orderId?: string;
+  bitcoinCheckout?: { attemptId: string; rewardClaimId?: string };
   items: Array<{
     productId: string;
     name: string;

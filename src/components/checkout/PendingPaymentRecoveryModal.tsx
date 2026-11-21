@@ -5,6 +5,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { usePathname } from "next/navigation";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useCart } from "@/context/CartContext";
+import { consumePaidBitcoinCart } from "@/lib/bitcoin-cart";
 import {
   clearPendingVivaPayment,
   readPendingVivaPayment,
@@ -19,6 +20,7 @@ type PaymentStatus = {
   status: string;
   totalAmount: number;
   canResume: boolean;
+  switchedFromBitcoin?: boolean;
 };
 
 const PAYMENT_RETURN_PATH_PATTERN =
@@ -27,7 +29,8 @@ const PAYMENT_RETURN_PATH_PATTERN =
 export function PendingPaymentRecoveryModal() {
   const pathname = usePathname();
   const router = useRouter();
-  const { clearCart, refreshSession } = useCart();
+  const { cartLoading, items, clearCart, refreshSession } = useCart();
+  const cartRef = useRef(items);
   const [pendingPayment, setPendingPayment] = useState<PendingVivaPayment | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus | null>(null);
   const [modifyingCart, setModifyingCart] = useState(false);
@@ -37,7 +40,7 @@ export function PendingPaymentRecoveryModal() {
   const primaryActionRef = useRef<HTMLAnchorElement>(null);
 
   const checkPendingPayment = useCallback(async () => {
-    if (requestInFlightRef.current || PAYMENT_RETURN_PATH_PATTERN.test(pathname)) return;
+    if (cartLoading || requestInFlightRef.current || PAYMENT_RETURN_PATH_PATTERN.test(pathname)) return;
     const stored = readPendingVivaPayment(window.sessionStorage);
     if (!stored || dismissedAttemptIdRef.current === stored.attemptId) return;
 
@@ -56,7 +59,8 @@ export function PendingPaymentRecoveryModal() {
       const status = (await response.json()) as PaymentStatus;
       if (status.paymentState === "paid") {
         clearPendingVivaPayment(window.sessionStorage, stored.orderId);
-        clearCart();
+        if (status.switchedFromBitcoin) consumePaidBitcoinCart(stored.orderId, cartRef.current, clearCart);
+        else clearCart();
         void refreshSession({ silent: true, force: true });
         setPendingPayment(null);
         setPaymentStatus(null);
@@ -74,7 +78,11 @@ export function PendingPaymentRecoveryModal() {
     } finally {
       requestInFlightRef.current = false;
     }
-  }, [clearCart, pathname, refreshSession]);
+  }, [cartLoading, clearCart, pathname, refreshSession]);
+
+  useEffect(() => {
+    cartRef.current = items;
+  }, [items]);
 
   useEffect(() => {
     void checkPendingPayment();

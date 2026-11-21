@@ -21,6 +21,7 @@ export async function GET(
     order.paymentState === "paid" ||
     order.status === "cancelled" ||
     order.archivedAt ||
+    (order.swissBitcoinCardStartedAt && order.paymentReviewRequired) ||
     !order.vivaOrderCode
   ) {
     return NextResponse.redirect(new URL("/profil?tab=commandes", request.url), 303);

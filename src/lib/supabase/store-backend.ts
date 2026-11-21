@@ -140,11 +140,13 @@ const SELECT_ORDERS_COLUMNS = [
   "id",
   "created_at",
   "status",
+  "payment_provider",
   "payment_state",
   "archived_at",
   "archived_reason",
   "viva_order_code",
   "viva_transaction_id",
+  "swiss_bitcoin_card_started_at",
   "customer_id",
   "legacy_customer_id",
   "customer_email",
@@ -570,7 +572,7 @@ function mapOrderRow(
     status: validOrderStatus.has(statusCandidate as OrderStatus)
       ? (statusCandidate as OrderStatus)
       : "new",
-    paymentProvider: "viva",
+    paymentProvider: row.payment_provider === "swiss_bitcoin_pay" ? "swiss_bitcoin_pay" : "viva",
     paymentState: validPaymentState.has(paymentStateCandidate)
       ? paymentStateCandidate
       : "pending",
@@ -583,6 +585,7 @@ function mapOrderRow(
         ? row.viva_order_code
         : undefined,
     vivaTransactionId: toOptionalString(row.viva_transaction_id),
+    swissBitcoinCardStartedAt: toOptionalString(row.swiss_bitcoin_card_started_at),
     source: "web",
     customerId: toOptionalString(row.customer_id) ?? toOptionalString(row.legacy_customer_id),
     customerEmail: toOptionalString(row.customer_email),
@@ -831,7 +834,7 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
       .select(SELECT_ORDERS_COLUMNS)
       // A verified capture after cancellation must remain visible for refund/
       // reconciliation without reactivating its released first-order discount.
-      .or("archived_at.is.null,and(payment_state.eq.paid,payment_review_required.eq.true)")
+      .or("archived_at.is.null,payment_review_required.eq.true")
       .order("created_at", { ascending: false }),
   ]);
 

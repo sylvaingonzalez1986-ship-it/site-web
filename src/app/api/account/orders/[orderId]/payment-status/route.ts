@@ -35,6 +35,7 @@ export async function GET(
       status: order.status,
       totalAmount: order.totalAmount,
       canResume,
+      switchedFromBitcoin: Boolean(order.swissBitcoinCardStartedAt),
     },
     { headers: NO_STORE_HEADERS },
   );

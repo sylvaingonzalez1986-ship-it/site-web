@@ -12,6 +12,7 @@ const SELECT_ORDERS_COLUMNS = [
   "id",
   "created_at",
   "status",
+  "payment_provider",
   "payment_state",
   "payment_review_required",
   "payment_review_reason",
@@ -19,6 +20,7 @@ const SELECT_ORDERS_COLUMNS = [
   "archived_reason",
   "viva_order_code",
   "viva_transaction_id",
+  "swiss_bitcoin_card_started_at",
   "customer_id",
   "legacy_customer_id",
   "customer_email",
@@ -134,7 +136,7 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     id: toText(row.id),
     createdAt: toIsoString(row.created_at),
     status: toOrderStatus(row.status),
-    paymentProvider: "viva",
+    paymentProvider: row.payment_provider === "swiss_bitcoin_pay" ? "swiss_bitcoin_pay" : "viva",
     paymentState: toPaymentState(row.payment_state),
     paymentReviewRequired: row.payment_review_required === true,
     paymentReviewReason: toOptionalText(row.payment_review_reason),
@@ -142,6 +144,7 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     archivedReason: toOptionalText(row.archived_reason),
     vivaOrderCode: normalizeVivaOrderCode(toOptionalText(row.viva_order_code)) ?? undefined,
     vivaTransactionId: toOptionalText(row.viva_transaction_id),
+    swissBitcoinCardStartedAt: toOptionalText(row.swiss_bitcoin_card_started_at),
     source: "web",
     customerId: toOptionalText(row.customer_id) ?? toOptionalText(row.legacy_customer_id),
     customerEmail: toOptionalText(row.customer_email),
@@ -439,16 +442,23 @@ export async function appendOrderToSupabase(input: AppendOrderInput): Promise<Cm
       }
       : null;
 
-  const { data: rpcOrderId, error } = await supabase.rpc("rpc_create_order", {
+  const orderArgs = {
     p_order: orderPayload,
     p_items: itemsPayload,
     p_promo: promoPayload,
-  });
+  };
+  const { data: rpcOrderId, error } = input.bitcoinCheckout
+    ? await supabase.rpc("rpc_create_swiss_bitcoin_order", {
+        ...orderArgs,
+        p_attempt_id: input.bitcoinCheckout.attemptId,
+        p_reward_claim_id: input.bitcoinCheckout.rewardClaimId ?? null,
+      })
+    : await supabase.rpc("rpc_create_order", orderArgs);
   if (error) {
     if (error.message.includes("PROMO_NOT_AVAILABLE")) {
       throw new Error("Code promo invalide ou déjà utilisé.");
     }
-    failIfError(error, "rpc_create_order");
+    failIfError(error, input.bitcoinCheckout ? "rpc_create_swiss_bitcoin_order" : "rpc_create_order");
   }
 
   const insertedOrderId = typeof rpcOrderId === "string" && rpcOrderId.trim()

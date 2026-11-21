@@ -1172,8 +1172,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         {open && items.length > 0 && !checkoutVisible && <div data-ui-commerce="cart-mobile" className={styles.mobileSummary}>
           <div><span>{isAuthenticated ? "Total à payer" : "Total estimé"}</span><strong>{formatPrice(finalAmountToPay)} TTC</strong></div>
           <button data-ui-commerce="mobile-control" data-ui-shape="control" type="button" onClick={() => {
-            checkoutAreaRef.current?.scrollIntoView({ block: "center" });
-            checkoutAreaRef.current?.focus({ preventScroll: true });
+            const target = checkoutAreaRef.current?.querySelector<HTMLElement>("[data-checkout-payment-methods]") ?? checkoutAreaRef.current;
+            target?.scrollIntoView({ block: "center" });
+            target?.focus({ preventScroll: true });
           }}>Récapitulatif</button>
         </div>}
       </dialog>

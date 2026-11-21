@@ -41,6 +41,7 @@ export type AuditEventType =
   | "pioneer_pack_claimed"
   | "viva_webhook_verification"
   | "viva_webhook_verification_failed"
+  | "swiss_bitcoin_invoice_recovered"
   | "rate_limit_fallback_activated"
   | "contest_profile_upsert"
   | "contest_review_submit"

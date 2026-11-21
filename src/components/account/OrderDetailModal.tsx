@@ -153,7 +153,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
             Statut: {orderStatusLabels[order.status]}
           </span>
           <span data-ui-account="order-status" data-ui-shape="panel" className={`pill-cartoon px-3 py-1 ${getPaymentStateClass(order.paymentState)}`}>
-            Paiement: {paymentStateLabels[order.paymentState]}
+            {order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : {paymentStateLabels[order.paymentState]}
           </span>
         </div>
 
@@ -224,17 +224,19 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
           {order.paymentState !== "paid" &&
             order.status !== "cancelled" &&
             !order.archivedAt &&
-            order.vivaOrderCode && (
+            (order.vivaOrderCode || order.paymentProvider === "swiss_bitcoin_pay") && (
               <div data-ui-account="fill-fff5da" data-ui-shape="panel" className="mb-4 card-cartoon bg-[#fff5da] p-4">
                 <p className="text-sm font-bold text-ink">Cette commande attend encore son paiement.</p>
                 <p className="mt-1 text-sm text-charcoal">
-                  Reprends la session existante : ne cree pas une nouvelle commande.
+                  Reprends le paiement de cette commande.
                 </p>
                 <a
-                  href={`/api/account/orders/${encodeURIComponent(order.id)}/resume-payment`}
+                  href={order.paymentProvider === "swiss_bitcoin_pay"
+                    ? `/checkout/bitcoin/${encodeURIComponent(order.id)}`
+                    : `/api/account/orders/${encodeURIComponent(order.id)}/resume-payment`}
                   className="btn-cartoon btn-primary mt-3 inline-flex"
                 >
-                  Reprendre le paiement
+                  {order.paymentProvider === "swiss_bitcoin_pay" ? "Voir le paiement Bitcoin" : "Reprendre le paiement"}
                 </a>
               </div>
             )}

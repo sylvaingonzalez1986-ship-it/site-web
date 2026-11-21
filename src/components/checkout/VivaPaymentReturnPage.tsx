@@ -175,6 +175,7 @@ export async function VivaPaymentReturnPage({
           </p>
           <VivaPaymentReturnEffects
             clearCart={order?.paymentState === "paid"}
+            bitcoinOrderId={order?.swissBitcoinCardStartedAt ? order.id : undefined}
             pollPayment={kind === "success" && order?.paymentState === "pending"}
             statusUnavailable={lookupFailed || Boolean(session && vivaOrderCode && !order)}
           />

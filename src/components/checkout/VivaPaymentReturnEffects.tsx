@@ -4,20 +4,24 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import Link from "@/components/navigation/NavigationLink";
 import { useCart } from "@/context/CartContext";
+import { consumePaidBitcoinCart } from "@/lib/bitcoin-cart";
 import { clearPendingVivaPayment } from "@/lib/pending-viva-payment";
 
 type VivaPaymentReturnEffectsProps = {
   clearCart?: boolean;
+  bitcoinOrderId?: string;
   pollPayment?: boolean;
   statusUnavailable?: boolean;
 };
 
 export function VivaPaymentReturnEffects({
   clearCart: shouldClearCart = false,
+  bitcoinOrderId,
   pollPayment = false,
   statusUnavailable = false,
 }: VivaPaymentReturnEffectsProps) {
-  const { clearCart, refreshSession } = useCart();
+  const { cartLoading, clearCart, items, refreshSession } = useCart();
+  const processed = useRef(false);
   const router = useRouter();
   const refreshRef = useRef(router.refresh);
   const [waitExpired, setWaitExpired] = useState(false);
@@ -25,13 +29,16 @@ export function VivaPaymentReturnEffects({
   useEffect(() => { refreshRef.current = router.refresh; }, [router]);
 
   useEffect(() => {
+    if (processed.current || (shouldClearCart && bitcoinOrderId && cartLoading)) return;
     if (shouldClearCart) {
-      clearCart();
+      if (bitcoinOrderId) consumePaidBitcoinCart(bitcoinOrderId, items, clearCart);
+      else clearCart();
       clearPendingVivaPayment(window.sessionStorage);
+      processed.current = true;
     }
 
     void refreshSession({ silent: true, force: true });
-  }, [clearCart, refreshSession, shouldClearCart]);
+  }, [bitcoinOrderId, cartLoading, clearCart, items, refreshSession, shouldClearCart]);
 
   useEffect(() => {
     if (!pollPayment) return;

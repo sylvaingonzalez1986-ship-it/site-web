@@ -1,17 +1,11 @@
 import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
-import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import {
-  consumeLotteryRewardClaimsForOrderByBackend,
-  mintLotteryTicketsForOrderByBackend,
-} from "@/lib/lottery-backend";
-import {
-  applyOrderLoyaltyBonusByBackend,
   finalizeVivaPaymentByBackend,
   getOrderByVivaOrderCodeByBackend,
   updateOrderPaymentByVivaOrderCodeByBackend,
 } from "@/lib/order-backend";
-import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
+import { processPaidOrder } from "@/lib/order-paid-effects";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import {
@@ -276,20 +270,8 @@ export async function POST(request: Request) {
       updated = result.order;
       reviewRequired = result.reviewRequired;
 
-      await issueInvoiceForOrder(updated.id);
-      if (!reviewRequired) {
-        await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
-        await applyOrderLoyaltyBonusByBackend(updated.id);
-        if (updated.customerId) {
-          await mintLotteryTicketsForOrderByBackend({
-            userId: updated.customerId,
-            orderId: updated.id,
-            orderAmount: updated.totalAmount,
-            bonusTicketCount: updated.extraLotteryTickets ?? 0,
-          });
-          await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });
-        }
-      } else {
+      await processPaidOrder(updated, reviewRequired);
+      if (reviewRequired) {
         console.error(`[viva-webhook] Paid order ${updated.id} requires manual payment review.`);
       }
     } else {

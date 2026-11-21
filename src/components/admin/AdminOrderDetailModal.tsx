@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AdminInvoiceDownload } from "@/components/admin/AdminInvoiceDownload";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { isInvoiceEligibleOrder } from "@/lib/invoice-utils";
 import { getDeliveryMethodLabel } from "@/lib/shipping";
+import type { SwissBitcoinPaymentSummary } from "@/lib/swiss-bitcoin-pay-types";
 import { formatPrice } from "@/lib/utils";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 
 type AdminOrderDetailModalProps = {
   order: CmsOrder | null;
+  bitcoinPayments: SwissBitcoinPaymentSummary[];
+  bitcoinHistoryUnavailable?: boolean;
+  onBitcoinHistoryRefresh: () => Promise<void>;
   onClose: () => void;
 };
 
@@ -28,6 +32,21 @@ const paymentStateLabels: Record<CmsOrder["paymentState"], string> = {
   failed: "Échec",
   not_configured: "Validation manuelle",
 };
+
+const bitcoinStateLabels: Record<SwissBitcoinPaymentSummary["state"], string> = {
+  creating: "Création en cours",
+  unknown: "Statut indéterminé",
+  pending: "En attente",
+  confirming: "Confirmation en cours",
+  expired: "Expiré",
+  failed: "Échec",
+  paid: "Payé",
+  review: "À vérifier",
+};
+
+function formatPaymentDate(value: string | null): string {
+  return value ? new Date(value).toLocaleString("fr-FR") : "Indisponible";
+}
 
 function getStatusClass(status: OrderStatus): string {
   switch (status) {
@@ -58,12 +77,18 @@ function getPaymentStateClass(paymentState: CmsOrder["paymentState"]): string {
   }
 }
 
-export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalProps) {
+export function AdminOrderDetailModal({
+  order, onClose, bitcoinPayments, bitcoinHistoryUnavailable = false, onBitcoinHistoryRefresh,
+}: AdminOrderDetailModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
-  useBodyScrollLock(Boolean(order));
+  const recoveryFeedbackRef = useRef<HTMLParagraphElement>(null);
+  const [recoveringInvoice, setRecoveringInvoice] = useState(false);
+  const [invoiceFeedback, setInvoiceFeedback] = useState<{ message: string; error: boolean } | null>(null);
+  const orderId = order?.id;
+  useBodyScrollLock(Boolean(orderId));
 
   useEffect(() => {
-    if (!order) {
+    if (!orderId) {
       return;
     }
 
@@ -97,13 +122,45 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
       window.removeEventListener("keydown", onKeyDown);
       previouslyFocusedElement?.focus();
     };
-  }, [order, onClose]);
+  }, [orderId, onClose]);
 
   if (!order) {
     return null;
   }
 
   const canDownloadInvoice = isInvoiceEligibleOrder(order);
+  const isBitcoinOrder = order.paymentProvider === "swiss_bitcoin_pay" || Boolean(order.swissBitcoinCardStartedAt);
+  const canRecoverInvoice = bitcoinPayments.some(({ state, invoiceId }) => state === "unknown" && !invoiceId);
+
+  const attachInvoice = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (recoveringInvoice) return;
+    const invoiceId = String(new FormData(event.currentTarget).get("invoiceId") ?? "").trim();
+    setRecoveringInvoice(true);
+    setInvoiceFeedback(null);
+    try {
+      const response = await fetch(`/api/admin/orders/${encodeURIComponent(order.id)}/bitcoin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ invoiceId }),
+      });
+      if (!response.ok) {
+        const data = await response.json().catch(() => null) as { error?: string } | null;
+        throw new Error(data?.error ?? "Le rattachement de la facture a échoué.");
+      }
+      setInvoiceFeedback({ message: "Facture rattachée. L’historique est en cours d’actualisation.", error: false });
+      await onBitcoinHistoryRefresh();
+      setInvoiceFeedback({ message: "Facture rattachée.", error: false });
+      recoveryFeedbackRef.current?.focus();
+    } catch (reason) {
+      setInvoiceFeedback({
+        message: reason instanceof Error ? reason.message : "Le rattachement de la facture a échoué.",
+        error: true,
+      });
+    } finally {
+      setRecoveringInvoice(false);
+    }
+  };
 
   const hasShippingInfo = Boolean(
     order.shippingAddress ||
@@ -167,7 +224,7 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
               Statut: {orderStatusLabels[order.status]}
             </span>
             <span className={`pill-cartoon px-3 py-1 ${getPaymentStateClass(order.paymentState)}`}>
-              Paiement: {paymentStateLabels[order.paymentState]}
+              {order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : {paymentStateLabels[order.paymentState]}
             </span>
             <span className="pill-cartoon px-3 py-1">
               Livraison: {getDeliveryMethodLabel(deliveryMethod)}
@@ -181,15 +238,93 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
 
           {order.paymentReviewRequired && (
             <div className="mt-4 border-2 border-red-700 bg-red-50 p-4 text-sm text-red-900" role="alert">
-              <p className="font-bold">Paiement confirme - revue manuelle obligatoire</p>
+              <p className="font-bold">Vérification manuelle du paiement requise</p>
               <p className="mt-1">
-                Le paiement Viva est enregistre, mais le stock ou une recompense necessite une verification.
-                Ne pas expedier avant reconciliation.
+                Vérifie le paiement et la commande avant expédition.
               </p>
               {order.paymentReviewReason && (
                 <p className="mt-2 break-words font-mono text-xs">{order.paymentReviewReason}</p>
               )}
             </div>
+          )}
+
+          {(isBitcoinOrder || bitcoinPayments.length > 0) && (
+            <section className="mt-6 border-t border-[#003f30]/20 pt-4">
+              <h4 className="font-display text-xl text-ink">Historique Swiss Bitcoin Pay</h4>
+              <p className="mt-1 text-sm text-charcoal">Total de la commande TTC {formatPrice(order.totalAmount)}</p>
+              {order.swissBitcoinCardStartedAt && (
+                <p className="mt-1 text-sm text-charcoal">
+                  Bascule vers la carte engagée le {formatPaymentDate(order.swissBitcoinCardStartedAt)}.
+                </p>
+              )}
+              {bitcoinPayments.length === 0 && (
+                <p className="mt-2 text-sm text-charcoal">
+                  {bitcoinHistoryUnavailable ? "L’historique est momentanément indisponible." : "Aucune tentative chargée."}
+                </p>
+              )}
+              <ul className="divide-y divide-[#003f30]/20">
+                {bitcoinPayments.map((payment) => {
+                  const details = [
+                    ["Identifiant de la facture", payment.invoiceId ?? "Indisponible"],
+                    ["Montant attendu", formatPrice(payment.expectedEurMinor / 100)],
+                    ["Montant payé vérifié", payment.paidSats === null
+                      ? "Indisponible" : `${payment.paidSats.toLocaleString("fr-FR")} sats`],
+                    ["Statut du prestataire", payment.providerStatus ?? "Indisponible"],
+                    ["Créée le", formatPaymentDate(payment.createdAt)],
+                    ["Expiration", formatPaymentDate(payment.expiresAt)],
+                    ["Paiement confirmé le", formatPaymentDate(payment.paidAt)],
+                    ["Dernière vérification", formatPaymentDate(payment.lastCheckedAt)],
+                    ...(payment.issue ? [["Anomalie", payment.issue]] : []),
+                  ];
+                  return (
+                    <li key={payment.id} className="py-3">
+                      <h5 className="font-bold text-ink">{bitcoinStateLabels[payment.state]}</h5>
+                      <dl className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
+                        {details.map(([label, value]) => (
+                          <div key={label} className="min-w-0">
+                            <dt className="font-semibold text-charcoal">{label}</dt>
+                            <dd className="break-words text-ink">{value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </li>
+                  );
+                })}
+              </ul>
+              {canRecoverInvoice && (
+                <form className="mt-3 grid gap-2 border-t border-[#003f30]/20 pt-3" onSubmit={attachInvoice}>
+                  <label className="grid gap-1 text-sm font-semibold text-ink">
+                    Identifiant de la facture Swiss Bitcoin Pay retrouvée
+                    <input
+                      type="text"
+                      name="invoiceId"
+                      required
+                      autoComplete="off"
+                      spellCheck={false}
+                      maxLength={36}
+                      pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                      className="min-h-11 min-w-0 border border-ink bg-white px-3"
+                    />
+                  </label>
+                  <button type="submit" className="btn-cartoon btn-secondary min-h-11 justify-self-start" disabled={recoveringInvoice}>
+                    {recoveringInvoice ? "Vérification de la facture…" : "Vérifier et rattacher la facture"}
+                  </button>
+                </form>
+              )}
+              {invoiceFeedback && (
+                <p role={invoiceFeedback.error ? "alert" : "status"} tabIndex={-1} ref={recoveryFeedbackRef} className="mt-2 text-sm font-bold text-ink">
+                  {invoiceFeedback.message}
+                </p>
+              )}
+              <div className="mt-3 border-t border-[#003f30]/20 pt-3">
+                <h5 className="font-bold text-ink">Rapprochement financier</h5>
+                <dl className="mt-1 grid gap-1 text-sm sm:grid-cols-3">
+                  <div><dt>Conversion</dt><dd>Indisponible</dd></div>
+                  <div><dt>Frais</dt><dd>Indisponibles</dd></div>
+                  <div><dt>Virement</dt><dd>Indisponible</dd></div>
+                </dl>
+              </div>
+            </section>
           )}
 
           <div className="mt-6 grid gap-4 md:grid-cols-2">

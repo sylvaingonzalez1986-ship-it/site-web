@@ -42,12 +42,13 @@ export type CmsOrder = {
   id: string;
   createdAt: string;
   status: OrderStatus;
-  paymentProvider: "viva";
+  paymentProvider: "viva" | "swiss_bitcoin_pay";
   paymentState: "pending" | "paid" | "failed" | "not_configured";
   archivedAt?: string;
   archivedReason?: string;
   vivaOrderCode?: string;
   vivaTransactionId?: string;
+  swissBitcoinCardStartedAt?: string;
   paymentReviewRequired?: boolean;
   paymentReviewReason?: string;
   source: "web";

@@ -1,0 +1,179 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+  createSwissBitcoinInvoice,
+  fetchSwissBitcoinInvoice,
+  inspectSwissBitcoinInvoice,
+  isSwissBitcoinPayEnabled,
+  matchesSwissBitcoinSecret,
+  swissBitcoinCheckoutUrl,
+} from "@/lib/swiss-bitcoin-pay";
+
+const invoiceId = "10111111-1111-4111-8111-111111111111";
+const attemptId = "20222222-2222-4222-8222-222222222222";
+const orderId = "ORD-20261121-4321";
+const checkoutUrl = `https://pay.swiss-bitcoin-pay.ch/${invoiceId}`;
+const paymentHash = "a".repeat(64);
+const paidInvoice = {
+  id: invoiceId,
+  status: "paid",
+  createdAt: 1795260000000,
+  delay: 10,
+  extra: { reference: attemptId },
+  input: { amount: 21.50, unit: "EUR" },
+  paymentDetails: [{ network: "lightning", paidAt: 1795260010000, hash: paymentHash, amount: 12_345 }],
+};
+
+function configure() {
+  vi.stubEnv("SWISS_BITCOIN_PAY_ENABLED", "true");
+  vi.stubEnv("SWISS_BITCOIN_PAY_API_KEY", "api-key");
+  vi.stubEnv("SWISS_BITCOIN_PAY_WEBHOOK_SECRET", "webhook-secret");
+  vi.stubEnv("CRON_SECRET", "cron-secret");
+  vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://shop.example.test/path?ignored=1");
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllEnvs();
+});
+
+describe("Swiss Bitcoin Pay merchant API", () => {
+  it("creates a Lightning invoice for the exact order total without customer data", async () => {
+    configure();
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      Response.json({ id: invoiceId, checkoutUrl, pr: "invoice-private-unneeded" }, { status: 201 }),
+    );
+    expect(await createSwissBitcoinInvoice(orderId, attemptId, 2150)).toEqual({ invoiceId, checkoutUrl });
+    expect(fetchMock.mock.calls[0][0]).toBe("https://api.swiss-bitcoin-pay.ch/checkout");
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      method: "POST",
+      redirect: "error",
+      headers: { "api-key": "api-key" },
+    });
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body))).toEqual({
+      amount: 21.50,
+      unit: "EUR",
+      onChain: false,
+      delay: 10,
+      redirect: false,
+      redirectAfterPaid: `https://shop.example.test/checkout/bitcoin/${orderId}`,
+      webhook: {
+        url: "https://shop.example.test/api/checkout/bitcoin/webhook",
+        headers: { "x-sbp-webhook-secret": "webhook-secret" },
+      },
+      extra: { reference: attemptId },
+    });
+  });
+
+  it("uses the merchant key already configured as swiss_bitcoin on Vercel", async () => {
+    configure();
+    vi.stubEnv("SWISS_BITCOIN_PAY_API_KEY", "");
+    vi.stubEnv("swiss_bitcoin", "existing-key");
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      Response.json({ id: invoiceId, checkoutUrl }, { status: 201 }),
+    );
+    await createSwissBitcoinInvoice(orderId, attemptId, 2150);
+    expect(fetchMock.mock.calls[0][1]?.headers).toMatchObject({ "api-key": "existing-key" });
+  });
+
+  it("checks existing invoices after disabling creation and omits the api key", async () => {
+    configure();
+    vi.stubEnv("SWISS_BITCOIN_PAY_ENABLED", "false");
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json(paidInvoice));
+    expect(isSwissBitcoinPayEnabled()).toBe(false);
+    expect(await fetchSwissBitcoinInvoice(invoiceId)).toEqual(paidInvoice);
+    expect(fetchMock.mock.calls[0][0]).toBe(`https://api.swiss-bitcoin-pay.ch/checkout/${invoiceId}`);
+    expect(fetchMock.mock.calls[0][1]?.headers).toBeUndefined();
+  });
+
+  it("distinguishes explicit API denial from an ambiguous create failure", async () => {
+    configure();
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 403 }))
+      .mockResolvedValueOnce(new Response(null, { status: 500 }));
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: false });
+  });
+
+  it("does not enable creation with an insecure canonical origin", () => {
+    configure();
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "http://shop.example.test");
+    expect(isSwissBitcoinPayEnabled()).toBe(false);
+  });
+
+  it("does not enable creation while scheduled recovery is unconfigured", () => {
+    configure();
+    vi.stubEnv("CRON_SECRET", " ");
+    expect(isSwissBitcoinPayEnabled()).toBe(false);
+  });
+
+  it.each([
+    "http://pay.swiss-bitcoin-pay.ch/",
+    "https://swiss-bitcoin-pay.ch.example.test/",
+    "https://swiss-bitcoin-pay.ch@example.test/",
+    "https://example.test@swiss-bitcoin-pay.ch/",
+    "https://swiss-bitcoin-pay.ch:8080/",
+  ])("rejects unsafe checkout URL %s", (url) => {
+    expect(swissBitcoinCheckoutUrl(url)).toBeNull();
+  });
+
+  it("requires the webhook secret to match exactly", () => {
+    expect(matchesSwissBitcoinSecret("shared", "shared")).toBe(true);
+    expect(matchesSwissBitcoinSecret("SHARED", "shared")).toBe(false);
+    expect(matchesSwissBitcoinSecret("", undefined)).toBe(false);
+  });
+});
+
+describe("Swiss Bitcoin Pay invoice observations", () => {
+  it("uses the requested EUR amount, settled status and paid Lightning reference", () => {
+    expect(inspectSwissBitcoinInvoice(paidInvoice, invoiceId, attemptId, 2150)).toEqual({
+      associationVerified: true,
+      state: "paid",
+      issue: null,
+      currency: "EUR",
+      eurMinor: 2150,
+      providerStatus: "paid",
+      expiresAt: new Date(paidInvoice.createdAt + 600_000).toISOString(),
+      paidAt: new Date(paidInvoice.paymentDetails[0].paidAt).toISOString(),
+      paidSats: null,
+      paymentReference: paymentHash,
+    });
+  });
+
+  it.each([
+    [{ input: { unit: "USD", amount: 21.50 } }, "invoice_amount_mismatch"],
+    [{ input: { unit: "EUR", amount: 21.499 } }, "invoice_amount_mismatch"],
+    [{ input: { unit: "EUR", amount: "21.50" } }, "invoice_amount_mismatch"],
+    [{ input: { unit: "EUR", amount: 21.51 } }, "invoice_amount_mismatch"],
+    [{ input: { unit: "eur", amount: 21.50 } }, "invoice_amount_mismatch"],
+    [{ extra: { reference: invoiceId } }, "invoice_reference_mismatch"],
+    [{ id: attemptId }, "invoice_id_mismatch"],
+    [{ status: "unknown" }, "invoice_status_unknown"],
+  ])("requires manual review when %j conflicts with the stored attempt", (changes, issue) => {
+    expect(inspectSwissBitcoinInvoice({ ...paidInvoice, ...changes }, invoiceId, attemptId, 2150))
+      .toMatchObject({ state: "review", issue, paidAt: null, paidSats: null, paymentReference: null });
+  });
+
+  it("never treats obsolete flags as settlement", () => {
+    expect(inspectSwissBitcoinInvoice({ ...paidInvoice, status: "unconfirmed", isPaid: true }, invoiceId, attemptId, 2150))
+      .toMatchObject({ state: "confirming", paidAt: null });
+  });
+
+  it("interprets the provider's response delay in seconds and preserves the observed paid time", () => {
+    const createdAt = 1795260000;
+    const expiresAt = new Date((createdAt + 600) * 1000).toISOString();
+    expect(inspectSwissBitcoinInvoice({ ...paidInvoice, createdAt, delay: 600 }, invoiceId, attemptId, 2150))
+      .toMatchObject({ state: "paid", expiresAt });
+  });
+
+  it("asks for review when settlement time or invoice expiry cannot be established", () => {
+    expect(inspectSwissBitcoinInvoice({ ...paidInvoice, paymentDetails: [] }, invoiceId, attemptId, 2150))
+      .toMatchObject({ state: "review", issue: "invoice_timing_unverified" });
+    expect(inspectSwissBitcoinInvoice({ ...paidInvoice, delay: undefined }, invoiceId, attemptId, 2150))
+      .toMatchObject({ state: "review", issue: "invoice_timing_unverified" });
+  });
+
+  it("records a verified payment reported on-chain for review", () => {
+    expect(inspectSwissBitcoinInvoice({ ...paidInvoice, paymentMethod: "onchain" }, invoiceId, attemptId, 2150))
+      .toMatchObject({ associationVerified: true, state: "review", issue: "invoice_network_mismatch" });
+  });
+});
