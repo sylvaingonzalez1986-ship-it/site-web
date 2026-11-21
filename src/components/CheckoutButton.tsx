@@ -77,7 +77,7 @@ export function CheckoutButton({
 }: CheckoutButtonProps) {
   const { hasConsent } = useCookieConsent();
   const methodName = useId();
-  const submitting = useRef(false);
+  const checkoutRequest = useRef<AbortController | null>(null);
   const [bitcoinAvailability, setBitcoinAvailability] = useState<BitcoinAvailability>("loading");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
   const [loading, setLoading] = useState(false);
@@ -100,10 +100,13 @@ export function CheckoutButton({
     return () => controller.abort();
   }, []);
 
+  useEffect(() => () => checkoutRequest.current?.abort(), []);
+
   const handleCheckout = async () => {
-    if (submitting.current || !paymentMethod ||
+    if (checkoutRequest.current || !paymentMethod ||
         (paymentMethod === "bitcoin_lightning" && bitcoinAvailability !== "enabled")) return;
-    submitting.current = true;
+    const controller = new AbortController();
+    checkoutRequest.current = controller;
     setLoading(true);
     setError(null);
     setResumeUrl(null);
@@ -136,55 +139,74 @@ export function CheckoutButton({
       } catch {
         window.sessionStorage.removeItem(VIVA_CHECKOUT_ATTEMPT_STORAGE_KEY);
       }
-      if (!checkoutAttemptId) {
-        checkoutAttemptId = createClientRequestKey();
+      const startNewAttempt = () => {
+        const attemptId = createClientRequestKey();
         window.sessionStorage.setItem(
           VIVA_CHECKOUT_ATTEMPT_STORAGE_KEY,
-          JSON.stringify({ signature: attemptSignature, attemptId: checkoutAttemptId }),
+          JSON.stringify({ signature: attemptSignature, attemptId }),
         );
-      }
-
-      const response = await fetch("/api/checkout/viva", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "checkout",
-          paymentMethod,
-          amount,
-          itemsCount,
-          items,
-          shippingName: shipping.name,
-          shippingEmail: shipping.email,
-          shippingPhone: shipping.phone,
-          shippingAddress: shipping.address,
-          shippingCity: shipping.city,
-          shippingPostalCode: shipping.postalCode,
-          shippingCountry: shipping.country,
-          deliveryMethod: shipping.deliveryMethod,
-          deliveryFeeEur: shipping.deliveryFeeEur,
-          relayId: shipping.relayId,
-          relayName: shipping.relayName,
-          relayAddress: shipping.relayAddress,
-          relayPostalCode: shipping.relayPostalCode,
-          relayCity: shipping.relayCity,
-          relayCountry: shipping.relayCountry,
-          promoCode: promoCode || undefined,
-          lotteryRewardClaimId: lotteryRewardClaimId || undefined,
-          checkoutAttemptId,
-        }),
-      });
-
-      const data = (await response.json()) as {
-        redirectUrl?: string;
-        error?: string;
-        message?: string;
-        orderId?: string;
-        resumed?: boolean;
-        code?: string;
-        resumeUrl?: string;
+        return attemptId;
       };
+      if (!checkoutAttemptId) checkoutAttemptId = startNewAttempt();
+
+      const checkoutPayload = {
+        action: "checkout",
+        paymentMethod,
+        amount,
+        itemsCount,
+        items,
+        shippingName: shipping.name,
+        shippingEmail: shipping.email,
+        shippingPhone: shipping.phone,
+        shippingAddress: shipping.address,
+        shippingCity: shipping.city,
+        shippingPostalCode: shipping.postalCode,
+        shippingCountry: shipping.country,
+        deliveryMethod: shipping.deliveryMethod,
+        deliveryFeeEur: shipping.deliveryFeeEur,
+        relayId: shipping.relayId,
+        relayName: shipping.relayName,
+        relayAddress: shipping.relayAddress,
+        relayPostalCode: shipping.relayPostalCode,
+        relayCity: shipping.relayCity,
+        relayCountry: shipping.relayCountry,
+        promoCode: promoCode || undefined,
+        lotteryRewardClaimId: lotteryRewardClaimId || undefined,
+      };
+      const sendAttempt = async (attemptId: string) => {
+        const response = await fetch("/api/checkout/viva", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...checkoutPayload, checkoutAttemptId: attemptId }),
+          signal: controller.signal,
+        });
+        const data = (await response.json()) as {
+          redirectUrl?: string;
+          error?: string;
+          orderId?: string;
+          resumed?: boolean;
+          code?: string;
+          resumeUrl?: string;
+        };
+        return { response, data };
+      };
+
+      let { response, data } = await sendAttempt(checkoutAttemptId);
+      let restarted = false;
+      let busyRetries = 0;
+      while (response.status === 409) {
+        if (data.code === "checkout_attempt_archived" && !restarted) {
+          checkoutAttemptId = startNewAttempt();
+          restarted = true;
+        } else if (data.code === "checkout_attempt_busy" && busyRetries < 2) {
+          busyRetries += 1;
+          await new Promise<void>((resolve) => window.setTimeout(resolve, 3_000));
+        } else {
+          break;
+        }
+        controller.signal.throwIfAborted();
+        ({ response, data } = await sendAttempt(checkoutAttemptId));
+      }
 
       if (!response.ok) {
         if (response.status === 409 && data.code === "checkout_method_conflict") {
@@ -194,7 +216,7 @@ export function CheckoutButton({
           setError(data.error ?? "Un paiement est déjà en cours avec l’autre moyen de paiement.");
           return;
         }
-        if (data.code === "checkout_attempt_completed") {
+        if (data.code === "checkout_attempt_completed" || data.code === "checkout_attempt_archived") {
           window.sessionStorage.removeItem(VIVA_CHECKOUT_ATTEMPT_STORAGE_KEY);
         }
         if (hasConsent("analytics")) {
@@ -232,10 +254,10 @@ export function CheckoutButton({
       setSuccess(data.orderId ? `Commande ${data.orderId} enregistrée.` : "Commande enregistrée.");
       onSuccess?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inconnue.");
+      if (!controller.signal.aborted) setError(err instanceof Error ? err.message : "Erreur inconnue.");
     } finally {
-      submitting.current = false;
-      setLoading(false);
+      checkoutRequest.current = null;
+      if (!controller.signal.aborted) setLoading(false);
     }
   };
 

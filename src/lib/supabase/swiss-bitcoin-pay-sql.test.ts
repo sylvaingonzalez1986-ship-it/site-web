@@ -31,6 +31,7 @@ beforeAll(async () => {
       archived_at TIMESTAMPTZ, archived_reason TEXT, checkout_attempt_id UUID,
       payment_review_required BOOLEAN NOT NULL DEFAULT FALSE, payment_review_reason TEXT,
       stock_applied_at TIMESTAMPTZ, tracking_number TEXT, paid_at TIMESTAMPTZ);
+    CREATE UNIQUE INDEX uq_orders_checkout_attempt_id ON orders (checkout_attempt_id) WHERE checkout_attempt_id IS NOT NULL;
     CREATE TABLE products(id TEXT PRIMARY KEY, track_stock BOOLEAN, stock_quantity INTEGER, variant_options JSONB);
     CREATE TABLE order_items(id INTEGER, order_id TEXT, product_id TEXT, quantity INTEGER, unit_price NUMERIC);
     CREATE TABLE checkout_attempts(attempt_id UUID PRIMARY KEY, customer_id UUID, cart_fingerprint TEXT, order_id TEXT, state TEXT DEFAULT 'creating',
@@ -57,7 +58,6 @@ beforeAll(async () => {
     "rpc_consume_lottery_reward_claims_for_order", "rpc_release_lottery_reward_claims_for_order"]) {
     await db.exec(definition(lottery, name));
   }
-  await db.exec(definition(migration("20260811000100_checkout_payment_security_hardening"), "rpc_begin_checkout_attempt"));
   await db.exec(definition(migration("20260826000100_arena_customer_reward_pool"), "arena_set_order_paid_at"));
   await db.exec(definition(migration("20261025000300_monthly_review_draw"), "monthly_review_draw_keep_order_reservation"));
   await db.exec(`
@@ -69,6 +69,7 @@ beforeAll(async () => {
   await db.exec(migration("20261110000300_security_payment_boundaries"));
   await db.exec(migration("20261121000100_swiss_bitcoin_pay"));
   await db.exec(migration("20261121000200_swiss_bitcoin_deferred_archive"));
+  await db.exec(migration("20261121000300_checkout_restart_after_archive"));
 }, 30_000);
 
 beforeEach(async () => {
@@ -123,6 +124,19 @@ const requestArchive = async () => (await db.query("SELECT rpc_request_swiss_bit
 const archiveIdle = async () => (await db.query("SELECT rpc_archive_idle_swiss_bitcoin_orders(25) AS count")).rows[0];
 
 describe("Swiss Bitcoin Pay payment transitions", () => {
+  it.each(["failed", "creating"])("restarts an archived checkout with a fresh key when the old attempt is %s", async (state) => {
+    expect(await requestArchive()).toEqual({ result: { action: "archived" } });
+    await db.query("UPDATE checkout_attempts SET state = $1, updated_at = now() WHERE attempt_id = $2", [state, checkout]);
+    expect((await checkoutBegin()).rows[0].result).toEqual({ action: "restart" });
+    expect((await checkoutBegin(secondInvoice)).rows[0].result).toEqual({ action: "create" });
+    expect((await checkoutBegin(secondInvoice)).rows[0].result).toEqual({ action: "busy" });
+    await db.query("SELECT rpc_create_swiss_bitcoin_order($1, $2, NULL, $3, NULL)", [
+      { id: "ORDER-2", customer_id: owner, total_amount: 10 }, { product_id: "product" }, secondInvoice,
+    ]);
+    expect((await checkoutBegin(invoice)).rows[0].result).toMatchObject({ action: "resume", order_id: "ORDER-2" });
+    expect(await order()).toMatchObject({ checkout_attempt_id: checkout, payment_state: "failed" });
+  });
+
   it("commits order, checkout link and reserved reward once, shared by card and Bitcoin", async () => {
     await createOrder();
     expect(await order()).toMatchObject({ payment_provider: "swiss_bitcoin_pay", payment_state: "pending" });

@@ -258,6 +258,26 @@ describe("POST /api/checkout/viva delivery details", () => {
     expect(prepareSwissBitcoinPayment).not.toHaveBeenCalled();
   });
 
+  it.each(["card", "bitcoin_lightning"])("allows a fresh attempt after the prior order was archived (%s)", async (paymentMethod) => {
+    isSwissBitcoinPayEnabled.mockReturnValue(true);
+    beginCheckoutAttempt.mockResolvedValue({ action: "restart" });
+    const response = await checkout({ ...homeDelivery, paymentMethod });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ code: "checkout_attempt_archived" });
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+    expect(createVivaCheckoutOrder).not.toHaveBeenCalled();
+  });
+
+  it("returns a retry hint when the attempt is still active", async () => {
+    isSwissBitcoinPayEnabled.mockReturnValue(true);
+    beginCheckoutAttempt.mockResolvedValue({ action: "busy" });
+    const response = await checkout({ ...homeDelivery, paymentMethod: "bitcoin_lightning" });
+    expect(response.status).toBe(409);
+    expect(response.headers.get("Retry-After")).toBe("3");
+    expect(await response.json()).toMatchObject({ code: "checkout_attempt_busy" });
+    expect(appendOrderByBackend).not.toHaveBeenCalled();
+  });
+
   it("resumes the same Viva session when the current choice is card", async () => {
     beginCheckoutAttempt.mockResolvedValue({ action: "resume", orderId: "order-1", checkoutUrl: "https://payment.example.test/checkout" });
     const response = await checkout({ ...homeDelivery, paymentMethod: "card" });

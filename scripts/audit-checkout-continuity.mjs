@@ -78,9 +78,20 @@ window.fetch=async(input,init={})=>{
    ...(state.bitcoinState==='pending'?{checkoutUrl:'https://checkout.example.test/fake-invoice'}:{})});
  }
  if(url.pathname==='/api/checkout/viva'&&method==='POST'&&body.paymentMethod==='bitcoin_lightning'){
+  const bitcoinAttempts=JSON.parse(sessionStorage.getItem('audit:bitcoin-attempts')??'[]');
+  bitcoinAttempts.push(body.checkoutAttemptId);
+  sessionStorage.setItem('audit:bitcoin-attempts',JSON.stringify(bitcoinAttempts));
   if(state.conflict){
    return Response.json({code:'checkout_method_conflict',error:'Un paiement est déjà en cours avec l’autre moyen de paiement.',orderId:'AUDIT-CARD',
     resumeUrl:'/api/account/orders/AUDIT-CARD/resume-payment'},{status:409});
+  }
+  if(state.retryBitcoin==='archived'){
+   state.retryBitcoin='busy';
+   return Response.json({code:'checkout_attempt_archived'},{status:409});
+  }
+  if(state.retryBitcoin==='busy'){
+   state.retryBitcoin=null;
+   return Response.json({code:'checkout_attempt_busy'},{status:409,headers:{'Retry-After':'3'}});
   }
   sessionStorage.setItem('audit:bitcoin-attempt',body.checkoutAttemptId);
   return Response.json({orderId:'AUDIT-BITCOIN',redirectUrl:'/checkout/bitcoin/AUDIT-BITCOIN',resumed:false});
@@ -484,14 +495,20 @@ try {
     assert.equal(await page.$eval("#fixture-state", state => state.dataset.count), "1");
     assert.equal(await page.evaluate(() => sessionStorage.getItem("checkout:viva:pending-payment")), null);
     record("method-conflict-offers-explicit-resume-without-redirect", width);
-    await page.evaluate(() => { window.__fixture.conflict = false; });
+    await page.evaluate(() => { window.__fixture.conflict = false; window.__fixture.retryBitcoin = "archived"; });
     await Promise.all([page.waitForNavigation(), clickButton("Payer ")]);
     await page.waitForSelector('a[href="https://checkout.example.test/fake-invoice"]');
-    assert.equal(await page.evaluate(() => sessionStorage.getItem("audit:bitcoin-attempt")), cardAttempt.checkoutAttemptId);
+    const bitcoinAttempts = await page.evaluate(() => JSON.parse(sessionStorage.getItem("audit:bitcoin-attempts") ?? "[]"));
+    assert.equal(bitcoinAttempts.length, 4);
+    assert.equal(bitcoinAttempts[0], cardAttempt.checkoutAttemptId);
+    assert.equal(bitcoinAttempts[1], cardAttempt.checkoutAttemptId);
+    assert.notEqual(bitcoinAttempts[2], cardAttempt.checkoutAttemptId);
+    assert.equal(bitcoinAttempts[3], bitcoinAttempts[2]);
+    assert.equal(await page.evaluate(() => sessionStorage.getItem("audit:bitcoin-attempt")), bitcoinAttempts[2]);
     assert.equal(await page.evaluate(() => sessionStorage.getItem("checkout:viva:pending-payment")), null);
     assert.equal(await page.$eval("#fixture-state", state => state.dataset.count), "1");
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
-    record("bitcoin-and-card-share-attempt-and-bitcoin-payment-fits-viewport", width);
+    record("archived-checkout-renews-once-and-busy-reuses-the-fresh-key", width);
 
     // A changed cart must survive even after the original order is confirmed.
     if (width === 320) {

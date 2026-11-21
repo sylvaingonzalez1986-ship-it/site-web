@@ -7,6 +7,7 @@ type CheckoutAttemptAction =
   | { action: "create" }
   | { action: "busy" }
   | { action: "completed" }
+  | { action: "restart" }
   | { action: "resume"; orderId: string; checkoutUrl: string };
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -56,7 +57,7 @@ export async function beginCheckoutAttempt(input: {
 
   const payload = asRecord(result.data);
   const action = asText(payload.action);
-  if (action === "create" || action === "busy" || action === "completed") {
+  if (action === "create" || action === "busy" || action === "completed" || action === "restart") {
     return { action };
   }
   if (action === "resume") {

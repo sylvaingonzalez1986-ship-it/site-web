@@ -1015,8 +1015,14 @@ export async function POST(request: Request) {
   }
   if (attempt.action === "busy") {
     return NextResponse.json(
-      { error: "Le paiement est deja en cours de preparation. Patiente quelques secondes." },
+      { code: "checkout_attempt_busy", error: "Le paiement se prépare encore. Réessaie dans un instant pour reprendre la même tentative." },
       { status: 409, headers: { "Retry-After": "3" } },
+    );
+  }
+  if (attempt.action === "restart") {
+    return NextResponse.json(
+      { code: "checkout_attempt_archived", error: "La commande précédente a été archivée. Réessaie pour lancer un nouveau paiement." },
+      { status: 409 },
     );
   }
   if (attempt.action === "completed") {
