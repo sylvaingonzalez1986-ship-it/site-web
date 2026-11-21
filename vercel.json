@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "src/app/api/checkout/viva/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/checkout/bitcoin/*/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/cron/swiss-bitcoin-pay/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/admin/orders/*/bitcoin/route.ts": { "regions": ["cdg1"] }
+  },
   "crons": [
     { "path": "/api/cron/placard-crypto", "schedule": "0 17 * * *" },
     { "path": "/api/cron/placard-crypto", "schedule": "0 18 * * *" },

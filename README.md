@@ -22,6 +22,9 @@ applique le réglage marchand existant **95 % EUR / 5 % BTC**.
    Le serveur transmet à Swiss Bitcoin Pay l’URL et l’en-tête privé
    `x-sbp-webhook-secret` à chaque création. Le webhook est
    `POST /api/checkout/bitcoin/webhook`.
+   Le checkout, les reprises et les vérifications auprès de Swiss Bitcoin Pay
+   s’exécutent à Paris (`cdg1`). Lors de la mise en service, les mêmes appels
+   anonymes à l’API depuis la Virginie (`iad1`) recevaient un HTTP 403 vide.
 3. Vérifier dans Vercel que `GET /api/cron/swiss-bitcoin-pay` tourne toutes
    les cinq minutes avec le secret de cron. Son résultat JSON indique le
    nombre de tentatives vérifiées et d’échecs. Les erreurs de vérification
