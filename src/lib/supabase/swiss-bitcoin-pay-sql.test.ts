@@ -30,14 +30,15 @@ beforeAll(async () => {
       viva_order_code TEXT UNIQUE, viva_transaction_id TEXT UNIQUE, customer_id UUID, promo_code TEXT,
       archived_at TIMESTAMPTZ, archived_reason TEXT, checkout_attempt_id UUID,
       payment_review_required BOOLEAN NOT NULL DEFAULT FALSE, payment_review_reason TEXT,
-      stock_applied_at TIMESTAMPTZ, tracking_number TEXT);
+      stock_applied_at TIMESTAMPTZ, tracking_number TEXT, paid_at TIMESTAMPTZ);
     CREATE TABLE products(id TEXT PRIMARY KEY, track_stock BOOLEAN, stock_quantity INTEGER, variant_options JSONB);
     CREATE TABLE order_items(id INTEGER, order_id TEXT, product_id TEXT, quantity INTEGER, unit_price NUMERIC);
     CREATE TABLE checkout_attempts(attempt_id UUID PRIMARY KEY, customer_id UUID, cart_fingerprint TEXT, order_id TEXT, state TEXT DEFAULT 'creating',
       updated_at TIMESTAMPTZ DEFAULT now(), last_error TEXT, viva_order_code TEXT, checkout_url TEXT, attempt_count INTEGER DEFAULT 1);
     CREATE TABLE promo_codes(customer_id UUID, code TEXT, used BOOLEAN, used_at TIMESTAMPTZ);
     CREATE TABLE lottery_reward_claims(id UUID PRIMARY KEY, user_id UUID, reward_line_id TEXT, status TEXT,
-      reserved_order_id TEXT, reserved_at TIMESTAMPTZ, reserved_until TIMESTAMPTZ, used_at TIMESTAMPTZ, used_order_id TEXT);
+      reserved_order_id TEXT, reserved_at TIMESTAMPTZ, reserved_until TIMESTAMPTZ, used_at TIMESTAMPTZ, used_order_id TEXT,
+      reward_snapshot JSONB);
     CREATE TABLE lottery_reward_lines(claim_id UUID, status TEXT, claimed_at TIMESTAMPTZ);
     CREATE TABLE lottery_audit_log(event_type TEXT, order_id TEXT, details JSONB, user_id UUID, reward_claim_id UUID);
     CREATE FUNCTION rpc_create_order(p_order JSONB, p_items JSONB, p_promo JSONB) RETURNS TEXT LANGUAGE plpgsql AS $$
@@ -57,8 +58,17 @@ beforeAll(async () => {
     await db.exec(definition(lottery, name));
   }
   await db.exec(definition(migration("20260811000100_checkout_payment_security_hardening"), "rpc_begin_checkout_attempt"));
+  await db.exec(definition(migration("20260826000100_arena_customer_reward_pool"), "arena_set_order_paid_at"));
+  await db.exec(definition(migration("20261025000300_monthly_review_draw"), "monthly_review_draw_keep_order_reservation"));
+  await db.exec(`
+    CREATE TRIGGER trg_arena_set_order_paid_at BEFORE INSERT OR UPDATE OF payment_state ON public.orders
+      FOR EACH ROW EXECUTE FUNCTION public.arena_set_order_paid_at();
+    CREATE TRIGGER monthly_review_draw_order_reservation BEFORE INSERT OR UPDATE ON public.lottery_reward_claims
+      FOR EACH ROW EXECUTE FUNCTION public.monthly_review_draw_keep_order_reservation();
+  `);
   await db.exec(migration("20261110000300_security_payment_boundaries"));
   await db.exec(migration("20261121000100_swiss_bitcoin_pay"));
+  await db.exec(migration("20261121000200_swiss_bitcoin_deferred_archive"));
 }, 30_000);
 
 beforeEach(async () => {
@@ -102,11 +112,15 @@ async function observe(attemptId: string, state: string, invoiceId = invoice, ce
   `, [attemptId, invoiceId, state, cents, currency])).rows[0].result;
 }
 
-const order = async () => (await db.query("SELECT * FROM orders WHERE id = 'ORDER-1'")).rows[0];
+const order = async () => (await db.query<{ swiss_bitcoin_archive_requested_at: Date | null; paid_at: Date | null }>(
+  "SELECT * FROM orders WHERE id = 'ORDER-1'",
+)).rows[0];
 const stock = async () => (await db.query("SELECT stock_quantity FROM products")).rows[0];
 const claim = async () => (await db.query("SELECT status, reserved_order_id, used_order_id FROM lottery_reward_claims")).rows[0];
 const attempts = async () => (await db.query("SELECT id, state, issue, paid_sats, effects_pending FROM swiss_bitcoin_payment_attempts ORDER BY created_at")).rows;
 const card = async () => (await db.query("SELECT rpc_claim_swiss_bitcoin_card_fallback('ORDER-1') AS claimed")).rows[0];
+const requestArchive = async () => (await db.query("SELECT rpc_request_swiss_bitcoin_archive('ORDER-1') AS result")).rows[0];
+const archiveIdle = async () => (await db.query("SELECT rpc_archive_idle_swiss_bitcoin_orders(25) AS count")).rows[0];
 
 describe("Swiss Bitcoin Pay payment transitions", () => {
   it("commits order, checkout link and reserved reward once, shared by card and Bitcoin", async () => {
@@ -223,13 +237,98 @@ describe("Swiss Bitcoin Pay payment transitions", () => {
     expect(await attempts()).toMatchObject([{ state: "review", issue: "duplicate_payment" }]);
   });
 
+  it.each(["failed", "expired"])("archives an admin request immediately after a verified %s attempt", async (state) => {
+    const { attempt_id: attemptId } = await begin();
+    if (state === "failed") {
+      await db.query("SELECT rpc_note_swiss_bitcoin_creation($1, TRUE)", [attemptId]);
+    } else {
+      await attach(attemptId);
+      await observe(attemptId, "expired");
+    }
+    expect(await requestArchive()).toEqual({ result: { action: "archived" } });
+    expect(await order()).toMatchObject({ status: "cancelled", payment_state: "failed", archived_reason: "admin_removed_incomplete" });
+    expect(await claim()).toMatchObject({ status: "available" });
+    expect(await attempts()).toMatchObject([{ id: attemptId, state }]);
+    expect(await requestArchive()).toEqual({ result: { action: "blocked" } });
+  });
+
+  it("keeps an active invoice payable, prevents replacement and archives as soon as expiry is verified", async () => {
+    const { attempt_id: attemptId } = await begin();
+    await attach(attemptId);
+    await expect(db.exec("SELECT rpc_archive_incomplete_order('ORDER-1')")).rejects.toThrow("order_transition_bitcoin_open");
+    expect(await requestArchive()).toEqual({ result: { action: "scheduled" } });
+    const requested = (await order()).swiss_bitcoin_archive_requested_at;
+    expect(requested).not.toBeNull();
+    expect(await requestArchive()).toEqual({ result: { action: "scheduled" } });
+    expect((await order()).swiss_bitcoin_archive_requested_at).toEqual(requested);
+    expect(await archiveIdle()).toEqual({ count: 0 });
+    expect(await claim()).toMatchObject({ status: "reserved" });
+    await observe(attemptId, "expired");
+    await expect(begin(true)).rejects.toThrow("order_transition_bitcoin_archive_requested");
+    await expect(card()).rejects.toThrow("order_transition_bitcoin_archive_requested");
+    expect(await archiveIdle()).toEqual({ count: 1 });
+    expect(await order()).toMatchObject({ status: "cancelled", archived_reason: "admin_removed_incomplete" });
+    expect(await claim()).toMatchObject({ status: "available" });
+    await observe(attemptId, "paid");
+    expect(await attempts()).toMatchObject([{ state: "review", issue: "payment_after_cancellation" }]);
+    expect(await stock()).toEqual({ stock_quantity: 5 });
+  });
+
+  it("clears the request when an open invoice is paid and preserves the normal payment effects", async () => {
+    const { attempt_id: attemptId } = await begin();
+    await attach(attemptId);
+    expect(await requestArchive()).toEqual({ result: { action: "scheduled" } });
+    expect(await observe(attemptId, "paid")).toEqual({ effects_pending: true });
+    expect(await order()).toMatchObject({ status: "paid", archived_at: null, swiss_bitcoin_archive_requested_at: null });
+    expect((await order()).paid_at).not.toBeNull();
+    expect(await stock()).toEqual({ stock_quantity: 3 });
+    expect(await requestArchive()).toEqual({ result: { action: "blocked" } });
+    expect(await archiveIdle()).toEqual({ count: 0 });
+  });
+
+  it("retains an ambiguous attempt indefinitely and withholds an archived outcome when review is required", async () => {
+    const { attempt_id: attemptId } = await begin();
+    expect(await requestArchive()).toEqual({ result: { action: "scheduled" } });
+    await db.query("SELECT rpc_note_swiss_bitcoin_creation($1, FALSE)", [attemptId]);
+    await db.exec("UPDATE orders SET created_at = now() - interval '2 hours'; UPDATE swiss_bitcoin_payment_attempts SET created_at = now() - interval '2 hours'");
+    expect(await archiveIdle()).toEqual({ count: 0 });
+    await expect(db.exec("SELECT rpc_archive_incomplete_order('ORDER-1')")).rejects.toThrow("order_transition_bitcoin_open");
+    await attach(attemptId);
+    await observe(attemptId, "paid", invoice, 999);
+    expect(await requestArchive()).toEqual({ result: { action: "blocked" } });
+    expect(await archiveIdle()).toEqual({ count: 0 });
+    expect(await order()).toMatchObject({ payment_review_required: true, archived_at: null });
+  });
+
+  it("uses the existing archive only after Viva cancellation and records a late Viva capture under review", async () => {
+    const { attempt_id: attemptId } = await begin();
+    await attach(attemptId);
+    await observe(attemptId, "expired");
+    expect(await card()).toEqual({ claimed: true });
+    expect(await requestArchive()).toEqual({ result: { action: "blocked" } });
+    await expect(db.exec("SELECT rpc_archive_incomplete_order('ORDER-1')")).rejects.toThrow("order_transition_bitcoin_open");
+    await db.exec("SELECT rpc_attach_swiss_bitcoin_card_fallback('ORDER-1','123456')");
+    expect(await requestArchive()).toEqual({ result: { action: "blocked" } });
+    await db.exec("SELECT rpc_archive_incomplete_order('ORDER-1')");
+    await db.query("SELECT rpc_finalize_viva_payment('123456',$1,1000,'978')", [secondInvoice]);
+    expect(await order()).toMatchObject({
+      status: "cancelled", payment_state: "paid", payment_review_required: true, viva_transaction_id: secondInvoice,
+    });
+    expect(await stock()).toEqual({ stock_quantity: 5 });
+    expect(await attempts()).toMatchObject([{ id: attemptId, state: "expired" }]);
+  });
+
   it("gives Data API clients no access and limits service_role to reads and named operations", async () => {
     const result = await db.query(`
       SELECT has_table_privilege('anon', 'swiss_bitcoin_payment_attempts', 'SELECT') AS public_read,
         has_table_privilege('service_role', 'swiss_bitcoin_payment_attempts', 'SELECT') AS service_read,
         has_table_privilege('service_role', 'swiss_bitcoin_payment_attempts', 'UPDATE') AS service_write,
-        has_function_privilege('authenticated', 'rpc_begin_swiss_bitcoin_payment(text,boolean)', 'EXECUTE') AS customer_begin
+        has_function_privilege('authenticated', 'rpc_begin_swiss_bitcoin_payment(text,boolean)', 'EXECUTE') AS customer_begin,
+        has_function_privilege('authenticated', 'rpc_request_swiss_bitcoin_archive(text)', 'EXECUTE') AS customer_archive,
+        has_function_privilege('service_role', 'rpc_request_swiss_bitcoin_archive(text)', 'EXECUTE') AS service_archive
     `);
-    expect(result.rows[0]).toEqual({ public_read: false, service_read: true, service_write: false, customer_begin: false });
+    expect(result.rows[0]).toEqual({
+      public_read: false, service_read: true, service_write: false, customer_begin: false, customer_archive: false, service_archive: true,
+    });
   });
 });

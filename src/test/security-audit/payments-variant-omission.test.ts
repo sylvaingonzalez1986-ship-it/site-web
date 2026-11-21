@@ -12,6 +12,7 @@ vi.mock("@/lib/customer-backend", () => ({
 vi.mock("@/lib/data-backend", () => ({ readPublicStoreByBackend: mocks.store }));
 vi.mock("@/lib/invoice-config", () => ({ INVOICE_SETTINGS: { vatMode: "taxable" } }));
 vi.mock("@/lib/checkout-attempt", () => ({
+  findRecordedSwissBitcoinCheckout: async () => null,
   beginCheckoutAttempt: async () => ({ action: "create" }), completeCheckoutAttempt: vi.fn(),
   createCheckoutFingerprint: () => "audit", failCheckoutAttempt: vi.fn(),
 }));

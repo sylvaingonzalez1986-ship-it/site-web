@@ -148,6 +148,18 @@ describe("Swiss Bitcoin Pay attempt reconciliation", () => {
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
+  it("withholds payment links and retries after an archive request, while still showing a confirmed payment", async () => {
+    const closingOrder = { ...pendingOrder, swissBitcoinArchiveRequestedAt: pendingOrder.createdAt };
+    queries([activeAttempt], [{ ...activeAttempt, state: "expired" }], [{ ...activeAttempt, state: "paid" }]);
+    for (let index = 0; index < 2; index++) {
+      const status = await getSwissBitcoinPaymentStatus(closingOrder, false);
+      expect(status).toMatchObject({ state: "unavailable", archiveRequested: true, canRetry: false, canPayByCard: false });
+      expect(status?.checkoutUrl).toBeUndefined();
+    }
+    const paid = await getSwissBitcoinPaymentStatus({ ...closingOrder, paymentState: "paid", status: "paid" }, false);
+    expect(paid?.state).toBe("paid");
+  });
+
   it("does not execute paid effects for a conflicting provider observation", async () => {
     queries(activeAttempt);
     mocks.fetchInvoice.mockResolvedValueOnce({ ...paidInvoice, input: { amount: 1, unit: "EUR" } });

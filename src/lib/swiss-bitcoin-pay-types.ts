@@ -20,6 +20,7 @@ export type SwissBitcoinPaymentStatus = {
   orderId: string;
   totalAmount: number;
   state: "preparing" | "pending" | "confirming" | "paid" | "expired" | "unavailable" | "review" | "cancelled";
+  archiveRequested?: boolean;
   checkoutUrl?: string;
   resumeCardUrl?: string;
   expiresAt?: string;

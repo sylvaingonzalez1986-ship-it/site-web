@@ -49,6 +49,7 @@ export type CmsOrder = {
   vivaOrderCode?: string;
   vivaTransactionId?: string;
   swissBitcoinCardStartedAt?: string;
+  swissBitcoinArchiveRequestedAt?: string;
   paymentReviewRequired?: boolean;
   paymentReviewReason?: string;
   source: "web";

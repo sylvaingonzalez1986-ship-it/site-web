@@ -31,6 +31,7 @@ export type AuditEventType =
   | "update_store"
   | "update_order"
   | "archive_order"
+  | "request_order_archive"
   | "add_promo_code"
   | "create_mission"
   | "update_mission"

@@ -14,6 +14,7 @@ import {
 } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
 import { cancelVivaPaymentOrder, getVivaConfig } from "@/lib/viva-payment";
+import { requestSwissBitcoinOrderArchive } from "@/lib/swiss-bitcoin-pay-service";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 
 export async function PATCH(
@@ -147,7 +148,12 @@ export async function DELETE(
     return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
   }
 
-  if (!canArchiveIncompleteOrder(order)) {
+  const bitcoinOrder = order.paymentProvider === "swiss_bitcoin_pay" || Boolean(order.swissBitcoinCardStartedAt);
+  if (bitcoinOrder && order.paymentReviewRequired) {
+    return NextResponse.json({ error: "Vérifie l’alerte de paiement avant de retirer cette commande." }, { status: 409 });
+  }
+  if (order.archivedAt && order.paymentState !== "paid") return NextResponse.json(order);
+  if (!canArchiveIncompleteOrder(order) || order.status === "paid") {
     return NextResponse.json(
       { error: "Seules les commandes non finalisees peuvent etre retirees." },
       { status: 409 },
@@ -155,15 +161,35 @@ export async function DELETE(
   }
 
   try {
-    if (order.vivaOrderCode) {
-      // Do not release local reservations while an external payment URL is active.
-      // The archive RPC rechecks the payment under its row lock after this call.
-      await cancelVivaPaymentOrder({ config: getVivaConfig(), orderCode: order.vivaOrderCode });
+    let archivedOrder: CmsOrder | null;
+    if (order.paymentProvider === "swiss_bitcoin_pay" || (order.swissBitcoinCardStartedAt && !order.vivaOrderCode)) {
+      const action = await requestSwissBitcoinOrderArchive(orderId);
+      if (action === "blocked") {
+        return NextResponse.json({ error: "Le paiement a changé ou doit être vérifié. Actualise la commande avant de la retirer." }, { status: 409 });
+      }
+      const updated = await getOrderByIdByBackend(orderId);
+      if (!updated) return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
+      if (updated.paymentState === "paid" || updated.paymentReviewRequired) {
+        return NextResponse.json({ error: "Un paiement a été enregistré ou doit être vérifié. La commande reste visible." }, { status: 409 });
+      }
+      if (!updated.archivedAt) {
+        if (action !== "scheduled" || !updated.swissBitcoinArchiveRequestedAt) {
+          return NextResponse.json({ error: "Le statut de la commande a changé. Actualise la liste." }, { status: 409 });
+        }
+        logAuditEvent({ eventType: "request_order_archive", metadata: { orderId } });
+        return NextResponse.json(updated, { status: 202 });
+      }
+      archivedOrder = updated;
+    } else {
+      if (order.vivaOrderCode) {
+        // The archive RPC rechecks payment under its row lock after Viva confirms cancellation.
+        await cancelVivaPaymentOrder({ config: getVivaConfig(), orderCode: order.vivaOrderCode });
+      }
+      archivedOrder = await archiveIncompleteOrderByBackend({
+        orderId,
+        reason: "admin_removed_incomplete",
+      });
     }
-    const archivedOrder = await archiveIncompleteOrderByBackend({
-      orderId,
-      reason: "admin_removed_incomplete",
-    });
 
     if (!archivedOrder) {
       return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });

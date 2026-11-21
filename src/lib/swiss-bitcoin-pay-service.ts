@@ -232,6 +232,14 @@ async function reconcileAttempt(attempt: Attempt) {
   }
 }
 
+export async function requestSwissBitcoinOrderArchive(orderId: string) {
+  const result = await rpc<{ action: string }>("rpc_request_swiss_bitcoin_archive", { p_order_id: orderId });
+  if (result?.action === "archived" || result?.action === "scheduled" || result?.action === "blocked") {
+    return result.action;
+  }
+  throw new Error("Unexpected Swiss Bitcoin Pay archive response");
+}
+
 export async function reconcileSwissBitcoinPayments(): Promise<{ checked: number; failed: number; archived: number }> {
   const { data, error } = await attempts()
     .lte("next_check_at", new Date().toISOString())
@@ -258,7 +266,7 @@ function paymentStatus(order: CmsOrder, rows: Attempt[]): SwissBitcoinPaymentSta
   const cancelled = order.status === "cancelled" || Boolean(order.archivedAt);
   const canAct = !review && order.status === "pending_payment" && !cancelled &&
     order.paymentState === "pending" && order.paymentProvider === "swiss_bitcoin_pay";
-  const canReplace = canAct && !order.vivaOrderCode && !order.swissBitcoinCardStartedAt &&
+  const canReplace = canAct && !order.swissBitcoinArchiveRequestedAt && !order.vivaOrderCode && !order.swissBitcoinCardStartedAt &&
     Date.now() - Date.parse(order.createdAt) < 60 * 60_000 &&
     rows.every((row) => row.state === "failed" || row.state === "expired");
   const checkoutUrl = latestState === "pending" && (!attempt.expires_at || Date.parse(attempt.expires_at) > Date.now())
@@ -269,6 +277,7 @@ function paymentStatus(order: CmsOrder, rows: Attempt[]): SwissBitcoinPaymentSta
     : order.paymentState === "paid" ? "paid"
     : cancelled ? "cancelled"
     : unresolvedCardSwitch || latestState === "unknown" ? "review"
+    : order.swissBitcoinArchiveRequestedAt ? "unavailable"
     : order.swissBitcoinCardStartedAt && !resumeCardUrl ? "confirming"
     : !canAct || resumeCardUrl ? "unavailable"
     : latestState === "expired" ? "expired"
@@ -280,6 +289,7 @@ function paymentStatus(order: CmsOrder, rows: Attempt[]): SwissBitcoinPaymentSta
     orderId: order.id,
     totalAmount: order.totalAmount,
     state,
+    ...(state === "unavailable" && order.swissBitcoinArchiveRequestedAt ? { archiveRequested: true } : {}),
     ...(state === "pending" && checkoutUrl ? { checkoutUrl } : {}),
     ...(resumeCardUrl ? { resumeCardUrl } : {}),
     ...(attempt?.expires_at ? { expiresAt: attempt.expires_at } : {}),

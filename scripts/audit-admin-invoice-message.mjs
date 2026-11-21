@@ -13,14 +13,24 @@ const port = 3259;
 const widths = [320, 390, 1440];
 const initialMessage = "Merci Élodie pour ta fidélité !\nÀ bientôt, Sylvain";
 const modules = {
+  "next/dynamic": `export default function dynamic(){return () => null;}`,
+  "next/image": `import React from 'react'; export default function Image(props){return React.createElement('img',props);}`,
+  "@/components/navigation/NavigationFeedback": `const router={push:()=>{},refresh:()=>{}}; export const useRouter=()=>router;`,
+  "@/components/navigation/NavigationLink": `import React from 'react'; export default function Link(props){return React.createElement('a',props);}`,
   "invoice-message-entry.tsx": `
 import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import '/src/app/globals.css';
 import AdminLayout from '/src/app/admin/layout';
 import {AdminOrderDetailModal} from '/src/components/admin/AdminOrderDetailModal';
+import {defaultStore} from '/src/data/default-store';
 const query=new URLSearchParams(location.search);
-window.__fixture={messages:{'DEMO-A':${JSON.stringify(initialMessage)},'DEMO-B':'Un autre client, un autre message.'},requests:[],downloads:[],pending:[],delayGet:query.has('delay'),failGet:query.has('error'),postMode:'pdf'};
+const AdminPanel=query.has('archives')?React.lazy(()=>import('/src/components/admin/AdminPanel').then(module=>({default:module.AdminPanel}))):null;
+const orderBase={createdAt:'2026-09-30T10:00:00Z',status:'pending_payment',paymentState:'pending',paymentProvider:'viva',source:'web',customerName:'Client de démonstration',itemsCount:1,totalHt:20,totalVat:4,totalAmount:24,items:[]};
+const btcOrder={...orderBase,id:'DEMO-BTC',paymentProvider:'swiss_bitcoin_pay'};
+const otherOrder={...orderBase,id:'DEMO-CARD'};
+const pendingOrder={...btcOrder,swissBitcoinArchiveRequestedAt:'2026-09-30T10:02:00Z'};
+window.__fixture={messages:{'DEMO-A':${JSON.stringify(initialMessage)},'DEMO-B':'Un autre client, un autre message.'},requests:[],downloads:[],pending:[],delayGet:query.has('delay'),failGet:query.has('error'),postMode:'pdf',archiveStage:query.get('archives'),failDelete:false};
 window.__releaseGet=(id,message)=>{
  const state=window.__fixture;
  const pending=state.pending.filter(item=>item.id===id);
@@ -33,6 +43,17 @@ window.fetch=async(input,init={})=>{
  if(!url.pathname.startsWith('/api/'))return nativeFetch(input,init);
  const state=window.__fixture,method=init.method||'GET';
  state.requests.push({path:url.pathname,method,body:init.body?JSON.parse(init.body):null});
+ if(query.has('archives')){
+  const orders=state.archiveStage==='archived'?[otherOrder]:
+    [state.archiveStage==='pending'?pendingOrder:btcOrder,otherOrder];
+  if(url.pathname==='/api/admin/store'&&method==='GET')return Response.json({...defaultStore,orders});
+  if(url.pathname==='/api/admin/orders'&&method==='GET')return Response.json({orders,bitcoinPayments:{}});
+  if(url.pathname==='/api/admin/orders/DEMO-BTC'&&method==='DELETE'){
+   if(state.failDelete)throw new TypeError('Failed to fetch');
+   state.archiveStage='pending';
+   return Response.json(pendingOrder,{status:202});
+  }
+ }
  const match=url.pathname.match(new RegExp('^/api/admin/orders/([^/]+)/invoice(/message)?$'));
  if(!match)return Response.json({error:'Unexpected fixture API'},{status:503});
  const id=decodeURIComponent(match[1]);
@@ -57,7 +78,8 @@ function Fixture(){
  useEffect(()=>{window.__setOrder=setId;window.__open=()=>setOpen(true);},[]);
  const unpaid=id==='UNPAID';
  const order={id,createdAt:'2026-09-30T10:00:00Z',status:unpaid?'pending_payment':'paid',paymentState:unpaid?'pending':'paid',paymentProvider:'viva',source:'web',customerName:'Élodie Exemple',customerEmail:'client@example.test',shippingAddress:'12 rue de la Démonstration',shippingCity:'Rennes',shippingPostalCode:'35000',shippingCountry:'FR',deliveryMethod:'home',deliveryFee:0,itemsCount:1,totalHt:20,totalVat:4,vatBreakdown:[{rate:20,baseHt:20,vatAmount:4}],totalAmount:24,items:[{productId:'demo-product',name:'Fleur de démonstration',unitPrice:24,quantity:1,lineTotal:24,vatRate:20,unitPriceHt:20,lineTotalHt:20,lineVatAmount:4}]};
- return React.createElement(AdminLayout,null,React.createElement(AdminOrderDetailModal,{order:open?order:null,onClose:()=>setOpen(false)}));
+ return React.createElement(AdminLayout,null,AdminPanel?React.createElement(React.Suspense,null,React.createElement(AdminPanel)):
+  React.createElement(AdminOrderDetailModal,{order:open?order:null,onClose:()=>setOpen(false),bitcoinPayments:[],onBitcoinHistoryRefresh:async()=>{}}));
 }
 createRoot(document.getElementById('root')).render(React.createElement(Fixture));
 `,
@@ -67,12 +89,18 @@ const server = await createServer({
   root, configFile: false, envDir: false, publicDir: resolve(root, "public"),
   cacheDir: resolve(output, "vite-cache"),
   esbuild: { jsx: "automatic" },
-  optimizeDeps: { include: ["react", "react-dom/client"] },
+  define: { "process.env": "{}" },
+  optimizeDeps: { noDiscovery: true, include: ["react", "react/jsx-dev-runtime", "react/jsx-runtime", "react-dom/client", "lucide-react"] },
   resolve: { alias: { "@": resolve(root, "src") }, dedupe: ["react", "react-dom"] },
   css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{
     name: "admin-invoice-message-fixture", enforce: "pre",
-    resolveId(id) { if (id in modules) return "\0" + id; },
+    resolveId(id) {
+      if (id in modules) return "\0" + id;
+      const normalized = id.replaceAll("\\", "/");
+      const match = Object.keys(modules).find((name) => name.startsWith("@/") && normalized === resolve(root, "src", name.slice(2)).replaceAll("\\", "/"));
+      if (match) return "\0" + match;
+    },
     load(id) { if (id.startsWith("\0")) return modules[id.slice(1)]; },
     configureServer(vite) {
       vite.middlewares.use((req, res, next) => {
@@ -82,7 +110,7 @@ const server = await createServer({
       });
     },
   }],
-  server: { host: "127.0.0.1", port, strictPort: true, hmr: false, watch: { ignored: ["**/output/**", "**/.next/**"] } },
+  server: { host: "127.0.0.1", port, strictPort: true, hmr: false, watch: null },
 });
 
 let browser;
@@ -232,11 +260,66 @@ try {
   assert.equal(await page.evaluate(() => window.__fixture.requests.some((request) => request.path.includes("UNPAID"))), false);
   record("unpaid-order-cannot-download", 390);
 
+  const archivePage = async (stage) => {
+    await page.goto(`http://127.0.0.1:${port}/?archives=${stage}`, { waitUntil: "networkidle0" });
+    await page.waitForSelector('select[aria-label="Statut de la commande DEMO-BTC"]');
+  };
+  const clickOrderButton = (id, label) => page.evaluate((orderId, title) => {
+    const row = document.querySelector(`select[aria-label="Statut de la commande ${orderId}"]`).closest("article");
+    const button = [...row.querySelectorAll("button")].find(item => item.textContent.trim() === title);
+    if (!button || button.disabled) throw new Error("Missing or disabled button: " + title);
+    button.click();
+  }, id, label);
+  const requestArchive = async () => {
+    let confirmation = "";
+    page.once("dialog", async (dialog) => {
+      confirmation = dialog.message();
+      await dialog.accept();
+    });
+    await clickOrderButton("DEMO-BTC", "Retirer");
+    assert.match(confirmation, /après vérification de son expiration/);
+    assert.match(confirmation, /Tout paiement confirmé est conservé/);
+  };
+  const pendingStatus = 'article [role="status"]';
+  await archivePage("active");
+  await page.evaluate(() => { window.__fixture.failDelete = true; });
+  await requestArchive();
+  await page.waitForSelector('article [role="alert"]');
+  assert.match(await page.$eval('article [role="alert"]', (node) => node.textContent), /Connexion interrompue/);
+  await page.evaluate(() => { window.__fixture.failDelete = false; });
+  await requestArchive();
+  await page.waitForSelector(pendingStatus);
+  assert.match(await page.$eval(pendingStatus, (node) => node.textContent), /Retrait demandé/);
+  assert(await page.evaluate(() => [...document.querySelectorAll("article button")].some(
+    (button) => button.textContent.trim() === "Retrait demandé" && button.disabled,
+  )));
+  record("bitcoin-delete-network-error-and-accepted-deferral", 390);
+
+  await archivePage("pending");
+  await page.waitForSelector(pendingStatus);
+  const unrelatedStatus = 'select[aria-label="Statut de la commande DEMO-CARD"]';
+  await page.select(unrelatedStatus, "processing");
+  await clickOrderButton("DEMO-BTC", "Voir le détail");
+  await page.waitForSelector('[role="dialog"]');
+  assert.match(await page.$eval('[role="dialog"]', (node) => node.textContent), /Retrait demandé le/);
+  await page.evaluate(() => {
+    window.__fixture.archiveStage = "archived";
+    window.dispatchEvent(new Event("focus"));
+  });
+  await page.waitForSelector('select[aria-label="Statut de la commande DEMO-BTC"]', { hidden: true });
+  assert.equal(await page.$('[role="dialog"]'), null);
+  assert.equal(await page.$eval(unrelatedStatus, (node) => node.value), "processing");
+  record("bitcoin-deferral-survives-reload-and-cron-refresh-keeps-local-draft", 390);
+
   const report = { passed: errors.length === 0 && blockedRequests.length === 0, widths, results, errors, blockedRequests };
   await writeFile(resolve(output, "report.json"), JSON.stringify(report, null, 2));
   assert.deepEqual(errors, []);
   assert.deepEqual(blockedRequests, []);
   console.log(`Admin invoice message audit passed: ${results.length} checks.`);
+} catch (error) {
+  if (errors.length) console.error("Browser errors:", errors);
+  if (blockedRequests.length) console.error("Blocked requests:", blockedRequests);
+  throw error;
 } finally {
   await browser?.close();
   await server.close();

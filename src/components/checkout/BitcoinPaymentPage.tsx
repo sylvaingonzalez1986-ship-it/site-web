@@ -17,6 +17,7 @@ const copy = {
   expired: ["Lien expiré", "Ce lien de paiement a expiré. Les options disponibles s’affichent ci-dessous."],
   unavailable: ["Paiement indisponible", "Le paiement Bitcoin est temporairement indisponible pour cette commande."],
   review: ["Paiement à vérifier", "Contacte le support avec ta référence de commande avant de payer à nouveau."],
+  closing: ["Clôture en cours", "La boutique a demandé le retrait de cette commande. Si tu as déjà payé, ton paiement sera vérifié."],
   cancelled: ["Paiement Bitcoin clôturé", "Retrouve le suivi et les options de ta commande dans ton profil."],
 } as const;
 
@@ -32,7 +33,7 @@ export function BitcoinPaymentPage({ orderId }: { orderId: string }) {
   const [busy, setBusy] = useState(false);
   const inFlight = useRef<{ controller: AbortController; interactive: boolean } | null>(null);
   const completedOrder = useRef(false);
-  const shouldPoll = !accessError && (!payment || Boolean(payment.resumeCardUrl) || ["preparing", "pending", "confirming"].includes(payment.state));
+  const shouldPoll = !accessError && (!payment || payment.archiveRequested || Boolean(payment.resumeCardUrl) || ["preparing", "pending", "confirming"].includes(payment.state));
   const canCheck = !accessError && payment?.state !== "paid" && payment?.state !== "cancelled";
 
   const requestStatus = useCallback(async (action?: "retry" | "card", manual = false) => {
@@ -154,11 +155,11 @@ export function BitcoinPaymentPage({ orderId }: { orderId: string }) {
             {payment && (
               <>
                 <h2 className="font-display text-2xl text-ink">
-                  {payment.resumeCardUrl ? "En attente de paiement par carte" : copy[payment.state][0]}
+                  {payment.resumeCardUrl ? "En attente de paiement par carte" : copy[payment.archiveRequested ? "closing" : payment.state][0]}
                 </h2>
                 <p className="mt-1">{payment.resumeCardUrl
                   ? "Le paiement par carte est disponible pour cette commande."
-                  : copy[payment.state][1]}</p>
+                  : copy[payment.archiveRequested ? "closing" : payment.state][1]}</p>
               </>
             )}
             {accessError === 401 && <p>Connecte-toi pour consulter ce paiement.</p>}

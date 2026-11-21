@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useMemo, useState, type ClipboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ClipboardEvent } from "react";
 import dynamic from "next/dynamic";
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowUpRight, LogOut, RefreshCw, Save, Settings2 } from "lucide-react";
@@ -51,6 +51,24 @@ import {
   type Producer,
   type ProducerCultureType,
 } from "@/types/store";
+
+function hasPendingBitcoinArchive(order: CmsOrder): boolean {
+  return Boolean(order.swissBitcoinArchiveRequestedAt) && !order.archivedAt && order.paymentState !== "paid";
+}
+
+function mergeArchiveOrder(local: CmsOrder, fresh: CmsOrder, statusEdited: boolean): CmsOrder {
+  return {
+    ...local,
+    paymentProvider: fresh.paymentProvider,
+    paymentState: fresh.paymentState,
+    paymentReviewRequired: fresh.paymentReviewRequired,
+    paymentReviewReason: fresh.paymentReviewReason,
+    swissBitcoinCardStartedAt: fresh.swissBitcoinCardStartedAt,
+    swissBitcoinArchiveRequestedAt: fresh.swissBitcoinArchiveRequestedAt,
+    archivedAt: fresh.archivedAt,
+    status: statusEdited && !fresh.archivedAt ? local.status : fresh.status,
+  };
+}
 
 const productCategoryOptions = Object.keys(categoryLabels) as ProductCategory[];
 const blogCategoryOptions = [...BLOG_CATEGORY_OPTIONS];
@@ -269,6 +287,10 @@ export function AdminPanel() {
   const [status, setStatus] = useState<string>("Chargement...");
   const [saving, setSaving] = useState(false);
   const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
+  const archivingOrders = useRef(new Set<string>());
+  const [archivingOrderIds, setArchivingOrderIds] = useState<string[]>([]);
+  const [archiveErrors, setArchiveErrors] = useState<Record<string, string>>({});
+  const editedOrderStatuses = useRef(new Set<string>());
   const [orderSearch, setOrderSearch] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState<"all" | OrderStatus>("all");
   const [orderDateFrom, setOrderDateFrom] = useState("");
@@ -330,6 +352,7 @@ export function AdminPanel() {
     () => draft.orders.find((order) => order.id === selectedOrderId) ?? null,
     [draft.orders, selectedOrderId],
   );
+  const pendingArchiveIds = draft.orders.filter(hasPendingBitcoinArchive).map((order) => order.id).join(",");
 
   const productsWithIndex = useMemo(
     () => draft.products.map((product, index) => ({ product, index })),
@@ -429,6 +452,7 @@ export function AdminPanel() {
     }
 
     const data = (await response.json()) as CmsStore;
+    editedOrderStatuses.current.clear();
     setDraft(data);
     setSelectedBlogId((current) => {
       if (current && data.blog.some((post) => post.id === current)) {
@@ -452,6 +476,51 @@ export function AdminPanel() {
   useEffect(() => {
     void loadStore();
   }, [loadStore]);
+
+  useEffect(() => {
+    if (activeTab !== "commandes" || !pendingArchiveIds) return;
+    const ids = new Set(pendingArchiveIds.split(","));
+    const controller = new AbortController();
+    let checking = false;
+
+    const checkArchives = async () => {
+      if (checking || document.visibilityState !== "visible") return;
+      checking = true;
+      try {
+        const response = await fetch("/api/admin/orders", { cache: "no-store", signal: controller.signal });
+        if (!response.ok) return;
+        const { orders } = await response.json() as { orders?: CmsOrder[] };
+        if (controller.signal.aborted || !Array.isArray(orders)) return;
+        const returned = new Map(orders.filter((order) => ids.has(order.id)).map((order) => [order.id, order]));
+        const removed = new Set([...ids].filter((id) => !returned.has(id)));
+        setDraft((current) => ({
+          ...current,
+          orders: current.orders.flatMap((order) => {
+            if (!ids.has(order.id) || !hasPendingBitcoinArchive(order)) return [order];
+            const fresh = returned.get(order.id);
+            return fresh ? [mergeArchiveOrder(order, fresh, editedOrderStatuses.current.has(order.id))] : [];
+          }),
+        }));
+        setSelectedOrderId((current) => current && removed.has(current) ? null : current);
+        for (const id of removed) editedOrderStatuses.current.delete(id);
+      } catch {
+        // Leave the pending request visible and retry at the next check.
+      } finally {
+        checking = false;
+      }
+    };
+
+    const timer = window.setInterval(() => void checkArchives(), 20_000);
+    const onVisibilityChange = () => void checkArchives();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("focus", onVisibilityChange);
+    return () => {
+      controller.abort();
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("focus", onVisibilityChange);
+    };
+  }, [activeTab, pendingArchiveIds]);
 
   useEffect(() => {
     if (draft.blog.length === 0) {
@@ -530,6 +599,7 @@ export function AdminPanel() {
   };
 
   const updateOrderStatusDraft = (orderId: string, nextStatus: OrderStatus) => {
+    editedOrderStatuses.current.add(orderId);
     setDraft((current) => ({
       ...current,
       orders: current.orders.map((order) =>
@@ -572,6 +642,7 @@ export function AdminPanel() {
       }
 
       const updated = (await response.json()) as CmsOrder;
+      editedOrderStatuses.current.delete(order.id);
 
       setDraft((current) => ({
         ...current,
@@ -611,20 +682,19 @@ export function AdminPanel() {
   };
 
   const removeIncompleteOrder = async (order: CmsOrder) => {
-    if (!canArchiveIncompleteOrder(order)) {
-      setStatus("Seules les commandes non finalisees peuvent etre retirees.");
-      return;
-    }
+    if (!canArchiveIncompleteOrder(order) || hasPendingBitcoinArchive(order) || archivingOrders.current.has(order.id)) return;
 
-    const confirmed = window.confirm(
-      `Retirer ${order.id} de la liste des commandes ? Cette action archive la commande incomplete.`,
-    );
+    const confirmMessage = order.paymentProvider === "swiss_bitcoin_pay"
+      ? `Retirer la commande ${order.id} ? Si le lien Bitcoin est encore ouvert, la commande sera archivée après vérification de son expiration. Tout paiement confirmé est conservé.`
+      : `Retirer ${order.id} de la liste des commandes ? Cette action archive la commande incomplète.`;
+    const confirmed = window.confirm(confirmMessage);
     if (!confirmed) {
       return;
     }
 
-    setUpdatingOrderId(order.id);
-    setStatus(`Retrait de ${order.id}...`);
+    archivingOrders.current.add(order.id);
+    setArchivingOrderIds([...archivingOrders.current]);
+    setArchiveErrors((current) => ({ ...current, [order.id]: "" }));
 
     try {
       const response = await fetch(`/api/admin/orders/${encodeURIComponent(order.id)}`, {
@@ -634,19 +704,38 @@ export function AdminPanel() {
 
       if (!response.ok) {
         const payload = (await response.json().catch(() => null)) as { error?: string } | null;
-        setStatus(payload?.error ?? "Erreur de retrait commande.");
-        return;
+        throw new Error(payload?.error ?? "Le retrait de la commande a échoué.");
       }
 
-      const archived = (await response.json()) as CmsOrder;
+      const updated = await response.json().catch(() => null) as CmsOrder | null;
+      if (updated?.id !== order.id) throw new Error("La réponse de retrait est inattendue.");
+      if (response.status === 202) {
+        if (!updated.swissBitcoinArchiveRequestedAt) throw new Error("La demande de retrait n’a pas pu être vérifiée.");
+        setDraft((current) => ({
+          ...current,
+          orders: current.orders.map((item) =>
+            item.id === updated.id ? mergeArchiveOrder(item, updated, editedOrderStatuses.current.has(item.id)) : item),
+        }));
+        return;
+      }
+      if (!updated.archivedAt) throw new Error("L’archivage de la commande n’a pas pu être vérifié.");
+      editedOrderStatuses.current.delete(updated.id);
       setDraft((current) => ({
         ...current,
-        orders: current.orders.filter((item) => item.id !== archived.id),
+        orders: current.orders.filter((item) => item.id !== updated.id),
       }));
-      setSelectedOrderId((current) => (current === archived.id ? null : current));
-      setStatus(`Commande ${archived.id} retiree de la liste.`);
+      setSelectedOrderId((current) => (current === updated.id ? null : current));
+      setStatus(`Commande ${updated.id} retirée de la liste.`);
+    } catch (error) {
+      setArchiveErrors((current) => ({
+        ...current,
+        [order.id]: error instanceof TypeError
+          ? "Connexion interrompue pendant le retrait. Réessaie dans un instant."
+          : error instanceof Error ? error.message : "Le retrait de la commande a échoué.",
+      }));
     } finally {
-      setUpdatingOrderId(null);
+      archivingOrders.current.delete(order.id);
+      setArchivingOrderIds([...archivingOrders.current]);
     }
   };
 
@@ -1681,11 +1770,19 @@ export function AdminPanel() {
                       <button
                         type="button"
                         onClick={() => removeIncompleteOrder(order)}
-                        disabled={updatingOrderId === order.id}
+                        disabled={updatingOrderId === order.id || archivingOrderIds.includes(order.id) || hasPendingBitcoinArchive(order)}
                         className="btn-cartoon btn-secondary"
                       >
-                        {updatingOrderId === order.id ? "..." : "Retirer"}
+                        {hasPendingBitcoinArchive(order) ? "Retrait demandé" : archivingOrderIds.includes(order.id) ? "Retrait en cours…" : "Retirer"}
                       </button>
+                    )}
+                    {hasPendingBitcoinArchive(order) && (
+                      <p role="status" className="col-span-2 text-sm text-charcoal">
+                        Retrait demandé. La commande sera archivée après vérification de l’expiration du lien.
+                      </p>
+                    )}
+                    {archiveErrors[order.id] && (
+                      <p role="alert" className="col-span-2 text-sm font-semibold text-red-700">{archiveErrors[order.id]}</p>
                     )}
                   </div>
                 </div>
