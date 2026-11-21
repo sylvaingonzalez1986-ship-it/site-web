@@ -70,6 +70,69 @@ export class SwissBitcoinCreationError extends Error {
   }
 }
 
+const providerRefusals = new Map([
+  ["api_key_not_provided", "missing_api_key"],
+  ["api_key_missing", "missing_api_key"],
+  ["missing_api_key", "missing_api_key"],
+  ["invalid_api_key", "invalid_api_key"],
+  ["unauthorized", "unauthorized"],
+  ["forbidden", "forbidden"],
+  ["account_suspended", "account_suspended"],
+  ["account_locked", "account_locked"],
+  ["account_not_found", "account_not_found"],
+  ["access_denied", "access_denied"],
+  ["signature_not_provided", "missing_signature"],
+  ["missing_signature", "missing_signature"],
+  ["invalid_signature", "invalid_signature"],
+  ["hmac_required", "missing_signature"],
+  ["invalid_hmac", "invalid_signature"],
+  ["invalid_request", "invalid_request"],
+  ["invalid_webhook", "invalid_webhook"],
+  ["invalid_amount", "invalid_amount"],
+  ["rate_limit_exceeded", "rate_limited"],
+  ["too_many_requests", "rate_limited"],
+]);
+
+async function readProviderRefusal(response: Response): Promise<string | undefined> {
+  const reader = response.body?.getReader();
+  if (!reader) return undefined;
+
+  const bytes = new Uint8Array(1024);
+  let size = 0;
+  try {
+    for (;;) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      if (size + chunk.value.byteLength > bytes.byteLength) {
+        void reader.cancel().catch(() => {});
+        return undefined;
+      }
+      bytes.set(chunk.value, size);
+      size += chunk.value.byteLength;
+    }
+  } catch {
+    return undefined;
+  } finally {
+    reader.releaseLock();
+  }
+
+  const text = new TextDecoder().decode(bytes.subarray(0, size));
+  let parsed: unknown = text;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    // Some providers or gateways return an error as plain text.
+  }
+  const fields = object(parsed);
+  for (const value of [fields.code, fields.error, fields.message, parsed]) {
+    if (typeof value !== "string") continue;
+    const key = value.trim().toLowerCase().replace(/[ -]+/g, "_").replace(/[.!]$/, "");
+    const category = providerRefusals.get(key);
+    if (category) return category;
+  }
+  return undefined;
+}
+
 export async function createSwissBitcoinInvoice(orderId: string, attemptId: string, eurMinor: number) {
   const config = creationConfig();
   if (!config || !Number.isSafeInteger(eurMinor) || eurMinor < 1) throw new SwissBitcoinCreationError(true);
@@ -94,7 +157,15 @@ export async function createSwissBitcoinInvoice(orderId: string, attemptId: stri
       extra: { reference: attemptId },
     }),
   });
-  if (response.status !== 201) throw new SwissBitcoinCreationError(response.status === 403);
+  if (response.status !== 201) {
+    const category = await readProviderRefusal(response);
+    console.warn("[swiss-bitcoin-pay] invoice creation refused", {
+      status: response.status,
+      orderId: /^ORD-\d{8}-\d{4}$/.test(orderId) ? orderId : undefined,
+      ...(category ? { category } : {}),
+    });
+    throw new SwissBitcoinCreationError(response.status === 403);
+  }
   const data = object(await response.json());
   const invoiceId = swissBitcoinId(data.id);
   if (!invoiceId) throw new SwissBitcoinCreationError(false);

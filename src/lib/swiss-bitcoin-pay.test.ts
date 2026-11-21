@@ -87,11 +87,65 @@ describe("Swiss Bitcoin Pay merchant API", () => {
 
   it("distinguishes explicit API denial from an ambiguous create failure", async () => {
     configure();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(null, { status: 403 }))
       .mockResolvedValueOnce(new Response(null, { status: 500 }));
     await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
     await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: false });
+  });
+
+  it.each([
+    [Response.json({ error: "Api key not provided", details: "private-token" }, { status: 403 }), "missing_api_key", 403],
+    [Response.json({ code: "INVALID_API_KEY", message: "welcome alice@example.test" }, { status: 500 }), "invalid_api_key", 500],
+    [Response.json({ message: "Too many requests" }, { status: 429 }), "rate_limited", 429],
+    [new Response(" Forbidden\n", { status: 403 }), "forbidden", 403],
+  ])("logs only status, order and an allowlisted provider category", async (response, category, status) => {
+    configure();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(response);
+
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: status === 403 });
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
+      "[swiss-bitcoin-pay] invoice creation refused", { status, orderId, category },
+    );
+  });
+
+  it.each([
+    Response.json({
+      error: "Invalid API key: private-token",
+      code: "new_private_reason",
+      message: "Call alice@example.test or https://shop.example.test/private",
+    }, { status: 403, headers: { "api-key": "response-secret" } }),
+    new Response("Forbidden: private-token", { status: 403 }),
+  ])("omits details, headers and unknown provider messages", async (response) => {
+    configure();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(response);
+
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
+      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId },
+    );
+  });
+
+  it("cancels oversized responses without parsing a partial reason", async () => {
+    configure();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const cancel = vi.fn();
+    const body = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("Forbidden" + " ".repeat(1024)));
+      },
+      cancel,
+    });
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(body, { status: 403 }));
+
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
+    expect(cancel).toHaveBeenCalledOnce();
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
+      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId },
+    );
   });
 
   it("does not enable creation with an insecure canonical origin", () => {
