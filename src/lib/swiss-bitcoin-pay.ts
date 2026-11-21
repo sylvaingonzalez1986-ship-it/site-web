@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createHash, timingSafeEqual } from "node:crypto";
+import { getSiteUrl } from "@/lib/site-url";
 import type { SwissBitcoinAttemptState } from "@/lib/swiss-bitcoin-pay-types";
 
 const checkoutApi = "https://api.swiss-bitcoin-pay.ch/checkout";
@@ -22,7 +23,7 @@ function object(value: unknown): Record<string, unknown> {
 export function swissBitcoinSiteOrigin(): string | null {
   try {
     const url = new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() ?? "");
-    return url.protocol === "https:" && !url.username && !url.password ? url.origin : null;
+    return url.protocol === "https:" && !url.username && !url.password ? getSiteUrl() : null;
   } catch {
     return null;
   }
@@ -270,6 +271,7 @@ const invoiceStates = new Map<string, SwissBitcoinAttemptState>([
   ["unconfirmed", "confirming"],
   ["expired", "expired"],
   ["paid", "paid"],
+  ["settled", "paid"],
 ]);
 
 export function inspectSwissBitcoinInvoice(value: unknown, invoiceId: string, attemptId: string, expectedMinor: number) {

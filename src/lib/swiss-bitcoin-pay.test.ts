@@ -37,6 +37,17 @@ afterEach(() => {
 });
 
 describe("Swiss Bitcoin Pay merchant API", () => {
+  it("sends webhooks and returning customers straight to the canonical shop host", async () => {
+    configure();
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://leschanvriersbretons.com");
+    const request = vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json({ id: invoiceId, checkoutUrl }, { status: 201 }));
+    await createSwissBitcoinInvoice(orderId, attemptId, 90);
+    expect(JSON.parse(String(request.mock.calls[0][1]?.body))).toMatchObject({
+      webhook: { url: "https://www.leschanvriersbretons.com/api/checkout/bitcoin/webhook" },
+      redirectAfterPaid: `https://www.leschanvriersbretons.com/checkout/bitcoin/${orderId}`,
+    });
+  });
+
   it("creates a Lightning invoice for the exact order total without customer data", async () => {
     configure();
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
@@ -211,6 +222,23 @@ describe("Swiss Bitcoin Pay merchant API", () => {
 });
 
 describe("Swiss Bitcoin Pay invoice observations", () => {
+  it("accepts a settled Lightning invoice with Unix timestamps and a matching EUR amount and reference", () => {
+    const createdAt = 1795267693;
+    const paidAt = createdAt + 44;
+    const settled = {
+      ...paidInvoice, status: "settled", paymentMethod: "lightning",
+      input: { amount: 0.9, unit: "EUR" }, createdAt, paidAt, expiry: createdAt + 600, delay: 600,
+      paymentDetails: [{ network: "lightning", hash: paymentHash, paidAt }],
+    };
+    expect(inspectSwissBitcoinInvoice(settled, invoiceId, attemptId, 90)).toMatchObject({
+      associationVerified: true, state: "paid", providerStatus: "settled", issue: null, eurMinor: 90,
+      paidAt: new Date(paidAt * 1000).toISOString(), paymentReference: paymentHash,
+    });
+    expect(inspectSwissBitcoinInvoice(settled, invoiceId, attemptId, 91)).toMatchObject({
+      state: "review", issue: "invoice_amount_mismatch", paidAt: null,
+    });
+  });
+
   it("uses the requested EUR amount, settled status and paid Lightning reference", () => {
     expect(inspectSwissBitcoinInvoice(paidInvoice, invoiceId, attemptId, 2150)).toEqual({
       associationVerified: true,
