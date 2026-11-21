@@ -29,6 +29,8 @@ import { getKqJuryTarget } from "@/lib/kanab-quest-jury-target";
 import { getKqJuryReadiness, getKqTrimHref, getKqTrimPresentation } from "@/lib/kanab-quest-jury-readiness";
 import { KqBattleVerdictDialog } from "./KqBattleVerdictDialog";
 import { KqCulturePreparation } from "./KqCulturePreparation";
+import { KqWarehouseLaunchSupplies } from "./KqWarehouseLaunchSupplies";
+import { WarehouseRunSupplies } from "./KqWarehouseSupplies";
 import { KqCultureCarousel, type KqCulturePanelId } from "./KqCultureCarousel";
 import { KqCultureContract } from "./KqCultureContract";
 import { KqHarvestMoment } from "./KqHarvestMoment";
@@ -131,7 +133,7 @@ import { clearKqZoneStartRequestKey, getKqClientRunZoneId, getKqZoneStartRequest
 import { getKqCampaignMemberState, getKqCampaignParticipants, getKqCampaignTotals } from "@/lib/kanab-quest-campaign";
 import { KqCampaignSummary } from "./KqCampaignSummary";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
-import { isKqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
+import { isKqWarehouseState, isKqWarehouseZoneOperational, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
 import { isKqProductionReservation } from "@/lib/kanab-quest-production-reservation";
 import styles from "./KanabQuestDicePrototype.module.css";
 
@@ -564,6 +566,7 @@ function KqGameSession({
   const [pendingBurnCode, setPendingBurnCode] = useState<string | null>(null);
   const [handFilterChoice, setHandFilterChoice] = useState<{ scope: string; value: "playable" | "all" } | null>(null);
   const [pendingStart, setPendingStart] = useState(false);
+  const [preparationKey, setPreparationKey] = useState<string | null>(null);
   const [lastBooster, setLastBooster] = useState<KqSupportCard[]>([]);
   const [boosterNonce, setBoosterNonce] = useState(0);
   const [pendingBattleVerdict, setPendingBattleVerdict] = useState(false);
@@ -832,7 +835,7 @@ function KqGameSession({
       confirmedWarehouse = warehouse;
       zone = warehouse.state.zones.find(item => item.id === initialZoneId) ?? null;
       if (initialZoneId && !zone) throw new Error("Cette zone n’existe plus. Choisis une zone dans l’entrepôt.");
-      participants = getKqCampaignParticipants(warehouse.state, warehouse.revision ?? 0, undefined, warehouse.productionReservation?.zoneId ?? null);
+      participants = getKqCampaignParticipants(warehouse.state, warehouse.revision ?? 0, undefined, warehouse.productionReservation?.zoneId ?? null, practiceSession ? undefined : 1);
     }
     if (signal.aborted || !lifecycle.current.mounted || generation !== cardSyncGeneration.current || cardOperation.current || cardRecoveryRef.current) throw new DOMException("Culture fermée", "AbortError");
     const recoveredZoneId = selected ? getKqClientRunZoneId(selected) : undefined;
@@ -845,14 +848,14 @@ function KqGameSession({
     setSelectionError("");
     setSelectionReady(true);
     return { ...resolved, activeRun: selected };
-  }, [initialCampaign, initialRunId, initialZoneId, isolatedStorage?.session, isPlayerMode, remoteRequest]);
+  }, [initialCampaign, initialRunId, initialZoneId, isolatedStorage?.session, isPlayerMode, practiceSession, remoteRequest]);
 
   const applyBuddieAssignment = useCallback((snapshot: KqBuddieAssignmentSnapshot) => {
     setPreparationWarehouse(snapshot);
-    setCampaignParticipants(getKqCampaignParticipants(snapshot.state, snapshot.revision, undefined, snapshot.productionReservation?.zoneId ?? null));
+    setCampaignParticipants(getKqCampaignParticipants(snapshot.state, snapshot.revision, undefined, snapshot.productionReservation?.zoneId ?? null, practiceSession ? undefined : 1));
     setZoneContext(snapshot.state.zones.find(zone => zone.id === initialZoneId) ?? null);
     setEnergyEstimate(null);
-  }, [initialZoneId]);
+  }, [initialZoneId, practiceSession]);
 
   const applyOfficialSessionPayload = useCallback((payload: PlayerSessionPayload) => {
     if (!lifecycle.current.mounted || cardOperation.current || cardRecoveryRef.current) return;
@@ -982,6 +985,23 @@ function KqGameSession({
     const refreshAfterMarketSale = () => void refreshOfficialRanking();
     return api.subscribe(["kq:market-updated"], refreshAfterMarketSale);
   }, [api, isPlayerMode, refreshOfficialRanking]);
+
+  useEffect(() => {
+    if (!isPlayerMode || !remoteRunId) return;
+    let generation = 0;
+    const unsubscribe = api.subscribe(["kq:provision-used"], async () => {
+      const current = ++generation;
+      try {
+        const { activeRun } = await getKqRemoteActiveRun(remoteRequest, { runId: remoteRunId });
+        if (current !== generation || activeRun?.runId !== remoteRunId) return;
+        const preparations = activeRun.state.warehousePreparations;
+        if (preparations) setState(previous => ({ ...previous, warehousePreparations: preparations }));
+      } catch {
+        if (current === generation) setRemoteNotice("Provision utilisée. Le bilan de la culture sera actualisé à la prochaine action.");
+      }
+    });
+    return () => { generation++; unsubscribe(); };
+  }, [api, isPlayerMode, remoteRequest, remoteRunId]);
 
   useEffect(() => {
     if (!isPlayerMode && !showAdminOperations) {
@@ -1984,6 +2004,7 @@ function KqGameSession({
       return;
     }
     if (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode)) return;
+    if (isPlayerMode && !practiceSession && !preparationKey) return;
     const currentDailyChallenges = getKqDailyChallenges();
     if (dailyChallenges[0]?.dayKey !== currentDailyChallenges[0]?.dayKey) {
       setDailyChallenges(currentDailyChallenges);
@@ -2006,6 +2027,9 @@ function KqGameSession({
           expectedProductionReservedZoneId: isPlayerMode ? preparationWarehouse?.productionReservation?.zoneId ?? null : undefined,
           heritageCode: selectedHeritage || undefined,
           ...(isPlayerMode ? { campaign: true } : {}),
+          ...(isPlayerMode && !practiceSession ? {
+            expectedPreparationKey: preparationKey ?? undefined,
+          } : {}),
         };
         const requestKey = isPlayerMode ? getKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), KQ_CAMPAIGN_START_SCOPE, { ...input, participants: campaignParticipants }, createClientRequestKey) : undefined;
         const result = await startKqRemoteRun({ ...input, ...(requestKey ? { requestKey } : {}) }, remoteRequest);
@@ -2387,6 +2411,16 @@ function KqGameSession({
   const contextPlan = preparationWarehouse?.state ?? state.warehouse?.sourceState;
   const contextZoneIdentity = contextPlan && zoneContext ? getKqZoneIdentity(contextPlan, zoneContext.id) : null;
   const contextZoneLabel = contextZoneIdentity && zoneContext ? `${contextZoneIdentity.label} · ${zoneContext.width * zoneContext.height} m²` : null;
+  const confirmedGuideRun = isPlayerMode && remoteBurnsEnabled && !practiceSession && !cardRecovery && remoteRunId ? remoteRunId : undefined;
+  let guidePreparationRecovery: "install" | "prepare" | undefined;
+  if (isPlayerMode && !practiceSession && preparationWarehouse && !buddieAssignmentBlocked && activeRuns.length === 0) {
+    const reservedZone = preparationWarehouse.productionReservation?.zoneId;
+    const hasPersonalZone = preparationWarehouse.state.zones.some(zone => zone.id !== reservedZone && isKqWarehouseZoneOperational(zone));
+    if (!hasPersonalZone) guidePreparationRecovery = "install";
+    else if (!remoteCollection.loading && !remoteCollection.error && buddieRotation && (!campaignParticipants.length || unavailableParticipant)) {
+      guidePreparationRecovery = "prepare";
+    }
+  }
   if (!hydrated) return <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page}><div className={styles.loading}>Ouverture de Botte du Chanvrier…</div></main>;
 
   if (isPlayerMode && viewMode !== "arena" && (!selectionReady || selectionError)) {
@@ -2422,6 +2456,8 @@ function KqGameSession({
     return (
       <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
         <section className={styles.setupPanel}
+          data-sylvain-culture-setup={isPlayerMode && !practiceSession && viewMode !== "arena" || undefined}
+          data-sylvain-culture-recovery={viewMode !== "arena" ? guidePreparationRecovery : undefined}
           data-preparation-deck={setupOpen && viewMode !== "arena" ? selectedCards.join(",") : undefined}
           data-preparation-heritage={setupOpen && viewMode !== "arena" ? selectedHeritage : undefined}>
           {isPlayerMode && viewMode !== "arena"
@@ -2531,9 +2567,10 @@ function KqGameSession({
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><CardEffectGuide card={card} /><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
           <div className={styles.pbiReserve}><span>Suivi vivant · intrants et protection biologique</span><p>Observation gratuite dans Santé. Les intrants et auxiliaires s’y achètent et restent hors du deck.</p></div>
           {isPlayerMode && !api.isTutorial ? <KqCultureContract disabled={remoteAction !== null || careBusy || pendingStart} onBusyChange={setContractBusy} /> : null}
-          {playerPresentation ? <section className={styles.setupLaunch} data-culture-preparation aria-labelledby="culture-preparation-title">
+          {playerPresentation ? <section className={styles.setupLaunch} data-culture-preparation aria-labelledby="culture-preparation-title"
+            data-sylvain-preparation={isPlayerMode && !practiceSession && !buddieStartBlockReason && campaignParticipants.length > 0 ? "ready" : undefined}>
             <div><h2 id="culture-preparation-title">Prêt à cultiver ?</h2><p>{isPlayerMode ? "6 étapes communes. Dés, cartes et soins font avancer tous tes Buddies." : "6 étapes à jouer. Le sol vivant est inclus ; le coût d’énergie sera présenté avant de commencer."}</p>{buddieStartBlockReason ? <p className={styles.setupLaunchWarning} role="status">{buddieStartBlockReason}</p> : null}</div>
-            <button type="button" data-culture-start-review disabled={Boolean(buddieStartBlockReason) || remoteAction !== null || careBusy || contractBusy} onClick={() => { setEnergyEstimate(null); setPendingStart(true); }}>{remoteAction !== null || careBusy || contractBusy ? "Action en cours…" : isPlayerMode ? "Vérifier et lancer" : "Lancer ma culture"}<ArrowRight size={20} aria-hidden="true" /></button>
+            <button type="button" data-culture-start-review data-sylvain-target="supplies-open" disabled={Boolean(buddieStartBlockReason) || remoteAction !== null || careBusy || contractBusy} onClick={() => { setEnergyEstimate(null); setPendingStart(true); }}>{remoteAction !== null || careBusy || contractBusy ? "Action en cours…" : isPlayerMode ? "Vérifier et lancer" : "Lancer ma culture"}<ArrowRight size={20} aria-hidden="true" /></button>
             <details><summary>Comment se déroule une étape ?</summary><KqHelpDashboard>
               <KqHelpSteps art="help-culture" steps={[
                 { label: "Lire la situation", detail: "Carte ou soin facultatif.", art: "help-plan" },
@@ -2669,9 +2706,11 @@ function KqGameSession({
           {pendingStart ? <AppDialog open onClose={() => setPendingStart(false)}
             title={<span id="culture-system-burn-title">{isPlayerMode ? "Lancer mes cultures ?" : "Commencer la culture ?"}</span>}
             labelledBy="culture-system-burn-title" className={styles.verdictDialog} bodyClassName={styles.startConfirm}>
+            {isPlayerMode && !practiceSession && <div data-farm-guide-host />}
             {practiceSession ? <p className={styles.startTrialNotice}>Essai · cartes et budget fictifs</p> : null}
             {isPlayerMode && campaignParticipants.length > 0 ? <p className={styles.startScope} data-culture-launch-scope><strong>{campaignParticipants.length} Buddie{campaignParticipants.length > 1 ? "s" : ""} · {getKqCampaignTotals(campaignParticipants).areaM2.toLocaleString("fr-FR")} m²</strong></p> : null}
             {playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}
+            {isPlayerMode && !practiceSession && <KqWarehouseLaunchSupplies members={campaignParticipants} onReady={setPreparationKey} />}
             {isPlayerMode && campaignParticipants.length > 0 ? <details data-culture-launch-participants><summary>Buddies et zones</summary>
               <ul className={styles.startParticipants}>{campaignParticipants.map(member => <li key={member.zoneId}>
                 <strong>{KQ_BUDDIES.find(buddie => buddie.code === member.buddieCode)?.name ?? member.buddieCode}</strong>
@@ -2690,8 +2729,8 @@ function KqGameSession({
               ]} />
               <KqHelpNote>Avance à ton rythme, étape par étape.</KqHelpNote>
             </KqHelpDashboard></details>
-            {buddieStartBlockReason || remoteNotice ? <p className={styles.modalNotice} role="status">{buddieStartBlockReason || remoteNotice}</p> : null}
-            {isPlayerMode && remoteNotice && remoteAction === null ? <button type="button" className={styles.startRecovery} data-culture-refresh-preparation disabled={careBusy || contractBusy} onClick={() => {
+            {buddieStartBlockReason || remoteNotice ? <p className={styles.modalNotice} role="status" data-sylvain-launch-reason>{buddieStartBlockReason || remoteNotice}</p> : null}
+            {isPlayerMode && remoteNotice && remoteAction === null ? <button type="button" className={styles.startRecovery} data-culture-refresh-preparation data-sylvain-target="launch-refresh" disabled={careBusy || contractBusy} onClick={() => {
               setPendingStart(false);
               setRemoteNotice("");
               setEnergyEstimate(null);
@@ -2699,8 +2738,8 @@ function KqGameSession({
             }}>Actualiser la préparation</button> : null}
             <div className={styles.startConfirmActions}>
               <button type="button" onClick={() => setPendingStart(false)}>{remoteAction === "start" ? "Fermer" : "Annuler"}</button>
-              <button type="button" disabled={(remoteAction !== null || careBusy) || Boolean(buddieStartBlockReason) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))}
-                data-culture-confirm-start onClick={() => void startSelectedGame()}>{remoteAction === "start" ? "Confirmation…" : isPlayerMode ? "Lancer mes cultures" : "Commencer"}<ArrowRight size={18} aria-hidden="true" /></button>
+              <button type="button" disabled={(remoteAction !== null || careBusy) || Boolean(buddieStartBlockReason) || (isPlayerMode && !practiceSession && !preparationKey) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))}
+                data-culture-confirm-start data-sylvain-target="launch" onClick={() => void startSelectedGame()}>{remoteAction === "start" ? "Confirmation…" : isPlayerMode ? "Lancer mes cultures" : "Commencer"}<ArrowRight size={18} aria-hidden="true" /></button>
             </div>
           </AppDialog> : null}
           {pendingRandomQueueFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }} title="Le jury" labelledBy="random-queue-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>{practiceSession ? "Duel classé d’essai" : "Duel aléatoire · classé"}</span><h2 id="random-queue-title">Entrer dans le duel classé ?</h2><p data-jury-confirm-flower={pendingRandomQueueFlowerId}>{officialFlowers.find(flower => flower.id === pendingRandomQueueFlowerId)?.varietyName} · Fleur {pendingRandomQueueFlowerId.slice(0, 8)}</p><p>Une Fleur d’un autre joueur est tirée au hasard, quelle que soit sa qualité. Tu peux retirer la tienne pendant l’attente. Dès qu’un adversaire est trouvé, le verdict est automatique et les deux Fleurs d’Arène sont définitivement consommées.</p><p data-jury-stock-consequence>Ton stock récolté{practiceSession ? " dans cet essai" : ""} est conservé. Le verdict ouvre ses possibilités de vente ; la Fleur d’Arène ne pourra plus servir en duel.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes Botte du Chanvrier.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
@@ -2763,10 +2802,10 @@ function KqGameSession({
         {harvestMoment}
         {contractRun}
         <KqCultureCarousel activeId={cultureRecapPanel} onChange={setCultureRecapPanel} panels={[
-          { id: "harvest", label: "Récoltes", art: "help-quality", content: <div className={styles.cultureSheet}><KqChapterHeading title="Les récoltes" compact /><KqCampaignSummary state={state} flowers={officialFlowers} /></div> },
-          { id: "journal", label: "Journal", art: "help-plan", content: <div className={styles.cultureSheet} data-culture-campaign-recap><KqChapterHeading title="Journal de la campagne" compact /><KqCultureRecap state={state} /><HarvestScoreSheet state={state} /><p>{burnedCards.length} copie{burnedCards.length > 1 ? "s" : ""} brûlée{burnedCards.length > 1 ? "s" : ""} · {preservedCards.length} conservée{preservedCards.length > 1 ? "s" : ""}, pour l’ensemble de la campagne.</p></div> },
-          { id: "care", label: "Santé", art: "help-care", content: <div className={styles.cultureSheet}><KqCultureCarePanel compact presentation="carousel" active={cultureRecapPanel === "care"} state={state} request={remoteRequest} runId={state.campaign.leaderRunId} disabled onStateChange={setState} onBusyChange={setCareBusy} onOpenHarvest={openCultureQuality} />{!state.care ? <p>Aucun suivi de santé enregistré pour cette culture.</p> : null}</div> },
-          { id: "charges", label: "Charges", art: "help-accounts", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading title="Charges et factures" compact /><KqEnergyPanel campaign campaignMembers={state.campaign.members} runId={state.campaign.leaderRunId} /></div> },
+          { id: "harvest", label: "Récoltes", content: <div className={styles.cultureSheet}><KqChapterHeading title="Les récoltes" compact /><KqCampaignSummary state={state} flowers={officialFlowers} /></div> },
+          { id: "journal", label: "Journal", content: <div className={styles.cultureSheet} data-culture-campaign-recap><KqChapterHeading title="Journal de la campagne" compact /><KqCultureRecap state={state} /><HarvestScoreSheet state={state} /><p>{burnedCards.length} copie{burnedCards.length > 1 ? "s" : ""} brûlée{burnedCards.length > 1 ? "s" : ""} · {preservedCards.length} conservée{preservedCards.length > 1 ? "s" : ""}, pour l’ensemble de la campagne.</p></div> },
+          { id: "care", label: "Santé", content: <div className={styles.cultureSheet}><KqCultureCarePanel compact presentation="carousel" active={cultureRecapPanel === "care"} state={state} request={remoteRequest} runId={state.campaign.leaderRunId} disabled onStateChange={setState} onBusyChange={setCareBusy} onOpenHarvest={openCultureQuality} />{!state.care ? <p>Aucun suivi de santé enregistré pour cette culture.</p> : null}</div> },
+          { id: "charges", label: "Charges", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading title="Charges et factures" compact /><KqEnergyPanel campaign campaignMembers={state.campaign.members} runId={state.campaign.leaderRunId} /></div> },
         ]} />
         <div className={styles.zoneNavigation}>{onOpenWarehouse ? <button type="button" onClick={() => onOpenWarehouse()}>Retour à l’entrepôt</button> : <Link href="/arene/placard?view=workshop">Retour à l’entrepôt</Link>}</div>
       </main>;
@@ -2801,7 +2840,7 @@ function KqGameSession({
           </section>
           <KqCultureRoom state={state} initialZoneId={initialZoneId} />
           <KqCultureCarousel activeId={cultureRecapPanel} onChange={setCultureRecapPanel} panels={[
-            { id: "journal", label: "Journal", art: "help-plan", content: (
+            { id: "journal", label: "Journal", content: (
           <section className={styles.traitsPanel}>
             <KqChapterHeading title="L’histoire de cette culture" compact /><KqCultureRecap state={state} />
             <ol className={styles.cultureDeathHistory} aria-label="Résultats des étapes validées">
@@ -2818,7 +2857,7 @@ function KqGameSession({
             </div>
           </section>
             ) },
-            { id: "care", label: "Santé", art: "help-care", content: <div className={styles.cultureSheet}>
+            { id: "care", label: "Santé", content: <div className={styles.cultureSheet}>
           <KqCultureCarePanel compact presentation="carousel" active={cultureRecapPanel === "care"} state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={Boolean(cardRecovery) || careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
           {!state.care ? <p>Aucun suivi de santé enregistré pour cette culture.</p> : null}
             </div> },
@@ -2841,7 +2880,7 @@ function KqGameSession({
           {contractRun}
           {hasHarvest ? <p className={styles.harvestNote}>Au jury, seule la Fleur d’Arène est consommée. Ta récolte reste disponible pour la vente après le verdict.</p> : null}
           <KqCultureCarousel activeId={cultureRecapPanel} onChange={setCultureRecapPanel} panels={[
-            { id: "harvest", label: "Fleur", art: "help-quality", content: <div className={styles.cultureSheet} data-harvest-flower><KqChapterHeading title="Ma Fleur d’Arène" compact />
+            { id: "harvest", label: "Fleur", content: <div className={styles.cultureSheet} data-harvest-flower><KqChapterHeading title="Ma Fleur d’Arène" compact />
 
             {recordedFlower ? <>
             {harvestProjection.nextTier && harvestProjection.qualityToNextTier === 0 ? <p><KqHarvestTierProgress projection={harvestProjection} /></p> : null}
@@ -2861,7 +2900,7 @@ function KqGameSession({
             </section>
             </> : <p>La Fleur d’Arène de cette culture n’a pas encore été retrouvée. Consulte le stockage pour vérifier ce lot.</p>}
             </div> },
-            { id: "journal", label: "Journal", art: "help-plan", content: <div className={styles.cultureSheet} data-harvest-journal><KqChapterHeading title="Journal et cartes" compact />
+            { id: "journal", label: "Journal", content: <div className={styles.cultureSheet} data-harvest-journal><KqChapterHeading title="Journal et cartes" compact />
 
             <div className={styles.cultureReceipt}>
               <article><Flame /><span><small>Copies consommées · {burnedCards.length}</small><div>{burnedCards.length > 0 ? burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune copie consommée</em>}</div></span></article>
@@ -2871,11 +2910,11 @@ function KqGameSession({
 
             {hasHarvest && Number.isFinite(state.quality) ? <HarvestScoreSheet state={state} /> : <p>Le journal conserve le parcours de la culture. Aucun bulletin de récolte n’est présenté sans quantité récoltée connue.</p>}
             </div> },
-            { id: "care", label: "Santé", art: "help-care", content: <div className={styles.cultureSheet}>
+            { id: "care", label: "Santé", content: <div className={styles.cultureSheet}>
             <KqCultureCarePanel compact presentation="carousel" active={cultureRecapPanel === "care"} state={state} request={remoteRequest} storage={careStorage} runId={runId} disabled onStateChange={setState} onBusyChange={setCareBusy} />
             {!state.care ? <p>Aucun suivi de santé enregistré pour cette culture.</p> : null}
             </div> },
-            { id: "charges", label: "Charges", art: "help-accounts", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading title="Charges et factures" compact />
+            { id: "charges", label: "Charges", content: <div className={styles.cultureSheet} data-harvest-charges><KqChapterHeading title="Charges et factures" compact />
               {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedWarehouse={state.warehouse} lockedTents={state.equipment?.tents} lockedScope={state.equipment?.scope} productionUnits={state.equipment?.productionUnits} runId={runId} zoneId={initialZoneId} /> : <p>Aucun relevé d’énergie disponible pour cette culture.</p>}
             </div> },
           ]} />
@@ -3060,6 +3099,8 @@ function KqGameSession({
 
   return (
     <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-view-mode={viewMode} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-culture-play data-choosing-pbi={!!treatment || undefined}
+      data-sylvain-run={confirmedGuideRun}
+      data-sylvain-care-confirmed={confirmedGuideRun && state.care?.history.some(event => event.kind === "intervention") || undefined}
       data-guide-card-played={isPlayerMode && remoteBurnsEnabled && !!remoteRunId && !api.isTutorial && !cardRecovery && state.usedCards.length > 0 || undefined}
       data-guide-culture-started={isPlayerMode && remoteBurnsEnabled && !!remoteRunId && !api.isTutorial || undefined}
       data-guide-turn-resolved={isPlayerMode && remoteBurnsEnabled && !!remoteRunId && !api.isTutorial && state.history.length > 0 || undefined}>
@@ -3070,7 +3111,7 @@ function KqGameSession({
 
       <KqCultureRoom state={state} initialZoneId={initialZoneId} observe={isPlayerMode} treatment={treatment && { ...treatment, choose: deposit, cancel: cancelCareSelection }} />
       {!treatment && <nav className={styles.roomShortcuts} aria-label="Actions de culture sur mobile">
-        <button type="button" onClick={() => focusTurnElement("[data-culture-options]")}>Soins</button>
+        <button type="button" onClick={() => focusTurnElement("[data-culture-options]")}>Santé</button>
         <button type="button" data-room-show-dice onClick={() => focusTurnElement("[data-culture-decision]")}>Voir les dés</button>
       </nav>}
       <KqCardRecoveryNotice pending={Boolean(cardRecovery)} checking={cardChecking} message={cardRecoveryMessage}
@@ -3096,7 +3137,7 @@ function KqGameSession({
       <KqCultureCarousel activeId={culturePanel} onChange={setCulturePanel}
         disabled={Boolean(pendingBurnCode) || remoteAction !== null || careBusy || rolling || diceVisualSyncing}
         panels={[
-          { id: "play", label: "Jouer", art: "help-culture", detail: `Étape ${state.stageIndex + 1}/6`, content: (
+          { id: "play", label: "Jouer", detail: `Étape ${state.stageIndex + 1}/6`, content: (
       <section className={styles.gameGrid}>
         <div className={styles.situationCard} data-culture-situation tabIndex={-1}>
           <span className={styles.stepLabel}>Étape {state.stageIndex + 1}/6 · {getKqStageDisplayName(situation.stage)}</span>
@@ -3184,12 +3225,15 @@ function KqGameSession({
         </div>
       </section>
           ) },
-          { id: "care", label: "Soins", art: "help-care", detail: state.care ? `${state.care.vitality}/100 santé` : "Suivi", actionCount: careActionCount, content: (
+          { id: "care", label: "Santé", detail: state.care ? `${state.care.vitality}/100 santé` : "Suivi", actionCount: careActionCount, content: (
             <section className={styles.cultureSheet} data-culture-options tabIndex={-1} aria-label="Soins et suivi">
             <KqCultureCarePanel compact presentation="carousel" active={culturePanel === "care"} state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={Boolean(cardRecovery) || careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} onOpenHarvest={openCultureQuality} onAvailabilityChange={setCareAvailability} onChooseCareSector={chooseCareSector} onMaintenance={() => requestAnimationFrame(showRoom)} />
+            {isPlayerMode && !practiceSession && remoteRunId && <details className={styles.cultureDisclosure}><summary>Nutrition et prévention de la zone</summary>
+              <WarehouseRunSupplies locked={Boolean(cardRecovery) || careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} runs={state.campaign?.members.map(member => ({ runId: member.runId, name: getKqZoneIdentity(member.warehouse.sourceState, member.zoneId)?.label ?? member.zoneId })) ?? [{ runId: remoteRunId, name: state.varietyName }]} />
+            </details>}
             </section>
           ) },
-          { id: "cards", label: "Cartes", art: "collection", detail: cardChoices.label, actionCount: playableActionCount, content: (
+          { id: "cards", label: "Cartes", detail: cardChoices.label, actionCount: playableActionCount, content: (
             <div className={styles.cultureCards}>
           <section className={styles.handDetails} data-culture-hand tabIndex={-1}>
 
@@ -3257,7 +3301,7 @@ function KqGameSession({
 
             </div>
           ) },
-          { id: "harvest", label: "Récolte", art: "help-quality", detail: `${displayedHarvestGrams.toLocaleString("fr-FR")} g estimés`, content: (
+          { id: "harvest", label: "Récolte", detail: `${displayedHarvestGrams.toLocaleString("fr-FR")} g estimés`, content: (
             <div className={styles.cultureSheet}>
               <KqChapterHeading title="Récolte estimée" compact />
         {state.campaign && <section data-campaign-progress><KqCampaignSummary state={state} /></section>}
@@ -3294,7 +3338,7 @@ function KqGameSession({
 
             </div>
           ) },
-          { id: "journal", label: "Journal", art: "help-plan", detail: `${state.history.length} étape${state.history.length > 1 ? "s" : ""}`, content: (
+          { id: "journal", label: "Journal", detail: `${state.history.length} étape${state.history.length > 1 ? "s" : ""}`, content: (
             <div className={styles.cultureSheet}>
               <KqChapterHeading title="Journal de culture" compact />
         <section className={styles.cultureSheet}>
@@ -3311,7 +3355,7 @@ function KqGameSession({
 
             </div>
           ) },
-          { id: "rules", label: "Repères", art: "help-training", detail: "Règles et dés", content: (
+          { id: "rules", label: "Repères", detail: "Règles et dés", content: (
             <div>
               <KqChapterHeading title="Repères de culture" compact />
               {cultureWorkEnabled ? <KqCultureWorkStatus detailsOnly quote={cultureWork.quote} error={cultureWork.error} onRefresh={cultureWork.refresh} /> : null}

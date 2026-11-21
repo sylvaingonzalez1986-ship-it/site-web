@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { projectVillageSurface, villageMaterial, type VillageSurface } from "./village-surfaces";
+import { HEMP_FARM, HEMP_FARM_ID } from "./village-layout";
 
 export type VillageBuildingKind = "warehouse" | "bank" | "office" | "market" | "shop" | "arena" | "missions" | "collection";
 
@@ -8,17 +9,18 @@ const C = {
   cream: "#f6e6bc", light: "#fff2cf", slate: "#344c56", tile: "#516872",
   slateGreen: "#37564e", slateViolet: "#51566a", lime: "#f4e2bc",
   teal: "#008f8c", tealDark: "#00615f", wood: "#ad713d", woodLight: "#d99a57",
-  gold: "#efb33b", ink: "#243b37", stone: "#bcb092", granite: "#93988a", glass: "#3b7777",
+  gold: "#efb33b", lantern: "#efb33b", ink: "#243b37", stone: "#bcb092", granite: "#93988a", glass: "#3b7777", window: "#3b7777",
   paper: "#fff4d6", red: "#ba503b", green: "#477c50", white: "#fff9e7",
 } as const;
 type Paint = keyof typeof C;
 type XYZ = readonly [number, number, number];
 type RoofSlate = "slate" | "slateGreen" | "slateViolet";
-type MaterialFamily = "masonry" | "roof" | "joinery" | "metal" | "solid";
+type MaterialFamily = "masonry" | "roof" | "joinery" | "metal" | "solid" | "window" | "lantern";
 
 const familyByPaint: Partial<Record<Paint, MaterialFamily>> = {
   lime: "masonry", stone: "masonry", granite: "masonry", slate: "roof", tile: "roof", slateGreen: "roof", slateViolet: "roof",
   wood: "joinery", woodLight: "joinery", teal: "joinery", tealDark: "joinery", gold: "metal",
+  window: "window", lantern: "lantern",
 };
 const surfaceByFamily: Partial<Record<MaterialFamily, VillageSurface>> = { masonry: "granite", roof: "slate", joinery: "timber" };
 
@@ -122,7 +124,10 @@ class BuildingParts {
       merged.computeBoundingSphere();
       const surface = surfaceByFamily[family];
       if (surface) projectVillageSurface(merged, surface);
-      const material = villageMaterial({ vertexColors: true, roughness: 0.92, metalness: family === "metal" ? 0.2 : 0, flatShading: true }, surface);
+      const material = villageMaterial({
+        vertexColors: true, roughness: 0.92, metalness: family === "metal" || family === "lantern" ? 0.2 : 0, flatShading: true,
+      }, surface);
+      if (family === "lantern" || family === "window") material.name = `village-${family}`;
       const mesh = new THREE.Mesh(merged, material);
       mesh.name = `${meshPrefix}-${family}`;
       mesh.castShadow = true;
@@ -133,7 +138,7 @@ class BuildingParts {
     return group;
   }
 
-  finish(kind: VillageBuildingKind | "mailbox") {
+  finish(kind: VillageBuildingKind | "mailbox" | typeof HEMP_FARM_ID) {
     const group = this.buildGroup(`village-building-${kind}`, kind);
     group.userData.buildingKind = kind;
     return group;
@@ -295,7 +300,7 @@ function door(p: BuildingParts, x: number, z: number, width: number, height: num
 
 function window(p: BuildingParts, x: number, y: number, z: number, shutters = true) {
   p.shape(arch(0.71, 1.12), 0.04, [x, y, z], "ink");
-  p.shape(arch(0.55, 0.96), 0.04, [x, y + 0.08, z + 0.04], "glass");
+  p.shape(arch(0.55, 0.96), 0.04, [x, y + 0.08, z + 0.04], "window");
   p.box([0.055, 0.94, 0.05], [x, y + 0.55, z + 0.11], "light");
   p.box([0.55, 0.055, 0.05], [x, y + 0.54, z + 0.11], "light");
   p.box([0.87, 0.1, 0.24], [x, y + 0.01, z + 0.1], "light");
@@ -448,7 +453,7 @@ function activityJar(p: BuildingParts, x: number, y: number, z: number) {
 function activityLantern(p: BuildingParts, x: number, y: number, z: number) {
   p.beam([x, y + 0.27, z], [x, y + 0.49, z], 0.035, "ink");
   p.torus(0.075, 0.022, [x, y + 0.3, z], "ink");
-  p.sphere(0.2, [x, y, z], "gold", [0.8, 1.1, 0.8]);
+  p.sphere(0.2, [x, y, z], "lantern", [0.8, 1.1, 0.8]);
   for (const dy of [-0.21, 0.21]) p.cylinder(0.2, 0.07, [x, y + dy, z], "ink");
   for (const dx of [-0.13, 0.13]) for (const dz of [-0.1, 0.1]) {
     p.beam([x + dx, y - 0.21, z + dz], [x + dx, y + 0.21, z + dz], 0.025, "wood");
@@ -1034,6 +1039,35 @@ export function createVillageBuilding(kind: VillageBuildingKind): THREE.Group {
   };
   factories[kind](parts);
   return parts.finish(kind);
+}
+
+export function createVillageHempFarm() {
+  const p = new BuildingParts();
+  const { width, depth, wall: height, rise } = HEMP_FARM.footprint;
+  const front = depth / 2;
+  wall(p, width, depth, height, rise, true);
+  roof(p, width + .46, depth + .52, height + .11, rise);
+  cottageDetails(p, width, depth, height, rise);
+  chimney(p, 1.18, height + .81, -.61);
+  p.box([width + .11, .57, depth + .1], [0, -.25, 0], "granite");
+  // The masonry footing reaches the rock where the rear corner meets the slope.
+  p.box([.75, 1.35, .73], [width / 2 - .31, -.68, -front + .31], "granite");
+  door(p, 0, front + .04, 1.25, 1.78, "wood", true);
+  window(p, 1.4, 1.38, front + .035);
+  wallLantern(p, -1.04, 1.80, front + .09);
+  p.box([1.47, .13, .56], [0, .025, front + .26], "stone");
+  crate(p, [-1.62, -.1, front + .42], .52);
+  barrel(p, 1.85, front + .43, -.13);
+  // A small painted stalk marks the drying barn above its split door.
+  p.box([.94, .64, .085], [0, 2.64, front + .025], "tealDark");
+  p.beam([0, 2.4, front + .089], [0, 2.92, front + .089], .034, "gold");
+  for (const side of [-1, 1]) for (let row = 0; row < 2; row++) {
+    const length = .23 - row * .065;
+    p.sphere(.108, [side * length * .52, 2.63 + row * .147, front + .089], "gold", [length * 6, .29, .16]);
+  }
+  const model = p.finish(HEMP_FARM_ID);
+  model.traverse(part => { part.raycast = () => {}; });
+  return model;
 }
 
 /** The separate KqMailbox map prop, modelled from /placard/ui/mailbox-v1.webp. */

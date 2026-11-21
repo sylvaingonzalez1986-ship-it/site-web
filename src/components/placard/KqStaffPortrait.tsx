@@ -17,7 +17,13 @@ const STAFF_AVATARS: Record<string, ChanvrierAvatarProfile> = {
   malik: avatar("male", "ebony", "ochre", { hair: "crop", hairColor: "black", accessory: "round-glasses", top: "jacket" }),
 };
 
+type StaffIdentity = Pick<KqStaffCandidate, "code" | "portraitCode">;
+
 /** One portrait identity across recruitment, the work plan and the workshop. */
-export function KqStaffPortrait({ person, view = "portrait" }: { person: Pick<KqStaffCandidate, "code" | "portraitCode">; view?: "full" | "portrait" }) {
-  return <ChanvrierAvatar profile={STAFF_AVATARS[person.portraitCode ?? person.code] ?? STAFF_AVATARS.anna} view={view} />;
+export function getKqStaffAvatarProfile(person: StaffIdentity) {
+  return STAFF_AVATARS[person.portraitCode ?? person.code] ?? STAFF_AVATARS.anna;
+}
+
+export function KqStaffPortrait({ person, view = "portrait" }: { person: StaffIdentity; view?: "full" | "portrait" }) {
+  return <ChanvrierAvatar profile={getKqStaffAvatarProfile(person)} view={view} />;
 }

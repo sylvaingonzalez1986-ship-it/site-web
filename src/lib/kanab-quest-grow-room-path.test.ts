@@ -91,6 +91,25 @@ describe("actual warehouse walking routes", () => {
       point = next;
     }
   });
+  it("routes around a solid irrigation station and through the hygiene gate", () => {
+    const starter = createKqWarehouseStarter();
+    const plan = getKqWarehouseSpatialLayout({ ...starter, serviceZones: [],
+      zones: [{ ...starter.zones[0], x: 5, y: 3 }],
+      stationPlacements: [{ id: "pump", code: "SIM-WATER-03", x: 5, y: 7 },
+        { id: "gate", code: "SIM-HYGIENE-03", x: 5, y: 9 }],
+    });
+    const graph = createGrowRoomPaths(plan);
+    const start = { x: .5, z: 5.5 }, aisle = { x: .5, z: 3.5 };
+    expect(graph.canWalk(start, aisle)).toBe(true);
+    expect(graph.canWalk(aisle, { x: .5, z: 1.5 })).toBe(false);
+    const route = graph.route(start, "starter", { zoneId: "starter", x: 0, y: 0 })!;
+    expect(route.points.length).toBeGreaterThan(1);
+    let previous = start;
+    for (const next of route.points) {
+      expect(graph.canWalk(previous, next)).toBe(true);
+      previous = next;
+    }
+  });
   it("rejects a closed rack front, including a separating wall between a free hand position and the shelf", () => {
     const rack = item("rack", "drying", 0, 0, 2, 1);
     expect(createGrowRoomPaths(layout([rack, item("wall", "partition", 0, .52, 2.5, .04)])).route({ x: 0, z: 1 }, "rack")).toBeNull();

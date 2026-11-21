@@ -37,7 +37,10 @@ export type KqStoredStorageLot = {
   state: KqStorageLot; revision: number; juryScore: number | null; marketStatus?: string | null;
   overflowOffer?: { units: number; payoutCents: number; netPayoutCents: number };
 };
-type StoredSnapshot = Omit<KqStorageSnapshot, "catalog" | "containers" | "lots"> & { lots: KqStoredStorageLot[] };
+type StoredSnapshot = Omit<KqStorageSnapshot, "catalog" | "containers" | "lots"> & {
+  lots: KqStoredStorageLot[];
+  businessStartedAt?: string | null;
+};
 
 export function projectKqStoredStorageLot(lot: KqStoredStorageLot, nowMs: number) {
   if (!isKqStorageLot(lot.state)) throw new Error("[supabase:storage] invalid_storage_state");
@@ -65,7 +68,11 @@ export async function getKqStorageSnapshot(userId: string) {
   try { staff = await settleKqStaffIfAvailable(userId); } catch { /* unknown trim */ }
   const result = await createSupabaseServiceClient().rpc("rpc_kq_warehouse_storage_state", { p_user_id: uuid(userId) });
   if (result.error) databaseError(result.error.message);
-  return snapshot(result.data as StoredSnapshot, staff);
+  const stored = result.data as StoredSnapshot;
+  const storage = snapshot(stored, staff);
+  // Older SQL snapshots omitted the origin. The staff snapshot uses the same rule.
+  const businessStartedAt = stored.businessStartedAt === undefined ? staff?.context?.businessStartedAt : stored.businessStartedAt;
+  return { ...storage, businessStartedAt };
 }
 export async function handleKqStorageAction(userId: string, body: Record<string, unknown>) {
   uuid(userId);

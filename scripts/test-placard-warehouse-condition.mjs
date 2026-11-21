@@ -191,6 +191,45 @@ export async function conditionChecks({ db, sql, scalar, equal, reject, player, 
       for (const signature of ["kq_warehouse_validate_assets(jsonb,jsonb)", "kq_warehouse_condition_projection(jsonb)", "kq_warehouse_wear_on_completion()", "kq_warehouse_save_before_condition(uuid,uuid,jsonb,integer,jsonb,jsonb,integer)"])
         equal(await scalar("SELECT has_function_privilege($1,$2,'EXECUTE')", [role, signature]), false, `${role} cannot bypass condition guards`);
     }
+    const cartCode = "SIM-LOGISTICS-02";
+    const cartOwner = await player(), oldCart = await initialize(cartOwner);
+    const cartZone = oldCart.state.zones[0];
+    const legacyCartState = { ...oldCart.state, zones: oldCart.state.zones.map(zone =>
+      zone.id === cartZone.id ? { ...zone, optionCodes: [cartCode] } : zone),
+      optionInventory: [{ code: cartCode, quantity: cartZone.width * cartZone.height + 2 }] };
+    const retained = { id: randomUUID(), kind: "option", code: cartCode, quantity: 1, purchaseUnitCents: 1300, wearPercent: 12,
+      zoneId: null, sourceAssetKey: "warehouse:cart-purchase" };
+    const oldCartAssets = [...oldCart.cultureEquipment.assets, retained,
+      { ...retained, id: randomUUID(), quantity: cartZone.width * cartZone.height, wearPercent: 22, zoneId: cartZone.id },
+      { ...retained, id: randomUUID(), purchaseUnitCents: null, wearPercent: 33, sourceAssetKey: undefined }];
+    await db.query("UPDATE kq_warehouse_layouts SET state=$2,culture_assets=$3::jsonb WHERE user_id=$1",
+      [cartOwner, legacyCartState, JSON.stringify(oldCartAssets)]);
+    await db.exec("COMMIT");
+    await db.exec("CREATE FUNCTION public.kq_staff_production_reservation(UUID) RETURNS JSONB LANGUAGE sql STABLE AS 'SELECT NULL::JSONB'");
+    await db.exec(await sql("20261120000200_kq_warehouse_handling_cart.sql"));
+    await db.exec("BEGIN");
+    const converted = await scalar("SELECT rpc_kq_warehouse_convert_handling_cart($1,$2)", [cartOwner, oldCart.revision]);
+    equal(converted.state.optionInventory, [{ code: cartCode, quantity: 1 }], "historical area modules become one common cart");
+    equal(converted.state.zones[0].optionCodes, [], "legacy cart assignment is removed");
+    equal(converted.cultureEquipment.assets.filter(asset => asset.code === cartCode), [retained], "retained lot keeps wear, source and the funded basis");
+    equal(converted.cashCents, oldCart.cashCents, "cart conversion leaves wallet cash unchanged");
+    equal(converted.migrationCreditCents, oldCart.migrationCreditCents + 1300 * cartZone.width * cartZone.height, "only known excess principal becomes investment credit");
+    const archivedCart = await scalar("SELECT handling_cart_conversion FROM kq_warehouse_layouts WHERE user_id=$1", [cartOwner]);
+    equal(archivedCart.unknownBasisQuantity, 1, "unknown excess stays archived without an invented credit");
+    equal((await layout(cartOwner)).handlingCartConversion, { quantity: legacyCartState.optionInventory[0].quantity,
+      creditCents: archivedCart.creditCents, unknownBasisQuantity: 1 }, "the saved snapshot exposes the conversion totals without the private archive");
+    equal((await scalar("SELECT rpc_kq_warehouse_convert_handling_cart($1,$2)", [cartOwner, converted.revision])).revision,
+      converted.revision, "conversion cannot replay against the latest revision");
+    const newCartOwner = await player(), withoutCart = await initialize(newCartOwner), cartKey = randomUUID();
+    const freshCart = warehouse.getKqWarehouseQuote({ ...withoutCart.state, optionInventory: [{ code: cartCode, quantity: 1 }] }, withoutCart.state);
+    const fundedCart = Math.max(0, freshCart.totalCostCents - withoutCart.migrationCreditCents);
+    const cartAssets = condition.reconcileKqWarehouseCondition(withoutCart.state, freshCart.nextState, withoutCart.cultureEquipment,
+      { requestKey: cartKey, fundedFraction: fundedCart / freshCart.totalCostCents, fundedCents: fundedCart, investmentCents: freshCart.totalCostCents }, randomUUID);
+    const cartPurchase = await scalar("SELECT rpc_kq_warehouse_save_condition($1,$2,$3,$4,$5,$6,$7,$8,$9)", [newCartOwner, cartKey,
+      { state: freshCart.nextState, expectedRevision: withoutCart.revision, expectedCostCents: 1600 }, withoutCart.revision,
+      withoutCart.state, freshCart.nextState, 1600, withoutCart.cultureEquipment.assets, cartAssets.assets]);
+    equal(cartPurchase.receipt.investmentCents, 1600, "only the flat cart price is billed for a new purchase");
+    equal(cartPurchase.cultureEquipment.assets.find(asset => asset.code === cartCode)?.zoneId, null, "the cart attaches to no zone");
     console.log("Warehouse condition: real purchase, reserve, quote CAS, one-shot wear, reduced yield, resale, disposal and private grants passed.");
   } finally { await vite.close(); }
 }

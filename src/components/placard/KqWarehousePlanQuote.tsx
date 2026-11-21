@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import type { KqWarehouseQuote, KqWarehouseState } from "@/lib/kanab-quest-warehouse";
 import { getKqWarehousePlanChanges, getKqWarehousePlanPayment } from "@/lib/kanab-quest-warehouse-plan-review";
+import { KQ_WAREHOUSE_STATIONS, isKqWarehouseStationCode } from "@/lib/kanab-quest-warehouse-stations";
 import styles from "./KqWarehousePlanQuote.module.css";
 
 type Props = {
@@ -21,8 +22,11 @@ const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractio
 export function KqWarehousePlanQuote({ previousState, draftState, quote, cashCents, migrationCreditCents, children, aside, compact = false }: Props) {
   const payment = getKqWarehousePlanPayment(quote, cashCents, migrationCreditCents);
   const changes = getKqWarehousePlanChanges(previousState, draftState);
+  const addingAirlock = draftState.stationPlacements?.some(item => item.code === "SIM-HYGIENE-03")
+    && !previousState.stationPlacements?.some(item => item.code === "SIM-HYGIENE-03");
   return <section className={`${styles.sheet} ${compact ? styles.compact : ""}`} aria-label="Devis du plan" data-warehouse-plan-quote>
     <div className={styles.heading}><h3>Devis du plan</h3><p>{changes.zoneChanges.length > 0 ? `${changes.zoneChanges.length} zone${changes.zoneChanges.length > 1 ? "s concernées" : " concernée"} · toutes les modifications non enregistrées.` : "Toutes les modifications non enregistrées."}</p></div>
+    {addingAirlock && <p className={styles.note}>Sas d’entretien à installer à la porte sud · pose comprise.</p>}
     <dl className={styles.payment}>
       <div className={styles.payable}><dt>À payer maintenant</dt><dd data-warehouse-plan-payable-cents={payment.payableCents ?? undefined}>{payment.payableCents === null ? "À calculer" : formatKqCash(payment.payableCents)}</dd></div>
       <div><dt>Trésorerie après</dt><dd>{payment.cashAfterCents === null ? payment.shortfallCents ? "Fonds insuffisants" : "À calculer" : formatKqCash(payment.cashAfterCents)}</dd></div>
@@ -49,7 +53,7 @@ export function KqWarehousePlanQuote({ previousState, draftState, quote, cashCen
             <div className={styles.total}><dt>Total des modifications</dt><dd data-warehouse-plan-total-cents={quote.totalCostCents}>{formatKqCash(quote.totalCostCents)}</dd></div>
             {!!payment.creditUsedCents && <div><dt>Crédit de reprise</dt><dd data-warehouse-plan-credit-cents={payment.creditUsedCents}>− {formatKqCash(payment.creditUsedCents)}</dd></div>}
           </dl>
-          {quote.purchases.length + quote.optionPurchases.length > 0 ? <div className={styles.purchases}><h4>Achats neufs du plan</h4><ul>{quote.purchases.map(line => <li key={line.code}><span>{number(line.quantity)} × {line.device.name}</span><strong>{formatKqCash(line.totalCents)}</strong></li>)}{quote.optionPurchases.map(line => <li key={line.code}><span>{number(line.quantity)} m² · {line.option.name}</span><strong>{formatKqCash(line.totalCents)}</strong></li>)}</ul></div> : <p className={styles.note}>Aucun matériel neuf à acheter.</p>}
+          {quote.purchases.length + quote.optionPurchases.length > 0 ? <div className={styles.purchases}><h4>Achats neufs du plan</h4><ul>{quote.purchases.map(line => <li key={line.code}><span>{number(line.quantity)} × {line.device.name}</span><strong>{formatKqCash(line.totalCents)}</strong></li>)}{quote.optionPurchases.map(line => <li key={line.code}><span>{number(line.quantity)} {line.unit ? "×" : "m² ·"} {line.unit === "station" && isKqWarehouseStationCode(line.code) ? KQ_WAREHOUSE_STATIONS[line.code].name : line.option.name}</span><strong>{formatKqCash(line.totalCents)}</strong></li>)}</ul></div> : <p className={styles.note}>Aucun matériel neuf à acheter.</p>}
           <p className={styles.note}>La réserve est réutilisée avant tout achat. Les charges de culture sont facturées séparément.</p>
         </>}
       </div>

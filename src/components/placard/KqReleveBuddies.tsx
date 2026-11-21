@@ -48,6 +48,7 @@ export function KqReleveBuddies({ state, onAction }: {
       <section className={styles.placement} aria-label="Tes Buddies dans l’entrepôt">
         <h3>Tes Buddies dans l’entrepôt</h3>
         <KqWarehousePlan zones={state.draftWarehouse.zones} serviceZones={state.draftWarehouse.serviceZones ?? []}
+          stationPlacements={state.draftWarehouse.stationPlacements} handlingPlacements={state.draftWarehouse.handlingPlacements} airPlacements={state.draftWarehouse.airPlacements} partitions={state.draftWarehouse.partitions}
           dimensions={{ columns: 10, rows: 10 }}
           selectedId={zone?.id ?? null} drawing={false} drawingKind="culture" anchor={null} cursor={{ x: 0, y: 0 }} zoom={zoom}
           interactionHint="Choisis ta zone et sa carte dans le carrousel au-dessus." locked managing={false} growing={false} onZoom={setZoom} onDrawingKind={() => {}} onToggleDrawing={() => {}}

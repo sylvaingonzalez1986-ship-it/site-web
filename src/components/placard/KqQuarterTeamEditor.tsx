@@ -8,6 +8,7 @@ import { KQ_PROSPECTING_DEPARTMENTS } from "@/lib/kanab-quest-prospecting";
 import { applyKqStaffCommand, getKqStaffCalendar, getKqStaffCapacity, KQ_STAFF_CITIES, KQ_STAFF_SKILLS } from "@/lib/kanab-quest-staff";
 import type { KqStaffSkill, KqStaffSnapshot, KqStaffTaskKind, KqTeamAssignment, KqTeamDayPlan, KqTeamPlanCommand } from "@/lib/kanab-quest-staff-types";
 import { KQ_STAFF_PRODUCTION_STEPS, KQ_STAFF_TRAINING_HOURLY_CENTS } from "@/lib/kanab-quest-staff-weekly";
+import { KqActivityDuration } from "./KqActivityDuration";
 import type { KqStaffConfirmationDraft } from "./KqStaffOperations";
 import { assignmentKind, teamActivityNames, teamAssignmentText, teamHours } from "./kq-quarter-team-presentation";
 import styles from "./KqQuarterTeamPanel.module.css";
@@ -79,6 +80,8 @@ export function KqQuarterTeamEditor({ snapshot, initialPerson, playerName, plan,
   else if (isPlayer || kind === "countryside") assignment = { action: "player-assign", kind, hours, expectedCostCents: cost, ...fields };
   else assignment = { action: "assign", employeeId: person, kind, hours, expectedCostCents: cost, ...fields };
   const taskDay = mode === "now" ? calendar.day : day;
+  const free = freeHours(snapshot, person, taskDay);
+  const reusableHours = plan?.assigneeId === person && plan.day === taskDay ? plan.assignment.hours : 0;
   const order = (state.dayPlans ?? []).filter(row => row.assigneeId === person && row.day === taskDay && row.id !== plan?.id);
   const command: KqTeamPlanCommand = mode === "now" ? { action: "start-team-task", assignment, ...teamPlanVersion(snapshot) } : {
     action: "save-day-plan", assignment, day, ...teamPlanVersion(snapshot), ...(plan ? { planId: plan.id } : {}),
@@ -137,13 +140,16 @@ export function KqQuarterTeamEditor({ snapshot, initialPerson, playerName, plan,
       {kind === "training" && <label>Compétence<select value={skill} onChange={event => setSkill(event.target.value as KqStaffSkill)}>{Object.entries(KQ_STAFF_SKILLS).map(([key, name]) => <option key={key} value={key}>{name}</option>)}</select></label>}
       {kind === "trim" && <label>Mode<select value={trimMode} onChange={event => setTrimMode(event.target.value as typeof trimMode)}><option value="manual">À la main</option><option value="machine" disabled={!state.trimmerOwned}>Machine{!state.trimmerOwned && " · à acquérir"}</option></select></label>}
       {kind === "production" && <label>Étape<select value={step} onChange={event => setStep(event.target.value as typeof step)}>{Object.entries(KQ_STAFF_PRODUCTION_STEPS).map(([key, name]) => <option key={key} value={key}>{name}</option>)}</select></label>}
-      <label>Durée en heures de jeu<input type="number" inputMode="decimal" min={0.5} step={0.5} max={isPlayer ? 12 : 10} required value={kind === "countryside" ? 12 : hourInput} readOnly={kind === "countryside"} onChange={event => setHourInput(event.target.value)} /></label>
+      {kind === "countryside" ? <p>Durée de la tournée <strong>{teamHours(KQ_PLAYER_DAILY_HOURS)}</strong></p> : isPlayer ?
+        <KqActivityDuration label="Heures à réserver" hours={hours} minimumHours={kind === "sales" ? 2 : .5}
+          availableHours={Math.min(KQ_PLAYER_DAILY_HOURS, free + reusableHours)} disabled={disabled} onChange={value => setHourInput(String(value))} /> :
+        <label>Durée en heures de jeu<input type="number" inputMode="decimal" min={0.5} step={0.5} max={10} required value={hourInput} onChange={event => setHourInput(event.target.value)} /></label>}
       {mode === "plan" && order.length > 0 && <label>Ordre d’exécution<select value={position} onChange={event => setPosition(event.target.value)}>
         <option value="keep">{plan && plan.day === day && plan.assigneeId === person ? "Garder la position" : "Après les autres tâches"}</option>
         {order.map((row, index) => <option key={row.id} value={row.id}>Avant {index + 1}. {teamAssignmentText(row.assignment, snapshot).name}</option>)}
         {plan && <option value="end">En dernière position</option>}
       </select></label>}
-      <dl className={styles.quote}><div><dt>Temps libre actuel · jour {taskDay}</dt><dd>{teamHours(freeHours(snapshot, person, taskDay))}</dd></div>
+      <dl className={styles.quote}><div><dt>Temps libre actuel · jour {taskDay}</dt><dd>{teamHours(free)}</dd></div>
         {preview.free !== null && <div><dt>Libre après validation</dt><dd>{teamHours(preview.free)}</dd></div>}
         <div><dt>{kind === "production" ? "Frais de production" : "Frais au lancement"}</dt><dd>{costLabel}</dd></div>
       </dl>

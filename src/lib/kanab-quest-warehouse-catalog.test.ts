@@ -1,23 +1,48 @@
+import { getKqWarehouseRetailPrice } from "./kanab-quest-warehouse-retail";
+import { existsSync } from "node:fs";
+import { getKqCareProductArtwork } from "./kanab-quest-care-artwork";
+import { KQ_WAREHOUSE_PREPARATION_CATALOG, getKqWarehouseInputPack, isKqWarehouseInputCode } from "./kanab-quest-warehouse-preparations";
 import { describe, expect, it } from "vitest";
 import { KQ_WAREHOUSE_CATALOG, getKqWarehouseDevice } from "./kanab-quest-warehouse-catalog";
 import { KQ_WAREHOUSE_OPTIONS, KQ_WAREHOUSE_OPTION_FAMILIES } from "./kanab-quest-warehouse-options";
 import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot, getKqWarehouseServiceZoneQuote, getKqWarehouseZoneQuote, isKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 
+describe("warehouse retail input packs", () => {
+  it("gives every purchased pack a physical format, sourced price, whole game charges and its own illustration", () => {
+    const codes = Object.keys(KQ_WAREHOUSE_PREPARATION_CATALOG).filter(isKqWarehouseInputCode);
+    expect(codes).toHaveLength(18);
+    for (const code of codes) {
+      const pack = getKqWarehouseInputPack(code)!;
+      const artwork = getKqCareProductArtwork(code)!;
+      expect(pack.format.length).toBeGreaterThan(0);
+      expect(pack.packPriceCents).toBeGreaterThan(0);
+      expect(pack.chargesPerPack).toBeGreaterThan(0);
+      expect(Number.isInteger(pack.chargesPerPack)).toBe(true);
+      expect(artwork.referenceUrl).toBe(pack.url);
+      expect(existsSync(`public${artwork.src}`)).toBe(true);
+    }
+    expect(new Set(codes.map(code => getKqCareProductArtwork(code)?.src)).size).toBe(codes.length);
+    expect(getKqWarehouseInputPack("WAREHOUSE-MOP")).toBeUndefined();
+    expect(getKqWarehouseInputPack("__proto__")).toBeUndefined();
+    expect(getKqWarehouseInputPack("CARE-APHIDIUS")).toMatchObject({ packPriceCents: 2226, chargesPerPack: 500 });
+    expect(getKqWarehouseInputPack("CARE-PHYTOSEIULUS")).toMatchObject({ packPriceCents: 1695, chargesPerPack: 25 });
+  });
+});
+
 describe("fictional equipment tiers", () => {
-  it("offers exactly three purchasable tiers with increasing full-coverage prices per square metre", () => {
+  it("offers exactly three purchasable tiers at their documented retail prices", () => {
     for (const kind of ["lighting", "air", "drying", "storage"]) {
       const devices = KQ_WAREHOUSE_CATALOG.filter(device => device.kind === kind && device.purchasable !== false);
       expect(devices.map(device => device.tier)).toEqual(["economy", "standard", "premium"]);
-      const prices = devices.map(device => device.zoneLayout
-        ? device.priceCents * device.zoneLayout.unitsPerM2 : device.priceCents / device.gameCapacity.value);
-      expect(prices[1]).toBeGreaterThan(prices[0]);
-      expect(prices[2]).toBeGreaterThan(prices[1]);
+      for (const device of devices) expect(device.priceCents).toBe(getKqWarehouseRetailPrice(device.code)?.unitPriceCents);
     }
     for (const family of KQ_WAREHOUSE_OPTION_FAMILIES) {
       const options = KQ_WAREHOUSE_OPTIONS.filter(option => option.family === family.code);
       expect(options.map(option => option.tier)).toEqual(["economy", "standard", "premium"]);
-      expect(options[1].equipmentCentsPerM2).toBeGreaterThan(options[0].equipmentCentsPerM2);
-      expect(options[2].equipmentCentsPerM2).toBeGreaterThan(options[1].equipmentCentsPerM2);
+      for (const option of options) {
+        const retail = getKqWarehouseRetailPrice(option.code);
+        if (retail) expect(option.unitPriceCents).toBe(retail.unitPriceCents);
+      }
     }
   });
 
@@ -26,14 +51,12 @@ describe("fictional equipment tiers", () => {
     for (const kind of ["lighting", "air"]) {
       const codes = KQ_WAREHOUSE_CATALOG.filter(device => device.kind === kind && device.purchasable !== false).map(device => device.code);
       const quotes = codes.map(code => getKqWarehouseZoneQuote({ ...base, [kind === "lighting" ? "lightingCode" : "airCode"]: code }));
-      expect(quotes[1].equipmentCostCents).toBeGreaterThan(quotes[0].equipmentCostCents);
-      expect(quotes[2].equipmentCostCents).toBeGreaterThan(quotes[1].equipmentCostCents);
       expect(quotes[1].energyCostCents).toBeLessThan(quotes[0].energyCostCents);
       expect(quotes[2].energyCostCents).toBeLessThan(quotes[1].energyCostCents);
     }
   });
 
-  it("keeps each tier more expensive for every valid zone, including partially used devices", () => {
+  it("charges whole units at their retail price for every valid zone, including partially used devices", () => {
     const base = { ...createKqWarehouseStarter().zones[0], x: 0, y: 0 };
     for (const kind of ["lighting", "air", "drying", "storage"] as const) {
       const devices = KQ_WAREHOUSE_CATALOG.filter(device => device.kind === kind && device.purchasable !== false);
@@ -47,16 +70,21 @@ describe("fictional equipment tiers", () => {
           const expectedCount = devices[index].zoneLayout ? area * devices[index].zoneLayout.unitsPerM2
             : Math.ceil(area / devices[index].gameCapacity.value);
           expect(line.quantity).toBe(expectedCount);
-          if (index > 0) expect(quote.equipmentCostCents, `${kind} ${width} × ${height}`)
-            .toBeGreaterThan(quotes[index - 1].equipmentCostCents);
+          expect(line.totalCents).toBe(expectedCount * devices[index].priceCents);
         }
       }
     }
   });
 
-  it("makes every module upgrade improve yield without losing a quality benefit", () => {
+  it("improves zone profiles by tier and prices the shared cart independently of the culture", () => {
     for (const family of KQ_WAREHOUSE_OPTION_FAMILIES) {
       const options = KQ_WAREHOUSE_OPTIONS.filter(option => option.family === family.code);
+      if (family.code === "logistics") {
+        expect(options.map(option => option.yieldBonusPercent)).toEqual([1, 0, 3]);
+        expect(options[1]).toMatchObject({ name: "Chariot de manutention", qualityBonus: 0, consumablesCentsPerM2: 0 });
+        expect(options[2].consumablesCentsPerM2).toBeGreaterThan(options[0].consumablesCentsPerM2);
+        continue;
+      }
       expect(options.map(option => option.yieldBonusPercent)).toEqual([1, 2, 3]);
       expect(options[1].qualityBonus).toBeGreaterThanOrEqual(options[0].qualityBonus);
       expect(options[2].qualityBonus).toBeGreaterThanOrEqual(options[1].qualityBonus);
@@ -96,13 +124,13 @@ describe("fictional equipment tiers", () => {
     expect(isKqWarehouseRunSnapshot(frozen)).toBe(true);
   });
 
-  it("keeps all commercial identity out of the purchasable catalogue", () => {
-    for (const device of KQ_WAREHOUSE_CATALOG) {
-      expect(device.sourceUrl).toBe("");
-      expect(device.specificationUrl).toBeUndefined();
-      expect(device.priceBasis).toBe("simulation");
-      expect([device.name, device.priceNote, device.specification, device.gameCapacity.note, device.zoneLayout?.note].join(" "))
-        .not.toMatch(/Mars Hydro|Secret Jardin|Le Parfait|CurTec|IKEA|Graveda|fabricant|TTC/iu);
+  it("identifies the retail price of every purchasable device", () => {
+    for (const device of KQ_WAREHOUSE_CATALOG.filter(item => item.purchasable !== false)) {
+      const reference = getKqWarehouseRetailPrice(device.code);
+      expect(reference, device.code).toBeDefined();
+      expect(device.sourceUrl).toEqual(reference?.url);
+      expect(device.priceCents).toEqual(reference?.unitPriceCents);
+      expect(device.priceBasis).toBe("observed");
     }
   });
 });

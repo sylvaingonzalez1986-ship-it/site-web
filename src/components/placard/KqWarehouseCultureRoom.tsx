@@ -16,5 +16,9 @@ export function KqWarehouseCultureRoom({ plan, runs, reservedZoneId, onSelect, s
   const character = useContext(QuarterCharacterContext);
   const zones = useMemo(() => getWarehouseRoomZones(plan, runs, reservedZoneId, stockGrams), [plan, runs, reservedZoneId, stockGrams]);
   const affected = useMemo(() => runs.flatMap(run => run.roomCare?.affectedPlants?.filter(p => p.zoneId === run.zoneId) ?? []), [runs]);
-  return <KqGrowRoom plan={plan} zones={zones} playerProfile={character} onSelectZone={onSelect} event={event} affectedPlants={affected} warehouseEditor={warehouseEditor} />;
+  const { cleaning, cleaningPlayer, cleaningStartedAt } = warehouseEditor;
+  const cleaningEvent = useMemo<KqGrowRoomEvent | null>(() => cleaning && cleaningPlayer && cleaningStartedAt ? {
+    id: `${cleaning}-${cleaningStartedAt}`, zoneId: "warehouse-cleaning", gesture: "sweep",
+  } : null, [cleaning, cleaningPlayer, cleaningStartedAt]);
+  return <KqGrowRoom plan={plan} zones={zones} playerProfile={character} onSelectZone={onSelect} event={cleaningEvent ?? event} affectedPlants={affected} warehouseEditor={warehouseEditor} />;
 }

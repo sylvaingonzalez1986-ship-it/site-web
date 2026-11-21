@@ -50,7 +50,7 @@ const modules = {
         return new Response(JSON.stringify({level:current+1}));
       }
       if(body.action==='workshop-tier'){
-        const price=getKqWorkshopTierPrice(body.equipmentCode,definition.priceCents,body.targetLevel,current);
+        const price=getKqWorkshopTierPrice(body.equipmentCode,body.targetLevel,current);
         if(current!==body.expectedLevel||price!==body.expectedPriceCents||price===null||price>state.cashCents)return new Response('{}',{status:409});
         if(!current){state.ownedCodes.push(body.equipmentCode);state.purchasedCodes.push(body.equipmentCode);}
         state.levels[body.equipmentCode]=body.targetLevel;state.cashCents-=price;

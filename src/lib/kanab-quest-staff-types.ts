@@ -1,4 +1,5 @@
 import type { KqStaffProductionState, KqProductionEffect, KqProductionFacilityInput, KqProductionRulesCommand, KqProductionStep } from "./kanab-quest-staff-production-types";
+import type { KqWarehouseHandling } from "./kanab-quest-warehouse-handling";
 
 export type KqStaffSkill = "culture" | "processing" | "communication" | "sales" | "administration";
 export type KqStaffRole = "worker" | "grower" | "processor" | "commercial" | "administrator";
@@ -112,6 +113,7 @@ export type KqStaffContext = {
   supplierInvoices: Array<{ id: string; remainingCents: number; dueAt: string }>;
   trimLots?: KqStaffTrimLot[];
   trimQueueVersion?: 2;
+  warehouseHandling?: KqWarehouseHandling;
   weeklyPlanVersion?: 1;
   cultureWorkVersion?: 1;
   processingWorkVersion?: 1;
@@ -126,7 +128,7 @@ export type KqStaffContext = {
   rehireSource?: KqStaffEmployee;
 };
 export type KqTeamWorkReceipt = {
-  id: string; assigneeId: string; kind: "processing" | "culture"; target: string; hours: number;
+  id: string; assigneeId: string; kind: "processing" | "culture" | "cleaning"; target: string; hours: number;
   startedAt: string; completesAt: string; stage?: number;
 };
 export type KqStaffRawSnapshot = { state: KqStaffState | null; revision: number; serverNow: string; cashCents: number; context: KqStaffContext; replayed?: boolean; archiveCount?: number; benefits?: KqStaffBenefits };
@@ -160,7 +162,7 @@ type KqStaffWorkCommand =
   | { action: "pay-invoice"; employeeId: string; invoiceId: string; expectedCents: number }
   | { action: "leave"; employeeId: string; startDay: number; endDay: number }
   | { action: "cancel-leave"; employeeId: string; leaveId: string }
-  | { action: "trim"; employeeId: string | null; flowerId?: string; mode: KqStaffTrimMode; hours: number; expectedCostCents: number }
+  | { action: "trim"; employeeId: string | null; flowerId?: string; mode: KqStaffTrimMode; hours: number; expectedCostCents: number; expectedRate?: number }
   | { action: "buy-trimmer"; expectedCostCents: number }
   | { action: "settle" };
 export type KqStaffCommand = KqStaffWorkCommand | KqTeamPlanCommand;

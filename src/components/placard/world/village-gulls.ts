@@ -21,8 +21,8 @@ function seaLoop(name: string, period: number, phase: number, altitude: number, 
 // The channel lies between the island and the mainland, west of the lighthouse.
 const routes = [
   seaLoop("channel", 26, .12, 2.8, [
-    [60, -140], [350, -138], [660, -96], [975, -33], [1170, 0], [1230, -94],
-    [1080, -169], [785, -206], [480, -211], [190, -219], [28, -222], [-96, -208],
+    [60, -140], [350, -138], [660, -75], [975, 12], [1170, 21], [1230, -36],
+    [1080, -49], [785, -104], [620, -135], [480, -175], [190, -208], [28, -216], [-96, -208],
     [-141, -176], [-75, -146],
   ]),
   seaLoop("western-cove", 27, .13, 1.72, [

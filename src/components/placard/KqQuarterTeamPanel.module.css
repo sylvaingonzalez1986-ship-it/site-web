@@ -35,6 +35,10 @@
 .host .primary, .host .trigger, .host button[aria-pressed="true"] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .host .primary, .host .trigger { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
 .host .trigger { padding-inline: 16px; }
+.collapsed { display: flex; align-items: stretch; gap: 4px; max-width: calc(100vw - 24px); }
+.time { flex: 0 0 98px; padding: 3px 8px 5px; }
+.time > div > div:first-child { display: grid; gap: 0; line-height: 1.2; }
+.time [role="meter"] { height: 7px; margin-top: 4px; }
 @media (hover: hover) {
   .host :where(button, select):hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
 }

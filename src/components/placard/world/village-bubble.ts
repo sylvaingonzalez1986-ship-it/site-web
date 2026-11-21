@@ -1,7 +1,8 @@
 /** Position a readable HTML speech bubble against a projected roof, inside the stage. */
-export function positionVillageBubble(panel: HTMLElement, tail: SVGPathElement | null, x: number, y: number, width: number, height: number, speech = false, feetY?: number) {
+export function positionVillageBubble(panel: HTMLElement, tail: SVGPathElement | null, x: number, y: number, width: number, height: number,
+  { speech = false, feetY, clearHeader = 0 }: { speech?: boolean; feetY?: number; clearHeader?: number } = {}) {
   const edge = 12;
-  const topInset = speech ? Math.min(76, height / 3) : edge;
+  const topInset = speech ? Math.min(76, height / 3) : Math.max(edge, clearHeader);
   // Leave the camera controls reachable, including at 320 px.
   const rightInset = speech && height <= 540 ? 96 : width <= 760 ? 58 : 80;
   const leftSpace = x - edge - 42, rightSpace = width - rightInset - x - 42;
@@ -12,7 +13,8 @@ export function positionVillageBubble(panel: HTMLElement, tail: SVGPathElement |
   const toLeft = leftSpace >= rightSpace;
   const maxWidth = Math.max(180, Math.min(speech ? 380 : 326, beside ? Math.max(leftSpace, rightSpace) : width - edge - rightInset));
   panel.style.width = `${maxWidth}px`;
-  panel.style.maxHeight = `${speech ? Math.max(100, height - (below ? belowTop : topInset) - edge) : Math.max(150, Math.min(height - edge * 2, y - edge - 22))}px`;
+  const availableHeight = height - (below ? belowTop : topInset) - edge;
+  panel.style.maxHeight = `${speech ? Math.max(100, availableHeight) : Math.max(0, Math.min(availableHeight, Math.max(150, y - topInset - 22)))}px`;
   const panelHeight = panel.offsetHeight;
   const left = Math.max(edge, Math.min(width - rightInset - maxWidth, beside ? toLeft ? x - 42 - maxWidth : x + 42 : x - maxWidth / 2));
   const top = below ? belowTop : Math.max(topInset, Math.min(height - panelHeight - edge, y - panelHeight * (beside ? 0.5 : 1) - (beside ? 0 : 22)));

@@ -28,9 +28,10 @@ describe("server storage API", () => {
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_storage_state", { p_user_id: user });
   });
   it("settles once before reading storage and projects each lot's confirmed trim", async () => {
-    mocks.staff.mockResolvedValue({ serverNow: now, context: { trimLots: [{ flowerId: flower, requiredWork: 6,
+    mocks.staff.mockResolvedValue({ serverNow: now, context: { businessStartedAt: "2026-10-09T12:00:00Z", trimLots: [{ flowerId: flower, requiredWork: 6,
       completedWork: 3, completedAt: null, totalGrams: 120, completedGrams: 60 }] } });
     const result = await getKqStorageSnapshot(user);
+    expect(result.businessStartedAt).toBe("2026-10-09T12:00:00Z");
     expect(result.lots[0].trim).toEqual({ status: "in-progress", totalGrams: 120, completedGrams: 60 });
     expect(mocks.staff).toHaveBeenCalledExactlyOnceWith(user);
     expect(mocks.staff.mock.invocationCallOrder[0]).toBeLessThan(mocks.rpc.mock.invocationCallOrder[0]);
@@ -44,8 +45,10 @@ describe("server storage API", () => {
   });
   it("keeps stock visible if the optional trim source fails", async () => {
     mocks.staff.mockRejectedValueOnce(new Error("Temporary staff transport failure"));
+    mocks.rpc.mockResolvedValue({ data: { ...stored(), businessStartedAt: "2026-10-09T12:00:00Z" }, error: null });
     const result = await getKqStorageSnapshot(user);
     expect(result.cashCents).toBe(20000);
+    expect(result.businessStartedAt).toBe("2026-10-09T12:00:00Z");
     expect(result.lots[0].trim?.status).toBe("unknown");
     expect(result.lots[0].harvestGrams).toBe(120);
     expect(mocks.staff).toHaveBeenCalledTimes(1);

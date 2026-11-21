@@ -1,7 +1,8 @@
 import { getValidatedAdminContext } from "@/lib/admin-guard";
-import { findSupportForReconciliation, getAdminSupportDashboard, getAdminSupportRows, getSupportVivaConfig, mutateSupportAdmin } from "@/lib/support-backend";
+import { acknowledgeSupportSwissLate, findSupportForReconciliation, getAdminSupportDashboard, getAdminSupportRows, getConfiguredSupportProviders, mutateSupportAdmin } from "@/lib/support-backend";
 import { SupportError, SUPPORT_UUID, supportCsv } from "@/lib/support-campaign";
 import { readSupportBody, requireSupportOrigin, supportFailure, supportJson } from "@/lib/support-http";
+import { reconcileAdminSwissBitcoinSupport } from "@/lib/support-swiss-bitcoin-pay";
 import { reconcileAdminSupport } from "@/lib/support-viva";
 export const runtime = "nodejs";
 
@@ -41,19 +42,30 @@ export async function POST(request: Request) {
     const body = await readSupportBody(request);
     if (body.action === "campaign") {
       if (typeof body.active !== "boolean" || !(body.goalCents === null || (Number.isSafeInteger(body.goalCents) && Number(body.goalCents) > 0 && Number(body.goalCents) <= 1_000_000_000))) throw new SupportError("Objectif ou état invalide.");
-      if (body.active && !getSupportVivaConfig().isConfigured) throw new SupportError(getSupportVivaConfig().configurationError ?? "Configurer Viva avant l’ouverture.", 409);
+      if (body.active && !getConfiguredSupportProviders().length) throw new SupportError("Configure au moins un moyen de paiement avant l’ouverture.", 409);
       await mutateSupportAdmin("campaign", null, { active: body.active, goalCents: body.goalCents }, admin.customerId);
     } else {
       if (typeof body.id !== "string" || !SUPPORT_UUID.test(body.id)) throw new SupportError("Référence invalide.");
       if (body.action === "visibility" && typeof body.hidden === "boolean") await mutateSupportAdmin("visibility", body.id, { hidden: body.hidden }, admin.customerId);
       else if (body.action === "fees") {
-        if (!Number.isSafeInteger(body.feesCents) || Number(body.feesCents) < 0 || Number(body.feesCents) > 1_000_000 || typeof body.reference !== "string" || !body.reference.trim() || body.reference.trim().length > 200) throw new SupportError("Saisis les frais réels et la référence du relevé Viva.");
+        if (!Number.isSafeInteger(body.feesCents) || Number(body.feesCents) < 0 || Number(body.feesCents) > 1_000_000 || typeof body.reference !== "string" || !body.reference.trim() || body.reference.trim().length > 200) throw new SupportError("Saisis les frais réels en euros et la référence du relevé du prestataire.");
         await mutateSupportAdmin("fees", body.id, { feesCents: body.feesCents, reference: body.reference.trim() }, admin.customerId);
-      } else if (body.action === "reconcile") {
-        if (typeof body.transactionId !== "string" || !SUPPORT_UUID.test(body.transactionId)) throw new SupportError("Identifiant de transaction Viva invalide.");
+      } else if (body.action === "reconcile" || body.action === "ack-late") {
         const record = await findSupportForReconciliation(body.id);
         if (!record) throw new SupportError("Soutien introuvable.", 404);
-        await reconcileAdminSupport(record, body.transactionId);
+        if (record.provider === "swiss-bitcoin-pay") {
+          if (typeof body.invoiceId !== "string" || !SUPPORT_UUID.test(body.invoiceId)) throw new SupportError("Identifiant de facture Swiss Bitcoin Pay invalide.");
+          const invoiceId = body.invoiceId.toLowerCase();
+          const observed = await reconcileAdminSwissBitcoinSupport(record, invoiceId);
+          if (body.action === "ack-late") {
+            if (observed.state !== "paid") throw new SupportError("Le prestataire doit confirmer ce versement avant le rapprochement.", 409);
+            await acknowledgeSupportSwissLate(record.id, invoiceId, admin.customerId);
+          }
+        } else {
+          if (body.action === "ack-late") throw new SupportError("Ce soutien ne correspond pas à une facture Lightning.", 409);
+          if (typeof body.transactionId !== "string" || !SUPPORT_UUID.test(body.transactionId)) throw new SupportError("Identifiant de transaction Viva invalide.");
+          await reconcileAdminSupport(record, body.transactionId);
+        }
       } else throw new SupportError("Action inconnue.");
     }
     return supportJson({ ok: true });

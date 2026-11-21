@@ -76,7 +76,7 @@ export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onS
         </div>
         <h3>{buddie.name}</h3><p>{buddie.ability}</p>
         {locked ? <p id={availabilityId} className={styles.rotationStatus}><LockKeyhole size={14} aria-hidden="true" />{availabilityLabel}</p> : null}
-        <button type="button" data-buddie-select={buddie.code} disabled={locked} aria-label={`${locked ? "Indisponible" : selected ? "Sélectionné" : "Choisir"} : ${buddie.name}`} aria-describedby={locked ? availabilityId : undefined} aria-pressed={selected} onClick={() => { if (!locked) onSelect(buddie.code); }}>{locked ? disabled || reason ? "Indisponible" : "Buddie en rotation" : selected ? "Sélectionné" : "Choisir ce Buddie"}</button>
+        <button type="button" data-buddie-select={buddie.code} data-sylvain-target={!selected ? "prepare-choice" : undefined} disabled={locked} aria-label={`${locked ? "Indisponible" : selected ? "Sélectionné" : "Choisir"} : ${buddie.name}`} aria-describedby={locked ? availabilityId : undefined} aria-pressed={selected} onClick={() => { if (!locked) onSelect(buddie.code); }}>{locked ? disabled || reason ? "Indisponible" : "Buddie en rotation" : selected ? "Sélectionné" : "Choisir ce Buddie"}</button>
       </article>;
     })}
   </KqCardCarousel>

@@ -12,8 +12,13 @@ import { arenaPublicPlayerKey } from "@/lib/arena-public-player-key";
 import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 
 import { normalizeEmail } from "@/lib/admin-allowlist";
-import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
+import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, getKqSituation, getKqTheftZones, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
 import { getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse-backend";
+import { getKqWarehouseRunSnapshot as deriveWarehouseRunSnapshot } from "@/lib/kanab-quest-warehouse";
+import { isKqWarehouseCampaignInputs, isKqWarehouseInputQuantities, type KqWarehouseCampaignInputs, type KqWarehouseInputQuantities } from "@/lib/kanab-quest-warehouse-preparations";
+import { getKqWarehousePreparationError } from "./kanab-quest-warehouse-preparations-backend";
+import { getKqWarehouseSecurityForIncident } from "./kanab-quest-warehouse-security-backend";
+import type { KqWarehouseSecurityDecision } from "@/lib/kanab-quest-warehouse-security";
 import { getKqStorageRecords, projectKqStoredStorageLot, type KqStoredStorageLot } from "./kanab-quest-storage-backend";
 import { applyKqStorageToJury } from "@/lib/kanab-quest-storage";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
@@ -899,6 +904,8 @@ export type KqStartRunInput = {
   expectedEnergyCents?: number;
   expectedWarehouseRevision?: number;
   expectedProductionReservedZoneId?: string | null;
+  warehouseInputs?: KqWarehouseInputQuantities | KqWarehouseCampaignInputs;
+  expectedPreparationKey?: string;
   buddieCode: string;
   deckCodes: string[];
   cultureTokens?: number;
@@ -959,6 +966,10 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     || !input.expectedProductionReservedZoneId.trim() || input.expectedProductionReservedZoneId.length > 80)) throw new Error("Réservation de production invalide.");
   if (input.campaign !== undefined && typeof input.campaign !== "boolean") throw new Error("Campagne invalide.");
   if (input.campaign && input.zoneId !== undefined) throw new Error("La campagne comprend toutes les zones affectées.");
+  if (input.warehouseInputs !== undefined && !(input.campaign ? isKqWarehouseCampaignInputs(input.warehouseInputs)
+    : input.zoneId !== undefined && isKqWarehouseInputQuantities(input.warehouseInputs))) throw new Error("Préparation des fournitures invalide.");
+  if (input.expectedPreparationKey !== undefined && (!/^[a-f0-9]{32}$/.test(input.expectedPreparationKey)
+    || (!input.campaign && input.zoneId === undefined))) throw new Error("Devis de préparation invalide.");
   if (input.zoneId !== undefined && (typeof input.zoneId !== "string" || !input.zoneId.trim() || input.zoneId.length > 80)) throw new Error("Zone de culture invalide.");
   if ((input.campaign || input.zoneId !== undefined) && (typeof input.requestKey !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.requestKey))) throw new Error("Clé de lancement invalide.");
   if (input.energyMode !== undefined && !isKqEnergyMode(input.energyMode)) throw new Error("Mode énergétique invalide.");
@@ -978,6 +989,8 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     ...(input.campaign ? { campaign: true } : { zoneId: input.zoneId }), buddieCode: input.buddieCode, deckCodes: input.deckCodes,
     cultureTokens, heritageCode: heritageCode ?? null, energyMode: "balanced",
     expectedEnergyCents: input.expectedEnergyCents ?? null,
+    ...(input.warehouseInputs !== undefined ? { warehouseInputs: input.warehouseInputs } : {}),
+    ...(input.expectedPreparationKey !== undefined ? { expectedPreparationKey: input.expectedPreparationKey } : {}),
   };
   // A retry must find its committed receipt before checking rotation, capacity
   // or drawing a new seed: each of those may legitimately have changed.
@@ -1042,14 +1055,17 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     throw new Error("La zone réservée à la production autonome a changé. Actualise la préparation avant de lancer.");
   }
   const participants = input.campaign && storedWarehouse
-    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment, storedWarehouse.productionReservedZoneId) : [];
+    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment, storedWarehouse.productionReservedZoneId, 1) : [];
   if (input.campaign && (!participants.length || participants[0].buddieCode !== input.buddieCode)) {
     throw new Error("Affecte tes Buddies aux zones, puis actualise la préparation de la campagne.");
   }
   if (input.campaign && new Set(participants.map(member => member.buddieCode)).size !== participants.length) {
     throw new Error("Chaque Buddie doit occuper une seule zone dans la campagne.");
   }
-  const warehouse = input.campaign ? participants[0].warehouse : storedWarehouse;
+  const warehouse = input.campaign ? participants[0].warehouse : storedWarehouse && input.zoneId !== undefined
+    ? { ...deriveWarehouseRunSnapshot(storedWarehouse.sourceState, storedWarehouse.revision, input.zoneId, 2, 2, 2, storedWarehouse.cultureEquipment, 1),
+        ...(storedWarehouse.productionReservedZoneId !== undefined ? { productionReservedZoneId: storedWarehouse.productionReservedZoneId } : {}) }
+    : storedWarehouse;
   const remainingBuddies = getKqBuddieRotationRemaining(input.buddieCode, buddieRotation.recentBuddieCodes);
   // For zoned launches the transaction checks rotation after its receipt: a
   // concurrent retry must not be rejected because the first launch just used it.
@@ -1115,6 +1131,8 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   });
   if (result.error) {
     const message = result.error.message || "Création de partie impossible.";
+    const preparationMessage = getKqWarehousePreparationError(message);
+    if (preparationMessage) throw new Error(preparationMessage);
     if (message.includes("campaign_active") || message.includes("campaign_legacy_active")) throw new Error("Termine la campagne ou les cultures en cours avant d’en lancer une nouvelle.");
     if (message.includes("campaign_members") || message.includes("campaign_manifest")) throw new Error("Les affectations ont changé. Actualise la préparation de la campagne.");
     if (message.includes("request_mismatch")) throw new Error("Cette demande a déjà servi à une autre culture.");
@@ -2704,10 +2722,10 @@ export type KqRunAction = "roll" | "resolve" | "advance" | "redraw" | "heritage"
 export function applyKqRunAction(
   state: KqGameState,
   action: KqRunAction,
-  options?: { handIndex?: number; reserveIndex?: number },
+  options?: { handIndex?: number; reserveIndex?: number; warehouseSecurity?: KqWarehouseSecurityDecision },
 ) {
   const nextState = action === "roll" ? rollKqDice(state)
-    : action === "resolve" ? resolveKqStage(state)
+    : action === "resolve" ? resolveKqStage(state, options?.warehouseSecurity)
       : action === "advance" ? advanceKqStage(state)
         : action === "redraw" ? redrawKqHand(state)
           : action === "heritage" ? activateKqHeritage(state)
@@ -2751,7 +2769,9 @@ export async function applyKqPlayerRunAction(
   if (runResult.data.status !== "active") throw new Error("Culture active introuvable.");
   // A retry of a confirmed stage must not roll or spend another half-hour.
   if (action === "roll" && state.phase !== "prepare") return { state, persistedFlower: null, replayed: true };
-  const nextState = applyKqRunAction(state, action, options);
+  const warehouseSecurity = action === "resolve" && state.phase === "rolled" && state.warehouse && getKqSituation(state).incident === "crop-theft"
+    ? await getKqWarehouseSecurityForIncident(ownerId, getKqTheftZones(state).map(zone => zone.id)) : undefined;
+  const nextState = applyKqRunAction(state, action, { ...options, warehouseSecurity });
   const flower = nextState.phase === "complete" && !isKqCultureDead(nextState) ? createKqFlower(nextState) : null;
   const flowerPayload = (memberState: KqGameState, memberFlower: KqFlowerCard | null) => memberFlower ? {
     varietyCode: memberState.varietyCode, varietyName: memberFlower.variety, quality: memberState.quality,

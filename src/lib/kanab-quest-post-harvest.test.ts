@@ -5,6 +5,7 @@ import { getKqPostHarvestDeviceBenefits, getKqPostHarvestTierBenefits, getKqWare
 import { createKqWarehouseStarter, getKqWarehouseEquipmentDemand, getKqWarehouseQuote, getKqWarehouseRunSnapshot, getKqWarehouseSummary, isKqWarehouseRunSnapshot, validateKqWarehouseState, type KqWarehouseState } from "./kanab-quest-warehouse";
 import { changeKqStorageCapacity, changeKqStoragePostHarvest, createKqStorageLot, getKqStorageExposureRates, isKqStorageLot, KQ_CURING_DURATION_MS, planKqStorageAllocation, projectKqStorageLot, settleKqStorageLot } from "./kanab-quest-storage";
 import { getKqWarehouseProductArtwork } from "./kanab-quest-warehouse-product-artwork";
+import { getKqWarehouseRetailPrice } from "./kanab-quest-warehouse-retail";
 
 const origin = Date.parse("2026-10-18T12:00:00Z");
 const premium = { dryingQualityBonus: .4, storageQualityBonus: .3, climateQualityBonus: .3, aromaRateFactor: 42, chemistryRateFactor: 42 };
@@ -31,10 +32,13 @@ describe("separate post-harvest room quality", () => {
   it("funds one selected climate unit, keeps replaced equipment and rejects invalid placement", () => {
     const starter = createKqWarehouseStarter();
     const quote = getKqWarehouseQuote({ ...starter, storageClimateCode: "SIM-STORAGE-CLIMATE-01" }, starter);
-    expect(quote.totalCostCents).toBe(57_385);
+    const cost = getKqWarehouseRetailPrice("SIM-STORAGE-CLIMATE-01")!.unitPriceCents;
+    expect(quote).toMatchObject({ equipmentCostCents: cost, preparationCostCents: 0,
+      installationCostCents: Math.round(cost * .15), totalCostCents: cost + Math.round(cost * .15) });
     expect(quote.purchases).toMatchObject([{ code: "SIM-STORAGE-CLIMATE-01", quantity: 1 }]);
     expect(getKqWarehouseEquipmentDemand(quote.nextState.zones, quote.nextState.serviceZones, quote.nextState.storageClimateCode)).toContainEqual({ code: "SIM-STORAGE-CLIMATE-01", quantity: 1 });
     const upgrade = getKqWarehouseQuote({ ...quote.nextState, storageClimateCode: "SIM-STORAGE-CLIMATE-03" }, quote.nextState);
+    expect(upgrade.purchases).toMatchObject([{ code: "SIM-STORAGE-CLIMATE-03", quantity: 1, totalCents: getKqWarehouseRetailPrice("SIM-STORAGE-CLIMATE-03")!.unitPriceCents }]);
     expect(upgrade.nextState.equipment).toContainEqual({ code: "SIM-STORAGE-CLIMATE-01", quantity: 1 });
     expect(getKqWarehouseSummary(upgrade.nextState).reserve).toContainEqual({ code: "SIM-STORAGE-CLIMATE-01", quantity: 1 });
     expect(getKqWarehouseQuote({ ...upgrade.nextState, storageClimateCode: "SIM-STORAGE-CLIMATE-01" }, upgrade.nextState).totalCostCents).toBe(0);

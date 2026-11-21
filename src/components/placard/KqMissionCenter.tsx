@@ -192,7 +192,8 @@ export function KqMissionCenter({ onOpen, initialSection = "challenges", initial
       : rewardOpened ? "Ton pack est ouvert." : reward.replayed ? "Ton pack est déjà récupéré." : `Bravo ! Un pack de ${reward.cardCount} cartes gagné.`
     : "";
 
-  return <main className={styles.center}>
+  return <main className={styles.center} data-sylvain-target="missions"
+    data-sylvain-seen={!api.isTutorial && section === "challenges" && overview && !loading && !error && total > 0 ? "missions" : undefined} tabIndex={-1}>
     <KqChapterHeading title="Mes défis" level={1} compact />
     <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
     {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>

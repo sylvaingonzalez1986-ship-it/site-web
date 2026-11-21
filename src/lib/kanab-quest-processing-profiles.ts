@@ -53,7 +53,7 @@ export function getKqProcessingMachineReference(code: string, requestedLevel = 1
 }
 
 /** Aggregate serial stages in hours of game work; sources keep their own units. */
-export function createKqProcessingPlan(input: { inputGrams: number; productGrams: number; equipmentCodes: string[]; levels?: Record<string, number> }): KqProcessingPlan | null {
+export function createKqProcessingPlan(input: { inputGrams: number; productGrams: number; equipmentCodes: string[]; levels?: Record<string, number>; dryerHandlingSaving?: number }): KqProcessingPlan | null {
   if (![input.inputGrams, input.productGrams].every(value => Number.isFinite(value) && value > 0 && value <= 1_000_000) || input.productGrams > input.inputGrams) return null;
   const machines: KqProcessingMachine[] = [];
   let nominalHours = 0, passiveHours = 0;
@@ -65,8 +65,12 @@ export function createKqProcessingPlan(input: { inputGrams: number; productGrams
       const wetGrams = input.productGrams * 4;
       const batches = Math.ceil(wetGrams / 5443);
       const hours = batches * 24;
-      passiveHours += hours; nominalHours += batches * .5;
-      machines.push({ ...reference, quantityGrams: round(wetGrams), hours });
+      const savedFraction = Number.isFinite(input.dryerHandlingSaving) ? Math.max(0, Math.min(.25, input.dryerHandlingSaving!)) : 0;
+      const baseHours = batches * .5, handlingHours = baseHours * (1 - savedFraction);
+      passiveHours += hours;
+      nominalHours += handlingHours;
+      machines.push({ ...reference, quantityGrams: round(wetGrams), hours,
+        handling: { charges: batches, baseHours, hours: round(handlingHours) } });
     } else {
       const quantityGrams = reference.basis === "output" ? input.productGrams : input.inputGrams;
       const hours = quantityGrams / reference.gramsPerHour!;

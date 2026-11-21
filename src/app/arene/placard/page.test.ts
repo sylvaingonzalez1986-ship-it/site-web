@@ -97,12 +97,11 @@ describe("Placard page entry", () => {
     expect(mocks.introduction).not.toHaveBeenCalled();
   });
 
-  it.each(["new", "seen", "unavailable"])("passes the authenticated introduction state (%s) before mounting the live game", async introductionState => {
+  it("opens the verified player's quarter independently of the retired introduction", async () => {
     mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
-    mocks.introduction.mockResolvedValue(introductionState);
     const entry = await renderPage();
-    expect(mocks.introduction).toHaveBeenCalledExactlyOnceWith("verified-id");
-    expect(entry.props).toEqual({ userId: "verified-id", introductionState, betaConnectionKey: "test-connection" });
+    expect(mocks.introduction).not.toHaveBeenCalled();
+    expect(entry.props).toEqual({ userId: "verified-id", betaConnectionKey: "test-connection" });
     expect(entry.key).toBe("verified-id");
   });
 

@@ -1,6 +1,7 @@
 import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { isKqEnergyMode } from "@/lib/kanab-quest-energy";
+import { isKqWarehouseCampaignInputs, isKqWarehouseInputQuantities } from "@/lib/kanab-quest-warehouse-preparations";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -73,6 +74,12 @@ export async function POST(request: Request) {
   if (body.expectedProductionReservedZoneId !== undefined && body.expectedProductionReservedZoneId !== null && (typeof body.expectedProductionReservedZoneId !== "string" || !body.expectedProductionReservedZoneId.trim())) return NextResponse.json({ error: "Réservation de production invalide." }, { status: 400 });
   if (body.campaign !== undefined && typeof body.campaign !== "boolean") return NextResponse.json({ error: "Campagne invalide." }, { status: 400 });
   if ((body.zoneId !== undefined && typeof body.zoneId !== "string") || (body.requestKey !== undefined && typeof body.requestKey !== "string")) return NextResponse.json({ error: "Zone ou clé de lancement invalide." }, { status: 400 });
+  const warehouseInputs = body.campaign === true
+    ? (isKqWarehouseCampaignInputs(body.warehouseInputs) ? body.warehouseInputs : undefined)
+    : (typeof body.zoneId === "string" && isKqWarehouseInputQuantities(body.warehouseInputs) ? body.warehouseInputs : undefined);
+  if (body.warehouseInputs !== undefined && !warehouseInputs) return NextResponse.json({ error: "Préparation des fournitures invalide." }, { status: 400 });
+  if (body.expectedPreparationKey !== undefined && (typeof body.expectedPreparationKey !== "string" || !/^[a-f0-9]{32}$/.test(body.expectedPreparationKey)
+    || (body.campaign !== true && typeof body.zoneId !== "string"))) return NextResponse.json({ error: "Devis de préparation invalide." }, { status: 400 });
   const input = {
     ...(body.campaign === true ? { campaign: true } : {}),
     zoneId: typeof body.zoneId === "string" ? body.zoneId : undefined,
@@ -80,6 +87,8 @@ export async function POST(request: Request) {
     expectedEnergyCents: typeof body.expectedEnergyCents === "number" ? body.expectedEnergyCents : undefined,
     ...(typeof body.expectedWarehouseRevision === "number" ? { expectedWarehouseRevision: body.expectedWarehouseRevision } : {}),
     ...(body.expectedProductionReservedZoneId !== undefined ? { expectedProductionReservedZoneId: body.expectedProductionReservedZoneId as string | null } : {}),
+    ...(warehouseInputs !== undefined ? { warehouseInputs } : {}),
+    ...(typeof body.expectedPreparationKey === "string" ? { expectedPreparationKey: body.expectedPreparationKey } : {}),
     energyMode: isKqEnergyMode(body.energyMode) ? body.energyMode : "balanced" as const,
     buddieCode: typeof body.buddieCode === "string" ? body.buddieCode : "",
     deckCodes: body.deckCodes as string[],
@@ -97,7 +106,7 @@ export async function POST(request: Request) {
     if (message.startsWith("[supabase:")) {
       return NextResponse.json({ error: "Culture momentanément indisponible." }, { status: 503 });
     }
-    const conflict = message.includes("déjà active") || message.includes("disponible");
+    const conflict = message.includes("déjà active") || message.includes("disponible") || message.includes("Les préparations ont changé");
     return NextResponse.json({ error: message }, { status: conflict ? 409 : 400 });
   }
 }

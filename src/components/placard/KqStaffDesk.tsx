@@ -383,7 +383,8 @@ function TeamDesk({ initialTab = "overview", onOpenTrim }: TeamDeskProps) {
     </> },
   ] : [];
 
-  return <div className={styles.desk} data-staff-desk data-guide-employee-count={snapshot && !loading && !error ? active.length : undefined} data-guide-staff-ready={!!snapshot && !locked}>
+  return <div className={styles.desk} data-staff-desk data-guide-employee-count={snapshot && !loading && !error ? active.length : undefined} data-guide-staff-ready={!!snapshot && !locked}
+    data-sylvain-target="staff" data-sylvain-seen={!locked && snapshot?.state.tasks.some(task => task.status === "running" || task.status === "completed") ? "staff" : undefined} tabIndex={-1}>
     <div className={styles.overview} data-staff-overview><div className={styles.overviewStatus}><KqStaffOperationsStatus controller={controller} label="Personnel" disabled={!!controller.pending} suppressNotice={!!currentMoment} /></div></div>
     {currentMoment ? <KqStaffMoment key={currentMoment.id} moment={currentMoment} disabled={locked} onDismiss={() => dismissMoment()} onOpenEmployee={() => dismissMoment(true)} /> : null}
     {snapshot ? <KqStaffCarousel panels={panels} activeId={tab} onChange={setTab} disabled={locked || !!employeeSheet} /> : null}

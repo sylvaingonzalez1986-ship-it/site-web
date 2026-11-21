@@ -5,12 +5,17 @@ import { paintingToGround, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlac
 import { createVillageMainland } from "./village-mainland";
 import { VILLAGE_SHEEP_PASTURE } from "./village-sheep-pasture";
 import { projectVillageSurface, villageGraniteBlock, villageMaterial, type VillageSurface } from "./village-surfaces";
+import { applyVillageSeason, registerVillagePigments, type VillageSeasonPigment } from "./village-seasons";
 
 type Point = readonly [number, number];
 type XYZ = readonly [number, number, number];
-type Layer = "ground" | "track" | "rocks" | "details";
+type Layer = "ground" | "track" | "rocks" | "details" | "grass" | "crown" | "crownWarm" | "evergreen"
+  | "spring-blossom" | "summer-blossom" | "wildflowers" | "autumn-litter";
 type Pigment = string | ((color: THREE.Color, x: number, y: number, z: number) => void);
 const surfaces: Partial<Record<Layer, VillageSurface>> = { ground: "turf", track: "silt", rocks: "granite" };
+const seasonalPigments: Partial<Record<Layer, VillageSeasonPigment>> = {
+  ground: "turf", grass: "grass", crown: "crown", crownWarm: "crownWarm", evergreen: "evergreen",
+};
 const C = {
   turf: "#a6bc7c", grass: "#759653", grassLight: "#c4d28c", grassDark: "#4b7749",
   leaf: "#397856", leafLight: "#62985e", leafDark: "#265d49", leafTip: "#82aa68",
@@ -53,8 +58,8 @@ class LandscapeParts {
     this.add(new THREE.BoxGeometry(...size), color, at, [1, 1, 1], [0, angle, 0], layer);
   }
 
-  sphere(color: string, at: XYZ, radius: number, scale: XYZ = [1, 1, 1]) {
-    this.add(new THREE.SphereGeometry(radius, radius < 0.2 ? 7 : 10, radius < 0.2 ? 5 : 7), color, at, scale);
+  sphere(color: string, at: XYZ, radius: number, scale: XYZ = [1, 1, 1], layer: Layer = "details") {
+    this.add(new THREE.SphereGeometry(radius, radius < 0.2 ? 7 : 10, radius < 0.2 ? 5 : 7), color, at, scale, [0, 0, 0], layer);
   }
 
   stone(color: string, at: XYZ, radius: number, scale: XYZ = [1, 0.6, 1], angle = 0, layer: Layer = "details") {
@@ -65,7 +70,7 @@ class LandscapeParts {
     this.add(villageGraniteBlock(angle), color, at, size, [0.1, angle, 0.14], layer);
   }
 
-  foliage(color: string, at: XYZ, size: XYZ, salt: number) {
+  foliage(color: string, at: XYZ, size: XYZ, salt: number, layer: Layer = "evergreen") {
     const geometry = new THREE.IcosahedronGeometry(1, 1);
     const positions = geometry.getAttribute("position"), shade = new THREE.Color(color), low = new THREE.Color(C.leafDark);
     const rgb = new Float32Array(positions.count * 3);
@@ -76,14 +81,14 @@ class LandscapeParts {
       this.color.copy(shade).lerp(low, (1 - y) * 0.21).multiplyScalar(0.96 + cut * 0.055).toArray(rgb, i * 3);
     }
     geometry.setAttribute("color", new THREE.BufferAttribute(rgb, 3));
-    this.add(geometry, color, at, size, [0.04, salt * 0.32, -0.12]);
+    this.add(geometry, color, at, size, [0.04, salt * 0.32, -0.12], layer);
   }
 
-  beam(color: string, start: XYZ, end: XYZ, radius: number, round = true) {
+  beam(color: string, start: XYZ, end: XYZ, radius: number, round = true, layer: Layer = "details") {
     const a = new THREE.Vector3(...start), b = new THREE.Vector3(...end);
     const geometry = round ? new THREE.CylinderGeometry(radius * 0.75, radius, a.distanceTo(b), 7) : new THREE.BoxGeometry(radius, a.distanceTo(b), radius);
     geometry.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()));
-    this.add(geometry, color, a.add(b).multiplyScalar(0.5).toArray() as [number, number, number]);
+    this.add(geometry, color, a.add(b).multiplyScalar(0.5).toArray() as [number, number, number], [1, 1, 1], [0, 0, 0], layer);
   }
 
   tube(color: string, points: readonly XYZ[], radius: number, layer: Layer = "details") {
@@ -104,8 +109,11 @@ class LandscapeParts {
       if (surface) projectVillageSurface(geometry, surface);
       const mesh = new THREE.Mesh(geometry, villageMaterial({ vertexColors: true, roughness: 0.96 }, surface));
       mesh.name = "landscape-" + layer;
-      mesh.castShadow = layer === "details" || layer === "rocks";
+      mesh.castShadow = layer === "details" || layer === "rocks" || layer === "grass" || layer === "wildflowers" || layer === "summer-blossom"
+        || layer === "crown" || layer === "crownWarm" || layer === "evergreen";
       mesh.receiveShadow = true;
+      const pigment = seasonalPigments[layer];
+      if (pigment) registerVillagePigments(mesh, [{ start: 0, end: geometry.getAttribute("color").count, pigment }]);
       // Decoration cannot mask the buildings/mailbox. Ground keeps the existing
       // raycast and click-to-dismiss behaviour.
       if (layer !== "ground" && layer !== "track") mesh.raycast = () => {};
@@ -341,7 +349,7 @@ export function createVillageTerrain() {
       blades.push(...blades.slice(end - 3, end), ...blades.slice(end - 6, end - 3), ...blades.slice(end - 9, end - 6));
     }
     const geometry = new THREE.BufferGeometry(); geometry.setAttribute("position", new THREE.Float32BufferAttribute(blades, 3)); geometry.computeVertexNormals();
-    p.add(geometry, color, [0, 0, 0]);
+    p.add(geometry, color, [0, 0, 0], [1, 1, 1], [0, 0, 0], "grass");
   }
   // Low grass tufts gather above soft pigment patches on the windward turf.
   const dryTurf = new THREE.Color("#bbc98c"), baseTurf = new THREE.Color(C.turf), dampTurf = new THREE.Color("#8eaa6a");
@@ -364,19 +372,19 @@ export function createVillageTerrain() {
     for (let j = 0; j < 2; j++) grass(x + (random() - 0.5) * radius, z + (random() - 0.5) * radius, 0.52 + random() * 0.62, choose([C.grass, C.grassDark, C.grassLight]));
   }
 
-  function petal(x: number, y: number, z: number, a: number, color: string) {
-    const petal = new THREE.IcosahedronGeometry(0.072);
-    p.add(petal, color, [x, y, z], [1.2, 0.34, 0.72], [0, -a, 0.09]);
+  function petal(x: number, y: number, z: number, a: number, color: string, layer: Layer, radius = .072) {
+    const petal = new THREE.IcosahedronGeometry(radius);
+    p.add(petal, color, [x, y, z], [1.2, 0.34, 0.72], [0, -a, 0.09], layer);
   }
 
   function flower(x: number, z: number, height: number, color: string = C.gold) {
-    p.beam(C.grassDark, [x, 0.04, z], [x + 0.03, height, z], 0.018);
-    p.sphere(C.leafLight, [x - 0.05, height * 0.45, z], 0.085, [1.3, 0.23, 0.65]);
+    p.beam(C.grassDark, [x, 0.04, z], [x + 0.03, height, z], 0.018, true, "wildflowers");
+    p.sphere(C.leafLight, [x - 0.05, height * 0.45, z], 0.085, [1.3, 0.23, 0.65], "wildflowers");
     for (let index = 0; index < 5; index++) {
       const a = index * Math.PI * 0.4;
-      petal(x + Math.cos(a) * 0.081, height, z + Math.sin(a) * 0.081, a, color);
+      petal(x + Math.cos(a) * 0.081, height, z + Math.sin(a) * 0.081, a, color, "wildflowers");
     }
-    p.sphere(color === C.gold ? C.woodLight : C.gold, [x, height + 0.025, z], 0.043, [1, 0.7, 1]);
+    p.sphere(color === C.gold ? C.woodLight : C.gold, [x, height + 0.025, z], 0.043, [1, 0.7, 1], "wildflowers");
   }
   function shrub(px: number, py: number, radius = 0.6, hydrangea = false) {
     const [x, z] = paintingToGround(px, py);
@@ -388,10 +396,10 @@ export function createVillageTerrain() {
       p.foliage(choose([C.leaf, C.leafLight, C.leafDark]), [bx, radius * 0.46 + i % 2 * 0.13, bz], [spread, spread * 0.8, spread], a);
       if (hydrangea && i % 2 === 0) {
         const fy = radius * 0.95 + i % 3 * 0.07;
-        p.foliage(C.blue, [bx, fy, bz], [radius * 0.29, radius * 0.26, radius * 0.28], a);
+        p.foliage(C.blue, [bx, fy, bz], [radius * 0.29, radius * 0.26, radius * 0.28], a, "summer-blossom");
         for (let j = 0; j < 6; j++) {
           const a = j * 2.4;
-          p.sphere(j % 3 ? C.flower : C.blue, [bx + Math.cos(a) * radius * 0.22, fy + 0.07 + Math.sin(j) * 0.07, bz + Math.sin(a) * radius * 0.22], radius * 0.09, [1, 0.65, 1]);
+          p.sphere(j % 3 ? C.flower : C.blue, [bx + Math.cos(a) * radius * 0.22, fy + 0.07 + Math.sin(j) * 0.07, bz + Math.sin(a) * radius * 0.22], radius * 0.09, [1, 0.65, 1], "summer-blossom");
         }
       }
     }
@@ -406,16 +414,19 @@ export function createVillageTerrain() {
     for (let j = 0; j < 4; j++) flower(x + (random() - 0.5) * 0.5, z + (random() - 0.5) * 0.5, 0.23 + random() * 0.21, i % 3 === 0 ? C.cream : C.gold);
   }
 
+  const seasonAnchors: XYZ[] = [];
   function tree(px: number, py: number, size: number) {
     const [x, z] = paintingToGround(px, py);
     if (!unoccupied(x, z, size * 1.6) || !awayFromPaths(x, z, size)) return;
     navigationObstacles.push({ x, z, radius: size * 0.65 });
-    p.stone(C.grass, [x, 0.028, z], size * 1.4, [1, 0.035, 0.9]);
-    const pine = (px + py) % 7 < 3;
+    p.stone(C.grass, [x, 0.028, z], size * 1.4, [1, 0.035, 0.9], 0, "grass");
+    const pine = (px + py) % 7 < 2;
+    const canopy = pine ? "evergreen" : (px + py) % 3 === 0 ? "crownWarm" : "crown";
     const lean = pine ? 0.52 : 0.18;
     const footing: XYZ = [x, 0.018, z];
     const fork: XYZ = [x + size * lean * 0.5, size * 1.12, z - size * 0.17];
     const trunk: XYZ = [x + size * lean, size * (pine ? 2.54 : 2.26), z - size * 0.28];
+    if (!pine) seasonAnchors.push(trunk);
     p.beam(C.woodDark, footing, fork, size * 0.2);
     p.beam(C.wood, fork, trunk, size * 0.135);
     for (let i = 0; i < 5; i++) {
@@ -423,12 +434,32 @@ export function createVillageTerrain() {
       p.beam(C.woodDark, [x, 0.2, z], [x + Math.cos(a) * size * 0.55, 0.03, z + Math.sin(a) * size * 0.55], size * 0.09);
       const branch: XYZ = [fork[0] + Math.cos(a) * size * 0.66, size * (1.78 + i % 3 * 0.2), fork[2] + Math.sin(a) * size * 0.69];
       p.beam(C.wood, fork, branch, size * 0.089);
-      p.foliage(i % 3 === 0 ? C.leafDark : C.leaf, branch, [size * 0.86, size * (pine ? 0.47 : 0.78), size * 0.79], a + px);
+      p.foliage(i % 3 === 0 ? C.leafDark : C.leaf, branch, [size * 0.86, size * (pine ? 0.47 : 0.78), size * 0.79], a + px, canopy);
       if (i % 2 === 0) p.foliage(C.leafLight, [branch[0] + size * 0.14, branch[1] + size * 0.37, branch[2]],
-        [size * 0.72, size * (pine ? 0.37 : 0.53), size * 0.61], a + py);
+        [size * 0.72, size * (pine ? 0.37 : 0.53), size * 0.61], a + py, canopy);
+      if (pine) continue;
+      for (const side of [-1, 1]) {
+        const yaw = a + side * .49;
+        const tip: XYZ = [branch[0] + Math.cos(yaw) * size * .42, branch[1] + size * (.38 + side * .1), branch[2] + Math.sin(yaw) * size * .42];
+        p.beam(C.woodDark, branch, tip, size * .045);
+      }
+      for (let blossom = 0; blossom < 12; blossom++) {
+        const angle = blossom * 2.4 + a;
+        const reach = (.52 + blossom % 4 * .075) * size;
+        const rise = i % 2 === 0 ? .82 : .56;
+        const y = branch[1] + (rise - blossom % 5 * .19) * size;
+        const color = ["#fff1dc", "#f5c1b4", "#e8938d"][blossom % 3];
+        petal(branch[0] + Math.cos(angle) * reach, y, branch[2] + Math.sin(angle) * reach, angle, color, "spring-blossom", .125 * size);
+      }
+      for (let leaf = 0; leaf < 7; leaf++) {
+        const angle = a + leaf * .9;
+        const reach = (.69 + leaf % 3 * .23) * size;
+        petal(x + Math.cos(angle) * reach, .045 + leaf % 3 * .006, z + Math.sin(angle) * reach, angle,
+          ["#c98239", "#a85b34", "#dbae52"][leaf % 3], "autumn-litter", .115 * size);
+      }
     }
-    p.foliage(C.leafLight, trunk, [size * 0.92, size * (pine ? 0.43 : 0.77), size * 0.85], px + py);
-    p.foliage(C.leafTip, [trunk[0] + size * 0.28, trunk[1] + size * 0.27, trunk[2] - size * 0.28], [size * 0.55, size * 0.32, size * 0.53], px);
+    p.foliage(C.leafLight, trunk, [size * 0.92, size * (pine ? 0.43 : 0.77), size * 0.85], px + py, canopy);
+    p.foliage(C.leafTip, [trunk[0] + size * 0.28, trunk[1] + size * 0.27, trunk[2] - size * 0.28], [size * 0.55, size * 0.32, size * 0.53], px, canopy);
   }
   [[80, 100, 1.05], [150, 65, 1.1], [540, 95, 1.2], [620, 150, 0.9], [985, 165, 0.85], [1470, 555, 0.95], [110, 790, 1.05], [40, 930, 1.1], [170, 1030, 0.8], [1100, 790, 0.72], [1420, 1040, 1.2]].forEach(([px, py, size]) => tree(px, py, size));
 
@@ -544,7 +575,6 @@ export function createVillageTerrain() {
   p.box(C.teal, [lx, 0.35, lz + 0.43], [0.19, 0.45, 0.055]);
   for (const y of [1.1, 1.85]) p.box(C.ink, [lx, y, lz + 0.4 - y * 0.07], [0.085, 0.19, 0.035]);
   p.add(new THREE.CylinderGeometry(0.46, 0.46, 0.15, 16), C.ink, [lx, 2.78, lz]);
-  p.add(new THREE.CylinderGeometry(0.27, 0.27, 0.47, 12), C.gold, [lx, 3.04, lz]);
   for (let i = 0; i < 8; i++) {
     const a = i * Math.PI / 4;
     p.beam(C.ink, [lx + Math.cos(a) * 0.31, 2.85, lz + Math.sin(a) * 0.31], [lx + Math.cos(a) * 0.31, 3.29, lz + Math.sin(a) * 0.31], 0.022);
@@ -561,6 +591,14 @@ export function createVillageTerrain() {
   }
   p.box(C.woodLight, [lx + 1.1, 0.3, lz + 0.18], [0.15, 0.35, 0.03]);
   const result = p.finish();
+  const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.27, 0.47, 12),
+    new THREE.MeshStandardMaterial({ color: C.gold, roughness: .96, name: "village-lantern" }));
+  lantern.name = "village-lighthouse-lantern";
+  lantern.position.set(lx, 3.04, lz);
+  lantern.castShadow = true;
+  lantern.receiveShadow = true;
+  lantern.raycast = () => {};
+  result.add(lantern);
   const mainland = createVillageMainland();
   result.add(mainland);
   result.userData.triangles += mainland.geometry.getAttribute("position").count / 3;
@@ -568,6 +606,8 @@ export function createVillageTerrain() {
   result.userData.groundPaths = paths;
   result.userData.groundAprons = groundAprons;
   result.userData.groundHeightAt = groundHeightAt;
+  result.userData.seasonAnchors = seasonAnchors;
+  applyVillageSeason(result, "summer");
   return result;
 }
 

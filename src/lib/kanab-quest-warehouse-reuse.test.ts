@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
+import retail from "./kanab-quest-warehouse-retail-equipment.json";
 import { createKqWarehouseStarter, getKqWarehouseQuote, type KqWarehouseState } from "./kanab-quest-warehouse";
 import { initializeKqWarehouseCondition, type KqWarehouseCondition } from "./kanab-quest-warehouse-condition";
 import { getKqWarehouseReusePreview } from "./kanab-quest-warehouse-reuse";
 
 const code = "SIM-LIGHT-02";
+const lampPriceCents = retail[code].unitPriceCents;
 function fixture(reserveQuantity = 2) {
   const starter = createKqWarehouseStarter();
   const previous = getKqWarehouseQuote({ ...starter,
@@ -31,7 +33,7 @@ describe("warehouse reuse preview", () => {
   it("purchases only the missing device while preserving worn reuse", () => {
     const { previous, candidate, condition, zoneId } = fixture(1);
     expect(getKqWarehouseReusePreview(previous, candidate, zoneId, "device", code, condition)).toMatchObject({
-      keptQuantity: 0, reusedQuantity: 1, newQuantity: 1, newCostCents: 32900, planPurchaseCents: 32900,
+      keptQuantity: 0, reusedQuantity: 1, newQuantity: 1, newCostCents: lampPriceCents, planPurchaseCents: lampPriceCents,
       groups: [{ origin: "reused", quantity: 1, wearPercent: 20 }, { origin: "new", quantity: 1, wearPercent: 0 }],
     });
   });
@@ -39,7 +41,7 @@ describe("warehouse reuse preview", () => {
   it("keeps unknown wear unknown even though stock quantities can be allocated", () => {
     const { previous, candidate, zoneId } = fixture(1);
     const result = getKqWarehouseReusePreview(previous, candidate, zoneId, "device", code);
-    expect(result).toMatchObject({ reusedQuantity: 1, newQuantity: 1, newCostCents: 32900,
+    expect(result).toMatchObject({ reusedQuantity: 1, newQuantity: 1, newCostCents: lampPriceCents,
       groups: [{ origin: "reused", quantity: 1, wearPercent: null }, { origin: "new", quantity: 1, wearPercent: 0 }] });
     expect(result?.condition).toBeUndefined();
   });
@@ -55,7 +57,7 @@ describe("warehouse reuse preview", () => {
     const candidate = { ...previous, zones: previous.zones.map(zone => ({ ...zone, lightingCode: code })) };
     const first = getKqWarehouseReusePreview(previous, candidate, previous.zones[0].id, "device", code, condition);
     expect(first).toMatchObject({ keptQuantity: 1, reusedQuantity: 0, newQuantity: 0, newCostCents: 0,
-      planPurchaseQuantity: 1, planPurchaseCents: 32900, groups: [{ origin: "kept", quantity: 1, wearPercent: 60 }] });
+      planPurchaseQuantity: 1, planPurchaseCents: lampPriceCents, groups: [{ origin: "kept", quantity: 1, wearPercent: 60 }] });
     const second = getKqWarehouseReusePreview(previous, candidate, "second", "device", code, condition);
     expect(second).toMatchObject({ keptQuantity: 0, reusedQuantity: 1, newQuantity: 1 });
   });

@@ -35,9 +35,10 @@
 .products { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; align-items: start; }
 .product, .product[data-stocked] { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr); min-width: 0; gap: 8px 20px; padding: 18px 0; overflow: visible; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 0; border-bottom: 1px solid #17292340; border-radius: 0; border-image: none; background: none; box-shadow: none; }
 .productMain { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 12px; }
-.illustration { display: grid; place-items: center; overflow: hidden; width: 72px; height: 72px; border-radius: 0; background: none; }
+.illustration { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; width: 72px; height: 72px; border-radius: 0; background: none; }
 .productImage { display: block; width: 100%; height: 100%; object-fit: contain; }
 .productIdentity { min-width: 0; }
+.productIdentity > small:not(.stock) { display: block; font-size: 13px; overflow-wrap: anywhere; }
 .stock { display: inline-flex; align-items: center; gap: 5px; color: #455748; font-size: 13px; }
 .stock::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #b0b29a; }
 .stock[data-stocked] { color: #172923; font-weight: 750; }
@@ -62,6 +63,9 @@
 .reason { display: block; grid-column: 1 / -1; margin: 0; color: #455748; font-size: 13px; line-height: 1.5; }
 .reason[data-available] { color: #172923; }
 .productEffect { grid-column: 1 / -1; margin: 0; font-size: 13px; line-height: 1.45; }
+.focusTarget { grid-column: 1 / -1; display: grid; gap: 4px; min-width: 0; font-size: 13px; overflow-wrap: anywhere; }
+.focusTarget select { min-width: 0; max-width: 100%; min-height: 44px; padding: 8px; font: inherit; color: #172923; background: transparent; border: 2px solid transparent; border-image: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.focusTarget select:focus-visible { outline: 3px solid #172923; outline-offset: 2px; }
 .product > .notice { grid-column: 1 / -1; margin: 0; }
 .cashHint { display: block; grid-column: 1 / -1; margin: 0; color: #8c6033; font-size: 13px; }
 .notice { margin: 10px 0; padding: 10px 0; border: 0; border-block: 1px solid #17292340; border-radius: var(--game-panel-radius, 2px); background: none; color: #172923; font-size: 13px; }
@@ -86,8 +90,8 @@
   .tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shop[data-reserve] .tabs button:first-child { grid-column: 1 / -1; }
   .shop .tabs button { min-width: 0; gap: 5px; padding: 10px; text-align: center; }
-  .tabs button span { min-width: 0; overflow-wrap: anywhere; }
-  .tabs svg { flex-shrink: 0; width: 14px; }
+  .tabs button span { min-width: 0; }
+  .tabs svg { display: none; }
   .productMain { grid-template-columns: 64px minmax(0, 1fr); }
   .illustration { width: 64px; height: 64px; }
   .shop button.buy { padding-right: 9px; padding-left: 9px; font-size: 13px; }

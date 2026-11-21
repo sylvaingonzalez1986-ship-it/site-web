@@ -39,7 +39,8 @@ describe("server-authoritative care transitions", () => {
   });
   it.each(["CARE-ORIUS", ...KQ_CARE_PRODUCTS.filter(product => product.kind === "input").map(product => product.code)])("binds the frozen culture cell to replay and persisted state for %s", async productCode => {
     const state = startKqGame(31, { warehouse: getKqWarehouseRunSnapshot(createKqWarehouseStarter(), 0, "starter") });
-    state.care!.problems = [problem("THRIPS")];
+    const product = KQ_CARE_PRODUCTS.find(item => item.code === productCode)!;
+    state.care!.problems = [problem(product.targetedCare ? product.targets![0] : "THRIPS")];
     mocks.maybeSingle.mockResolvedValue({ data: { state, status: "active", updated_at: "version" }, error: null });
     const target = { zoneId: "starter", x: 0, y: 0 };
     await expect(applyKqPlayerCare({ ...input, productCode })).rejects.toThrow(/case/);

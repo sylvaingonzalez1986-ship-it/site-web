@@ -8,6 +8,7 @@ import {
   fetchSwissBitcoinInvoice,
   inspectSwissBitcoinInvoice,
   isSwissBitcoinPayEnabled,
+  isSwissBitcoinSupportInvoice,
   SwissBitcoinCreationError,
   swissBitcoinCheckoutUrl,
   swissBitcoinId,
@@ -156,6 +157,7 @@ async function deliverPaidEffects(attempt: Attempt) {
 }
 
 async function observeInvoice(attempt: Attempt, invoiceId: string, invoice: unknown) {
+  if (isSwissBitcoinSupportInvoice(invoice)) return false;
   const observed = inspectSwissBitcoinInvoice(invoice, invoiceId, attempt.id, attempt.expected_eur_minor);
   if (!attempt.invoice_id && !observed.associationVerified) return false;
   const result = await rpc<{ effects_pending: boolean }>("rpc_observe_swiss_bitcoin_payment", {

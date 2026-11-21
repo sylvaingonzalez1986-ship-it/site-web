@@ -71,7 +71,7 @@ describe("commercial production facility and isolation", () => {
   it("uses funded equipment, balance two options and actual wear for the next cycle quote", () => {
     const raw = fixture(), starter = createKqWarehouseStarter();
     const paid = getKqWarehouseQuote({ ...starter, zones: starter.zones.map(zone => ({ ...zone,
-      lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: ["SIM-WATER-03", "SIM-CLIMATE-03"],
+      lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: ["SIM-WATER-03", "SIM-CLIMATE-UNIT-03"],
     })) }, starter).nextState;
     const condition = initializeKqWarehouseCondition(paid, false);
     condition.assets.forEach(asset => { asset.wearPercent = 40; });
@@ -80,6 +80,20 @@ describe("commercial production facility and isolation", () => {
     expect(quote).toMatchObject({ harvestGrams: 212, qualityBonus: 6, cycleCostCents: expected.operatingCostCents });
     expect(quote.cycleCostCents).toBeGreaterThan(raw.state.production!.facility!.cycleCostCents);
     expect(raw.state.production!.facility!.harvestGrams).toBe(250);
+  });
+  it("applies shared irrigation and hygiene to autonomous harvest, supplies and starting quality", () => {
+    const raw = fixture(), starter = createKqWarehouseStarter(true);
+    const paid = getKqWarehouseQuote({ ...starter,
+      zones: [{ ...starter.zones[0], x: 5, y: 8 }],
+      airPlacements: [{ ...starter.airPlacements![0], x: 5, y: 8 }],
+      stationPlacements: [{ id: "water", code: "SIM-WATER-03", x: 4, y: 8 },
+        { id: "hygiene", code: "SIM-HYGIENE-03", x: 5, y: 9 }],
+    }, starter).nextState;
+    raw.context.productionFacility = { ...raw.context.productionFacility!, warehouseState: paid,
+      cultureEquipment: initializeKqWarehouseCondition(paid) };
+    expect(getKqProductionFacilities(raw.context)[0]).toMatchObject({
+      harvestGrams: 257.5, cycleCostCents: 7710, qualityBonus: 4, available: true,
+    });
   });
   it.each([false, true])("freezes equipment quality at launch and preserves historical lots (legacy=%s)", legacy => {
     const raw = fixture(); raw.state.production!.facility!.qualityBonus = 6;

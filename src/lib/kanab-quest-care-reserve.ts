@@ -1,5 +1,6 @@
-import { canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProblem, getKqCareProduct, KQ_CARE_PRODUCTS, type KqCareProduct } from "./kanab-quest-care";
-import { getKqCareSectors } from "./kanab-quest-care-spatial";
+import { canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProblem, getKqCareProduct, kqCareProductMatchesProblem, KQ_CARE_PRODUCTS, type KqCareProduct } from "./kanab-quest-care";
+import { getKqCareProblemPlants, getKqCareSectors, isKqRunSector, sectorKey, type KqCareSector } from "./kanab-quest-care-spatial";
+import { getKqZoneIdentity } from "./kanab-quest-zone-identity";
 import type { KqGameState } from "./kanab-quest-game";
 
 export type KqCareReserveMatch = { product: KqCareProduct; problemLabels: string[] };
@@ -12,9 +13,35 @@ export type KqCareReserveSnapshot = {
   pricingUnits?: number;
   legacyInventory?: Record<string, number>;
   areaInventory?: Record<string, number>;
+  zoneQuantities?: Record<string, Record<string, number>>;
 };
 
 export type KqCareAvailabilityNotice = { scope: string; count: number | null };
+
+export function getKqCareZoneStock(snapshot: KqCareReserveSnapshot, code: string, zoneId: string) {
+  const zones = snapshot.zoneQuantities?.[code];
+  return zones ? zones[zoneId] ?? 0 : snapshot.inventory[code] ?? 0;
+}
+
+export function getKqCareSectorLabel(state: KqGameState, target: KqCareSector) {
+  const plan = state.campaign?.members.find(member => member.zoneId === target.zoneId)?.warehouse.sourceState ?? state.warehouse?.sourceState;
+  const zone = plan && getKqZoneIdentity(plan, target.zoneId);
+  const name = plan?.zones.find(zone => zone.id === target.zoneId)?.name;
+  return `${zone?.label ?? target.zoneId}${name && name !== zone?.label ? ` · ${name}` : ""}, case ${target.x + 1}, ${target.y + 1}`;
+}
+
+export function getKqCareFocusSectors(state: KqGameState, product: KqCareProduct) {
+  const sectors = new Map<string, KqCareSector>();
+  for (const problem of state.care?.problems ?? []) {
+    const definition = getKqCareProblem(problem.code);
+    if (!definition || !kqCareProductMatchesProblem(product, definition)) continue;
+    for (const { zoneId, x, y } of getKqCareProblemPlants(state, problem)) {
+      const target = { zoneId, x, y };
+      if (isKqRunSector(state, target)) sectors.set(sectorKey(target), target);
+    }
+  }
+  return [...sectors.values()];
+}
 
 export function getKqCareStockQuantity(legacyQuantity: number, areaQuantity: number, pricingUnits: number, targeted: boolean) {
   return targeted ? legacyQuantity * pricingUnits + areaQuantity : legacyQuantity + Math.floor(areaQuantity / pricingUnits);
@@ -54,14 +81,24 @@ export function getKqCareAvailabilityScope(state: KqGameState, runId?: string | 
 /** Inventory expresses usable applications, either one sector or one complete passage. */
 export function getKqCareActionAvailability(snapshot: KqCareReserveSnapshot | null, state?: KqGameState) {
   if (!snapshot) return null;
-  const usable = state ? KQ_CARE_PRODUCTS.filter(product => (snapshot.inventory[product.code] ?? 0) > 0
-    && canApplyKqCareProduct(state, product.code).allowed) : [];
+  const sectors = state && snapshot.zoneQuantities ? getKqCareSectors(state) : [];
+  const usable = state ? KQ_CARE_PRODUCTS.filter(product => {
+    if (!(snapshot.inventory[product.code] > 0) || !canApplyKqCareProduct(state, product.code).allowed) return false;
+    if (!sectors.length || !snapshot.zoneQuantities?.[product.code]) return true;
+    const candidates = product.targetedCare ? getKqCareFocusSectors(state, product) : sectors;
+    return candidates.some(target => getKqCareZoneStock(snapshot, product.code, target.zoneId) > 0
+      && canApplyKqCareProduct(state, product.code, target).allowed);
+  }) : [];
   const affordable = KQ_CARE_PRODUCTS.filter(product => snapshot.prices[product.code] !== undefined
     && snapshot.cashCents >= snapshot.prices[product.code]);
   const basic = !!state && canPerformKqBasicCare(state).allowed
     && snapshot.basicCarePriceCents !== undefined && snapshot.basicCarePriceCents > 0
     && snapshot.cashCents >= snapshot.basicCarePriceCents;
-  const context = new Set(getKqCareReserveProducts(state).map(match => match.product.code));
+  const context = new Set(getKqCareReserveProducts(state).filter(match => {
+    const sectors = state && getKqCareFocusSectors(state, match.product);
+    return !state || !sectors?.length || sectors.some(target => getKqCareZoneStock(snapshot, match.product.code, target.zoneId) > 0
+      && canApplyKqCareProduct(state, match.product.code, target).allowed);
+  }).map(match => match.product.code));
   return {
     total: usable.length + Number(basic), products: usable.length, basic: Number(basic),
     usable: { input: usable.filter(product => product.kind === "input").length,
@@ -80,7 +117,7 @@ export function getKqCareReserveProducts(state?: KqGameState): KqCareReserveMatc
   });
   return KQ_CARE_PRODUCTS.flatMap(product => {
     const problemLabels = [...new Set(problems
-      .filter(problem => product.targets.includes(problem.target))
+      .filter(problem => kqCareProductMatchesProblem(product, problem))
       .map(problem => problem.name))];
     return problemLabels.length ? [{ product, problemLabels }] : [];
   });
@@ -96,11 +133,17 @@ const isAmount = (value: unknown): value is number =>
 export function parseKqCareReserveSnapshot(value: unknown): KqCareReserveSnapshot | null {
   if (!isRecord(value) || !isAmount(value.cashCents) || !Array.isArray(value.inventory) || !Array.isArray(value.catalog)) return null;
   const inventory: Record<string, number> = {};
+  const zoneQuantities: Record<string, Record<string, number>> = {};
   const legacyInventory: Record<string, number> = {}, areaInventory: Record<string, number> = {};
   for (const item of value.inventory) {
     if (!isRecord(item) || typeof item.productCode !== "string" || !getKqCareProduct(item.productCode)
       || !isAmount(item.quantity) || Object.hasOwn(inventory, item.productCode)) return null;
     inventory[item.productCode] = item.quantity;
+    if (item.zoneQuantities !== undefined) {
+      if (!isRecord(item.zoneQuantities) || !Object.entries(item.zoneQuantities).every(([id, quantity]) =>
+        id.length > 0 && id.length <= 128 && isAmount(quantity) && quantity <= (item.quantity as number))) return null;
+      zoneQuantities[item.productCode] = item.zoneQuantities as Record<string, number>;
+    }
     if (item.legacyQuantity !== undefined) { if (!isAmount(item.legacyQuantity)) return null; legacyInventory[item.productCode] = item.legacyQuantity; }
     if (item.areaQuantity !== undefined) { if (!isAmount(item.areaQuantity)) return null; areaInventory[item.productCode] = item.areaQuantity; }
   }
@@ -117,6 +160,7 @@ export function parseKqCareReserveSnapshot(value: unknown): KqCareReserveSnapsho
   if (value.pricingUnits !== undefined && (!isAmount(value.pricingUnits) || value.pricingUnits <= 0)) return null;
   if (value.basicCarePriceCents !== undefined && !isAmount(value.basicCarePriceCents)) return null;
   return { cashCents: value.cashCents, inventory, prices,
+    ...(Object.keys(zoneQuantities).length ? { zoneQuantities } : {}),
     ...(value.basicCarePriceCents !== undefined ? { basicCarePriceCents: value.basicCarePriceCents as number } : {}),
     ...(value.areaM2 !== undefined ? { areaM2: value.areaM2 as number | null } : {}),
     ...(value.pricingUnits !== undefined ? { pricingUnits: value.pricingUnits as number } : {}),

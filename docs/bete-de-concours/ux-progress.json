@@ -1,4 +1,220 @@
 {
+  "retourVillageEntrepot20261122": {
+    "date": "2026-11-22",
+    "livraison": "Bouton Retour au village dans l’en-tête de l’entrepôt en Pilotage et en Aménager. Le bouton du bandeau du village s’efface lorsque celui de l’entrepôt est affiché. Le retour conserve le dialogue de confirmation du brouillon.",
+    "verification": "Chromium à 1440 px en Pilotage et 320 px en Aménager. Retour au clavier, annulation du départ et reprise du brouillon vérifiés. Le nettoyage en cours reste visible après un retour au village. TypeScript et ESLint passent.",
+    "evidence": ["output/parcours-loic/nettoyage.json", "output/parcours-loic/retour-village-320.png"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le retour au village sur le Quartier hébergé après publication."
+  },
+  "menusEntrepotSimplifies20261122": {
+    "date": "2026-11-22",
+    "livraison": "Suppression de « Références de cette zone », des titres de rayon répétés, des accroches du stockage et du séchage et des rappels redondants du plan, du matériel et du trim. Le bouton Modifier les dimensions est accessible directement. Les quantités de matériel, les capacités et les charges sont regroupées dans la fiche de zone.",
+    "verification": "37 contrôles Chromium à 320 et 1440 px. Le devis global reste consultable depuis les dimensions d’une autre zone à 390 × 480 px. TypeScript, ESLint et 47 tests ciblés passent.",
+    "evidence": ["output/warehouse-menus-simplifies/rapport-apres.json", "output/warehouse-menus-simplifies/apres-reglages-zone-320.png", "output/clarity-lot20/dimensions-plan-short.png", "output/clarity-lot20/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le menu d’une zone de culture et son devis sur le Quartier hébergé."
+  },
+  "fichesMaterielSimplifiees20261121": {
+    "date": "2026-11-21",
+    "livraison": "Retrait des comparatifs de prix publics, relevés, références fabricant et liens vendeurs dans les fiches joueur de l’entrepôt, du catalogue et de l’atelier. Les fiches affichent les prix du jeu, les stocks, les cadences et les actions d’achat.",
+    "verification": "35 contrôles Chromium à 320 et 1440 px dans l’entrepôt. Achats et devis des six appareils de climat et de pilotage vérifiés aux deux formats. Devis de transformation vérifiés à 320, 390 et 1440 px. Les 99 tests ciblés passent.",
+    "evidence": ["output/warehouse-fiches-epurees/apres-securite-1440.png", "output/warehouse-fiches-epurees/apres-intrants-320.png", "output/warehouse-fiches-epurees/rapport-apres.json", "output/warehouse-climate-control/rapport.json", "output/placard-staff-ui/processing-work-report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier la fiche caméra et le devis d’achat dans le Quartier hébergé."
+  },
+  "selecteurEntrepot20261121": {
+    "date": "2026-11-21",
+    "livraison": "L’entrepôt réunit Pilotage et Aménager dans un même sélecteur. Le mode actif est turquoise et souligné. Les libellés expliquent les deux usages. Pendant un brouillon, Aménager reste actif et l’option Pilotage indique « Brouillon en cours ».",
+    "verification": "Chromium à 320 et 1440 px. Position du volet, libellés, basculement au clavier et au tactile, restauration du brouillon, devis et retour au Pilotage vérifiés.",
+    "evidence": ["output/warehouse-mode-switch/apres-mode-pilotage-1440.png", "output/warehouse-mode-switch/apres-mode-arrangement-320.png", "output/warehouse-mode-switch/rapport-apres.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le basculement entre les deux modes dans une partie hébergée sur un téléphone physique."
+  },
+  "tarifsMachinesAtelier20261121": {
+    "date": "2026-11-21",
+    "livraison": "Les six machines ont un prix d’achat par gamme, avec une référence vendeur en devise d’origine. Les laveuses coûtent 6 300 €, 34 800 € et 85 800 €. Un passage déduit la valeur du niveau possédé.",
+    "verification": "Les 18 débits et leurs reçus ont été vérifiés en PostgreSQL local. Reprise des achats anciens, refus des devis périmés de gamme, de niveau ou de panier mixte, et accord au centime des améliorations par niveau. Fiches et achats simulés vérifiés dans Chromium à 320, 390 et 1440 px.",
+    "evidence": [
+      "docs/bete-de-concours/prix-publics-entrepot.md",
+      "src/lib/kanab-quest-workshop-retail.json",
+      "scripts/test-placard-warehouse.mjs",
+      "output/visual-workshop/report.json",
+      "output/warehouse-v4/workshop-report.json",
+      "output/warehouse-v4/laveuse-trois-gammes-1440.png"
+    ],
+    "deployed": false,
+    "nextBoundedTask": "Appliquer la migration 20261122000600 avec la publication de l’application et vérifier un devis de laveuse sur la version hébergée."
+  },
+  "navigationCultureCannabis20261121": {
+    "date": "2026-11-21",
+    "livraison": "Les six onglets de la culture ont des titres de 14 à 15 px, des états de 12 px et une place dédiée aux compteurs. Les vignettes représentent le cannabis sur les boutons concernés, avec un carnet et des dés pour les deux autres. Les onglets tiennent en deux colonnes sur téléphone.",
+    "verification": "Chromium à 320, 390, 768 et 1440 px avec contrôle de la séparation des textes, des images et des compteurs. Navigation clavier, précédente, suivante et geste tactile vérifiés. TypeScript, ESLint et 22 tests des libellés et états réussis.",
+    "evidence": ["output/placard-journey-continuity/culture-navigation-320.png", "output/placard-journey-continuity/culture-navigation-1440.png", "output/placard-journey-continuity/culture-carousel-visual-report.json", "output/culture-navigation/verification-nav.json", "docs/bete-de-concours/ui-navigation-provenance.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier la navigation de culture d’une partie existante sur le Quartier hébergé."
+  },
+  "didacticielLoic20261121": {
+    "date": "2026-11-21",
+    "livraison": "Loïc accompagne les six gestes de la première culture dans la partie du joueur. Son carnet propose 24 chapitres contextuels. Le menu conserve la pause, la reprise, les chapitres passés et la relecture par compte dans le navigateur.",
+    "verification": "Chromium à 1440 et 320 px, 17 points de contrôle par format. Plan proposé en quatre gestes, devis de 786,74 €, refus puis réussite, retrait puis réaffectation d’une variété, stocks lus, semis et échéance. L’aspiration en attente a été quittée puis retrouvée à l’échéance sur horloge locale. Les RPC de campagne et le budget initial sont vérifiés séparément en PostgreSQL local.",
+    "fermeture": "La croix Fermer le guide est accessible dès l’invitation, pendant une étape et en pause. La fiche et ses repères disparaissent, la fermeture persiste au rechargement et le menu permet de reprendre la même étape.",
+    "albumVide": "À 320 px avec zéro point, le joueur récupère et ouvre un seul pack offert, choisit l’un des trois Buddies révélés, sème et retrouve une étape passée après rechargement.",
+    "evidence": ["docs/bete-de-concours/parcours-loic.md", "output/parcours-loic/loic/rapport.json", "output/parcours-loic/loic-welcome/rapport.json", "output/parcours-loic/nettoyage.json", "output/parcours-loic/loic/devis-1440.png", "output/parcours-loic/loic-welcome/semis-320.png", "output/parcours-loic/loic/culture-320.png"],
+    "deployed": false,
+    "nextBoundedTask": "Rejouer le parcours sur téléphone physique avec un compte de recette du Quartier hébergé."
+  },
+  "trimIsometrique20261121": {
+    "date": "2026-11-21",
+    "livraison": "Le poste de trim passe en 3D isométrique. L’établi, la machine, les ciseaux et les avatars partagent la même scène. Le suivi de l’équipe est à côté sur ordinateur et sous la scène sur mobile. Les postes actifs s’animent et une vue fixe isométrique reste disponible sans WebGL.",
+    "verification": "Recette Chromium à 320, 390 et 1440 px. Trim manuel, rotor, arrêt faute de fleurs compatibles, pause, mouvement réduit, identité de l’équipe et commandes vérifiés. 35 tests unitaires ciblés passent.",
+    "evidence": ["output/placard-staff-ui/shared-trim-team-1440.png", "output/placard-staff-ui/shared-trim-team-320.png", "output/placard-staff-ui/shared-trim-machine-390.png", "output/placard-staff-ui/shared-trim-report.json", "output/placard-staff-ui/shared-trim-edge-report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le trim sur un téléphone physique dans le Quartier hébergé."
+  },
+  "atelierDansLePilotage20261121": {
+    "date": "2026-11-21",
+    "livraison": "L’atelier affiche d’emblée Trim, Extractions et Machines avec un retour à l’entrepôt. Le laboratoire reprend ses panneaux papier et ses commandes. Le décor entier est cadré, avec les effectifs en haut et les six postes à droite sur ordinateur, sous le plan sur mobile.",
+    "verification": "Recette Chromium à 1440, 390 et 320 px. Accès depuis l’entrepôt, zoom et déplacement du plan, fiches des six machines, entretien, achat simulé et retour clavier vérifiés.",
+    "evidence": ["output/atelier-pilotage/integration/apres-atelier-machines-1440.png", "output/atelier-pilotage/integration/apres-atelier-machines-320.png", "output/atelier-pilotage/integration/rapport-apres.json", "output/atelier-pilotage/machines/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le cadrage de l’atelier dans le Quartier hébergé sur un téléphone physique."
+  },
+  "pilotageEntrepot20261121": {
+    "date": "2026-11-21",
+    "navigation": "Le bouton illustré « Quartier » a été retiré de l’en-tête de l’entrepôt. Le retour « Au village » est exercé au clavier dans scripts/audit-loic-cleaning.mjs.",
+    "livraison": "Le Pilotage ouvre la scène isométrique et quatre indicateurs. Les priorités, étapes, zones et équipements ouvrent leur fiche ou leur action. Les modules de nettoyage, sécurité, extraction d’air, irrigation, intrants et atelier sont accessibles depuis l’entrepôt. Aménager conserve le brouillon, le devis, la pose et les confirmations existantes.",
+    "verification": "33 vérifications Chromium à 1440 × 900 et 320 × 710 sur trois états de partie. Accès clavier et tactile émulé, couvertures, échéances, quantités par cycle, devis et reprise du brouillon. Pose et sauvegarde de l’extracteur, de la centrale et du sas vérifiées aux deux tailles. Les 817 tests ciblés passent.",
+    "evidence": ["output/warehouse-pilotage/rapport-avant.json", "output/warehouse-pilotage/rapport-apres.json", "output/warehouse-pilotage/equipements/rapport-equipements.json", "output/warehouse-pilotage/apres-actif-1440.png", "output/warehouse-pilotage/apres-actif-320.png"],
+    "deployed": false,
+    "nextBoundedTask": "Rejouer l’installation et le retour depuis la boutique sur un téléphone physique dans une partie de test hébergée."
+  },
+  "nettoyageDepuisEntrepot20261121": {
+    "date": "2026-11-21",
+    "livraison": "Dans l’en-tête de l’entrepôt, Nettoyer ouvre l’affectation, les deux passages et leurs échéances. Le rayon Nettoyage vend les outils et le sas. Le nettoyage fonctionne sur un plan vide dès l’achat des outils.",
+    "verification": "Parcours Chromium à 320 et 1440 px sans sas. Achat des deux outils, affectation manuelle ou automatique, aspiration puis lavage, contrôle des temps et reprise après rechargement. Les 5 tests PostgreSQL de préparation passent.",
+    "evidence": ["output/warehouse-fresh-local/rapport.json", "output/warehouse-fresh-local/nettoyage-320.png"],
+    "deployed": false,
+    "nextBoundedTask": "Publier l’interface et vérifier l’action Nettoyer dans l’entrepôt hébergé."
+  },
+  "catalogueIntrantsEtSoins20261121": {
+    "date": "2026-11-21",
+    "livraison": "18 références illustrées au conditionnement et au prix public TTC. Le joueur achète des paquets entiers, puis choisit en culture les soins adaptés au foyer et à la case. Les nouvelles cultures partagent le stock encore disponible qui était présent au semis. Les mélanges de centrale et les anciennes réserves sont conservés.",
+    "verification": "Parcours de la boutique au bilan de santé vérifié dans Chromium à 320 et 1440 px. Pour 200 charges présentes au semis et 100 achetées ensuite, une application laisse 199 utilisables et 299 physiquement en stock, sans nouveau paiement. 357 contrôles PostgreSQL et compilation de production réussie.",
+    "database": "Migrations 20261122000500 et 20261122000510 appliquées. La base liée contient 433 migrations, 18 produits et 14 soins ciblés. L’heure de référence du semis a été vérifiée sur la base liée. Le contrôle des droits couvre les 433 migrations.",
+    "evidence": ["output/warehouse-provisions/rapport.json", "output/warehouse-provisions/catalogue-1440.png", "output/warehouse-provisions/soin-320.png", "output/warehouse-fresh-local/rapport.json", "docs/bete-de-concours/prix-publics-entrepot.md"],
+    "deployed": false,
+    "nextBoundedTask": "Publier l’interface du jeu et vérifier le rayon et le premier soin dans la version hébergée."
+  },
+  "appareilsClimatPilotage20261121": {
+    "date": "2026-11-21",
+    "livraison": "Six appareils aux prix publics TTC à l’unité, avec besoin arrondi séparément dans chaque zone. Les deux appareils portables sont sans frais de pose. Les anciens modules conservent leurs surfaces acquises et leur usure.",
+    "verification": "Six achats vérifiés à 320 et 1440 px avec annulation, devis, confirmation et réinstallation depuis la réserve. Tests TypeScript et PostgreSQL sur les seuils, paniers mixtes, stocks anciens et semis. Compilation de production réussie.",
+    "database": "Migration 20261122000400 appliquée. Les six prix, les besoins pour 21 m² et les exemptions de pose ont été vérifiés sur la base liée. Aucune migration en attente.",
+    "evidence": ["output/warehouse-climate-control/rapport.json", "output/warehouse-climate-control/climat-1440.png", "output/warehouse-climate-control/pilotage-320.png", "docs/bete-de-concours/prix-publics-entrepot.md"],
+    "deployed": false,
+    "nextBoundedTask": "Publier l’interface et vérifier les deux rayons dans la boutique hébergée."
+  },
+  "sasEntreeEntrepot20261121": {
+    "date": "2026-11-21",
+    "livraison": "Le sas unique se place au seuil de la porte sud et coûte 15 000 € pose comprise. Chaque nouvelle culture bénéficie dans tout le bâtiment de 75 % de réduction du risque restant de foyer infectieux, viral ou de ravageurs. La protection est figée au semis.",
+    "verification": "Parcours Chromium à 320 et 1440 px, devis mixte et réinstallation gratuite, tests PostgreSQL et simulation des trois types de foyers. Compilation de production réussie.",
+    "database": "Les deux migrations 20261122000300 et 20261122000310 sont appliquées. Supabase confirme qu’aucune migration ne reste en attente. Lecture distante vérifiée à 1 500 000 centimes, avec activation au seuil uniquement.",
+    "evidence": ["output/warehouse-coverage/rapport-equipements.json", "output/warehouse-coverage/fiche-sas-1440.png", "output/warehouse-coverage/repli-sas-seuil-320.png", "docs/bete-de-concours/prix-publics-entrepot.md"],
+    "deployed": false,
+    "nextBoundedTask": "Publier l’interface du jeu et vérifier la fiche du sas dans la boutique hébergée."
+  },
+  "achatPlacementEtPrixPublics20261121": {
+    "date": "2026-11-21",
+    "livraison": "Acheter ouvre le plan pour poser la manutention. Débit à la confirmation, déplacement et installation du matériel déjà payé gratuits. Les caméras se posent avec orientation et l’alarme au seuil. Les prix affichés renvoient à leur référence publique TTC.",
+    "verification": "59 tarifs contrôlés sur le serveur. Scénarios Chromium à 320 et 1440 px pour achat, annulation, rechargement, déplacement et stock. Le tutoriel conserve un premier aménagement finançable.",
+    "database": "Cinq migrations appliquées. Les 428 versions sont synchronisées sur le projet lié.",
+    "evidence": [
+      "docs/bete-de-concours/prix-publics-entrepot.md",
+      "output/warehouse-handling-placement/rapport.json",
+      "output/warehouse-provisions/rapport.json",
+      "output/warehouse-security/rapport.json"
+    ],
+    "deployed": false,
+    "nextBoundedTask": "Publier l’application web avec le nouveau parcours et vérifier le placement en session de jeu hébergée."
+  },
+  "preparationEntrepot20261121": {
+    "date": "2026-11-21",
+    "livraison": "Stock partagé et quantités verrouillées par culture, mélange fini en centrale, injecteur réutilisable, entretien hebdomadaire, manutention et planning du Quartier, caméras orientables, alarme et télésurveillance.",
+    "verification": "Recettes Chromium à 320 et 1440 px depuis un atelier vide, réinitialisation locale, 269 contrôles PostgreSQL des soins et des provisions, tests des échéances, incidents et planning. Compilation Next.js réussie, 155 pages générées, droits contrôlés sur 423 migrations.",
+    "evidence": ["output/warehouse-provisions/rapport.json", "output/warehouse-security/rapport.json", "output/warehouse-fresh-local/rapport.json", "docs/bete-de-concours/warehouse-equipment-decisions.md"],
+    "deployed": false,
+    "database": "Les huit migrations d’entrepôt ont été appliquées au projet Supabase lié le 21 novembre 2026. Les neuf nouvelles versions du lot, soutien producteur inclus, sont enregistrées. Le contrôle final confirme 423 versions et aucune migration en attente.",
+    "nextBoundedTask": "Vérifier le parcours intégré après publication de l’application avec un compte de jeu neuf."
+  },
+  "fermeSoutien20261121": {
+    "date": "2026-11-21",
+    "livraison": "La ferme chanvrière se trouve sur un promontoire du continent, en haut du Quartier. La grange en granit et ardoise, le chemin et les rangs de chanvre suivent l’éclairage et les saisons de la scène. Le bâtiment et sa pancarte ouvrent le soutien. La liste HTML prend le relais sans WebGL.",
+    "navigation": "Le panneau remplace l’encart du bilan. Les trois paragraphes d’origine de l’appel au don restent visibles et repérables depuis le formulaire. Après paiement, le même onglet retrouve la fiche et restaure le cadrage enregistré. Les bulles d’activités se placent sous la barre du jeu.",
+    "paiement": "Carte via Viva Smart Checkout et facture Lightning en euros via l’adaptateur Swiss Bitcoin Pay existant. La contribution est confirmée après vérification serveur. Le registre et le CSV par prestataire indiquent les références et anomalies. Swiss Bitcoin Pay applique la répartition marchande du compte.",
+    "saison2": "L’identité hemp-farm, son implantation, son modèle, sa zone interactive et l’action de soutien peuvent évoluer séparément.",
+    "verification": "Recettes Chromium du soutien, des retours simulés et des accès existants au Quartier. Les tests de paiement couvrent aussi la concurrence, la reprise, les rappels, les expirations et les paiements tardifs. TypeScript, ESLint ciblé et grants Supabase vérifiés.",
+    "evidence": ["output/placard-journey-continuity/ferme-continent-printemps-1440.png", "output/placard-journey-continuity/ferme-continent-nuit-320.png", "output/placard-journey-continuity/soutien-320.png", "output/placard-journey-continuity/appel-aux-dons-320.png", "output/placard-journey-continuity/financial-support-report.json", "output/village-3d/report.json"],
+    "deployed": false,
+    "database": "La migration de soutien producteur 20261121000400 a été appliquée au projet Supabase lié le 21 novembre 2026.",
+    "nextBoundedTask": "Activer SWISS_BITCOIN_PAY_SUPPORT_ENABLED avec la clé marchande, le secret webhook et CRON_SECRET. Confirmer les retours Viva avec la source de soutien en démo."
+  },
+  "rangeesLampes20261120": {
+    "date": "2026-11-20",
+    "livraison": "Les lampes s’alignent en rangées le long de la culture. La sélection d’une zone affiche toutes les emprises et la fiche permet d’isoler un luminaire. Le tracé, le changement de gamme, l’agrandissement et la rotation utilisent le même calcul de couverture que les rangées affichées.",
+    "reglage": "Le devis et le plan utilisent le même nombre entier de lampes selon la capacité du modèle. Les surfaces réparties entre les lampes couvrent exactement la zone, sans recouvrement ni débordement. Les zones en pause et les supports sans éclairage gardent leur état.",
+    "verification": "Sur une zone de 4 × 3 m, six lampes standard de 2 m² couvrent 12 m² en deux rangées. Le passage au haut de gamme donne trois lampes de 4 m². Tests de géométrie, de rotation, du devis et du rendu, puis confirmation et rechargement dans Chromium à 1440 et 320 px.",
+    "evidence": ["output/warehouse-lighting/rangees-standard-1440.png", "output/warehouse-lighting/couverture-standard-320.png", "output/warehouse-lighting/rangees-webgl-320.png", "output/warehouse-lighting/rapport.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le toucher sur une rangée dense sur téléphone physique."
+  },
+  "porteeEquipements20261120": {
+    "date": "2026-11-20",
+    "livraison": "Le plan montre le flux des extracteurs posés au sol ou fixés à un mur ou à une cloison. La centrale d’irrigation occupe une case libre et le sas d’entretien occupe le seuil de la porte sud. Sélectionner un appareil affiche sa portée et les m² réellement desservis dans chaque zone.",
+    "reglage": "Les avantages et les charges suivent la fraction desservie. La capacité se partage entre les zones et les cloisons coupent la portée. Les postes retirés retournent à la pièce en réserve. Les anciennes cultures gardent leurs effets enregistrés.",
+    "verification": "Recette Chromium à 1440 et 320 px au clavier et au toucher émulé. Un extracteur mural dessert 6 m² dans deux zones, une centrale dessert 12 m² et le sas est installé au seuil. Pose, devis unique et inspection après rechargement vérifiés. 371 tests intégrés de l’entrepôt, des campagnes et des chemins, dont la réserve, les achats et la parité avec PostgreSQL. TypeScript, ESLint ciblé et droits Supabase vérifiés.",
+    "evidence": ["output/warehouse-coverage/mur-deux-zones-1440.png", "output/warehouse-coverage/paroi-interieure-320.png", "output/warehouse-coverage/centrale-portee-320.png", "output/warehouse-coverage/sas-seuil-320.png", "output/warehouse-coverage/rapport-equipements.json", "output/warehouse-coverage/rapport-equipements-repli.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier sur téléphone physique la sélection d’un appareil fixé près d’une cloison avant publication de la bêta."
+  },
+  "boutiqueAmenagement20261120": {
+    "date": "2026-11-20",
+    "livraison": "Depuis la Ferme, Aménager ouvre la boutique sur les supports. Une nouvelle partie dispose de 1 000 € et de 100 m² libres. Chaque article se place après son choix, sur une case, sur un rectangle tracé ou dans une zone compatible. Le devis rassemble les modifications et affiche le budget disponible.",
+    "sauvegardes": "Le support seul reste en pause avec ses modules. La première lampe le rend actif. Le serveur conserve les plans existants, récupère les achats historiques et protège la confirmation du devis contre les doubles débits. Aucune réinitialisation de compte ou de dégustation.",
+    "verification": "PostgreSQL local, droits Supabase, 351 tests ciblés entrepôt et guides, TypeScript et ESLint. Dans Chromium, entrée depuis la Ferme, pose au clavier et au toucher émulé, modification de la taille et de la cible, dépassement puis correction du budget, confirmation unique et recharge. Deux zones enregistrées pour 912,40 € sur ordinateur et 788,95 € dans le scénario mobile. La Relève effectue 35 actions depuis un sol vide jusqu’au Buddie affecté et enregistré.",
+    "evidence": ["output/warehouse-shop-first/boutique-support-320.png", "output/warehouse-shop-first/cibles-eclairage-320.png", "output/warehouse-shop-first/plan-recharge-1440.png", "output/warehouse-shop-first/rapport.json", "output/arena-releve-guide/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Recette tactile sur téléphone physique avant publication de la bêta."
+  },
+  "equipementsEntrepot20261120": {
+    "date": "2026-11-20",
+    "livraison": "Chariot unique, temps de chargement du lyophilisateur, reprise des anciens chariots. Extraction sur grille avec portée, capacité partagée, parois et puissance répartie entre les zones actives. La boutique, le devis, les campagnes et la production autonome utilisent la couverture du plan.",
+    "reglage": "Les nouveaux plans donnent à la manutention locale et à la sécurité une économie de fournitures. L’hygiène agit sur la qualité. Anciennes cultures figées. Décisions et coûts par objet dans warehouse-equipment-decisions.md.",
+    "verification": "Tests ciblés des devis, sauvegardes et traitements. Vérification SQL locale des prix, de la migration, des projections par zone et des refus de doubles achats. Parcours Chromium au clavier et au toucher émulé, devis, pose, déplacement, réserve et recharge.",
+    "evidence": ["output/warehouse-coverage/multizone-1440.png", "output/warehouse-coverage/apercu-tactile-320.png", "output/warehouse-coverage/chariot-acquis-1440.png", "output/warehouse-coverage/rapport.json"],
+    "deployed": false,
+    "nextBoundedTask": "Vérifier le placement sur un téléphone physique lors de la recette bêta."
+  },
+  "calendrierQuartier20261120": {
+    "date": "2026-11-20",
+    "livraison": "La carte 3D affiche le mois, le jour, la saison, le moment et l’heure sur le papier du solde. L’éclairage de l’île, la mer, les vitres et les lanternes suivent cette heure. Les feuillus fleurissent au printemps, portent leurs feuilles en été, roussissent en automne et perdent leur couronne en hiver.",
+    "horloge": "Origine économique de la sauvegarde et heure du serveur. Un jour dure quatre heures réelles, un mois compte trente jours et les saisons se succèdent tous les trois mois à partir du printemps. Les essais guidés utilisent leur horloge de simulation.",
+    "verification": "Comparaisons Chromium au même cadrage et navigation nocturne au clavier, écran de 320 px et paysage de 844 px, passage du jour 90 au jour 91 à minuit, rechargement, pause visuelle et mouvement réduit. TypeScript, ESLint ciblé, tests du calendrier, de la simulation et de l’API, essai SQL local et vérification des grants.",
+    "evidence": ["output/village-calendar/journee.webp", "output/village-calendar/saisons.webp", "output/village-calendar/nuit-320.png", "output/village-calendar/rapport.json"],
+    "recette": "node scripts/audit-village-3d.mjs --calendar",
+    "preview": "/arene/placard?villageDay=181&villageMinute=1170",
+    "deployed": false,
+    "nextBoundedTask": "Confirmer la lisibilité nocturne et la cadence des animations sur un téléphone physique."
+  },
+  "tempsActivites20261120": {
+    "date": "2026-11-20",
+    "livraison": "La jauge personnelle est visible dans le Quartier, y compris lorsque Mon équipe est replié, et dans l’encart Ton temps de Personnel. Le bilan du Quartier garde le détail du renouvellement et des coûts par geste.",
+    "reglage": "Les missions personnelles, le planning du Quartier et le trim ouvrent le réglage sur demande. Le curseur avance par demi-heure selon les heures disponibles. Appliquer la durée prépare le récapitulatif de l’activité. La confirmation réserve les heures.",
+    "verification": "Recettes Chromium Quartier, travail personnel et guide à 320, 390 et 1440 px. Navigation, clavier, ouverture tactile, annulation, retour du focus, durée appliquée, heures épuisées, renouvellement et accès guidé au détail des heures. TypeScript, ESLint ciblé et 153 tests Vitest validés.",
+    "evidence": ["output/placard-navigation/quarter-team-report.json", "output/placard-staff-ui/player-work-report.json", "output/placard-journey-continuity/staff-guide-report.json", "output/placard-staff-ui/player-duration-320.png"],
+    "deployed": false,
+    "nextBoundedTask": "Essayer le curseur de durée sur un téléphone physique à la prochaine recette."
+  },
   "quizEditorialAudit20261119": {
     "date": "2026-11-19",
     "livraison": "1 000 questions actives relues, 570 corrigées dont 307 reclassées, aucun identifiant retiré. Les références arrivent au corrigé et les identifiants de choix suivent le mélange.",
@@ -2551,6 +2767,7 @@
   },
   "financialSupport": {
     "updated": "2026-11-08",
+    "supersededBy": "fermeSoutien20261121",
     "status": "Lien Viva fourni par l’utilisateur et raccordé localement : https://pay.vivawallet.com/les-champs-bretons. Bouton libellé Soutenir, à la demande de l’utilisateur ; actif avec la configuration locale, aucun déploiement effectué.",
     "entry": "/arene/placard?view=hub",
     "scope": "Soutenir les petits producteurs sous la carte et l’apprentissage, papier et enseigne existants ; texte humoristique demandé par l’utilisateur sur la tréso, les banques et les moyens des petits producteurs. Invitation à donner un ou deux euros même sans acheter de CBD, pour soutenir l’entreprise et améliorer le jeu. Contribution facultative en argent réel, sans contrepartie ni avantage dans les concours. Bénéficiaire et précisions fiscales dans les détails ; lien Viva et fonctionnement inchangés.",

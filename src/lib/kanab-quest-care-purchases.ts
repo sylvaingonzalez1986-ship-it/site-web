@@ -25,6 +25,9 @@ const record = (value: unknown): value is Record<string, unknown> => !!value && 
 const amount = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const date = (value: unknown): value is string => typeof value === "string" && Number.isFinite(Date.parse(value));
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+export function isKqCarePurchaseId(value: unknown): value is string {
+  return typeof value === "string" && /^(purchase|basic|warehouse):[0-9a-f-]{36}$/i.test(value);
+}
 
 export function isKqCarePurchasesPage(value: unknown): value is KqCarePurchasesPage {
   if (!record(value) || !date(value.serverNow) || !amount(value.totalPaidCents) || !amount(value.totalCount)
@@ -33,7 +36,7 @@ export function isKqCarePurchasesPage(value: unknown): value is KqCarePurchasesP
   const ids = new Set<string>();
   let paid = 0;
   for (const item of value.items) {
-    if (!record(item) || typeof item.id !== "string" || !/^(purchase|basic):[0-9a-f-]{36}$/i.test(item.id) || ids.has(item.id)
+    if (!record(item) || !isKqCarePurchaseId(item.id) || ids.has(item.id)
       || !amount(item.quantity) || !item.quantity || !amount(item.amountCents) || !item.amountCents || !date(item.createdAt)
       || !(item.runId === null || typeof item.runId === "string" && uuid.test(item.runId))
       || !(item.areaM2 === null || amount(item.areaM2) && item.areaM2 > 0)

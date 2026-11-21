@@ -48,6 +48,7 @@ function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, u
   const count = Math.min(quantity, Math.max(1, maxPacks));
   const totalPoints = count * LOTTERY_POINTS_PACK_COST;
   const unavailable = authLoading || loading || !ticketsReady || !isAuthenticated || !config?.isActive;
+  const guideNeedsBuddy = inventory?.uniqueOwned === 0;
 
   useEffect(() => {
     mounted.current = true;
@@ -188,12 +189,14 @@ function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, u
         {!config?.isActive && <p className={styles.notice} role="status">Les packs Buddies sont momentanément indisponibles.</p>}
         {welcomeEligible && <div className={styles.welcomeOffer}>
           <div><strong>Ton départ offert</strong><p>3 Buddies communs différents, garantis dans ton pack de bienvenue, pour alterner tes cultures.</p></div>
-          <button type="button" className={styles.welcome} data-buddie-pack-welcome disabled={unavailable || busy} onClick={() => void claimWelcome()}><Gift size={18} aria-hidden="true" />{pending === "welcome" ? "Récupération…" : "Récupérer mon pack offert"}</button>
+          <button type="button" className={styles.welcome} data-buddie-pack-welcome data-sylvain-target={guideNeedsBuddy ? "prepare-pack-welcome" : undefined}
+            disabled={unavailable || busy} onClick={() => void claimWelcome()}><Gift size={18} aria-hidden="true" />{pending === "welcome" ? "Récupération…" : "Récupérer mon pack offert"}</button>
         </div>}
         <div className={styles.purchase}><div role="group" aria-label="Nombre de packs Buddies"><QuantitySelector value={count} max={Math.max(1, maxPacks)} onChange={setQuantity} disabled={unavailable || busy || !!purchaseCheck || !!error} /></div><button type="button" className={styles.primary} data-buddie-pack-purchase disabled={unavailable || busy || !!error || !!purchaseCheck || maxPacks < 1} onClick={() => void buy()}>{pending === "buy" ? "Achat…" : `Acheter ${count} pack${count > 1 ? "s" : ""}`}<small>{totalPoints.toLocaleString("fr-FR")} points fidélité</small></button></div>
         {!unavailable && maxPacks < 1 && !purchaseCheck && <p className={styles.hint}>Il te manque {Math.max(0, LOTTERY_POINTS_PACK_COST - loyalty.spendablePoints)} points pour ce pack.</p>}
         {purchaseCheck && pending !== "buy" && <div className={styles.verification}><p>L’achat de {purchaseCheck.packCount} pack{purchaseCheck.packCount > 1 ? "s" : ""} reste à vérifier.</p><button type="button" data-buddie-pack-verify disabled={busy} onClick={() => void verifyPurchase()}><RefreshCw size={16} aria-hidden="true" />{pending === "verify" ? "Vérification…" : "Vérifier mes packs"}</button></div>}
-        <div className={styles.ready}><span><strong data-buddie-pack-available>{ticketsLoaded ? available.length : "?"}</strong> pack{available.length > 1 ? "s" : ""} à ouvrir</span><button type="button" data-buddie-pack-open className={styles.open} disabled={unavailable || busy || available.length === 0} onClick={() => { if (!actionLock.current && available[0]) setSelectedTicket(available[0]); }}><PackageOpen size={19} aria-hidden="true" /> Ouvrir un pack</button></div>
+        <div className={styles.ready}><span><strong data-buddie-pack-available>{ticketsLoaded ? available.length : "?"}</strong> pack{available.length > 1 ? "s" : ""} à ouvrir</span><button type="button" data-buddie-pack-open data-sylvain-target={guideNeedsBuddy ? "prepare-pack-open" : undefined}
+          className={styles.open} disabled={unavailable || busy || available.length === 0} onClick={() => { if (!actionLock.current && available[0]) setSelectedTicket(available[0]); }}><PackageOpen size={19} aria-hidden="true" /> Ouvrir un pack</button></div>
       </>}
       {actionError && <p className={styles.error} role="alert">{actionError}</p>}
       {error && <p className={styles.error} role="alert">{error}{ticketsLoaded && !ticketsReady ? " Les derniers montants connus sont affich?s." : ""} <button type="button" disabled={busy || loading} onClick={() => void refreshAll()}>Actualiser</button></p>}

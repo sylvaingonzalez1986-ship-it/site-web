@@ -1,67 +1,104 @@
 "use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
-import { SUPPORT_UUID, supportEuros, type SupportAttempt, type SupportStatus } from "@/lib/support-campaign";
-import { goToSupportPayment, readSupportAttempt, supportRequest } from "@/lib/support-client";
+import { supportEuros, type SupportAttempt, type SupportStatus } from "@/lib/support-campaign";
+import {
+  goToSupportPayment, readSupportAttempt, readSupportGameReturnHref, SUPPORT_GAME_HOME, SUPPORT_PROVIDER_LABELS,
+  supportRequest, supportReturnIdentity, supportStatusIsFinal, supportStatusMessage, validateSupportStatus,
+} from "@/lib/support-client";
+import { KqChapterHeading } from "./KqChapterHeading";
 import styles from "./KqFinancialSupport.module.css";
 
-export function SupportPaymentReturn({ transactionId }: { transactionId?: string }) {
+export function SupportPaymentReturn({ supportId, transactionId, orderCode }: { supportId?: string | string[]; transactionId?: string | string[]; orderCode?: string | string[] }) {
   const [attempt, setAttempt] = useState<SupportAttempt | null>(null);
   const [status, setStatus] = useState<SupportStatus | null>(null);
+  const [returnHref, setReturnHref] = useState(SUPPORT_GAME_HOME);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(true);
   const [stopped, setStopped] = useState(false);
-  const flight = useRef(false);
-  const mounted = useRef(true);
-  const check = useCallback(async (saved: SupportAttempt) => {
-    if (flight.current) return null;
-    flight.current = true;
+  const controller = useRef<AbortController | null>(null);
+  const flight = useRef<AbortSignal | null>(null);
+  const verifyButton = useRef<HTMLButtonElement>(null);
+  const returnLink = useRef<HTMLAnchorElement>(null);
+
+  const check = useCallback(async (saved: SupportAttempt, signal: AbortSignal) => {
+    const identity = supportReturnIdentity(saved, supportId, transactionId, orderCode);
+    if (!identity || signal.aborted || flight.current === signal) return null;
+    flight.current = signal;
+    setBusy(true);
     try {
-      const result = await supportRequest<SupportStatus>("/api/support/status", { id: saved.id, token: saved.token,
-        ...(transactionId && SUPPORT_UUID.test(transactionId) ? { transactionId } : {}) });
-      if (mounted.current) { setStatus(result); setError(""); }
+      const result = validateSupportStatus(await supportRequest<SupportStatus>("/api/support/status", identity, signal), saved);
+      if (!signal.aborted) {
+        if (result.state === "paid" && document.activeElement === verifyButton.current) returnLink.current?.focus();
+        setStatus(result);
+        setError("");
+      }
       return result;
-    } catch (cause) { if (mounted.current) setError(cause instanceof Error ? cause.message : "Vérification momentanément indisponible."); return null; }
-    finally { flight.current = false; if (mounted.current) setBusy(false); }
-  }, [transactionId]);
+    } catch (cause) {
+      if (!signal.aborted) setError(cause instanceof Error ? cause.message : "Vérification momentanément indisponible.");
+      return null;
+    } finally {
+      if (flight.current === signal) flight.current = null;
+      if (!signal.aborted) setBusy(false);
+    }
+  }, [supportId, transactionId, orderCode]);
+
   useEffect(() => {
-    mounted.current = true;
+    const current = new AbortController();
+    controller.current = current;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let saved: SupportAttempt | null = null;
-    try { saved = readSupportAttempt(); } catch { /* Show recovery instructions, never infer success. */ }
-    if (!saved) { setError("La fiche de soutien n’est pas disponible dans cet onglet. Le paiement sera comptabilisé après sa confirmation par Viva."); setBusy(false); return; }
-    setAttempt(saved);
+    try { saved = readSupportAttempt(); } catch { /* La fiche peut manquer ou avoir été effacée. */ }
+    if (!saved || !supportReturnIdentity(saved, supportId, transactionId, orderCode)) {
+      setError("La fiche correspondant à ce retour est introuvable dans cet onglet. Tu peux retrouver ton soutien dans l’onglet d’origine.");
+      setBusy(false);
+      return;
+    }
+    const matched = saved;
+    setAttempt(matched);
+    setReturnHref(readSupportGameReturnHref(matched.id));
     let polls = 0;
     const poll = async () => {
-      const result = await check(saved!);
-      if (!mounted.current || (result && ["paid", "refunded", "cancelled", "review"].includes(result.state))) return;
+      const result = await check(matched, current.signal);
+      if (current.signal.aborted || supportStatusIsFinal(result) || result?.state === "review") return;
       if (++polls < 10) timer = setTimeout(() => void poll(), 3000);
       else setStopped(true);
     };
     void poll();
-    return () => { mounted.current = false; clearTimeout(timer); };
-  }, [check]);
+    return () => {
+      current.abort();
+      clearTimeout(timer);
+    };
+  }, [check, supportId, transactionId, orderCode]);
+
+  const provider = attempt?.provider ?? "viva";
   const confirmed = status?.state === "paid";
+  const title = confirmed ? "Merci pour ton soutien !" : status?.state === "refunded" ? "Soutien remboursé" : "Ton soutien aux producteurs";
+
   return <section className={styles.support} data-support-return>
-    <h1 className="font-display text-3xl">{confirmed ? "Merci pour ton soutien !" : status?.state === "refunded" ? "Soutien remboursé" : "Ton soutien aux producteurs"}</h1>
+    <KqChapterHeading title={title} level={1} />
     <div role="status" aria-live="polite">
-      {confirmed ? <p>Ton versement de <strong>{supportEuros(status.amountCents)}</strong> est confirmé. La cagnotte a été mise à jour.</p>
-        : status?.state === "refunded" ? <p>Le remboursement de {supportEuros(status.refundedCents)} a été confirmé.</p>
-        : status?.state === "cancelled" ? <p>Cette session de paiement a été annulée.</p>
-        : status?.state === "review" ? <p>Le versement est en cours de rapprochement par l’équipe.</p>
-        : <p>{busy ? "Vérification de ton paiement auprès de Viva…" : "Ton paiement n’est pas encore confirmé."}</p>}
-      {confirmed && status.refundedCents > 0 && <p>Dont {supportEuros(status.refundedCents)} remboursés.</p>}
-      {stopped && !confirmed && <p>La confirmation peut prendre un peu de temps. Tu peux revenir vérifier : fermer cette page n’interrompt pas le suivi du versement.</p>}
+      {status && <p className={styles.receiptAmount}><strong>{supportEuros(status.amountCents)}</strong> · {SUPPORT_PROVIDER_LABELS[provider]}</p>}
+      {status ? <p>{confirmed ? "Le versement est confirmé." : supportStatusMessage(status)}</p> : busy ? <p>Vérification de ton paiement…</p> : null}
+      {status?.refundedCents ? <p>Montant remboursé de {supportEuros(status.refundedCents)}.</p> : null}
+      {busy && status && <p>Vérification auprès du prestataire…</p>}
+      {stopped && !supportStatusIsFinal(status) && status?.state !== "review" && <p>Tu peux vérifier de nouveau plus tard. Le suivi continue après la fermeture de cette page.</p>}
     </div>
     {error && <p role="alert" className={styles.error}>{error}</p>}
     <div className={styles.actions}>
-      {attempt && <button type="button" disabled={busy} onClick={() => { setBusy(true); void check(attempt); }}>Vérifier à nouveau</button>}
-      {status?.checkoutUrl && !confirmed && <button type="button" onClick={() => { try { goToSupportPayment(status); } catch (cause) { setError((cause as Error).message); } }}>Reprendre sur Viva</button>}
+      {status?.state === "ready" && status.checkoutUrl && <button type="button" className={styles.primary} disabled={busy} onClick={() => {
+        try { goToSupportPayment(status); }
+        catch (cause) { setError(cause instanceof Error ? cause.message : "Lien de paiement indisponible."); }
+      }}>Reprendre sur {provider === "viva" ? "Viva" : "Lightning"}</button>}
+      {attempt && !confirmed && <button ref={verifyButton} type="button" aria-disabled={busy} onClick={() => {
+        if (controller.current) void check(attempt, controller.current.signal);
+      }}>Vérifier à nouveau</button>}
       <Link className={styles.buttonLink} href="/soutenir">Voir la cagnotte</Link>
-      <Link className={styles.buttonLink} href="/arene/placard">Retour au Quartier</Link>
+      <Link ref={returnLink} className={confirmed ? `${styles.buttonLink} ${styles.primary}` : styles.buttonLink} href={returnHref}>Retour au Quartier</Link>
     </div>
-    {attempt && <p className={styles.reference}>Référence : {attempt.id}</p>}
-    <p>Besoin d’aide ? <a href={`mailto:${BUSINESS_IDENTITY.email}`}>{BUSINESS_IDENTITY.email}</a></p>
+    {status && <small className={styles.reference}>Référence de ton soutien&nbsp;: {status.id}</small>}
+    <p className={styles.contact}>Besoin d’aide ? <a href={`mailto:${BUSINESS_IDENTITY.email}`}>{BUSINESS_IDENTITY.email}</a></p>
   </section>;
 }

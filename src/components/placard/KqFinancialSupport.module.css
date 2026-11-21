@@ -1,48 +1,166 @@
-.support { margin-top: 24px; padding: clamp(18px, 3vw, 32px); color: var(--arcade-ink, #172923); --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; font: 500 15px/1.5 var(--font-body), Arial, sans-serif; overflow-wrap: anywhere; }
-.overview { display: grid; grid-template-columns: minmax(140px, 220px) minmax(0, 1fr); align-items: center; gap: 24px; }
-.art { width: 100%; max-width: 220px; height: auto; justify-self: center; }
-.summary { min-width: 0; }
-.support :is(h1, h2) { font: 900 clamp(26px, 4vw, 38px)/1.1 var(--font-display), Impact, sans-serif; margin: 0 0 12px; text-transform: none; }
-.support h3 { font: 800 25px/1.15 var(--font-display), Impact, sans-serif; margin: 0 0 16px; }
-.support p { margin: 10px 0; }
-.support small { display: block; font-size: 12px; line-height: 1.5; }
-.amount { font: 900 clamp(30px, 5vw, 44px)/1.15 var(--font-display), Impact, sans-serif; }
-.amount span { font: 600 16px/1.4 var(--font-body), Arial, sans-serif; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
-.support button, .support details > summary, .support .buttonLink { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); min-height: 44px; padding: 10px 15px; color: inherit; font: 750 14px/1.4 var(--font-body), Arial, sans-serif; background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; cursor: pointer; max-width: 100%; }
-.support button, .buttonLink { display: inline-flex; gap: 8px; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box; }
-.support button svg { flex-shrink: 0; }
-.support .primary { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; font-size: 17px; min-height: 50px; }
-.support button[aria-pressed="true"], .support details[open] > summary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
-.support button:disabled { cursor: default; opacity: .6; }
-.support :is(button, input, a, summary, [tabindex]):focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
-.formSection, .donors, .details { margin-top: 24px; padding-top: 22px; border-top: 1px solid #67756b; }
-.formSection :is(h3, input, button) { scroll-margin-top: 120px; }
-.fields { border: 0; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; min-width: 0; }
-.fields label { display: flex; flex-direction: column; gap: 7px; font-weight: 700; min-width: 0; }
-.fields input:not([type="checkbox"]) { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; width: 100%; min-width: 0; min-height: 48px; padding: 10px 14px; font: 500 16px/1.4 var(--font-body), Arial, sans-serif; color: inherit; box-sizing: border-box; }
-.fields .check { grid-column: 1 / -1; flex-direction: row; align-items: flex-start; font-size: 14px; cursor: pointer; }
+.support {
+  --support-ink: var(--arcade-ink, #172923);
+  margin: 0;
+  min-width: 0;
+  color: var(--support-ink);
+  font: 500 15px/1.5 var(--font-body), Arial, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+  grid-template-areas: "funding form";
+  align-items: start;
+  gap: 14px;
+}
+
+.summary, .formSection, .donors, .support[data-support-return] {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  padding: clamp(14px, 2.3vw, 24px);
+  min-width: 0;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+  box-shadow: none;
+}
+
+.summary {
+  grid-area: funding;
+  --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp"));
+}
+
+.formSection { grid-area: form; }
+
+.support h2 {
+  margin: 0 0 10px;
+  font: 800 clamp(21px, 2.5vw, 28px)/1.12 var(--font-display), Impact, sans-serif;
+}
+
+.support p { margin: 8px 0; }
+.support .purpose { margin: 0 0 10px; font-size: 13px; }
+.support small { display: block; font-size: 13px; line-height: 1.45; }
+.support .amount { margin: 5px 0 0; font: 900 clamp(28px, 4.2vw, 44px)/1.12 var(--font-display), Impact, sans-serif; }
+.amount span { display: inline-block; font: 700 15px/1.4 var(--font-body), Arial, sans-serif; }
+.support .count { margin: 3px 0 12px; }
+.pendingTotal { font: 750 22px/1.2 var(--font-display), Impact, sans-serif; }
+.summary small { margin-top: 8px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+
+.support :is(button, details > summary, .buttonLink, .methodPlate) {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  display: inline-flex;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  box-shadow: none;
+  color: inherit;
+  font: 750 14px/1.35 var(--font-body), Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.support :is(button, .methodPlate) svg { flex-shrink: 0; }
+.support .primary { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff7e7; font-size: 16px; min-height: 48px; }
+.support :is(button[aria-pressed="true"], details[open] > summary, .methods input:checked + .methodPlate) {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+}
+.support button:is(:disabled, [aria-disabled="true"]), .methods input:disabled + .methodPlate { cursor: default; opacity: .68; }
+.support :is(button, input:not([type="radio"]), a, summary, [tabindex]):focus-visible, .methods input:focus-visible + .methodPlate {
+  outline: 3px solid #075b51;
+  outline-offset: 3px;
+}
+.support details > summary::before { content: "▸"; flex: none; }
+.support details[open] > summary::before { content: "▾"; }
+
+.formSection :is(h2, input, button) { scroll-margin-top: 100px; }
+.fields, .methods { min-width: 0; margin: 0; padding: 0; border: 0; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.fields > :not(.amountField, .pseudonymField) { grid-column: 1 / -1; }
+.fields label { display: grid; gap: 4px; font-weight: 700; min-width: 0; }
+.pseudonymField { align-self: start; }
+.fields input:not([type="checkbox"], [type="radio"]) {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 7px 12px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  box-shadow: none;
+  color: inherit;
+  font: 500 16px/1.4 var(--font-body), Arial, sans-serif;
+}
+
+.amountField small { margin-top: 3px; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button { flex: 1 0 44px; padding-inline: 5px; }
+.methods legend { margin-bottom: 4px; font-weight: 700; }
+.methodOptions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.methodOptions label { position: relative; }
+.methodInput { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.methodInput:disabled { cursor: default; }
+.support .methodPlate { justify-content: flex-start; min-height: 54px; gap: 6px; padding-inline: 8px; }
+.methodPlate small { font-size: 11px; }
+.support .hint { margin: 0; font-size: 13px; }
+.fields .primary { width: 100%; }
+.fields .check { display: flex; align-items: flex-start; gap: 7px; margin: 12px 0 0; font-size: 14px; cursor: pointer; }
 .check input { width: 20px; height: 20px; flex-shrink: 0; margin: 0; accent-color: #087b70; }
-.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.preview, .hint { font-size: 13px; }
-.error { color: #81281c; font-weight: 700; }
-.thanks { font-size: 20px; font-weight: 750; }
-.reference, .close { margin-top: 16px; }
+.support .privacy > summary { width: 100%; justify-content: flex-start; text-align: start; }
+.preview { font-size: 13px; }
+
+.error {
+  padding: 6px 8px;
+  border-inline-start: 3px solid #81281c;
+  background: var(--game-surface-warm, #f6b76e);
+  color: #81281c;
+  font-weight: 750;
+}
+.support .receiptAmount { font-size: 16px; }
+.receiptAmount strong { font: 850 clamp(24px, 4vw, 34px)/1.2 var(--font-display), Impact, sans-serif; }
+.reference { margin-top: 14px; }
+.presentation { margin-top: 14px; padding: 12px clamp(12px, 2.3vw, 24px); border-top: 1px solid #aeaa96; }
+.presentation h2 { scroll-margin-top: 100px; }
+.presentation p { max-width: 70ch; }
+.donors, .details { margin-top: 14px; }
 .donors ul { list-style: none; margin: 0; padding: 0; }
-.donors li { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #b3af97; }
+.donors li { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #aeaa96; }
 .donors li > span { min-width: 0; }
 .donors li > span:last-child { text-align: right; }
-.donors time { display: block; font-size: 12px; }
-.donors > button { margin-top: 14px; }
+.donors time { display: block; font-size: 13px; }
+.donors > button { margin-top: 10px; }
 .details > summary { width: fit-content; }
-.details a { color: #075c54; text-decoration: underline; }
+.support :is(.purpose, .details, .contact) a { color: #075c54; text-decoration: underline; }
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.collapsible { padding: 10px clamp(10px, 2vw, 18px); }
-.support .disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; list-style: none; }
-.disclosure > summary::-webkit-details-marker { display: none; }
-.support .disclosure > summary h2 { margin: 0; font-size: clamp(19px, 3vw, 24px); }
-.disclosure > summary svg { flex-shrink: 0; }
-.disclosure[open] > summary svg { transform: rotate(180deg); }
-.disclosureContent { padding: 20px 6px 10px; }
-@media (hover: hover) { .support button:not(:disabled):hover, .support details > summary:hover, .support .buttonLink:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; } }
-@media (max-width: 600px) { .overview { grid-template-columns: minmax(0, 1fr); gap: 12px; } .art { width: 150px; } .fields { grid-template-columns: minmax(0, 1fr); } .actions { align-items: stretch; } .actions .primary { width: 100%; } }
+
+@media (hover: hover) {
+  .support :is(button:not(:disabled, [aria-disabled="true"]), details > summary, .buttonLink):hover, .methodOptions label:hover input:not(:disabled) + .methodPlate {
+    --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+    color: #172923;
+  }
+}
+
+@media (max-width: 660px) {
+  .overview { grid-template-columns: minmax(0, 1fr); grid-template-areas: "form" "funding"; gap: 10px; }
+  .summary, .formSection { padding-block: 10px; }
+  .support .count { margin-bottom: 6px; }
+  .summary small { margin-top: 5px; }
+  .actions .primary { width: 100%; }
+}
+
+@media (max-width: 350px) {
+  .support .methodPlate { gap: 4px; padding-inline: 6px; font-size: 13px; }
+  .methodPlate svg { width: 15px; }
+}

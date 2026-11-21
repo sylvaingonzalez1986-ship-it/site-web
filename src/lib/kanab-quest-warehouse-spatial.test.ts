@@ -154,4 +154,20 @@ describe("real warehouse spatial adapter", () => {
     expect(getKqWarehouseInaccessibleZoneIds(full)).toEqual([]);
     expect(validateKqWarehouseSpatialTransition(full, full)).toEqual([]);
   });
+
+  it("rejects an irrigation station in the only free aisle without blocking the entrance gate", () => {
+    const seed = createKqWarehouseStarter(true);
+    const zone = (id: string, x: number, y: number, height = 1): KqWarehouseZone =>
+      ({ ...seed.zones[0], id, name: id, x, y, height });
+    const open: KqWarehouseState = { ...seed, airPlacements: [], serviceZones: [],
+      zones: [zone("inner", 4, 4), zone("left", 3, 3, 3), zone("right", 5, 3, 3), zone("top", 4, 3)],
+      stationPlacements: [{ id: "gate", code: "SIM-HYGIENE-03", x: 5, y: 9 }] };
+    const blocked: KqWarehouseState = { ...open, stationPlacements: [
+      ...open.stationPlacements!, { id: "pump", code: "SIM-WATER-03", x: 4, y: 5 },
+    ] };
+    expect(getKqWarehouseInaccessibleZoneIds(open)).toEqual([]);
+    expect(getKqWarehouseInaccessibleZoneIds(blocked)).toEqual(["inner"]);
+    expect(validateKqWarehouseSpatialTransition(open, blocked)).toEqual(["Garde un passage d’au moins 1 m vers « inner »."]);
+    expect(getKqWarehouseSpatialLayout(blocked).obstacles).toEqual([{ id: "pump", x: -.5, z: .5, width: 1, depth: 1 }]);
+  });
 });

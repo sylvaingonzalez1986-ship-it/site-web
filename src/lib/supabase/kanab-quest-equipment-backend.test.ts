@@ -11,14 +11,14 @@ import { repairKqMachine, equipKqDurableEquipment, upgradeKqDurableEquipment, pu
 const USER_ID = "11000000-0000-4000-8000-000000000001";
 
 describe("atomic workshop tier checkout", () => {
-  const input = { userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 263500 };
+  const input = { userId: USER_ID, requestKey: "11000000-0000-4000-8000-000000000002", equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 2_160_000 };
   beforeEach(() => createSupabaseServiceClient.mockReset());
   it("sends the confirmed offer to one atomic RPC without a series of client-side upgrades", async () => {
-    const rpc = vi.fn().mockResolvedValue({ data: { level: 7, priceCents: 263500, replayed: false }, error: null });
+    const rpc = vi.fn().mockResolvedValue({ data: { level: 7, priceCents: 2_160_000, replayed: false }, error: null });
     createSupabaseServiceClient.mockReturnValue({ rpc });
-    await expect(purchaseKqWorkshopTier(input)).resolves.toMatchObject({ level: 7, priceCents: 263500 });
+    await expect(purchaseKqWorkshopTier(input)).resolves.toMatchObject({ level: 7, priceCents: 2_160_000 });
     expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_purchase_workshop_tier", {
-      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "PRESS-0600", p_target_level: 7, p_expected_level: 0, p_expected_price_cents: 263500,
+      p_user_id: USER_ID, p_request_key: input.requestKey, p_equipment_code: "PRESS-0600", p_target_level: 7, p_expected_level: 0, p_expected_price_cents: 2_160_000,
     });
   });
   it.each([{ equipmentCode: "LED-300" }, { equipmentCode: "PRESS-20T" }, { targetLevel: 5 }, { expectedLevel: 7 }, { expectedLevel: -1 }, { expectedLevel: 1.5 }, { expectedPriceCents: 0 }])("rejects malformed offers before database access: %o", async patch => {
@@ -210,9 +210,9 @@ describe("individual tent inventory and shared transformation workshop", () => {
   it("targets the canonical machine for upgrades and repairs without scaling their price", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: {}, error: null });
     createSupabaseServiceClient.mockReturnValue({ rpc });
-    await upgradeKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCode: "WASHER-25L", expectedLevel: 3, tentNumber: 8, expectedUnits: 8 });
-    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_upgrade_tent_equipment", {
-      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_code: "WASHER-25L", p_expected_level: 3, p_tent_number: 1,
+    await upgradeKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCode: "WASHER-25L", expectedLevel: 3, expectedPriceCents: 950_000, tentNumber: 8, expectedUnits: 8 });
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_upgrade_workshop_machine", {
+      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_code: "WASHER-25L", p_expected_level: 3, p_expected_price_cents: 950_000,
     });
     await repairKqMachine({ userId: USER_ID, requestKey, equipmentCode: "WASHER-25L", expectedVersion: 4, expectedCostCents: 12500, tentNumber: 8 });
     expect(rpc).toHaveBeenLastCalledWith("rpc_kq_repair_tent_machine", {
@@ -220,18 +220,32 @@ describe("individual tent inventory and shared transformation workshop", () => {
     });
   });
 
+  it("leaves stale workshop quotes and receipts from older clients to the transaction", async () => {
+    const input = { userId: USER_ID, requestKey, equipmentCode: "WASHER-25L", expectedLevel: 3 };
+    const rpc = vi.fn()
+      .mockResolvedValueOnce({ error: { message: "workshop_upgrade_price_changed" }, data: null })
+      .mockResolvedValueOnce({ error: null, data: { level: 4, priceCents: 2_970, replayed: true } });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    await expect(upgradeKqDurableEquipment({ ...input, expectedPriceCents: 2_970 })).rejects.toThrow("Le prix de l’amélioration a changé");
+    expect(rpc).toHaveBeenNthCalledWith(1, "rpc_kq_upgrade_workshop_machine", expect.objectContaining({ p_expected_price_cents: 2_970 }));
+    await expect(upgradeKqDurableEquipment(input)).resolves.toMatchObject({ priceCents: 2_970, replayed: true });
+    expect(rpc).toHaveBeenNthCalledWith(2, "rpc_kq_upgrade_workshop_machine", expect.objectContaining({ p_expected_price_cents: null }));
+  });
+
   it("purchases a mixed cart in one transaction that retains the selected tent", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: {}, error: null });
     createSupabaseServiceClient.mockReturnValue({ rpc });
-    await purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["LED-300", "WASHER-25L"], tentNumber: 8 });
+    await purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["LED-300", "WASHER-25L"], tentNumber: 8, expectedPriceCents: 665_900 });
     expect(rpc).toHaveBeenCalledTimes(1);
-    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_tent_equipment", {
-      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_codes: ["LED-300", "WASHER-25L"], p_tent_number: 8,
+    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_workshop_cart", {
+      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_codes: ["LED-300", "WASHER-25L"], p_tent_number: 8, p_expected_price_cents: 665_900,
     });
     await purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["WASHER-25L"], tentNumber: 8 });
-    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_tent_equipment", {
-      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_codes: ["WASHER-25L"], p_tent_number: 8,
+    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_workshop_cart", {
+      p_user_id: USER_ID, p_request_key: requestKey, p_equipment_codes: ["WASHER-25L"], p_tent_number: 8, p_expected_price_cents: null,
     });
+    rpc.mockResolvedValueOnce({ data: null, error: { message: "workshop_cart_price_changed" } });
+    await expect(purchaseKqDurableEquipment({ userId: USER_ID, requestKey, equipmentCodes: ["WASHER-25L"], tentNumber: 8, expectedPriceCents: 9900 })).rejects.toThrow("Le prix du panier a changé");
   });
 
   it("returns the canonical shared profile once and excludes stale copies from individual tents", async () => {

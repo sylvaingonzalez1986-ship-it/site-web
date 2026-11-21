@@ -1,5 +1,6 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
-import { getKqWorkshopMachinePresentation, getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
+import { getKqWorkshopPriceList, KQ_RETAIL_PRICE_CHECKED_AT } from "./kanab-quest-warehouse-retail";
+import { getKqWorkshopLevelValue, getKqWorkshopMachinePresentation, getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
 
 export const KQ_STARTING_CASH_CENTS = 100_000;
 
@@ -80,6 +81,8 @@ export type KqEquipmentDefinition = {
     seller: string;
     sourceUrl: string;
     referencePriceCents: number;
+    currency?: "EUR" | "USD";
+    taxLabel?: "HT" | "TTC";
     priceKind: "standard" | "promotion" | "starting-at" | "game-balance";
     observedPriceCents?: number;
     checkedAt: string;
@@ -714,6 +717,7 @@ export const KQ_EQUIPMENT_REPLACEMENTS: Record<string, { code: string; level: nu
   "PRESS-20T": { code: "PRESS-0600", level: 10 },
 };
 
+// Inputs for the historical balance migration generator. Live workshop prices come from the tier catalogue.
 export const KQ_GAME_EQUIPMENT_PRICES: Record<string, number> = { "SIFT-TRAY": 55000, "PRESS-0600": 85000, "WASHER-25L": 125000 };
 
 // Keep definitions readable for immutable old runs, but remove them from live equipment.
@@ -721,26 +725,34 @@ export const KQ_RETIRED_EQUIPMENT_CODES: readonly string[] = ["SECURITY-FENCE"];
 
 export const KQ_EQUIPMENT_CATALOG: readonly KqEquipmentDefinition[] = LEGACY_EQUIPMENT_CATALOG
   .filter((item) => !KQ_EQUIPMENT_REPLACEMENTS[item.code] && !KQ_RETIRED_EQUIPMENT_CODES.includes(item.code))
-  .map((item) => ({
-    ...item,
-    ...getKqWorkshopMachinePresentation(item.code),
-    priceCents: KQ_GAME_EQUIPMENT_PRICES[item.code] ?? item.priceCents,
-    ...(getKqWorkshopMachineSpecification(item.code) ? { effects: {
-      ...item.effects,
-      processingBatchGrams: getKqWorkshopMachineSpecification(item.code)!.capacityGrams,
-      processingTuningPrecision: getKqWorkshopMachineSpecification(item.code)!.precision,
-    } } : {}),
-    ...(item.slot === "tent" ? { unlocks: ["raw-sale"] as KqEquipmentUnlock[] } : {}),
-    ...(item.code === "PRESS-0600" ? {
-      name: "Presse compacte",
-      benefit: "Débloque les filières Rosin. Les niveaux augmentent la capacité et la valeur de transformation.",
-      unlocks: ["rosin-trial", "rosin-selection", "rosin-premium", "rosin-signature"] as KqEquipmentUnlock[],
-    } : {}),
-    requirements: item.requirements?.map((requirement) => ({ ...requirement,
-      oneOf: [...new Set(requirement.oneOf.map((code) => KQ_EQUIPMENT_REPLACEMENTS[code]?.code ?? code))],
-    })),
-    recommendations: item.recommendations?.map((code) => KQ_EQUIPMENT_REPLACEMENTS[code]?.code ?? code),
-  }));
+  .map((item) => {
+    const retail = getKqWorkshopPriceList(item.code)?.[0];
+    return {
+      ...item,
+      ...getKqWorkshopMachinePresentation(item.code),
+      priceCents: retail?.gamePriceCents ?? item.priceCents,
+      realWorldAnchor: retail ? {
+        label: retail.model, seller: retail.seller, sourceUrl: retail.url, referencePriceCents: retail.sourcePriceCents,
+        taxLabel: retail.basis === "eu-ex-tax" ? "HT" as const : retail.basis === "eu-tax-included" ? "TTC" as const : undefined,
+        currency: retail.currency === "USD" ? "USD" as const : "EUR" as const, checkedAt: KQ_RETAIL_PRICE_CHECKED_AT, priceKind: "standard" as const,
+      } : item.realWorldAnchor,
+      ...(getKqWorkshopMachineSpecification(item.code) ? { effects: {
+        ...item.effects,
+        processingBatchGrams: getKqWorkshopMachineSpecification(item.code)!.capacityGrams,
+        processingTuningPrecision: getKqWorkshopMachineSpecification(item.code)!.precision,
+      } } : {}),
+      ...(item.slot === "tent" ? { unlocks: ["raw-sale"] as KqEquipmentUnlock[] } : {}),
+      ...(item.code === "PRESS-0600" ? {
+        name: "Presse compacte",
+        benefit: "Débloque les filières Rosin. Les niveaux augmentent la capacité et la valeur de transformation.",
+        unlocks: ["rosin-trial", "rosin-selection", "rosin-premium", "rosin-signature"] as KqEquipmentUnlock[],
+      } : {}),
+      requirements: item.requirements?.map((requirement) => ({ ...requirement,
+        oneOf: [...new Set(requirement.oneOf.map((code) => KQ_EQUIPMENT_REPLACEMENTS[code]?.code ?? code))],
+      })),
+      recommendations: item.recommendations?.map((code) => KQ_EQUIPMENT_REPLACEMENTS[code]?.code ?? code),
+    };
+  });
 
 // Old saves and sale receipts can still resolve retired model codes.
 const EQUIPMENT_BY_CODE = new Map([...LEGACY_EQUIPMENT_CATALOG, ...KQ_EQUIPMENT_CATALOG].map((equipment) => [equipment.code, equipment]));
@@ -927,6 +939,7 @@ export function getKqEquipmentUpgradeCost(code: string, requestedLevel: number, 
   const equipment = getKqEquipmentDefinition(code);
   const level = getKqEquipmentLevel(requestedLevel);
   if (!equipment?.purchasable || KQ_EQUIPMENT_REPLACEMENTS[code] || KQ_RETIRED_EQUIPMENT_CODES.includes(code) || level !== requestedLevel || level >= KQ_EQUIPMENT_MAX_LEVEL) return null;
+  if (getKqWorkshopPriceList(code)) return getKqWorkshopLevelValue(code, level + 1)! - getKqWorkshopLevelValue(code, level)!;
   return Math.ceil(equipment.priceCents * level / 10) * getKqEquipmentPriceMultiplier(code, productionUnits);
 }
 

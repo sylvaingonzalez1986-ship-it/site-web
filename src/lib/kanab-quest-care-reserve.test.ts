@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { canApplyKqCareProduct, createKqCareState, KQ_CARE_PRODUCTS, type KqCareProblem } from "./kanab-quest-care";
 import { startKqGame, type KqGameState } from "./kanab-quest-game";
-import { getKqCareActionAvailability, getKqCareAvailabilityScope, getKqCareReserveProducts, parseKqCareReserveSnapshot } from "./kanab-quest-care-reserve";
+import { getKqCareActionAvailability, getKqCareAvailabilityScope, getKqCareFocusSectors, getKqCareReserveProducts, getKqCareZoneStock, parseKqCareReserveSnapshot } from "./kanab-quest-care-reserve";
+import { createKqWarehouseStarter, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { getKqLocalCareSnapshot, type KqCareStorage } from "./kanab-quest-care-local";
 
 function withProblems(...codes: string[]): KqGameState {
@@ -23,6 +24,7 @@ describe("care products for observed problems", () => {
     expect(getKqCareReserveProducts(state).map(row => ({ code: row.product.code, problems: row.problemLabels }))).toEqual([
       { code: "CARE-SEAWEED", problems: ["Stress thermique"] },
       { code: "CARE-PHYTOSEIULUS", problems: ["Foyer de tétranyques"] },
+      { code: "CARE-SHADE", problems: ["Stress thermique"] },
     ]);
   });
 
@@ -31,7 +33,7 @@ describe("care products for observed problems", () => {
     const before = structuredClone(state);
     const rows = getKqCareReserveProducts(state);
     expect(rows.map(row => row.product.code)).toEqual([
-      "CARE-APHIDIUS", "CARE-SWIRSKII", "CARE-ORIUS", "CARE-CHRYSOPERLA", "CARE-COCCINELLA",
+      "CARE-APHIDIUS", "CARE-SWIRSKII", "CARE-ORIUS", "CARE-CHRYSOPERLA", "CARE-COCCINELLA", "CARE-BLUE-TRAPS",
     ]);
     expect(rows.find(row => row.product.code === "CARE-CHRYSOPERLA")?.problemLabels).toEqual(["Foyer de thrips", "Foyer de pucerons"]);
     expect(state).toEqual(before);
@@ -39,7 +41,7 @@ describe("care products for observed problems", () => {
 
   it("does not turn an unknown problem into a recommendation", () => {
     expect(getKqCareReserveProducts(withProblems("UNKNOWN"))).toEqual([]);
-    expect(getKqCareReserveProducts(withProblems("UNKNOWN", "ROOTS")).map(row => row.product.code)).toEqual(["CARE-COMPOST-TEA"]);
+    expect(getKqCareReserveProducts(withProblems("UNKNOWN", "ROOTS")).map(row => row.product.code)).toEqual(["CARE-COMPOST-TEA", "CARE-PERLITE"]);
   });
 
   it("leaves timing and ongoing-intervention restrictions to the game permissions", () => {
@@ -58,6 +60,25 @@ const snapshot = () => ({
 });
 
 describe("verified care reserve snapshots", () => {
+  it("uses each zone’s starting stock without summing shared charges or borrowing from another zone", () => {
+    const product = KQ_CARE_PRODUCTS.find(item => item.code === "CARE-IRON")!;
+    const item = { productCode: product.code, quantity: 8, zoneQuantities: { starter: 0, second: 8, third: 8 } };
+    const stock = parseKqCareReserveSnapshot({ ...snapshot(), inventory: [item] })!;
+    expect(stock.inventory[product.code]).toBe(8);
+    expect(getKqCareZoneStock(stock, product.code, "starter")).toBe(0);
+    expect(getKqCareZoneStock(stock, product.code, "unknown")).toBe(0);
+    const state = { ...withProblems("IRON"), warehouse: getKqWarehouseRunSnapshot(createKqWarehouseStarter()) };
+    state.care!.problems[0].plants = [0, 1].map(slot => ({ zoneId: "starter", x: 0, y: 0, slot: slot as 0 | 1, severity: 2 }));
+    expect(getKqCareFocusSectors(state, product)).toEqual([{ zoneId: "starter", x: 0, y: 0 }]);
+    expect(getKqCareActionAvailability(stock, state)?.usable.context).toBe(0);
+    const accessible = parseKqCareReserveSnapshot({ ...snapshot(), inventory: [{ ...item, zoneQuantities: { starter: 8, second: 8 } }] });
+    expect(getKqCareActionAvailability(accessible, state)?.usable.context).toBe(1);
+  });
+
+  it.each([null, [], { starter: -1 }, { starter: 3 }, { starter: "1" }])("rejects invalid per-zone stock", zoneQuantities => {
+    expect(parseKqCareReserveSnapshot({ ...snapshot(), inventory: [{ productCode: "CARE-SEAWEED", quantity: 2, zoneQuantities }] })).toBeNull();
+  });
+
   it("keeps the server stock and offered prices without using catalogue reference amounts", () => {
     const input = { ...snapshot(), catalog: [{ code: "CARE-SEAWEED", priceCents: 1350 }] };
     const before = structuredClone(input);

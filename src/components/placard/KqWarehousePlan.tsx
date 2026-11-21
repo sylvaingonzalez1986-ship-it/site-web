@@ -1,12 +1,18 @@
 "use client";
 
-import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
+import { KqHelpDashboard, KqHelpGrid } from "./KqHelpDashboard";
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { KQ_WAREHOUSE_ART_FRAMES, KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import { Focus, Grid2X2, Maximize2, Minimize2, Plus, Minus, Move, MousePointer2, Scaling, Scan, CircleHelp, Sprout, Wind, Package } from "lucide-react";
 import { doKqWarehouseZonesOverlap, getKqWarehousePartitionBounds, type KqWarehousePartition, type KqWarehouseZone, type KqWarehouseServiceZone } from "@/lib/kanab-quest-warehouse";
 import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
+import { getKqWarehouseAirCoverage, getKqWarehouseAirReach, type KqWarehouseAirPlacement } from "@/lib/kanab-quest-warehouse-air";
+import { KQ_WAREHOUSE_HANDLING, type KqWarehouseHandlingPlacement } from "@/lib/kanab-quest-warehouse-handling";
+import { getKqWarehouseStationCoverage, getKqWarehouseStationReach, KQ_WAREHOUSE_STATIONS, type KqWarehouseStationPlacement } from "@/lib/kanab-quest-warehouse-stations";
+import { KQ_ENTRANCE_AIRLOCK_PREVENTION_PERCENT } from "@/lib/kanab-quest-warehouse-preparations";
+import { getKqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
+import { getKqWarehouseProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
 import { KqWarehousePlanFixtures, SceneDefinitions } from "./KqWarehousePlanArt";
 export { KqWarehouseObject, KqWarehouseModuleObject } from "./KqWarehousePlanArt";
 import styles from "./KqWarehousePlan.module.css";
@@ -53,7 +59,7 @@ function lockGestureScrolling() {
   };
 }
 
-export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, interactionHint, selectedId, drawing, drawingKind, anchor, cursor, zoom, locked, growing, managing = true, activeZoneIds, lockedZoneIds = [], productionReservedZoneId, placingBuddie = false, buddieDrop, partitions = [], selectedPartitionId, onChooseCell, onSelectPartition, onZoom, onDrawingKind, onToggleDrawing, onSelectPoint, onDrawZone, onConfigureZone, onOpenZoneMenu, onCursor, onKeyDown, onTransformZone }: {
+export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, interactionHint, selectedId, drawing, drawingKind, anchor, cursor, zoom, locked, growing, managing = true, activeZoneIds, lockedZoneIds = [], productionReservedZoneId, placingBuddie = false, buddieDrop, airPlacements, stationPlacements, handlingPlacements, partitions = [], selectedPartitionId, onChooseCell, onSelectPartition, onZoom, onDrawingKind, onToggleDrawing, onSelectPoint, onDrawZone, onConfigureZone, onOpenZoneMenu, onCursor, onKeyDown, onTransformZone }: {
   zones: KqWarehouseZone[]; serviceZones: KqWarehouseServiceZone[]; selectedId: string | null; drawing: boolean; drawingKind: ZoneKind; anchor: Point | null; cursor: Point;
   dimensions?: { columns: number; rows: number };
   roomArtwork?: string;
@@ -70,6 +76,9 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
   /** Opt-in single-cell construction; historical drawing/tutorial consumers keep their controls. */
   onChooseCell?: (point: Point) => void;
   partitions?: KqWarehousePartition[];
+  airPlacements?: KqWarehouseAirPlacement[];
+  stationPlacements?: KqWarehouseStationPlacement[];
+  handlingPlacements?: KqWarehouseHandlingPlacement[];
   selectedPartitionId?: string | null;
   onSelectPartition?: (id: string) => void;
   onTransformZone: (zoneId: string, patch: ZoneRectangle) => void;
@@ -94,6 +103,15 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
   const framedSelection = useRef<{ initialized: boolean; id: string | null; layout: string }>({ initialized: false, id: null, layout: layoutKey });
   const suppressClick = useRef(false);
   const [grid, setGrid] = useState(!!onChooseCell);
+  const [coverageId, setCoverageId] = useState("");
+  const fan = airPlacements?.find(item => item.id === coverageId);
+  const station = stationPlacements?.find(item => item.id === coverageId);
+  const airlockFocused = station?.code === "SIM-HYGIENE-03";
+  const irrigation = station?.code === "SIM-WATER-03" ? station : undefined;
+  const reach = fan ? getKqWarehouseAirReach(fan, GRID, partitions) : irrigation ? getKqWarehouseStationReach(irrigation, GRID, partitions) : [];
+  const servedCells = fan ? getKqWarehouseAirCoverage({ zones, airPlacements, partitions })?.cells
+    : irrigation ? getKqWarehouseStationCoverage({ zones, serviceZones, partitions, airPlacements, stationPlacements })?.cells : undefined;
+  const served = new Set(servedCells?.filter(item => item.placementId === coverageId).map(item => `${item.x},${item.y}`));
   const [hoverCell, setHoverCell] = useState<Point | null>(null);
   const [tool, setTool] = useState<PlanTool>("inspect");
   const [preview, setPreview] = useState<TransformPreview | null>(null);
@@ -560,6 +578,14 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
       if (drawing) onToggleDrawing();
     }}>
     {managing && (choosingCells ? <details className={styles.advanced}><summary>Outils avancés : tracer une zone</summary>{creationControls}</details> : creationControls)}
+    {(!!airPlacements?.length || !!stationPlacements?.length) && <label className={styles.coverageChoice}>Couverture d’un équipement
+      <select value={fan?.id ?? station?.id ?? ""} onChange={event => setCoverageId(event.target.value)}><option value="">Vue d’ensemble</option>
+        {airPlacements?.map(item => <option key={item.id} value={item.id}>{getKqWarehouseDevice(item.code)?.name} · {item.x + 1}, {item.y + 1}</option>)}
+        {stationPlacements?.map(item => <option key={item.id} value={item.id}>{KQ_WAREHOUSE_STATIONS[item.code].name} · {item.x + 1}, {item.y + 1}</option>)}
+      </select>
+      {airlockFocused && <small>Porte sud · Tout l’entrepôt · Risque d’infections, de ravageurs et de virus −{KQ_ENTRANCE_AIRLOCK_PREVENTION_PERCENT} %</small>}
+      {(fan || irrigation) && <small>{served.size} m² desservis en trait plein · portée en pointillés</small>}
+    </label>}
     <div className={styles.toolbar}>
       {!legacy && <strong>10 × 10 m · 100 m²</strong>}
       {zoomEnabled && <div className={styles.cameraControls}><button type="button" data-warehouse-action="zoom-out" disabled={zoom <= MIN_ZOOM} onClick={() => changeZoom(zoom - ZOOM_STEP)} aria-label="Réduire le zoom"><Minus size={15} /></button><output aria-label="Niveau de zoom">{clamp(zoom, MIN_ZOOM, maxZoom)}%</output><button type="button" data-warehouse-action="zoom-in" disabled={zoom >= maxZoom} onClick={() => changeZoom(zoom + ZOOM_STEP)} aria-label="Augmenter le zoom"><Plus size={15} /></button>{legacy && <><span className={styles.divider} /><button type="button" data-warehouse-action="focus" disabled={!selectedValid} onClick={() => selectedValid && frameZone(selectedValid)} aria-label="Centrer la zone sélectionnée" title="Centrer la zone sélectionnée"><Focus size={15} /><span>Ma zone</span></button><button type="button" data-warehouse-action="overview" onClick={overview} aria-label="Voir tout l’entrepôt" title="Voir tout l’entrepôt"><Scan size={15} /><span>Ensemble</span></button></>}</div>}
@@ -635,7 +661,8 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
           const badgeScale = Math.min(markerScale, zone.width * GRID.cell / (badgeWidth + 2), zone.height * GRID.cell / 28);
           return <g key={zone.id} className={styles.zone} data-zone-id={zone.id} data-zone-kind={kindOf(zone)} data-zone-color={identity.color} style={{ "--zone-color": identity.color, "--zone-tint": identity.tint } as CSSProperties} data-selected={zone.id === selectedId} data-buddie-drop={placingBuddie && buddieDrop?.zoneId === zone.id ? buddieDrop.allowed ? "valid" : "invalid" : undefined} data-buddie-target={placingBuddie && !("kind" in zone) && !lockedZoneIds.includes(zone.id) || undefined}>
             <title>{identity.label} · {zone.id === productionReservedZoneId ? "Production autonome" : zoneLabel(zone)} · {area} m²{"active" in zone && !zone.active ? " · en pause" : ""}</title>
-            <KqWarehousePlanFixtures zone={zone} grid={GRID} id={id} tint={identity.tint} growing={activeZoneIds ? activeZoneIds.includes(zone.id) : growing} />
+            <KqWarehousePlanFixtures zone={zone} grid={GRID} id={id} tint={identity.tint} sharedAir={airPlacements !== undefined}
+              inspectLighting={zone.id === selectedId && !placingBuddie && !drawing} growing={activeZoneIds ? activeZoneIds.includes(zone.id) : growing} />
             {zone.id === selectedId && <rect className={styles.selectionOutline} x={x - 2 * markerScale} y={y - 2 * markerScale} width={zone.width * GRID.cell + 4 * markerScale} height={zone.height * GRID.cell + 4 * markerScale} rx={2 * markerScale} fill="none" stroke="#172923" strokeWidth="2" vectorEffect="non-scaling-stroke" pointerEvents="none" />}
             <rect className={styles.zoneOutline} x={x} y={y} width={zone.width * GRID.cell} height={zone.height * GRID.cell} fill="transparent" stroke={identity.color} strokeWidth="2" vectorEffect="non-scaling-stroke" />
             <g pointerEvents="none">
@@ -673,6 +700,23 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
             <rect data-warehouse-partition-hit x={x - targetWidth / 2} y={y - targetHeight / 2} width={targetWidth} height={targetHeight} fill="transparent" />
           </g>;
         })}
+        {airlockFocused && <rect data-airlock-protection="building" x={GRID.x} y={GRID.y}
+          width={GRID.columns * GRID.cell} height={GRID.rows * GRID.cell} fill="#0d685b25" stroke="#0b5b4f" strokeWidth="2.5"
+          vectorEffect="non-scaling-stroke" pointerEvents="none" />}
+        {reach.map(cell => {
+          const key = `${cell.x},${cell.y}`, covered = served.has(key);
+          return <rect key={key} x={GRID.x + cell.x * GRID.cell} y={GRID.y + cell.y * GRID.cell} width={GRID.cell} height={GRID.cell}
+            fill={covered ? "#00bba85e" : "#f6cb4d26"} stroke={covered ? "#075c55" : "#81641b"} strokeWidth="1" strokeDasharray={covered ? undefined : "3 3"} pointerEvents="none" />;
+        })}
+        {airPlacements?.map(placement => <use key={placement.id} data-air-marker={placement.id} data-equipment-code={placement.code}
+          href={`#${id}-air`} x={GRID.x + (placement.x + .3) * GRID.cell} y={GRID.y + (placement.y + .3) * GRID.cell}
+          width={GRID.cell * .4} height={GRID.cell * .4} pointerEvents="none" />)}
+        {handlingPlacements?.map(item => <image key={item.code} data-handling-marker={item.code} href={getKqWarehouseProductArtwork(item.code)?.src}
+          x={GRID.x + item.x * GRID.cell} y={GRID.y + item.y * GRID.cell} width={GRID.cell} height={GRID.cell} pointerEvents="none">
+          <title>{KQ_WAREHOUSE_HANDLING[item.code].name}</title></image>)}
+        {stationPlacements?.map(item => <image key={item.id} data-station-marker={item.id} href={getKqWarehouseProductArtwork(item.code)?.src}
+          x={GRID.x + item.x * GRID.cell} y={GRID.y + item.y * GRID.cell} width={GRID.cell} height={GRID.cell} pointerEvents="none">
+          <title>{KQ_WAREHOUSE_STATIONS[item.code].name}</title></image>)}
         {transform && <g pointerEvents="none" data-warehouse-transform-preview data-valid={transform.valid}><rect x={GRID.x + transform.rectangle.x * GRID.cell} y={GRID.y + transform.rectangle.y * GRID.cell} width={transform.rectangle.width * GRID.cell} height={transform.rectangle.height * GRID.cell} fill={transform.valid ? "#c9d7a842" : "#ec735b55"} stroke={transform.valid ? "#f4cf80" : "#ff8f76"} strokeWidth="3" strokeDasharray="7 5" vectorEffect="non-scaling-stroke" /></g>}
         {handleZone && tool === "resize" && !selectedLocked && !drawing && <g data-warehouse-resize-handle className={styles.resizeHandle}><title>Glisser pour redimensionner la zone sélectionnée</title><rect x={GRID.x + (handleZone.x + handleZone.width) * GRID.cell - 22 * markerScale} y={GRID.y + (handleZone.y + handleZone.height) * GRID.cell - 22 * markerScale} width={44 * markerScale} height={44 * markerScale} rx={6 * markerScale} fill="#f1cd86" stroke="#283c30" strokeWidth="2" vectorEffect="non-scaling-stroke" /><path d={`M${GRID.x + (handleZone.x + handleZone.width) * GRID.cell - 8 * markerScale} ${GRID.y + (handleZone.y + handleZone.height) * GRID.cell + 8 * markerScale}l${16 * markerScale} ${-16 * markerScale}`} stroke="#283c30" strokeWidth="2" vectorEffect="non-scaling-stroke" pointerEvents="none" /></g>}
         {drawing && drawingRectangle && <g data-warehouse-draw-preview data-valid={drawPreview?.valid ?? true} data-width={drawingRectangle.width} data-height={drawingRectangle.height} data-area={selectionArea} pointerEvents="none"><rect x={GRID.x + drawingRectangle.x * GRID.cell} y={GRID.y + drawingRectangle.y * GRID.cell} width={drawingRectangle.width * GRID.cell} height={drawingRectangle.height * GRID.cell} fill={drawPreview?.valid === false ? "#ec735b55" : "#efc86755"} stroke={drawPreview?.valid === false ? "#a62d20" : "#6b4613"} strokeWidth="2" vectorEffect="non-scaling-stroke" strokeDasharray="6 3" /></g>}
@@ -695,7 +739,6 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
           { label: "Dessin au clavier", value: "Entrée aux deux coins", detail: "Échap annule.", art: "help-plan" },
           ...(legacy ? [{ label: "Déplacer la vue", value: "Glisser le sol", detail: "Molette pour le zoom.", art: "warehouse" as const }] : []),
         ]} />
-        <KqHelpNote>Les changements s’appliquent après enregistrement du plan.</KqHelpNote>
       </KqHelpDashboard>
       <div className={styles.footer}><div className={styles.legend}>{ZONE_TYPES.map(type => <span key={type.code}><type.icon size={14} aria-hidden="true" />{type.label}</span>)}</div><small>{GRID.columns} × {GRID.rows} m · 1 case = 1 m²</small></div>
       {legacy && <label className={styles.zoomRange}>Zoom<input type="range" min={MIN_ZOOM} max={MAX_ZOOM} step={ZOOM_STEP} value={zoom} onChange={event => changeZoom(Number(event.target.value))} aria-label="Zoom du plan" /><output>{zoom}%</output></label>}

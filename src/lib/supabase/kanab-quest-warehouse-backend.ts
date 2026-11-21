@@ -1,8 +1,14 @@
+import { getKqWarehouseAirCoverage } from "../kanab-quest-warehouse-air";
+import { getKqWarehouseStationCoverage, isKqWarehouseStationCode } from "../kanab-quest-warehouse-stations";
+import { validateKqWarehouseSpatialTransition } from "../kanab-quest-warehouse-spatial";
 import "server-only";
 
 import { KQ_WAREHOUSE_CATALOG } from "@/lib/kanab-quest-warehouse-catalog";
+import type { KqWarehouseHandlingCartConversion } from "@/lib/kanab-quest-warehouse-options";
+import { getKqWarehouseHandling, getKqWarehouseHandlingSaving, hasKqWarehouseHandling, isKqWarehouseHandlingCode, KQ_WAREHOUSE_HANDLING_CART } from "@/lib/kanab-quest-warehouse-handling";
 import {
   compactKqWarehouseToStarterFloor,
+  createKqWarehouseEmpty,
   createKqWarehouseStarter,
   getKqWarehouseQuote,
   getKqWarehouseRunSnapshot as deriveWarehouseRunSnapshot,
@@ -76,6 +82,7 @@ export type KqWarehouseSnapshot = {
   salesForecast?: KqWarehouseSalesForecast;
   context: { available: boolean; salesAvailable: boolean };
   conversion?: { convertedAt: string; originalCreditCents: number; previousTentCount: number; note: string } | null;
+  handlingCartConversion?: KqWarehouseHandlingCartConversion;
   receipt?: KqWarehouseReceipt;
 };
 
@@ -112,6 +119,7 @@ function databaseError(message: string): never {
     ["warehouse_request_mismatch", "Cette demande a déjà servi à un autre aménagement.", 409],
     ["warehouse_active_run", "Termine la culture en cours avant de modifier l’entrepôt.", 409],
     ["warehouse_price_changed", "Le devis a changé. Vérifie le nouveau montant avant de confirmer.", 409],
+    ["warehouse_retired_option_purchase", "Ces anciens modules sont disponibles uniquement dans ta réserve.", 409],
     ["warehouse_insufficient_cash", "Trésorerie insuffisante pour cet aménagement.", 400],
     ["warehouse_inventory_loss", "Les appareils possédés doivent rester disponibles dans la réserve.", 400],
     ["warehouse_options_invalid", "Les modules de simulation ou leur réserve sont invalides.", 400],
@@ -152,7 +160,7 @@ function storedSnapshot(result: RpcResult): StoredSnapshot {
 }
 
 /** Rebuild known fields; client-supplied derived values and hidden extras never persist. */
-function cleanState(value: unknown): KqWarehouseState {
+function cleanState(value: unknown, trustedDerivedFields = false): KqWarehouseState {
   if (!isKqWarehouseState(value)) throw new KqWarehouseError("Le plan contient des zones ou des appareils invalides.");
   return {
     version: 1,
@@ -160,6 +168,14 @@ function cleanState(value: unknown): KqWarehouseState {
     ...(value.partitions !== undefined ? { partitions: value.partitions.map(partition => ({
       id: partition.id, x: partition.x, y: partition.y, axis: partition.axis, length: partition.length,
     })) } : {}),
+    ...(value.airPlacements !== undefined ? { airPlacements: value.airPlacements.map(({ id, code, x, y, mount }) => ({
+      id, code, x, y, ...(mount ? { mount: { kind: mount.kind, face: mount.face,
+        ...(mount.partitionId === undefined ? {} : { partitionId: mount.partitionId }) } } : {}),
+    })) } : {}),
+    ...(trustedDerivedFields && value.airService !== undefined ? { airService: value.airService } : {}),
+    ...(value.stationPlacements !== undefined ? { stationPlacements: value.stationPlacements.map(({ id, code, x, y }) => ({ id, code, x, y })) } : {}),
+    ...(value.handlingPlacements !== undefined ? { handlingPlacements: value.handlingPlacements.map(({ code, x, y }) => ({ code, x, y })) } : {}),
+    ...(trustedDerivedFields && value.stationService !== undefined ? { stationService: value.stationService } : {}),
     ...(value.floor ? { floor: { ...value.floor } } : {}),
     zones: value.zones.map(zone => ({
       id: zone.id, name: zone.name, x: zone.x, y: zone.y, width: zone.width, height: zone.height,
@@ -182,7 +198,7 @@ function cleanState(value: unknown): KqWarehouseState {
 
 function publicSnapshot(data: StoredSnapshot): KqWarehouseSnapshot {
   const receipt = data.receipt as (KqWarehouseReceipt & { resaleCents?: number; soldCount?: number; keptCount?: number }) | undefined;
-  return { ...data, state: data.state ?? createKqWarehouseStarter(),
+  return { ...data, state: data.state ?? (data.legacyActiveRun ? createKqWarehouseStarter() : createKqWarehouseEmpty()),
     ...(receipt && [receipt.resaleCents, receipt.soldCount, receipt.keptCount].every(value => Number.isSafeInteger(value) && value! >= 0)
       ? { removalReceipt: { resaleCents: receipt.resaleCents!, soldCount: receipt.soldCount!, keptCount: receipt.keptCount!, requestKey: receipt.requestKey, replayed: receipt.replayed } } : {}),
   };
@@ -235,6 +251,32 @@ async function compactIdleWarehouse(userId: string, current: StoredSnapshot): Pr
   return storedSnapshot(result);
 }
 
+async function convertHandlingCart(userId: string, current: StoredSnapshot): Promise<StoredSnapshot> {
+  if (!current.state || current.activeRun || current.legacyActiveRun || current.activeRuns?.length || current.productionReservation) return current;
+  if (!current.state.zones.some(zone => zone.optionCodes?.includes(KQ_WAREHOUSE_HANDLING_CART))
+    && !current.state.optionInventory?.some(item => item.code === KQ_WAREHOUSE_HANDLING_CART && item.quantity > 1)) return current;
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_warehouse_convert_handling_cart", {
+    p_user_id: userId, p_expected_revision: current.revision,
+  });
+  if (result.error?.message.includes("rpc_kq_warehouse_convert_handling_cart")
+    && /schema cache|does not exist|could not find/i.test(result.error.message)) return current;
+  return storedSnapshot(result);
+}
+
+async function convertHandlingEquipment(userId: string, current: StoredSnapshot): Promise<StoredSnapshot> {
+  if (!current.state || current.activeRun || current.legacyActiveRun || current.activeRuns?.length || current.productionReservation) return current;
+  if (current.state.zones.some(zone => zone.optionCodes?.some(isKqWarehouseHandlingCode))
+    || current.state.optionInventory?.some(item => isKqWarehouseHandlingCode(item.code) && item.quantity > 1)) {
+    const result = await createSupabaseServiceClient().rpc("rpc_kq_warehouse_convert_handling", {
+      p_user_id: userId, p_expected_revision: current.revision,
+    });
+    if (result.error?.message.includes("rpc_kq_warehouse_convert_handling")
+      && /schema cache|does not exist|could not find/i.test(result.error.message)) return convertHandlingCart(userId, current);
+    return storedSnapshot(result);
+  }
+  return current;
+}
+
 /** One narrow read per overview, including one row per shared campaign. If a
  * stage changes between reads, retain only its original navigational summary. */
 async function withRoomObservations<T extends { activeRuns?: KqWarehouseActiveRun[] }>(userId: string, snapshot: T): Promise<T> {
@@ -274,11 +316,12 @@ export async function getKqWarehouseSnapshot(userId: string, options?: { preserv
   if (!initial.state && !initial.activeRun) {
     // Install the physical storage rules before commerce can settle anything:
     // opening this screen must not trigger a historical automatic overflow sale.
-    initial = storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_initialize", {
-      p_user_id: userId, p_starter_state: createKqWarehouseStarter(),
+    initial = storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_initialize_onboarding", {
+      p_user_id: userId, p_starter_state: createKqWarehouseStarter(true), p_empty_state: createKqWarehouseEmpty(),
     }));
     initial = await ensureCondition(userId, initial, true);
   }
+  initial = await convertHandlingEquipment(userId, initial);
   if (!options?.preserveLayout) await compactIdleWarehouse(userId, initial);
   const forecast = await salesForecast(userId);
   // Commerce may settle pending proceeds, even before an optional forecast fails.
@@ -324,11 +367,32 @@ export async function saveKqWarehouseLayout(input: {
     databaseError("warehouse_revision_changed");
   }
   if (!!current.state.floor !== !!candidate.floor) databaseError("warehouse_floor_changed");
-  // Older plans may omit saved walls; validate their effective 2D geometry too.
-  const geometryErrors = validateKqWarehouseState(candidate.partitions === undefined && current.state.partitions !== undefined
-    ? { ...candidate, partitions: current.state.partitions } : candidate);
-  if (geometryErrors.length) throw new KqWarehouseError(geometryErrors.join(" "));
   if (current.legacyActiveRun || (current.activeRun && !current.activeRuns?.length)) databaseError("warehouse_active_run");
+  // A legacy client may omit the spatial fields already installed on the floor.
+  const effectiveAir = candidate.airPlacements ?? current.state.airPlacements;
+  const effectiveStations = candidate.stationPlacements ?? current.state.stationPlacements;
+  const effectiveHandling = candidate.handlingPlacements ?? current.state.handlingPlacements;
+  const effectivePartitions = candidate.partitions ?? current.state.partitions;
+  const effective = { ...candidate, ...(effectiveAir !== undefined ? { airPlacements: effectiveAir } : {}),
+    ...(effectiveStations !== undefined ? { stationPlacements: effectiveStations } : {}),
+    ...(effectiveHandling !== undefined ? { handlingPlacements: effectiveHandling } : {}),
+    ...(effectivePartitions !== undefined ? { partitions: effectivePartitions } : {}) };
+  const hasSolidStations = [...(current.state.stationPlacements ?? []), ...(effective.stationPlacements ?? [])]
+    .some(station => station.code === "SIM-WATER-03");
+  const geometryErrors = hasSolidStations || effectiveHandling?.length || current.state.handlingPlacements?.length
+    ? validateKqWarehouseSpatialTransition(current.state, effective) : validateKqWarehouseState(effective);
+  if (geometryErrors.length) throw new KqWarehouseError(geometryErrors.join(" "));
+  const nextAir = getKqWarehouseAirCoverage(effective)?.service;
+  const beforeAir = current.state.airService;
+  const airChangedFor = (id: string) => {
+    const before = beforeAir?.[id], after = nextAir?.[id];
+    return before?.qualityPoints !== after?.qualityPoints || before?.coveredAreaM2 !== after?.coveredAreaM2
+      || before?.powerMilliWatts !== after?.powerMilliWatts;
+  };
+  const nextStations = getKqWarehouseStationCoverage(effective)?.zones;
+  const previousStations = current.state.stationService;
+  const irrigationChangedFor = (id: string) =>
+    (previousStations?.[id]?.waterAreaM2 ?? 0) !== (nextStations?.[id]?.waterAreaM2 ?? 0);
   if (current.productionReservation) {
     const zoneId = current.productionReservation.zoneId;
     const previous = cleanState(current.state);
@@ -336,7 +400,7 @@ export async function saveKqWarehouseLayout(input: {
     const after = candidate.zones.find(zone => zone.id === zoneId);
     if (!before || !after || JSON.stringify(withoutKqProductionEquipment(before)) !== JSON.stringify(withoutKqProductionEquipment(after))
       || JSON.stringify(previous.serviceZones) !== JSON.stringify(candidate.serviceZones)) databaseError("staff_production_occupied");
-    if (JSON.stringify(before) !== JSON.stringify(after)) {
+    if (JSON.stringify(before) !== JSON.stringify(after) || airChangedFor(zoneId) || irrigationChangedFor(zoneId)) {
       if (current.productionReservation.equipmentEditable === undefined) databaseError("staff_production_equipment_busy");
       productionStaff = await getKqStaffSnapshot(input.userId);
       current = await readStoredSnapshot(input.userId);
@@ -348,7 +412,8 @@ export async function saveKqWarehouseLayout(input: {
   for (const run of current.activeRuns ?? []) {
     const before = current.state.zones.find(zone => zone.id === run.zoneId);
     const after = candidate.zones.find(zone => zone.id === run.zoneId);
-    if (!run.zoneId || !before || !after || JSON.stringify(cleanState({ ...current.state, zones: [before] }).zones[0]) !== JSON.stringify(cleanState({ ...candidate, zones: [after] }).zones[0])) databaseError("warehouse_zone_in_use");
+    if (!run.zoneId || !before || !after || airChangedFor(run.zoneId) || irrigationChangedFor(run.zoneId)
+      || JSON.stringify(cleanState({ ...current.state, zones: [before] }).zones[0]) !== JSON.stringify(cleanState({ ...candidate, zones: [after] }).zones[0])) databaseError("warehouse_zone_in_use");
   }
   if (current.state.serviceZones !== undefined && candidate.serviceZones === undefined) databaseError("warehouse_service_plan_required");
   if (candidate.serviceZones === undefined && candidate.equipment.some(item => {
@@ -358,7 +423,21 @@ export async function saveKqWarehouseLayout(input: {
   })) databaseError("warehouse_service_plan_required");
   // All prices, missing devices, reserve preservation and preparation costs are
   // recalculated here. Neither candidate.preparedAreaM2 nor confirmed cost grants assets.
-  const quote = getKqWarehouseQuote(candidate, current.state);
+  let quote: ReturnType<typeof getKqWarehouseQuote>;
+  try { quote = getKqWarehouseQuote(candidate, current.state); }
+  catch (error) {
+    if (error instanceof Error) throw new KqWarehouseError(error.message);
+    throw error;
+  }
+  if (quote.optionPurchases.some(item => isKqWarehouseHandlingCode(item.code) && !quote.nextState.handlingPlacements?.some(placement => placement.code === item.code))) {
+    throw new KqWarehouseError("Place le matériel de manutention sur une case libre avant de confirmer l’achat.");
+  }
+  if (quote.nextState.stationPlacements === undefined && quote.optionPurchases.some(item => isKqWarehouseStationCode(item.code))) {
+    throw new KqWarehouseError("Place les nouveaux postes communs sur le plan avant de les acheter.");
+  }
+  if (quote.optionPurchases.some(item => /^SIM-(?:SECURITY-0[123]|NUTRITION-0[123]|HYGIENE-0[12])$/.test(item.code))) {
+    databaseError("warehouse_retired_option_purchase");
+  }
   if (!Number.isSafeInteger(quote.totalCostCents) || quote.totalCostCents > MAX_INTEGER) {
     throw new KqWarehouseError("Cet aménagement dépasse la limite d’investissement.");
   }
@@ -390,11 +469,12 @@ export async function getKqWarehouseRunSnapshot(userId: string, zoneId?: string)
   if (zoneId !== undefined && (typeof zoneId !== "string" || !zoneId.trim() || zoneId.length > 80)) throw new KqWarehouseError("Zone de culture invalide.");
   let current = await readStoredSnapshot(userId);
   if (!current.state && !current.activeRun) {
-    current = storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_initialize", {
-      p_user_id: userId, p_starter_state: createKqWarehouseStarter(),
+    current = storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_initialize_onboarding", {
+      p_user_id: userId, p_starter_state: createKqWarehouseStarter(true), p_empty_state: createKqWarehouseEmpty(),
     }));
     current = await ensureCondition(userId, current, true);
   }
+  current = await convertHandlingEquipment(userId, current);
   current = await compactIdleWarehouse(userId, current);
   current = await ensureCondition(userId, current);
   if (zoneId !== undefined && current.productionReservation?.zoneId === zoneId) databaseError("staff_production_occupied");
@@ -466,11 +546,14 @@ export async function getKqWarehouseProcessingEquipment(userId: string, existing
   levels: Record<string, number>;
   processingBatchGrams: Record<string, number>;
   processingDurationSeconds: Record<string, number>;
+  dryerHandlingSaving?: number;
   revision: number;
   sourceState: KqWarehouseState;
   workshopSnapshot: { equippedCodes: string[]; levels: Record<string, number> };
 } | null> {
-  const current = await readStoredSnapshot(userId);
+  let current = await convertHandlingEquipment(userId, await readStoredSnapshot(userId));
+  if (hasKqWarehouseHandling(current.state ?? undefined, KQ_WAREHOUSE_HANDLING_CART)
+    && current.cultureEquipment === null) current = await ensureCondition(userId, current);
   if (!current.state) return null;
   const shop = existingShop ?? await getKqEquipmentShopSnapshot(userId);
   const workshop = shop.sharedEquipment;
@@ -482,13 +565,15 @@ export async function getKqWarehouseProcessingEquipment(userId: string, existing
   // enters the culture snapshot or produces an equipment-level bonus.
   const equippedCodes = ["TENT-080-STARTER", ...machines.map(item => item.code)].sort();
   const levels = Object.fromEntries(equippedCodes.map(code => [code, workshop.levels[code] ?? 1]));
+  const wear = getKqWarehouseHandling(current.state, current.cultureEquipment)[KQ_WAREHOUSE_HANDLING_CART];
   return {
     equippedCodes,
     operationalCodes: equippedCodes.filter(code => code === "TENT-080-STARTER" || workshop.operationalCodes.includes(code)),
     levels,
     processingBatchGrams: Object.fromEntries(machines.map(({ code, specification }) => [code, specification.capacityGrams])),
     processingDurationSeconds: Object.fromEntries(machines.map(({ code, specification }) => [code, specification.durationSeconds])),
-    revision: current.revision, sourceState: cleanState(current.state),
+    ...(wear === undefined ? {} : { dryerHandlingSaving: getKqWarehouseHandlingSaving(KQ_WAREHOUSE_HANDLING_CART, wear) }),
+    revision: current.revision, sourceState: cleanState(current.state, true),
     workshopSnapshot: { equippedCodes, levels },
   };
 }

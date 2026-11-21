@@ -42,17 +42,18 @@ export function KqBarChart({ title, items, emptyLabel = "Aucune donnée pour le 
 
 /** Parts of one total; no fabricated proportions when the total is zero. */
 export function KqAllocationBar({ label, items, emptyLabel = "Aucun montant à répartir." }: {
-  label: string; items: KqVisualItem[]; emptyLabel?: string;
+  label: string; items: Array<KqVisualItem & { onSelect?: () => void; muted?: boolean }>; emptyLabel?: string;
 }) {
   const total = items.reduce((sum, item) => sum + Math.max(0, finite(item.value)), 0);
   const tones: KqVisualTone[] = ["teal", "gold", "ink", "red"];
   return <figure className={styles.chart}>
     <figcaption>{label}</figcaption>
     <div className={styles.allocation} aria-hidden="true">{items.map((item, index) => <span key={`${item.label}-${index}`}
-      data-tone={item.tone ?? tones[index % tones.length]} style={{ width: `${total > 0 ? Math.max(0, finite(item.value)) / total * 100 : 0}%` }} />)}</div>
+      data-tone={item.tone ?? tones[index % tones.length]} data-muted={item.muted || undefined} style={{ width: `${total > 0 ? Math.max(0, finite(item.value)) / total * 100 : 0}%` }} />)}</div>
     {total === 0 ? <p className={styles.hint}>{emptyLabel}</p> : null}
-    <ul className={styles.legend}>{items.map((item, index) => <li key={`${item.label}-${index}`} data-tone={item.tone ?? tones[index % tones.length]}>
-      <span><i aria-hidden="true" />{item.label}</span><strong>{item.displayValue}</strong>
+    <ul className={styles.legend}>{items.map((item, index) => <li key={`${item.label}-${index}`} data-tone={item.tone ?? tones[index % tones.length]} data-muted={item.muted || undefined}>
+      {item.onSelect ? <button type="button" className={styles.legendAction} onClick={item.onSelect}><span><i aria-hidden="true" />{item.label}</span><strong>{item.displayValue}</strong></button>
+        : <><span><i aria-hidden="true" />{item.label}</span><strong>{item.displayValue}</strong></>}
     </li>)}</ul>
   </figure>;
 }

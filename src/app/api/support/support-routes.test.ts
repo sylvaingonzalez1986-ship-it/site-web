@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mock = vi.hoisted(() => ({ getSupportSummary: vi.fn(), getAdminSupportDashboard: vi.fn(), getAdminSupportRows: vi.fn(), getSupportVivaConfig: vi.fn(), mutateSupportAdmin: vi.fn(), findSupportForReconciliation: vi.fn(),
+const mock = vi.hoisted(() => ({ getSupportSummary: vi.fn(), getAdminSupportDashboard: vi.fn(), getAdminSupportRows: vi.fn(), getConfiguredSupportProviders: vi.fn(), mutateSupportAdmin: vi.fn(), findSupportForReconciliation: vi.fn(),
+  startSwissBitcoinSupport: vi.fn(), receiveSwissBitcoinSupportNotification: vi.fn(), reconcileSwissBitcoinSupport: vi.fn(), reconcileAdminSwissBitcoinSupport: vi.fn(),
   getValidatedAdminContext: vi.fn(), hitRateLimit: vi.fn(), getRequestIp: vi.fn(), startSupportPayment: vi.fn(), refreshOwnedSupport: vi.fn(), cancelOwnedSupport: vi.fn(), handleSupportWebhook: vi.fn(), reconcileAdminSupport: vi.fn() }));
 vi.mock("@/lib/support-backend", () => mock);
 vi.mock("@/lib/support-viva", () => mock);
+vi.mock("@/lib/support-swiss-bitcoin-pay", () => mock);
 vi.mock("@/lib/admin-guard", () => mock);
 vi.mock("@/lib/security-rate-limit", () => mock);
 import { GET as publicSummary } from "./route";
@@ -10,11 +12,13 @@ import { POST as checkout } from "./checkout/route";
 import { POST as status } from "./status/route";
 import { POST as cancel } from "./cancel/route";
 import { POST as webhook } from "./viva/webhook/route";
+import { POST as swissWebhook } from "./swiss-bitcoin-pay/webhook/route";
+import { GET as cron } from "../cron/support-payments/route";
 import { GET as adminGet, POST as adminPost } from "../admin/support/route";
 const origin = "https://site.test";
 const body = { id: "11111111-1111-4111-8111-111111111111", token: "a".repeat(64), pseudonym: "Breton", amountCents: 1000, publishName: true, publishAmount: false };
 const req = (payload: unknown, headers: Record<string, string> = {}) => new Request(`${origin}/api/support`, { method: "POST", headers: { "content-type": "application/json", origin, ...headers }, body: JSON.stringify(payload) });
-beforeEach(() => { vi.resetAllMocks(); mock.hitRateLimit.mockResolvedValue({ allowed: true }); mock.getRequestIp.mockReturnValue("127.0.0.1"); mock.getSupportVivaConfig.mockReturnValue({ isConfigured: true }); mock.startSupportPayment.mockResolvedValue({ state: "ready" }); mock.refreshOwnedSupport.mockResolvedValue({ state: "paid" }); mock.getValidatedAdminContext.mockResolvedValue(null); });
+beforeEach(() => { vi.unstubAllEnvs(); vi.resetAllMocks(); mock.hitRateLimit.mockResolvedValue({ allowed: true }); mock.getRequestIp.mockReturnValue("127.0.0.1"); mock.getConfiguredSupportProviders.mockReturnValue(["viva"]); mock.startSupportPayment.mockResolvedValue({ state: "ready" }); mock.refreshOwnedSupport.mockResolvedValue({ state: "paid" }); mock.getValidatedAdminContext.mockResolvedValue(null); });
 describe("support public and admin boundaries", () => {
   it("rejects cross-origin mutations before creating or verifying any payment", async () => {
     for (const handler of [checkout, status, cancel]) expect((await handler(req(body, { origin: "https://evil.test" }))).status).toBe(403);
@@ -22,6 +26,13 @@ describe("support public and admin boundaries", () => {
   });
   it("accepts a bounded guest form and returns uncached state", async () => {
     const response = await checkout(req(body)); expect(response.status).toBe(200); expect(response.headers.get("cache-control")).toContain("no-store"); expect(mock.startSupportPayment).toHaveBeenCalledWith(body);
+  });
+  it("routes validated Lightning requests without defaulting an unknown provider to Viva", async () => {
+    mock.startSwissBitcoinSupport.mockResolvedValue({ state: "ready" });
+    expect((await checkout(req({ ...body, provider: "swiss-bitcoin-pay" }))).status).toBe(200);
+    expect(mock.startSwissBitcoinSupport).toHaveBeenCalledWith(body);
+    expect((await checkout(req({ ...body, provider: "other" }))).status).toBe(400);
+    expect(mock.startSupportPayment).not.toHaveBeenCalled();
   });
   it("rejects invalid amounts and missing publication choices", async () => {
     for (const change of [{ amountCents: 10.5 }, { amountCents: 100001 }, { publishName: "yes" }, { token: "" }, { pseudonym: "<script>" }]) expect((await checkout(req({ ...body, ...change }))).status).toBe(400);
@@ -34,8 +45,9 @@ describe("support public and admin boundaries", () => {
   });
   it("passes transaction hints only with the private owner credentials", async () => {
     expect((await status(req({ id: body.id, transactionId: body.id }))).status).toBe(400);
-    await status(req({ id: body.id, token: body.token, transactionId: body.id }));
-    expect(mock.refreshOwnedSupport).toHaveBeenCalledWith(body.id, body.token, body.id);
+    await status(req({ id: body.id, token: body.token, transactionId: body.id, orderCode: "987654321012345678" }));
+    expect(mock.refreshOwnedSupport).toHaveBeenCalledWith(body.id, body.token, body.id, "987654321012345678");
+    expect((await status(req({ id: body.id, token: body.token, orderCode: ["1", "2"] }))).status).toBe(400);
   });
   it("requires admin identity for reads, CSV exports and writes", async () => {
     expect((await adminGet(new Request(`${origin}/api/admin/support?format=csv`))).status).toBe(401);
@@ -43,9 +55,13 @@ describe("support public and admin boundaries", () => {
     expect(mock.getAdminSupportRows).not.toHaveBeenCalled(); expect(mock.mutateSupportAdmin).not.toHaveBeenCalled();
   });
   it("requires a distinct configured source before opening the campaign", async () => {
-    mock.getValidatedAdminContext.mockResolvedValue({ customerId: "admin" }); mock.getSupportVivaConfig.mockReturnValue({ isConfigured: false, configurationError: "Source manquante" });
+    mock.getValidatedAdminContext.mockResolvedValue({ customerId: "admin" }); mock.getConfiguredSupportProviders.mockReturnValue([]);
     expect((await adminPost(req({ action: "campaign", active: true, goalCents: null }))).status).toBe(409);
     expect(mock.mutateSupportAdmin).not.toHaveBeenCalled();
+  });
+  it("allows a campaign configured for Lightning only", async () => {
+    mock.getValidatedAdminContext.mockResolvedValue({ customerId: "admin" }); mock.getConfiguredSupportProviders.mockReturnValue(["swiss-bitcoin-pay"]);
+    expect((await adminPost(req({ action: "campaign", active: true, goalCents: null }))).status).toBe(200);
   });
   it("audits configuration changes with the authenticated actor, not a supplied actor", async () => {
     mock.getValidatedAdminContext.mockResolvedValue({ customerId: "real-admin" });
@@ -66,5 +82,20 @@ describe("support public and admin boundaries", () => {
   it("does not substitute a missing total with zero", async () => {
     mock.getSupportSummary.mockRejectedValue(new Error("db unavailable"));
     const response = await publicSummary(new Request(`${origin}/api/support`)); expect(response.status).toBe(503); expect(await response.json()).not.toHaveProperty("collectedCents");
+  });
+  it("authenticates the Lightning webhook and uses only the invoice reference as a hint", async () => {
+    vi.stubEnv("SWISS_BITCOIN_PAY_WEBHOOK_SECRET", "webhook-secret");
+    expect((await swissWebhook(req({ id: body.id, status: "paid" }))).status).toBe(401);
+    expect(mock.receiveSwissBitcoinSupportNotification).not.toHaveBeenCalled();
+    expect((await swissWebhook(req({ id: body.id, status: "paid" }, { "x-sbp-webhook-secret": "webhook-secret" }))).status).toBe(200);
+    expect(mock.receiveSwissBitcoinSupportNotification).toHaveBeenCalledWith(body.id);
+  });
+  it("requires the cron secret before claiming any invoice reconciliation", async () => {
+    vi.stubEnv("CRON_SECRET", "cron-secret");
+    const url = `${origin}/api/cron/support-payments`;
+    expect((await cron(new Request(url))).status).toBe(401);
+    expect(mock.reconcileSwissBitcoinSupport).not.toHaveBeenCalled();
+    mock.reconcileSwissBitcoinSupport.mockResolvedValue({ checked: 2, failed: 1 });
+    expect((await cron(new Request(url, { headers: { Authorization: "Bearer cron-secret" } }))).status).toBe(503);
   });
 });

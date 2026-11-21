@@ -48,10 +48,6 @@
   font-weight: 400;
   line-height: 1.4;
 }
-.toggleLabel { padding: 4px 8px; border: 1px solid #c7bda4; border-radius: var(--game-panel-radius, 2px); color: #36543e; font-size: 12px; font-weight: 600; }
-.whenOpen { display: none; }
-.disclosure[open] > .heading .whenClosed { display: none; }
-.disclosure[open] > .heading .whenOpen { display: inline; }
 .disclosure[open] > .heading { border-bottom: 1px solid #d8cfb9; }
 .chevron { color: #50674e; }
 .overview details[open] > summary > .chevron { transform: rotate(180deg); }
@@ -165,7 +161,6 @@
   .overview { padding: 10px 12px 12px; }
 }
 @container (max-width: 450px) {
-  .toggleLabel { display: none; }
   .tents { padding: 8px; gap: 8px; }
   .shared { margin: 0 8px 8px; }
   .tent > summary { flex-wrap: wrap; gap: 6px 9px; }

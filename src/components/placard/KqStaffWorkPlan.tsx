@@ -260,7 +260,8 @@ export function KqStaffWorkPlan({ snapshot, disabled = false, onAssign, renderPo
         </button>
         <div className={styles.personText}><strong>{person.name}</strong><span>{person.identity}</span>{selected.id === person.id ? <span className={styles.selectionState}><Check size={12} aria-hidden="true" />Sélectionné</span> : null}</div>
         <div className={styles.employeeCapacity}>
-          {person.total > 0 ? <KqProgressMeter label="Heures disponibles" value={person.remaining} max={person.total} valueLabel={hours(person.remaining) + " / " + hours(person.total)} /> : <p className={styles.restingState}><Pause size={17} aria-hidden="true" /><strong>{person.availability}</strong></p>}
+          {person.id === "player" ? <p><strong>{hours(person.remaining)} disponibles</strong></p> :
+            person.total > 0 ? <KqProgressMeter label="Heures disponibles" value={person.remaining} max={person.total} valueLabel={hours(person.remaining) + " / " + hours(person.total)} /> : <p className={styles.restingState}><Pause size={17} aria-hidden="true" /><strong>{person.availability}</strong></p>}
           {person.total > 0 && (person.remaining <= 0 || person.id === "player") ? <p className={styles.capacityNote}>{person.availability}</p> : null}
         </div>
         {person.id !== "player" && (onOpenEmployee || onOpenPlanning) ? <div className={styles.employeeActions}>

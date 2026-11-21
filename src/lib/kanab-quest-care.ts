@@ -1,5 +1,6 @@
+import retailSupplies from "./kanab-quest-warehouse-retail-supplies.json";
 import type { KqGameState, KqOutcome, KqPest, KqSituation } from "./kanab-quest-game";
-import { careApplicationKey, getKqCareProblemPlants, getKqCareSectors, isKqCareSector, isKqRunSector, plantKey, resolveKqPlantFocus, sameKqCareSector, sectorKey, type KqCarePlant, type KqCareSector } from "./kanab-quest-care-spatial";
+import { careApplicationKey, getKqCareProblemPlants, getKqCareSectors, hasKqEntranceAirlockSnapshot, isKqCareSector, isKqRunSector, isKqWarehouseProtectedCarePlant, plantKey, resolveKqPlantFocus, sameKqCareSector, sectorKey, type KqCarePlant, type KqCareSector } from "./kanab-quest-care-spatial";
 
 /** Biological observations are sourced; points, prices and turns are game rules.
  * Cannabinoid percentages below are explicitly fictional game values, never
@@ -103,24 +104,38 @@ export type KqTerpeneReport = NonNullable<ReturnType<typeof getKqTerpeneReport>>
 export type KqCareProduct = {
   code: string; kind: "input" | "pbi"; name: string; priceCents: number;
   description: string; sourceUrl: string; targets: string[];
+  /** Requires the corresponding observed problem. These values only affect its game severity. */
+  targetedCare?: { success: number; fragile?: number; containsFailure?: boolean };
   /** Fictional severity reductions at the first and second operation checks. */
   pbi?: { role: string; reductions: readonly [number, number] };
 };
 export const KQ_CARE_PRODUCTS: KqCareProduct[] = [
-  { code: "CARE-COMPOST-TEA", kind: "input", name: "Thé de compost", priceCents: 900, description: "Soutien conditionnel du sol. Une opération réussie auprès de racines fragiles active un bénéfice limité ; aucun rendement garanti.", sourceUrl: "https://www.mdpi.com/2223-7747/10/8/1638", targets: ["roots"] },
-  { code: "CARE-VERMICOMPOST", kind: "input", name: "Lombricompost", priceCents: 1400, description: "Amendement organique, inspiré de Worm·Humus. Accompagne progressivement un trouble nutritif identifié dans la simulation.", sourceUrl: "https://biobizz.com/products/worm-humus", targets: ["nutrition"] },
-  { code: "CARE-ORGANIC-FEED", kind: "input", name: "Engrais organique", priceCents: 1600, description: "Inspiré de Bio·Grow et Bio·Bloom. Un apport pertinent et une opération réussie peuvent soutenir la production. Incompatible avec un stress salin.", sourceUrl: "https://biobizz.com/products/bio-grow", targets: ["nutrition"] },
-  { code: "CARE-SEAWEED", kind: "input", name: "Extrait d’algues", priceCents: 1200, description: "Inspiré d’Alg·A·Mic. Soutien modeste face au stress, sans restauration des pertes déjà subies.", sourceUrl: "https://biobizz.com/products/alg-a-mic", targets: ["stress"] },
-  { code: "CARE-APHIDIUS", kind: "pbi", name: "Aphidius colemani", priceCents: 1200, description: "Parasitoïde de certaines espèces de pucerons. Option économique : contient le foyer au premier bilan, puis réduit sa gravité de 2 niveaux au second dans le jeu.", sourceUrl: "https://www.koppert.fr/aphipar/", targets: ["aphids"], pbi: { role: "Économique · action différée", reductions: [0, 2] } },
-  { code: "CARE-PHYTOSEIULUS", kind: "pbi", name: "Phytoseiulus persimilis", priceCents: 1400, description: "Prédateur spécialisé des tétranyques. Contient le foyer puis réduit sa gravité de 2 niveaux au second bilan de jeu. Application bloquée tant qu’un stress thermique est présent.", sourceUrl: "https://www.koppert.fr/spidex/", targets: ["mites"], pbi: { role: "Spécialiste des tétranyques", reductions: [0, 2] } },
-  { code: "CARE-SWIRSKII", kind: "pbi", name: "Amblyseius swirskii", priceCents: 1100, description: "Prédateur notamment des jeunes larves de thrips. Option économique pour les petits foyers : contention puis baisse de 1 niveau au second bilan de jeu.", sourceUrl: "https://www.koppert.fr/swirski-mite/", targets: ["thrips"], pbi: { role: "Économique · petits foyers", reductions: [0, 1] } },
-  { code: "CARE-ORIUS", kind: "pbi", name: "Orius laevigatus", priceCents: 1800, description: "Prédateur des larves et adultes de thrips. Plus coûteux, mais plus fort sur un foyer installé : contention puis baisse de 2 niveaux au second bilan de jeu.", sourceUrl: "https://www.koppert.fr/thripor-l/", targets: ["thrips"], pbi: { role: "Action forte · foyer installé", reductions: [0, 2] } },
-  { code: "CARE-CHRYSOPERLA", kind: "pbi", name: "Chrysoperla carnea", priceCents: 1400, description: "Ses larves consomment des pucerons et certains thrips. Une charge peut suivre ces deux foyers ensemble : contention puis baisse de 1 niveau chacun au second bilan de jeu. Ne couvre pas tous les stades de tous les thrips.", sourceUrl: "https://www.koppert.fr/chrysopa/", targets: ["aphids", "thrips"], pbi: { role: "Polyvalent · deux cibles", reductions: [0, 1] } },
-  { code: "CARE-COCCINELLA", kind: "pbi", name: "Coccinelle à sept points", priceCents: 1600, description: "Coccinella septempunctata, prédatrice de pucerons, utile sur les colonies installées. Renfort rapide : baisse de 1 niveau au premier bilan, puis de 2 au second dans le jeu. Aucun effet avant validation.", sourceUrl: "https://ephytia.inrae.fr/fr/C/20817/Biocontrol-Coccinella-septempunctata", targets: ["aphids"], pbi: { role: "Renfort rapide · dès le premier bilan", reductions: [1, 2] } },
+  { code: "CARE-COMPOST-TEA", kind: "input", name: "Thé de compost", priceCents: retailSupplies["CARE-COMPOST-TEA"].unitPriceCents, description: "Soutien conditionnel du sol. Une opération réussie auprès de racines fragiles active un bénéfice limité ; aucun rendement garanti.", sourceUrl: "https://www.mdpi.com/2223-7747/10/8/1638", targets: ["roots"] },
+  { code: "CARE-VERMICOMPOST", kind: "input", name: "Lombricompost", priceCents: retailSupplies["CARE-VERMICOMPOST"].unitPriceCents, description: "Amendement organique, inspiré de Worm·Humus. Accompagne progressivement un trouble nutritif identifié dans la simulation.", sourceUrl: "https://biobizz.com/products/worm-humus", targets: ["nutrition"] },
+  { code: "CARE-ORGANIC-FEED", kind: "input", name: "Engrais organique", priceCents: retailSupplies["CARE-ORGANIC-FEED"].unitPriceCents, description: "Inspiré de Bio·Grow et Bio·Bloom. Un apport pertinent et une opération réussie peuvent soutenir la production. Incompatible avec un stress salin.", sourceUrl: "https://biobizz.com/products/bio-grow", targets: ["nutrition"] },
+  { code: "CARE-SEAWEED", kind: "input", name: "Extrait d’algues", priceCents: retailSupplies["CARE-SEAWEED"].unitPriceCents, description: "Inspiré d’Alg·A·Mic. Soutien modeste face au stress, sans restauration des pertes déjà subies.", sourceUrl: "https://biobizz.com/products/alg-a-mic", targets: ["stress"] },
+  { code: "CARE-APHIDIUS", kind: "pbi", name: "Aphidius colemani", priceCents: retailSupplies["CARE-APHIDIUS"].unitPriceCents, description: "Parasitoïde de certaines espèces de pucerons. Option économique : contient le foyer au premier bilan, puis réduit sa gravité de 2 niveaux au second dans le jeu.", sourceUrl: "https://www.koppert.fr/aphipar/", targets: ["aphids"], pbi: { role: "Économique · action différée", reductions: [0, 2] } },
+  { code: "CARE-PHYTOSEIULUS", kind: "pbi", name: "Phytoseiulus persimilis", priceCents: retailSupplies["CARE-PHYTOSEIULUS"].unitPriceCents, description: "Prédateur spécialisé des tétranyques. Contient le foyer puis réduit sa gravité de 2 niveaux au second bilan de jeu. Application bloquée tant qu’un stress thermique est présent.", sourceUrl: "https://www.koppert.fr/spidex/", targets: ["mites"], pbi: { role: "Spécialiste des tétranyques", reductions: [0, 2] } },
+  { code: "CARE-SWIRSKII", kind: "pbi", name: "Amblyseius swirskii", priceCents: retailSupplies["CARE-SWIRSKII"].unitPriceCents, description: "Prédateur notamment des jeunes larves de thrips. Option économique pour les petits foyers : contention puis baisse de 1 niveau au second bilan de jeu.", sourceUrl: "https://www.koppert.fr/swirski-mite/", targets: ["thrips"], pbi: { role: "Économique · petits foyers", reductions: [0, 1] } },
+  { code: "CARE-ORIUS", kind: "pbi", name: "Orius laevigatus", priceCents: retailSupplies["CARE-ORIUS"].unitPriceCents, description: "Prédateur des larves et adultes de thrips. Plus coûteux, mais plus fort sur un foyer installé : contention puis baisse de 2 niveaux au second bilan de jeu.", sourceUrl: "https://www.koppert.fr/thripor-l/", targets: ["thrips"], pbi: { role: "Action forte · foyer installé", reductions: [0, 2] } },
+  { code: "CARE-CHRYSOPERLA", kind: "pbi", name: "Chrysoperla carnea", priceCents: retailSupplies["CARE-CHRYSOPERLA"].unitPriceCents, description: "Ses larves consomment des pucerons et certains thrips. Une charge peut suivre ces deux foyers ensemble : contention puis baisse de 1 niveau chacun au second bilan de jeu. Ne couvre pas tous les stades de tous les thrips.", sourceUrl: "https://www.koppert.fr/chrysopa/", targets: ["aphids", "thrips"], pbi: { role: "Polyvalent · deux cibles", reductions: [0, 1] } },
+  { code: "CARE-COCCINELLA", kind: "pbi", name: "Coccinelle à sept points", priceCents: retailSupplies["CARE-COCCINELLA"].unitPriceCents, description: "Coccinella septempunctata, prédatrice de pucerons, utile sur les colonies installées. Renfort rapide : baisse de 1 niveau au premier bilan, puis de 2 au second dans le jeu. Aucun effet avant validation.", sourceUrl: "https://ephytia.inrae.fr/fr/C/20817/Biocontrol-Coccinella-septempunctata", targets: ["aphids"], pbi: { role: "Renfort rapide · dès le premier bilan", reductions: [1, 2] } },
+  { code: "CARE-IRON", kind: "input", name: "Fer chélaté", priceCents: retailSupplies["CARE-IRON"].unitPriceCents,
+    description: "Sur la case traitée, une opération réussie réduit de deux niveaux la carence en fer. Un stress salin empêche cet apport.",
+    sourceUrl: retailSupplies["CARE-IRON"].url, targets: ["IRON"], targetedCare: { success: 2 } },
+  { code: "CARE-PERLITE", kind: "input", name: "Perlite horticole", priceCents: retailSupplies["CARE-PERLITE"].unitPriceCents,
+    description: retailSupplies["CARE-PERLITE"].usage, sourceUrl: retailSupplies["CARE-PERLITE"].url,
+    targets: ["ROOTS"], targetedCare: { success: 1, fragile: 1 } },
+  { code: "CARE-SHADE", kind: "input", name: "Filet d’ombrage", priceCents: retailSupplies["CARE-SHADE"].unitPriceCents,
+    description: retailSupplies["CARE-SHADE"].usage, sourceUrl: retailSupplies["CARE-SHADE"].url,
+    targets: ["HEAT"], targetedCare: { success: 1, containsFailure: true } },
+  { code: "CARE-BLUE-TRAPS", kind: "input", name: "Plaques bleues engluées", priceCents: retailSupplies["CARE-BLUE-TRAPS"].unitPriceCents,
+    description: "Contient les thrips de la case pendant un bilan. Limite les nouveaux dégâts et les passages vers les cases voisines.",
+    sourceUrl: retailSupplies["CARE-BLUE-TRAPS"].url, targets: ["THRIPS"], targetedCare: { success: 0, containsFailure: true } },
 ];
 export const getKqCareProduct = (code: string) => KQ_CARE_PRODUCTS.find(product => product.code === code);
 export type KqCareProblemDefinition = {
-  code: string; name: string; family: "nutrition" | "pest" | "stress";
+  code: string; name: string; family: "nutrition" | "pest" | "stress" | "disease";
   target: string; symptoms: readonly [string, string]; sourceUrl: string;
 };
 const nutritionSource = "https://www.mdpi.com/2076-3417/9/20/4432";
@@ -134,11 +149,16 @@ export const KQ_CARE_PROBLEMS: KqCareProblemDefinition[] = [
   { code: "APHIDS", name: "Foyer de pucerons", family: "pest", target: "aphids", symptoms: ["De petits insectes groupés sont visibles sous le feuillage.", "Les colonies persistent et de nouvelles feuilles se déforment."], sourceUrl: "https://ipm.ucanr.edu/PMG/PESTNOTES/pn7404.html" },
   { code: "MITES", name: "Foyer de tétranyques", family: "pest", target: "mites", symptoms: ["De fines ponctuations apparaissent sur les feuilles.", "Les ponctuations s’étendent et de fins fils deviennent visibles."], sourceUrl: "https://ipm.ucanr.edu/PMG/PESTNOTES/pn7405.html" },
   { code: "THRIPS", name: "Foyer de thrips", family: "pest", target: "thrips", symptoms: ["Des plages argentées marquent le feuillage.", "De nouvelles stries et de petits points sombres sont observés."], sourceUrl: "https://ipm.ucanr.edu/PMG/PESTNOTES/pn7429.html" },
+  { code: "MILDEW", name: "Foyer d’oïdium", family: "disease", target: "climate", symptoms: ["Quelques taches blanches et poudreuses apparaissent sur le feuillage.", "Des plaques poudreuses s’étendent sur les feuilles atteintes."], sourceUrl: "https://ipm.ucanr.edu/agriculture/floriculture-and-ornamental-nurseries/powdery-mildew/" },
+  { code: "VIRUS", name: "Foyer viral", family: "disease", target: "hygiene", symptoms: ["Un foyer viral est suspecté sur un plant.", "Le suivi sanitaire signale une possible atteinte virale."], sourceUrl: "https://s3.wp.wsu.edu/uploads/sites/2701/2023/10/Jarugula-et-al-2023.pdf" },
   { code: "ROOTS", name: "Stress racinaire", family: "stress", target: "roots", symptoms: ["La motte reste humide et la pousse ralentit.", "Un jaunissement accompagne la mauvaise aération racinaire."], sourceUrl: "https://extension.umn.edu/agriculture/crop-production/small-grains/wheat-flooding-and-waterlogging" },
   { code: "SALTS", name: "Accumulation de sels", family: "stress", target: "stress", symptoms: ["Des dépôts clairs et des pointes abîmées appellent une vérification.", "Le flétrissement persiste malgré un substrat humide."], sourceUrl: "https://www.extension.umd.edu/resource/excess-fertilizer-or-salt-damage-flowers" },
   { code: "HEAT", name: "Stress thermique", family: "stress", target: "stress", symptoms: ["Le feuillage perd temporairement sa tenue pendant l’épisode chaud.", "Certaines parties exposées restent abîmées après le retour au calme."], sourceUrl: "https://extension.umn.edu/about/our-stories/news/yard-and-garden-news/keep-gardens-thriving-through-the-heat" },
 ];
 export const getKqCareProblem = (code: string) => KQ_CARE_PROBLEMS.find(problem => problem.code === code);
+export function kqCareProductMatchesProblem(product: KqCareProduct, definition: KqCareProblemDefinition) {
+  return product.targets.includes(definition.target) || product.targets.includes(definition.code);
+}
 export type KqCareProblem = { code: string; severity: 1 | 2 | 3; status: "suspected" | "confirmed"; trend: "worsening" | "stable" | "recovering"; appearedAt: number; variant: 0 | 1; plants?: KqCarePlant[] };
 export type KqCareIntervention = { productCode: string; stageIndex: number; remainingSteps: number; status: "installing" | "active"; target?: KqCareSector };
 export type KqCareEvent = { stageIndex: number; kind: "observation" | "intervention" | "resolution"; message: string; vitalityDelta: number; terpenesDelta: number; cannabinoidDelta?: number; productCode?: string };
@@ -225,7 +245,12 @@ export function canApplyKqCareProduct(state: KqGameState, code: string, target?:
     if (inputs.some(item => item.productCode !== code && item.stageIndex === stageIndex)) return permission(false, "Un seul intrant par bilan.");
     if (inputs.some(item => item.productCode === code && item.stageIndex !== stageIndex)) return permission(false, "Cet intrant a déjà été utilisé dans cette culture.");
     if (!inputs.some(isCurrentInput) && countCarePasses(inputs) >= 2) return permission(false, "Deux apports maximum par culture.");
-    if (code === "CARE-ORGANIC-FEED" && state.care.problems.some(item => item.code === "SALTS")) return permission(false, "Un stress salin est présent : cet apport est inadapté.");
+    if ((code === "CARE-ORGANIC-FEED" || code === "CARE-IRON") && state.care.problems.some(item => item.code === "SALTS")) return permission(false, "Un stress salin est présent : cet apport est inadapté.");
+    if (product.targetedCare && !state.care.problems.some(problem => {
+      const definition = getKqCareProblem(problem.code);
+      return definition && kqCareProductMatchesProblem(product, definition) &&
+        (!target || getKqCareProblemPlants(state, problem).some(plant => sameKqCareSector(plant, target)));
+    })) return permission(false, target ? "Aucun problème compatible observé sur cette case." : "Aucun problème compatible observé dans cette culture.");
   } else {
     if (stageIndex >= 4) return permission(false, "Trop tard pour une nouvelle PBI : ses deux bilans doivent tenir avant la fin de la récolte. La charge reste en réserve.");
     if (code === "CARE-PHYTOSEIULUS" && state.care.problems.some(item => item.code === "HEAT")) return permission(false, "Stress thermique actif : Phytoseiulus ne peut pas s’installer. Attends le rétablissement ; la charge reste en réserve.");
@@ -234,7 +259,7 @@ export function canApplyKqCareProduct(state: KqGameState, code: string, target?:
   }
   return permission(true, product.pbi
     ? `${state.warehouse || state.campaign ? "1 m²" : "Une charge"}, deux bilans. ${product.pbi.reductions[0] ? "Recul du foyer dès le premier bilan." : "Installation puis recul du foyer au second bilan."}`
-    : state.warehouse || state.campaign ? "1 m² sera consommé pour la case choisie. Effet au prochain bilan."
+    : state.warehouse || state.campaign ? "1 charge pour la case de 1 m². Effet au prochain bilan."
       : "Une charge sera consommée. Effet suivi aux prochaines validations.");
 }
 export function applyKqCareProduct(state: KqGameState, code: string, target?: KqCareSector): KqGameState {
@@ -280,19 +305,29 @@ export function observeKqCareStage(state: KqGameState, situation: KqSituation): 
   const recentTrouble = care.history.some(item => item.kind === "resolution" && item.stageIndex === stageIndex - 1 && item.vitalityDelta <= -15);
   // This seeded draw is independent of the situation card and of real elapsed
   // time. One observation per stage, with recovery room after a difficult check.
-  const ambientFamily = choice % 5 === 0 ? "nutrition" : choice % 5 === 1 ? "pest" : undefined;
-  const candidates = KQ_CARE_PROBLEMS.filter(item => item.family === ambientFamily && !care.problems.some(problem => problem.code === item.code));
+  const ambientFamily = choice % 5 === 0 ? "nutrition" : choice % 5 === 1
+    ? (state.warehouse?.preparationVersion === 1 && (choice >>> 12) % 4 === 0 ? "disease" : "pest") : undefined;
+  const candidates = KQ_CARE_PROBLEMS.filter(item => item.family === ambientFamily
+    && (item.code !== "VIRUS" || hasKqEntranceAirlockSnapshot(state))
+    && !care.problems.some(problem => problem.code === item.code));
   const ambient = stageIndex >= 1 && stageIndex <= 3 && !recentTrouble && care.problems.length < 2 && candidates.length
     ? candidates[(choice >>> 4) % candidates.length].code : undefined;
   const candidate = explicit ?? ambient;
   const definition = candidate ? getKqCareProblem(candidate) : undefined;
   const canAdd = definition && care.problems.length < KQ_CARE_MAX_PROBLEMS && !care.problems.some(item => item.code === definition.code);
-  const problem: KqCareProblem | undefined = canAdd ? { code: definition.code, severity: 1, status: definition.family === "pest" ? "confirmed" : "suspected", trend: "stable", appearedAt: stageIndex, variant: (choice % 2) as 0 | 1 } : undefined;
+  let problem: KqCareProblem | undefined = canAdd ? { code: definition.code, severity: 1, status: definition.family === "pest" ? "confirmed" : "suspected", trend: "stable", appearedAt: stageIndex, variant: (choice % 2) as 0 | 1 } : undefined;
+  let prevented = false;
   if (problem) {
+    const { code } = problem;
     const plants = getKqCareProblemPlants(state, problem);
     if (plants.length) problem.plants = plants;
+    if ((definition?.family === "pest" || definition?.family === "disease")
+      && plants.some(plant => isKqWarehouseProtectedCarePlant(state, code, plant, "appearance", definition.family === "pest"))) {
+      problem = undefined;
+      prevented = true;
+    }
   }
-  return { ...state, care: appendEvent({ ...care, problems: problem ? [...care.problems, problem] : care.problems }, { stageIndex, kind: "observation", message: problem && definition ? definition.symptoms[problem.variant] : care.problems.length ? "Le suivi reprend les foyers présents ; aucun nouveau trouble observé." : "Observation calme : aucun problème actif détecté.", vitalityDelta: 0, terpenesDelta: 0 }) };
+  return { ...state, care: appendEvent({ ...care, problems: problem ? [...care.problems, problem] : care.problems }, { stageIndex, kind: "observation", message: problem && definition ? definition.symptoms[problem.variant] : prevented ? "La prévention a contenu un nouveau foyer." : care.problems.length ? "Le suivi reprend les foyers présents ; aucun nouveau trouble observé." : "Observation calme : aucun problème actif détecté.", vitalityDelta: 0, terpenesDelta: 0 }) };
 }
 
 /** One deterministic health tick per resolved operation; no additional random roll. */
@@ -312,7 +347,7 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
   const inputNotes = new Set<string>();
   for (const intervention of active) {
     const product = getKqCareProduct(intervention.productCode)!;
-    if (product.kind !== "input" || lot) continue;
+    if (product.kind !== "input" || product.targetedCare || lot) continue;
     const matches = care.problems.filter(problem => {
       const definition = getKqCareProblem(problem.code)!;
       return product.targets.includes(definition.target) || product.targets.includes(definition.family);
@@ -338,25 +373,31 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
   const problems = lot ? [] : care.problems.flatMap(problem => {
     const definition = getKqCareProblem(problem.code)!;
     const previous = focusPlants.get(problem.code)!;
-    if (definition.family === "pest" && previous.length) {
+    const pest = definition.family === "pest";
+    const matching = active.filter(item => kqCareProductMatchesProblem(getKqCareProduct(item.productCode)!, definition));
+    const treatments = matching.filter(item => getKqCareProduct(item.productCode)!.targetedCare);
+    const treatmentFor = (plant?: KqCarePlant) => {
+      const item = treatments.find(item => !item.target || (plant && sameKqCareSector(item.target, plant)));
+      return item && getKqCareProduct(item.productCode)!.targetedCare;
+    };
+    if ((pest || definition.family === "disease") && previous.length) {
       const protection = (plant: KqCarePlant) => {
-        const treatment = active.find(i => (!i.target || sameKqCareSector(i.target, plant)) && getKqCareProduct(i.productCode)?.targets.includes(definition.target)
+        const treatment = matching.find(i => getKqCareProduct(i.productCode)?.pbi && (!i.target || sameKqCareSector(i.target, plant))
           && !(i.productCode === "CARE-PHYTOSEIULUS" && care.problems.some(p => p.code === "HEAT")));
         const pbi = treatment && getKqCareProduct(treatment.productCode)?.pbi;
-        return pbi && { reduction: pbi.reductions[treatment.status === "installing" ? 0 : 1] };
+        if (pbi) return { reduction: pbi.reductions[treatment.status === "installing" ? 0 : 1] };
+        if (treatmentFor(plant)?.containsFailure) return { reduction: 0 };
       };
-      const help = biological && won && (basic || relevantOperation || situation.tags.includes("pest"));
-      const { plants, spread } = resolveKqPlantFocus(state, problem, protection, help, biological && outcome === "failure" && !basic);
+      const helpTag = pest ? "pest" : definition.target === "hygiene" ? "hygiene" : "climate";
+      const help = biological && won && (basic || relevantOperation || situation.tags.includes(helpTag));
+      const { plants, spread } = resolveKqPlantFocus(state, problem, protection, help, biological && outcome === "failure" && !basic, pest);
       if (!plants.length) { notes.push(`${definition.name} résorbé.`); return []; }
       const severity = Math.max(...plants.map(p => p.severity)) as KqCarePlant["severity"];
       damage += Math.max(0, ...previous.map(p => p.severity * 3 - Number(!!protection(p)) * 3 - Number(basic) * 2));
       notes.push(`${definition.name} · ${plants.length} plant${plants.length > 1 ? "s" : ""} atteint${plants.length > 1 ? "s" : ""}${spread ? ", un nouveau plant touché" : ""}.`);
       return [{ ...problem, plants, severity, status: "confirmed" as const, trend: spread || severity > problem.severity ? "worsening" as const : severity < problem.severity || plants.length < previous.length ? "recovering" as const : "stable" as const }];
     }
-    const pbi = active.find(item => {
-      const product = getKqCareProduct(item.productCode)!;
-      return product.kind === "pbi" && product.targets.includes(definition.target);
-    });
+    const pbi = matching.find(item => getKqCareProduct(item.productCode)!.kind === "pbi");
     const blockedPbi = pbi?.productCode === "CARE-PHYTOSEIULUS" && care.problems.some(item => item.code === "HEAT");
     const pbiEstablished = Boolean(pbi && !blockedPbi);
     // Every auxiliary contains damage while establishing. The predatory
@@ -364,25 +405,31 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
     // never changes a problem. These levels are game balance, not efficacy data.
     const pbiReduction = pbiEstablished && pbi
       ? getKqCareProduct(pbi.productCode)?.pbi?.reductions[pbi.status === "installing" ? 0 : 1] ?? 0 : 0;
-    const treatingInputs = active.filter(item => inputCodes.has(item.productCode) && getKqCareProduct(item.productCode)!.targets.includes(definition.target));
+    const treatingInputs = matching.filter(item => inputCodes.has(item.productCode) && !getKqCareProduct(item.productCode)!.targetedCare);
     const nutritionHelp = definition.family === "nutrition" && treatingInputs.some(item => !item.target);
     const operationHelp = biological && won && (basic || relevantOperation || situation.tags.includes(definition.family === "pest" ? "pest" : definition.target === "roots" ? "roots" : "climate"));
     const reduction = pbiReduction + Number(operationHelp || (nutritionHelp && won));
     const increase = biological && outcome === "failure" && !basic && !pbiEstablished ? 1 : 0;
+    const severityAfterCheck = (severity: number, plant?: KqCarePlant) => {
+      const treatment = treatmentFor(plant);
+      const treatmentReduction = won ? treatment?.success : outcome === "fragile" ? treatment?.fragile : 0;
+      const helped = won && plant && treatingInputs.some(item => item.target && sameKqCareSector(item.target, plant));
+      return severity + (treatment?.containsFailure ? 0 : increase) - Math.max(reduction, Number(!!helped), treatmentReduction ?? 0);
+    };
     // Non-contagious problems stay on their affected plants. A successful
     // input helps only its treated squares. Global historical inputs retain
     // their original nutrition, vitality and yield effects.
     const survivingPlants = previous.flatMap(plant => {
-      const helped = won && treatingInputs.some(item => item.target && sameKqCareSector(item.target, plant));
-      const severity = plant.severity + increase - Math.max(reduction, Number(helped));
+      const severity = severityAfterCheck(plant.severity, plant);
       return severity > 0 ? [{ ...plant, severity: Math.min(3, severity) as KqCarePlant["severity"] }] : [];
     });
-    const nextSeverity = previous.length ? Math.max(0, ...survivingPlants.map(plant => plant.severity)) : problem.severity + increase - reduction;
+    const nextSeverity = previous.length ? Math.max(0, ...survivingPlants.map(plant => plant.severity)) : severityAfterCheck(problem.severity);
     if (pbi) notes.push(`${getKqCareProduct(pbi.productCode)!.name} · ${definition.name} : ${blockedPbi ? "action perturbée par le stress thermique" : pbiReduction ? `recul de ${pbiReduction} niveau${pbiReduction > 1 ? "x" : ""} au bilan` : "installation et contention du foyer"}.`);
     if (nextSeverity <= 0) { notes.push(`${definition.name} : problème résorbé ; les pertes antérieures restent enregistrées.`); return []; }
     damage += Math.max(0, problem.severity * 3 - Number(pbiEstablished) * 3 - Number(basic) * 2);
     const recovering = reduction > 0 || nextSeverity < problem.severity || survivingPlants.length < previous.length;
-    return [{ ...problem, ...(previous.length ? { plants: survivingPlants } : {}), severity: clamp(nextSeverity, 1, 3) as 1 | 2 | 3, status: "confirmed" as const, trend: recovering ? "recovering" as const : increase > 0 ? "worsening" as const : "stable" as const }];
+    const worsening = treatments.length ? nextSeverity > problem.severity : increase > 0;
+    return [{ ...problem, ...(previous.length ? { plants: survivingPlants } : {}), severity: clamp(nextSeverity, 1, 3) as 1 | 2 | 3, status: "confirmed" as const, trend: recovering ? "recovering" as const : worsening ? "worsening" as const : "stable" as const }];
   });
   const operationDelta = biological ? outcome === "critical" ? 7 : won ? 4 : outcome === "fragile" ? -4 : -16 : 0;
   const vitality = lot ? care.vitality : clamp(care.vitality + operationDelta - damage + support + (basic ? 3 : 0) + (biological && won && relevantOperation ? 2 : 0), 0, 100);

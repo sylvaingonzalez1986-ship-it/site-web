@@ -95,7 +95,8 @@ export function KqCultureWorkStatus({ quote, error, onRefresh, compact = false, 
   const employee = quote?.employee;
   const employeeWorking = quote?.source === "employee" && employee;
   const legacyStage = !!quote && !quote.paid && quote.phase !== "prepare";
-  return <aside className={styles.status} aria-label="Travail de cette étape" data-culture-work-status={detailsOnly ? undefined : ""} data-culture-work-details={detailsOnly || undefined} data-compact={compact || undefined} data-work-source={quote?.source}>
+  return <aside className={styles.status} aria-label="Travail de cette étape" data-culture-work-status={detailsOnly ? undefined : ""} data-culture-work-details={detailsOnly || undefined} data-compact={compact || undefined} data-work-source={quote?.source}
+    data-sylvain-target={quote && !error && !detailsOnly ? "next" : undefined} tabIndex={quote && !error && !detailsOnly ? -1 : undefined}>
     {!detailsOnly && onSelectChoice ? <KqWorkActorSelector label="Qui réalise l’étape ?" value={selectedChoice} onChange={onSelectChoice} disabled={selectionDisabled || !!quote?.paid} options={choices.map(option => ({
       id: option.choice, name: option.employee?.name ?? "Toi",
       portrait: option.employee ? <KqStaffPortrait person={option.employee} /> : <PlayerPortrait />,

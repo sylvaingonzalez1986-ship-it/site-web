@@ -1,6 +1,7 @@
 /** Expected game limits must stay readable instead of becoming a service outage. */
 export function getKqPlayerWorkErrorMessage(error: unknown): string | null {
   const message = typeof error === "string" ? error : error instanceof Error ? error.message : "";
+  if (/\bkq_preparation_operator_busy\b/.test(message)) return "Cette personne termine le nettoyage de l’entrepôt. Reprends après son créneau ou choisis une autre personne.";
   if (/\bstaff_production_machine_reserved\b/.test(message)) return "Ce tamis est réservé à la production autonome. Suspends les nouveaux cycles et termine les lots avant de le réaffecter.";
   if (/\bstaff_production_occupied\b/.test(message)) return "Cette zone ou son équipement est réservé à la production autonome. Termine et vends ses lots avant de changer son affectation.";
   if (/\bstaff_production_capacity\b/.test(message)) return "Le séchage ou le stockage disponible ne suffit pas pour cette réservation. Vérifie les capacités de l’Entrepôt.";

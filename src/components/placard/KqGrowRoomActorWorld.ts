@@ -37,7 +37,8 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
     }
     profileKey = look;
     const key = prev?.layout === next.layout ? layoutKey : JSON.stringify([next.layout.width, next.layout.depth,
-      ...next.layout.items.map(i => [i.id, i.name, i.kind, i.x, i.z, i.width, i.depth, i.rotation, i.deviceCode])]);
+      next.layout.items.map(i => [i.id, i.name, i.kind, i.x, i.z, i.width, i.depth, i.rotation, i.deviceCode]),
+      next.layout.obstacles ?? []]);
     const rebuilt = !paths || key !== layoutKey;
     if (rebuilt) {
       paths = createGrowRoomPaths(next.layout);

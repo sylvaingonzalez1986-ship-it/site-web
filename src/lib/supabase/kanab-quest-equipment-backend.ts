@@ -273,6 +273,7 @@ export async function purchaseKqDurableEquipment(input: {
   userId: string;
   requestKey: string;
   equipmentCodes: string[];
+  expectedPriceCents?: number;
   expectedUnits?: number;
   tentNumber?: number;
 }) {
@@ -288,12 +289,18 @@ export async function purchaseKqDurableEquipment(input: {
     throw new Error("Un équipement du panier n’est pas disponible.");
   }
 
-  const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_purchase_production_equipment" : "rpc_kq_purchase_tent_equipment", {
-    p_user_id: input.userId,
-    p_request_key: input.requestKey,
-    p_equipment_codes: equipmentCodes,
-    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: input.tentNumber }),
-  });
+  const workshopCart = equipmentCodes.some(isKqProcessingEquipment);
+  if (workshopCart && input.expectedPriceCents !== undefined && (!Number.isSafeInteger(input.expectedPriceCents) || input.expectedPriceCents <= 0)) {
+    throw new Error("Montant du panier invalide.");
+  }
+  const rpc = createSupabaseServiceClient();
+  const args = { p_user_id: input.userId, p_request_key: input.requestKey, p_equipment_codes: equipmentCodes };
+  const result = workshopCart
+    ? await rpc.rpc("rpc_kq_purchase_workshop_cart", { ...args, p_tent_number: input.tentNumber ?? null, p_expected_price_cents: input.expectedPriceCents ?? null,
+      ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : {}) })
+    : input.tentNumber === undefined
+      ? await rpc.rpc("rpc_kq_purchase_production_equipment", { ...args, p_expected_units: input.expectedUnits ?? 1 })
+      : await rpc.rpc("rpc_kq_purchase_tent_equipment", { ...args, p_tent_number: input.tentNumber });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
     if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
@@ -302,6 +309,7 @@ export async function purchaseKqDurableEquipment(input: {
     if (careerError) throw new Error(careerError);
     if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le panier.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant.");
+    if (message.includes("workshop_cart_price_changed")) throw new Error("Le prix du panier a changé. Recharge la page pour voir le nouveau total.");
     if (message.includes("equipment_already_owned")) throw new Error("Tu possèdes déjà un équipement du panier.");
     if (message.includes("equipment_unavailable")) throw new Error("Un équipement du panier n’est plus disponible.");
     throw new Error(`[supabase:rpc_kq_purchase_equipment] ${message}`);
@@ -320,8 +328,7 @@ export async function purchaseKqWorkshopTier(input: {
 }) {
   assertUuid(input.userId, "Compte équipement invalide.");
   assertUuid(input.requestKey, "Demande d’achat invalide.");
-  const equipment = getKqEquipmentDefinition(input.equipmentCode);
-  const price = getKqWorkshopTierPrice(input.equipmentCode, equipment?.priceCents ?? 0, input.targetLevel, input.expectedLevel);
+  const price = getKqWorkshopTierPrice(input.equipmentCode, input.targetLevel, input.expectedLevel);
   if (price === null) throw new Error("Gamme d’atelier invalide ou déjà atteinte.");
   if (!Number.isSafeInteger(input.expectedPriceCents) || input.expectedPriceCents <= 0) {
     throw new Error("Prix de gamme invalide.");
@@ -335,7 +342,7 @@ export async function purchaseKqWorkshopTier(input: {
     const careerError = getChanvrierCareerError(message);
     if (careerError) throw new Error(careerError);
     if (message.includes("equipment_level_changed")) throw new Error("Le niveau a changé. Actualise les gammes de l’atelier.");
-    if (message.includes("workshop_tier_price_changed")) throw new Error("Le prix a changé. Actualise les gammes de l’atelier.");
+    if (message.includes("workshop_tier_price_changed")) throw new Error("Le prix a changé. Recharge la page pour voir les nouveaux tarifs de l’atelier.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette gamme.");
     if (message.includes("workshop_tier_maintenance")) throw new Error("Entretiens cette machine avant de changer de gamme.");
     if (message.includes("workshop_tier_request_mismatch")) throw new Error("Cette demande d’achat a déjà été utilisée pour un autre choix.");
@@ -346,7 +353,7 @@ export async function purchaseKqWorkshopTier(input: {
 }
 
 export async function upgradeKqDurableEquipment(input: {
-  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number; expectedUnits?: number; tentNumber?: number;
+  userId: string; requestKey: string; equipmentCode: string; expectedLevel: number; expectedPriceCents?: number; expectedUnits?: number; tentNumber?: number;
 }) {
   assertTentNumber(input.tentNumber === undefined ? 1 : input.tentNumber);
   assertUuid(input.userId, "Compte équipement invalide.");
@@ -355,11 +362,18 @@ export async function upgradeKqDurableEquipment(input: {
   if (getKqEquipmentUpgradeCost(input.equipmentCode, input.expectedLevel) === null) {
     throw new Error("Niveau maximal atteint ou équipement non améliorable.");
   }
-  const result = await createSupabaseServiceClient().rpc(input.tentNumber === undefined ? "rpc_kq_upgrade_production_equipment" : "rpc_kq_upgrade_tent_equipment", {
-    p_user_id: input.userId, p_request_key: input.requestKey,
-    p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel,
-    ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : { p_tent_number: equipmentRequestTent(input.equipmentCode, input.tentNumber) }),
-  });
+  const workshop = isKqProcessingEquipment(input.equipmentCode);
+  if (workshop && input.expectedPriceCents !== undefined && (!Number.isSafeInteger(input.expectedPriceCents) || input.expectedPriceCents <= 0)) {
+    throw new Error("Prix d’amélioration invalide.");
+  }
+  const rpc = createSupabaseServiceClient();
+  const args = { p_user_id: input.userId, p_request_key: input.requestKey, p_equipment_code: input.equipmentCode, p_expected_level: input.expectedLevel };
+  const result = workshop
+    ? await rpc.rpc("rpc_kq_upgrade_workshop_machine", { ...args, p_expected_price_cents: input.expectedPriceCents ?? null,
+      ...(input.tentNumber === undefined ? { p_expected_units: input.expectedUnits ?? 1 } : {}) })
+    : input.tentNumber === undefined
+      ? await rpc.rpc("rpc_kq_upgrade_production_equipment", { ...args, p_expected_units: input.expectedUnits ?? 1 })
+      : await rpc.rpc("rpc_kq_upgrade_tent_equipment", { ...args, p_tent_number: equipmentRequestTent(input.equipmentCode, input.tentNumber) });
   if (result.error) {
     if (result.error.message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise ton entrepôt pour sélectionner une tente.");
     if (result.error.message.includes("production_invalid_tent")) throw new Error("Cette tente n’est pas disponible. Actualise ton entrepôt.");
@@ -369,6 +383,7 @@ export async function upgradeKqDurableEquipment(input: {
     if (message.includes("production_units_changed")) throw new Error("Ton installation a changé. Actualise le prix de l’amélioration.");
     if (message.includes("insufficient_equipment_cash")) throw new Error("Solde insuffisant pour cette amélioration.");
     if (message.includes("equipment_level_changed")) throw new Error("Le niveau a changé. Actualise le matériel avant de réessayer.");
+    if (message.includes("workshop_upgrade_price_changed")) throw new Error("Le prix de l’amélioration a changé. Recharge la page pour voir le nouveau montant.");
     if (message.includes("equipment_not_purchased")) throw new Error("Achète d’abord cet équipement.");
     if (message.includes("equipment_max_level")) throw new Error("Niveau 10 déjà atteint.");
     if (message.includes("equipment_upgrade_request_mismatch")) throw new Error("Demande d’amélioration déjà utilisée.");

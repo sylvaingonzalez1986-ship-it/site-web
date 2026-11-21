@@ -1,3 +1,5 @@
+import { getKqWorkshopPriceList } from "./kanab-quest-warehouse-retail";
+
 /** Fictional workshop capacities, expressed in grams of source flowers per lot.
  * They are balancing values, not manufacturer specifications or extraction instructions.
  * The persisted 1–10 index retains old purchases while describing three configurations.
@@ -37,14 +39,24 @@ export function getKqWorkshopMachineSpecification(code: string, requestedLevel =
   };
 }
 
-/** Mirrors the existing one-level prices; SQL remains authoritative at checkout. */
-export function getKqWorkshopTierPrice(code: string, basePriceCents: number, targetLevel: number, currentLevel = 0): number | null {
-  if (!Object.hasOwn(MACHINES, code) || !Number.isSafeInteger(basePriceCents) || basePriceCents <= 0
-    || !KQ_WORKSHOP_MACHINE_TIERS.some(tier => tier.level === targetLevel)
-    || !Number.isInteger(currentLevel) || currentLevel < 0 || currentLevel > 10 || targetLevel <= currentLevel) return null;
-  let price = currentLevel === 0 ? basePriceCents : 0;
-  for (let level = Math.max(1, currentLevel); level < targetLevel; level++) price += Math.ceil(basePriceCents * level / 10);
-  return Number.isSafeInteger(price) ? price : null;
+/** Cumulative values make a direct purchase and successive upgrades cost the same. */
+export function getKqWorkshopLevelValue(code: string, level: number): number | null {
+  const offers = getKqWorkshopPriceList(code);
+  if (!offers || !Number.isInteger(level) || level < 0 || level > 10) return null;
+  if (level === 0) return 0;
+  const [economy, standard, premium] = offers.map(offer => offer.gamePriceCents);
+  if (level <= 4) return economy + Math.floor((standard - economy) * (level - 1) / 3);
+  if (level <= 7) return standard + Math.floor((premium - standard) * (level - 4) / 3);
+  let value = premium;
+  for (let previous = 7; previous < level; previous++) value += Math.ceil(economy * previous / 10);
+  return value;
+}
+
+export function getKqWorkshopTierPrice(code: string, targetLevel: number, currentLevel = 0): number | null {
+  if (!KQ_WORKSHOP_MACHINE_TIERS.some(tier => tier.level === targetLevel) || targetLevel <= currentLevel) return null;
+  const target = getKqWorkshopLevelValue(code, targetLevel);
+  const owned = getKqWorkshopLevelValue(code, currentLevel);
+  return target === null || owned === null ? null : target - owned;
 }
 
 /** Presentation only: no branded specification changes the simulated machine. */

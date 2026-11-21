@@ -501,6 +501,27 @@ export function createInteriorObjectArt(object: InteriorObject, room?: InteriorR
     case "storage": storage(a, object, w, d); break;
     case "bookshelf": storage(a, object, w, d, true); break;
     case "workbench": machine(a, object, w, d); break;
+    case "handling": {
+      if (object.deviceCode === "SIM-LOGISTICS-03") {
+        table(a, .96, .68);
+        a.box(.42, .62, .56, .21, .55, 0, "blue");
+        a.box(.2, .03, .035, .21, .75, .295, "steel");
+      } else if (object.deviceCode === "SIM-LOGISTICS-02") {
+        a.box(.55, .04, .42, 0, .08, .12, "slate");
+        for (const x of [-.23, .23]) {
+          a.cylinder(.13, .075, x * 1.3, .14, -.12, "ink", .13, [0, 0, Math.PI / 2]);
+          a.rod([x, .1, -.03], [x, 1.08, -.2], .027, "gold");
+        }
+        a.rod([-.23, 1.08, -.2], [.23, 1.08, -.2], .032, "ink");
+      } else {
+        for (const h of [.19, .49, .79]) a.box(.85, .07, .51, 0, h, 0, "slate");
+        for (const x of [-.38, .38]) for (const z of [-.21, .21]) {
+          a.rod([x, .12, z], [x, .87, z], .024, "steel");
+          a.cylinder(.07, .04, x, .07, z, "ink", .07, [0, 0, Math.PI / 2]);
+        }
+      }
+      break;
+    }
     case "character": character(a, object); break;
     case "desk":
       table(a, w, d);

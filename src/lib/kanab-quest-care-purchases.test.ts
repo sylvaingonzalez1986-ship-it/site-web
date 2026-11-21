@@ -10,6 +10,11 @@ describe("care purchase register contract", () => {
     expect(isKqCarePurchasesPage(page)).toBe(true);
     expect(isKqCarePurchasesPage({ ...page, items: [], totalCount: 0, totalPaidCents: 0 })).toBe(true);
   });
+  it("accepts a pack bought from the warehouse in the same paginated register", () => {
+    const receipt = { ...page.items[0], id: "warehouse:00000000-0000-4000-8000-000000000002", productCode: "CARE-IRON", amountCents: 1390 };
+    expect(isKqCarePurchasesPage({ ...page, items: [receipt], totalPaidCents: 1390,
+      nextCursor: `${receipt.createdAt}|${receipt.id}` })).toBe(true);
+  });
   it.each([null, {}, { ...page, items: undefined }, { ...page, totalPaidCents: 0 }, { ...page, totalCount: 0 },
     { ...page, items: [page.items[0], page.items[0]], totalCount: 2, totalPaidCents: 2400 },
     { ...page, items: [{ ...page.items[0], areaM2: 0 }] }, { ...page, items: [{ ...page.items[0], kind: "pbi" }] }])("rejects incomplete or misleading history %#", value => {

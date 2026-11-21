@@ -1,15 +1,29 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
-import { parseSupportEuros, supportEuros, type AdminSupportDashboard, type AdminSupportRow } from "@/lib/support-campaign";
+import { parseSupportEuros, supportEuros, supportProviderLabel, type AdminSupportDashboard, type AdminSupportRow } from "@/lib/support-campaign";
 import { supportRequest } from "@/lib/support-client";
 
 const button = "btn-cartoon btn-secondary text-sm";
 const input = "min-h-11 w-full min-w-0 rounded border-2 border-ink bg-white p-2 text-ink";
 
+const paymentIssues: Record<string, string> = {
+  creation_uncertain: "Création de la session à vérifier",
+  invoice_id_mismatch: "Identifiant de facture inattendu",
+  invoice_reference_mismatch: "Référence de soutien incohérente",
+  invoice_purpose_mismatch: "Origine de la facture incohérente",
+  invoice_amount_mismatch: "Montant ou devise incohérents",
+  invoice_status_unknown: "État de la facture non reconnu",
+  invoice_network_mismatch: "Réseau de paiement incohérent",
+  invoice_timing_unverified: "Dates de paiement ou d’expiration non vérifiées",
+  paid_after_expiry: "Paiement confirmé après expiration",
+};
+
 function SupportRow({ row, busy, mutate }: { row: AdminSupportRow; busy: boolean; mutate: (body: Record<string, unknown>) => Promise<boolean> }) {
+  const isSwiss = row.provider === "swiss-bitcoin-pay";
+  const paymentLabel = isSwiss ? "Facture Swiss Bitcoin Pay à vérifier" : "Transaction Viva à vérifier (paiement ou remboursement)";
   const [fee, setFee] = useState(row.feesCents === null ? "" : String(row.feesCents / 100));
   const [reference, setReference] = useState(row.feeReference ?? "");
-  const [transaction, setTransaction] = useState(row.transactionId ?? "");
+  const [transaction, setTransaction] = useState(row.invoiceId ?? row.transactionId ?? "");
   const [error, setError] = useState("");
   async function saveFees(event: FormEvent) {
     event.preventDefault(); setError("");
@@ -19,30 +33,37 @@ function SupportRow({ row, busy, mutate }: { row: AdminSupportRow; busy: boolean
   }
   return <details className="min-w-0 border-b border-ink/30 py-4">
     <summary className="cursor-pointer break-words font-semibold">
-      {row.pseudonym} · {supportEuros(row.amountCents)} · {row.reviewRequired ? "À rapprocher" : row.paidAt ? row.refundedCents >= row.capturedCents ? "Remboursé" : "Confirmé" : row.checkoutState === "cancelled" ? "Session annulée" : "En attente"}
+      {row.pseudonym} · {supportEuros(row.amountCents)} · {supportProviderLabel(row.provider)} · {row.reviewRequired ? "À rapprocher" : row.paidAt ? row.refundedCents >= row.capturedCents ? "Remboursé" : "Confirmé" : row.checkoutState === "cancelled" ? "Session annulée" : row.checkoutState === "expired" ? "Session expirée" : "En attente"}
       <span className="ml-2 text-xs font-normal">{new Date(row.createdAt).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}</span>
     </summary>
     <div className="mt-3 grid min-w-0 gap-4 text-sm">
       <dl className="grid grid-cols-1 gap-2 break-all sm:grid-cols-2">
         <div><dt className="font-semibold">Référence soutien</dt><dd>{row.id}</dd></div>
-        <div><dt className="font-semibold">Source Viva</dt><dd>{row.sourceCode}</dd></div>
-        <div><dt className="font-semibold">Commande Viva</dt><dd>{row.orderCode ?? "Non rattachée"}</dd></div>
-        <div><dt className="font-semibold">Transaction encaissée</dt><dd>{row.transactionId ?? "Non confirmée"}</dd></div>
+        {isSwiss ? <div><dt className="font-semibold">Facture Swiss Bitcoin Pay</dt><dd>{row.invoiceId ?? "Non rattachée"}</dd></div> : <>
+          <div><dt className="font-semibold">Source Viva</dt><dd>{row.sourceCode}</dd></div>
+          <div><dt className="font-semibold">Commande Viva</dt><dd>{row.orderCode ?? "Non rattachée"}</dd></div>
+          <div><dt className="font-semibold">Transaction encaissée</dt><dd>{row.transactionId ?? "Non confirmée"}</dd></div>
+        </>}
         <div><dt className="font-semibold">Confirmé le</dt><dd>{row.paidAt ? new Date(row.paidAt).toLocaleString("fr-FR", { timeZone: "Europe/Paris" }) : "En attente"}</dd></div>
         <div><dt className="font-semibold">Remboursements vérifiés</dt><dd>{supportEuros(row.refundedCents)}</dd></div>
+        {row.providerStatus && <div><dt className="font-semibold">État du prestataire</dt><dd>{row.providerStatus}</dd></div>}
+        {row.providerIssue && <div><dt className="font-semibold">Anomalie</dt><dd>{paymentIssues[row.providerIssue] ?? row.providerIssue}</dd></div>}
       </dl>
       <p>Affichage public : {row.hidden || !row.publishName ? "Anonyme" : row.pseudonym} · {row.hidden || !row.publishAmount ? "montant masqué" : "montant visible"}.</p>
       <div><button type="button" className={button} disabled={busy} onClick={() => void mutate({ action: "visibility", id: row.id, hidden: !row.hidden })}>{row.hidden ? "Rétablir les préférences du donateur" : "Masquer le pseudo et le montant"}</button></div>
       {row.paidAt && <form onSubmit={saveFees} className="grid items-end gap-3 sm:grid-cols-3">
-        <label>Frais réels Viva en euros<input className={input} inputMode="decimal" value={fee} onChange={event => setFee(event.target.value)} required disabled={busy} /></label>
+        <label>Frais réels en euros<input className={input} inputMode="decimal" value={fee} onChange={event => setFee(event.target.value)} required disabled={busy} /></label>
         <label>Référence du relevé<input className={input} value={reference} maxLength={200} onChange={event => setReference(event.target.value)} required disabled={busy} /></label>
         <button className={button} disabled={busy}>Enregistrer les frais</button>
         <p className="sm:col-span-3">{row.feesCents === null ? "Frais inconnus : le net n’est pas calculé." : `Frais rapprochés : ${supportEuros(row.feesCents)}. Chaque correction est conservée dans le journal administratif.`}</p>
       </form>}
-      <form onSubmit={event => { event.preventDefault(); void mutate({ action: "reconcile", id: row.id, transactionId: transaction.trim() }); }} className="grid items-end gap-3 sm:grid-cols-[1fr_auto]">
-        <label>Transaction Viva à vérifier (paiement ou remboursement)<input className={input} value={transaction} onChange={event => setTransaction(event.target.value)} required disabled={busy} /></label>
-        <button className={button} disabled={busy}>Vérifier auprès de Viva</button>
+      <form onSubmit={event => { event.preventDefault(); void mutate({ action: "reconcile", id: row.id, [isSwiss ? "invoiceId" : "transactionId"]: transaction.trim() }); }} className="grid items-end gap-3 sm:grid-cols-[1fr_auto]">
+        <label>{paymentLabel}<input className={input} value={transaction} onChange={event => setTransaction(event.target.value)} required disabled={busy} /></label>
+        <button className={button} disabled={busy}>Vérifier auprès du prestataire</button>
       </form>
+      {row.invoiceId && row.providerIssue === "paid_after_expiry" && row.reviewRequired && <div>
+        <button type="button" className={button} disabled={busy} onClick={() => void mutate({ action: "ack-late", id: row.id, invoiceId: row.invoiceId })}>Confirmer le rapprochement du versement tardif</button>
+      </div>}
       {error && <p role="alert" className="font-semibold text-red-800">{error}</p>}
     </div>
   </details>;
@@ -90,7 +111,7 @@ export function AdminSupportPanel() {
   const totals = dashboard?.totals;
   const disabled = busy || loading;
   return <section className="cartoon-border min-w-0 bg-cream p-4 sm:p-6" aria-busy={disabled}>
-    <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-display text-3xl">Soutiens aux producteurs</h2><p className="mt-2 text-sm">Cagnotte, versements et rapprochement Viva. Les ventes restent dans leur propre registre.</p></div><button className={button} disabled={disabled} onClick={() => void load()}>Recharger</button></div>
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-display text-3xl">Soutiens aux producteurs</h2><p className="mt-2 text-sm">Cagnotte, versements et rapprochement des paiements.</p></div><button className={button} disabled={disabled} onClick={() => void load()}>Recharger</button></div>
     {error && <p role="alert" className="mt-4 rounded border-2 border-ink bg-[#fff0e5] p-3">{error}</p>}
     {notice && <p role="status" className="mt-4 font-semibold">{notice}</p>}
     {loading && !dashboard && <p role="status" className="mt-4">Chargement des soutiens…</p>}
@@ -98,6 +119,7 @@ export function AdminSupportPanel() {
       <form className="card-cartoon grid gap-4 bg-white p-4" onSubmit={saveCampaign}>
         <h3 className="font-display text-2xl">La cagnotte</h3>
         {!dashboard.configured && <p className="font-semibold text-red-800">{dashboard.configurationError}</p>}
+        {dashboard.providers.length > 0 && <p className="text-sm">Prestataires configurés · {dashboard.providers.map(supportProviderLabel).join(", ")}</p>}
         <label className="max-w-sm">Objectif en euros (facultatif)<input className={input} value={goal} inputMode="decimal" onChange={event => setGoal(event.target.value)} disabled={disabled} /><small>Sans objectif, le cumul reste visible sans jauge ni pourcentage.</small></label>
         <label className="flex items-center gap-3"><input type="checkbox" checked={active} onChange={event => setActive(event.target.checked)} disabled={disabled || !dashboard.configured} />Accepter de nouveaux soutiens</label>
         <p className="text-sm">Une fermeture conserve les paiements déjà engagés et leur suivi. Les soutiens sont sans contrepartie et reçus par la SASU Les Champs Bretons.</p>
@@ -107,14 +129,14 @@ export function AdminSupportPanel() {
         <label>Créés à partir du<input className={input} type="date" value={from} onChange={event => { setPage(0); setFrom(event.target.value); }} disabled={busy} /></label>
         <label>Jusqu’au<input className={input} type="date" value={to} onChange={event => { setPage(0); setTo(event.target.value); }} disabled={busy} /></label>
         <a className={button} href={`/api/admin/support?${query}&format=csv`} download>Exporter les soutiens CSV</a>
-        <small className="basis-full">Période de création des soutiens, heure de Paris. Les remboursements et frais affichés sont leur cumul connu à ce jour.</small>
+        <small className="basis-full">Période de création des soutiens, heure de Paris. Le registre indique les montants de référence en euros. Les relevés Swiss Bitcoin Pay indiquent les règlements effectifs. Les remboursements et frais affichés sont leur cumul connu à ce jour.</small>
       </div>
       {totals && <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[['Encaissé', supportEuros(totals.capturedCents)], ['Remboursé', supportEuros(totals.refundedCents)], ['Frais connus', supportEuros(totals.feesCents)], ['Net après frais', totals.missingFees || totals.reviewCount ? 'À compléter' : supportEuros(totals.capturedCents - totals.refundedCents - totals.feesCents)]].map(([label, value]) => <div key={label} className="card-cartoon min-w-0 break-words bg-white p-3"><p className="text-sm">{label}</p><strong className="text-xl">{value}</strong></div>)}
       </div>}
       {Boolean(totals?.missingFees || totals?.reviewCount) && <p>{totals?.missingFees} soutien(s) avec frais à renseigner · {totals?.reviewCount} versement(s) à rapprocher. Les montants inconnus ne sont pas comptés comme des frais nuls.</p>}
       <div><h3 className="font-display text-2xl">Registre des soutiens</h3><p className="my-2 text-sm">{dashboard.total} fiche(s) dans la période. Une fiche en attente n’est pas un versement encaissé.</p>
-        {dashboard.rows.map(row => <SupportRow key={`${row.id}:${row.feeUpdatedAt}:${row.hidden}`} row={row} busy={disabled} mutate={mutate} />)}
+        {dashboard.rows.map(row => <SupportRow key={`${row.id}:${row.feeUpdatedAt}:${row.hidden}:${row.invoiceId}:${row.transactionId}`} row={row} busy={disabled} mutate={mutate} />)}
         {!dashboard.rows.length && <p>Aucun soutien dans cette période.</p>}
         <div className="mt-4 flex flex-wrap items-center gap-3"><button className={button} disabled={disabled || page === 0} onClick={() => setPage(value => value - 1)}>Précédents</button><span>Page {page + 1}</span><button className={button} disabled={disabled || (page + 1) * 50 >= dashboard.total} onClick={() => setPage(value => value + 1)}>Suivants</button></div>
       </div>

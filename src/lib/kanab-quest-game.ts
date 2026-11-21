@@ -5,6 +5,8 @@ import { summarizeKqTentEquipment } from "./kanab-quest-production";
 import { isKqWarehouseRunSnapshot, type KqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { getKqCareProblemPlants, sameKqCareSector } from "./kanab-quest-care-spatial";
 import { calculateKqWarehouseHarvest, quoteKqWarehouseEnergy } from "./kanab-quest-warehouse-run";
+import { getKqWarehousePreparationEffects, type KqWarehouseRunPreparations } from "./kanab-quest-warehouse-preparations";
+import { getKqWarehouseProtectedTheftLoss, type KqWarehouseSecurityDecision } from "./kanab-quest-warehouse-security";
 import { applyKqBuddieYield, isKqBuddieCultivationProfile, type KqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
 import type { KqCampaign } from "./kanab-quest-campaign";
 import { getKqHarvestTierProgress, type KqLegendaryRequirements } from "./kanab-quest-harvest-tiers";
@@ -130,6 +132,7 @@ export type KqEquipmentRunProfile = ReturnType<typeof summarizeKqEquipmentLoadou
 export type KqStageDecision = {
   version: 1 | 2;
   care?: KqCareState;
+  warehouseSecurity?: KqWarehouseSecurityDecision;
   xp: number;
   quality: number;
   pressure: number;
@@ -150,6 +153,7 @@ export type KqStageDecision = {
 
 export type KqGameState = {
   warehouse?: KqWarehouseRunSnapshot;
+  warehousePreparations?: KqWarehouseRunPreparations;
   rulesVersion?: 2 | 3;
   /** Absent on existing cultures, which keep their original harvest scale. */
   harvestTierVersion?: 2;
@@ -1262,7 +1266,15 @@ function endKqDeadCulture(state: KqGameState): KqGameState {
   };
 }
 
-export function resolveKqStage(state: KqGameState): KqGameState {
+export function getKqTheftLoss(outcome: KqOutcome) {
+  return outcome === "failure" ? 35 : outcome === "fragile" ? 15 : 0;
+}
+
+export function getKqTheftZones(state: KqGameState) {
+  return state.campaign?.members.flatMap(member => member.warehouse.zones) ?? state.warehouse?.zones ?? [];
+}
+
+export function resolveKqStage(state: KqGameState, warehouseSecurity?: KqWarehouseSecurityDecision): KqGameState {
   if (state.phase !== "rolled" || !state.dice) return state;
   const situation = getKqSituation(state);
   const result = previewKqResolution(state);
@@ -1346,9 +1358,9 @@ export function resolveKqStage(state: KqGameState): KqGameState {
   const theftProtected = (state.equipment?.unlocks.includes("theft-protection") ?? false)
     || state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.effect === "theft-guard")
     || heritage?.effect === "harvest-theft-shield";
-  const theftLoss = situation.incident === "crop-theft" && !theftProtected
-    ? effectiveOutcome === "failure" ? 35 : effectiveOutcome === "fragile" ? 15 : 0
-    : 0;
+  const rawTheftLoss = situation.incident === "crop-theft" && !theftProtected ? getKqTheftLoss(effectiveOutcome) : 0;
+  const security = state.warehouse && rawTheftLoss > 0 ? warehouseSecurity : undefined;
+  const theftLoss = security ? getKqWarehouseProtectedTheftLoss(security, getKqTheftZones(state), rawTheftLoss) : rawTheftLoss;
   const buildingHarvestLosses = buildingScope ? getKqBuildingIncidentLosses(state, situation, effectiveOutcome) : undefined;
   const previousBuildingLosses = buildingScope ? getKqBuildingHarvestLosses(state) : {};
   const nextBuildingLosses = Object.fromEntries(Object.entries(previousBuildingLosses).map(([building, loss]) =>
@@ -1376,7 +1388,8 @@ export function resolveKqStage(state: KqGameState): KqGameState {
           ? "Gros molosse : récolte intégralement protégée."
           : `${state.equipment?.codes.map(getKqEquipmentDefinition).find((item) => item?.category === "security")?.name ?? "Sécurité"} : récolte intégralement protégée.`,
     ] : []),
-    ...(!buildingScope && theftLoss > 0 ? [`Renard à deux pattes : -${theftLoss} % sur le poids final.`] : []),
+    ...(!buildingScope && theftLoss > 0 && theftLoss === rawTheftLoss ? [`Renard à deux pattes : -${theftLoss} % sur le poids final.`] : []),
+    ...(security && theftLoss < rawTheftLoss ? [`Sécurité de l’entrepôt : la perte liée au vol passe de ${rawTheftLoss} % à ${theftLoss} %${state.campaign ? " sur la surface de la campagne" : ""}.`] : []),
   ];
   const heritageEffectNotices = heritageNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), state.effectNotices);
   const nextNotices = incidentNotices.reduce((notices, notice) => appendKqEffectNotice(notices, notice), heritageEffectNotices);
@@ -1410,6 +1423,7 @@ export function resolveKqStage(state: KqGameState): KqGameState {
       decision: {
         version: state.rulesVersion === 3 ? 2 : 1,
         ...(state.rulesVersion === 3 && state.care ? { care: structuredClone(state.care) } : {}),
+        ...(security ? { warehouseSecurity: security } : {}),
         xp: state.xp,
         quality: state.quality,
         pressure: state.pressure,
@@ -1511,7 +1525,7 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
     : calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages);
   const projectedQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
   const tierProgress = getKqHarvestTierProgress(projectedQuality, state);
-  const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
+  const harvestLossPercent = getKqProjectedHarvestLoss(state);
   const harvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
     : calculateKqInstallationHarvest(state, projectedQuality, successfulStages, harvestLossPercent).finalGrams;
@@ -1532,11 +1546,25 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
   };
 }
 
+function getKqProjectedHarvestLoss(state: KqGameState) {
+  let loss = state.harvestLossPercent ?? 0;
+  if (state.campaign && state.warehouse?.version === 2) {
+    for (const entry of state.history) {
+      const security = entry.decision?.warehouseSecurity;
+      if (security) loss += getKqWarehouseProtectedTheftLoss(security, state.warehouse.zones, getKqTheftLoss(entry.outcome)) - (entry.harvestLossPercent ?? 0);
+    }
+  }
+  return Math.max(0, Math.min(80, loss));
+}
+
 /** Preserve each tent's yield cap and rounding, including legacy identical installations. */
 function calculateKqInstallationHarvest(state: KqGameState, quality: number, successfulStages: number, lossPercent: number) {
   if (state.warehouse) {
+    const preparation = state.warehouse.zoneId ? state.warehousePreparations?.[state.warehouse.zoneId] : undefined;
+    const effects = getKqWarehousePreparationEffects(state.warehouse.activeAreaM2, preparation);
     const harvest = calculateKqWarehouseHarvest({ warehouse: state.warehouse, quality, successfulStages,
-      inputBonusPercent: state.care?.yieldBonusPercent ?? 0, healthLossPercent: state.care?.yieldLossPercent ?? 0,
+      inputBonusPercent: (state.care?.yieldBonusPercent ?? 0) + effects.yieldBonusPercent,
+      healthLossPercent: state.care?.yieldLossPercent ?? 0,
       incidentLossPercent: lossPercent });
     return { ...harvest, beforeCultivationGrams: harvest.finalGrams,
       finalGrams: applyKqBuddieYield(harvest.finalGrams, state.cultivationProfile) };
@@ -1584,7 +1612,7 @@ export function getKqHarvestBreakdown(state: KqGameState): KqHarvestBreakdown {
     ?? calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages));
   const finalQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
   const quantityPercent = state.equipment?.quantityPercent ?? 0;
-  const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
+  const harvestLossPercent = getKqProjectedHarvestLoss(state);
   const harvest = cultureDead ? { grossGrams: 0, afterIncidentGrams: 0, beforeCultivationGrams: 0, finalGrams: 0, tentHarvests: [] }
     : calculateKqInstallationHarvest(state, finalQuality, successfulStages, harvestLossPercent);
   const { grossGrams: grossHarvestGrams, afterIncidentGrams, finalGrams: calculatedFinalGrams } = harvest;

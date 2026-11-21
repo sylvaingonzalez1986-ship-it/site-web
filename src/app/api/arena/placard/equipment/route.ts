@@ -37,8 +37,11 @@ export async function GET(request: Request) {
       getKqStorageSnapshot(session.customerId),
     ]);
     if (equipment.status === "rejected") throw equipment.reason;
+    const storageSnapshot = storage.status === "fulfilled" ? storage.value : null;
     return NextResponse.json({ ...equipment.value,
-      storageCapacity: storage.status === "fulfilled" ? storage.value.capacity : null,
+      storageCapacity: storageSnapshot?.capacity ?? null,
+      businessClock: storageSnapshot?.businessStartedAt
+        ? { startedAt: storageSnapshot.businessStartedAt, serverNow: storageSnapshot.serverNow } : null,
     });
   } catch (error) {
     const failure = publicEquipmentError(error, "Catalogue matériel indisponible.");
@@ -63,11 +66,12 @@ export async function POST(request: Request) {
   try {
     const boundedBody = await readRequestBody(request);
     if (!boundedBody.ok) return boundedBody.response;
-    const payload = await boundedBody.body.json() as { requestKey?: string; equipmentCodes?: string[]; expectedUnits?: number; tentNumber?: number };
+    const payload = await boundedBody.body.json() as { requestKey?: string; equipmentCodes?: string[]; expectedPriceCents?: number; expectedUnits?: number; tentNumber?: number };
     return NextResponse.json(await purchaseKqDurableEquipment({
       userId: session.customerId,
       requestKey: String(payload.requestKey ?? ""),
       equipmentCodes: Array.isArray(payload.equipmentCodes) ? payload.equipmentCodes : [],
+      ...(payload.expectedPriceCents !== undefined ? { expectedPriceCents: payload.expectedPriceCents } : {}),
       expectedUnits: payload.expectedUnits ?? 1,
       ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
     }));
@@ -130,6 +134,7 @@ export async function PATCH(request: Request) {
         requestKey: String(payload.requestKey ?? ""),
         equipmentCode: String(payload.equipmentCode ?? ""),
         expectedLevel: payload.expectedLevel ?? 0,
+        ...(payload.expectedPriceCents !== undefined ? { expectedPriceCents: payload.expectedPriceCents } : {}),
         expectedUnits: payload.expectedUnits ?? 1,
         ...(payload.tentNumber !== undefined ? { tentNumber: payload.tentNumber } : {}),
       }));

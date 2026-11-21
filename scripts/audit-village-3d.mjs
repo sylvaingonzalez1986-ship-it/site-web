@@ -5,7 +5,6 @@ import { relative, resolve } from 'node:path';
 import { createServer, transformWithOxc } from 'vite';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
-import { OrthographicCamera, Vector3 } from 'three';
 
 const lifecycle = process.argv.includes('--interiors-lifecycle');
 const interiors = process.argv.includes('--interiors') || process.argv.includes('--interiors-builder') || lifecycle;
@@ -16,8 +15,10 @@ const life = process.argv.includes('--life');
 const npcs = process.argv.includes('--npcs');
 const characterQuality = process.argv.includes('--character-quality');
 const worldFinish = process.argv.includes('--world-finish');
+const calendar = process.argv.includes('--calendar');
 const port = Number(process.env.VILLAGE_PREVIEW_PORT ?? 3618), origin = `http://127.0.0.1:${port}`;
 const modules = {
+  'audit-village-camera': 'export { _roots as fiberRoots } from "@react-three/fiber"; export { Vector3 } from "three";',
   entry: `import React from 'react';import {createRoot} from 'react-dom/client';import {VillagePrototype} from '/src/components/placard/world/VillagePrototype';createRoot(document.getElementById('main-content')).render(<VillagePrototype/>);`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,unoptimized,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
   'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
@@ -26,6 +27,11 @@ const modules = {
 };
 if (life && !process.argv.includes('--baseline')) modules.entry = modules.entry.replace('render(<VillagePrototype/>)', 'render(new URLSearchParams(location.search).has("strict") ? <React.StrictMode><VillagePrototype/></React.StrictMode> : <VillagePrototype/>)');
 if (npcs || characterQuality) modules.entry = (await import('./audit-village-npcs.mjs')).npcAuditEntry;
+if (calendar) modules.entry = `import React from 'react';import {createRoot} from 'react-dom/client';
+  import {VillagePrototype} from '/src/components/placard/world/VillagePrototype';
+  import {KqQuarterTeamAccess} from '/src/components/placard/KqQuarterTeamAccess';
+  import {KqStaffRecoveryProvider} from '/src/components/placard/KqStaffRecoveryContext';
+  const noop=()=>{};createRoot(document.getElementById('main-content')).render(<KqStaffRecoveryProvider ownerId="world-audit-player"><VillagePrototype onNavigate={noop} onOpenOverview={noop}><KqQuarterTeamAccess onAvailabilityChange={noop}/></VillagePrototype></KqStaffRecoveryProvider>);`;
 if (studio) modules.entry = (await import('./audit-chanvrier-studio.mjs')).entry;
 if (worldFinish || (characterQuality && process.argv.includes('--timing-only') && process.argv.includes('--human-finish'))) {
   const { entry } = await import('./audit-village-finish.mjs');
@@ -83,6 +89,8 @@ if (preview) {
   console.log(`Village 3D : ${origin}`);
   const stop = async () => { await server.close(); process.exit(0); };
   process.on('SIGINT', stop); process.on('SIGTERM', stop);
+} else if (calendar) {
+  try { await (await import('./audit-village-calendar.mjs')).auditVillageCalendar(origin, server); } finally { await server.close(); }
 } else if (studio) {
   try { await (await import('./audit-chanvrier-studio.mjs')).run({ origin, output }); } finally { await server.close(); }
 } else if (worldFinish) {
@@ -198,12 +206,12 @@ if (preview) {
       const panel = document.querySelector('[data-building]');
       await Promise.all((panel?.getAnimations({ subtree: true }) ?? []).map(animation => animation.finished.catch(() => {})));
     }).then(waitCamera);
-    assert.equal(await page.$$eval(destinations, nodes => nodes.length), 8);
+    assert.equal(await page.$$eval(destinations, nodes => nodes.length), 9);
     assert.equal(await page.$('[data-village-prototype] footer'), null);
     assert.equal(await page.$('[aria-label="Choisir un lieu du quartier"]'), null);
     assert.equal(await page.$eval('canvas', node => Math.abs(node.getBoundingClientRect().bottom - innerHeight) < 2), true);
     await page.screenshot({ path: resolve(output, 'desktop.png') });
-    report.cases.push('Full-height village without bottom bar; eight building controls live on the map');
+    report.cases.push('Full-height village with nine building controls on the map');
     const menuButton = '[aria-label="Ouvrir le menu du quartier"]', menuDialog = 'dialog[aria-label="Menu de Kanab Quest"][open]';
     const menuKeys = ['hub', 'game', 'harvests', 'workshop', 'market', 'social', 'staff', 'treasury', 'school', 'missions', 'shop'];
     const waitMenuClosed = async () => {
@@ -238,14 +246,15 @@ if (preview) {
     await page.waitForFunction(() => window.__villageNavigations?.at(-1) === '/arene/placard?guide=1');
     report.cases.push('Village side menu with all eleven entries, tutorial, keyboard, Escape/Back/backdrop, focus return and desktop resizing');
     async function projectWorldPoint(position) {
+      await page.evaluate(() => new Promise(done => requestAnimationFrame(done)));
       await waitCamera();
-      const rect = await page.$eval('canvas', node => { const r = node.getBoundingClientRect(); return { left: r.left, top: r.top, width: r.width, height: r.height }; });
-      const camera = new OrthographicCamera(-rect.width / 2, rect.width / 2, rect.height / 2, -rect.height / 2, 0.1, 180);
-      camera.position.set(1.5 + Math.sin(Math.PI / 4) * 46, 33.727, 4 + Math.cos(Math.PI / 4) * 46);
-      camera.zoom = Math.min(rect.width / 38, rect.height / 30);
-      camera.lookAt(1.5, 1.2, 4); camera.updateProjectionMatrix(); camera.updateMatrixWorld();
-      const point = new Vector3(...position).project(camera);
-      return { x: rect.left + (point.x + 1) * rect.width / 2, y: rect.top + (1 - point.y) * rect.height / 2 };
+      return page.evaluate(async position => {
+        const { fiberRoots, Vector3 } = await import('/@id/__x00__audit-village-camera');
+        const canvas = document.querySelector('canvas[data-village-ready="true"]');
+        const { camera } = fiberRoots.get(canvas).store.getState();
+        const rect = canvas.getBoundingClientRect(), point = new Vector3(...position).project(camera);
+        return { x: rect.left + (point.x + 1) * rect.width / 2, y: rect.top + (1 - point.y) * rect.height / 2 };
+      }, position);
     }
     const farmPosition = await page.evaluate(async () => {
       const { VILLAGE_PLACES, villagePlacePosition } = await import('/src/components/placard/world/village-layout.ts');
@@ -298,10 +307,10 @@ if (preview) {
     assert.equal(feedbackRequests.length, 0, 'Mailbox history must load only when opened');
     assert.equal(await page.$('[data-map-mailbox], [data-village-prototype] img[src*="mailbox"]'), null, 'No 2D mailbox artwork floats over the village');
     assert.equal(await page.$eval(mailboxButton, node => getComputedStyle(node).opacity === '0' && getComputedStyle(node).pointerEvents === 'none'), true, 'The keyboard mailbox control must not overlay the scene or capture pointer hits');
-    // Project a point on the real model's front face, then click the WebGL canvas.
+    // Project the centre of the mailbox body, then click the WebGL canvas.
     const mailboxPosition = await page.evaluate(async () => {
       const { VILLAGE_MAILBOX_POSITION } = await import('/src/components/placard/world/village-layout.ts');
-      return [VILLAGE_MAILBOX_POSITION[0], VILLAGE_MAILBOX_POSITION[1] + 1.7, VILLAGE_MAILBOX_POSITION[2] + 0.67];
+      return [VILLAGE_MAILBOX_POSITION[0], VILLAGE_MAILBOX_POSITION[1] + 1.75, VILLAGE_MAILBOX_POSITION[2]];
     });
     const { x: mx, y: my } = await projectWorldPoint(mailboxPosition);
     assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.tagName, { x: mx, y: my }), 'CANVAS', 'Pointer reaches the real mailbox model');
@@ -309,8 +318,8 @@ if (preview) {
     await page.mouse.move(mx, my); await page.mouse.down(); await page.mouse.move(mx + 40, my + 10, { steps: 6 }); await page.mouse.up();
     assert.equal(await page.$(mailboxDialog), null, 'Camera dragging must not open the mailbox');
     await page.click('[aria-label="Recentrer la vue isométrique"]');
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    await page.mouse.click(mx, my);
+    const resetMailboxPoint = await projectWorldPoint(mailboxPosition);
+    await page.mouse.click(resetMailboxPoint.x, resetMailboxPoint.y);
     await page.waitForSelector(mailboxDialog);
     await page.waitForFunction(() => document.querySelector('[data-mailbox-dialog]')?.textContent.includes('Réponse de recette : ton idée a bien été lue.'));
     assert.equal(feedbackRequests.length, 1, 'A model click opens one mailbox and fetches history once');
@@ -351,8 +360,9 @@ if (preview) {
     await page.tap(menuButton); await page.waitForSelector(menuDialog);
     assert.equal(await page.$eval(menuDialog, node => node.scrollWidth <= node.clientWidth && node.getBoundingClientRect().right <= innerWidth), true);
     await page.screenshot({ path: resolve(output, 'mobile-menu.png') });
-    await page.$eval(`${menuDialog} [data-arena-learning-trigger]`, node => node.scrollIntoView({ block: 'nearest' }));
-    assert.equal(await page.$eval(`${menuDialog} [data-arena-learning-trigger]`, node => node.getBoundingClientRect().bottom <= innerHeight), true);
+    const mobileLearning = `${menuDialog} [data-arena-learning-trigger]`;
+    await page.$eval(mobileLearning, node => node.scrollIntoView({ block: 'end', behavior: 'instant' }));
+    await page.waitForFunction(selector => document.querySelector(selector).getBoundingClientRect().bottom <= innerHeight + 1, {}, mobileLearning);
     await page.tap('[aria-label="Fermer le menu"]'); await waitMenuClosed();
     assert.equal(await page.$('[aria-label="Accès rapides de Kanab Quest"]'), null);
     report.cases.push('320px side menu opens by touch, scrolls to tutorial, closes from sticky header and keeps the village free of bottom navigation');
@@ -368,6 +378,8 @@ if (preview) {
     await tapBuildingModel('market');
     await page.waitForSelector('[data-building="market"][data-positioned]');
     await settleBubble();
+    assert(await page.$eval('[data-building="market"]', node =>
+      node.getBoundingClientRect().top >= document.querySelector('[data-village-prototype] > header').getBoundingClientRect().bottom));
     await page.screenshot({ path: resolve(output, 'mobile-commerce.png') });
     assert.equal(await page.$$eval('[data-building="market"] a', nodes => nodes.length), expectedActions[3].length);
     await page.$eval('[data-building="market"] a:last-child', node => node.scrollIntoView({ block: 'nearest' }));
@@ -434,14 +446,16 @@ if (preview) {
     await page.waitForSelector(fallback, { visible: true });
     assert.match(await page.$eval(`${fallback} [role="alert"]`, node => node.textContent), /indisponible/);
     assert.equal(await page.$(oldMap), null);
-    assert.equal(await page.$$eval(`${fallback} ${destinations}`, nodes => nodes.length), 8);
+    assert.equal(await page.$$eval(`${fallback} ${destinations}`, nodes => nodes.length), 9);
+    await page.focus(`${fallback} [data-village-building="hemp-farm"]`); await page.keyboard.press('Enter');
+    await page.waitForFunction(() => window.__villageNavigations?.at(-1) === '/arene/placard?support=1');
     const fallbackFarm = `${fallback} [data-village-building="warehouse"]`;
     await page.focus(fallbackFarm); await page.keyboard.press('Enter');
     await page.waitForSelector('[data-building="warehouse"]', { visible: true });
     assert.deepEqual(await page.$$eval('[data-building="warehouse"] a', nodes => nodes.map(node => node.getAttribute('href'))), farmLinks);
     await page.click('[aria-label="Fermer les activités du bâtiment"]');
     await page.waitForFunction(selector => document.activeElement?.matches(selector), {}, fallbackFarm);
-    report.cases.push('After context loss the HTML directory keeps all eight buildings and their activities keyboard-accessible');
+    report.cases.push('After context loss the HTML directory keeps eight activity menus and direct producer support keyboard-accessible');
     await page.tap(mailboxButton); await page.waitForSelector(mailboxDialog);
     await page.waitForFunction(() => document.querySelector('[data-mailbox-dialog]')?.textContent.includes('Courrier de recette'));
     await page.tap('[aria-label="Fermer la boîte aux lettres"]'); await page.waitForSelector(mailboxDialog, { hidden: true });

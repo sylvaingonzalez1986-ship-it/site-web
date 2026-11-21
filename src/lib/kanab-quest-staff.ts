@@ -1,6 +1,6 @@
 import { KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS } from "./kanab-quest-business";
-import { getKqWorkerProcessingEnd } from "./kanab-quest-team-work";
-import { getKqStaffSharedTrimQuote, getKqStaffTrimQuote, KQ_STAFF_TRIMMER_COST_CENTS } from "./kanab-quest-staff-trim";
+import { getKqWorkerBusyUntil } from "./kanab-quest-team-work";
+import { getKqSharedTrimStartAt, getKqStaffSharedTrimQuote, getKqStaffTrimQuote, KQ_STAFF_MAX_TRIM_RATE, KQ_STAFF_TRIMMER_COST_CENTS } from "./kanab-quest-staff-trim";
 import { advanceKqSharedTrim, getKqSharedTrimLots } from "./kanab-quest-staff-trim-queue";
 import { advanceKqStaffProduction, configureKqStaffProduction, getKqProductionCashDelta, isKqStaffProductionState } from "./kanab-quest-staff-production";
 import type { KqProductionStep } from "./kanab-quest-staff-production-types";
@@ -226,7 +226,11 @@ export function parseKqStaffCommand(raw: unknown): KqStaffCommand {
     case "buy-trimmer": return { action: "buy-trimmer", expectedCostCents: num("expectedCostCents") };
     case "trim": {
       const mode = str("mode")!; assert(mode === "manual" || mode === "machine", "Choix de trim invalide.");
-      return { action: "trim", employeeId: body.employeeId === null ? null : employeeId(), ...(body.flowerId !== undefined ? { flowerId: str("flowerId")! } : {}), mode, hours: num("hours"), expectedCostCents: num("expectedCostCents") };
+      const expectedRate = body.expectedRate;
+      assert(expectedRate === undefined || typeof expectedRate === "number" && Number.isFinite(expectedRate)
+        && expectedRate >= 1 && expectedRate <= KQ_STAFF_MAX_TRIM_RATE, "Cadence de trim invalide.");
+      return { action: "trim", employeeId: body.employeeId === null ? null : employeeId(), ...(body.flowerId !== undefined ? { flowerId: str("flowerId")! } : {}), mode, hours: num("hours"), expectedCostCents: num("expectedCostCents"),
+        ...(expectedRate !== undefined ? { expectedRate } : {}) };
     }
     default: throw new Error("Action du personnel inconnue.");
   }
@@ -493,7 +497,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     number(command.hours, 0.5, 7, 0.5);
     assert(!state.tasks.some(task => task.employeeId === employee.id && task.day === calendar.day && (task.cultureShift || task.processingShift)), "Ce salarié accompagne déjà les cultures jouées aujourd’hui. Prévois la production autonome un autre jour.");
     consume(command.hours);
-    const queuedUntil = Math.max(slotStartAt(raw.serverNow), getKqWorkerProcessingEnd(raw.context, employee.id), ...state.tasks.filter(task => task.employeeId === employee.id && task.status === "running").map(task => slotStartAt(task.completesAt)));
+    const queuedUntil = Math.max(slotStartAt(raw.serverNow), getKqWorkerBusyUntil(raw.context, employee.id), ...state.tasks.filter(task => task.employeeId === employee.id && task.status === "running").map(task => slotStartAt(task.completesAt)));
     const completesAt = new Date(queuedUntil + command.hours * HOUR_MS).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt) && (!employee.endsAt || at(completesAt) <= at(employee.endsAt)), "Le créneau dépasserait la journée ou la fin du contrat.");
     const productionSalaryCents = Math.round(getKqStaffMonthlyCost(employee, employee.weeklyHours).totalCents * 7 / (30 * employee.weeklyHours) * command.hours);
@@ -540,9 +544,10 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
       && !legacyTargets.has(lot.flowerId) && (lot.mode === null || lot.mode === command.mode));
     assert(available, "Aucune récolte disponible pour ce mode de trim. Les préparations déjà commencées conservent leur mode.");
     const level = employee ? effectiveLevel(employee, "processing") : getKqStaffLevel(getKqPlayerSkills(state).processing);
-    const quote = getKqStaffSharedTrimQuote({ mode: command.mode, hours: command.hours, level, trait: employee?.trait });
+    const quote = getKqStaffSharedTrimQuote({ mode: command.mode, hours: command.hours, level, trait: employee?.trait, handling: raw.context.warehouseHandling });
+    assert(command.expectedRate === undefined || command.expectedRate === quote.gramsPerHour, "La cadence de trim a changé. Actualise le devis avant de confirmer.");
     const workerId = employee?.id ?? "player";
-    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, workerId), ...state.tasks.filter(task => task.employeeId === workerId && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
+    const queuedUntil = getKqSharedTrimStartAt(raw.serverNow, raw.context, state.tasks, workerId);
     const startedAt = new Date(queuedUntil).toISOString(), completesAt = new Date(queuedUntil + quote.durationMs).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps aujourd’hui pour cette préparation.");
     if (employee) { assert(!employee.endsAt || at(completesAt) <= at(employee.endsAt), "Le trim dépasserait la fin du contrat."); consume(command.hours); }
@@ -565,7 +570,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const level = employee ? effectiveLevel(employee, "processing") : getKqStaffLevel(state.playerProcessingXp);
     const quote = getKqStaffTrimQuote({ lot: { ...lot, completedWork, mode: lockedMode }, mode: command.mode, hours: command.hours, level, trait: employee?.trait });
     const workerId = employee?.id ?? "player";
-    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, workerId), ...state.tasks.filter(task => task.employeeId === workerId && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
+    const queuedUntil = getKqSharedTrimStartAt(raw.serverNow, raw.context, state.tasks, workerId);
     const completesAt = new Date(queuedUntil + quote.durationMs).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps aujourd’hui pour cette préparation.");
     if (employee) { assert(!employee.endsAt || at(completesAt) <= at(employee.endsAt), "Le trim dépasserait la fin du contrat."); consume(command.hours); }
@@ -578,7 +583,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     consumePlayer(command.hours);
     const skill = kind === "countryside" ? "sales" : kind;
     const level = getKqStaffLevel(getKqPlayerSkills(state)[skill]);
-    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, "player"), ...state.tasks.filter(task => task.employeeId === "player" && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
+    const queuedUntil = Math.max(at(raw.serverNow), getKqWorkerBusyUntil(raw.context, "player"), ...state.tasks.filter(task => task.employeeId === "player" && task.status === "running" && !task.cultureShift && !task.processingShift).map(task => at(task.completesAt)));
     const completesAt = new Date(queuedUntil + command.hours * HOUR_MS).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps dans ce jour du jeu. Réduis la mission ou reviens à la prochaine journée.");
     const task: KqStaffTask = { id, employeeId: "player", kind, skill, skillLevel: level, hours: command.hours, day: calendar.day,
@@ -667,7 +672,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     const cultureShift = kind === "culture" && raw.context.cultureWorkVersion === 1;
     const processingShift = kind === "processing" && raw.context.processingWorkVersion === 1;
     const reservation = cultureShift || processingShift;
-    const queuedUntil = reservation ? at(raw.serverNow) : Math.max(at(raw.serverNow), getKqWorkerProcessingEnd(raw.context, employee.id), ...state.tasks.filter(row => row.employeeId === employee.id && row.status === "running" && !row.cultureShift && !row.processingShift).map(row => at(row.completesAt)));
+    const queuedUntil = reservation ? at(raw.serverNow) : Math.max(at(raw.serverNow), getKqWorkerBusyUntil(raw.context, employee.id), ...state.tasks.filter(row => row.employeeId === employee.id && row.status === "running" && !row.cultureShift && !row.processingShift).map(row => at(row.completesAt)));
     const speed = kind === "training" ? 1 : (1 + (level - 1) * 0.025) * (employee.trait === "quick" ? 1.15 : employee.trait === "meticulous" ? 1 / 1.10 : 1);
     const completesAt = reservation ? calendar.nextDayAt : new Date(queuedUntil + command.hours * HOUR_MS / speed).toISOString();
     assert(at(completesAt) <= at(calendar.nextDayAt), "Il reste trop peu de temps aujourd’hui. Réduis la mission ou reprends au prochain jour travaillé.");

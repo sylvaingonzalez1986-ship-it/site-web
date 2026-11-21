@@ -20,6 +20,7 @@ import { positionVillageBubble } from "./village-bubble";
 import type { VillageNpcBridge } from "./VillageNpcDialogue";
 import type { NpcPoint, VillageNpcId, VillageNpcRig } from "./village-npc-types";
 import type { RefObject } from "react";
+import { createVillageSeasonMotion, getVillageSeason } from "./village-seasons";
 
 export type VillageMotionProps = {
   activity: VillageActivityState;
@@ -30,6 +31,9 @@ export type VillageMotionProps = {
 
 export function VillageAtmosphere({ terrain, surface, buildings, activity, motion, focusBuilding, reaction, dragging, quality, npc, labelNodes }: VillageMotionProps & { terrain: THREE.Group; surface: VillageGrazingSurface; buildings: readonly AnimatedVillageBuilding[]; dragging: boolean; quality: "low" | "high"; npc: VillageNpcBridge; labelNodes: RefObject<Map<string, HTMLButtonElement>> }) {
   const controller = useMemo(() => createVillageAnimation(buildings), [buildings]);
+  const seasonMotion = useMemo(() => createVillageSeasonMotion(terrain), [terrain]);
+  const hydrangea = useMemo(() => controller.object.getObjectByName("motion-hydrangea"), [controller]);
+  const daisies = useMemo(() => controller.object.getObjectByName("motion-daisies"), [controller]);
   const { life, npcs } = useMemo(() => {
     const rigs: [VillageNpcId, VillageNpcRig][] = [
       ["breton", createVillageBreton(surface.heightAt)], ["fisherman", createVillageFisherman()], ["loic", createVillageLoic(surface.heightAt)],
@@ -60,11 +64,11 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       release() {
         leases--;
         queueMicrotask(() => {
-          if (!leases && !disposed) { disposed = true; controller.dispose(); life.forEach(part => part.dispose()); npcs.forEach(({ rig, contact }) => { contact.mesh.dispose(); rig.dispose(); }); }
+          if (!leases && !disposed) { disposed = true; controller.dispose(); seasonMotion.dispose(); life.forEach(part => part.dispose()); npcs.forEach(({ rig, contact }) => { contact.mesh.dispose(); rig.dispose(); }); }
         });
       },
     };
-  }, [controller, life, npcs]);
+  }, [controller, life, npcs, seasonMotion]);
   const { gl, invalidate, camera, size } = useThree();
   const tapGate = useMemo(() => createVillageNpcTapGate(), []);
   const projection = useMemo(() => new THREE.Vector3(), []);
@@ -141,6 +145,10 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
     const step = running ? Math.min(delta, 0.05) : 0;
     time.current += step;
     controller.update(time.current, activity, motion.reduced);
+    const season = getVillageSeason(terrain);
+    if (hydrangea) hydrangea.visible = season === "summer";
+    if (daisies) daisies.visible = season === "spring" || season === "summer";
+    seasonMotion.update(time.current, motion.reduced, quality);
     visibility.matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     visibility.frustum.setFromProjectionMatrix(visibility.matrix);
     const detail = camera instanceof THREE.OrthographicCamera
@@ -186,7 +194,7 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       }
       if (npc.active === id && npc.bubbleNode.current) {
         projection.copy(rig.object.position); projection.y += 2.15; projection.project(camera);
-        positionVillageBubble(npc.bubbleNode.current, npc.bubbleTail.current, (projection.x + 1) * size.width / 2, (1 - projection.y) * size.height / 2, size.width, size.height, true, feetY);
+        positionVillageBubble(npc.bubbleNode.current, npc.bubbleTail.current, (projection.x + 1) * size.width / 2, (1 - projection.y) * size.height / 2, size.width, size.height, { speech: true, feetY });
       }
     }
     gl.domElement.setAttribute("data-motion-time", time.current.toFixed(3));
@@ -201,7 +209,7 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       gl.domElement.setAttribute("data-npc-targets", JSON.stringify(targets));
     }
   });
-  return <><primitive object={controller.object} />{life.map(part => <primitive key={part.object.uuid} object={part.object} />)}
+  return <><primitive object={controller.object} /><primitive object={seasonMotion.object} />{life.map(part => <primitive key={part.object.uuid} object={part.object} />)}
     {npcs.map(({ id, rig }) => <primitive key={id} object={rig.object}
       onPointerDown={(event: ThreeEvent<PointerEvent>) => { event.stopPropagation(); tapGate.claim(event.pointerId, id); }}
       onClick={(event: ThreeEvent<MouseEvent>) => { event.stopPropagation(); if (event.delta <= 6 && tapGate.consume(id)) { npc.onInteract(id); invalidate(); } }}

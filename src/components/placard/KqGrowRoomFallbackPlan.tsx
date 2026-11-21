@@ -30,7 +30,7 @@ export default function KqGrowRoomFallbackPlan({ profile, position, plan, layout
   const stations = useMemo(() => {
     const occupied = new Set(zones.filter(zone => typeof plantStage(zone) === "number" && zone.stageIndex !== 5).map(zone => zone.id));
     return [...plan.zones, ...(plan.serviceZones ?? [])].map((zone, index) => (
-      <KqWarehousePlanFixtures key={zone.id} id={id} grid={grid} zone={zone} tint={getKqZonePalette(index).tint} growing={occupied.has(zone.id)} />
+      <KqWarehousePlanFixtures key={zone.id} id={id} grid={grid} zone={zone} tint={getKqZonePalette(index).tint} growing={occupied.has(zone.id)} showLighting={false} />
     ));
   }, [zones, plan, grid, id]);
   const location = position ?? layout.entry;

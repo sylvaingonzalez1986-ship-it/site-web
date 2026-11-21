@@ -1,8 +1,20 @@
 import { KQ_BUDDIES } from "./kanab-quest-game";
-import type { KqWarehouseQuote, KqWarehouseServiceZone, KqWarehouseState, KqWarehouseZone } from "./kanab-quest-warehouse";
+import { KQ_WAREHOUSE_UNLIT_CODE, type KqWarehouseQuote, type KqWarehouseServiceZone, type KqWarehouseState, type KqWarehouseZone } from "./kanab-quest-warehouse";
 import { getKqWarehouseDevice } from "./kanab-quest-warehouse-catalog";
+import { getKqWarehouseAirPlacements, type KqWarehouseAirMount } from "./kanab-quest-warehouse-air";
 import { getKqWarehouseOption } from "./kanab-quest-warehouse-options";
+import { KQ_WAREHOUSE_STATIONS } from "./kanab-quest-warehouse-stations";
+import { KQ_WAREHOUSE_HANDLING } from "./kanab-quest-warehouse-handling";
 import { getKqZoneIdentity } from "./kanab-quest-zone-identity";
+
+export function describeKqWarehouseAirMount(mount?: KqWarehouseAirMount, partitions: KqWarehouseState["partitions"] = []) {
+  if (!mount) return "Au sol";
+  const walls = { north: "Mur sud", south: "Mur nord", east: "Mur ouest", west: "Mur est" };
+  const directions = { north: "nord", south: "sud", east: "est", west: "ouest" };
+  const partitionIndex = partitions.findIndex(wall => wall.id === mount.partitionId);
+  const support = mount.partitionId ? (partitionIndex < 0 ? "Paroi" : `Paroi ${partitionIndex + 1}`) : walls[mount.face];
+  return `${support} · prise d’air côté ${directions[mount.face]}`;
+}
 
 /** Presentation only: the quote supplied by the existing pricing engine stays authoritative. */
 export function getKqWarehousePlanPayment(quote: KqWarehouseQuote | null, cashCents: number, migrationCreditCents: number) {
@@ -35,7 +47,7 @@ const zones = (state: KqWarehouseState): PlanZone[] => [...state.zones, ...(stat
 const sorted = (codes: string[] = []) => [...codes].sort().join("|");
 const inventoryKey = (inventory: KqWarehouseState["equipment"] = []) => [...inventory]
   .sort((a, b) => a.code.localeCompare(b.code)).map(item => `${item.code}:${item.quantity}`).join("|");
-const deviceName = (code?: string) => code ? getKqWarehouseDevice(code)?.name ?? "Matériel sélectionné" : "Aucune";
+const deviceName = (code?: string) => code === KQ_WAREHOUSE_UNLIT_CODE ? "À installer" : code ? getKqWarehouseDevice(code)?.name ?? "Matériel sélectionné" : "Aucune";
 const buddieName = (code?: string) => code ? KQ_BUDDIES.find(item => item.code === code)?.name ?? "Buddie sélectionné" : "Aucun";
 const moduleNames = (codes: string[] = []) => codes.length ? codes.map(code => getKqWarehouseOption(code)?.name ?? "Module sélectionné").join(", ") : "Aucun";
 const area = (zone: PlanZone) => `${zone.width * zone.height} m²`;
@@ -70,7 +82,7 @@ export function getKqWarehousePlanChanges(previousState: KqWarehouseState, draft
     const previous = previousById.get(zone.id);
     const details = previous ? zoneDetails(previous, zone) : [area(zone), ...("kind" in zone
       ? [`Matériel : ${deviceName(zone.deviceCode)}`]
-      : [`Éclairage : ${deviceName(zone.lightingCode)}`, `Extraction : ${deviceName(zone.airCode)}`,
+      : [`Éclairage : ${deviceName(zone.lightingCode)}`, ...(draftState.airPlacements ? [] : [`Extraction : ${deviceName(zone.airCode)}`]),
         ...(zone.optionCodes?.length ? [`Modules : ${moduleNames(zone.optionCodes)}`] : []),
         ...(zone.buddieCode ? [`Buddie : ${buddieName(zone.buddieCode)}`] : [])])];
     if (previous && !details.length) continue;
@@ -91,6 +103,34 @@ export function getKqWarehousePlanChanges(previousState: KqWarehouseState, draft
     });
   }
   const otherChanges: string[] = [];
+  if (draftState.airPlacements) {
+    const previousAir = getKqWarehouseAirPlacements(previousState);
+    if (!previousState.airPlacements) otherChanges.push("Passage au placement individuel des extracteurs");
+    const byId = new Map(previousAir.map(item => [item.id, item]));
+    for (const item of draftState.airPlacements) {
+      const before = byId.get(item.id);
+      const location = `colonne ${item.x + 1}, ligne ${item.y + 1}`;
+      if (!before || before.x !== item.x || before.y !== item.y || before.code !== item.code
+        || before.mount?.face !== item.mount?.face || before.mount?.partitionId !== item.mount?.partitionId) {
+        otherChanges.push(`${deviceName(item.code)} · ${location}${item.mount || before?.mount ? " · " + describeKqWarehouseAirMount(item.mount, draftState.partitions) : ""}`);
+      }
+      byId.delete(item.id);
+    }
+    for (const item of byId.values()) otherChanges.push(`${deviceName(item.code)} retiré · colonne ${item.x + 1}, ligne ${item.y + 1}`);
+  }
+  const oldStations = new Map(previousState.stationPlacements?.map(station => [station.id, station]));
+  for (const item of draftState.handlingPlacements ?? []) {
+    const old = previousState.handlingPlacements?.find(previous => previous.code === item.code);
+    if (!old || old.x !== item.x || old.y !== item.y) otherChanges.push(`${KQ_WAREHOUSE_HANDLING[item.code].name} · colonne ${item.x + 1}, ligne ${item.y + 1}`);
+  }
+  for (const station of draftState.stationPlacements ?? []) {
+    const previous = oldStations.get(station.id);
+    if (!previous || previous.code !== station.code || previous.x !== station.x || previous.y !== station.y) {
+      otherChanges.push(`${KQ_WAREHOUSE_STATIONS[station.code].name} · colonne ${station.x + 1}, ligne ${station.y + 1}`);
+    }
+    oldStations.delete(station.id);
+  }
+  for (const station of oldStations.values()) otherChanges.push(`${KQ_WAREHOUSE_STATIONS[station.code].name} remis en réserve · colonne ${station.x + 1}, ligne ${station.y + 1}`);
   const previousPartitions = previousState.partitions ?? [];
   const draftPartitions = draftState.partitions ?? previousPartitions;
   const previousPartitionsById = new Map(previousPartitions.map(partition => [partition.id, partition]));

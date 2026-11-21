@@ -25,7 +25,7 @@ function databaseError(error: { message: string; code?: string }): never {
     staff_payroll_changed: "La paie a changé. Actualise Personnel avant de confirmer le règlement.",
     staff_payroll_invalid: "La paie ne peut pas être validée. Actualise Personnel avant de réessayer.",
     staff_trim_required: "Termine le trim de cette récolte dans l’Atelier avant le jury ou la vente.",
-    staff_trim_changed: "Le lot ou son mode de trim a changé. Actualise avant de continuer.",
+    staff_trim_changed: "Le lot, le mode ou la cadence de trim a changé. Actualise avant de continuer.",
     staff_trim_unavailable: "Ce lot n’est plus disponible pour le trim.",
     staff_archive_invalid: "La demande d’archives est invalide.",
     staff_archive_unavailable: "Ce dossier archivé n’est pas disponible.",

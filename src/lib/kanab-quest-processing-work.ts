@@ -5,6 +5,7 @@ export type KqProcessingMachine = {
   material: string; basis: "input" | "output" | "passive";
   quantityGrams: number; gramsPerHour: number | null; hours: number;
   estimated: boolean; note: string;
+  handling?: { charges: number; baseHours: number; hours: number };
 };
 export type KqProcessingPlan = {
   version: 1; profileVersion: 1; inputGrams: number; nominalHours: number; passiveHours: number;
@@ -56,6 +57,11 @@ export function isKqProcessingPlan(value: unknown): value is KqProcessingPlan {
       && typeof machine.basis === "string" && ["input", "output", "passive"].includes(machine.basis)
       && finite(machine.quantityGrams, 4_000_000) && finite(machine.hours)
       && (machine.gramsPerHour === null ? machine.basis === "passive" : finite(machine.gramsPerHour) && Number(machine.gramsPerHour) > 0)
+      && (machine.handling === undefined || machine.code === "FREEZE-DRYER" && object(machine.handling)
+        && Number.isSafeInteger(machine.handling.charges) && Number(machine.handling.charges) > 0
+        && finite(machine.handling.baseHours) && Number(machine.handling.baseHours) === Number(machine.handling.charges) * .5
+        && finite(machine.handling.hours, Number(machine.handling.baseHours))
+        && Number(machine.handling.hours) >= Number(machine.handling.baseHours) * .75)
       && typeof machine.estimated === "boolean")
     && Array.isArray(value.sources) && value.sources.every(source => object(source) && typeof source.label === "string"
       && typeof source.url === "string" && source.url.startsWith("https://"));

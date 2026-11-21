@@ -52,9 +52,13 @@ export function getKqStaffBenefitPreview(input: KqStaffBenefitPreviewInput): KqS
       result.notes.push("Seulement sur un lot encore en transformation à la fin de la mission, dans la limite de son délai restant.");
     }
   } else if (kind === "trim") {
-    const quote = getKqStaffSharedTrimQuote({ hours, level, trait, mode: input.trimMode ?? "manual" });
+    const quote = getKqStaffSharedTrimQuote({ hours, level, trait, mode: input.trimMode ?? "manual", handling: context.warehouseHandling });
     metric("Cadence", quote.gramsPerHour, "g/h");
     metric("Quantité maximale", quote.grams, "g");
+    if (quote.gramsPerHour > quote.baseGramsPerHour) {
+      metric("Même quantité sans matériel", Math.round(quote.grams * 1000 / quote.baseGramsPerHour) / 100, "min réelles");
+      metric("Même quantité avec matériel", hours * 10, "min réelles");
+    }
     metric("Qualité à la fin du lot", quote.qualityDelta, "points");
     result.notes.push("La quantité dépend des récoltes compatibles disponibles. La qualité est appliquée une fois par lot terminé. Le trim mécanique exige la machine commune et réduit la qualité.");
   } else if (kind === "communication") {

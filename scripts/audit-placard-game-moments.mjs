@@ -33,7 +33,7 @@ const solo={...startKqGame(2026,{varietyCode:"HH2026-002"}),phase:"complete",qua
 const initial=createKqWarehouseStarter();
 const plan=getKqWarehouseQuote({...initial,zones:[
  {...initial.zones[0],id:"a",buddieCode:"HH2026-002"},
- {...initial.zones[0],id:"b",x:4,width:2,buddieCode:"HH2026-003",optionCodes:["SIM-CLIMATE-03","SIM-NUTRITION-03"]},
+ {...initial.zones[0],id:"b",x:4,width:2,buddieCode:"HH2026-003",optionCodes:["SIM-CLIMATE-UNIT-03","SIM-NUTRITION-03"]},
 ]},initial).nextState;
 const members=getKqCampaignParticipants(plan,4).map((member,index)=>({...member,runId:"40000000-0000-4000-8000-00000000000"+(index+1)}));
 let campaign={...startKqGame(300,{varietyCode:members[0].buddieCode,warehouse:members[0].warehouse,cultivationProfile:members[0].cultivationProfile}),campaign:{version:1,id:"50000000-0000-4000-8000-000000000001",leaderRunId:runId,members}};

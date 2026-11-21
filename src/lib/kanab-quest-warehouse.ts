@@ -1,11 +1,21 @@
 import { KQ_WAREHOUSE_CATALOG, getKqWarehouseDeviceQualityBonus, type KqWarehouseDevice } from "./kanab-quest-warehouse-catalog";
-import { KQ_WAREHOUSE_OPTIONS, KQ_WAREHOUSE_OPTION_LIMITS, KQ_WAREHOUSE_LEGACY_OPTION_LIMITS, getKqWarehouseOption, getKqWarehouseOptionLine, validateKqWarehouseOptionCodes, type KqWarehouseOptionLine } from "./kanab-quest-warehouse-options";
+import { KQ_WAREHOUSE_HANDLING_CART, KQ_WAREHOUSE_OPTION_CODE_COUNT, KQ_WAREHOUSE_OPTION_LIMITS, KQ_WAREHOUSE_LEGACY_OPTION_LIMITS,
+  getKqWarehouseOption, getKqWarehouseOptionLine, getKqWarehouseZoneModuleEffect, getKqWarehouseZoneOptionQuantity,
+  isKqWarehouseLegacyZoneOption, validateKqWarehouseOptionCodes, type KqWarehouseOptionLine } from "./kanab-quest-warehouse-options";
+import { hasKqWarehouseHandling, isKqWarehouseHandlingCode, validateKqWarehouseHandlingPlacements, type KqWarehouseHandlingPlacement } from "./kanab-quest-warehouse-handling";
 import { assertKqWarehouseCondition, getKqWarehouseZoneCondition, isKqWarehouseCondition, type KqWarehouseCondition } from "./kanab-quest-warehouse-condition";
+import { getKqWarehouseAirCoverage, getKqWarehouseAirPlacements, validateKqWarehouseAirPlacements, withKqWarehouseAirService, type KqWarehouseAirPlacement, type KqWarehouseAirService, type KqWarehouseAirZoneCoverage } from "./kanab-quest-warehouse-air";
+import { getKqWarehouseStationCoverage, isKqWarehouseStationCode, KQ_WAREHOUSE_STATIONS, validateKqWarehouseStationPlacements, withKqWarehouseStationService,
+  type KqWarehouseStationPlacement, type KqWarehouseStationService, type KqWarehouseStationZoneCoverage } from "./kanab-quest-warehouse-stations";
+import { getKqWarehouseLightingCount } from "./kanab-quest-warehouse-fixtures";
+
+export type { KqWarehouseAirPlacement } from "./kanab-quest-warehouse-air";
 
 /** Historical bounds remain valid for archived plans and immutable run snapshots. */
 export const KQ_WAREHOUSE_COLUMNS = 40;
 export const KQ_WAREHOUSE_ROWS = 25;
 export const KQ_WAREHOUSE_AREA_M2 = KQ_WAREHOUSE_COLUMNS * KQ_WAREHOUSE_ROWS;
+export const KQ_WAREHOUSE_UNLIT_CODE = "UNLIT";
 export type KqWarehouseDimensions = { columns: number; rows: number };
 export type KqWarehouseRotation = 0 | 90 | 180 | 270;
 export const KQ_WAREHOUSE_PARTITION_THICKNESS = 0.12;
@@ -29,6 +39,7 @@ export function getKqWarehousePartitionBounds(partition: KqWarehousePartition, d
 export const KQ_WAREHOUSE_SIMULATION = {
   equivalentLightingHours: 1_000,
   equivalentAirHours: 1_440,
+  unventilatedYieldFactor: 0.75,
   electricityCentsPerKwh: 25,
   consumablesCentsPerM2: 2_200,
   preparationCentsPerM2: 12_000,
@@ -58,6 +69,10 @@ export type KqWarehouseZone = {
   buddieCode?: string;
 };
 
+export function isKqWarehouseZoneOperational(zone: KqWarehouseZone): boolean {
+  return zone.active && zone.lightingCode !== KQ_WAREHOUSE_UNLIT_CODE;
+}
+
 export type KqWarehouseEquipment = { code: string; quantity: number };
 export type KqWarehouseServiceZone = {
   id: string;
@@ -76,6 +91,14 @@ export type KqWarehouseState = {
   spatial?: { version: 1 };
   /** Visual beta partitions. They do not buy equipment, capacity or preparation. */
   partitions?: KqWarehousePartition[];
+  /** Absent on historical plans, which still use the ventilation model stored per zone. */
+  airPlacements?: KqWarehouseAirPlacement[];
+  /** Derived by the server for SQL settlement. It is replaced when quoting an updated plan. */
+  airService?: KqWarehouseAirService;
+  stationPlacements?: KqWarehouseStationPlacement[];
+  handlingPlacements?: KqWarehouseHandlingPlacement[];
+  /** Server-derived cache for projection of a selected zone within the complete floor. */
+  stationService?: KqWarehouseStationService;
   /** Absence identifies the historical 40 × 25 floor. Only the server can adopt this floor. */
   floor?: { columns: 10; rows: 10 };
   zones: KqWarehouseZone[];
@@ -85,7 +108,7 @@ export type KqWarehouseState = {
   storageClimateCode?: string;
   /** All owned devices, including culture equipment kept in reserve. */
   equipment: KqWarehouseEquipment[];
-  /** Owned simulation-module coverage, in whole square metres. Removed modules stay in reserve. */
+  /** All owned options, in whole devices or square metres according to the product code. */
   optionInventory?: KqWarehouseEquipment[];
   /** Already funded room preparation. Remains available after moving/removing a zone. */
   preparedAreaM2: number;
@@ -122,6 +145,7 @@ export type KqWarehouseZoneQuote = {
   consumablesCostCents: number;
   operatingCostCents: number;
   estimatedHarvestGrams: number;
+  airCoverage?: KqWarehouseAirZoneCoverage;
 };
 
 export type KqWarehouseQuote = {
@@ -190,6 +214,8 @@ export type KqWarehouseRunSnapshot = {
   climateBillingVersion?: 2;
   /** New crop captures use the stronger drying tiers; historical runs keep theirs. */
   postHarvestBalanceVersion?: 2;
+  /** Active preparations replace automatic nutrition and hygiene charges. */
+  preparationVersion?: 1;
   revision: number;
   sourceState: KqWarehouseState;
   zones: KqWarehouseZone[];
@@ -284,7 +310,7 @@ export function validateKqWarehouseZones(value: unknown, dimensions = getKqWareh
     if ("optionCodes" in candidate && !validateKqWarehouseOptionCodes(candidate.optionCodes)) errors.push("Choisis au plus un module de simulation par famille.");
     if (zone.x + zone.width > dimensions.columns || zone.y + zone.height > dimensions.rows) errors.push(`Une zone dépasse les ${dimensions.columns} × ${dimensions.rows} cases de la chambre.`);
     try {
-      requireAreaDevice(zone.lightingCode, "lighting");
+      if (zone.lightingCode !== KQ_WAREHOUSE_UNLIT_CODE) requireAreaDevice(zone.lightingCode, "lighting");
       requireAreaDevice(zone.airCode, "air");
     } catch {
       errors.push("Une zone contient un éclairage ou un extracteur incompatible.");
@@ -339,6 +365,8 @@ export function validateKqWarehouseState(value: unknown): string[] {
     || Object.keys(value.floor).length !== 2)) return ["Dimensions de l’entrepôt invalides."];
   const dimensions = getKqWarehouseDimensions(value as KqWarehouseState);
   const errors = validateKqWarehouseZones(value.zones, dimensions);
+  if (!errors.length && (value.zones as KqWarehouseZone[]).some(zone => zone.lightingCode === KQ_WAREHOUSE_UNLIT_CODE
+    && (zone.active || !Array.isArray(value.airPlacements)))) errors.push("Une zone sans éclairage doit rester en pause sur un plan à ventilation placée.");
   if ("serviceZones" in value) errors.push(...validateKqWarehouseServiceZones(value.serviceZones, errors.length ? [] : value.zones as KqWarehouseZone[], dimensions));
   if ("partitions" in value) {
     const zones = errors.length ? [] : [...value.zones as KqWarehouseZone[], ...((value.serviceZones as KqWarehouseServiceZone[] | undefined) ?? [])];
@@ -351,9 +379,16 @@ export function validateKqWarehouseState(value: unknown): string[] {
     if (climate?.kind !== "climate" || climate.room !== "storage") errors.push("Le climatiseur de stockage est invalide.");
     if (!Array.isArray(value.serviceZones) || !value.serviceZones.some(zone => record(zone) && zone.kind === "storage")) errors.push("Aménage une zone de stockage avant d’installer son climatiseur.");
   }
+  if ("airPlacements" in value) {
+    errors.push(...validateKqWarehouseAirPlacements(value.airPlacements, dimensions,
+      errors.length ? [] : value.partitions as KqWarehousePartition[] | undefined));
+  }
+  if ("stationPlacements" in value && !errors.length) {
+    errors.push(...validateKqWarehouseStationPlacements(value.stationPlacements, dimensions, value as unknown as KqWarehouseState));
+  }
   if (!natural(value.preparedAreaM2) || value.preparedAreaM2 > dimensions.columns * dimensions.rows) errors.push("Surface aménagée invalide.");
   if ("optionInventory" in value) {
-    if (!Array.isArray(value.optionInventory) || value.optionInventory.length > KQ_WAREHOUSE_OPTIONS.length) errors.push("Réserve de modules invalide.");
+    if (!Array.isArray(value.optionInventory) || value.optionInventory.length > KQ_WAREHOUSE_OPTION_CODE_COUNT) errors.push("Réserve de modules invalide.");
     else {
       const seen = new Set<string>();
       for (const item of value.optionInventory) {
@@ -363,6 +398,7 @@ export function validateKqWarehouseState(value: unknown): string[] {
     }
   }
   if (!Array.isArray(value.equipment) || value.equipment.length > KQ_WAREHOUSE_CATALOG.length) return [...errors, "Inventaire d’appareils invalide."];
+  if (!errors.length) errors.push(...validateKqWarehouseHandlingPlacements(value as unknown as KqWarehouseState, dimensions));
   const codes = new Set<string>();
   for (const item of value.equipment) {
     if (!record(item) || typeof item.code !== "string" || !deviceByCode(item.code) || !natural(item.quantity) || item.quantity > 100_000 || codes.has(item.code)) {
@@ -383,44 +419,82 @@ function assertState(state: KqWarehouseState) {
   if (errors.length) throw new Error(errors.join(" "));
 }
 
+function matchesAirService(value: unknown, expected: KqWarehouseAirService | undefined) {
+  if (expected === undefined) return value === undefined;
+  if (!record(value) || Object.keys(value).length !== Object.keys(expected).length) return false;
+  return Object.entries(expected).every(([id, entry]) => {
+    const actual = value[id];
+    return Object.hasOwn(value, id) && record(actual) && actual.coveredAreaM2 === entry.coveredAreaM2
+      && actual.qualityPoints === entry.qualityPoints && actual.powerMilliWatts === entry.powerMilliWatts;
+  });
+}
+
+function matchesStationService(value: unknown, expected: KqWarehouseStationService | undefined) {
+  if (expected === undefined) return value === undefined;
+  if (!record(value) || Object.keys(value).length !== Object.keys(expected).length) return false;
+  return Object.entries(expected).every(([id, entry]) => {
+    const actual = value[id];
+    return Object.hasOwn(value, id) && record(actual)
+      && actual.waterAreaM2 === entry.waterAreaM2 && actual.hygieneAreaM2 === entry.hygieneAreaM2;
+  });
+}
+
 function deviceLine(code: string, quantity: number): KqWarehouseDeviceLine {
   const device = requireDevice(code);
   return { code, quantity, device, totalCents: device.priceCents * quantity, powerWatts: device.watts * quantity };
 }
 
-export function getKqWarehouseZoneQuote(zone: KqWarehouseZone, balanceVersion: 1 | 2 = 2, condition?: KqWarehouseCondition): KqWarehouseZoneQuote {
+export function getKqWarehouseZoneQuote(zone: KqWarehouseZone, balanceVersion: 1 | 2 = 2, condition?: KqWarehouseCondition, airCoverage?: KqWarehouseAirZoneCoverage, stationCoverage?: KqWarehouseStationZoneCoverage, preparationVersion?: 1): KqWarehouseZoneQuote {
   const errors = validateKqWarehouseZones([zone]);
   if (errors.length) throw new Error(errors.join(" "));
   const areaM2 = zone.width * zone.height;
-  const lighting = requireAreaDevice(zone.lightingCode, "lighting");
-  const air = requireAreaDevice(zone.airCode, "air");
-  const devices = [lighting, air].map((device) => deviceLine(device.code, Math.ceil(areaM2 / device.gameCapacity!.value)));
-  const options = (zone.optionCodes ?? []).map(code => getKqWarehouseOptionLine(code, areaM2, balanceVersion));
+  const lit = zone.lightingCode !== KQ_WAREHOUSE_UNLIT_CODE;
+  const operational = isKqWarehouseZoneOperational(zone);
+  const devices = !lit ? [] : (airCoverage ? [requireAreaDevice(zone.lightingCode, "lighting")]
+    : [requireAreaDevice(zone.lightingCode, "lighting"), requireAreaDevice(zone.airCode, "air")])
+    .map(device => deviceLine(device.code, device.kind === "lighting" ? getKqWarehouseLightingCount(zone.width, zone.height, device.code)
+      : Math.ceil(areaM2 / device.gameCapacity.value)));
+  const options = (zone.optionCodes ?? []).map(code => getKqWarehouseOptionLine(code, getKqWarehouseZoneOptionQuantity(code, areaM2),
+    code === KQ_WAREHOUSE_HANDLING_CART ? 1 : balanceVersion, areaM2));
+  const runningOptions = preparationVersion ? options.filter(({ option }) => !["nutrition", "hygiene"].includes(option.family)
+    && option.code !== "SIM-WATER-03") : options;
+  const moduleEffects = runningOptions.map(line => getKqWarehouseZoneModuleEffect(line.option, airCoverage !== undefined));
   const optionEquipmentCostCents = options.reduce((sum, line) => sum + line.totalCents, 0);
   const limits = balanceVersion === 1 ? KQ_WAREHOUSE_LEGACY_OPTION_LIMITS : KQ_WAREHOUSE_OPTION_LIMITS;
-  const yieldBonusPercent = Math.min(limits.yieldBonusPercent, options.reduce((sum, line) => sum + line.option.yieldBonusPercent, 0));
-  const moduleQualityBonus = Math.min(limits.qualityBonus, options.reduce((sum, line) => sum + line.option.qualityBonus, 0));
+  const waterArea = balanceVersion === 2 && !preparationVersion ? stationCoverage?.waterAreaM2 ?? 0 : 0;
+  const hygieneArea = balanceVersion === 2 && !preparationVersion ? stationCoverage?.hygieneAreaM2 ?? 0 : 0;
+  const water = KQ_WAREHOUSE_STATIONS["SIM-WATER-03"], hygiene = KQ_WAREHOUSE_STATIONS["SIM-HYGIENE-03"];
+  const yieldBonusPercent = Math.min(limits.yieldBonusPercent, moduleEffects.reduce((sum, effect) => sum + effect.yieldBonusPercent, water.yieldBonusPercent * waterArea / areaM2));
+  const moduleQualityBonus = Math.min(limits.qualityBonus, moduleEffects.reduce((sum, effect) => sum + effect.qualityBonus, hygiene.qualityBonus * hygieneArea / areaM2));
   // A better device benefits the zone once, regardless of how many units it needs.
-  const equipmentQualityBonus = getKqWarehouseDeviceQualityBonus(lighting.code, balanceVersion)
-    + getKqWarehouseDeviceQualityBonus(air.code, balanceVersion);
-  const qualityBonus = moduleQualityBonus + equipmentQualityBonus;
+  const equipmentQualityBonus = lit ? getKqWarehouseDeviceQualityBonus(zone.lightingCode, balanceVersion)
+    + (airCoverage && balanceVersion === 2 ? airCoverage.qualityBonus : getKqWarehouseDeviceQualityBonus(zone.airCode, balanceVersion)) : 0;
+  const qualityBonus = Math.floor(moduleQualityBonus + equipmentQualityBonus);
   const equipmentCostCents = devices.reduce((sum, line) => sum + line.totalCents, 0) + optionEquipmentCostCents;
   const preparationCostCents = areaM2 * KQ_WAREHOUSE_SIMULATION.preparationCentsPerM2;
-  const installationCostCents = Math.round(equipmentCostCents * KQ_WAREHOUSE_SIMULATION.installationPercent / 100);
+  const installationCostCents = getWarehouseInstallationCost(equipmentCostCents, options);
   const totalCostCents = equipmentCostCents + preparationCostCents + installationCostCents;
-  const energyKwh = zone.active ? rounded(devices.reduce((sum, line) => sum + line.powerWatts * (line.device.kind === "lighting"
-    ? KQ_WAREHOUSE_SIMULATION.equivalentLightingHours : KQ_WAREHOUSE_SIMULATION.equivalentAirHours) / 1_000, 0)) : 0;
+  const airWatts = airCoverage?.powerWatts ?? 0;
+  const energyKwh = operational ? rounded(devices.reduce((sum, line) => sum + line.powerWatts * (line.device.kind === "lighting"
+    ? KQ_WAREHOUSE_SIMULATION.equivalentLightingHours : KQ_WAREHOUSE_SIMULATION.equivalentAirHours) / 1_000,
+    airWatts * KQ_WAREHOUSE_SIMULATION.equivalentAirHours / 1_000)) : 0;
   const energyCostCents = Math.round(energyKwh * KQ_WAREHOUSE_SIMULATION.electricityCentsPerKwh);
-  const consumablesCostCents = zone.active ? areaM2 * KQ_WAREHOUSE_SIMULATION.consumablesCentsPerM2 + options.reduce((sum, line) => sum + line.consumablesCostCents, 0) : 0;
+  const supplySavingCentsPerM2 = moduleEffects.reduce((sum, effect) => sum + effect.supplySavingCentsPerM2, 0);
+  const baseSuppliesCentsPerM2 = Math.max(0, KQ_WAREHOUSE_SIMULATION.consumablesCentsPerM2 - supplySavingCentsPerM2);
+  const consumablesCostCents = operational ? areaM2 * baseSuppliesCentsPerM2 + runningOptions.reduce((sum, line) => sum + line.consumablesCostCents, 0)
+    + waterArea * water.consumablesCentsPerM2 + hygieneArea * hygiene.consumablesCentsPerM2 : 0;
+  const uncoveredYield = KQ_WAREHOUSE_SIMULATION.unventilatedYieldFactor;
+  const ventilationYield = airCoverage ? uncoveredYield + (1 - uncoveredYield) * airCoverage.coverageRatio : 1;
   return {
     areaM2, devices, options, optionEquipmentCostCents, yieldBonusPercent, qualityBonus, equipmentQualityBonus, moduleQualityBonus,
     equipmentCostCents, preparationCostCents, installationCostCents, totalCostCents,
     costPerM2Cents: Math.round(totalCostCents / areaM2),
-    powerWatts: zone.active ? devices.reduce((sum, line) => sum + line.powerWatts, 0) : 0,
+    powerWatts: operational ? devices.reduce((sum, line) => sum + line.powerWatts, airWatts) : 0,
     energyKwh, energyCostCents, consumablesCostCents,
     operatingCostCents: energyCostCents + consumablesCostCents,
-    estimatedHarvestGrams: zone.active ? rounded(areaM2 * KQ_WAREHOUSE_SIMULATION.estimatedDryGramsPerM2 * (100 + yieldBonusPercent) / 100
-      * (condition ? (getKqWarehouseZoneCondition(zone.id, condition.assets).yieldPercent ?? 100) / 100 : 1)) : 0,
+    estimatedHarvestGrams: operational ? rounded(areaM2 * KQ_WAREHOUSE_SIMULATION.estimatedDryGramsPerM2 * (100 + yieldBonusPercent) / 100
+      * ventilationYield * (condition ? (getKqWarehouseZoneCondition(zone.id, condition.assets).yieldPercent ?? 100) / 100 : 1)) : 0,
+    ...(airCoverage ? { airCoverage } : {}),
   };
 }
 
@@ -446,13 +520,21 @@ export function getKqWarehouseServiceZoneQuote(zone: KqWarehouseServiceZone): Kq
   };
 }
 
-export function getKqWarehouseEquipmentDemand(zones: KqWarehouseZone[], serviceZones: KqWarehouseServiceZone[] = [], storageClimateCode?: string): KqWarehouseEquipment[] {
+export function getKqWarehouseEquipmentDemand(zones: KqWarehouseZone[], serviceZones: KqWarehouseServiceZone[] = [], storageClimateCode?: string, airPlacements?: KqWarehouseAirPlacement[]): KqWarehouseEquipment[] {
   const errors = validateKqWarehouseZones(zones);
   errors.push(...validateKqWarehouseServiceZones(serviceZones, zones));
   if (errors.length) throw new Error(errors.join(" "));
   const quantities = new Map<string, number>();
   for (const zone of zones) {
-    for (const line of getKqWarehouseZoneQuote(zone).devices) quantities.set(line.code, (quantities.get(line.code) ?? 0) + line.quantity);
+    if (zone.lightingCode === KQ_WAREHOUSE_UNLIT_CODE) continue;
+    for (const code of airPlacements === undefined ? [zone.lightingCode, zone.airCode] : [zone.lightingCode]) {
+      const quantity = code === zone.lightingCode ? getKqWarehouseLightingCount(zone.width, zone.height, code)
+        : Math.ceil(zone.width * zone.height / requireDevice(code).gameCapacity.value);
+      quantities.set(code, (quantities.get(code) ?? 0) + quantity);
+    }
+  }
+  for (const { code } of airPlacements ?? []) {
+    quantities.set(code, (quantities.get(code) ?? 0) + 1);
   }
   for (const zone of serviceZones) {
     for (const line of getKqWarehouseServiceZoneQuote(zone).devices) quantities.set(line.code, (quantities.get(line.code) ?? 0) + line.quantity);
@@ -465,51 +547,98 @@ export function getKqWarehouseEquipmentDemand(zones: KqWarehouseZone[], serviceZ
   return [...quantities].map(([code, quantity]) => ({ code, quantity })).sort((a, b) => a.code.localeCompare(b.code));
 }
 
-export function getKqWarehouseOptionDemand(zones: KqWarehouseZone[]): KqWarehouseEquipment[] {
+export function getKqWarehouseOptionDemand(zones: KqWarehouseZone[], stations?: KqWarehouseStationPlacement[]): KqWarehouseEquipment[] {
   const quantities = new Map<string, number>();
-  for (const zone of zones) for (const code of zone.optionCodes ?? []) quantities.set(code, (quantities.get(code) ?? 0) + zone.width * zone.height);
+  for (const zone of zones) {
+    const areaM2 = zone.width * zone.height;
+    for (const code of zone.optionCodes ?? []) quantities.set(code, (quantities.get(code) ?? 0) + getKqWarehouseZoneOptionQuantity(code, areaM2));
+  }
+  for (const { code } of stations ?? []) quantities.set(code, (quantities.get(code) ?? 0) + 1);
   return [...quantities].map(([code, quantity]) => ({ code, quantity })).sort((a, b) => a.code.localeCompare(b.code));
 }
 
 const copyZone = (zone: KqWarehouseZone): KqWarehouseZone => ({ ...zone, ...(zone.optionCodes === undefined ? {} : { optionCodes: [...zone.optionCodes] }) });
 
+function getWarehouseInstallationCost(equipmentCents: number, options: KqWarehouseOptionLine[]) {
+  const included = options.reduce((sum, line) => sum + (line.option.installationIncluded || line.unit === "handling"
+    || line.unit === "station" && line.code === "SIM-HYGIENE-03" ? line.totalCents : 0), 0);
+  return Math.round((equipmentCents - included) * KQ_WAREHOUSE_SIMULATION.installationPercent / 100);
+}
+
+// The airlock is fitted to the existing entrance. Only irrigation stations need new flooring.
+function getWarehouseFloorPreparationArea(state: KqWarehouseState) {
+  return [...state.zones, ...(state.serviceZones ?? [])].reduce((sum, zone) => sum + zone.width * zone.height, 0)
+    + (state.stationPlacements ?? []).filter(station => station.code !== "SIM-HYGIENE-03").length;
+}
+
 /** No implicit sale: removing a zone or replacing a device keeps existing assets in reserve. */
 export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWarehouseState): KqWarehouseQuote {
   // Older 2D clients omit this optional field. Only an explicit array replaces it.
   if (candidate.partitions === undefined && previous?.partitions !== undefined) candidate = { ...candidate, partitions: previous.partitions };
+  if (candidate.airPlacements === undefined && previous?.airPlacements !== undefined) candidate = { ...candidate, airPlacements: previous.airPlacements };
+  if (candidate.stationPlacements === undefined && previous?.stationPlacements !== undefined) candidate = { ...candidate, stationPlacements: previous.stationPlacements };
+  if (candidate.handlingPlacements === undefined && previous?.handlingPlacements !== undefined) candidate = { ...candidate, handlingPlacements: previous.handlingPlacements };
   assertState(candidate);
   if (previous) assertState(previous);
   if (previous && !!previous.floor !== !!candidate.floor) throw new Error("Les dimensions de l’entrepôt ne peuvent pas être modifiées dans un devis.");
   if (previous?.serviceZones !== undefined && candidate.serviceZones === undefined) throw new Error("Les zones de séchage et stockage doivent rester présentes dans le plan.");
   const owned = new Map(previous?.equipment.map((item) => [item.code, item.quantity]) ?? []);
   const target = new Map(owned);
-  for (const item of [...candidate.equipment, ...getKqWarehouseEquipmentDemand(candidate.zones, candidate.serviceZones, candidate.storageClimateCode)]) target.set(item.code, Math.max(target.get(item.code) ?? 0, item.quantity));
+  for (const item of [...candidate.equipment, ...getKqWarehouseEquipmentDemand(candidate.zones, candidate.serviceZones, candidate.storageClimateCode, candidate.airPlacements)]) target.set(item.code, Math.max(target.get(item.code) ?? 0, item.quantity));
   const purchases = [...target].map(([code, quantity]) => deviceLine(code, Math.max(0, quantity - (owned.get(code) ?? 0)))).filter((line) => line.quantity > 0);
   if (purchases.some(line => line.device.purchasable === false)) {
     throw new Error("Cet équipement historique peut être réutilisé depuis la réserve, mais ne peut plus être acheté.");
   }
   const ownedOptions = new Map(previous?.optionInventory?.map(item => [item.code, item.quantity]) ?? []);
+  if (candidate.zones.some(zone => zone.optionCodes?.some(code => isKqWarehouseHandlingCode(code)
+    && !previous?.zones.find(oldZone => oldZone.id === zone.id)?.optionCodes?.includes(code)))) {
+    throw new Error("Le matériel de manutention est commun à tout l’entrepôt.");
+  }
   const targetOptions = new Map(ownedOptions);
-  for (const item of [...(candidate.optionInventory ?? []), ...getKqWarehouseOptionDemand(candidate.zones)]) targetOptions.set(item.code, Math.max(targetOptions.get(item.code) ?? 0, item.quantity));
-  const optionPurchases = [...targetOptions].map(([code, quantity]) => getKqWarehouseOptionLine(code, Math.max(0, quantity - (ownedOptions.get(code) ?? 0)))).filter(line => line.quantity > 0);
+  const optionDemand = getKqWarehouseOptionDemand(candidate.zones, candidate.stationPlacements);
+  for (const item of [...(candidate.optionInventory ?? []), ...optionDemand]) {
+    targetOptions.set(item.code, Math.max(targetOptions.get(item.code) ?? 0, item.quantity));
+  }
+  if ([...targetOptions].some(([code, quantity]) => isKqWarehouseLegacyZoneOption(code) && quantity > (ownedOptions.get(code) ?? 0))) {
+    throw new Error("La réserve de cet ancien module ne couvre pas la zone. Choisis un appareil du catalogue ou libère la surface déjà financée.");
+  }
+  const requiredOptions = new Map(optionDemand.map(item => [item.code, item.quantity]));
+  for (const [code, quantity] of targetOptions) {
+    if (quantity <= Math.max(ownedOptions.get(code) ?? 0, requiredOptions.get(code) ?? 0)) continue;
+    if (getKqWarehouseOption(code)?.unit === "device") throw new Error("Affecte chaque nouvel appareil à une zone de culture avant de confirmer l’achat.");
+    if (candidate.stationPlacements !== undefined && isKqWarehouseStationCode(code)) throw new Error("Place les nouveaux postes communs sur le plan avant de les acheter.");
+  }
+  if ([...targetOptions].some(([code, quantity]) => isKqWarehouseHandlingCode(code)
+    && quantity > Math.max(1, ownedOptions.get(code) ?? 0))) {
+    throw new Error("Un exemplaire de chaque équipement de manutention peut être acheté pour l’entrepôt.");
+  }
+  const optionPurchases: KqWarehouseOptionLine[] = [...targetOptions].map(([code, quantity]) => ({
+    ...getKqWarehouseOptionLine(code, Math.max(0, quantity - (ownedOptions.get(code) ?? 0))),
+    ...(isKqWarehouseHandlingCode(code) ? { unit: "handling" as const, consumablesCostCents: 0 }
+      : candidate.stationPlacements !== undefined && isKqWarehouseStationCode(code) ? { unit: "station" as const } : {}),
+  })).filter(line => line.quantity > 0);
   const optionEquipmentCostCents = optionPurchases.reduce((sum, line) => sum + line.totalCents, 0);
   if (previous && candidate.serviceZones === undefined && purchases.some(line => line.device.kind === "drying" || line.device.kind === "storage")) {
     throw new Error("Trace une zone de séchage ou stockage avant d’acheter ce matériel.");
   }
   const equippedAreaM2 = candidate.zones.reduce((sum, zone) => sum + zone.width * zone.height, 0);
-  const allocatedAreaM2 = equippedAreaM2 + (candidate.serviceZones ?? []).reduce((sum, zone) => sum + zone.width * zone.height, 0);
+  const allocatedAreaM2 = equippedAreaM2 + (candidate.serviceZones ?? []).reduce((sum, zone) => sum + zone.width * zone.height, 0)
+    + (candidate.stationPlacements?.length ?? 0);
   // Client-provided preparedAreaM2 never waives the cost of new preparation.
-  const preparedAreaM2 = Math.max(previous?.preparedAreaM2 ?? 0, allocatedAreaM2);
+  const preparedAreaM2 = Math.max(previous?.preparedAreaM2 ?? 0, getWarehouseFloorPreparationArea(candidate));
   const addedAreaM2 = preparedAreaM2 - (previous?.preparedAreaM2 ?? 0);
   const equipmentCostCents = purchases.reduce((sum, line) => sum + line.totalCents, 0) + optionEquipmentCostCents;
   const preparationCostCents = addedAreaM2 * KQ_WAREHOUSE_SIMULATION.preparationCentsPerM2;
-  const installationCostCents = Math.round(equipmentCostCents * KQ_WAREHOUSE_SIMULATION.installationPercent / 100);
+  const installationCostCents = getWarehouseInstallationCost(equipmentCostCents, optionPurchases);
   const totalCostCents = equipmentCostCents + preparationCostCents + installationCostCents;
   return {
-    nextState: {
+    nextState: withKqWarehouseStationService(withKqWarehouseAirService({
       version: 1,
       ...(candidate.spatial || previous?.spatial ? { spatial: { version: 1 } as const } : {}),
       ...(candidate.partitions !== undefined ? { partitions: candidate.partitions.map(partition => ({ ...partition })) } : {}),
+      ...(candidate.airPlacements !== undefined ? { airPlacements: getKqWarehouseAirPlacements(candidate) } : {}),
+      ...(candidate.stationPlacements !== undefined ? { stationPlacements: candidate.stationPlacements.map(placement => ({ ...placement })) } : {}),
+      ...(candidate.handlingPlacements !== undefined ? { handlingPlacements: candidate.handlingPlacements.map(placement => ({ ...placement })) } : {}),
       ...(candidate.floor ? { floor: { ...candidate.floor } } : {}),
       zones: candidate.zones.map(copyZone),
       ...(candidate.serviceZones !== undefined ? { serviceZones: candidate.serviceZones.map(zone => ({ ...zone })) } : {}),
@@ -519,7 +648,7 @@ export function getKqWarehouseQuote(candidate: KqWarehouseState, previous?: KqWa
         optionInventory: [...targetOptions].filter(([, quantity]) => quantity > 0).map(([code, quantity]) => ({ code, quantity })).sort((a, b) => a.code.localeCompare(b.code)),
       } : {}),
       preparedAreaM2,
-    },
+    })),
     purchases, optionPurchases, optionEquipmentCostCents, addedAreaM2, equipmentCostCents, preparationCostCents, installationCostCents, totalCostCents,
     costPerM2Cents: allocatedAreaM2 ? Math.round(totalCostCents / allocatedAreaM2) : 0,
   };
@@ -541,23 +670,30 @@ export function getKqWarehouseStorageClimateQuote(state: KqWarehouseState) {
   return { code, areaM2, kwhPerM2, monthlyKwh: kwhPerM2 * areaM2, monthlyCents: centsPerM2 * areaM2, centsPerM2 };
 }
 
-export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1 | 2 = 2, climateBillingVersion: 1 | 2 = 2, condition?: KqWarehouseCondition): KqWarehouseSummary {
+export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1 | 2 = 2, climateBillingVersion: 1 | 2 = 2, condition?: KqWarehouseCondition, zoneId?: string, preparationVersion?: 1): KqWarehouseSummary {
   assertState(state);
   const dimensions = getKqWarehouseDimensions(state);
   const totalAreaM2 = dimensions.columns * dimensions.rows;
-  const quotes = state.zones.map(zone => getKqWarehouseZoneQuote(zone, balanceVersion, condition));
+  const airCoverage = getKqWarehouseAirCoverage(state);
+  const stationCoverage = getKqWarehouseStationCoverage(state);
+  const zones = zoneId === undefined ? state.zones : state.zones.filter(zone => zone.id === zoneId);
+  const quotes = zones.map(zone => getKqWarehouseZoneQuote(zone, balanceVersion, condition, airCoverage?.zones[zone.id], stationCoverage?.zones[zone.id], preparationVersion));
   const equippedAreaM2 = quotes.reduce((sum, quote) => sum + quote.areaM2, 0);
   const serviceZones = state.serviceZones ?? [];
   const dryingAreaM2 = serviceZones.reduce((sum, zone) => sum + (zone.kind === "drying" ? zone.width * zone.height : 0), 0);
   const storageAreaM2 = serviceZones.reduce((sum, zone) => sum + (zone.kind === "storage" ? zone.width * zone.height : 0), 0);
-  const allocatedAreaM2 = equippedAreaM2 + dryingAreaM2 + storageAreaM2;
-  const activeAreaM2 = state.zones.reduce((sum, zone) => sum + (zone.active ? zone.width * zone.height : 0), 0);
-  const demand = new Map(getKqWarehouseEquipmentDemand(state.zones, serviceZones, state.storageClimateCode).map((item) => [item.code, item.quantity]));
+  const allocatedAreaM2 = equippedAreaM2 + dryingAreaM2 + storageAreaM2 + (state.stationPlacements?.length ?? 0) + (state.handlingPlacements?.length ?? 0);
+  const activeAreaM2 = zones.reduce((sum, zone) => sum + (zone.active ? zone.width * zone.height : 0), 0);
+  const demand = new Map(getKqWarehouseEquipmentDemand(zones, serviceZones, state.storageClimateCode, state.airPlacements).map((item) => [item.code, item.quantity]));
   const equipment = state.equipment.map((item) => deviceLine(item.code, item.quantity));
-  const options = (state.optionInventory ?? []).map(item => getKqWarehouseOptionLine(item.code, item.quantity, balanceVersion));
-  const optionDemand = new Map(getKqWarehouseOptionDemand(state.zones).map(item => [item.code, item.quantity]));
+  const options: KqWarehouseOptionLine[] = (state.optionInventory ?? []).map(item => ({
+    ...getKqWarehouseOptionLine(item.code, item.quantity, balanceVersion),
+    ...(isKqWarehouseHandlingCode(item.code) && hasKqWarehouseHandling(state, item.code) ? { unit: "handling" as const, consumablesCostCents: 0 }
+      : state.stationPlacements !== undefined && isKqWarehouseStationCode(item.code) ? { unit: "station" as const } : {}),
+  }));
+  const optionDemand = new Map(getKqWarehouseOptionDemand(state.zones, state.stationPlacements).map(item => [item.code, item.quantity]));
   const equipmentCostCents = equipment.reduce((sum, line) => sum + line.totalCents, 0) + options.reduce((sum, line) => sum + line.totalCents, 0);
-  const investmentCents = equipmentCostCents + Math.round(equipmentCostCents * KQ_WAREHOUSE_SIMULATION.installationPercent / 100)
+  const investmentCents = equipmentCostCents + getWarehouseInstallationCost(equipmentCostCents, options)
     + state.preparedAreaM2 * KQ_WAREHOUSE_SIMULATION.preparationCentsPerM2;
   const capacity = (kind: "drying" | "storage") => state.serviceZones !== undefined
     ? serviceZones.reduce((sum, zone) => sum + (zone.kind === kind ? getKqWarehouseServiceZoneQuote(zone).capacityGrams : 0), 0)
@@ -569,7 +705,7 @@ export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1
   return {
     totalAreaM2, equippedAreaM2, cultureAreaM2: equippedAreaM2, dryingAreaM2, storageAreaM2, allocatedAreaM2,
     activeAreaM2, freeAreaM2: totalAreaM2 - allocatedAreaM2,
-    powerWatts: quotes.reduce((sum, quote) => sum + quote.powerWatts, 0) + storageClimateWatts,
+    powerWatts: rounded(quotes.reduce((sum, quote) => sum + quote.powerWatts, 0) + storageClimateWatts),
     energyKwh, energyCostCents, consumablesCostCents, operatingCostCents: energyCostCents + consumablesCostCents,
     estimatedHarvestGrams: quotes.reduce((sum, quote) => sum + quote.estimatedHarvestGrams, 0),
     investmentCents, investmentPerM2Cents: allocatedAreaM2 ? Math.round(investmentCents / allocatedAreaM2) : 0,
@@ -579,17 +715,19 @@ export function getKqWarehouseSummary(state: KqWarehouseState, balanceVersion: 1
       ? line.quantity * line.device.gameCapacity.value / line.device.gameCapacity.durationHours! : 0), 0)),
     equipment,
     options,
-    optionReserve: (state.optionInventory ?? []).map(item => ({ code: item.code, quantity: Math.max(0, item.quantity - (optionDemand.get(item.code) ?? 0)) })).filter(item => item.quantity > 0),
-    qualityBonus: activeAreaM2 ? Math.floor(quotes.reduce((sum, quote, index) => sum + (state.zones[index].active ? quote.qualityBonus * quote.areaM2 : 0), 0) / activeAreaM2) : 0,
+    optionReserve: (state.optionInventory ?? []).map(item => ({ code: item.code, quantity: Math.max(0, item.quantity - (optionDemand.get(item.code) ?? 0)) })).filter(item => item.quantity > 0 && !isKqWarehouseHandlingCode(item.code)),
+    qualityBonus: activeAreaM2 ? Math.floor(quotes.reduce((sum, quote, index) => sum + (zones[index].active
+      ? Math.round((quote.moduleQualityBonus + quote.equipmentQualityBonus) * quote.areaM2) : 0), 0) / activeAreaM2) : 0,
     reserve: state.equipment.filter((item) => requireDevice(item.code).room === "culture" || (state.serviceZones !== undefined && requireDevice(item.code).room === "storage"))
       .map((item) => ({ code: item.code, quantity: Math.max(0, item.quantity - (demand.get(item.code) ?? 0)) })).filter((item) => item.quantity > 0),
   };
 }
 
-export function createKqWarehouseStarter(): KqWarehouseState {
+export function createKqWarehouseStarter(spatialAir = false): KqWarehouseState {
   return getKqWarehouseQuote({
     version: 1, floor: { columns: 10, rows: 10 }, preparedAreaM2: 0, equipment: [],
     zones: [{ id: "starter", name: "Première zone", x: 0, y: 0, width: 1, height: 1, active: true, lightingCode: "MH-TS1000", airCode: "SJ-DF16E350" }],
+    ...(spatialAir ? { airPlacements: [{ id: "air-starter", code: "SJ-DF16E350", x: 0, y: 0 }] } : {}),
     serviceZones: [
       { id: "starter-drying", name: "Filets de séchage", x: 0, y: 9, width: 1, height: 1, kind: "drying", deviceCode: "SJ-DRYIT90" },
       { id: "starter-storage", name: "Premiers bocaux", x: 2, y: 9, width: 1, height: 1, kind: "storage", deviceCode: "LP-SUPER-1L" },
@@ -597,11 +735,16 @@ export function createKqWarehouseStarter(): KqWarehouseState {
   }).nextState;
 }
 
+export function createKqWarehouseEmpty(): KqWarehouseState {
+  return { version: 1, floor: { columns: 10, rows: 10 }, zones: [], serviceZones: [],
+    airPlacements: [], airService: {}, equipment: [], preparedAreaM2: 0 };
+}
+
 /** Free, conservative relocation. Funding, identity, inventory and dimensions of every zone are preserved.
  * A failed packing leaves the whole historical plan untouched. The server separately locks active runs. */
 export function compactKqWarehouseToStarterFloor(state: KqWarehouseState): KqWarehouseState | null {
   assertState(state);
-  if (state.spatial || state.partitions !== undefined || state.floor || state.preparedAreaM2 > 100) return null;
+  if (state.spatial || state.partitions !== undefined || state.airPlacements !== undefined || state.stationPlacements !== undefined || state.floor || state.preparedAreaM2 > 100) return null;
   const all = [...state.zones, ...(state.serviceZones ?? [])];
   if (all.some(zone => zone.width > 10 || zone.height > 10)
     || all.reduce((area, zone) => area + zone.width * zone.height, 0) > 100) return null;
@@ -631,26 +774,30 @@ export function compactKqWarehouseToStarterFloor(state: KqWarehouseState): KqWar
   return isKqWarehouseState(next) ? next : null;
 }
 
-export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0, zoneId?: string, balanceVersion: 1 | 2 = 2, climateBillingVersion: 1 | 2 = 2, postHarvestBalanceVersion: 1 | 2 = 2, condition?: KqWarehouseCondition): KqWarehouseRunSnapshot {
+export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0, zoneId?: string, balanceVersion: 1 | 2 = 2, climateBillingVersion: 1 | 2 = 2, postHarvestBalanceVersion: 1 | 2 = 2, condition?: KqWarehouseCondition, preparationVersion?: 1): KqWarehouseRunSnapshot {
   if (!natural(revision)) throw new Error("Révision de l’entrepôt invalide.");
-  const fullSummary = getKqWarehouseSummary(state, balanceVersion, climateBillingVersion);
-  const demand = getKqWarehouseEquipmentDemand(state.zones, state.serviceZones, state.storageClimateCode);
-  const optionDemand = getKqWarehouseOptionDemand(state.zones);
-  if (fullSummary.allocatedAreaM2 > state.preparedAreaM2 || demand.some((required) => required.quantity > (state.equipment.find((item) => item.code === required.code)?.quantity ?? 0))
+  const fullSummary = getKqWarehouseSummary(state, balanceVersion, climateBillingVersion, undefined, undefined, preparationVersion);
+  const demand = getKqWarehouseEquipmentDemand(state.zones, state.serviceZones, state.storageClimateCode, state.airPlacements);
+  const optionDemand = getKqWarehouseOptionDemand(state.zones, state.stationPlacements);
+  const fixedAreaM2 = getWarehouseFloorPreparationArea(state);
+  if (fixedAreaM2 > state.preparedAreaM2 || demand.some((required) => required.quantity > (state.equipment.find((item) => item.code === required.code)?.quantity ?? 0))
     || optionDemand.some(required => required.quantity > (state.optionInventory?.find(item => item.code === required.code)?.quantity ?? 0))) {
     throw new Error("L’aménagement doit être financé avant de commencer une culture.");
   }
   const selected = zoneId === undefined ? undefined : state.zones.find(zone => zone.id === zoneId);
-  if (zoneId !== undefined && (!selected || !selected.active)) throw new Error("Choisis une zone de culture active.");
+  if (selected?.lightingCode === KQ_WAREHOUSE_UNLIT_CODE) throw new Error("Installe un éclairage avant de commencer cette culture.");
+  if (zoneId !== undefined && (!selected || !isKqWarehouseZoneOperational(selected))) throw new Error("Choisis une zone de culture active.");
   const zones = selected ? [selected] : state.zones;
-  const summary = selected ? getKqWarehouseSummary({ ...state, zones }, balanceVersion, climateBillingVersion) : fullSummary;
+  const summary = selected ? getKqWarehouseSummary(state, balanceVersion, climateBillingVersion, undefined, zoneId, preparationVersion) : fullSummary;
   const freshHarvest = summary.estimatedHarvestGrams;
   if (condition) {
     assertKqWarehouseCondition(state, condition);
+    const airCoverage = getKqWarehouseAirCoverage(state);
+    const stationCoverage = getKqWarehouseStationCoverage(state);
     summary.estimatedHarvestGrams = rounded(zones.filter(zone => zone.active).reduce((sum, zone) => {
       const efficiency = getKqWarehouseZoneCondition(zone.id, condition.assets).yieldPercent;
       if (efficiency === null) throw new Error("L’état du matériel de culture doit être actualisé.");
-      return sum + getKqWarehouseZoneQuote(zone, balanceVersion).estimatedHarvestGrams * efficiency / 100;
+      return sum + getKqWarehouseZoneQuote(zone, balanceVersion, undefined, airCoverage?.zones[zone.id], stationCoverage?.zones[zone.id], preparationVersion).estimatedHarvestGrams * efficiency / 100;
     }, 0));
   }
   if (!summary.activeAreaM2) throw new Error("Active au moins une zone avant de commencer.");
@@ -669,11 +816,15 @@ export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0,
     ...(balanceVersion === 2 ? { balanceVersion: 2 as const } : {}),
     ...(climateBillingVersion === 2 ? { climateBillingVersion: 2 as const } : {}),
     ...(postHarvestBalanceVersion === 2 ? { postHarvestBalanceVersion: 2 as const } : {}),
-    sourceState: { ...state, ...(state.floor ? { floor: { ...state.floor } } : {}), zones: state.zones.map(copyZone), equipment: state.equipment.map((item) => ({ ...item })),
+    ...(preparationVersion ? { preparationVersion } : {}),
+    sourceState: withKqWarehouseStationService(withKqWarehouseAirService({ ...state, ...(state.floor ? { floor: { ...state.floor } } : {}), zones: state.zones.map(copyZone), equipment: state.equipment.map((item) => ({ ...item })),
       ...(state.spatial ? { spatial: { ...state.spatial } } : {}),
       ...(state.partitions !== undefined ? { partitions: state.partitions.map(partition => ({ ...partition })) } : {}),
+      ...(state.airPlacements !== undefined ? { airPlacements: getKqWarehouseAirPlacements(state) } : {}),
+      ...(state.stationPlacements !== undefined ? { stationPlacements: state.stationPlacements.map(placement => ({ ...placement })) } : {}),
+      ...(state.handlingPlacements !== undefined ? { handlingPlacements: state.handlingPlacements.map(placement => ({ ...placement })) } : {}),
       ...(state.optionInventory !== undefined ? { optionInventory: state.optionInventory.map(item => ({ ...item })) } : {}),
-      ...(state.serviceZones !== undefined ? { serviceZones: state.serviceZones.map(zone => ({ ...zone })) } : {}) },
+      ...(state.serviceZones !== undefined ? { serviceZones: state.serviceZones.map(zone => ({ ...zone })) } : {}) })),
     zones: zones.map(copyZone),
     activeAreaM2: summary.activeAreaM2, estimatedHarvestGrams: summary.estimatedHarvestGrams,
     powerWatts: summary.powerWatts, energyKwh: summary.energyKwh, energyCostCents: summary.energyCostCents,
@@ -691,13 +842,17 @@ export function isKqWarehouseRunSnapshot(value: unknown): value is KqWarehouseRu
   if (value.balanceVersion !== undefined && value.balanceVersion !== 2) return false;
   if (value.climateBillingVersion !== undefined && value.climateBillingVersion !== 2) return false;
   if (value.postHarvestBalanceVersion !== undefined && value.postHarvestBalanceVersion !== 2) return false;
+  if (value.preparationVersion !== undefined && (value.preparationVersion !== 1 || value.balanceVersion !== 2)) return false;
   if (value.wearVersion !== undefined ? value.wearVersion !== 1 || !isKqWarehouseCondition(value.cultureEquipment) : value.cultureEquipment !== undefined || value.yieldFactor !== undefined) return false;
   if (value.version === 2 ? typeof value.zoneId !== "string" || !value.zoneId : value.version !== 1 || value.zoneId !== undefined) return false;
   try {
     const expected = getKqWarehouseRunSnapshot(value.sourceState, value.revision, value.version === 2 ? value.zoneId as string : undefined,
-      value.balanceVersion === 2 ? 2 : 1, value.climateBillingVersion === 2 ? 2 : 1, value.postHarvestBalanceVersion === 2 ? 2 : 1, value.wearVersion === 1 ? value.cultureEquipment as KqWarehouseCondition : undefined);
+      value.balanceVersion === 2 ? 2 : 1, value.climateBillingVersion === 2 ? 2 : 1, value.postHarvestBalanceVersion === 2 ? 2 : 1, value.wearVersion === 1 ? value.cultureEquipment as KqWarehouseCondition : undefined, value.preparationVersion === 1 ? 1 : undefined);
     const fields = ["activeAreaM2", "estimatedHarvestGrams", "powerWatts", "energyKwh", "energyCostCents", "consumablesCostCents", "operatingCostCents", "dryingCapacityGrams", "storageCapacityGrams"] as const;
-    return fields.every((field) => value[field] === expected[field]) && value.yieldFactor === expected.yieldFactor && value.qualityBonus === expected.qualityBonus && JSON.stringify(value.zones) === JSON.stringify(expected.zones);
+    return matchesAirService(value.sourceState.airService, expected.sourceState.airService)
+      && matchesStationService(value.sourceState.stationService, expected.sourceState.stationService)
+      && fields.every((field) => value[field] === expected[field]) && value.yieldFactor === expected.yieldFactor
+      && value.qualityBonus === expected.qualityBonus && JSON.stringify(value.zones) === JSON.stringify(expected.zones);
   } catch {
     return false;
   }

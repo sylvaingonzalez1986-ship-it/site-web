@@ -14,7 +14,6 @@ import { getKqStorageRefreshDelay, KQ_STORAGE_REFRESH_MS } from "@/lib/kanab-que
 import { useKqTentSelection } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { PlacardMapOpen } from "./KqPlacardMap";
-import { KqFinancialSupport } from "./KqFinancialSupport";
 import styles from "./KqPlacardLobby.module.css";
 
 type LobbySnapshot = {
@@ -160,6 +159,5 @@ export function KqPlacardLobby({ onOpen, workAvailability, children, teamPanel }
     </section>}
     {children}
     </div>
-    {!api.isTutorial ? <KqFinancialSupport /> : null}
   </main>;
 }

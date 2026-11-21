@@ -21,9 +21,9 @@ const actions: Record<string, string> = {
   "workshop-tier": "Équiper l’atelier", "pay-energy": "Régler l’énergie",
 };
 
-export function getKqWorkerProcessingEnd(context: KqStaffContext, assigneeId: string) {
+export function getKqWorkerBusyUntil(context: KqStaffContext, assigneeId: string) {
   return (context.teamWork ?? []).reduce((end, receipt) => {
-    if (receipt.kind !== "processing" || receipt.assigneeId !== assigneeId) return end;
+    if (receipt.kind === "culture" || receipt.assigneeId !== assigneeId) return end;
     // A Postgres microsecond may fall just after the millisecond JS can represent.
     const fraction = receipt.completesAt.match(/\.(\d+)(?:Z|[+-])/i)?.[1] ?? "";
     const time = Date.parse(receipt.completesAt) + (/[1-9]/.test(fraction.slice(3)) ? 1 : 0);
@@ -35,8 +35,8 @@ export function getKqTeamWorkEntries(snapshot: KqStaffSnapshot) {
   const entries = (snapshot.context.teamWork ?? []).map(receipt => ({
     id: receipt.id, assigneeId: receipt.assigneeId, hours: receipt.hours, startedAt: receipt.startedAt,
     completesAt: receipt.completesAt, instant: receipt.kind === "culture",
-    label: receipt.kind === "culture" ? `Travailler l’étape ${(receipt.stage ?? 0) + 1}` : "Transformer le lot",
-    place: `${receipt.kind === "culture" ? "Culture" : "Atelier"} · ${receipt.target}`,
+    label: receipt.kind === "culture" ? `Travailler l’étape ${(receipt.stage ?? 0) + 1}` : receipt.kind === "cleaning" ? receipt.target : "Transformer le lot",
+    place: receipt.kind === "cleaning" ? "Hygiène · Entrepôt" : `${receipt.kind === "culture" ? "Culture" : "Atelier"} · ${receipt.target}`,
   }));
   const manual = snapshot.state.playerActions;
   if (manual?.day === snapshot.calendar.day) manual.entries.forEach((action, index) => entries.push({

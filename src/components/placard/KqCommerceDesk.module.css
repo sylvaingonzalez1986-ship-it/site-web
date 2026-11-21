@@ -26,6 +26,18 @@
 .flow > p { max-width: 70ch; color: #172923; font-size: .9rem; }
 .back { min-height: 44px; display: inline-flex; align-items: center; color: #172923; font-size: .78rem !important; font-weight: 700 !important; }
 .back:hover { color: #172923; }
+.page[data-warehouse-extracts] button.back {
+  justify-content: center;
+  padding: 6px 12px;
+  cursor: pointer;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border: var(--game-control-border-width, 2px) solid transparent;
+  border-radius: 0;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  background: transparent;
+  box-shadow: none;
+}
+.page[data-warehouse-extracts] button.back:is(:hover, :focus-visible):enabled { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .standaloneNav { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 2px solid #172923; }
 .standaloneNav button { min-height: 44px; padding: 10px 12px; color: #172923; font-size: .8rem; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .standaloneNav button[aria-pressed="true"] { color: #172923; font-weight: 800; border-bottom: 2px solid #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }

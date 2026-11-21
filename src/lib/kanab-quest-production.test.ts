@@ -30,8 +30,8 @@ describe("production expansion", () => {
     const cart=validateKqEquipmentCart({cartCodes:["LED-300"],ownedCodes:[],cashCents:35900,productionUnits:units});
     expect(cart.cashAfterCents).toBe(35900-35900*units);
     expect(cart.errors.length).toBeGreaterThan(0);
-    const base=getKqNextEquipmentGoal({ownedCodes:[],cashCents:0})!;
-    const fleet=getKqNextEquipmentGoal({ownedCodes:[],cashCents:base.equipment.priceCents,productionUnits:units})!;
+    const base=getKqNextEquipmentGoal({ownedCodes:[],cashCents:0,category:"security"})!;
+    const fleet=getKqNextEquipmentGoal({ownedCodes:[],cashCents:base.equipment.priceCents,productionUnits:units,category:"security"})!;
     expect(fleet.equipment.priceCents).toBe(base.equipment.priceCents*Math.ceil(units/4));
     expect(fleet.affordable).toBe(units <= 4);
   });

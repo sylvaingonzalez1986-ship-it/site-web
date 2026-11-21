@@ -1,5 +1,6 @@
 "use client";
 
+import { isKqWarehouseZoneOperational } from "@/lib/kanab-quest-warehouse";
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { Check, Leaf, LockKeyhole, Pencil, RotateCw, X } from "lucide-react";
@@ -94,7 +95,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
 
   const zones = snapshot?.state.zones ?? [];
   const reservation = snapshot?.productionReservation;
-  const assignedZones = zones.filter(zone => zone.active && zone.buddieCode && zone.id !== reservation?.zoneId);
+  const assignedZones = zones.filter(zone => isKqWarehouseZoneOperational(zone) && zone.buddieCode && zone.id !== reservation?.zoneId);
   const assignedArea = assignedZones.reduce((area, zone) => area + zone.width * zone.height, 0);
   const selectedZone = zones.find(zone => zone.id === selectedZoneId && zone.id !== reservation?.zoneId);
   const selectedIdentity = snapshot && selectedZone ? getKqZoneIdentity(snapshot.state, selectedZone.id) : null;
@@ -172,7 +173,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
   }
 
   return <section className={styles.section} data-culture-buddies aria-labelledby={`${id}-title`} aria-busy={status === "saving"}
-    data-guide-saved-zone-count={snapshot?.state.zones.length}
+    data-guide-saved-zone-count={snapshot?.state.zones.filter(isKqWarehouseZoneOperational).length}
     data-guide-assigned-zone-count={snapshot ? assignedZones.length : undefined}>
     <header className={styles.header}>
       <div><h2 id={`${id}-title`}>1 · Tes Buddies</h2>
@@ -184,8 +185,8 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
     <p className={styles.intro}>Un Buddie par zone, les mêmes cartes pour toutes. Les zones vides ou réservées au personnel ne participent pas à la campagne.</p>
     {emptyCollection ? <div className={styles.empty} data-empty-buddie-collection>
       <p role="status"><strong>Un Buddie pour commencer</strong><br />Il te faut une carte Buddie dans ta collection pour choisir une variété. Elle est conservée pendant la culture.</p>
-      {onOpenBuddiePacks ? <button type="button" disabled={disabled || blocked} onClick={onOpenBuddiePacks}>Découvrir les Packs Buddies</button>
-        : !api.isTutorial ? <Link href="/arene/placard?view=shop&section=buddies&from=game" aria-disabled={disabled || blocked || undefined} onClick={event => { if (disabled || blocked) event.preventDefault(); }}>Découvrir les Packs Buddies</Link> : null}
+      {onOpenBuddiePacks ? <button type="button" data-sylvain-target="prepare-packs" disabled={disabled || blocked} onClick={onOpenBuddiePacks}>Découvrir les Packs Buddies</button>
+        : !api.isTutorial ? <Link href="/arene/placard?view=shop&section=buddies&from=game" data-sylvain-target="prepare-packs" aria-disabled={disabled || blocked || undefined} onClick={event => { if (disabled || blocked) event.preventDefault(); }}>Découvrir les Packs Buddies</Link> : null}
     </div> : null}
     {!snapshot ? <div className={styles.empty}><p>{loading ? "Lecture des zones de culture…" : "Les zones de culture sont indisponibles."}</p><button type="button" disabled={disabled || blocked || loading} onClick={onRefresh}>Actualiser</button></div>
       : !zones.length ? <p className={styles.empty}>Ajoute une zone de culture dans ton entrepôt pour accueillir un Buddie.</p>
@@ -227,7 +228,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
                 <p className={styles.state}>{busy || remaining ? <LockKeyhole size={13} aria-hidden="true" /> : zone.active && zone.buddieCode && rotation && ownedCodes?.includes(zone.buddieCode) ? <Check size={13} aria-hidden="true" /> : null}{statusLabel}</p>
                 <div className={styles.actions}>
                   {!emptyCollection ? <button type="button" ref={node => { if (node) triggers.current.set(zone.id, node); else triggers.current.delete(zone.id); }}
-                    data-culture-buddie-change={zone.id} disabled={unavailable || ownedCodes === null || rotation === null}
+                    data-culture-buddie-change={zone.id} data-sylvain-target="prepare-buddie" disabled={unavailable || ownedCodes === null || rotation === null}
                     aria-label={`${zone.buddieCode ? "Changer" : "Choisir"} le Buddie de la ${label.toLowerCase()}`}
                     aria-expanded={selectedZoneId === zone.id} aria-controls={selectedZoneId === zone.id ? `${id}-picker` : undefined}
                     onClick={() => { setSelectedZoneId(previous => previous === zone.id ? null : zone.id); setError(""); setNotice(""); }}>

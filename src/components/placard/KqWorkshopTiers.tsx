@@ -1,11 +1,11 @@
 "use client";
 
-import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import Image from "next/image";
+import { getKqWorkshopPriceList } from "@/lib/kanab-quest-warehouse-retail";
 import { useEffect, useRef, useState } from "react";
 import { Check, LoaderCircle, ShoppingCart } from "lucide-react";
 import { createClientRequestKey } from "@/lib/client-request-key";
-import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
+import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getChanvrierCareerGate, getChanvrierEquipmentAccess, getChanvrierEquipmentUpgradeRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { getKqWorkshopMachineSpecification, getKqWorkshopTierPrice, KQ_WORKSHOP_MACHINE_TIERS, type KqWorkshopTierLevel } from "@/lib/kanab-quest-workshop-machines";
 import { getKqWorkshopProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
@@ -27,14 +27,13 @@ export function KqWorkshopTiers({ code, level = 0, cashCents, career, maintenanc
   const request = useRef<{ signature: string; key: string } | null>(null);
   useEffect(() => { onBusyChange?.(pending); }, [pending, onBusyChange]);
   useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
-  const equipment = getKqEquipmentDefinition(code);
-  if (!equipment || !getKqWorkshopMachineSpecification(code)) return null;
+  if (!getKqWorkshopPriceList(code) || !getKqWorkshopMachineSpecification(code)) return null;
   const currentLevel = Math.max(level, completedLevel);
   const acquisition = career ? getChanvrierEquipmentAccess(career, code) : null;
   const offers = KQ_WORKSHOP_MACHINE_TIERS.map(tier => {
     const isCurrentTier = currentLevel >= tier.level && currentLevel < (tier.level === 1 ? 4 : tier.level === 4 ? 7 : 11);
     const machine = getKqWorkshopMachineSpecification(code, isCurrentTier ? currentLevel : tier.level)!;
-    const price = getKqWorkshopTierPrice(code, equipment.priceCents, tier.level, currentLevel);
+    const price = getKqWorkshopTierPrice(code, tier.level, currentLevel);
     const gate = tier.level > 1 && career ? getChanvrierCareerGate(career.xp, getChanvrierEquipmentUpgradeRequiredLevel(code, tier.level)) : acquisition;
     const reason = currentLevel === 0 && !acquisition?.allowed ? acquisition?.reason ?? "Progression du joueur indisponible."
       : !gate?.allowed ? gate?.reason ?? "Progression du joueur indisponible."
@@ -72,28 +71,22 @@ export function KqWorkshopTiers({ code, level = 0, cashCents, career, maintenanc
     <div className={styles.grid}>{offers.map(offer => <article key={offer.code} data-tier={offer.code} data-workshop-tier={offer.level} data-selected={selected === offer.level || undefined} data-attained={offer.attained || undefined}>
       <small>{offer.label}</small><strong>{offer.machine.name}</strong>
       {offer.artwork && <Image className={styles.artwork} src={offer.artwork.src} alt="" width={512} height={512} sizes="(max-width: 700px) 160px, 180px" data-workshop-tier-artwork={offer.level} />}
-      <dl><div><dt>Capacité de jeu</dt><dd>{offer.machine.capacityGrams} g / lot</dd></div><div><dt>Précision de jeu</dt><dd>{offer.machine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %</dd></div></dl>
-      {offer.reference ? <><p>{offer.reference.gramsPerHour === null ? "Attente autonome estimée" : `${offer.reference.gramsPerHour.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g/h de jeu estimés`} · {offer.reference.material}.</p><details><summary>Cadence et source fabricant</summary><KqHelpDashboard>
-        <KqHelpGrid art="help-workshop" items={[
-          { label: "Modèle de référence", value: offer.reference.model, art: "help-workshop" },
-          { label: "Donnée fabricant", value: offer.reference.specification, art: "help-plan" },
-          { label: "Cadence affichée", value: "Avant la compétence", art: "help-training" },
-          { label: "1 h de jeu", value: "10 min réelles", art: "help-time" },
-        ]} />
-        <KqHelpNote>{offer.reference.note}</KqHelpNote>
-        <a href={offer.reference.sourceUrl} target="_blank" rel="noreferrer">Fiche fabricant</a>
-      </KqHelpDashboard></details></> : null}
-      <b>{offer.attained ? "Acquise" : formatKqCash(offer.price ?? 0)}</b>
+      <dl>
+        <div><dt>Capacité de jeu</dt><dd>{offer.machine.capacityGrams} g / lot</dd></div>
+        <div><dt>Précision de jeu</dt><dd>{offer.machine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %</dd></div>
+        {offer.reference && <div><dt>Cadence de base estimée</dt>
+          <dd>{offer.reference.gramsPerHour === null ? "Attente autonome" : `${offer.reference.gramsPerHour.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g/h de jeu`} · {offer.reference.material}</dd></div>}
+      </dl>
+      <b>{offer.attained ? "Acquise" : offer.price === null ? "Prix indisponible" : formatKqCash(offer.price)}</b>
       <span>{offer.attained ? `Niveau actuel ${currentLevel}` : currentLevel > 0 ? "Passage de gamme · achat unique" : "Machine complète · achat unique"}</span>
       {offer.attained ? <p className={styles.owned}><Check size={16} aria-hidden="true" />{currentLevel < (offer.level === 1 ? 4 : offer.level === 4 ? 7 : 11) ? "Ta gamme actuelle" : "Incluse dans ta machine"}</p>
-        : <button type="button" disabled={disabled || pending || !!offer.reason} data-workshop-tier-choose={offer.level} aria-pressed={selected === offer.level} onClick={() => { setSelected(offer.level); setError(""); }}><ShoppingCart size={16} aria-hidden="true" />Choisir {offer.label.toLocaleLowerCase("fr-FR")}</button>}
+        : <button type="button" disabled={disabled || pending || offer.price === null || !!offer.reason} data-workshop-tier-choose={offer.level} aria-pressed={selected === offer.level} onClick={() => { setSelected(offer.level); setError(""); }}><ShoppingCart size={16} aria-hidden="true" />Choisir {offer.label.toLocaleLowerCase("fr-FR")}</button>}
       {!offer.attained && offer.reason ? <p className={styles.reason}>{offer.reason}</p> : null}
     </article>)}</div>
-    <small className={styles.gameNote}>Capacités et précision fictives. Les réglages fins et les filières débloquées suivent les niveaux déjà acquis.</small>
-    {chosen && !chosen.attained ? <div className={styles.confirm} role="group" aria-label="Confirmer la gamme">
-      <strong>{chosen.machine.name} · {formatKqCash(chosen.price ?? 0)}</strong>
-      <p>{currentLevel > 0 ? `Passage du niveau ${currentLevel} au niveau ${chosen.level}.` : `Achat direct au niveau ${chosen.level}.`} Solde prévu : {formatKqCash(Math.max(0, cashCents - (chosen.price ?? 0)))}.</p>
-      <div><button type="button" disabled={pending} onClick={() => setSelected(null)}>Annuler</button><button type="button" data-workshop-tier-confirm disabled={pending || disabled || !!chosen.reason || chosen.price === null} onClick={() => void buy()}>{pending ? <><LoaderCircle size={16} aria-hidden="true" />Achat…</> : `Confirmer · ${formatKqCash(chosen.price ?? 0)}`}</button></div>
+    {chosen && !chosen.attained && chosen.price !== null ? <div className={styles.confirm} role="group" aria-label="Confirmer la gamme">
+      <strong>{chosen.machine.name} · {formatKqCash(chosen.price)}</strong>
+      <p>{currentLevel > 0 ? `Passage du niveau ${currentLevel} au niveau ${chosen.level}.` : `Achat direct au niveau ${chosen.level}.`} Solde prévu : {formatKqCash(Math.max(0, cashCents - chosen.price))}.</p>
+      <div><button type="button" disabled={pending} onClick={() => setSelected(null)}>Annuler</button><button type="button" data-workshop-tier-confirm disabled={pending || disabled || !!chosen.reason || chosen.price === null} onClick={() => void buy()}>{pending ? <><LoaderCircle size={16} aria-hidden="true" />Achat…</> : `Confirmer · ${formatKqCash(chosen.price)}`}</button></div>
     </div> : null}
     {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
     {error ? <p className={styles.error} role="alert">{error} <button type="button" disabled={pending} onClick={() => void onUpdated()}>Actualiser</button></p> : null}

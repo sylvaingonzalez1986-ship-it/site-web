@@ -60,6 +60,8 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
   const person = id => `[data-team-person="${id}"]`;
   const free = id => page.$eval(`[data-team-free="${id}"]`, node => node.textContent);
   const planRow = id => `[data-team-plan-id="${id}"]`;
+  const durationDialog = 'dialog[data-activity-duration-dialog][open]';
+  const durationRange = `${durationDialog} input[type="range"]`;
   async function activate(selector) {
     const button = await page.waitForSelector(selector,{visible:true});
     await button.evaluate(node => node.scrollIntoView({block:"center",inline:"center",behavior:"instant"}));
@@ -80,6 +82,20 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     await field.asElement().select(value); await field.dispose();
   }
   async function duration(value) {
+    const trigger = '[data-team-form] [data-activity-duration]';
+    if (await page.$(trigger)) {
+      const before = fixture.mutations();
+      await activate(trigger); await page.waitForSelector(durationRange, { visible: true });
+      const min = await page.$eval(durationRange, node => Number(node.min));
+      await page.focus(durationRange); await page.keyboard.press('Home');
+      for (let i = 0; i < (value - min) * 2; i++) await page.keyboard.press('ArrowRight');
+      assert.equal(await page.$eval(durationRange, node => node.valueAsNumber), value);
+      await activate(`${durationDialog} [data-app-dialog-body] button`);
+      await page.waitForSelector(durationDialog, { hidden: true });
+      await page.waitForFunction(selector => document.activeElement?.matches(selector), {}, trigger);
+      assert.equal(fixture.mutations(), before, 'Applying a duration only edits the draft');
+      return;
+    }
     const selector="[data-team-form] input[type=number]";
     await page.focus(selector); await page.keyboard.press("Home"); await page.keyboard.down("Shift"); await page.keyboard.press("End"); await page.keyboard.up("Shift");
     await page.keyboard.type(String(value));
@@ -109,6 +125,11 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     await page.setViewport({width,height:width===320?690:width===390?844:900,isMobile:width<1000,hasTouch:width<1000,deviceScaleFactor:1});
     await visit("starter",`world=${requestedWorld}&entryGate=1`);
     await page.waitForSelector('[data-placard-world="3d"]');
+    if (width < 1000) {
+      const meter = '[data-team-player-time] [role="meter"]';
+      await page.waitForSelector(meter, { visible: true });
+      assert.equal(await page.$eval(meter, node => node.getAttribute('aria-valuenow')), '11.5');
+    }
     await showPanel();
     assert.match(await page.$eval(person("player"), node => node.textContent), /VillageAudit/);
     await page.waitForSelector(person("player") + ' canvas[data-avatar-state="ready"]');
@@ -164,10 +185,22 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     await add("communication",1);await activate('[data-team-mode="now"]');
     assert.equal(await page.$eval("[data-team-form] button[type=submit]",node=>node.disabled),true);
     assert.match(await page.$eval("[data-team-form] [role=status]",node=>node.textContent),/travaille|occupé|créneau/i);
-    await activate('[data-team-mode="plan"]');await duration(12);
-    assert.equal(await page.$eval("[data-team-form] button[type=submit]",node=>node.disabled),true);
+    await activate('[data-team-mode="plan"]'); await activate('[data-team-form] [data-activity-duration]');
+    await page.waitForSelector(durationRange); await page.focus(durationRange); await page.keyboard.press('End');
+    assert.equal(await page.$eval(durationRange, node => node.valueAsNumber), 9.5, 'The selector cannot go past the available hours');
+    await page.keyboard.press('Escape'); await page.waitForSelector(durationDialog, { hidden: true });
     await activate("[data-team-close]");await page.waitForSelector("[data-team-open]");
     await page.waitForFunction(()=>document.activeElement===document.querySelector("[data-team-open]"));
-    results.push({scenario:"quarter-team-lifecycle",width,requestedWorld,world:"3d",keyboard:width>=1000,touch:width<1000,mutations:fixture.mutations(),persistedAfterReload:true});
+    await activate('button[aria-label="Ouvrir le bilan de ma partie"]');
+    const quarterMeter = '[data-player-work-status] [role="meter"]';
+    await page.waitForSelector(quarterMeter, { visible: true });
+    assert.equal(await page.$eval(quarterMeter, node => node.getAttribute('aria-valuenow')), '9.5');
+    await visit('starter', 'view=staff');
+    await page.waitForSelector('[data-placard-stage="staff"]');
+    assert.equal(await page.$('[data-player-work-status], [data-team-player-time], [data-activity-duration-dialog]'), null);
+    await visit('starter', 'view=workshop&section=processing');
+    await page.waitForSelector('[data-placard-stage="workshop"]');
+    assert.equal(await page.$('[data-player-work-status], [data-team-player-time], [data-activity-duration-dialog]'), null);
+    results.push({scenario:"quarter-team-lifecycle",width,requestedWorld,world:"3d",keyboard:width>=1000,touch:width<1000,mutations:fixture.mutations(),persistedAfterReload:true,scopedWorkdayMeter:true,activityDurationDialog:true});
   }
 }

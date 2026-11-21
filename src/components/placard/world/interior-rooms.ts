@@ -1,5 +1,6 @@
 import { getKqWarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
 import { getKqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
+import { KQ_WAREHOUSE_HANDLING } from "@/lib/kanab-quest-warehouse-handling";
 import type { KqWarehouseViewSnapshot } from "../KqWarehouse";
 import type { VillageBuildingKind } from "./village-buildings";
 import type { InteriorObject, InteriorRoom } from "./interior-types";
@@ -52,6 +53,11 @@ export function createInteriorRoom(id: VillageBuildingKind, snapshot: KqWarehous
         href: run ? `/arene/placard?view=game&zone=${encodeURIComponent(item.id)}&run=${encodeURIComponent(run.runId)}` : item.href,
         detail: item.kind === "partition" ? `${Math.max(item.width, item.depth)} m · Paroi de séparation` : [device?.name, `${item.width * item.depth} m²`, run ? "Culture en cours" : reserved ? "Production commerciale" : ""].filter(Boolean).join(" · ") };
     });
+    for (const item of snapshot?.state.handlingPlacements ?? []) {
+      objects.push({ ...obj(item.code, "handling", KQ_WAREHOUSE_HANDLING[item.code].name,
+        item.x + .5 - workArea.width / 2, item.y + .5 - workArea.depth / 2, 1, 1, "view=workshop&catalog=equipment&equipment=" + item.code),
+        solid: true, deviceCode: item.code });
+    }
     const front = workArea.depth / 2 + 1.25;
     objects.push(obj("warehouse-plan", "desk", "Équipements et réserve", -width / 2 + 1.8, front, 2, .85, "view=workshop", "Inventaire, options, Buddies et retrait des zones"),
       obj("workshop", "workbench", "Ouvrir l’Atelier", width / 2 - 1.8, front, 2, .9, "view=workshop&section=processing", "Trim, machines et transformation"),

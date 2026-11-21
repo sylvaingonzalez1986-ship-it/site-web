@@ -62,11 +62,13 @@ describe("warehouse equipment condition and resale", () => {
   it("uses exact funded cents even when the floating-point ratio rounds below a cent", () => {
     const condition = initializeKqWarehouseCondition(starter);
     const nextState = { ...starter, equipment: starter.equipment.map(item => item.code === "MH-TS1000" ? { ...item, quantity: item.quantity + 1 } : item) };
-    const purchase = { requestKey: "credit", fundedFraction: 157 / 298, fundedCents: 157, investmentCents: 298 };
-    expect(Math.floor(KQ_WAREHOUSE_CATALOG.find(item => item.code === "MH-TS1000")!.priceCents * purchase.fundedFraction)).toBe(7849);
+    const purchase = { requestKey: "credit", fundedFraction: 13 / 17, fundedCents: 13, investmentCents: 17 };
+    const retailCents = KQ_WAREHOUSE_CATALOG.find(item => item.code === "MH-TS1000")!.priceCents;
+    const exactCents = Math.floor(retailCents * purchase.fundedCents / purchase.investmentCents);
+    expect(Math.floor(retailCents * purchase.fundedFraction)).toBe(exactCents - 1);
     const next = reconcileKqWarehouseCondition(starter, nextState, condition, purchase);
-    expect(next.assets.find(asset => asset.sourceAssetKey === "warehouse:credit")?.purchaseUnitCents).toBe(7850);
-    expect(() => reconcileKqWarehouseCondition(starter, nextState, condition, { ...purchase, fundedCents: 299 })).toThrow();
+    expect(next.assets.find(asset => asset.sourceAssetKey === "warehouse:credit")?.purchaseUnitCents).toBe(exactCents);
+    expect(() => reconcileKqWarehouseCondition(starter, nextState, condition, { ...purchase, fundedCents: 18 })).toThrow();
   });
   it("freezes the reduced yield at launch and validates it without changing historical runs", () => {
     const historical = getKqWarehouseRunSnapshot(starter, 1, zoneId);

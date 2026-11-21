@@ -1,6 +1,7 @@
 import type { KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
+import type { KqWarehouseCampaignInputs, KqWarehouseInputQuantities } from "@/lib/kanab-quest-warehouse-preparations";
 import type { KqCultureWorkChoice, KqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
 import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/lib/kanab-quest-care";
 import type { KqCareSector } from "@/lib/kanab-quest-care-spatial";
@@ -129,7 +130,7 @@ export async function readKqResponse<T>(response: Response): Promise<T> {
   return payload;
 }
 
-export type KqCareInventory = Array<{ productCode: string; quantity: number; legacyQuantity?: number; areaQuantity?: number }>;
+export type KqCareInventory = Array<{ productCode: string; quantity: number; legacyQuantity?: number; areaQuantity?: number; zoneQuantities?: Record<string, number> }>;
 export type KqStorageSnapshot = {
   /** Optional on older servers. Do not infer packet status from capacity.usedUnits. */
   stockBreakdown?: KqStorageStockBreakdown;
@@ -178,7 +179,9 @@ export async function applyKqRemoteCare(runId: string, input: { productCode?: st
 }
 
 export async function startKqRemoteRun(
-  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; expectedWarehouseRevision?: number; expectedProductionReservedZoneId?: string | null; zoneId?: string; campaign?: boolean; requestKey?: string },
+  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; expectedWarehouseRevision?: number; expectedProductionReservedZoneId?: string | null; zoneId?: string; campaign?: boolean; requestKey?: string;
+    warehouseInputs?: KqWarehouseCampaignInputs | KqWarehouseInputQuantities;
+    expectedPreparationKey?: string },
   request: typeof fetch = fetch,
 ) {
   const response = await request("/api/admin/placard/runs", {

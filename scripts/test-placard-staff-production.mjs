@@ -280,6 +280,7 @@ try {
   await db.exec(legacyOptions.replaceAll('public.kq_warehouse_option(','public.kq_warehouse_option_v1('));
   for(const name of ['kq_warehouse_option','kq_warehouse_device_quality','kq_warehouse_options_projection'])
     await db.exec(await definition('20261015000400_kq_warehouse_tier_balance.sql',name));
+  await db.exec(await migration('20261121002200_kq_warehouse_retail_prices.sql'));
   await db.exec('ALTER TABLE kq_warehouse_layouts ADD COLUMN culture_assets JSONB; ALTER TABLE kq_warehouse_layouts ADD COLUMN migration_credit_cents INTEGER NOT NULL DEFAULT 0;');
   for(const name of ['kq_warehouse_validate_assets','kq_warehouse_condition_projection'])
     await db.exec(await definition('20261030000100_kq_warehouse_condition_and_resale.sql',name));
@@ -321,7 +322,7 @@ try {
   await commit(equipmentUser,equipmentRaw,config,staff.applyKqStaffCommand(equipmentRaw,config,randomUUID()));
   equipmentRaw=await read(equipmentUser);
   check('Enabled empty production publishes equipment editing capability',await scalar("SELECT kq_warehouse_snapshot($1)#>'{productionReservation,equipmentEditable}'",[equipmentUser]),true);
-  const upgraded=warehouse.getKqWarehouseQuote({...equipmentPlan,zones:equipmentPlan.zones.map(zone=>({...zone,lightingCode:'SIM-LIGHT-03',optionCodes:['SIM-WATER-03','SIM-CLIMATE-03']}))},equipmentPlan);
+  const upgraded=warehouse.getKqWarehouseQuote({...equipmentPlan,zones:equipmentPlan.zones.map(zone=>({...zone,lightingCode:'SIM-LIGHT-03',optionCodes:['SIM-WATER-03','SIM-SUBSTRATE-03']}))},equipmentPlan);
   const upgradeKey=randomUUID();
   const upgradeCondition=conditionModule.reconcileKqWarehouseCondition(equipmentPlan,upgraded.nextState,equipmentCondition,{requestKey:upgradeKey,fundedFraction:1,fundedCents:upgraded.totalCostCents,investmentCents:upgraded.totalCostCents});
   const upgradeRequest={state:upgraded.nextState,expectedRevision:1,expectedCostCents:upgraded.totalCostCents};

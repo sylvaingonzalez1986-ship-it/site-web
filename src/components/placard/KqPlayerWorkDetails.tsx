@@ -31,20 +31,10 @@ const labels: Record<string, string> = {
   "administration/pay-energy": "Achats, factures, organisation",
   "culture/buy-care": "Acheter des soins",
 };
-const contextNotes: Record<string, string> = {
-  game: "Culture déléguée : les heures viennent de l’équipe. Planning épuisé : étape bloquée. Cartes et soins joués : aucun temps en plus.",
-  workshop: "Les délais des machines continuent séparément du travail actif.",
-  harvests: "Rangement : Transformation. Vente : Prospection.",
-  market: "Le temps de diffusion d’une campagne est distinct de ton travail.",
-  social: "La fréquence autorisée des publications reste indépendante du temps de travail.",
-  staff: "Toi : 12 h par jour, week-end compris. Chaque salarié suit son propre planning.",
-  treasury: "La banque et la consultation des comptes ne prennent aucune heure.",
-};
-
-export function KqPlayerWorkDetails({ view, workday, skills }: {
-  view: string; workday: ReturnType<typeof getKqPlayerWorkday> | null; skills: KqStaffSkills | null;
+export function KqPlayerWorkDetails({ workday, skills }: {
+  workday: ReturnType<typeof getKqPlayerWorkday> | null; skills: KqStaffSkills | null;
 }) {
-  const [selectedGroup, setSelectedGroup] = useState<string>(({ game: "culture", workshop: "processing", harvests: "processing", market: "sales", treasury: "administration" } as Record<string, string>)[view] ?? "communication");
+  const [selectedGroup, setSelectedGroup] = useState<string>("communication");
   return <KqHelpDashboard>
     <div className={styles.daySummary}>
       <section className={styles.paper} aria-label="Répartition de ta journée">
@@ -93,6 +83,6 @@ export function KqPlayerWorkDetails({ view, workday, skills }: {
       { label: "Sillonner les campagnes", value: "12 h", detail: "Toute ta journée de travail.", art: "help-travel" },
       { label: "Consulter ou déléguer", value: "0 min", detail: "Pause et récupération d’un résultat aussi.", art: "help-team" },
     ]} />
-    <KqHelpNote>Heures réservées à la confirmation. Une action refusée ne consomme rien. {contextNotes[view] ?? "Tes salariés utilisent leur propre planning."}</KqHelpNote>
+    <KqHelpNote>Heures réservées à la confirmation. Une action refusée ne consomme rien. Tes salariés utilisent leur propre planning.</KqHelpNote>
   </KqHelpDashboard>;
 }

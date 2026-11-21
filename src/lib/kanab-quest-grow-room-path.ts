@@ -51,7 +51,7 @@ function workPoints(item: WarehouseSpatialItem, cell?: GrowPoint | null) {
 
 export function createGrowRoomPaths(layout: WarehouseSpatialLayout) {
   const roomX = layout.width / 2 + 1 - clearance, roomZ = layout.depth / 2 + 1 - clearance;
-  const fixtures = layout.items.map(item => ({
+  const fixtures = [...layout.items, ...(layout.obstacles ?? [])].map(item => ({
     id: item.id, left: item.x - item.width / 2, right: item.x + item.width / 2,
     back: item.z - item.depth / 2, front: item.z + item.depth / 2,
   }));

@@ -92,7 +92,8 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
     onRetry?.();
   }
 
-  return <section ref={section} className={styles.section} aria-label="Récoltes en conservation" data-conservation-summary>
+  return <section ref={section} className={styles.section} aria-label="Récoltes en conservation" data-conservation-summary data-sylvain-target="harvest"
+    data-sylvain-seen={!api.isTutorial && storage && !error && !disabled && lots.length > 0 ? "harvest" : undefined} tabIndex={-1}>
     <header className={styles.heading}>
       <div><h3>Mes fleurs stockées</h3>
         {storage && lots.length > 0 && <div className={styles.counts} aria-label="État des lots">

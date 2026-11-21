@@ -18,7 +18,7 @@ function campaign() {
   const initial = createKqWarehouseStarter();
   const plan = getKqWarehouseQuote({ ...initial, zones: [
     { ...initial.zones[0], id: "a", buddieCode: "HH2026-002" },
-    { ...initial.zones[0], id: "b", x: 4, width: 2, buddieCode: "HH2026-003", optionCodes: ["SIM-CLIMATE-03", "SIM-NUTRITION-03"] },
+    { ...initial.zones[0], id: "b", x: 4, width: 2, buddieCode: "HH2026-003", optionCodes: ["SIM-CLIMATE-UNIT-03", "SIM-NUTRITION-03"] },
   ] }, initial).nextState;
   const members = getKqCampaignParticipants(plan, 4).map((member, index) => ({ ...member, runId: `run-${index}` }));
   let state: KqGameState = {

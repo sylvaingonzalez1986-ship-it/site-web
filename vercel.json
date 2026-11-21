@@ -4,6 +4,7 @@
     "src/app/api/checkout/viva/route.ts": { "regions": ["cdg1"] },
     "src/app/api/checkout/bitcoin/*/route.ts": { "regions": ["cdg1"] },
     "src/app/api/cron/swiss-bitcoin-pay/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/cron/support-payments/route.ts": { "regions": ["cdg1"] },
     "src/app/api/admin/orders/*/bitcoin/route.ts": { "regions": ["cdg1"] }
   },
   "crons": [
@@ -12,6 +13,7 @@
     { "path": "/api/cron/placard-crypto", "schedule": "0 19 * * *" },
     { "path": "/api/cron/placard-crypto", "schedule": "0 20 * * *" },
     { "path": "/api/cron/placard-online", "schedule": "15 * * * *" },
-    { "path": "/api/cron/swiss-bitcoin-pay", "schedule": "*/5 * * * *" }
+    { "path": "/api/cron/swiss-bitcoin-pay", "schedule": "*/5 * * * *" },
+    { "path": "/api/cron/support-payments", "schedule": "*/5 * * * *" }
   ]
 }

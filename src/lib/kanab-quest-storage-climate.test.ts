@@ -1,21 +1,25 @@
 import { describe, expect, it } from "vitest";
-import { KQ_WAREHOUSE_CATALOG } from "./kanab-quest-warehouse-catalog";
-import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseStorageClimateQuote } from "./kanab-quest-warehouse";
+import { getKqWarehouseRetailPrice } from "./kanab-quest-warehouse-retail";
+import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseServiceZoneQuote, getKqWarehouseStorageClimateQuote } from "./kanab-quest-warehouse";
 import { KQ_GAME_MONTH_MS } from "./kanab-quest-business";
 import { createKqStorageClimateAccrual, getKqStorageClimateBilling, settleKqStorageClimateAccrual } from "./kanab-quest-storage-climate";
 
 describe("post-harvest investment and monthly storage electricity", () => {
   it.each([
-    ["SJ-DRYIT90", "SIM-DRYING-02", "SIM-DRYING-03"],
-    ["LP-SUPER-1L", "BROR-JARS-48", "CURTEC-60L"],
-  ])("charges more per m² and per capacity for each upgrade from %s", (...codes) => {
-    const devices = codes.map(code => KQ_WAREHOUSE_CATALOG.find(device => device.code === code)!);
-    const pricesPerM2 = devices.map(device => device.priceCents * device.zoneLayout!.unitsPerM2);
-    const pricesPerGram = devices.map(device => device.priceCents / device.zoneLayout!.capacityGramsPerUnit);
-    for (let tier = 1; tier < devices.length; tier++) {
-      expect(pricesPerM2[tier]).toBeGreaterThan(pricesPerM2[tier - 1] * 3);
-      expect(pricesPerGram[tier]).toBeGreaterThan(pricesPerGram[tier - 1]);
-    }
+    ["drying", "SJ-DRYIT90", 1, 1000],
+    ["drying", "SIM-DRYING-02", 1, 2500],
+    ["drying", "SIM-DRYING-03", 1, 6000],
+    ["storage", "LP-SUPER-1L", 4, 300],
+    ["storage", "BROR-JARS-48", 1, 2400],
+    ["storage", "CURTEC-60L", 4, 3000],
+  ] as const)("charges the public price for the units fitting a %s zone with %s", (kind, deviceCode, unitsPerM2, gramsPerUnit) => {
+    const unitPrice = getKqWarehouseRetailPrice(deviceCode)!.unitPriceCents;
+    const quote = getKqWarehouseServiceZoneQuote({ id: "bay", name: "Réserve", kind, deviceCode, x: 0, y: 0, width: 2, height: 1 });
+    const quantity = 2 * unitsPerM2;
+    expect(quote.devices).toMatchObject([{ code: deviceCode, quantity, totalCents: quantity * unitPrice }]);
+    expect(quote.equipmentCostCents).toBe(quantity * unitPrice);
+    expect(quote.capacityGrams).toBe(quantity * gramsPerUnit);
+    expect(quote.installationCostCents).toBe(Math.round(quantity * unitPrice * .15));
   });
 
   it.each([["01", 6, 150], ["02", 12, 300], ["03", 24, 600]] as const)("quotes model %s per storage m² even without an active culture", (tier, kwh, cents) => {

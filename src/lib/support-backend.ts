@@ -1,18 +1,21 @@
 import "server-only";
 
 import { createHash } from "node:crypto";
+import { inspectSwissBitcoinInvoice, isSwissBitcoinSupportEnabled, swissBitcoinInvoicePage } from "@/lib/swiss-bitcoin-pay";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { buildVivaCheckoutUrl, getVivaConfig, type VivaConfig, type VivaVerifiedTransaction } from "@/lib/viva-payment";
-import { SupportError, type AdminSupportDashboard, type AdminSupportRow, type SupportAttempt, type SupportCampaign, type SupportStatus, type SupportSummary } from "@/lib/support-campaign";
+import { SupportError, type AdminSupportDashboard, type AdminSupportRow, type SupportAttempt, type SupportCampaign, type SupportProvider, type SupportStatus, type SupportSummary } from "@/lib/support-campaign";
 
 export type SupportRecord = {
   id: string; pseudonym: string; amount_cents: number; publish_name: boolean; publish_amount: boolean;
   source_code: string; order_code: string | null; transaction_id: string | null; paid_at: string | null;
-  checkout_state: "creating" | "ready" | "uncertain" | "cancelled"; expires_at: string; review_required: boolean;
+  checkout_state: "creating" | "ready" | "uncertain" | "cancelled" | "expired"; expires_at: string; review_required: boolean;
+  provider?: SupportProvider; invoice_id?: string | null; provider_issue?: string | null;
+  last_checked_at?: string | null; created_at?: string;
   support_reversals?: { amount_cents: number }[];
 };
 const hash = (token: string) => createHash("sha256").update(token).digest("hex");
-const recordColumns = "id,pseudonym,amount_cents,publish_name,publish_amount,source_code,order_code,transaction_id,paid_at,checkout_state,expires_at,review_required,support_reversals(amount_cents)";
+const recordColumns = "id,pseudonym,amount_cents,publish_name,publish_amount,source_code,order_code,transaction_id,paid_at,checkout_state,expires_at,review_required,provider,invoice_id,provider_issue,last_checked_at,created_at,support_reversals(amount_cents)";
 
 export function getSupportVivaConfig(): VivaConfig {
   const base = getVivaConfig();
@@ -21,6 +24,13 @@ export function getSupportVivaConfig(): VivaConfig {
     : sourceCode === base.sourceCode ? "La source Soutiens doit être distincte de la source Boutique."
     : base.configurationError;
   return { ...base, sourceCode, configurationError, isConfigured: !configurationError };
+}
+
+export function getConfiguredSupportProviders(): SupportProvider[] {
+  const providers: SupportProvider[] = [];
+  if (getSupportVivaConfig().isConfigured) providers.push("viva");
+  if (isSwissBitcoinSupportEnabled()) providers.push("swiss-bitcoin-pay");
+  return providers;
 }
 
 function check(error: { code?: string; message: string } | null) {
@@ -47,13 +57,14 @@ export async function getSupportSummary(offset = 0): Promise<SupportSummary> {
   const result = await createSupabaseServiceClient().rpc("rpc_support_public_summary", { p_offset: offset });
   check(result.error);
   if (!result.data) throw new SupportError("La cagnotte est momentanément indisponible.", 503);
-  return { ...result.data, checkoutAvailable: result.data.campaign.active && getSupportVivaConfig().isConfigured };
+  const providers = result.data.campaign.active ? getConfiguredSupportProviders() : [];
+  return { ...result.data, providers, checkoutAvailable: providers.length > 0 };
 }
 
 export async function beginSupportCheckout(attempt: SupportAttempt, source: string): Promise<{ created: boolean; contribution: SupportRecord }> {
   const result = await createSupabaseServiceClient().rpc("rpc_begin_support_checkout", {
     p_id: attempt.id, p_token_hash: hash(attempt.token), p_pseudonym: attempt.pseudonym, p_amount: attempt.amountCents,
-    p_publish_name: attempt.publishName, p_publish_amount: attempt.publishAmount, p_source: source,
+    p_publish_name: attempt.publishName, p_publish_amount: attempt.publishAmount, p_source: source, p_provider: attempt.provider ?? "viva",
   });
   check(result.error);
   return result.data;
@@ -70,6 +81,37 @@ export async function findSupportByOrder(order: string): Promise<SupportRecord |
   return result.data as SupportRecord | null;
 }
 
+export async function findSupportBySwissInvoice(invoiceId: string): Promise<SupportRecord | null> {
+  const result = await createSupabaseServiceClient().from("support_contributions").select(recordColumns)
+    .eq("provider", "swiss-bitcoin-pay").eq("invoice_id", invoiceId).maybeSingle();
+  check(result.error);
+  return result.data as SupportRecord | null;
+}
+
+export async function setSupportSwissCheckout(id: string, invoiceId: string | null) {
+  const result = await createSupabaseServiceClient().rpc("rpc_support_swiss_checkout", { p_id: id, p_invoice: invoiceId });
+  check(result.error);
+}
+
+export async function observeSupportSwissInvoice(id: string, invoiceId: string, observed: ReturnType<typeof inspectSwissBitcoinInvoice>) {
+  const result = await createSupabaseServiceClient().rpc("rpc_support_swiss_observe", {
+    p_id: id, p_invoice: invoiceId, p_state: observed.state, p_amount: observed.eurMinor, p_currency: observed.currency,
+    p_status: observed.providerStatus, p_expires: observed.expiresAt, p_paid: observed.paidAt, p_issue: observed.issue,
+  });
+  check(result.error);
+}
+
+export async function claimSupportSwissChecks(): Promise<{ id: string; invoice_id: string; amount_cents: number }[]> {
+  const result = await createSupabaseServiceClient().rpc("rpc_claim_support_swiss_checks");
+  check(result.error);
+  return result.data;
+}
+
+export async function acknowledgeSupportSwissLate(id: string, invoiceId: string, actor: string) {
+  const result = await createSupabaseServiceClient().rpc("rpc_ack_support_swiss_late", { p_id: id, p_invoice: invoiceId, p_actor: actor });
+  check(result.error);
+}
+
 export async function getOwnedSupport(id: string, token: string): Promise<SupportRecord> {
   const result = await createSupabaseServiceClient().from("support_contributions").select(recordColumns)
     .eq("id", id).eq("access_token_hash", hash(token)).maybeSingle();
@@ -78,10 +120,16 @@ export async function getOwnedSupport(id: string, token: string): Promise<Suppor
   return result.data as SupportRecord;
 }
 
+export function verifiedSupportVivaSource(record: SupportRecord, transaction: VivaVerifiedTransaction) {
+  // Retrieve Transaction can omit the source. Our checkout set the reserved merchant reference.
+  return transaction.sourceCode || (transaction.merchantTrns === `SOUTIEN:${record.id}` ? record.source_code : "");
+}
+
 export async function applySupportTransaction(record: SupportRecord, transaction: VivaVerifiedTransaction, verifiedParent?: VivaVerifiedTransaction) {
   const currency = transaction.currencyCode.toUpperCase();
-  const expectedSource = transaction.amountInMinorUnits < 0 ? verifiedParent?.sourceCode : transaction.sourceCode;
-  if (transaction.orderCode !== record.order_code || expectedSource !== record.source_code || !["EUR", "978"].includes(currency)
+  const sourceTransaction = transaction.amountInMinorUnits < 0 ? verifiedParent : transaction;
+  const expectedSource = sourceTransaction && verifiedSupportVivaSource(record, sourceTransaction);
+  if (record.provider === "swiss-bitcoin-pay" || transaction.orderCode !== record.order_code || expectedSource !== record.source_code || !["EUR", "978"].includes(currency)
     || (transaction.amountInMinorUnits < 0 && (!verifiedParent || verifiedParent.orderCode !== record.order_code
       || verifiedParent.transactionId.toLowerCase() !== transaction.parentTransactionId?.toLowerCase()))) {
     throw new SupportError("Les références du paiement ne correspondent pas au soutien.", 409);
@@ -95,11 +143,23 @@ export async function applySupportTransaction(record: SupportRecord, transaction
 
 export function supportStatus(record: SupportRecord): SupportStatus {
   const refundedCents = (record.support_reversals ?? []).reduce((sum, reversal) => sum + reversal.amount_cents, 0);
-  const state = record.review_required || (!record.paid_at && (record.transaction_id || refundedCents)) ? "review" : record.paid_at ? (refundedCents >= record.amount_cents ? "refunded" : "paid") : record.checkout_state;
-  const config = getSupportVivaConfig();
-  const canResume = state === "ready" && record.order_code && Date.parse(record.expires_at) > Date.now() && record.source_code === config.sourceCode;
-  return { id: record.id, state, amountCents: record.amount_cents, refundedCents,
-    checkoutUrl: canResume ? buildVivaCheckoutUrl(record.order_code!, config) || null : null, expiresAt: record.expires_at };
+  const provider = record.provider ?? "viva";
+  const checkoutState = stalledSupportCreation(record.checkout_state, record.created_at) ? "uncertain" : record.checkout_state;
+  const state = record.review_required || (!record.paid_at && (record.transaction_id || refundedCents)) ? "review"
+    : record.paid_at ? (refundedCents >= record.amount_cents ? "refunded" : "paid") : checkoutState;
+  let checkoutUrl: string | null = null;
+  if (state === "ready" && Date.parse(record.expires_at) > Date.now()) {
+    if (provider === "swiss-bitcoin-pay" && record.invoice_id) checkoutUrl = swissBitcoinInvoicePage(record.invoice_id);
+    if (provider === "viva" && record.order_code) {
+      const config = getSupportVivaConfig();
+      if (record.source_code === config.sourceCode) checkoutUrl = buildVivaCheckoutUrl(record.order_code, config) || null;
+    }
+  }
+  return { id: record.id, provider, state, amountCents: record.amount_cents, refundedCents, checkoutUrl, expiresAt: record.expires_at };
+}
+
+function stalledSupportCreation(state: string, createdAt?: string) {
+  return state === "creating" && createdAt !== undefined && Date.now() - Date.parse(createdAt) > 30_000;
 }
 
 type Row = Record<string, unknown>;
@@ -109,7 +169,7 @@ const integer = (value: unknown) => {
   return number;
 };
 const nullableText = (value: unknown) => typeof value === "string" ? value : null;
-const adminColumns = "id,pseudonym,publish_name,publish_amount,amount_cents,source_code,order_code,transaction_id,paid_at,checkout_state,review_required,hidden,fees_cents,fee_reference,fee_updated_at,fee_updated_by,created_at,support_reversals(amount_cents)";
+const adminColumns = "id,pseudonym,publish_name,publish_amount,amount_cents,source_code,order_code,transaction_id,paid_at,checkout_state,review_required,hidden,fees_cents,fee_reference,fee_updated_at,fee_updated_by,created_at,provider,invoice_id,provider_status,provider_issue,support_reversals(amount_cents)";
 export type SupportPeriod = { from: string | null; until: string | null };
 
 export async function getAdminSupportRows(period: SupportPeriod): Promise<AdminSupportRow[]> {
@@ -123,13 +183,18 @@ export async function getAdminSupportRows(period: SupportPeriod): Promise<AdminS
     check(result.error);
     for (const row of (result.data ?? []) as Row[]) {
       const paidAt = nullableText(row.paid_at), amountCents = integer(row.amount_cents);
+      const createdAt = String(row.created_at), checkoutState = String(row.checkout_state);
+      const uncertain = checkoutState === "uncertain" || stalledSupportCreation(checkoutState, createdAt);
       rows.push({ id: String(row.id), pseudonym: String(row.pseudonym), publishName: row.publish_name === true, publishAmount: row.publish_amount === true,
         amountCents, capturedCents: paidAt ? amountCents : 0,
         refundedCents: (row.support_reversals as { amount_cents: number }[]).reduce((sum, refund) => sum + integer(refund.amount_cents), 0),
         feesCents: row.fees_cents == null ? null : integer(row.fees_cents), feeReference: nullableText(row.fee_reference),
         feeUpdatedAt: nullableText(row.fee_updated_at), feeUpdatedBy: nullableText(row.fee_updated_by),
-        createdAt: String(row.created_at), paidAt, orderCode: nullableText(row.order_code), transactionId: nullableText(row.transaction_id),
-        sourceCode: String(row.source_code), checkoutState: String(row.checkout_state), reviewRequired: row.review_required === true || (!paidAt && Boolean(row.transaction_id)), hidden: row.hidden === true });
+        createdAt, paidAt, orderCode: nullableText(row.order_code), transactionId: nullableText(row.transaction_id),
+        provider: row.provider === "swiss-bitcoin-pay" ? "swiss-bitcoin-pay" : "viva", invoiceId: nullableText(row.invoice_id),
+        providerStatus: nullableText(row.provider_status), providerIssue: nullableText(row.provider_issue) ?? (uncertain ? "creation_uncertain" : null),
+        sourceCode: String(row.source_code), checkoutState: uncertain ? "uncertain" : checkoutState,
+        reviewRequired: row.review_required === true || (!paidAt && Boolean(row.transaction_id)) || uncertain, hidden: row.hidden === true });
     }
     if ((result.data?.length ?? 0) < 1000) break;
     if (rows.length >= 50_000) throw new SupportError("Sélectionne une période plus courte pour consulter ou exporter ces soutiens.", 413);
@@ -139,8 +204,9 @@ export async function getAdminSupportRows(period: SupportPeriod): Promise<AdminS
 
 export async function getAdminSupportDashboard(period: SupportPeriod, page: number): Promise<AdminSupportDashboard> {
   const [summary, rows] = await Promise.all([getSupportSummary(), getAdminSupportRows(period)]);
-  const config = getSupportVivaConfig();
-  return { campaign: summary.campaign, configured: config.isConfigured, configurationError: config.configurationError ?? null,
+  const providers = getConfiguredSupportProviders();
+  return { campaign: summary.campaign, providers, configured: providers.length > 0,
+    configurationError: providers.length ? null : "Configure au moins un moyen de paiement pour ouvrir la cagnotte.",
     rows: rows.slice(page * 50, page * 50 + 50), total: rows.length, page,
     totals: rows.reduce((total, row) => ({ capturedCents: total.capturedCents + row.capturedCents, refundedCents: total.refundedCents + row.refundedCents,
       feesCents: total.feesCents + (row.feesCents ?? 0), missingFees: total.missingFees + (row.paidAt && row.feesCents === null ? 1 : 0),

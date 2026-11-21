@@ -1,4 +1,4 @@
-import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
+import { KqHelpDashboard, KqHelpGrid } from "./KqHelpDashboard";
 import type { KqProcessingPlan, KqProcessingWorkQuote } from "@/lib/kanab-quest-processing-work";
 import { isKqProcessingWorkQuote } from "@/lib/kanab-quest-processing-work";
 import { KqProgressMeter } from "./KqVisuals";
@@ -22,24 +22,21 @@ export function KqProcessingWorkSummary({ plan, quote: suppliedQuote }: { plan: 
         <div><dt>Tes heures consommées</dt><dd>{quote.source === "player" ? hours(quote.bookedHours) : "0 h"}{quote.employee ? <small>Prélevées sur la réserve de {quote.employee.name}</small> : null}</dd></div>
       </> : <div><dt>Heures et personne</dt><dd>Devis indisponible<small>Actualise le lot avant de confirmer.</small></dd></div>}
       <div><dt>Attente autonome en fin de lot</dt><dd>{hours(plan.passiveHours)}<small>{plan.passiveHours > 0 ? `${realTime(plan.passiveHours)} estimées · aucune heure de travail consommée` : "Aucune attente autonome prévue"}</small></dd></div>
+      {plan.machines.map(machine => machine.handling && <div key={machine.code}><dt>Chargement estimé · {machine.handling.charges} {machine.handling.charges === 1 ? "charge" : "charges"}</dt>
+        <dd>{realTime(machine.handling.baseHours)}{machine.handling.hours < machine.handling.baseHours && <> → {realTime(machine.handling.hours)}<small>Durées au poste, avant et avec le chariot</small></>}</dd>
+      </div>)}
     </dl>
     {quote && quote.fundedGrams > 0 ? <KqProgressMeter label="Volume couvert par cette réservation" value={quote.fundedGrams} max={quote.inputGrams} valueLabel={`${number(quote.fundedGrams)} g / ${number(quote.inputGrams)} g`} hint="Vente après la fin complète du lot." /> : null}
     {quote?.blockedReason ? <p role="status" className={styles.remainder}>{quote.blockedReason}</p> : null}
     {quote?.employee ? <p className={styles.remainder}>À la fin du travail réservé, tu peux choisir qui prend la suite. Tes heures restent intactes tant que tu ne choisis pas ton personnage.</p> : null}
-    <details className={styles.sources} data-processing-sources><summary>Cadences, estimations et sources</summary><KqHelpDashboard>
-      <KqHelpGrid art="help-workshop" items={[
-        { label: "1 h de jeu", value: "10 min réelles", art: "help-time" },
-        { label: "Durées et rendements", value: "Estimations de jeu", detail: "Charge et matière du fabricant ci-dessous.", art: "help-workshop" },
-      ]} />
+    <details className={styles.sources} data-processing-rates><summary>Cadences de jeu</summary><KqHelpDashboard>
+      <p>1 h de jeu correspond à 10 min réelles.</p>
       {plan.machines.map(machine => <section key={machine.code}>
-        <h4>{machine.name} · {machine.model}</h4>
+        <h4>{machine.name}</h4>
         <KqHelpGrid art="help-workshop" items={[
           { label: "Cadence de jeu estimée", value: machine.gramsPerHour === null ? "Attente autonome" : `${number(machine.gramsPerHour)} g/h de jeu`, art: "help-time" },
           { label: "Matière", value: machine.material, art: "harvest" },
-          { label: "Donnée fabricant", value: machine.specification, art: "help-workshop" },
         ]} />
-        <KqHelpNote>{machine.note}</KqHelpNote>
-        <a href={machine.sourceUrl} target="_blank" rel="noreferrer">Consulter la fiche fabricant</a>
       </section>)}
     </KqHelpDashboard></details>
   </div>;

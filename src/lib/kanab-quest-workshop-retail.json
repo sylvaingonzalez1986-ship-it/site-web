@@ -1,0 +1,176 @@
+{
+  "SIFT-TRAY": [
+    {
+      "model": "The Original Resinator OG Base",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/the-original-resinator-og-base-model-affordable-cannabis-machine",
+      "currency": "EUR",
+      "sourcePriceCents": 420000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 504000
+    },
+    {
+      "model": "The Original Resinator XL Base",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/the-original-resinator-xl-base-model-commercial-cannabis-machine",
+      "currency": "EUR",
+      "sourcePriceCents": 525000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 630000
+    },
+    {
+      "model": "The Original Resinator XL Classic Bundle",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/resinator-xl-classic-bundle-all-in-one-trimmer-sifter-and-washer",
+      "currency": "EUR",
+      "sourcePriceCents": 695000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 834000
+    }
+  ],
+  "PRESS-0600": [
+    {
+      "model": "Lowtemp V2 4×7 avec pompe manuelle",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/lowtemp-v2-press--4-x-7",
+      "currency": "EUR",
+      "sourcePriceCents": 375000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 450000
+    },
+    {
+      "model": "PurePressure Longs Peak",
+      "seller": "Green Thumb Depot",
+      "url": "https://greenthumbdepot.com/products/purepressure-longs-peak-8-ton-pneumatic-rosin-press",
+      "currency": "USD",
+      "sourcePriceCents": 1149500,
+      "basis": "us-list",
+      "gamePriceCents": 1240000
+    },
+    {
+      "model": "NugSmasher IQ Pro",
+      "seller": "NugSmasher",
+      "url": "https://nugsmasher.com/product/nugsmasher-iq-pro/",
+      "currency": "USD",
+      "sourcePriceCents": 1999600,
+      "basis": "us-list",
+      "gamePriceCents": 2160000
+    }
+  ],
+  "WASHER-25L": [
+    {
+      "model": "Lowtemp Mini Osprey 2.0",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/lowtemp-mini-osprey--30-gallon-20",
+      "currency": "EUR",
+      "sourcePriceCents": 525000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 630000
+    },
+    {
+      "model": "Lowtemp Osprey 75 Gallon",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/lowtemp-the-osprey--75-gallon-commercial-washing-machine",
+      "currency": "EUR",
+      "sourcePriceCents": 2900000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 3480000
+    },
+    {
+      "model": "Forza TSS-225",
+      "seller": "Forza Solventless",
+      "url": "https://www.forzasolventless.com/products/tss-225",
+      "currency": "USD",
+      "sourcePriceCents": 7940000,
+      "basis": "us-list",
+      "gamePriceCents": 8580000
+    }
+  ],
+  "AUTO-SIEVE": [
+    {
+      "model": "Lowtemp Mini AutoSieve",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/lowtemp-mini-autosieve-collection-system",
+      "currency": "EUR",
+      "sourcePriceCents": 430000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 516000
+    },
+    {
+      "model": "Lowtemp AutoSieve",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/lowtemp-autosieve-collection-system",
+      "currency": "EUR",
+      "sourcePriceCents": 480000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 576000
+    },
+    {
+      "model": "SC Filtration Vibrating Screen System",
+      "seller": "The High Corner",
+      "url": "https://www.thehighcorner.es/en/product-page/vibrating-screen-system",
+      "currency": "EUR",
+      "sourcePriceCents": 1550000,
+      "basis": "eu-ex-tax",
+      "gamePriceCents": 1860000
+    }
+  ],
+  "FREEZE-DRYER": [
+    {
+      "model": "HiLyph Hash Dryer Medium",
+      "seller": "TCI Scientific",
+      "url": "https://www.tciscientific.com/category/HiLyph-Hash-Dryers",
+      "currency": "USD",
+      "sourcePriceCents": 699500,
+      "basis": "us-list",
+      "gamePriceCents": 760000
+    },
+    {
+      "model": "HiLyph Hash Dryer Large",
+      "seller": "TCI Scientific",
+      "url": "https://www.tciscientific.com/category/HiLyph-Hash-Dryers",
+      "currency": "USD",
+      "sourcePriceCents": 799500,
+      "basis": "us-list",
+      "gamePriceCents": 860000
+    },
+    {
+      "model": "HiLyph Hash Dryer XL",
+      "seller": "TCI Scientific",
+      "url": "https://www.tciscientific.com/category/HiLyph-Hash-Dryers",
+      "currency": "USD",
+      "sourcePriceCents": 899500,
+      "basis": "us-list",
+      "gamePriceCents": 970000
+    }
+  ],
+  "STATIC-PLASMA": [
+    {
+      "model": "Master Products Plasmastatic Pilot",
+      "seller": "GrowLED",
+      "url": "https://www.growled.fr/pro-extraction-transformation/5915-plasmastatic-pilot-master-products.html",
+      "currency": "EUR",
+      "sourcePriceCents": 1800000,
+      "basis": "eu-tax-included",
+      "gamePriceCents": 1800000
+    },
+    {
+      "model": "Master Products Plasmastatic V1",
+      "seller": "GrowLED",
+      "url": "https://www.growled.fr/856-pro-extraction-transformation",
+      "currency": "EUR",
+      "sourcePriceCents": 4200000,
+      "basis": "eu-tax-included",
+      "gamePriceCents": 4200000
+    },
+    {
+      "model": "Master Products Plasmastatic V2",
+      "seller": "GrowLED",
+      "url": "https://www.growled.fr/856-pro-extraction-transformation",
+      "currency": "EUR",
+      "sourcePriceCents": 7800000,
+      "basis": "eu-tax-included",
+      "gamePriceCents": 7800000
+    }
+  ]
+}

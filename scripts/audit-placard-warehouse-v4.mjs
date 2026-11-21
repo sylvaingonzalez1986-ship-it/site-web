@@ -59,7 +59,10 @@ const modules = {
     window.__machines=machines.map(item=>({code:item.code,slot:item.slot,name:item.name}));
     window.__workshop={ownedCodes:machines.map(item=>item.code),purchasedCodes:machines.map(item=>item.code),equippedCodes:machines.map(item=>item.code),levels:Object.fromEntries(machines.map(item=>[item.code,3])),maintenance:Object.fromEntries(machines.map(item=>[item.code,getKqMachineCondition(item.code,3,2)]))};
     window.__tierReceipts={};
-    if(query.has('newWorkshop'))window.__workshop={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},maintenance:{}};
+    if(query.has('newWorkshop')){
+      window.__workshop={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},maintenance:{}};
+      window.__snapshot.cashCents=4_000_000;
+    }
     const equipmentSnapshot=()=>{
       const shared=window.__workshop;
       return {equipmentScopeVersion:3,career:createChanvrierCareerSnapshot({xp:4500,completedCultures:20,processingPractice:{sifting:30,washing:30,pressing:30}}),tentNumber:1,productionUnits:4,cashCents:window.__snapshot.cashCents,ownedCodes:[...starter,...shared.ownedCodes],purchasedCodes:shared.purchasedCodes,equippedCodes:[...starter,...shared.equippedCodes],levels:shared.levels,maintenance:shared.maintenance,sharedEquipment:shared,catalog:KQ_EQUIPMENT_CATALOG,routePlan:null,reputation:500,tents:[{tentNumber:1,ownedCodes:starter,purchasedCodes:[],equippedCodes:starter,levels:{}}],buildings:[],activeRun:window.__snapshot.activeRun};
@@ -80,7 +83,7 @@ const modules = {
         if(body.action==='workshop-tier'){
           if(window.__tierReceipts[body.requestKey])return Response.json({...window.__tierReceipts[body.requestKey],replayed:true});
           const previous=workshop.levels[body.equipmentCode]??0;
-          const price=getKqWorkshopTierPrice(body.equipmentCode,getKqEquipmentDefinition(body.equipmentCode).priceCents,body.targetLevel,previous);
+          const price=getKqWorkshopTierPrice(body.equipmentCode,body.targetLevel,previous);
           if(previous!==body.expectedLevel||price!==body.expectedPriceCents||price===null||price>window.__snapshot.cashCents)return Response.json({error:'Devis de gamme invalide.'},{status:400});
           window.__snapshot.cashCents-=price;
           workshop.ownedCodes=[...new Set([...workshop.ownedCodes,body.equipmentCode])];
@@ -210,7 +213,8 @@ if(process.argv.includes('--preview')){
     const assertWorkshopTierLayout=async context=>{
       const cards=await page.$$eval('[data-workshop-tiers] article[data-workshop-tier]',nodes=>nodes.filter(node=>node.getBoundingClientRect().width>0).map(node=>{
         const card=node.getBoundingClientRect();
-        return {tier:node.dataset.workshopTier,width:card.width,overflow:[...node.querySelectorAll('button,dt,dd')].filter(part=>{const r=part.getBoundingClientRect();return r.left<card.left-1||r.right>card.right+1||r.bottom>card.bottom+1||part.scrollWidth>part.clientWidth+1;}).map(part=>part.textContent)};
+        const visibleParts=[...node.querySelectorAll('button,dt,dd')].filter(part=>!part.closest('details:not([open])')&&part.getClientRects().length);
+        return {tier:node.dataset.workshopTier,width:card.width,overflow:visibleParts.filter(part=>{const r=part.getBoundingClientRect();return r.left<card.left-1||r.right>card.right+1||r.bottom>card.bottom+1||part.scrollWidth>part.clientWidth+1;}).map(part=>part.textContent)};
       }));
       assert.equal(cards.length,3,'All three workshop tiers remain visible in '+context);
       for(const card of cards)assert.deepEqual(card.overflow,[],'Workshop tier '+card.tier+' controls and metrics fit inside their card in '+context);
@@ -808,30 +812,48 @@ if(process.argv.includes('--preview')){
       checks.push('direct tier cards and their purchase actions remain readable at 1440, 390 and 320 pixels');
       }
 
+      const openWasherOffers=async (query,width)=>{
+        await page.goto(origin+'/?'+query,{waitUntil:'networkidle0'});
+        const atelier='button[data-warehouse-module="processing"]';
+        await page.waitForSelector(atelier,{visible:true});await page.click(atelier);
+        await page.waitForSelector('[data-workshop-tabs]');await clickText('Machines');
+        const washer='[data-warehouse-slot="washing"]';
+        await page.waitForSelector(washer,{visible:true});await page.click(washer);
+        if(query==='newWorkshop'&&width===1440){
+          const offers=await page.waitForSelector('[data-workshop-machine-dialog][open] [data-workshop-tiers="WASHER-25L"]',{visible:true});
+          await offers.evaluate(async node=>{
+            await Promise.all([...node.querySelectorAll('img')].map(image=>image.decode()));
+            node.scrollIntoView({block:'center',behavior:'instant'});
+          });
+          await settleView();
+          const rendered=await offers.evaluate(node=>[...node.querySelectorAll('[data-workshop-tier] > b')].map(price=>({
+            price:price.textContent.replace(/\s+/g,' '),top:price.closest('article').getBoundingClientRect().top,
+          })));
+          assert.deepEqual(rendered.map(item=>item.price),['6 300 €','34 800 €','85 800 €']);
+          assert.ok(rendered.every(item=>Math.abs(item.top-rendered[0].top)<=1),'The desktop washer dialog lays out its three tiers side by side');
+          await offers.screenshot({path:resolve(output,'laveuse-trois-gammes-1440.png')});
+          await offers.dispose();
+        }
+        const catalog=await page.waitForFunction(()=>[...document.querySelectorAll('[data-workshop-machine-dialog][open] button')].find(button=>button.textContent.trim()==='Matériel de l’atelier commun'&&!button.disabled));
+        await catalog.asElement().click();await catalog.dispose();
+        await page.waitForSelector('#equipment-catalog-title');
+        await page.waitForSelector('[data-workshop-tiers="WASHER-25L"]',{visible:true});
+      };
       for(const width of [1440,390,320]){
-        await page.setViewport({width,height:1000,isMobile:width<600,hasTouch:width<600});await visit('expanded');await clickRoom('processing');
-        await page.waitForSelector('[data-workshop-tiers]');await assertLayout();await assertWorkshopTierLayout('installed-'+width);
+        await page.setViewport({width,height:1000,isMobile:width<600,hasTouch:width<600});await openWasherOffers('expanded',width);
+        await assertLayout();await assertWorkshopTierLayout('installed-'+width);
         await page.screenshot({path:resolve(output,'processing-'+width+'.png'),fullPage:true});
-        await visit('newWorkshop');await clickRoom('processing');
-        await clickText('Matériel de l’atelier commun');await page.waitForSelector('#equipment-catalog-title');
-        const name=await page.evaluate(()=>window.__machines.find(item=>item.code==='SIFT-TRAY').name);
-        const machineButton='button[aria-label='+JSON.stringify('Voir '+name)+']';
-        await page.waitForSelector(machineButton,{visible:true});
-        // The inventory opens its suggested machine directly. On narrow screens
-        // that detail covers the catalogue; dismiss it before choosing another.
-        const suggestedDetail=await page.$('button[aria-label="Fermer la fiche"]');
-        if(suggestedDetail){await suggestedDetail.click();await page.waitForSelector('button[aria-label="Fermer la fiche"]',{hidden:true});}
-        await page.click(machineButton);await page.waitForSelector('[data-workshop-tiers="SIFT-TRAY"]');
-        const tiers=await page.$$eval('[data-workshop-tiers="SIFT-TRAY"] [data-workshop-tier]',nodes=>nodes.map(node=>({level:node.dataset.workshopTier,label:node.querySelector('small').textContent,price:node.querySelector('b').textContent})));
+        await openWasherOffers('newWorkshop',width);
+        const tiers=await page.$$eval('[data-workshop-tiers="WASHER-25L"] [data-workshop-tier]',nodes=>nodes.map(node=>({level:node.dataset.workshopTier,label:node.querySelector('small').textContent,price:node.querySelector(':scope > b').textContent.replace(/\s+/g,' ')})));
         assert.deepEqual(tiers.map(item=>item.level),['1','4','7'],'Every machine offers the three actual acquisition tiers');
         assert.deepEqual(tiers.map(item=>item.label),['Économique','Standard','Haut de gamme'],'Workshop uses the same three tier labels');
-        assert.ok(tiers.every(item=>item.price.includes('€')),'Every workshop tier displays its complete acquisition price');
-        await page.$eval('[data-workshop-tiers="SIFT-TRAY"]',node=>node.scrollIntoView({block:'start'}));await settleView();await assertLayout();
-        const bounds=await page.$eval('[data-workshop-tiers="SIFT-TRAY"]',node=>{const r=node.getBoundingClientRect();return {left:r.left,right:r.right,viewport:innerWidth};});
+        assert.deepEqual(tiers.map(item=>item.price),['6 300 €','34 800 €','85 800 €'],'All three full washer prices at '+width+' px');
+        await page.$eval('[data-workshop-tiers="WASHER-25L"]',node=>node.scrollIntoView({block:'start'}));await settleView();await assertLayout();
+        const bounds=await page.$eval('[data-workshop-tiers="WASHER-25L"]',node=>{const r=node.getBoundingClientRect();return {left:r.left,right:r.right,viewport:innerWidth};});
         assert.ok(bounds.left>=-1&&bounds.right<=bounds.viewport+1,'Workshop tier cards stay inside the viewport');
         const overflowingControls=await page.$$eval('[data-workshop-tier]',cards=>cards.flatMap(card=>{
           const box=card.getBoundingClientRect();
-          return [...card.querySelectorAll('button,b')].filter(node=>{const rect=node.getBoundingClientRect();return rect.left<box.left-1||rect.right>box.right+1;}).map(node=>node.textContent);
+          return [...card.querySelectorAll('button,:scope > b')].filter(node=>{const rect=node.getBoundingClientRect();return rect.left<box.left-1||rect.right>box.right+1;}).map(node=>node.textContent);
         }));
         assert.deepEqual(overflowingControls,[],'Workshop prices and purchase buttons stay inside each card at '+width);
         await assertWorkshopTierLayout('catalog-'+width);await page.screenshot({path:resolve(output,'workshop-tiers-'+width+'.png')});
@@ -847,9 +869,10 @@ if(process.argv.includes('--preview')){
           const result=await page.evaluate(()=>({requests:window.__equipmentRequests,cash:window.__snapshot.cashCents,workshop:window.__workshop}));
           assert.equal(result.requests[0].requestKey,result.requests[1].requestKey,'Lost workshop response reuses its purchase identity');
           assert.equal(result.requests[0].action,'workshop-tier');assert.equal(result.requests[0].targetLevel,4);assert.equal(result.requests[0].expectedLevel,0);
-          assert.equal(result.workshop.levels['SIFT-TRAY'],4,'Direct standard acquisition arrives at the real level');
-          assert.equal(cashBefore-result.cash,88000,'Standard acquisition is charged exactly once');
-          assert.ok(!result.workshop.equippedCodes.includes('SIFT-TRAY'),'New ownership does not silently change the installed workshop');
+          assert.equal(result.workshop.levels['WASHER-25L'],4,'Direct standard acquisition arrives at the real level');
+          assert.equal(result.requests[0].expectedPriceCents,3_480_000,'Checkout confirms the displayed standard washer price');
+          assert.equal(cashBefore-result.cash,3_480_000,'Standard acquisition is charged exactly once');
+          assert.ok(!result.workshop.equippedCodes.includes('WASHER-25L'),'New ownership does not silently change the installed workshop');
         }
       }
       checks.push('workshop offers three complete prices, confirms direct acquisition and retries a lost response without duplicate spending at desktop and mobile sizes');

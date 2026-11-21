@@ -122,9 +122,8 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
       })}
     </section>
     <details className={styles.purchasePanel} data-storage-shop>
-    <summary className={styles.catalogHeading}><div><small>Besoin de plus de place ?</small><span className={styles.catalogTitle}>Acheter des contenants</span></div><span className={styles.balance}><Wallet size={18} aria-hidden="true" /><span><small>Ton solde</small><strong>{snapshot ? formatKqCash(snapshot.cashCents) : "Chargement…"}</strong></span></span><ChevronDown className={styles.catalogChevron} size={20} aria-hidden="true" /></summary>
+    <summary className={styles.catalogHeading}><span className={styles.catalogTitle}>Acheter des contenants</span><span className={styles.balance}><Wallet size={18} aria-hidden="true" /><span><small>Ton solde</small><strong>{snapshot ? formatKqCash(snapshot.cashCents) : "Chargement…"}</strong></span></span><ChevronDown className={styles.catalogChevron} size={20} aria-hidden="true" /></summary>
     <div className={styles.purchaseContent}>
-    <p className={styles.help}>Prix, capacités et niveaux de protection : valeurs du jeu.</p>
     <div className={styles.catalog}>{containers.map(container => {
       const item = inventory.find(item => item.code === container.code);
       const owned = snapshot?.ownedContainers?.[container.code] ?? 0, occupied = item?.occupiedQuantity ?? 0, free = item?.freeQuantity ?? 0;

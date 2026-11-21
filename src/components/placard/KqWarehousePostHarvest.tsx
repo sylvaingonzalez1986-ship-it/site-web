@@ -90,7 +90,7 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
   const nextBilling = billing?.nextBillingAt ? new Date(billing.nextBillingAt) : null;
   const totalBonus = profile.dryingQualityBonus + profile.storageQualityBonus + profile.climateQualityBonus;
 
-  return <section className={styles.section} data-post-harvest={kind} data-postharvest-room={kind} aria-label={drying ? "Salle de séchage" : "Salle de stockage et affinage"}>
+  return <section className={styles.section} data-post-harvest={kind} data-postharvest-room={kind} data-sylvain-target={kind} tabIndex={-1} aria-label={drying ? "Salle de séchage" : "Salle de stockage et affinage"}>
     {beforeConfiguration}
     <div className={styles.sectionHeading}><div><h4>{drying ? "Mes zones de séchage" : "Mes zones de stockage"}</h4></div><span className={styles.count}>{zones.length} zone{zones.length > 1 ? "s" : ""}</span></div>
     {zones.length > 0 ? <div className={styles.zones}>{zones.map(zone => {
@@ -170,10 +170,8 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
 
         <div className={styles.hero}>
           <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}>{drying ? "01 · Après la récolte" : "02 · Après le séchage"}</span>
             <h3>{drying ? "Salle de séchage" : "Stockage & affinage"}</h3>
             <p>{drying ? "Améliore ta salle pour préparer des récoltes de meilleure qualité avant leur affinage." : "Des contenants adaptés et une salle climatisée pour développer la qualité pendant l’affinage, puis mieux la préserver."}</p>
-            <span className={styles.roomTag}>{drying ? <Sun size={16} aria-hidden="true" /> : <ShieldCheck size={16} aria-hidden="true" />}{drying ? "Le matériel prépare la qualité" : "Contenants + climat = conservation"}</span>
           </div>
           <div className={styles.roomVisual} data-has-climate={!drying && !!currentClimate} aria-hidden="true">
             <span className={styles.wallSign}>{drying ? "SÉCHAGE" : "CONSERVATION"}</span>
@@ -186,7 +184,7 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
         </div>
 
         <div className={styles.metrics} aria-label="Configuration de la salle">
-          <div><span><Grid2X2 size={15} aria-hidden="true" />Surface aménagée</span><strong>{number(area)} <small>m²</small></strong><small>Configuration du plan</small></div>
+          <div><span><Grid2X2 size={15} aria-hidden="true" />Surface aménagée</span><strong>{number(area)} <small>m²</small></strong></div>
           <div><span><Package size={15} aria-hidden="true" />{drying ? "Capacité de séchage" : "Capacité des contenants"}</span><strong>{mass(capacity)}</strong><small>{drying ? "Par passage en salle" : "Équivalent fleurs"}</small></div>
           <div><span><Sparkles size={15} aria-hidden="true" />{drying ? "Bonus de séchage" : "Bonus d’affinage"}</span><strong>+{number(qualityBonus)} <small>/ 10</small></strong><QualityBar value={qualityBonus} max={maxBonus} label={drying ? "Bonus de qualité du séchage" : "Bonus de qualité des contenants"} /></div>
         </div>

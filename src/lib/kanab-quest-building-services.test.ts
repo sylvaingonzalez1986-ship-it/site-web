@@ -20,7 +20,7 @@ describe("physical services per building", () => {
     expect([1, 2, 4, 5, 6, 8].map(tent => getKqEquipmentStorageTent("SECURITY-CAMERA", tent))).toEqual([1, 1, 1, 5, 5, 5]);
     expect(getKqEquipmentStorageTent("PRESS-0600", 8)).toBe(1);
     expect(getKqEquipmentStorageTent("LED-300", 8)).toBe(8);
-    expect(getKqEquipmentCartTotal(["DRYING-ROOM", "LED-300", "PRESS-0600"], 8)).toBe(2 * 60000 + 8 * 35900 + 85000);
+    expect(getKqEquipmentCartTotal(["DRYING-ROOM", "LED-300", "PRESS-0600"], 8)).toBe(2 * 60_000 + 8 * 35_900 + 450_000);
   });
 
   it("serves only the four tents of its own building without changing physical ownership", () => {

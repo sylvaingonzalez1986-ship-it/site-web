@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   Box,
   Check,
-  ExternalLink,
   Lightbulb,
   Laptop,
   Leaf,
@@ -38,6 +37,7 @@ import {
   getKqEquipmentAtLevel,
   getKqEquipmentDefinition,
   getKqEquipmentImpactLabels,
+  getKqEquipmentPriceMultiplier,
   getKqEquipmentRequirementState,
   getKqEquipmentBuildingNumber,
   isKqBuildingEquipment,
@@ -206,6 +206,7 @@ function LegacyKqEquipmentCatalogModal({
   const selectedTentNumber = useKqTentSelection();
   const tentNumber = workshopOnly ? 1 : selectedTentNumber;
   const currentTent = useRef(tentNumber);
+  const purchaseRequest = useRef<{ signature: string; key: string } | null>(null);
   const refreshGeneration = useRef(0);
   const [snapshot, setSnapshot] = useState<EquipmentSnapshot | null>(null);
   const [pending, setPending] = useState<"load" | "purchase" | "equip" | null>("load");
@@ -359,7 +360,7 @@ function LegacyKqEquipmentCatalogModal({
     .map((code) => {
       const listed = snapshot?.catalog.find((equipment) => equipment.code === code);
       const fallback = getKqEquipmentDefinition(code);
-      return listed ?? (fallback ? { ...fallback, priceCents: fallback.priceCents * productionUnits } : null);
+      return listed ?? (fallback ? { ...fallback, priceCents: fallback.priceCents * getKqEquipmentPriceMultiplier(code, productionUnits) } : null);
     })
     .filter((equipment): equipment is KqEquipmentDefinition => Boolean(equipment));
   const cartValidation = snapshot ? validateKqEquipmentCart({
@@ -495,16 +496,20 @@ function LegacyKqEquipmentCatalogModal({
 
   const purchase = async () => {
     if (!snapshot || !snapshotReady || pending !== null || mutationPending || !cartValidation || cartValidation.errors.length > 0 || cartCareerErrors.length > 0) return;
+    const signature = JSON.stringify([tentNumber, totalProductionUnits, cartValidation.totalCents, ...cartValidation.uniqueCodes]);
+    if (purchaseRequest.current?.signature !== signature) purchaseRequest.current = { signature, key: createClientRequestKey() };
     setPending("purchase");
     setError("");
     try {
       const response = await api.request("/api/arena/placard/equipment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ requestKey: createClientRequestKey(), equipmentCodes: cartValidation.uniqueCodes, tentNumber, expectedUnits: totalProductionUnits }),
+        body: JSON.stringify({ requestKey: purchaseRequest.current.key, equipmentCodes: cartValidation.uniqueCodes, tentNumber, expectedUnits: totalProductionUnits,
+          ...(cartValidation.uniqueCodes.some(isKqSharedEquipment) ? { expectedPriceCents: cartValidation.totalCents } : {}) }),
       });
       const payload = await response.json() as PurchaseResult & { error?: string };
       if (!response.ok) throw new Error(payload.error || "Achat impossible.");
+      purchaseRequest.current = null;
       setPurchaseResult({ ...payload, tentNumber });
       setCheckoutOpen(false);
       setCartOpen(false);
@@ -657,7 +662,7 @@ function LegacyKqEquipmentCatalogModal({
                     </span>
                   </button>
                   <footer>
-                    <span><strong>{equipment.purchasable ? formatKqCash(equipment.priceCents) : "Fourni"}</strong><small>{equipmentDestination(equipment.code)} · {equipment.powerWatts > 0 ? `${equipment.powerWatts} W` : "Sans consommation"}</small></span>
+                    <span><strong>{workshopOnly && equipment.purchasable ? "Dès " : ""}{equipment.purchasable ? formatKqCash(equipment.priceCents) : "Fourni"}</strong><small>{equipmentDestination(equipment.code)} · {equipment.powerWatts > 0 ? `${equipment.powerWatts} W` : "Sans consommation"}</small></span>
                     {owned ? (
                       <button type="button" disabled={pending !== null || mutationPending || (broken ? !onOpenWorkshop : equipped || !equipment.purchasable || !requirementState.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(equipment.code) : void equip(equipment.code)}>{broken ? "À remplacer" : equipped ? "Équipé" : !equipment.purchasable ? "Kit de départ" : !requirementState.compatible ? "Prérequis" : "Équiper"}</button>
                     ) : (
@@ -728,7 +733,7 @@ function LegacyKqEquipmentCatalogModal({
         {selectedEquipment.code !== recommendedEquipmentCode && isKqEquipmentSuperseded(selectedEquipment.code, snapshot?.ownedCodes ?? []) ? <em className={styles.alternativeBadge}>Modèle alternatif · un modèle supérieur est déjà acquis</em> : null}
         <small>{KQ_EQUIPMENT_CATEGORY_LABELS[selectedEquipment.category]} · Durable</small>
         <h3>{selectedEquipment.name}</h3>
-        <strong className={styles.detailPrice}>{selectedEquipment.purchasable ? formatKqCash(selectedEquipment.priceCents) : "Équipement fourni"}</strong>
+        <strong className={styles.detailPrice}>{workshopOnly && selectedEquipment.purchasable ? "Dès " : ""}{selectedEquipment.purchasable ? formatKqCash(selectedEquipment.priceCents) : "Équipement fourni"}</strong>
         <p>{selectedEquipment.shortDescription}</p>
         <p>{workshopOnly ? "Machine de transformation : achète-la, installe-la dans son emplacement, puis améliore et entretiens ton atelier." : isKqSharedEquipment(selectedEquipment.code) ? "Machine de transformation de l’atelier commun. Un achat, une installation et un entretien pour toutes les tentes." : buildingScope && isKqBuildingEquipment(selectedEquipment.code) ? `Service de l’entrepôt ${buildingNumber} : un achat au prix affiché pour les tentes ${buildingNumber === 1 ? "1 à 4" : "5 à 8"}. Installation, niveau et usure partagés dans ce bâtiment.` : `Matériel réservé à la tente ${tentNumber}. Achat, installation, niveau et usure propres à cette tente.`}</p>
         <EquipmentBenefits equipment={selectedEquipment} level={snapshot?.levels?.[selectedEquipment.code] ?? 1} />
@@ -778,15 +783,6 @@ function LegacyKqEquipmentCatalogModal({
           <p>{selectedEquipment.specification} · {selectedEquipment.powerWatts} W · {equipmentDestination(selectedEquipment.code)}</p>
           <small>Emplacement : {KQ_EQUIPMENT_SLOT_LABELS[selectedEquipment.slot]} · un modèle actif · {equipmentDestination(selectedEquipment.code)}</small>
         </section>
-        {!getKqWorkshopMachineSpecification(selectedEquipment.code) ? <section>
-          <h4>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Inspiration et règles de jeu" : "Équivalent réel vérifié"}</h4>
-          <p>{selectedEquipment.realWorldAnchor.label}</p>
-          <small>{selectedEquipment.realWorldAnchor.priceKind === "game-balance" ? "Le prix, les frais par cycle et les caractéristiques sont adaptés au jeu. La source présente l’inspiration réelle." : `Modèle de référence relevé le ${selectedEquipment.realWorldAnchor.checkedAt}. Le prix en euros affiché dans la boutique est un prix de jeu.`}
-          </small>
-          <a className="mt-2 inline-flex items-center gap-1 text-[.62rem] font-black uppercase text-[#0c6f5b] underline" href={selectedEquipment.realWorldAnchor.sourceUrl} target="_blank" rel="noreferrer">
-            Vérifier chez {selectedEquipment.realWorldAnchor.seller}<ExternalLink aria-hidden="true" />
-          </a>
-        </section> : null}
         {(selectedEquipment.requirements ?? []).map((requirement) => <p className={styles.requirement} key={requirement.label}><AlertTriangle aria-hidden="true" />Nécessite : {requirement.label}</p>)}
         {snapshot?.ownedCodes.includes(selectedEquipment.code) ? <button type="button" className={styles.detailCta} disabled={pending !== null || mutationPending || (selectedCondition?.due ? !onOpenWorkshop : snapshot.equippedCodes.includes(selectedEquipment.code) || !selectedEquipment.purchasable || !selectedRequirementState?.compatible)} onClick={() => onOpenWorkshop ? onOpenWorkshop(selectedEquipment.code) : void equip(selectedEquipment.code)}>{selectedCondition?.due ? "Remplacer dans l’entrepôt" : snapshot.equippedCodes.includes(selectedEquipment.code) ? "Déjà équipé" : !selectedEquipment.purchasable ? "Équipement de départ fourni" : !selectedRequirementState?.compatible ? "Prérequis manquant" : "Équiper maintenant"}</button> : !workshopOnly ? <button type="button" className={styles.detailCta} disabled={!selectedEquipment.purchasable || !selectedCareerAccess?.allowed || cartCodes.includes(selectedEquipment.code) || pending !== null} onClick={() => addToCart(selectedEquipment.code)}>{cartCodes.includes(selectedEquipment.code) ? "Déjà au panier" : !selectedCareerAccess?.allowed ? "À débloquer" : "Ajouter au panier"}</button> : null}
       </aside> : null}

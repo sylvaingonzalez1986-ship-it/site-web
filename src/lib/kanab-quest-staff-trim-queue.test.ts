@@ -67,6 +67,39 @@ describe("shared trim shifts in actual harvested grams", () => {
     expect(advance(snapshot, 2).effects).toEqual([]);
   });
 
+  it("uses complementary equipment for both workers and pins the rate when booked", () => {
+    const snapshot = raw();
+    snapshot.context.warehouseHandling = { "SIM-LOGISTICS-01": 50, "SIM-LOGISTICS-02": 0, "SIM-LOGISTICS-03": 0 };
+    const before = getKqStaffSharedTrimQuote({ hours: 1, level: 1, mode: "manual", handling: snapshot.context.warehouseHandling });
+    expect(before.gramsPerHour).toBeCloseTo(60 / (.95 * .8), 6);
+    assign(snapshot, null, 1);
+    snapshot.context.warehouseHandling["SIM-LOGISTICS-03"] = 100;
+    const employee = getKqStaffSharedTrimQuote({ hours: 1, level: 1, mode: "manual", handling: snapshot.context.warehouseHandling });
+    expect(() => applyKqStaffCommand(snapshot, { ...command("worker", 1), expectedRate: before.gramsPerHour }, "worker")).toThrow(/cadence de trim a changé/);
+    const accepted = parseKqStaffCommand({ ...command("worker", 1), expectedRate: employee.gramsPerHour });
+    snapshot.state = applyKqStaffCommand(snapshot, accepted, "worker").state;
+    expect(snapshot.state.tasks.map(task => task.trimRateGramsPerHour)).toEqual([before.gramsPerHour, employee.gramsPerHour]);
+    expect(snapshot.state.tasks.map(task => task.completesAt)).toEqual([hour(1), hour(1)]);
+    expect(snapshot.state.playerWorkDays["1"].usedHours).toBe(1);
+    expect(snapshot.state.employees[0].workDays["1"].usedHours).toBe(1);
+    advance(snapshot, 1);
+    expect(snapshot.context.trimLots![0].completedGrams).toBeCloseTo(before.grams + employee.grams, 6);
+  });
+
+  it("gives the machine the trolley benefit alone, with a bounded maximum rate", () => {
+    const machine = getKqStaffSharedTrimQuote({ hours: 12, level: 10, mode: "machine",
+      handling: { "SIM-LOGISTICS-01": 0, "SIM-LOGISTICS-03": 0 } });
+    expect(machine.gramsPerHour).toBeCloseTo(600 / .9, 6);
+    const snapshot = raw([lot("bulk", 10_000)]);
+    snapshot.state!.trimmerOwned = true;
+    snapshot.state!.playerProcessingXp = 8100;
+    snapshot.context.warehouseHandling = { "SIM-LOGISTICS-01": 0, "SIM-LOGISTICS-03": 0 };
+    assign(snapshot, null, 12, "machine", "machine");
+    const progress = advance(snapshot, 12);
+    expect(snapshot.context.trimLots![0].completedGrams).toBeCloseTo(machine.grams, 6);
+    expect(progress.effects.filter(effect => effect.kind === "trim-work").map(effect => effect.work)).toEqual([7200, 800.000004]);
+  });
+
   it("lets a colleague join midway, including when the first shift could finish all remaining stock", () => {
     const snapshot = raw([lot("a", 90)]);
     assign(snapshot);

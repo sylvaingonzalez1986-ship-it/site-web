@@ -7,8 +7,12 @@ import tailwindcss from '@tailwindcss/postcss';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
-const root = process.cwd(), output = resolve(root, 'output/placard-journey-continuity');
-const port = Number(process.env.KQ_JOURNEY_PORT ?? 3426), origin = `http://127.0.0.1:${port}`;
+const loicCleaning = process.argv.includes('--loic-cleaning');
+const loicWelcome = process.argv.includes('--loic-welcome');
+const loic = loicCleaning || loicWelcome || process.argv.includes('--loic');
+const root = process.cwd(), output = resolve(root, loic ? 'output/parcours-loic' : 'output/placard-journey-continuity');
+const port = Number(process.env.KQ_JOURNEY_PORT ?? (loic ? 0 : 3426));
+let origin = `http://127.0.0.1:${port}`;
 const preview = process.argv.includes('--preview');
 const preparationOnly = process.argv.includes('--preparation-only'), storageOnly = process.argv.includes('--storage-only');
 const guideNavigationOnly = process.argv.includes('--guide-navigation-only');
@@ -27,6 +31,11 @@ const cultureCarouselOnly = cultureBadgesOnly || cultureQualityOnly || cultureCa
 const reportName = trimJourneyOnly ? 'trim-journey-report.json' : cultureRelayOnly ? 'culture-relay-report.json' : cultureBadgesOnly ? 'culture-badges-report.json' : cultureQualityOnly ? 'culture-quality-report.json' : cultureCarouselVisualOnly ? 'culture-carousel-visual-report.json' : cultureCarouselOnly ? 'culture-carousel-report.json' : cultureWorkOnly ? 'culture-work-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : financialSupportOnly ? 'financial-support-report.json' : workPlanOnly ? 'work-plan-report.json' : staffGuideOnly ? 'staff-guide-report.json' : workshopOnly ? 'workshop-report.json' : guideCompletionOnly ? 'guide-completion-report.json' : guideNavigationOnly ? 'guide-navigation-report.json' : guideOnly ? 'guide-report.json' : preparationOnly ? 'preparation-report.json' : storageOnly ? 'storage-report.json' : 'report.json';
 const targetId = 'c0a00002-0000-4000-8000-000000000002', decoyId = 'c0a00001-0000-4000-8000-000000000001';
 const planEmployeeId = 'c0a00003-0000-4000-8000-000000000003';
+const supportCheckoutUrls = {
+  viva: 'https://www.vivapayments.com/web/checkout?ref=987654321012345678',
+  'swiss-bitcoin-pay': 'https://app.swiss-bitcoin-pay.ch/invoice/33333333-3333-4333-8333-333333333333',
+};
+const supportVivaTransaction = '22222222-2222-4222-8222-222222222222';
 const entry = `
 import React from'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
 import{PlacardPlayerShell}from'/src/components/placard/PlacardPlayerShell';
@@ -44,19 +53,24 @@ import{encodeKqSave,parseKqGameSave}from'/src/lib/kanab-quest-persistence';
 import{createKqFlowerTrimReader}from'/src/lib/kanab-quest-flower-trim';
 window.__guideIds={steps:FARM_GUIDE_STEPS.map(step=>step.id),chapters:FARM_GUIDE_CHAPTERS.map(chapter=>chapter.id)};
 const scenario=new URLSearchParams(location.search).get('scenario')||'preparation';
-window.__supportState='ready';window.__supportPending=[];
+window.__supportState=scenario==='financial-support-return-legacy'?'creating':scenario==='financial-support-return-wrong'?'paid':'ready';
+window.__supportCheckoutState='ready';window.__supportPending=[];window.__holdSupportCheckout=false;window.__supportStatusFailure=false;
+const supportCheckoutUrls=${JSON.stringify(supportCheckoutUrls)};
+const savedSupport=()=>JSON.parse(sessionStorage.getItem('lcb-support-attempt-v1')??'null');
+const supportReceipt=(attempt,state)=>{
+ const provider=attempt.provider??'viva';
+ return {id:attempt.id,state,provider,amountCents:attempt.amountCents,refundedCents:0,checkoutUrl:state==='ready'?supportCheckoutUrls[provider]:null,expiresAt:new Date(Date.now()+600000).toISOString()};
+};
 const supportCampaign={title:'Soutenir les producteurs',goalCents:50000,minCents:100,maxCents:100000,active:true,createdAt:'2026-11-11T10:00:00Z'};
-const supportSummary={campaign:supportCampaign,collectedCents:15000,contributionCount:3,feesCents:null,needsReconciliation:false,checkoutAvailable:true,updatedAt:'2026-11-11T12:00:00Z',nextOffset:20,contributions:[{id:'one',pseudonym:'Camille',amountCents:10000,paidAt:'2026-11-11T11:00:00Z'},{id:'two',pseudonym:'Anonyme',amountCents:null,paidAt:'2026-11-11T10:00:00Z'}]};
-const supportRow={id:'11111111-1111-4111-8111-111111111111',pseudonym:'Camille',publishName:true,publishAmount:true,amountCents:1000,capturedCents:1000,refundedCents:0,feesCents:null,feeReference:null,feeUpdatedAt:null,feeUpdatedBy:null,createdAt:'2026-11-11T11:00:00Z',paidAt:'2026-11-11T11:01:00Z',orderCode:'987654321012345678',transactionId:'22222222-2222-4222-8222-222222222222',sourceCode:'4321',checkoutState:'ready',reviewRequired:false,hidden:false};
-if(scenario.startsWith('financial-support-return')){sessionStorage.setItem('lcb-support-attempt-v1',JSON.stringify({id:supportRow.id,token:'a'.repeat(64),pseudonym:'Camille',amountCents:1000,publishName:true,publishAmount:true}));window.__supportState=scenario.endsWith('pending')?'creating':'paid';}
-window.__financialSupportUrl=scenario==='financial-support-hidden'?'':scenario==='financial-support-invalid'?'javascript:alert(1)':'https://pay.vivawallet.com/les-champs-bretons';
-if(${financialSupportOnly}){
- if(scenario==='financial-support-default')delete window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL;
- else window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=window.__financialSupportUrl;
+const supportSummary={campaign:supportCampaign,collectedCents:15000,contributionCount:3,feesCents:null,needsReconciliation:false,checkoutAvailable:true,providers:['viva','swiss-bitcoin-pay'],updatedAt:'2026-11-11T12:00:00Z',nextOffset:20,contributions:[{id:'one',pseudonym:'Camille',amountCents:10000,paidAt:'2026-11-11T11:00:00Z'},{id:'two',pseudonym:'Anonyme',amountCents:null,paidAt:'2026-11-11T10:00:00Z'}]};
+const supportRow={id:'11111111-1111-4111-8111-111111111111',pseudonym:'Camille',publishName:true,publishAmount:true,amountCents:1000,capturedCents:1000,refundedCents:0,feesCents:null,feeReference:null,feeUpdatedAt:null,feeUpdatedBy:null,createdAt:'2026-11-11T11:00:00Z',paidAt:'2026-11-11T11:01:00Z',provider:'viva',orderCode:'987654321012345678',transactionId:'22222222-2222-4222-8222-222222222222',sourceCode:'4321',checkoutState:'ready',reviewRequired:false,hidden:false};
+const lightningRow={...supportRow,id:'44444444-4444-4444-8444-444444444444',pseudonym:'Breton',provider:'swiss-bitcoin-pay',invoiceId:'33333333-3333-4333-8333-333333333333',providerStatus:'expired',sourceCode:'producer-support',orderCode:null,transactionId:null,amountCents:250,capturedCents:0,checkoutState:'expired',paidAt:null};
+if(scenario==='financial-support-return-legacy'||scenario==='financial-support-return-wrong'){
+ sessionStorage.setItem('lcb-support-attempt-v1',JSON.stringify({id:supportRow.id,token:'a'.repeat(64),pseudonym:'Camille',amountCents:1000,publishName:true,publishAmount:true,...(scenario.endsWith('wrong')?{provider:'swiss-bitcoin-pay'}:{})}));
 }
 const workdayScenario=scenario==='workday';
 const workshopScenario=scenario==='workshop',staffGuideScenario=scenario==='staff-guide',staffPlanScenario=scenario==='staff-plan',storageScenario=${trimJourneyOnly}||scenario.startsWith('storage')||workshopScenario||staffPlanScenario;
-if(!new URLSearchParams(location.search).has('view'))history.replaceState(null,'','?scenario='+scenario+'&view='+(storageScenario?'harvests':'game&campaign=1'));
+if(!${financialSupportOnly}&&!new URLSearchParams(location.search).has('view'))history.replaceState(null,'','?scenario='+scenario+'&view='+(storageScenario?'harvests':'game&campaign=1'));
 let production=createKqReleveProduction();const act=action=>production=applyKqReleveProductionAction(production,action);
 const badgeCase=new URLSearchParams(location.search).get('badgeCase');
 act({type:'draft',warehouse:suggestKqRelevePlan(production,1,badgeCase==='target-input'?2:1)});act({type:'save-plan'});
@@ -148,17 +162,29 @@ const projectSoloSession=payload=>{if(scenario==='culture-carousel-solo')for(con
 const request=async(input,init={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.origin),path=url.pathname,method=init.method??'GET',body=init.body?JSON.parse(init.body):null;
  window.__calls.push({path,method,body,...(${cultureBadgesOnly || cultureRelayOnly}?{query:url.search}:{})});
+ if(method==='GET'&&path==='/api/arena/tutorial')return response({userId:'journey-local-fixture',chanvrier:null});
+ if(${financialSupportOnly}&&method==='GET'&&path==='/api/arena/placard/equipment')return response({activeRun:true,cashCents:125000,readyLotCount:3,availableFlowerCount:2,curingFlowerCount:1,ownedCodes:[]});
  if(path==='/api/support'){
   if(scenario==='financial-support-error')return response({error:'Cagnotte indisponible.'},503);
   if(scenario==='financial-support-malformed')return response({});
-  return response({...supportSummary,...(scenario==='financial-support-review'?{needsReconciliation:true}:{}),...(scenario==='financial-support-no-goal'?{campaign:{...supportCampaign,goalCents:null}}:{}),...(scenario==='financial-support-closed'?{checkoutAvailable:false}:{}),...(url.searchParams.has('offset')?{contributions:[{id:'three',pseudonym:'Breton',amountCents:5000,paidAt:'2026-11-10T10:00:00Z'}],nextOffset:null}:{})});
+  return response({...supportSummary,...(scenario==='financial-support-review'?{needsReconciliation:true}:{}),...(scenario==='financial-support-no-goal'?{campaign:{...supportCampaign,goalCents:null}}:{}),...(scenario==='financial-support-closed'?{checkoutAvailable:false,providers:[]}:{}),...(url.searchParams.has('offset')?{contributions:[{id:'three',pseudonym:'Breton',amountCents:5000,paidAt:'2026-11-10T10:00:00Z'}],nextOffset:null}:{})});
  }
  if(path==='/api/support/profile')return response({pseudonym:'Breton29'});
- if(path==='/api/support/checkout'){await new Promise(done=>window.__supportPending.push(done));return response({id:body.id,state:'ready',amountCents:body.amountCents,refundedCents:0,checkoutUrl:null,expiresAt:'2026-12-01T00:00:00Z'});}
- if(path==='/api/support/status'||path==='/api/support/cancel')return response({id:body.id,state:path.endsWith('/cancel')?'cancelled':window.__supportState,amountCents:1000,refundedCents:0,checkoutUrl:null,expiresAt:'2026-12-01T00:00:00Z'});
+ if(path==='/api/support/checkout'){
+  if(window.__holdSupportCheckout)await new Promise(done=>window.__supportPending.push(done));
+  window.__supportState=window.__supportCheckoutState;return response(supportReceipt(body,window.__supportState));
+ }
+ if(path==='/api/support/status'||path==='/api/support/cancel'){
+  const attempt=savedSupport();
+  if(!attempt||attempt.id!==body?.id||attempt.token!==body?.token)return response({error:'Fiche introuvable.'},404);
+  if(body.orderCode&&body.orderCode!==supportRow.orderCode)return response({error:'Ce retour Viva ne correspond pas à ta fiche de soutien.'},409);
+  if(window.__supportStatusFailure)return response({error:'Vérification momentanément indisponible.'},503);
+  if(path.endsWith('/cancel'))window.__supportState='cancelled';
+  return response(supportReceipt(attempt,window.__supportState));
+ }
  if(path==='/api/admin/support'){
   if(method==='POST'){if(body.action==='campaign')Object.assign(supportCampaign,{active:body.active,goalCents:body.goalCents});if(body.action==='fees')Object.assign(supportRow,{feesCents:body.feesCents,feeReference:body.reference,feeUpdatedAt:'2026-11-11T12:00:00Z'});if(body.action==='visibility')supportRow.hidden=body.hidden;return response({ok:true});}
-  return response({campaign:supportCampaign,configured:true,configurationError:null,rows:[supportRow],total:1,page:0,totals:{capturedCents:1000,refundedCents:0,feesCents:supportRow.feesCents??0,missingFees:supportRow.feesCents===null?1:0,reviewCount:0}});
+  return response({campaign:supportCampaign,configured:true,configurationError:null,providers:['viva','swiss-bitcoin-pay'],rows:[supportRow,lightningRow],total:2,page:0,totals:{capturedCents:1000,refundedCents:0,feesCents:supportRow.feesCents??0,missingFees:supportRow.feesCents===null?1:0,reviewCount:0}});
  }
  if(path.endsWith('/social/player')&&method==='GET')return response({firstName:'Joueur',profile:null});
  const permittedPlay=allowPlay&&method==='POST'&&(path.endsWith('/runs')||/\\/runs\\/[^/]+\\/actions$/.test(path)||(${cultureBadgesOnly}&&(path.endsWith('/care')||/\\/runs\\/[^/]+\\/cards$/.test(path))));
@@ -208,6 +234,10 @@ const request=async(input,init={})=>{
  if(path.endsWith('/warehouse')){
   const received=await transport(input,init),payload=await received.json();
   return response(storageScenario?{...payload,stockGrams:lots.reduce((sum,lot)=>sum+lot.harvestGrams,0),storageReservedGrams:0}:payload,received.status);
+ }
+ if(${cultureCarouselOnly}&&method==='GET'&&path==='/api/arena/placard/warehouse/preparations'){
+  const never={completedAt:null,expiresAt:null,pending:null};
+  return response({cashCents:production.cashCents,serverNow:new Date(production.clock).toISOString(),items:[],programs:[],coverage:[],runs:[],cleaning:{vacuum:never,mop:never}});
  }
  if(path.endsWith('/flowers')&&storageScenario)return response({flowers:${trimJourneyOnly}?journeyFlowers():[]});
  if(path==='/api/account/collection')return response({pages:[{slots:[]}]});
@@ -261,44 +291,73 @@ if(${trimJourneyOnly}){
 }
 if(${financialSupportOnly})api.isTutorial=scenario==='financial-support-tutorial';
 const fixtureRoot=createRoot(document.getElementById('root'));
-const renderFixture=ownerId=>fixtureRoot.render(<KqTutorialApiProvider api={api}><aside className="fixture-tools"><strong>Démo locale · retrouver sa préparation et sa récolte</strong><p>Choix, plan et lots fictifs en mémoire. Aucun compte réel.</p><label>Parcours <select value={scenario} onChange={event=>location.href='/?scenario='+event.target.value}>{['preparation','storage','storage-overflow'].map(value=><option key={value}>{value}</option>)}</select></label></aside><PlacardPlayerShell draftOwnerId={ownerId}/></KqTutorialApiProvider>);
+const renderFixture=ownerId=>fixtureRoot.render(<KqTutorialApiProvider api={api}>{!${financialSupportOnly}&&<aside className="fixture-tools"><strong>Démo locale · retrouver sa préparation et sa récolte</strong><p>Choix, plan et lots fictifs en mémoire. Aucun compte réel.</p><label>Parcours <select value={scenario} onChange={event=>location.href='/?scenario='+event.target.value}>{['preparation','storage','storage-overflow'].map(value=><option key={value}>{value}</option>)}</select></label></aside>}<PlacardPlayerShell draftOwnerId={ownerId} initialGuideOpen={scenario==='financial-support-tutorial'}/></KqTutorialApiProvider>);
 window.__control.owner=renderFixture;
-if(scenario.startsWith('financial-support-return'))fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><SupportPaymentReturn transactionId='22222222-2222-4222-8222-222222222222'/></main>);
+const returnQuery=new URLSearchParams(location.search);
+if(location.pathname==='/soutenir/retour')fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><SupportPaymentReturn transactionId={returnQuery.get('t')??undefined} supportId={returnQuery.get('support')??undefined} orderCode={returnQuery.get('s')??undefined}/></main>);
 else if(scenario==='financial-support-admin')fixtureRoot.render(<main style={{maxWidth:1000,margin:'auto',padding:12}}><AdminSupportPanel/></main>);
-else if(scenario==='financial-support-standalone')fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><KqFinancialSupport standalone/></main>);
+else if(location.pathname==='/soutenir')fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><KqFinancialSupport standalone/></main>);
 else renderFixture('journey-local-fixture');
 `;
 const modules = {
-  entry,
+  entry: loic ? await readFile(resolve(root, 'scripts/fixtures/loic-journey.jsx'), 'utf8') : entry,
+  ...(financialSupportOnly ? { 'support-audit-scene': 'export { _roots as fiberRoots } from "@react-three/fiber"; export { Vector3 } from "three";' } : {}),
   'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
   'next/image': `import React from'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
   'next/link': `import React from'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props} onClick={event=>{props.onClick?.(event);if(${trimJourneyOnly}&&!event.defaultPrevented&&event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){const url=new URL(props.href,location.href);if(url.origin===location.origin){event.preventDefault();history.pushState({},'',url.pathname+url.search+url.hash);window.dispatchEvent(new Event('kq:placard-location'))}}}}/>}`,
   'next/navigation': `export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
   'next/dynamic': `import React from'react';export default function dynamic(loader,options={}){const C=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=><React.Suspense fallback={options.loading?<options.loading/>:null}><C {...props}/></React.Suspense>}`,
+  '@/components/cookies/CookieConsentProvider': `export const useCookieConsent=()=>({showBanner:false,consent:null,hasConsent:()=>false});`,
   '@/context/CartContext': `export const useCart=()=>({user:{id:'00000000-0000-4000-8000-000000000099'},isAuthenticated:true,authLoading:false,refreshSession:async()=>{}});`,
 };
 const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}.fixture-tools{padding:12px 18px;font:12px Body;background:#182b24;color:#fff1d6}.fixture-tools p{margin:5px 0}.fixture-tools select{max-width:100%;margin-left:8px;color:#182b24}`;
 const server = await createServer({ root, configFile: false, envDir: false, cacheDir: resolve(output, 'vite-cache'), publicDir: resolve(root, 'public'),
-  define: { 'process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL': '""' },
   optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react',
-    'cannon-es', 'three', 'three/addons/utils/BufferGeometryUtils.js', 'three/addons/geometries/RoundedBoxGeometry.js', 'three/addons/controls/OrbitControls.js'] },
+    'cannon-es', 'three', '@react-three/fiber', 'three/addons/utils/BufferGeometryUtils.js', 'three/addons/geometries/RoundedBoxGeometry.js', 'three/addons/controls/OrbitControls.js',
+    ...(loicWelcome ? ['gsap'] : [])] },
   resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [tailwindcss({ base: root })] } },
-  plugins: [{ name: 'journey-continuity-audit', enforce: 'pre', resolveId(id) { if (/\/src\/context\/CartContext(?:\.tsx)?$/.test(id.replaceAll('\\', '/'))) return '\0@/context/CartContext'; if (id.endsWith('/public/placard/warehouse-v2/manifest.json')) return '\0warehouse-assets'; if (id in modules) return '\0' + id; },
+  plugins: [{ name: 'journey-continuity-audit', enforce: 'pre', resolveId(id) { if (/\/CookieConsentProvider(?:\.tsx)?$/.test(id.replaceAll('\\', '/'))) return '\0@/components/cookies/CookieConsentProvider'; if (/\/src\/context\/CartContext(?:\.tsx)?$/.test(id.replaceAll('\\', '/'))) return '\0@/context/CartContext'; if (id.endsWith('/public/placard/warehouse-v2/manifest.json')) return '\0warehouse-assets'; if (id in modules) return '\0' + id; },
     async load(id) { if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
-    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.startsWith('/api/')) { res.statusCode = 403; res.end('Real API disabled'); return; } if (!['/', '/arene/placard'].includes(req.url?.split('?')[0])) return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Préparation et stockage · démo locale</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
+    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.startsWith('/api/')) { res.statusCode = 403; res.end('Real API disabled'); return; } if (!['/', '/arene/placard', '/soutenir', '/soutenir/retour'].includes(req.url?.split('?')[0])) return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Démo locale du Quartier</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
   }], server: { host: '127.0.0.1', port, strictPort: true, hmr: false, watch: null },
 });
 const results = [], errors = [], forbiddenRequests = [];
+const supportRoundTrips = [];
+let supportRedirect;
+function mockSupportRedirect(provider, contributionId) {
+  const query = new URLSearchParams({ scenario: 'financial-support-return-redirect' });
+  if (provider === 'viva') { query.set('t', supportVivaTransaction); query.set('s', '987654321012345678'); }
+  else query.set('support', contributionId);
+  supportRedirect = { provider, url: supportCheckoutUrls[provider], redirect: `${origin}/soutenir/retour?${query}` };
+}
 let browser, page;
 await mkdir(output, { recursive: true }); await server.listen();
-if (preview) {
+origin = 'http://127.0.0.1:' + server.httpServer.address().port;
+if (loic && !preview) {
+  try {
+    browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--enable-unsafe-swiftshader'] });
+    if (loicCleaning) await (await import('./audit-loic-cleaning.mjs')).auditLoicCleaning({ origin, output, browser });
+    else await (await import('./audit-loic-journey.mjs')).auditLoicJourney({ origin, output, browser, welcomeOnly: loicWelcome });
+  } finally { await browser?.close(); await server.close(); }
+} else if (preview) {
   console.log(`Local journey continuity demo: ${origin} (PID ${process.pid}). In-memory data only.`);
   await new Promise(resolveStop => { const stop = () => { void server.close().then(resolveStop); }; process.once('SIGINT', stop); process.once('SIGTERM', stop); });
 } else try {
-  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
-  page = await browser.newPage(); page.setDefaultTimeout(30000); page.setDefaultNavigationTimeout(120000);
+  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', financialSupportOnly ? '--enable-unsafe-swiftshader' : '--disable-gpu'] });
+  page = await browser.newPage(); page.setDefaultTimeout(financialSupportOnly ? 60000 : 30000); page.setDefaultNavigationTimeout(120000);
   page.on('pageerror', error => errors.push(error.message));
-  await page.setRequestInterception(true); page.on('request', request => { const url = new URL(request.url()); if (['data:', 'blob:'].includes(url.protocol)) return void request.continue(); if (url.origin !== origin || url.pathname.startsWith('/api/')) { forbiddenRequests.push(request.url()); return void request.abort(); } void request.continue(); });
+  await page.setRequestInterception(true);
+  page.on('request', request => {
+    const url = new URL(request.url());
+    if (['data:', 'blob:'].includes(url.protocol)) return void request.continue();
+    if (financialSupportOnly && request.isNavigationRequest() && request.url() === supportRedirect?.url) {
+      const { provider, redirect } = supportRedirect; supportRedirect = undefined;
+      supportRoundTrips.push(provider);
+      return void request.respond({ status: 302, headers: { location: redirect, 'cache-control': 'no-store' } });
+    }
+    if (url.origin !== origin || url.pathname.startsWith('/api/')) { forbiddenRequests.push(request.url()); return void request.abort(); }
+    void request.continue();
+  });
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   const keyClick = async selector => { await page.waitForSelector(selector, { visible: true }); await page.focus(selector); await page.keyboard.press('Enter'); };
   async function button(label, scope = 'body') { const match = await page.waitForFunction((label, scope) => [...document.querySelectorAll(scope + ' button')].find(node => node.textContent.trim() === label && !node.disabled && node.getClientRects().length), {}, label, scope); await match.asElement().focus(); await page.keyboard.press('Enter'); await match.dispose(); }
@@ -307,9 +366,10 @@ if (preview) {
   const mutations = () => page.evaluate(() => window.__calls.filter(call => call.method !== 'GET'));
   async function load(scenario, width = 390, query = '') {
     await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); }).catch(() => {});
-    await page.setViewport({ width, height: width === 320 ? 720 : width === 390 ? 844 : 1000 });
-    const navigation = cultureBadgesOnly ? { waitUntil: 'domcontentloaded', timeout: 360000 } : { waitUntil: 'networkidle0' };
-    await page.goto(`${origin}${guideOnly ? '/arene/placard' : '/'}?scenario=${scenario}${query ? '&' + query : ''}`, navigation); await page.evaluate(() => document.fonts.ready);
+    await page.setViewport({ width, height: width === 320 ? 720 : width === 390 ? 844 : 1000, ...(financialSupportOnly && width <= 390 ? { isMobile: true, hasTouch: true } : {}) });
+    const navigation = cultureBadgesOnly || financialSupportOnly ? { waitUntil: 'domcontentloaded', timeout: 360000 } : { waitUntil: 'networkidle0' };
+    const path = scenario.startsWith('financial-support-return') ? '/soutenir/retour' : scenario === 'financial-support-standalone' ? '/soutenir' : guideOnly || financialSupportOnly ? '/arene/placard' : '/';
+    await page.goto(`${origin}${path}?scenario=${scenario}${query ? '&' + query : ''}`, navigation); await page.evaluate(() => document.fonts.ready);
   }
   async function layout() { assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No horizontal page overflow'); }
   const settled = () => page.waitForFunction(() => !document.querySelector('[data-placard-view] > [role="status"]'));
@@ -699,7 +759,49 @@ if (preview) {
       return measures;
     }
     const gameSnapshot = () => page.evaluate(() => { const value = window.__fixture().production; return JSON.stringify({ game: value.game, cashCents: value.cashCents, inventory: value.supportInventory, careInventory: value.careInventory }); });
-    for (const [width, height] of cultureCarouselVisualOnly ? [[320, 568], [390, 844]] : [[320, 568], [390, 844], [768, 1000], [1440, 1000]]) {
+    async function assertNavigation(width) {
+      const navigation = await page.waitForSelector('[data-culture-navigation]', { visible: true });
+      await navigation.scrollIntoView();
+      await page.waitForFunction(() => [...document.querySelectorAll('[data-culture-tab] img')].every(img => img.complete && img.naturalWidth > 0));
+      const visuals = await navigation.evaluate(node => {
+        const overlaps = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+        const contains = (outer, inner) => inner.width > 0 && inner.height > 0 &&
+          inner.left >= outer.left - 1 && inner.right <= outer.right + 1 && inner.top >= outer.top - 1 && inner.bottom <= outer.bottom + 1;
+        const list = node.querySelector('[role="tablist"]');
+        const tabs = [...list.querySelectorAll('[role="tab"]')].map(button => {
+          const image = button.querySelector('img');
+          const title = button.querySelector('strong');
+          const detail = button.querySelector('small');
+          const badge = button.querySelector('[data-action-count]');
+          const text = [title, detail, badge].filter(Boolean).map(element => element.getBoundingClientRect());
+          const illustration = image.getBoundingClientRect();
+          const bounds = button.getBoundingClientRect();
+          return {
+            id: button.dataset.cultureTab,
+            art: image.getAttribute('src'),
+            titleSize: parseFloat(getComputedStyle(title).fontSize),
+            detailSize: parseFloat(getComputedStyle(detail).fontSize),
+            contentFits: [illustration, ...text].every(rect => contains(bounds, rect)),
+            illustrationClear: text.every(rect => !overlaps(illustration, rect)),
+            badgesClear: text.every((rect, index) => text.slice(index + 1).every(other => !overlaps(rect, other))),
+          };
+        });
+        const pagerLabels = [...node.querySelectorAll('[data-culture-carousel-prev] > span, [data-culture-carousel-next] > span')];
+        return {
+          tabs, noHorizontalScroll: list.scrollWidth <= list.clientWidth + 1,
+          pagerLabelsVisible: pagerLabels.length === 2 && pagerLabels.every(label => label.checkVisibility()),
+        };
+      });
+      assert(visuals.noHorizontalScroll && visuals.pagerLabelsVisible, `All navigation fits at ${width}px`);
+      for (const item of visuals.tabs) {
+        assert(item.art.endsWith(`culture-tab-${item.id}-v1.webp`), `${item.id} uses its dedicated illustration`);
+        assert(item.contentFits && item.illustrationClear && item.badgesClear, `${item.id} illustration, label, status and badge stay separated at ${width}px`);
+        assert(item.titleSize >= 14 && item.detailSize >= 12, `${item.id} retains readable type sizes`);
+      }
+      await navigation.screenshot({ path: resolve(output, `culture-navigation-${width}.png`) });
+      await navigation.dispose();
+    }
+    for (const [width, height] of [[320, 568], [390, 844], [768, 1000], [1440, 1000]]) {
       await load('culture-carousel', width, 'view=game&run=61000000-0000-4000-8000-000000000001');
       await page.setViewport({ width, height, hasTouch: width < 768 });
       await page.waitForSelector('[data-culture-carousel]');
@@ -709,6 +811,8 @@ if (preview) {
         await screenshot(`culture-carousel-initial-${width}x${height}`);
       }
       const initialGame = await gameSnapshot();
+      await panel('cards');
+      await assertNavigation(width);
       const heights = {};
       for (const id of cultureCarouselVisualOnly ? ['play'] : ids) {
         await panel(id); heights[id] = (await assertPanels(id)).pageHeight;
@@ -720,8 +824,7 @@ if (preview) {
       }
       assert.equal((await mutations()).length, 0, 'Reading all six panels never submits an action');
       assert.equal(await gameSnapshot(), initialGame, 'Navigation preserves the complete game, cash and inventories');
-      results.push({ width, height, sixAccessiblePanels: true, inactivePanelsHaveNoHeightOrFocus: true, pageHeights: heights, navigationHasNoMutations: true });
-      if (cultureCarouselVisualOnly) continue;
+      results.push({ width, height, sixAccessiblePanels: true, illustrationsAndLabelsSeparated: true, statusesAndPagerVisible: true, inactivePanelsHaveNoHeightOrFocus: true, pageHeights: heights, navigationHasNoMutations: true });
 
       await panel('play'); await page.focus(tab('play')); await page.keyboard.press('ArrowRight');
       await page.waitForFunction(() => document.querySelector('[data-culture-tab="care"]')?.getAttribute('aria-selected') === 'true');
@@ -741,14 +844,17 @@ if (preview) {
           for (let step = 1; step <= 5; step++) await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: point.x + dx * step / 5, y: point.y + dy * step / 5, id: 1 }] });
           await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
         }
-        await swipe('[data-culture-carousel] > div:first-child > :first-child', -100);
+        const pagerStatus = '[data-culture-navigation] [aria-live="polite"]';
+        await swipe(pagerStatus, -100);
         await page.waitForFunction(() => document.querySelector('[data-culture-tab="care"]')?.getAttribute('aria-selected') === 'true');
-        await swipe('[data-culture-carousel] > div:first-child > :first-child', -10, -80);
+        await swipe(pagerStatus, -10, -80);
         assert.equal(await active(), 'care', 'Vertical scrolling never changes panels');
         await client.detach();
         assert.equal((await mutations()).length, 0);
         results.push({ width, touchSwipe: true, verticalScrollDoesNotNavigate: true });
       }
+
+      if (cultureCarouselVisualOnly) continue;
 
       await panel('cards');
       await keyClick('[data-hand-filter="all"]');
@@ -1109,7 +1215,8 @@ if (preview) {
   }
   if (financialSupportOnly) {
     const { auditSupportCampaign } = await import('./fixtures/support-campaign-browser.mjs');
-    await auditSupportCampaign({ page, load, button, keyClick, screenshot, layout, fixture, results });
+    await auditSupportCampaign({ page, load, button, keyClick, screenshot, layout, fixture, results, mockSupportRedirect });
+    assert.deepEqual(supportRoundTrips, ['viva', 'swiss-bitcoin-pay']);
   } else if (workPlanOnly) {
     await load('staff-plan', 390, 'view=staff');
     await page.waitForSelector('[data-staff-work-plan]', { visible: true });
@@ -1180,7 +1287,7 @@ if (preview) {
     const settleGuide = () => page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))));
     const staffProgress = async () => (await storedGuide()).completed.filter(id => staffSteps.includes(id));
     async function seedPreviousGuide(active = false) {
-      const previous = { version: 2, active, started: true, collapsed: !active, completed: previousSteps, flowerId: targetId };
+      const previous = { version: 2, active, started: true, collapsed: !active, completed: active ? [...previousSteps, 'work-hours'] : previousSteps, flowerId: targetId };
       await page.evaluate(({ key, previous }) => localStorage.setItem(key, JSON.stringify(previous)), { key: guideKey, previous });
       await page.reload({ waitUntil: 'networkidle0' });
       await page.waitForSelector('[data-guide-staff-ready="true"]', { visible: true });
@@ -1200,14 +1307,25 @@ if (preview) {
     for (const width of [320, 390, 1440]) {
       await load('staff-guide', width, 'view=staff');
       const previous = await seedPreviousGuide(); const before = await fixture();
+      const dedicated = '[data-staff-metric="player"] [role="meter"]';
+      await page.waitForSelector(dedicated, { visible: true });
+      assert.equal(await page.$eval(dedicated, node => node.getAttribute('aria-valuemax')), '12');
+      assert.equal(await page.$('[data-player-work-status], [data-team-player-time]'), null);
       assert.equal(before.staffRaw.state.employees.length, 0, 'The learning route works without an employee');
       assert.equal(await page.$('[data-farm-guide]'), null, 'Adding Personnel never reopens a previously closed guide');
       assert.equal(await page.$('[data-farm-guide-resume]'), null);
       const restored = await storedGuide();
-      assert.deepEqual({ ...restored, completed: restored.completed.filter(id => id !== 'trim') }, previous, 'Old objectives, tracked harvest and display preferences are preserved');
+      assert.deepEqual({ ...restored, completed: restored.completed.filter(id => id !== 'trim').sort() }, { ...previous, completed: [...previous.completed].sort() }, 'Old objectives, tracked harvest and display preferences are preserved');
       assert(restored.completed.includes('trim'), 'An old confirmed jury satisfies the trim prerequisite without retroactive work');
       await page.evaluate(() => window.dispatchEvent(new Event('kq:farm-guide-open')));
+      await waitStep('work-hours');
+      await guideTarget();
+      await page.waitForSelector('[data-placard-view="hub"] [data-player-work-status][data-tutorial-ready="true"]', { visible: true });
+      assert.equal((await storedGuide()).completed.includes('work-hours'), false);
+      await keyClick('[data-player-work-status] details > summary');
       await waitStep('staff-candidate');
+      await guideTarget();
+      await page.waitForSelector('[data-placard-view="staff"] [data-guide-staff-ready="true"]', { visible: true });
       await guideTarget();
       assert(await page.$('[data-staff-tab="candidates"][data-farm-guide-target]'));
       assert.deepEqual(await staffProgress(), [], 'Highlighting recruitment is not reading a contract');
@@ -1241,7 +1359,7 @@ if (preview) {
       assert.deepEqual(await staffProgress(), staffSteps.slice(0, 3), 'Payroll discovery needs the visible payroll panel');
       await keyClick('[data-staff-tab="payroll"]');
       await page.waitForSelector('[data-staff-panel="payroll"]', { visible: true });
-      await waitStep('complete');
+      await waitStep('processing');
       assert.deepEqual(await staffProgress(), staffSteps);
       assert(await page.$eval('[data-staff-panel="payroll"]', node => node.textContent.includes('Aucune paie à régler')), 'No debt or payment is required to understand payroll');
       assert.equal((await storedGuide()).flowerId, targetId);
@@ -1262,7 +1380,7 @@ if (preview) {
       assert.equal(await page.$('[data-farm-guide]'), null);
       assert.deepEqual((await storedGuide()).completed, completed, 'The four discoveries survive closing and reloading');
       await assertReadOnly(before);
-      results.push({ width, scenario: 'previously completed guide → candidates → planning → development → payroll', closedPreferencePreserved: true, trackedHarvestPreserved: true, explicitVisibleEvidence: true, noEmployeeRequired: true, persisted: true, noGameWrites: true });
+      results.push({ width, scenario: 'existing guide → Quartier workday → candidates → planning → development → payroll', closedPreferencePreserved: true, trackedHarvestPreserved: true, workdayHelpInQuartier: true, personalMeterInDedicatedPanel: true, explicitVisibleEvidence: true, noEmployeeRequired: true, persisted: true, noGameWrites: true });
       console.log('Personnel guide discovery verified at ' + width + 'px');
     }
 
@@ -1299,7 +1417,7 @@ if (preview) {
     await keyClick('[data-staff-guide="development"] > summary');
     await waitStep('staff-payroll');
     assert.deepEqual(await staffProgress(), staffSteps.slice(0, 3), 'Opening the recovered contract supplies the missing candidate evidence');
-    await keyClick('[data-staff-tab="payroll"]'); await waitStep('complete');
+    await keyClick('[data-staff-tab="payroll"]'); await waitStep('processing');
     await assertReadOnly(beforeUnavailable);
     results.push({ width: 390, scenario: 'loading and failed refresh lock candidate actions and preserve incomplete objectives; retry restores explanations and a freshly opened contract', loadingControlsLocked: true, loadingDoesNotValidate: true, errorDoesNotValidate: true, retryRestores: true, recoveredContractOpened: true, noGameWrites: true });
   }
@@ -1551,17 +1669,18 @@ if (preview) {
     await keyClick('[data-culture-confirm-start]');
     await page.waitForSelector('[data-culture-play][data-guide-culture-started="true"]');
     await waitStep('roll');
-    await page.waitForFunction(() => document.querySelector('[data-player-work-status]')?.textContent.includes('12 h / 12 h'));
+    assert.equal(await page.$('[data-player-work-status]'), null);
+    await page.waitForFunction(() => document.querySelector('[data-culture-work-status]')?.textContent.includes('Ta réserve restante : 12 h'));
     assert.equal((await mutations()).length, 1);
     await keyClick('[data-culture-primary-action][data-action="roll"]');
     await page.waitForSelector('[data-culture-play][data-culture-phase="rolled"]');
     await waitStep('resolve');
-    await page.waitForFunction(() => document.querySelector('[data-player-work-status]')?.textContent.includes('11,5 h / 12 h'));
+    await page.waitForFunction(() => document.querySelector('[data-culture-work-status]')?.textContent.includes('Ta réserve restante : 11,5 h'));
     assert.equal((await storedGuide()).completed.includes('resolve'), false, 'Rolled dice alone do not resolve a turn');
     await keyClick('[data-culture-primary-action][data-action="resolve"]');
     await page.waitForSelector('[data-guide-turn-resolved="true"]');
     await waitStep('harvest');
-    await page.waitForFunction(() => document.querySelector('[data-player-work-status]')?.textContent.includes('11,5 h / 12 h'));
+    await page.waitForFunction(() => document.querySelector('[data-culture-work-status]')?.textContent.includes('Ta réserve restante : 11,5 h'));
     assert.equal((await storedGuide()).completed.includes('harvest'), false, 'A resolved turn is not a harvest');
     const playWrites = await mutations();
     assert.equal(playWrites.length, 3);
@@ -1647,8 +1766,10 @@ if (preview) {
 
     for (const width of [320, 390, 1440]) {
       await load('workday', width, 'view=hub');
+      await keyClick('button[aria-label="Ouvrir le bilan de ma partie"]');
       await page.waitForSelector('[data-placard-next-action][data-priority="new-culture"][data-tone="ready"]');
       await page.evaluate(() => window.__control.workHours(0.5));
+      await page.waitForFunction(() => document.querySelector('[data-player-work-status] [role="meter"]')?.getAttribute('aria-valuenow') === '0.5');
       await page.waitForFunction(() => document.querySelector('[data-resume-work-notice]')?.textContent.includes('0,5 h'));
       assert(await page.$eval('[data-placard-next-action]', node => node.textContent.includes('Le lancement demande 1 h')));
       await layout(); await screenshot('guide-workday-half-hour-' + width);

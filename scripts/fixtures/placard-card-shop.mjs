@@ -110,7 +110,8 @@ export function installPlacardCardShopFixture(supportCards, cultivationProfile) 
       if (!fixture.buddieOpens[id]) {
         const existing = fixture.tickets.find(item => item.id === id);
         if (!existing) return json({ error: 'Pack inconnu.' }, 404);
-        const drawn = definitions.filter(card => ['HH2026-001', 'HH2026-004', 'HH2026-020'].includes(card.code));
+        const codes = id === 'welcome' ? ['HH2026-020', 'HH2026-021', 'HH2026-022'] : ['HH2026-001', 'HH2026-004', 'HH2026-020'];
+        const drawn = definitions.filter(card => codes.includes(card.code));
         drawn.forEach(card => { fixture.buddieCounts[card.code] = (fixture.buddieCounts[card.code] || 0) + 1; });
         existing.status = 'scratched';
         const cards = drawn.map(ownedCard);

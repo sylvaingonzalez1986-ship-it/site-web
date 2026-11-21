@@ -116,7 +116,8 @@ export function KqBankLoans() {
       : data?.blockedReason === "arrears" ? "Régularise ton prêt en cours avant d’en demander un autre."
         : "Un seul prêt peut être en cours. Actualise ton dossier pour consulter son état.";
 
-  return <section className={styles.bank} aria-labelledby="bank-loans-title">
+  return <section className={styles.bank} aria-labelledby="bank-loans-title" data-sylvain-target="bank"
+    data-sylvain-seen={!api.isTutorial && data && !busy && !error ? "bank" : undefined} tabIndex={-1}>
     <header className={styles.heading}><Landmark aria-hidden="true" size={25} /><h3 id="bank-loans-title">{loan ? "Mon prêt" : "Emprunter"}</h3><button type="button" className={styles.refresh} disabled={busy} aria-label="Actualiser le dossier bancaire" onClick={() => setRefresh(value => value + 1)}><RefreshCw size={18} aria-hidden="true" /></button></header>
     {!data && !error ? <p role="status">Le banquier examine ton dossier…</p> : null}
     {error && !draft ? <p className={styles.error} role="alert">{error}</p> : null}

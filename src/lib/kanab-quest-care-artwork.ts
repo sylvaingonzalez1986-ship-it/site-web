@@ -1,15 +1,25 @@
+import { getKqWarehouseInputPack } from "./kanab-quest-warehouse-preparations";
+
 /** Fictional product illustrations; commercial references remain separate metadata. */
-const productArtwork: Record<string, { src: string; alt: string; referenceLabel?: string; referenceUrl?: string }> = {
-  "CARE-COMPOST-TEA": { src: "/placard/equipment-sylvain-v1/care-compost-tea.webp", alt: "Fournitures pour thé de compost illustrées dans le style de Kanab Quest", referenceLabel: "Pack TCO Terralba · Alchimia", referenceUrl: "https://www.alchimiaweb.com/fr/pack-croissance-tco-terralba-product-11311.php" },
-  "CARE-VERMICOMPOST": { src: "/placard/equipment-sylvain-v1/care-vermicompost.webp", alt: "Lombricompost illustré dans le style de Kanab Quest", referenceLabel: "Worm·Humus BioBizz · Alchimia", referenceUrl: "https://www.alchimiaweb.com/fr/biobizz-worm-humus-40-l-product-18550.php" },
-  "CARE-ORGANIC-FEED": { src: "/placard/equipment-sylvain-v1/nutrition-2.webp", alt: "Fournitures de nutrition illustrées dans le style de Kanab Quest", referenceLabel: "Bio·Grow / Bio·Bloom · Alchimia", referenceUrl: "https://www.alchimiaweb.com/fr/bio-bizz-bio-grow-1-l-product-241.php" },
-  "CARE-SEAWEED": { src: "/placard/equipment-sylvain-v1/care-seaweed.webp", alt: "Soutien aux algues illustré dans le style de Kanab Quest", referenceLabel: "Alg·A·Mic BioBizz · Alchimia", referenceUrl: "https://www.alchimiaweb.com/fr/bio-bizz-algamic-1-l-product-243.php" },
-  "CARE-APHIDIUS": { src: "/placard/equipment-sylvain-v1/care-aphidius.webp", alt: "Auxiliaires Aphidius illustrés dans le style de Kanab Quest", referenceLabel: "Aphipar · Saltón Verde", referenceUrl: "https://saltonverde.com/fr/produit/aphipar-aphidius-colemani-koppert/" },
-  "CARE-PHYTOSEIULUS": { src: "/placard/equipment-sylvain-v1/care-phytoseiulus.webp", alt: "Auxiliaires Phytoseiulus illustrés dans le style de Kanab Quest", referenceLabel: "Spidex Vital · Koppert Retail", referenceUrl: "https://retail.koppert.ca/fr/products/spidex-vital" },
-  "CARE-SWIRSKII": { src: "/placard/equipment-sylvain-v1/care-swirskii.webp", alt: "Auxiliaires Swirskii illustrés dans le style de Kanab Quest", referenceLabel: "Swirski-Mite Plus · Koppert Retail", referenceUrl: "https://retail.koppert.ca/collections/amblyseius-swirskii/products/swirskimite-plus" },
-  "CARE-ORIUS": { src: "/placard/equipment-sylvain-v1/care-orius.webp", alt: "Auxiliaires Orius illustrés dans le style de Kanab Quest", referenceLabel: "Thripor-L · Saltón Verde", referenceUrl: "https://www.saltonverde.com/fr/produit/thripor-l-orius-laevigatus-koppert/" },
-  "CARE-CHRYSOPERLA": { src: "/placard/equipment-sylvain-v1/care-chrysoperla.webp", alt: "Chrysopes illustrées dans le style de Kanab Quest", referenceLabel: "Chrysopa · Koppert Retail", referenceUrl: "https://retail.koppert.ca/products/chrysopa" },
-  "CARE-COCCINELLA": { src: "/placard/equipment-sylvain-v1/care-coccinella.webp", alt: "Coccinelles illustrées dans le style de Kanab Quest", referenceLabel: "Coccinelles à sept points · Plantura", referenceUrl: "https://shop.plantura.garden/products/marienkaefer" },
+const productArtwork: Record<string, { src: string; alt: string }> = {
+  "CARE-COMPOST-TEA": { src: "/placard/equipment-sylvain-v1/care-compost-tea.webp", alt: "Fournitures pour thé de compost illustrées dans le style de Kanab Quest" },
+  "CARE-VERMICOMPOST": { src: "/placard/equipment-sylvain-v1/care-vermicompost.webp", alt: "Lombricompost illustré dans le style de Kanab Quest" },
+  "CARE-ORGANIC-FEED": { src: "/placard/equipment-sylvain-v1/nutrition-2.webp", alt: "Fournitures de nutrition illustrées dans le style de Kanab Quest" },
+  "CARE-SEAWEED": { src: "/placard/equipment-sylvain-v1/care-seaweed.webp", alt: "Soutien aux algues illustré dans le style de Kanab Quest" },
+  "CARE-APHIDIUS": { src: "/placard/equipment-sylvain-v1/care-aphidius.webp", alt: "Auxiliaires Aphidius illustrés dans le style de Kanab Quest" },
+  "CARE-PHYTOSEIULUS": { src: "/placard/equipment-sylvain-v1/care-phytoseiulus.webp", alt: "Auxiliaires Phytoseiulus illustrés dans le style de Kanab Quest" },
+  "CARE-SWIRSKII": { src: "/placard/equipment-sylvain-v1/care-swirskii.webp", alt: "Auxiliaires Swirskii illustrés dans le style de Kanab Quest" },
+  "CARE-ORIUS": { src: "/placard/equipment-sylvain-v1/care-orius.webp", alt: "Auxiliaires Orius illustrés dans le style de Kanab Quest" },
+  "CARE-CHRYSOPERLA": { src: "/placard/equipment-sylvain-v1/care-chrysoperla.webp", alt: "Chrysopes illustrées dans le style de Kanab Quest" },
+  "CARE-COCCINELLA": { src: "/placard/equipment-sylvain-v1/care-coccinella.webp", alt: "Coccinelles illustrées dans le style de Kanab Quest" },
+  "WAREHOUSE-NUTRITION-BASE": { src: "/placard/equipment-sylvain-v1/nutrition-1.webp", alt: "Illustration de matériel de nutrition de base" },
+  "WAREHOUSE-NUTRITION-SUPPLEMENT": { src: "/placard/equipment-sylvain-v1/nutrition-3.webp", alt: "Illustration de flacons de compléments nutritifs" },
+  "WAREHOUSE-PBI": { src: "/app/kanab-quest/cards/botte-025-plaque-engluee-suivi-v2.webp", alt: "Illustration d’une plaque de suivi des insectes" },
+  "WAREHOUSE-MAINTENANCE": { src: "/placard/inputs-v1/black-soap.webp", alt: "Illustration d’un bidon de savon noir pour les sols" },
+  "CARE-IRON": { src: "/placard/inputs-v1/iron.webp", alt: "Illustration d’un flacon de complément au fer" },
+  "CARE-PERLITE": { src: "/placard/inputs-v1/perlite.webp", alt: "Illustration d’un sac de perlite et de ses grains blancs" },
+  "CARE-SHADE": { src: "/placard/inputs-v1/shade.webp", alt: "Illustration d’un filet horticole d’ombrage plié" },
+  "CARE-BLUE-TRAPS": { src: "/placard/inputs-v1/blue-traps.webp", alt: "Illustration de plaques bleues de suivi des thrips" },
 };
 
 export const KQ_CARE_HEALTH_ARTWORK = {
@@ -18,5 +28,8 @@ export const KQ_CARE_HEALTH_ARTWORK = {
 };
 
 export function getKqCareProductArtwork(code: string) {
-  return productArtwork[code];
+  const art = Object.hasOwn(productArtwork, code) ? productArtwork[code] : undefined;
+  const pack = getKqWarehouseInputPack(code);
+  if (!art || !pack) return undefined;
+  return { ...art, referenceLabel: pack.name, referenceUrl: pack.url };
 }

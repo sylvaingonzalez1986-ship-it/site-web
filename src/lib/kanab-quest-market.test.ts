@@ -446,7 +446,7 @@ describe("Kanab Quest post-harvest market", () => {
       quote: drySift,
       ownedCodes: ["TENT-080-STARTER"],
       equippedCodes: ["TENT-080-STARTER"],
-      cashCents: 500_000,
+      cashCents: 504_000,
     })).toMatchObject({ code: "SIFT-TRAY", kind: "buy", affordable: true });
   });
 

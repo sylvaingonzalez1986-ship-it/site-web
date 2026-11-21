@@ -88,7 +88,7 @@ export function KqWarehouseCosts({ summary, quote, dirty, migrationCreditCents }
                   label: "Pose",
                   value: quote.installationCostCents,
                   displayValue: formatKqCash(quote.installationCostCents),
-                  note: `${KQ_WAREHOUSE_SIMULATION.installationPercent} % du matériel acheté`,
+                  note: `${KQ_WAREHOUSE_SIMULATION.installationPercent} % du matériel à installer`,
                   tone: "amber",
                 },
               ]}
@@ -104,7 +104,7 @@ export function KqWarehouseCosts({ summary, quote, dirty, migrationCreditCents }
             {dirty && <p className={styles.note}>Le devis sera disponible dès que le plan sera valide.</p>}
             <dl className={styles.rates}>
               <div><dt>Aménagement</dt><dd>{formatKqCash(KQ_WAREHOUSE_SIMULATION.preparationCentsPerM2)}<small>/m² ajouté</small></dd></div>
-              <div><dt>Pose</dt><dd>{KQ_WAREHOUSE_SIMULATION.installationPercent} %<small>du matériel acheté</small></dd></div>
+              <div><dt>Pose</dt><dd>{KQ_WAREHOUSE_SIMULATION.installationPercent} %<small>du matériel à installer</small></dd></div>
             </dl>
             {availableCredit > 0 && (
               <div className={styles.credit}>

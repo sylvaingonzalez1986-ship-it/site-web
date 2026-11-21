@@ -1,5 +1,7 @@
 import { KQ_WAREHOUSE_CATALOG } from "./kanab-quest-warehouse-catalog";
 import { getKqWarehouseOption } from "./kanab-quest-warehouse-options";
+import { withKqWarehouseAirService } from "./kanab-quest-warehouse-air";
+import { withKqWarehouseStationService } from "./kanab-quest-warehouse-stations";
 import { getKqWarehouseZoneQuote, type KqWarehouseState } from "./kanab-quest-warehouse";
 
 export type KqWarehouseAsset = {
@@ -62,7 +64,9 @@ function inventory(state: KqWarehouseState) {
 function demands(state: KqWarehouseState) {
   return state.zones.flatMap(zone => {
     const quote = getKqWarehouseZoneQuote(zone);
-    return [...quote.devices.map(item => ({ code: item.code, quantity: item.quantity, kind: "device" as const })),
+    // Explicit fans belong to the warehouse pool and survive a zone resale.
+    const localDevices = state.airPlacements ? quote.devices.filter(line => line.device.kind !== "air") : quote.devices;
+    return [...localDevices.map(item => ({ code: item.code, quantity: item.quantity, kind: "device" as const })),
       ...quote.options.map(item => ({ code: item.code, quantity: item.quantity, kind: "option" as const }))]
       .map(item => ({ ...item, zoneId: zone.id }));
   });
@@ -130,7 +134,7 @@ export function reconcileKqWarehouseCondition(previous: KqWarehouseState, next: 
     const quantity = item.quantity - (before.get(equipmentKey(item)) ?? 0);
     if (quantity < 0) throw new Error("Une revente doit être confirmée séparément.");
     if (quantity) {
-      const price = item.kind === "device" ? device(item.code)!.priceCents : getKqWarehouseOption(item.code)!.equipmentCentsPerM2;
+      const price = item.kind === "device" ? device(item.code)!.priceCents : getKqWarehouseOption(item.code)!.unitPriceCents;
       nextAssets.push({ ...item, id: newId(), quantity, purchaseUnitCents: fundedUnitPrice(price), wearPercent: 0, zoneId: null, sourceAssetKey: `warehouse:${purchase.requestKey}` });
     }
   }
@@ -161,5 +165,5 @@ export function removeKqWarehouseZone(state: KqWarehouseState, condition: KqWare
   const next: KqWarehouseState = { ...state, zones: state.zones.filter(zone => zone.id !== zoneId), equipment: reduce("device", state.equipment),
     ...(state.optionInventory === undefined ? {} : { optionInventory: reduce("option", state.optionInventory) }) };
   assertKqWarehouseCondition(next, remaining);
-  return { state: next, condition: remaining, sold };
+  return { state: withKqWarehouseStationService(withKqWarehouseAirService(next)), condition: remaining, sold };
 }

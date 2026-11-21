@@ -61,6 +61,7 @@ export function WarehouseBuildMenu({ open, cell, selected, warehouse, onClose, o
         {warehouse.lockReason(selected.id) && <p>{warehouse.lockReason(selected.id)}</p>}
       </>}
     </div>}
+    {!dirty && <OpenActivity onOpen={() => onNavigate("/arene/placard?view=workshop&catalog=equipment&equipment=SIM-AIR-01")}>Choisir un ventilateur sur le plan</OpenActivity>}
     {dirty && <>
       {partition ? <>
         <p>La paroi passe au milieu des cases. Laisse une ouverture d’au moins un mètre pour entrer dans chaque pièce.</p>

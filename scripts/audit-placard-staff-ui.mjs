@@ -31,7 +31,8 @@ const contractLifecycleOnly = process.argv.includes('--contract-lifecycle-only')
 const employeeSheetOnly = process.argv.includes('--employee-sheet-only') || contractLifecycleOnly;
 const weeklyPlanOnly = process.argv.includes('--weekly-plan-only');
 const cultureWorkOnly = process.argv.includes('--culture-work-only');
-const processingWorkOnly = process.argv.includes('--processing-work-only');
+const processingQuotesOnly = process.argv.includes('--processing-quotes-only');
+const processingWorkOnly = processingQuotesOnly || process.argv.includes('--processing-work-only');
 const sharedTrimEdgeOnly = process.argv.includes('--shared-trim-edge-only');
 const sharedTrimOnly = process.argv.includes('--shared-trim-only') || sharedTrimEdgeOnly || trimMotionAlias;
 const reportName = reauthOnly ? 'reauth-report.json' : recoveryOnly ? 'recovery-report.json' : carouselOnly ? 'carousel-report.json' : productionOnly ? 'production-report.json' : impactDashboardOnly ? 'impact-dashboard-report.json' : benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
@@ -40,7 +41,8 @@ import React,{useState} from 'react';import {createRoot} from 'react-dom/client'
 import {KqStaffDesk} from '/src/components/placard/KqStaffDesk';
 import {KqStaffRecoveryProvider} from '/src/components/placard/KqStaffRecoveryContext';
 ${reauthOnly ? "import {AccountLoginForm} from '/src/components/account/AccountLoginForm';" : ''}
-import {KqPlayerWorkStatus} from '/src/components/placard/KqPlayerWorkStatus';
+import {KqQuarterWorkHelp} from '/src/components/placard/KqPlayerWorkStatus';
+import {useKqPlayerWorkAvailability} from '/src/components/placard/KqPlayerActionTime';
 import {KqCultureWorkStatus,useKqCultureWorkQuote} from '/src/components/placard/KqCultureWorkStatus';
 import {getKqPlayerWorkErrorMessage} from '/src/lib/kanab-quest-player-work-errors';
 import {KqWorkshopTrimDesk} from '/src/components/placard/KqWorkshopTrimDesk';
@@ -270,7 +272,8 @@ Object.assign(window.__staff,{condition:condition=>{if(condition==='weekend')raw
 Object.assign(window.__staff,{personalCondition:condition=>{if(condition==='late')raw.serverNow=new Date(Date.parse(now)+3*60*60*1000).toISOString();if(condition==='weekend-unpaid'){raw.serverNow=new Date(Date.parse(now)+5*KQ_GAME_DAY_MS).toISOString();raw.state.payroll.push({id:'personal-unpaid',employeeId:'former-employee',dueAt:now,grossCents:10000,employerCents:3500,indemnityCents:0,totalCents:13500,paidCents:0})}}});
 Object.assign(window.__staff,{personalDay:()=>{raw.serverNow=projectKqStaffSnapshot(raw).calendar.nextDayAt;api.notify('kq:staff-updated')},personalSocialHours:hours=>{const day=String(projectKqStaffSnapshot(raw).calendar.day);raw.state.playerWorkDays[day]={usedHours:(raw.state.playerWorkDays[day]?.usedHours??0)+hours};api.notify('kq:social-updated')},personalAvailability:value=>{unavailable=!value;api.notify('kq:staff-updated')}});
 Object.assign(window.__staff,{personalSkills:xp=>{raw.state.playerSkills={culture:xp,processing:xp,communication:xp,sales:xp,administration:xp};raw.state.playerProcessingXp=xp;api.notify('kq:staff-updated')}});
-function Fixture(){const[view,setView]=useState('staff'),[busy,setBusy]=useState(false),[disabled,setDisabled]=useState(false),[trimEmployee,setTrimEmployee]=useState(undefined);return <KqTutorialApiProvider api={api}><nav aria-label="Navigation de recette"><button disabled={busy} onClick={()=>setView('staff')}>Personnel</button><button disabled={busy} onClick={()=>setView('workshop')}>Atelier</button><button disabled={busy} onClick={()=>setDisabled(value=>!value)}>{disabled?'Déverrouiller le parent':'Verrouiller le parent'}</button></nav>{${playerWorkOnly || helpOnly}?<div style={{maxWidth:1180,margin:'auto',padding:16}}><KqPlayerWorkStatus view={view} onOpenPersonal={()=>setView('staff')}/></div>:null}{view==='staff'?<KqStaffDesk onOpenTrim={employeeId=>{setTrimEmployee(employeeId);setView('workshop')}}/>:<main style={{padding:'24px 16px',maxWidth:1180,margin:'auto'}}><KqWorkshopTrimDesk initialFlowerId={${workPlanOnly}&&trimEmployee?undefined:'trim-manual'} initialEmployeeId={trimEmployee} disabled={disabled} onBusyChange={setBusy} onOpenHarvests={flowerId=>openedHarvests.push(flowerId)}/></main>}</KqTutorialApiProvider>}
+function WorkdayHelp({view}){const availability=useKqPlayerWorkAvailability(view);return <div style={{maxWidth:1180,margin:'auto',padding:16}}><KqQuarterWorkHelp availability={availability}/></div>}
+function Fixture(){const[view,setView]=useState('staff'),[busy,setBusy]=useState(false),[disabled,setDisabled]=useState(false),[trimEmployee,setTrimEmployee]=useState(undefined);return <KqTutorialApiProvider api={api}><nav aria-label="Navigation de recette"><button disabled={busy} onClick={()=>setView('staff')}>Personnel</button><button disabled={busy} onClick={()=>setView('workshop')}>Atelier</button><button disabled={busy} onClick={()=>setDisabled(value=>!value)}>{disabled?'Déverrouiller le parent':'Verrouiller le parent'}</button></nav>{${playerWorkOnly || helpOnly}?<WorkdayHelp view={view}/>:null}{view==='staff'?<KqStaffDesk onOpenTrim={employeeId=>{setTrimEmployee(employeeId);setView('workshop')}}/>:<main style={{padding:'24px 16px',maxWidth:1180,margin:'auto'}}><KqWorkshopTrimDesk initialFlowerId={${workPlanOnly}&&trimEmployee?undefined:'trim-manual'} initialEmployeeId={trimEmployee} disabled={disabled} onBusyChange={setBusy} onOpenHarvests={flowerId=>openedHarvests.push(flowerId)}/></main>}</KqTutorialApiProvider>}
 function RecoveryFixture(){
  const params=new URLSearchParams(location.search);
  const[owner,setOwner]=useState(recoveryOwner),[view,setView]=useState(${reauthOnly}?params.get('view')??'staff':'staff'),[epoch,setEpoch]=useState(0),[mounted,setMounted]=useState(true);
@@ -319,14 +322,33 @@ const errors = [], forbiddenRequests = [], results = [];
 let browser, page;
 try {
   await server.listen();
-  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
+  const trimSoftwareGl = sharedTrimOnly ? ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : [];
+  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu', ...trimSoftwareGl] });
   page = await browser.newPage(); page.setDefaultTimeout(30000); page.setDefaultNavigationTimeout(120000);
   page.on('pageerror', error => errors.push(error.message));
   await page.setRequestInterception(true); page.on('request', request => { const url = new URL(request.url()); if (['data:', 'blob:'].includes(url.protocol)) return void request.continue(); if (url.origin !== origin || url.pathname.startsWith('/api/')) { forbiddenRequests.push(request.url()); return void request.abort(); } void request.continue(); });
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   async function button(label, scope = 'body') { const handle = await page.waitForFunction((label, scope) => [...document.querySelectorAll(scope + ' button')].find(node => node.textContent.trim() === label && !node.disabled && node.getClientRects().length), {}, label, scope); await handle.asElement().focus(); await page.keyboard.press('Enter'); await handle.dispose(); }
   async function select(label, value) { if (label === 'Ville à prospecter') { const activeScope = await page.$('[data-staff-work-form]') ? '[data-staff-work-form]' : '[data-player-work-desk]'; await disclosure(activeScope + ' [data-prospecting-city-list]', true); const selector = `${activeScope} [data-prospecting-city="${value}"]`; await page.waitForSelector(selector, { visible: true }); await page.focus(selector); await page.keyboard.press('Enter'); return; } const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label && node.checkVisibility())?.querySelector('select'), {}, label); await handle.asElement().select(value); await handle.dispose(); }
-  async function input(label, value) { const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label && node.checkVisibility())?.querySelector('input'), {}, label); await handle.asElement().focus(); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type(String(value)); await handle.dispose(); }
+  const durationDialog = 'dialog[data-activity-duration-dialog][open]';
+  const durationRange = `${durationDialog} input[type="range"]`;
+  async function chooseDuration(value) {
+    const { min, max } = await page.$eval(durationRange, node => ({ min: Number(node.min), max: Number(node.max) }));
+    assert(Number(value) >= min && Number(value) <= max);
+    await page.focus(durationRange); await page.keyboard.press('Home');
+    for (let index = 0; index < (Number(value) - min) * 2; index++) await page.keyboard.press('ArrowRight');
+    assert.equal(await page.$eval(durationRange, node => node.valueAsNumber), Number(value));
+    await button('Appliquer la durée', durationDialog);
+    await page.waitForSelector(durationDialog, { hidden: true });
+  }
+  async function input(label, value) {
+    const durationTrigger = '[data-trim-shared-form] [data-activity-duration]';
+    if (label === 'Heures de trim' && await page.$(durationTrigger)) {
+      await keyActivate(durationTrigger); await page.waitForSelector(durationRange); await chooseDuration(value); return;
+    }
+    const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label && node.checkVisibility())?.querySelector('input'), {}, label);
+    await handle.asElement().focus(); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type(String(value)); await handle.dispose();
+  }
   async function summary(prefix) { const handle = await page.waitForFunction(prefix => [...document.querySelectorAll('summary')].find(node => node.textContent.trim().startsWith(prefix) && node.checkVisibility()), {}, prefix); await handle.asElement().focus(); await page.keyboard.press('Enter'); await handle.dispose(); }
   const raw = () => page.evaluate(() => window.__staff.raw());
   const calls = () => page.evaluate(() => window.__staff.calls);
@@ -346,8 +368,9 @@ try {
     if (expectedStation) await page.waitForFunction(kind => document.activeElement?.getAttribute('data-staff-station') === kind, {}, expectedStation);
   }
   async function personalActivity(kind) {
-    await closeAssignment();
     await page.waitForSelector('[data-guide-staff-ready="true"]');
+    if (!await page.$('[data-staff-tab="team"][aria-selected="true"]')) await keyActivate('[data-staff-tab="team"]');
+    await closeAssignment();
     if (await page.$eval('[data-staff-work-employee="player"]', node => node.getAttribute('aria-pressed') !== 'true')) await keyActivate('[data-staff-work-employee="player"]');
     await keyActivate(`[data-staff-station="${kind === 'countryside' ? 'sales' : kind}"]`);
     if (kind !== 'trim') await page.waitForSelector('[data-player-work-form]', { visible: true });
@@ -1093,7 +1116,7 @@ try {
       assert.deepEqual((await raw()).state, before.state);
       await closeAssignment();
       await personalActivity('administration');
-      assert.equal(await page.$eval('[data-player-work-form] input', node => node.value), '0.5');
+      assert.match(await page.$eval('[data-player-work-form] [data-activity-duration]', node => node.textContent), /0,5 h/);
       await button('Vérifier mon travail', '[data-player-work-form]'); await page.waitForSelector('dialog[open]');
       assert.match(await page.$eval('dialog', node => node.textContent), /Prévision.*7 jours du jeu/s); await cancel(); await closeAssignment();
       await keyActivate('[data-staff-work-plan] [data-staff-open-employee="work-plan-anna"]'); await keyActivate('dialog[data-staff-employee-sheet] [data-staff-open-weekly]');
@@ -1360,9 +1383,12 @@ try {
       await page.waitForSelector('[data-processing-work-summary][data-work-source="employee"]');
       const preview = await page.$eval('[data-processing-work-summary]', node => node.textContent);
       assert(preview.includes('Anna') && preview.includes('Tes heures consommées0 h') && preview.includes('2 h de jeu') && preview.includes('24 h de jeu') && preview.includes('240 min réelles'));
-      await disclosure('[data-processing-sources]', true);
-      assert.equal(await page.$$eval('[data-processing-sources] a', nodes => nodes.filter(node => node.href.startsWith('https://')).length), 2);
-      await layout(); await disclosure('[data-processing-sources]', false);
+      await disclosure('[data-processing-rates]', true);
+      const rates = await page.$eval('[data-processing-rates]', node => node.textContent);
+      assert(rates.includes('Cadences de jeu') && rates.includes('10 min réelles'));
+      assert.doesNotMatch(rates, /fabricant/i);
+      assert.equal(await page.$('[data-processing-rates] a[href]'), null);
+      await layout(); await disclosure('[data-processing-rates]', false);
       await page.$eval('[data-processing-work-summary]', node => node.scrollIntoView({ block: 'start' })); await shot('processing-preview-' + width);
       await keyActivate('[data-prepare-lot]'); await page.waitForSelector('dialog[open]');
       assert.equal(await page.$eval('dialog [data-processing-work-summary]', node => node.textContent), preview);
@@ -1373,7 +1399,7 @@ try {
       assert(!(await page.$eval('body', node => node.innerText)).includes('9999'));
       await page.evaluate(() => { window.__processing.available(false); window.__processing.mode('blocked'); });
       await page.waitForSelector('[data-processing-status="blocked"]');
-      assert((await page.$eval('[data-commerce-workshop-scene]', node => node.textContent)).includes('Aucun relais joueur'));
+      assert.match(await page.$eval('[data-commerce-workshop-scene]', node => node.textContent), /Transformation en attente d’heures/);
       await keyActivate('[data-resume-processing]'); await page.waitForSelector('dialog [data-work-source="blocked"]');
       assert(await page.$eval('dialog footer button:last-child', node => node.disabled));
       await page.evaluate(() => window.__processing.available(true)); await button('Actualiser les heures', 'dialog');
@@ -1390,7 +1416,8 @@ try {
       await page.goto(origin + '?processing=1', { waitUntil: 'networkidle0' }); await page.select('[data-commerce-preparation] select', 'dry-sift');
       await page.evaluate(() => window.__processing.mode('missing-quote')); await page.waitForSelector('[data-work-source="unavailable"]');
       assert(await page.$eval('[data-prepare-lot]', node => node.disabled));
-      results.push({ width, scope: 'processing quote and continuation', checks: ['same server work summary before confirmation', 'official source links', 'employee hours and zero player hours', 'game and real time units', 'cancel without mutation', 'expected work token', 'blocked continuation', 'refresh employee hours', 'same request key retry', 'passive and completed statuses', 'no sentinel date', 'missing quote blocks confirmation', 'no overflow'] });
+      results.push({ width, scope: 'processing quote and continuation', checks: ['same server work summary before confirmation', 'game rates without supplier links', 'employee hours and zero player hours', 'game and real time units', 'cancel without mutation', 'expected work token', 'blocked continuation', 'refresh employee hours', 'same request key retry', 'passive and completed statuses', 'no sentinel date', 'missing quote blocks confirmation', 'no overflow'] });
+      if (processingQuotesOnly) continue;
 
       await page.goto(origin, { waitUntil: 'networkidle0' }); await page.waitForSelector('[data-guide-staff-ready="true"]');
       await keyActivate('[data-staff-work-employee="work-plan-anna"]'); await keyActivate('[data-staff-station="processing"]');
@@ -1617,8 +1644,15 @@ try {
     // LAN HTTP browsers expose getRandomValues but not randomUUID.
     await page.evaluateOnNewDocument(() => {
       if (innerWidth === 320) Object.defineProperty(crypto, 'randomUUID', { value: undefined, configurable: true });
+      const getContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (kind, options) {
+        if (!this.hasAttribute('data-trim-canvas') || kind !== 'webgl2') return getContext.call(this, kind, options);
+        if (new URLSearchParams(location.search).has('no-webgl')) return null;
+        return getContext.call(this, kind, { ...options, preserveDrawingBuffer: true });
+      };
     });
     const scene = '[data-trim-scene]', worker = '[data-trim-worker]';
+    const canvas = '[data-trim-renderer="ready"] [data-trim-canvas]';
     const selectWorker = async id => {
       const selector = worker + ' input[data-work-actor-choice="' + id + '"]';
       await page.$eval(selector, node => node.closest('label').scrollIntoView({ block: 'nearest', inline: 'nearest' }));
@@ -1631,8 +1665,24 @@ try {
       await selectWorker(employeeId); await input('Heures de trim', hours); await button(mode === 'manual' ? 'Manuel' : 'Machine');
       await button('Vérifier le trim'); await button('Confirmer le trim', 'dialog');
     };
-    const painted = () => page.$$eval('[data-trim-moving-part]', nodes => nodes.map(node => { const style = getComputedStyle(node); return { part: node.dataset.trimMovingPart, transform: style.transform, animation: style.animationName, playState: style.animationPlayState }; }));
-    const frozen = async label => { await painted(); await wait(200); const before = await painted(); assert(before.every(item => item.playState === 'paused' || item.animation === 'none'), label + ' pauses every tool'); await wait(250); assert.deepEqual(await painted(), before, label + ' preserves the painted tools'); };
+    const painted = (box = null) => page.$eval(canvas, (node, box) => {
+      if (!box) return node.toDataURL();
+      const [x, y, w, h] = box.map((value, i) => Math.round(value * (i % 2 ? node.height : node.width)));
+      const crop = document.createElement('canvas');
+      crop.width = w; crop.height = h;
+      crop.getContext('2d').drawImage(node, x, y, w, h, 0, 0, w, h);
+      return crop.toDataURL();
+    }, box);
+    const frozen = async label => {
+      await wait(200);
+      const before = await painted();
+      assert(before.length > 2000, label + ' leaves the room rendered');
+      await wait(250);
+      assert.equal(await painted(), before, label + ' preserves the painted tools');
+    };
+    const showScene = () => page.$eval(scene, node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
+    // Crop the rotor when the machine is in the center slot.
+    const rotor = [0.454, 0.475, 0.064, 0.04];
     for (const width of sharedTrimEdgeOnly ? [] : [320, 390, 1440]) {
       await page.setViewport({ width, height: width < 500 ? 844 : 1000, hasTouch: width < 500 });
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
@@ -1677,17 +1727,20 @@ try {
         results.push({ width, scope: 'trim without native randomUUID', checks: ['confirmation opens', 'valid UUID v4 request keys', 'distinct operations', 'same-key retry'], mutations: trimKeys.length });
       }
       assert(await page.$(worker), 'The allocation form remains available while colleagues work');
-      await page.waitForFunction(() => document.querySelectorAll('[data-trim-scene] canvas[data-avatar-state="ready"]').length >= 3);
-      const avatars = await page.$$eval('[data-trim-scene] canvas[data-avatar-state="ready"]', nodes => nodes.map(node => node.toDataURL()));
-      assert(new Set(avatars).size >= 3, 'The actual player, Anna and Maël keep distinct avatars');
-      await page.$eval(scene, node => node.scrollIntoView({ block: 'start', behavior: 'instant' })); await shot(`shared-trim-team-${width}`);
+      await page.waitForSelector(canvas, { visible: true });
+      assert.equal(await page.$$eval(scene + ' canvas', nodes => nodes.length), 1, 'The three avatars and their workbench share one 3D scene');
+      assert.equal(await page.$$eval('[data-trim-worker-row][data-trim-worker-state="working"]', nodes => nodes.length), 3);
+      await showScene(); await shot(`shared-trim-team-${width}`);
       await frozen('Reduced motion');
       if (width === 390) {
         await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]);
         await page.$eval(scene, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
         await page.waitForFunction(() => document.querySelector('[data-trim-scene]')?.dataset.motionState === 'running');
-        const fixedArt = () => page.$$eval('[data-trim-static-art]', nodes => nodes.map(node => { const style = getComputedStyle(node); return { part: node.dataset.trimStaticArt, transform: style.transform, animation: style.animationName }; }));
-        const fixedBefore = await fixedArt(), beforeMotion = await painted(); await wait(400); assert.notDeepEqual(await painted(), beforeMotion, 'Confirmed concurrent workers move their tools'); assert.deepEqual(await fixedArt(), fixedBefore, 'The illustrated bench never moves with the articulated tools');
+        const fixedArt = () => painted([.45, .85, .23, .08]);
+        const fixedBefore = await fixedArt(), beforeMotion = await painted();
+        await wait(400);
+        assert.notEqual(await painted(), beforeMotion, 'Confirmed concurrent workers move in the 3D room');
+        assert.equal(await fixedArt(), fixedBefore, 'The furniture remains fixed as the workers move');
         await keyActivate('[data-trim-motion-toggle]'); await frozen('User pause');
         await button('Actualiser'); await frozen('Pause survives the server refresh');
         await keyActivate('[data-trim-motion-toggle]');
@@ -1698,12 +1751,20 @@ try {
         try { await other.bringToFront(); realHidden = await page.evaluate(() => document.hidden); if (!realHidden) await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); }); await page.waitForFunction(() => document.querySelector('[data-trim-scene]')?.dataset.motionState === 'hidden'); await frozen('Hidden tab'); }
         finally { if (!realHidden) await page.evaluate(() => { delete document.hidden; document.dispatchEvent(new Event('visibilitychange')); }); await other.close(); await page.bringToFront(); }
         await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]); await frozen('Live reduced-motion preference');
-        const playerCanvas = '[data-trim-worker-id="player"] canvas', playerPortrait = await page.$eval(playerCanvas, node => node.toDataURL());
-        for (const status of ['null', 'error']) { await page.evaluate(status => window.__sharedTrim.profile(status), status); await page.waitForSelector(playerCanvas, { hidden: true }); assert.equal(await page.$$eval('[data-trim-character="employee"] canvas[data-avatar-state="ready"]', nodes => nodes.length), 2, 'Employee portraits survive unavailable player identity'); assert(await page.$('[data-trim-worker-row="player"]'), 'The assigned player remains named when their portrait is unavailable'); }
-        await page.evaluate(() => window.__sharedTrim.profile('ready')); await page.waitForSelector(playerCanvas + '[data-avatar-state="ready"]'); assert.equal(await page.$eval(playerCanvas, node => node.toDataURL()), playerPortrait, 'Profile recovery restores the same customized player');
+        const teamPortrait = await painted();
+        await page.evaluate(() => window.__sharedTrim.profile('null'));
+        await page.waitForFunction((canvas, before) => document.querySelector(canvas)?.toDataURL() !== before, { polling: 120 }, canvas, teamPortrait);
+        const teamWithoutPlayer = await painted();
+        await page.evaluate(() => window.__sharedTrim.profile('error')); await frozen('Unavailable player identity');
+        assert.equal(await painted(), teamWithoutPlayer);
+        assert(await page.$('[data-trim-worker-row="player"]'), 'The assigned player remains named when their avatar is unavailable');
+        await page.evaluate(() => window.__sharedTrim.profile('ready'));
+        await page.waitForFunction((canvas, before) => document.querySelector(canvas)?.toDataURL() === before, { polling: 120 }, canvas, teamPortrait);
         assert.deepEqual(await raw(), scheduled, 'Animation never changes credited grams, money or planning');
       }
-      await selectWorker('player'); await input('Heures de trim', '12'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Player cannot exceed eleven remaining hours');
+      await selectWorker('player'); await keyActivate('[data-trim-shared-form] [data-activity-duration]');
+      await page.waitForSelector(durationRange); assert.equal(await page.$eval(durationRange, node => Number(node.max)), 11, 'Player cannot exceed eleven remaining hours');
+      await page.keyboard.press('Escape'); await page.waitForSelector(durationDialog, { hidden: true });
       await selectWorker('work-plan-anna'); await input('Heures de trim', '7'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Employee cannot exceed six remaining hours');
       await input('Heures de trim', '0.5');
       await page.evaluate(() => window.__sharedTrim.advance(5)); await button('Actualiser');
@@ -1722,22 +1783,29 @@ try {
       await button('Retrouver cette récolte →'); assert.deepEqual(await page.evaluate(() => window.__staff.openedHarvests), ['trim-manual']);
       await button('Personnel', '[aria-label="Navigation de recette"]'); await page.waitForSelector('[data-guide-staff-ready="true"]');
       assert.equal((await raw()).state.employees.find(employee => employee.id === 'work-plan-anna').workDays['1'].usedHours, 1, 'The same employee planning is retained in Personnel');
-      results.push({ width, scope: 'shared trim stock', checks: ['no lot chooser or flowerId command', 'review and parent lock', 'rejected and lost-response same-key retry', 'player plus two concurrent employees', '60 and 150 grams/hour; machine times four', 'ten real minutes/game hour', 'actual distinct avatars', 'form remains available', 'player and employee capacity', 'oldest harvest first', 'confirmed grams separate from estimates', 'read failure preserves progress', 'motion pause and reduced motion', 'harvest callback', 'no horizontal overflow'], tasks: 3, confirmedGrams: 195, mutations: (await calls()).length });
+      results.push({ width, scope: 'shared trim stock', checks: ['no lot chooser or flowerId command', 'review and parent lock', 'rejected and lost-response same-key retry', 'player plus two concurrent employees', '60 and 150 grams/hour; machine times four', 'ten real minutes/game hour', 'single isometric WebGL room with player profile recovery', 'form remains available', 'player and employee capacity', 'oldest harvest first', 'confirmed grams separate from estimates', 'read failure preserves progress', 'motion pause and reduced motion', 'harvest callback', 'no horizontal overflow'], tasks: 3, confirmedGrams: 195, mutations: (await calls()).length });
     }
     if (!sharedTrimEdgeOnly) {
-    await page.setViewport({ width: 390, height: 844, hasTouch: true }); await page.goto(origin, { waitUntil: 'networkidle0' }); await button('Atelier', '[aria-label="Navigation de recette"]'); await page.waitForSelector(worker);
+    await page.setViewport({ width: 390, height: 844, hasTouch: true }); await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]); await page.goto(origin, { waitUntil: 'networkidle0' }); await button('Atelier', '[aria-label="Navigation de recette"]'); await page.waitForSelector(worker);
     await start('player', '0.5', 'machine'); await taskCount(1); assert.equal((await raw()).state.tasks[0].trimRateGramsPerHour, 240);
+    await page.waitForSelector(canvas, { visible: true }); await showScene();
+    await page.waitForSelector(scene + '[data-tools-moving="true"]');
+    const rotorBefore = await painted(rotor); await wait(400);
+    assert.notEqual(await painted(rotor), rotorBefore, 'The 3D rotor turns during confirmed machine work');
+    await keyActivate('[data-trim-motion-toggle]'); await frozen('Paused machine'); await shot('shared-trim-machine-390');
     await page.evaluate(() => window.__sharedTrim.advance(5)); await button('Actualiser'); await page.waitForFunction(() => window.__staff.raw().state.tasks[0].status === 'completed');
     assert.deepEqual((await raw()).context.trimLots.map(lot => lot.completedGrams), [90, 30], 'A level-one machine task credits 120 grams across FIFO lots in five minutes');
     results.push({ width: 390, scope: 'machine actual throughput', checks: ['240 grams/hour at level one', 'five real minutes for half a game hour', '120 actual grams across two FIFO lots'], mutations: 1 });
-    await page.goto(origin + '?unowned', { waitUntil: 'networkidle0' }); await button('Atelier', '[aria-label="Navigation de recette"]'); await page.waitForSelector(worker);
+    await page.goto(origin + '?unowned&no-webgl', { waitUntil: 'networkidle0' }); await button('Atelier', '[aria-label="Navigation de recette"]'); await page.waitForSelector(worker);
+    await page.waitForFunction(() => document.querySelector('[data-trim-renderer="fallback"] img')?.naturalWidth > 0);
+    await showScene(); await shot('shared-trim-static-390');
     await button('Machine'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Machine requires its confirmed purchase');
     await button('Vérifier cet achat'); assert((await page.$eval('dialog', node => node.textContent)).replace(/\s/g, '').includes('1500'), 'Purchase keeps its actual price'); await page.keyboard.press('Escape');
     await page.evaluate(() => window.__sharedTrim.empty()); await button('Actualiser'); await page.waitForFunction(() => document.querySelector('[data-workshop-trim-desk] button[type="submit"]')?.disabled); assert.equal((await calls()).length, 0);
     await shot('shared-trim-empty-390');
     await page.evaluate(() => window.__sharedTrim.omit()); await button('Actualiser'); await page.waitForFunction(() => !document.querySelector('[data-trim-worker]') && document.querySelector('[data-workshop-trim-desk]')?.textContent.includes('disponible'));
     assert.equal((await calls()).length, 0);
-    results.push({ scope: 'shared trim stock prerequisites', checks: ['unowned machine blocks work', 'purchase review without payment', 'empty stock blocks reservation', 'missing stock does not invent zero progress'], mutations: 0 });
+    results.push({ scope: 'shared trim stock prerequisites', checks: ['isometric illustration without WebGL', 'unowned machine blocks work', 'purchase review without payment', 'empty stock blocks reservation', 'missing stock does not invent zero progress'], mutations: 0 });
     }
     if (sharedTrimEdgeOnly) {
       await page.setViewport({ width: 320, height: 844, hasTouch: true }); await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]);
@@ -1754,9 +1822,11 @@ try {
       assert.equal((await raw()).state.tasks.find(task => task.kind === 'trim' && task.employeeId === 'player').trimGrams, 120, 'No compatible stock means no invented machine progress');
       await page.$eval(scene, node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
       await page.waitForFunction(() => document.querySelector('[data-trim-scene]')?.dataset.motionState === 'running');
-      const machine = '[data-trim-moving-part="rotor"]';
-      const rotor = await page.$eval(machine, node => ({ transform: getComputedStyle(node).transform, playState: getComputedStyle(node).animationPlayState })); await wait(350);
-      assert.equal(rotor.playState, 'paused'); assert.deepEqual(await page.$eval(machine, node => ({ transform: getComputedStyle(node).transform, playState: getComputedStyle(node).animationPlayState })), rotor, 'The exhausted machine visibly pauses while other work continues');
+      await page.waitForSelector(canvas, { visible: true });
+      const stoppedRotor = await painted(rotor), movingRoom = await painted();
+      await wait(400);
+      assert.equal(await painted(rotor), stoppedRotor, 'The exhausted machine visibly pauses while other work continues');
+      assert.notEqual(await painted(), movingRoom, 'The manual station keeps moving');
       await shot('shared-trim-compatible-empty-320');
       await page.$eval('[data-trim-worker-row="player"]', node => node.scrollIntoView({ block: 'start', behavior: 'instant' })); await shot('shared-trim-compatible-workers-320');
       const posted = (await calls()).length;
@@ -2097,14 +2167,14 @@ try {
   }
   if (playerWorkOnly) {
     const scope = '[data-player-work-desk]';
-    const globalHours = async expected => page.waitForFunction(value => Number(document.querySelector('[data-player-work-status] [role="meter"]')?.getAttribute('aria-valuenow')) === value && !!document.querySelector('[data-player-work-status] [role="meter"]'), {}, expected);
+    const workdayHours = async expected => page.waitForFunction(value => document.querySelector('[data-player-work-status] [role="meter"]')?.getAttribute('aria-valuenow') === String(value), {}, expected);
     const ready = async () => { await page.waitForSelector('[data-guide-staff-ready="true"]'); await page.waitForSelector('[data-staff-work-plan]'); };
     const review = async () => { await button('Vérifier mon travail', scope); await page.waitForSelector('dialog[open]'); return page.$$eval('dialog dl > div', nodes => Object.fromEntries(nodes.map(node => [node.querySelector('dt')?.textContent, node.querySelector('dd')?.textContent]))); };
     const cashValue = text => Number(text.replace(/[^\d,.-]/g, '').replace(',', '.'));
     for (const width of [320, 390, 1440]) {
       await page.setViewport({ width, height: width < 500 ? 844 : 1000, hasTouch: width < 500 });
       await page.goto(origin, { waitUntil: 'networkidle0' }); await ready(); await page.evaluate(() => document.fonts.ready);
-      await globalHours(12); await page.$eval('[data-player-work-status]', node => node.scrollIntoView({ block: 'start' })); await shot(`player-global-${width}`);
+      await workdayHours(12); await page.$eval('[data-player-work-status]', node => node.scrollIntoView({ block: 'start' })); await shot(`player-global-${width}`);
       await disclosure('[data-player-work-status] details', true);
       for (const [xp, level, hourGesture, halfHourGesture] of [[0, 1, '60 min', '30 min'], [1600, 5, '36 min', '18 min'], [8100, 10, '6 min', '3 min']]) {
         await page.evaluate(value => window.__staff.personalSkills(value), xp);
@@ -2128,7 +2198,21 @@ try {
       assert.equal((await raw()).state.employees.length, 0);
       assert.equal(await page.$(scope), null, 'A personal mission opens only after choosing a station');
       await personalActivity('culture');
-      assert.equal(await page.$eval(scope + ' [role="meter"]', node => Number(node.getAttribute('aria-valuemax'))), 12);
+      const durationTrigger = `${scope} [data-activity-duration]`;
+      assert.equal(await page.$(`${scope} [role="meter"], ${durationDialog}`), null);
+      await keyActivate(durationTrigger); await page.waitForSelector(durationRange);
+      assert.equal(await page.$eval(durationRange, node => Number(node.max)), 12);
+      await page.focus(durationRange); await page.keyboard.press('ArrowRight');
+      assert.equal(await page.$eval(durationRange, node => node.valueAsNumber), 2.5);
+      await shot(`player-duration-${width}`);
+      await page.keyboard.press('Escape'); await page.waitForSelector(durationDialog, { hidden: true });
+      await page.waitForFunction(selector => document.activeElement?.matches(selector), {}, durationTrigger);
+      assert.match(await page.$eval(durationTrigger, node => node.textContent), /2 h/);
+      await keyActivate(durationTrigger); await page.waitForSelector(durationRange); await chooseDuration(1.5);
+      assert.equal((await review())['Temps réservé aujourd’hui'], '1,5 h');
+      await page.keyboard.press('Escape'); await page.waitForSelector('dialog[open]', { hidden: true });
+      assert.equal((await calls()).length, 0);
+      await keyActivate(durationTrigger); await page.waitForSelector(durationRange); await chooseDuration(2);
       await page.$eval(scope, node => node.scrollIntoView({ block: 'start' })); await shot(`player-work-${width}`);
       await select('Ta culture à accompagner', 'test-run');
       const before = await raw(), proposal = await review();
@@ -2145,40 +2229,52 @@ try {
       await personalActivity('trim'); await page.waitForSelector('[data-trim-worker]');
       assert.equal(await page.$eval('[data-trim-worker]', node => node.dataset.trimWorker), 'player');
       assert.equal(await page.$('[data-trim-assigned-employee="player"]'), null, 'Personal trim is not described as an unavailable employee');
-      assert.equal(await page.$eval('[data-trim-shared-form] input[type="number"]', node => Number(node.max)), 8, 'Workshop allows only the same eight remaining hours after four reserved hours');
-      await globalHours(8);
-      await input('Heures de trim', '2'); await button('Vérifier le trim'); await button('Confirmer le trim', 'dialog');
+      assert.equal(await page.$('[data-trim-shared-form] input[type="number"]'), null);
+      await keyActivate('[data-trim-shared-form] [data-activity-duration]'); await page.waitForSelector(durationRange);
+      assert.equal(await page.$eval(durationRange, node => Number(node.max)), 8, 'Workshop allows only the same eight remaining hours after four reserved hours');
+      await workdayHours(8);
+      await chooseDuration(2); await button('Vérifier le trim'); await button('Confirmer le trim', 'dialog');
       await page.waitForFunction(() => window.__staff.raw().state.tasks.length === 3);
       await button('Personnel', '[aria-label="Navigation de recette"]'); await ready();
       await personalActivity('sales');
-      assert.equal(await page.$eval(scope + ' [role="meter"]', node => Number(node.getAttribute('aria-valuenow'))), 6);
+      await workdayHours(6);
       await select('Ville à prospecter', 'brest');
-      await input('Tes heures à réserver', '1'); assert(await page.$eval(scope + ' button[type="submit"]', node => node.disabled), 'City prospecting requires at least two hours');
-      await input('Tes heures à réserver', '2');
+      await keyActivate(durationTrigger); await page.waitForSelector(durationRange);
+      assert.equal(await page.$eval(durationRange, node => Number(node.min)), 2, 'City prospecting requires at least two hours');
+      await chooseDuration(2);
       const cityReview = await review(); assert.equal(cityReview['Destination / objectif'], 'Brest (29)'); assert.equal(cashValue(cityReview['Frais de déplacement au départ']), 60);
       await shot(`player-city-confirm-${width}`); await button('Payer le trajet et partir', 'dialog');
       await page.waitForFunction(() => window.__staff.raw().state.tasks.length === 4); await ready();
-      await globalHours(4);
+      await workdayHours(4);
       for (const [index, kind] of ['administration', 'processing'].entries()) {
-        await personalActivity(kind); await review(); await button('Commencer mon travail', 'dialog');
+        await personalActivity(kind);
+        if (kind === 'processing') {
+          await keyActivate(durationTrigger); await page.waitForSelector(durationRange); await chooseDuration(3.5);
+        }
+        await review(); await button('Commencer mon travail', 'dialog');
         await page.waitForFunction(count => window.__staff.raw().state.tasks.length === count, {}, 5 + index); await ready();
       }
       const assigned = await raw(); assert.equal(assigned.state.playerWorkDays['1'].usedHours, 12); assert.equal(assigned.cashCents, before.cashCents - 6000);
-      await globalHours(0);
+      await workdayHours(0);
       assert.deepEqual(assigned.state.tasks.map(task => task.kind), ['culture', 'communication', 'trim', 'sales', 'administration', 'processing']);
       assert(assigned.state.tasks.every((task, index, all) => task.employeeId === 'player' && (!index || Date.parse(task.startedAt) >= Date.parse(all[index - 1].completesAt))), 'All personal tasks and trim queue without overlap');
       assert.equal(assigned.state.tasks[5].targetId, 'test-flower');
+      await personalActivity('communication'); await keyActivate(durationTrigger);
+      await page.waitForSelector(`${durationDialog} [role="status"]`);
+      assert.equal(await page.$(durationRange), null, 'An exhausted workday cannot supply a valid duration');
+      await page.keyboard.press('Escape'); await page.waitForSelector(durationDialog, { hidden: true });
       await personalActivity('countryside'); assert(await page.$eval(scope + ' button[type="submit"]', node => node.disabled));
       assert((await page.$eval(scope, node => node.textContent)).includes('12 h complètes'));
       await page.evaluate(() => window.__staff.finish()); await button('Actualiser'); await ready();
       assert((await raw()).state.tasks.every(task => task.status === 'completed'));
       assert((await raw()).state.playerSkills.culture > 0 && (await raw()).state.playerSkills.processing > 0 && (await raw()).state.playerSkills.communication > 0 && (await raw()).state.playerSkills.administration > 0 && (await raw()).state.playerSkills.sales > 0);
       await layout();
-      results.push({ width, scope: 'personal work and shared trim', checks: ['visible without employees', '12-hour meter', 'global remaining hours after personal missions and trim', 'keyboard confirmation and cancellation', 'same request on retry', 'five personal skills', 'trim workshop callback', 'shared hours in both screens', 'queued personal work', 'city minimum and exact cost', 'exhausted rural trip blocked', 'completed task XP', 'no page overflow'], mutations: (await calls()).length });
+      results.push({ width, scope: 'personal work and shared trim', checks: ['visible without employees', 'no persistent personal meter in the work form', 'duration opens on demand', 'half-hour steps and keyboard cancellation with focus restoration', 'applied duration in confirmation', 'same request on retry', 'five personal skills', 'shared hours in both screens', 'queued personal work', 'city minimum and exact cost', 'exhausted rural trip blocked', 'completed task XP', 'no page overflow'], mutations: (await calls()).length });
 
       await page.goto(origin, { waitUntil: 'networkidle0' }); await ready();
       await personalActivity('countryside'); await select('Département à sillonner', '29');
-      assert(await page.$eval(scope + ' input', node => node.readOnly && node.value === '12'));
+      assert.equal(await page.$(scope + ' [data-activity-duration]'), null);
+      assert.match(await page.$eval(scope, node => node.textContent), /Durée de la tournée 12 h/);
       assert((await page.$eval(scope, node => node.textContent)).includes('0 à 2'));
       const ruralBefore = await raw(), ruralReview = await review();
       assert.equal(ruralReview['Destination / objectif'], 'Finistère (29)'); assert.equal(ruralReview['Temps réservé aujourd’hui'], '12 h'); assert.equal(cashValue(ruralReview['Frais de déplacement au départ']), 40);
@@ -2201,17 +2297,17 @@ try {
     await review(); await button('Commencer mon travail', 'dialog'); await page.waitForFunction(() => window.__staff.raw().state.tasks.length === 1); await ready();
     assert.equal((await raw()).state.playerWorkDays['6'].usedHours, 2); assert.equal((await raw()).cashCents, 2500000);
     results.push({ width: 390, scope: 'personal availability', checks: ['end-of-day reservation blocked', 'weekend allowed', 'unpaid employee wages do not block player', 'no salary debit'], mutations: 1 });
-    await globalHours(10); await page.evaluate(() => window.__staff.personalDay()); await ready(); await globalHours(12);
-    await page.evaluate(() => window.__staff.personalSocialHours(1.5)); await globalHours(10.5);
+    await workdayHours(10); await page.evaluate(() => window.__staff.personalDay()); await ready(); await workdayHours(12);
+    await page.evaluate(() => window.__staff.personalSocialHours(1.5)); await workdayHours(10.5);
     await page.evaluate(() => window.__staff.personalAvailability(false));
     await page.waitForFunction(() => document.querySelector('[data-player-work-status]')?.textContent.includes('Temps de travail indisponible'));
     assert.equal(await page.$('[data-player-work-status] [role="meter"]'), null, 'Unavailable hours are not presented as zero or as a fresh allowance');
     assert.deepEqual(await page.$$eval('[data-player-cost-group="communication"] dd', nodes => nodes.map(node => node.textContent)), ['6 min à 60 min', '3 min à 30 min']);
     assert.deepEqual(await page.$$eval('[data-player-cost-group="processing"] dd', nodes => nodes.map(node => node.textContent)), ['6 min à 60 min', '3 min à 30 min']);
     assert.equal(await page.$('[data-player-cost-group="communication"] figure'), null, 'Unknown skill has no fabricated current-duration chart');
-    await page.evaluate(() => window.__staff.personalAvailability(true)); await button('Actualiser', '[data-player-work-status]'); await globalHours(10.5);
-    await layout(); assert.equal((await calls()).length, 1, 'Global status and its retries only read the snapshot');
-    results.push({ width: 390, scope: 'global personal status', checks: ['authoritative next-day renewal', 'social event refreshes confirmed hours', 'unknown data never presented as zero', 'read-only retry recovers same remaining hours'], mutations: 0 });
+    await page.evaluate(() => window.__staff.personalAvailability(true)); await workdayHours(10.5);
+    await layout(); assert.equal((await calls()).length, 1, 'Availability refreshes only read the snapshot');
+    results.push({ width: 390, scope: 'personal availability refresh', checks: ['authoritative next-day renewal', 'social event refreshes confirmed hours', 'unknown data never presented as zero', 'read-only refresh recovers same remaining hours'], mutations: 0 });
   }
   if (workSceneOnly) {
     const pause = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));

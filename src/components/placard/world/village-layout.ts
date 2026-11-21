@@ -3,6 +3,27 @@ import { MAP_ENTRANCES } from "../KqPlacardMap.scene";
 
 export const VILLAGE_SEA_SIZE = 160;
 export const VILLAGE_SEA_LEVEL = -.32;
+export const HEMP_FARM_ID = "hemp-farm";
+export const HEMP_FARM_HREF = "/arene/placard?support=1";
+
+export type VillagePlaceId = VillageBuildingKind | typeof HEMP_FARM_ID;
+
+/** Coordinates in the mainland shoreline's across/depth frame. */
+export const HEMP_FARM_SITE = { across: 5.15, depth: -25.45, height: 1.87 } as const;
+
+export function mainlandToGround(across: number, depth: number): [number, number] {
+  return [(depth + across) * Math.SQRT1_2, (depth - across) * Math.SQRT1_2];
+}
+
+const [hempFarmX, hempFarmZ] = mainlandToGround(HEMP_FARM_SITE.across, HEMP_FARM_SITE.depth);
+export const HEMP_FARM = {
+  id: HEMP_FARM_ID,
+  name: "Ferme chanvrière",
+  href: HEMP_FARM_HREF,
+  scale: 1.03,
+  position: [hempFarmX, HEMP_FARM_SITE.height, hempFarmZ] as [number, number, number],
+  footprint: { width: 4.25, depth: 3.05, wall: 2.38, rise: 1.28 },
+} as const;
 
 /** Inverse ground-plane projection of the existing painting; never economy coordinates. */
 export function paintingToGround(px: number, py: number): [number, number] {

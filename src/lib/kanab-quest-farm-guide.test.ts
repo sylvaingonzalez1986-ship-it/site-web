@@ -70,7 +70,9 @@ describe("contextual story", () => {
   });
   it("explains an empty plan and an uncommitted draft before following the generic zone instructions", () => {
     const chapter = getFarmGuideChapter({ view: "workshop" });
-    expect(getFarmGuideAdvice(chapter, { room: "culture", emptyPlan: true }).title).toBe("Dessiner ta première zone");
+    expect(getFarmGuideAdvice(chapter, { room: "culture", emptyPlan: true })).toMatchObject({
+      title: "Aménager ta première zone", target: "[data-warehouse-build-shop]",
+    });
     expect(getFarmGuideAdvice(chapter, { room: "culture", planDraft: true }).target).toBe("[data-warehouse-plan-review]");
   });
   it("places trim in the workshop while Personnel explains team management", () => {

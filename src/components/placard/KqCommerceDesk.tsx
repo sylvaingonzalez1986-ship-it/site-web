@@ -149,7 +149,7 @@ const channelTradeoffs: Record<KqSalesChannel, { advantage: string; drawback: st
 
 export type KqCommerceMode = "overview" | "demands" | "sales" | "dashboard";
 
-export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onOpenMerch, onOpenStorage, onOpenCulture, mode, onModeChange, initialFlowerId, initialLotId, onLotSelectionChange, initialReceipt, initialListingId }: { onOpenShop: (equipmentCode?: string, flowerId?: string) => void; onOpenTreasury?: () => void; onOpenBusiness?: () => void; onOpenMerch?: () => void; onOpenStorage?: (flowerId?: string, lotId?: string) => void; onOpenCulture?: () => void; mode?: KqCommerceMode; onModeChange?: (mode: KqCommerceMode, listingId?: string) => void; initialFlowerId?: string; initialLotId?: string; onLotSelectionChange?: (selectedId: string | undefined, flowerId?: string) => void; initialReceipt?: KqCommerceReceipt; initialListingId?: string }) {
+export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onOpenMerch, onOpenStorage, onOpenCulture, mode, onModeChange, initialFlowerId, initialLotId, onLotSelectionChange, initialReceipt, initialListingId, workshop = false, onBusyChange }: { onOpenShop: (equipmentCode?: string, flowerId?: string) => void; onOpenTreasury?: () => void; onOpenBusiness?: () => void; onOpenMerch?: () => void; onOpenStorage?: (flowerId?: string, lotId?: string) => void; onOpenCulture?: () => void; mode?: KqCommerceMode; onModeChange?: (mode: KqCommerceMode, listingId?: string) => void; initialFlowerId?: string; initialLotId?: string; onLotSelectionChange?: (selectedId: string | undefined, flowerId?: string) => void; initialReceipt?: KqCommerceReceipt; initialListingId?: string; workshop?: boolean; onBusyChange?: (busy: boolean) => void }) {
   const api = useKqTutorialApi();
   const heading = useRef<HTMLHeadingElement>(null);
   const focusMode = useRef(false);
@@ -163,7 +163,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
   const [lotNotice, setLotNotice] = useState("");
   const [liveNow, setLiveNow] = useState<number | undefined>(undefined);
   const [localMode, setLocalMode] = useState<KqCommerceMode>(initialFlowerId || initialLotId ? "sales" : "demands");
-  const activeMode = mode ?? localMode;
+  const activeMode = workshop ? "sales" : mode ?? localMode;
   const dashboard = activeMode === "dashboard";
   const demands = activeMode === "demands";
   const sales = activeMode === "sales";
@@ -175,6 +175,9 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null); const [receipt, setReceipt] = useState<SaleResult | null>(initialReceipt ?? null);
   const [pendingSale, setPendingSale] = useState<Confirmation | null>(null);
   const [pendingWork, setPendingWork] = useState<Confirmation | null>(null);
+  const workshopBusy = busy || !!confirmation || !!pendingWork;
+  useEffect(() => { onBusyChange?.(workshopBusy); }, [onBusyChange, workshopBusy]);
+  useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const [processingChoice, setProcessingChoice] = useState<{ scope: string; actorId: string } | null>(null);
   const [processingPreview, setProcessingPreview] = useState<{ source: KqMarketQuote; actorId: string; preparation?: KqMarketQuote; error: string } | null>(null);
   const load = useCallback(() => {
@@ -210,13 +213,14 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
       }
       if (!data || initialLot.current.resolved) return;
       initialLot.current.resolved = true;
-      const target = getKqCommerceFlowerSelection(data, initialLot.current.flowerId, initialLot.current.lotId);
+      const target = getKqCommerceFlowerSelection(workshop ? { ...data, stocks: data.stocks.filter(stock => stock.route !== "raw" && stock.route !== "biomass") } : data,
+        initialLot.current.flowerId, initialLot.current.lotId);
       focusMode.current = target.status !== "none";
       setSelectedId(target.status === "selected" ? target.selectedId : "");
       setLotNotice(target.status === "missing" ? "Ce lot n’est pas disponible dans le stock confirmé. Il a pu être vendu ou transformé. Aucun autre produit n’a été sélectionné." : "");
     });
     return () => cancelAnimationFrame(frame);
-  }, [data, initialFlowerId, initialLotId]);
+  }, [data, initialFlowerId, initialLotId, workshop]);
   useEffect(() => {
     const tick = () => {
       if (!document.hidden && clock.current) setLiveNow(clock.current.server + Math.max(0, performance.now() - clock.current.received));
@@ -259,7 +263,10 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
       focusListings.current = false;
     }
   }, [dashboard]);
-  const sourceProduct = raw?.options.find(q => q.route === route) ?? raw?.options.find(q => q.route === "raw");
+  const productOptions = workshop ? raw?.options.filter(quote => quote.family === "hash" || quote.family === "rosin") : raw?.options;
+  const sourceProduct = productOptions?.find(q => q.route === route) ?? (workshop
+    ? productOptions?.find(q => q.available) ?? productOptions?.[0]
+    : productOptions?.find(q => q.route === "raw"));
   const processingScope = `${raw?.flowerId ?? ""}:${sourceProduct?.route ?? ""}`;
   const processingActorId = processingChoice?.scope === processingScope ? processingChoice.actorId : "auto";
   const selectedProcessingPreview = processingPreview && processingPreview.source === sourceProduct && processingPreview.actorId === processingActorId ? processingPreview : null;
@@ -441,15 +448,31 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
     } finally { setBusy(false); }
   }
   const emptyComptoir = Boolean(data && !data.rawLots.length && !data.stocks.length);
-  const title = dashboard ? "Mon stock en vente" : missingRequestedLot ? "Lot indisponible" : saleComplete ? "Vente terminée" : onlineScreen ? "Préparer une annonce en ligne" : stock ? channel ? KQ_CHANNELS[channel].name : "Choisir où vendre" : raw ? "Préparer ma récolte" : emptyComptoir ? "Préparer une vente" : "Quelle récolte veux-tu vendre ?";
+  const title = workshop ? missingRequestedLot ? "Lot indisponible" : stock ? "Suivi de l’extraction" : raw ? "Préparer une extraction" : "Extractions de l’atelier"
+    : dashboard ? "Mon stock en vente" : missingRequestedLot ? "Lot indisponible" : saleComplete ? "Vente terminée" : onlineScreen ? "Préparer une annonce en ligne" : stock ? channel ? KQ_CHANNELS[channel].name : "Choisir où vendre" : raw ? "Préparer ma récolte" : emptyComptoir ? "Préparer une vente" : "Quelle récolte veux-tu vendre ?";
   const currentStep = saleComplete ? 4 : stock ? channel ? 3 : 2 : raw ? 1 : 0;
+  const extracts = workshop ? data?.stocks.filter(item => item.route !== "raw" && item.route !== "biomass") ?? [] : [];
+  const extractionLots = workshop && data && <>
+    {extracts.length === 0 && data.rawLots.length === 0 ? <p>Présente un lot au jury pour ouvrir les extractions de l’atelier.</p> : <div className={styles.lotList} aria-label="Lots de l’atelier">
+      {extracts.map(item => <button type="button" key={item.id} disabled={workshopBusy} onClick={() => choose(item.id)}>
+        <span className={styles.lotIcon}><Clock3 size={20} aria-hidden="true" /></span><span className={styles.lotText}><strong>{item.name}</strong>
+          <small>{productName(item.route)} · {item.processingWork ? item.processingWork.status === "completed" ? "Terminé" : item.processingWork.status === "blocked" ? "Heures à attribuer" : "En cours" : item.processingReadyAt && (liveNow === undefined || Date.parse(item.processingReadyAt) > liveNow) ? "Disponibilité à vérifier" : "En stock"}</small></span>
+        <span>Suivre <ArrowRight size={16} aria-hidden="true" /></span>
+      </button>)}
+      {data.rawLots.map(item => <button type="button" key={item.flowerId} disabled={workshopBusy} onClick={() => choose(`raw:${item.flowerId}`)}>
+        <span className={styles.lotIcon}><Leaf size={20} aria-hidden="true" /></span><span className={styles.lotText}><strong>{item.varietyName}</strong><small>{item.harvestGrams.toLocaleString("fr-FR")} g · Jury {qualityScore(item.juryScore)}</small></span>
+        <span>Préparer <ArrowRight size={16} aria-hidden="true" /></span>
+      </button>)}
+    </div>}
+  </>;
   if (activeMode === "overview") return <KqShopOverview data={data} loading={loading} refreshing={refreshing} error={error || loadError} now={liveNow} headingRef={heading} onRefresh={() => void load()} onPrepareStock={browseDemandLots} onViewSales={listingId => changeMode("dashboard", listingId)} onViewDemands={() => changeMode("demands")} onOpenBusiness={onOpenBusiness} onOpenMerch={onOpenMerch} onOpenTreasury={onOpenTreasury} onOpenCulture={onOpenCulture} />;
-  return <main className={styles.page} data-screen={screen} data-commerce-flower={raw?.flowerId ?? stock?.flowerId} data-commerce-lot={raw || stock ? selectedId : undefined} data-commerce-missing-flower={missingRequestedLot ? initialFlowerId : undefined} data-commerce-missing-lot={missingRequestedLot ? initialLotId ?? selectedId : undefined}
+  return <main className={styles.page} data-screen={screen} data-warehouse-extracts={workshop || undefined} data-commerce-flower={raw?.flowerId ?? stock?.flowerId} data-commerce-lot={raw || stock ? selectedId : undefined} data-commerce-missing-flower={missingRequestedLot ? initialFlowerId : undefined} data-commerce-missing-lot={missingRequestedLot ? initialLotId ?? selectedId : undefined}
+    data-sylvain-target={workshop ? "processing" : "commerce"} data-sylvain-seen={!api.isTutorial && !loading && !refreshing && !error && !loadError && (raw || stock) ? workshop ? "processing" : "commerce" : undefined} tabIndex={-1}
     data-guide-sale-confirmed={saleComplete && typeof receipt.units === "number" && Number.isFinite(receipt.units) && receipt.units > 0 || undefined}
     data-guide-flower-id={saleComplete ? receipt.flowerId : undefined}>
-    {!dashboard && mode === undefined && <div className={styles.scenery} aria-hidden="true"><Image key={channel ?? "workshop"} src={channel ? KQ_CHANNELS[channel].image : "/placard/market-workshop-sylvain-v2.webp"} alt="" fill sizes="(max-width: 1200px) 100vw, 1120px" priority /></div>}
-    <h1 className="sr-only" ref={!sales || loading || !data ? heading : undefined} data-commerce-view-heading={!sales || loading || !data || undefined} tabIndex={-1}>{demands ? "Demandes du moment" : dashboard ? "Mon stock en vente" : "Vendre"}</h1>
-    {mode === undefined ? <nav className={styles.standaloneNav} aria-label="Mon commerce"><button type="button" aria-pressed={demands} onClick={() => changeMode("demands")}>Demandes du moment</button><button type="button" aria-pressed={sales} onClick={() => changeMode("sales")}>Vendre</button><button type="button" aria-pressed={dashboard} onClick={() => changeMode("dashboard")}>Mon stock en vente</button>{onOpenBusiness ? <button type="button" onClick={onOpenBusiness}>Développer</button> : null}</nav> : null}
+    {!workshop && !dashboard && mode === undefined && <div className={styles.scenery} aria-hidden="true"><Image key={channel ?? "workshop"} src={channel ? KQ_CHANNELS[channel].image : "/placard/market-workshop-sylvain-v2.webp"} alt="" fill sizes="(max-width: 1200px) 100vw, 1120px" priority /></div>}
+    {!workshop && <h1 className="sr-only" ref={!sales || loading || !data ? heading : undefined} data-commerce-view-heading={!sales || loading || !data || undefined} tabIndex={-1}>{demands ? "Demandes du moment" : dashboard ? "Mon stock en vente" : "Vendre"}</h1>}
+    {!workshop && mode === undefined ? <nav className={styles.standaloneNav} aria-label="Mon commerce"><button type="button" aria-pressed={demands} onClick={() => changeMode("demands")}>Demandes du moment</button><button type="button" aria-pressed={sales} onClick={() => changeMode("sales")}>Vendre</button><button type="button" aria-pressed={dashboard} onClick={() => changeMode("dashboard")}>Mon stock en vente</button>{onOpenBusiness ? <button type="button" onClick={onOpenBusiness}>Développer</button> : null}</nav> : null}
     {(error || loadError) && !confirmation ? <p className={styles.error} role="alert">{error || loadError} <button onClick={() => void load()}>Actualiser</button></p> : null}
     {pendingSale && !confirmation ? <div role="status" className={styles.error} data-pending-commerce-sale>
       <p>La réponse de ta vente n’a pas été confirmée. Vérifie cette demande avant d’en préparer une autre.</p>
@@ -463,16 +486,16 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
       <button type="button" className={styles.primary} data-commerce-other-lots onClick={() => choose("")}>Voir mes autres lots <ArrowRight size={18} aria-hidden="true" /></button>
     </section> : null}
     {!loading && demands ? <KqCustomerDemandDashboard data={data} now={liveNow} busy={busy || refreshing} onRetry={() => void load()} onChooseLot={chooseDemandLot} onOpenCulture={onOpenCulture} onOpenListings={openDemandListings} onBrowseLots={browseDemandLots} /> : null}
-    {!demands && mode === undefined ? <button type="button" className={styles.back} onClick={() => changeMode("demands")}>← Demandes du moment</button> : null}
-    {loading ? <p className={styles.loading}><LoaderCircle className={styles.spin} /> Ouverture du comptoir…</p> : data && !demands && !missingRequestedLot ? <section key={screen} className={styles.flow} aria-labelledby={dashboard ? undefined : "commerce-step-title"}>
-      {!dashboard && (!emptyComptoir || saleComplete) ? <ol className={styles.steps} aria-label="Les étapes de la vente">{["Récolte", "Préparation", "Mode de vente", "Validation"].map((step, index) => <li key={step} aria-current={index === currentStep ? "step" : undefined} data-complete={index < currentStep}><span aria-hidden="true">{index < currentStep ? <Check size={13} /> : index + 1}</span>{step}</li>)}</ol> : null}
-      {!dashboard && !saleComplete && (raw || stock || onlineScreen) ? <button className={styles.back} onClick={() => stock && channel ? chooseChannel(null) : choose("")}>← {stock && channel ? "Comparer les circuits" : "Retour aux lots"}</button> : null}
+    {!workshop && !demands && mode === undefined ? <button type="button" className={styles.back} onClick={() => changeMode("demands")}>← Demandes du moment</button> : null}
+    {loading ? <p className={styles.loading}><LoaderCircle className={styles.spin} /> {workshop ? "Lecture des lots de l’atelier…" : "Ouverture du comptoir…"}</p> : data && !demands && !missingRequestedLot ? <section key={screen} className={styles.flow} aria-labelledby={dashboard ? undefined : "commerce-step-title"}>
+      {!workshop && !dashboard && (!emptyComptoir || saleComplete) ? <ol className={styles.steps} aria-label="Les étapes de la vente">{["Récolte", "Préparation", "Mode de vente", "Validation"].map((step, index) => <li key={step} aria-current={index === currentStep ? "step" : undefined} data-complete={index < currentStep}><span aria-hidden="true">{index < currentStep ? <Check size={13} /> : index + 1}</span>{step}</li>)}</ol> : null}
+      {!dashboard && !saleComplete && (raw || stock || onlineScreen) ? <button className={styles.back} disabled={workshop && workshopBusy} onClick={() => stock && channel ? chooseChannel(null) : choose("")}>← {stock && channel ? "Comparer les circuits" : "Retour aux lots"}</button> : null}
       {!dashboard ? <h2 id="commerce-step-title" ref={heading} data-commerce-view-heading tabIndex={-1}>{title}</h2> : null}
       {!dashboard && !saleComplete && stock ? <div className={styles.lotSheet}><KqLotSummary source={{ kind: "product", stock }} compact={screen === "distribution" || screen === "offer"}>
         <Link prefetch={false} data-commerce-open-lot-storage className={styles.back} href={storageHref} onClick={openStorage}>Stockage de cette récolte <ArrowRight size={16} aria-hidden="true" /></Link>
       </KqLotSummary></div> : null}
       {!dashboard && !saleComplete && stock && (stock.processingReadyAt || stock.processingWork) ? <><KqCommerceWorkshopScene stock={stock} now={loadError ? undefined : liveNow} />{stock.processingWork?.status === "blocked" ? <div className={styles.actions}><button type="button" className={styles.primary} data-resume-processing disabled={busy || refreshing || !!loadError} onClick={() => void askProcessingWork()}>Reprendre la transformation <ArrowRight size={18} aria-hidden="true" /></button><button type="button" disabled={busy || refreshing} onClick={() => void load()}>Actualiser les heures</button></div> : null}</> : null}
-      {!dashboard && data.strength === "merchant" ? <p><Sparkles size={16} aria-hidden="true" /> Commercial · capacité de vente +50 % en ligne et en boutique. Recettes et progression du recrutement +50 %.</p> : null}
+      {!workshop && !dashboard && data.strength === "merchant" ? <p><Sparkles size={16} aria-hidden="true" /> Commercial · capacité de vente +50 % en ligne et en boutique. Recettes et progression du recrutement +50 %.</p> : null}
       {dashboard ? data.online ? <KqOnlineDashboard key={initialListingId ?? "all"} initialListingId={initialListingId} data={data} now={liveNow} busy={busy} onAsk={ask} onOpenBusiness={onOpenBusiness} onOpenMerch={onOpenMerch} onOpenShop={() => onOpenShop("COMPUTER", raw?.flowerId ?? stock?.flowerId)} onPrepareStock={browseDemandLots} /> : <div className={styles.dashboardUnavailable}><p>Le suivi des annonces en ligne n’est pas disponible dans cet atelier.</p><button className={styles.primary} onClick={browseDemandLots}>Choisir un lot <ArrowRight size={18} aria-hidden="true" /></button></div> : saleComplete ? <div className={styles.saleDone} role="status" data-commerce-sale-receipt data-new-receipt={receipt !== restoredReceipt.current && !receipt.replayed || undefined}><span className={styles.successEmblem}><Coins size={42} aria-hidden="true" /><Sparkles size={22} aria-hidden="true" /></span><small>Dans ta trésorerie</small><strong>{formatKqCash(receipt.netPayoutCents ?? 0)} versés</strong><p>{grams(receipt.units ?? 0)} vendus · {grams(receipt.remainingUnits ?? 0)} restants.</p>
         <dl className={styles.receiptAmounts}><div><dt>Recette TTC</dt><dd>{formatKqCash(receipt.payoutCents ?? 0)}</dd></div><div><dt>TVA mise de côté</dt><dd>−{formatKqCash(receipt.vatCents ?? 0)}</dd></div><div><dt>Analyses échues réglées</dt><dd>−{formatKqCash(receipt.labPaidCents ?? 0)}</dd></div><div><dt>Électricité et soins réglés</dt><dd>−{formatKqCash(receipt.electricityPaidCents ?? 0)}</dd></div>{(receipt.supplierPaidCents ?? 0) > 0 ? <div><dt>Fournisseurs échus réglés</dt><dd>−{formatKqCash(receipt.supplierPaidCents ?? 0)}</dd></div> : null}</dl>
         <CustomerFeedback receipt={receipt} />
@@ -483,7 +506,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
           <header className={styles.preparationIdentity}><h3>{raw.varietyName}</h3><p>Lot {raw.flowerId.slice(0, 8)} · Qualité actuelle : {rawSummary?.quality.value == null ? "à confirmer" : qualityScore(rawSummary.quality.value)}</p></header>
           {rawSummary && rawSummary.state !== "Prêt à vendre" && !overflowUnits ? <p role="status">{rawSummary.state} · {rawSummary.next}</p> : null}
           {overflowUnits > 0 ? <div role="status"><p className={styles.error}>{grams(overflowUnits)} n’ont pas de contenant. Range le surplus dans tes contenants disponibles ou consulte sa reprise avant de préparer le lot.</p><Link prefetch={false} href={storageHref} className={styles.primary} onClick={openStorage}>Gérer mes contenants et le surplus <ArrowRight size={18} /></Link></div> : null}
-          <label className={styles.field}>Produit à préparer<span className={styles.productChoice}><select value={activeProduct.route} onChange={e => setRoute(e.target.value as KqMarketRouteCode)}>{raw.options.map(q => <option key={q.route} value={q.route}>{productName(q.route)}{q.available || q.route === "raw" || q.route === "biomass" ? "" : " · verrouillé"}</option>)}</select><ChevronDown size={18} aria-hidden="true" /></span></label>
+          <label className={styles.field}>Produit à préparer<span className={styles.productChoice}><select value={activeProduct.route} disabled={workshop && workshopBusy} onChange={e => setRoute(e.target.value as KqMarketRouteCode)}>{productOptions?.map(q => <option key={q.route} value={q.route}>{productName(q.route)}{q.available || q.route === "raw" || q.route === "biomass" ? "" : " · verrouillé"}</option>)}</select><ChevronDown size={18} aria-hidden="true" /></span></label>
           {(workQuote ?? sourceProduct?.processingWork?.quote) ? <KqProcessingActorSelector quote={(workQuote ?? sourceProduct!.processingWork!.quote)!} actorId={processingActorId} disabled={busy || refreshing || !!pendingWork || !!loadError} onChange={actorId => setProcessingChoice({ scope: processingScope, actorId })} /> : null}
           {processingQuotePending ? <p role="status">Vérification des heures de la personne choisie…</p> : processingQuoteError ? <p role="alert" className={styles.error}>{processingQuoteError}</p> : null}
           <KqPreparationSummary quote={activeProduct} costCents={cost} />
@@ -491,14 +514,15 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
           {!canPrepare && !overflowUnits ? <p role="status" className={styles.error}>{processingQuoteUnavailable ? workQuote?.blockedReason ?? "Devis de travail indisponible. Actualise ce lot avant de confirmer." : activeProduct.blockedReason ?? "Ce produit ne peut pas encore être préparé."}</p> : null}
           {processingQuoteUnavailable ? <button type="button" disabled={busy || refreshing} onClick={() => void load()}>Actualiser les heures</button> : null}
           {cost > data.cashCents ? <p role="status" className={styles.error}>Il manque {formatKqCash(cost - data.cashCents)}. Trésorerie disponible : {formatKqCash(data.cashCents)}.</p> : null}
-          <button className={styles.primary} data-prepare-lot={raw.flowerId} disabled={busy || !!loadError || !canPrepare || cost > data.cashCents} onClick={askPreparation}>{cost > data.cashCents ? "Trésorerie insuffisante" : activeProduct.route === "raw" ? "Préparer les fleurs et continuer" : activeProduct.route === "biomass" ? "Préparer la biomasse et continuer" : "Transformer et continuer"} <ArrowRight size={18} aria-hidden="true" /></button>
+          <button className={styles.primary} data-prepare-lot={raw.flowerId} disabled={busy || !!loadError || !canPrepare || cost > data.cashCents} onClick={askPreparation}>{cost > data.cashCents ? "Trésorerie insuffisante" : workshop ? "Lancer l’extraction" : activeProduct.route === "raw" ? "Préparer les fleurs et continuer" : activeProduct.route === "biomass" ? "Préparer la biomasse et continuer" : "Transformer et continuer"} <ArrowRight size={18} aria-hidden="true" /></button>
+          {workshop && !activeProduct.available && <button className={styles.back} type="button" disabled={workshopBusy} onClick={() => onOpenShop()}>Voir les machines de l’atelier</button>}
           <details className={styles.preparationDetails} data-preparation-details><summary>Détails du produit</summary><KqHelpGrid items={[
   { art: "help-workshop" as const, label: "Produit", value: productName(activeProduct.route), detail: activeProduct.route === "raw" ? "Fleurs entières, sans transformation." : activeProduct.description },
-  { art: "commerce" as const, label: "Étape suivante", value: "Choisir le circuit", detail: "Transformation terminée avant la vente." },
+  ...(!workshop ? [{ art: "commerce" as const, label: "Étape suivante", value: "Choisir le circuit", detail: "Transformation terminée avant la vente." }] : []),
 ]} /><Image src="/placard/market-workshop-sylvain-v2.webp" width={1536} height={1024} alt="Presse, tamis et laveuse de l’atelier de Kanab Quest" sizes="(max-width: 700px) 100vw, 480px" /></details>
         </div>
         <details className={styles.preparationDetails}><summary>Récolte, qualité et stockage</summary><KqLotSummary source={{ kind: "raw", lot: raw }}><Link prefetch={false} data-commerce-open-lot-storage className={styles.back} href={storageHref} onClick={openStorage}>Stockage de cette récolte <ArrowRight size={16} aria-hidden="true" /></Link></KqLotSummary></details>
-      </div> : stock && !channel ? <>
+      </div> : workshop ? stock ? null : extractionLots : stock && !channel ? <>
         <p>Montants estimés TTC, avant TVA et factures échues. Le versement net sera confirmé avant la vente.</p>
         {data.campaign && data.campaign.event !== "normal" ? <p className={styles.event}>{KQ_COMMERCE_EVENTS[data.campaign.event]}</p> : null}
         <div className={channelStyles.choices} aria-label="Circuits de vente">{(["cbd-shop", "wholesale", "online"] as const).map(code => {
@@ -616,7 +640,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
         </div></div>
       </> : <KqCommerceEmptyState data={data} onOpenStorage={onOpenStorage} onOpenCulture={onOpenCulture} onViewSales={() => changeMode("dashboard")} />}
     </section> : null}
-    {data && !dashboard && screen === "lots" ? <KqCommerceOverview data={data} onOpenShop={() => onOpenShop()} /> : null}
+    {!workshop && data && !dashboard && screen === "lots" ? <KqCommerceOverview data={data} onOpenShop={() => onOpenShop()} /> : null}
     {pendingWork && !confirmation ? <p role="status">Une demande de transformation attend son reçu. <button type="button" onClick={() => setConfirmation(pendingWork)}>Vérifier la même demande</button></p> : null}
     {confirmation ? <Confirm confirmation={confirmation} busy={busy} error={error} now={liveNow} onRequote={() => void (confirmation.processingWork || confirmation.preparation?.quote.processingWork ? askProcessingWork(confirmation) : examineSale(confirmation))} onActorChange={actorId => void askProcessingWork(confirmation, actorId)} onClose={() => { if (!busy) { setConfirmation(null); setError(""); } }} onConfirm={() => void commit()} /> : null}
   </main>;

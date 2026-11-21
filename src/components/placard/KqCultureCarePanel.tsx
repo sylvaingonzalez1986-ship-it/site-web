@@ -11,9 +11,10 @@ import { getKqCareProductArtwork } from "@/lib/kanab-quest-care-artwork";
 import { careApplicationKey, getKqCareProblemPlants, type KqCareSector } from "@/lib/kanab-quest-care-spatial";
 import { getKqCarePresentation } from "@/lib/kanab-quest-care-presentation";
 import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
-import { getKqCareActionAvailability, getKqCareAvailabilityScope, parseKqCareReserveSnapshot, type KqCareAvailabilityNotice, type KqCareReserveSnapshot } from "@/lib/kanab-quest-care-reserve";
+import { getKqCareActionAvailability, getKqCareAvailabilityScope, getKqCareSectorLabel, getKqCareZoneStock, parseKqCareReserveSnapshot, type KqCareAvailabilityNotice, type KqCareReserveSnapshot } from "@/lib/kanab-quest-care-reserve";
 import { getKqStageDisplayName, hasKqFirstCultureRescue, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
 import { KqCareShop } from "./KqCareShop";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
 import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import { KqBarChart } from "./KqVisuals";
@@ -31,11 +32,12 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   onMaintenance?: () => void;
 }) {
   const carousel = layout === "carousel";
+  const api = useKqTutorialApi();
   const [expanded, setExpanded] = useState(carousel);
   const [careSection, setCareSection] = useState<CareSection>("overview");
   const [shopOpen, setShopOpen] = useState(false);
   const [shopVisited, setShopVisited] = useState(false);
-  const [feedback, setFeedback] = useState<{ turn: string; text: string } | null>(null);
+  const [feedback, setFeedback] = useState<{ turn: string; text: string; productCode?: string } | null>(null);
   const [pending, setPending] = useState(false);
   const [shopPending, setShopPending] = useState(false);
   const [reserve, setReserve] = useState<{ scope: string; snapshot: KqCareReserveSnapshot } | null>(null);
@@ -105,6 +107,9 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
     try {
       const action = `${state.seed}:${state.stageIndex}:${state.phase}:${productCode ?? "basic"}` + (target ? JSON.stringify(target) : "");
       const retry = receipt.current?.action === action;
+      if (productCode && target && !retry && balance && getKqCareZoneStock(balance, productCode, target.zoneId) < 1) {
+        throw new Error("Aucune charge disponible dans cette zone pour cette culture.");
+      }
       if (!productCode && !retry) {
         if (!quotedPriceReady || basicPrice === null || !balance) throw new Error("Tarif d’entretien indisponible. Actualise le suivi avant de payer.");
         if (balance.cashCents < basicPrice) throw new Error(`Trésorerie insuffisante : il faut ${formatCash(basicPrice)} pour cet entretien.`);
@@ -114,12 +119,14 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
       let next: KqGameState;
       let chargedCents = 0;
       let replayed = false;
+      let remaining: number | undefined;
       if (storage) {
         const previousCash = loadKqLocalCare(storage).cashCents;
         next = applyKqLocalCare(storage, state, productCode, target);
         const currentCash = loadKqLocalCare(storage).cashCents;
         chargedCents = Math.max(0, previousCash - currentCash);
         replayed = !productCode && chargedCents === 0;
+        if (productCode) remaining = getKqLocalCareSnapshot(storage, next).inventory.find(row => row.productCode === productCode)?.quantity;
         updateCash(currentCash);
       }
       else {
@@ -129,7 +136,9 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         next = result.state;
         chargedCents = result.chargedCents ?? 0;
         replayed = result.replayed;
+        if (productCode && Array.isArray(result.inventory)) remaining = result.inventory.find(row => row.productCode === productCode)?.quantity ?? 0;
         if (Number.isSafeInteger(result.cashCents)) updateCash(result.cashCents);
+        if (productCode) api.notify("kq:preparations-updated", { cashCents: result.cashCents });
       }
       receipt.current = null;
       if (liveScope.current !== availabilityScope) return;
@@ -137,6 +146,12 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
       if (!productCode && next.care?.lastBasicCareStage !== state.care?.lastBasicCareStage) onMaintenance?.();
       const payment = chargedCents > 0 ? replayed ? `Paiement de ${formatCash(chargedCents)} déjà enregistré, aucun nouveau débit.` : `${formatCash(chargedCents)} débités de ta trésorerie.` : "Aucun nouveau débit.";
       if (!productCode) setFeedback({ turn, text: `${payment} Entretien activé pour l’étape « ${basicCareStageLabel} ». La santé sera évaluée à sa validation.` });
+      else {
+        const unit = target ? "charge" : "passage";
+        const applied = replayed ? "Intervention déjà enregistrée" : target ? "1 charge consommée pour 1 m²" : "1 passage consommé";
+        const stock = remaining === undefined ? "" : ` Stock restant pour la culture : ${remaining} ${unit}${remaining > 1 ? "s" : ""}.`;
+        setFeedback({ turn, productCode, text: `${getKqCareProduct(productCode)?.name} · ${applied}${target ? ` · ${getKqCareSectorLabel(state, target)}` : ""}.${stock} Effet au prochain bilan, à la validation de l’opération.` });
+      }
     } catch (error) {
       if (error instanceof Error && error.message === "Le prix ou la surface a changé. Actualise le suivi avant de confirmer.") receipt.current = null;
       if (!productCode) setFeedback({ turn, text: error instanceof Error ? error.message : "Intervention indisponible." });
@@ -175,7 +190,8 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   const insufficientCash = !!balance && basicPrice !== null && balance.cashCents < basicPrice;
   const showHealthyCareChoice = basicCareWindow && permission.allowed && !retryBasic && quotedPriceReady && !insufficientCash
     && care.vitality >= 90 && problems.length === 0;
-  return <section className={styles.panel} aria-label="Suivi vivant de la culture" data-culture-care data-presentation={layout} data-compact={compact || undefined} data-expanded={expanded} data-critical={critical || undefined} data-condition={presentation.condition} aria-busy={busyNow}>
+  return <section className={styles.panel} aria-label="Suivi vivant de la culture" data-culture-care data-presentation={layout} data-compact={compact || undefined} data-expanded={expanded} data-critical={critical || undefined} data-condition={presentation.condition} aria-busy={busyNow}
+    data-sylvain-target="care" tabIndex={-1}>
     <div className={styles.summary}>
       <div className={styles.portrait}>
         <Image src={presentation.artwork.src} alt={presentation.artwork.alt} width={240} height={240} sizes="(max-width: 600px) 80px, 120px" data-care-portrait />
@@ -218,17 +234,18 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         <div className={styles.problems}>{problems.length ? problems.map(problem => {
           const definition = getKqCareProblem(problem.code);
           const plants = getKqCareProblemPlants(state, problem);
-          const ProblemIcon = definition?.family === "pest" ? Bug : definition?.family === "nutrition" ? Leaf : Sun;
+          const ProblemIcon = definition?.family === "pest" ? Bug : definition?.family === "disease" ? Heart : definition?.family === "nutrition" ? Leaf : Sun;
           const TrendIcon = problem.trend === "worsening" ? ArrowUpRight : problem.trend === "recovering" ? ArrowDownRight : Minus;
           return <article key={problem.code} data-severity={problem.severity}>
             <div className={styles.problemType}>
               <ProblemIcon size={16} aria-hidden="true" />
-              <span>{definition?.family === "pest" ? "Parasites" : definition?.family === "nutrition" ? "Nutrition" : "Stress"}</span>
+              <span>{definition?.family === "pest" ? "Parasites" : definition?.family === "disease" ? "Maladie" : definition?.family === "nutrition" ? "Nutrition" : "Stress"}</span>
               <span className={styles.severityPips} aria-label={`Gravité ${problem.severity} sur 3`}>{[1, 2, 3].map(level => <i key={level} data-filled={level <= problem.severity || undefined} />)}</span>
             </div>
             <div className={styles.problemHeading}><h4>{definition?.name ?? problem.code}</h4><span>{KQ_CARE_SEVERITY_LABELS[problem.severity]}</span></div>
             <p>{definition?.symptoms[problem.variant]}</p>
-            {!!plants.length && <p>{plants.length} plant{plants.length > 1 ? "s" : ""} atteint{plants.length > 1 ? "s" : ""} sur le plan.{definition?.family === "pest" && " Au bilan, le foyer peut gagner un plant voisin. Dans un secteur protégé, le risque est de 1 sur 10."}</p>}
+            {!!plants.length && <p>{plants.length} plant{plants.length > 1 ? "s" : ""} atteint{plants.length > 1 ? "s" : ""} sur le plan.{(definition?.family === "pest" || definition?.family === "disease") && " Au bilan, le foyer peut gagner un plant voisin."}{definition?.family === "pest" && " Si les auxiliaires couvrent tous les contacts possibles, le risque de propagation est d’au plus 1 sur 10."}</p>}
+            {!!plants.length && <p data-care-problem-location>{[...new Set(plants.map(plant => getKqCareSectorLabel(state, plant)))].join(" / ")}</p>}
             <div className={styles.problemFoot}>
               <small>{problem.status === "suspected" ? "Hypothèse à suivre" : definition?.family === "pest" ? "Foyer observé" : "Trouble confirmé"}</small>
               <strong data-trend={problem.trend}><TrendIcon size={14} aria-hidden="true" />{KQ_CARE_TREND_LABELS[problem.trend]}</strong>
@@ -239,7 +256,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
           disabled={busyNow} onClick={() => {
             setCareSection("intervention"); setShopVisited(true); setShopOpen(true);
             requestAnimationFrame(() => document.getElementById(`${reserveId}-toggle`)?.focus());
-          }}>Consulter les produits de soin <ArrowUpRight size={15} aria-hidden="true" /></button> : null}
+          }}>Voir les soins compatibles en stock <ArrowUpRight size={15} aria-hidden="true" /></button> : null}
         <details className={styles.basicCareDetails}><summary>Comment évolue le suivi ?</summary><KqHelpDashboard>
           {dead ? <KqHelpGrid art="help-care" items={[{ label: "Culture terminée", value: "Suivi clos", detail: "Opérations et problèmes conservés dans le journal." }]} /> : state.stageIndex >= 5 ? <KqHelpGrid art="help-care" items={[
             { label: "Santé", value: "Bilan conservé", detail: "Valeur à la récolte." },
@@ -261,8 +278,9 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         </div>
         <div id={`${contentId}-intervention`} role={carousel ? "tabpanel" : undefined} aria-labelledby={carousel ? `${contentId}-tab-intervention` : undefined} hidden={carousel && visibleSection !== "intervention"} inert={carousel && visibleSection !== "intervention"}>
         {!completed && !dead ? <div className={styles.careActions}>
+          {notice && (!shopOpen || !feedback?.productCode) ? <p role="status" className={styles.notice} data-care-feedback>{notice}</p> : null}
           <button className={styles.reserveToggle} id={`${reserveId}-toggle`} type="button" aria-expanded={shopOpen} aria-controls={reserveId} onClick={() => { if (!busy.current.care && !busy.current.shop) { setShopVisited(true); setShopOpen(!shopOpen); } }} disabled={busyNow} data-care-reserve-toggle><PackageOpen size={24} aria-hidden="true" /><span><b>Produits de soin <KqActionBadge count={actions?.products} label={actions?.products === 1 ? "produit utilisable" : "produits utilisables"} /></b><small>{shopOpen ? "Replier les produits" : "Choisir un produit et consulter ma réserve"}</small></span><ChevronDown size={18} aria-hidden="true" /></button>
-          <div id={reserveId} hidden={!shopOpen}>{shopVisited ? <div className={styles.reserve}><KqCareShop request={request} storage={storage} state={state} runId={runId} reserveState={{ snapshot: balance, loading: balanceLoading, error: balanceError, recovering: !!receipt.current || shopRecovery, refresh: refreshBalance }} onRecoveryChange={setShopRecovery} disabled={disabled || pending} onApply={apply} onChooseSector={onChooseCareSector && (code => onChooseCareSector(code, target => apply(code, target)))} onBusyChange={setShopBusy} /></div> : null}</div>
+          <div id={reserveId} hidden={!shopOpen}>{shopVisited ? <div className={styles.reserve}><KqCareShop request={request} storage={storage} state={state} runId={runId} reserveState={{ snapshot: balance, loading: balanceLoading, error: balanceError, recovering: !!receipt.current || shopRecovery, refresh: refreshBalance }} applicationNotice={notice && feedback?.productCode ? { code: feedback.productCode, text: notice } : undefined} onRecoveryChange={setShopRecovery} disabled={disabled || pending} onApply={apply} onChooseSector={onChooseCareSector && (code => onChooseCareSector(code, target => apply(code, target)))} onBusyChange={setShopBusy} /></div> : null}</div>
           <div className={styles.basicCareSection} data-care-basic-section>
             {showHealthyCareChoice ? <p id={basicCareChoiceId} className={styles.careChoice} data-care-choice><Leaf size={18} aria-hidden="true" /><span><strong>Tu peux continuer sans entretien.</strong> Santé {care.vitality}/100, aucun problème actif. Tu gardes les {formatCash(basicPrice!)} de cet entretien.</span></p> : null}
             <div className={styles.actions}>
@@ -273,7 +291,6 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
               {basicCareWindow ? <small><b>{basicCareStageLabel}</b> · {basicCareQueued ? "Prévu pour ce bilan" : "Une fois pour ce bilan"}</small> : null}
             </div>
             {basicCareWindow ? <div className={styles.careBalance}><span data-care-cash data-cash-cents={balance?.cashCents}>{storage ? "Budget de simulation" : "Trésorerie"} : <b>{balance ? formatCash(balance.cashCents) : "Chargement…"}</b></span><button type="button" onClick={() => void refreshBalance()} disabled={busyNow} aria-label="Actualiser la trésorerie"><RefreshCw size={14} aria-hidden="true" /></button></div> : null}
-            {notice ? <p role="status" className={styles.notice} data-care-feedback>{notice}</p> : null}
             {basicCareWindow && !basicCareQueued ? <p className={styles.paymentHint} role="status">{retryBasic ? "Une demande a déjà été envoyée. Vérifie son résultat : elle ne sera pas facturée deux fois." : balanceError || (balance && !quotedPriceReady ? "L’entretien payant est momentanément indisponible. Actualise le suivi pour consulter le tarif." : insufficientCash ? `Trésorerie insuffisante : il manque ${formatCash(basicPrice! - balance!.cashCents)}.` : balance?.areaM2 ? `Tarif pour ${balance.areaM2.toLocaleString("fr-FR")} m². Chaque entretien est payé séparément.` : "Chaque entretien est payé séparément. Aucun renouvellement automatique.")}</p> : null}
             <p id={basicCareDescriptionId} className={styles.basicCareEffect}>{basicCareWindow ? <>Ton personnage balaie les allées de {state.warehouse || state.campaign ? "l’entrepôt" : "la tente"}. Le prochain bilan compte <strong>+3 santé</strong> et <strong>jusqu’à 2 dégâts en moins par problème persistant</strong>.</> : permission.reason}</p>
             {basicCareWindow ? <details className={styles.basicCareDetails}>

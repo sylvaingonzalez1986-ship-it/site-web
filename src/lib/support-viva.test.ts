@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ applySupportTransaction: vi.fn(), beginSupportCheckout: vi.fn(), findSupportByOrder: vi.fn(), getOwnedSupport: vi.fn(),
+  findSupportForReconciliation: vi.fn(), verifiedSupportVivaSource: vi.fn(),
   getSupportVivaConfig: vi.fn(), setSupportCheckoutState: vi.fn(), supportStatus: vi.fn(), cancelVivaPaymentOrder: vi.fn(), createVivaCheckoutOrder: vi.fn(), getVivaAccessToken: vi.fn(), retrieveVivaTransaction: vi.fn() }));
 vi.mock("./support-backend", () => mocks);
 vi.mock("./viva-payment", () => mocks);
@@ -14,6 +15,7 @@ beforeEach(() => {
   mocks.beginSupportCheckout.mockResolvedValue({ created: true, contribution: row }); mocks.getOwnedSupport.mockResolvedValue(row);
   mocks.createVivaCheckoutOrder.mockResolvedValue(row.order_code); mocks.supportStatus.mockReturnValue({ state: "ready" });
   mocks.retrieveVivaTransaction.mockResolvedValue(transaction); mocks.findSupportByOrder.mockResolvedValue(row);
+  mocks.verifiedSupportVivaSource.mockImplementation((_record, verified) => verified.sourceCode);
 });
 describe("support payment isolation and recovery", () => {
   it("sends an exact euro amount and stable support reference without substituting the pseudonym for legal identity", async () => {
@@ -49,6 +51,20 @@ describe("support payment isolation and recovery", () => {
     await expect(refreshOwnedSupport(id, attempt.token, tx)).rejects.toThrow("not owned");
     expect(mocks.retrieveVivaTransaction).not.toHaveBeenCalled();
   });
+  it("matches a failure return with only an order code to the private contribution", async () => {
+    await expect(refreshOwnedSupport(id, attempt.token, undefined, row.order_code)).resolves.toMatchObject({ state: "ready" });
+    await expect(refreshOwnedSupport(id, attempt.token, undefined, "987654321012345678")).rejects.toMatchObject({ status: 409 });
+    expect(mocks.retrieveVivaTransaction).not.toHaveBeenCalled();
+    expect(mocks.applySupportTransaction).not.toHaveBeenCalled();
+  });
+  it("requires the verified Viva order to match both hints before recovering a lost binding", async () => {
+    mocks.getOwnedSupport.mockResolvedValue({ ...row, order_code: null });
+    mocks.retrieveVivaTransaction.mockResolvedValue({ ...transaction, merchantTrns: "SOUTIEN:" + id });
+    await expect(refreshOwnedSupport(id, attempt.token, tx, "987654321012345678")).rejects.toMatchObject({ status: 409 });
+    expect(mocks.setSupportCheckoutState).not.toHaveBeenCalled();
+    await refreshOwnedSupport(id, attempt.token, tx, row.order_code);
+    expect(mocks.setSupportCheckoutState).toHaveBeenCalledWith(id, "ready", row.order_code);
+  });
   it("rejects an inconsistent provider transaction identifier", async () => {
     mocks.retrieveVivaTransaction.mockResolvedValue({ ...transaction, transactionId: reversalId });
     await expect(verifySupportTransaction(row, tx)).rejects.toThrow("incohérente"); expect(mocks.applySupportTransaction).not.toHaveBeenCalled();
@@ -70,8 +86,16 @@ describe("support payment isolation and recovery", () => {
   });
   it("keeps an early callback retryable and ignores another source with no known contribution", async () => {
     mocks.findSupportByOrder.mockResolvedValue(null);
-    await expect(handleSupportWebhook("123", tx, "4321")).rejects.toMatchObject({ status: 503 });
     await handleSupportWebhook("123", tx, "shop"); expect(mocks.retrieveVivaTransaction).not.toHaveBeenCalled();
+    await expect(handleSupportWebhook("123", tx, "4321")).rejects.toMatchObject({ status: 503 });
+  });
+  it("uses the verified provider reference to bind an early notification after a lost local write", async () => {
+    mocks.findSupportByOrder.mockResolvedValue(null);
+    mocks.findSupportForReconciliation.mockResolvedValue({ ...row, order_code: null });
+    mocks.retrieveVivaTransaction.mockResolvedValue({ ...transaction, merchantTrns: `SOUTIEN:${id}` });
+    await handleSupportWebhook(row.order_code, tx, "4321");
+    expect(mocks.setSupportCheckoutState).toHaveBeenCalledWith(id, "ready", row.order_code);
+    expect(mocks.applySupportTransaction).toHaveBeenCalledTimes(1);
   });
   it("does not cancel captured payments or acknowledge failed provider cancellation", async () => {
     mocks.getOwnedSupport.mockResolvedValueOnce({ ...row, paid_at: "2026-11-11" });

@@ -82,9 +82,9 @@
 .cursor { display: none; }
 .cursor[data-visible=true], .map:focus-visible .cursor { display: block; }
 .resizeHandle { cursor: nwse-resize; touch-action: none; }
-.lampGlow { animation: lampBreath 4s ease-in-out infinite alternate; mix-blend-mode: screen; }
+.lightingFootprint { fill: #f2c35d44; stroke: #825319; stroke-width: 1; vector-effect: non-scaling-stroke; }
+[data-lighting-state="paused"] .lightingFootprint { fill: #a9a88d33; stroke: #554f45; stroke-dasharray: 3 2; }
 .airFlow { animation: airPassing 1.6s linear infinite; opacity: .7; }
-@keyframes lampBreath { from { opacity: .53; } to { opacity: .85; } }
 @keyframes airPassing { to { stroke-dashoffset: -14; } }
 .zone[data-buddie-target=true] .zoneOutline { stroke: #08766b; stroke-width: 2; stroke-dasharray: 5 4; }
 .zone[data-buddie-drop=valid] .zoneOutline { fill: #149b8b40; stroke: #005f4e; stroke-width: 4; stroke-dasharray: none; }
@@ -168,8 +168,7 @@
 }
 @media(prefers-reduced-motion:reduce) {
   .zoneOutline { transition: none; }
-  .lampGlow, .airFlow { animation: none; }
-  .lampGlow { opacity: .65; }
+  .airFlow { animation: none; }
 }
 
 .finishManipulation { min-height: 44px; width: 100%; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; margin-block: 8px; padding: 8px 12px; color: #283c30; font: inherit; font-weight: 800; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
@@ -208,3 +207,6 @@
 
 /* Declare this on the HTML viewport before contact, including the space around the SVG. */
 .plan .viewport[data-manipulating=true] { touch-action: none; overscroll-behavior: none; }
+
+.coverageChoice { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .75rem; padding: .75rem; }
+.coverageChoice select { max-width: 100%; min-height: 44px; font: inherit; color: inherit; }

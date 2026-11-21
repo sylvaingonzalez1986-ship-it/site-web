@@ -38,7 +38,6 @@ export function KqWarehouseOverview({ tents, buildings = [], equipmentScopeVersi
       <summary id="warehouse-overview-title" className={styles.heading}>
         <span className={styles.headingIcon}><PackageOpen size={20} aria-hidden="true"/></span>
         <span>Matériel de l’entrepôt<small>{tents.length} tente{tents.length > 1 ? "s" : ""}{equipmentScopeVersion===3?" · Services par bâtiment":""} · Atelier commun{attentionCount > 0 ? ` · ${attentionCount} tente${attentionCount > 1 ? "s" : ""} à vérifier` : ""}</small></span>
-        <span className={styles.toggleLabel} aria-hidden="true"><span className={styles.whenClosed}>Afficher</span><span className={styles.whenOpen}>Masquer</span></span>
         <ChevronDown size={16} className={styles.chevron} aria-hidden="true"/>
       </summary>
       <div className={styles.tents} aria-label="Récapitulatif par tente">

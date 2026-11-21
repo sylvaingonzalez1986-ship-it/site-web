@@ -1,12 +1,12 @@
-﻿import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), storage: vi.fn(), purchase: vi.fn(), tier: vi.fn(), rate: vi.fn() }));
+import { beforeEach, describe, expect, it, vi } from "vitest";
+const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), storage: vi.fn(), purchase: vi.fn(), tier: vi.fn(), upgrade: vi.fn(), rate: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-storage-backend", () => ({ getKqStorageSnapshot: mocks.storage }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({
   expandKqProduction: mocks.expand, replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: mocks.shop, equipKqDurableEquipment: vi.fn(),
-  purchaseKqDurableEquipment: mocks.purchase, setKqEquipmentRoutePlan: vi.fn(), upgradeKqDurableEquipment: vi.fn(), repairKqMachine: vi.fn(),
+  purchaseKqDurableEquipment: mocks.purchase, setKqEquipmentRoutePlan: vi.fn(), upgradeKqDurableEquipment: mocks.upgrade, repairKqMachine: vi.fn(),
   purchaseKqWorkshopTier: mocks.tier,
 }));
 import { GET, POST, PATCH } from "./route";
@@ -52,12 +52,12 @@ describe("direct workshop tier endpoint", () => {
   beforeEach(() => {
     vi.clearAllMocks(); mocks.enabled.mockResolvedValue(true);
     mocks.session.mockResolvedValue({ customerId: "session-owner", customer: { email: "owner@example.test" } });
-    mocks.rate.mockResolvedValue({ allowed: true }); mocks.tier.mockResolvedValue({ level: 7, priceCents: 263500 });
+    mocks.rate.mockResolvedValue({ allowed: true }); mocks.tier.mockResolvedValue({ level: 7, priceCents: 2_160_000 });
   });
-  const buy = () => request({ action: "workshop-tier", userId: "forged-owner", equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 263500 });
+  const buy = () => request({ action: "workshop-tier", userId: "forged-owner", equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 2_160_000 });
   it("uses the session owner and a single explicit tier action", async () => {
     expect((await PATCH(buy())).status).toBe(200);
-    expect(mocks.tier).toHaveBeenCalledWith({ userId: "session-owner", requestKey: body.requestKey, equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 263500 });
+    expect(mocks.tier).toHaveBeenCalledWith({ userId: "session-owner", requestKey: body.requestKey, equipmentCode: "PRESS-0600", targetLevel: 7, expectedLevel: 0, expectedPriceCents: 2_160_000 });
     expect(mocks.purchase).not.toHaveBeenCalled();
   });
   it("requires login, feature access and rate budget before purchasing", async () => {
@@ -72,6 +72,23 @@ describe("direct workshop tier endpoint", () => {
     mocks.tier.mockRejectedValueOnce(new Error("[supabase:rpc_kq_purchase_workshop_tier] private details"));
     const response = await PATCH(buy()); expect(response.status).toBe(500);
     expect(await response.json()).toEqual({ error: "Service momentanément indisponible." });
+  });
+  it("forwards the single-level workshop quote and exposes a stale price for reconfirmation", async () => {
+    const upgrade = { action: "upgrade", equipmentCode: "WASHER-25L", expectedLevel: 3, tentNumber: 8 };
+    mocks.upgrade.mockResolvedValueOnce({ level: 4, priceCents: 950_000 });
+    const response = await PATCH(request({ ...upgrade, expectedPriceCents: 950_000 }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ level: 4, priceCents: 950_000 });
+    expect(mocks.upgrade).toHaveBeenCalledWith({
+      userId: "session-owner", requestKey: body.requestKey, equipmentCode: "WASHER-25L",
+      expectedLevel: 3, expectedPriceCents: 950_000, expectedUnits: 1, tentNumber: 8,
+    });
+    const message = "Le prix de l’amélioration a changé. Recharge la fiche avant de confirmer.";
+    mocks.upgrade.mockRejectedValueOnce(new Error(message));
+    const stale = await PATCH(request({ ...upgrade, expectedPriceCents: 2_970 }));
+    expect(stale.status).toBe(400);
+    expect(await stale.json()).toEqual({ error: message });
+    expect(mocks.upgrade).toHaveBeenLastCalledWith(expect.objectContaining({ expectedPriceCents: 2_970 }));
   });
 });
 
@@ -108,7 +125,7 @@ describe("individual tent equipment endpoints", () => {
     mocks.session.mockResolvedValue({ customerId: "session-owner", customer: { email: "owner@example.test" } });
     mocks.rate.mockResolvedValue({ allowed: true });
     mocks.shop.mockResolvedValue({ tentNumber: 2 });
-    mocks.storage.mockResolvedValue({ capacity: { freeUnits: 1000, totalUnits: 2000 } });
+    mocks.storage.mockResolvedValue({ capacity: { freeUnits: 1000, totalUnits: 2000 }, businessStartedAt: "2026-10-10T12:00:00Z", serverNow: "2026-10-10T16:00:00Z" });
     mocks.purchase.mockResolvedValue({ totalPriceCents: 35900 });
   });
   it("reads the selected tent for the authenticated owner", async () => {
@@ -116,13 +133,19 @@ describe("individual tent equipment endpoints", () => {
     expect(response.status).toBe(200);
     expect(mocks.shop).toHaveBeenCalledWith("session-owner", 2);
     expect(mocks.storage).toHaveBeenCalledWith("session-owner");
-    expect(await response.json()).toMatchObject({ storageCapacity: { freeUnits: 1000, totalUnits: 2000 } });
+    expect(await response.json()).toMatchObject({ storageCapacity: { freeUnits: 1000, totalUnits: 2000 },
+      businessClock: { startedAt: "2026-10-10T12:00:00Z", serverNow: "2026-10-10T16:00:00Z" } });
   });
   it("keeps equipment available with an explicit missing storage estimate", async () => {
     mocks.storage.mockRejectedValueOnce(new Error("storage unavailable"));
     const response = await GET(new Request("http://localhost/api/arena/placard/equipment"));
     expect(response.status).toBe(200);
-    expect(await response.json()).toMatchObject({ storageCapacity: null });
+    expect(await response.json()).toMatchObject({ storageCapacity: null, businessClock: null });
+  });
+  it("forwards the confirmed total for a mixed workshop basket", async () => {
+    const response = await POST(request({ equipmentCodes: ["LED-300", "WASHER-25L"], tentNumber: 2, expectedPriceCents: 665_900 }));
+    expect(response.status).toBe(200);
+    expect(mocks.purchase).toHaveBeenCalledWith(expect.objectContaining({ userId: "session-owner", tentNumber: 2, expectedPriceCents: 665_900 }));
   });
   it("passes the selected tent to a purchase without accepting a forged owner", async () => {
     const response = await POST(request({ equipmentCodes: ["LED-300"], userId: "forged", tentNumber: 2, expectedUnits: 4 }));

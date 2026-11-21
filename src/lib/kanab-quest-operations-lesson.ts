@@ -158,7 +158,9 @@ export function getKqOperationsEquipment(state: KqOperationsLessonState, tentNum
   const tent = tents.find(item => item.tentNumber === tentNumber) ?? tents[0];
   const building = buildings.find(item => item.buildingNumber === getKqEquipmentBuildingNumber(tent.tentNumber))!;
   const scopes = [tent, building, sharedEquipment];
+  const business = state.trial.commerce.business;
   return { ...tent, tents, buildings, equipmentScopeVersion: 3 as const, sharedEquipment, cashCents: state.trial.commerce.cashCents,
+    businessClock: business ? { startedAt: business.startedAt, serverNow: new Date(state.trial.clock).toISOString() } : null,
     career: createChanvrierCareerSnapshot({ xp: 4500, completedCultures: 45, processingPractice: { sifting: 10, washing: 6, pressing: 6 } }),
     storageCapacity: getKqOperationsStorage(state).capacity,
     expansionEnergyCents: state.tents.length < 8 ? quoteKqEnergy([...KQ_STARTING_EQUIPMENT_CODES]).totalCents : 0,

@@ -37,7 +37,7 @@ const CONTEXT_LINES: Record<string, string> = {
   "Décider après le lancer": "Les dés ont parlé. Regarde le résultat prévu et tes possibilités avant de valider.",
   "Comprendre le résultat": "Regardons ce que ce choix a changé pour tes plantes. Puis on passera à la suite.",
   "Relire le devis du plan": "Ton plan est encore un brouillon. Vérifions le devis avant d’enregistrer cet aménagement.",
-  "Dessiner ta première zone": "Tout commence ici. Dessine une zone de culture ; gardons aussi de la place pour sécher et ranger.",
+  "Aménager ta première zone": "Choisis un support dans Aménager. Garde aussi de la place pour le séchage et le stockage.",
   "Préparer le séchage": "Après la culture, il faudra sécher. Comparons la capacité et le prix du matériel.",
   "Faire de la place aux récoltes": "Voyons tes stocks et tes contenants libres. Chaque lot doit trouver sa place.",
   "Transformer quand c’est utile": "Voici l’atelier. Vérifie la machine, son état et son rendement avant de transformer une récolte.",

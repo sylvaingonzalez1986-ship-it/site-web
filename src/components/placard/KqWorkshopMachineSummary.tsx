@@ -1,6 +1,5 @@
 "use client";
 
-import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import Image from "next/image";
 import { Check, Package, RefreshCw, Wrench } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -49,17 +48,6 @@ export function KqWorkshopMachineSummary({ code, level, condition, cashCents, ca
     {reference ? <div className={styles.cadence} data-machine-processing-reference>
       <strong>{reference.gramsPerHour === null ? "Séchage autonome · attente estimée" : `${reference.gramsPerHour.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g/h de jeu · cadence estimée`}</strong>
       <p>{reference.material} · avant l’effet de la compétence de la personne au poste.</p>
-      <details><summary>Référence fabricant et hypothèses du jeu</summary><KqHelpDashboard>
-        <KqHelpGrid art="help-workshop" items={[
-          { label: "Modèle de référence", value: reference.model, art: "help-workshop" },
-          { label: "Donnée fabricant", value: reference.specification, art: "help-plan" },
-          { label: "1 h de jeu", value: "10 min réelles", art: "help-time" },
-          { label: "Manutention", value: "Travail actif", art: "help-team" },
-          { label: "Attente autonome", value: "0 h de travail consommée", art: "help-rest" },
-        ]} />
-        <KqHelpNote>{reference.note}</KqHelpNote>
-        <a href={reference.sourceUrl} target="_blank" rel="noreferrer">Consulter la fiche fabricant</a>
-      </KqHelpDashboard></details>
     </div> : null}
     <div className={styles.grid}>
       <KqEquipmentUpgrade compact workshopOnly code={code} level={level} cashCents={cashCents} career={career}

@@ -32,7 +32,7 @@ const helpLayout=${helpLayout};
 const initial=createKqWarehouseStarter();
 const plan=getKqWarehouseQuote({...initial,zones:[
  {...initial.zones[0],id:'a',buddieCode:'HH2026-002'},
- {...initial.zones[0],id:'b',x:4,width:2,buddieCode:'HH2026-003',optionCodes:['SIM-CLIMATE-03','SIM-NUTRITION-03']},
+ {...initial.zones[0],id:'b',x:4,width:2,buddieCode:'HH2026-003',optionCodes:['SIM-CLIMATE-UNIT-03','SIM-NUTRITION-03']},
  ...(helpLayout?[{...initial.zones[0],id:'c',x:6,width:2,buddieCode:'HH2026-004'}]:[])
 ]},initial).nextState;
 const members=getKqCampaignParticipants(plan,4).map((member,i)=>({...member,runId:'40000000-0000-4000-8000-00000000000'+(i+1)}));

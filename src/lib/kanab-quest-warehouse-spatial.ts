@@ -42,17 +42,28 @@ export type WarehouseSpatialLayout = {
   width: number;
   depth: number;
   items: WarehouseSpatialItem[];
+  /** Solid fittings with no work destination. The entry gate remains traversable. */
+  obstacles?: Pick<WarehouseSpatialItem, "id" | "x" | "z" | "width" | "depth">[];
   entry: { x: number; z: number };
 };
+
+function solidStations(state: KqWarehouseState) {
+  return [...(state.stationPlacements?.filter(station => station.code === "SIM-WATER-03") ?? []),
+    ...(state.handlingPlacements ?? []).map(item => ({ id: item.code, x: item.x, y: item.y }))];
+}
 
 /** Pure projection: no conversion, purchases, synthetic zones or changed IDs. */
 export function getKqWarehouseSpatialLayout(state: KqWarehouseState): WarehouseSpatialLayout {
   const { columns: width, rows: depth } = getKqWarehouseDimensions(state);
+  const obstacles = solidStations(state).map(station => ({
+    id: station.id, x: station.x + 0.5 - width / 2, z: station.y + 0.5 - depth / 2, width: 1, depth: 1,
+  }));
   const position = (zone: KqWarehouseState["zones"][number] | NonNullable<KqWarehouseState["serviceZones"]>[number]) => ({
     id: zone.id, name: zone.name, x: zone.x + zone.width / 2 - width / 2,
     z: zone.y + zone.height / 2 - depth / 2, width: zone.width, depth: zone.height, rotation: zone.rotation ?? 0,
   });
-  return { version: 1, width, depth, entry: { x: 0, z: depth / 2 + 0.7 }, items: [
+  return { version: 1, width, depth, entry: { x: 0, z: depth / 2 + 0.7 },
+    ...(obstacles.length ? { obstacles } : {}), items: [
     ...state.zones.map(zone => ({ ...position(zone), kind: "culture" as const, active: zone.active,
       href: `/arene/placard?view=workshop&zone=${encodeURIComponent(zone.id)}` })),
     ...(state.serviceZones ?? []).map(zone => ({ ...position(zone), kind: zone.kind, deviceCode: zone.deviceCode,
@@ -77,6 +88,7 @@ export function getKqWarehouseInaccessibleZoneIds(state: KqWarehouseState): stri
     for (let row = top; row <= bottom; row++) for (let column = left; column <= right; column++) occupied[row * gridColumns + column] = 1;
   };
   for (const zone of zones) occupy(zone.x, zone.y, zone.width, zone.height);
+  for (const station of solidStations(state)) occupy(station.x, station.y, 1, 1);
   for (const partition of state.partitions ?? []) {
     const bounds = getKqWarehousePartitionBounds(partition, { columns, rows });
     occupy(bounds.x + columns / 2 - bounds.width / 2, bounds.z + rows / 2 - bounds.depth / 2, bounds.width, bounds.depth);
@@ -108,6 +120,8 @@ export function getKqWarehouseInaccessibleZoneIds(state: KqWarehouseState): stri
 /** Historical access defects are grandfathered; a rearrangement cannot add one. */
 export function validateKqWarehouseSpatialTransition(previous: KqWarehouseState, next: KqWarehouseState): string[] {
   if (next.partitions === undefined && previous.partitions !== undefined) next = { ...next, partitions: previous.partitions };
+  if (next.stationPlacements === undefined && previous.stationPlacements !== undefined) next = { ...next, stationPlacements: previous.stationPlacements };
+  if (next.handlingPlacements === undefined && previous.handlingPlacements !== undefined) next = { ...next, handlingPlacements: previous.handlingPlacements };
   const errors = validateKqWarehouseState(next);
   if (errors.length) return errors;
   const alreadyBlocked = new Set(getKqWarehouseInaccessibleZoneIds(previous));

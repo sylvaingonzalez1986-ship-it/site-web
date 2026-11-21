@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import retail from "./kanab-quest-warehouse-retail-equipment.json";
 import { canPlayKqCard, getKqHandCodes, isKqCultureDead, KQ_ACTIVE_CARDS } from "./kanab-quest-game";
 import { isKqCampaign } from "./kanab-quest-campaign";
 import { getKqBuddieRotationRemaining } from "./kanab-quest-buddie-rotation";
@@ -8,6 +9,14 @@ import { KQ_CURING_DURATION_MS, projectKqStorageLot } from "./kanab-quest-storag
 import { createReleveCommerce, getReleveCommerceStorageSnapshot } from "./kanab-quest-releve-commerce";
 import { getKqJuryScoreFromRounds } from "./kanab-quest-market";
 import { applyKqReleveProductionAction as act, createKqReleveExpansion, createKqReleveProduction, getKqReleveHarvests, getKqReleveLaunchIssues, getKqRelevePlanReview, getKqReleveProductionOutstanding, getKqReleveProductionProgress, suggestKqRelevePlan, type KqReleveProductionState } from "./kanab-quest-releve-production";
+
+const lampCents = retail["MH-TS1000"].unitPriceCents;
+const extractorCents = retail["SIM-AIR-01"].unitPriceCents;
+const serviceEquipmentCents = retail["SJ-DRYIT90"].unitPriceCents + 4 * retail["LP-SUPER-1L"].unitPriceCents;
+function installedCost(materialCents: number, preparedM2: number) {
+  return materialCents + Math.round(materialCents * 15 / 100) + preparedM2 * 12_000;
+}
+const additionalZoneCents = installedCost(lampCents + extractorCents, 1);
 
 function planned(cultures: 1 | 2 = 1) {
   let state = createKqReleveProduction();
@@ -42,24 +51,28 @@ describe("La relève — plans and campaign budget", () => {
     expect(getKqReleveProductionProgress("plan", state).complete).toBe(false);
   });
 
-  it.each([[1, 1, 89_659, 11_670], [1, 2, 118_794, 18_120], [2, 1, 124_429, 23_340]] as const)("quotes %s zone(s) of %s m² with current costs and future bills", (cultures, width, cost, commitments) => {
+  it.each([[1, 1, 11_670], [1, 2, 18_120], [2, 1, 23_340]] as const)("quotes %s zone(s) of %s m² with current costs and future bills", (cultures, width, commitments) => {
     const state = createKqReleveProduction();
     const review = getKqRelevePlanReview(act(state, { type: "draft", warehouse: suggestKqRelevePlan(state, cultures, width) }));
+    const area = cultures * width;
+    const cost = installedCost(area * lampCents + cultures * extractorCents + serviceEquipmentCents, area + 2);
     expect(review.errors).toEqual([]);
     expect(review.quote?.totalCostCents).toBe(cost);
     expect(review.commitmentsCents).toBe(commitments);
     expect(review.availableCents).toBe(200_000 - cost - commitments);
+    expect(review.availableCents).toBeGreaterThanOrEqual(0);
   });
 
   it("charges additions once and reuses equipment instead of repurchasing the whole plan", () => {
     let state = planned();
-    expect(state.cashCents).toBe(110_341);
+    const firstPlanCents = installedCost(lampCents + extractorCents + serviceEquipmentCents, 3);
+    expect(state.cashCents).toBe(200_000 - firstPlanCents);
     expect(act(state, { type: "save-plan" })).toEqual(state);
     state = act(state, { type: "draft", warehouse: suggestKqRelevePlan(state, 2) });
-    expect(getKqRelevePlanReview(state).quote?.totalCostCents).toBe(34_770);
+    expect(getKqRelevePlanReview(state).quote?.totalCostCents).toBe(additionalZoneCents);
     state = act(state, { type: "save-plan" });
-    expect(state.cashCents).toBe(75_571);
-    expect(state.ledger.reduce((sum, entry) => sum + entry.amountCents, 0)).toBe(124_429);
+    expect(state.cashCents).toBe(200_000 - firstPlanCents - additionalZoneCents);
+    expect(state.ledger.reduce((sum, entry) => sum + entry.amountCents, 0)).toBe(firstPlanCents + additionalZoneCents);
     state = act(state, { type: "draft", warehouse: suggestKqRelevePlan(state) });
     const review = getKqRelevePlanReview(state);
     expect(review.quote?.totalCostCents).toBe(0);
@@ -85,7 +98,7 @@ describe("La relève — plans and campaign budget", () => {
     state = act(state, { type: "draft", warehouse: suggestKqRelevePlan(state, 2) });
     state = act(state, { type: "save-plan" });
     expect(getKqReleveProductionProgress("expansion", state).complete).toBe(true);
-    expect(state.cashCents).toBe(465_230);
+    expect(state.cashCents).toBe(500_000 - additionalZoneCents);
     expect(createKqReleveProduction().cashCents).toBe(200_000);
   });
 });

@@ -1,9 +1,10 @@
+import retail from "../kanab-quest-warehouse-retail-equipment.json";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const { createSupabaseServiceClient, getKqStaffSnapshot } = vi.hoisted(() => ({ createSupabaseServiceClient: vi.fn(), getKqStaffSnapshot: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient }));
 vi.mock("./kanab-quest-staff-backend", () => ({ getKqStaffSnapshot }));
 vi.mock("./kanab-quest-warehouse-flow-backend", () => ({ getKqWarehouseSalesForecast: vi.fn().mockResolvedValue(null) }));
-import { compactKqWarehouseToStarterFloor, createKqWarehouseStarter, getKqWarehouseQuote, type KqWarehouseState } from "../kanab-quest-warehouse";
+import { compactKqWarehouseToStarterFloor, createKqWarehouseEmpty, createKqWarehouseStarter, getKqWarehouseQuote, type KqWarehouseState } from "../kanab-quest-warehouse";
 import { getKqWarehouseProcessingEquipment, getKqWarehouseRunSnapshot, getKqWarehouseSnapshot, saveKqWarehouseLayout } from "./kanab-quest-warehouse-backend";
 import { getKqWarehouseSalesForecast } from "./kanab-quest-warehouse-flow-backend";
 import { initializeKqWarehouseCondition } from "../kanab-quest-warehouse-condition";
@@ -79,6 +80,24 @@ describe("warehouse service boundary", () => {
     expect(rpc.mock.calls.filter(([name]) => name === "rpc_kq_warehouse_save")).toHaveLength(1);
   });
 
+  it("copies only known nested fan mount fields and recomputes station service", async () => {
+    const base = createKqWarehouseEmpty();
+    const rpc = vi.fn().mockImplementation(async (name, args) => ({ error: null, data: name === "rpc_kq_warehouse_receipt"
+      ? null : { ...current(), state: name === "rpc_kq_warehouse_save" ? args.p_next_state : base } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    const mount = { kind: "wall", face: "east" } as const;
+    const fan = { id: "fan", code: "SIM-AIR-01", x: 0, y: 1, mount };
+    const station = { id: "pump", code: "SIM-WATER-03", x: 5, y: 2 } as const;
+    const candidate = { ...base, airPlacements: [fan], stationPlacements: [station] };
+    const quote = getKqWarehouseQuote(candidate, base);
+    expect(quote.nextState.airPlacements?.[0].mount).not.toBe(mount);
+    const saved = await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, expectedCostCents: quote.totalCostCents,
+      state: { ...candidate, airPlacements: [{ ...fan, mount: { ...mount, invented: true } }],
+        stationService: { invented: { waterAreaM2: 99, hygieneAreaM2: 99 } } } });
+    expect(saved.state.airPlacements).toEqual([fan]);
+    expect(saved.state.stationService).toEqual({});
+  });
+
   it("saves non-overlapping walls without requiring a 3D doorway", async () => {
     const state: KqWarehouseState = { ...starter, serviceZones: [], zones: [{ ...starter.zones[0], x: 4, y: 4 }], partitions: [
       { id: "top", x: 2, y: 2, axis: "x", length: 6 }, { id: "bottom", x: 2, y: 6, axis: "x", length: 6 },
@@ -130,6 +149,26 @@ describe("warehouse service boundary", () => {
     expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")?.[1]).toMatchObject({
       p_next_state: { zones: starter.zones, serviceZones: state.serviceZones }, p_cost_cents: 0,
     });
+  });
+
+  it.each(["player", "employee"])("allows the airlock to be stored and reinstalled during %s production", async actor => {
+    const zone = { ...starter.zones[0], id: "main", active: true, x: 5, y: 6, width: 4, height: 1 };
+    const airlock = { id: "airlock", code: "SIM-HYGIENE-03", x: 5, y: 9 } as const;
+    let plan = getKqWarehouseQuote({ ...createKqWarehouseEmpty(), zones: [zone], stationPlacements: [airlock] }).nextState;
+    const busy = actor === "player" ? { activeRun: true, activeRuns: [{ zoneId: zone.id }] }
+      : { productionReservation: { zoneId: zone.id, enabled: true, equipmentEditable: false } };
+    const rpc = vi.fn().mockImplementation(async (name, args) => {
+      if (name === "rpc_kq_warehouse_receipt") return { data: null, error: null };
+      if (name === "rpc_kq_warehouse_save") plan = args.p_next_state;
+      return { data: { ...current(), state: plan, ...busy }, error: null };
+    });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    expect(plan.stationService?.main.hygieneAreaM2).toBe(4);
+    for (const stationPlacements of [[], [airlock]]) {
+      await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: { ...plan, stationPlacements }, expectedCostCents: 0 });
+      expect(plan.stationPlacements).toEqual(stationPlacements);
+    }
+    expect(getKqStaffSnapshot).not.toHaveBeenCalled();
   });
 
   it("saves adjacent 2D zones without requiring a passage around an enclosed zone", async () => {
@@ -299,17 +338,17 @@ describe("warehouse service boundary", () => {
   });
 
   it("recomputes fictional modules and strips client-defined effects before spending", async () => {
-    const candidate = { ...starter, zones: starter.zones.map(zone => ({ ...zone, optionCodes: ["SIM-NUTRITION-03", "SIM-CLIMATE-02"], qualityBonus: 999 })),
-      optionInventory: [{ code: "SIM-NUTRITION-03", quantity: 1, discountCents: 99999 }] };
+    const candidate = { ...starter, zones: starter.zones.map(zone => ({ ...zone, optionCodes: ["SIM-CONTROL-UNIT-01", "SIM-CLIMATE-UNIT-02"], qualityBonus: 999 })),
+      optionInventory: [{ code: "SIM-CONTROL-UNIT-01", quantity: 1, discountCents: 99999 }] };
     const quote = getKqWarehouseQuote(candidate, starter);
     const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve({ error: null,
       data: name === "rpc_kq_warehouse_receipt" ? null : name === "rpc_kq_warehouse_save" ? { ...current(), revision: 2, state: quote.nextState } : current() }));
     createSupabaseServiceClient.mockReturnValue({ rpc });
     await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: candidate, expectedCostCents: quote.totalCostCents });
     const args = rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")![1];
-    expect(args.p_cost_cents).toBe(4255);
-    expect(args.p_next_state.optionInventory).toEqual([{ code: "SIM-CLIMATE-02", quantity: 1 }, { code: "SIM-NUTRITION-03", quantity: 1 }]);
-    expect(args.p_next_state.zones[0].optionCodes).toEqual(["SIM-CLIMATE-02", "SIM-NUTRITION-03"]);
+    expect(args.p_cost_cents).toBe(Math.round(retail["SIM-CLIMATE-UNIT-02"].unitPriceCents * 1.15) + retail["SIM-CONTROL-UNIT-01"].unitPriceCents);
+    expect(args.p_next_state.optionInventory).toEqual([{ code: "SIM-CLIMATE-UNIT-02", quantity: 1 }, { code: "SIM-CONTROL-UNIT-01", quantity: 1 }]);
+    expect(args.p_next_state.zones[0].optionCodes).toEqual(["SIM-CLIMATE-UNIT-02", "SIM-CONTROL-UNIT-01"]);
     expect(args.p_next_state.zones[0]).not.toHaveProperty("qualityBonus");
     expect(args.p_request.state.optionInventory[0]).not.toHaveProperty("discountCents");
   });
@@ -339,12 +378,17 @@ describe("warehouse service boundary", () => {
     expect(createSupabaseServiceClient).not.toHaveBeenCalled();
   });
 
-  it("initializes the physical warehouse before a new run even when its room was never opened", async () => {
+  it("initializes the empty warehouse and blocks a new run before furnishing it", async () => {
+    const empty = createKqWarehouseEmpty();
     const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve({ error: null,
-      data: name === "rpc_kq_warehouse_initialize" ? current() : { ...current(), state: null, revision: 0 } }));
+      data: name === "rpc_kq_warehouse_initialize_onboarding" ? { ...current(), state: empty }
+        : { ...current(), state: null, revision: 0 } }));
     createSupabaseServiceClient.mockReturnValue({ rpc });
-    expect(await getKqWarehouseRunSnapshot(userId)).toMatchObject({ revision: 1, sourceState: starter, activeAreaM2: 1 });
-    expect(rpc.mock.calls.map(([name]) => name)).toEqual(["rpc_kq_warehouse_snapshot", "rpc_kq_warehouse_initialize"]);
+    await expect(getKqWarehouseRunSnapshot(userId)).rejects.toThrow("Active au moins une zone");
+    expect(rpc.mock.calls.map(([name]) => name)).toEqual(["rpc_kq_warehouse_snapshot", "rpc_kq_warehouse_initialize_onboarding"]);
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_warehouse_initialize_onboarding", {
+      p_user_id: userId, p_starter_state: createKqWarehouseStarter(true), p_empty_state: empty,
+    });
   });
 
   it("converts before commerce settlement can sell legacy overflow automatically", async () => {
@@ -352,7 +396,7 @@ describe("warehouse service boundary", () => {
     let converted = false;
     const rpc = vi.fn().mockImplementation((name: string) => {
       order.push(name);
-      if (name === "rpc_kq_warehouse_initialize") converted = true;
+      if (name === "rpc_kq_warehouse_initialize_onboarding") converted = true;
       return Promise.resolve({ error: null, data: converted ? current() : { ...current(), state: null, revision: 0 } });
     });
     createSupabaseServiceClient.mockReturnValue({ rpc });
@@ -361,7 +405,7 @@ describe("warehouse service boundary", () => {
       throw new Error("forecast temporarily unavailable");
     });
     expect(await getKqWarehouseSnapshot(userId)).toMatchObject({ state: starter, revision: 1 });
-    expect(order).toEqual(["rpc_kq_warehouse_snapshot", "rpc_kq_warehouse_initialize", "commerce-forecast", "rpc_kq_warehouse_snapshot"]);
+    expect(order).toEqual(["rpc_kq_warehouse_snapshot", "rpc_kq_warehouse_initialize_onboarding", "commerce-forecast", "rpc_kq_warehouse_snapshot"]);
   });
 
   it("uses the shared workshop levels and excludes machines requiring maintenance", async () => {
@@ -422,7 +466,7 @@ describe("warehouse service boundary", () => {
     createSupabaseServiceClient.mockReturnValue({ rpc });
     await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: candidate, expectedCostCents: quote.totalCostCents })).rejects.toMatchObject({ status: 409 });
     expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save")![1]).toMatchObject({
-      p_cost_cents: 413_540, p_next_state: { serviceZones: candidate.serviceZones, equipment: expect.arrayContaining([{ code: "CURTEC-60L", quantity: 4 }]) },
+      p_cost_cents: Math.round(4 * retail["CURTEC-60L"].unitPriceCents * 1.15), p_next_state: { serviceZones: candidate.serviceZones, equipment: expect.arrayContaining([{ code: "CURTEC-60L", quantity: 4 }]) },
     });
   });
 

@@ -38,23 +38,25 @@ describe("warehouse balance versions", () => {
     expect(getKqWarehouseZoneQuote({ ...base, lightingCode: "MH-FCE3000" }).equipmentQualityBonus).toBe(0);
   });
 
-  it("keeps device quality available after the module cap and preserves each premium yield gain", () => {
+  it("preserves device quality above the module cap of the historical all-module setup", () => {
     const options = KQ_WAREHOUSE_OPTIONS.filter(option => option.tier === "premium").map(option => option.code);
-    const plan = equipped("SIM-LIGHT-03", "SIM-AIR-03", options);
-    expect(getKqWarehouseZoneQuote(plan.zones[0])).toMatchObject({
+    const zone = { ...createKqWarehouseStarter().zones[0], lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: options };
+    expect(getKqWarehouseZoneQuote(zone)).toMatchObject({
       qualityBonus: 8, equipmentQualityBonus: 4, moduleQualityBonus: 4, yieldBonusPercent: 24, estimatedHarvestGrams: 310,
     });
     const standard = options.map(code => code.replace(/03$/, "02"));
-    const allStandard = getKqWarehouseZoneQuote({ ...plan.zones[0], optionCodes: standard });
+    const allStandard = getKqWarehouseZoneQuote({ ...zone, optionCodes: standard });
     expect(allStandard.yieldBonusPercent).toBe(16);
     for (const premium of options) {
       const upgrade = standard.map(code => code.slice(0, -2) === premium.slice(0, -2) ? premium : code);
-      expect(getKqWarehouseZoneQuote({ ...plan.zones[0], optionCodes: upgrade }).yieldBonusPercent).toBe(17);
+      expect(getKqWarehouseZoneQuote({ ...zone, optionCodes: upgrade }).yieldBonusPercent).toBe(17);
     }
   });
 
   it("preserves old snapshots and saves with the exact original bonuses", () => {
-    const plan = equipped("SIM-LIGHT-03", "SIM-AIR-03", ["SIM-CLIMATE-03", "SIM-NUTRITION-03"]);
+    const equipment = equipped("SIM-LIGHT-03", "SIM-AIR-03", ["SIM-NUTRITION-03"]);
+    const plan = { ...equipment, zones: equipment.zones.map(zone => ({ ...zone, optionCodes: ["SIM-CLIMATE-03", "SIM-NUTRITION-03"] })),
+      optionInventory: [...equipment.optionInventory!, { code: "SIM-CLIMATE-03", quantity: 1 }] };
     for (const zoneId of [undefined, plan.zones[0].id]) {
       const legacy = getKqWarehouseRunSnapshot(plan, 6, zoneId, 1);
       expect(legacy).not.toHaveProperty("balanceVersion");

@@ -1,7 +1,9 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { VILLAGE_SEA_LEVEL, VILLAGE_SEA_SIZE } from "./village-layout";
+import { HEMP_FARM_SITE, VILLAGE_SEA_LEVEL, VILLAGE_SEA_SIZE, mainlandToGround } from "./village-layout";
+import { createVillageHempFarmLandscape } from "./village-hemp-farm";
 import { projectVillageSurface, villageGraniteBlock, villageMaterial } from "./village-surfaces";
+import { registerVillagePigments, type VillageSeasonPigment } from "./village-seasons";
 
 type Point = readonly [number, number];
 type Vertex = readonly [number, number, number];
@@ -13,8 +15,8 @@ const shore: readonly Point[] = [
   [40 - halfDiagonal, -40],
   [-67, -39], [-64, -33], [-57, -28], [-48, -29], [-42, -33], [-37, -36], [-32, -35],
   [-27, -31], [-23, -29], [-20, -27.4], [-17, -28], [-14, -30.5],
-  [-10, -33.5], [-6, -34], [-2, -32], [0, -30.6], [2, -29.2], [5, -27.7],
-  [8, -28.6], [11, -30.5], [13, -33.3], [17, -35.4], [22, -36],
+  [-11, -29.5], [-9, -27.2], [-6, -26], [-3.7, -25], [-1.3, -23.7], [1.3, -23.1],
+  [3.5, -22.6], [6.3, -22.23], [7.2, -23.16], [8.2, -25.36], [9.3, -27.1], [11.4, -29.25], [14, -32.5], [17, -34.7], [22, -36],
   [27, -35.1], [31, -32.3], [35, -30.8], [40, -31.9], [46, -35],
   [52, -37], [57, -36], [62, -38], [66, -43], [halfDiagonal - 44, -44],
 ];
@@ -27,9 +29,7 @@ const colors = {
   gorse: "#6a8c56", gorseLight: "#85a360", blooms: "#d7af45", marram: "#b4ba79",
 };
 
-function ground(across: number, depth: number): Point {
-  return [(depth + across) * Math.SQRT1_2, (depth - across) * Math.SQRT1_2];
-}
+const ground = mainlandToGround;
 
 // Sampling each span includes the zero-across column that ends at the square's corner.
 const shoreline = new THREE.CatmullRomCurve3(shore.map(([across, depth]) =>
@@ -41,7 +41,7 @@ const groves = [
   { across: -43, inland: 12, trees: [[-46, 7.8, 1.62], [-42.5, 8.1, 2.05], [-39.8, 7.7, 1.44]] },
   { across: -18, inland: 7, trees: [[-22, 6.7, 1.91], [-19.1, 7.0, 2.35], [-16.4, 6.8, 1.77], [-14, 7.4, 1.4]] },
   { across: -5, inland: 23, trees: [[-9.3, 9.4, 1.66], [-6.2, 9.3, 2.09], [-3.4, 9.6, 2.23], [-.9, 9.8, 1.55]] },
-  { across: 7, inland: 9, trees: [[2.3, 6.8, 1.67], [5.6, 7.3, 2.17], [8.2, 7.2, 2.36], [11, 7.6, 1.58]] },
+  { across: 8, inland: 19, trees: [[2.3, 8.8, 1.67], [5.6, 9.1, 2.17], [8.2, 8.9, 2.36], [11, 8.3, 1.58]] },
   { across: 29, inland: 17, trees: [[25.9, 8.4, 1.62], [29.3, 8.7, 2.07], [32.1, 8.5, 1.93], [35.2, 8.1, 1.54]] },
 ];
 
@@ -69,7 +69,10 @@ export function createVillageMainland() {
       const [x, z] = ground(across, depth - inland);
       const ridge = 1.12 * Math.exp(-(((across + 8 + inland * .22) / 12) ** 2 + ((inland - 16) / 7) ** 2))
         + 1.07 * Math.exp(-(((across - 16) / 9) ** 2 + ((inland - 25 + across * .35) / 7) ** 2));
-      const relief = up + ridge * THREE.MathUtils.smoothstep(inland, 2, 7);
+      const farmTerrace = (1 - THREE.MathUtils.smoothstep(Math.abs(across - HEMP_FARM_SITE.across), 3.7, 6.8))
+        * (1 - THREE.MathUtils.smoothstep(Math.abs(depth - inland - HEMP_FARM_SITE.depth), 4.2, 7.9))
+        * THREE.MathUtils.smoothstep(inland, .6, 1.6);
+      const relief = THREE.MathUtils.lerp(up + ridge * THREE.MathUtils.smoothstep(inland, 2, 7), HEMP_FARM_SITE.height - .045, farmTerrace);
       const y = THREE.MathUtils.lerp(Math.min(up, edgeHeight), relief, THREE.MathUtils.smoothstep(landWidth - inland, 0, 12));
       positions.push(x, y, z);
       paint.set(base).lerp(accent.set(tint), mix);
@@ -105,11 +108,20 @@ export function createVillageMainland() {
     ];
   });
   const width = rows[0].length;
+  const seasonalRanges: { start: number; end: number; pigment: VillageSeasonPigment }[] = [];
+  const firstMeadowRow = 5;
   for (let index = 0; index < rows.length - 1; index++) {
+    const meadowBoundary = indices.length + (firstMeadowRow - 1) * 6;
     for (let layer = 0; layer < width - 1; layer++) {
       const a = index * width + layer, b = a + width;
       indices.push(a, b, a + 1, a + 1, b, b + 1);
     }
+    // Include the upper vertices of the last granite triangle strip so the
+    // shared meadow boundary keeps the same colour on both sides.
+    seasonalRanges.push(
+      { start: meadowBoundary + 2, end: meadowBoundary + 4, pigment: "meadow" },
+      { start: meadowBoundary + 5, end: indices.length, pigment: "meadow" },
+    );
   }
   const land = new THREE.BufferGeometry();
   land.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
@@ -118,7 +130,15 @@ export function createVillageMainland() {
   land.computeVertexNormals();
 
   const parts = [land.toNonIndexed()];
+  const landSurface = new THREE.Mesh(land, new THREE.MeshBasicMaterial());
+  const down = new THREE.Raycaster(new THREE.Vector3(0, 20, 0), new THREE.Vector3(0, -1, 0));
+  const farmLandscape = createVillageHempFarmLandscape((x, z) => {
+    down.ray.origin.set(x, 20, z);
+    return down.intersectObject(landSurface, false)[0]?.point.y ?? HEMP_FARM_SITE.height;
+  });
   land.dispose();
+  landSurface.material.dispose();
+  let vertexCount = indices.length;
 
   function add(source: THREE.BufferGeometry, color: string, [x, y, z]: Vertex, size: Vertex, yaw = 0, lean = 0) {
     const part = source.index ? source.toNonIndexed() : source;
@@ -132,6 +152,10 @@ export function createVillageMainland() {
       accent.copy(paint).multiplyScalar(.97 + light * .19).toArray(shades, i * 3);
     }
     part.setAttribute("color", new THREE.BufferAttribute(shades, 3));
+    if (color === colors.needles || color === colors.needlesDark || color === colors.needlesLight) {
+      seasonalRanges.push({ start: vertexCount, end: vertexCount + vertex.count, pigment: "mainlandEvergreen" });
+    }
+    vertexCount += vertex.count;
     parts.push(part);
   }
 
@@ -152,8 +176,8 @@ export function createVillageMainland() {
   for (const [across, depth, radius, height, tint] of [
     [-21.4, -27.55, .69, .88, 2], [-20.6, -27.24, .41, .61, 1], [-19.3, -27.45, .5, .76, 4],
     [-17.7, -27.98, .72, 1.04, 3], [-15.2, -29.96, .48, .74, 2], [-14.8, -30.18, .4, .85, 4],
-    [3.5, -28.38, .58, .83, 1], [4.3, -27.69, .35, .8, 3], [5.4, -27.25, .61, .95, 2],
-    [6.4, -27.55, .41, .66, 3], [7.5, -28.2, .65, .76, 4], [10.2, -30.07, .66, .93, 2],
+    [3.5, -22.28, .58, .83, 1], [4.3, -22.06, .35, .8, 3], [5.4, -21.85, .61, .95, 2],
+    [6.4, -22.02, .41, .66, 3], [7.45, -23.32, .65, .76, 4], [10.2, -27.85, .66, .93, 2],
     [31.9, -31.62, .65, .76, 1], [33.7, -30.68, .51, .84, 4], [35.4, -30.51, .7, .83, 3],
     [36.6, -31.01, .47, .71, 1], [37.1, -30.72, .36, .84, 2],
   ]) {
@@ -177,7 +201,7 @@ export function createVillageMainland() {
   for (const [across, layer, scale] of [
     [-46, 6, 1.6], [-43, 6.4, 1.8], [-25, 6.6, 1.24], [-22, 5.7, 1.62], [-20.2, 5.7, 1.41], [-18, 5.5, 1.7],
     [-13.1, 8.3, 1.67], [-11, 8.8, 1.49], [-9.1, 8.7, 1.59], [-6.9, 8.5, 1.35], [-4.9, 8.7, 1.78],
-    [1.5, 5.8, 1.57], [3.4, 5.9, 1.23], [4.8, 6.1, 1.55], [7, 6, 1.59], [9, 6.2, 1.33],
+    [1.5, 7.8, 1.57], [2.9, 8.6, 1.23], [9.9, 6.05, 1.55], [10.9, 6.1, 1.22], [8.9, 5.9, 1.08],
     [14, 7.9, 1.56], [16.3, 7.9, 1.37], [18, 7.8, 1.69], [25, 7.8, 1.67],
     [29, 7.9, 1.26], [31, 6.1, 1.49], [33, 6.1, 1.71], [35, 6.3, 1.29], [40, 7.2, 1.6],
   ]) {
@@ -191,7 +215,7 @@ export function createVillageMainland() {
   for (const [across, layer, scale] of [
     [-23, 4.6, .98], [-20.8, 3, 1.35], [-19.1, 2.7, .92], [-17.8, 4.7, 1.26],
     [-13.2, 7, 1.43], [-11.3, 7.3, 1.19], [-9.9, 7.2, .94],
-    [4.1, 3.7, 1.32], [5.5, 3, 1], [6.6, 3.6, 1.57], [7.9, 4.8, 1.1],
+    [4.1, 3.7, .96], [5.5, 3, 1], [6.6, 3.6, 1.17], [8.05, 4.8, .86],
     [15.3, 8.6, 1.43], [17.4, 8.7, 1.1], [18.9, 8.9, 1.13], [34.1, 5.1, 1.11], [35.8, 5.2, .92],
   ]) {
     const [x, y, z] = at(across, layer);
@@ -210,9 +234,11 @@ export function createVillageMainland() {
   if (!geometry) throw new Error("Unable to merge the village mainland");
   projectVillageSurface(geometry, "granite");
   const mesh = new THREE.Mesh(geometry, villageMaterial({ vertexColors: true, roughness: .96 }, "granite"));
+  registerVillagePigments(mesh, seasonalRanges);
   mesh.name = "village-mainland";
   mesh.castShadow = true;
   mesh.receiveShadow = true;
+  mesh.add(farmLandscape);
   mesh.raycast = () => {};
   return mesh;
 }

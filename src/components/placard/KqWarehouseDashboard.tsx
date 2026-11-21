@@ -2,12 +2,13 @@
 
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { ArrowRight, BarChart3, ChevronDown, Coins, Package, Ruler, Sprout } from "lucide-react";
+import { ArrowRight, BarChart3, ChevronDown, Coins, Package, Sprout } from "lucide-react";
 import type { KqWarehouseQuote, KqWarehouseSummary } from "@/lib/kanab-quest-warehouse";
 import type { KqWarehouseCondition } from "@/lib/kanab-quest-warehouse-condition";
 import { WarehouseBars, WarehouseStackedBar } from "./KqWarehouseCharts";
 import { KqWarehouseCosts } from "./KqWarehouseCosts";
 import { KqWarehouseReserve } from "./KqWarehouseReserve";
+import { WarehouseStockRegister } from "./KqWarehouseSupplies";
 import styles from "./KqWarehouseDashboard.module.css";
 
 const TABS = [
@@ -69,7 +70,7 @@ export function KqWarehouseDashboard({ summary, installedSummary, condition, pro
     if (open === undefined) setLocalOpen(nextOpen);
     if (nextOpen !== expanded) onOpenChange?.(nextOpen);
   }}>
-    <summary className={styles.heading}><BarChart3 size={23} aria-hidden="true" /><span><strong>Ton entrepôt en chiffres</strong><small>Performances, coûts et réserve</small></span><ChevronDown className={styles.chevron} size={20} aria-hidden="true" /></summary>
+    <summary className={styles.heading}><BarChart3 size={23} aria-hidden="true" /><span><strong>Ton entrepôt en chiffres</strong></span><ChevronDown className={styles.chevron} size={20} aria-hidden="true" /></summary>
     <div className={styles.body}>
       <div className={styles.tabs} role="tablist" aria-label="Bilan de l’entrepôt">{TABS.map((item, index) => <button key={item.id} ref={node => { buttons.current[index] = node; }} type="button" role="tab" id={`${id}-${item.id}-tab`} aria-controls={`${id}-${item.id}-panel`} aria-selected={tab === item.id} tabIndex={tab === item.id ? 0 : -1} onKeyDown={event => navigateTabs(event, index)} onClick={() => setTab(item.id)} data-warehouse-summary-tab={item.id}><item.icon size={17} aria-hidden="true" />{item.label}</button>)}</div>
       {dirty && <p className={styles.draft}>{tab === "reserve" && installedSummary ? "Ta réserve actuelle reste inchangée tant que le plan n’est pas enregistré." : "Aperçu avec tes modifications. Enregistre le plan pour les appliquer."}</p>}
@@ -94,20 +95,12 @@ export function KqWarehouseDashboard({ summary, installedSummary, condition, pro
             ]} /> : <p className={styles.status}>L’occupation du stock n’est pas disponible pour le moment.</p>}
             {storageShortage > 0 && <p className={styles.warning}>{currentOverflow > 0 ? `Il manque ${mass(currentOverflow)} pour les lots et les cultures déjà réservés.` : `Il manquerait ${mass(storageShortage)} de stockage pour accueillir une récolte complète.`}</p>}
           </article>
-          <article className={`${styles.panel} ${styles.surface}`}>
-            <header className={styles.panelHeading}><Ruler size={19} aria-hidden="true" /><h3>Surface · {area(summary.totalAreaM2)}</h3></header>
-            <WarehouseStackedBar label="Répartition de la surface au sol" segments={[
-              { id: "culture", label: "Culture", value: summary.cultureAreaM2, displayValue: area(summary.cultureAreaM2), tone: "green" },
-              { id: "drying", label: "Séchage", value: summary.dryingAreaM2, displayValue: area(summary.dryingAreaM2), tone: "amber" },
-              { id: "storage", label: "Stockage", value: summary.storageAreaM2, displayValue: area(summary.storageAreaM2), tone: "blue" },
-              { id: "free", label: "Libre", value: summary.freeAreaM2, displayValue: area(summary.freeAreaM2), tone: "slate" },
-            ]} />
-          </article>
         </div>
         <div className={styles.outlets}><p><strong>Débouchés sur 24 h</strong><span>{typeof salesGramsPerDay === "number" ? `Potentiel de vente : ${mass(salesGramsPerDay)}, selon ta clientèle et ton stock prêt à vendre.` : "Les ventes dépendent de ta clientèle et de ton stock prêt à vendre."}</span></p><Link href="/arene/placard?view=market">Voir le marché <ArrowRight size={14} aria-hidden="true" /></Link></div>
       </div>
       <div role="tabpanel" id={`${id}-costs-panel`} aria-labelledby={`${id}-costs-tab`} hidden={tab !== "costs"} tabIndex={0}><KqWarehouseCosts summary={summary} quote={quote} dirty={dirty} migrationCreditCents={migrationCreditCents} /></div>
       <div role="tabpanel" id={`${id}-reserve-panel`} aria-labelledby={`${id}-reserve-tab`} hidden={tab !== "reserve"} tabIndex={0}>
+        {expanded && tab === "reserve" && <WarehouseStockRegister />}
         {reservePreviewOnly && <p className={styles.draft}>{quote ? "La réserve enregistrée n’est pas disponible dans cette vue. Les quantités ci-dessous sont un aperçu du plan." : "La réserve enregistrée n’est pas disponible dans cette vue. Corrige le plan pour prévisualiser la réserve après installation."}</p>}
         {(!reservePreviewOnly || quote) && <KqWarehouseReserve summary={installedSummary ?? summary} condition={reservePreviewOnly ? projectedCondition : condition} mode={reservePreviewOnly ? "preview" : "current"} />}
         {dirty && installedSummary && <details className={styles.reserveProjection} data-warehouse-reserve-projection><summary>Après installation du plan<ChevronDown size={18} aria-hidden="true" /></summary>{quote ? <KqWarehouseReserve summary={summary} condition={projectedCondition} mode="preview" /> : <p className={styles.draft} data-warehouse-reserve-preview-unavailable>Corrige le plan pour prévisualiser la réserve après installation.</p>}</details>}

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { X } from "lucide-react";
-import { KQ_FARM_GUIDE_OPEN_EVENT } from "@/lib/kanab-quest-farm-guide";
+import { KQ_FARM_GUIDE_OPEN_EVENT } from "@/lib/kanab-quest-guide-navigation";
 import { advanceVillageDialogue, type NpcDialogue } from "./village-npc-dialogue";
 import type { VillageNpcId, VillageNpcInteraction } from "./village-npc-types";
 import styles from "./VillagePrototype.module.css";
@@ -16,12 +16,11 @@ export type VillageNpcBridge = {
   bubbleTail: RefObject<SVGPathElement | null>;
 };
 
-export function useVillageNpcDialogue(tutorialActive: boolean, hidden: boolean, beforeInteract: () => void) {
+export function useVillageNpcDialogue(hidden: boolean, beforeInteract: () => void) {
   const [dialogue, setDialogue] = useState<NpcDialogue | null>(null);
   const [reading, setReading] = useState(false);
   const history = useRef<Partial<Record<VillageNpcId, NpcDialogue>>>({});
   const current = useRef<NpcDialogue | null>(null);
-  const tutorialRequested = useRef(false);
   const bubble = useRef<HTMLElement>(null), tail = useRef<SVGPathElement>(null);
   const close = useCallback((restoreFocus = false) => {
     const previous = current.current;
@@ -33,11 +32,9 @@ export function useVillageNpcDialogue(tutorialActive: boolean, hidden: boolean, 
     if (previous && (restoreFocus || focused)) document.querySelector<HTMLButtonElement>(`[data-npc-access="${previous.npcId}"]`)?.focus({ preventScroll: true });
   }, []);
   const interact = useCallback((id: VillageNpcId) => {
-    if (tutorialActive || tutorialRequested.current) return;
     beforeInteract();
     if (id === "loic") {
       close();
-      tutorialRequested.current = true;
       window.dispatchEvent(new CustomEvent(KQ_FARM_GUIDE_OPEN_EVENT, { detail: { source: "loic" } }));
       return;
     }
@@ -46,11 +43,7 @@ export function useVillageNpcDialogue(tutorialActive: boolean, hidden: boolean, 
     current.current = next;
     history.current[id] = next;
     setDialogue(next);
-  }, [beforeInteract, close, tutorialActive]);
-  useEffect(() => {
-    // The real controller confirms opening/closing; a new tap never mounts it again.
-    tutorialRequested.current = tutorialActive;
-  }, [tutorialActive]);
+  }, [beforeInteract, close]);
   useEffect(() => {
     const opening = () => close();
     window.addEventListener(KQ_FARM_GUIDE_OPEN_EVENT, opening);
@@ -62,8 +55,8 @@ export function useVillageNpcDialogue(tutorialActive: boolean, hidden: boolean, 
     return () => window.clearTimeout(timer);
   }, [dialogue, close, hidden, reading]);
   const bridge: VillageNpcBridge = {
-    active: tutorialActive ? "loic" : dialogue?.npcId ?? null,
-    interaction: tutorialActive ? { type: "tutorial", emphasis: 0.3 } : dialogue ? { type: dialogue.type, emphasis: dialogue.emphasis } : undefined,
+    active: dialogue?.npcId ?? null,
+    interaction: dialogue ? { type: dialogue.type, emphasis: dialogue.emphasis } : undefined,
     onInteract: interact, bubbleNode: bubble, bubbleTail: tail,
   };
   return { dialogue, bridge, close, setReading };

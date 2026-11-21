@@ -1,9 +1,9 @@
 /** The guide only explains and navigates. It never performs a game action. */
-export const KQ_FARM_GUIDE_OPEN_EVENT = "kq:farm-guide-open";
+export { KQ_FARM_GUIDE_OPEN_EVENT } from "./kanab-quest-guide-navigation";
 export const KQ_FARM_GUIDE_KEY = "kq:farm-guide:v1";
 
-export type FarmGuideView = "hub" | "workshop" | "collection" | "shop" | "game" | "harvests" | "arena" | "market" | "treasury" | "staff" | "social" | "missions" | "school" | "notebook" | "profile" | "ranking";
-export type FarmGuideDestination = { view: FarmGuideView; section?: string; pole?: "accounting" | "bank"; href?: string };
+import type { FarmGuideDestination } from "./kanab-quest-guide-navigation";
+export type { FarmGuideDestination, FarmGuideView } from "./kanab-quest-guide-navigation";
 export const FARM_GUIDE_CHAPTERS = [
   { id: "arrival", title: "Les clés de grand-père", tab: "Mon quartier", view: "hub", story: "Grand-père t’a légué sa maison et sa grange. Loïc, ton voisin, t’accompagne pour transformer cet héritage en ferme. La carte est ton point de départ ; son résumé indique ce qui demande ton attention.", task: "Repère ta prochaine action et les bâtiments de la ferme.", target: "[data-placard-next-action]" },
   { id: "warehouse", title: "Transformer la grange", tab: "Entrepôt", view: "workshop", story: "Avant de planter, prenons les mesures de la grange. Dans l’entrepôt, chaque zone a un rôle : culture, séchage ou stockage. L’Atelier accueille le trim et les machines de transformation.", task: "Sur le plan, touche une zone : Aménager ouvre son matériel, Buddies permet de choisir les variétés. Vérifie la surface et le devis avant de confirmer.", target: "[data-warehouse-map]" },
@@ -84,7 +84,7 @@ export function getFarmGuideAdvice(chapter: FarmGuideChapter, facts: FarmGuideFa
   }
   if (chapter.id === "warehouse") {
     if (facts.room === "culture" && facts.planDraft) return advice("Relire le devis du plan", "Ton aménagement est encore un brouillon. Vérifie les surfaces et le montant avant d’enregistrer ; annuler permet de garder l’installation précédente.", "[data-warehouse-plan-review]");
-    if (facts.room === "culture" && facts.emptyPlan) return advice("Dessiner ta première zone", "Choisis une zone de culture dans les outils du plan, puis trace sa surface. Prévois aussi séchage et stockage ; le devis s’ajuste avant ton accord.", "[data-warehouse-map]");
+    if (facts.room === "culture" && facts.emptyPlan) return advice("Aménager ta première zone", "Ouvre Aménager, choisis un support et place-le dans une case libre. Ajoute un éclairage au support, puis prévois le séchage et le stockage avant de valider le devis.", "[data-warehouse-build-shop]");
     if (facts.room === "drying") return advice("Préparer le séchage", "Ce matériel protège la qualité après la récolte. Compare capacité, gamme et coût avant de modifier ton installation.", "[data-postharvest-guide=drying]");
     if (facts.room === "storage") return advice("Faire de la place aux récoltes", "Les stocks et les contenants disponibles passent en premier. Range chaque lot par variété ; les améliorations et leurs coûts se consultent ensuite.", "[data-storage-inventory]");
     if (facts.room === "processing") return advice("Préparer les récoltes à l’Atelier", "Dans Trim, prépare chaque nouvelle récolte avant le jury : travaille toi-même ou choisis un salarié. Le mode manuel privilégie la présentation ; la machine va plus vite mais l’abîme. Consulte aussi les machines de transformation et leurs coûts avant de préparer un produit dans Commerce.", "[data-warehouse-workshop]");

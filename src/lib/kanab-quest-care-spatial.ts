@@ -1,5 +1,6 @@
 import type { KqGameState } from "./kanab-quest-game";
 import type { KqCareProblem } from "./kanab-quest-care";
+import { getKqWarehousePreparationEffects } from "./kanab-quest-warehouse-preparations";
 
 /** Cell coordinates are relative to the saved, already rotated footprint. */
 export type KqCareSector = { zoneId: string; x: number; y: number };
@@ -35,6 +36,21 @@ function draw(seed: number, stage: number, code: string, purpose: string) {
   hash = Math.imul(hash ^ (hash >>> 16), 0x85ebca6b);
   return (hash ^ (hash >>> 13)) >>> 0;
 }
+
+/** Protect each *new* event in the affected zone without changing the game dice. */
+export function isKqWarehouseProtectedCarePlant(state: KqGameState, code: string, plant: KqCarePlant, event: "appearance" | "worsening" | "spread", pest: boolean) {
+  const preparations = state.warehousePreparations?.[plant.zoneId];
+  if (!preparations) return false;
+  const warehouse = state.campaign?.members.find(member => member.zoneId === plant.zoneId)?.warehouse ?? state.warehouse;
+  if (warehouse?.zoneId !== plant.zoneId) return false;
+  const { preventionPercent } = getKqWarehousePreparationEffects(warehouse.activeAreaM2, preparations, pest);
+  return draw(state.seed, state.stageIndex, code, `${event}/${plantKey(plant)}`) % 10_000 < preventionPercent * 100;
+}
+
+export function hasKqEntranceAirlockSnapshot(state: KqGameState) {
+  const zoneId = state.warehouse?.zoneId;
+  return zoneId !== undefined && state.warehousePreparations?.[zoneId]?.entranceAirlock !== undefined;
+}
 export function getKqCareProblemPlants(state: Layout & {seed: number}, problem: KqCareProblem): KqCarePlant[] {
   if (problem.plants) return problem.plants;
   const cells = getKqCareSectors(state);
@@ -46,17 +62,19 @@ export function getKqCareProblemPlants(state: Layout & {seed: number}, problem: 
 /** A single frontier advances per operation. Adjacent pots can share a cell or
  * touch across two cultivated cells. Empty aisles and other runs break contact. */
 export function resolveKqPlantFocus(state: KqGameState, problem: KqCareProblem,
-  protection: (p: KqCarePlant) => { reduction: number } | undefined, generalHelp: boolean, failed: boolean) {
+  protection: (p: KqCarePlant) => { reduction: number } | undefined, generalHelp: boolean, failed: boolean, pest = true) {
   const plants = getKqCareProblemPlants(state, problem);
   const zones = cropZones(state);
   const occupied = new Set(plants.map(plantKey));
+  const entranceRules = hasKqEntranceAirlockSnapshot(state);
   const viable = new Map<string, KqCarePlant>(), exposed = new Map<string, KqCarePlant>();
   const survivors: KqCarePlant[] = [];
   for (const p of plants) {
     const zone = zones.find(z => z.id === p.zoneId);
     if (!zone) continue;
     const shield = protection(p);
-    const next = p.severity + Number(failed && !shield) - (shield?.reduction ?? 0) - Number(generalHelp);
+    const next = p.severity + Number(failed && !shield && !isKqWarehouseProtectedCarePlant(state, problem.code, p, "worsening", pest))
+      - (shield?.reduction ?? 0) - Number(generalHelp);
     if (next > 0) survivors.push({ ...p, severity: Math.min(3, next) as KqCarePlant["severity"] });
     const col = (zone.x + p.x) * 2 + p.slot % 2, row = (zone.y + p.y) * 2 + Math.floor(p.slot / 2);
     for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
@@ -65,13 +83,20 @@ export function resolveKqPlantFocus(state: KqGameState, problem: KqCareProblem,
       if (!neighbor) continue;
       const newPlant: KqCarePlant = { zoneId: neighbor.id, x: Math.floor(x/2) - neighbor.x, y: Math.floor(y/2) - neighbor.y, slot: ((y%2)*2 + x%2) as KqCarePlant["slot"], severity: 1 };
       const key = plantKey(newPlant);
-      if (!occupied.has(key)) (shield || protection(newPlant) ? exposed : viable).set(key, newPlant);
+      if (!occupied.has(key) && (entranceRules || !isKqWarehouseProtectedCarePlant(state, problem.code, newPlant, "spread", pest))) {
+        (shield || protection(newPlant) ? exposed : viable).set(key, newPlant);
+      }
     }
   }
   const escapes = draw(state.seed, state.stageIndex, problem.code, "escape") % 10 === 0;
   const candidates = [...(viable.size ? viable : escapes ? exposed : []).values()];
-  if (candidates.length) survivors.push(candidates[draw(state.seed, state.stageIndex, problem.code, "neighbor") % candidates.length]);
-  return { plants: survivors, spread: candidates.length > 0 };
+  const neighbor = candidates.length ? candidates[draw(state.seed, state.stageIndex, problem.code, "neighbor") % candidates.length] : undefined;
+  // A blocked exposure ends the attempt, even when other neighbors are available.
+  if (neighbor && (!entranceRules || !isKqWarehouseProtectedCarePlant(state, problem.code, neighbor, "spread", pest))) {
+    survivors.push(neighbor);
+    return { plants: survivors, spread: true };
+  }
+  return { plants: survivors, spread: false };
 }
 export const careApplicationKey = (a: { productCode: string; stageIndex: number; target?: KqCareSector }) =>
   JSON.stringify([a.productCode, a.stageIndex, a.target && sectorKey(a.target)]);

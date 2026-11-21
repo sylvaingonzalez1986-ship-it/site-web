@@ -9,9 +9,9 @@ import { KQ_PLAYER_COUNTRYSIDE_COST_CENTS, KQ_PLAYER_DAILY_HOURS, getKqPlayerSki
 import { KQ_PROSPECTING_DEPARTMENTS } from "@/lib/kanab-quest-prospecting";
 import { KQ_STAFF_CITIES, KQ_STAFF_SKILLS, getKqStaffLevel } from "@/lib/kanab-quest-staff";
 import type { KqStaffSkill, KqStaffSnapshot } from "@/lib/kanab-quest-staff-types";
+import { KqActivityDuration } from "./KqActivityDuration";
 import type { KqStaffConfirmationDraft } from "./KqStaffOperations";
 import { KqStaffProspectingMap } from "./KqStaffProspectingMap";
-import { KqProgressMeter } from "./KqVisuals";
 import { getKqStaffBenefitPreview } from "@/lib/kanab-quest-staff-benefits";
 import { getKqStaffBenefitRows, KqStaffBenefits } from "./KqStaffBenefits";
 import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
@@ -38,16 +38,15 @@ const descriptions: Record<Activity, string> = {
 export function KqPlayerWorkDesk({ snapshot, disabled, prepare, fixedKind }: Props) {
   const [prospectingMode, setProspectingMode] = useState<"city" | "countryside">("city");
   const kind: Activity = fixedKind === "sales" && prospectingMode === "countryside" ? "countryside" : fixedKind;
-  const [hourInput, setHourInput] = useState(fixedKind === "administration" ? "0.5" : "2");
+  const [chosenHours, setChosenHours] = useState(fixedKind === "administration" ? .5 : 2);
   const [runId, setRunId] = useState(snapshot.context.activeRuns[0]?.id ?? "");
   const [flowerId, setFlowerId] = useState(snapshot.context.processingBatches[0]?.flowerId ?? "");
   const [cityId, setCityId] = useState(KQ_STAFF_CITIES[0].id);
   const [department, setDepartment] = useState<string>("35");
   const workday = getKqPlayerWorkday(snapshot);
-  const committedHours = workday.dailyHours - workday.remainingHours;
   const skills = getKqPlayerSkills(snapshot.state);
   const rural = kind === "countryside";
-  const hours = rural ? KQ_PLAYER_DAILY_HOURS : Number(hourInput);
+  const hours = rural ? KQ_PLAYER_DAILY_HOURS : chosenHours;
   const minimum = kind === "sales" ? 2 : .5;
   const validHours = Number.isFinite(hours) && hours >= minimum && hours <= KQ_PLAYER_DAILY_HOURS && Number.isInteger(hours * 2);
   const benefit = validHours ? getKqStaffBenefitPreview({ actor: { skills }, kind, hours, context: snapshot.context, cityId }) : null;
@@ -78,19 +77,19 @@ export function KqPlayerWorkDesk({ snapshot, disabled, prepare, fixedKind }: Pro
   }
 
   if (fixedKind === "processing" && snapshot.context.processingWorkVersion === 1) return <div className={styles.form} data-player-processing-entry>
-    <KqProgressMeter label="Tes heures utilisées ou réservées aujourd’hui" value={committedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(committedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles.`} />
+    <p>{hoursLabel(workday.remainingHours)} disponibles aujourd’hui.</p>
     <p>Le devis dans Commerce indique les heures nécessaires. Un salarié utilise ses propres heures de transformation.</p>
     <Link href="/arene/placard?view=market&section=sales" prefetch={false} className={styles.primary}>Choisir un lot à transformer</Link>
   </div>;
 
   return <div className={styles.form} data-player-work-desk>
-    <KqProgressMeter label="Tes heures utilisées ou réservées aujourd’hui" value={committedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(committedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles, partagées avec ton trim et tes autres gestes dans la ferme.`} />
     <p className={styles.muted}>Aucun salaire personnel. Prochaine journée : <time dateTime={workday.nextDayAt}>{dateTime(workday.nextDayAt)}</time> (heure réelle).</p>
     <form className={styles.form} data-player-work-form data-player-work-kind={kind} data-tutorial-observation={!disabled ? "personal-work" : undefined} onSubmit={submit}>
       <fieldset className={styles.form} disabled={disabled}>
         {fixedKind === "sales" ? <div className={styles.actions} role="group" aria-label="Type de prospection"><button type="button" data-player-prospecting-mode="city" aria-pressed={!rural} onClick={() => setProspectingMode("city")}>En ville</button><button type="button" data-player-prospecting-mode="countryside" aria-pressed={rural} onClick={() => setProspectingMode("countryside")}>Sillonner les campagnes</button></div> : null}
         <dl className={`${styles.numbers} ${styles.workQuote}`}><div><dt>{kind === "sales" || rural ? "Trajet à payer au départ" : "Paiement immédiat"}</dt><dd>{formatKqCash(debitCents)}</dd></div>{validHours ? <div><dt>Fin estimée · heure réelle</dt><dd>{dateTime(estimatedEnd)}</dd></div> : null}</dl>
-        <label>Tes heures à réserver<input type="number" min={rural ? KQ_PLAYER_DAILY_HOURS : minimum} max={KQ_PLAYER_DAILY_HOURS} step={.5} value={rural ? KQ_PLAYER_DAILY_HOURS : hourInput} readOnly={rural} required onChange={event => setHourInput(event.target.value)} /></label>
+        {rural ? <p>Durée de la tournée <strong>{hoursLabel(KQ_PLAYER_DAILY_HOURS)}</strong></p> :
+          <KqActivityDuration label="Tes heures à réserver" hours={hours} availableHours={workday.remainingHours} minimumHours={minimum} disabled={disabled} onChange={setChosenHours} />}
         {kind === "culture" ? <label>Ta culture à accompagner<select value={runId} required onChange={event => setRunId(event.target.value)}><option value="" disabled>Choisir une culture</option>{snapshot.context.activeRuns.map(run => <option value={run.id} key={run.id}>{run.name}</option>)}</select></label> : null}
         {kind === "processing" ? <label>Ton lot en séchage ou affinage<select value={flowerId} required onChange={event => setFlowerId(event.target.value)}><option value="" disabled>Choisir un lot</option>{batches.map(batch => <option value={batch.flowerId} key={batch.flowerId}>{batch.name}</option>)}</select></label> : null}
         {kind === "sales" ? <KqStaffProspectingMap cityId={cityId} onCityChange={setCityId} disabled={disabled} prospecting={snapshot.state.prospecting} networkPartners={snapshot.context.shopPartners} /> : null}

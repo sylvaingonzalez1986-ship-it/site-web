@@ -20,6 +20,19 @@
 .gameSummary:has(.lifeMenu[open]) { z-index: 7; }
 .gameSummary a { color: inherit; text-underline-offset: 3px; }
 .gameSummary .control { padding: 5px 10px; min-height: 44px; }
+.gameSummary:has(.calendar) { max-width: none; gap: 0 12px; padding: 5px 7px 5px 12px; }
+.walletRow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.calendar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.calendarBody { min-width: 148px; }
+.calendarIcon { flex: none; color: #805013; }
+.calendar[data-village-phase="night"] .calendarIcon { color: #39517a; }
+.calendarDate { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 10px; font-size: 12px; }
+.calendarDate b { font-weight: 750; }
+.calendarDate > span { color: #415d50; font-weight: 600; }
+.calendarBody [role="meter"] { height: 5px; margin-top: 1px; }
+.calendarBody strong { margin: 0; }
+.stage[data-clock-pending]:not([data-village-unavailable]) > :not(.loading) { visibility: hidden; }
+.stage[data-clock-pending] .loading { background: #f1e6cc; }
 .lifeMenu summary { list-style: none; }
 .lifeMenu summary::-webkit-details-marker { display: none; }
 .lifeChoices { position: absolute; z-index: 8; top: calc(100% + 6px); left: 0; display: grid; gap: 3px; width: 180px; }
@@ -35,7 +48,7 @@
 .label[data-offscreen] { visibility: visible; }
 .label[data-offscreen="true"] { opacity: 0; pointer-events: none; }
 .labelIcon { display: none; }
-.label[data-selected] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.label:is([data-selected], [data-highlighted]) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .label small { display: block; margin-top: 3px; font-size: 10px; font-weight: 500; }
 /* In 3D, pointer hits belong to the model. Keep a visible keyboard focus target. */
 .labels .mailboxTrigger:not(:focus-visible) { opacity: 0; pointer-events: none; }
@@ -83,6 +96,7 @@
   .cameraControls > span { height: 2px; }
   .labels .label { opacity: 0; min-height: 36px; pointer-events: none; }
   .labels .label:is([data-selected], :focus-visible) { opacity: 1; pointer-events: auto; }
+  .labels .label[data-village-building="hemp-farm"][data-offscreen="false"] { opacity: 1; min-height: 36px; padding-inline: 10px; pointer-events: auto; }
   .bubbleSheet { padding: 9px; }
   .detailHeading h2 { font-size: 25px; }
   .activity { min-height: 54px; padding: 8px; gap: 6px; }
@@ -93,8 +107,21 @@
 @media (max-width: 620px) {
   .header { flex-direction: column; gap: 4px; max-width: calc(100% - var(--hud-left) - var(--hud-right) - 50px); }
   .gameSummary { max-width: 100%; }
+  .cash { display: grid; gap: 1px; }
+  .cash strong { margin: 0; }
   .lifeChoices { max-height: calc(100dvh - var(--hud-top) - 175px - env(safe-area-inset-bottom)); }
   .stage[data-village-unavailable] { padding-top: calc(var(--hud-top) + 116px); }
+}
+@media (max-width: 900px), (min-width: 1000px) and (max-width: 1100px) {
+  .gameSummary:has(.calendar) { flex-direction: column; align-items: stretch; max-width: 100%; padding: 6px 10px 4px; }
+  .calendar { padding-bottom: 3px; border-bottom: 1px solid #38534940; }
+  .calendarBody { flex: 1; min-width: 0; }
+  .walletRow { justify-content: space-between; }
+  .gameSummary:has(.calendar) .lifeChoices { max-height: calc(100dvh - var(--hud-top) - 190px - env(safe-area-inset-bottom)); }
+  .stage[data-village-unavailable] { padding-top: calc(var(--hud-top) + 152px); }
+}
+@media (max-height: 540px) and (min-width: 500px) {
+  .header { flex-direction: column; gap: 4px; max-width: calc(100% - var(--hud-left) - var(--hud-right) - 100px); }
 }
 @media (max-height: 540px) {
   .cameraControls { top: var(--hud-top); transform: none; grid-template-columns: repeat(2, 44px); gap: 4px; }

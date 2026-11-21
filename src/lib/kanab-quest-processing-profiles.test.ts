@@ -63,6 +63,15 @@ describe("processing profiles retain manufacturer material distinctions", () => 
     expect(first.machines[0].quantityGrams).not.toBe(first.inputGrams);
   });
 
+  it("applies the cart saving to dryer loading and preserves machine waiting and other work", () => {
+    const source = { inputGrams: 20000, productGrams: 2000, equipmentCodes: ["SIFT-TRAY", "FREEZE-DRYER"] };
+    const baseline = createKqProcessingPlan(source)!;
+    const helped = createKqProcessingPlan({ ...source, dryerHandlingSaving: .25 })!;
+    expect(helped.nominalHours).toBeCloseTo(baseline.nominalHours - .25);
+    expect(helped.passiveHours).toBe(baseline.passiveHours);
+    expect(helped.machines[0]).toEqual(baseline.machines[0]);
+  });
+
   it("does not duplicate a stage or disguise legacy family estimates as old manufacturer specifications", () => {
     const simple = createKqProcessingPlan({ inputGrams: 1000, productGrams: 100, equipmentCodes: ["SIFT-TRAY"] });
     const repeated = createKqProcessingPlan({ inputGrams: 1000, productGrams: 100, equipmentCodes: ["SIFT-TRAY", "SIFT-TRAY"] });

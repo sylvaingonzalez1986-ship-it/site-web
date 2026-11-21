@@ -1,4 +1,5 @@
 import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
+import { KQ_STAFF_MAX_TRIM_RATE } from "./kanab-quest-staff-trim";
 import type { KqStaffEffect, KqStaffRawSnapshot, KqStaffState, KqStaffTask, KqStaffTrimLot } from "./kanab-quest-staff-types";
 
 const HOUR_MS = KQ_GAME_DAY_MS / 24;
@@ -40,7 +41,7 @@ export function advanceKqSharedTrim(state: KqStaffState, raw: KqStaffRawSnapshot
   const availableAt = (lot: typeof lots[number]) => Math.max(Date.parse(lot.createdAt ?? raw.context.businessStartedAt), legacyRelease.get(lot.flowerId) ?? 0);
   const progressAt = (task: KqStaffTask) => Date.parse(task.trimProgressAt ?? task.startedAt);
   for (const task of shifts) {
-    if (!Number.isFinite(task.trimRateGramsPerHour) || task.trimRateGramsPerHour! <= 0 || task.trimRateGramsPerHour! > 600
+    if (!Number.isFinite(task.trimRateGramsPerHour) || task.trimRateGramsPerHour! <= 0 || task.trimRateGramsPerHour! > KQ_STAFF_MAX_TRIM_RATE
       || !task.trimMode || !Number.isInteger(task.trimQualityDelta) || !Number.isFinite(progressAt(task))) {
       throw new Error("Réservation de trim incompatible. Actualise l’Atelier.");
     }

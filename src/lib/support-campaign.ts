@@ -2,6 +2,8 @@ export const SUPPORT_CAMPAIGN_ID = "producer-support";
 export const SUPPORT_STORAGE_KEY = "lcb-support-attempt-v1";
 export const SUPPORT_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const SUPPORT_TOKEN = /^[0-9a-f]{64}$/;
+export const SUPPORT_VIVA_ORDER_CODE = /^\d{1,32}$/;
+export type SupportProvider = "viva" | "swiss-bitcoin-pay";
 
 export class SupportError extends Error {
   constructor(message: string, public status = 400) { super(message); }
@@ -16,12 +18,13 @@ export type SupportSummary = {
   campaign: SupportCampaign; collectedCents: number; contributionCount: number;
   feesCents: number | null;
   needsReconciliation: boolean; contributions: PublicSupport[]; nextOffset: number | null;
-  checkoutAvailable: boolean; updatedAt: string;
+  checkoutAvailable: boolean; providers?: SupportProvider[]; updatedAt: string;
 };
 export type SupportForm = { pseudonym: string; amountCents: number; publishName: boolean; publishAmount: boolean };
-export type SupportAttempt = SupportForm & { id: string; token: string };
+export type SupportAttempt = SupportForm & { id: string; token: string; provider?: SupportProvider };
 export type SupportStatus = {
-  id: string; state: "creating" | "ready" | "uncertain" | "cancelled" | "paid" | "refunded" | "review";
+  id: string; provider?: SupportProvider;
+  state: "creating" | "ready" | "uncertain" | "cancelled" | "expired" | "paid" | "refunded" | "review";
   amountCents: number; refundedCents: number; checkoutUrl: string | null; expiresAt: string;
 };
 export type AdminSupportRow = {
@@ -30,14 +33,26 @@ export type AdminSupportRow = {
   feeReference: string | null; feeUpdatedAt: string | null; feeUpdatedBy: string | null;
   createdAt: string; paidAt: string | null; orderCode: string | null; transactionId: string | null;
   sourceCode: string; checkoutState: string; reviewRequired: boolean; hidden: boolean;
+  provider: SupportProvider; invoiceId: string | null; providerStatus: string | null; providerIssue: string | null;
 };
 export type AdminSupportDashboard = {
   campaign: SupportCampaign; configured: boolean; configurationError: string | null;
+  providers: SupportProvider[];
   rows: AdminSupportRow[]; total: number; page: number;
   totals: { capturedCents: number; refundedCents: number; feesCents: number; missingFees: number; reviewCount: number };
 };
 
 export const supportEuros = (cents: number) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
+
+export function supportProviderLabel(provider: SupportProvider) {
+  return provider === "swiss-bitcoin-pay" ? "Swiss Bitcoin Pay · Lightning" : "Viva.com";
+}
+
+export function parseSupportProvider(value: unknown): SupportProvider {
+  if (value === undefined || value === "viva") return "viva";
+  if (value === "swiss-bitcoin-pay") return value;
+  throw new SupportError("Moyen de paiement inconnu.");
+}
 
 /** Parse a decimal euro amount without rounding away extra decimals. */
 export function parseSupportEuros(value: string): number | null {
@@ -76,9 +91,11 @@ export function supportCsv(rows: AdminSupportRow[]): string {
   };
   const euros = (cents: number | null) => cents === null ? "" : (cents / 100).toFixed(2).replace(".", ",");
   return "\uFEFF" + [
-    ["Type", "Référence soutien", "Créé le", "Confirmé le", "Pseudo", "Source Viva", "Commande Viva", "Transaction Viva", "Demandé EUR", "Encaissé EUR", "Remboursé EUR", "Frais EUR", "Net après frais EUR", "Justificatif frais", "À rapprocher"],
-    ...rows.map(row => ["SOUTIEN", row.id, row.createdAt, row.paidAt, row.pseudonym, row.sourceCode, row.orderCode, row.transactionId,
+    ["Type", "Référence soutien", "Créé le", "Confirmé le", "Pseudo", "Prestataire", "Source Viva", "Commande Viva", "Transaction Viva", "Facture Swiss Bitcoin Pay", "Demandé EUR", "Encaissé EUR", "Remboursé EUR", "Frais EUR", "Net après frais EUR", "Justificatif frais", "À rapprocher", "État prestataire", "Anomalie"],
+    ...rows.map(row => ["SOUTIEN", row.id, row.createdAt, row.paidAt, row.pseudonym, supportProviderLabel(row.provider),
+      row.provider === "viva" ? row.sourceCode : null, row.orderCode, row.transactionId, row.invoiceId,
       euros(row.amountCents), euros(row.capturedCents), euros(row.refundedCents), euros(row.feesCents),
-      euros(row.feesCents === null || row.reviewRequired ? null : row.capturedCents - row.refundedCents - row.feesCents), row.feeReference, row.reviewRequired ? "oui" : "non"]),
+      euros(row.feesCents === null || row.reviewRequired ? null : row.capturedCents - row.refundedCents - row.feesCents), row.feeReference,
+      row.reviewRequired ? "oui" : "non", row.providerStatus, row.providerIssue]),
   ].map(row => row.map(cell).join(";")).join("\r\n");
 }

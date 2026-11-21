@@ -1,7 +1,7 @@
 import { getKqPlayerWorkday } from "./kanab-quest-player-work";
 import { getKqStaffCapacity } from "./kanab-quest-staff";
 import type { KqStaffSnapshot } from "./kanab-quest-staff-types";
-export { getKqTeamWorkEntries, getKqWorkerProcessingEnd } from "./kanab-quest-team-work";
+export { getKqTeamWorkEntries } from "./kanab-quest-team-work";
 
 const round = (hours: number) => Math.round(hours * 100) / 100;
 
@@ -19,6 +19,11 @@ export function getKqTeamDayBudget(snapshot: KqStaffSnapshot, assigneeId: string
     else if (task.processingShift) pending += task.hours - (task.processingUsedHours ?? 0);
     else if (task.kind === "production") pending += task.hours - (task.productionWorkedHours ?? 0);
     else if (task.status === "running") pending += task.hours;
+  }
+  for (const receipt of snapshot.context.teamWork ?? []) {
+    if (receipt.kind === "cleaning" && receipt.assigneeId === assigneeId && Date.parse(receipt.completesAt) > Date.parse(snapshot.serverNow)) {
+      pending += receipt.hours;
+    }
   }
   // Workshop segments debit their booked hours when funded. Other timed
   // missions only settle on completion. The clock alone posts neither debit.

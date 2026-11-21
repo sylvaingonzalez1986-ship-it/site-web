@@ -257,6 +257,11 @@ export function AdminOrderDetailModal({
                   Bascule vers la carte engagée le {formatPaymentDate(order.swissBitcoinCardStartedAt)}.
                 </p>
               )}
+              {order.swissBitcoinArchiveRequestedAt && !order.archivedAt && order.paymentState !== "paid" && (
+                <p className="mt-2 text-sm font-semibold text-ink">
+                  Retrait demandé le {formatPaymentDate(order.swissBitcoinArchiveRequestedAt)}. La commande reste visible jusqu’à la vérification de l’expiration du lien.
+                </p>
+              )}
               {bitcoinPayments.length === 0 && (
                 <p className="mt-2 text-sm text-charcoal">
                   {bitcoinHistoryUnavailable ? "L’historique est momentanément indisponible." : "Aucune tentative chargée."}

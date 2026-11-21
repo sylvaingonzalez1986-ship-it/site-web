@@ -5,6 +5,9 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { PGlite } from "@electric-sql/pglite";
 import { createServer } from "vite";
+import { installWarehousePreparations } from "./lib/warehouse-preparation-fixture.mjs";
+
+import { installCultureCareFixture, installCultureCareWork } from "./lib/culture-care-fixture.mjs";
 
 const db = new PGlite();
 const vite = await createServer({ configFile: false, envDir: false, resolve: { alias: { "@": path.resolve("src") } }, server: { middlewareMode: true, watch: null } });
@@ -38,69 +41,7 @@ async function createRun(owner, state = startKqGame(31)) {
 try {
   ({ startKqGame, resolveKqStage, advanceKqStage } = await vite.ssrLoadModule("/src/lib/kanab-quest-game.ts"));
   ({ applyKqCareProduct, performKqBasicCare, KQ_CARE_PRODUCTS, KQ_BASIC_CARE_PRICE_CENTS, getKqCannabinoidReport } = await vite.ssrLoadModule("/src/lib/kanab-quest-care.ts"));
-  await db.exec(`
-    CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role;
-    CREATE SCHEMA auth; CREATE TABLE auth.users(id UUID PRIMARY KEY);
-    CREATE TYPE kq_run_status AS ENUM('active','completed','abandoned');
-    CREATE TYPE lottery_card_rarity AS ENUM('common','silver','gold');
-    CREATE TABLE kq_runs(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID REFERENCES auth.users,state JSONB,
-      status kq_run_status,started_at TIMESTAMPTZ DEFAULT now(),updated_at TIMESTAMPTZ DEFAULT now(),completed_at TIMESTAMPTZ,integrity_code TEXT,
-      CHECK((status='completed')=(completed_at IS NOT NULL)));
-    CREATE TABLE kq_flowers(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),run_id UUID UNIQUE REFERENCES kq_runs,owner_id UUID,
-      variety_code TEXT,variety_name TEXT,quality SMALLINT,traits TEXT[],combos TEXT[],battle_stats JSONB,status TEXT DEFAULT 'available',
-      created_at TIMESTAMPTZ DEFAULT now(),locked_at TIMESTAMPTZ,burned_at TIMESTAMPTZ);
-    CREATE TABLE kq_equipment_wallets(user_id UUID PRIMARY KEY REFERENCES auth.users,cash_cents INTEGER DEFAULT 100000 CHECK(cash_cents>=0),updated_at TIMESTAMPTZ DEFAULT now());
-    CREATE TABLE kq_treasury_accounts(user_id UUID PRIMARY KEY REFERENCES auth.users,started_at TIMESTAMPTZ DEFAULT now());
-    CREATE TABLE kq_treasury_journal(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID REFERENCES kq_treasury_accounts,
-      source_key TEXT,kind TEXT,reference TEXT,occurred_at TIMESTAMPTZ,postings JSONB,UNIQUE(user_id,source_key));
-    CREATE TABLE kq_treasury_balances(user_id UUID REFERENCES kq_treasury_accounts,account TEXT,balance_cents BIGINT,PRIMARY KEY(user_id,account));
-    -- Existing production accounting is exercised below using the real post/
-    -- pair functions, plus a minimal opening position and wallet trigger.
-    CREATE FUNCTION kq_treasury_initialize(p_user UUID) RETURNS VOID LANGUAGE plpgsql AS $$
-      DECLARE cash INTEGER; BEGIN
-      SELECT cash_cents INTO cash FROM kq_equipment_wallets WHERE user_id=p_user FOR UPDATE;
-      INSERT INTO kq_treasury_accounts(user_id) VALUES(p_user) ON CONFLICT DO NOTHING;
-      IF FOUND THEN PERFORM kq_treasury_pair(p_user,'opening','opening',now(),'cash','opening_equity',cash,'Opening fixture'); END IF;
-      END $$;
-    CREATE FUNCTION fixture_wallet_movement() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN
-      IF EXISTS(SELECT 1 FROM kq_treasury_accounts WHERE user_id=NEW.user_id) THEN
-        PERFORM kq_treasury_pair(NEW.user_id,'cash-movement','cash:'||gen_random_uuid(),now(),'cash','suspense',NEW.cash_cents-OLD.cash_cents,'Wallet fixture');
-      END IF; RETURN NEW; END $$;
-    CREATE TRIGGER fixture_wallet_movement AFTER UPDATE ON kq_equipment_wallets FOR EACH ROW EXECUTE FUNCTION fixture_wallet_movement();
-    CREATE FUNCTION rpc_kq_ensure_equipment_profile(p_user_id UUID) RETURNS VOID LANGUAGE sql AS $$
-      INSERT INTO kq_equipment_wallets(user_id) VALUES(p_user_id) ON CONFLICT DO NOTHING $$;
-    CREATE FUNCTION kq_business_settle(p_user UUID) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN RETURN; END $$;
-    CREATE TABLE lottery_card_collections(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),code TEXT,is_active BOOLEAN DEFAULT true);
-    CREATE TABLE lottery_card_definitions(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),collection_id UUID,code TEXT,name TEXT,
-      rarity lottery_card_rarity,card_number INTEGER,is_active BOOLEAN DEFAULT true,image_url TEXT,description TEXT);
-    CREATE TABLE lottery_card_instances(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID,card_definition_id UUID,
-      ticket_id UUID,kq_support_entitlement_id UUID,source_bot_battle_id UUID,pack_slot INTEGER,created_at TIMESTAMPTZ DEFAULT now());
-    CREATE TABLE kq_support_booster_entitlements(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID,ticket_id UUID,
-      status TEXT DEFAULT 'available',card_count INTEGER DEFAULT 10,opened_at TIMESTAMPTZ);
-    CREATE FUNCTION lottery_secure_random_int(lo INTEGER,hi INTEGER) RETURNS INTEGER LANGUAGE sql AS $$ SELECT lo $$;
-    CREATE TABLE kq_card_burn_receipts(id UUID,run_id UUID,card_instance_id UUID,card_code TEXT,stage_index SMALLINT,use_kind TEXT,burned_at TIMESTAMPTZ);
-    CREATE TABLE kq_battles(id UUID,player_one_id UUID,player_two_id UUID,flower_one_id UUID,flower_two_id UUID,status TEXT,seed INTEGER,
-      rounds JSONB,winner_id UUID,locked_at TIMESTAMPTZ,verdict_at TIMESTAMPTZ);
-    CREATE TABLE kq_bot_battles(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),flower_id UUID,user_id UUID,bot_code TEXT,bot_flower JSONB,seed INTEGER,rounds JSONB,winner TEXT,experience_awarded NUMERIC DEFAULT 0.1,verdict_at TIMESTAMPTZ DEFAULT now());
-    CREATE TABLE kq_rank_profiles(user_id UUID PRIMARY KEY,season_code TEXT,rating INTEGER,season_points INTEGER,wins INTEGER,losses INTEGER,
-      streak INTEGER,burned_flowers INTEGER,arena_experience NUMERIC,updated_at TIMESTAMPTZ);
-    CREATE FUNCTION kq_active_season_code() RETURNS TEXT LANGUAGE sql AS $$ SELECT 'KQ-2026-S1'::TEXT $$;
-    CREATE TABLE kq_leaderboard_snapshots(season_code TEXT,snapshot_date DATE,leaderboard JSONB);
-    -- A representative trigger verifies that interventions are not harvested
-    -- runs and death remains terminal without running the completion pipeline.
-    CREATE TABLE completion_audit(run_id UUID PRIMARY KEY);
-    CREATE FUNCTION fixture_completion() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN
-      IF NEW.status='completed' AND OLD.status='active' THEN INSERT INTO completion_audit VALUES(NEW.id); END IF; RETURN NEW; END $$;
-    CREATE TRIGGER fixture_completion AFTER UPDATE ON kq_runs FOR EACH ROW EXECUTE FUNCTION fixture_completion();
-  `);
-  const treasury = await migration("20260921000200_kq_treasury_accounting.sql");
-  await db.exec(treasury.slice(treasury.indexOf("CREATE FUNCTION public.kq_treasury_post"), treasury.indexOf("-- Actual production cost only.")));
-  const booster = await migration("20260727000300_kq_pvp_three_card_booster.sql");
-  await db.exec(booster.slice(booster.indexOf("CREATE OR REPLACE FUNCTION public.rpc_kq_open_support_booster"), booster.indexOf("CREATE OR REPLACE FUNCTION public.rpc_kq_finalize_battle_for_both_players")));
-  const bot=await migration("20260727000200_kq_bot_victory_card_reward.sql");
-  await db.exec(bot.slice(bot.indexOf("CREATE OR REPLACE FUNCTION public.rpc_kq_finalize_bot_battle"),bot.indexOf("COMMIT;")));
-  await db.exec(await migration("20260813000100_kq_player_core_snapshot.sql"));
-  await db.exec(await migration("20261010000100_kq_culture_care.sql"));
+  await installCultureCareFixture(db, migration);
   const crowdedState = {
     ...startKqGame(31), stageIndex: 4,
     care: {
@@ -136,7 +77,8 @@ try {
   check("updated validator preserves history bounds", await scalar("SELECT kq_care_state_valid($1)", [JSON.stringify({
     ...crowdedState.care, history: Array(49).fill({}),
   })]), false);
-  for (const product of KQ_CARE_PRODUCTS) check(`authoritative SQL price ${product.code}`, await scalar("SELECT kq_care_price($1)", [product.code]), product.priceCents);
+  const originalPrices = Object.fromEntries(await Promise.all(KQ_CARE_PRODUCTS.map(async product =>
+    [product.code, await scalar("SELECT kq_care_price($1)", [product.code])])));
 
   const owner = await player(), other = await player();
   const crowdedOwner = await player();
@@ -305,24 +247,7 @@ try {
   await query("UPDATE kq_equipment_wallets SET cash_cents=1000000 WHERE user_id=$1",[surfaceOwner]);
   await buy(surfaceOwner,"CARE-SEAWEED",2);
   const historical=await scalar("SELECT jsonb_agg(to_jsonb(p)) FROM kq_care_purchases p WHERE user_id=$1",[surfaceOwner]);
-  await db.exec(`
-    CREATE TABLE fixture_work(user_id UUID PRIMARY KEY,hours NUMERIC NOT NULL DEFAULT 0);
-    CREATE FUNCTION kq_player_work_cost(TEXT,TEXT) RETURNS NUMERIC LANGUAGE sql AS $$ SELECT 0.5::NUMERIC $$;
-    CREATE FUNCTION kq_player_work_charge(p_user UUID,p_hours NUMERIC) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN
-      INSERT INTO fixture_work VALUES(p_user,p_hours) ON CONFLICT(user_id) DO UPDATE SET hours=fixture_work.hours+p_hours;
-      IF (SELECT hours FROM fixture_work WHERE user_id=p_user)>12 THEN RAISE EXCEPTION 'player_work_exhausted'; END IF;
-    END $$;
-    CREATE FUNCTION kq_campaign_assert_leader(p_user UUID,p_run UUID,p_state JSONB) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN
-      IF p_state->'campaign' IS NOT NULL AND p_state->'campaign'->>'leaderRunId' IS DISTINCT FROM p_run::TEXT THEN RAISE EXCEPTION 'kq_campaign_action_required'; END IF;
-    END $$;
-    DO $$ DECLARE body TEXT; BEGIN
-      body:=pg_get_functiondef('rpc_kq_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)'::regprocedure);
-      EXECUTE replace(body,E'\\nBEGIN\\n',E'\\nBEGIN\\n PERFORM public.kq_campaign_assert_leader(p_user_id,p_run_id,p_next_state);\\n');
-    END $$;
-  `);
-  const workMigration=await migration("20261107000500_kq_player_workday.sql");
-  await db.exec(workMigration.slice(workMigration.indexOf("CREATE FUNCTION pg_temp.kq_player_work_wrap"),workMigration.indexOf("-- Registration list")));
-  await db.exec("SELECT pg_temp.kq_player_work_wrap('public.rpc_kq_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)','culture','''care''')");
+  await installCultureCareWork(db, migration);
   await db.exec(await migration("20261108000900_kq_care_surface_and_purchase_register.sql"));
   check("old receipts retain their recorded amount",await scalar("SELECT total_price_cents FROM kq_care_purchases WHERE user_id=$1",[surfaceOwner]),historical[0].total_price_cents);
   check("old full-treatment reserve is not diluted",await scalar("SELECT quantity FROM kq_care_inventory WHERE user_id=$1",[surfaceOwner]),2);
@@ -531,7 +456,7 @@ try {
   await db.exec(await migration("20261118000400_kq_care_input_sectors.sql"));
   const restoreInputs=await captureCare();
   const inputOwner=await player();
-  const inputCodes=KQ_CARE_PRODUCTS.filter(product=>product.kind==="input").map(product=>product.code);
+  const inputCodes=KQ_CARE_PRODUCTS.filter(product=>product.kind==="input" && originalPrices[product.code]!=null).map(product=>product.code);
   const reserve=(result,code)=>result.inventory.find(item=>item.productCode===code);
   const inputShop=run=>scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[inputOwner,run.id]);
   for(const code of inputCodes) {
@@ -543,7 +468,7 @@ try {
     const purchasedLot=await buyLot();
     check(`${code} buys the quoted six square metres`,
       [purchasedLot.cashCents,purchasedLot.totalPriceCents,reserve(purchasedLot,code).quantity],
-      [quote.cashCents-quote.prices[code],KQ_CARE_PRODUCTS.find(p=>p.code===code).priceCents*6,6]);
+      [quote.cashCents-quote.prices[code],originalPrices[code]*6,6]);
     check(`${code} purchase replay preserves cash and stock`,await buyLot(),{...purchasedLot,replayed:true});
     const next=applyKqCareProduct(run.state,code,firstCell);
     const beforeInput=await snapshot(inputOwner);
@@ -615,6 +540,226 @@ try {
   await db.exec(restoreInputs);
   check("restored input version quotes the exact sector stock",reserve(await inputShop(rootsRun),"CARE-SEAWEED").quantity,4);
   check("input version round trip preserves money, hours, stock and all receipts",await persisted(),beforeInputRestore);
+  await installWarehousePreparations(db, { retail: false });
+  await db.exec("ALTER FUNCTION kq_treasury_initialize(uuid) SET search_path=pg_catalog,public; ALTER FUNCTION fixture_wallet_movement() SET search_path=pg_catalog,public");
+  await db.exec(await migration("20261121001300_kq_warehouse_care_provisions.sql"));
+  await db.exec(await migration("20261122000200_kq_warehouse_retail_supplies.sql"));
+  await db.exec(await migration("20261122000310_kq_warehouse_airlock_preparation.sql"));
+  const references=JSON.parse(await readFile("src/lib/kanab-quest-warehouse-retail-supplies.json","utf8"));
+  for (const [code,reference] of Object.entries(references)) {
+    if (code.startsWith("CARE-") && originalPrices[code]==null) continue;
+    check(`public retail unit price ${code}`, await scalar("SELECT kq_warehouse_retail_supply_price($1)",[code]), reference.unitPriceCents);
+  }
+  for (const product of KQ_CARE_PRODUCTS.filter(p=>originalPrices[p.code]!=null)) check(`authoritative care price ${product.code}`,
+    await scalar("SELECT kq_care_price($1)", [product.code]), product.priceCents);
+  const betaOwner=await player();
+  await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[betaOwner,{zones:[zone]}]);
+  const buyDose=(key=randomUUID(), offered=references[vermi].unitPriceCents)=>scalar(
+    "SELECT rpc_kq_purchase_care_v2($1,$2,1,$3,NULL,$4)",[betaOwner,vermi,key,offered]);
+  await reject("stale standalone soil dose price fails before debit",()=>buyDose(randomUUID(),1400),"kq_care_price_changed");
+  const retailKey=randomUUID();
+  const firstRetail=await buyDose(retailKey);
+  check("retail receipt remains authoritative on retry",await buyDose(retailKey,1400),{...firstRetail,replayed:true});
+  const betaRun=await createRun(betaOwner,{...sectorState,warehouse:{...warehouse,preparationVersion:1}});
+  await query("UPDATE kq_runs SET warehouse_zone_id=$2 WHERE id=$1",[betaRun.id,zone.id]);
+  await scalar("SELECT kq_warehouse_launch_preparations($1,$2,ARRAY[$2]::uuid[],$3)",[betaOwner,betaRun.id,{[zone.id]:{[vermi]:1}}]);
+  await buyDose();
+  let live=await runRow(betaRun.id);
+  check("later purchases cannot enlarge this crop's reserve",reserve(await scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[betaOwner,live.id]),vermi).quantity,1);
+  const assigned=applyKqCareProduct(live.state,vermi,firstCell);
+  const betaKey=randomUUID();
+  const appliedDose=await apply(betaOwner,live,assigned,vermi,betaKey);
+  check("a targeted soil treatment consumes the allocated square metre", reserve(appliedDose,vermi).quantity,0);
+  check("retrying a locked crop treatment consumes no extra dose",(await apply(betaOwner,live,assigned,vermi,betaKey)).replayed,true);
+  live=await runRow(live.id);
+  await reject("the additional unit cannot be used on a second square of the existing crop",
+    ()=>apply(betaOwner,live,applyKqCareProduct(live.state,vermi,secondCell),vermi),"kq_preparation_reserved");
+  check("later stock stays available in the warehouse",reserve(await scalar("SELECT rpc_kq_care_shop_v2($1,NULL)",[betaOwner]),vermi).quantity,1);
+  const withPump={zones:[zone],stationPlacements:[{id:"pump",code:"SIM-WATER-03",x:0,y:1}]};
+  await query("update kq_warehouse_layouts set state=$2 where user_id=$1",[betaOwner,withPump]);
+  const pumpCommand=(action,key=randomUUID())=>scalar("select rpc_kq_warehouse_preparation_command($1,$2,$3)",[betaOwner,key,{...action,requestKey:key}]);
+  await reject("mixing supplement needs an installed injector",()=>pumpCommand({action:"program",stationId:"pump",zoneId:zone.id,quantities:{"WAREHOUSE-NUTRITION-BASE":1,"WAREHOUSE-NUTRITION-SUPPLEMENT":1}}),"kq_preparation_injector_required");
+  const stale={action:"purchase",code:"WAREHOUSE-VACUUM",quantity:1,expectedCents:400};
+  await reject("warehouse rejects stale retail price",()=>pumpCommand(stale),"kq_preparation_price_changed");
+  await reject("warehouse requires the quoted price on a new purchase",()=>pumpCommand({action:"purchase",code:stale.code,quantity:1}),"kq_preparation_price_changed");
+  const vacuum=await pumpCommand({...stale,expectedCents:references[stale.code].unitPriceCents});
+  check("register shows the purchased public-price vacuum",vacuum.items.find(item=>item.code===stale.code).availableQuantity,1);
+  const attach={action:"injector",stationId:"pump",expectedCents:references["WAREHOUSE-INJECTOR"].unitPriceCents}, attachKey=randomUUID();
+  const installedInjector=await pumpCommand(attach,attachKey);
+  const retried=await pumpCommand(attach,attachKey);
+  check("an injector is billed once per request",[retried.cashCents,retried.injectors],[installedInjector.cashCents,installedInjector.injectors]);
+  await query("update kq_warehouse_layouts set state=$2 where user_id=$1",[betaOwner,{...withPump,stationPlacements:[]}]);
+  await query("update kq_warehouse_layouts set state=$2 where user_id=$1",[betaOwner,withPump]);
+  const reused=await pumpCommand({...attach,expectedCents:0});
+  check("removing and refitting a station reuses its paid injector",[reused.cashCents,reused.injectors],[installedInjector.cashCents,installedInjector.injectors]);
+  {
+    const openingOwner=await player();
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[openingOwner,{zones:[zone]}]);
+    const priorRun=await createRun(openingOwner,{...sectorState,warehouse:{...warehouse,preparationVersion:1}});
+    await query("UPDATE kq_runs SET warehouse_zone_id=$2 WHERE id=$1",[priorRun.id,zone.id]);
+    const oldRequest=randomUUID();
+    const oldReceipt=await scalar("SELECT rpc_kq_purchase_care_v2($1,$2,3,$3,NULL,$4)",[openingOwner,vermi,oldRequest,3*references[vermi].unitPriceCents]);
+    await scalar("SELECT kq_warehouse_launch_preparations($1,$2,ARRAY[$2]::uuid[],$3)",[openingOwner,priorRun.id,{[zone.id]:{[vermi]:1}}]);
+    const irrigator=await player(), baseCode="WAREHOUSE-NUTRITION-BASE";
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[irrigator,withPump]);
+    const priorCommand=input=>scalar("SELECT rpc_kq_warehouse_preparation_command($1,$2,$3)",[irrigator,randomUUID(),input]);
+    await priorCommand({action:"purchase",code:baseCode,quantity:4,expectedCents:60});
+    await priorCommand({action:"program",zoneId:zone.id,stationId:"pump",quantities:{[baseCode]:3}});
+    await db.exec(await migration("20261122000500_kq_warehouse_supply_packs.sql"));
+    await db.exec(await migration("20261122000510_kq_supply_clock_after_lock.sql"));
+    const prep=owner=>scalar("SELECT rpc_kq_warehouse_preparations($1)",[owner]);
+    const stockItem=(snapshot,code)=>snapshot.items.find(i=>i.code===code);
+    const supplies=(owner,action,key=randomUUID())=>scalar("SELECT rpc_kq_warehouse_preparation_command($1,$2,$3)",[owner,key,{...action,requestKey:key}]);
+    const pack=(owner,code,expectedCents,quantity=1,key=randomUUID())=>supplies(owner,{action:"purchasePack",code,expectedCents,quantity},key);
+    const health=(owner,id)=>scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[owner,id]);
+    const seed=async(owner,zoneId,state=sectorState)=>{
+      const run=await createRun(owner,{...state,warehouse:{...warehouse,zoneId,zones:[{...zone,id:zoneId}],preparationVersion:1}});
+      await query("UPDATE kq_runs SET warehouse_zone_id=$2 WHERE id=$1",[run.id,zoneId]);
+      await scalar("SELECT kq_warehouse_launch_preparations($1,$2,ARRAY[$2]::uuid[],NULL)",[owner,run.id]);
+      return runRow(run.id);
+    };
+    const opening=await prep(openingOwner);
+    check("historical loose stock survives without reallocating a seeded zone",
+      [stockItem(opening,vermi).availableQuantity,stockItem(opening,vermi).reservedQuantity,opening.runs[0].available[vermi]],[2,1,1]);
+    check("historical unit receipt retains its original amount after pack migration",
+      (await scalar("SELECT rpc_kq_purchase_care_v2($1,$2,3,$3,NULL,0)",[openingOwner,vermi,oldRequest])).totalPriceCents,oldReceipt.totalPriceCents);
+    const priorSaved=await runRow(priorRun.id);
+    const oldApplied=await apply(openingOwner,priorSaved,applyKqCareProduct(priorSaved.state,vermi,firstCell),vermi);
+    check("old dedicated dose is spent first and other loose charges remain untouched",[reserve(oldApplied,vermi).quantity,stockItem(await prep(openingOwner),vermi).availableQuantity],[0,2]);
+    const freshOwner=await player(), newZone="sibling";
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[freshOwner,{zones:[zone,{...zone,id:newZone}]}]);
+    const beforePacks=await prep(freshOwner);
+    check("all 18 public pack offers are supplied by the server",beforePacks.items.filter(i=>i.chargesPerPack>0&&i.packPriceCents>0).length,18);
+    const offers=Object.fromEntries(beforePacks.items.filter(i=>i.chargesPerPack).map(i=>[i.code,i]));
+    for(const [code,offer] of Object.entries(offers)) {
+      const source=references[code];
+      if(source?.chargesPerPack) check(`${code} matches the published pack and game charge count`,
+        [offer.packPriceCents,offer.chargesPerPack],[source.packPriceCents,source.chargesPerPack]);
+    }
+    const bio="WAREHOUSE-PBI", packsKey=randomUUID(), startCash=beforePacks.cashCents;
+    await reject("the loose-dose endpoint cannot create a new receipt",()=>supplies(freshOwner,{action:"purchase",code:vermi,quantity:1,expectedCents:55}),"kq_preparation_pack_required");
+    await reject("stale eight-cent aggregate price cannot buy ten sticky cards",()=>pack(freshOwner,bio,1190),"kq_preparation_price_changed");
+    for(const invalid of [0,-1,1.5,101]) await reject("whole packs only "+invalid,()=>pack(freshOwner,bio,1188,invalid),"kq_preparation_invalid");
+    const buying=()=>pack(freshOwner,bio,1188,1,packsKey);
+    const bought=await Promise.all([buying(),buying()]);
+    check("simultaneous receipt retries charge once and issue exactly ten unique charges",
+     bought.map(x=>[x.cashCents,stockItem(x,bio).availableQuantity]),[[startCash-1188,10],[startCash-1188,10]]);
+    await reject("changing the pack amount on retry is a mismatch",()=>pack(freshOwner,bio,2376,2,packsKey),"kq_preparation_request_mismatch");
+    await reject("insufficient funds cannot credit even part of a pack",()=>pack(freshOwner,"CARE-SWIRSKII",633000,100),"kq_preparation_cash");
+    const a=await seed(freshOwner,zone.id), b=await seed(freshOwner,newZone);
+    const consumeSupplies=(run,qty,key=randomUUID())=>supplies(freshOwner,{action:"use",runId:run.id,quantities:{[bio]:qty}},key);
+    const seeded=await prep(freshOwner);
+    check("seeding two independent zones does not reserve the shared supplies",
+      [stockItem(seeded,bio).availableQuantity,stockItem(seeded,bio).reservedQuantity,seeded.runs.map(r=>r.available[bio])],[10,0,[6,6]]);
+    const useKey=randomUUID(); await consumeSupplies(a,6,useKey); await consumeSupplies(a,6,useKey);
+    await pack(freshOwner,bio,1188);
+    const toppedUp=await prep(freshOwner);
+    check("later purchase cannot restore six spent serials to a second older crop",
+     [stockItem(toppedUp,bio).availableQuantity,toppedUp.runs.find(r=>r.runId===b.id).available[bio]],[14,4]);
+    await reject("older crop cannot draw five charges from remaining four",()=>consumeSupplies(b,5),"kq_preparation_reserved");
+    await reject("single zone cannot cover its six square metres twice",()=>consumeSupplies(a,1),"kq_preparation_coverage");
+    await reject("another owner cannot spend a run's balance",()=>supplies(openingOwner,{action:"use",runId:b.id,quantities:{[bio]:1}}),"kq_preparation_run");
+    await consumeSupplies(b,4);
+    await pack(freshOwner,vermi,2200);
+    const beforeLate=await health(freshOwner,b.id);
+    check("buying a new soil product cannot activate an earlier zone",reserve(beforeLate,vermi).zoneQuantities[newZone],0);
+    const c=await seed(freshOwner,"third");
+    const careTarget={zoneId:"third",x:0,y:0}, careKey=randomUUID();
+    const newCare=applyKqCareProduct(c.state,vermi,careTarget);
+    const [firstCare,replayCare]=await Promise.all([apply(freshOwner,c,newCare,vermi,careKey),apply(freshOwner,c,newCare,vermi,careKey)]);
+    check("a post-purchase seed can target one cell and retry without a new debit",
+     [reserve(firstCare,vermi).quantity,reserve(replayCare,vermi).zoneQuantities.third,replayCare.replayed],[39,39,true]);
+    const publicShop=await health(freshOwner,null);
+    check("health catalog quotes packs independently of the crop area",[publicShop.prices["CARE-IRON"],publicShop.prices[vermi],beforeLate.prices[vermi]],[1390,2200,2200]);
+    const purchaseLog=await scalar("SELECT rpc_kq_care_purchase_register($1)",[freshOwner]);
+    check("one warehouse pack appears once in the historical care register",[purchaseLog.totalCount,purchaseLog.totalPaidCents,purchaseLog.items[0].quantity],[1,2200,1]);
+    const manualRun=await createRun(freshOwner,{...sectorState,warehouse:{...warehouse,preparationVersion:1}});
+    await query("UPDATE kq_runs SET warehouse_zone_id=$2 WHERE id=$1",[manualRun.id,zone.id]);
+    await reject("new manual reservations are rejected at seed",()=>scalar("SELECT kq_warehouse_launch_preparations($1,$2,ARRAY[$2]::uuid[],$3)",[freshOwner,manualRun.id,{[zone.id]:{[bio]:1}}]),"kq_preparation_manual_allocation");
+    const irrigationBefore=await prep(irrigator);
+    check("migration preserves real serials for a pre-existing irrigation mix",
+      [stockItem(irrigationBefore,baseCode).availableQuantity,stockItem(irrigationBefore,baseCode).reservedQuantity],[1,3]);
+    const detached=await seed(irrigator,"detached");
+    check("a different zone only sees the free part of the supply", (await prep(irrigator)).runs.find(r=>r.runId===detached.id).available[baseCode],1);
+    const irrigated=await seed(irrigator,zone.id);
+    check("program consumes its own three units on launch, preserving the fourth unit",
+      [irrigated.state.warehousePreparations[zone.id].used[baseCode],stockItem(await prep(irrigator),baseCode).availableQuantity],[3,1]);
+    await pack(irrigator,baseCode,1490);
+    const oneOldUnit=await supplies(irrigator,{action:"use",runId:detached.id,quantities:{[baseCode]:1}});
+    check("the new pack never replaces an old unit after the irrigation mix is spent",
+      [stockItem(oneOldUnit,baseCode).availableQuantity,oneOldUnit.runs.find(r=>r.runId===irrigated.id).available[baseCode]],[100,0]);
+    const protectedOwner=await player();
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[protectedOwner,withPump]);
+    await pack(protectedOwner,baseCode,1490);
+    const launchBeforeHold=await seed(protectedOwner,"before-mix");
+    await supplies(protectedOwner,{action:"program",zoneId:zone.id,stationId:"pump",quantities:{[baseCode]:3}});
+    check("new automatic irrigation holds choose three unique serials",await scalar("SELECT held_units->>$2 FROM kq_warehouse_irrigation_programs WHERE user_id=$1",[protectedOwner,baseCode]),"{[0,3)}");
+    // A transaction which began before the program existed can resume after
+    // another action has obtained and released the shared wallet lock.
+    await db.exec("BEGIN");
+    try {
+      await query("UPDATE kq_warehouse_irrigation_programs SET starts_at=transaction_timestamp()+interval '1 millisecond' WHERE user_id=$1",[protectedOwner]);
+      await new Promise(resolve=>setTimeout(resolve,20));
+      check("the pre-lock clock sees all 100 charges, the current clock protects the three newer held charges",
+        (await query(`SELECT kq_supply_count(a.units)::int AS earlier,kq_supply_count(b.units)::int AS current
+          FROM kq_supply_free($1,transaction_timestamp()) a JOIN kq_supply_free($1) b USING(code) WHERE a.code=$2`,
+          [protectedOwner,baseCode])).rows[0],{earlier:100,current:97});
+    } finally { await db.exec("ROLLBACK"); }
+    await supplies(protectedOwner,{action:"program",zoneId:zone.id,stationId:"pump",quantities:{}});
+    await supplies(protectedOwner,{action:"use",runId:launchBeforeHold.id,quantities:{[baseCode]:2}});
+    check("cancelled mix releases its original eligible units",await scalar("SELECT remaining_units::text FROM kq_warehouse_input_stock WHERE user_id=$1 AND code=$2",[protectedOwner,baseCode]),"{[2,100)}");
+    const legacyOwner=await player();
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[legacyOwner,{zones:[zone]}]);
+    // Simulate player-owned historic full passes and area already paid for.
+    await query("INSERT INTO kq_care_inventory(user_id,product_code,quantity,area_quantity) VALUES($1,$2,1,1)",[legacyOwner,vermi]);
+    await pack(legacyOwner,vermi,2200);
+    const legacyRun=await seed(legacyOwner,zone.id);
+    const historicalStock=reserve(await health(legacyOwner,legacyRun.id),vermi);
+    check("historic pass retains coverage across the full six square metres",
+      [historicalStock.legacyQuantity,historicalStock.areaQuantity,historicalStock.quantity],[1,41,47]);
+    let legacyCurrent=legacyRun;
+    for (const cell of [firstCell,secondCell]) {
+      await apply(legacyOwner,legacyCurrent,applyKqCareProduct(legacyCurrent.state,vermi,cell),vermi);
+      legacyCurrent=await runRow(legacyRun.id);
+    }
+    check("old m² then one historic pass are consumed without losing the remainder or paying again",
+      (await query("SELECT quantity,area_quantity FROM kq_care_inventory WHERE user_id=$1 AND product_code=$2",[legacyOwner,vermi])).rows[0],{quantity:0,area_quantity:5});
+    check("the modern paid pack stays intact when an old wallet supplied both applications",
+      await scalar("SELECT quantity::int FROM kq_warehouse_input_stock WHERE user_id=$1 AND code=$2",[legacyOwner,vermi]),40);
+    const campaignOwner=await player(), cid=randomUUID(), lid=randomUUID(), fid=randomUUID();
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[campaignOwner,{zones:[zone,secondZone]}]);
+    await pack(campaignOwner,vermi,2200);
+    await pack(campaignOwner,bio,1188);
+    const participants=[{runId:lid,zoneId:zone.id,warehouse:{...warehouse,preparationVersion:1}},
+     {runId:fid,zoneId:secondZone.id,warehouse:{zoneId:secondZone.id,activeAreaM2:3,zones:[secondZone],preparationVersion:1}}];
+    for(const member of participants) await query("INSERT INTO kq_runs(id,user_id,warehouse_zone_id,campaign_id,state,status) VALUES($1,$2,$3,$4,$5,'active')",
+     [member.runId,campaignOwner,member.zoneId,cid,{...sectorState,warehouse:member.warehouse,campaign:{leaderRunId:lid,members:participants}}]);
+    await scalar("SELECT kq_warehouse_launch_preparations($1,$2,$3,NULL)",[campaignOwner,lid,[lid,fid]]);
+    const aggregate=reserve(await health(campaignOwner,lid),vermi);
+    check("campaign total counts shared stock once even when both zones can use it",
+     [aggregate.quantity,aggregate.zoneQuantities],[40,{[zone.id]:40,[secondZone.id]:40}]);
+    const memberUse=await supplies(campaignOwner,{action:"use",runId:fid,quantities:{[bio]:2}});
+    check("the nonleader can spend its provisions and updates the leader's correct zone",
+     [memberUse.runs.find(r=>r.runId===fid).consumed[bio],(await runRow(lid)).state.warehousePreparations[secondZone.id].used[bio]],[2,2]);
+    const leaderState=await runRow(lid);
+    const campaignCare=await apply(campaignOwner,leaderState,applyKqCareProduct(leaderState.state,vermi,memberCell),vermi);
+    check("a campaign care application spends the selected member's charge and updates all visible balances",
+     [reserve(campaignCare,vermi).quantity,reserve(campaignCare,vermi).zoneQuantities],[39,{[zone.id]:39,[secondZone.id]:39}]);
+    for (const [code,problem] of [["CARE-IRON","IRON"],["CARE-PERLITE","ROOTS"],["CARE-SHADE","HEAT"],["CARE-BLUE-TRAPS","THRIPS"]]) {
+      const selectedZone=code.toLowerCase(), focus={zoneId:selectedZone,x:0,y:1}, otherCell={...focus,x:1};
+      const focused={...sectorState,care:{...sectorState.care,problems:[{...sectorState.care.problems[0],code:problem,plants:[{...focus,severity:2,slot:0}]}]}};
+      await pack(freshOwner,code,offers[code].packPriceCents);
+      const treatedRun=await seed(freshOwner,selectedZone,focused);
+      const next=applyKqCareProduct(treatedRun.state,code,focus);
+      await reject(code+" rejects off-focus application before consuming stock",()=>apply(freshOwner,treatedRun,substitute(next,otherCell),code),"kq_care_invalid_request");
+      if(code==="CARE-IRON") {
+        const salineState={...focused,care:{...focused.care,problems:[...focused.care.problems,{...focused.care.problems[0],code:"SALTS"}]}};
+        const saline=await seed(freshOwner,selectedZone,salineState);
+        await reject("iron is incompatible with saline stress even at the observed cell",()=>apply(freshOwner,saline,forceInput(saline.state,code,focus),code),"kq_care_invalid_request");
+      }
+      check(code+" spends just one eligible charge after all game validations",reserve(await apply(freshOwner,treatedRun,next,code),code).quantity,offers[code].chargesPerPack-1);
+    }
+  }
   console.log(JSON.stringify({result:"passed",checks:checks.length,details:checks,engine:"PGlite isolated PostgreSQL",concurrency:"Retry calls submitted together; PGlite serializes on one connection. CAS and row/advisory locks are explicitly verified."},null,2));
 } catch(error) {
   console.error(error.message, error.where ?? "", error.detail ?? "");

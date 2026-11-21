@@ -129,7 +129,8 @@ describe("processing workshop embedded in the warehouse", () => {
     expect(buttons.every(button => !button.includes("disabled="))).toBe(true);
     const details = html.match(/<details\b[^>]*>[\s\S]*?<\/details>/g) ?? [];
     expect(details.every(content => !content.includes("data-machine-upgrade") && !content.includes("data-machine-maintenance"))).toBe(true);
-    expect(html).toContain("Référence fabricant et hypothèses du jeu");
+    expect(html).toContain("g/h de jeu · cadence estimée");
+    expect(html).not.toMatch(/Référence fabricant|fiche fabricant/i);
     expect(html).not.toContain("Trois gammes");
   });
 

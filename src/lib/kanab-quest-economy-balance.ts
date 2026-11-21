@@ -225,22 +225,25 @@ export function buildKqEconomyBalanceReport(input: {
   const priceAnchors = KQ_EQUIPMENT_CATALOG
     .filter((equipment) => equipment.purchasable)
     .map((equipment) => {
-      const gamePriceUsd = equipment.priceCents / 100;
-      const referencePriceUsd = equipment.realWorldAnchor.referencePriceCents / 100;
+      const referenceCurrency = equipment.realWorldAnchor.currency ?? "USD";
+      const { referencePriceCents, taxLabel } = equipment.realWorldAnchor;
+      const comparableCents = taxLabel === "HT" ? Math.round(referencePriceCents * 120 / 100) : referencePriceCents;
       return {
         code: equipment.code,
         name: equipment.name,
-        gamePriceUsd,
-        referencePriceUsd,
+        gamePriceCents: equipment.priceCents,
+        referenceCurrency,
+        referencePriceCents,
+        taxLabel,
         seller: equipment.realWorldAnchor.seller,
         sourceUrl: equipment.realWorldAnchor.sourceUrl,
         productLabel: equipment.realWorldAnchor.label,
         priceKind: equipment.realWorldAnchor.priceKind,
         observedPriceCents: equipment.realWorldAnchor.observedPriceCents ?? null,
         checkedAt: equipment.realWorldAnchor.checkedAt,
-        deviationPercent: referencePriceUsd > 0
-          ? roundTenth((gamePriceUsd - referencePriceUsd) / referencePriceUsd * 100)
-          : 0,
+        deviationPercent: referenceCurrency === "EUR" && comparableCents > 0
+          ? roundTenth((equipment.priceCents - comparableCents) / comparableCents * 100)
+          : null,
       };
     });
 
@@ -275,7 +278,8 @@ export function buildKqEconomyBalanceReport(input: {
     },
     priceAnchors: {
       checkedAt: priceAnchors.map((anchor) => anchor.checkedAt).sort().at(-1) ?? null,
-      alignedCount: priceAnchors.filter((anchor) => Math.abs(anchor.deviationPercent) <= 10).length,
+      alignedCount: priceAnchors.filter((anchor) => anchor.deviationPercent !== null && Math.abs(anchor.deviationPercent) <= 10).length,
+      comparableCount: priceAnchors.filter((anchor) => anchor.deviationPercent !== null).length,
       totalCount: priceAnchors.length,
       items: priceAnchors,
     },

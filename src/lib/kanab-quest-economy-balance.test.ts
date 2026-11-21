@@ -77,7 +77,7 @@ describe("Kanab Quest economy balance report", () => {
   it("keeps every unlocked transformation financially useful at signature quality", () => {
     const report = buildKqEconomyBalanceReport({ juryScore: 8.8, harvestGrams: 100 });
     expect(report.signals.dominated).toBe(0);
-    expect(report.projections.filter(item => item.status === "too-fast").map(item => item.route)).toEqual(["rosin-signature"]);
+    expect(report.signals.tooFast).toBe(0);
     expect(report.signals.balanced + report.signals.slowOrExcessive + report.signals.tooFast).toBe(8);
     expect(report.projections.find((projection) => projection.route === "dry-sift")?.comparisonDeltaCents)
       .toBeGreaterThan(0);
@@ -114,9 +114,13 @@ describe("Kanab Quest economy balance report", () => {
   it("tracks the real-world price anchors for every purchasable item", () => {
     const report = buildKqEconomyBalanceReport({ juryScore: 8, harvestGrams: 120 });
     expect(report.priceAnchors.totalCount).toBe(14);
-    expect(report.priceAnchors.alignedCount).toBe(report.priceAnchors.totalCount - 4);
-    expect(report.priceAnchors.items.filter((item) => item.deviationPercent !== 0)).toHaveLength(4);
-    expect(report.priceAnchors.checkedAt).toBe("2026-09-13");
+    expect(report.priceAnchors.alignedCount).toBe(5);
+    expect(report.priceAnchors.items.filter((item) => item.referenceCurrency === "USD").every(item => item.deviationPercent === null)).toBe(true);
+    expect(report.priceAnchors.comparableCount).toBe(5);
+    expect(report.priceAnchors.items.find(item => item.code === "WASHER-25L")).toMatchObject({
+      referenceCurrency: "EUR", referencePriceCents: 525_000, gamePriceCents: 630_000, deviationPercent: 0,
+    });
+    expect(report.priceAnchors.checkedAt).toBe("2026-11-21");
     expect(report.priceAnchors.items.every((item) => item.sourceUrl.startsWith("https://"))).toBe(true);
     expect(report.priceAnchors.items.some((item) => item.priceKind === "promotion")).toBe(true);
   });
@@ -141,9 +145,9 @@ describe("Kanab Quest economy balance report", () => {
     const one = buildKqEconomyBalanceReport({ juryScore: 9, harvestGrams: 100 });
     const fleet = buildKqEconomyBalanceReport({ juryScore: 9, harvestGrams: 100, productionUnits: 8 });
     for (const [route, level, acquisitionCostCents, upgradeCostCents] of [
-      ["rosin-selection", 4, 136_000, 51_000],
-      ["rosin-premium", 7, 263_500, 178_500],
-      ["rosin-signature", 10, 467_500, 382_500],
+      ["rosin-selection", 4, 1_240_000, 790_000],
+      ["rosin-premium", 7, 2_160_000, 1_710_000],
+      ["rosin-signature", 10, 3_240_000, 2_790_000],
     ] as const) {
       const expectation = { available: true, equipmentLevels: { "PRESS-0600": level }, acquisitionCostCents, upgradeCostCents };
       expect(one.projections.find(item => item.route === route)).toMatchObject(expectation);
@@ -168,8 +172,8 @@ describe("Kanab Quest economy balance report", () => {
     expect(scenario.remainingEquipmentCodes).toEqual(["AUTO-SIEVE", "FREEZE-DRYER"]);
     expect(scenario.cartEquipmentCodes).toEqual(["FREEZE-DRYER"]);
     expect(scenario.missingAfterCartCodes).toEqual(["AUTO-SIEVE"]);
-    expect(scenario.remainingInvestmentCents).toBe(1_249_000);
-    expect(scenario.missingAfterCartCents).toBe(499_500);
+    expect(scenario.remainingInvestmentCents).toBe(1_276_000);
+    expect(scenario.missingAfterCartCents).toBe(516_000);
     expect(scenario.personalizedPaybackHarvests).toBeGreaterThan(0);
   });
 

@@ -1,4 +1,6 @@
-/** Fictional equipment. Historical codes remain stable save and inventory keys. */
+import { getKqWarehouseRetailPrice, KQ_RETAIL_PRICE_CHECKED_AT } from "./kanab-quest-warehouse-retail";
+
+/** The game keeps its own capacities and stable inventory keys. */
 export const KQ_WAREHOUSE_TIERS = [
   {
     "code": "economy",
@@ -51,12 +53,12 @@ export type KqWarehouseDevice = {
   };
 };
 
-export const KQ_WAREHOUSE_CATALOG_CHECKED_AT = "2026-10-12";
+export const KQ_WAREHOUSE_CATALOG_CHECKED_AT = KQ_RETAIL_PRICE_CHECKED_AT;
 /** Fictional volume conversion; never a product density. */
 export const KQ_WAREHOUSE_STORAGE_SIMULATED_GRAMS_PER_LITRE = 50;
 
 /** Current purchase prices; capacities and historical run loads keep their saved rules. */
-export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
+const devices: readonly KqWarehouseDevice[] = [
   {
     "code": "MH-TS1000",
     "name": "Éclairage économique",
@@ -71,7 +73,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-12",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose et préparation de la zone calculées séparément dans le devis.",
-    "specification": "Couvre 1 m². Le plus petit budget d’achat, sans bonus de qualité au départ.",
+    "specification": "Un luminaire couvre 1 m². La qualité au départ reste inchangée.",
     "gameCapacity": {
       "unit": "m2",
       "value": 1,
@@ -494,6 +496,12 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "tier": "standard"
   }
 ];
+
+export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = devices.map(device => {
+  const reference = getKqWarehouseRetailPrice(device.code);
+  return reference ? { ...device, priceCents: reference.unitPriceCents, priceBasis: "observed",
+    priceNote: reference.basis, sourceUrl: reference.url, checkedAt: KQ_RETAIL_PRICE_CHECKED_AT } : device;
+});
 
 export function getKqWarehouseDevice(code: string): KqWarehouseDevice | undefined {
   return KQ_WAREHOUSE_CATALOG.find(device => device.code === code);

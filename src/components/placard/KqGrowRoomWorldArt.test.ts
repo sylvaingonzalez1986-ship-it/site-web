@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { createCanvas } from "@napi-rs/canvas";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { WarehouseSpatialItem } from "@/lib/kanab-quest-warehouse-spatial";
+import { getKqWarehouseZoneLightingLayout } from "@/lib/kanab-quest-warehouse-fixtures";
+import { KQ_WAREHOUSE_UNLIT_CODE } from "@/lib/kanab-quest-warehouse";
 import { createRoomResources, type RoomResources } from "./KqGrowRoomGeometry";
 import { makeGrowStation, releaseStation } from "./KqGrowRoomWorldArt";
 
@@ -12,6 +14,37 @@ describe("installed service furniture", () => {
     try { resources = createRoomResources(); } finally { vi.unstubAllGlobals(); }
   });
   afterAll(() => resources.dispose());
+
+  it.each([0, 90, 180, 270] as const)("positions instanced lights over the paid footprints at %d degrees", rotation => {
+    const item: WarehouseSpatialItem = { id: "bed", name: "Culture", kind: "culture", x: 3, z: -1, width: 3, depth: 7, rotation };
+    const lightingCode = "SIM-LIGHT-03";
+    const expected = getKqWarehouseZoneLightingLayout({ width: item.width, height: item.depth, rotation, lightingCode });
+    const group = makeGrowStation(resources, item, { id: item.id, name: item.name, lightingCode }, 4, true);
+    try {
+      group.updateMatrixWorld(true);
+      const lights = group.getObjectByName("lighting") as THREE.InstancedMesh;
+      expect(lights.count).toBe(6);
+      for (const [index, { x, z }] of expected.entries()) {
+        const matrix = new THREE.Matrix4();
+        lights.getMatrixAt(index, matrix);
+        const position = new THREE.Vector3().setFromMatrixPosition(matrix).applyMatrix4(lights.matrixWorld);
+        expect(position.x).toBeCloseTo(item.x - item.width / 2 + x);
+        expect(position.z).toBeCloseTo(item.z - item.depth / 2 + z);
+      }
+    } finally { releaseStation(group); }
+  });
+
+  it("omits lights in unlit zones while retaining the historical fan model", () => {
+    const item: WarehouseSpatialItem = { id: "bed", name: "Culture", kind: "culture", x: 0, z: 0, width: 1, depth: 1, rotation: 0 };
+    const room = { id: item.id, name: item.name, lightingCode: KQ_WAREHOUSE_UNLIT_CODE, airCode: "AIR-STARTER" };
+    const unlit = makeGrowStation(resources, item, room, 4, true);
+    const historical = makeGrowStation(resources, item, { ...room, lightingCode: "LED-150-STARTER" }, 4, true);
+    try {
+      expect(unlit.getObjectByName("lighting")).toBeUndefined();
+      expect(historical.getObjectByName("lighting")).toBeInstanceOf(THREE.InstancedMesh);
+      expect(historical.getObjectByName("rotor-still")).toBeInstanceOf(THREE.InstancedMesh);
+    } finally { releaseStation(unlit); releaseStation(historical); }
+  });
 
   it.each([
     ["SJ-DRYIT90", "drying", "service-drying", 1],

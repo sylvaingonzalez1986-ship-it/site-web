@@ -71,4 +71,25 @@ describe("time available to the team across the farm", () => {
     expect(queued.startedAt).toBe("2026-11-18T08:20:00.001Z");
     expect(() => applyKqStaffCommand(team, { action: "start-team-task", assignment: task, expectedVersion: 0, expectedDay: 1 }, "now")).toThrow(/travaille déjà/);
   });
+
+  it.each(["player", "alice"])("shows cleaning in %s’s day and queues new work behind it", assigneeId => {
+    const team = snapshot();
+    const employee = { ...team.candidates[0], id: "alice", status: "active" as const, contract: "cdi" as const,
+      weeklyHours: 35, hiredAt: start, endsAt: null, reason: "permanent" as const, paidUntil: start, nextPayrollAt: finish,
+      grossEarnedCents: 0, overtimeGrossCents: 0, finalPaid: false, workDays: { "1": { usedHours: assigneeId === "alice" ? .5 : 0, extraHours: 0 } },
+      leave: [], completedTasks: 0 };
+    team.state.employees = [employee];
+    team.state.playerWorkDays["1"] = { usedHours: assigneeId === "player" ? .5 : 0 };
+    const end = "2026-11-18T08:05:00Z";
+    team.context.teamWork = [{ id: "cleaning", kind: "cleaning", target: "Passer l’aspirateur", assigneeId,
+      hours: .5, startedAt: start, completesAt: end }];
+    expect(getKqTeamWorkEntries(team)).toEqual([expect.objectContaining({ label: "Passer l’aspirateur", place: "Hygiène · Entrepôt", instant: false, assigneeId })]);
+    expect(getKqTeamDayBudget(team, assigneeId)).toMatchObject({ usedHours: 0, reservedHours: .5 });
+    expect(getKqTeamDayBudget({ ...team, serverNow: end }, assigneeId)).toMatchObject({ usedHours: .5, reservedHours: 0 });
+    const assignment = assigneeId === "player"
+      ? { action: "player-assign", kind: "administration", hours: .5, expectedCostCents: 0 } as const
+      : { action: "assign", employeeId: assigneeId, kind: "administration", hours: .5 } as const;
+    expect(applyKqStaffCommand(team, assignment, "next").state.tasks[0].startedAt).toBe("2026-11-18T08:05:00.000Z");
+    expect(() => applyKqStaffCommand(team, { action: "start-team-task", assignment, expectedVersion: 0, expectedDay: 1 }, "now")).toThrow(/travaille déjà/);
+  });
 });

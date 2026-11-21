@@ -1,6 +1,7 @@
 import { getKqEquipmentDefinition, isKqProcessingEquipment } from "./kanab-quest-equipment";
 import { getKqWarehouseDevice, KQ_WAREHOUSE_CATALOG } from "./kanab-quest-warehouse-catalog";
-import { getKqWarehouseOption, type KqWarehouseOptionFamily } from "./kanab-quest-warehouse-options";
+import { getKqWarehouseOption, isKqWarehouseLegacyZoneOption, type KqWarehouseOptionFamily } from "./kanab-quest-warehouse-options";
+import { isKqWarehousePreparationCode, KQ_WAREHOUSE_PREPARATION_CATALOG } from "./kanab-quest-warehouse-preparations";
 
 export type KqWarehouseDepartment = KqWarehouseOptionFamily | "lighting" | "air" | "drying" | "storage" | "workshop";
 export type KqWarehouseShopTarget =
@@ -12,8 +13,13 @@ export type KqWarehouseShopTarget =
 /** Resolve actual catalog identities only. An old culture model is not an equivalent new purchase. */
 export function getKqWarehouseShopTarget(code?: string | null): KqWarehouseShopTarget | null {
   if (!code) return null;
+  if (isKqWarehousePreparationCode(code)) {
+    const item = KQ_WAREHOUSE_PREPARATION_CATALOG[code];
+    return { kind: "catalog", code, name: item.name, department: item.kind === "equipment" ? "hygiene" : "nutrition" };
+  }
   if (code === "COMPUTER" || isKqProcessingEquipment(code)) return { kind: "workshop", code };
   const option = getKqWarehouseOption(code);
+  if (option && isKqWarehouseLegacyZoneOption(code)) return { kind: "unavailable", code, name: option.name };
   if (option) return { kind: "catalog", code, name: option.name, department: option.family };
   const device = getKqWarehouseDevice(code) ?? KQ_WAREHOUSE_CATALOG.find(item => item.legacyCode === code);
   if (device?.purchasable !== false) {
@@ -27,5 +33,5 @@ export function getKqWarehouseShopTarget(code?: string | null): KqWarehouseShopT
 }
 
 export function getKqWarehouseDepartment(room: "culture" | "drying" | "storage" | "processing"): KqWarehouseDepartment {
-  return room === "culture" ? "lighting" : room === "processing" ? "workshop" : room;
+  return room === "culture" ? "substrate" : room === "processing" ? "workshop" : room;
 }

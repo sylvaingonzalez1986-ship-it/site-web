@@ -126,7 +126,8 @@ export function KqHarvestStorage({ initialFlowerId, onOpenMarket, onOpenArena, o
     target?.focus({ preventScroll: true });
     target?.scrollIntoView({ block: "start", behavior: "instant" });
   }
-  return <div ref={root} data-harvest-storage>
+  return <div ref={root} data-harvest-storage data-sylvain-target="storage"
+    data-sylvain-seen={storage && !pending && !error ? "storage" : undefined} tabIndex={-1}>
     <KqStorageInventory snapshot={storage} selectedFlowerId={initialFlowerId} onOpenLot={openLot} />
     <div className={styles.storageTools}>
       <div>

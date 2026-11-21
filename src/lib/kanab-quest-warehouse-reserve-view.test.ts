@@ -3,6 +3,7 @@ import { KQ_WAREHOUSE_CATALOG } from "./kanab-quest-warehouse-catalog";
 import { KQ_WAREHOUSE_OPTIONS } from "./kanab-quest-warehouse-options";
 import type { KqWarehouseAsset, KqWarehouseCondition } from "./kanab-quest-warehouse-condition";
 import { getKqWarehouseReserveView } from "./kanab-quest-warehouse-reserve-view";
+import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseSummary } from "./kanab-quest-warehouse";
 
 const code = "MH-TS1000";
 const summary = { reserve: [{ code, quantity: 4 }], optionReserve: [] };
@@ -44,6 +45,37 @@ describe("warehouse reserve presentation", () => {
 
   it("does not invent reserve lines from the ledger or from zero inventory", () => {
     const view = getKqWarehouseReserveView({ reserve: [{ code, quantity: 0 }], optionReserve: [] }, condition(asset("ledger-only", 4, 20)));
-    expect(view).toEqual({ hardware: [], modules: [] });
+    expect(view).toEqual({ hardware: [], modules: [], stations: [] });
+  });
+
+  it("shows whole controllers as devices and previously paid module coverage in square metres", () => {
+    const current = "SIM-CONTROL-UNIT-01", legacy = "SIM-CONTROL-01";
+    const view = getKqWarehouseReserveView({ reserve: [], optionReserve: [{ code: current, quantity: 1 }, { code: legacy, quantity: 8 }] },
+      condition(asset("controller", 1, 12, { kind: "option", code: current })));
+    expect(view.hardware).toMatchObject([{ code: current, kind: "control", quantity: 1, wearGroups: [{ quantity: 1, wearPercent: 12 }] }]);
+    expect(view.modules.map(({ code, quantity }) => ({ code, quantity }))).toEqual([{ code: legacy, quantity: 8 }]);
+  });
+
+  it("counts removed shared stations as units and keeps historical supplies in square metres", () => {
+    const starter = createKqWarehouseStarter(true);
+    const placed = getKqWarehouseQuote({ ...starter, stationPlacements: [
+      { id: "water", code: "SIM-WATER-03", x: 1, y: 1 },
+      { id: "hygiene", code: "SIM-HYGIENE-03", x: 5, y: 9 },
+    ], optionInventory: [{ code: "SIM-WATER-01", quantity: 2 }] }, starter).nextState;
+    const removed = getKqWarehouseQuote({ ...placed, stationPlacements: [] }, placed).nextState;
+    const waterCondition = condition(asset("water-stock", 1, 20, { code: "SIM-WATER-03", kind: "option" }));
+    const view = getKqWarehouseReserveView(getKqWarehouseSummary(removed), waterCondition);
+    expect(view.stations).toEqual([
+      { code: "SIM-HYGIENE-03", name: "Sas d’entretien", quantity: 1, wearGroups: [{ quantity: 1, wearPercent: null }] },
+      { code: "SIM-WATER-03", name: "Centrale d’irrigation", quantity: 1, wearGroups: [{ quantity: 1, wearPercent: 20 }] },
+    ]);
+    expect(view.modules.map(({ code, quantity }) => ({ code, quantity }))).toEqual([{ code: "SIM-WATER-01", quantity: 2 }]);
+    const historical = getKqWarehouseReserveView(getKqWarehouseSummary({ ...starter,
+      optionInventory: [{ code: "SIM-WATER-03", quantity: 4 }, { code: "SIM-HYGIENE-03", quantity: 3 }],
+    }));
+    expect(historical.stations).toEqual([]);
+    expect(historical.modules.map(({ code, quantity }) => ({ code, quantity }))).toEqual([
+      { code: "SIM-WATER-03", quantity: 4 }, { code: "SIM-HYGIENE-03", quantity: 3 },
+    ]);
   });
 });

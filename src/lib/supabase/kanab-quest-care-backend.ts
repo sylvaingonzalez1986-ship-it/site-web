@@ -1,7 +1,7 @@
 import "server-only";
 
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_CARE_PRODUCTS, performKqBasicCare } from "@/lib/kanab-quest-care";
-import { isKqCarePurchasesPage, type KqCarePurchasesPage } from "@/lib/kanab-quest-care-purchases";
+import { isKqCarePurchaseId, isKqCarePurchasesPage, type KqCarePurchasesPage } from "@/lib/kanab-quest-care-purchases";
 import { getKqCareSectors, isKqCareSector, type KqCareSector } from "@/lib/kanab-quest-care-spatial";
 import type { KqGameState } from "@/lib/kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
@@ -13,7 +13,7 @@ function assertId(value: string) {
   if (!UUID.test(value)) throw new Error("Demande de suivi invalide.");
 }
 
-export type KqCareInventoryItem = { productCode: string; quantity: number; legacyQuantity?: number; areaQuantity?: number };
+export type KqCareInventoryItem = { productCode: string; quantity: number; legacyQuantity?: number; areaQuantity?: number; zoneQuantities?: Record<string, number> };
 export type KqCareShopSnapshot = { cashCents: number; basicCarePriceCents?: number; areaM2?: number | null; pricingUnits?: number; runId?: string | null; inventory: KqCareInventoryItem[]; catalog: typeof KQ_CARE_PRODUCTS };
 export type KqCareInterventionResult = { state: KqGameState; updatedAt: string; inventory: KqCareInventoryItem[]; cashCents: number; chargedCents: number; replayed: boolean };
 
@@ -23,6 +23,11 @@ function careError(operation: string, error: { message: string }): never {
     kq_care_basic_insufficient_cash: "Trésorerie insuffisante pour cet entretien.",
     kq_care_price_changed: "Le prix ou la surface a changé. Actualise le suivi avant de confirmer.",
     kq_care_stock_unavailable: "Ce produit n’est plus disponible dans ton stock.",
+    kq_preparation_stock: "Le stock de ce produit a changé. Actualise le suivi pour vérifier les charges restantes.",
+    kq_preparation_reserved: "Cette zone a épuisé le stock disponible au semis. Les achats suivants serviront aux prochaines cultures.",
+    warehouse_care_locked: "Achète les produits à l’entrepôt avant le semis. Cette culture utilise son stock de départ encore disponible.",
+    kq_preparation_cash: "Trésorerie insuffisante pour cet achat.",
+    kq_preparation_request_mismatch: "Cette demande a déjà été utilisée pour une autre opération.",
     kq_stale_run: "La culture a évolué. Recharge son suivi avant d’intervenir.",
     kq_run_unavailable: "Culture active introuvable.",
     kq_care_request_mismatch: "Cette demande a déjà été utilisée pour une autre intervention.",
@@ -126,7 +131,7 @@ export async function applyKqPlayerCare(input: {
 export async function getKqCarePurchaseRegister(userId: string, before?: string): Promise<KqCarePurchasesPage> {
   assertId(userId);
   const split = before?.split("|");
-  if (split && (split.length !== 2 || !Number.isFinite(Date.parse(split[0])) || !/^(purchase|basic):[0-9a-f-]{36}$/i.test(split[1]))) throw new Error("Page du registre invalide.");
+  if (split && (split.length !== 2 || !Number.isFinite(Date.parse(split[0])) || !isKqCarePurchaseId(split[1]))) throw new Error("Page du registre invalide.");
   const result = await createSupabaseServiceClient().rpc("rpc_kq_care_purchase_register", {
     p_user_id: userId, p_before_at: split?.[0] ?? null, p_before_id: split?.[1] ?? null,
   });

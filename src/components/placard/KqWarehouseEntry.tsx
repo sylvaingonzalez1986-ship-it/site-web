@@ -2,7 +2,7 @@
 
 import type { KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
 import { KqWarehouse } from "./KqWarehouse";
@@ -16,7 +16,7 @@ import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 
 type Snapshot={chanvrierProfile?:ChanvrierProfile|null;equipmentScopeVersion?:2|3;career?:ChanvrierCareerSnapshot;storageCapacity?:{freeUnits:number;totalUnits:number}|null;expansionEnergyCents?:number;tentNumber?:number;tents?:KqTentOverview[];buildings?:KqBuildingEquipmentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
-type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialEmployeeId?:string;initialShopOpen?:boolean;initialStorageEquipmentOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage"|"processing";initialWorkshopTab?:"trim"|"machines";onClose:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onOpenMarket?: (flowerId?: string, section?: KqHarvestMarketSection) => void;onOpenHarvests?:(flowerId?:string)=>void;onOpenStaff?:()=>void;onBusyChange?:(busy:boolean)=>void};
+type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;showWorkshopHeading?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialEmployeeId?:string;initialShopOpen?:boolean;initialStorageEquipmentOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage"|"processing";initialWorkshopTab?:"trim"|"machines";onClose:()=>void;onReturnToVillage?:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onOpenMarket?: (flowerId?: string, section?: KqHarvestMarketSection) => void;onOpenHarvests?:(flowerId?:string)=>void;onOpenStaff?:()=>void;onBusyChange?:(busy:boolean)=>void;contextNavigation?:ReactNode};
 
 /** Existing teaching sessions keep their isolated equipment fixture and never migrate an account. */
 export function KqWarehouseEntry(props: WarehouseEntryProps) {
@@ -24,7 +24,7 @@ export function KqWarehouseEntry(props: WarehouseEntryProps) {
   return (api.isTutorial && !api.nativeWarehouse) || props.workshopOnly ? <LegacyKqWarehouseEntry {...props} /> : <KqWarehouse key={props.draftOwnerId ?? "local"} {...props} draftStore={api.warehouseDraftStore} onOpenCulture={props.onOpenCulture ?? api.onOpenCulture} />;
 }
 
-function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipmentCode,initialSection="equipment",onClose,onOpenShop=()=>{},onBusyChange}:WarehouseEntryProps){
+function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,showWorkshopHeading,initialEquipmentCode,initialSection="equipment",onClose,onOpenShop=()=>{},onBusyChange}:WarehouseEntryProps){
   const api=useKqTutorialApi();
   const selectKqTent=useKqSelectTent();
   const selectedTentNumber=useKqTentSelection();
@@ -57,7 +57,7 @@ function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipm
   };
   const shared=snapshot.sharedEquipment;
   const building=snapshot.equipmentScopeVersion===3?snapshot.buildings?.find(item=>item.buildingNumber===getKqEquipmentBuildingNumber(tentNumber)):undefined;
-  return <KqEquipmentInventoryModal embedded={embedded} workshopOnly={workshopOnly} onBusyChange={onBusyChange} {...snapshot} {...(selected??EMPTY)}
+  return <KqEquipmentInventoryModal embedded={embedded} workshopOnly={workshopOnly} showWorkshopHeading={showWorkshopHeading} onBusyChange={onBusyChange} {...snapshot} {...(selected??EMPTY)}
     inventoryKnown={snapshotKnown&&selected!==null}
     cashCents={snapshot.cashCents}
     career={snapshot.career}

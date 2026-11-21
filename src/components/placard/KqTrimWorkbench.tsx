@@ -1,13 +1,13 @@
 "use client";
 
-import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
+import { KqHelpDashboard, KqHelpGrid } from "./KqHelpDashboard";
 import Link from "next/link";
 import { useState } from "react";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { Scissors, Settings2, UserRound } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqStaffCapacity, getKqStaffLevel } from "@/lib/kanab-quest-staff";
-import { KQ_STAFF_TRIMMER_COST_CENTS, getKqStaffSharedTrimQuote } from "@/lib/kanab-quest-staff-trim";
+import { KQ_STAFF_TRIMMER_COST_CENTS, getKqSharedTrimStartAt, getKqStaffSharedTrimQuote } from "@/lib/kanab-quest-staff-trim";
 import { KQ_PLAYER_DAILY_HOURS, getKqPlayerSkills, getKqPlayerWorkday } from "@/lib/kanab-quest-player-work";
 import type { KqStaffSnapshot, KqStaffTrimLot, KqStaffTrimMode } from "@/lib/kanab-quest-staff-types";
 import type { KqStaffConfirmationDraft } from "./KqStaffOperations";
@@ -16,12 +16,14 @@ import { KqTrimScene } from "./KqTrimScene";
 import { ChanvrierAvatar } from "../contest/ChanvrierAvatar";
 import { KqStaffPortrait } from "./KqStaffPortrait";
 import { KqWorkActorSelector } from "./KqWorkActorSelector";
+import { KqActivityDuration } from "./KqActivityDuration";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqStaffDesk.module.css";
 
 type Props = { snapshot: KqStaffSnapshot; prepare: (confirmation: KqStaffConfirmationDraft) => void; disabled: boolean; stale?: boolean; snapshotReceivedAt?: number; playerProfile?: ChanvrierAvatarProfile | null };
 const hoursLabel = (value: number) => `${value.toLocaleString("fr-FR")} h`;
 const grams = (value: number) => `${value.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} g`;
+const minutes = (value: number) => `${value.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} min réelles`;
 const dateTime = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const hasWeight = (lot: KqStaffTrimLot) => typeof lot.totalGrams === "number" && Number.isFinite(lot.totalGrams) && lot.totalGrams >= 0 && typeof lot.completedGrams === "number" && Number.isFinite(lot.completedGrams) && lot.completedGrams >= 0 && lot.completedGrams <= lot.totalGrams;
 const finished = (lot: KqStaffTrimLot) => !!lot.completedAt || hasWeight(lot) && lot.completedGrams! >= lot.totalGrams!;
@@ -39,9 +41,9 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
   const remainingHours = player ? workday.remainingHours : employee ? getKqStaffCapacity(employee, snapshot.calendar, snapshot.state.dayPlans).remainingHours : 0;
   const hours = Number(hourInput);
   let quote: ReturnType<typeof getKqStaffSharedTrimQuote> | null = null, quoteError = "";
-  try { quote = getKqStaffSharedTrimQuote({ mode, hours, level: effectiveLevel, trait: employee?.trait }); }
+  try { quote = getKqStaffSharedTrimQuote({ mode, hours, level: effectiveLevel, trait: employee?.trait, handling: snapshot.context.warehouseHandling }); }
   catch (cause) { quoteError = cause instanceof Error ? cause.message : "Prévision de trim indisponible."; }
-  const queuedUntil = Math.max(Date.parse(snapshot.serverNow), ...snapshot.state.tasks.filter(task => task.employeeId === worker && task.status === "running").map(task => Date.parse(task.completesAt)));
+  const queuedUntil = getKqSharedTrimStartAt(snapshot.serverNow, snapshot.context, snapshot.state.tasks, worker);
   const estimatedEnd = queuedUntil + (quote?.durationMs ?? 0);
   const tooLate = !!quote && estimatedEnd > Date.parse(snapshot.calendar.nextDayAt);
   const beyondContract = !!employee?.endsAt && estimatedEnd > Date.parse(employee.endsAt);
@@ -50,12 +52,19 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
   const compatible = unfinished.filter(lot => hasWeight(lot) && (!lot.mode || lot.mode === mode) && !legacyBusy.has(lot.flowerId));
   const canStart = !disabled && !!quote && compatible.length > 0 && !tooLate && !beyondContract && hours <= remainingHours && (player || (!!employee && snapshot.outstandingCents === 0)) && (mode === "manual" || snapshot.state.trimmerOwned);
   const quality = quote ? `${quote.qualityDelta > 0 ? "+" : ""}${quote.qualityDelta} point${Math.abs(quote.qualityDelta) > 1 ? "s" : ""} / 100` : "";
-  const duration = quote ? `${(quote.durationMs / 60000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} min réelles` : "";
+  const duration = quote ? minutes(quote.durationMs / 60000) : "";
+  const estimatedGrams = quote ? Math.min(quote.grams, compatible.reduce((sum, lot) => sum + lot.totalGrams! - lot.completedGrams!, 0)) : 0;
+  const comparison = quote && quote.gramsPerHour > quote.baseGramsPerHour && estimatedGrams > 0 ? {
+    label: `Durée pour ${grams(estimatedGrams)} · estimation`,
+    description: `${minutes(estimatedGrams * 10 / quote.baseGramsPerHour)} sans matériel → ${minutes(estimatedGrams * 10 / quote.gramsPerHour)} avec matériel`,
+  } : null;
   function start() {
     if (!canStart || !quote) return;
     prepare({ title: mode === "manual" ? "Rejoindre le trim manuel" : "Rejoindre le trim à la machine", description: "L’atelier traite automatiquement les récoltes compatibles, des plus anciennes aux plus récentes. Les autres travailleurs continuent en parallèle. Les heures choisies sont entièrement réservées, même si les fleurs disponibles sont épuisées avant la fin.", rows: [
-      ["Qui travaille", player ? "Toi" : employee!.name], ["Méthode", mode === "manual" ? "Manuel" : "Machine"], ["Cadence", `${grams(quote.gramsPerHour)} / h de jeu`], ["Heures réservées", hoursLabel(hours)], ["Quantité maximale prévue", grams(quote.grams)], ["Durée de cette tâche", duration], ["Début prévu · heure réelle", dateTime(new Date(queuedUntil).toISOString())], ["Fin prévue · heure réelle", dateTime(new Date(estimatedEnd).toISOString())], ["Contribution à la présentation · estimation", quality], ["Paiement immédiat", formatKqCash(0)],
-    ], command: { action: "trim", employeeId: player ? null : employee!.id, mode, hours, expectedCostCents: 0 }, debitCents: 0, confirmLabel: "Confirmer le trim" });
+      ["Qui travaille", player ? "Toi" : employee!.name], ["Méthode", mode === "manual" ? "Manuel" : "Machine"], ["Cadence", `${grams(quote.gramsPerHour)} / h de jeu`], ["Heures réservées", hoursLabel(hours)], ["Quantité maximale prévue", grams(quote.grams)], ["Durée du créneau", duration],
+      ...(comparison ? [[comparison.label, comparison.description] as [string, string]] : []),
+      ["Début prévu · heure réelle", dateTime(new Date(queuedUntil).toISOString())], ["Fin prévue · heure réelle", dateTime(new Date(estimatedEnd).toISOString())], ["Contribution à la présentation · estimation", quality], ["Paiement immédiat", formatKqCash(0)],
+    ], command: { action: "trim", employeeId: player ? null : employee!.id, mode, hours, expectedCostCents: 0, expectedRate: quote.gramsPerHour }, debitCents: 0, confirmLabel: "Confirmer le trim" });
   }
   return <div className={styles.form}>
     <KqTrimScene snapshot={snapshot} workerId={worker} mode={mode} stale={stale} snapshotReceivedAt={snapshotReceivedAt} playerProfile={playerProfile} paused={motionPaused} onPausedChange={setMotionPaused} />
@@ -72,10 +81,11 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
             disabledReason: snapshot.outstandingCents > 0 ? "Paie à régulariser" : capacity.remainingHours < .5 ? "Aucune heure disponible" : undefined };
         }),
       ]} /></div>
-      <div className={styles.fields}><label>Heures de trim<input type="number" min={.5} max={Math.min(player ? KQ_PLAYER_DAILY_HOURS : 10, remainingHours)} step={.5} value={hourInput} disabled={disabled} required onChange={event => setHourInput(event.target.value)} /></label></div>
+      <div className={styles.fields}>{player ? <KqActivityDuration label="Heures de trim" hours={hours} availableHours={remainingHours} disabled={disabled} onChange={value => setHourInput(String(value))} /> :
+        <label>Heures de trim<input type="number" min={.5} max={Math.min(10, remainingHours)} step={.5} value={hourInput} disabled={disabled} required onChange={event => setHourInput(event.target.value)} /></label>}</div>
       <p className={styles.muted}>{player ? `${hoursLabel(remainingHours)} disponibles aujourd’hui, week-end compris. Tes activités partagent les mêmes ${KQ_PLAYER_DAILY_HOURS} h quotidiennes.` : employee ? `${hoursLabel(remainingHours)} disponibles aujourd’hui sur le planning commun de ${employee.name}.` : "Choisis une personne disponible."}</p>
       <div className={styles.actions} role="group" aria-label="Méthode de trim"><button type="button" aria-pressed={mode === "manual"} disabled={disabled} onClick={() => setMode("manual")}><Scissors size={18} aria-hidden="true" /> Manuel</button><button type="button" aria-pressed={mode === "machine"} disabled={disabled} onClick={() => setMode("machine")}><Settings2 size={18} aria-hidden="true" /> Machine</button></div>
-      {quote ? <dl className={styles.numbers}><div><dt>Cadence de {player ? "ton travail" : employee?.name ?? "cette personne"}</dt><dd>{grams(quote.gramsPerHour)} / h de jeu</dd></div><div><dt>Quantité maximale prévue</dt><dd>{grams(quote.grams)}</dd></div><div><dt>Durée de cette tâche</dt><dd>{duration}</dd></div></dl> : <p className={styles.muted}>{quoteError}</p>}
+      {quote ? <dl className={styles.numbers}><div><dt>Cadence de {player ? "ton travail" : employee?.name ?? "cette personne"}</dt><dd>{grams(quote.gramsPerHour)} / h de jeu</dd></div><div><dt>Quantité maximale prévue</dt><dd>{grams(quote.grams)}</dd></div><div><dt>Durée du créneau</dt><dd>{duration}</dd></div>{comparison && <div><dt>{comparison.label}</dt><dd>{comparison.description}</dd></div>}</dl> : <p className={styles.muted}>{quoteError}</p>}
       <p className={styles.muted}>{mode === "manual" ? "Le travail manuel améliore la présentation des fleurs." : "La machine traite quatre fois plus de fleurs par heure, mais réduit leur présentation."} Les récoltes gardent la méthode avec laquelle elles ont commencé.</p>
       {mode === "machine" && !snapshot.state.trimmerOwned ? <p className={styles.callout}>La trimeuse doit être achetée avant cette méthode : {formatKqCash(KQ_STAFF_TRIMMER_COST_CENTS)} pour toute la ferme. Son achat se confirme ci-dessous.</p> : null}
       {!player && snapshot.outstandingCents > 0 ? <p className={styles.callout}>Règle les salaires échus avant de confier du trim à un employé.</p> : null}
@@ -100,7 +110,6 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
           { label: "Travail d’équipe", value: "En parallèle", detail: "Un planning par personne.", art: "help-team" },
           { label: "Ajustement du lot", value: "Une fois, à la fin", detail: "Selon le travail réellement effectué.", art: "harvest" },
         ]} />
-        <KqHelpNote>Le serveur confirme les grammes selon les fleurs disponibles. Les heures réservées restent consommées si aucune fleur compatible ne reste.</KqHelpNote>
       </KqHelpDashboard></details>
     </form>
   </div>;
@@ -120,7 +129,7 @@ export function KqTrimWorkbench({ snapshot, prepare, disabled, stale, snapshotRe
     return tasks.length ? "queued" : "required";
   };
   const requestedEmployee = snapshot.state.employees.find(employee => employee.id === initialEmployeeId && employee.status === "active");
-  return <section className={styles.form} aria-label="Atelier de trim" data-guide-trim-ready={!stale && !disabled}>
+  return <section className={styles.form} aria-label="Atelier de trim" data-guide-trim-ready={!stale && !disabled} data-sylvain-target="trim" tabIndex={-1}>
     <header className={styles.sectionHeader}><div><h2>Trim des récoltes</h2><p className={styles.muted}>Les récoltes compatibles sont traitées des plus anciennes aux plus récentes.</p></div></header>
     <dl className={styles.numbers} aria-label="Récoltes en attente de trim"><div><dt>Reste à préparer</dt><dd>{remaining === null ? "Quantité à vérifier" : grams(remaining)}</dd></div><div><dt>Récoltes à préparer</dt><dd>{unfinished.length}</dd></div></dl>
     {initialEmployeeId && initialEmployeeId !== "player" ? <p className={styles.callout} data-trim-assigned-employee={initialEmployeeId}>{requestedEmployee ? <><strong>{requestedEmployee.name}</strong> est présélectionné. Choisis sa méthode et ses heures avant de confirmer.</> : "Le salarié choisi n’est plus disponible. Choisis une autre personne avant de confirmer."}</p> : null}

@@ -104,7 +104,8 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
             event.currentTarget.parentElement?.querySelector<HTMLButtonElement>(`[data-collection-tab="${next}"]`)?.focus();
           }}>{kind === "botte" ? <BookOpen size={18} aria-hidden="true" /> : <Leaf size={18} aria-hidden="true" />}{kind === "botte" ? "Botte du Chanvrier" : "Buddies"}</button>)}
         </div>
-        <div className={styles.albumPanel} hidden={album !== "botte"} role="tabpanel" id="collection-panel-botte" aria-labelledby="collection-tab-botte" data-collection-panel="botte">
+        <div className={styles.albumPanel} hidden={album !== "botte"} role="tabpanel" id="collection-panel-botte" aria-labelledby="collection-tab-botte" data-collection-panel="botte"
+          data-sylvain-target="cards" data-sylvain-seen={!api.isTutorial && inventory && !loading && !error ? "cards" : undefined} tabIndex={-1}>
         <section className={styles.progress} aria-label="État de ta collection"><div><strong>{inventory ? `${owned} / ${KQ_CARDS.length}` : "…"}</strong><span>cartes différentes en stock</span></div><progress value={inventory ? owned : 0} max={KQ_CARDS.length} aria-label="Cartes différentes possédées" /><div><strong>{inventory ? copies : "…"}</strong><span>exemplaires disponibles</span></div></section>
         <div className={styles.filters}>
           <nav aria-label="Afficher les cartes"><button type="button" aria-pressed={ownership === "owned"} disabled={!inventory} onClick={() => setOwnership("owned")}>Mes cartes <b>{inventory ? owned : "…"}</b></button><button type="button" aria-pressed={ownership === "all"} onClick={() => setOwnership("all")}>Album complet <b>{KQ_CARDS.length}</b></button><button type="button" aria-pressed={ownership === "missing"} disabled={!inventory} onClick={() => setOwnership("missing")}>Manquantes <b>{inventory ? KQ_CARDS.length - owned : "…"}</b></button></nav>

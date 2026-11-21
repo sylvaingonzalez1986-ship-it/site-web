@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DELETE } from "./route";
 
 const mocks = vi.hoisted(() => ({
-  guard: vi.fn(), getOrder: vi.fn(), archive: vi.fn(), requestArchive: vi.fn(),
+  guard: vi.fn(), getOrder: vi.fn(), archive: vi.fn(), rpc: vi.fn(),
   cancelViva: vi.fn(), audit: vi.fn(),
 }));
 vi.mock("@/lib/admin-guard", () => ({ denyIfNotAdminApi: mocks.guard }));
 vi.mock("@/lib/order-backend", () => ({ getOrderByIdByBackend: mocks.getOrder, archiveIncompleteOrderByBackend: mocks.archive }));
-vi.mock("@/lib/swiss-bitcoin-pay-service", () => ({ requestSwissBitcoinOrderArchive: mocks.requestArchive }));
+vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc }) }));
 vi.mock("@/lib/viva-payment", () => ({ cancelVivaPaymentOrder: mocks.cancelViva, getVivaConfig: () => ({}) }));
 vi.mock("@/lib/audit-log", () => ({ logAuditEvent: mocks.audit }));
 
@@ -28,11 +28,11 @@ describe("admin removal of unpaid Bitcoin orders", () => {
   it("confirms a scheduled withdrawal without removing a payable order from the list", async () => {
     const scheduled = { ...order, swissBitcoinArchiveRequestedAt: requestedAt };
     mocks.getOrder.mockResolvedValueOnce(order).mockResolvedValueOnce(scheduled);
-    mocks.requestArchive.mockResolvedValue("scheduled");
+    mocks.rpc.mockResolvedValue({ data: { action: "scheduled" }, error: null });
     const response = await remove();
     expect(response.status).toBe(202);
     expect(await response.json()).toEqual(scheduled);
-    expect(mocks.requestArchive).toHaveBeenCalledWith(order.id);
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_request_swiss_bitcoin_archive", { p_order_id: order.id });
     expect(mocks.archive).not.toHaveBeenCalled();
     expect(mocks.cancelViva).not.toHaveBeenCalled();
     expect(mocks.audit).toHaveBeenCalledWith({ eventType: "request_order_archive", metadata: { orderId: order.id } });
@@ -41,7 +41,7 @@ describe("admin removal of unpaid Bitcoin orders", () => {
   it.each(["archived", "scheduled"])("returns the archived order if the database has finished removal (%s)", async (action) => {
     const archived = { ...order, status: "cancelled", paymentState: "failed", archivedAt: requestedAt };
     mocks.getOrder.mockResolvedValueOnce(order).mockResolvedValueOnce(archived);
-    mocks.requestArchive.mockResolvedValue(action);
+    mocks.rpc.mockResolvedValue({ data: { action }, error: null });
     const response = await remove();
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual(archived);
@@ -49,14 +49,14 @@ describe("admin removal of unpaid Bitcoin orders", () => {
 
   it("keeps an order visible if a settlement arrives during the request", async () => {
     mocks.getOrder.mockResolvedValueOnce(order).mockResolvedValueOnce({ ...order, paymentState: "paid", status: "paid" });
-    mocks.requestArchive.mockResolvedValue("scheduled");
+    mocks.rpc.mockResolvedValue({ data: { action: "scheduled" }, error: null });
     expect((await remove()).status).toBe(409);
     expect(mocks.audit).not.toHaveBeenCalled();
   });
 
   it("blocks a card switch in progress and leaves the provider session intact", async () => {
     mocks.getOrder.mockResolvedValue({ ...order, swissBitcoinCardStartedAt: requestedAt });
-    mocks.requestArchive.mockResolvedValue("blocked");
+    mocks.rpc.mockResolvedValue({ data: { action: "blocked" }, error: null });
     expect((await remove()).status).toBe(409);
     expect(mocks.archive).not.toHaveBeenCalled();
     expect(mocks.cancelViva).not.toHaveBeenCalled();
@@ -68,7 +68,7 @@ describe("admin removal of unpaid Bitcoin orders", () => {
     mocks.archive.mockResolvedValue({ ...card, archivedAt: requestedAt });
     expect((await remove()).status).toBe(200);
     expect(mocks.cancelViva).toHaveBeenCalledWith({ config: {}, orderCode: "12345" });
-    expect(mocks.requestArchive).not.toHaveBeenCalled();
+    expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
   it("keeps the admin guard ahead of any read or write", async () => {

@@ -60,12 +60,12 @@ describe("machine maintenance", () => {
     expect(getKqMachineCondition("PRESS-0600", 5, 20)).toMatchObject({ remaining: 0, due: true });
     expect(getKqMachineCondition("FREEZE-DRYER", 1, 19)?.interval).toBe(20);
     expect(getKqMachineCondition("LED-300", 1, 15)).toBeNull();
-    expect(getKqMachineCondition("SIFT-TRAY", 1, 10)).toMatchObject({ due: true, interval: 10, repairCents: 3300 });
+    expect(getKqMachineCondition("SIFT-TRAY", 1, 10)).toMatchObject({ due: true, interval: 10, repairCents: 20_000 });
   });
   it("makes the same repair free for the handyperson and keeps wear", () => {
     const normal = getKqMachineCondition("PRESS-0600", 1, 10, 3)!;
     const free = getKqMachineCondition("PRESS-0600", 1, 10, 3, "handyperson");
-    expect(normal.repairCents).toBe(5100);
+    expect(normal.repairCents).toBe(20_000);
     expect(free).toEqual({ ...normal, repairCents: 0 });
     expect(getKqMachineCondition("FREEZE-DRYER", 10, 20)?.repairCents).toBe(20000);
   });

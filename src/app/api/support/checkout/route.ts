@@ -1,5 +1,6 @@
-import { parseSupportForm, parseSupportIdentity } from "@/lib/support-campaign";
+import { parseSupportForm, parseSupportIdentity, parseSupportProvider } from "@/lib/support-campaign";
 import { readSupportBody, requireSupportOrigin, supportFailure, supportJson, supportRateLimit } from "@/lib/support-http";
+import { startSwissBitcoinSupport } from "@/lib/support-swiss-bitcoin-pay";
 import { startSupportPayment } from "@/lib/support-viva";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
@@ -8,6 +9,8 @@ export async function POST(request: Request) {
     const limited = await supportRateLimit(request, "checkout", 12, 600);
     if (limited) return limited;
     const body = await readSupportBody(request);
-    return supportJson(await startSupportPayment({ ...parseSupportIdentity(body), ...parseSupportForm(body) }));
+    const provider = parseSupportProvider(body.provider);
+    const attempt = { ...parseSupportIdentity(body), ...parseSupportForm(body) };
+    return supportJson(provider === "swiss-bitcoin-pay" ? await startSwissBitcoinSupport(attempt) : await startSupportPayment(attempt));
   } catch (error) { return supportFailure(error); }
 }

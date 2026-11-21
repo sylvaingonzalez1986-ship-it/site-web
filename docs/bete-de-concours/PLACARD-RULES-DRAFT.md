@@ -266,10 +266,7 @@ pas être achetée en double : le remplacement remet à neuf la pièce déjà po
 
 Catalogue de lancement :
 
-Les prix en euros sont des valeurs de jeu. Les références matérielles documentent
-l’inspiration visuelle et technique ; leurs prix historiques étrangers ne sont
-pas des taux de conversion. Les premières machines de transformation ont des prix
-adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
+Les équipements sont payés avec la monnaie virtuelle du jeu. Pour les six machines de l’atelier, le tableau indique le prix du modèle compact. Le passage à une gamme supérieure déduit la valeur du niveau déjà acquis. [Prix et modèles des trois gammes](prix-publics-entrepot.md#machines-de-latelier)
 
 | Équipement | Prix virtuel en euros |
 | --- | ---: |
@@ -278,12 +275,12 @@ adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 | LED spéciale 300 W | 359 € |
 | Extracteur EC 6 pouces | 149 € |
 | Contrôleur climatique AI+ | 139 € |
-| Tamis compact | 550 € |
-| Laveuse compacte | 1 250 € |
-| Collecteur compact | 4 995 € |
-| Séparateur compact | 22 800 € |
-| Presse compacte | 850 € |
-| Sécheur compact | 7 495 € |
+| Tamis compact | 5 040 € |
+| Laveuse compacte | 6 300 € |
+| Collecteur compact | 5 160 € |
+| Séparateur compact | 18 000 € |
+| Presse compacte | 4 500 € |
+| Sécheur compact | 7 600 € |
 | Panneau solaire et batterie | 1 149 € |
 | Caméra de surveillance | 69,99 € |
 | Chien de garde | 1 000 € |

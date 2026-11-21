@@ -105,9 +105,11 @@ try {
   // This isolated runner ends before the monthly-climate/repricing migration.
   // Keep the catalogue in its historical state for every chronological quote.
   const { KQ_WAREHOUSE_CATALOG: fixtureCatalog } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-catalog.ts");
-  const historicalPostHarvestPrices = { "SJ-DRYIT90": 3990, "SIM-DRYING-02": 9990, "SIM-DRYING-03": 19990,
-    "LP-SUPER-1L": 2090, "BROR-JARS-48": 25720, "CURTEC-60L": 8550 };
-  for (const device of fixtureCatalog) if (Object.hasOwn(historicalPostHarvestPrices, device.code)) device.priceCents = historicalPostHarvestPrices[device.code];
+  const historicalPrices = { "SJ-DRYIT90": 3990, "SIM-DRYING-02": 9990, "SIM-DRYING-03": 19990,
+    "LP-SUPER-1L": 2090, "BROR-JARS-48": 25720, "CURTEC-60L": 8550,
+    "MH-TS1000": 14900, "SIM-LIGHT-02": 32900, "SIM-LIGHT-03": 74900,
+    "SIM-AIR-01": 4900, "SJ-DF16E350": 14900, "SIM-AIR-03": 44900, "GV-GP50-7": 36999, "GV-WASHER-36L": 12799 };
+  for (const device of fixtureCatalog) if (Object.hasOwn(historicalPrices, device.code)) device.priceCents = historicalPrices[device.code];
   // Every assertion before the balance-v2 migration uses the original rules.
   const getKqWarehouseRunSnapshot = (state, revision, zoneId) => getCurrentRunSnapshot(state, revision, zoneId, 1, 1);
   // These chronological tests predate floor adoption. Preserve their exact
@@ -859,10 +861,10 @@ try {
   equal(await scalar("SELECT count(*)::integer FROM kq_market_sale_receipts WHERE owner_id=$1 AND supplier_paid_cents>0", [supplierBatch.user]), (await timelineFacts(supplierBatch.user)).filter(sale => sale.supplier_paid_cents > 0).length, "historical market receipts preserve the actual supplier amount collected online");
   equal((await scalar("SELECT kq_business_snapshot($1)", [dueOwner])).suppliers.invoices.some(invoice => invoice.id === dueBill && invoice.remainingCents === 0), true, "recent paid invoices remain visible alongside current debts");
   equal(await scalar("SELECT has_table_privilege('service_role','kq_supplier_invoices','SELECT')"), false, "supplier invoices stay private behind controlled RPCs");
-  const { KQ_WAREHOUSE_LEGACY_OPTIONS: KQ_WAREHOUSE_OPTIONS, KQ_WAREHOUSE_OPTIONS: currentOptions } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-options.ts");
+  const { KQ_WAREHOUSE_HANDLING_CART, KQ_WAREHOUSE_LEGACY_OPTIONS: KQ_WAREHOUSE_OPTIONS, getKqWarehouseOption } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-options.ts");
   for (const option of KQ_WAREHOUSE_OPTIONS) {
     equal(await scalar("SELECT kq_warehouse_option($1)", [option.code]), {
-      code: option.code, family: option.family, equipmentCentsPerM2: option.equipmentCentsPerM2,
+      code: option.code, family: option.family, equipmentCentsPerM2: option.unitPriceCents,
       consumablesCentsPerM2: option.consumablesCentsPerM2, yieldBonusPercent: option.yieldBonusPercent, qualityBonus: option.qualityBonus,
     }, `SQL and server game catalogue agree on ${option.code}`);
   }
@@ -870,7 +872,9 @@ try {
   const moduleOriginal = await scalar("SELECT rpc_kq_warehouse_initialize($1,$2)", [moduleOwner, physicalStarter]);
   await db.query("UPDATE kq_equipment_wallets SET cash_cents=1000000 WHERE user_id=$1", [moduleOwner]);
   const moduleDraft = { ...moduleOriginal.state, zones: moduleOriginal.state.zones.map(zone => ({ ...zone, optionCodes: ["SIM-CLIMATE-03", "SIM-NUTRITION-03"] })) };
-  const moduleQuote = getKqWarehouseQuote(moduleDraft, moduleOriginal.state), moduleKey = randomUUID();
+  // The chronological RPC receives the area-based quote issued in this migration.
+  const moduleQuote = { nextState: { ...moduleDraft, optionInventory: moduleDraft.zones[0].optionCodes.map(code => ({ code, quantity: 1 })) },
+    totalCostCents: Math.round((4600 + 900) * 1.15) }, moduleKey = randomUUID();
   const moduleRequest = { state: moduleDraft, expectedRevision: moduleOriginal.revision, expectedCostCents: moduleQuote.totalCostCents };
   const moduleSave = () => scalar("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,$7)", [moduleOwner, moduleKey, moduleRequest, moduleOriginal.revision, moduleOriginal.state, moduleQuote.nextState, moduleQuote.totalCostCents]);
   await reject(() => scalar("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,0)", [moduleOwner, randomUUID(), { ...moduleRequest, expectedCostCents: 0 }, moduleOriginal.revision, moduleOriginal.state, moduleQuote.nextState]), "warehouse_price_changed");
@@ -881,7 +885,9 @@ try {
   const projection = await scalar("SELECT kq_warehouse_options_projection($1)", [moduleSaved.state]);
   equal(projection, { activeAreaM2: 1, estimatedHarvestGrams: 257.5, consumablesCostCents: 3060, qualityBonus: 2, hasOptions: true }, "SQL derives actual game costs and bonuses from the paid plan");
   const maxProfiles = KQ_WAREHOUSE_OPTIONS.filter(option => option.code.endsWith("03")).map(option => option.code);
-  const fullModules = getKqWarehouseQuote({ ...physicalStarter, serviceZones: [], zones: [{ ...physicalStarter.zones[0], width: 40, height: 25, optionCodes: maxProfiles }] }).nextState;
+  const fundedProfiles = { ...physicalStarter, serviceZones: [], optionInventory: maxProfiles.map(code => ({ code, quantity: 1000 })),
+    zones: [{ ...physicalStarter.zones[0], width: 40, height: 25, optionCodes: maxProfiles }] };
+  const fullModules = getKqWarehouseQuote(fundedProfiles, fundedProfiles).nextState;
   const fullFrozen = getKqWarehouseRunSnapshot(fullModules);
   equal(await scalar("SELECT kq_warehouse_options_projection($1)", [fullModules]), {
     activeAreaM2: fullFrozen.activeAreaM2, estimatedHarvestGrams: fullFrozen.estimatedHarvestGrams,
@@ -1086,11 +1092,13 @@ try {
   equal(isKqWarehouseRunSnapshot(legacyRunBeforeBalance.warehouse), true, "a saved run without a balance marker remains valid in TypeScript");
   await scalar("SELECT kq_warehouse_validate_options_run($1)", [legacyRunBeforeBalance.warehouse]);
   const optionFields = option => ({ code: option.code, family: option.family, tier: option.tier,
-    equipmentCentsPerM2: option.equipmentCentsPerM2, consumablesCentsPerM2: option.consumablesCentsPerM2,
+    equipmentCentsPerM2: option.unitPriceCents, consumablesCentsPerM2: option.consumablesCentsPerM2,
     yieldBonusPercent: option.yieldBonusPercent, qualityBonus: option.qualityBonus });
-  for (const option of currentOptions) {
-    equal(await scalar("SELECT kq_warehouse_option($1)", [option.code]), optionFields(option), `${option.code} current bonuses and prices match TypeScript`);
-    equal(await scalar("SELECT kq_warehouse_option_v1($1)", [option.code]), optionFields(KQ_WAREHOUSE_OPTIONS.find(old => old.code === option.code)), `${option.code} legacy bonuses remain accessible without mutation`);
+  for (const legacy of KQ_WAREHOUSE_OPTIONS) {
+    const option = getKqWarehouseOption(legacy.code);
+    const installedProfile = option.code === KQ_WAREHOUSE_HANDLING_CART ? legacy : { ...option, unitPriceCents: legacy.unitPriceCents };
+    equal(await scalar("SELECT kq_warehouse_option($1)", [option.code]), optionFields(installedProfile), `${option.code} saved zone bonuses and prices match TypeScript`);
+    equal(await scalar("SELECT kq_warehouse_option_v1($1)", [option.code]), optionFields(legacy), `${option.code} legacy bonuses remain accessible without mutation`);
   }
   const { getKqWarehouseDeviceQualityBonus } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-catalog.ts");
   for (const device of tierDevices) equal(await scalar("SELECT kq_warehouse_device_quality($1)", [device.code]), getKqWarehouseDeviceQualityBonus(device.code), `${device.code} gives exactly its advertised starting quality`);
@@ -1114,10 +1122,12 @@ try {
     equal(maximumBalanceSnapshot[field], maximumLegacySnapshot[field], `balance v2 leaves ${field} unchanged on the same paid plan`);
   equal(await scalar("SELECT strpos(pg_get_functiondef('kq_validate_warehouse_run_start(uuid,uuid,jsonb)'::regprocedure),'NOT BETWEEN 0.1 AND 310000')>0"), true, "the actual run-start guard permits the full v2 potential");
 
-  const selectedBalancePlan = getKqWarehouseQuote({ ...physicalStarter, zones: [
+  const oneCellInventory = maxProfiles.map(code => ({ code, quantity: 1 }));
+  const selectedDraft = { ...physicalStarter, optionInventory: oneCellInventory, zones: [
     { ...physicalStarter.zones[0], id: "premium-selected", lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: maxProfiles },
     { ...physicalStarter.zones[0], id: "economy-other", x: 5, width: 3, airCode: "SIM-AIR-01", optionCodes: [] },
-  ] }).nextState;
+  ] };
+  const selectedBalancePlan = getKqWarehouseQuote(selectedDraft, selectedDraft).nextState;
   const selectedBalance = getCurrentRunSnapshot(selectedBalancePlan, 3, "premium-selected");
   const selectedValidation = { ...selectedBalance, sourceState: { ...selectedBalance.sourceState, zones: selectedBalance.zones } };
   await scalar("SELECT kq_warehouse_validate_options_run($1)", [selectedValidation]);
@@ -1135,7 +1145,10 @@ try {
   const balanceDraft = { ...balanceOriginal.state, zones: balanceOriginal.state.zones.map(zone => ({
     ...zone, lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: maxProfiles,
   })) };
-  const balanceQuote = getKqWarehouseQuote(balanceDraft, balanceOriginal.state);
+  const fittedDraft = { ...balanceDraft, optionInventory: oneCellInventory };
+  const devicesOnly = getKqWarehouseQuote(fittedDraft, fittedDraft);
+  const historicalBasis = devicesOnly.equipmentCostCents + maxProfiles.reduce((sum, code) => sum + getKqWarehouseOption(code, 1).unitPriceCents, 0);
+  const balanceQuote = { nextState: devicesOnly.nextState, totalCostCents: historicalBasis + Math.round(historicalBasis * .15) };
   const balanceSaved = await scalar("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,$7)", [balanceOwner, randomUUID(),
     { state: balanceDraft, expectedRevision: balanceOriginal.revision, expectedCostCents: balanceQuote.totalCostCents },
     balanceOriginal.revision, balanceOriginal.state, balanceQuote.nextState, balanceQuote.totalCostCents]);
@@ -1164,6 +1177,124 @@ try {
       equal(await scalar("SELECT has_function_privilege($1,$2,'EXECUTE')", [role, signature]), false, `${role} cannot directly execute ${signature}`);
     equal(await scalar("SELECT has_function_privilege($1,'rpc_kq_warehouse_save(uuid,uuid,jsonb,integer,jsonb,jsonb,integer)','EXECUTE')", [role]), role === "service_role", `${role} retains only its existing named warehouse save permission`);
   }
+  // Bring only the purchase/upgrade entry points of the historical fixture
+  // forward to their production workday wrapper names. Restore the historical
+  // schema afterwards for the zone and campaign suites sharing this database.
+  await db.exec("SAVEPOINT workshop_pricing");
+  const workday = await sql("20261107000500_kq_player_workday.sql");
+  const installer = workday.match(/CREATE FUNCTION pg_temp\.kq_player_work_wrap\([\s\S]*?END \$installer\$;/)?.[0];
+  const registrations = workday.match(/^SELECT pg_temp\.kq_player_work_wrap\('public\.rpc_kq_(?:purchase_tent_equipment|upgrade_tent_equipment|purchase_workshop_tier)\(.*;$/gm);
+  assert(installer && registrations?.length === 3, "Missing equipment workday wrappers");
+  await db.exec(installer);
+  await db.exec(registrations.join("\n"));
+  const parentSignature = "kq_work_inner_purchase_workshop_tier(uuid,uuid,text,integer,integer,integer)";
+  const parentBody = await scalar("SELECT pg_get_functiondef($1::regprocedure)", [parentSignature]);
+  await db.exec(parentBody.replaceAll("public.rpc_kq_purchase_tent_equipment(", "public.kq_work_inner_purchase_tent_equipment(")
+    .replaceAll("public.rpc_kq_upgrade_tent_equipment(", "public.kq_work_inner_upgrade_tent_equipment("));
+  await db.exec(`CREATE TABLE test_workshop_hours(user_id uuid, hours numeric);
+    CREATE FUNCTION kq_player_work_cost(text,text) RETURNS numeric LANGUAGE sql AS 'SELECT 0.05::numeric';
+    CREATE FUNCTION kq_player_work_charge(uuid,numeric) RETURNS void LANGUAGE sql AS 'INSERT INTO test_workshop_hours VALUES($1,$2)';`);
+
+  await db.exec(await sql("20261121002210_kq_workshop_retail_prices.sql"));
+  const legacyBuyer = await prepareTierWorkshop(), legacyKey = randomUUID();
+  const legacyReceipt = await buyWorkshopTier(legacyBuyer, "WASHER-25L", 4, 0, 15840, legacyKey);
+  await buyWorkshopTier(legacyBuyer, "PRESS-0600", 1, 0, 24900);
+  const legacySingleKey = randomUUID();
+  const singleLegacy = (owner, key, level) => scalar("SELECT rpc_kq_upgrade_tent_equipment($1,$2,'PRESS-0600',$3,1)", [owner, key, level]);
+  const paidSingle = await singleLegacy(legacyBuyer, legacySingleKey, 1);
+  const quotedSingle = (owner, key, level, price, units=null) => scalar("SELECT rpc_kq_upgrade_workshop_machine($1,$2,'PRESS-0600',$3,$4,$5)", [owner,key,level,price,units]);
+  const cartLegacy = (owner,key,codes) => scalar("SELECT rpc_kq_purchase_tent_equipment($1,$2,$3,1)", [owner,key,codes]);
+  const quotedCart = (owner,key,codes,price,tent=1,units=null) => scalar("SELECT rpc_kq_purchase_workshop_cart($1,$2,$3,$4,$5,$6)", [owner,key,codes,tent,price,units]);
+  const oldCartCodes = ["FREEZE-DRYER","STATIC-PLASMA"], oldCartKey = randomUUID();
+  const oldCart = await cartLegacy(legacyBuyer, oldCartKey, oldCartCodes);
+  const legacyFacts = await facts(legacyBuyer);
+  const tierPricingMigration = await sql("20261122000600_kq_workshop_machine_tier_prices.sql");
+  assert(/^BEGIN;\r?\n/.test(tierPricingMigration) && /\r?\nCOMMIT;\s*$/.test(tierPricingMigration), "workshop pricing transaction markers changed");
+  await db.exec(tierPricingMigration.replace(/^BEGIN;\r?\n/, "").replace(/\r?\nCOMMIT;\s*$/, ""));
+  equal(await buyWorkshopTier(legacyBuyer, "WASHER-25L", 4, 0, 15840, legacyKey), { ...legacyReceipt, replayed: true }, "old purchase receipt replays at the price actually paid");
+  equal(await quotedSingle(legacyBuyer, legacySingleKey, 1, 2490), { ...paidSingle, replayed: true }, "quoted single upgrades can replay a pre-migration receipt at its historical price");
+  equal(await singleLegacy(legacyBuyer, legacySingleKey, 1), { ...paidSingle, replayed: true }, "a legacy single-level retry without a quote also finds its receipt");
+  equal(await quotedSingle(legacyBuyer, legacySingleKey, 1, 2490, 8), { ...paidSingle, replayed: true }, "legacy unit count does not change a paid upgrade");
+  await reject(() => quotedSingle(legacyBuyer, legacySingleKey, 1, 2491), "workshop_upgrade_price_changed");
+  equal(await cartLegacy(legacyBuyer, oldCartKey, oldCartCodes), { ...oldCart, replayed:true }, "older clients can replay carts without a quoted total");
+  equal(await quotedCart(legacyBuyer, oldCartKey, oldCartCodes, oldCart.totalPriceCents,null,8), { ...oldCart, replayed:true }, "already purchased carts replay at their historical total and ignore changed tent counts");
+  await reject(() => quotedCart(legacyBuyer, oldCartKey, oldCartCodes, oldCart.totalPriceCents+1), "workshop_cart_price_changed");
+  equal(await facts(legacyBuyer), legacyFacts, "repricing and replay preserve cash, ownership and accounting");
+  const grid = JSON.parse(await readFile(new URL("../src/lib/kanab-quest-workshop-retail.json", import.meta.url), "utf8"));
+  const buyers = await Promise.all([1, 4, 7].map(() => prepareTierWorkshop()));
+  const cash = owner => scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [owner]);
+  for (const [code, offers] of Object.entries(grid)) {
+    for (const [index, offer] of offers.entries()) {
+      const owner = buyers[index], target = [1, 4, 7][index], price = offer.gamePriceCents;
+      const priorCash = await cash(owner);
+      const receipt = await buyWorkshopTier(owner, code, target, 0, price);
+      equal([receipt.priceCents, receipt.level, receipt.cashAfterCents, await cash(owner)], [price, target, priorCash-price, priorCash-price], `${code} level ${target}: charged at its published price`);
+      const recorded = await scalar(`SELECT (SELECT sum(total_price_cents) FROM kq_equipment_purchase_receipts WHERE user_id=$1 AND equipment_codes=ARRAY[$2::text]) +
+        COALESCE((SELECT sum(price_cents) FROM kq_equipment_upgrade_receipts WHERE user_id=$1 AND equipment_code=$2),0)`, [owner, code]);
+      equal(Number(recorded), price, `${code} level ${target}: child receipts cover every cent`);
+    }
+  }
+  const [washerBase, washerStandard, washerPremium] = grid["WASHER-25L"].map(offer => offer.gamePriceCents);
+  const withheld = await cash(legacyBuyer);
+  await reject(() => buyWorkshopTier(legacyBuyer, "WASHER-25L", 7, 4, 30690-15840), "workshop_tier_price_changed");
+  equal(await cash(legacyBuyer), withheld, "stale quotes cannot change the balance");
+  const upgrade = await buyWorkshopTier(legacyBuyer, "WASHER-25L", 7, 4, washerPremium-washerStandard);
+  equal(upgrade.cashAfterCents, withheld-(washerPremium-washerStandard), "an existing owner pays only the new tier difference");
+  const steps = buyers[0], [pressBase, pressStandard, pressPremium] = grid["PRESS-0600"].map(offer => offer.gamePriceCents);
+  const firstGap = Math.floor((pressStandard-pressBase)/3);
+  const oneKey = randomUUID(), beforeSingle = await facts(steps);
+  await reject(() => quotedSingle(steps, oneKey, 1, firstGap-1), "workshop_upgrade_price_changed");
+  await reject(() => quotedSingle(steps, oneKey, 1, firstGap, 8), "production_units_changed");
+  await reject(() => singleLegacy(steps, oneKey, 1), "workshop_upgrade_price_changed");
+  await reject(() => scalar("SELECT rpc_kq_upgrade_equipment($1,$2,'PRESS-0600',1)", [steps, oneKey]), "workshop_upgrade_price_changed");
+  equal(await facts(steps), beforeSingle, "stale and missing single-level quotes leave cash, accounts, machines and receipts unchanged");
+  const stepOne = await quotedSingle(steps, oneKey, 1, firstGap);
+  equal(stepOne.priceCents, firstGap, "fractional cent rounds at the cumulative level");
+  equal(await quotedSingle(steps, oneKey, 1, firstGap), { ...stepOne, replayed: true }, "a single-level replay preserves the price and remaining cash");
+  equal((await buyWorkshopTier(steps, "PRESS-0600", 4, 2, pressStandard-pressBase-firstGap)).level, 4, "a partial-level machine receives credit to the cent");
+  const secondGap = Math.floor((pressPremium-pressStandard)/3);
+  equal((await quotedSingle(steps, randomUUID(), 4, secondGap)).priceCents, secondGap, "intermediate premium step uses the second price gap");
+  equal((await buyWorkshopTier(steps, "PRESS-0600", 7, 5, pressPremium-pressStandard-secondGap)).level, 7, "partial premium upgrade charges the exact remainder");
+  for (const level of [7, 8, 9]) {
+    const price = Math.ceil(pressBase*level/10);
+    equal((await quotedSingle(steps, randomUUID(), level, price)).priceCents, price, "post-premium levels retain the single-level formula");
+  }
+  equal(await scalar("SELECT kq_equipment_upgrade_step_price(6999,NULL,NULL,3)"), 2100, "individual non-workshop equipment retains its original price rule");
+  equal(await scalar("SELECT count(*)::int FROM test_workshop_hours WHERE user_id=$1", [buyers[2]]), 6, "each composite purchase spends work time once");
+  const poorBuyer = await prepareTierWorkshop();
+  await db.query("UPDATE kq_equipment_wallets SET cash_cents=$2 WHERE user_id=$1", [poorBuyer, washerBase-1]);
+  const beforeRefusal = await facts(poorBuyer);
+  await reject(() => buyWorkshopTier(poorBuyer, "WASHER-25L", 1, 0, washerBase), "insufficient_equipment_cash");
+  equal(await facts(poorBuyer), beforeRefusal, "insufficient funds leave all equipment and receipts intact");
+
+  // A pre-warehouse installation can still order workshop and tent items together.
+  const mixedOwner = await freshAccount(), mixedKey = randomUUID(), mixedCodes = ["WASHER-25L","PRESS-0600","LED-300"];
+  await seedHistoricalCultures(mixedOwner);
+  await earnCareer(mixedOwner);
+  await db.query("UPDATE kq_equipment_wallets SET cash_cents=10000000 WHERE user_id=$1", [mixedOwner]);
+  const lampPrice = await scalar("SELECT price_cents FROM kq_equipment_catalog WHERE code='LED-300'");
+  const mixedTotal = washerBase + pressBase + lampPrice;
+  const beforeMixed = await facts(mixedOwner);
+  await reject(() => quotedCart(mixedOwner,mixedKey,mixedCodes,mixedTotal-1), "workshop_cart_price_changed");
+  await reject(() => cartLegacy(mixedOwner,mixedKey,mixedCodes), "workshop_cart_price_changed");
+  await reject(() => scalar("SELECT rpc_kq_purchase_equipment($1,$2,$3)", [mixedOwner,mixedKey,mixedCodes]), "workshop_cart_price_changed");
+  await reject(() => quotedCart(mixedOwner,mixedKey,mixedCodes,mixedTotal,null,8), "production_units_changed");
+  equal(await facts(mixedOwner), beforeMixed, "an unconfirmed mixed basket never spends cash or creates inventory and receipts");
+  const mixedReceipt = await quotedCart(mixedOwner,mixedKey,mixedCodes,mixedTotal,null,1);
+  equal([mixedReceipt.totalPriceCents, mixedReceipt.cashAfterCents, await cash(mixedOwner)], [mixedTotal,10000000-mixedTotal,10000000-mixedTotal], "the warehouse chain and tent equipment charge one confirmed total");
+  equal(await quotedCart(mixedOwner,mixedKey,mixedCodes,mixedTotal), { ...mixedReceipt, replayed:true }, "a mixed basket replays without buying twice");
+  await reject(() => quotedCart(mixedOwner,mixedKey,[...mixedCodes].reverse(),mixedTotal), "equipment_purchase_request_mismatch");
+  equal(await scalar("SELECT count(*)::int FROM test_workshop_hours WHERE user_id=$1", [mixedOwner]), 1, "a mixed basket and its retries spend time once");
+  equal((await cartLegacy(mixedOwner,randomUUID(),["AIR-EC6"])).totalPriceCents,14900, "tent-only carts retain their normal checkout");
+  for (const role of ["anon","authenticated","service_role"]) {
+    equal(await scalar("SELECT has_function_privilege($1,'kq_equipment_upgrade_step_price(integer,integer,integer,integer)','EXECUTE')", [role]), false, `${role} cannot call the internal price routine directly`);
+    equal(await scalar("SELECT has_function_privilege($1,'kq_upgrade_tent_equipment_with_work(uuid,uuid,text,integer,integer)','EXECUTE')", [role]), false, `${role} cannot bypass quote validation`);
+    equal(await scalar("SELECT has_function_privilege($1,'rpc_kq_upgrade_workshop_machine(uuid,uuid,text,integer,integer,integer)','EXECUTE')", [role]), role === "service_role", `${role} has the expected quoted upgrade permissions`);
+    equal(await scalar("SELECT has_function_privilege($1,'kq_purchase_tent_equipment_with_work(uuid,uuid,text[],integer)','EXECUTE')", [role]), false, `${role} cannot bypass cart quote validation`);
+    equal(await scalar("SELECT has_function_privilege($1,'rpc_kq_purchase_workshop_cart(uuid,uuid,text[],integer,integer,integer)','EXECUTE')", [role]), role === "service_role", `${role} has the expected quoted cart permissions`);
+  }
+  await db.exec("ROLLBACK TO SAVEPOINT workshop_pricing");
+  console.log("Workshop pricing passed: 18 offers, wallet and child receipts, existing machines, single-level and mixed-cart quotes, replays and permissions.");
   await db.exec("ROLLBACK");
   console.log(`Warehouse: ${checks} PostgreSQL integration checks passed.`);
 } catch (error) {

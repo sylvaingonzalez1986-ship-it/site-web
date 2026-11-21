@@ -1,4 +1,8 @@
 import { KQ_WAREHOUSE_TIERS, type KqWarehouseTier } from "./kanab-quest-warehouse-catalog";
+import { getKqWarehouseRetailPrice } from "./kanab-quest-warehouse-retail";
+import { isKqWarehouseHandlingCode, KQ_WAREHOUSE_HANDLING, KQ_WAREHOUSE_HANDLING_CART } from "./kanab-quest-warehouse-handling";
+
+export { KQ_WAREHOUSE_HANDLING_CART, KQ_WAREHOUSE_HANDLING_CART_PRICE_CENTS, KQ_WAREHOUSE_HANDLING_CART_SAVING } from "./kanab-quest-warehouse-handling";
 
 /** Fictional management-game modules. Values are game balance, never growing advice. */
 export const KQ_WAREHOUSE_OPTION_FAMILIES = [
@@ -19,11 +23,19 @@ export type KqWarehouseOption = {
   tier: KqWarehouseTier;
   name: string;
   description: string;
-  equipmentCentsPerM2: number;
+  /** Price of one funded inventory unit (one device or one square metre of coverage). */
+  unitPriceCents: number;
+  installationIncluded?: boolean;
   consumablesCentsPerM2: number;
   unitsPerM2PerCycle: number;
   yieldBonusPercent: number;
   qualityBonus: number;
+} & ({ unit: "device"; capacityM2: number } | { unit?: undefined; capacityM2?: never });
+
+export type KqWarehouseHandlingCartConversion = {
+  quantity: number;
+  creditCents: number;
+  unknownBasisQuantity: number;
 };
 
 const profile = (family: KqWarehouseOptionFamily, suffix: string, name: string, description: string,
@@ -33,7 +45,7 @@ const profile = (family: KqWarehouseOptionFamily, suffix: string, name: string, 
   tier: KQ_WAREHOUSE_TIERS[Number(suffix) - 1].code,
   name: `${KQ_WAREHOUSE_OPTION_FAMILIES.find(item => item.code === family)!.label} ${KQ_WAREHOUSE_TIERS[Number(suffix) - 1].label.toLocaleLowerCase("fr")}`,
   description: `${name}. ${description}`,
-  equipmentCentsPerM2, consumablesCentsPerM2, unitsPerM2PerCycle, yieldBonusPercent, qualityBonus,
+  unitPriceCents: equipmentCentsPerM2, consumablesCentsPerM2, unitsPerM2PerCycle, yieldBonusPercent, qualityBonus,
 });
 
 /** Original balance is retained for cultures already in progress. */
@@ -64,24 +76,90 @@ export const KQ_WAREHOUSE_LEGACY_OPTIONS: readonly KqWarehouseOption[] = [
   profile("nutrition", "03", "Fournitures confort", "Trois unités de jeu par m² et par cycle : rendement modéré et qualité de départ.", 900, 520, 3, 1, 1),
 ];
 
-/** A higher tier never removes the yield or quality granted by the lower tier. */
-export const KQ_WAREHOUSE_OPTIONS: readonly KqWarehouseOption[] = KQ_WAREHOUSE_LEGACY_OPTIONS.map(option => {
+const balancedOptions = KQ_WAREHOUSE_LEGACY_OPTIONS.map((option): KqWarehouseOption => {
+  const unitPriceCents = getKqWarehouseRetailPrice(option.code)?.unitPriceCents ?? option.unitPriceCents;
+  if (option.code === KQ_WAREHOUSE_HANDLING_CART) return {
+    ...option,
+    unitPriceCents,
+    name: "Chariot de manutention",
+    description: "Un chariot pour tout l’entrepôt. Réduit jusqu’à 25 % le temps de chargement du lyophilisateur selon son état.",
+    consumablesCentsPerM2: 0,
+    unitsPerM2PerCycle: 0,
+    yieldBonusPercent: 0,
+    qualityBonus: 0,
+  };
   const yieldBonusPercent = KQ_WAREHOUSE_TIERS.findIndex(tier => tier.code === option.tier) + 1;
   const qualityBonus = option.tier === "premium" && ["climate", "hygiene", "substrate"].includes(option.family)
     ? 2 : option.qualityBonus;
   const quality = qualityBonus > 0 ? ` Qualité au départ : +${qualityBonus}.` : "";
   return {
     ...option,
+    unitPriceCents,
+    ...(isKqWarehouseHandlingCode(option.code) ? { name: KQ_WAREHOUSE_HANDLING[option.code].name } : {}),
     yieldBonusPercent,
     qualityBonus,
     description: `${option.description.split(". ")[0]}. Récolte estimée : +${yieldBonusPercent} %.${quality}`,
   };
 });
 
+const zoneDevices = {
+  "SIM-CLIMATE-01": { code: "SIM-CLIMATE-UNIT-01", capacityM2: 20, installationIncluded: true, name: "Déshumidificateur Meaco Arete One", description: "Ce modèle mobile condense l’humidité de l’air et recueille l’eau dans un bac de 4,8 L." },
+  "SIM-CLIMATE-02": { code: "SIM-CLIMATE-UNIT-02", capacityM2: 50, name: "VMC double flux Duocosy HR", description: "Renouvelle l’air par deux circuits et récupère la chaleur de l’air extrait." },
+  "SIM-CLIMATE-03": { code: "SIM-CLIMATE-UNIT-03", capacityM2: 100, name: "Centrale Atlantic Nova HR 1000 BT", description: "Cette centrale double flux de 1 000 m³/h renouvelle l’air des grands volumes et préchauffe l’air entrant." },
+  "SIM-CONTROL-01": { code: "SIM-CONTROL-UNIT-01", capacityM2: 10, installationIncluded: true, name: "Thermohygromètre SwitchBot Meter Plus", description: "Ce capteur affiche la température et l’humidité sur son écran et les transmet par Bluetooth." },
+  "SIM-CONTROL-02": { code: "SIM-CONTROL-UNIT-02", capacityM2: 50, name: "Contrôleur TrolMaster Hydro-X", description: "Sa sonde relève température, humidité et lumière. Le contrôleur commande les appareils raccordés d’une zone." },
+  "SIM-CONTROL-03": { code: "SIM-CONTROL-UNIT-03", capacityM2: 100, name: "Console TrolMaster Hydro-X Pro", description: "L’écran tactile de 10 pouces permet de programmer plusieurs secteurs d’une salle avec des sondes et des modules compatibles." },
+} as const;
+
+export function isKqWarehouseLegacyZoneOption(code: string): code is keyof typeof zoneDevices {
+  return Object.hasOwn(zoneDevices, code);
+}
+
+export function isKqWarehouseZoneDevice(option: KqWarehouseOption): option is Extract<KqWarehouseOption, { unit: "device" }> {
+  return option.unit === "device";
+}
+
+export const KQ_WAREHOUSE_OPTIONS: readonly KqWarehouseOption[] = balancedOptions.map(option => {
+  if (!isKqWarehouseLegacyZoneOption(option.code)) return option;
+  const device = zoneDevices[option.code];
+  const retail = getKqWarehouseRetailPrice(device.code);
+  if (!retail) throw new Error(`Tarif manquant pour ${device.code}.`);
+  return { ...option, ...device, unit: "device", unitPriceCents: retail.unitPriceCents };
+});
+
+const archivedZoneOptions = balancedOptions.filter(option => isKqWarehouseLegacyZoneOption(option.code));
+const allOptions = [...KQ_WAREHOUSE_OPTIONS, ...archivedZoneOptions];
+export const KQ_WAREHOUSE_OPTION_CODE_COUNT = allOptions.length;
+
 export const KQ_WAREHOUSE_LEGACY_OPTION_LIMITS = { yieldBonusPercent: 20, qualityBonus: 4 } as const;
 export const KQ_WAREHOUSE_OPTION_LIMITS = { yieldBonusPercent: 24, qualityBonus: 4 } as const;
 export const getKqWarehouseOption = (code: string, balanceVersion: 1 | 2 = 2) =>
-  (balanceVersion === 1 ? KQ_WAREHOUSE_LEGACY_OPTIONS : KQ_WAREHOUSE_OPTIONS).find(option => option.code === code);
+  (balanceVersion === 1 ? KQ_WAREHOUSE_LEGACY_OPTIONS : allOptions).find(option => option.code === code);
+
+/** Round at the zone boundary. A spare part of a device cannot serve another zone. */
+export function getKqWarehouseZoneOptionQuantity(code: string, areaM2: number): number {
+  const option = getKqWarehouseOption(code);
+  if (!option || !Number.isSafeInteger(areaM2) || areaM2 < 0) throw new Error("Surface de module invalide.");
+  return isKqWarehouseZoneDevice(option) ? Math.ceil(areaM2 / option.capacityM2) : areaM2;
+}
+
+export function getKqWarehouseZoneModuleEffect(option: KqWarehouseOption, modern: boolean) {
+  const { yieldBonusPercent, qualityBonus } = option;
+  const unchanged = { yieldBonusPercent, qualityBonus, supplySavingCentsPerM2: 0 };
+  if (!modern) return unchanged;
+
+  const tierIndex = KQ_WAREHOUSE_TIERS.findIndex(tier => tier.code === option.tier);
+  switch (option.family) {
+    case "hygiene":
+      return { yieldBonusPercent: 0, qualityBonus: tierIndex + 1, supplySavingCentsPerM2: 0 };
+    case "logistics":
+      return { yieldBonusPercent: 0, qualityBonus: 0, supplySavingCentsPerM2: [110, 0, 310][tierIndex] };
+    case "security":
+      return { yieldBonusPercent: 0, qualityBonus: 0, supplySavingCentsPerM2: [125, 250, 400][tierIndex] };
+    default:
+      return unchanged;
+  }
+}
 
 export function validateKqWarehouseOptionCodes(value: unknown): boolean {
   if (!Array.isArray(value) || value.length > KQ_WAREHOUSE_OPTION_FAMILIES.length) return false;
@@ -96,16 +174,21 @@ export function validateKqWarehouseOptionCodes(value: unknown): boolean {
 
 export type KqWarehouseOptionLine = {
   code: string;
-  /** One purchased unit covers one square metre, even when the zone is inactive. */
+  unit?: "station" | "handling" | "device";
+  /** Inventory quantity in the product's own unit. */
   quantity: number;
+  /** Actual surface of a quoted zone, even when the final device is only partially used. */
+  treatedAreaM2?: number;
   option: KqWarehouseOption;
   totalCents: number;
   consumablesCostCents: number;
 };
 
-export function getKqWarehouseOptionLine(code: string, quantity: number, balanceVersion: 1 | 2 = 2): KqWarehouseOptionLine {
+export function getKqWarehouseOptionLine(code: string, quantity: number, balanceVersion: 1 | 2 = 2, treatedAreaM2?: number): KqWarehouseOptionLine {
   const option = getKqWarehouseOption(code, balanceVersion);
   if (!option || !Number.isSafeInteger(quantity) || quantity < 0 || quantity > 100_000) throw new Error("Module de simulation invalide.");
-  return { code, quantity, option, totalCents: option.equipmentCentsPerM2 * quantity,
-    consumablesCostCents: option.consumablesCentsPerM2 * quantity };
+  const cycleArea = treatedAreaM2 ?? (isKqWarehouseZoneDevice(option) ? 0 : quantity);
+  return { code, quantity, option, ...(option.unit ? { unit: option.unit } : {}),
+    ...(treatedAreaM2 === undefined ? {} : { treatedAreaM2 }),
+    totalCents: option.unitPriceCents * quantity, consumablesCostCents: option.consumablesCentsPerM2 * cycleArea };
 }

@@ -4,6 +4,7 @@ import { getReleveLessonGuide } from "./arena-releve-lesson-guide";
 import { canPlayKqCard, isKqCultureDead, KQ_ACTIVE_CARDS } from "./kanab-quest-game";
 import { applyKqReleveProductionAction as act, createKqReleveExpansion, createKqReleveProduction, getKqReleveHarvests, suggestKqRelevePlan, type KqReleveProductionState } from "./kanab-quest-releve-production";
 import { createKqTreasuryTutorial } from "./kanab-quest-treasury-tutorial";
+import { KQ_WAREHOUSE_UNLIT_CODE } from "./kanab-quest-warehouse";
 
 function planned(count: 1 | 2 = 1) {
   let state = createKqReleveProduction();
@@ -34,14 +35,17 @@ function harvested(count: 1 | 2 = 1) {
 const ids = (chapter: Parameters<typeof getReleveProductionGuide>[0], state: KqReleveProductionState) => getReleveProductionGuide(chapter, state).map(step => step.id);
 
 describe("La relève — guidance follows the player's production state", () => {
-  it("guides drawing, native equipment and the cost dashboard without editing the farm", () => {
+  it("guides support, lighting, the native quote and the cost dashboard without editing the farm", () => {
     let state = createKqReleveProduction();
     const empty = structuredClone(state);
-    expect(ids("plan", state)).toContain("plan:draw-culture");
-    expect(getReleveProductionGuide("plan", state).find(step => step.id === "plan:trace-culture")?.kind).toBe("element");
+    expect(getReleveProductionGuide("plan", state).find(step => step.id === "plan:choose-substrate")?.selector).toBe('[data-warehouse-shop-choose="SIM-SUBSTRATE-01"]');
+    expect(getReleveProductionGuide("plan", state).find(step => step.id === "plan:place-substrate")?.kind).toBe("element");
     expect(state).toEqual(empty);
+    const support = { ...suggestKqRelevePlan(state).zones[0], active: false, lightingCode: KQ_WAREHOUSE_UNLIT_CODE, optionCodes: ["SIM-SUBSTRATE-01"] };
+    const afterSupport = act(state, { type: "draft", warehouse: { ...state.warehouse, zones: [support], airPlacements: [] } });
+    expect(getReleveProductionGuide("plan", afterSupport).find(step => step.id === "plan:place-lighting")?.selector)
+      .toBe('[data-warehouse-placement="MH-TS1000"] [data-warehouse-build-target="culture-1"]');
     state = act(state, { type: "draft", warehouse: suggestKqRelevePlan(state) });
-    expect(ids("plan", state)).toContain("plan:configure");
     expect(ids("plan", state)).toContain("plan:save");
     expect(getReleveProductionGuide("plan", state).find(step => step.id === "plan:quote")?.selector).toBe("[data-warehouse-quote-details] > summary");
     const beforeQuote = structuredClone(state);
@@ -54,7 +58,7 @@ describe("La relève — guidance follows the player's production state", () => 
     expect(ids("plan", state)).toContain("plan:charges");
     state = act(state, { type: "mark", milestone: "charges-read" });
     expect(ids("plan", state)).not.toContain("plan:charges");
-    expect(ids("plan", state)).not.toContain("plan:draw-culture");
+    expect(ids("plan", state)).not.toContain("plan:choose-substrate");
   });
 
   it("keeps the real equipment editor and quote accessible when the budget is insufficient", () => {
@@ -62,7 +66,6 @@ describe("La relève — guidance follows the player's production state", () => 
     state = act(state, { type: "draft", warehouse: suggestKqRelevePlan(state) });
     state.cashCents = 1;
     const before = structuredClone(state);
-    expect(ids("plan", state)).toContain("plan:configure");
     expect(ids("plan", state)).toContain("plan:quote");
     expect(state).toEqual(before);
     // Availability of the native save button is determined by its real quote;
@@ -72,12 +75,11 @@ describe("La relève — guidance follows the player's production state", () => 
 
   it("treats the already installed expansion dossier as a new comparison", () => {
     const state = createKqReleveExpansion();
-    expect(ids("expansion", state)).toContain("expansion:draw-culture");
-    expect(ids("plan", state)).not.toContain("plan:draw-culture");
+    expect(ids("expansion", state)).toContain("expansion:choose-substrate");
+    expect(ids("plan", state)).not.toContain("plan:choose-substrate");
     const draft = act(state, { type: "draft", warehouse: suggestKqRelevePlan(state, 2) });
-    expect(ids("expansion", draft)).toContain("expansion:configure");
     expect(ids("expansion", draft)).toContain("expansion:save");
-    expect(ids("expansion", act(draft, { type: "save-plan" }))).not.toContain("expansion:draw-culture");
+    expect(ids("expansion", act(draft, { type: "save-plan" }))).not.toContain("expansion:choose-substrate");
   });
 
   it("reveals all cards, teaches the profile, and assigns distinct available Buddies", () => {
@@ -87,6 +89,10 @@ describe("La relève — guidance follows the player's production state", () => 
     for (let index = 0; index < 3; index++) state = act(state, { type: "reveal-buddie" });
     expect(ids("buddies", state)).toContain("buddies:profile");
     expect(getReleveProductionGuide("buddies", state).find(step => step.id === "buddies:choose-profile")?.selector).toBe("[data-buddie-variety-choose]");
+    const paused = { ...state.draftWarehouse.zones[0], active: false };
+    const withPaused = { ...state, draftWarehouse: { ...state.draftWarehouse, zones: [paused, state.draftWarehouse.zones[1]] } };
+    expect(getReleveProductionGuide("buddies", withPaused).find(step => step.id === "buddies:place")?.selector)
+      .toBe('[data-grow-room]:has([data-buddie-target=true]) [data-warehouse-zone-chip="culture-2"]');
     expect(getReleveProductionGuide("buddies", state).at(-1)?.selector).toBe('[data-warehouse-buddie-card="HH2026-005"]');
     const rotated = { ...state, recentBuddieCodes: ["HH2026-005"] };
     expect(getReleveProductionGuide("buddies", rotated).at(-1)?.selector).toBe('[data-warehouse-buddie-card="HH2026-010"]');

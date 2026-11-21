@@ -74,7 +74,7 @@ export function AdminPlacardEconomyReview() {
         <b className="border-2 border-ink bg-[#dff1df] p-3">{report.signals.balanced}<small className="block font-normal">voie(s) équilibrée(s)</small></b>
         <b className="border-2 border-ink bg-[#ffd8cc] p-3">{report.signals.dominated}<small className="block font-normal">voie(s) dominée(s)</small></b>
         <b className="border-2 border-ink bg-[#fff0ae] p-3">{report.signals.tooFast}<small className="block font-normal">amortissement(s) rapide(s)</small></b>
-        <b className="border-2 border-ink bg-[#fff0ae] p-3">{report.priceAnchors.alignedCount}/{report.priceAnchors.totalCount}<small className="block font-normal">valeurs proches des références historiques</small></b>
+        <b className="border-2 border-ink bg-[#fff0ae] p-3">{report.priceAnchors.alignedCount}/{report.priceAnchors.comparableCount}<small className="block font-normal">prix proches des références en euros</small></b>
         <b className="border-2 border-ink bg-[#dff1df] p-3">+{report.expertise.activeBonusReputation}<small className="block font-normal">réputation de palier à la vente n° {report.expertise.saleCount}</small></b>
       </div>
 
@@ -147,13 +147,13 @@ export function AdminPlacardEconomyReview() {
         </summary>
         <div className="overflow-x-auto border-t-2 border-ink">
           <table className="min-w-[900px] w-full border-collapse text-left text-xs">
-            <thead className="bg-[#20251c] text-white"><tr><th className="p-3">Équipement du jeu</th><th className="p-3">Équivalent réel</th><th className="p-3 text-right">Prix public US</th><th className="p-3 text-right">Prix constaté</th><th className="p-3">Source</th></tr></thead>
+            <thead className="bg-[#20251c] text-white"><tr><th className="p-3">Équipement du jeu</th><th className="p-3">Équivalent réel</th><th className="p-3 text-right">Prix public</th><th className="p-3 text-right">Prix constaté</th><th className="p-3">Source</th></tr></thead>
             <tbody>{report.priceAnchors.items.map((anchor) => (
               <tr className="border-t-2 border-ink align-top" key={anchor.code}>
-                <td className="p-3"><strong>{anchor.name}</strong><small className="block text-charcoal">jeu · {formatKqCash(Math.round(anchor.gamePriceUsd * 100))}</small></td>
+                <td className="p-3"><strong>{anchor.name}</strong><small className="block text-charcoal">jeu · {formatKqCash(anchor.gamePriceCents)}</small></td>
                 <td className="p-3">{anchor.productLabel}</td>
-                <td className="p-3 text-right font-bold">{new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(anchor.referencePriceUsd)}{anchor.priceKind === "starting-at" ? <small className="block font-normal">à partir de</small> : null}</td>
-                <td className="p-3 text-right font-bold">{anchor.observedPriceCents ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(anchor.observedPriceCents / 100) : "—"}</td>
+                <td className="p-3 text-right font-bold">{new Intl.NumberFormat("fr-FR", { style: "currency", currency: anchor.referenceCurrency }).format(anchor.referencePriceCents / 100)} {anchor.taxLabel}{anchor.priceKind === "starting-at" ? <small className="block font-normal">à partir de</small> : null}</td>
+                <td className="p-3 text-right font-bold">{anchor.observedPriceCents ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: anchor.referenceCurrency }).format(anchor.observedPriceCents / 100) : "—"}</td>
                 <td className="p-3"><a className="inline-flex items-center gap-1 font-bold text-green underline" href={anchor.sourceUrl} target="_blank" rel="noreferrer">{anchor.seller}<ExternalLink aria-hidden="true" size={13} /></a><small className="block text-charcoal">relevé le {anchor.checkedAt}</small></td>
               </tr>
             ))}</tbody>
@@ -163,7 +163,7 @@ export function AdminPlacardEconomyReview() {
 
       <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 border-2 border-ink bg-white p-3 text-xs text-charcoal">
         <span className="inline-flex items-center gap-2"><Gauge aria-hidden="true" size={17} /><strong>Zone cible :</strong> 3–18 récoltes · jusqu’à 36 pour Signature · bonus expertise aux ventes 3, 6 et 10.</span>
-        <span>Prix publics US vérifiés le {report.priceAnchors.checkedAt ?? "—"} · hors livraison et taxes locales · monnaie fictive non convertible.</span>
+        <span>Dernier relevé le {report.priceAnchors.checkedAt ?? "—"}. Les offres françaises incluent la TVA. Chaque prix public conserve sa devise d’origine.</span>
       </footer>
     </section>
   );

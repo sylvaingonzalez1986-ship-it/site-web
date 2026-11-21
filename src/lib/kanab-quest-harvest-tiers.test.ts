@@ -123,7 +123,7 @@ describe("versioned harvest distinctions", () => {
     const starter = createKqWarehouseStarter();
     const warehouse = getKqWarehouseQuote({ ...starter, zones: starter.zones.map(zone => ({
       ...zone, lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03",
-      optionCodes: ["SIM-CLIMATE-03", "SIM-HYGIENE-03"],
+      optionCodes: ["SIM-CLIMATE-UNIT-03", "SIM-HYGIENE-03"],
     })) }, starter).nextState;
     let state = startKqGame(42, {
       warehouse: getKqWarehouseRunSnapshot(warehouse),

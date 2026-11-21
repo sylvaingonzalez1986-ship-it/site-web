@@ -1,0 +1,75 @@
+.panel { display: grid; gap: 14px; color: #172923; min-width: 0; }
+.panel :is(h3,h4,p,dl) { margin: 0; }
+.panel p { line-height: 1.45; }
+.sheet { display: grid; gap: 10px; min-width: 0; padding: 16px; border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-panel-art,var(--game-panel-paper,url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(235px,100%),1fr)); gap: 12px; }
+.row { padding: 10px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; justify-content: space-between; border-top: 1px solid #17292345; }
+.stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; }
+.stats dt { font-size: .78rem; }
+.stats dd { margin: 0; font-weight: 750; font-variant-numeric: tabular-nums; }
+.panel label { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cleaningPanel { padding: 8px clamp(6px, 2vw, 14px) 14px; }
+.panel select {
+  min-width: 0;
+  padding: 6px 12px;
+  background: transparent;
+  border: 2px solid transparent;
+  box-shadow: none;
+  border-image: var(--game-control-paper,url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch;
+}
+.panel select:hover:enabled { border-image-source: var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
+.panel :is(input,select) { font: inherit; max-width: 100%; min-height: 44px; color: #172923; }
+.panel input { width: 4.5em; padding: 4px 8px; }
+.panel button { min-height: 44px; padding: 8px 14px; font: inherit; font-weight: 700; color: #172923; cursor: pointer; border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-control-art,var(--game-control-gold,url("/placard/ui/control-gold-v2.webp"))) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.panel button:disabled { opacity: .64; cursor: default; }
+.panel :is(button,input,select,summary):focus-visible { outline: 3px solid #076c61; outline-offset: 2px; }
+.panel summary { cursor: pointer; padding: 6px 0; }
+.panel a { color: #125e52; font-weight: 650; text-underline-offset: 3px; }
+.note { font-size: .88rem; color: #364f43; }
+.error { color: #882c20; }
+.catalog { display: grid; gap: 14px; min-width: 0; }
+.catalog > p { max-width: 76ch; }
+.filters, .searchRow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.filters button[aria-pressed="true"], .panel button:hover:enabled { --game-control-art: var(--game-control-teal,url("/placard/ui/control-teal-v2.webp")); color: #fff6dc; }
+.searchRow { padding-block: 6px; border-block: 1px solid #17292342; }
+.searchRow label:first-child { flex: 1 1 240px; }
+.searchRow input[type="search"] { width: 100%; flex: 1 1 175px; min-width: 0; }
+.searchRow input[type="checkbox"] { width: 20px; min-height: 20px; height: 20px; accent-color: #116855; }
+.searchRow label:has(input[type="checkbox"]) { min-height: 44px; }
+.searchRow span, .format { font-size: .9rem; color: #365249; }
+.productCard { display: flex; flex-direction: column; gap: 8px; scroll-margin-block-start: 18px; }
+.productCard:focus-visible { outline: 3px solid #076c61; outline-offset: 2px; }
+.productImage { display: grid; place-items: center; height: 110px; }
+.productImage img { width: 140px; height: 104px; max-width: 100%; object-fit: contain; }
+.productCard header h4 { font-size: 1.06rem; line-height: 1.25; overflow-wrap: anywhere; }
+.productNumbers, .onHand, .purchase { display: grid; gap: 2px; }
+.productNumbers { border-top: 1px solid #17292342; padding-top: 7px; }
+.productNumbers strong { font-size: 1.32rem; line-height: 1.2; }
+.productNumbers span, .onHand small, .use { font-size: .9rem; }
+.onHand { display: block; color: #155749; }
+.onHand small { display: block; }
+.purchase { margin-top: auto; gap: 6px; padding-top: 6px; }
+.purchase label { justify-content: space-between; }
+.purchase input { min-height: 40px; }
+.receipt { font-weight: 700; color: #14574c; }
+.inline { gap: .7rem; font-size: .875rem; }
+.inline > label { display: grid; grid-template-columns: auto minmax(0, 1fr); }
+.inline > label select { width: 100%; }
+.inline h4 { font-size: 1rem; line-height: 1.35; overflow-wrap: anywhere; }
+.panel [aria-live]:empty, .actions:empty { display: none; }
+.registerLine { display: grid; gap: .45rem; padding-top: .7rem; border-top: 1px solid #17292345; min-width: 0; }
+.launchStock { display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+.launchStock li { padding-top: .35rem; border-top: 1px solid #17292345; }
+.actions { display: flex; flex-wrap: wrap; gap: .4rem .55rem; align-items: start; }
+.actions button { max-width: 100%; text-align: start; }
+.inline button:not([data-primary]) { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+.inline button:hover:enabled { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); }
+.cycleStats { display: grid; gap: .25rem; padding: .35rem 0; }
+.cycleStats > div { display: flex; justify-content: space-between; gap: .25rem .8rem; flex-wrap: wrap; }
+.cycleStats dd { margin: 0; font-weight: 750; font-variant-numeric: tabular-nums; }
+.intervention { color: #852f1f; font-weight: 700; }
+@media (max-width: 420px) {
+  .filters { gap: 4px; }
+  .filters button { padding-inline: 10px; }
+  .searchRow { gap: 4px 10px; }
+}

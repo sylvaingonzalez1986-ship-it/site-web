@@ -139,7 +139,7 @@ export function getKqReleveHarvests(state: KqReleveProductionState) {
 
 export function getKqReleveStorageContainers(state: KqReleveProductionState): Record<string, number> {
   const owned: Record<string, number> = {};
-  for (const item of getKqWarehouseEquipmentDemand(state.warehouse.zones, state.warehouse.serviceZones)) {
+  for (const item of getKqWarehouseEquipmentDemand(state.warehouse.zones, state.warehouse.serviceZones, state.warehouse.storageClimateCode, state.warehouse.airPlacements)) {
     if (item.code === 'LP-SUPER-1L' || item.code === 'BROR-JARS-48') owned['GLASS-1L'] = (owned['GLASS-1L'] ?? 0) + item.quantity * (item.code === 'LP-SUPER-1L' ? 6 : 48);
     if (item.code === 'CURTEC-60L') owned['CURTEC-60L'] = (owned['CURTEC-60L'] ?? 0) + item.quantity;
   }
@@ -336,7 +336,7 @@ export function getKqReleveProductionProgress(chapter: KqReleveProductionChapter
   const saved = JSON.stringify(state.warehouse) === JSON.stringify(state.draftWarehouse);
   const planReady = state.warehouse.zones.some(zone => zone.active) && summary.dryingCapacityGrams >= summary.estimatedHarvestGrams && summary.storageCapacityGrams >= summary.estimatedHarvestGrams;
   if (chapter === "expansion") return { complete: saved && state.milestones.includes("expansion-saved"), instruction: "Essaie un agrandissement, compare les modules et enregistre ton projet dans ce dossier prêté. Son budget reste séparé de ta ferme d’essai." };
-  if (chapter === "plan") return { complete: saved && planReady && ["plan-saved", "quote-read", "charges-read"].every(key => state.milestones.includes(key)), instruction: "Dessine tes zones, compare le devis et les charges, puis enregistre l’installation." };
+  if (chapter === "plan") return { complete: saved && planReady && ["plan-saved", "quote-read", "charges-read"].every(key => state.milestones.includes(key)), instruction: "Choisis les équipements dans Aménager et pose-les sur le plan. Compare le devis et les charges avant d’enregistrer." };
   if (chapter === "buddies") return { complete: saved && state.milestones.includes("pack-opened") && state.milestones.includes("profile-read") && getKqCampaignParticipants(state.warehouse, state.revision).length > 0,
     instruction: "Révèle le pack prêté, découvre un profil et affecte une variété disponible à chaque zone que tu veux cultiver. Enregistre ton choix." };
   if (chapter === "launch") return { complete: !!state.game, instruction: "Vérifie les participants, les cartes et les factures prévues. Confirme le départ commun." };

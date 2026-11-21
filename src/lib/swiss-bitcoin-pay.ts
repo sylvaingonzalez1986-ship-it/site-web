@@ -29,18 +29,22 @@ export function swissBitcoinSiteOrigin(): string | null {
   }
 }
 
-function creationConfig() {
+function creationConfig(enabled: string | undefined) {
   const apiKey = process.env.SWISS_BITCOIN_PAY_API_KEY?.trim() || process.env.swiss_bitcoin?.trim();
   const webhookSecret = process.env.SWISS_BITCOIN_PAY_WEBHOOK_SECRET?.trim();
   const origin = swissBitcoinSiteOrigin();
   const cronSecret = process.env.CRON_SECRET?.trim();
-  return process.env.SWISS_BITCOIN_PAY_ENABLED === "true" && apiKey && webhookSecret && origin && cronSecret
+  return enabled === "true" && apiKey && webhookSecret && origin && cronSecret
     ? { apiKey, webhookSecret, origin }
     : null;
 }
 
 export function isSwissBitcoinPayEnabled(): boolean {
-  return Boolean(creationConfig());
+  return Boolean(creationConfig(process.env.SWISS_BITCOIN_PAY_ENABLED));
+}
+
+export function isSwissBitcoinSupportEnabled(): boolean {
+  return Boolean(creationConfig(process.env.SWISS_BITCOIN_PAY_SUPPORT_ENABLED));
 }
 
 export function matchesSwissBitcoinSecret(received: string | null, expected: string | undefined): boolean {
@@ -188,8 +192,29 @@ function diagnoseProviderRefusal(text: string, contentType: string, truncated: b
   return { format, ...size, ...(terms.size ? { terms: [...terms].slice(0, 6) } : {}) };
 }
 
-export async function createSwissBitcoinInvoice(orderId: string, attemptId: string, eurMinor: number) {
-  const config = creationConfig();
+export const swissBitcoinSupportPurpose = "producer-support";
+
+export function createSwissBitcoinInvoice(orderId: string, attemptId: string, eurMinor: number) {
+  return createInvoice(creationConfig(process.env.SWISS_BITCOIN_PAY_ENABLED), eurMinor, attemptId, {
+    orderId,
+    returnPath: `/checkout/bitcoin/${encodeURIComponent(orderId)}`,
+    webhookPath: "/api/checkout/bitcoin/webhook",
+  });
+}
+
+export function createSwissBitcoinSupportInvoice(id: string, eurMinor: number) {
+  return createInvoice(creationConfig(process.env.SWISS_BITCOIN_PAY_SUPPORT_ENABLED), eurMinor, id, {
+    title: "Soutien volontaire aux producteurs",
+    purpose: swissBitcoinSupportPurpose,
+    returnPath: `/soutenir/retour?support=${encodeURIComponent(id)}`,
+    webhookPath: "/api/support/swiss-bitcoin-pay/webhook",
+  });
+}
+
+async function createInvoice(
+  config: ReturnType<typeof creationConfig>, eurMinor: number, attemptId: string,
+  details: { orderId?: string; title?: string; purpose?: string; returnPath: string; webhookPath: string },
+) {
   if (!config || !Number.isSafeInteger(eurMinor) || eurMinor < 1) throw new SwissBitcoinCreationError(true);
 
   const response = await fetch(checkoutApi, {
@@ -204,12 +229,13 @@ export async function createSwissBitcoinInvoice(orderId: string, attemptId: stri
       onChain: false,
       delay: invoiceDelayMinutes,
       redirect: false,
-      redirectAfterPaid: `${config.origin}/checkout/bitcoin/${encodeURIComponent(orderId)}`,
+      title: details.title,
+      redirectAfterPaid: `${config.origin}${details.returnPath}`,
       webhook: {
-        url: `${config.origin}/api/checkout/bitcoin/webhook`,
+        url: `${config.origin}${details.webhookPath}`,
         headers: { [swissBitcoinWebhookHeader]: config.webhookSecret },
       },
-      extra: { reference: attemptId },
+      extra: { reference: attemptId, purpose: details.purpose },
     }),
   });
   if (response.status !== 201) {
@@ -217,7 +243,7 @@ export async function createSwissBitcoinInvoice(orderId: string, attemptId: stri
     const diagnostic = diagnoseProviderRefusal(text, response.headers.get("content-type") ?? "", truncated);
     console.warn("[swiss-bitcoin-pay] invoice creation refused", {
       status: response.status,
-      orderId: /^ORD-\d{8}-\d{4}$/.test(orderId) ? orderId : undefined,
+      orderId: details.orderId && /^ORD-\d{8}-\d{4}$/.test(details.orderId) ? details.orderId : undefined,
       ...diagnostic,
     });
     throw new SwissBitcoinCreationError(response.status === 403);
@@ -248,6 +274,10 @@ export function swissBitcoinInvoiceId(value: unknown): string | null {
   return swissBitcoinId(object(value).id);
 }
 
+export function isSwissBitcoinSupportInvoice(value: unknown): boolean {
+  return object(object(value).extra).purpose === swissBitcoinSupportPurpose;
+}
+
 function eurMinorAmount(value: unknown): number | null {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) return null;
   // Accept only a decimal EUR amount with at most two decimal places.
@@ -274,7 +304,7 @@ const invoiceStates = new Map<string, SwissBitcoinAttemptState>([
   ["settled", "paid"],
 ]);
 
-export function inspectSwissBitcoinInvoice(value: unknown, invoiceId: string, attemptId: string, expectedMinor: number) {
+export function inspectSwissBitcoinInvoice(value: unknown, invoiceId: string, attemptId: string, expectedMinor: number, purpose?: string) {
   const data = object(value);
   const input = object(data.input);
   const eurMinor = eurMinorAmount(input.amount);
@@ -292,12 +322,14 @@ export function inspectSwissBitcoinInvoice(value: unknown, invoiceId: string, at
   const paidAt = timestamp(payment?.paidAt) ?? timestamp(data.paidAt);
   const associationIssue = swissBitcoinId(data.id) !== invoiceId ? "invoice_id_mismatch"
     : swissBitcoinInvoiceReference(data) !== attemptId ? "invoice_reference_mismatch"
+    : purpose && object(data.extra).purpose !== purpose ? "invoice_purpose_mismatch"
     : currency !== "EUR" || eurMinor !== expectedMinor ? "invoice_amount_mismatch"
     : null;
-  const onChainPayment = typeof data.paymentMethod === "string" && data.paymentMethod.toLowerCase() === "onchain";
+  const paymentMethod = typeof data.paymentMethod === "string" ? data.paymentMethod.toLowerCase() : null;
   const issue = associationIssue ?? (
     !providerStatus ? "invoice_status_unknown"
-    : state === "paid" && onChainPayment ? "invoice_network_mismatch"
+    : state === "paid" && (paymentMethod === "onchain" || (purpose && paymentMethod !== "lightning" && !payment)) ? "invoice_network_mismatch"
+    : purpose && state === "confirming" ? "invoice_network_mismatch"
     : state === "paid" && (!paidAt || !expiresAt || (createdAt && paidAt < createdAt)) ? "invoice_timing_unverified"
     : null
   );

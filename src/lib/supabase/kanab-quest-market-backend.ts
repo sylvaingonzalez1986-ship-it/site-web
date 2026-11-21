@@ -262,7 +262,8 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
         const batchSeconds = processingEquipmentCodes.reduce((sum, code) => sum + (physicalWorkshop?.processingDurationSeconds[code] ?? 0), 0);
         const seconds = batchSeconds * Math.ceil(quote.processedInputGrams / Math.max(0.1, quote.processingBatchGrams ?? quote.processedInputGrams));
         const processingWork = processingWorkEnabled && (quote.family === "hash" || quote.family === "rosin")
-          ? createKqProcessingPlan({ inputGrams: quote.processedInputGrams, productGrams: quote.productGrams, equipmentCodes: processingEquipmentCodes, levels: workshop.levels }) : null;
+          ? createKqProcessingPlan({ inputGrams: quote.processedInputGrams, productGrams: quote.productGrams,
+            equipmentCodes: processingEquipmentCodes, levels: workshop.levels, dryerHandlingSaving: physicalWorkshop?.dryerHandlingSaving }) : null;
         return { ...quote, storageRevision: storageLot.revision, storageChangeAt: condition.nextChangeAt,
           ...(processingWork ? { processingWork } : {}),
           ...(physicalWorkshop ? { warehouseRevision: physicalWorkshop.revision, warehouseState: physicalWorkshop.sourceState,

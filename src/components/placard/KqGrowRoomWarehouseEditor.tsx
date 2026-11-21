@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
-import { Archive, Leaf, MousePointer2, Move, Scaling, Wind, X } from "lucide-react";
+import { MousePointer2, Move, Scaling } from "lucide-react";
 import { doKqWarehouseZonesOverlap, type KqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
+import type { getKqWarehouseAirCoverage, getKqWarehouseAirPlacements, KqWarehouseAirPlacement } from "@/lib/kanab-quest-warehouse-air";
+import { getKqWarehouseStationEntrance, type getKqWarehouseStationCoverage, type KqWarehouseStationPlacement } from "@/lib/kanab-quest-warehouse-stations";
 import type { WarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
+import type { KqWarehouseHandlingCode } from "@/lib/kanab-quest-warehouse-handling";
+import type { KqWarehouseCamera } from "@/lib/kanab-quest-warehouse-security";
 import styles from "./KqGrowRoom.module.css";
 
 export type RoomPoint = { x: number; y: number };
@@ -13,7 +17,13 @@ type Gesture = { id: number; floor: RoomPoint; screen: RoomPoint; moved: boolean
 export type KqGrowRoomWarehouseEditor = {
   selectedId: string | null;
   drawingKind?: ZoneKind | null;
-  onDrawingKind?: (kind: ZoneKind | null) => void;
+  placementCode?: string;
+  targetZoneIds?: readonly string[];
+  effectZoneId?: string | null;
+  lightingZoneId?: string | null;
+  lightingIndex?: number;
+  onInspectLighting?: (zoneId: string, index?: number) => void;
+  onTargetZone?: (id: string) => boolean;
   locked: boolean;
   managing?: boolean;
   lockedZoneIds?: readonly string[];
@@ -21,6 +31,31 @@ export type KqGrowRoomWarehouseEditor = {
   placingBuddie?: boolean;
   buddieDrop?: { zoneId: string | null; allowed: boolean } | null;
   interactionHint?: string;
+  handlingTarget?: { id: string; code: KqWarehouseHandlingCode; initialCell?: RoomPoint };
+  previewHandling?: (point: RoomPoint) => string | undefined;
+  onMoveHandling?: (code: string) => void;
+  airPlacements?: ReturnType<typeof getKqWarehouseAirPlacements>;
+  airCoverage?: ReturnType<typeof getKqWarehouseAirCoverage>;
+  airTarget?: Pick<KqWarehouseAirPlacement, "id" | "code" | "mount"> & { initialCell?: RoomPoint };
+  previewAir?: (point: RoomPoint) => { placement?: KqWarehouseAirPlacement; coverage?: ReturnType<typeof getKqWarehouseAirCoverage>; error?: string };
+  selectedAirId?: string | null;
+  onInspectAir?: (id: string) => void;
+  stationTarget?: Pick<KqWarehouseStationPlacement, "id" | "code"> & { initialCell?: RoomPoint };
+  previewStation?: (point: RoomPoint) => { placement?: KqWarehouseStationPlacement; coverage?: ReturnType<typeof getKqWarehouseStationCoverage>; error?: string };
+  selectedStationId?: string | null;
+  onInspectStation?: (id: string) => void;
+  security?: {
+    cameras: readonly KqWarehouseCamera[];
+    alarmInstalled: boolean;
+    selectedCameraId: string | null;
+    showCoverage: boolean;
+    onCameraPick: (id: string) => void;
+    onAlarmPick: () => void;
+  };
+  cleaning?: "vacuum" | "mop";
+  cleaningPlayer?: boolean;
+  cleaningStartedAt?: string;
+  irrigationPreparing?: string;
   onOpenZoneMenu: (id: string) => void;
   onDrawZone: (start: RoomPoint, end: RoomPoint, kind: ZoneKind) => boolean;
   onTransformZone: (id: string, patch: Rectangle) => boolean;
@@ -30,11 +65,6 @@ export type KqGrowRoomWarehouseEditor = {
   onCancel?: () => void;
 };
 
-const zoneTypes = [
-  { code: "culture", label: "Culture", icon: Leaf },
-  { code: "drying", label: "Séchage", icon: Wind },
-  { code: "storage", label: "Stockage", icon: Archive },
-] as const;
 const tools = [
   { code: "inspect", label: "Voir", name: "Observer les zones", icon: MousePointer2 },
   { code: "move", label: "Déplacer", name: "Déplacer la zone", icon: Move },
@@ -47,7 +77,6 @@ const rectangleBetween = (a: RoomPoint, b: RoomPoint): Rectangle => ({
 const sameRectangle = (a: Rectangle, b: Rectangle) => a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
 
 export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | undefined, plan: KqWarehouseState, layout: WarehouseSpatialLayout) {
-  const [localKind, setLocalKind] = useState<ZoneKind | null>(null);
   const [tool, setTool] = useState<Tool>("inspect");
   const [anchor, setAnchor] = useState<RoomPoint | null>(null);
   const [cursor, setCursor] = useState<RoomPoint | null>(null);
@@ -58,15 +87,23 @@ export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | u
   const selected = zones.find(zone => zone.id === editor?.selectedId);
   const managing = !!editor && editor.managing !== false;
   const disabled = !managing || editor.locked || !!editor.placingBuddie;
-  const transformDisabled = disabled || !selected || !!editor?.lockedZoneIds?.includes(selected.id);
-  const drawing = disabled ? null : editor?.drawingKind === undefined ? localKind : editor.drawingKind;
+  const transformDisabled = disabled || !!editor?.onChooseCell || !selected || !!editor?.lockedZoneIds?.includes(selected.id);
+  const drawing = disabled ? null : editor?.drawingKind;
   const activeTool = drawing ? "draw" : transformDisabled ? "inspect" : tool;
-  const [previousDrawing, setPreviousDrawing] = useState(drawing);
-  if (previousDrawing !== drawing) {
-    setPreviousDrawing(drawing);
+  const cellEquipment = editor?.airTarget ?? editor?.stationTarget ?? editor?.handlingTarget;
+  const mount = editor?.airTarget?.mount;
+  const mode = cellEquipment ? `${cellEquipment.id}:${mount?.face ?? ""}:${mount?.partitionId ?? ""}` : editor?.placementCode;
+  const [previousMode, setPreviousMode] = useState(mode);
+  if (previousMode !== mode) {
+    setPreviousMode(mode);
+    setNotice("");
     setAnchor(null);
-    setCursor(null);
+    const moving = [...(editor?.airPlacements ?? []), ...(plan.stationPlacements ?? [])].find(item => item.id === cellEquipment?.id);
+    const entrance = editor?.stationTarget?.code === "SIM-HYGIENE-03"
+      ? getKqWarehouseStationEntrance({ columns: layout.width, rows: layout.depth }) : null;
+    setCursor(cellEquipment?.initialCell ?? (moving ? { x: moving.x, y: moving.y } : entrance ?? (cellEquipment ? { x: 0, y: 0 } : null)));
     setPointerPreview(null);
+    setTool("inspect");
   }
   const cell = (point: RoomPoint) => ({ x: clamp(Math.floor(point.x), layout.width - 1), y: clamp(Math.floor(point.y), layout.depth - 1) });
   const inside = (point: RoomPoint) => point.x >= 0 && point.x < layout.width && point.y >= 0 && point.y < layout.depth;
@@ -92,33 +129,28 @@ export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | u
     setAnchor(null);
     setCursor(null);
   }
-  function chooseKind(kind: ZoneKind | null) {
+  function chooseTool(next: Tool) {
     clearGesture();
     setNotice("");
-    setTool("inspect");
-    if (editor?.onDrawingKind) {
-      if (editor.drawingKind !== kind) editor.onDrawingKind(kind);
-    } else setLocalKind(kind);
-  }
-  function chooseTool(next: Tool) {
-    chooseKind(null);
     setTool(next);
   }
   function cancel() {
-    chooseKind(null);
+    chooseTool("inspect");
     editor?.onCancel?.();
   }
   function commitDraw(start: RoomPoint, end: RoomPoint) {
     if (!editor || !drawing) return;
     clearGesture();
+    const target = start.x === end.x && start.y === end.y ? zoneAt(start) : undefined;
+    if (target && editor.onTargetZone) {
+      if (!editor.onTargetZone(target.id)) setNotice("Choisis une zone disponible du même type ou une case libre.");
+      return;
+    }
     if (overlaps(rectangleBetween(start, end))) {
       setNotice("Le tracé chevauche une zone ou une paroi.");
       return;
     }
-    if (editor.onDrawZone(start, end, drawing)) {
-      chooseKind(null);
-      setNotice("Zone tracée. Sélectionne-la pour l’aménager.");
-    }
+    editor.onDrawZone(start, end, drawing);
   }
   function commitTransform(rectangle: Rectangle) {
     if (!editor || transformDisabled || !selected || sameRectangle(rectangle, selected)) return;
@@ -132,6 +164,7 @@ export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | u
   }
   function begin(id: number, screen: RoomPoint, floor: RoomPoint, handle: boolean) {
     const at = { id, floor, screen, moved: false };
+    if (!disabled && cellEquipment && inside(floor)) setCursor(cell(floor));
     if (drawing && inside(floor)) {
       gesture.current = { ...at, kind: "draw", zoneKind: drawing };
       setPointerPreview(rectangleBetween(anchor ?? cell(floor), cell(floor)));
@@ -148,7 +181,7 @@ export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | u
   function movePointer(id: number, screen: RoomPoint, floor: RoomPoint) {
     const current = gesture.current;
     if (!current || current.id !== id) {
-      if (!current && drawing && inside(floor)) {
+      if (!current && (drawing || cellEquipment) && inside(floor)) {
         const next = cell(floor);
         setCursor(old => old?.x === next.x && old.y === next.y ? old : next);
       }
@@ -172,12 +205,7 @@ export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | u
     const moved = current.moved || Math.hypot(current.screen.x - screen.x, current.screen.y - screen.y) > 5;
     if (current.kind === "draw") {
       const start = cell(current.floor), end = cell(floor);
-      if (moved || anchor) commitDraw(anchor ?? start, end);
-      else {
-        setNotice("");
-        setAnchor(start);
-        setCursor(end);
-      }
+      if (inside(floor)) commitDraw(start, end);
     } else if (moved) {
       commitTransform(transform(current.origin, Math.round(floor.x - current.floor.x), Math.round(floor.y - current.floor.y)));
     }
@@ -200,33 +228,27 @@ export function useGrowRoomWarehouseEditor(editor: KqGrowRoomWarehouseEditor | u
     if (drawing) {
       if (anchor) commitDraw(anchor, keyboardCell);
       else { setNotice(""); setAnchor(keyboardCell); }
-    } else if (activeTool === "inspect" && selected && !cursor) editor.onOpenZoneMenu(selected.id);
+    } else if (activeTool === "inspect" && selected && !cursor && !editor.onChooseCell) editor.onOpenZoneMenu(selected.id);
     else if (activeTool === "inspect") inspect(keyboardCell);
     return true;
   }
   const preview = activeTool === "inspect" ? null : pointerPreview ??
     (drawing && anchor ? rectangleBetween(anchor, keyboardCell) : null);
   const cursorRectangle = drawing || cursor && activeTool === "inspect" && editor?.onChooseCell ? rectangleBetween(keyboardCell, keyboardCell) : null;
-  const valid = !preview || !overlaps(preview, drawing ? undefined : selected?.id);
-  return { activeTool, drawing, disabled, transformDisabled, managing, selected, preview, valid, cursorRectangle, anchor, notice,
-    chooseTool, chooseKind, cancel, clearGesture, begin, movePointer, end, key, zoneAt, inside };
+  const previewTarget = drawing && preview?.width === 1 && preview.height === 1 ? zoneAt(preview) : undefined;
+  const valid = previewTarget ? !!editor?.targetZoneIds?.includes(previewTarget.id) : !preview || !overlaps(preview, drawing ? undefined : selected?.id);
+  return { activeTool, drawing, disabled, transformDisabled, managing, selected, preview, valid, cursorRectangle, cursor, anchor, notice,
+    chooseTool, cancel, clearGesture, begin, movePointer, end, key, zoneAt, inside };
 }
 
 export function WarehouseEditControls({ room, focusMap }: { room: ReturnType<typeof useGrowRoomWarehouseEditor>; focusMap: () => void }) {
-  if (!room.managing) return null;
+  if (!room.managing || !room.selected || room.drawing || room.transformDisabled) return null;
   return <div className={styles.warehouseEditor}>
-    <div className={styles.editorGroup} role="group" aria-label="Tracer une nouvelle zone">
-      {zoneTypes.map(({ code, label, icon: Icon }) => <button key={code} type="button" className={styles.stationChoice}
-        data-warehouse-action={code === "culture" ? "draw" : undefined} data-warehouse-draw-kind={code}
-        disabled={room.disabled} aria-pressed={room.drawing === code}
-        onClick={() => { room.chooseKind(room.drawing === code ? null : code); focusMap(); }}><Icon size={15} aria-hidden="true" />{label}</button>)}
-    </div>
-    {(room.selected || room.drawing) && <div className={styles.editorGroup} role="group" aria-label="Outils du plan">
-      {room.drawing ? <button className={styles.stationChoice} type="button" onClick={() => room.chooseKind(null)}>
-        <X size={15} aria-hidden="true" /> Annuler le tracé</button> : tools.map(({ code, label, name, icon: Icon }) => <button key={code}
-          type="button" data-warehouse-tool={code} className={styles.stationChoice} aria-label={name}
+    <div className={styles.editorGroup} role="group" aria-label="Outils du plan">
+      {tools.map(({ code, label, name, icon: Icon }) => <button key={code}
+        type="button" data-warehouse-tool={code} className={styles.stationChoice} aria-label={name}
           disabled={code !== "inspect" && room.transformDisabled} aria-pressed={room.activeTool === code}
           onClick={() => { room.chooseTool(code); focusMap(); }}><Icon size={15} aria-hidden="true" />{label}</button>)}
-    </div>}
+    </div>
   </div>;
 }

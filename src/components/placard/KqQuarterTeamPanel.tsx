@@ -11,7 +11,7 @@ import { KqQuarterTeamEditor, previewTeamCommand, teamPlanVersion } from "./KqQu
 import { KqStaffOperationsConfirmation, KqStaffOperationsStatus, type KqStaffConfirmationDraft, type KqStaffOperationsController } from "./KqStaffOperations";
 import { KqStaffPortrait } from "./KqStaffPortrait";
 import { KqStaffWeeklyPlanner } from "./KqStaffWeeklyPlanner";
-import { KqAllocationBar } from "./KqVisuals";
+import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 import { teamActivityNames, teamAssignmentText, teamHours, teamTaskText, teamTime } from "./kq-quarter-team-presentation";
 import styles from "./KqQuarterTeamPanel.module.css";
 
@@ -155,6 +155,7 @@ export function KqQuarterTeamPanel({ controller, playerName, playerPortrait }: {
   const title = useId(), section = useId();
   const expanded = compact ? mobileOpen : desktopOpen;
   const { snapshot } = controller;
+  const collapsedBudget = !expanded && snapshot && !controller.error && !controller.authProblem ? getKqTeamDayBudget(snapshot, "player") : null;
   const employees = snapshot?.state.employees.filter(row => row.status === "active") ?? [];
   const drying = snapshot?.state.production?.lots.filter(lot => lot.stage === "drying" && Date.parse(lot.readyAt) > Date.parse(snapshot.serverNow)) ?? [];
   const passive = snapshot?.context.processingJobs?.filter(job => job.status === "passive") ?? [];
@@ -190,8 +191,14 @@ export function KqQuarterTeamPanel({ controller, playerName, playerPortrait }: {
     </div>
   </div>;
   return <aside className={styles.host} aria-label="Équipe du Quartier" data-team-panel data-team-expanded={expanded || undefined}>
-    {!expanded && <button className={styles.trigger} data-team-open ref={opener} type="button" aria-haspopup={compact ? "dialog" : undefined} aria-controls={section} aria-expanded={false}
-      onClick={() => { if (compact) setMobileOpen(true); else setDesktopOpen(true); }}><UsersRound size={19} aria-hidden="true" /> Mon équipe{snapshot && <span>({1 + employees.length})</span>}</button>}
+    {!expanded && <div className={styles.collapsed}>
+      <button className={styles.trigger} data-team-open ref={opener} type="button" aria-haspopup={compact ? "dialog" : undefined} aria-controls={section} aria-expanded={false}
+        onClick={() => { if (compact) setMobileOpen(true); else setDesktopOpen(true); }}><UsersRound size={19} aria-hidden="true" /> Mon équipe{snapshot && <span>({1 + employees.length})</span>}</button>
+      {collapsedBudget && <div className={`${styles.paper} ${styles.time}`} data-team-player-time>
+        <KqProgressMeter label="Temps libre" value={collapsedBudget.remainingHours} max={collapsedBudget.totalHours}
+          valueLabel={`${teamHours(collapsedBudget.remainingHours)} / ${teamHours(collapsedBudget.totalHours)}`} tone={collapsedBudget.remainingHours ? "teal" : "red"} />
+      </div>}
+    </div>}
     {compact ? mobileOpen && <dialog id={section} ref={sheet} className={styles.sheet} aria-labelledby={title} onCancel={event => { event.preventDefault(); close(); }}>{content}</dialog> :
       expanded && <section id={section} aria-labelledby={title} className={styles.desk}>{content}</section>}
     <KqStaffOperationsConfirmation controller={controller} />

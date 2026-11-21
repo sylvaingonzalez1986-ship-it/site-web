@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { paintingToGround, VILLAGE_SEA_LEVEL as SEA_LEVEL, VILLAGE_SEA_SIZE } from "./village-layout";
+import { mainlandToGround, paintingToGround, VILLAGE_SEA_LEVEL as SEA_LEVEL, VILLAGE_SEA_SIZE } from "./village-layout";
 import { VILLAGE_COAST, VILLAGE_RIVER, VILLAGE_SECOND_BANK } from "./village-terrain";
 import { VILLAGE_MAINLAND_SHORE } from "./village-mainland";
 import type { VillageLifeController } from "./village-life-types";
@@ -27,8 +27,11 @@ export function sampleVillageWaves(x: number, z: number, time: number, river = f
 // Keep clear of the island, the lighthouse's entire rock ring, and the second bank.
 // Closed centripetal interpolation avoids overshoot at the four fishing stations.
 const route = new THREE.CatmullRomCurve3([
-  [-12, -15], [-8, -24], [-1, -27], [8, -23], [20, -14], [29, -6], [33, 5], [30, 17],
-  [17, 25], [5, 30], [-8, 26], [-21, 14], [-26, 1], [-24, -9], [-19, -14],
+  [-12, -15], mainlandToGround(5, -17.5), mainlandToGround(7, -17.5), mainlandToGround(8.35, -18.8),
+  mainlandToGround(9.8, -20.95), mainlandToGround(12.8, -22.8), mainlandToGround(16.4, -22.0),
+  [-1, -27], [8, -23], [20, -14], [29, -6], [33, 5], [30, 17],
+  [17, 25], [5, 30], [-8, 26], [-21, 14], [-26, 1], [-24, -9],
+  mainlandToGround(-7.2, -21.85), mainlandToGround(-3, -20.2), mainlandToGround(0, -19.5),
 ].map(([x, z]) => new THREE.Vector3(x, 0, z)), true, "centripetal");
 route.arcLengthDivisions = 640;
 const routeLength = route.getLength();
@@ -117,6 +120,7 @@ function waterMaterial(river = false, foam = false) {
     transparent: foam, depthWrite: !foam, side: foam ? THREE.DoubleSide : THREE.FrontSide, forceSinglePass: foam,
     uniforms: {
       uTime: { value: 0 }, uRiver: { value: river ? 1 : 0 }, uFoam: { value: foam ? 1 : 0 }, uDetail: { value: 1 },
+      uWaterLight: { value: new THREE.Vector3(1, 1, 1) },
       uDeepColor: { value: new THREE.Color(river ? "#218d86" : "#176c7c") },
       uWaterColor: { value: new THREE.Color(river ? "#3ca79a" : "#279ba1") },
       uShallowColor: { value: new THREE.Color("#79c4aa") }, uFoamColor: { value: new THREE.Color("#e2efd6") },
@@ -135,6 +139,7 @@ function waterMaterial(river = false, foam = false) {
     fragmentShader: `
       uniform float uTime; uniform float uRiver; uniform float uFoam; uniform float uDetail;
       uniform vec3 uDeepColor; uniform vec3 uWaterColor; uniform vec3 uShallowColor; uniform vec3 uFoamColor;
+      uniform vec3 uWaterLight;
       varying vec2 vWater; varying float vCoast;
       ${waveGLSL}
       float hash21(vec2 p) {
@@ -188,6 +193,7 @@ function waterMaterial(river = false, foam = false) {
           color += vec3(.023, .056, .052)*(swells*.70 + chop*.44*uDetail);
           gl_FragColor = vec4(color, 1.);
         }
+        gl_FragColor.rgb *= uWaterLight;
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }
@@ -254,7 +260,10 @@ function foamRibbon(coast: readonly Point[], outward: boolean, height: number, w
 function wakeMaterial() {
   return new THREE.ShaderMaterial({
     transparent: true, depthWrite: false,
-    uniforms: { uTime: { value: 0 }, uRiver: { value: 0 }, uFoamColor: { value: new THREE.Color("#daeace") } },
+    uniforms: {
+      uTime: { value: 0 }, uRiver: { value: 0 }, uFoamColor: { value: new THREE.Color("#daeace") },
+      uWaterLight: { value: new THREE.Vector3(1, 1, 1) },
+    },
     vertexShader: `
       uniform float uTime; uniform float uRiver;
       varying vec2 vStroke; varying float vOpacity;
@@ -269,16 +278,24 @@ function wakeMaterial() {
     `,
     fragmentShader: `
       uniform vec3 uFoamColor;
+      uniform vec3 uWaterLight;
       varying vec2 vStroke; varying float vOpacity;
       void main() {
         vec2 p = (vStroke - .5) * 2.;
         float edge = 1. - smoothstep(.1, 1., dot(p, p));
-        gl_FragColor = vec4(uFoamColor, edge * vOpacity);
+        gl_FragColor = vec4(uFoamColor * uWaterLight, edge * vOpacity);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }
     `,
   });
+}
+
+export function applyVillageWaterLight(marine: THREE.Object3D, light: readonly [number, number, number]) {
+  for (const object of marine.children) {
+    if (!(object instanceof THREE.Mesh) || !(object.material instanceof THREE.ShaderMaterial)) continue;
+    object.material.uniforms.uWaterLight?.value.fromArray(light);
+  }
 }
 
 /** Small coloured parts merge once; moving gear stays separate from the hull. */

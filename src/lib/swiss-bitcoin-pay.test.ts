@@ -1,9 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createSwissBitcoinInvoice,
+  createSwissBitcoinSupportInvoice,
   fetchSwissBitcoinInvoice,
   inspectSwissBitcoinInvoice,
   isSwissBitcoinPayEnabled,
+  isSwissBitcoinSupportEnabled,
   matchesSwissBitcoinSecret,
   swissBitcoinCheckoutUrl,
 } from "@/lib/swiss-bitcoin-pay";
@@ -84,6 +86,22 @@ describe("Swiss Bitcoin Pay merchant API", () => {
     );
     await createSwissBitcoinInvoice(orderId, attemptId, 2150);
     expect(fetchMock.mock.calls[0][1]?.headers).toMatchObject({ "api-key": "existing-key" });
+  });
+
+  it("uses a separate Lightning support return and webhook with the existing merchant secrets", async () => {
+    configure();
+    vi.stubEnv("SWISS_BITCOIN_PAY_ENABLED", "false");
+    vi.stubEnv("SWISS_BITCOIN_PAY_SUPPORT_ENABLED", "true");
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json({ id: invoiceId, checkoutUrl }, { status: 201 }));
+    expect(isSwissBitcoinPayEnabled()).toBe(false);
+    expect(isSwissBitcoinSupportEnabled()).toBe(true);
+    await createSwissBitcoinSupportInvoice(attemptId, 2150);
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body))).toMatchObject({
+      amount: 21.50, unit: "EUR", onChain: false, delay: 10,
+      redirectAfterPaid: `https://shop.example.test/soutenir/retour?support=${attemptId}`,
+      webhook: { url: "https://shop.example.test/api/support/swiss-bitcoin-pay/webhook", headers: { "x-sbp-webhook-secret": "webhook-secret" } },
+      extra: { reference: attemptId, purpose: "producer-support" },
+    });
   });
 
   it("checks existing invoices after disabling creation and omits the api key", async () => {

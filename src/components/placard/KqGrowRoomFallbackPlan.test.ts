@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it } from "vitest";
-import type { KqWarehouseState } from "@/lib/kanab-quest-warehouse";
+import { KQ_WAREHOUSE_UNLIT_CODE, type KqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
 import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
 import { getKqWarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
 import KqGrowRoomFallbackPlan from "./KqGrowRoomFallbackPlan";
@@ -9,6 +9,21 @@ import { KqGrowRoomCareOverlay } from "./KqGrowRoomCareOverlay";
 import { KqGrowRoom } from "./KqGrowRoom";
 import { projectRoomPoint } from "./KqGrowRoomProjection";
 import { getGrowRoomShellRegistration } from "./KqGrowRoomShellRegistration";
+import { KqWarehousePlanFixtures } from "./KqWarehousePlanArt";
+
+it("keeps the support sprite without fixtures and stops painting legacy fans in shared air mode", () => {
+  const lit: KqWarehouseZone = { id: "bed", name: "Nord", x: 0, y: 0, width: 1, height: 1,
+    active: true, lightingCode: "MH-TS1000", airCode: "SIM-AIR-01", optionCodes: ["SIM-SUBSTRATE-01"] };
+  const render = (zone: KqWarehouseZone, sharedAir: boolean) => renderToStaticMarkup(createElement("svg", {},
+    createElement(KqWarehousePlanFixtures, { zone, sharedAir, id: "plan", tint: "#adede0", growing: false,
+      grid: { x: 0, y: 0, cell: 30, columns: 10, rows: 10 } })));
+  const unlit = render({ ...lit, active: false, lightingCode: KQ_WAREHOUSE_UNLIT_CODE }, false);
+  expect(unlit).toContain('data-warehouse-module="SIM-SUBSTRATE-01"');
+  expect(unlit).not.toContain("data-plan-fixture=");
+  expect(render(lit, true)).toContain('data-plan-fixture="lighting"');
+  expect(render(lit, true)).not.toContain('data-plan-fixture="air"');
+  expect(render(lit, false)).toContain('data-plan-fixture="air"');
+});
 
 it("counts and marks a pot once while preserving each distinct problem name", () => {
   const plan: KqWarehouseState = { version: 1, floor: { columns: 10, rows: 10 }, equipment: [], preparedAreaM2: 0,

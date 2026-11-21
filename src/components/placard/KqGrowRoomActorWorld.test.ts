@@ -14,6 +14,27 @@ const layout: WarehouseSpatialLayout = {
 };
 const base = { layout, stage: 1, motion: true, visible: true, profile: { gender: "female" as const, skin: "brown" as const, clothing: "berry" as const } };
 describe("player in the shared grow room renderer", () => {
+  it("rebuilds the route when the only layout change is a solid station", () => {
+    const actor = createGrowRoomActor(new THREE.Group(), () => {});
+    try {
+      const open = { ...layout, items: [{ ...layout.items[1], x: 0, z: -2, rotation: 0 as const }] };
+      const blocked = { ...open, obstacles: [{ id: "pump", x: 0, z: 2, width: 1, depth: 1 }] };
+      actor.update({ ...base, layout: open, targetId: "sechoir" });
+      actor.update({ ...base, layout: blocked, targetId: "sechoir" });
+      const paths = createGrowRoomPaths(blocked);
+      let previous = actor.getPose(), deviation = 0;
+      for (let t = 0; t < 20000; t += 50) {
+        const more = actor.tick(t);
+        const next = actor.getPose();
+        expect(paths.canWalk(previous, next)).toBe(true);
+        deviation = Math.max(deviation, Math.abs(next.x));
+        previous = next;
+        if (!more) break;
+      }
+      expect(deviation).toBeGreaterThan(.72);
+      expect(actor.getPose().state).toBe("idle");
+    } finally { actor.dispose(); }
+  });
   it("reaches the service counter when the renderer can only deliver five frames per second", () => {
     const actor = createGrowRoomActor(new THREE.Group(), () => {});
     try {

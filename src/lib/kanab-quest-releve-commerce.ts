@@ -115,7 +115,7 @@ export function createReleveCommerce(input: { cashCents: number; clock?: number;
   trial.commerce = { ...trial.commerce, cashCents: input.cashCents, reputation: 0, clients: 0, shopPartners: 0, computerOwned: false, business, online: createKqOnlinePreview(clock) };
   Object.assign(trial.commerce.online!.site, { active: false, createdAt: null });
   const room = first.game.warehouse?.sourceState;
-  const equipment = room ? getKqWarehouseEquipmentDemand(room.zones, room.serviceZones) : [];
+  const equipment = room ? getKqWarehouseEquipmentDemand(room.zones, room.serviceZones, room.storageClimateCode, room.airPlacements) : [];
   const ownedContainers: Record<string, number> = {};
   for (const item of equipment) {
     if (item.code === 'LP-SUPER-1L' || item.code === 'BROR-JARS-48') ownedContainers['GLASS-1L'] = (ownedContainers['GLASS-1L'] ?? 0) + item.quantity * (item.code === 'LP-SUPER-1L' ? 6 : 48);
@@ -314,7 +314,7 @@ function reconcileClimatePayment(state: KqReleveCommerceState, previousEnergyCen
 }
 function warehouseContainers(room: KqWarehouseState) {
   const result: Record<string, number> = {};
-  for (const item of getKqWarehouseEquipmentDemand(room.zones, room.serviceZones)) {
+  for (const item of getKqWarehouseEquipmentDemand(room.zones, room.serviceZones, room.storageClimateCode, room.airPlacements)) {
     if (item.code === 'LP-SUPER-1L' || item.code === 'BROR-JARS-48') result['GLASS-1L'] = (result['GLASS-1L'] ?? 0) + item.quantity * (item.code === 'LP-SUPER-1L' ? 6 : 48);
     if (item.code === 'CURTEC-60L') result['CURTEC-60L'] = (result['CURTEC-60L'] ?? 0) + item.quantity;
   }

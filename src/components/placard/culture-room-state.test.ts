@@ -4,12 +4,20 @@ import { getKqRoomCare } from "@/lib/kanab-quest-care-presentation";
 import { advanceKqStage, getKqRunProjection, playKqCard, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
 import { createKqFlower } from "@/lib/kanab-quest-battle";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
-import { createKqWarehouseStarter } from "@/lib/kanab-quest-warehouse";
+import { createKqWarehouseStarter, KQ_WAREHOUSE_UNLIT_CODE } from "@/lib/kanab-quest-warehouse";
 import { getCultureRoomAction, getCultureRoomZones, getWarehouseRoomZones } from "./culture-room-state";
 
 afterEach(() => vi.useRealTimers());
 
 describe("presentation of accepted cultivation actions", () => {
+  it("shows a standalone support without rendering placeholder lighting or ventilation", () => {
+    const plan = createKqWarehouseStarter();
+    const bareSupport = { ...plan.zones[0], active: false, lightingCode: KQ_WAREHOUSE_UNLIT_CODE, optionCodes: ["SIM-SUBSTRATE-01"] };
+    const [presentation] = getWarehouseRoomZones({ ...plan, zones: [bareSupport] }, []);
+    expect(presentation).toMatchObject({
+      status: "paused", supportCode: "SIM-SUBSTRATE-01", lightingCode: undefined, airCode: undefined,
+    });
+  });
   it("keeps aggregate stock at warehouse level when a lot has no recorded shelf", () => {
     const plan = createKqWarehouseStarter();
     const shelf = plan.serviceZones!.find(zone => zone.kind === "storage")!;

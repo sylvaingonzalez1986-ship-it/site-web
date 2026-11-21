@@ -1,5 +1,5 @@
 import { isKqEnergyQuoteValid } from "@/lib/kanab-quest-energy";
-import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, getKqBuildingHarvestLosses, getKqBuildingLossAverage, getKqBuildingIncidentLosses, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState, type KqSharedEquipmentRunProfile } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_SUBSTRATE_CODES, isKqRetiredSubstrate, getKqHandCodes, getKqStateHeritage, getKqBuildingHarvestLosses, getKqBuildingLossAverage, getKqBuildingIncidentLosses, getKqTheftLoss, getKqTheftZones, KQ_CARDS, KQ_HAND_SIZE, KQ_HERITAGE_RESERVE_SIZE, KQ_SITUATIONS, KQ_STAGES, type KqGameState, type KqSharedEquipmentRunProfile } from "@/lib/kanab-quest-game";
 import { isKqHeritageEffect, isKqHeritageTiming } from "@/lib/kanab-quest-heritage";
 import { getKqEquipmentDefinition, isKqProcessingEquipment, summarizeKqEquipmentLoadout } from "@/lib/kanab-quest-equipment";
 import type { KqBattle } from "@/lib/kanab-quest-battle";
@@ -14,6 +14,8 @@ import { isKqWarehouseEnergyQuote } from "./kanab-quest-warehouse-run";
 import { applyKqBuddieYield, isKqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
 import { isKqCampaign } from "./kanab-quest-campaign";
 import { getKqHarvestStageCounts, KQ_HARVEST_TIERS_V2, KQ_LEGENDARY_REQUIREMENTS } from "./kanab-quest-harvest-tiers";
+import { getKqWarehouseProtectedTheftLoss } from "./kanab-quest-warehouse-security";
+import { isKqWarehouseInputQuantities } from "./kanab-quest-warehouse-preparations";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 
@@ -49,6 +51,23 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       if (!member || member.buddieCode !== state.varietyCode
         || JSON.stringify(member.cultivationProfile) !== JSON.stringify(state.cultivationProfile)
         || JSON.stringify(member.warehouse) !== JSON.stringify(warehouse)) return null;
+    }
+    if (state.warehousePreparations !== undefined) {
+      if (warehouse?.preparationVersion !== 1 || warehouse.version !== 2 || !isRecord(state.warehousePreparations)
+        || Array.isArray(state.warehousePreparations)) return null;
+      const zones = isKqCampaign(state.campaign) ? state.campaign.members.map(member => member.warehouse) : [warehouse];
+      const preparations = state.warehousePreparations;
+      const leaderPreparation = preparations[warehouse.zoneId!];
+      if (Object.keys(preparations).length !== zones.length || zones.some(zone => {
+        const item = preparations[zone.zoneId!];
+        const count = (value: unknown) => typeof value === "number" && Number.isInteger(value) && value >= 0 && value <= zone.activeAreaM2;
+        return !Object.hasOwn(preparations, zone.zoneId!) || !isRecord(item) || Array.isArray(item)
+          || typeof item.vacuum !== "boolean" || typeof item.mop !== "boolean"
+          || (item.entranceAirlock !== undefined && typeof item.entranceAirlock !== "boolean")
+          || !isRecord(leaderPreparation) || item.entranceAirlock !== leaderPreparation.entranceAirlock
+          || !count(item.hygieneM2) || !count(item.irrigatedM2) || !isKqWarehouseInputQuantities(item.used)
+          || Object.values(item.used).some(value => !count(value));
+      })) return null;
     }
     if (state.domiciliation !== undefined && state.domiciliation !== "home" && state.domiciliation !== "external" && state.domiciliation !== "retired") return null;
     const phases = ["prepare", "rolled", "resolved", "complete"];
@@ -187,6 +206,23 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       }
       if (state.harvestLossPercent !== getKqBuildingLossAverage(current, getKqBuildingHarvestLosses(current))) return null;
     } else if (state.history.some(entry => entry.buildingHarvestLosses !== undefined)) return null;
+    if (state.history.some(entry => isRecord(entry.decision) && Object.hasOwn(entry.decision, "warehouseSecurity"))) {
+      const current = state as unknown as KqGameState;
+      const zones = getKqTheftZones(current);
+      const ids = new Set(zones.map(zone => zone.id));
+      let total = 0;
+      for (const [index, entry] of current.history.entries()) {
+        if (entry.decision && Object.hasOwn(entry.decision, "warehouseSecurity")) {
+          if (!warehouse || !isKqStageDecision(entry.decision) || !entry.decision.warehouseSecurity
+            || KQ_SITUATIONS.find(item => item.code === current.situationCodes[index])?.incident !== "crop-theft"
+            || Object.keys(entry.decision.warehouseSecurity.filmed).some(id => !ids.has(id))
+            || entry.decision.harvestLossPercent !== total
+            || entry.harvestLossPercent !== getKqWarehouseProtectedTheftLoss(entry.decision.warehouseSecurity, zones, getKqTheftLoss(entry.outcome))) return null;
+        }
+        total = Math.min(80, total + (entry.harvestLossPercent ?? 0));
+      }
+      if (state.harvestLossPercent !== total) return null;
+    }
     let zeroSuccessStages = 0;
     let rescuedStages = 0;
     for (const entry of state.history) {

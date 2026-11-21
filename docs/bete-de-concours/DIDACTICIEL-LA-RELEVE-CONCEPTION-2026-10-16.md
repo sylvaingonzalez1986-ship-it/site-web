@@ -1,5 +1,7 @@
 # La relève
 
+Cette archive décrit la ferme d’essai d’octobre 2026. Le didacticiel actuel se déroule dans le Quartier du joueur. [Parcours de Loïc](./parcours-loic.md)
+
 Conception du didacticiel narratif de Kanab Quest — 16 octobre 2026.
 
 Le joueur reprend la ferme de son grand-père. Avec Sylvain, il débarrasse et rénove entièrement l'intérieur de l'ancienne grange à bétail pour en faire une chambre de culture professionnelle. Une fois les locaux terminés, il choisit ses zones et son matériel, découvre les Buddies, accompagne sa première campagne et trouve ses premiers débouchés. Le bâtiment garde son extérieur breton ; à l'intérieur, le changement est complet avant la première plante. La rénovation constitue la mise en scène de départ ; les décisions d'équipement et de culture lui apprennent ensuite les actions du jeu.
@@ -342,25 +344,25 @@ Les prix des zones et des équipements sont calculés par le moteur de l'Entrep�
 
 Le coach distingue trois montants : **À payer pour ce plan**, **Charges estimées de la campagne**, **Disponible après ces engagements**. Il précise le dénominateur des valeurs par m² : surface aménagée du devis ou surface active de culture. Les charges ne sont pas toutes des prélèvements immédiats ; les échéances sont reprises des factures du moteur.
 
-Les exemples suivants partent d'une chambre entièrement rénovée mais encore vide d'équipements, sans module optionnel, avec extraction et éclairage économiques. Leurs montants excluent le chantier de rénovation de la scène. Ils ne sont pas des promesses de récolte ; le profil des Buddies et les résultats de jeu modifient le potentiel.
+Les devis du 21 novembre 2026 partent de la grange rénovée et vide, avec extraction et éclairage économiques. Le filet de séchage et les quatre lots de bocaux équipent les zones de service. Le profil des Buddies et les résultats de jeu modifient le potentiel de récolte.
 
 | Projet | Aménagement total initial | Énergie par cycle | Consommables par cycle | Potentiel de base avant Buddies et résultats |
 | --- | ---: | ---: | ---: | ---: |
-| Culture 1 m², séchage 1 m², stockage 1 m² | 729,73 € | 44,70 € | 22,00 € | 250 g |
-| Culture 2 m², mêmes services | 1 021,08 € | 82,20 € | 44,00 € | 500 g |
-| Deux cultures distinctes de 1 m², mêmes services | 1 077,43 € | 89,40 € | 44,00 € | 500 g |
+| Culture 1 m², séchage 1 m², stockage 1 m² | 898,15 € | 44,70 € | 22,00 € | 250 g |
+| Culture 2 m², mêmes services | 1 240,05 € | 82,20 € | 44,00 € | 500 g |
+| Deux cultures distinctes de 1 m², mêmes services | 1 372,65 € | 89,40 € | 44,00 € | 500 g |
 
 Les zones de service de cet exemple représentent 1 kg de capacité de séchage et 1,2 kg de stockage. Les charges excluent soins, analyse et autres frais. Le contrôle de lancement tient aussi compte des réservations par lot : une somme de grammes libres ne suffit pas à prouver que chaque lot a une place.
 
-Pour les deux zones distinctes, le scénario provisionne 228,40 € : 89,40 € d'énergie, 44 € de consommables, 90 € d'analyses pour deux cultures terminées et un entretien partagé de 5 €. Après les 1 077,43 € d'aménagement et une réserve supplémentaire de 150 €, il reste 544,17 € sur le budget de 2 000 €, sans compter aucune vente ni récompense. Une seconde zone ajoutée après le premier devis coûte 347,70 € dans cet exemple ; le total reste identique. Cette vérification couvre la voie économique proposée, pas toutes les dépenses libres possibles.
+Pour deux zones distinctes, le scénario provisionne 233,40 € de charges. L'énergie représente 89,40 €, les consommables 44 €, les analyses 90 € et l’entretien 10 €. Sur les 2 000 € de départ, il reste 393,95 € après l’aménagement et ces engagements. Garder 150 € supplémentaires pour les imprévus laisse 243,95 € disponibles. Si le joueur commence avec une seule zone, l’ajout de la seconde coûte 474,50 €. Le filet et les bocaux déjà acquis servent aux deux cultures.
 
 Pour une zone de culture de 2 m² seule, avec extraction économique, la comparaison actuelle donne :
 
 | Éclairage | Investissement de cette zone | Charges par cycle | Lecture proposée à Sylvain |
 | --- | ---: | ---: | --- |
-| Deux appareils économiques | 639,05 € | 126,20 € | Achat le plus bas de cette comparaison. |
-| Un appareil standard | 674,70 € | 111,20 € | Couverture utilisée, charges plus basses et +1 qualité initiale. |
-| Un appareil haut de gamme | 1 157,70 € | 151,20 € | +2 qualité initiale, mais couverture sous-utilisée sur cette surface. |
+| Deux appareils économiques | 816,39 € | 126,20 € | Il faut deux lampes pour couvrir les deux cases. |
+| Un appareil standard | 568,10 € | 111,20 € | Une seule lampe couvre les deux cases et apporte +1 de qualité initiale. |
+| Un appareil haut de gamme | 752,10 € | 151,20 € | +2 de qualité initiale et deux cases de portée encore disponibles. |
 
 Le joueur n'a pas à mémoriser ces chiffres. Il doit apprendre à comparer le devis complet, le matériel déjà possédé, les charges et le résultat estimé. Les chiffres d'illustration seront recalculés si l'équilibrage change ; les validations d'un chapitre ne doivent pas dépendre d'un prix inscrit en dur.
 

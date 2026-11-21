@@ -4,15 +4,17 @@ import { getKqCarePresentation, getKqRoomCare } from "@/lib/kanab-quest-care-pre
 import { getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_BUDDIES, KQ_CARDS, type KqGameState } from "@/lib/kanab-quest-game";
 import { getKqProductionUnits } from "@/lib/kanab-quest-production-scale";
-import { getKqWarehouseServiceZoneQuote, type KqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
+import { getKqWarehouseServiceZoneQuote, KQ_WAREHOUSE_UNLIT_CODE, type KqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
 import type { KqWarehouseActiveRun } from "@/lib/supabase/kanab-quest-warehouse-backend";
 import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import type { KqGrowRoomEvent, KqGrowRoomZone } from "./KqGrowRoomModel";
 
-export function warehouseBay(zone: KqWarehouseZone, plan: Pick<KqWarehouseState, "zones">): KqGrowRoomZone {
+export function warehouseBay(zone: KqWarehouseZone, plan: Pick<KqWarehouseState, "zones" | "airPlacements">): KqGrowRoomZone {
+  const lit = zone.lightingCode !== KQ_WAREHOUSE_UNLIT_CODE;
   return {
     id: zone.id, kind: "culture", name: getKqZoneIdentity(plan, zone.id)?.label ?? zone.name,
-    areaM2: zone.width * zone.height, lightingCode: zone.lightingCode, airCode: zone.airCode,
+    areaM2: zone.width * zone.height, lightingCode: lit ? zone.lightingCode : undefined,
+    airCode: lit && plan.airPlacements === undefined ? zone.airCode : undefined,
     optionCodes: zone.optionCodes, supportCode: zone.optionCodes?.find(code => code.startsWith("SIM-SUBSTRATE-")),
     variety: KQ_BUDDIES.find(buddie => buddie.code === zone.buddieCode)?.name,
     status: zone.active ? "idle" : "paused",

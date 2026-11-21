@@ -1,7 +1,7 @@
 import type { VillageBuildingKind } from "./village-buildings";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 
-export type InteriorObjectKind = "culture" | "drying" | "storage" | "partition" | "workbench" | "counter" | "desk" | "bookshelf" | "board" | "cards" | "podium" | "safe" | "character" | "exit";
+export type InteriorObjectKind = "culture" | "drying" | "storage" | "partition" | "handling" | "workbench" | "counter" | "desk" | "bookshelf" | "board" | "cards" | "podium" | "safe" | "character" | "exit";
 export type InteriorRotation = 0 | 90 | 180 | 270;
 /** Metres. x/z are footprint centres; width/depth describe the final rotated footprint. */
 export type InteriorObject = {

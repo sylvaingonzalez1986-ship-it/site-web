@@ -21,6 +21,12 @@ describe("support source and private status", () => {
     for (const change of [{ sourceCode: "shop" }, { currencyCode: "USD" }, { orderCode: "9" }]) await expect(applySupportTransaction(record, { ...payment, ...change })).rejects.toThrow("correspondent");
     expect(rpc).not.toHaveBeenCalled();
   });
+  it("uses the exact merchant reference in a retrieved transaction when Viva omits the source", async () => {
+    const payment = { orderCode: record.order_code!, transactionId: tx, sourceCode: "", amountInMinorUnits: 1000, currencyCode: "EUR", statusId: "F" };
+    await expect(applySupportTransaction(record, { ...payment, merchantTrns: "SHOP" })).rejects.toThrow("correspondent");
+    await applySupportTransaction(record, { ...payment, merchantTrns: `SOUTIEN:${id}` });
+    expect(rpc).toHaveBeenCalledWith("rpc_support_apply_transaction", expect.objectContaining({ p_source: "4321" }));
+  });
   it("requires the verified original for a refund on another source", async () => {
     const parent = { orderCode: record.order_code!, transactionId: tx, sourceCode: "4321", amountInMinorUnits: 1000, currencyCode: "978", statusId: "R" };
     const refund = { ...parent, transactionId: id, sourceCode: "Default", amountInMinorUnits: -300, parentTransactionId: tx, statusId: "F" };

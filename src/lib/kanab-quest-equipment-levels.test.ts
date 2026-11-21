@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { KQ_EQUIPMENT_CATALOG, KQ_EQUIPMENT_REPLACEMENTS, getKqEquipmentAtLevel, getKqEquipmentUpgradeCost, summarizeKqEquipmentLoadout } from "./kanab-quest-equipment";
 import { getKqEquipmentArtwork, getKqEquipmentVisualTier } from "./kanab-quest-equipment-artwork";
+import { getKqWorkshopPriceList } from "./kanab-quest-warehouse-retail";
 import { startKqGame } from "./kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 import { quoteKqMarketRoutes } from "./kanab-quest-market";
@@ -17,6 +18,8 @@ describe("unique equipment and ten-level progression", () => {
 
   it.each(purchasable)("improves $code at every level without mutating its base definition", (base) => {
     expect(getKqEquipmentAtLevel(base.code, 1)).toEqual(base);
+    const workshopPrices = getKqWorkshopPriceList(base.code);
+    let investedCents = base.priceCents;
     let previous = base;
     for (let level = 2; level <= 10; level++) {
       const current = getKqEquipmentAtLevel(base.code, level)!;
@@ -26,7 +29,13 @@ describe("unique equipment and ten-level progression", () => {
       }
       expect(current.powerWatts).toBe(base.powerWatts);
       expect(current.effects.pressureDelta).toBe(base.effects.pressureDelta);
-      expect(getKqEquipmentUpgradeCost(base.code, level - 1)).toBe(Math.ceil(base.priceCents * (level - 1) / 10));
+      const upgradeCents = getKqEquipmentUpgradeCost(base.code, level - 1)!;
+      expect(upgradeCents).toBeGreaterThan(0);
+      investedCents += upgradeCents;
+      if (workshopPrices && (level === 4 || level === 7)) {
+        expect(investedCents).toBe(workshopPrices[level === 4 ? 1 : 2].gamePriceCents);
+      }
+      if (!workshopPrices || level > 7) expect(upgradeCents).toBe(Math.ceil(base.priceCents * (level - 1) / 10));
       previous = current;
     }
     expect(getKqEquipmentAtLevel(base.code, 1)).toEqual(base);

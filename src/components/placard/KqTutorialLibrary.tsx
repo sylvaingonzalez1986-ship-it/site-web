@@ -1,59 +1,74 @@
 "use client";
 
 import { AppDialog, useDialogNavigation } from "@/components/ui/AppDialog";
-import { FARM_GUIDE_CHAPTERS, type FarmGuideChapter, type FarmGuideAdvice } from "@/lib/kanab-quest-farm-guide";
-import { FARM_GUIDE_STEPS, getFarmStepState, type FarmProgress, type FarmEvidence, type FarmStepId } from "@/lib/kanab-quest-farm-progress";
-import { ARENA_PLAYABLE_LESSONS, type ArenaPlayableLessonId } from "@/lib/arena-playable-learning";
+import {
+  SYLVAIN_INVITATION, type SylvainLessonId, type SylvainState, type getSylvainGuide,
+} from "@/lib/kanab-quest-sylvain-guide";
+import { KqProgressMeter } from "./KqVisuals";
 import styles from "./KqFarmGuide.module.css";
 
 type LibraryProps = {
-  state: FarmProgress;
-  evidence: FarmEvidence;
-  stepId?: FarmStepId;
-  replaying: boolean;
-  currentChapter: FarmGuideChapter;
-  currentAdvice: FarmGuideAdvice;
-  harvestChoices: { id: string; label: string }[];
-  onChoose: (id: FarmStepId, review: boolean) => void;
-  onFollowHarvest: (id: string) => void;
-  onPractice: (id: ArenaPlayableLessonId) => void;
-  onPause: () => void;
+  mode: SylvainState["mode"];
+  guide: ReturnType<typeof getSylvainGuide>;
+  onAction: (action: { type: "start" | "pause" | "resume" | "off" | "skip" | "follow" }) => void;
+  onSelect: (id: SylvainLessonId) => void;
 };
 
-// Retire the dialog's history entry before opening a game activity or a practice.
-function LibraryContents({ state, evidence, stepId, replaying, currentChapter, currentAdvice, harvestChoices, onChoose, onFollowHarvest, onPractice, onPause }: LibraryProps) {
-  const navigate = useDialogNavigation();
-  return <div className={styles.notebook}>
+const statusLabels = {
+  completed: "Validée",
+  skipped: "Passée",
+  available: "Disponible",
+  later: "Pour plus tard",
+};
 
-        <p><strong>{currentChapter.tab}</strong> · {currentAdvice.instruction}</p><p>{currentChapter.story}</p>
-        <p>Tu peux explorer librement pendant une attente. Une visite ne valide pas une culture ou une vente. Aucun achat ni paiement n’est effectué par le guide.</p>
-        {harvestChoices.length > 0 && (harvestChoices.length > 1 || harvestChoices[0].id !== state.flowerId) ? <label className={styles.harvestChoice}>Récolte à accompagner<select value={state.flowerId ?? ""} onChange={event => onFollowHarvest(event.target.value)}>{!harvestChoices.some(item => item.id === state.flowerId) ? <option value={state.flowerId ?? ""} disabled>Choisir un lot disponible</option> : null}{harvestChoices.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select><small>Tes acquis restent conservés lorsque tu changes de lot.</small></label> : null}
-        <ol>{FARM_GUIDE_CHAPTERS.map(item => {
-          const goals = FARM_GUIDE_STEPS.filter(goal => goal.chapter === item.id);
-          const remaining = goals.filter(goal => !state.completed.includes(goal.id));
-          const goal = remaining.find(goal => getFarmStepState(state, goal.id, evidence).status === "available") ?? remaining[0] ?? goals[0];
-          if (!goal) return null;
-          const status = getFarmStepState(state, goal.id, evidence);
-          const label = remaining.length === 0 ? "Terminé" : goal.id === stepId && !replaying ? "En cours" : status.status === "waiting" ? "En attente" : status.status === "locked" ? "Verrouillé" : "À découvrir";
-          return <li className={styles.chapterRow} key={item.id} data-tutorial-chapter={item.id}>
-            <strong>{item.tab}</strong><span className={styles.chapterStatus}>{label} · {goals.length - remaining.length}/{goals.length}</span>
-            {status.reason && remaining.length > 0 ? <small>{status.reason}</small> : null}
-            <div className={styles.chapterActions}><button type="button" data-tutorial-select={goal.id} aria-label={`${remaining.length === 0 ? "Revoir" : "Reprendre"} : ${item.tab}`} onClick={() => navigate(() => onChoose(goal.id, remaining.length === 0))}>{remaining.length === 0 ? "Revoir" : "Reprendre"}</button></div>
-            <details><summary>Objectifs de {item.tab}</summary><ul className={styles.checklist}>{goals.map(objective => <li key={objective.id}><button type="button" onClick={() => navigate(() => onChoose(objective.id, state.completed.includes(objective.id)))}>{state.completed.includes(objective.id) ? "✓ " : "○ "}{objective.title}</button></li>)}</ul></details>
-          </li>;
-        })}</ol>
-        <details data-tutorial-practice-menu><summary>S’entraîner avec un budget fictif</summary>
-          <p>Matériel, cartes, temps et recettes de démonstration. Ces essais séparés permettent de pratiquer pendant une attente ; ils ne valident aucune action de ta partie.</p>
-          <ol>{ARENA_PLAYABLE_LESSONS.map(lesson => <li key={lesson.id}><button type="button" data-tutorial-practice={lesson.id} onClick={() => navigate(() => onPractice(lesson.id))}>{lesson.title}</button></li>)}</ol>
+function LibraryContents({ mode, guide, onAction, onSelect }: LibraryProps) {
+  const navigate = useDialogNavigation();
+  const active = mode === "active";
+  const completed = guide.lessons.filter(item => item.status === "completed").length;
+  return <>
+    <KqProgressMeter label="Étapes validées" value={completed} max={guide.lessons.length} />
+    {guide.current && active ? <div className={styles.current}>
+      <h3>{guide.current.title}</h3>
+      <p>{guide.current.body}</p>
+      <p><strong>{guide.current.action}</strong></p>
+      {!guide.replay && guide.hint && <p className={styles.hint}>{guide.hint}</p>}
+      {!guide.recovery && <div className={styles.actions}>
+        {guide.replay ? <button type="button" data-sylvain-control="follow" onClick={() => navigate(() => onAction({ type: "follow" }))}>Suivre ma partie</button>
+          : <button type="button" data-sylvain-control="skip" onClick={() => navigate(() => onAction({ type: "skip" }))}>Passer l’étape</button>}
+      </div>}
+    </div> : null}
+    {mode === "invited" ? <p>{SYLVAIN_INVITATION.body}</p> : null}
+    <div className={styles.actions}>
+      {active ? <button type="button" data-sylvain-control="pause" onClick={() => navigate(() => onAction({ type: "pause" }))}>Mettre en pause</button>
+        : <button type="button" className={styles.primary} data-sylvain-control={mode === "invited" ? "start" : "resume"}
+          onClick={() => navigate(() => onAction({ type: mode === "invited" ? "start" : "resume" }))}>{mode === "invited" ? SYLVAIN_INVITATION.action : "Reprendre le guide"}</button>}
+      {mode !== "off" && <button type="button" data-sylvain-control="off" onClick={() => navigate(() => onAction({ type: "off" }))}>Fermer le guide</button>}
+    </div>
+    <details className={styles.help}>
+      <summary data-sylvain-control="help">Fonctionnement du guide</summary>
+      <p>« Me montrer » repère le geste à faire dans le jeu. Tu peux passer une étape, explorer à ton rythme et relire une fiche ici. Tes étapes sont conservées dans ce navigateur pour ce compte.</p>
+    </details>
+    <ol className={styles.register}>
+      {guide.lessons.map(({ lesson, status }) => <li key={lesson.id} data-sylvain-lesson={lesson.id} data-status={status}>
+        <details>
+          <summary>
+            <strong>{lesson.title}</strong>
+            <span className={styles.lessonStatus}>{statusLabels[status]}</span>
+          </summary>
+          <p>{lesson.body}</p>
+          <p><strong>{lesson.action}</strong></p>
+          {guide.current?.id !== lesson.id && active && status === "available"
+            && <button type="button" className={styles.primary} data-sylvain-select={lesson.id}
+              onClick={() => navigate(() => onSelect(lesson.id))}>Suivre cette étape</button>}
         </details>
-        <p>Réduis le guide pour garder l’objectif ou suspends-le avec ×. Retrouve-le dans Tutoriel. Ton choix et ta progression sont conservés dans ce navigateur pour ce compte.</p>
-        <div className={styles.actions}><button type="button" onClick={() => navigate(onPause)}>Désactiver le tutoriel</button></div>
-      
-  </div>;
+      </li>)}
+    </ol>
+  </>;
 }
 
 export function KqTutorialLibrary({ open, onClose, ...props }: LibraryProps & { open: boolean; onClose: () => void }) {
-  return <AppDialog open={open} onClose={onClose} title="Chapitres du tutoriel" closeLabel="Fermer les chapitres" className={styles.library} bodyClassName={styles.libraryBody} dialogProps={{ "data-tutorial-chapters": true }}>
+  return <AppDialog open={open} onClose={onClose} title="Carnet de Loïc" closeLabel="Fermer le carnet"
+    className={styles.library} bodyClassName={styles.libraryBody} dialogProps={{ "data-sylvain-library": true }}>
     <LibraryContents {...props} />
   </AppDialog>;
 }

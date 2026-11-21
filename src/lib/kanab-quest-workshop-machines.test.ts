@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getKqWorkshopMachineSpecification, getKqWorkshopTierPrice } from "./kanab-quest-workshop-machines";
+import retail from "./kanab-quest-workshop-retail.json";
 import { getKqEquipmentDefinition, getKqEquipmentUpgradeCost } from "./kanab-quest-equipment";
 import { quoteKqMarketRoutes } from "./kanab-quest-market";
 
@@ -37,21 +38,22 @@ describe("workshop capacity and configurations", () => {
     expect(getKqWorkshopMachineSpecification("toString")).toBeNull();
   });
   it("prices a direct purchase exactly like the existing acquisition and paid upgrades", () => {
-    for (const code of ["SIFT-TRAY", "PRESS-0600", "WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER", "STATIC-PLASMA"]) {
+    for (const [code, offers] of Object.entries(retail)) {
       const base = getKqEquipmentDefinition(code)!.priceCents;
-      for (const target of [1, 4, 7]) {
+      for (const [index, target] of [1, 4, 7].entries()) {
+        expect(getKqWorkshopTierPrice(code, target)).toBe(offers[index].gamePriceCents);
         const expected = base + Array.from({ length: target - 1 }, (_, level) => getKqEquipmentUpgradeCost(code, level + 1)!).reduce((sum, price) => sum + price, 0);
-        expect(getKqWorkshopTierPrice(code, base, target)).toBe(expected);
+        expect(getKqWorkshopTierPrice(code, target)).toBe(expected);
       }
     }
-    expect([1, 4, 7].map(target => getKqWorkshopTierPrice("PRESS-0600", 85000, target))).toEqual([85000, 136000, 263500]);
+    expect([1, 4, 7].map(target => getKqWorkshopTierPrice("WASHER-25L", target))).toEqual([630000, 3480000, 8580000]);
   });
-  it("credits acquired intermediate levels and refuses downgrades, unknown models and invalid prices", () => {
-    expect(getKqWorkshopTierPrice("PRESS-0600", 85000, 4, 2)).toBe(42500);
-    expect(getKqWorkshopTierPrice("PRESS-0600", 85000, 7, 5)).toBe(93500);
-    expect(getKqWorkshopTierPrice("PRESS-0600", 85001, 4, 2)).toBe(42502);
-    for (const [code, price, target, current] of [["unknown", 85000, 4, 1], ["PRESS-0600", 85000, 4, 4], ["PRESS-0600", 85000, 7, 10], ["PRESS-0600", 85000, 5, 1], ["PRESS-0600", -1, 4, 1], ["PRESS-0600", 85000, 7, 1.5]] as const) {
-      expect(getKqWorkshopTierPrice(code, price, target, current)).toBeNull();
+  it("credits acquired intermediate levels to the cent and refuses invalid levels or unknown models", () => {
+    expect(getKqWorkshopTierPrice("PRESS-0600", 4, 2)).toBe(526667);
+    expect(getKqWorkshopTierPrice("PRESS-0600", 7, 5)).toBe(613334);
+    expect(getKqWorkshopTierPrice("WASHER-25L", 4, 1)).toBe(2850000);
+    for (const [code, target, current] of [["unknown", 4, 1], ["toString", 4, 0], ["PRESS-0600", 4, 4], ["PRESS-0600", 7, 10], ["PRESS-0600", 5, 1], ["PRESS-0600", 4, -1], ["PRESS-0600", 7, 1.5]] as const) {
+      expect(getKqWorkshopTierPrice(code, target, current)).toBeNull();
     }
   });
 });

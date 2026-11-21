@@ -14,6 +14,18 @@ const commerce = (body: Record<string, unknown>): KqOperationsLessonAction => ({
 const storage = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: '/api/arena/placard/storage', method: 'POST', body });
 afterEach(() => vi.unstubAllGlobals());
 
+it('reports the lesson clock from replayable actions and keeps the same business origin', () => {
+  const initial = createKqOperationsLesson('market');
+  const initialClock = getKqOperationsEquipment(initial).businessClock!;
+  const advance = commerce({ action: 'online', command: 'advance-online-time', payload: { hours: 24 } });
+  const advanced = applyKqOperationsRequest(initial, advance).state;
+  const restored = restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions: [advance] }).state;
+  const clock = getKqOperationsEquipment(advanced).businessClock!;
+  expect(clock.startedAt).toBe(initialClock.startedAt);
+  expect(Date.parse(clock.serverNow) - Date.parse(initialClock.serverNow)).toBe(24 * 60 * 60 * 1000);
+  expect(getKqOperationsEquipment(restored).businessClock).toEqual(clock);
+});
+
 describe('exact placement in the operations lesson', () => {
   it('uses the exact model, preserves the clock and wallet and replays once', () => {
     const initial = createKqOperationsLesson('warehouse');

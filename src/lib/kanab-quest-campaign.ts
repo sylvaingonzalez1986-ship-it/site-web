@@ -14,12 +14,12 @@ export type KqCampaignMember = KqCampaignParticipant & { runId: string };
 export type KqCampaign = { version: 1; id: string; leaderRunId: string; members: KqCampaignMember[] };
 
 /** All available assigned zones join together; the paid plan stays intact. */
-export function getKqCampaignParticipants(state: KqWarehouseState, revision: number, condition?: KqWarehouseCondition, reservedZoneId?: string | null): KqCampaignParticipant[] {
+export function getKqCampaignParticipants(state: KqWarehouseState, revision: number, condition?: KqWarehouseCondition, reservedZoneId?: string | null, preparationVersion?: 1): KqCampaignParticipant[] {
   if (reservedZoneId != null && !state.zones.some(zone => zone.id === reservedZoneId)) throw new Error("La réservation de production ne correspond plus au plan. Actualise la préparation.");
   return state.zones.filter(zone => zone.active && zone.buddieCode && zone.id !== reservedZoneId)
     .sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0)
     .map(zone => ({ zoneId: zone.id, buddieCode: zone.buddieCode!,
-      warehouse: { ...getKqWarehouseRunSnapshot(state, revision, zone.id, 2, 2, 2, condition),
+      warehouse: { ...getKqWarehouseRunSnapshot(state, revision, zone.id, 2, 2, 2, condition, preparationVersion),
         ...(reservedZoneId !== undefined ? { productionReservedZoneId: reservedZoneId } : {}), },
       cultivationProfile: getKqBuddieCultivationProfile(zone.buddieCode!),
     }));
@@ -40,9 +40,39 @@ export function getKqCampaignWarehouse(members: readonly KqCampaignParticipant[]
   if (!members.length) return null;
   const included = new Set(members.map(member => member.zoneId));
   const first = members[0].warehouse;
+  const source = first.sourceState;
+  if (source.stationPlacements?.length || source.airPlacements?.length) {
+    // Excluded zones still compete for shared equipment on the paid floor.
+    const warehouse: KqWarehouseRunSnapshot = { ...first, version: 1, zoneId: undefined };
+    delete warehouse.zoneId;
+    const total = members.reduce((sum, { warehouse: own }) => ({
+      activeAreaM2: sum.activeAreaM2 + own.activeAreaM2,
+      estimatedHarvestGrams: sum.estimatedHarvestGrams + own.estimatedHarvestGrams,
+      powerWatts: sum.powerWatts + own.powerWatts,
+      energyKwh: sum.energyKwh + own.energyKwh,
+      energyCostCents: sum.energyCostCents + own.energyCostCents,
+      consumablesCostCents: sum.consumablesCostCents + own.consumablesCostCents,
+      operatingCostCents: sum.operatingCostCents + own.operatingCostCents,
+      qualityPoints: sum.qualityPoints + (own.qualityBonus ?? 0) * own.activeAreaM2,
+      freshHarvestGrams: sum.freshHarvestGrams + own.estimatedHarvestGrams / (own.yieldFactor ?? 1),
+    }), { activeAreaM2: 0, estimatedHarvestGrams: 0, powerWatts: 0, energyKwh: 0, energyCostCents: 0,
+      consumablesCostCents: 0, operatingCostCents: 0, qualityPoints: 0, freshHarvestGrams: 0 });
+    const rounded = (value: number) => Math.round(value * 1000) / 1000;
+    const estimatedHarvestGrams = rounded(total.estimatedHarvestGrams);
+    return {
+      ...warehouse,
+      zones: source.zones.map(zone => ({ ...zone, active: included.has(zone.id) })),
+      activeAreaM2: total.activeAreaM2, estimatedHarvestGrams,
+      powerWatts: rounded(total.powerWatts), energyKwh: rounded(total.energyKwh),
+      energyCostCents: total.energyCostCents, consumablesCostCents: total.consumablesCostCents,
+      operatingCostCents: total.operatingCostCents,
+      qualityBonus: Math.floor(total.qualityPoints / total.activeAreaM2),
+      ...(warehouse.wearVersion ? { yieldFactor: total.freshHarvestGrams ? estimatedHarvestGrams / total.freshHarvestGrams : 1 } : {}),
+    };
+  }
   return getKqWarehouseRunSnapshot({ ...first.sourceState,
     zones: first.sourceState.zones.map(zone => ({ ...zone, active: included.has(zone.id) })),
-  }, first.revision, undefined, first.balanceVersion ?? 1, first.climateBillingVersion ?? 1, first.postHarvestBalanceVersion ?? 1, first.cultureEquipment);
+  }, first.revision, undefined, first.balanceVersion ?? 1, first.climateBillingVersion ?? 1, first.postHarvestBalanceVersion ?? 1, first.cultureEquipment, first.preparationVersion);
 }
 
 /** Project one shared decision journal without replaying dice, cards or care.

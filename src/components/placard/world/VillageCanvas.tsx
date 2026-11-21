@@ -1,16 +1,21 @@
 "use client";
 
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { useVillagePlayer } from "./useVillagePlayer";
 import { createVillageWalkSurface } from "./village-walk-surface";
-import { VILLAGE_LIGHT as light } from "./village-lighting";
+import { applyVillageEmissives, sampleVillageLighting, VILLAGE_LIGHT as light } from "./village-lighting";
+import type { VillageCalendar } from "./village-calendar";
+import { applyVillageWaterLight } from "./village-marine";
+import { applyVillageSeason } from "./village-seasons";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { createVillageBuilding, createVillageMailbox, type VillageBuildingKind } from "./village-buildings";
+import { createVillageBuilding, createVillageHempFarm, createVillageMailbox } from "./village-buildings";
 import { createVillageTerrain, disposeVillageObject } from "./village-terrain";
-import { VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition } from "./village-layout";
+import { HEMP_FARM, HEMP_FARM_ID, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition, type VillagePlaceId } from "./village-layout";
+import { createVillageHempFarmCollider } from "./village-hemp-farm";
+import { consumeVillageSupportView, saveVillageSupportView } from "./village-support-view";
 import { positionVillageBubble } from "./village-bubble";
 import { VillageAtmosphere, type VillageMotionProps } from "./VillageAtmosphere";
 import type { VillageNpcBridge } from "./VillageNpcDialogue";
@@ -18,20 +23,25 @@ import type { VillageNpcBridge } from "./VillageNpcDialogue";
 export type VillageLifeSubject = "player" | "sheep" | "wolf" | "fox" | "weasel" | "boat" | "breton" | "fisherman" | "loic";
 export type VillageCameraRequest = { rotation: number; zoom: number; reset: number; observe?: VillageLifeSubject };
 const VILLAGE_VIEW_CENTER = new THREE.Vector3(-4.3, 1.2, -1.8);
+const VILLAGE_NARROW_VIEW_CENTER = VILLAGE_VIEW_CENTER.clone().add(new THREE.Vector3(0, 3.15, 0));
 const LIFE_NAMES: Record<VillageLifeSubject, string> = { player: "chanvrier", sheep: "village-sheep-pasture", wolf: "village-animal-wolf", fox: "village-animal-fox", weasel: "village-animal-weasel", boat: "fishing-boat", breton: "village-breton", fisherman: "village-fisherman", loic: "village-loic" };
 const RESIDENT_EYE_HEIGHT: Partial<Record<VillageLifeSubject, number>> = { player: 1.57, breton: 1.65, fisherman: 1.35, loic: 1.66 };
 type Props = VillageMotionProps & {
+  calendar?: VillageCalendar | null;
   profile: ChanvrierAvatarProfile | null;
   npc: VillageNpcBridge;
   controlsBlocked: boolean;
-  selected: VillageBuildingKind | null;
-  keyboardFocus: VillageBuildingKind | "mailbox" | null;
-  onSelect: (id: VillageBuildingKind) => void;
-  onHover: (id: VillageBuildingKind | null) => void;
+  supportOpen?: boolean;
+  restoreSupportView?: boolean;
+  selected: VillagePlaceId | null;
+  keyboardFocus: VillagePlaceId | "mailbox" | null;
+  onSelect: (id: VillagePlaceId) => void;
+  onHover: (id: VillagePlaceId | null) => void;
   onOpenMailbox: () => void;
   cameraRequest: VillageCameraRequest;
   labelNodes: RefObject<Map<string, HTMLButtonElement>>;
   bubbleNode: RefObject<HTMLElement | null>;
+  headerNode: RefObject<HTMLElement | null>;
   bubbleTail: RefObject<SVGPathElement | null>;
   onCloseActivities: () => void;
   onReady: () => void;
@@ -70,14 +80,17 @@ function frameResident(scene: THREE.Scene, subject: THREE.Object3D, orbit: THREE
   orbit.theta = subject.rotation.y + angles[0]; orbit.phi = 0.65;
 }
 
-function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { request: VillageCameraRequest; focus?: THREE.Vector3; onDrag: (dragging: boolean) => void; motion: VillageMotionProps["motion"]; controlsBlocked: boolean }) {
+function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpen, restoreSupportView }: { request: VillageCameraRequest; focus?: THREE.Vector3; onDrag: (dragging: boolean) => void; motion: VillageMotionProps["motion"] } & Pick<Props, "controlsBlocked" | "supportOpen" | "restoreSupportView">) {
   const { camera, gl, invalidate, size, scene } = useThree();
   const controls = useRef<OrbitControls | null>(null);
   const previous = useRef<{ request?: VillageCameraRequest; focus?: THREE.Vector3; width?: number; height?: number }>({});
   const transition = useRef<CameraTransition | null>(null);
+  const support = useRef<{ open: boolean; restored: boolean; pose?: ReturnType<typeof consumeVillageSupportView>; orbit?: OrbitControls }>({ open: false, restored: false });
+  const restoredZoomRatio = useRef(1);
   const stopped = motion.reduced || motion.paused || motion.hidden || controlsBlocked;
   const tracking = useRef(false);
   const observation = useMemo(() => new THREE.Vector3(), []);
+  const viewZoom = Math.min(size.width / 38, size.height / 36);
   const eyeHeight = request.observe && RESIDENT_EYE_HEIGHT[request.observe];
   // At full length centre the torso. A deliberate close-up moves towards the eyes.
   const observationHeight = eyeHeight ? THREE.MathUtils.lerp(eyeHeight * .59, eyeHeight, THREE.MathUtils.smoothstep(request.zoom, 1, 2.5)) : .4;
@@ -142,7 +155,12 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
     orbit.addEventListener("change", redraw);
     orbit.update();
     controls.current = orbit;
-    return () => { transition.current = null; orbit.removeEventListener("change", redraw); orbit.removeEventListener("start", start); orbit.removeEventListener("end", end); orbit.dispose(); controls.current = null; };
+    return () => {
+      transition.current = null;
+      previous.current = {};
+      orbit.removeEventListener("change", redraw); orbit.removeEventListener("start", start); orbit.removeEventListener("end", end);
+      orbit.dispose(); controls.current = null;
+    };
   }, [camera, gl, invalidate, onDrag]);
 
   useEffect(() => {
@@ -182,7 +200,8 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
     gl.domElement.dataset.lifeObserve = subject ? request.observe! : "";
     const reset = !prior || request.reset !== prior.reset;
     if (reset) {
-      if (!focus || prior) target.copy(VILLAGE_VIEW_CENTER);
+      restoredZoomRatio.current = 1;
+      if (!focus || prior) target.copy(size.width <= 380 ? VILLAGE_NARROW_VIEW_CENTER : VILLAGE_VIEW_CENTER);
       const angle = Math.PI / 4 + request.rotation * Math.PI / 4;
       offset.setFromVector3(new THREE.Vector3(Math.sin(angle) * 46, 32.527, Math.cos(angle) * 46));
     } else if (request.rotation !== prior.rotation) {
@@ -197,8 +216,9 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
     offset.theta = fromOrbit.theta + Math.atan2(Math.sin(offset.theta - fromOrbit.theta), Math.cos(offset.theta - fromOrbit.theta));
     const subjectZoom = observingResident ? Math.min(size.width / 3.1, size.height / 4.1) : Math.min(size.width / 8, size.height / 6);
     orbit.maxZoom = observingResident ? Math.max(110, subjectZoom * 2.5) : 110;
+    if (subject) restoredZoomRatio.current = 1;
     const toZoom = subject ? THREE.MathUtils.clamp(subjectZoom * request.zoom, orbit.minZoom, orbit.maxZoom) : reset || resized || request.zoom !== prior?.zoom || prior?.observe
-      ? THREE.MathUtils.clamp(Math.min(size.width / 38, size.height / 36) * request.zoom, orbit.minZoom, orbit.maxZoom)
+      ? THREE.MathUtils.clamp(viewZoom * request.zoom * restoredZoomRatio.current, orbit.minZoom, orbit.maxZoom)
       : pending?.toZoom ?? camera.zoom;
     const changed = target.distanceToSquared(orbit.target) > 0.000001 || Math.abs(offset.theta - fromOrbit.theta) > 0.000001 || Math.abs(offset.phi - fromOrbit.phi) > 0.000001 || Math.abs(toZoom - camera.zoom) > 0.000001;
     if (prior && changed && !stopped && !document.hidden) {
@@ -217,14 +237,47 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked }: { reques
     previous.current = { request, focus, width: size.width, height: size.height };
     // Motion changes cancel separately; resuming must not restart an old camera command.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [camera, eyeHeight, focus, gl, invalidate, observationHeight, request, scene, size.width, size.height]);
+  }, [camera, eyeHeight, focus, gl, invalidate, observationHeight, request, scene, size.width, size.height, viewZoom]);
+
+  useEffect(() => {
+    const orbit = controls.current;
+    if (!orbit || !(camera instanceof THREE.OrthographicCamera) || viewZoom <= 0) return;
+    const opened = supportOpen === true && !support.current.open;
+    support.current.open = supportOpen === true;
+    if (restoreSupportView && support.current.orbit !== orbit) {
+      if (!support.current.restored) {
+        support.current.pose = consumeVillageSupportView();
+        support.current.restored = true;
+      }
+      support.current.orbit = orbit;
+      const pose = support.current.pose;
+      if (!pose) return;
+      transition.current = null;
+      tracking.current = false;
+      restoredZoomRatio.current = pose.zoomRatio / request.zoom;
+      orbit.target.set(...pose.target);
+      camera.position.copy(orbit.target).add(new THREE.Vector3().setFromSpherical(new THREE.Spherical(pose.radius, pose.phi, pose.theta)));
+      camera.zoom = THREE.MathUtils.clamp(viewZoom * pose.zoomRatio, orbit.minZoom, orbit.maxZoom);
+      camera.updateProjectionMatrix();
+      orbit.update();
+      camera.updateMatrixWorld();
+      gl.domElement.dataset.cameraTransition = "idle";
+      invalidate();
+    } else if (opened) {
+      const offset = new THREE.Spherical().setFromVector3(camera.position.clone().sub(orbit.target));
+      saveVillageSupportView({ target: orbit.target.toArray(), radius: offset.radius, phi: offset.phi, theta: offset.theta, zoomRatio: camera.zoom / viewZoom });
+    }
+  }, [camera, gl, invalidate, request.zoom, restoreSupportView, supportOpen, viewZoom]);
   return null;
 }
 
-function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, npc, controlsBlocked }: Omit<Props, "onUnavailable">) {
+function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, npc, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
   const [dragging, setDragging] = useState(false);
   const terrain = useMemo(() => createVillageTerrain(), []);
   const mailbox = useMemo(() => createVillageMailbox(), []);
+  const hempFarm = useMemo(() => createVillageHempFarm(), []);
+  const hempFarmCollider = useMemo(() => createVillageHempFarmCollider(), []);
+  const hempFarmFocus = useMemo(() => new THREE.Vector3(...HEMP_FARM.position).add(new THREE.Vector3(0, 1.6, 0)), []);
   const mailboxFocus = useMemo(() => new THREE.Vector3(...VILLAGE_MAILBOX_POSITION).add(new THREE.Vector3(0, 2, 0)), []);
   const buildings = useMemo(() => VILLAGE_PLACES.map(place => {
     const object = createVillageBuilding(place.id), position = villagePlacePosition(place);
@@ -234,37 +287,47 @@ function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onO
   const surface = useMemo(() => createVillageWalkSurface(terrain, buildings), [terrain, buildings]);
   const walkTo = useVillagePlayer(profile, terrain, surface, controlsBlocked || motion.paused || motion.hidden, motion.reduced);
   const active = buildings.find(({ place }) => place.id === selected);
-  const { camera, size, gl, invalidate } = useThree();
+  const { camera, size, gl, invalidate, get } = useThree();
   const quality = Math.min(size.width, size.height) < 600 ? "low" : "high";
   const labelPosition = useMemo(() => new THREE.Vector3(), []);
   const labelCamera = useMemo(() => new THREE.Matrix4(), []);
   const projectedCamera = useMemo(() => new THREE.Matrix4(), []);
   const layoutDirty = useRef(true);
   const ready = useRef(false);
+  const season = calendar?.season;
+  useLayoutEffect(() => {
+    if (!season) return;
+    applyVillageSeason(terrain, season);
+    get().gl.shadowMap.needsUpdate = true;
+    invalidate();
+  }, [get, invalidate, season, terrain]);
   useEffect(() => () => {
     disposeVillageObject(terrain);
     disposeVillageObject(mailbox);
+    disposeVillageObject(hempFarm);
+    hempFarmCollider.dispose();
     buildings.forEach(({ object }) => disposeVillageObject(object));
     gl.domElement.style.removeProperty("cursor");
-  }, [buildings, terrain, mailbox, gl]);
+  }, [buildings, terrain, mailbox, hempFarm, hempFarmCollider, gl]);
   useEffect(() => {
     layoutDirty.current = true;
     const node = bubbleNode.current;
     if (!node) return;
     const observer = new ResizeObserver(() => { layoutDirty.current = true; invalidate(); });
     observer.observe(node);
+    if (headerNode.current) observer.observe(headerNode.current);
     return () => observer.disconnect();
-  }, [bubbleNode, selected, invalidate, size.width, size.height]);
+  }, [bubbleNode, headerNode, selected, invalidate, size.width, size.height]);
   useFrame(() => {
     projectedCamera.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     if (!layoutDirty.current && projectedCamera.equals(labelCamera)) return;
     labelCamera.copy(projectedCamera);
     layoutDirty.current = false;
-    const positionLabel = (id: string, x3: number, z3: number) => {
+    const positionLabel = (id: string, x3: number, z3: number, groundY = .4) => {
       const label = labelNodes.current.get(id);
       if (!label) return;
       label.style.removeProperty("visibility");
-      labelPosition.set(x3, 0.4, z3).project(camera);
+      labelPosition.set(x3, groundY, z3).project(camera);
       const x = (labelPosition.x + 1) * size.width / 2, y = (1 - labelPosition.y) * size.height / 2;
       label.style.transform = `translate(${x}px, ${y}px) translate(-50%, 0)`;
       label.dataset.offscreen = String(labelPosition.z > 1 || Math.abs(labelPosition.x) > 1 || Math.abs(labelPosition.y) > 1);
@@ -272,11 +335,14 @@ function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onO
     for (const { place, position } of buildings) {
       positionLabel(place.id, position[0], position[2] + place.depth * place.scale / 2 + 0.75);
     }
+    positionLabel(HEMP_FARM_ID, HEMP_FARM.position[0], HEMP_FARM.position[2] + HEMP_FARM.footprint.depth * HEMP_FARM.scale / 2 + .52, HEMP_FARM.position[1] + .28);
     positionLabel("mailbox", VILLAGE_MAILBOX_POSITION[0], VILLAGE_MAILBOX_POSITION[2] + 0.9);
     if (active && bubbleNode.current) {
       labelPosition.copy(active.anchor).project(camera);
+      const headerBottom = headerNode.current?.getBoundingClientRect().bottom ?? 0;
+      const clearHeader = headerBottom - gl.domElement.getBoundingClientRect().top + 8;
       positionVillageBubble(bubbleNode.current, bubbleTail.current,
-        (labelPosition.x + 1) * size.width / 2, (1 - labelPosition.y) * size.height / 2, size.width, size.height);
+        (labelPosition.x + 1) * size.width / 2, (1 - labelPosition.y) * size.height / 2, size.width, size.height, { clearHeader });
     }
     if (!ready.current) {
       ready.current = true;
@@ -284,12 +350,12 @@ function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onO
       onReady();
     }
   });
-  const choose = (event: ThreeEvent<MouseEvent>, id: VillageBuildingKind) => {
+  const choose = (event: ThreeEvent<MouseEvent>, id: VillagePlaceId) => {
     if (event.delta > 5) return;
     event.stopPropagation(); onSelect(id);
   };
   return <>
-    <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} controlsBlocked={controlsBlocked} />
+    <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : keyboardFocus === HEMP_FARM_ID ? hempFarmFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} controlsBlocked={controlsBlocked} supportOpen={supportOpen} restoreSupportView={restoreSupportView} />
     <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
     <primitive object={terrain} onClick={(event: ThreeEvent<MouseEvent>) => { if (event.delta <= 5) { event.stopPropagation(); onCloseActivities(); walkTo(event.point); } }} />
     <group position={VILLAGE_MAILBOX_POSITION}
@@ -297,6 +363,15 @@ function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onO
       onPointerOver={event => { event.stopPropagation(); gl.domElement.style.setProperty("cursor", "pointer"); }}
       onPointerOut={() => { gl.domElement.style.removeProperty("cursor"); }}>
       <primitive object={mailbox} />
+    </group>
+    <group position={HEMP_FARM.position} scale={HEMP_FARM.scale}>
+      <primitive object={hempFarm} />
+      {!controlsBlocked && <mesh name="village-hemp-farm-collider" geometry={hempFarmCollider}
+        onClick={event => choose(event, HEMP_FARM_ID)}
+        onPointerOver={event => { event.stopPropagation(); gl.domElement.style.setProperty("cursor", "pointer"); onHover(HEMP_FARM_ID); }}
+        onPointerOut={() => { gl.domElement.style.removeProperty("cursor"); onHover(null); }}>
+        <meshBasicMaterial visible={false} />
+      </mesh>}
     </group>
     {buildings.map(({ place, object, position }) => <group key={place.id} position={position} scale={place.scale}
       onClick={event => choose(event, place.id)}
@@ -308,6 +383,42 @@ function VillageWorld({ profile, selected, keyboardFocus, onSelect, onHover, onO
         <meshBasicMaterial color="#f8cb57" side={THREE.DoubleSide} />
       </mesh> : null}
     </group>)}
+  </>;
+}
+
+function VillageLighting({ minute }: { minute: number | null }) {
+  const ambient = useRef<THREE.AmbientLight>(null);
+  const hemi = useRef<THREE.HemisphereLight>(null);
+  const rim = useRef<THREE.DirectionalLight>(null);
+  const key = useRef<THREE.DirectionalLight>(null);
+  const get = useThree(state => state.get);
+  useLayoutEffect(() => {
+    if (!ambient.current || !hemi.current || !rim.current || !key.current) return;
+    const { gl, invalidate, scene } = get();
+    const palette = sampleVillageLighting(minute);
+    ambient.current.intensity = palette.ambient;
+    hemi.current.intensity = palette.hemi;
+    hemi.current.color.copy(palette.sky);
+    hemi.current.groundColor.copy(palette.ground);
+    rim.current.intensity = palette.rim.power;
+    rim.current.color.copy(palette.rim.color);
+    key.current.intensity = palette.key.power;
+    key.current.color.copy(palette.key.color);
+    gl.toneMappingExposure = palette.exposure;
+    gl.setClearColor(palette.clear, 1);
+    const marine = scene.getObjectByName("village-marine");
+    if (marine) applyVillageWaterLight(marine, palette.water);
+    applyVillageEmissives(scene, palette.lamps);
+    invalidate();
+  }, [get, minute]);
+  return <>
+    <ambientLight ref={ambient} />
+    <hemisphereLight ref={hemi} />
+    <directionalLight ref={rim} position={light.rim.position} />
+    <directionalLight ref={key} position={light.key.position} castShadow
+      shadow-mapSize={[2048, 2048]} shadow-camera-left={-33} shadow-camera-right={33}
+      shadow-camera-top={33} shadow-camera-bottom={-33} shadow-camera-near={1} shadow-camera-far={100}
+      shadow-bias={-0.0005} shadow-normalBias={0.04} />
   </>;
 }
 
@@ -365,16 +476,10 @@ export default function VillageCanvas(props: Props) {
     camera={{ position: [34, 33, 36], near: 0.1, far: 180, zoom: 20 }}
     gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     fallback={<p>La vue 3D est indisponible sur ce navigateur.</p>}
-    onCreated={({ gl }) => { gl.setClearColor("#159a9e", 1); gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = light.exposure; }}>
-    <ambientLight intensity={light.ambient} />
-    <hemisphereLight args={[light.sky, light.ground, light.hemi]} />
-    <directionalLight position={light.rim.position} intensity={light.rim.power} color={light.rim.color} />
-    <directionalLight position={light.key.position} intensity={light.key.power} color={light.key.color} castShadow
-      shadow-mapSize={[2048, 2048]} shadow-camera-left={-33} shadow-camera-right={33}
-      shadow-camera-top={33} shadow-camera-bottom={-33} shadow-camera-near={1} shadow-camera-far={100}
-      shadow-bias={-0.0005} shadow-normalBias={0.04} />
+    onCreated={({ gl }) => { gl.toneMapping = THREE.ACESFilmicToneMapping; }}>
     <ContextRecovery onUnavailable={props.onUnavailable} />
     <RenderMetrics onDprChange={setDpr} />
     <VillageWorld {...props} />
+    <VillageLighting minute={props.calendar?.minuteOfDay ?? null} />
   </Canvas>;
 }

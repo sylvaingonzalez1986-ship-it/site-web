@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { advanceKqStage, resolveKqStage, startKqGame } from "./kanab-quest-game";
 import { getKqCampaignMemberState, getKqCampaignParticipants, getKqCampaignWarehouse, isKqCampaign, type KqCampaign } from "./kanab-quest-campaign";
-import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import { createKqWarehouseEmpty, createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 import { getKqWarehouseRunPostHarvestProfile } from "./kanab-quest-post-harvest";
 
 function fixture() {
-  const initial = createKqWarehouseStarter();
+  const initial = { ...createKqWarehouseStarter(), optionInventory: [{ code: "SIM-CLIMATE-03", quantity: 2 }] };
   const plan = getKqWarehouseQuote({ ...initial, zones: [
     { ...initial.zones[0], id: "a", buddieCode: "HH2026-002" },
     { ...initial.zones[0], id: "b", x: 4, width: 2, buddieCode: "HH2026-003", optionCodes: ["SIM-CLIMATE-03", "SIM-NUTRITION-03"] },
@@ -50,6 +50,24 @@ describe("shared decisions with different zone equipment", () => {
       changed.members[0].warehouse.productionReservedZoneId = id;
       expect(isKqCampaign(changed)).toBe(false);
     }
+  });
+
+  it("keeps the frozen station allocation in a campaign preview when another active zone is excluded", () => {
+    const zone = createKqWarehouseStarter().zones[0];
+    const plan = getKqWarehouseQuote({ ...createKqWarehouseEmpty(), zones: [
+      { ...zone, id: "staff", width: 4, height: 8 },
+      { ...zone, id: "player", x: 9, y: 5, buddieCode: "HH2026-002" },
+    ], stationPlacements: [{ id: "water", code: "SIM-WATER-03", x: 4, y: 4 },
+      { id: "hygiene", code: "SIM-HYGIENE-03", x: 5, y: 9 }] }).nextState;
+    const participants = getKqCampaignParticipants(plan, 1, undefined, "staff");
+    expect(participants).toHaveLength(1);
+    const run = participants[0].warehouse;
+    expect(run.sourceState.stationService?.player).toMatchObject({ waterAreaM2: 0, hygieneAreaM2: 1 });
+    expect(run).toMatchObject({ estimatedHarvestGrams: 187.5, consumablesCostCents: 2460, qualityBonus: 3 });
+    expect(getKqCampaignWarehouse(participants)).toMatchObject({
+      estimatedHarvestGrams: run.estimatedHarvestGrams, qualityBonus: run.qualityBonus,
+      consumablesCostCents: run.consumablesCostCents, operatingCostCents: run.operatingCostCents,
+    });
   });
 
   it("retains each zone's quality advantage and harvest without stacking it on replay", () => {

@@ -4,7 +4,6 @@
 .heading > svg { flex: 0 0 auto; }
 .heading > span { flex: 1; min-width: 0; }
 .heading strong { display: block; font-family: var(--font-display), sans-serif; font-size: 29px; font-weight: 800; line-height: 1.05; }
-.heading small { display: block; margin-top: 4px; color: #52634e; font-size: 12px; }
 .dashboard[open] .chevron { transform: rotate(180deg); }
 .body { padding: 20px; }
 .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; max-width: 560px; padding: 4px; margin-bottom: 20px; border-radius: var(--game-panel-radius, 2px); background: #e4e5d2; }
@@ -34,10 +33,6 @@
 .storageTotal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: -3px 0 14px; }
 .storageTotal strong { font-family: var(--font-display), sans-serif; font-size: 32px; font-weight: 800; line-height: 1.1; }
 .storageTotal span { color: #5b6859; font-size: 12px; }
-.surface { grid-column: 1 / -1; }
-.surface dl { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-.surface dl > div { display: block; }
-.surface dd { justify-content: flex-start; margin-top: 7px; padding-left: 17px; }
 .outlets { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-top: 16px; padding: 0 3px; }
 .outlets p { display: grid; gap: 4px; margin: 0; font-size: 12px; line-height: 1.5; }
 .outlets p strong { color: #304c42; }
@@ -51,7 +46,6 @@
   .tabs button svg { display: none; }
   .panels { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .panel { padding: 16px; }
-  .surface dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .outlets { align-items: flex-start; flex-direction: column; gap: 2px; }
 }
 @media (max-width: 380px) {

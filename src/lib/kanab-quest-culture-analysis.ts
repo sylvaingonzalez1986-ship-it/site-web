@@ -5,6 +5,7 @@ import {
   type KqGameState, type KqOutcome, type KqStageDecision, type KqSupportCard,
 } from "./kanab-quest-game";
 import { isKqCareState, isKqCareReplacedCard } from "./kanab-quest-care";
+import { isKqWarehouseSecurityDecision, type KqWarehouseSecurityDecision } from "./kanab-quest-warehouse-security";
 
 type Receipt = KqGameState["history"][number];
 export type KqCultureStageAnalysis = {
@@ -70,8 +71,10 @@ const codes = (value: unknown, limit: number) => Array.isArray(value) && value.l
 export function isKqStageDecision(value: unknown): value is KqStageDecision {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const d = value as Record<string, unknown>;
-  return ((d.version === 1 && Object.keys(d).length === 17 && d.care === undefined)
-    || (d.version === 2 && Object.keys(d).length === 18 && isKqCareState(d.care)))
+  const securityField = Number(Object.hasOwn(d, "warehouseSecurity"));
+  return ((d.version === 1 && Object.keys(d).length === 17 + securityField && d.care === undefined)
+    || (d.version === 2 && Object.keys(d).length === 18 + securityField && isKqCareState(d.care)))
+    && (!securityField || isKqWarehouseSecurityDecision(d.warehouseSecurity))
     && integer(d.xp, 0, 10000) && integer(d.quality, -100, 10000)
     && integer(d.pressure, 0, 4) && integer(d.cancelledDangers, 0, 10)
     && integer(d.rollNonce, 0, 10000) && typeof d.harvestLossPercent === "number" && Number.isFinite(d.harvestLossPercent) && d.harvestLossPercent >= 0 && d.harvestLossPercent <= 80
@@ -95,7 +98,7 @@ function restoreDecision(state: KqGameState, index: number): KqGameState | null 
   const entry = state.history[index];
   if (!entry || !isKqStageDecision(entry.decision) || entry.stage !== KQ_STAGES[index]) return null;
   if (!Array.isArray(entry.dice) || entry.dice.length !== 3 || !entry.dice.every(die => integer(die, 1, 6))) return null;
-  const { version: _version, ...decision } = entry.decision;
+  const { version: _version, warehouseSecurity, ...decision } = entry.decision;
   void _version;
   const history = state.history.slice(0, index);
   const position: KqGameState = {
@@ -108,7 +111,7 @@ function restoreDecision(state: KqGameState, index: number): KqGameState | null 
     completedAt: "2000-01-01T00:00:00.000Z", effectNotices: [], lastOutcome: null,
   };
   try {
-    const computed = resolveKqStage(position).history.at(-1)!;
+    const computed = resolveKqStage(position, warehouseSecurity).history.at(-1)!;
     const fields = ["stage", "situation", "total", "target", "outcome", "trait", "qualityDelta", "xpGain", "pressureAfter", "dangers", "sparks", "harvestLossPercent"] as const;
     if (fields.some(field => computed[field] !== entry[field])) return null;
     if ((computed.rescued === true) !== (entry.rescued === true)
@@ -121,11 +124,12 @@ function restoreDecision(state: KqGameState, index: number): KqGameState | null 
 }
 
 function describeStage(entry: Receipt, index: number, position: KqGameState | null): KqCultureStageAnalysis {
+  const warehouseSecurity = entry.decision?.warehouseSecurity;
   const evidence: string[] = [
     `Dés validés : ${entry.dice.join(" · ")}. ${entry.total} réussite${entry.total === 1 ? "" : "s"} pour un seuil de ${entry.target}.`,
   ];
   if (position?.rulesVersion === 3 && position.care) {
-    const after = resolveKqStage(position).care!;
+    const after = resolveKqStage(position, warehouseSecurity).care!;
     evidence.push(`Vitalité : ${position.care.vitality} → ${after.vitality}. Expression des terpènes : ${position.care.terpenes} → ${after.terpenes}. Expression cannabinoïde : ${position.care.cannabinoidExpression} → ${after.cannabinoidExpression}.`);
     const followup = after.history.findLast(item => item.kind === "resolution" && item.stageIndex === index);
     if (followup) evidence.push(followup.message);
@@ -147,7 +151,7 @@ function describeStage(entry: Receipt, index: number, position: KqGameState | nu
       if (entry.target > calmTarget) evidence.push(`À ${position.pressure} Pression, le seuil est passé de ${calmTarget} à ${entry.target} réussites.`);
     }
     if (preview.dangers > 0) {
-      const withoutDangers = resolveKqStage({ ...position, cancelledDangers: 3 }).history.at(-1)!;
+      const withoutDangers = resolveKqStage({ ...position, cancelledDangers: 3 }, warehouseSecurity).history.at(-1)!;
       evidence.push(`${preview.dangers} Danger${preview.dangers > 1 ? "s" : ""} non protégé${preview.dangers > 1 ? "s" : ""}${withoutDangers.outcome !== entry.outcome ? ` : sans ces Dangers, le même nombre de réussites donnait ${OUTCOME[withoutDangers.outcome]}` : " à la validation"}.`);
     }
     const shielded = Math.min(position.cancelledDangers, entry.dice.filter(die => die === 1).length);
@@ -157,7 +161,7 @@ function describeStage(entry: Receipt, index: number, position: KqGameState | nu
     for (const code of position.playedThisStage) {
       const card = KQ_CARDS.find(item => item.code === code);
       if (!card || !resolutionBonusEffects.has(card.effect)) continue;
-      const withoutBonus = resolveKqStage({ ...position, playedThisStage: position.playedThisStage.filter(item => item !== code) }).history.at(-1)!;
+      const withoutBonus = resolveKqStage({ ...position, playedThisStage: position.playedThisStage.filter(item => item !== code) }, warehouseSecurity).history.at(-1)!;
       const quality = (entry.qualityDelta ?? 0) - (withoutBonus.qualityDelta ?? 0);
       const xp = (entry.xpGain ?? 0) - (withoutBonus.xpGain ?? 0);
       if (quality > 0 || xp > 0) evidence.push(`${card.name} a ajouté ${[quality > 0 ? `+${quality} Qualité` : "", xp > 0 ? `+${xp} XP` : ""].filter(Boolean).join(" et ")} à la validation, sur ces dés.`);
@@ -186,12 +190,12 @@ const FIXED_REACTIONS = new Set([
   "gentle-recovery", "expert-recovery", "emergency-adjustment", "harvest-team", "controlled-drying",
 ]);
 
-function verifiedAdvice(position: KqGameState, index: number): { advice: KqCultureCardAdvice; score: number }[] {
-  const baseline = resolveKqStage(position);
+function verifiedAdvice(position: KqGameState, index: number, warehouseSecurity?: KqWarehouseSecurityDecision): { advice: KqCultureCardAdvice; score: number }[] {
+  const baseline = resolveKqStage(position, warehouseSecurity);
   const before = resultOf(baseline);
   return KQ_CARDS.flatMap(card => {
     if (card.timing !== "after-roll" || !FIXED_REACTIONS.has(card.effect) || !canPlayKqCard(position, card).allowed) return [];
-    const changed = resolveKqStage(playKqCard(position, card.code));
+    const changed = resolveKqStage(playKqCard(position, card.code), warehouseSecurity);
     const after = resultOf(changed);
     const xpBalanceDelta = changed.xp - baseline.xp;
     const score = (Number(before.cultureDead) - Number(after.cultureDead)) * 100
@@ -276,7 +280,8 @@ export function getKqCultureAnalysis(state: KqGameState): KqCultureAnalysis {
   if ((best.qualityDelta ?? 0) > 0) evidence.push(`Meilleur apport : ${best.stage}, +${best.qualityDelta} Qualité avec ${OUTCOME[best.outcome]}.`);
   if ((state.equipmentQualityBonus ?? 0) > 0) evidence.push(`Le matériel a ajouté +${state.equipmentQualityBonus} Qualité à la récolte, en plus des étapes.`);
   if (coverage !== "detailed") evidence.push("Certaines positions avant validation ne sont pas enregistrées ou ne sont plus vérifiables : aucun coup manqué n’est affirmé pour ces étapes.");
-  const ranked = positions.flatMap((position, index) => position ? verifiedAdvice(position, index) : []).sort((a, b) => b.score - a.score || a.advice.xpCost - b.advice.xpCost || a.advice.stageIndex - b.advice.stageIndex);
+  const ranked = positions.flatMap((position, index) => position ? verifiedAdvice(position, index, state.history[index].decision?.warehouseSecurity) : [])
+    .sort((a, b) => b.score - a.score || a.advice.xpCost - b.advice.xpCost || a.advice.stageIndex - b.advice.stageIndex);
   const advice: KqCultureCardAdvice[] = [];
   for (const item of ranked) {
     if (!advice.some(existing => existing.code === item.advice.code || existing.stageIndex === item.advice.stageIndex)) advice.push(item.advice);

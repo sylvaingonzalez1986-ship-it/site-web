@@ -54,7 +54,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
     try {
       const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "upgrade", tentNumber: targetTent, equipmentCode: code, expectedLevel: level, expectedUnits: productionUnits, requestKey: request.current.key }),
+        body: JSON.stringify({ action: "upgrade", tentNumber: targetTent, equipmentCode: code, expectedLevel: level, expectedUnits: productionUnits, ...(machine ? { expectedPriceCents: cost } : {}), requestKey: request.current.key }),
       });
       const result = await response.json() as { error?: string; level: number };
       if (!response.ok) throw new Error(result.error || "Amélioration impossible.");
