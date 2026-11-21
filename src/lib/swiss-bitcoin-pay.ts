@@ -93,44 +93,98 @@ const providerRefusals = new Map([
   ["too_many_requests", "rate_limited"],
 ]);
 
-async function readProviderRefusal(response: Response): Promise<string | undefined> {
+async function readProviderRefusalPrefix(response: Response): Promise<{ text: string; truncated: boolean }> {
   const reader = response.body?.getReader();
-  if (!reader) return undefined;
+  if (!reader) return { text: "", truncated: false };
 
-  const bytes = new Uint8Array(1024);
+  const bytes = new Uint8Array(4096);
   let size = 0;
+  let truncated = false;
   try {
     for (;;) {
       const chunk = await reader.read();
       if (chunk.done) break;
-      if (size + chunk.value.byteLength > bytes.byteLength) {
+      const prefix = chunk.value.subarray(0, bytes.length - size);
+      bytes.set(prefix, size);
+      size += prefix.byteLength;
+      if (prefix.byteLength < chunk.value.byteLength) {
         void reader.cancel().catch(() => {});
-        return undefined;
+        truncated = true;
+        break;
       }
-      bytes.set(chunk.value, size);
-      size += chunk.value.byteLength;
     }
   } catch {
-    return undefined;
+    return { text: "", truncated: false };
   } finally {
     reader.releaseLock();
   }
 
-  const text = new TextDecoder().decode(bytes.subarray(0, size));
-  let parsed: unknown = text;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    // Some providers or gateways return an error as plain text.
+  return { text: new TextDecoder().decode(bytes.subarray(0, size)), truncated };
+}
+
+const providerDiagnosticTerms = new Set([
+  "account", "allowed", "authorization", "available", "balance", "blocked", "callback", "country",
+  "denied", "disabled", "domain", "enabled", "external", "forbidden", "forbidden_country",
+  "header", "hmac", "inactive", "insufficient", "invalid", "ip", "key", "kyc", "lightning",
+  "limit", "liquidity", "locked", "merchant", "missing", "not", "not_verified", "onchain",
+  "payment", "permission", "redirect", "region", "required", "secure",
+  "signature", "suspended", "token", "unauthorized", "url", "webhook",
+]);
+
+function providerErrorMessages(value: unknown, depth = 0): string[] {
+  if (typeof value === "string") return [value];
+  if (depth >= 3) return [];
+  const fields = object(value);
+  return ["code", "error", "message", "detail", "reason"]
+    .flatMap((key) => providerErrorMessages(fields[key], depth + 1));
+}
+
+function diagnoseProviderRefusal(text: string, contentType: string, truncated: boolean) {
+  const prefix = text.trimStart();
+  if (!prefix) return { format: "empty", ...(truncated ? { truncated } : {}) };
+  const size = truncated ? { truncated } : {};
+  if (/^\s*<(?:!doctype\s+html|html\b|head\b|body\b)/i.test(prefix) || /^text\/html\b/i.test(contentType)) {
+    const edgePage = /\/cdn-cgi\/challenge-platform\/|\bcf-chl-/i.test(prefix) ? "challenge"
+      : /\bcloudflare\b/i.test(prefix) && /\berror\s*(?:code\s*)?1020\b/i.test(prefix) ? "blocked"
+      : undefined;
+    return { format: "html", ...size, ...(edgePage ? { edgePage } : {}) };
   }
-  const fields = object(parsed);
-  for (const value of [fields.code, fields.error, fields.message, parsed]) {
-    if (typeof value !== "string") continue;
-    const key = value.trim().toLowerCase().replace(/[ -]+/g, "_").replace(/[.!]$/, "");
-    const category = providerRefusals.get(key);
-    if (category) return category;
+
+  let messages: string[];
+  const format = /^(?:\{|\[|")/.test(prefix) || /(?:\/|\+)json\b/i.test(contentType) ? "json" : "text";
+  if (format === "json") {
+    try {
+      messages = truncated ? [] : providerErrorMessages(JSON.parse(prefix));
+    } catch {
+      messages = [];
+    }
+  } else {
+    messages = [truncated ? prefix.replace(/\S+$/, "") : prefix];
   }
-  return undefined;
+  // Ignore reflected request fragments and strip values before looking for diagnostic words.
+  const diagnosticMessages = messages.filter((message) =>
+    !/\b(?:request|payload|body)\s*(?:=|:)|["'](?:extra|redirectAfterPaid|headers|webhook|unit)["']\s*:/i.test(message));
+  const category = truncated ? undefined : diagnosticMessages
+    .map((message) => providerRefusals.get(message.trim().toLowerCase().replace(/[ -]+/g, "_").replace(/[.!]$/, "")))
+    .find(Boolean);
+  if (category) return { format, ...size, category };
+
+  const terms = new Set<string>();
+  for (const message of diagnosticMessages) {
+    const words = message.toLowerCase()
+      .replace(/(?:https?:\/\/|www\.)[^\s"'<>]+|[\w.+-]+@[\w.-]+|["'`][^"'`]*["'`]/g, " ")
+      .match(/[a-z0-9_-]+/g) ?? [];
+    for (const word of words) {
+      if (providerDiagnosticTerms.has(word)) terms.add(word);
+      else {
+        const parts = word.split("_");
+        if (parts.every((part) => providerDiagnosticTerms.has(part))) {
+          for (const part of parts) terms.add(part);
+        }
+      }
+    }
+  }
+  return { format, ...size, ...(terms.size ? { terms: [...terms].slice(0, 6) } : {}) };
 }
 
 export async function createSwissBitcoinInvoice(orderId: string, attemptId: string, eurMinor: number) {
@@ -158,11 +212,12 @@ export async function createSwissBitcoinInvoice(orderId: string, attemptId: stri
     }),
   });
   if (response.status !== 201) {
-    const category = await readProviderRefusal(response);
+    const { text, truncated } = await readProviderRefusalPrefix(response);
+    const diagnostic = diagnoseProviderRefusal(text, response.headers.get("content-type") ?? "", truncated);
     console.warn("[swiss-bitcoin-pay] invoice creation refused", {
       status: response.status,
       orderId: /^ORD-\d{8}-\d{4}$/.test(orderId) ? orderId : undefined,
-      ...(category ? { category } : {}),
+      ...diagnostic,
     });
     throw new SwissBitcoinCreationError(response.status === 403);
   }

@@ -107,35 +107,36 @@ describe("Swiss Bitcoin Pay merchant API", () => {
 
     await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: status === 403 });
     expect(warn).toHaveBeenCalledExactlyOnceWith(
-      "[swiss-bitcoin-pay] invoice creation refused", { status, orderId, category },
+      "[swiss-bitcoin-pay] invoice creation refused",
+      { status, orderId, category, format: response.headers.get("content-type")?.includes("json") ? "json" : "text" },
     );
   });
 
   it.each([
-    Response.json({
+    [Response.json({
       error: "Invalid API key: private-token",
       code: "new_private_reason",
       message: "Call alice@example.test or https://shop.example.test/private",
-    }, { status: 403, headers: { "api-key": "response-secret" } }),
-    new Response("Forbidden: private-token", { status: 403 }),
-  ])("omits details, headers and unknown provider messages", async (response) => {
+    }, { status: 403, headers: { "api-key": "response-secret" } }), "json", ["invalid", "key"]],
+    [new Response("Forbidden: private-token", { status: 403 }), "text", ["forbidden"]],
+  ])("omits details, headers and unknown provider messages", async (response, format, terms) => {
     configure();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(response);
 
     await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
     expect(warn).toHaveBeenCalledExactlyOnceWith(
-      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId },
+      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId, format, terms },
     );
   });
 
-  it("cancels oversized responses without parsing a partial reason", async () => {
+  it("cancels oversized responses and safely diagnoses an HTML challenge from the prefix", async () => {
     configure();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const cancel = vi.fn();
     const body = new ReadableStream({
       start(controller) {
-        controller.enqueue(new TextEncoder().encode("Forbidden" + " ".repeat(1024)));
+        controller.enqueue(new TextEncoder().encode('<!DOCTYPE html><script src="/cdn-cgi/challenge-platform/private-key"></script>' + " ".repeat(4096)));
       },
       cancel,
     });
@@ -144,7 +145,39 @@ describe("Swiss Bitcoin Pay merchant API", () => {
     await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
     expect(cancel).toHaveBeenCalledOnce();
     expect(warn).toHaveBeenCalledExactlyOnceWith(
-      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId },
+      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId, format: "html", truncated: true, edgePage: "challenge" },
+    );
+  });
+
+  it("extracts bounded vocabulary from nested provider errors and ignores reflected request fields", async () => {
+    configure();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(Response.json({
+      error: {
+        code: "merchant_account_suspended",
+        detail: "Webhook domain rejected for this merchant. Contact alice@example.test.",
+      },
+      reason: "region policy",
+      message: 'Request: {"webhook":{"headers":{"Authorization":"forbidden"}}}',
+      request: { error: "invalid_api_key" },
+    }, { status: 403 }));
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
+    expect(warn).toHaveBeenCalledExactlyOnceWith("[swiss-bitcoin-pay] invoice creation refused", {
+      status: 403, orderId, format: "json", terms: ["merchant", "account", "suspended", "webhook", "domain", "region"],
+    });
+  });
+
+  it.each([
+    [new Response(null, { status: 403 }), "empty"],
+    [new Response('Request: {"webhook":{"headers":{"Authorization":"forbidden"}}}', { status: 403 }), "text"],
+    [Response.json({ webhook: { url: "https://forbidden.test" }, error: { request: { code: "invalid_api_key" } } }, { status: 403 }), "json"],
+  ])("does not draw diagnostic conclusions from absent or reflected content", async (response, format) => {
+    configure();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(response);
+    await expect(createSwissBitcoinInvoice(orderId, attemptId, 2150)).rejects.toMatchObject({ definitive: true });
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
+      "[swiss-bitcoin-pay] invoice creation refused", { status: 403, orderId, format },
     );
   });
 
