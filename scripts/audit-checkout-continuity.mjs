@@ -18,7 +18,7 @@ const port = 3262;
 const widths = [320, 1440];
 const modules = {
   "next/navigation": `export const usePathname=()=>'/boutique';`,
-  "next/image": `import React from 'react'; export default function Image({priority,fill,unoptimized,...props}){return React.createElement('img',props);}`,
+  "next/image": `import React from 'react'; export default function Image({priority,preload,fill,unoptimized,...props}){return React.createElement('img',props);}`,
   "next/dynamic": `import React from 'react'; export default function dynamic(loader){const Component=React.lazy(()=>loader().then(value=>({default:value.default||value})));return function Dynamic(props){return React.createElement(React.Suspense,{fallback:null},React.createElement(Component,props));};}`,
   "@/components/navigation/NavigationFeedback": `const router={push:(url)=>window.__fixture.navigation.push({method:'push',url}),replace:(url)=>window.__fixture.navigation.push({method:'replace',url})}; export const useRouter=()=>router;`,
   "@/components/navigation/NavigationLink": `import React from 'react'; export default function Link(props){return React.createElement('a',props);}`,
@@ -39,6 +39,13 @@ import {BitcoinPaymentPage} from '/src/components/checkout/BitcoinPaymentPage';
 
 const scenario=new URLSearchParams(location.search).get('scenario');
 const bitcoinPage=location.pathname==='/checkout/bitcoin/AUDIT-BITCOIN';
+const Profile=scenario==='profile-orders'?React.lazy(()=>import('/src/components/account/ProfilePanel').then(module=>({default:module.ProfilePanel}))):null;
+if(bitcoinPage || Profile){
+ for(const key of ['setTimeout','setInterval']){
+  const original=window[key].bind(window);
+  window[key]=(callback,delay,...args)=>original(callback,delay===30_000?400:delay,...args);
+ }
+}
 const nextUrl='/boutique?panier=1';
 const initialUser={id:'customer-a',email:'camille@example.test',firstName:'Camille',lastName:'Exemple',dateOfBirth:'1990-01-01',phone:'',address:'',city:'',postalCode:'',country:'France',loyaltyPoints:0,loyaltyPointsSpent:0,contestBetaEnabled:false,promoCodes:[],createdAt:'2026-01-01T00:00:00Z'};
 const secondUser={...initialUser,id:'customer-b',email:'alex@example.test',firstName:'Alex'};
@@ -64,7 +71,13 @@ window.fetch=async(input,init={})=>{
  }
  if(url.pathname==='/api/account/register'&&method==='POST')return Response.json({email:body.email});
  if(url.pathname==='/api/account/login'&&method==='POST'){state.user=initialUser;return Response.json({user:initialUser});}
- if(url.pathname==='/api/account/orders')return Response.json({orders:[]});
+ if(url.pathname==='/api/account/orders'){
+  const paid=state.bitcoinState==='paid';
+  const order={id:'AUDIT-BITCOIN',customerId:initialUser.id,paymentProvider:'swiss_bitcoin_pay',status:paid?'paid':'pending_payment',paymentState:paid?'paid':'pending',
+   createdAt:'2026-11-01T10:00:00Z',items:[],itemsCount:0,totalAmount:19.9,totalHt:19.9,totalVat:0,vatBreakdown:[]};
+  return Response.json({orders:Profile?[order]:[]});
+ }
+ if(url.pathname==='/api/account/referral' && Profile)return Response.json({summary:null});
  if(url.pathname==='/api/account/tickets')return Response.json({tickets:[],inventory:null,config:null});
  if(url.pathname==='/api/account/welcome-pack')return Response.json({eligible:false});
  if(url.pathname==='/api/relay/points')return Response.json({points:[relay,belgianRelay].filter(point=>point.country===url.searchParams.get('country')&&point.postalCode===url.searchParams.get('postalCode'))});
@@ -126,6 +139,7 @@ function Harness(){
   scenario==='register'?el('section',{id:'fixture-register'},el(AccountRegisterForm,{nextUrl})):null,
   scenario==='login'?el('section',{id:'fixture-login'},el(AccountLoginForm,{nextUrl})):null,
   bitcoinPage?el(BitcoinPaymentPage,{orderId:'AUDIT-BITCOIN'}):null,
+  Profile?el(React.Suspense,null,el(Profile)):null,
   el(CartDrawer,{key:generation,open,onClose:()=>setOpen(false)}));
 }
 createRoot(document.getElementById('root')).render(React.createElement(CartProvider,null,React.createElement(Harness)));
@@ -135,7 +149,7 @@ const server = await createServer({
   root, configFile: false, envDir: false, publicDir: resolve(root, "public"),
   cacheDir: resolve(output, "vite-cache"), esbuild: { jsx: "automatic" },
   define: { "process.env": "{}" },
-  optimizeDeps: { include: ["react", "react-dom/client", "lucide-react", "@vercel/analytics/react"] },
+  optimizeDeps: { include: ["react", "react-dom", "react-dom/client", "lucide-react", "@vercel/analytics/react"] },
   resolve: { alias: { "@": resolve(root, "src") }, dedupe: ["react", "react-dom"] },
   css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{
@@ -516,9 +530,11 @@ try {
       await page.waitForSelector('#fixture-state[data-count="2"]');
     }
     await page.evaluate(() => {
-      window.__fixture.bitcoinState = "paid";
-      [...document.querySelectorAll("button")].find(button => button.textContent.trim() === "Actualiser le statut").click();
+      window.__fixture.bitcoinState = "review";
+      window.dispatchEvent(new Event("pageshow"));
     });
+    await page.waitForFunction(() => document.querySelector('section [role="status"]')?.textContent.includes("Paiement à vérifier"));
+    await page.evaluate(() => { window.__fixture.bitcoinState = "paid"; });
     await page.waitForFunction(() => document.querySelector('section [role="status"]')?.textContent.includes("Paiement confirmé"));
     await page.waitForSelector(`#fixture-state[data-count="${width === 320 ? 2 : 0}"]`);
     unexpectedApis.push(...await page.evaluate(() => window.__fixture.unexpected));
@@ -538,6 +554,16 @@ try {
     unexpectedApis.push(...await page.evaluate(() => window.__fixture.unexpected));
     record("card-remains-usable-when-bitcoin-availability-fails", width);
   }
+  await page.goto(`http://127.0.0.1:${port}/?scenario=profile-orders&tab=commandes`, { waitUntil: "networkidle0" });
+  const orderEntry = '[data-ui-account="order-entry"]';
+  await page.waitForSelector(orderEntry);
+  await trigger(orderEntry);
+  await page.waitForSelector('dialog[open][aria-label="Détail commande AUDIT-BITCOIN"]');
+  await page.evaluate(() => { window.__fixture.bitcoinState = "paid"; });
+  await page.waitForFunction(() => document.querySelector("dialog[open]")?.textContent.includes("Bitcoin (Lightning) : Payé"));
+  assert.match(await page.$eval(orderEntry, node => node.textContent), /Paiement: Payé/);
+  unexpectedApis.push(...await page.evaluate(() => window.__fixture.unexpected));
+  record("profile-shows-confirmation-in-list-and-open-detail", 1440);
   assert.deepEqual(errors, []);
   assert.deepEqual(blockedRequests, []);
   assert.deepEqual(unexpectedApis, []);

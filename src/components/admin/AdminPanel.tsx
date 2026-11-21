@@ -56,13 +56,20 @@ function hasPendingBitcoinArchive(order: CmsOrder): boolean {
   return Boolean(order.swissBitcoinArchiveRequestedAt) && !order.archivedAt && order.paymentState !== "paid";
 }
 
-function mergeArchiveOrder(local: CmsOrder, fresh: CmsOrder, statusEdited: boolean): CmsOrder {
+function needsBitcoinUpdate(order: CmsOrder): boolean {
+  return hasPendingBitcoinArchive(order) || (order.paymentProvider === "swiss_bitcoin_pay" &&
+    !order.archivedAt && order.paymentState === "pending");
+}
+
+function mergePaymentUpdate(local: CmsOrder, fresh: CmsOrder, statusEdited: boolean): CmsOrder {
   return {
     ...local,
     paymentProvider: fresh.paymentProvider,
     paymentState: fresh.paymentState,
     paymentReviewRequired: fresh.paymentReviewRequired,
     paymentReviewReason: fresh.paymentReviewReason,
+    vivaOrderCode: fresh.vivaOrderCode,
+    vivaTransactionId: fresh.vivaTransactionId,
     swissBitcoinCardStartedAt: fresh.swissBitcoinCardStartedAt,
     swissBitcoinArchiveRequestedAt: fresh.swissBitcoinArchiveRequestedAt,
     archivedAt: fresh.archivedAt,
@@ -352,7 +359,7 @@ export function AdminPanel() {
     () => draft.orders.find((order) => order.id === selectedOrderId) ?? null,
     [draft.orders, selectedOrderId],
   );
-  const pendingArchiveIds = draft.orders.filter(hasPendingBitcoinArchive).map((order) => order.id).join(",");
+  const pendingBitcoinIds = draft.orders.filter(needsBitcoinUpdate).map((order) => order.id).join(",");
 
   const productsWithIndex = useMemo(
     () => draft.products.map((product, index) => ({ product, index })),
@@ -430,7 +437,8 @@ export function AdminPanel() {
         if (updatedOrder) {
           setDraft((current) => ({
             ...current,
-            orders: current.orders.map((order) => order.id === refreshOrderId ? updatedOrder : order),
+            orders: current.orders.map((order) => order.id === refreshOrderId
+              ? mergePaymentUpdate(order, updatedOrder, editedOrderStatuses.current.has(order.id)) : order),
           }));
         }
       }
@@ -478,40 +486,44 @@ export function AdminPanel() {
   }, [loadStore]);
 
   useEffect(() => {
-    if (activeTab !== "commandes" || !pendingArchiveIds) return;
-    const ids = new Set(pendingArchiveIds.split(","));
+    if (activeTab !== "commandes" || !pendingBitcoinIds) return;
+    const ids = new Set(pendingBitcoinIds.split(","));
     const controller = new AbortController();
     let checking = false;
 
-    const checkArchives = async () => {
+    const checkPayments = async () => {
       if (checking || document.visibilityState !== "visible") return;
       checking = true;
       try {
         const response = await fetch("/api/admin/orders", { cache: "no-store", signal: controller.signal });
         if (!response.ok) return;
-        const { orders } = await response.json() as { orders?: CmsOrder[] };
+        const { orders, bitcoinPayments: history } = await response.json() as {
+          orders?: CmsOrder[];
+          bitcoinPayments?: Record<string, SwissBitcoinPaymentSummary[]> | null;
+        };
         if (controller.signal.aborted || !Array.isArray(orders)) return;
+        if (history) setBitcoinPayments(history);
         const returned = new Map(orders.filter((order) => ids.has(order.id)).map((order) => [order.id, order]));
         const removed = new Set([...ids].filter((id) => !returned.has(id)));
         setDraft((current) => ({
           ...current,
           orders: current.orders.flatMap((order) => {
-            if (!ids.has(order.id) || !hasPendingBitcoinArchive(order)) return [order];
+            if (!ids.has(order.id) || !needsBitcoinUpdate(order)) return [order];
             const fresh = returned.get(order.id);
-            return fresh ? [mergeArchiveOrder(order, fresh, editedOrderStatuses.current.has(order.id))] : [];
+            return fresh ? [mergePaymentUpdate(order, fresh, editedOrderStatuses.current.has(order.id))] : [];
           }),
         }));
         setSelectedOrderId((current) => current && removed.has(current) ? null : current);
         for (const id of removed) editedOrderStatuses.current.delete(id);
       } catch {
-        // Leave the pending request visible and retry at the next check.
+        // Keep the current payment state visible until the next check succeeds.
       } finally {
         checking = false;
       }
     };
 
-    const timer = window.setInterval(() => void checkArchives(), 20_000);
-    const onVisibilityChange = () => void checkArchives();
+    const timer = window.setInterval(() => void checkPayments(), 20_000);
+    const onVisibilityChange = () => void checkPayments();
     document.addEventListener("visibilitychange", onVisibilityChange);
     window.addEventListener("focus", onVisibilityChange);
     return () => {
@@ -520,7 +532,7 @@ export function AdminPanel() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("focus", onVisibilityChange);
     };
-  }, [activeTab, pendingArchiveIds]);
+  }, [activeTab, pendingBitcoinIds]);
 
   useEffect(() => {
     if (draft.blog.length === 0) {
@@ -714,7 +726,7 @@ export function AdminPanel() {
         setDraft((current) => ({
           ...current,
           orders: current.orders.map((item) =>
-            item.id === updated.id ? mergeArchiveOrder(item, updated, editedOrderStatuses.current.has(item.id)) : item),
+            item.id === updated.id ? mergePaymentUpdate(item, updated, editedOrderStatuses.current.has(item.id)) : item),
         }));
         return;
       }

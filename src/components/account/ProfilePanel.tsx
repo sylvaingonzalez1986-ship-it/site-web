@@ -129,6 +129,7 @@ export function ProfilePanel() {
     loading,
     refresh,
     setUser,
+    setOrders,
   } = useCustomerSession();
   const { store: cmsStore } = useCmsStore();
 
@@ -148,7 +149,8 @@ export function ProfilePanel() {
   const [deleteStatus, setDeleteStatus] = useState<string | null>(null);
   const [deletingAccount, setDeletingAccount] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<CmsOrder | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const selectedOrder = orders.find((order) => order.id === selectedOrderId) ?? null;
   const [activeTab, setActiveTab] = useState<ProfileTab>("fidelite");
   const [referralSummary, setReferralSummary] = useState<ReferralSummary | null>(null);
   const [referralLoading, setReferralLoading] = useState(false);
@@ -162,6 +164,35 @@ export function ProfilePanel() {
     () => [...orders].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
     [orders],
   );
+  const customerId = user?.id;
+  const hasPendingBitcoin = orders.some((order) => order.paymentProvider === "swiss_bitcoin_pay" &&
+    order.paymentState === "pending" && !order.archivedAt && order.status !== "cancelled");
+
+  useEffect(() => {
+    if (activeTab !== "commandes" || !customerId || !hasPendingBitcoin) return;
+    const controller = new AbortController();
+    let checking = false;
+    const checkOrders = async () => {
+      if (checking || document.visibilityState !== "visible") return;
+      checking = true;
+      try {
+        const response = await fetch("/api/account/orders", { cache: "no-store", signal: controller.signal });
+        if (!response.ok) return;
+        const data = await response.json() as { orders?: CmsOrder[] };
+        if (!controller.signal.aborted && Array.isArray(data.orders) &&
+          data.orders.every((order) => order.customerId === customerId)) setOrders(data.orders);
+      } catch {
+        // Keep the order list until a later check succeeds.
+      } finally {
+        checking = false;
+      }
+    };
+    const timer = window.setInterval(() => void checkOrders(), 30_000);
+    return () => {
+      controller.abort();
+      window.clearInterval(timer);
+    };
+  }, [activeTab, customerId, hasPendingBitcoin, setOrders]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -822,7 +853,7 @@ export function ProfilePanel() {
                     key={order.id}
                     type="button"
                     className="card-cartoon w-full bg-white p-4 text-left transition-colors hover:bg-[#f7f4ee]"
-                    onClick={() => setSelectedOrder(order)}
+                    onClick={() => setSelectedOrderId(order.id)}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="font-semibold text-ink">{order.id}</p>
@@ -1098,7 +1129,7 @@ export function ProfilePanel() {
           </div>
         </div>
       </div>
-      <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />
+      <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrderId(null)} />
     </section>
   );
 }

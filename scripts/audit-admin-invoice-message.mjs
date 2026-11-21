@@ -44,8 +44,10 @@ window.fetch=async(input,init={})=>{
  const state=window.__fixture,method=init.method||'GET';
  state.requests.push({path:url.pathname,method,body:init.body?JSON.parse(init.body):null});
  if(query.has('archives')){
-  const orders=state.archiveStage==='archived'?[otherOrder]:
-    [state.archiveStage==='pending'?pendingOrder:btcOrder,otherOrder];
+  const bitcoin=state.archiveStage==='paid'?{...btcOrder,status:'paid',paymentState:'paid'}:
+    state.archiveStage==='review'?{...btcOrder,paymentReviewRequired:true,paymentReviewReason:'invoice_status_unknown'}:
+    state.archiveStage==='pending'?pendingOrder:btcOrder;
+  const orders=state.archiveStage==='archived'?[otherOrder]:[bitcoin,otherOrder];
   if(url.pathname==='/api/admin/store'&&method==='GET')return Response.json({...defaultStore,orders});
   if(url.pathname==='/api/admin/orders'&&method==='GET')return Response.json({orders,bitcoinPayments:{}});
   if(url.pathname==='/api/admin/orders/DEMO-BTC'&&method==='DELETE'){
@@ -310,6 +312,23 @@ try {
   assert.equal(await page.$('[role="dialog"]'), null);
   assert.equal(await page.$eval(unrelatedStatus, (node) => node.value), "processing");
   record("bitcoin-deferral-survives-reload-and-cron-refresh-keeps-local-draft", 390);
+
+  await archivePage("review");
+  const bitcoinStatus = 'select[aria-label="Statut de la commande DEMO-BTC"]';
+  await page.select(bitcoinStatus, "processing");
+  const tracking = 'input[aria-label="Numéro de suivi de la commande DEMO-BTC"]';
+  await page.type(tracking, "SUIVI-LOCAL");
+  await clickOrderButton("DEMO-BTC", "Voir le détail");
+  await page.waitForSelector('[role="dialog"]');
+  await page.evaluate(() => {
+    window.__fixture.archiveStage = "paid";
+    window.dispatchEvent(new Event("focus"));
+  });
+  await page.waitForFunction(() => document.querySelector('[role="dialog"]')?.textContent.includes("Bitcoin (Lightning) : Payé"));
+  assert.equal(await page.$eval(bitcoinStatus, (node) => node.value), "processing");
+  assert.equal(await page.$eval(tracking, (node) => node.value), "SUIVI-LOCAL");
+  assert.match(await page.$eval(bitcoinStatus, (node) => node.closest("article").textContent), /Bitcoin \(Lightning\) : Payé/);
+  record("confirmed-bitcoin-updates-list-and-open-detail-while-keeping-order-draft", 390);
 
   const report = { passed: errors.length === 0 && blockedRequests.length === 0, widths, results, errors, blockedRequests };
   await writeFile(resolve(output, "report.json"), JSON.stringify(report, null, 2));

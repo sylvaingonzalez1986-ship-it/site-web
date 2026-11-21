@@ -33,7 +33,8 @@ export function BitcoinPaymentPage({ orderId }: { orderId: string }) {
   const [busy, setBusy] = useState(false);
   const inFlight = useRef<{ controller: AbortController; interactive: boolean } | null>(null);
   const completedOrder = useRef(false);
-  const shouldPoll = !accessError && (!payment || payment.archiveRequested || Boolean(payment.resumeCardUrl) || ["preparing", "pending", "confirming"].includes(payment.state));
+  const shouldPoll = !accessError && (!payment || payment.archiveRequested || Boolean(payment.resumeCardUrl) || ["preparing", "pending", "confirming", "review"].includes(payment.state));
+  const awaitingReview = payment?.state === "review";
   const canCheck = !accessError && payment?.state !== "paid" && payment?.state !== "cancelled";
 
   const requestStatus = useCallback(async (action?: "retry" | "card", manual = false) => {
@@ -102,24 +103,26 @@ export function BitcoinPaymentPage({ orderId }: { orderId: string }) {
   useEffect(() => {
     if (!shouldPoll) return;
     let checks = 0;
-    const timer = window.setInterval(() => {
+    const nextDelay = () => awaitingReview || checks >= 36 ? 30_000 : 5_000;
+    const poll = () => {
       if (document.visibilityState === "visible") {
         void requestStatus();
         checks += 1;
       }
-      if (checks >= 36) window.clearInterval(timer);
-    }, 5_000);
+      timer = window.setTimeout(poll, nextDelay());
+    };
+    let timer = window.setTimeout(poll, nextDelay());
     const onVisible = () => {
       if (document.visibilityState === "visible") void requestStatus();
     };
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("pageshow", onVisible);
     return () => {
-      window.clearInterval(timer);
+      window.clearTimeout(timer);
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("pageshow", onVisible);
     };
-  }, [requestStatus, shouldPoll]);
+  }, [awaitingReview, requestStatus, shouldPoll]);
 
   useEffect(() => {
     if (payment?.state !== "paid" || cartLoading || completedOrder.current) return;
