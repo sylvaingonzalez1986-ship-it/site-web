@@ -62,7 +62,7 @@ try {
   await installCultureCareWork(db,migration);
   for(const name of ["20261108000900_kq_care_surface_and_purchase_register","20261118000100_kq_care_sectors","20261118000400_kq_care_input_sectors"]) await db.exec(await migration(name+".sql"));
   await installWarehousePreparations(db,{retail:false});
-  for(const name of ["20261121001300_kq_warehouse_care_provisions","20261122000200_kq_warehouse_retail_supplies","20261122000310_kq_warehouse_airlock_preparation","20261122000500_kq_warehouse_supply_packs","20261122000510_kq_supply_clock_after_lock"]) await db.exec(await migration(name+".sql"));
+  for(const name of ["20261121001300_kq_warehouse_care_provisions","20261122000200_kq_warehouse_retail_supplies","20261122000310_kq_warehouse_airlock_preparation","20261122000500_kq_warehouse_supply_packs","20261122000510_kq_supply_clock_after_lock","20261122001500_kq_distinct_culture_inputs"]) await db.exec(await migration(name+".sql"));
   await db.exec("ALTER FUNCTION kq_treasury_initialize(uuid) SET search_path=pg_catalog,public; ALTER FUNCTION fixture_wallet_movement() SET search_path=pg_catalog,public;");
   const {startKqGame,rollKqDice,resolveKqStage,previewKqResolution}=await server.ssrLoadModule("/src/lib/kanab-quest-game.ts");
   const {KQ_CARE_PRODUCTS,applyKqCareProduct}=await server.ssrLoadModule("/src/lib/kanab-quest-care.ts");

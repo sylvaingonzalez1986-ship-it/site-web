@@ -173,32 +173,36 @@ describe("distinct auxiliary roles and intervention timing", () => {
     expect(canApplyKqCareProduct(before, "CARE-PHYTOSEIULUS").allowed).toBe(true);
   });
 
-  it("prevents overlapping auxiliaries from multiplying the effect on the same targets", () => {
+  it("combines distinct auxiliaries and uses the strongest reduction for each pest", () => {
     const before = position();
     before.care!.problems = [problem("APHIDS"), problem("THRIPS"), problem("MITES")];
     const broad = applyKqCareProduct(before, "CARE-CHRYSOPERLA");
-    for (const code of ["CARE-CHRYSOPERLA", "CARE-APHIDIUS", "CARE-COCCINELLA", "CARE-SWIRSKII", "CARE-ORIUS"]) {
-      expect(canApplyKqCareProduct(broad, code).allowed).toBe(false);
-    }
-    expect(canApplyKqCareProduct(broad, "CARE-PHYTOSEIULUS").allowed).toBe(true);
+    expect(canApplyKqCareProduct(broad, "CARE-CHRYSOPERLA").allowed).toBe(false);
+    const combined = applyKqCareProduct(broad, "CARE-ORIUS");
+    expect(combined.care!.interventions).toHaveLength(2);
+    const first = careTick(combined);
+    expect(careTick({ ...first, stageIndex: 2 }).care!.problems.map(item => [item.code, item.severity]))
+      .toEqual([["APHIDS", 2], ["THRIPS", 1], ["MITES", 3]]);
   });
 
-  it("preserves imported valid states at the four-intervention and twelve-application limits", () => {
+  it("lets imported crops with four active interventions or twelve past applications continue", () => {
     const crowded = position(2);
     crowded.care!.problems = [problem("MITES")];
     const codes = ["CARE-APHIDIUS", "CARE-COCCINELLA", "CARE-CHRYSOPERLA", "CARE-SWIRSKII"];
     crowded.care!.applications = codes.map(productCode => ({ productCode, stageIndex: 1 }));
     crowded.care!.interventions = codes.map(productCode => ({ productCode, stageIndex: 1, remainingSteps: 1, status: "active" }));
     expect(isKqCareState(crowded.care)).toBe(true);
-    expect(canApplyKqCareProduct(crowded, "CARE-PHYTOSEIULUS").allowed).toBe(false);
-    expect(applyKqCareProduct(crowded, "CARE-PHYTOSEIULUS")).toBe(crowded);
+    const fifth = applyKqCareProduct(crowded, "CARE-PHYTOSEIULUS");
+    expect(fifth.care!.interventions).toHaveLength(5);
+    expect(isKqCareState(fifth.care)).toBe(true);
 
     const full = position(2);
     full.care!.problems = [problem("APHIDS")];
     full.care!.applications = [0, 1].flatMap(stageIndex => pbi.map(product => ({ productCode: product.code, stageIndex })));
     expect(isKqCareState(full.care)).toBe(true);
-    expect(canApplyKqCareProduct(full, "CARE-APHIDIUS").allowed).toBe(false);
-    expect(applyKqCareProduct(full, "CARE-APHIDIUS")).toBe(full);
+    const thirteenth = applyKqCareProduct(full, "CARE-APHIDIUS");
+    expect(thirteenth.care!.applications).toHaveLength(13);
+    expect(isKqCareState(thirteenth.care)).toBe(true);
   });
 });
 

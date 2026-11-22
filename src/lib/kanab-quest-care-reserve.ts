@@ -85,8 +85,7 @@ export function getKqCareActionAvailability(snapshot: KqCareReserveSnapshot | nu
   const usable = state ? KQ_CARE_PRODUCTS.filter(product => {
     if (!(snapshot.inventory[product.code] > 0) || !canApplyKqCareProduct(state, product.code).allowed) return false;
     if (!sectors.length || !snapshot.zoneQuantities?.[product.code]) return true;
-    const candidates = product.targetedCare ? getKqCareFocusSectors(state, product) : sectors;
-    return candidates.some(target => getKqCareZoneStock(snapshot, product.code, target.zoneId) > 0
+    return sectors.some(target => getKqCareZoneStock(snapshot, product.code, target.zoneId) > 0
       && canApplyKqCareProduct(state, product.code, target).allowed);
   }) : [];
   const affordable = KQ_CARE_PRODUCTS.filter(product => snapshot.prices[product.code] !== undefined

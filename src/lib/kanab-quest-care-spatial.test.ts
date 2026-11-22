@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { applyKqCareProduct, canApplyKqCareProduct, createKqCareState, isKqCareState, observeKqCareStage, resolveKqCareStage } from "./kanab-quest-care";
+import { applyKqCareProduct, canApplyKqCareProduct, createKqCareState, isKqCareState, KQ_CARE_PRODUCTS, observeKqCareStage, resolveKqCareStage } from "./kanab-quest-care";
 import { getKqCareProblemPlants, getKqCareSectors, type KqCareSector } from "./kanab-quest-care-spatial";
 import { getKqRoomCare } from "./kanab-quest-care-presentation";
-import { getKqRunProjection, getKqSituation, KQ_SITUATIONS, startKqGame, type KqGameState } from "./kanab-quest-game";
+import { advanceKqStage, getKqRunProjection, getKqSituation, KQ_SITUATIONS, resolveKqStage, startKqGame, type KqGameState } from "./kanab-quest-game";
 import { getKqCampaignMemberState, getKqCampaignParticipants } from "./kanab-quest-campaign";
 import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
@@ -169,12 +169,15 @@ describe("local outbreaks and one-square-metre game interventions", () => {
   ] as const)("checks the affected square for %s and applies its %s %s effect", (code, problemCode, outcome, expected) => {
     const game = fixed(42);
     const problem = game.care!.problems[0];
-    expect(canApplyKqCareProduct(game, code, first).allowed).toBe(false);
+    expect(canApplyKqCareProduct(game, code, first).allowed).toBe(true);
     problem.code = problemCode;
     problem.plants = [first, distant].map(cell => ({ ...cell, slot: 0, severity: 2 }));
     problem.severity = 2;
     const wrong = { ...first, x: 1 };
-    expect(applyKqCareProduct(game, code, wrong)).toBe(game);
+    const elsewhere = applyKqCareProduct(game, code, wrong);
+    expect(elsewhere.care!.applications).toHaveLength(1);
+    expect(resolveKqCareStage(elsewhere, operation, outcome, false)?.problems)
+      .toEqual(resolveKqCareStage(game, operation, outcome, false)?.problems);
     const applied = applyKqCareProduct(game, code, first);
     expect(applied).not.toBe(game);
     expect(applied.care?.problems).toEqual(game.care!.problems);
@@ -193,10 +196,14 @@ describe("local outbreaks and one-square-metre game interventions", () => {
     const problem = game.care!.problems[0];
     for (const code of ["CALCIUM", "MAGNESIUM", "NITROGEN", "VIRUS"]) {
       problem.code = code;
-      expect(canApplyKqCareProduct(game, "CARE-IRON", first).allowed).toBe(false);
+      const iron = applyKqCareProduct(game, "CARE-IRON", first);
+      expect(resolveKqCareStage(iron, operation, "success", false)?.problems)
+        .toEqual(resolveKqCareStage(game, operation, "success", false)?.problems);
     }
     for (const code of ["CARE-PERLITE", "CARE-SHADE", "CARE-BLUE-TRAPS"]) {
-      expect(canApplyKqCareProduct(game, code, first).allowed).toBe(false);
+      const treated = applyKqCareProduct(game, code, first);
+      expect(resolveKqCareStage(treated, operation, "success", false)?.problems)
+        .toEqual(resolveKqCareStage(game, operation, "success", false)?.problems);
     }
     problem.code = "IRON";
     game.care!.problems.push({ ...problem, code: "SALTS" });
@@ -252,7 +259,7 @@ describe("local outbreaks and one-square-metre game interventions", () => {
       expect(canApplyKqCareProduct(applied, code).allowed).toBe(true);
       applied = applyKqCareProduct(applied, code, cell);
       expect(canApplyKqCareProduct(applied, code, cell).allowed).toBe(false);
-      expect(canApplyKqCareProduct(applied, "CARE-SEAWEED", cell).allowed).toBe(false);
+      expect(canApplyKqCareProduct(applied, "CARE-SEAWEED", cell).allowed).toBe(true);
     }
     expect(canApplyKqCareProduct(applied, code).allowed).toBe(false);
     expect(applied.care!.history.filter(event => event.productCode === code)).toHaveLength(1);
@@ -263,8 +270,27 @@ describe("local outbreaks and one-square-metre game interventions", () => {
     expect(canApplyKqCareProduct(next, code, first).allowed).toBe(false);
     const secondInput = applyKqCareProduct(next, "CARE-SEAWEED", first);
     expect(canApplyKqCareProduct(secondInput, "CARE-SEAWEED", distant).allowed).toBe(true);
-    expect(canApplyKqCareProduct({ ...secondInput, stageIndex: 2 }, "CARE-VERMICOMPOST", distant).allowed).toBe(false);
+    expect(canApplyKqCareProduct({ ...secondInput, stageIndex: 2 }, "CARE-VERMICOMPOST", distant).allowed).toBe(true);
     expect(isKqCareState({ ...care, applications: [...care.applications, { productCode: code, stageIndex: 0 }] })).toBe(false);
+  });
+  it("reloads a crop and applies shade and every distinct input while last turn’s PBI is still active", () => {
+    let game = fixed(42);
+    for (const cell of getKqCareSectors(game)) game = applyKqCareProduct(game, product, cell);
+    game = advanceKqStage(resolveKqStage({ ...game, phase: "rolled", dice: [4, 4, 4] }));
+    const restored = parseKqGameSave(encodeKqSave(game))!;
+    expect(restored.care!.interventions).toHaveLength(6);
+    expect(restored.care!.interventions[0]).toMatchObject({ productCode: product, status: "active" });
+    expect(restored.care!.problems.some(problem => problem.code === "HEAT")).toBe(false);
+    game = applyKqCareProduct(restored, "CARE-SHADE", first);
+    expect(game.care!.applications.at(-1)).toMatchObject({ productCode: "CARE-SHADE", target: first, stageIndex: 1 });
+    expect(applyKqCareProduct(game, "CARE-SHADE", first)).toBe(game);
+    const inputs = KQ_CARE_PRODUCTS.filter(item => item.kind === "input" && item.code !== "CARE-SHADE");
+    for (const input of inputs) game = applyKqCareProduct(game, input.code, first);
+    expect(game.care!.applications).toHaveLength(7 + inputs.length);
+    expect(parseKqGameSave(encodeKqSave(game))).toEqual(game);
+    const resolved = resolveKqStage({ ...game, phase: "rolled", dice: [4, 4, 4] });
+    expect(parseKqGameSave(encodeKqSave(resolved))).toEqual(resolved);
+    expect(canApplyKqCareProduct(resolved, "CARE-SHADE", first).allowed).toBe(false);
   });
   it("keeps an input paid before sector selection effective over the whole saved culture", () => {
     const game = fixed(27);

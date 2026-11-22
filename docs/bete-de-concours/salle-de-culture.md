@@ -32,7 +32,7 @@ Le stockage indique le total connu et la capacité du poste. Quand plusieurs pos
 
 Un foyer de parasites commence sur un seul plant, marqué d’une croix. Depuis **Soins**, sélectionner un auxiliaire compatible puis toucher une case cultivée de 1 m². Le choix est aussi possible dans la liste des cases, avec **Traiter cette case**. L’acceptation débite 1 m² de couverture et le personnage rejoint l’allée pour y déposer le sachet. La case garde ce repère tant que la PBI est active, y compris après une reprise. Annuler le ciblage conserve la réserve. Le prix d’achat présenté par la boutique couvre la surface annoncée.
 
-Les quatre intrants utilisent le même choix de case. Le personnage épand le lombricompost ou verse le thé de compost, l’engrais organique liquide et l’extrait d’algues. Le bilan tient compte du problème local, du produit et de la superficie traitée. Plusieurs cases recevant le même intrant au même bilan comptent comme un seul apport pour la limite de deux apports par culture.
+Dans le rayon **Intrants**, chaque produit en stock peut être posé sur la case choisie, y compris si elle accueille déjà une PBI. Par exemple, un filet d’ombrage peut être installé sur une case saine après le lâcher d’un auxiliaire. Son effet dépend du stress thermique présent sur cette case au prochain bilan. Plusieurs intrants différents peuvent partager la case au même tour. Pour chaque intrant, le joueur choisit une étape d’application et peut y traiter plusieurs cases, à raison d’une charge par case.
 
 **Payer l’entretien** applique le devis affiché pour l’ensemble de la culture. La vue revient dans la salle et le personnage balaie l’allée. L’action utilise la trésorerie et les effets de santé sont calculés au prochain bilan.
 

@@ -1,4 +1,11 @@
 {
+  "cultureIntrantsDistincts20261122": {
+    "livraison": "Plusieurs intrants distincts peuvent être appliqués au même tour et sur la même case. Le filet d’ombrage peut être posé pendant qu’une PBI du tour précédent est encore active.",
+    "verification": "Parcours Chromium à 390 px avec PBI, filet puis extrait d’algues, doublon refusé. PostgreSQL isolé vérifie la consommation du stock, le rejeu et la reprise après les anciens plafonds.",
+    "preuves": ["output/culture-room/pbi-smoke/report.json", "src/lib/kanab-quest-care-spatial.test.ts", "scripts/test-placard-culture-care.mjs"],
+    "migrationProduction": "20261122001500 appliquée seule le 22 novembre 2026. La vérification Supabase du lot isolé confirme son application.",
+    "pointDeReprise": "Vérifier dans une culture en cours que le rayon Intrants propose le filet après un lâcher de PBI."
+  },
   "marcheKorrigans20261122": {
     "livraison": "Quartier nocturne, ronde de trois flûtistes Three.js autour du chêne, alternance des habitants, offrande de récolte et trois tirages sauvegardés.",
     "economie": "Minimum de reprise 100 € de jeu. Pertes 85 % par tirage, rendement monétaire moyen de 0,765 fois la valeur de vente par session, délai réel de 168 heures.",

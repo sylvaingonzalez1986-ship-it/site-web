@@ -534,7 +534,7 @@ function KqGameSession({
   const [gameActionError, setGameActionError] = useState("");
   const [directDiceResult, setDirectDiceResult] = useState(false);
   const [culturePanel, setCulturePanel] = useState<KqCulturePanelId>("play");
-  const [careChoice, setCareChoice] = useState<{ code: string; scope: string; submit: (cell: KqCareSector) => Promise<void>; busy: boolean; error: string; attempted?: KqCareSector } | null>(null);
+  const [careChoice, setCareChoice] = useState<{ code: string; eligible: KqCareSector[]; scope: string; submit: (cell: KqCareSector) => Promise<void>; busy: boolean; error: string; attempted?: KqCareSector } | null>(null);
   const depositing = useRef(false);
   const returnToProduct = useRef<HTMLElement | null>(null);
   const [cultureRecapPanel, setCultureRecapPanel] = useState<KqCulturePanelId>("harvest");
@@ -3058,9 +3058,9 @@ function KqGameSession({
     frame?.focus({ preventScroll: true });
     (room?.querySelector("[data-pbi-instructions]") ?? frame)?.scrollIntoView({ block: "start", behavior: "instant" });
   };
-  const chooseCareSector = (code: string, submit: (cell: KqCareSector) => Promise<void>) => {
+  const chooseCareSector = (code: string, eligible: KqCareSector[], submit: (cell: KqCareSector) => Promise<void>) => {
     returnToProduct.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    setCareChoice({ code, scope, submit, busy: false, error: "" });
+    setCareChoice({ code, eligible, scope, submit, busy: false, error: "" });
     requestAnimationFrame(showRoom);
   };
   const deposit = async (cell: KqCareSector) => {

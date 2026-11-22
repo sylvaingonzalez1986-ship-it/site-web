@@ -56,6 +56,10 @@ function mount() {
       state.game.care.problems[0].plants=[{zoneId:"culture-2",x:0,y:1,slot:3,severity:2}];
     }
     state.careInventory={"CARE-APHIDIUS":1};
+    if (scenario === "pbi-smoke") {
+      state.careInventory["CARE-SHADE"] = 1;
+      state.careInventory["CARE-SEAWEED"] = 1;
+    }
     if (scenario.startsWith("interventions-")) {
       for (const code of ["CARE-VERMICOMPOST", "CARE-COMPOST-TEA", "CARE-ORGANIC-FEED", "CARE-SEAWEED"]) state.careInventory[code]=1;
     }
@@ -529,6 +533,22 @@ async function audit(){
       assert.deepEqual(live.game.care.applications.map(application=>application.target),[target]);
       assert.deepEqual(live.calls.filter(call=>call.method==="POST").map(call=>[call.body.productCode,call.body.target,call.status]),[["CARE-APHIDIUS",target,200]]);
       pass("Culture selection and projected PBI target without warehouse editing",{target});
+
+      await tap('[data-culture-tab="play"]');
+      for (const phase of ["rolled", "resolved", "prepare"]) {
+        await tap("[data-culture-primary-action]");
+        await page.waitForSelector('[data-culture-phase="'+phase+'"]');
+      }
+      for (const code of ["CARE-SHADE", "CARE-SEAWEED"]) {
+        await chooseCareProduct(code);
+        await pressCareCell("culture-2:0:1");
+      }
+      const afterInputs = await state();
+      assert.deepEqual(afterInputs.game.care.applications.map(({productCode, stageIndex, target:cell}) => [productCode, stageIndex, cell]),
+        [["CARE-APHIDIUS", 0, target], ["CARE-SHADE", 1, target], ["CARE-SEAWEED", 1, target]]);
+      await chooseCareProduct("CARE-SHADE");
+      assert.equal(await page.$('[data-pbi-cell="culture-2:0:1"]'), null);
+      pass("The next turn accepts shade and a different input on the PBI square, then excludes that square for duplicate shade",{target});
     }
     if(!group||group==="campaign"){
     await viewport(320);await visit("campaign");await visibleRoom();

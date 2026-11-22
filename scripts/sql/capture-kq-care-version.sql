@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION pg_temp.capture_kq_care_functions() RETURNS TEXT
 LANGUAGE plpgsql SET search_path=pg_catalog,public AS $capture$
 DECLARE
   scoped BOOLEAN := to_regprocedure('public.rpc_kq_care_intervention_receipt(uuid,uuid,uuid,text,jsonb)') IS NOT NULL;
-  scoped_inputs BOOLEAN := strpos(pg_get_functiondef('public.kq_work_inner_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)'::regprocedure),'kq_care_treatment_count')>0;
+  scoped_inputs BOOLEAN := strpos(pg_get_functiondef('public.kq_work_inner_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)'::regprocedure),'IF EXISTS(SELECT FROM public.kq_care_crop_zones(run.state)) THEN')>0;
   old_receipt TEXT := 'public.rpc_kq_care_intervention_receipt(uuid,uuid,uuid,text)';
   sector_receipt TEXT := 'public.rpc_kq_care_intervention_receipt(uuid,uuid,uuid,text,jsonb)';
   receipt TEXT; definition TEXT; signature TEXT; result TEXT := E'BEGIN;\n'; old_guard TEXT;

@@ -33,7 +33,7 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
   request: typeof fetch; storage?: KqCareStorage; state?: KqGameState; runId?: string | null; disabled?: boolean;
   embedded?: boolean; refreshKey?: number; onPurchased?: (cashCents: number) => void;
   onApply?: (productCode: string, target?: KqCareSector) => Promise<void>; onBusyChange?: (busy: boolean) => void; onClose?: () => void;
-  onChooseSector?: (code: string) => void;
+  onChooseSector?: (code: string, eligible: KqCareSector[]) => void;
   onRecoveryChange?: (recovering: boolean) => void;
   applicationNotice?: { code: string; text: string };
   reserveState?: { snapshot: KqCareReserveSnapshot | null; loading: boolean; error: string; recovering?: boolean; refresh: () => Promise<void> };
@@ -41,7 +41,8 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
   const reserveView = Boolean(state && onApply);
   const cycleStock = !!runId && !storage && reserveView;
   const warehouseShop = !state && !storage;
-  const spatial = !!state && getKqCareSectors(state).length > 0;
+  const cropSectors = state ? getKqCareSectors(state) : [];
+  const spatial = cropSectors.length > 0;
   const [view, setView] = useState<"context" | "input" | "pbi">(reserveView ? "context" : "input");
   const [localWallet, setWallet] = useState<KqCareReserveSnapshot | null>(null);
   const [localLoading, setLoading] = useState(true);
@@ -148,7 +149,7 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
       <button type="button" data-care-rayon="input" disabled={!!pending} aria-pressed={view === "input"} onClick={() => setView("input")}><Leaf size={17} aria-hidden="true" /><span>Intrants</span><KqActionBadge count={rayonCounts?.input} label={badgeLabel(rayonCounts?.input)} /></button>
       <button type="button" data-care-rayon="pbi" disabled={!!pending} aria-pressed={view === "pbi"} onClick={() => setView("pbi")}><Bug size={17} aria-hidden="true" /><span>Auxiliaires</span><KqActionBadge count={rayonCounts?.pbi} label={badgeLabel(rayonCounts?.pbi)} /></button>
     </div>
-    <p className={styles.rayonHint}>{view === "context" ? "Produits compatibles avec les problèmes observés" : view === "input" ? "Nutrition, sol et protection" : "Protection biologique"}<span>{cycleStock ? spatial ? "1 charge par case de 1 m² traitée" : "1 passage pour la culture" : warehouseShop ? "Prix par conditionnement" : !known ? "Surface et tarifs à vérifier" : wallet.areaM2 != null ? `Prix pour ${wallet.areaM2.toLocaleString("fr-FR")} m²${state?.campaign ? " de cultures réunies" : ""} · un passage` : state ? "Prix pour cette culture · surface non enregistrée" : "Achat de réserve · couverture de 1 m²"}</span></p>
+    <p className={styles.rayonHint}>{view === "context" ? "Produits compatibles avec les problèmes observés" : view === "pbi" ? "Protection biologique" : reserveView ? "Tu peux combiner plusieurs intrants différents au même tour." : "Nutrition, sol et protection"}<span>{cycleStock ? spatial ? "1 charge par case de 1 m² traitée" : "1 passage pour la culture" : warehouseShop ? "Prix par conditionnement" : !known ? "Surface et tarifs à vérifier" : wallet.areaM2 != null ? `Prix pour ${wallet.areaM2.toLocaleString("fr-FR")} m²${state?.campaign ? " de cultures réunies" : ""} · un passage` : state ? "Prix pour cette culture · surface non enregistrée" : "Achat de réserve · couverture de 1 m²"}</span></p>
     {view === "context" && !products.length && known ? <p className={styles.empty}>{!state?.care?.problems.length ? "Aucun problème observé. Tu peux continuer ta culture." : matches.length && cycleStock ? "Aucun produit compatible en stock pour cette culture. Les achats à l’entrepôt seront disponibles aux prochains semis." : "Aucun produit ne cible les problèmes observés."}</p> : null}
     <div className={styles.products}>{products.map(product => {
       const permission = state ? canApplyKqCareProduct(state, product.code) : null;
@@ -162,15 +163,17 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
       const canUse = Boolean(onApply && permission);
       const pack = cycleStock || warehouseShop ? getKqWarehouseInputPack(product.code) : null;
       const focus = spatial && state && observedTargets ? getKqCareFocusSectors(state, product) : [];
-      const sectors = view === "context" ? focus : spatial && state && !onChooseSector ? getKqCareSectors(state) : [];
+      const sectors = view === "context" ? focus : !onChooseSector ? cropSectors : [];
       const sectorAvailable = (cell: KqCareSector) => !!wallet && !!state && getKqCareZoneStock(wallet, product.code, cell.zoneId) > 0
         && canApplyKqCareProduct(state, product.code, cell).allowed;
       const selected = sectors.find(cell => sectorKey(cell) === chosenSectors[product.code] && sectorAvailable(cell))
         ?? sectors.find(sectorAvailable) ?? sectors[0];
       const target = verifyUse ? applyReceipt?.target : selected;
       const directlyTargeted = !!target && spatial;
+      const planAvailable = !!onChooseSector && !!stock && !!permission?.allowed && cropSectors.some(sectorAvailable);
+      const openPlan = () => onChooseSector?.(product.code, cropSectors.filter(sectorAvailable));
       const useUnavailable = !known || !stock || !permission?.allowed || !!retryApply || (spatial &&
-        (target ? !sectorAvailable(target) : !onChooseSector));
+        (target ? !sectorAvailable(target) : !planAvailable));
       return <article className={styles.product} key={product.code} data-care-product={product.code} data-stocked={stock !== null && stock > 0 || undefined}>
         <div className={styles.productMain}>
           <div className={styles.illustration}>{artwork ? <Image src={artwork.src} alt={artwork.alt} width={72} height={72} sizes="72px" className={styles.productImage} /> : <Leaf aria-hidden="true" />}</div>
@@ -193,8 +196,8 @@ export function KqCareShop({ request, storage, state, runId, disabled, embedded,
             </select></> : <strong data-care-focus>{getKqCareSectorLabel(state, target)}</strong>}
             {known && wallet.zoneQuantities?.[product.code] && <small>Charges utilisables dans cette zone · {getKqCareZoneStock(wallet, product.code, target.zoneId)}</small>}
           </div> : null}
-          {canUse ? <button type="button" data-care-product-use data-care-target={target && sectorKey(target)} className={styles.use} disabled={disabled || !!pending || (!verifyUse && useUnavailable)} onClick={() => !verifyUse && spatial && !target ? onChooseSector?.(product.code) : void act(product.code, true, target)}>{verifyUse ? "Vérifier l’intervention" : directlyTargeted ? "Traiter la case · 1 charge" : spatial ? "Choisir 1 m² sur le plan" : "Utiliser · 1 passage"}</button> : null}
-          {directlyTargeted && onChooseSector && <button type="button" data-care-open-plan disabled={disabled || !!pending || !known || !stock || !permission?.allowed || !!retryApply} onClick={() => onChooseSector(product.code)}>Choisir sur le plan</button>}
+          {canUse ? <button type="button" data-care-product-use data-care-target={target && sectorKey(target)} className={styles.use} disabled={disabled || !!pending || (!verifyUse && useUnavailable)} onClick={() => !verifyUse && spatial && !target ? openPlan() : void act(product.code, true, target)}>{verifyUse ? "Vérifier l’intervention" : directlyTargeted ? "Traiter la case · 1 charge" : spatial ? "Choisir 1 m² sur le plan" : "Utiliser · 1 passage"}</button> : null}
+          {directlyTargeted && onChooseSector && <button type="button" data-care-open-plan disabled={disabled || !!pending || !known || !planAvailable || !!retryApply} onClick={openPlan}>Choisir sur le plan</button>}
           {!cycleStock && <>
           <span className={styles.price}><strong>{price === undefined ? "Prix à vérifier" : formatPrice(price)}</strong><small>{warehouseShop && pack ? `pour ${pack.chargesPerPack} charges` : known && wallet.areaM2 != null ? `pour ${wallet.areaM2.toLocaleString("fr-FR")} m²` : "pour 1 passage"}</small></span>
           <button type="button" data-care-product-buy className={styles.buy} disabled={disabled || !!pending || (!retryBuy && (!known || price === undefined || insufficientCash))} onClick={() => void act(product.code, false)}>{retryBuy ? "Vérifier l’achat" : warehouseShop ? "Acheter 1 conditionnement" : "Acheter 1 passage"}</button>

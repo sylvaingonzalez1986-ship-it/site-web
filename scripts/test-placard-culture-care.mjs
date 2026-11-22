@@ -759,6 +759,50 @@ try {
       }
       check(code+" spends just one eligible charge after all game validations",reserve(await apply(freshOwner,treatedRun,next,code),code).quantity,offers[code].chargesPerPack-1);
     }
+    await db.exec(await migration("20261122001500_kq_distinct_culture_inputs.sql"));
+    const distinctOwner=await player();
+    await query("INSERT INTO kq_warehouse_layouts VALUES($1,$2)",[distinctOwner,{zones:[zone]}]);
+    const auxiliaries=["CARE-ORIUS","CARE-SWIRSKII"];
+    const inputs=["CARE-SHADE","CARE-BLUE-TRAPS","CARE-IRON","CARE-PERLITE"];
+    for(const code of [...auxiliaries,...inputs]) await pack(distinctOwner,code,offers[code].packPriceCents);
+    let distinctRun=await seed(distinctOwner,zone.id);
+    const applyAndReload=async(code,cell)=>{
+      const result=await apply(distinctOwner,distinctRun,applyKqCareProduct(distinctRun.state,code,cell),code);
+      distinctRun=await runRow(distinctRun.id);
+      return result;
+    };
+    for(const cell of sixCells) await applyAndReload(auxiliaries[0],cell);
+    const nextTurn=advanceKqStage(resolveKqStage({...distinctRun.state,phase:"rolled",dice:[2,2,2]}));
+    await query("UPDATE kq_runs SET state=$2,updated_at=clock_timestamp() WHERE id=$1",[distinctRun.id,JSON.stringify(nextTurn)]);
+    distinctRun=await runRow(distinctRun.id);
+    check("prior PBI remains active on the next turn",distinctRun.state.care.interventions.length,sixCells.length);
+    const savedBeforeShade=distinctRun, shadeKey=randomUUID();
+    const shade=applyKqCareProduct(distinctRun.state,"CARE-SHADE",firstCell);
+    const shadeResult=await apply(distinctOwner,distinctRun,shade,"CARE-SHADE",shadeKey);
+    check("shade can be placed alongside a prior PBI before heat is observed",
+      [reserve(shadeResult,"CARE-SHADE").quantity,shadeResult.state.care.problems.some(p=>p.code==="HEAT")],
+      [offers["CARE-SHADE"].chargesPerPack-1,false]);
+    distinctRun=await runRow(distinctRun.id);
+    for(const code of inputs.slice(1)) await applyAndReload(code,firstCell);
+    for(const cell of sixCells) await applyAndReload(auxiliaries[1],cell);
+    check("distinct products stack on the same cell, including two auxiliaries with overlapping targets",
+      distinctRun.state.care.interventions.filter(i=>i.target.x===firstCell.x && i.target.y===firstCell.y).map(i=>i.productCode),
+      [auxiliaries[0],...inputs,auxiliaries[1]]);
+    check("all sixteen applications survive the round trip",distinctRun.state.care.applications.length,16);
+    const beforeDuplicate=await health(distinctOwner,distinctRun.id);
+    await reject("a second shade on the same square is refused",()=>apply(distinctOwner,distinctRun,
+      forceInput(distinctRun.state,"CARE-SHADE",firstCell),"CARE-SHADE"),"kq_care_invalid_request");
+    const replayedShade=await apply(distinctOwner,savedBeforeShade,shade,"CARE-SHADE",shadeKey);
+    check("refused duplicate and delayed replay preserve stock",[
+      replayedShade.replayed,(await health(distinctOwner,distinctRun.id)).inventory],[true,beforeDuplicate.inventory]);
+    const laterTurn=await createRun(distinctOwner,{...distinctRun.state,stageIndex:2,care:{...distinctRun.state.care,interventions:[]}});
+    await reject("the same input cannot start a second pass at a later stage",()=>apply(distinctOwner,laterTurn,
+      forceInput(laterTurn.state,"CARE-SHADE",secondCell),"CARE-SHADE"),"kq_care_invalid_request");
+    const saline=await createRun(distinctOwner,saltState);
+    for(const code of ["CARE-IRON","CARE-ORGANIC-FEED"]) {
+      await reject(code+" remains incompatible with saline stress",()=>apply(distinctOwner,saline,
+        forceInput(saline.state,code,firstCell),code),"kq_care_invalid_request");
+    }
   }
   console.log(JSON.stringify({result:"passed",checks:checks.length,details:checks,engine:"PGlite isolated PostgreSQL",concurrency:"Retry calls submitted together; PGlite serializes on one connection. CAS and row/advisory locks are explicitly verified."},null,2));
 } catch(error) {

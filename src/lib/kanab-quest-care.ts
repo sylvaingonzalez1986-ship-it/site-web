@@ -104,7 +104,7 @@ export type KqTerpeneReport = NonNullable<ReturnType<typeof getKqTerpeneReport>>
 export type KqCareProduct = {
   code: string; kind: "input" | "pbi"; name: string; priceCents: number;
   description: string; sourceUrl: string; targets: string[];
-  /** Requires the corresponding observed problem. These values only affect its game severity. */
+  /** Only changes the severity of the corresponding problem at the next check. */
   targetedCare?: { success: number; fragile?: number; containsFailure?: boolean };
   /** Fictional severity reductions at the first and second operation checks. */
   pbi?: { role: string; reductions: readonly [number, number] };
@@ -197,18 +197,8 @@ const permission = (allowed: boolean, reason: string) => ({ allowed, reason });
 type CareApplication = KqCareState["applications"][number];
 const inputPassKey = (item: CareApplication) => JSON.stringify([item.productCode, item.stageIndex]);
 const inputCodes = new Set(KQ_CARE_PRODUCTS.filter(product => product.kind === "input").map(product => product.code));
-// A single input pass can be distributed across the whole warehouse (1000 m²).
-// Each auxiliary release still counts separately against the existing limits.
-const maxCareEntries = 2 * 1000 + 12;
-function countCarePasses(items: CareApplication[]) {
-  const inputPasses = new Set<string>();
-  let releases = 0;
-  for (const item of items) {
-    if (inputCodes.has(item.productCode)) inputPasses.add(inputPassKey(item));
-    else releases++;
-  }
-  return inputPasses.size + releases;
-}
+// Save validation must accommodate every product on every square at each living stage.
+const maxCareEntries = KQ_CARE_PRODUCTS.length * 1000 * 5;
 function canIntervene(state: KqGameState) {
   if (state.rulesVersion !== 3 || !state.care) return permission(false, "Cette culture conserve ses règles historiques.");
   if (state.phase === "complete" || state.cultureDead) return permission(false, "Cette culture est terminée.");
@@ -223,13 +213,12 @@ export function canApplyKqCareProduct(state: KqGameState, code: string, target?:
   if (target !== undefined && !isKqRunSector(state, target)) return permission(false, "Choisis une case cultivée de cette partie.");
   const stageIndex = interventionStage(state);
   const { interventions, applications } = state.care;
+  if (product.kind === "input" && applications.some(item => item.productCode === code && item.stageIndex !== stageIndex)) {
+    return permission(false, "Cet intrant a déjà été utilisé dans cette culture.");
+  }
   const conflicts = [
     { entries: interventions.filter(item => item.productCode === code), reason: "Cette intervention est encore active." },
     { entries: applications.filter(item => item.productCode === code && item.stageIndex === stageIndex), reason: "Déjà utilisé pour ce bilan." },
-    { entries: product.kind === "pbi" ? interventions.filter(item => {
-      const active = getKqCareProduct(item.productCode);
-      return active?.kind === "pbi" && active.targets.some(group => product.targets.includes(group));
-    }) : [], reason: "Un auxiliaire agit déjà sur cette cible ; attendre son bilan." },
   ];
   const conflict = conflicts.find(group => group.entries.some(item => !target || !item.target || sameKqCareSector(target, item.target)));
   if (conflict) {
@@ -237,20 +226,8 @@ export function canApplyKqCareProduct(state: KqGameState, code: string, target?:
     const blocked = new Set(conflicts.flatMap(group => group.entries.map(item => item.target && sectorKey(item.target))));
     if (blocked.has(undefined) || !getKqCareSectors(state).some(cell => !blocked.has(sectorKey(cell)))) return permission(false, conflict.reason);
   }
-  const isCurrentInput = (item: CareApplication) => product.kind === "input" && item.productCode === code && item.stageIndex === stageIndex;
-  if (!interventions.some(isCurrentInput) && countCarePasses(interventions) >= 4) return permission(false, "Quatre interventions sont déjà en cours. Attends le prochain bilan.");
-  if (!applications.some(isCurrentInput) && countCarePasses(applications) >= 12) return permission(false, "Le nombre maximal d’interventions de cette culture est atteint.");
   if (product.kind === "input") {
-    const inputs = applications.filter(item => inputCodes.has(item.productCode));
-    if (inputs.some(item => item.productCode !== code && item.stageIndex === stageIndex)) return permission(false, "Un seul intrant par bilan.");
-    if (inputs.some(item => item.productCode === code && item.stageIndex !== stageIndex)) return permission(false, "Cet intrant a déjà été utilisé dans cette culture.");
-    if (!inputs.some(isCurrentInput) && countCarePasses(inputs) >= 2) return permission(false, "Deux apports maximum par culture.");
     if ((code === "CARE-ORGANIC-FEED" || code === "CARE-IRON") && state.care.problems.some(item => item.code === "SALTS")) return permission(false, "Un stress salin est présent : cet apport est inadapté.");
-    if (product.targetedCare && !state.care.problems.some(problem => {
-      const definition = getKqCareProblem(problem.code);
-      return definition && kqCareProductMatchesProblem(product, definition) &&
-        (!target || getKqCareProblemPlants(state, problem).some(plant => sameKqCareSector(plant, target)));
-    })) return permission(false, target ? "Aucun problème compatible observé sur cette case." : "Aucun problème compatible observé dans cette culture.");
   } else {
     if (stageIndex >= 4) return permission(false, "Trop tard pour une nouvelle PBI : ses deux bilans doivent tenir avant la fin de la récolte. La charge reste en réserve.");
     if (code === "CARE-PHYTOSEIULUS" && state.care.problems.some(item => item.code === "HEAT")) return permission(false, "Stress thermique actif : Phytoseiulus ne peut pas s’installer. Attends le rétablissement ; la charge reste en réserve.");
@@ -274,7 +251,7 @@ export function applyKqCareProduct(state: KqGameState, code: string, target?: Kq
   };
   // Every square is recorded in applications. Keep one journal entry for the
   // pass so a large room cannot evict the current stage's observation.
-  if (product.kind === "input" && state.care.applications.some(item => item.productCode === code && item.stageIndex === stageIndex)) return { ...state, care };
+  if (state.care.applications.some(item => item.productCode === code && item.stageIndex === stageIndex)) return { ...state, care };
   return { ...state, care: appendEvent(care, { stageIndex, kind: "intervention", message: `${product.name} : intervention engagée, bilan à la prochaine validation.`, vitalityDelta: 0, terpenesDelta: 0, productCode: code }) };
 }
 export function canPerformKqBasicCare(state: KqGameState) {
@@ -375,6 +352,32 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
     const previous = focusPlants.get(problem.code)!;
     const pest = definition.family === "pest";
     const matching = active.filter(item => kqCareProductMatchesProblem(getKqCareProduct(item.productCode)!, definition));
+    // Each pest gets the strongest compatible protection on its square.
+    // Zero still contains the pest while an auxiliary establishes.
+    let globalPbiReduction: number | undefined;
+    const pbiBySector = new Map<string, number>();
+    const globalAuxiliaries: string[] = [];
+    for (const item of matching) {
+      const product = getKqCareProduct(item.productCode)!;
+      if (!product.pbi) continue;
+      const blocked = product.code === "CARE-PHYTOSEIULUS" && care.problems.some(p => p.code === "HEAT");
+      const reduction = product.pbi.reductions[item.status === "installing" ? 0 : 1];
+      if (blocked) {
+        if (!previous.length) notes.push(`${product.name} · ${definition.name} : action perturbée par le stress thermique.`);
+        continue;
+      }
+      if (item.target) {
+        const key = sectorKey(item.target);
+        pbiBySector.set(key, Math.max(pbiBySector.get(key) ?? 0, reduction));
+      } else {
+        globalPbiReduction = Math.max(globalPbiReduction ?? 0, reduction);
+        globalAuxiliaries.push(product.name);
+      }
+    }
+    if (!previous.length && globalPbiReduction !== undefined) {
+      const effect = globalPbiReduction ? `recul de ${globalPbiReduction} niveau${globalPbiReduction > 1 ? "x" : ""} au bilan` : "installation et contention du foyer";
+      notes.push(`${globalAuxiliaries.join(", ")} · ${definition.name} : ${effect}.`);
+    }
     const treatments = matching.filter(item => getKqCareProduct(item.productCode)!.targetedCare);
     const treatmentFor = (plant?: KqCarePlant) => {
       const item = treatments.find(item => !item.target || (plant && sameKqCareSector(item.target, plant)));
@@ -382,10 +385,10 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
     };
     if ((pest || definition.family === "disease") && previous.length) {
       const protection = (plant: KqCarePlant) => {
-        const treatment = matching.find(i => getKqCareProduct(i.productCode)?.pbi && (!i.target || sameKqCareSector(i.target, plant))
-          && !(i.productCode === "CARE-PHYTOSEIULUS" && care.problems.some(p => p.code === "HEAT")));
-        const pbi = treatment && getKqCareProduct(treatment.productCode)?.pbi;
-        if (pbi) return { reduction: pbi.reductions[treatment.status === "installing" ? 0 : 1] };
+        const localReduction = pbiBySector.get(sectorKey(plant));
+        if (globalPbiReduction !== undefined || localReduction !== undefined) {
+          return { reduction: Math.max(globalPbiReduction ?? 0, localReduction ?? 0) };
+        }
         if (treatmentFor(plant)?.containsFailure) return { reduction: 0 };
       };
       const helpTag = pest ? "pest" : definition.target === "hygiene" ? "hygiene" : "climate";
@@ -397,18 +400,11 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
       notes.push(`${definition.name} · ${plants.length} plant${plants.length > 1 ? "s" : ""} atteint${plants.length > 1 ? "s" : ""}${spread ? ", un nouveau plant touché" : ""}.`);
       return [{ ...problem, plants, severity, status: "confirmed" as const, trend: spread || severity > problem.severity ? "worsening" as const : severity < problem.severity || plants.length < previous.length ? "recovering" as const : "stable" as const }];
     }
-    const pbi = matching.find(item => getKqCareProduct(item.productCode)!.kind === "pbi");
-    const blockedPbi = pbi?.productCode === "CARE-PHYTOSEIULUS" && care.problems.some(item => item.code === "HEAT");
-    const pbiEstablished = Boolean(pbi && !blockedPbi);
-    // Every auxiliary contains damage while establishing. The predatory
-    // ladybird also reduces severity at its first check; application itself
-    // never changes a problem. These levels are game balance, not efficacy data.
-    const pbiReduction = pbiEstablished && pbi
-      ? getKqCareProduct(pbi.productCode)?.pbi?.reductions[pbi.status === "installing" ? 0 : 1] ?? 0 : 0;
+    const pbiEstablished = globalPbiReduction !== undefined;
     const treatingInputs = matching.filter(item => inputCodes.has(item.productCode) && !getKqCareProduct(item.productCode)!.targetedCare);
     const nutritionHelp = definition.family === "nutrition" && treatingInputs.some(item => !item.target);
     const operationHelp = biological && won && (basic || relevantOperation || situation.tags.includes(definition.family === "pest" ? "pest" : definition.target === "roots" ? "roots" : "climate"));
-    const reduction = pbiReduction + Number(operationHelp || (nutritionHelp && won));
+    const reduction = (globalPbiReduction ?? 0) + Number(operationHelp || (nutritionHelp && won));
     const increase = biological && outcome === "failure" && !basic && !pbiEstablished ? 1 : 0;
     const severityAfterCheck = (severity: number, plant?: KqCarePlant) => {
       const treatment = treatmentFor(plant);
@@ -424,7 +420,6 @@ export function resolveKqCareStage(state: KqGameState, situation: KqSituation, o
       return severity > 0 ? [{ ...plant, severity: Math.min(3, severity) as KqCarePlant["severity"] }] : [];
     });
     const nextSeverity = previous.length ? Math.max(0, ...survivingPlants.map(plant => plant.severity)) : severityAfterCheck(problem.severity);
-    if (pbi) notes.push(`${getKqCareProduct(pbi.productCode)!.name} · ${definition.name} : ${blockedPbi ? "action perturbée par le stress thermique" : pbiReduction ? `recul de ${pbiReduction} niveau${pbiReduction > 1 ? "x" : ""} au bilan` : "installation et contention du foyer"}.`);
     if (nextSeverity <= 0) { notes.push(`${definition.name} : problème résorbé ; les pertes antérieures restent enregistrées.`); return []; }
     damage += Math.max(0, problem.severity * 3 - Number(pbiEstablished) * 3 - Number(basic) * 2);
     const recovering = reduction > 0 || nextSeverity < problem.severity || survivingPlants.length < previous.length;
@@ -470,19 +465,17 @@ export function isKqCareState(value: unknown): value is KqCareState {
   if (value.problems.some(p => p.plants !== undefined && (!Array.isArray(p.plants) || !p.plants.length || p.plants.length > 4000
     || p.plants.some((plant: KqCarePlant) => !isKqCareSector(plant) || !int(plant.slot, 0, 3) || !int(plant.severity, 1, 3)) || new Set(p.plants.map(plantKey)).size !== p.plants.length))) return false;
   if (!Array.isArray(value.applications) || value.applications.length > maxCareEntries || value.applications.some(item => !record(item) || !getKqCareProduct(String(item.productCode)) || !int(item.stageIndex, 0, 4))) return false;
-  if (value.applications.some(i => i.target !== undefined && !isKqCareSector(i.target)) || countCarePasses(value.applications) > 12) return false;
+  if (value.applications.some(i => i.target !== undefined && !isKqCareSector(i.target))) return false;
   const applicationKeys = new Set(value.applications.map(careApplicationKey));
   if (applicationKeys.size !== value.applications.length) return false;
   if (value.applications.some(item => item.target && applicationKeys.has(careApplicationKey({ ...item, target: undefined })))) return false;
   const inputs = value.applications.filter(item => inputCodes.has(item.productCode));
-  const passes = countCarePasses(inputs);
-  if (passes > 2 || new Set(inputs.map(item => item.productCode)).size !== passes || new Set(inputs.map(item => item.stageIndex)).size !== passes) return false;
+  if (new Set(inputs.map(inputPassKey)).size !== new Set(inputs.map(item => item.productCode)).size) return false;
   if (!Array.isArray(value.interventions) || value.interventions.length > maxCareEntries || value.interventions.some(item => !record(item)
     || !getKqCareProduct(String(item.productCode)) || !int(item.stageIndex, 0, 4) || !int(item.remainingSteps, 1, 2)
     || !["installing", "active"].includes(String(item.status))
     || (item.target !== undefined && !isKqCareSector(item.target))
     || !applicationKeys.has(careApplicationKey(item as CareApplication)))) return false;
-  if (countCarePasses(value.interventions) > 4) return false;
   if (new Set(value.interventions.map(item => careApplicationKey({ ...item, stageIndex: 0 }))).size !== value.interventions.length) return false;
   if (!Array.isArray(value.history) || value.history.length > 48 || value.history.some(item => !record(item)
     || !int(item.stageIndex, 0, 5) || !["observation", "intervention", "resolution"].includes(String(item.kind))

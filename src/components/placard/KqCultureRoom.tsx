@@ -2,8 +2,8 @@
 
 import { useContext, useMemo, useState } from "react";
 import type { KqGameState } from "@/lib/kanab-quest-game";
-import { getKqCareProduct, canApplyKqCareProduct } from "@/lib/kanab-quest-care";
-import { getKqCareSectors, type KqCareSector } from "@/lib/kanab-quest-care-spatial";
+import { getKqCareProduct } from "@/lib/kanab-quest-care";
+import type { KqCareSector } from "@/lib/kanab-quest-care-spatial";
 import { QuarterCharacterContext } from "../contest/QuarterCharacterContext";
 import { KqGrowRoom } from "./KqGrowRoom";
 import type { KqGrowRoomEvent } from "./KqGrowRoomModel";
@@ -11,7 +11,7 @@ import { getCultureRoomAction, getCultureRoomZones, getWarehouseRoomZones } from
 import { useObservedCultureRoom } from "./useObservedCultureRoom";
 import styles from "./KanabQuestDicePrototype.module.css";
 
-export type CareSectorSelection = { code: string; busy: boolean; error: string; attempted?: KqCareSector; choose: (cell: KqCareSector) => void; cancel: () => void };
+export type CareSectorSelection = { code: string; eligible: KqCareSector[]; busy: boolean; error: string; attempted?: KqCareSector; choose: (cell: KqCareSector) => void; cancel: () => void };
 
 export function KqCultureRoom({ state, initialZoneId, freshHarvest = false, observe = false, treatment }: {
   state: KqGameState; initialZoneId?: string; freshHarvest?: boolean; observe?: boolean;
@@ -25,7 +25,6 @@ export function KqCultureRoom({ state, initialZoneId, freshHarvest = false, obse
   const plan = treatment || (cue && cue !== "harvest" && cue.target) ? savedPlan : observed?.state ?? savedPlan;
   const productCode = treatment?.code;
   const product = productCode ? getKqCareProduct(productCode) : undefined;
-  const eligible = useMemo(() => productCode ? getKqCareSectors(state).filter(cell => canApplyKqCareProduct(state, productCode, cell).allowed) : [], [state, productCode]);
   const cultures = useMemo(() => getCultureRoomZones(state), [state]);
   const zones = useMemo(() => plan ? getWarehouseRoomZones(plan, observed?.activeRuns,
     observed?.productionReservation?.zoneId ?? state.warehouse?.productionReservedZoneId, observed?.stockGrams, cultures) : cultures,
@@ -59,7 +58,7 @@ export function KqCultureRoom({ state, initialZoneId, freshHarvest = false, obse
       {treatment.error && treatment.attempted && <button type="button" disabled={treatment.busy} onClick={() => treatment.choose(treatment.attempted!)}>Vérifier le dépôt</button>}
       <button type="button" disabled={treatment.busy} onClick={treatment.cancel}>{treatment.error ? "Retour aux soins" : "Annuler"}</button>
     </div>}
-    <KqGrowRoom plan={plan} zones={zones} affectedPlants={affectedPlants} pbiTargeting={treatment ? { eligible, onSelect: treatment.choose, busy: treatment.busy || !!treatment.error } : null} selectedZoneId={selected.id} onSelectZone={id => {
+    <KqGrowRoom plan={plan} zones={zones} affectedPlants={affectedPlants} pbiTargeting={treatment ? { eligible: treatment.eligible, onSelect: treatment.choose, busy: treatment.busy || !!treatment.error } : null} selectedZoneId={selected.id} onSelectZone={id => {
       setChoice(id);
       setCue(null);
     }} playerProfile={character} event={event} />

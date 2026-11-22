@@ -28,7 +28,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   state: KqGameState; request: typeof fetch; storage?: KqCareStorage; runId?: string | null; disabled?: boolean; compact?: boolean; active?: boolean; presentation?: "disclosure" | "carousel";
   onStateChange: (state: KqGameState) => void; onBusyChange: (busy: boolean) => void; onOpenHarvest?: () => void;
   onAvailabilityChange?: (availability: KqCareAvailabilityNotice) => void;
-  onChooseCareSector?: (code: string, submit: (cell: KqCareSector) => Promise<void>) => void;
+  onChooseCareSector?: (code: string, eligible: KqCareSector[], submit: (cell: KqCareSector) => Promise<void>) => void;
   onMaintenance?: () => void;
 }) {
   const carousel = layout === "carousel";
@@ -280,7 +280,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         {!completed && !dead ? <div className={styles.careActions}>
           {notice && (!shopOpen || !feedback?.productCode) ? <p role="status" className={styles.notice} data-care-feedback>{notice}</p> : null}
           <button className={styles.reserveToggle} id={`${reserveId}-toggle`} type="button" aria-expanded={shopOpen} aria-controls={reserveId} onClick={() => { if (!busy.current.care && !busy.current.shop) { setShopVisited(true); setShopOpen(!shopOpen); } }} disabled={busyNow} data-care-reserve-toggle><PackageOpen size={24} aria-hidden="true" /><span><b>Produits de soin <KqActionBadge count={actions?.products} label={actions?.products === 1 ? "produit utilisable" : "produits utilisables"} /></b><small>{shopOpen ? "Replier les produits" : "Choisir un produit et consulter ma réserve"}</small></span><ChevronDown size={18} aria-hidden="true" /></button>
-          <div id={reserveId} hidden={!shopOpen}>{shopVisited ? <div className={styles.reserve}><KqCareShop request={request} storage={storage} state={state} runId={runId} reserveState={{ snapshot: balance, loading: balanceLoading, error: balanceError, recovering: !!receipt.current || shopRecovery, refresh: refreshBalance }} applicationNotice={notice && feedback?.productCode ? { code: feedback.productCode, text: notice } : undefined} onRecoveryChange={setShopRecovery} disabled={disabled || pending} onApply={apply} onChooseSector={onChooseCareSector && (code => onChooseCareSector(code, target => apply(code, target)))} onBusyChange={setShopBusy} /></div> : null}</div>
+          <div id={reserveId} hidden={!shopOpen}>{shopVisited ? <div className={styles.reserve}><KqCareShop request={request} storage={storage} state={state} runId={runId} reserveState={{ snapshot: balance, loading: balanceLoading, error: balanceError, recovering: !!receipt.current || shopRecovery, refresh: refreshBalance }} applicationNotice={notice && feedback?.productCode ? { code: feedback.productCode, text: notice } : undefined} onRecoveryChange={setShopRecovery} disabled={disabled || pending} onApply={apply} onChooseSector={onChooseCareSector && ((code, eligible) => onChooseCareSector(code, eligible, target => apply(code, target)))} onBusyChange={setShopBusy} /></div> : null}</div>
           <div className={styles.basicCareSection} data-care-basic-section>
             {showHealthyCareChoice ? <p id={basicCareChoiceId} className={styles.careChoice} data-care-choice><Leaf size={18} aria-hidden="true" /><span><strong>Tu peux continuer sans entretien.</strong> Santé {care.vitality}/100, aucun problème actif. Tu gardes les {formatCash(basicPrice!)} de cet entretien.</span></p> : null}
             <div className={styles.actions}>

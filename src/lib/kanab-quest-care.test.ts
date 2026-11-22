@@ -48,7 +48,10 @@ describe("persistent culture care v3", () => {
     expect(applied.care?.problems).toEqual(state.care?.problems);
     expect(applied.care?.interventions[0].status).toBe("installing");
     expect(applyKqCareProduct(applied, "CARE-APHIDIUS")).toBe(applied);
-    expect(canApplyKqCareProduct(applied, "CARE-COCCINELLA").allowed).toBe(false);
+    const both = applyKqCareProduct(applied, "CARE-COCCINELLA");
+    const reversed = applyKqCareProduct(applyKqCareProduct(state, "CARE-COCCINELLA"), "CARE-APHIDIUS");
+    expect(finishStage(both, [2, 2, 2]).care?.problems).toEqual([]);
+    expect(finishStage(reversed, [2, 2, 2]).care?.problems).toEqual([]);
     expect(canApplyKqCareProduct(state, "CARE-PHYTOSEIULUS").allowed).toBe(false);
     const resolved = finishStage(applied, [2, 2, 2]);
     expect(resolved.care?.problems[0].severity).toBe(1);
@@ -68,12 +71,13 @@ describe("persistent culture care v3", () => {
     expect(finishStage(supported, [2, 2, 2]).care!.vitality).toBeGreaterThan(finishStage(state, [2, 2, 2]).care!.vitality);
   });
 
-  it("limits compatible organic inputs and preserves lasting losses after recovery", () => {
+  it("allows distinct organic inputs together and preserves lasting losses after recovery", () => {
     const state = position("SIT-004");
     state.care!.problems = [problem("NITROGEN", 2)];
     state.care!.yieldLossPercent = 8;
-    const applied = applyKqCareProduct(state, "CARE-ORGANIC-FEED");
-    expect(canApplyKqCareProduct(applied, "CARE-SEAWEED").allowed).toBe(false);
+    const fed = applyKqCareProduct(state, "CARE-ORGANIC-FEED");
+    const applied = applyKqCareProduct(fed, "CARE-SEAWEED");
+    expect(applied.care!.applications.map(item => item.productCode)).toEqual(["CARE-ORGANIC-FEED", "CARE-SEAWEED"]);
     const resolved = finishStage(applied, [6, 6, 6]);
     expect(resolved.care!.yieldBonusPercent).toBe(5);
     expect(resolved.care!.yieldLossPercent).toBe(8);

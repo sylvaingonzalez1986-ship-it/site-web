@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { canApplyKqCareProduct, createKqCareState, KQ_CARE_PRODUCTS, type KqCareProblem } from "./kanab-quest-care";
 import { startKqGame, type KqGameState } from "./kanab-quest-game";
 import { getKqCareActionAvailability, getKqCareAvailabilityScope, getKqCareFocusSectors, getKqCareReserveProducts, getKqCareZoneStock, parseKqCareReserveSnapshot } from "./kanab-quest-care-reserve";
-import { createKqWarehouseStarter, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { getKqLocalCareSnapshot, type KqCareStorage } from "./kanab-quest-care-local";
 
 function withProblems(...codes: string[]): KqGameState {
@@ -167,10 +167,23 @@ describe("verified available care actions", () => {
   it("recounts application and maintenance restrictions immediately", () => {
     const state = culture();
     state.care!.lastBasicCareStage = 0;
-    state.care!.applications.push({ productCode: "CARE-VERMICOMPOST", stageIndex: 0 });
-    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 1, products: 1, basic: 0 });
-    state.care!.interventions.push({ productCode: "CARE-COCCINELLA", stageIndex: 0, remainingSteps: 1, status: "active" });
-    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 0, products: 0, basic: 0 });
+    state.care!.applications.push({ productCode: "CARE-COMPOST-TEA", stageIndex: 0 });
+    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 2, usable: { input: 1, pbi: 1 }, basic: 0 });
+    state.care!.interventions.push({ productCode: "CARE-APHIDIUS", stageIndex: 0, remainingSteps: 1, status: "active" });
+    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 1, usable: { input: 1, pbi: 0 }, basic: 0 });
+  });
+
+  it("counts shade for a healthy square after every square with heat has received it", () => {
+    const starter = createKqWarehouseStarter();
+    const plan = getKqWarehouseQuote({ ...starter, zones: [{ ...starter.zones[0], width: 2 }] }, starter).nextState;
+    const state = { ...withProblems("HEAT"), warehouse: getKqWarehouseRunSnapshot(plan) };
+    const target = { zoneId: "starter", x: 0, y: 0 };
+    state.care!.problems[0].plants = [{ ...target, slot: 0, severity: 2 }];
+    state.care!.applications.push({ productCode: "CARE-SHADE", stageIndex: 0, target });
+    const stock = parseKqCareReserveSnapshot({ ...snapshot(), inventory: [
+      { productCode: "CARE-SHADE", quantity: 1, zoneQuantities: { starter: 1 } },
+    ] });
+    expect(getKqCareActionAvailability(stock, state)?.usable).toEqual({ input: 1, pbi: 0, context: 0 });
   });
 
   it("respects the next intervention window and closed cultures", () => {
