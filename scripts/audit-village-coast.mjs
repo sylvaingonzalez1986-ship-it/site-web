@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 const scene = '[data-village-prototype] canvas[data-village-ready="true"]';
 const menu = 'button[aria-label="Ouvrir le menu du quartier"]';
 const overview = 'button[aria-label="Ouvrir le bilan de ma partie"]';
-const observer = 'details:has([data-observe-life]) > summary';
+const settings = '[data-village-settings] > summary';
 const team = '[data-village-prototype] > [data-team-panel]';
 const sizes = [['bureau', 1440, 900], ['portrait', 390, 844], ['paysage', 844, 390], ['petit', 320, 568]];
 
@@ -85,7 +85,7 @@ export async function auditVillageCoast({page, visit, results, baseline, output,
         }),
         seaReceivesPointer: document.elementFromPoint(innerWidth*.53, 5) === canvas,
       };
-    }, {scene, controls: [menu,overview,observer, `${team} [data-team-open]`]});
+    }, {scene, controls: [menu,overview,settings, `${team} [data-team-open]`]});
     results.push({scenario:'littoral-' + device, device, ...layout});
     if (baseline) continue;
     assert.equal(layout.top, 0, device + ' canvas reaches the top');
@@ -108,12 +108,9 @@ export async function auditVillageCoast({page, visit, results, baseline, output,
     await page.click(menu);
     await page.waitForSelector('dialog[open][aria-label="Menu de Kanab Quest"]');
     await page.keyboard.press('Escape');
-    await page.click(observer);
-    const fisherman = '[data-observe-life="fisherman"]';
-    await page.waitForSelector(fisherman, {visible:true});
-    await page.click(fisherman);
-    await page.waitForSelector('canvas[data-life-observe="fisherman"]');
-    await page.click('[aria-label="Recentrer la vue isométrique"]');
+    await page.click(settings);
+    await page.waitForSelector('[data-village-settings][open] [data-village-toggle-labels]', {visible:true});
+    await page.keyboard.press('Escape');
     await page.click(overview);
     await page.waitForSelector('[data-village-activity-panel]', {visible:true});
     if (device === 'paysage') await page.screenshot({path: resolve(output, 'littoral-paysage-bilan.png')});

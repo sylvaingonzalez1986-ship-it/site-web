@@ -136,19 +136,9 @@ async function captureVillage(page, name) {
   report.village.push({ name, ...state });
 }
 
-async function observeVillage(page, id) {
-  const menu = 'details:has([data-observe-life])';
-  const activate = selector => page.viewport().hasTouch ? page.tap(selector) : page.click(selector);
-  await activate(menu + ' summary');
-  const option = `${menu}[open] [data-observe-life="${id}"]`;
-  await page.waitForSelector(option, { visible: true });
-  await activate(option);
-  await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`);
-}
-
-/** Repeat a fixed performance inside the live village, at the unmodified map/observer zoom.
+/** Repeat a fixed performance inside the live village, at the recorded camera zoom.
  * The screenshot uses the production renderer, buildings and lights. The live routine resumes
- * immediately afterward; the normal pointer/dialogue tests exercise the unfrozen actors. */
+ * immediately afterward; the pointer tests exercise the unfrozen actors. */
 async function captureVillagePose(page,id,name) {
   const prior = baseline ? null : JSON.parse(await readFile(resolve(outputRoot,'before',name+'.json'),'utf8'));
   const result=await page.$eval(ready,async(canvas,{id,worldPath,prior})=>{
@@ -236,7 +226,7 @@ async function captureMobileObservation(page) {
   for (const previous of reportRows) {
     const id = previous.name.split('-')[1];
     await page.waitForFunction((selector, time) => Number(document.querySelector(selector)?.dataset.motionTime) >= time, {}, ready, previous.time - 0.55);
-    await observeVillage(page, id);
+    await frameVillageSubject(page, id);
     const sightline = await page.$eval(ready, async (canvas, id) => {
       const { Box3, Raycaster, Vector3, fiberRoots } = await import('/@id/__x00__character-audit-three');
       const { scene, camera } = fiberRoots.get(canvas).store.getState();
@@ -732,7 +722,7 @@ try {
       await captureVillage(page, `village-${viewport.width}x${viewport.height}`);
       if(humanFinish && viewport.width>=844)await captureVillagePose(page,'loic','carte-loic-'+viewport.width);
       for (const id of viewport.width === 844 ? [] : ['breton', 'fisherman', 'loic']) {
-        await observeVillage(page, id);
+        await frameVillageSubject(page, id);
         await captureVillage(page, `observe-${id}-${viewport.width}x${viewport.height}`);
         if (humanFinish && viewport.width === 1440) {
           await captureVillagePose(page, id, 'quartier-' + id);

@@ -5,7 +5,7 @@ import { Launcher } from "chrome-launcher";
 import puppeteer from "puppeteer-core";
 import { KORRIGAN_ODDS, KORRIGAN_MIN_VALUE_CENTS } from "../src/lib/kanab-quest-korrigan.ts";
 
-const folder = resolve("docs/bete-de-concours/korrigans");
+const folder = resolve(process.env.KORRIGAN_AUDIT_ART_DIR ?? "docs/bete-de-concours/korrigans");
 const reportFolder = resolve("output/korrigans");
 const lotId = "657f3cfa-7204-499d-b381-36ce75748dfa";
 const sessionId = "db66e98e-f3d2-412f-a3dc-77347086c193";
@@ -73,9 +73,9 @@ export async function auditKorriganMarket(origin) {
       await page.evaluate(() => dispatchEvent(new Event("kq:equipment-updated")));
       await page.waitForSelector(`[data-village-phase="${night ? "night" : minute === 300 ? "dawn" : "day"}"]`);
     };
-    const observe = async () => {
-      await page.click("details:has([data-observe-life]) summary");
-      await page.click("[data-observe-life=korrigans]");
+    const focusMarket = async () => {
+      await page.keyboard.press("Tab");
+      await page.focus(access);
       await page.waitForSelector('canvas[data-life-observe="korrigans"][data-camera-transition="idle"]');
     };
     const open = async () => {
@@ -93,7 +93,9 @@ export async function auditKorriganMarket(origin) {
     await page.waitForSelector(readyCanvas);
     await page.waitForSelector(access + '[data-offscreen="false"]');
     assert.equal(await page.$$eval("[data-npc-access]", list => list.length), 0);
-    await observe();
+    assert.equal(await page.$("[data-observe-life]"), null);
+    assert.equal(await page.$eval(access, button => button.textContent), "Marché des korrigans");
+    await focusMarket();
     await page.waitForFunction(() => JSON.parse(document.querySelector("canvas").dataset.lifeKorrigans || "{}").dancers?.length === 3);
     const positions = () => page.$eval("canvas", node => JSON.parse(node.dataset.lifeKorrigans).dancers);
     const from = await positions();
@@ -109,11 +111,11 @@ export async function auditKorriganMarket(origin) {
     await page.waitForSelector(invitation, { hidden: true });
     assert.equal(await page.$(access), null);
     await page.waitForFunction(() => Object.values(JSON.parse(document.querySelector("canvas").dataset.lifeNpcs)).every(npc => npc.visible));
-    assert.equal(await page.$$eval("[data-npc-access]", list => list.length), 3);
+    assert.deepEqual(await page.$$eval("[data-npc-access]", list => list.map(node => node.dataset.npcAccess)), ["loic"]);
     assert.equal(offers, 0);
     cases.push("Aube pendant la proposition, même scène, trois habitants retrouvés");
     await phase(1380);
-    await observe();
+    await focusMarket();
     for (let step = 0; step < 5; step++) await page.click('button[aria-label="Agrandir le village"]');
     await page.waitForSelector('canvas[data-life-observe="korrigans"][data-camera-transition="idle"]');
     await shot("ronde-detail");
@@ -171,7 +173,7 @@ export async function auditKorriganMarket(origin) {
     await shot("machine-mobile");
     await page.keyboard.press("Escape");
     await page.waitForSelector(dialog, { hidden: true });
-    await observe();
+    await focusMarket();
     await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
     await page.waitForSelector('canvas[data-motion-state="running"]');
     await shot("ronde-mobile");
@@ -204,12 +206,12 @@ export async function auditKorriganMarket(origin) {
     await phase(1380);
     await settled(true);
     assert.equal(await canvas.evaluate(node => node === document.querySelector("canvas") && node.dataset.motionTime), pausedAt);
-    const raycast = await canvas.evaluate(async node => {
+    const residentHitTargets = await canvas.evaluate(async node => {
       const { fiberRoots } = await import("/@id/__x00__audit-village-camera");
       const { scene } = fiberRoots.get(node).store.getState();
-      return ["breton", "fisherman", "loic"].map(id => scene.getObjectByName("npc-hit-" + id).raycast.name);
+      return ["breton", "fisherman", "loic"].filter(id => scene.getObjectByName("npc-hit-" + id));
     });
-    assert.deepEqual(raycast, ["noCharacterHit", "noCharacterHit", "noCharacterHit"]);
+    assert.deepEqual(residentHitTargets, []);
     await canvas.dispose();
     cases.push("Ouverture depuis la carte, cadrage automatique et alternance sans remontage en pause à 320 px");
     assert.deepEqual(errors, []);

@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
+import { frameVillageSubject } from './fixtures/village-audit-camera.mjs';
 
 export const npcAuditEntry = `
 import React from 'react';import{createRoot}from'react-dom/client';
@@ -62,56 +63,36 @@ export async function runVillageNpcAudit(origin) {
     await page.reload({ waitUntil: 'domcontentloaded' }); await ready();
     const stats = () => page.$eval('canvas', node => ({ ...node.dataset }));
     const npcStats = async () => JSON.parse((await stats()).lifeNpcs);
-    const observe = async id => {
-      const activate = selector => page.viewport().hasTouch ? page.tap(selector) : page.click(selector);
-      await activate('details:has([data-observe-life]) summary');
-      const option = `details[open] [data-observe-life="${id}"]`;
-      await page.waitForSelector(option,{visible:true}); await activate(option);
-      await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`); await sleep(300);
+    const checkControls = async () => {
+      assert.equal(await page.$('[data-observe-life], [data-npc-dialogue]'), null);
+      assert.equal(await page.$$eval('summary', nodes => nodes.some(node => node.textContent.trim() === 'Observer')), false);
+      assert.deepEqual(await page.$$eval('[data-npc-access]', nodes => nodes.map(node => node.dataset.npcAccess)), ['loic']);
+      assert.deepEqual(Object.keys(await npcStats()).sort(), ['breton', 'fisherman', 'loic']);
     };
-    const point = async id => page.$eval('canvas', (node, id) => { const p = JSON.parse(node.dataset.npcTargets)[id], r = node.getBoundingClientRect(); return { x: p.x + r.x, y: p.y + r.y }; }, id);
-    const tap = async (id, touch = false) => { const p = await point(id); if (touch) await page.touchscreen.tap(p.x, p.y); else await page.mouse.click(p.x, p.y); };
-    const close = async () => { if (await page.$('[data-npc-dialogue]')) await page.click('[aria-label="Fermer l’échange"]'); };
-    const bubbleFits = async () => {
-      const box = await page.$eval('[data-npc-dialogue]', node => { const r = node.getBoundingClientRect(); return { left:r.left, right:r.right, top:r.top, bottom:r.bottom, width:innerWidth, height:innerHeight, scroll:node.querySelector('p').textContent }; });
-      assert.ok(box.left >= 0 && box.right <= box.width + 1 && box.top >= 0 && box.bottom <= box.height + 1, JSON.stringify(box));
+    const tap = async (id, touch = false) => {
+      await frameVillageSubject(page, id);
+      await page.waitForFunction(id => {
+        const node = document.querySelector('canvas');
+        const p = JSON.parse(node.dataset.npcTargets || '{}')[id], r = node.getBoundingClientRect();
+        return p?.visible && document.elementFromPoint(p.x + r.x, p.y + r.y) === node;
+      }, {}, id);
+      const p = await page.$eval('canvas', (node, id) => {
+        const target = JSON.parse(node.dataset.npcTargets)[id], rect = node.getBoundingClientRect();
+        return { x: target.x + rect.x, y: target.y + rect.y };
+      }, id);
+      if (touch) await page.touchscreen.tap(p.x, p.y);
+      else await page.mouse.click(p.x, p.y);
     };
-    await observe('breton'); await page.screenshot({ path: resolve(output, 'sonneur-marche.png') });
-    // One out-and-back drag must never count as a touch, even with a zero final delta.
-    const p = await point('breton'); await page.mouse.move(p.x, p.y); await page.mouse.down(); await page.mouse.move(p.x + 30, p.y, { steps: 5 }); await page.mouse.move(p.x, p.y, { steps: 5 }); await page.mouse.up();
-    assert.equal(await page.$('[data-npc-dialogue]'), null);
-    await observe('breton'); await page.evaluate(() => { window.__npcRandom = Math.random; Math.random = () => .99; });
-    await tap('breton'); await page.waitForSelector('[data-npc-dialogue="breton"][data-segment="0"]');
-    assert.equal(await page.$eval('[data-npc-dialogue]', node => node.dataset.intervention), 'loup-renard-belette');
-    const exact = await page.evaluate(async () => (await import('/src/components/placard/world/village-npc-dialogue.ts')).VILLAGE_NPC_INTERVENTIONS.breton.find(item => item.id === 'loup-renard-belette').segments);
-    for (let i = 0; i < exact.length; i++) {
-      assert.equal(await page.$eval('[data-npc-dialogue] p', node => node.textContent), exact[i]);
-      assert.equal(await page.$eval('[data-npc-dialogue]', node => +node.dataset.segment), i);
-      if (i < exact.length - 1) await page.click('[data-npc-next]');
-    }
-    await bubbleFits(); await sleep(900); await page.screenshot({ path: resolve(output, 'sonneur-chant.png') });
-    assert.ok((await npcStats()).breton.attention > .9);
-    await page.click('[data-npc-next]'); assert.notEqual(await page.$eval('[data-npc-dialogue]', node => node.dataset.intervention), 'loup-renard-belette');
-    await close(); const stopped = (await npcStats()).breton; await sleep(1800);
-    assert.ok(Math.hypot((await npcStats()).breton.x - stopped.x, (await npcStats()).breton.z - stopped.z) < 2, 'No route restart or teleport');
-    report.cases.push('Actual model click, out-and-back camera drag rejected, nine exact ordered song segments, no immediate repeat, bounded gaze and smooth resume');
-
-    await observe('fisherman'); await sleep(500); await page.screenshot({ path: resolve(output, 'pecheur-pont.png') });
-    await page.evaluate(() => { Math.random = () => .3; }); await tap('fisherman'); await page.waitForSelector('[data-npc-dialogue="fisherman"]');
-    assert.equal(await page.$eval('[data-npc-dialogue] p', node => node.textContent), 'Les Bretons ne sont pas têtus…');
-    await page.click('[data-npc-next]'); assert.equal(await page.$eval('[data-npc-dialogue] p', node => node.textContent), 'Ils ont juste raison.');
-    await close();
-    const phases = new Set();
-    for (let i = 0; i < 40; i++) {
-      const current = (await npcStats()).fisherman; phases.add(current.fishingPhase);
-      if (current.fishingPhase === 'sip') { await page.screenshot({ path: resolve(output, 'pecheur-gorgee.png') }); await tap('fisherman'); await page.waitForSelector('[data-npc-dialogue="fisherman"]'); await sleep(700); await page.screenshot({ path: resolve(output, 'pecheur-interruption.png') }); await close(); }
-      if (phases.size === 6) break;
-      await sleep(1000);
-    }
-    report.fishingPhases = [...phases]; assert.equal(phases.size, 6);
-    report.cases.push('Fisherman exact two-part joke, all six fishing/bottle phases, click interruption during sip and resumed routine');
-
-    await observe('loic'); await page.screenshot({ path: resolve(output, 'loic-promenade.png') });
+    const checkResidents = async (touch = false) => {
+      await checkControls();
+      for (const id of ['breton', 'fisherman']) {
+        await tap(id, touch);
+        assert.equal(await page.$('[data-npc-dialogue], [data-sylvain-library][open]'), null);
+        assert.equal((await npcStats())[id].attention, 0);
+      }
+    };
+    await checkResidents();
+    report.cases.push('The two villagers remain on the map. Clicking either model leaves the guide closed and opens no dialogue. Only Loïc has a keyboard action.');
     const book = 'dialog[data-sylvain-library][open]';
     const openBook = async (touch = false) => {
       await tap('loic', touch);
@@ -124,7 +105,7 @@ export async function runVillageNpcAudit(origin) {
       assert.equal(await page.$eval('canvas', node => node.dataset.villageReady), 'true');
     };
     const opensBefore = await page.evaluate(() => window.__npcGuideOpens);
-    await openBook(); await tap('loic'); await tap('loic');
+    await openBook();
     assert.equal(await page.evaluate(() => window.__npcGuideOpens), opensBefore + 1);
     assert.ok(await page.$(`${book} [data-sylvain-control="start"]`));
     assert.equal(await page.$('[data-npc-dialogue]'), null);
@@ -134,7 +115,7 @@ export async function runVillageNpcAudit(origin) {
     await closeBook();
     for (const kind of ['current', 'complete']) {
       const saved = await page.evaluate(kind => window.__npcSeed(kind), kind);
-      await page.reload({ waitUntil: 'domcontentloaded' }); await ready(); await observe('loic'); await openBook();
+      await page.reload({ waitUntil: 'domcontentloaded' }); await ready(); await openBook();
       assert.deepEqual(await page.$$eval(`${book} [data-status="completed"]`, nodes => nodes.map(node => node.dataset.sylvainLesson)), saved.completed);
       assert.deepEqual(await page.$$eval(`${book} [data-status="skipped"]`, nodes => nodes.map(node => node.dataset.sylvainLesson)), saved.skipped);
       await page.click(`${book} [data-sylvain-lesson="warehouse"] summary`);
@@ -146,26 +127,21 @@ export async function runVillageNpcAudit(origin) {
 
     for (const viewport of [{ width: 844, height: 390 }, { width: 568, height: 320 }, { width: 320, height: 568 }]) {
       await page.setViewport({ ...viewport, hasTouch: true, isMobile: true }); await ready();
-      await observe('breton'); await tap('breton', true); await page.waitForSelector('[data-npc-dialogue="breton"]'); await bubbleFits();
-      const before = await page.$eval('[data-npc-dialogue]', node => ({ id:node.dataset.intervention,segment:+node.dataset.segment }));
-      await page.touchscreen.tap(...Object.values(await point('breton'))); await sleep(100);
-      const after = await page.$eval('[data-npc-dialogue]', node => ({ id:node.dataset.intervention,segment:+node.dataset.segment }));
-      if (before.id === after.id) assert.equal(after.segment, before.segment + 1);
-      else assert.equal(after.segment, 0);
-      await page.screenshot({ path: resolve(output, `mobile-${viewport.width}x${viewport.height}.png`) }); await close();
-      await observe('fisherman'); await tap('fisherman', true); await page.waitForSelector('[data-npc-dialogue="fisherman"]'); await bubbleFits();
-      await observe('loic'); assert.equal(await page.$('[data-npc-dialogue]'), null); await openBook(true); await closeBook();
+      await checkResidents(true);
+      await openBook(true); await closeBook();
     }
-    report.cases.push('Touch at 844×390, 568×320 and 320×568; one segment per tap; bounded speech; successive musician/fisherman/guide exchanges');
-    await page.setViewport({ width: 1440, height: 1000 });
-    await page.evaluate(() => document.documentElement.requestFullscreen());
-    assert.ok(await page.evaluate(() => !!document.fullscreenElement));
-    await observe('loic'); await openBook(); await page.screenshot({ path: resolve(output, 'fullscreen-guide.png') }); await closeBook(); await page.evaluate(() => document.exitFullscreen());
-    await page.emulateMediaFeatures([{ name:'prefers-reduced-motion', value:'reduce' }]); await page.waitForSelector('canvas[data-motion-state="reduced"]');
+    report.cases.push('Touching the three models at 844×390, 568×320 and 320×568 opens only the guide for Loïc.');
+    await page.setViewport({ width: 1440, height: 1000 }); await ready();
+    await page.emulateMediaFeatures([{ name:'prefers-reduced-motion', value:'reduce' }]);
+    await page.waitForSelector('canvas[data-motion-state="reduced"]');
     const before = await npcStats(); await sleep(350); assert.deepEqual(await npcStats(), before);
-    await observe('breton'); await tap('breton'); await page.waitForSelector('[data-npc-dialogue="breton"]'); await close();
-    await page.emulateMediaFeatures([]);
-    report.cases.push('Fullscreen actual guide; reduced motion holds rigs while interactions remain usable');
+    await page.focus('[data-npc-access="loic"]'); await page.keyboard.press('Enter');
+    await page.waitForSelector(book, { visible: true }); await closeBook();
+    await page.focus('[data-village-building="warehouse"]'); await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-building="warehouse"] a[href*="view=workshop"]');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[data-building="warehouse"]', { hidden: true });
+    report.cases.push('With reduced motion, Loïc’s tutorial and the warehouse remain accessible by keyboard.');
     const final = await stats(); report.performance = { drawCalls:+final.drawCalls, triangles:+final.triangles, geometries:+final.geometries, textures:+final.textures, renderSubmitMs:+final.renderSubmitMs };
     assert.deepEqual(report.errors, []); assert.deepEqual(report.external, []); assert.ok(report.requests.every(request => request.method === 'GET'));
     report.passed = true;

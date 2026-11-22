@@ -178,26 +178,6 @@ async function walkOnPath(page) {
   throw new Error('A click on the ground did not move the player: '+JSON.stringify(points));
 }
 
-async function observe(page, subject) {
-  const menu='details:has([data-observe-life])';
-  const choice='[data-observe-life="' + subject + '"]';
-  const tap=page.viewport()?.hasTouch;
-  if(tap) await page.tap(menu+' summary'); else await page.click(menu+' summary');
-  await page.waitForSelector(menu+'[open] '+choice,{visible:true});
-  if(tap) await page.tap(choice); else await page.click(choice);
-  try {
-    await page.waitForSelector('canvas[data-life-observe="' + subject + '"][data-camera-transition="idle"]',{timeout:8000});
-  } catch(error) {
-    const state=await page.evaluate(({menu,choice})=>{
-      const item=document.querySelector(choice), canvas=document.querySelector('canvas'), r=item.getBoundingClientRect();
-      return {open:document.querySelector(menu).open, pressed:item.getAttribute('aria-pressed'), camera:canvas.dataset.cameraTransition,
-        subject:canvas.dataset.lifeObserve, focused:document.activeElement?.outerHTML.slice(0,220),
-        at:document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.outerHTML.slice(0,220)};
-    },{menu,choice});
-    throw new Error('Observer '+subject+' '+JSON.stringify(state),{cause:error});
-  }
-}
-
 export async function auditWorld(origin) {
   const dir=resolve(root,label); await mkdir(dir,{recursive:true});
   const report={label, passed:false, api:[], external:[], errors:[], performance:{}, readyMs:{}, samples:{}, interactions:[]};
@@ -247,14 +227,10 @@ export async function auditWorld(origin) {
         await walkOnPath(page); report.interactions.push('player-walk');
         await frameVillageSubject(page,'player');
         await page.screenshot({path:resolve(dir,'personnage.png')});
-        await observe(page,'fisherman');
-        await page.focus('[data-npc-access="fisherman"]'); await page.keyboard.press('Enter');
-        await page.waitForSelector('[data-npc-dialogue="fisherman"]');
-        await page.waitForSelector('canvas[data-camera-transition="idle"]');
-        await page.screenshot({path:resolve(dir,'echange.png')});
-        await page.click('[data-npc-next]'); await page.click('[aria-label="Fermer l’échange"]');
+        await frameVillageSubject(page,'fisherman');
+        await page.screenshot({path:resolve(dir,'pecheur.png')});
+        assert.equal(await page.$('[data-npc-access="fisherman"], [data-npc-dialogue]'), null);
         await page.click('[aria-label="Recentrer la vue isométrique"]'); await wait(600);
-        report.interactions.push('dialogue');
       }
       report.samples[device]=await page.evaluate(()=>{
         const canvas=document.querySelector('canvas'), {scene}=window.probeThree.fiberRoots.get(canvas).store.getState();

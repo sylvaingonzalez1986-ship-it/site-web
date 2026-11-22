@@ -1,4 +1,10 @@
 {
+  "villageSansDialogues20261122": {
+    "livraison": "Menu Observer et conversations du sonneur et du pêcheur retirés temporairement. Les habitants poursuivent leurs activités. Loïc ouvre directement son carnet et le panneau nocturne donne accès au marché des korrigans.",
+    "verification": "22 tests ciblés réussis. Chromium vérifie les clics et les touchers sur les trois modèles, le carnet et l’entrepôt au clavier, ainsi que l’accès au marché nocturne à 320 px et sur ordinateur.",
+    "preuves": ["output/village-npcs/report.json", "output/korrigans/navigateur.json"],
+    "pointDeReprise": "Les répliques sont conservées dans village-npc-dialogue.ts pour une éventuelle réactivation."
+  },
   "positionJoueurDansMaCulture20261122": {
     "livraison": "Dans Ma culture, le personnage apparaît sur une allée intérieure accessible et inspecte les plants depuis le côté intérieur du bac lorsque le passage est libre. Avec les animations réduites, il se place directement au poste. Le repère du poste laisse son visage visible.",
     "verification": "Les parcours Chromium warehouse-actor, campaign et warehouse-player contrôlent le placement des pieds, les actions de culture et le retour au village à 320 et 1 440 px.",

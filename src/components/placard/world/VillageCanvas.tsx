@@ -19,7 +19,6 @@ import { consumeVillageSupportView, saveVillageSupportView } from "./village-sup
 import { positionVillageBubble } from "./village-bubble";
 import { placeVillageLabel, type VillageLabelBounds } from "./village-labels";
 import { VillageAtmosphere, type VillageMotionProps } from "./VillageAtmosphere";
-import type { VillageNpcBridge } from "./VillageNpcDialogue";
 import { VILLAGE_KORRIGANS_NAME } from "./village-korrigans";
 
 export type VillageLifeSubject = "player" | "sheep" | "wolf" | "fox" | "weasel" | "boat" | "breton" | "fisherman" | "loic" | "korrigans";
@@ -32,7 +31,7 @@ type Props = VillageMotionProps & {
   calendar?: VillageCalendar | null;
   profile: ChanvrierAvatarProfile | null;
   playerIndoors: boolean;
-  npc: VillageNpcBridge;
+  onOpenGuide: () => void;
   controlsBlocked: boolean;
   supportOpen?: boolean;
   restoreSupportView?: boolean;
@@ -287,7 +286,7 @@ function CameraRig({ request, focus, onDrag, motion, night, controlsBlocked, sup
   return null;
 }
 
-function VillageWorld({ calendar, profile, playerIndoors, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, korriganReaction, npc, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
+function VillageWorld({ calendar, profile, playerIndoors, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, korriganReaction, onOpenGuide, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
   const [dragging, setDragging] = useState(false);
   const terrain = useMemo(() => createVillageTerrain(), []);
   const mailbox = useMemo(() => createVillageMailbox(), []);
@@ -400,7 +399,7 @@ function VillageWorld({ calendar, profile, playerIndoors, selected, keyboardFocu
   return <>
     <group ref={playerLayer} visible={!playerIndoors} />
     <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : keyboardFocus === HEMP_FARM_ID ? hempFarmFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} night={night} controlsBlocked={controlsBlocked} supportOpen={supportOpen} restoreSupportView={restoreSupportView} />
-    <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} korriganReaction={korriganReaction} night={night} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
+    <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} korriganReaction={korriganReaction} night={night} dragging={dragging} quality={quality} onOpenGuide={onOpenGuide} labelNodes={labelNodes} />
     <primitive object={terrain} onClick={(event: ThreeEvent<MouseEvent>) => { if (event.delta <= 5) { event.stopPropagation(); onCloseActivities(); walkTo(event.point); } }} />
     <group position={VILLAGE_MAILBOX_POSITION}
       onClick={event => { if (event.delta > 5) return; event.stopPropagation(); onOpenMailbox(); }}

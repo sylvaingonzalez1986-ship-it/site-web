@@ -28,7 +28,7 @@ const modules = {
   'next/navigation': `export function usePathname(){return '/arene/village-3d'}export function useRouter(){return {push:href=>${preview ? 'window.location.assign(href)' : '(window.__villageNavigations??=[]).push(href)'}}}`,
   'next/dynamic': `import React from 'react';export default function dynamic(loader,options={}){const Lazy=React.lazy(()=>Promise.resolve(loader()).then(value=>typeof value==='function'?{default:value}:value));return function Dynamic(props){const Loading=options.loading;return <React.Suspense fallback={Loading?<Loading/>:null}><Lazy {...props}/></React.Suspense>}}`,
 };
-if (life || studio || worldFinish || characterQuality) modules['audit-camera-scene'] = auditCameraScene;
+if (life || studio || worldFinish || characterQuality || npcs) modules['audit-camera-scene'] = auditCameraScene;
 if (korrigans) modules['audit-korrigan-account'] = 'export const useCart = () => ({ user: { id: "korrigan-fixture" } });';
 if (life && !process.argv.includes('--baseline')) modules.entry = `
   import React from 'react';
@@ -407,22 +407,11 @@ if (preview) {
     }
     report.cases.push('All nine building names are visible, separated and touchable at 320px and 390px; the mailbox model remains reachable');
     const labelToggle = '[data-village-toggle-labels]';
-    const observer = 'details:has([data-observe-life])';
     const settings = '[data-village-settings]';
-    await page.tap(`${observer} > summary`);
-    assert.deepEqual(await page.$$eval(`${observer}[open] button`, nodes => nodes.map(node => node.innerText.trim())),
-      ['Le sonneur de biniou', 'Le pêcheur près du pont', 'Loïc, le guide']);
-    await page.screenshot({ path: resolve(output, 'mobile-observer-320.png') });
-    for (const id of ['breton', 'fisherman', 'loic']) {
-      await page.tap(`${observer} [data-observe-life="${id}"]`);
-      await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`);
-      assert.equal(await page.$eval(observer, node => !node.open && document.activeElement === node.querySelector('summary')), true);
-      await page.tap(`${observer} > summary`);
-    }
-    report.cases.push('320px Observer offers only the three NPCs; tapping each follows that character and returns focus to Observer');
+    assert.equal(await page.$('[data-observe-life], [data-npc-dialogue]'), null);
+    assert.deepEqual(await page.$$eval('[data-npc-access]', nodes => nodes.map(node => node.dataset.npcAccess)), ['loic']);
     const toggleNames = async caption => {
       await page.tap(`${settings} > summary`);
-      assert.equal(await page.$eval(observer, node => node.open), false);
       assert.ok(await page.$(`${settings}[open] ${labelToggle}`));
       assert.equal(await page.$eval(labelToggle, node => node.innerText.trim()), caption);
       await page.tap(labelToggle);

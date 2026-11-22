@@ -198,11 +198,8 @@ export async function run({origin,output}) {
     await page.goto(origin+'/?village');await page.waitForSelector('canvas[data-village-ready="true"]');
     await frameVillageSubject(page, 'player');
     await shot('personnage-au-quartier');
-    const observer = 'details:has([data-observe-life])';
-    await page.click(observer + ' > summary');
-    assert.deepEqual(await page.$$eval(observer + ' button', nodes => nodes.map(node => node.dataset.observeLife)), ['breton', 'fisherman', 'loic']);
+    assert.equal(await page.$('[data-observe-life]'), null);
     await page.click('[data-village-settings] > summary');
-    assert.equal(await page.$eval(observer, node => node.open), false);
     assert.ok(await page.$('[data-village-settings][open] [data-village-toggle-labels]'));
     await page.click('[data-village-settings][open] [aria-label="Modifier mon personnage"]');
     await page.waitForSelector(stage);await category('Tenue');await field('Haut');

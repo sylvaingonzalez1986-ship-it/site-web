@@ -54,12 +54,6 @@ try {
   if (!baseline && !metricsOnly) {
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     const stats = () => page.$eval('canvas', node => ({ ...node.dataset }));
-    const observer = 'details:has([data-observe-life])';
-    const observe = async id => {
-      await page.click(observer + ' > summary'); await page.click(`[data-observe-life="${id}"]`);
-      await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`);
-      assert.equal(await page.$eval(observer, node => node.open), false);
-    };
     await page.setViewport({ width: 1100, height: 760 });
     await page.goto(`${origin}/?strict=1`, { waitUntil: 'networkidle0' });
     await page.waitForSelector('canvas[data-motion-state="running"][data-life-boat]');
@@ -79,18 +73,17 @@ try {
     report.fishing = { phases: [...phases], catchObserved: catches.length > 0 };
     const actorRecorder = await page.screencast({ path: resolve(output, 'island-characters.webm'), ffmpegPath, fps: 15, scale: 0.75 });
     for (const id of ['wolf', 'fox', 'weasel', 'breton']) {
-      if (id === 'breton') await observe(id);
-      else await frameVillageSubject(page, id);
+      await frameVillageSubject(page, id);
       await sleep(700);
       await page.screenshot({ path: resolve(output, `portrait-${id}.png`) }); await sleep(2500);
     }
     await actorRecorder.stop();
     await page.setViewport({ width: 568, height: 320 });
-    await observe('breton'); await page.screenshot({ path: resolve(output, 'mobile-observe-breton.png') });
+    await frameVillageSubject(page, 'breton'); await page.screenshot({ path: resolve(output, 'mobile-observe-breton.png') });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     assert.equal(await page.$$eval('[aria-label="Caméra du village"] button', nodes => nodes.every(node => node.getBoundingClientRect().bottom <= innerHeight)), true);
-    await page.focus(observer + ' > summary'); await page.keyboard.press('Enter'); await page.keyboard.press('Escape');
-    assert.equal(await page.$eval(observer, node => !node.open && document.activeElement === node.querySelector('summary')), true);
+    await page.focus('[data-village-settings] > summary'); await page.keyboard.press('Enter'); await page.keyboard.press('Escape');
+    assert.equal(await page.$eval('[data-village-settings]', node => !node.open && document.activeElement === node.querySelector('summary')), true);
     await page.click('[data-village-motion-toggle]'); await page.waitForSelector('canvas[data-motion-state="paused"]');
     const paused = await stats(); await sleep(500); const frozen = await stats();
     assert.equal(frozen.motionTime, paused.motionTime); assert.equal(frozen.lifeBoat, paused.lifeBoat); assert.equal(frozen.lifeAnimals, paused.lifeAnimals);
@@ -103,7 +96,7 @@ try {
     const hiddenTime = Number((await stats()).motionTime), other = await browser.newPage(); await other.bringToFront();
     await sleep(800); await page.bringToFront(); await other.close();
     assert.ok(Number((await stats()).motionTime) - hiddenTime < 0.3, 'Background time must not be replayed');
-    report.cases.push('Observer keyboard/menu, 568×320 close-up, all rigs freeze on pause/reduced motion and return without background catch-up');
+    report.cases.push('Settings keyboard/menu, 568×320 close-up, all rigs freeze on pause/reduced motion and return without background catch-up');
     await page.setViewport({ width: 1440, height: 1000 });
     const memory = [];
     for (let mount = 0; mount < 3; mount++) {
